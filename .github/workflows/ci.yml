@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Python tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Ruff lint
+        run: ruff check src tests
+
+      - name: Ruff format
+        run: ruff format --check src tests
+
+      - name: Pytest
+        run: pytest -q
+
+  specpm-integration:
+    name: SpecPM integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout SpecHarvester
+        uses: actions/checkout@v4
+        with:
+          path: SpecHarvester
+
+      - name: Checkout SpecPM
+        uses: actions/checkout@v4
+        with:
+          repository: 0al-spec/SpecPM
+          path: SpecPM
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ./SpecHarvester -e ./SpecPM
+
+      - name: Build fixture repository
+        run: |
+          fixture=/tmp/spec-harvester-fixture
+          mkdir -p "$fixture/packages/react"
+          cat > "$fixture/README.md" <<'EOF'
+          # Flow Fixture
+
+          Test fixture for SpecHarvester CI.
+          EOF
+          cat > "$fixture/LICENSE" <<'EOF'
+          MIT
+          EOF
+          cat > "$fixture/package.json" <<'EOF'
+          {
+            "name": "@example/flow-fixture",
+            "version": "0.1.0",
+            "description": "React library for building node-based editors and interactive flow charts.",
+            "license": "MIT",
+            "devDependencies": {
+              "typescript": "^5.0.0"
+            }
+          }
+          EOF
+          cat > "$fixture/packages/react/package.json" <<'EOF'
+          {
+            "name": "@example/flow-fixture-react",
+            "version": "0.1.0",
+            "description": "React bindings for node-based editor flows.",
+            "license": "MIT",
+            "peerDependencies": {
+              "react": "^19.0.0"
+            },
+            "exports": {
+              ".": "./dist/index.js"
+            }
+          }
+          EOF
+
+      - name: Collect and draft candidate
+        working-directory: SpecHarvester
+        run: |
+          python -m spec_harvester collect-local /tmp/spec-harvester-fixture \
+            --repository https://github.com/example/flow-fixture \
+            --revision "$GITHUB_SHA" \
+            --out /tmp/spec-harvester-candidate
+          python -m spec_harvester draft /tmp/spec-harvester-candidate \
+            --package-id flow_fixture.core \
+            --name "Flow Fixture" \
+            --out /tmp/spec-harvester-candidate
+
+      - name: Validate candidate with SpecPM
+        run: |
+          python -m specpm.cli validate /tmp/spec-harvester-candidate --json
+
+      - name: Promote candidate
+        run: |
+          python -m spec_harvester promote /tmp/spec-harvester-candidate \
+            --accepted-root /tmp/accepted \
+            --manifest /tmp/accepted-packages.yml \
+            --manifest-entry-path accepted/flow_fixture.core/0.1.0 \
+            --specpm-command "python -m specpm.cli"
+
+      - name: Generate SpecPM public index
+        run: |
+          cd /tmp
+          python -m specpm.cli public-index generate \
+            --manifest accepted-packages.yml \
+            --output specpm-public-index \
+            --registry http://localhost:8081 \
+            --json
+          test -f specpm-public-index/v0/status/index.json
+          test -f specpm-public-index/v0/packages/flow_fixture.core/index.json
+          test -f specpm-public-index/v0/intents/index.json
