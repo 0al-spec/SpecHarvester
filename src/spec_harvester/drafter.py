@@ -116,7 +116,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "provides": {"capabilities": capability_entries},
         "requires": {"capabilities": []},
         "interfaces": {
-            "inbound": build_interfaces(capability_entries, package_records),
+            "inbound": build_interfaces(package_records),
             "outbound": [],
         },
         "effects": {"sideEffects": []},
@@ -201,9 +201,9 @@ def infer_repository_name(source: dict[str, Any]) -> str:
         if name:
             return slug_id(name)
 
-    source_path = source.get("path")
-    if isinstance(source_path, str) and source_path.strip():
-        return slug_id(Path(source_path).name)
+    source_label = source.get("label")
+    if isinstance(source_label, str) and source_label.strip():
+        return slug_id(source_label)
     return "generated_package"
 
 
@@ -275,14 +275,12 @@ def infer_intent_ids(package_name: str, summary: str) -> list[str]:
     return sorted(intents)
 
 
-def build_interfaces(
-    capability_entries: list[dict[str, Any]], package_records: list[dict[str, Any]]
-) -> list[dict[str, Any]]:
+def build_interfaces(package_records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     interfaces: list[dict[str, Any]] = []
-    for _entry, record in zip(capability_entries, package_records):
+    for record in package_records:
         package = record["package"]
         package_name = package.get("name")
-        if not isinstance(package_name, str):
+        if not isinstance(package_name, str) or not package_name.strip():
             continue
         interface_id = slug_id(f"package.{package_label(package_name)}")
         outputs = [

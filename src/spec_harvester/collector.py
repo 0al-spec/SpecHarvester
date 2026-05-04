@@ -4,7 +4,6 @@ import hashlib
 import json
 import re
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -88,13 +87,9 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
     return {
         "schemaVersion": SNAPSHOT_SCHEMA_VERSION,
         "kind": SNAPSHOT_KIND,
-        "generatedAt": datetime.now(timezone.utc)
-        .replace(microsecond=0)
-        .isoformat()
-        .replace("+00:00", "Z"),
         "source": {
             "kind": "local_checkout",
-            "path": str(source),
+            "label": source.name,
             "repository": options.repository,
             "revision": options.revision,
         },

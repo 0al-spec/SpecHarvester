@@ -332,7 +332,6 @@
       "size": 437
     }
   ],
-  "generatedAt": "2026-05-04T20:59:56Z",
   "kind": "SpecHarvesterEvidenceSnapshot",
   "policy": {
     "contentAuthority": "untrusted_metadata",
@@ -344,7 +343,7 @@
   "skippedFiles": [],
   "source": {
     "kind": "local_checkout",
-    "path": "/Users/egor/Development/GitHub/xyflow",
+    "label": "xyflow",
     "repository": "https://github.com/xyflow/xyflow",
     "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd"
   },

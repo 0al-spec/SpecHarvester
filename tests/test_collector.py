@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from spec_harvester.cli import main
 from spec_harvester.collector import HarvestOptions, collect_local_repository
 from spec_harvester.drafter import DraftOptions, draft_spec_package
@@ -47,6 +49,9 @@ def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None
     assert snapshot["kind"] == "SpecHarvesterEvidenceSnapshot"
     assert snapshot["source"]["repository"] == "https://github.com/example/demo"
     assert snapshot["source"]["revision"] == "abc123"
+    assert snapshot["source"]["label"] == "demo"
+    assert "path" not in snapshot["source"]
+    assert "generatedAt" not in snapshot
     assert snapshot["policy"]["execution"] == "none"
     assert snapshot["summary"]["fileCount"] == 4
     assert snapshot["summary"]["packageManifestCount"] == 2
@@ -58,6 +63,20 @@ def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None
     assert by_path["package.json"]["package"]["dependencies"] == ["react"]
     assert by_path["package.json"]["package"]["peerDependencies"] == ["react-dom"]
     assert by_path["package.json"]["package"]["exports"] == ["."]
+
+
+def test_collect_local_repository_snapshot_is_deterministic(tmp_path: Path) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "README.md").write_text("# Demo\n", encoding="utf-8")
+
+    options = HarvestOptions(
+        source=repo,
+        repository="https://github.com/example/demo",
+        revision="abc123",
+    )
+
+    assert collect_local_repository(options) == collect_local_repository(options)
 
 
 def test_collect_local_repository_skips_paths_outside_source(tmp_path: Path) -> None:
@@ -144,6 +163,40 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     assert "path: harvest.json" in spec
 
 
+def test_draft_spec_package_keeps_interfaces_matched_to_valid_packages(tmp_path: Path) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps({"version": "1.0.0", "description": "Root package without a name."}),
+        encoding="utf-8",
+    )
+    package_dir = repo / "packages" / "core"
+    package_dir.mkdir(parents=True)
+    (package_dir / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/core",
+                "version": "1.0.0",
+                "description": "Core package.",
+                "license": "MIT",
+            }
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="example.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    assert "id: package.core" in spec
+    assert "Observed import surface for @example/core." in spec
+
+
 def test_cli_draft_writes_candidate_files(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
     repo = tmp_path / "demo"
     repo.mkdir()
@@ -189,6 +242,65 @@ def test_promote_candidate_copies_package_and_updates_manifest(tmp_path: Path) -
     assert (destination / "harvest.json").exists()
     assert (destination / "specs" / "demo.spec.yaml").exists()
     assert "  - path: accepted/example.core/0.1.0\n" in manifest.read_text(encoding="utf-8")
+
+
+def test_promote_candidate_rejects_candidate_symlinks(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    outside = tmp_path / "outside.txt"
+    outside.write_text("secret", encoding="utf-8")
+    (candidate / "evidence-link").symlink_to(outside)
+
+    with pytest.raises(ValueError, match="unsupported symlink"):
+        promote_candidate(
+            PromoteOptions(
+                candidate=candidate,
+                accepted_root=tmp_path / "accepted",
+                skip_validation=True,
+            )
+        )
+
+
+def test_promote_candidate_inserts_manifest_entry_inside_packages_block(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    manifest = tmp_path / "accepted-packages.yml"
+    manifest.write_text(
+        "schemaVersion: 1\n"
+        "packages:\n"
+        "  - path: existing/package\n"
+        "# keep comment\n"
+        "metadata:\n"
+        "  owner: test\n",
+        encoding="utf-8",
+    )
+
+    promote_candidate(
+        PromoteOptions(
+            candidate=candidate,
+            accepted_root=tmp_path / "accepted",
+            manifest=manifest,
+            manifest_entry_path="accepted/example.core/0.1.0",
+            skip_validation=True,
+        )
+    )
+
+    text = manifest.read_text(encoding="utf-8")
+    assert "  - path: accepted/example.core/0.1.0\n" in text
+    assert text.index("  - path: accepted/example.core/0.1.0") < text.index("metadata:")
+
+
+def test_promote_candidate_rejects_unsafe_manifest_entry_path(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+
+    with pytest.raises(ValueError, match="relative|parent|newlines"):
+        promote_candidate(
+            PromoteOptions(
+                candidate=candidate,
+                accepted_root=tmp_path / "accepted",
+                manifest=tmp_path / "accepted-packages.yml",
+                manifest_entry_path="../accepted/example.core/0.1.0",
+                skip_validation=True,
+            )
+        )
 
 
 def test_cli_promote_writes_json_result(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
