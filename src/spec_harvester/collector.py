@@ -59,10 +59,19 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
     files: list[dict[str, Any]] = []
     skipped_files: list[dict[str, Any]] = []
     for path in candidate_files(source):
+        rel = path.relative_to(source).as_posix()
+        resolved_path = path.resolve()
+        if not is_inside(source, resolved_path):
+            skipped_files.append(
+                {
+                    "path": rel,
+                    "reason": "path_outside_source",
+                }
+            )
+            continue
         if path.is_symlink() or not path.is_file():
             continue
         stat = path.stat()
-        rel = path.relative_to(source).as_posix()
         if stat.st_size > options.max_file_bytes:
             skipped_files.append(
                 {
@@ -116,6 +125,14 @@ def candidate_files(root: Path) -> list[Path]:
             if path.exists():
                 seen[path.resolve().as_posix()] = path
     return list(seen.values())
+
+
+def is_inside(root: Path, path: Path) -> bool:
+    try:
+        path.resolve().relative_to(root.resolve())
+    except ValueError:
+        return False
+    return True
 
 
 def collect_file(root: Path, path: Path) -> dict[str, Any]:
