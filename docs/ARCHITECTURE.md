@@ -26,6 +26,9 @@ SpecPM validation
 candidate review
         |
         v
+controlled promotion
+        |
+        v
 accepted registry source
 ```
 
@@ -76,6 +79,18 @@ specpm validate <candidate-dir> --json
 Generated packages should not be accepted into a public registry without a
 review gate. Reviewers should check scope, evidence, provenance, package IDs,
 intent IDs, upstream relationship, and licensing statements.
+
+### Promotion Gate
+
+Copies a reviewed candidate into an accepted source root and optionally appends
+a local `path` entry to an accepted package manifest. Promotion does not publish
+to a remote registry by itself.
+
+Current command:
+
+```bash
+spec-harvester promote <candidate-dir> --accepted-root <accepted-root>
+```
 
 ## Non-Goals
 

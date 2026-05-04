@@ -6,6 +6,7 @@ from pathlib import Path
 from spec_harvester.cli import main
 from spec_harvester.collector import HarvestOptions, collect_local_repository
 from spec_harvester.drafter import DraftOptions, draft_spec_package
+from spec_harvester.promoter import PromoteOptions, promote_candidate
 
 
 def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None:
@@ -136,3 +137,85 @@ def test_cli_draft_writes_candidate_files(tmp_path: Path, capsys) -> None:  # ty
     assert (out / "specpm.yaml").exists()
     assert (out / "specs" / "demo.spec.yaml").exists()
     assert json.loads(capsys.readouterr().out)["packageId"] == "example.core"
+
+
+def test_promote_candidate_copies_package_and_updates_manifest(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    validator = tmp_path / "specpm"
+    validator.write_text('#!/bin/sh\nprintf \'{"status":"warning_only"}\\n\'\n', encoding="utf-8")
+    validator.chmod(0o755)
+    accepted_root = tmp_path / "accepted"
+    manifest = tmp_path / "accepted-packages.yml"
+
+    result = promote_candidate(
+        PromoteOptions(
+            candidate=candidate,
+            accepted_root=accepted_root,
+            manifest=manifest,
+            manifest_entry_path="accepted/example.core/0.1.0",
+            specpm_command=str(validator),
+        )
+    )
+
+    destination = accepted_root / "example.core" / "0.1.0"
+    assert result["status"] == "ok"
+    assert result["validationStatus"] == "warning_only"
+    assert (destination / "specpm.yaml").exists()
+    assert (destination / "harvest.json").exists()
+    assert (destination / "specs" / "demo.spec.yaml").exists()
+    assert "  - path: accepted/example.core/0.1.0\n" in manifest.read_text(encoding="utf-8")
+
+
+def test_cli_promote_writes_json_result(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
+    candidate = draft_demo_candidate(tmp_path)
+    accepted_root = tmp_path / "accepted"
+
+    result = main(
+        [
+            "promote",
+            str(candidate),
+            "--accepted-root",
+            str(accepted_root),
+            "--skip-validation",
+        ]
+    )
+
+    output = json.loads(capsys.readouterr().out)
+    assert result == 0
+    assert output["packageId"] == "example.core"
+    assert output["validationStatus"] == "skipped"
+    assert (accepted_root / "example.core" / "0.1.0" / "specpm.yaml").exists()
+
+
+def draft_demo_candidate(tmp_path: Path) -> Path:
+    repo = tmp_path / "demo"
+    repo.mkdir(exist_ok=True)
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/demo",
+                "version": "1.0.0",
+                "description": "Demo package",
+                "license": "MIT",
+            }
+        ),
+        encoding="utf-8",
+    )
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            repository="https://github.com/example/demo",
+            revision="abc123",
+        )
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir(exist_ok=True)
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+    draft_spec_package(
+        DraftOptions(
+            snapshot=candidate,
+            out=candidate,
+            package_id="example.core",
+        )
+    )
+    return candidate
