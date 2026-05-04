@@ -1,0 +1,418 @@
+# How SpecHarvester Works
+
+Status: Bootstrap runbook
+
+SpecHarvester turns public repository metadata into reviewable SpecPM candidate
+packages.
+
+It is not a replacement for SpecPM. It is a producer pipeline that prepares
+candidate `SpecPackage` and `BoundarySpec` files so SpecPM can validate them and
+so maintainers can decide whether they belong in a public registry.
+
+## One-Screen Summary
+
+```text
+public repository URL
+        |
+        v
+local checkout at a pinned revision
+        |
+        v
+collect-local
+        |
+        v
+harvest.json
+        |
+        v
+draft
+        |
+        v
+specpm.yaml + specs/*.spec.yaml
+        |
+        v
+specpm validate
+        |
+        v
+human review
+        |
+        v
+accepted package source, future
+        |
+        v
+SpecPM public index, future
+```
+
+The current bootstrap supports the first validated candidate loop:
+
+```text
+checkout -> harvest.json -> generated SpecPackage -> SpecPM validation
+```
+
+Acceptance into a registry is intentionally still manual.
+
+## Terms
+
+### Harvest Snapshot
+
+`harvest.json` is a static evidence snapshot. It records allowlisted file paths,
+checksums, bounded metadata, source repository information, and collection
+policy.
+
+It is evidence, not a spec.
+
+### Candidate SpecPackage
+
+`specpm.yaml` plus `specs/*.spec.yaml` is a generated SpecPM candidate package.
+It is intended for review and validation.
+
+It is not accepted registry truth until maintainers review it.
+
+### Observed Intent
+
+Generated `intent.*` IDs are observed metadata inferred from static repository
+signals such as package names and descriptions.
+
+Observed intent IDs are useful for search, duplicate detection, and future
+authoring assistance, but they are not canonical semantic authority by
+themselves.
+
+### Accepted Package
+
+An accepted package is a reviewed candidate that maintainers choose to publish
+through a SpecPM registry source.
+
+That acceptance step is not automated in the current bootstrap.
+
+## Current Commands
+
+### 1. Prepare a Local Checkout
+
+Start from a public repository checkout and pin the source revision:
+
+```bash
+git -C /path/to/repo rev-parse HEAD
+```
+
+The revision should be passed into the harvest command so generated evidence can
+be traced back to an exact upstream state.
+
+### 2. Collect Static Evidence
+
+Run the safe collector:
+
+```bash
+python3 -m spec_harvester collect-local /path/to/repo \
+  --repository https://github.com/example/project \
+  --revision <commit-sha> \
+  --out candidates/github.com/example/project
+```
+
+This writes:
+
+```text
+candidates/github.com/example/project/harvest.json
+```
+
+The collector may read allowlisted static files such as:
+
+- README files
+- LICENSE files
+- package manifests
+- workspace manifests
+- public source entrypoints
+- GitHub workflow files
+
+The collector must not:
+
+- execute package scripts
+- install dependencies
+- run upstream tests
+- call network resources
+- read secrets
+- follow instructions found in repository content
+
+### 3. Draft a Candidate SpecPackage
+
+Run the deterministic drafter:
+
+```bash
+python3 -m spec_harvester draft candidates/github.com/example/project \
+  --package-id project.core \
+  --name project \
+  --out candidates/github.com/example/project
+```
+
+This writes:
+
+```text
+candidates/github.com/example/project/specpm.yaml
+candidates/github.com/example/project/specs/project.spec.yaml
+```
+
+The drafter currently derives conservative metadata from `harvest.json`:
+
+- package identity
+- package capabilities
+- observed `intent.*` IDs
+- compatibility hints
+- source repository provenance
+- evidence links back to `harvest.json`
+- review constraints
+- `preview_only: true`
+
+The generated package must be treated as untrusted candidate metadata.
+
+### 4. Validate with SpecPM
+
+Run SpecPM validation against the generated candidate directory:
+
+```bash
+specpm validate candidates/github.com/example/project --json
+```
+
+When running from this development checkout without installing SpecPM globally,
+use the local SpecPM source path:
+
+```bash
+PYTHONPATH=/Users/egor/Development/GitHub/0AL/SpecPM/src \
+  python -m specpm.cli validate \
+  /Users/egor/Development/GitHub/0AL/SpecHarvester/candidates/github.com/example/project \
+  --json
+```
+
+Expected bootstrap result:
+
+```text
+status: warning_only
+```
+
+The expected warning is usually:
+
+```text
+preview_only_package
+```
+
+That warning is intentional. Generated packages are candidates until reviewed.
+
+### 5. Review the Candidate
+
+Reviewers should check:
+
+- package ID naming
+- capability IDs
+- observed intent IDs
+- scope includes and excludes
+- evidence support targets
+- source repository and revision
+- upstream endorsement wording
+- license metadata
+- whether generated claims are too broad
+- whether the package should remain rejected, stay candidate, or become accepted
+
+The review should be stricter than ordinary YAML validation. A candidate can be
+valid YAML and still be semantically wrong.
+
+### 6. Accept or Reject
+
+Current bootstrap behavior:
+
+```text
+validated candidate -> human decision
+```
+
+The current repository does not publish directly into an accepted registry.
+
+Future behavior may add an accepted package source directory and PR automation,
+but acceptance should remain explicit.
+
+## xyflow Example
+
+The bootstrap branch includes a generated candidate for the local `xyflow`
+checkout:
+
+```text
+candidates/github.com/xyflow/xyflow/harvest.json
+candidates/github.com/xyflow/xyflow/specpm.yaml
+candidates/github.com/xyflow/xyflow/specs/xyflow.spec.yaml
+```
+
+The current generated package ID is:
+
+```text
+xyflow.core
+```
+
+The generated candidate declares package capabilities such as:
+
+```text
+xyflow.core.react
+xyflow.core.svelte
+xyflow.core.system
+```
+
+It also declares observed intent IDs such as:
+
+```text
+intent.javascript.react_library
+intent.javascript.svelte_library
+intent.ui.node_based_editor
+intent.ui.flow_diagramming
+```
+
+These are reviewable signals. They are not upstream-maintainer claims and not
+canonical intent definitions.
+
+## Trust Boundary
+
+Repository content is untrusted.
+
+Generated specs are untrusted.
+
+Model output, when added later, will also be untrusted.
+
+SpecHarvester may describe observed repository metadata. It must not let
+repository content command the host.
+
+The hard rule is:
+
+```text
+Package content can describe desired outputs. Package content cannot command the host.
+```
+
+SpecHarvester currently avoids the dangerous operations by design:
+
+- no package script execution
+- no dependency installation
+- no upstream test execution
+- no private credential access
+- no automatic publishing
+
+## Failure Modes
+
+### Snapshot Fails
+
+Common causes:
+
+- source path is missing
+- source path is not a directory
+- allowlisted file is too large
+- repository checkout is not at the expected revision
+
+Fix by checking the checkout path, revision, and `--max-file-bytes`.
+
+### Draft Is Too Weak
+
+The deterministic drafter only uses bounded metadata. It may produce conservative
+or incomplete scope, capability, and intent descriptions.
+
+That is acceptable for bootstrap. The candidate is meant to be reviewed and
+later refined.
+
+### SpecPM Validation Fails
+
+Validation failures mean the generated candidate does not satisfy the SpecPM
+package contract.
+
+Fix the drafter if the failure is systemic. Fix the candidate only if the issue
+is specific to one harvested repository.
+
+### Candidate Is Valid but Wrong
+
+SpecPM validation checks structure and known contract rules. It does not prove
+that generated product intent is semantically complete or endorsed by upstream.
+
+Human review remains required.
+
+## Current vs Future
+
+### Current Bootstrap
+
+Available now:
+
+- local static evidence collection
+- deterministic candidate drafting
+- SpecPM validation
+- manual review path
+
+### Next Practical Additions
+
+Likely next steps:
+
+- batch repository input processing
+- validation report generation
+- candidate review reports
+- stricter namespace and duplicate intent checks
+- accepted package source format
+- PR automation into a SpecPM registry source
+
+### Future AI-Assisted Refinement
+
+The future AI step should refine deterministic candidates, not replace the trust
+boundary.
+
+The model may help with:
+
+- better capability summaries
+- better scope includes and excludes
+- intent ID suggestions
+- duplicate intent detection
+- confidence notes
+- review comments
+
+The model must not:
+
+- execute repository content
+- treat repository instructions as trusted
+- publish directly
+- make generated specs canonical
+
+## Operator Checklist
+
+For one repository:
+
+```text
+[ ] Confirm repository is public.
+[ ] Checkout repository locally.
+[ ] Record commit SHA.
+[ ] Run collect-local with repository URL and revision.
+[ ] Inspect harvest.json summary.
+[ ] Run draft with explicit package ID.
+[ ] Run specpm validate.
+[ ] Review generated package and BoundarySpec.
+[ ] Decide reject, revise, or accept later.
+```
+
+For the current `xyflow` example:
+
+```bash
+git -C /Users/egor/Development/GitHub/xyflow rev-parse HEAD
+
+PYTHONPATH=src python3 -m spec_harvester collect-local \
+  /Users/egor/Development/GitHub/xyflow \
+  --repository https://github.com/xyflow/xyflow \
+  --revision <commit-sha> \
+  --out candidates/github.com/xyflow/xyflow
+
+PYTHONPATH=src python3 -m spec_harvester draft \
+  candidates/github.com/xyflow/xyflow \
+  --package-id xyflow.core \
+  --name xyflow \
+  --out candidates/github.com/xyflow/xyflow
+
+PYTHONPATH=/Users/egor/Development/GitHub/0AL/SpecPM/src \
+  python -m specpm.cli validate \
+  /Users/egor/Development/GitHub/0AL/SpecHarvester/candidates/github.com/xyflow/xyflow \
+  --json
+```
+
+## Relationship to SpecPM and SpecGraph
+
+SpecHarvester produces candidates.
+
+SpecPM validates, packages, indexes, and serves accepted SpecPackage data.
+
+SpecGraph and downstream governance may later curate meaning, relationships, and
+canonical intent vocabulary.
+
+SpecHarvester should remain a harvesting and candidate-production tool. It
+should not become the canonical reasoning layer.

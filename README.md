@@ -94,6 +94,9 @@ candidate review
 accepted public registry source
 ```
 
+For the full step-by-step operator flow, see
+[`docs/HOW_IT_WORKS.md`](docs/HOW_IT_WORKS.md).
+
 ## Repository Layout
 
 ```text
