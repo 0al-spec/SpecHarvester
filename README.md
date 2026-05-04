@@ -1,0 +1,2 @@
+# SpecHarvester
+Specs for everything
