@@ -60,6 +60,31 @@ def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None
     assert by_path["package.json"]["package"]["exports"] == ["."]
 
 
+def test_collect_local_repository_skips_paths_outside_source(tmp_path: Path) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "package.json").write_text(
+        json.dumps({"name": "@outside/secret", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    packages = repo / "packages"
+    packages.mkdir()
+    (packages / "core").symlink_to(outside, target_is_directory=True)
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    assert snapshot["summary"]["fileCount"] == 0
+    assert snapshot["summary"]["skippedFileCount"] == 1
+    assert snapshot["skippedFiles"] == [
+        {
+            "path": "packages/core/package.json",
+            "reason": "path_outside_source",
+        }
+    ]
+
+
 def test_cli_writes_harvest_snapshot(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
     repo = tmp_path / "demo"
     repo.mkdir()
