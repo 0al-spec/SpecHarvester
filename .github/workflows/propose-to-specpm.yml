@@ -49,6 +49,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: SpecHarvester
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Checkout SpecPM
         uses: actions/checkout@v4

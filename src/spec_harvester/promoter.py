@@ -30,6 +30,7 @@ def promote_candidate(options: PromoteOptions) -> dict[str, Any]:
     manifest_path = candidate / "specpm.yaml"
     if not manifest_path.is_file():
         raise ValueError(f"Candidate is missing specpm.yaml: {candidate}")
+    reject_symlinks(candidate)
 
     validation = None
     if not options.skip_validation:
@@ -55,7 +56,12 @@ def promote_candidate(options: PromoteOptions) -> dict[str, Any]:
         if not options.force:
             raise ValueError(f"Destination already exists: {destination}")
         shutil.rmtree(destination)
-    shutil.copytree(candidate, destination, ignore=shutil.ignore_patterns(".git", ".DS_Store"))
+    shutil.copytree(
+        candidate,
+        destination,
+        symlinks=True,
+        ignore=shutil.ignore_patterns(".git", ".DS_Store"),
+    )
 
     manifest_result = None
     if options.manifest is not None:
@@ -111,6 +117,13 @@ def validate_with_specpm(
             f"exit={completed.returncode}, stderr={completed.stderr.strip()}"
         )
     return payload
+
+
+def reject_symlinks(root: Path) -> None:
+    for path in root.rglob("*"):
+        if path.is_symlink():
+            relative = path.relative_to(root).as_posix()
+            raise ValueError(f"Candidate contains unsupported symlink: {relative}")
 
 
 def read_manifest_identity(manifest_path: Path) -> dict[str, str]:
@@ -180,6 +193,7 @@ def infer_manifest_entry_path(manifest: Path, destination: Path) -> str:
 
 
 def append_local_manifest_entry(manifest: Path, entry_path: str) -> dict[str, Any]:
+    validate_manifest_entry_path(entry_path)
     manifest.parent.mkdir(parents=True, exist_ok=True)
     entry_line = f"  - path: {entry_path}"
     if not manifest.exists():
@@ -187,13 +201,64 @@ def append_local_manifest_entry(manifest: Path, entry_path: str) -> dict[str, An
         return {"path": str(manifest), "entry": entry_path, "updated": True}
 
     text = manifest.read_text(encoding="utf-8")
-    if entry_line in text:
+    lines = text.splitlines()
+    if any(line.strip() == f"- path: {entry_path}" for line in lines):
         return {"path": str(manifest), "entry": entry_path, "updated": False}
 
-    if not text.endswith("\n"):
-        text += "\n"
-    if "packages:" not in text:
-        text += "packages:\n"
-    text += f"{entry_line}\n"
-    manifest.write_text(text, encoding="utf-8")
+    package_line_index = find_top_level_packages_line(lines)
+    if package_line_index is None:
+        if lines and lines[-1].strip():
+            lines.append("")
+        lines.extend(["packages:", entry_line])
+    else:
+        package_line = lines[package_line_index]
+        stripped = package_line.strip()
+        if stripped == "packages: []":
+            lines[package_line_index] = "packages:"
+            insert_at = package_line_index + 1
+        elif stripped == "packages:":
+            insert_at = end_of_packages_block(lines, package_line_index + 1)
+        else:
+            raise ValueError("Manifest packages field must be a block list or an empty list.")
+        lines.insert(insert_at, entry_line)
+
+    manifest.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return {"path": str(manifest), "entry": entry_path, "updated": True}
+
+
+def validate_manifest_entry_path(entry_path: str) -> None:
+    if not entry_path or not entry_path.strip():
+        raise ValueError("Manifest entry path must be non-empty.")
+    if "\n" in entry_path or "\r" in entry_path:
+        raise ValueError("Manifest entry path must not contain newlines.")
+    path = Path(entry_path)
+    if path.is_absolute():
+        raise ValueError("Manifest entry path must be relative.")
+    if any(part in {"", ".", ".."} for part in path.parts):
+        raise ValueError("Manifest entry path must not contain empty, current, or parent segments.")
+
+
+def find_top_level_packages_line(lines: list[str]) -> int | None:
+    for index, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if line.startswith((" ", "\t")):
+            continue
+        if stripped.startswith("packages:"):
+            return index
+    return None
+
+
+def end_of_packages_block(lines: list[str], start: int) -> int:
+    index = start
+    while index < len(lines):
+        line = lines[index]
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            index += 1
+            continue
+        if not line.startswith((" ", "\t")):
+            break
+        index += 1
+    return index
