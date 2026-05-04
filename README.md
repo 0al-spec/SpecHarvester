@@ -10,7 +10,8 @@ and sends them through validation and review.
 
 ## Current Bootstrap
 
-This repository currently provides a small safe collector:
+This repository currently provides a small safe collector and deterministic
+candidate drafter:
 
 ```bash
 python3 -m spec_harvester collect-local /path/to/repo \
@@ -29,6 +30,24 @@ The snapshot contains checksums and metadata from allowlisted static files such
 as `README.md`, `LICENSE`, `package.json`, `pyproject.toml`, `pnpm-workspace.yaml`,
 package manifests, public source entrypoints, and workflow files.
 
+Then draft a reviewable SpecPM candidate from the snapshot:
+
+```bash
+python3 -m spec_harvester draft candidates/github.com/example/project \
+  --package-id project.core \
+  --out candidates/github.com/example/project
+```
+
+The command writes:
+
+```text
+candidates/github.com/example/project/specpm.yaml
+candidates/github.com/example/project/specs/project.spec.yaml
+```
+
+Drafted specs are deterministic candidates. They must pass `specpm validate`
+and maintainer review before acceptance.
+
 ## Boundary
 
 SpecHarvester:
@@ -37,7 +56,7 @@ SpecHarvester:
 - records provenance and file digests;
 - extracts bounded metadata such as package names, descriptions, exports,
   dependency names, script names, and Markdown headings;
-- drafts candidate specs in a later AI-assisted step;
+- drafts candidate specs from harvested metadata;
 - validates candidates with SpecPM.
 
 SpecHarvester does not:
@@ -60,7 +79,10 @@ repository list
 safe evidence collector
       |
       v
-AI draft generator
+deterministic draft generator
+      |
+      v
+AI-assisted refinement, future
       |
       v
 specpm validate
