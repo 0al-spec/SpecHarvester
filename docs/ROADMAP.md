@@ -13,6 +13,7 @@
   directories.
 - Mark generated candidates as unofficial and community-observed.
 - Validate generated candidates with SpecPM.
+- Promote reviewed candidates into accepted source roots.
 
 ## Phase 2: AI-Assisted Refinement
 
@@ -32,6 +33,7 @@
 - Produce PR-ready accepted package manifest entries.
 - Support public index candidate review.
 - Export observed intent catalog inputs for SpecPM / SpecGraph workflows.
+- Automate PR creation from promoted accepted package sources.
 
 ## Phase 5: Governance
 

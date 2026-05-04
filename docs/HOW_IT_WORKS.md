@@ -36,19 +36,22 @@ specpm validate
 human review
         |
         v
-accepted package source, future
+promote
+        |
+        v
+accepted package source
         |
         v
 SpecPM public index, future
 ```
 
-The current bootstrap supports the first validated candidate loop:
+The current bootstrap supports the first controlled candidate loop:
 
 ```text
-checkout -> harvest.json -> generated SpecPackage -> SpecPM validation
+checkout -> harvest.json -> generated SpecPackage -> SpecPM validation -> promotion copy
 ```
 
-Acceptance into a registry is intentionally still manual.
+Publication into a registry is intentionally still a SpecPM maintainer PR.
 
 ## Terms
 
@@ -222,8 +225,56 @@ validated candidate -> human decision
 
 The current repository does not publish directly into an accepted registry.
 
-Future behavior may add an accepted package source directory and PR automation,
-but acceptance should remain explicit.
+### 7. Promote a Reviewed Candidate
+
+After review, copy the candidate into an accepted source root:
+
+```bash
+python3 -m spec_harvester promote candidates/github.com/example/project \
+  --accepted-root accepted \
+  --manifest accepted/accepted-packages.yml
+```
+
+Promotion does three controlled things:
+
+- validates the candidate with SpecPM unless `--skip-validation` is passed;
+- copies the candidate into `<accepted-root>/<package_id>/<version>`;
+- optionally appends a local `path` entry to an accepted package manifest.
+
+For a SpecPM public-index PR, point promotion at a directory inside the SpecPM
+checkout and write the manifest entry that `specpm public-index generate` should
+read:
+
+```bash
+PYTHONPATH=src python3 -m spec_harvester promote \
+  candidates/github.com/example/project \
+  --accepted-root /Users/egor/Development/GitHub/0AL/SpecPM/public-index/generated \
+  --manifest /Users/egor/Development/GitHub/0AL/SpecPM/public-index/accepted-packages.yml \
+  --manifest-entry-path public-index/generated/project.core/0.1.0 \
+  --specpm-command "python -m specpm.cli" \
+  --specpm-pythonpath /Users/egor/Development/GitHub/0AL/SpecPM/src
+```
+
+That still creates a reviewable git diff. It does not mutate a live registry.
+
+### 8. Publish Through SpecPM
+
+SpecPM registry publication remains a SpecPM repository operation:
+
+```text
+accepted package source diff
+        |
+        v
+SpecPM PR review
+        |
+        v
+public-index generate
+        |
+        v
+GitHub Pages /v0
+```
+
+Future behavior may add PR automation, but acceptance should remain explicit.
 
 ## xyflow Example
 
@@ -379,7 +430,9 @@ For one repository:
 [ ] Run draft with explicit package ID.
 [ ] Run specpm validate.
 [ ] Review generated package and BoundarySpec.
-[ ] Decide reject, revise, or accept later.
+[ ] Decide reject, revise, or promote.
+[ ] Run promote into an accepted source root.
+[ ] Open or update a maintainer PR for registry publication.
 ```
 
 For the current `xyflow` example:
@@ -403,6 +456,12 @@ PYTHONPATH=/Users/egor/Development/GitHub/0AL/SpecPM/src \
   python -m specpm.cli validate \
   /Users/egor/Development/GitHub/0AL/SpecHarvester/candidates/github.com/xyflow/xyflow \
   --json
+
+PYTHONPATH=src python3 -m spec_harvester promote \
+  candidates/github.com/xyflow/xyflow \
+  --accepted-root accepted \
+  --manifest accepted/accepted-packages.yml \
+  --skip-validation
 ```
 
 ## Relationship to SpecPM and SpecGraph

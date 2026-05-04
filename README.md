@@ -48,6 +48,17 @@ candidates/github.com/example/project/specs/project.spec.yaml
 Drafted specs are deterministic candidates. They must pass `specpm validate`
 and maintainer review before acceptance.
 
+After review, promote a candidate into an accepted source root:
+
+```bash
+python3 -m spec_harvester promote candidates/github.com/example/project \
+  --accepted-root accepted \
+  --manifest accepted/accepted-packages.yml
+```
+
+Promotion validates the candidate, copies it into `<accepted-root>/<package_id>/<version>`,
+and can append a local `path` entry to an accepted package manifest.
+
 ## Boundary
 
 SpecHarvester:
@@ -89,6 +100,9 @@ specpm validate
       |
       v
 candidate review
+      |
+      v
+controlled promotion
       |
       v
 accepted public registry source

@@ -16,6 +16,7 @@ from spec_harvester.drafter import (
     DraftOptions,
     draft_spec_package,
 )
+from spec_harvester.promoter import PromoteOptions, promote_candidate
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -70,6 +71,51 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"Generated SpecPackage author. Default: {DEFAULT_AUTHOR}.",
     )
     draft.set_defaults(func=run_draft)
+
+    promote = subcommands.add_parser(
+        "promote",
+        help="Validate and copy a candidate package into an accepted source root.",
+    )
+    promote.add_argument("candidate", type=Path, help="Candidate SpecPackage directory.")
+    promote.add_argument(
+        "--accepted-root",
+        type=Path,
+        required=True,
+        help="Directory where the promoted package copy will be written.",
+    )
+    promote.add_argument(
+        "--manifest",
+        type=Path,
+        help="Optional accepted-packages.yml manifest to update with a local path entry.",
+    )
+    promote.add_argument(
+        "--manifest-entry-path",
+        help="Path to write into the manifest. Defaults to an inferred local path.",
+    )
+    promote.add_argument(
+        "--package-subdir",
+        help="Subdirectory under --accepted-root. Defaults to <package_id>/<version>.",
+    )
+    promote.add_argument(
+        "--specpm-command",
+        default="specpm",
+        help="SpecPM validation command. Default: specpm.",
+    )
+    promote.add_argument(
+        "--specpm-pythonpath",
+        help="PYTHONPATH prefix for a local SpecPM checkout.",
+    )
+    promote.add_argument(
+        "--skip-validation",
+        action="store_true",
+        help="Skip SpecPM validation. Intended only for tests or emergency manual workflows.",
+    )
+    promote.add_argument(
+        "--force",
+        action="store_true",
+        help="Replace an existing promoted package directory.",
+    )
+    promote.set_defaults(func=run_promote)
     return parser
 
 
@@ -109,6 +155,24 @@ def run_draft(args: argparse.Namespace) -> int:
             name=args.name,
             version=args.version,
             author=args.author,
+        )
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_promote(args: argparse.Namespace) -> int:
+    result = promote_candidate(
+        PromoteOptions(
+            candidate=args.candidate,
+            accepted_root=args.accepted_root,
+            manifest=args.manifest,
+            manifest_entry_path=args.manifest_entry_path,
+            package_subdir=args.package_subdir,
+            specpm_command=args.specpm_command,
+            specpm_pythonpath=args.specpm_pythonpath,
+            skip_validation=args.skip_validation,
+            force=args.force,
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))
