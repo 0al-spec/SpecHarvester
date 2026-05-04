@@ -5,6 +5,7 @@ from pathlib import Path
 
 from spec_harvester.cli import main
 from spec_harvester.collector import HarvestOptions, collect_local_repository
+from spec_harvester.drafter import DraftOptions, draft_spec_package
 
 
 def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None:
@@ -70,3 +71,68 @@ def test_cli_writes_harvest_snapshot(tmp_path: Path, capsys) -> None:  # type: i
     snapshot = json.loads((out / "harvest.json").read_text(encoding="utf-8"))
     assert snapshot["summary"]["fileCount"] == 1
     assert json.loads(capsys.readouterr().out)["status"] == "ok"
+
+
+def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/react-flow",
+                "version": "1.0.0",
+                "description": "React library for building node-based editors.",
+                "license": "MIT",
+                "peerDependencies": {"react": "^19.0.0"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            repository="https://github.com/example/react-flow",
+            revision="abc123",
+        )
+    )
+    candidate = tmp_path / "candidate"
+    (candidate / "harvest.json").parent.mkdir(parents=True)
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(
+            snapshot=candidate,
+            out=candidate,
+            package_id="example.react_flow",
+        )
+    )
+
+    assert result["status"] == "ok"
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    assert "id: example.react_flow" in manifest
+    assert "preview_only: true" in manifest
+    assert "example.react_flow.react_flow" in spec
+    assert "intent.javascript.react_library" in spec
+    assert "intent.ui.node_based_editor" in spec
+    assert "path: harvest.json" in spec
+
+
+def test_cli_draft_writes_candidate_files(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps({"name": "@example/system", "description": "Core system", "license": "MIT"}),
+        encoding="utf-8",
+    )
+    out = tmp_path / "candidate"
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    out.mkdir()
+    (out / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = main(["draft", str(out), "--out", str(out), "--package-id", "example.core"])
+
+    assert result == 0
+    assert (out / "specpm.yaml").exists()
+    assert (out / "specs" / "demo.spec.yaml").exists()
+    assert json.loads(capsys.readouterr().out)["packageId"] == "example.core"

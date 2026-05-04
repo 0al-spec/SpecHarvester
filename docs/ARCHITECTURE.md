@@ -14,7 +14,10 @@ safe evidence collector
 evidence snapshot
         |
         v
-AI draft generator
+deterministic candidate drafter
+        |
+        v
+AI-assisted refinement, future
         |
         v
 SpecPM validation
@@ -39,13 +42,26 @@ Current command:
 spec-harvester collect-local <repo> --out <candidate-dir>
 ```
 
+### Deterministic Candidate Drafter
+
+Consumes evidence snapshots and drafts `specpm.yaml` plus
+`specs/*.spec.yaml`.
+
+The deterministic draft is intentionally conservative. It records observed
+package metadata, inferred capability IDs, inferred `intent.*` IDs, provenance,
+and review constraints. It does not claim upstream endorsement.
+
+Current command:
+
+```bash
+spec-harvester draft <harvest-dir-or-json> --out <candidate-dir>
+```
+
 ### AI Draft Generator
 
-Future component. It should consume evidence snapshots and draft
-`specpm.yaml` plus `specs/*.spec.yaml`.
-
-The model output must be treated as untrusted candidate metadata. It must be
-validated and reviewed before acceptance.
+Future component. It may refine deterministic candidates using a bounded model
+adapter. Model output must be treated as untrusted candidate metadata. It must
+be validated and reviewed before acceptance.
 
 ### SpecPM Validation Gate
 
