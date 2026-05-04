@@ -145,6 +145,12 @@ Pull requests run `.github/workflows/ci.yml`:
   source root, and verifies that `specpm public-index generate` produces `/v0`
   metadata.
 
+Trusted maintainers can use `.github/workflows/propose-to-specpm.yml` to turn a
+validated candidate into a PR against `0al-spec/SpecPM`. The proposal workflow
+requires `SPECPM_PROPOSAL_TOKEN` for cross-repository writes and does not run
+with write credentials on ordinary pull requests. See
+[`docs/SPECPM_PROPOSAL_AUTOMATION.md`](docs/SPECPM_PROPOSAL_AUTOMATION.md).
+
 ## Relationship to SpecPM
 
 SpecHarvester is a producer of candidate package data. SpecPM remains the
