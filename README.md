@@ -134,6 +134,17 @@ ruff check src tests
 ruff format --check src tests
 ```
 
+## CI
+
+Pull requests run `.github/workflows/ci.yml`:
+
+- `Python tests` installs `.[dev]`, runs Ruff lint, Ruff format check, and
+  pytest.
+- `SpecPM integration` checks out SpecPM, collects and drafts a fixture
+  candidate, validates it with SpecPM, promotes it into a temporary accepted
+  source root, and verifies that `specpm public-index generate` produces `/v0`
+  metadata.
+
 ## Relationship to SpecPM
 
 SpecHarvester is a producer of candidate package data. SpecPM remains the
