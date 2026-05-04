@@ -1,0 +1,9 @@
+# Example source list for future batch harvesting.
+schemaVersion: 1
+repositories:
+  - id: github.com/xyflow/xyflow
+    repository: https://github.com/xyflow/xyflow
+    ref: main
+    revision: null
+    packageId: xyflow.core
+    status: candidate
