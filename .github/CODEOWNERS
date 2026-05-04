@@ -1,0 +1,20 @@
+# Default repository owner.
+* @SoundBlaster
+
+# Cross-repository automation and registry proposal controls.
+.github/workflows/* @SoundBlaster
+.github/CODEOWNERS @SoundBlaster
+
+# Harvesting, drafting, and promotion code changes affect trust boundaries.
+src/spec_harvester/collector.py @SoundBlaster
+src/spec_harvester/drafter.py @SoundBlaster
+src/spec_harvester/promoter.py @SoundBlaster
+
+# Generated candidates and accepted-source staging require maintainer review.
+candidates/** @SoundBlaster
+accepted/** @SoundBlaster
+generated/** @SoundBlaster
+
+# Governance and automation documentation should track the same review boundary.
+docs/SPECPM_PROPOSAL_AUTOMATION.md @SoundBlaster
+docs/TRUST_BOUNDARY.md @SoundBlaster
