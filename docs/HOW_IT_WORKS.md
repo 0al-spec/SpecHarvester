@@ -276,6 +276,10 @@ GitHub Pages /v0
 
 Future behavior may add PR automation, but acceptance should remain explicit.
 
+The trusted proposal workflow is documented in
+[`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md). It can create a
+SpecPM PR from a promoted candidate, but it does not bypass SpecPM review.
+
 ## xyflow Example
 
 The bootstrap branch includes a generated candidate for the local `xyflow`
@@ -394,7 +398,7 @@ Likely next steps:
 - candidate review reports
 - stricter namespace and duplicate intent checks
 - accepted package source format
-- PR automation into a SpecPM registry source
+- broader PR automation into SpecPM registry sources
 
 ### Future AI-Assisted Refinement
 

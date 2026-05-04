@@ -1,0 +1,203 @@
+name: Propose to SpecPM
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_dir:
+        description: Candidate SpecPackage directory inside SpecHarvester.
+        required: true
+        default: candidates/github.com/xyflow/xyflow
+      package_id:
+        description: Candidate package id.
+        required: true
+        default: xyflow.core
+      package_version:
+        description: Candidate package version.
+        required: true
+        default: 0.1.0
+      create_pr:
+        description: Push a branch and open a SpecPM PR. Leave false for dry-run smoke.
+        required: true
+        type: boolean
+        default: false
+  workflow_run:
+    workflows:
+      - CI
+    branches:
+      - main
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  propose:
+    name: Propose accepted source diff
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'workflow_run' &&
+        github.event.workflow_run.conclusion == 'success' &&
+        vars.SPECHARVESTER_AUTO_PROPOSE_TO_SPECPM == 'true'
+      )
+
+    steps:
+      - name: Checkout SpecHarvester
+        uses: actions/checkout@v4
+        with:
+          path: SpecHarvester
+
+      - name: Checkout SpecPM
+        uses: actions/checkout@v4
+        with:
+          repository: 0al-spec/SpecPM
+          path: SpecPM
+          persist-credentials: false
+
+      - name: Configure proposal
+        id: config
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_CANDIDATE_DIR: ${{ github.event.inputs.candidate_dir }}
+          INPUT_PACKAGE_ID: ${{ github.event.inputs.package_id }}
+          INPUT_PACKAGE_VERSION: ${{ github.event.inputs.package_version }}
+          INPUT_CREATE_PR: ${{ github.event.inputs.create_pr }}
+          VAR_CANDIDATE_DIR: ${{ vars.SPECHARVESTER_CANDIDATE_DIR }}
+          VAR_PACKAGE_ID: ${{ vars.SPECHARVESTER_PACKAGE_ID }}
+          VAR_PACKAGE_VERSION: ${{ vars.SPECHARVESTER_PACKAGE_VERSION }}
+        run: |
+          candidate_dir="${INPUT_CANDIDATE_DIR:-${VAR_CANDIDATE_DIR:-candidates/github.com/xyflow/xyflow}}"
+          package_id="${INPUT_PACKAGE_ID:-${VAR_PACKAGE_ID:-xyflow.core}}"
+          package_version="${INPUT_PACKAGE_VERSION:-${VAR_PACKAGE_VERSION:-0.1.0}}"
+          create_pr="${INPUT_CREATE_PR:-false}"
+          if [ "$EVENT_NAME" = "workflow_run" ]; then
+            create_pr="true"
+          fi
+          package_subdir="${package_id}/${package_version}"
+          manifest_entry_path="public-index/generated/${package_subdir}"
+
+          {
+            echo "candidate_dir=$candidate_dir"
+            echo "package_id=$package_id"
+            echo "package_version=$package_version"
+            echo "package_subdir=$package_subdir"
+            echo "manifest_entry_path=$manifest_entry_path"
+            echo "create_pr=$create_pr"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ./SpecHarvester -e ./SpecPM
+
+      - name: Validate candidate
+        working-directory: SpecHarvester
+        run: |
+          test -d "${{ steps.config.outputs.candidate_dir }}"
+          python -m specpm.cli validate "${{ steps.config.outputs.candidate_dir }}" --json
+
+      - name: Promote into SpecPM checkout
+        working-directory: SpecHarvester
+        run: |
+          python -m spec_harvester promote "${{ steps.config.outputs.candidate_dir }}" \
+            --accepted-root ../SpecPM/public-index/generated \
+            --manifest ../SpecPM/public-index/accepted-packages.yml \
+            --manifest-entry-path "${{ steps.config.outputs.manifest_entry_path }}" \
+            --package-subdir "${{ steps.config.outputs.package_subdir }}" \
+            --specpm-command "python -m specpm.cli" \
+            --force
+
+      - name: Generate SpecPM public index
+        working-directory: SpecPM
+        run: |
+          python -m specpm.cli public-index generate \
+            --manifest public-index/accepted-packages.yml \
+            --output /tmp/specpm-public-index \
+            --registry http://localhost:8081 \
+            --json
+          test -f /tmp/specpm-public-index/v0/status/index.json
+          test -f "/tmp/specpm-public-index/v0/packages/${{ steps.config.outputs.package_id }}/index.json"
+          test -f /tmp/specpm-public-index/v0/intents/index.json
+
+      - name: Summarize SpecPM diff
+        id: diff
+        working-directory: SpecPM
+        run: |
+          git status --short
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            git diff -- public-index
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No SpecPM proposal diff was produced."
+          fi
+
+      - name: Create SpecPM pull request
+        if: steps.config.outputs.create_pr == 'true' && steps.diff.outputs.has_changes == 'true'
+        working-directory: SpecPM
+        env:
+          SPECPM_PROPOSAL_TOKEN: ${{ secrets.SPECPM_PROPOSAL_TOKEN }}
+          GH_TOKEN: ${{ secrets.SPECPM_PROPOSAL_TOKEN }}
+          PACKAGE_ID: ${{ steps.config.outputs.package_id }}
+          PACKAGE_VERSION: ${{ steps.config.outputs.package_version }}
+          MANIFEST_ENTRY_PATH: ${{ steps.config.outputs.manifest_entry_path }}
+          HARVESTER_SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "$SPECPM_PROPOSAL_TOKEN" ]; then
+            echo "::error::SPECPM_PROPOSAL_TOKEN is required to create a SpecPM PR."
+            exit 1
+          fi
+
+          safe_package_id="$(printf '%s' "$PACKAGE_ID" | tr -c 'A-Za-z0-9._-' '-')"
+          branch="harvester/${safe_package_id}-${PACKAGE_VERSION}-${GITHUB_RUN_ID}"
+
+          git config user.name "SpecHarvester Bot"
+          git config user.email "actions@github.com"
+          git checkout -b "$branch"
+          git add public-index/generated public-index/accepted-packages.yml
+          git commit -m "Add harvested SpecPackage ${PACKAGE_ID}"
+          git remote set-url origin "https://x-access-token:${SPECPM_PROPOSAL_TOKEN}@github.com/0al-spec/SpecPM.git"
+          git push origin "$branch"
+
+          cat > /tmp/specpm-proposal-body.md <<EOF
+          ## Motivation
+
+          SpecHarvester generated and promoted a reviewed candidate package for \`${PACKAGE_ID}\`.
+
+          ## Changes
+
+          - Adds \`${MANIFEST_ENTRY_PATH}\`.
+          - Updates \`public-index/accepted-packages.yml\`.
+
+          ## Validation
+
+          - SpecHarvester candidate validation passed.
+          - \`specpm public-index generate\` passed in the proposal workflow.
+
+          ## Boundaries
+
+          - This PR is a registry source proposal, not autonomous publication.
+          - SpecPM maintainers must review and merge before the package appears in public \`/v0\`.
+
+          ## Provenance
+
+          - SpecHarvester commit: \`${HARVESTER_SHA}\`
+          - Workflow run: ${RUN_URL}
+          EOF
+
+          gh pr create \
+            --repo 0al-spec/SpecPM \
+            --head "$branch" \
+            --base main \
+            --title "Add harvested SpecPackage ${PACKAGE_ID}" \
+            --body-file /tmp/specpm-proposal-body.md
