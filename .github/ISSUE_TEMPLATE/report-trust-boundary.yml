@@ -1,0 +1,62 @@
+name: Report Trust Boundary Concern
+description: Report a harvesting, provenance, or execution-boundary risk.
+title: "Trust Boundary Concern: "
+labels:
+  - trust-boundary
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to report a security, provenance, or workflow concern related to SpecHarvester's zero-trust boundary.
+
+        This form is for public, reviewable reports only. Do not include secrets, private keys, tokens, or private repository contents.
+  - type: dropdown
+    id: concern_type
+    attributes:
+      label: Concern type
+      description: Select the primary class of concern.
+      options:
+        - Harvesting reads data outside the documented boundary
+        - Candidate drafting overstates provenance or endorsement
+        - Promotion workflow weakens review controls
+        - Cross-repository automation permissions are too broad
+        - License or public-source provenance concern
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the concern, affected files or workflow, and why it matters.
+      placeholder: "Explain the observed boundary break or risk."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction or evidence
+      description: Provide steps, logs, file paths, commits, or public references needed to review the concern.
+      placeholder: |
+        1. Run ...
+        2. Observe ...
+        3. Compare with docs/TRUST_BOUNDARY.md
+    validations:
+      required: true
+  - type: textarea
+    id: suggested_fix
+    attributes:
+      label: Suggested fix or containment
+      description: Optional mitigation, tighter policy, or test you think should be added.
+      placeholder: "Optional mitigation or validation idea."
+    validations:
+      required: false
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Report acknowledgements
+      options:
+        - label: I have not included credentials, secrets, or private repository contents.
+          required: true
+        - label: I understand maintainers may need to minimize the change and preserve the documented trust boundary.
+          required: true
