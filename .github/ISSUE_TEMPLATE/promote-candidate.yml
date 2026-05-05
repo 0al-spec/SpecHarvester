@@ -1,0 +1,65 @@
+name: Promote Candidate
+description: Request review and promotion of a generated candidate into accepted-source staging.
+title: "Promote Candidate: "
+labels:
+  - promotion
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to request maintainer review and promotion of a generated candidate package.
+
+        Promotion is a controlled copy into accepted-source staging after validation and review. It does not directly publish to a public registry and does not bypass SpecPM maintainer review.
+  - type: input
+    id: candidate_dir
+    attributes:
+      label: Candidate directory
+      description: Path inside this repository to the candidate package directory.
+      placeholder: "candidates/github.com/example/project"
+    validations:
+      required: true
+  - type: input
+    id: package_id
+    attributes:
+      label: Package ID
+      description: Candidate `metadata.id`.
+      placeholder: "project.core"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: Candidate `metadata.version`.
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation evidence
+      description: Record the exact validation commands or workflow runs that passed.
+      placeholder: |
+        python -m specpm.cli validate candidates/github.com/example/project --json
+        .github/workflows/ci.yml run 123456789
+    validations:
+      required: true
+  - type: textarea
+    id: review_notes
+    attributes:
+      label: Review notes
+      description: Call out provenance, inferred intent/capability risks, licensing notes, or any manual review considerations.
+      placeholder: "Summarize what a maintainer should verify before promotion."
+    validations:
+      required: true
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Promotion acknowledgements
+      options:
+        - label: I understand promotion is maintainer-reviewed and not direct publication.
+          required: true
+        - label: I understand generated metadata must remain bounded, reviewable, and provenance-backed.
+          required: true
+        - label: I am not using this request to bypass SpecPM review or registry governance.
+          required: true

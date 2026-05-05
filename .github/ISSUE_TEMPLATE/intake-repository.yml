@@ -1,0 +1,69 @@
+name: Intake Repository
+description: Request harvesting of a public repository into a reviewable SpecPM candidate.
+title: "Intake Repository: "
+labels:
+  - intake
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to request bounded harvesting of a public repository into a reviewable SpecPM candidate package.
+
+        Intake requests are maintainer-reviewed workflow inputs. A request does not automatically harvest the repository, accept generated specs as canonical truth, publish anything into SpecPM, or grant upstream endorsement.
+
+        Harvesting is limited to public static metadata and follows the SpecHarvester trust boundary.
+  - type: input
+    id: repository_url
+    attributes:
+      label: Public repository URL
+      description: Provide the public Git repository URL to harvest.
+      placeholder: "https://github.com/example/project"
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Pinned revision
+      description: Provide a commit SHA, tag, or other pinned revision to inspect.
+      placeholder: "0123456789abcdef0123456789abcdef01234567"
+    validations:
+      required: true
+  - type: input
+    id: package_id
+    attributes:
+      label: Desired package ID
+      description: Proposed `SpecPackage` ID if known. Leave blank if maintainer inference is preferred.
+      placeholder: "project.core"
+    validations:
+      required: false
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why this repository
+      description: Explain why this repository should become a SpecPM candidate and what capability area it covers.
+      placeholder: "Describe the package family, expected capabilities, and why the repository is a good candidate."
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Public evidence and notes
+      description: List relevant public docs, release notes, package pages, or maintainer context that should help the review.
+      placeholder: |
+        https://github.com/example/project/blob/main/README.md
+        https://example.org/docs
+    validations:
+      required: false
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Intake acknowledgements
+      options:
+        - label: The repository is public and reviewable without credentials.
+          required: true
+        - label: I understand harvesting reads bounded static metadata and does not execute repository code.
+          required: true
+        - label: I understand generated specs are candidate metadata and not upstream-endorsed truth.
+          required: true
+        - label: I am not submitting secrets, private access tokens, or proprietary source material.
+          required: true

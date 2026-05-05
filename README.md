@@ -1,87 +1,57 @@
 # SpecHarvester
 
-SpecHarvester is an AI-assisted pipeline for producing reviewable SpecPM
-candidate packages from public repository metadata.
+AI-assisted harvesting pipeline for turning public repository metadata into
+reviewable SpecPM candidate packages.
 
-It is intentionally not SpecPM core. SpecPM validates, packs, indexes, and
-serves specification packages. SpecHarvester discovers public repositories,
-collects safe evidence, drafts candidate `SpecPackage` / `BoundarySpec` files,
-and sends them through validation and review.
+SpecHarvester is intentionally not SpecPM core. SpecPM validates, indexes, and
+serves `SpecPackage` bundles. SpecHarvester discovers public repositories,
+collects bounded evidence, drafts deterministic candidate specs, and prepares
+them for review and promotion.
 
-## Current Bootstrap
+License: MIT. See [`LICENSE`](LICENSE).
 
-This repository currently provides a small safe collector and deterministic
-candidate drafter:
+## TL;DR
+
+Run the current bootstrap loop:
 
 ```bash
 python3 -m spec_harvester collect-local /path/to/repo \
   --repository https://github.com/example/project \
   --revision <commit-sha> \
   --out candidates/github.com/example/project
-```
 
-The command writes:
-
-```text
-candidates/github.com/example/project/harvest.json
-```
-
-The snapshot contains checksums and metadata from allowlisted static files such
-as `README.md`, `LICENSE`, `package.json`, `pyproject.toml`, `pnpm-workspace.yaml`,
-package manifests, public source entrypoints, and workflow files.
-
-Then draft a reviewable SpecPM candidate from the snapshot:
-
-```bash
 python3 -m spec_harvester draft candidates/github.com/example/project \
   --package-id project.core \
   --out candidates/github.com/example/project
-```
 
-The command writes:
-
-```text
-candidates/github.com/example/project/specpm.yaml
-candidates/github.com/example/project/specs/project.spec.yaml
-```
-
-Drafted specs are deterministic candidates. They must pass `specpm validate`
-and maintainer review before acceptance.
-
-After review, promote a candidate into an accepted source root:
-
-```bash
 python3 -m spec_harvester promote candidates/github.com/example/project \
   --accepted-root accepted \
   --manifest accepted/accepted-packages.yml
 ```
 
-Promotion validates the candidate, copies it into `<accepted-root>/<package_id>/<version>`,
-and can append a local `path` entry to an accepted package manifest.
+This produces:
 
-## Boundary
+```text
+candidates/github.com/example/project/harvest.json
+candidates/github.com/example/project/specpm.yaml
+candidates/github.com/example/project/specs/project.spec.yaml
+accepted/<package_id>/<version>/
+```
 
-SpecHarvester:
+Drafted specs are deterministic candidates. They must pass `specpm validate`
+and maintainer review before they are treated as accepted registry source.
 
-- reads public repository metadata;
-- records provenance and file digests;
-- extracts bounded metadata such as package names, descriptions, exports,
-  dependency names, script names, and Markdown headings;
-- drafts candidate specs from harvested metadata;
-- validates candidates with SpecPM.
+## Documentation Map
 
-SpecHarvester does not:
+- [`docs/README.md`](docs/README.md): documentation index and operator path
+- [`docs/HOW_IT_WORKS.md`](docs/HOW_IT_WORKS.md): end-to-end workflow
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): component model and boundaries
+- [`docs/TRUST_BOUNDARY.md`](docs/TRUST_BOUNDARY.md): zero-trust handling rules
+- [`docs/SPECPM_PROPOSAL_AUTOMATION.md`](docs/SPECPM_PROPOSAL_AUTOMATION.md):
+  trusted cross-repository proposal flow
+- [`docs/ROADMAP.md`](docs/ROADMAP.md): planned delivery phases
 
-- execute repository scripts;
-- install dependencies;
-- run package tests;
-- access secrets or private credentials;
-- treat generated specs as upstream-endorsed truth;
-- publish candidates directly into the accepted registry.
-
-Generated specs are candidate, community-observed metadata until reviewed.
-
-## Intended Pipeline
+## Current Workflow
 
 ```text
 repository list
@@ -90,10 +60,13 @@ repository list
 safe evidence collector
       |
       v
-deterministic draft generator
+harvest.json
       |
       v
-AI-assisted refinement, future
+deterministic candidate drafter
+      |
+      v
+specpm.yaml + specs/*.spec.yaml
       |
       v
 specpm validate
@@ -108,48 +81,93 @@ controlled promotion
 accepted public registry source
 ```
 
-For the full step-by-step operator flow, see
-[`docs/HOW_IT_WORKS.md`](docs/HOW_IT_WORKS.md).
+The current repository supports the first controlled candidate loop:
+
+```text
+checkout -> harvest.json -> generated candidate -> SpecPM validation -> promotion copy
+```
+
+## Scope and Boundary
+
+SpecHarvester:
+
+- reads public repository metadata from allowlisted static files;
+- records provenance and file digests;
+- extracts bounded metadata such as package names, descriptions, exports,
+  dependency names, script names, and Markdown headings;
+- drafts candidate specs from harvested metadata;
+- validates candidates with SpecPM before promotion.
+
+SpecHarvester does not:
+
+- execute repository scripts;
+- install dependencies;
+- run harvested repository tests;
+- access secrets or private credentials;
+- treat generated specs as upstream-endorsed truth;
+- publish candidates directly into a public registry.
+
+Generated specs are community-observed candidate metadata until reviewed.
+
+## GitHub Workflow Surface
+
+This repository uses GitHub as an operational surface similar to SpecPM:
+
+- pull requests use [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md)
+  to capture motivation, goals, validation, and explicit boundaries;
+- issue forms under [`.github/ISSUE_TEMPLATE`](.github/ISSUE_TEMPLATE) capture
+  repository intake, candidate promotion requests, and trust-boundary concerns;
+- CI in [`.github/workflows/ci.yml`](.github/workflows/ci.yml) validates the
+  local Python code and the SpecPM integration loop;
+- trusted maintainers can use
+  [`.github/workflows/propose-to-specpm.yml`](.github/workflows/propose-to-specpm.yml)
+  to propose accepted-source diffs into `0al-spec/SpecPM`.
 
 ## Repository Layout
 
 ```text
-src/spec_harvester/       CLI and collector implementation
+src/spec_harvester/       CLI, collector, drafter, promoter
 tests/                    unit tests
-docs/                     architecture, boundary, roadmap
+docs/                     operator docs, architecture, trust boundary, roadmap
 inputs/                   example repository lists
-candidates/               generated candidate evidence/specs
-accepted/                 reviewed generated specs, future
+candidates/               generated candidate evidence and specs
+accepted/                 reviewed generated specs and accepted-source staging
 generated/                transient generated artifacts, future
 ```
 
 ## Development
 
+Install locally:
+
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -e ".[dev]"
+```
+
+Quality gates:
+
+```bash
 pytest
 ruff check src tests
 ruff format --check src tests
 ```
 
-## CI
+## CI and Promotion
 
-Pull requests run `.github/workflows/ci.yml`:
+Pull requests run [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
 
-- `Python tests` installs `.[dev]`, runs Ruff lint, Ruff format check, and
-  pytest.
+- `Python tests` installs `.[dev]`, runs Ruff lint, Ruff format check, and pytest.
 - `SpecPM integration` checks out SpecPM, collects and drafts a fixture
   candidate, validates it with SpecPM, promotes it into a temporary accepted
-  source root, and verifies that `specpm public-index generate` produces `/v0`
+  source root, and verifies that `specpm public-index generate` emits `/v0`
   metadata.
 
-Trusted maintainers can use `.github/workflows/propose-to-specpm.yml` to turn a
-validated candidate into a PR against `0al-spec/SpecPM`. The proposal workflow
-requires `SPECPM_PROPOSAL_TOKEN` for cross-repository writes and does not run
-with write credentials on ordinary pull requests. See
-[`docs/SPECPM_PROPOSAL_AUTOMATION.md`](docs/SPECPM_PROPOSAL_AUTOMATION.md).
+Trusted maintainers can use
+[`.github/workflows/propose-to-specpm.yml`](.github/workflows/propose-to-specpm.yml)
+to turn a validated candidate into a PR against `0al-spec/SpecPM`. The proposal
+workflow requires `SPECPM_PROPOSAL_TOKEN` for cross-repository writes and does
+not run with write credentials on ordinary pull requests.
 
 ## Relationship to SpecPM
 
