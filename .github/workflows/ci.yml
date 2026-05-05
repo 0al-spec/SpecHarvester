@@ -40,6 +40,14 @@ jobs:
       - name: Pytest
         run: pytest -q
 
+      - name: Swift package manifest validation
+        run: |
+          swift --version
+          swift package dump-package >/dev/null
+
+      - name: Swift docs target build
+        run: swift build --target SpecHarvesterDocs
+
   specpm-integration:
     name: SpecPM integration
     runs-on: ubuntu-latest

@@ -13,7 +13,7 @@ let package = Package(
         ),
         .executable(
             name: "SpecHarvester-docs",
-            targets: ["SpecHarvester-docs"]
+            targets: ["SpecHarvesterDocs"]
         ),
     ],
     dependencies: [
@@ -26,7 +26,7 @@ let package = Package(
             exclude: []
         ),
         .executableTarget(
-            name: "SpecHarvester-docs",
+            name: "SpecHarvesterDocs",
             path: "Sources/SpecHarvester-docs",
             exclude: []
         ),
