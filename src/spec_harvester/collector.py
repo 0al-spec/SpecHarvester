@@ -98,6 +98,7 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
         files.append(collect_file(source, path))
 
     files.sort(key=lambda item: item["path"])
+    skipped_files.sort(key=lambda item: item["path"])
     return {
         "schemaVersion": SNAPSHOT_SCHEMA_VERSION,
         "kind": SNAPSHOT_KIND,
