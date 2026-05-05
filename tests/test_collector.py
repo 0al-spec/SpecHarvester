@@ -7,7 +7,7 @@ import pytest
 
 from spec_harvester.cli import main
 from spec_harvester.collector import HarvestOptions, collect_local_repository
-from spec_harvester.drafter import DraftOptions, draft_spec_package
+from spec_harvester.drafter import DraftOptions, draft_spec_package, render_scalar
 from spec_harvester.promoter import PromoteOptions, promote_candidate
 
 
@@ -104,6 +104,28 @@ def test_collect_local_repository_skips_paths_outside_source(tmp_path: Path) -> 
     ]
 
 
+def test_collect_local_repository_logs_internal_symlink_skips(tmp_path: Path) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    target = repo / "real-package.json"
+    target.write_text(
+        json.dumps({"name": "@example/real", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (repo / "package.json").symlink_to(target)
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    assert snapshot["summary"]["fileCount"] == 0
+    assert snapshot["summary"]["skippedFileCount"] == 1
+    assert snapshot["skippedFiles"] == [
+        {
+            "path": "package.json",
+            "reason": "symlink_unsupported",
+        }
+    ]
+
+
 def test_cli_writes_harvest_snapshot(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
     repo = tmp_path / "demo"
     repo.mkdir()
@@ -195,6 +217,44 @@ def test_draft_spec_package_keeps_interfaces_matched_to_valid_packages(tmp_path:
     spec = Path(result["spec"]).read_text(encoding="utf-8")
     assert "id: package.core" in spec
     assert "Observed import surface for @example/core." in spec
+
+
+def test_draft_spec_package_keeps_capability_ids_unique_for_slug_collisions(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps({"name": "@example/react-flow", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    package_dir = repo / "packages" / "react"
+    package_dir.mkdir(parents=True)
+    (package_dir / "package.json").write_text(
+        json.dumps({"name": "@example/react_flow", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="example.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    assert "id: example.core.react_flow\n" in spec
+    assert "id: example.core.react_flow_2\n" in spec
+
+
+def test_render_scalar_quotes_yaml_reserved_words() -> None:
+    assert render_scalar("true") == '"true"'
+    assert render_scalar("FALSE") == '"FALSE"'
+    assert render_scalar("null") == '"null"'
+    assert render_scalar("yes") == '"yes"'
+    assert render_scalar("off") == '"off"'
+    assert render_scalar("~") == '"~"'
 
 
 def test_cli_draft_writes_candidate_files(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
@@ -301,6 +361,34 @@ def test_promote_candidate_rejects_unsafe_manifest_entry_path(tmp_path: Path) ->
                 skip_validation=True,
             )
         )
+
+
+def test_promote_candidate_force_preserves_destination_when_copy_fails(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    accepted_root = tmp_path / "accepted"
+    destination = accepted_root / "example.core" / "0.1.0"
+    destination.mkdir(parents=True)
+    existing_file = destination / "keep.txt"
+    existing_file.write_text("keep", encoding="utf-8")
+
+    def fail_copytree(*args, **kwargs):  # type: ignore[no-untyped-def]
+        raise OSError("copy failed")
+
+    monkeypatch.setattr("spec_harvester.promoter.shutil.copytree", fail_copytree)
+
+    with pytest.raises(OSError, match="copy failed"):
+        promote_candidate(
+            PromoteOptions(
+                candidate=candidate,
+                accepted_root=accepted_root,
+                force=True,
+                skip_validation=True,
+            )
+        )
+
+    assert existing_file.read_text(encoding="utf-8") == "keep"
 
 
 def test_cli_promote_writes_json_result(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]

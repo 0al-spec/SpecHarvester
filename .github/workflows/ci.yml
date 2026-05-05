@@ -109,9 +109,10 @@ jobs:
       - name: Collect and draft candidate
         working-directory: SpecHarvester
         run: |
+          fixture_revision="0000000000000000000000000000000000000000"
           python -m spec_harvester collect-local /tmp/spec-harvester-fixture \
             --repository https://github.com/example/flow-fixture \
-            --revision "$GITHUB_SHA" \
+            --revision "$fixture_revision" \
             --out /tmp/spec-harvester-candidate
           python -m spec_harvester draft /tmp/spec-harvester-candidate \
             --package-id flow_fixture.core \

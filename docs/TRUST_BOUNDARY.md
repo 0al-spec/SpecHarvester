@@ -28,6 +28,10 @@ The collector may read allowlisted static files, including:
 The collector records file hashes and bounded metadata rather than executing
 the repository.
 
+GitHub workflow files are collected only as static provenance evidence. Their
+shell snippets and workflow text do not participate in intent inference and
+must not be treated as package instructions.
+
 ## Generated Candidate Status
 
 Generated specs should use conservative language:

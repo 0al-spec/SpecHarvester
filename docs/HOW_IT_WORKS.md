@@ -125,6 +125,11 @@ The collector may read allowlisted static files such as:
 - public source entrypoints
 - GitHub workflow files
 
+The bootstrap allowlist is intentionally biased toward JavaScript and package
+workspace repositories. Python, Rust, Go, and other ecosystem-specific
+sub-package layouts should be added as explicit Phase 3 harvesting profiles
+rather than inferred by broad recursive scans.
+
 The collector must not:
 
 - execute package scripts
@@ -162,6 +167,12 @@ The drafter currently derives conservative metadata from `harvest.json`:
 - evidence links back to `harvest.json`
 - review constraints
 - `preview_only: true`
+
+Intent inference is a deterministic bootstrap heuristic over package manifest
+names and descriptions. It is useful as reviewable seed metadata, but it is not
+semantic authority and it can produce false positives. Other harvested files,
+including GitHub workflow files, are preserved as evidence and are not used for
+intent inference.
 
 The generated package must be treated as untrusted candidate metadata.
 
