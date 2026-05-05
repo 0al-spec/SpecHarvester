@@ -57,5 +57,5 @@ the execution runtime for harvested repositories.
 ## References
 
 - `docs/ROADMAP.md`
-- <doc:Architecture>
+- <doc:HarvesterArchitecture>
 - <doc:ProposalAutomation>

@@ -54,6 +54,6 @@ the host.
 
 ### Architecture
 
-- <doc:Architecture>
+- <doc:HarvesterArchitecture>
 - <doc:TrustBoundary>
 - <doc:Roadmap>
