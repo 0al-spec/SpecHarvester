@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 SPEC_API_VERSION = "specpm.dev/v0.1"
 DEFAULT_SPEC_VERSION = "0.1.0"
 DEFAULT_AUTHOR = "SpecHarvester"
+YAML_RESERVED_SCALARS = {"true", "false", "null", "yes", "no", "on", "off", "~"}
 
 
 @dataclass(frozen=True)
@@ -256,6 +257,9 @@ def build_capability_entries(
 
 
 def infer_intent_ids(package_name: str, summary: str) -> list[str]:
+    # Bootstrap-only baseline over package manifest name/description.
+    # Other harvested files, including workflow files, are provenance evidence and do not
+    # participate in intent inference.
     text = f"{package_name} {summary}".lower()
     intents = {"intent.package.javascript_library"}
     if "monorepo" in text or "workspace" in text:
@@ -468,5 +472,7 @@ def render_scalar(value: Any) -> str:
         and ":" not in text
     )
     if plain_safe:
+        if text.lower() in YAML_RESERVED_SCALARS:
+            return json.dumps(text)
         return text
     return json.dumps(text)

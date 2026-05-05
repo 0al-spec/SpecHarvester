@@ -55,13 +55,7 @@ def promote_candidate(options: PromoteOptions) -> dict[str, Any]:
     if destination.exists():
         if not options.force:
             raise ValueError(f"Destination already exists: {destination}")
-        shutil.rmtree(destination)
-    shutil.copytree(
-        candidate,
-        destination,
-        symlinks=True,
-        ignore=shutil.ignore_patterns(".git", ".DS_Store"),
-    )
+    copy_candidate_atomically(candidate, destination, force=options.force)
 
     manifest_result = None
     if options.manifest is not None:
@@ -124,6 +118,43 @@ def reject_symlinks(root: Path) -> None:
         if path.is_symlink():
             relative = path.relative_to(root).as_posix()
             raise ValueError(f"Candidate contains unsupported symlink: {relative}")
+
+
+def copy_candidate_atomically(candidate: Path, destination: Path, *, force: bool) -> None:
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temp_destination = unique_sibling_path(destination, "tmp")
+    backup_destination = unique_sibling_path(destination, "backup")
+    backup_created = False
+    try:
+        shutil.copytree(
+            candidate,
+            temp_destination,
+            symlinks=True,
+            ignore=shutil.ignore_patterns(".git", ".DS_Store"),
+        )
+        if destination.exists():
+            if not force:
+                raise ValueError(f"Destination already exists: {destination}")
+            destination.rename(backup_destination)
+            backup_created = True
+        temp_destination.rename(destination)
+        if backup_created:
+            shutil.rmtree(backup_destination)
+    except Exception:
+        if temp_destination.exists():
+            shutil.rmtree(temp_destination)
+        if backup_created and backup_destination.exists() and not destination.exists():
+            backup_destination.rename(destination)
+        raise
+
+
+def unique_sibling_path(path: Path, suffix: str) -> Path:
+    index = 1
+    while True:
+        candidate = path.with_name(f".{path.name}.{suffix}.{index}")
+        if not candidate.exists():
+            return candidate
+        index += 1
 
 
 def read_manifest_identity(manifest_path: Path) -> dict[str, str]:
@@ -231,6 +262,12 @@ def validate_manifest_entry_path(entry_path: str) -> None:
         raise ValueError("Manifest entry path must be non-empty.")
     if "\n" in entry_path or "\r" in entry_path:
         raise ValueError("Manifest entry path must not contain newlines.")
+    if "\x00" in entry_path:
+        raise ValueError("Manifest entry path must not contain null bytes.")
+    if "\\" in entry_path or (len(entry_path) >= 2 and entry_path[1] == ":"):
+        raise ValueError("Manifest entry path must use POSIX-style relative paths.")
+    if len(entry_path) > 512:
+        raise ValueError("Manifest entry path is too long.")
     path = Path(entry_path)
     if path.is_absolute():
         raise ValueError("Manifest entry path must be relative.")

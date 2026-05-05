@@ -68,7 +68,21 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
                 }
             )
             continue
-        if path.is_symlink() or not path.is_file():
+        if path.is_symlink():
+            skipped_files.append(
+                {
+                    "path": rel,
+                    "reason": "symlink_unsupported",
+                }
+            )
+            continue
+        if not path.is_file():
+            skipped_files.append(
+                {
+                    "path": rel,
+                    "reason": "not_regular_file",
+                }
+            )
             continue
         stat = path.stat()
         if stat.st_size > options.max_file_bytes:
