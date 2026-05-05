@@ -220,7 +220,9 @@ def infer_manifest_entry_path(manifest: Path, destination: Path) -> str:
             return destination.relative_to(root.resolve()).as_posix()
         except ValueError:
             continue
-    return destination.as_posix()
+    raise ValueError(
+        "Could not infer a relative manifest entry path. Pass --manifest-entry-path explicitly."
+    )
 
 
 def append_local_manifest_entry(manifest: Path, entry_path: str) -> dict[str, Any]:
@@ -243,8 +245,8 @@ def append_local_manifest_entry(manifest: Path, entry_path: str) -> dict[str, An
         lines.extend(["packages:", entry_line])
     else:
         package_line = lines[package_line_index]
-        stripped = package_line.strip()
-        if stripped == "packages: []":
+        stripped = strip_yaml_line_comment(package_line)
+        if stripped.startswith("packages:") and stripped.removeprefix("packages:").strip() == "[]":
             lines[package_line_index] = "packages:"
             insert_at = package_line_index + 1
         elif stripped == "packages:":
@@ -255,6 +257,10 @@ def append_local_manifest_entry(manifest: Path, entry_path: str) -> dict[str, An
 
     manifest.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return {"path": str(manifest), "entry": entry_path, "updated": True}
+
+
+def strip_yaml_line_comment(line: str) -> str:
+    return line.split("#", 1)[0].strip()
 
 
 def validate_manifest_entry_path(entry_path: str) -> None:

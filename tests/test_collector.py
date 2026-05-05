@@ -8,7 +8,7 @@ import pytest
 from spec_harvester.cli import main
 from spec_harvester.collector import HarvestOptions, collect_local_repository
 from spec_harvester.drafter import DraftOptions, draft_spec_package, render_scalar
-from spec_harvester.promoter import PromoteOptions, promote_candidate
+from spec_harvester.promoter import PromoteOptions, infer_manifest_entry_path, promote_candidate
 
 
 def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None:
@@ -123,6 +123,33 @@ def test_collect_local_repository_logs_internal_symlink_skips(tmp_path: Path) ->
             "path": "package.json",
             "reason": "symlink_unsupported",
         }
+    ]
+
+
+def test_collect_local_repository_sorts_skipped_files(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    target = repo / "real-package.json"
+    target.write_text(
+        json.dumps({"name": "@example/real", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    z_path = repo / "z-package.json"
+    a_path = repo / "a-package.json"
+    z_path.symlink_to(target)
+    a_path.symlink_to(target)
+    monkeypatch.setattr(
+        "spec_harvester.collector.candidate_files",
+        lambda _root: [z_path, a_path],
+    )
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    assert [item["path"] for item in snapshot["skippedFiles"]] == [
+        "a-package.json",
+        "z-package.json",
     ]
 
 
@@ -348,6 +375,34 @@ def test_promote_candidate_inserts_manifest_entry_inside_packages_block(tmp_path
     assert text.index("  - path: accepted/example.core/0.1.0") < text.index("metadata:")
 
 
+def test_promote_candidate_accepts_empty_packages_list_with_inline_comment(
+    tmp_path: Path,
+) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    manifest = tmp_path / "accepted-packages.yml"
+    manifest.write_text(
+        "schemaVersion: 1\n"
+        "packages: []  # generated packages are inserted here\n"
+        "metadata:\n"
+        "  owner: test\n",
+        encoding="utf-8",
+    )
+
+    promote_candidate(
+        PromoteOptions(
+            candidate=candidate,
+            accepted_root=tmp_path / "accepted",
+            manifest=manifest,
+            manifest_entry_path="accepted/example.core/0.1.0",
+            skip_validation=True,
+        )
+    )
+
+    text = manifest.read_text(encoding="utf-8")
+    assert "packages:\n  - path: accepted/example.core/0.1.0\n" in text
+    assert text.index("  - path: accepted/example.core/0.1.0") < text.index("metadata:")
+
+
 def test_promote_candidate_rejects_unsafe_manifest_entry_path(tmp_path: Path) -> None:
     candidate = draft_demo_candidate(tmp_path)
 
@@ -361,6 +416,16 @@ def test_promote_candidate_rejects_unsafe_manifest_entry_path(tmp_path: Path) ->
                 skip_validation=True,
             )
         )
+
+
+def test_infer_manifest_entry_path_requires_relative_manifest_path(tmp_path: Path) -> None:
+    manifest = tmp_path / "manifest-root" / "accepted-packages.yml"
+    destination = tmp_path / "accepted" / "example.core" / "0.1.0"
+    manifest.parent.mkdir()
+    destination.mkdir(parents=True)
+
+    with pytest.raises(ValueError, match="manifest entry path"):
+        infer_manifest_entry_path(manifest, destination)
 
 
 def test_promote_candidate_force_preserves_destination_when_copy_fails(
