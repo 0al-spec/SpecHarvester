@@ -24,7 +24,7 @@ body:
     id: revision
     attributes:
       label: Pinned revision
-      description: Provide a commit SHA, tag, or other pinned revision to inspect.
+      description: Provide the exact commit SHA to inspect. Mutable tags or branch names are not accepted for harvesting provenance.
       placeholder: "0123456789abcdef0123456789abcdef01234567"
     validations:
       required: true
@@ -62,6 +62,8 @@ body:
         - label: The repository is public and reviewable without credentials.
           required: true
         - label: I understand harvesting reads bounded static metadata and does not execute repository code.
+          required: true
+        - label: I understand the request must use an exact commit SHA, not a tag or branch name, so reviewers harvest the same source state.
           required: true
         - label: I understand generated specs are candidate metadata and not upstream-endorsed truth.
           required: true
