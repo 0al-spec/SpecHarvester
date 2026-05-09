@@ -6,6 +6,9 @@ Use it the same way the SpecPM repository uses GitHub-facing documentation:
 start from the workflow, then drill into architecture, trust boundaries, and
 automation details.
 
+Published DocC site:
+[https://0al-spec.github.io/SpecHarvester/](https://0al-spec.github.io/SpecHarvester/).
+
 ## Read This First
 
 1. [`../README.md`](../README.md): repository overview and GitHub workflow surface

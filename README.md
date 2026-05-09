@@ -10,6 +10,9 @@ them for review and promotion.
 
 License: MIT. See [`LICENSE`](LICENSE).
 
+Live DocC documentation:
+[https://0al-spec.github.io/SpecHarvester/](https://0al-spec.github.io/SpecHarvester/).
+
 ## TL;DR
 
 Run the current bootstrap loop:
