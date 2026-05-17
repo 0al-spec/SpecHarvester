@@ -46,6 +46,7 @@ def test_public_interface_index_minimal_shape_is_deterministic() -> None:
         "packages": [],
         "diagnostics": [],
         "summary": {
+            "status": "complete",
             "packageCount": 0,
             "entrypointCount": 0,
             "symbolCount": 0,
@@ -88,11 +89,50 @@ def test_public_interface_index_validates_package_entrypoint_symbol_evidence() -
 
     validate_public_interface_index(index)
     assert index["summary"] == {
+        "status": "complete",
         "packageCount": 1,
         "entrypointCount": 1,
         "symbolCount": 1,
         "diagnosticCount": 0,
     }
+
+
+def test_public_interface_index_derives_partial_and_failed_status() -> None:
+    partial = new_public_interface_index(
+        packages=[
+            {
+                "id": "@example/core",
+                "path": ".",
+                "entrypoints": [],
+            }
+        ],
+        diagnostics=[
+            {
+                "level": "warning",
+                "message": "missing optional entrypoint",
+                "path": "missing.js",
+                "evidence": evidence_record("package.json", "a" * 64),
+            }
+        ],
+    )
+    failed = new_public_interface_index(
+        diagnostics=[
+            {
+                "level": "error",
+                "message": "invalid manifest",
+                "path": "package.json",
+                "evidence": evidence_record("package.json", "b" * 64),
+            }
+        ],
+    )
+
+    validate_public_interface_index(partial)
+    validate_public_interface_index(failed)
+    assert partial["summary"]["status"] == "partial"
+    assert failed["summary"]["status"] == "failed"
+
+    partial["summary"]["status"] = "complete"
+    assert "summary must equal" in "\n".join(public_interface_index_errors(partial))
 
 
 def test_public_interface_index_rejects_bad_top_level_shape() -> None:

@@ -11,6 +11,7 @@ ALLOWED_ANALYZER_EXECUTIONS = {"none", "metadata_tool_only", "build_tool_sandbox
 ALLOWED_NETWORK_ACCESS = {"none"}
 ALLOWED_PACKAGE_SCRIPT_MODES = {"not_run"}
 ALLOWED_CONFIDENCE = {"high", "medium", "low"}
+ALLOWED_INDEX_STATUSES = {"complete", "partial", "failed"}
 ALLOWED_SYMBOL_KINDS = {
     "function",
     "class",
@@ -132,11 +133,20 @@ def summarize_public_interface(
             if isinstance(entrypoint, dict) and isinstance(entrypoint.get("symbols"), list):
                 symbol_count += len(entrypoint["symbols"])
     return {
+        "status": public_interface_status(packages, diagnostics),
         "packageCount": len(packages),
         "entrypointCount": entrypoint_count,
         "symbolCount": symbol_count,
         "diagnosticCount": len(diagnostics),
     }
+
+
+def public_interface_status(packages: list[Any], diagnostics: list[Any]) -> str:
+    if not diagnostics:
+        return "complete"
+    if packages:
+        return "partial"
+    return "failed"
 
 
 def require_list(record: dict[str, Any], key: str, errors: list[str]) -> list[Any]:

@@ -98,6 +98,7 @@ export default function createDefault() {}
         }
     ]
     assert index["summary"] == {
+        "status": "complete",
         "packageCount": 1,
         "entrypointCount": 6,
         "symbolCount": 18,
@@ -191,6 +192,7 @@ def test_analyze_js_ts_public_api_records_manifest_and_missing_entrypoint_diagno
 
     validate_public_interface_index(index)
     assert index["summary"] == {
+        "status": "partial",
         "packageCount": 1,
         "entrypointCount": 1,
         "symbolCount": 1,
@@ -207,6 +209,25 @@ def test_analyze_js_ts_public_api_records_manifest_and_missing_entrypoint_diagno
     assert "Invalid package.json" in diagnostics["package.json"]["message"]
     assert diagnostics["packages/valid/missing.js"]["level"] == "warning"
     assert "does not exist" in diagnostics["packages/valid/missing.js"]["message"]
+
+
+def test_analyze_js_ts_public_api_marks_failed_when_all_manifests_fail(tmp_path: Path) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "package.json").write_text('{"name": "broken"', encoding="utf-8")
+
+    index = analyze_js_ts_public_api(package)
+
+    validate_public_interface_index(index)
+    assert index["summary"] == {
+        "status": "failed",
+        "packageCount": 0,
+        "entrypointCount": 0,
+        "symbolCount": 0,
+        "diagnosticCount": 1,
+    }
+    assert index["diagnostics"][0]["level"] == "error"
+    assert "Invalid package.json" in index["diagnostics"][0]["message"]
 
 
 def test_analyze_js_ts_public_api_records_default_expression_exports(tmp_path: Path) -> None:
@@ -298,6 +319,7 @@ def test_analyze_js_ts_public_api_records_unreadable_manifest_and_continues(
 
     validate_public_interface_index(index)
     assert index["summary"] == {
+        "status": "partial",
         "packageCount": 1,
         "entrypointCount": 1,
         "symbolCount": 1,
@@ -336,6 +358,7 @@ def test_analyze_js_ts_public_api_records_unreadable_entrypoint_diagnostics(
 
     validate_public_interface_index(index)
     assert index["summary"] == {
+        "status": "partial",
         "packageCount": 1,
         "entrypointCount": 0,
         "symbolCount": 0,

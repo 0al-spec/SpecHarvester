@@ -226,6 +226,13 @@ The draft step does not run analyzers. It only reads and validates the supplied
 and uses its package, entrypoint, symbol, analyzer, and diagnostic summary as
 reviewable metadata.
 
+`PublicInterfaceIndex.summary.status` makes partial analysis explicit:
+
+- `complete` means no diagnostics were emitted.
+- `partial` means diagnostics were emitted while package evidence remains
+  available for review.
+- `failed` means diagnostics were emitted without any package record.
+
 The generated package must be treated as untrusted candidate metadata.
 
 ### 4. Validate with SpecPM

@@ -65,6 +65,7 @@ class Graph:
         }
     ]
     assert index["summary"] == {
+        "status": "complete",
         "packageCount": 1,
         "entrypointCount": 1,
         "symbolCount": 4,
@@ -211,6 +212,7 @@ def test_analyze_python_public_api_records_parse_diagnostics_and_skips_cache_dir
 
     validate_public_interface_index(index)
     assert index["summary"] == {
+        "status": "partial",
         "packageCount": 1,
         "entrypointCount": 1,
         "symbolCount": 1,
@@ -231,6 +233,25 @@ def test_analyze_python_public_api_records_parse_diagnostics_and_skips_cache_dir
     assert "null bytes" in diagnostics["null_byte.py"]["message"]
     assert diagnostics["null_byte.py"]["evidence"]["path"] == "null_byte.py"
     assert len(diagnostics["null_byte.py"]["evidence"]["sha256"]) == 64
+
+
+def test_analyze_python_public_api_marks_partial_when_all_files_fail(tmp_path: Path) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "broken.py").write_text("def broken(:\n", encoding="utf-8")
+
+    index = analyze_python_public_api(package)
+
+    validate_public_interface_index(index)
+    assert index["summary"] == {
+        "status": "partial",
+        "packageCount": 1,
+        "entrypointCount": 0,
+        "symbolCount": 0,
+        "diagnosticCount": 1,
+    }
+    assert index["diagnostics"][0]["level"] == "error"
+    assert "invalid syntax" in index["diagnostics"][0]["message"]
 
 
 def test_analyze_python_public_api_reuses_cached_file_results(
