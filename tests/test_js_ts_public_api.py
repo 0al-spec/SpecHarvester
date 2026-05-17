@@ -236,6 +236,81 @@ export default createClient;
     assert symbols["default"]["kind"] == "unknown"
 
 
+def test_analyze_js_ts_public_api_resolves_directory_entrypoints_to_index_files(
+    tmp_path: Path,
+) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "package.json").write_text(
+        json.dumps({"name": "directory-entrypoint", "main": "./dist", "exports": "./src"}),
+        encoding="utf-8",
+    )
+    (package / "dist").mkdir()
+    (package / "dist" / "index.js").write_text(
+        "export function fromMain() {}\n",
+        encoding="utf-8",
+    )
+    (package / "src").mkdir()
+    (package / "src" / "index.ts").write_text(
+        "export class FromExport {}\n",
+        encoding="utf-8",
+    )
+
+    index = analyze_js_ts_public_api(package)
+
+    validate_public_interface_index(index)
+    assert index["diagnostics"] == []
+    entrypoints = {
+        entrypoint["path"]: {symbol["name"]: symbol for symbol in entrypoint["symbols"]}
+        for entrypoint in index["packages"][0]["entrypoints"]
+    }
+    assert sorted(entrypoints) == ["dist/index.js", "src/index.ts"]
+    assert entrypoints["dist/index.js"]["fromMain"]["kind"] == "function"
+    assert entrypoints["src/index.ts"]["FromExport"]["kind"] == "class"
+
+
+def test_analyze_js_ts_public_api_records_unreadable_manifest_and_continues(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    unreadable_manifest = package / "packages" / "bad" / "package.json"
+    unreadable_manifest.parent.mkdir(parents=True)
+    unreadable_manifest.write_text(json.dumps({"name": "bad"}), encoding="utf-8")
+    valid = package / "packages" / "valid"
+    valid.mkdir(parents=True)
+    (valid / "package.json").write_text(
+        json.dumps({"name": "valid", "main": "./index.js"}),
+        encoding="utf-8",
+    )
+    (valid / "index.js").write_text("export function ok() {}\n", encoding="utf-8")
+    original_read_bytes = Path.read_bytes
+
+    def read_bytes_or_fail(path: Path) -> bytes:
+        if path == unreadable_manifest:
+            raise OSError("permission denied")
+        return original_read_bytes(path)
+
+    monkeypatch.setattr(Path, "read_bytes", read_bytes_or_fail)
+
+    index = analyze_js_ts_public_api(package)
+
+    validate_public_interface_index(index)
+    assert index["summary"] == {
+        "packageCount": 1,
+        "entrypointCount": 1,
+        "symbolCount": 1,
+        "diagnosticCount": 1,
+    }
+    assert index["packages"][0]["id"] == "valid"
+    assert index["packages"][0]["entrypoints"][0]["symbols"][0]["name"] == "ok"
+    diagnostic = index["diagnostics"][0]
+    assert diagnostic["level"] == "error"
+    assert diagnostic["path"] == "packages/bad/package.json"
+    assert "Unable to read package.json" in diagnostic["message"]
+
+
 def test_analyze_js_ts_public_api_records_unreadable_entrypoint_diagnostics(
     tmp_path: Path,
     monkeypatch,

@@ -48,6 +48,18 @@ JS_TS_EXTENSIONS = {
     ".tsx",
 }
 
+INDEX_FILENAMES = (
+    "index.js",
+    "index.mjs",
+    "index.cjs",
+    "index.ts",
+    "index.tsx",
+    "index.mts",
+    "index.cts",
+    "index.jsx",
+    "index.d.ts",
+)
+
 EXPORT_DECLARATION_RE = re.compile(
     r"^\s*export\s+"
     r"(?:(?P<default>default)\s+)?"
@@ -139,7 +151,17 @@ def analyze_package_manifest(
     diagnostics: list[dict[str, Any]],
 ) -> dict[str, Any] | None:
     relative_manifest = manifest_path.relative_to(root).as_posix()
-    data = manifest_path.read_bytes()
+    try:
+        data = manifest_path.read_bytes()
+    except OSError as exc:
+        diagnostics.append(
+            {
+                "level": "error",
+                "path": relative_manifest,
+                "message": f"Unable to read package.json: {exc}",
+            }
+        )
+        return None
     digest = hashlib.sha256(data).hexdigest()
     try:
         manifest = json.loads(data.decode("utf-8", errors="replace"))
@@ -205,13 +227,26 @@ def package_entrypoints(
         entrypoint_path = resolve_manifest_target(root, package_root, target)
         if entrypoint_path is None:
             continue
+        entrypoint_path = source_path_for_manifest_target(entrypoint_path)
         relative = entrypoint_path.relative_to(root).as_posix()
-        if not entrypoint_path.exists() or not entrypoint_path.is_file():
+        if not entrypoint_path.exists():
             diagnostics.append(
                 {
                     "level": "warning",
                     "path": relative,
                     "message": f"Manifest entrypoint does not exist: {target}",
+                    "evidence": evidence_record(manifest_path, manifest_digest),
+                }
+            )
+            continue
+        if not entrypoint_path.is_file():
+            diagnostics.append(
+                {
+                    "level": "warning",
+                    "path": relative,
+                    "message": (
+                        f"Manifest entrypoint does not resolve to a supported source file: {target}"
+                    ),
                     "evidence": evidence_record(manifest_path, manifest_digest),
                 }
             )
@@ -278,6 +313,16 @@ def resolve_manifest_target(root: Path, package_root: Path, target: str) -> Path
         return None
     if candidate.is_symlink():
         return None
+    return candidate
+
+
+def source_path_for_manifest_target(candidate: Path) -> Path:
+    if not candidate.is_dir():
+        return candidate
+    for filename in INDEX_FILENAMES:
+        index_path = candidate / filename
+        if index_path.exists() and index_path.is_file() and not index_path.is_symlink():
+            return index_path
     return candidate
 
 
