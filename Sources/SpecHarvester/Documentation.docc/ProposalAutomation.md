@@ -47,6 +47,26 @@ It can run in two trusted modes:
 
 It must not run with write credentials on ordinary `pull_request` events.
 
+## Preflight Validation
+
+Before writing proposal diffs, the workflow validates the candidate and expected
+proposal identity:
+
+- candidate directory presence
+- `specpm` candidate validation (`specpm.cli validate`)
+- candidate metadata identity:
+  - `metadata.id` matches workflow `package_id`
+  - `metadata.version` matches workflow `package_version`
+- symlink rejection for candidate manifest reads
+
+After promotion and `public-index generate`, proposal diff scope is validated.
+Allowed changed files are:
+
+- `public-index/generated/<packageId>/<packageVersion>/*`
+- `public-index/accepted-packages.yml`
+
+Any unexpected changed file fails the workflow before PR creation.
+
 ## Required Secret
 
 To create a pull request in SpecPM, configure:

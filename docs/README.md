@@ -24,7 +24,9 @@ Published DocC site:
    confidence and policy reports for batch output
 8. [`ACCEPTED_MANIFEST_ENTRIES.md`](ACCEPTED_MANIFEST_ENTRIES.md): prepare
    PR-ready accepted package manifest entries
-9. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+10. [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
+   proposal automation with preflight validation and diff-scope guardrails
+11. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
    implementing, validating, and archiving tasks
 
 ## Design References
