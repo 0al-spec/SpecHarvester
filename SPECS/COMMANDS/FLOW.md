@@ -22,6 +22,16 @@ BRANCH → SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → 
 
 ## Steps
 
+## Branch Protection Rule
+
+All repository changes must land through a pull request. This includes code,
+documentation, Flow artifacts, task archive updates, and small administrative
+edits.
+
+Do not push directly to `main` even when admin bypass is available. Admin bypass
+may be used only to merge an already-open pull request when explicitly requested
+by a maintainer.
+
 ### 1. BRANCH
 
 Create a new feature branch from `main` for the task.
