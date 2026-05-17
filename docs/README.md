@@ -21,6 +21,8 @@ Published DocC site:
 
 - [`ARCHITECTURE.md`](ARCHITECTURE.md): component model and non-goals
 - [`ROADMAP.md`](ROADMAP.md): implementation phases and future tracks
+- [`TREE_SITTER_EVALUATION.md`](TREE_SITTER_EVALUATION.md): decision record for
+  Tree-sitter as an optional syntax indexing layer
 - [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
   automation for proposing accepted-source diffs into SpecPM
 

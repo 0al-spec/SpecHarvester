@@ -56,4 +56,5 @@ the host.
 
 - <doc:HarvesterArchitecture>
 - <doc:TrustBoundary>
+- <doc:TreeSitterEvaluation>
 - <doc:Roadmap>
