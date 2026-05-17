@@ -1,26 +1,27 @@
-# Recommended Task: P5-T2 — Add Namespace and Upstream Relationship Review Report
+# Recommended Task: P5-T3 — Add License and Provenance Risk Report
 
 **Priority:** P5
 **Phase:** Governance Reports
 **Effort:** Medium
-**Dependencies:** P5-T1
+**Dependencies:** P5-T2
 **Status:** In Progress
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P5-T2-add-namespace-and-upstream-relationship-review-report`
-**Review Subject:** `p5_t2_namespace_upstream_review_report`
+**Suggested Branch:** `feature/p5-t3-add-license-and-provenance-risk-report`
+**Review Subject:** `p5_t3_license_and_provenance_risk_report`
 
 **Current Phase:** SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → ARCHIVE-REVIEW
 
 ## Description
 
-Add namespace and upstream dependency relationship review signals to support
-dependency-level governance review before package acceptance.
+Add review coverage for licensing and upstream provenance quality signals in candidate
+and accepted package metadata. The task should produce advisory, deterministic
+reports that help maintainers prioritize manual inspection.
 
 ## Coverage Note
 
-P4-T1 finished with 92.23% total coverage, improving on the P3-T3 baseline of
-92.07%. Future implementation tasks should continue to add focused tests so
-coverage does not decline.
+P5-T2 finished with 90.93% total coverage (still above project floor). Future
+implementation tasks should continue to add focused tests so coverage does not
+decline.
 
 ## Recently Archived
 
@@ -37,7 +38,9 @@ coverage does not decline.
   `SPECS/ARCHIVE/P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/`.
 - `P5-T1` Add duplicate intent and capability claim report: PASS,
   `SPECS/ARCHIVE/P5-T1_Add_Duplicate_Intent_and_Capability_Claim_Report/`.
+- `P5-T2` Add namespace and upstream relationship review report: PASS,
+  `SPECS/ARCHIVE/P5-T2_Add_Namespace_and_Upstream_Relationship_Review_Report/`.
 
 ## Next Step
 
-Plan task `P5-T2` when ready.
+Plan task `P5-T3` when ready.

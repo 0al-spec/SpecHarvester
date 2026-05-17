@@ -23,12 +23,13 @@
 | P4-T2 | [P4-T2_Add_Proposal_Preflight_Checks_for_Accepted_Source_Diffs/](P4-T2_Add_Proposal_Preflight_Checks_for_Accepted_Source_Diffs/) | 2026-05-18 | PASS |
 | P4-T3 | [P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/](P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/) | 2026-05-18 | PASS |
 | P5-T1 | [P5-T1_Add_Duplicate_Intent_and_Capability_Claim_Report/](P5-T1_Add_Duplicate_Intent_and_Capability_Claim_Report/) | 2026-05-18 | PASS |
+| P5-T2 | [P5-T2_Add_Namespace_and_Upstream_Relationship_Review_Report/](P5-T2_Add_Namespace_and_Upstream_Relationship_Review_Report/) | 2026-05-18 | PASS |
 
 ## Historical Artifacts
 
 | Folder | Description |
 |--------|-------------|
-| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md` |
+| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
 
 ## Archive Log
 
@@ -67,3 +68,5 @@
 | 2026-05-18 | P4-T3 | Archived REVIEW_p4_t3_extend_proposal_automation_docs report |
 | 2026-05-18 | P5-T1 | Archived Add Duplicate Intent and Capability Claim Report (PASS) |
 | 2026-05-18 | P5-T1 | Archived REVIEW_p5_t1_duplicate_intent_capability_claim_report report |
+| 2026-05-18 | P5-T2 | Archived Add Namespace and Upstream Relationship Review Report (PASS) |
+| 2026-05-18 | P5-T2 | Archived REVIEW_p5_t2_namespace_upstream_review_report report |

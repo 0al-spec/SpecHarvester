@@ -177,6 +177,17 @@ spec-harvester governance-report --accepted-root <accepted-root> --candidates-ro
 The report summarizes duplicate `intent.*` and `provides.capabilities` claims
 across accepted and candidate metadata to support human review before proposal.
 
+Build a namespace and upstream relationship review report:
+
+```bash
+spec-harvester governance-upstream-report \
+  --accepted-root <accepted-root> \
+  --candidates-root <candidates-root>
+```
+
+The report lists namespace collisions, packages missing upstream relationship
+links, and namespace-vs-upstream owner mismatches.
+
 ### Promotion Gate
 
 Copies a reviewed candidate into an accepted source root and optionally appends

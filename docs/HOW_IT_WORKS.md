@@ -234,6 +234,19 @@ The report summarizes overlapping `intent.*` and `provides.capabilities` claims
 across accepted and candidate metadata for review prioritization.
 See [`GOVERNANCE_REPORTS.md`](GOVERNANCE_REPORTS.md).
 
+Optionally write a namespace and upstream relationship review report:
+
+```bash
+python3 -m spec_harvester governance-upstream-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output candidates/namespace-upstream.json
+```
+
+This report highlights namespace collisions, missing upstream repository
+provenance, and namespace-vs-upstream-owner mismatches for maintainer review.
+See [`NAMESPACE_UPSTREAM_REPORTS.md`](NAMESPACE_UPSTREAM_REPORTS.md).
+
 ### 3. Draft a Candidate SpecPackage
 
 Run the deterministic drafter:

@@ -21,6 +21,10 @@ from spec_harvester.governance_reports import (
     build_duplicate_claim_report,
     write_governance_report,
 )
+from spec_harvester.namespace_reports import (
+    build_namespace_upstream_report,
+    write_namespace_upstream_report,
+)
 from spec_harvester.promoter import (
     PrepareAcceptedManifestEntryOptions,
     PromoteOptions,
@@ -240,6 +244,30 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where governance report JSON is written.",
     )
     governance.set_defaults(func=run_governance_report)
+
+    namespace_upstream = subcommands.add_parser(
+        "governance-upstream-report",
+        help=(
+            "Build namespace and upstream relationship review report from candidate/accepted "
+            "metadata."
+        ),
+    )
+    namespace_upstream.add_argument(
+        "--accepted-root",
+        type=Path,
+        help="Accepted package source root for namespace/upstream input.",
+    )
+    namespace_upstream.add_argument(
+        "--candidates-root",
+        type=Path,
+        help="Candidate package root for namespace/upstream input.",
+    )
+    namespace_upstream.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where namespace/upstream report JSON is written.",
+    )
+    namespace_upstream.set_defaults(func=run_namespace_upstream_report)
     return parser
 
 
@@ -348,6 +376,20 @@ def run_governance_report(args: argparse.Namespace) -> int:
     )
     if args.output is not None:
         write_governance_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_namespace_upstream_report(args: argparse.Namespace) -> int:
+    if args.accepted_root is None and args.candidates_root is None:
+        raise ValueError("At least one of --accepted-root or --candidates-root must be set.")
+
+    result = build_namespace_upstream_report(
+        accepted_root=args.accepted_root,
+        candidates_root=args.candidates_root,
+    )
+    if args.output is not None:
+        write_namespace_upstream_report(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 

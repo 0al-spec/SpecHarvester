@@ -88,7 +88,7 @@ Acceptance:
 ## Phase 5. Governance Reports
 
 - [x] `P5-T1` Add duplicate intent and capability claim report.
-- [ ] `P5-T2` Add namespace and upstream relationship review report.
+- [x] `P5-T2` Add namespace and upstream relationship review report.
 - [ ] `P5-T3` Add license and provenance risk report.
 
 Acceptance:

@@ -150,6 +150,18 @@ python3 -m spec_harvester governance-report \
 The report summarizes overlapping `intent.*` and `capability` claims for review
 prioritization before proposal and promotion.
 
+Build a namespace/upstream relationship review report:
+
+```bash
+python3 -m spec_harvester governance-upstream-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output candidates/namespace-upstream.json
+```
+
+This report highlights namespace collisions, missing `upstream_repository`
+artifacts, and namespace-vs-upstream-owner mismatches.
+
 ## Review Gates
 
 Every generated candidate should be checked for:
