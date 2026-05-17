@@ -35,6 +35,7 @@ The canonical source files remain in the repository:
 - `docs/ANALYZER_SANDBOX_REQUIREMENTS.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
+- `docs/BATCH_VALIDATION_REPORTS.md`
 - `docs/SPECPM_PROPOSAL_AUTOMATION.md`
 - `docs/ROADMAP.md`
 
@@ -55,6 +56,7 @@ the host.
 - <doc:Workflow>
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
+- <doc:BatchValidationReports>
 - <doc:ProposalAutomation>
 
 ### Architecture

@@ -6,6 +6,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.batch_validation import (
+    build_batch_validation_report,
+    write_batch_validation_report,
+)
 from spec_harvester.collector import (
     DEFAULT_MAX_FILE_BYTES,
     HarvestOptions,
@@ -22,6 +26,7 @@ class BatchCollectOptions:
     out: Path
     selected_ids: tuple[str, ...] = ()
     max_file_bytes: int = DEFAULT_MAX_FILE_BYTES
+    report: Path | None = None
 
 
 def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
@@ -98,7 +103,7 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
             }
         )
 
-    return {
+    result = {
         "status": "ok",
         "input": str(options.inputs),
         "outputRoot": str(options.out),
@@ -108,6 +113,14 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
         "collected": collected,
         "skipped": skipped,
     }
+    if options.report is not None:
+        report = build_batch_validation_report(
+            batch_result=result,
+            snapshots_by_id={plan["repository"]["id"]: plan["snapshot"] for plan in prepared},
+        )
+        write_batch_validation_report(options.report, report)
+        result["validationReport"] = str(options.report)
+    return result
 
 
 def candidate_directory(out_root: Path, repository_id: str) -> Path:

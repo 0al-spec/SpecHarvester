@@ -20,7 +20,9 @@ Published DocC site:
    batch harvesting input manifest schema
 6. [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md): deterministic batch snapshot
    collection from local checkouts
-7. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+7. [`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md): advisory
+   confidence and policy reports for batch output
+8. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
    implementing, validating, and archiving tasks
 
 ## Design References
