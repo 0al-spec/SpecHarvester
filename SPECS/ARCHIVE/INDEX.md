@@ -30,3 +30,4 @@
 | 2026-05-17 | P1-T3 | Archived Add JavaScript and TypeScript Manifest Export Analyzer (PASS) |
 | 2026-05-17 | P1-T3 | Archived REVIEW_p1_t3_js_ts_manifest_export_analyzer report |
 | 2026-05-17 | P1-T4 | Archived Evaluate Tree-sitter as the Shared Syntax Indexing Layer (PASS) |
+| 2026-05-17 | P1-T4 | Archived REVIEW_p1_t4_tree_sitter_syntax_indexing_layer report |
