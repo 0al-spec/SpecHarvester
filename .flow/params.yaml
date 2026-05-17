@@ -1,0 +1,34 @@
+# SpecHarvester Flow project config.
+# This file is user-owned and survives Flow-managed updates.
+
+project:
+  name: SpecHarvester
+  description: AI-assisted pipeline for turning public repository metadata into reviewable SpecPM candidate packages.
+  language: Python and Swift
+  package_manager: pip and SwiftPM
+  default_branch: main
+
+verify:
+  tests: PYTHONPATH=src python -m pytest
+  lint: ruff check src tests
+  format: ruff format --check src tests
+  coverage: PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90
+  coverage_threshold: 90
+  swift_manifest: swift package dump-package >/dev/null
+  swift_docs_build: swift build --target SpecHarvesterDocs
+
+task_system:
+  kind: file
+  project_key: SH
+  task_url_template: "SPECS/Workplan.md#{task_id}-{task_name_slug}"
+
+structure:
+  source: src/spec_harvester/
+  tests: tests/
+  docs: docs/
+  docc: Sources/SpecHarvester/Documentation.docc/
+  specs: SPECS/
+
+github:
+  pr_template: .github/PULL_REQUEST_TEMPLATE.md
+  issue_templates_dir: .github/ISSUE_TEMPLATE/

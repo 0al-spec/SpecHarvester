@@ -38,7 +38,7 @@ jobs:
         run: ruff format --check src tests
 
       - name: Pytest
-        run: pytest -q
+        run: pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90
 
       - name: Swift package manifest validation
         run: |

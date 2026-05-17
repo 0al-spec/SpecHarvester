@@ -6,9 +6,21 @@ from pathlib import Path
 import pytest
 
 from spec_harvester.cli import main
-from spec_harvester.collector import HarvestOptions, collect_local_repository
+from spec_harvester.collector import (
+    HarvestOptions,
+    classify_file,
+    collect_local_repository,
+    markdown_headings,
+    parse_package_json,
+)
 from spec_harvester.drafter import DraftOptions, draft_spec_package, render_scalar
-from spec_harvester.promoter import PromoteOptions, infer_manifest_entry_path, promote_candidate
+from spec_harvester.promoter import (
+    PromoteOptions,
+    append_local_manifest_entry,
+    infer_manifest_entry_path,
+    promote_candidate,
+    validate_with_specpm,
+)
 
 
 def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None:
@@ -77,6 +89,11 @@ def test_collect_local_repository_snapshot_is_deterministic(tmp_path: Path) -> N
     )
 
     assert collect_local_repository(options) == collect_local_repository(options)
+
+
+def test_collect_local_repository_rejects_missing_source(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="does not exist"):
+        collect_local_repository(HarvestOptions(source=tmp_path / "missing"))
 
 
 def test_collect_local_repository_skips_paths_outside_source(tmp_path: Path) -> None:
@@ -151,6 +168,61 @@ def test_collect_local_repository_sorts_skipped_files(
         "a-package.json",
         "z-package.json",
     ]
+
+
+def test_collect_local_repository_logs_non_file_and_large_file_skips(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    package_dir = repo / "package.json"
+    package_dir.mkdir()
+    readme = repo / "README.md"
+    readme.write_text("# Demo\ncontent\n", encoding="utf-8")
+    monkeypatch.setattr(
+        "spec_harvester.collector.candidate_files",
+        lambda _root: [package_dir, readme],
+    )
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo, max_file_bytes=4))
+
+    assert snapshot["summary"]["fileCount"] == 0
+    assert snapshot["skippedFiles"] == [
+        {"path": "README.md", "reason": "file_too_large", "size": 15, "maxFileBytes": 4},
+        {"path": "package.json", "reason": "not_regular_file"},
+    ]
+
+
+def test_collect_local_repository_records_binary_file_without_text_metadata(tmp_path: Path) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    package_dir = repo / "packages" / "core" / "src"
+    package_dir.mkdir(parents=True)
+    entrypoint = package_dir / "index.js"
+    entrypoint.write_bytes(b"\xff\xfe\x00")
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    record = snapshot["files"][0]
+    assert record["path"] == "packages/core/src/index.js"
+    assert record["kind"] == "source_entrypoint"
+    assert "package" not in record
+    assert "headings" not in record
+
+
+def test_metadata_helpers_cover_static_file_variants(tmp_path: Path) -> None:
+    workflow = tmp_path / ".github" / "workflows" / "ci.yml"
+    workflow.parent.mkdir(parents=True)
+    workflow.touch()
+
+    assert classify_file(workflow) == "workflow"
+    assert classify_file(tmp_path / "pnpm-workspace.yaml") == "workspace_manifest"
+    assert classify_file(tmp_path / "index.ts") == "source_entrypoint"
+    assert classify_file(tmp_path / "notes.txt") == "metadata"
+    assert markdown_headings("# One\n## Two\n### Three\n", limit=2) == ["One", "Two"]
+    assert parse_package_json("{") is None
+    assert parse_package_json("[]") is None
+    assert parse_package_json('{"exports":"./dist/index.js"}') == {"exports": ["."]}
 
 
 def test_cli_writes_harvest_snapshot(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
@@ -275,6 +347,36 @@ def test_draft_spec_package_keeps_capability_ids_unique_for_slug_collisions(
     assert "id: example.core.react_flow_2\n" in spec
 
 
+def test_draft_spec_package_uses_fallback_metadata_without_package_manifests(
+    tmp_path: Path,
+) -> None:
+    snapshot = {
+        "kind": "SpecHarvesterEvidenceSnapshot",
+        "source": "unexpected",
+        "policy": {"execution": "none"},
+        "files": [],
+    }
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "id: generated_package.core" in manifest
+    assert "license: UNKNOWN" in manifest
+    assert "intent.package.public_repository_metadata" in spec
+
+
+def test_draft_spec_package_rejects_unsupported_snapshot_kind(tmp_path: Path) -> None:
+    snapshot = tmp_path / "harvest.json"
+    snapshot.write_text(json.dumps({"kind": "OtherSnapshot"}), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="Unsupported harvest snapshot kind"):
+        draft_spec_package(DraftOptions(snapshot=snapshot, out=tmp_path / "candidate"))
+
+
 def test_render_scalar_quotes_yaml_reserved_words() -> None:
     assert render_scalar("true") == '"true"'
     assert render_scalar("FALSE") == '"FALSE"'
@@ -347,6 +449,87 @@ def test_promote_candidate_rejects_candidate_symlinks(tmp_path: Path) -> None:
         )
 
 
+def test_promote_candidate_rejects_missing_candidate_and_manifest(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="Candidate directory does not exist"):
+        promote_candidate(
+            PromoteOptions(
+                candidate=tmp_path / "missing",
+                accepted_root=tmp_path / "accepted",
+                skip_validation=True,
+            )
+        )
+
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    with pytest.raises(ValueError, match="missing specpm.yaml"):
+        promote_candidate(PromoteOptions(candidate=candidate, accepted_root=tmp_path / "accepted"))
+
+
+def test_promote_candidate_rejects_existing_destination_without_force(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    destination = tmp_path / "accepted" / "example.core" / "0.1.0"
+    destination.mkdir(parents=True)
+
+    with pytest.raises(ValueError, match="Destination already exists"):
+        promote_candidate(
+            PromoteOptions(
+                candidate=candidate,
+                accepted_root=tmp_path / "accepted",
+                skip_validation=True,
+            )
+        )
+
+
+def test_promote_candidate_rejects_escaping_package_subdir(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+
+    with pytest.raises(ValueError, match="escapes accepted root"):
+        promote_candidate(
+            PromoteOptions(
+                candidate=candidate,
+                accepted_root=tmp_path / "accepted",
+                package_subdir="../escape",
+                skip_validation=True,
+            )
+        )
+
+
+def test_promote_candidate_rejects_invalid_specpm_validation(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    validator = tmp_path / "specpm"
+    validator.write_text('#!/bin/sh\nprintf \'{"status":"invalid"}\\n\'\n', encoding="utf-8")
+    validator.chmod(0o755)
+
+    with pytest.raises(ValueError, match="SpecPM validation failed"):
+        promote_candidate(
+            PromoteOptions(
+                candidate=candidate,
+                accepted_root=tmp_path / "accepted",
+                specpm_command=str(validator),
+            )
+        )
+
+
+def test_validate_with_specpm_reports_tool_failures(tmp_path: Path) -> None:
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+
+    with pytest.raises(ValueError, match="was not found"):
+        validate_with_specpm(candidate, command=str(tmp_path / "missing-specpm"))
+
+    non_json = tmp_path / "non-json-specpm"
+    non_json.write_text("#!/bin/sh\necho nope\n", encoding="utf-8")
+    non_json.chmod(0o755)
+    with pytest.raises(ValueError, match="did not return JSON"):
+        validate_with_specpm(candidate, command=str(non_json))
+
+    failed = tmp_path / "failed-specpm"
+    failed.write_text('#!/bin/sh\nprintf \'{"status":"error"}\\n\'\nexit 2\n', encoding="utf-8")
+    failed.chmod(0o755)
+    with pytest.raises(ValueError, match="failed unexpectedly"):
+        validate_with_specpm(candidate, command=str(failed), pythonpath="src")
+
+
 def test_promote_candidate_inserts_manifest_entry_inside_packages_block(tmp_path: Path) -> None:
     candidate = draft_demo_candidate(tmp_path)
     manifest = tmp_path / "accepted-packages.yml"
@@ -416,6 +599,14 @@ def test_promote_candidate_rejects_unsafe_manifest_entry_path(tmp_path: Path) ->
                 skip_validation=True,
             )
         )
+
+
+def test_append_local_manifest_entry_rejects_invalid_packages_field(tmp_path: Path) -> None:
+    manifest = tmp_path / "accepted-packages.yml"
+    manifest.write_text("schemaVersion: 1\npackages: wrong\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="block list or an empty list"):
+        append_local_manifest_entry(manifest, "accepted/example.core/0.1.0")
 
 
 def test_infer_manifest_entry_path_requires_relative_manifest_path(tmp_path: Path) -> None:
