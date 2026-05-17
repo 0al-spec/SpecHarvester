@@ -150,11 +150,32 @@ python3 -m spec_harvester draft candidates/github.com/example/project \
   --out candidates/github.com/example/project
 ```
 
+If a deterministic analyzer has already produced a compact
+`PublicInterfaceIndex`, pass it explicitly:
+
+```bash
+python3 -m spec_harvester draft candidates/github.com/example/project \
+  --package-id project.core \
+  --name project \
+  --interface-index candidates/github.com/example/project/public-interface-index.json \
+  --out candidates/github.com/example/project
+```
+
+When no `--interface-index` value is provided, the drafter auto-detects a
+`public-interface-index.json` file beside `harvest.json`.
+
 This writes:
 
 ```text
 candidates/github.com/example/project/specpm.yaml
 candidates/github.com/example/project/specs/project.spec.yaml
+```
+
+When public interface evidence is supplied or auto-detected, the drafter also
+writes a normalized copy:
+
+```text
+candidates/github.com/example/project/public-interface-index.json
 ```
 
 The drafter currently derives conservative metadata from `harvest.json`:
@@ -163,8 +184,11 @@ The drafter currently derives conservative metadata from `harvest.json`:
 - package capabilities
 - observed `intent.*` IDs
 - compatibility hints
+- analyzer-backed `interfaces.inbound` summaries when a valid
+  `PublicInterfaceIndex` is present
 - source repository provenance
 - evidence links back to `harvest.json`
+- evidence links back to `public-interface-index.json` when present
 - review constraints
 - `preview_only: true`
 
@@ -173,6 +197,11 @@ names and descriptions. It is useful as reviewable seed metadata, but it is not
 semantic authority and it can produce false positives. Other harvested files,
 including GitHub workflow files, are preserved as evidence and are not used for
 intent inference.
+
+The draft step does not run analyzers. It only reads and validates the supplied
+`PublicInterfaceIndex`, copies the normalized JSON into the candidate directory,
+and uses its package, entrypoint, symbol, analyzer, and diagnostic summary as
+reviewable metadata.
 
 The generated package must be treated as untrusted candidate metadata.
 

@@ -7,9 +7,20 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
+from spec_harvester.interface_index import (
+    render_public_interface_index_json,
+    validate_public_interface_index,
+)
+
 SPEC_API_VERSION = "specpm.dev/v0.1"
 DEFAULT_SPEC_VERSION = "0.1.0"
 DEFAULT_AUTHOR = "SpecHarvester"
+PUBLIC_INTERFACE_INDEX_OUTPUT = "public-interface-index.json"
+PUBLIC_INTERFACE_INDEX_DISCOVERY_NAMES = (
+    PUBLIC_INTERFACE_INDEX_OUTPUT,
+    "public_interface_index.json",
+)
+PUBLIC_INTERFACE_INDEX_MEDIA_TYPE = "application/vnd.spec-harvester.public-interface-index+json"
 YAML_RESERVED_SCALARS = {"true", "false", "null", "yes", "no", "on", "off", "~"}
 
 
@@ -21,6 +32,7 @@ class DraftOptions:
     name: str | None = None
     version: str = DEFAULT_SPEC_VERSION
     author: str = DEFAULT_AUTHOR
+    interface_index: Path | None = None
 
 
 def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
@@ -28,6 +40,10 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
     if snapshot.get("kind") != "SpecHarvesterEvidenceSnapshot":
         raise ValueError(f"Unsupported harvest snapshot kind: {snapshot.get('kind')!r}")
+    public_interface_index = load_public_interface_index(
+        options.interface_index,
+        snapshot_path=snapshot_path,
+    )
 
     source = snapshot.get("source")
     if not isinstance(source, dict):
@@ -89,6 +105,22 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "keywords": ["generated", "specharvester", bounded_context],
     }
 
+    inbound_interfaces = build_interfaces(package_records, public_interface_index)
+    evidence = build_evidence(manifest_capabilities, inbound_interfaces, public_interface_index)
+    provenance = {
+        "sourceConfidence": {
+            "intent": "medium",
+            "boundary": "medium",
+            "behavior": "low",
+        },
+        "generatedBy": "SpecHarvester deterministic draft generator",
+        "sourceRepository": source.get("repository"),
+        "sourceRevision": source.get("revision"),
+        "harvestPolicy": snapshot.get("policy"),
+    }
+    if public_interface_index is not None:
+        provenance["publicInterfaceIndex"] = public_interface_provenance(public_interface_index)
+
     boundary_spec = {
         "apiVersion": SPEC_API_VERSION,
         "kind": "BoundarySpec",
@@ -117,7 +149,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "provides": {"capabilities": capability_entries},
         "requires": {"capabilities": []},
         "interfaces": {
-            "inbound": build_interfaces(package_records),
+            "inbound": inbound_interfaces,
             "outbound": [],
         },
         "effects": {"sideEffects": []},
@@ -139,29 +171,8 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
                 ),
             },
         ],
-        "evidence": [
-            {
-                "id": "harvest_snapshot",
-                "kind": "package_manifest",
-                "path": "harvest.json",
-                "supports": ["intent.summary", "scope", "provides.capabilities"]
-                + [
-                    f"provides.capabilities.{capability_id}"
-                    for capability_id in manifest_capabilities
-                ],
-            }
-        ],
-        "provenance": {
-            "sourceConfidence": {
-                "intent": "medium",
-                "boundary": "medium",
-                "behavior": "low",
-            },
-            "generatedBy": "SpecHarvester deterministic draft generator",
-            "sourceRepository": source.get("repository"),
-            "sourceRevision": source.get("revision"),
-            "harvestPolicy": snapshot.get("policy"),
-        },
+        "evidence": evidence,
+        "provenance": provenance,
         "foreignArtifacts": [foreign_repository_artifact(source)],
         "keywords": ["generated", "specharvester", bounded_context],
     }
@@ -169,10 +180,17 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     options.out.mkdir(parents=True, exist_ok=True)
     specs_dir = options.out / "specs"
     specs_dir.mkdir(parents=True, exist_ok=True)
+    interface_index_output: Path | None = None
+    if public_interface_index is not None:
+        interface_index_output = options.out / PUBLIC_INTERFACE_INDEX_OUTPUT
+        interface_index_output.write_text(
+            render_public_interface_index_json(public_interface_index),
+            encoding="utf-8",
+        )
     (options.out / "specpm.yaml").write_text(render_yaml(manifest), encoding="utf-8")
     (options.out / spec_path).write_text(render_yaml(boundary_spec), encoding="utf-8")
 
-    return {
+    result = {
         "status": "ok",
         "output": str(options.out),
         "manifest": str(options.out / "specpm.yaml"),
@@ -181,6 +199,9 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "capabilityCount": len(manifest_capabilities),
         "intentCount": len(manifest_intents),
     }
+    if interface_index_output is not None:
+        result["interfaceIndex"] = str(interface_index_output)
+    return result
 
 
 def resolve_snapshot_path(path: Path) -> Path:
@@ -189,6 +210,49 @@ def resolve_snapshot_path(path: Path) -> Path:
     if not path.exists() or not path.is_file():
         raise ValueError(f"Harvest snapshot does not exist: {path}")
     return path
+
+
+def resolve_public_interface_index_path(
+    path: Path | None,
+    *,
+    snapshot_path: Path,
+) -> Path | None:
+    if path is not None:
+        if path.is_dir():
+            for name in PUBLIC_INTERFACE_INDEX_DISCOVERY_NAMES:
+                candidate = path / name
+                if candidate.exists():
+                    path = candidate
+                    break
+        if not path.exists() or not path.is_file():
+            raise ValueError(f"Public interface index does not exist: {path}")
+        return path
+
+    for name in PUBLIC_INTERFACE_INDEX_DISCOVERY_NAMES:
+        candidate = snapshot_path.parent / name
+        if candidate.exists():
+            if not candidate.is_file():
+                raise ValueError(f"Public interface index is not a file: {candidate}")
+            return candidate
+    return None
+
+
+def load_public_interface_index(
+    path: Path | None,
+    *,
+    snapshot_path: Path,
+) -> dict[str, Any] | None:
+    resolved = resolve_public_interface_index_path(path, snapshot_path=snapshot_path)
+    if resolved is None:
+        return None
+    try:
+        index = json.loads(resolved.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid PublicInterfaceIndex JSON: {exc.msg}") from exc
+    if not isinstance(index, dict):
+        raise ValueError("Invalid PublicInterfaceIndex: index must be an object")
+    validate_public_interface_index(index)
+    return index
 
 
 def infer_repository_name(source: dict[str, Any]) -> str:
@@ -279,36 +343,258 @@ def infer_intent_ids(package_name: str, summary: str) -> list[str]:
     return sorted(intents)
 
 
-def build_interfaces(package_records: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    interfaces: list[dict[str, Any]] = []
+def build_interfaces(
+    package_records: list[dict[str, Any]],
+    public_interface_index: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    interfaces_by_id: dict[str, dict[str, Any]] = {}
+    interface_order: list[str] = []
     for record in package_records:
-        package = record["package"]
-        package_name = package.get("name")
-        if not isinstance(package_name, str) or not package_name.strip():
+        entry = manifest_interface_entry(record)
+        if entry is None:
             continue
-        interface_id = slug_id(f"package.{package_label(package_name)}")
-        outputs = [
+        interfaces_by_id[entry["id"]] = entry
+        interface_order.append(entry["id"])
+
+    if public_interface_index is not None:
+        packages = public_interface_index.get("packages", [])
+        for package in sorted(packages, key=public_interface_package_sort_key):
+            if not isinstance(package, dict):
+                continue
+            interface_id = public_interface_id(package)
+            base = interfaces_by_id.get(interface_id)
+            if base is None:
+                interface_order.append(interface_id)
+            interfaces_by_id[interface_id] = public_interface_entry(package, base)
+
+    return [interfaces_by_id[interface_id] for interface_id in interface_order]
+
+
+def manifest_interface_entry(record: dict[str, Any]) -> dict[str, Any] | None:
+    package = record["package"]
+    package_name = package.get("name")
+    if not isinstance(package_name, str) or not package_name.strip():
+        return None
+    outputs = [
+        {
+            "name": "package_manifest",
+            "mediaTypes": ["application/json"],
+        }
+    ]
+    if package.get("exports"):
+        outputs.append(
             {
-                "name": "package_manifest",
-                "mediaTypes": ["application/json"],
-            }
-        ]
-        if package.get("exports"):
-            outputs.append(
-                {
-                    "name": "package_exports",
-                    "mediaTypes": ["application/javascript", "text/css"],
-                }
-            )
-        interfaces.append(
-            {
-                "id": interface_id,
-                "kind": "library",
-                "summary": f"Observed import surface for {package_name}.",
-                "outputs": outputs,
+                "name": "package_exports",
+                "mediaTypes": ["application/javascript", "text/css"],
             }
         )
-    return interfaces
+    return {
+        "id": slug_id(f"package.{package_label(package_name)}"),
+        "kind": "library",
+        "summary": f"Observed import surface for {package_name}.",
+        "outputs": outputs,
+    }
+
+
+def public_interface_entry(
+    package: dict[str, Any],
+    base: dict[str, Any] | None,
+) -> dict[str, Any]:
+    package_id = public_interface_package_name(package)
+    entrypoints = public_interface_entrypoints(package)
+    entrypoint_count = len(entrypoints)
+    symbol_count = sum(entrypoint["symbolCount"] for entrypoint in entrypoints)
+    entry = {
+        "id": public_interface_id(package),
+        "kind": "library",
+        "summary": f"Observed public interface for {package_id} from PublicInterfaceIndex.",
+        "source": "public_interface_index",
+        "publicInterface": {
+            "packageId": package_id,
+            "packagePath": package.get("path"),
+            "entrypointCount": entrypoint_count,
+            "symbolCount": symbol_count,
+        },
+        "outputs": merge_interface_outputs(
+            list(base.get("outputs", [])) if base is not None else [],
+            [
+                {
+                    "name": "public_symbols",
+                    "mediaTypes": [PUBLIC_INTERFACE_INDEX_MEDIA_TYPE],
+                }
+            ],
+        ),
+    }
+    language = package.get("language")
+    if isinstance(language, str) and language.strip():
+        entry["language"] = language
+    if entrypoints:
+        entry["entrypoints"] = entrypoints
+    return entry
+
+
+def public_interface_entrypoints(package: dict[str, Any]) -> list[dict[str, Any]]:
+    entrypoints = package.get("entrypoints")
+    if not isinstance(entrypoints, list):
+        return []
+
+    summaries: list[dict[str, Any]] = []
+    for entrypoint in sorted(entrypoints, key=entrypoint_sort_key):
+        if not isinstance(entrypoint, dict):
+            continue
+        path = entrypoint.get("path")
+        if not isinstance(path, str) or not path.strip():
+            continue
+        symbols = public_interface_symbols(entrypoint)
+        summaries.append(
+            {
+                "path": path,
+                "symbolCount": len(symbols),
+                "symbols": symbols,
+            }
+        )
+    return summaries
+
+
+def public_interface_symbols(entrypoint: dict[str, Any]) -> list[dict[str, Any]]:
+    symbols = entrypoint.get("symbols")
+    if not isinstance(symbols, list):
+        return []
+
+    summaries: list[dict[str, Any]] = []
+    for symbol in sorted(symbols, key=symbol_sort_key):
+        if not isinstance(symbol, dict):
+            continue
+        name = symbol.get("name")
+        kind = symbol.get("kind")
+        if not isinstance(name, str) or not isinstance(kind, str):
+            continue
+        summary = {
+            "name": name,
+            "kind": kind,
+        }
+        signature = symbol.get("signature")
+        if isinstance(signature, str) and signature.strip():
+            summary["signature"] = signature
+        evidence = symbol.get("evidence")
+        if isinstance(evidence, dict):
+            path = evidence.get("path")
+            sha256 = evidence.get("sha256")
+            if isinstance(path, str) and isinstance(sha256, str):
+                summary["evidence"] = {"path": path, "sha256": sha256}
+        summaries.append(summary)
+    return summaries
+
+
+def merge_interface_outputs(
+    base_outputs: list[Any],
+    extra_outputs: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    outputs: list[dict[str, Any]] = []
+    seen: set[tuple[str, tuple[str, ...]]] = set()
+    for output in [*base_outputs, *extra_outputs]:
+        if not isinstance(output, dict):
+            continue
+        name = output.get("name")
+        media_types = output.get("mediaTypes")
+        if not isinstance(name, str) or not isinstance(media_types, list):
+            continue
+        normalized_media_types = tuple(str(media_type) for media_type in media_types)
+        key = (name, normalized_media_types)
+        if key in seen:
+            continue
+        seen.add(key)
+        outputs.append({"name": name, "mediaTypes": list(normalized_media_types)})
+    return outputs
+
+
+def public_interface_id(package: dict[str, Any]) -> str:
+    return slug_id(f"package.{package_label(public_interface_package_name(package))}")
+
+
+def public_interface_package_name(package: dict[str, Any]) -> str:
+    package_id = package.get("id")
+    if isinstance(package_id, str) and package_id.strip():
+        return package_id
+    package_path = package.get("path")
+    if isinstance(package_path, str) and package_path.strip() and package_path != ".":
+        return package_path
+    return "public_interface"
+
+
+def public_interface_package_sort_key(package: Any) -> tuple[str, str]:
+    if not isinstance(package, dict):
+        return ("", "")
+    return (str(package.get("path") or ""), str(package.get("id") or ""))
+
+
+def entrypoint_sort_key(entrypoint: Any) -> str:
+    if not isinstance(entrypoint, dict):
+        return ""
+    return str(entrypoint.get("path") or "")
+
+
+def symbol_sort_key(symbol: Any) -> tuple[str, str, str]:
+    if not isinstance(symbol, dict):
+        return ("", "", "")
+    return (
+        str(symbol.get("name") or ""),
+        str(symbol.get("kind") or ""),
+        str(symbol.get("signature") or ""),
+    )
+
+
+def build_evidence(
+    manifest_capabilities: list[str],
+    inbound_interfaces: list[dict[str, Any]],
+    public_interface_index: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    evidence = [
+        {
+            "id": "harvest_snapshot",
+            "kind": "package_manifest",
+            "path": "harvest.json",
+            "supports": ["intent.summary", "scope", "provides.capabilities"]
+            + [f"provides.capabilities.{capability_id}" for capability_id in manifest_capabilities],
+        }
+    ]
+    if public_interface_index is None:
+        return evidence
+
+    supported_interfaces = [
+        f"interfaces.inbound.{interface['id']}"
+        for interface in inbound_interfaces
+        if interface.get("source") == "public_interface_index"
+    ]
+    evidence.append(
+        {
+            "id": "public_interface_index",
+            "kind": "public_interface_index",
+            "path": PUBLIC_INTERFACE_INDEX_OUTPUT,
+            "supports": ["interfaces.inbound", *supported_interfaces],
+        }
+    )
+    return evidence
+
+
+def public_interface_provenance(index: dict[str, Any]) -> dict[str, Any]:
+    analyzers = []
+    for analyzer in index.get("analyzers", []):
+        if not isinstance(analyzer, dict):
+            continue
+        analyzers.append(
+            {
+                "id": analyzer.get("id"),
+                "version": analyzer.get("version"),
+                "confidence": analyzer.get("confidence"),
+                "execution": analyzer.get("execution"),
+            }
+        )
+    return {
+        "sourceRevision": index.get("sourceRevision"),
+        "summary": index.get("summary"),
+        "analyzers": analyzers,
+    }
 
 
 def infer_license(package_records: list[dict[str, Any]]) -> str:

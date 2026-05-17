@@ -14,6 +14,12 @@ from spec_harvester.collector import (
     parse_package_json,
 )
 from spec_harvester.drafter import DraftOptions, draft_spec_package, render_scalar
+from spec_harvester.interface_index import (
+    analyzer_record,
+    evidence_record,
+    new_public_interface_index,
+    render_public_interface_index_json,
+)
 from spec_harvester.promoter import (
     PromoteOptions,
     append_local_manifest_entry,
@@ -318,6 +324,109 @@ def test_draft_spec_package_keeps_interfaces_matched_to_valid_packages(tmp_path:
     assert "Observed import surface for @example/core." in spec
 
 
+def test_draft_spec_package_enriches_interfaces_from_public_interface_index(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/core",
+                "version": "1.0.0",
+                "description": "Core package.",
+                "license": "MIT",
+                "exports": {".": "./src/index.ts"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(source=repo, repository="https://github.com/example/core", revision="abc123")
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+    interface_index_path = tmp_path / "public-api.json"
+    interface_index_path.write_text(
+        render_public_interface_index_json(public_interface_index_fixture()),
+        encoding="utf-8",
+    )
+
+    result = draft_spec_package(
+        DraftOptions(
+            snapshot=candidate,
+            out=candidate,
+            package_id="example.core",
+            interface_index=interface_index_path,
+        )
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    copied_index = candidate / "public-interface-index.json"
+    assert copied_index.exists()
+    assert result["interfaceIndex"] == str(copied_index)
+    assert "id: public_interface_index" in spec
+    assert "path: public-interface-index.json" in spec
+    assert "interfaces.inbound.package.core" in spec
+    assert "Observed public interface for @example/core from PublicInterfaceIndex." in spec
+    assert "name: public_symbols" in spec
+    assert "application/vnd.spec-harvester.public-interface-index+json" in spec
+    assert 'packageId: "@example/core"' in spec
+    assert "path: src/index.ts" in spec
+    assert "symbolCount: 2" in spec
+    assert "name: createGraph" in spec
+    assert 'signature: "createGraph(options)"' in spec
+    assert "sha256: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" in spec
+
+
+def test_draft_spec_package_auto_detects_colocated_public_interface_index(
+    tmp_path: Path,
+) -> None:
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = {
+        "kind": "SpecHarvesterEvidenceSnapshot",
+        "source": {"label": "demo", "revision": "abc123"},
+        "policy": {"execution": "none"},
+        "files": [],
+    }
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+    (candidate / "public-interface-index.json").write_text(
+        render_public_interface_index_json(public_interface_index_fixture()),
+        encoding="utf-8",
+    )
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    assert result["interfaceIndex"] == str(candidate / "public-interface-index.json")
+    assert "id: package.core" in spec
+    assert "source: public_interface_index" in spec
+
+
+def test_draft_spec_package_rejects_invalid_public_interface_index(tmp_path: Path) -> None:
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    (candidate / "harvest.json").write_text(
+        json.dumps({"kind": "SpecHarvesterEvidenceSnapshot", "files": []}),
+        encoding="utf-8",
+    )
+    interface_index_path = tmp_path / "invalid-public-api.json"
+    interface_index_path.write_text(json.dumps({"kind": "Wrong"}), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="Invalid PublicInterfaceIndex"):
+        draft_spec_package(
+            DraftOptions(
+                snapshot=candidate,
+                out=candidate,
+                interface_index=interface_index_path,
+            )
+        )
+
+    assert not (candidate / "specpm.yaml").exists()
+
+
 def test_draft_spec_package_keeps_capability_ids_unique_for_slug_collisions(
     tmp_path: Path,
 ) -> None:
@@ -404,6 +513,42 @@ def test_cli_draft_writes_candidate_files(tmp_path: Path, capsys) -> None:  # ty
     assert (out / "specpm.yaml").exists()
     assert (out / "specs" / "demo.spec.yaml").exists()
     assert json.loads(capsys.readouterr().out)["packageId"] == "example.core"
+
+
+def test_cli_draft_accepts_public_interface_index(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps({"name": "@example/core", "description": "Core system", "license": "MIT"}),
+        encoding="utf-8",
+    )
+    out = tmp_path / "candidate"
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    out.mkdir()
+    (out / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+    interface_index_path = tmp_path / "public-api.json"
+    interface_index_path.write_text(
+        render_public_interface_index_json(public_interface_index_fixture()),
+        encoding="utf-8",
+    )
+
+    result = main(
+        [
+            "draft",
+            str(out),
+            "--out",
+            str(out),
+            "--package-id",
+            "example.core",
+            "--interface-index",
+            str(interface_index_path),
+        ]
+    )
+
+    cli_result = json.loads(capsys.readouterr().out)
+    assert result == 0
+    assert cli_result["interfaceIndex"] == str(out / "public-interface-index.json")
+    assert "name: createGraph" in (out / "specs" / "demo.spec.yaml").read_text(encoding="utf-8")
 
 
 def test_promote_candidate_copies_package_and_updates_manifest(tmp_path: Path) -> None:
@@ -700,3 +845,44 @@ def draft_demo_candidate(tmp_path: Path) -> Path:
         )
     )
     return candidate
+
+
+def public_interface_index_fixture() -> dict:
+    return new_public_interface_index(
+        source_revision="abc123",
+        analyzers=[
+            analyzer_record(
+                "js-ts-manifest-export-analyzer",
+                "0.1.0",
+                execution="none",
+                confidence="medium",
+            )
+        ],
+        packages=[
+            {
+                "id": "@example/core",
+                "path": ".",
+                "language": "javascript-typescript",
+                "entrypoints": [
+                    {
+                        "path": "src/index.ts",
+                        "symbols": [
+                            {
+                                "name": "GraphOptions",
+                                "kind": "type",
+                                "visibility": "public",
+                                "evidence": evidence_record("src/index.ts", "a" * 64),
+                            },
+                            {
+                                "name": "createGraph",
+                                "kind": "function",
+                                "visibility": "public",
+                                "signature": "createGraph(options)",
+                                "evidence": evidence_record("src/index.ts", "a" * 64),
+                            },
+                        ],
+                    }
+                ],
+            }
+        ],
+    )
