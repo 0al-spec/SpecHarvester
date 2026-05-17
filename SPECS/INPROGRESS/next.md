@@ -1,19 +1,25 @@
-# Recommended Task: P2-T3 — Add Parse Diagnostics and Partial-Index Behavior
+# Selected Task: P2-T3 — Add Parse Diagnostics and Partial-Index Behavior
 
 **Priority:** P2
 **Phase:** Analyzer Policy and Cache
 **Effort:** Medium
 **Dependencies:** P1-T1, P1-T2, P1-T3, P2-T1, P2-T2
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P2-T3-add-parse-diagnostics-and-partial-index-behavior`
-**Suggested Review Subject:** `p2_t3_parse_diagnostics_partial_index`
+**Branch:** `feature/P2-T3-add-parse-diagnostics-and-partial-index-behavior`
+**Review Subject:** `p2_t3_parse_diagnostics_partial_index`
 
 ## Description
 
 Strengthen analyzer diagnostic behavior so parse failures and partial-index
 cases are represented consistently, remain deterministic, and never require
 repository code execution.
+
+## Coverage Note
+
+P2-T2 finished with 90.57% total coverage. This task should avoid further
+coverage decline by adding focused tests for new diagnostic and partial-index
+branches, not only relying on the global `--cov-fail-under=90` gate.
 
 ## Recently Archived
 
@@ -25,4 +31,5 @@ repository code execution.
 
 ## Next Step
 
-Run BRANCH for `P2-T3` when ready.
+Run PLAN for `P2-T3` and create
+`SPECS/INPROGRESS/P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior.md`.
