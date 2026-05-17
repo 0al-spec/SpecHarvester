@@ -11,6 +11,7 @@
 | P1-T2 | [P1-T2_Add_Python_Static_Public_API_Analyzer_Using_ast/](P1-T2_Add_Python_Static_Public_API_Analyzer_Using_ast/) | 2026-05-17 | PASS |
 | P1-T3 | [P1-T3_Add_JavaScript_and_TypeScript_Manifest_Export_Analyzer/](P1-T3_Add_JavaScript_and_TypeScript_Manifest_Export_Analyzer/) | 2026-05-17 | PASS |
 | P1-T4 | [P1-T4_Evaluate_Tree_sitter_as_the_Shared_Syntax_Indexing_Layer/](P1-T4_Evaluate_Tree_sitter_as_the_Shared_Syntax_Indexing_Layer/) | 2026-05-17 | PASS |
+| P1-T5 | [P1-T5_Integrate_Public_Interface_Evidence_into_Deterministic_Drafting/](P1-T5_Integrate_Public_Interface_Evidence_into_Deterministic_Drafting/) | 2026-05-17 | PASS |
 
 ## Historical Artifacts
 
@@ -31,3 +32,4 @@
 | 2026-05-17 | P1-T3 | Archived REVIEW_p1_t3_js_ts_manifest_export_analyzer report |
 | 2026-05-17 | P1-T4 | Archived Evaluate Tree-sitter as the Shared Syntax Indexing Layer (PASS) |
 | 2026-05-17 | P1-T4 | Archived REVIEW_p1_t4_tree_sitter_syntax_indexing_layer report |
+| 2026-05-17 | P1-T5 | Archived Integrate Public Interface Evidence into Deterministic Drafting (PASS) |

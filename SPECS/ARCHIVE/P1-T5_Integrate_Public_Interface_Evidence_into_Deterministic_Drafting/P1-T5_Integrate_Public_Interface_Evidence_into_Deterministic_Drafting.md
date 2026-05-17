@@ -80,3 +80,7 @@ the index itself.
 - No Tree-sitter implementation.
 - No source tree scanning beyond reading explicitly provided JSON artifacts.
 - No promotion or registry acceptance changes.
+
+---
+**Archived:** 2026-05-17
+**Verdict:** PASS
