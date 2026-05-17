@@ -10,6 +10,7 @@
 | P1-T1 | [P1-T1_Define_PublicInterfaceIndex_Snapshot_Schema/](P1-T1_Define_PublicInterfaceIndex_Snapshot_Schema/) | 2026-05-17 | PASS |
 | P1-T2 | [P1-T2_Add_Python_Static_Public_API_Analyzer_Using_ast/](P1-T2_Add_Python_Static_Public_API_Analyzer_Using_ast/) | 2026-05-17 | PASS |
 | P1-T3 | [P1-T3_Add_JavaScript_and_TypeScript_Manifest_Export_Analyzer/](P1-T3_Add_JavaScript_and_TypeScript_Manifest_Export_Analyzer/) | 2026-05-17 | PASS |
+| P1-T4 | [P1-T4_Evaluate_Tree_sitter_as_the_Shared_Syntax_Indexing_Layer/](P1-T4_Evaluate_Tree_sitter_as_the_Shared_Syntax_Indexing_Layer/) | 2026-05-17 | PASS |
 
 ## Historical Artifacts
 
@@ -28,3 +29,4 @@
 | 2026-05-17 | P1-T2 | Archived REVIEW_p1_t2_python_static_public_api_analyzer report |
 | 2026-05-17 | P1-T3 | Archived Add JavaScript and TypeScript Manifest Export Analyzer (PASS) |
 | 2026-05-17 | P1-T3 | Archived REVIEW_p1_t3_js_ts_manifest_export_analyzer report |
+| 2026-05-17 | P1-T4 | Archived Evaluate Tree-sitter as the Shared Syntax Indexing Layer (PASS) |
