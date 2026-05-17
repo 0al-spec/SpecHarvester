@@ -42,3 +42,4 @@
 | 2026-05-17 | P2-T2 | Archived Add Per-File Analyzer Cache Keyed by File Digest and Analyzer Version (PASS) |
 | 2026-05-17 | P2-T2 | Archived REVIEW_p2_t2_per_file_analyzer_cache report |
 | 2026-05-17 | P2-T3 | Archived Add Parse Diagnostics and Partial-Index Behavior (PASS) |
+| 2026-05-17 | P2-T3 | Archived REVIEW_p2_t3_parse_diagnostics_partial_index report |
