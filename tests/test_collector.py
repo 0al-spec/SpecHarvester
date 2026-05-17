@@ -71,6 +71,19 @@ def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None
     assert "path" not in snapshot["source"]
     assert "generatedAt" not in snapshot
     assert snapshot["policy"]["execution"] == "none"
+    assert snapshot["analyzerPolicy"] == {
+        "schemaVersion": 1,
+        "inputAuthority": "untrusted_repository_content",
+        "outputAuthority": "untrusted_analyzer_metadata",
+        "allowedExecutions": ["none"],
+        "networkAccess": "none",
+        "packageScripts": "not_run",
+        "allowedConfidence": ["high", "medium", "low"],
+        "requiresAnalyzerId": True,
+        "requiresAnalyzerVersion": True,
+        "requiresSourceRevision": True,
+        "requiresSourceDigests": True,
+    }
     assert snapshot["summary"]["fileCount"] == 4
     assert snapshot["summary"]["packageManifestCount"] == 2
 

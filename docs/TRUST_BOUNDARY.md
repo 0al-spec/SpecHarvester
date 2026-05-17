@@ -32,6 +32,25 @@ GitHub workflow files are collected only as static provenance evidence. Their
 shell snippets and workflow text do not participate in intent inference and
 must not be treated as package instructions.
 
+## Analyzer Policy
+
+Harvest snapshots include an `analyzerPolicy` record. It is a declarative
+allowlist for future analyzer artifacts, not permission to execute analyzers
+during collection.
+
+The bootstrap policy accepts only analyzer metadata that declares:
+
+- no repository code execution;
+- no network access;
+- no package script execution;
+- analyzer id and version;
+- source revision metadata;
+- source digest evidence.
+
+Analyzer output remains untrusted evidence. It can support reviewable candidate
+metadata, but it is not proof of runtime behavior and does not override the
+collection trust boundary.
+
 ## Generated Candidate Status
 
 Generated specs should use conservative language:
