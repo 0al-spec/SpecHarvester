@@ -102,6 +102,26 @@ repositories:
         read_repository_source_manifests(inputs)
 
 
+def test_read_repository_source_manifests_rejects_duplicate_keys_per_entry(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    inputs.mkdir()
+    (inputs / "repos.yml").write_text(
+        """
+repositories:
+  - id: demo
+    id: changed
+    repository: https://github.com/example/demo
+    revision: abc
+""",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="duplicate key 'id'; first defined on line 3"):
+        read_repository_source_manifests(inputs)
+
+
 def test_read_repository_source_manifests_rejects_invalid_shapes(tmp_path: Path) -> None:
     inputs = tmp_path / "inputs"
     inputs.mkdir()
@@ -307,3 +327,24 @@ repositories:
     assert records[0]["id"] == "demo#literal"
     assert records[0]["packageId"] == "demo.core"
     assert records[0]["labels"] == []
+
+
+def test_read_repository_source_manifests_treats_apostrophes_as_plain_scalar_data(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    inputs.mkdir()
+    (inputs / "repos.yml").write_text(
+        """
+repositories:
+  - id: demo
+    repository: https://github.com/example/o'connor # trailing comment
+    revision: abc'def # trailing comment
+""",
+        encoding="utf-8",
+    )
+
+    records = read_repository_source_manifests(inputs)
+
+    assert records[0]["repository"] == "https://github.com/example/o'connor"
+    assert records[0]["revision"] == "abc'def"

@@ -56,21 +56,23 @@ def parse_repository_manifest(path: Path) -> list[dict[str, Any]]:
 
     repositories: list[dict[str, Any]] = []
     current: dict[str, Any] | None = None
+    current_keys: dict[str, int] = {}
     for line_number, indent, text in rows[1:]:
         if indent == 2 and text.startswith("-"):
             if current is not None:
                 repositories.append(current)
             current = {}
+            current_keys = {}
             rest = text[1:].strip()
             if rest:
                 key, value = parse_key_value(path, line_number, rest)
-                current[key] = parse_scalar(value)
+                assign_repository_value(path, line_number, current, current_keys, key, value)
             continue
         if indent == 4:
             if current is None:
                 raise ValueError(f"{path}:{line_number}: unsupported indentation")
             key, value = parse_key_value(path, line_number, text)
-            current[key] = parse_scalar(value)
+            assign_repository_value(path, line_number, current, current_keys, key, value)
             continue
         raise ValueError(f"{path}:{line_number}: unsupported indentation")
 
@@ -97,15 +99,43 @@ def strip_yaml_comment(line: str) -> str:
     in_double = False
     for index, char in enumerate(line):
         if char == "'" and not in_double:
-            in_single = not in_single
+            if in_single:
+                in_single = False
+            elif quote_starts_scalar(line, index):
+                in_single = True
             continue
         if char == '"' and not in_single:
-            in_double = not in_double
+            if in_double:
+                in_double = False
+            elif quote_starts_scalar(line, index):
+                in_double = True
             continue
         if char == "#" and not in_single and not in_double:
             if index == 0 or line[index - 1].isspace():
                 return line[:index]
     return line
+
+
+def quote_starts_scalar(line: str, quote_index: int) -> bool:
+    prefix = line[:quote_index].rstrip()
+    return not prefix or prefix[-1] in ":,["
+
+
+def assign_repository_value(
+    path: Path,
+    line_number: int,
+    repository: dict[str, Any],
+    seen_keys: dict[str, int],
+    key: str,
+    value: str,
+) -> None:
+    previous_line = seen_keys.get(key)
+    if previous_line is not None:
+        raise ValueError(
+            f"{path}:{line_number}: duplicate key {key!r}; first defined on line {previous_line}"
+        )
+    seen_keys[key] = line_number
+    repository[key] = parse_scalar(value)
 
 
 def parse_key_value(path: Path, line_number: int, text: str) -> tuple[str, str]:
