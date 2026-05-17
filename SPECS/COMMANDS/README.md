@@ -15,6 +15,7 @@ This folder holds the command prompts that orchestrate the documentation-driven 
 | PROGRESS | Optional checkpointing inside `next.md` | [PROGRESS.md](./PROGRESS.md) |
 | REVIEW  | Produce structured code reviews | [REVIEW.md](./REVIEW.md) |
 | ARCHIVE | Move finished PRDs into `SPECS/ARCHIVE/` | [ARCHIVE.md](./ARCHIVE.md) |
+| PULL REQUEST | Final `FLOW.md` step that pushes the feature branch and opens or updates the GitHub PR | [FLOW.md](./FLOW.md) |
 
 Additional helpers live in `PRIMITIVES/` (toolchain, commits, doc updates, archive maintenance).
 Main tasks tracker: `SPECS/Workplan.md`.
@@ -26,7 +27,7 @@ SELECT → updates SPECS/INPROGRESS/next.md
  PLAN  → creates SPECS/INPROGRESS/{TASK}.md
 EXECUTE → tests, linting, commits
              ↓
-          ARCHIVE → moves completed PRDs into SPECS/ARCHIVE/
+          ARCHIVE → REVIEW → ARCHIVE-REVIEW → PULL REQUEST
 ```
 
 Running `PROGRESS` lets you keep `next.md` up to date during long tasks, while `REVIEW` provides independent quality checkpoints before or after merging.
@@ -71,7 +72,8 @@ SPECS/
 1. Run `SELECT` to choose the highest-priority task from `SPECS/Workplan.md` and write `SPECS/INPROGRESS/next.md`.
 2. Run `PLAN` to produce the PRD in `SPECS/INPROGRESS/{TASK_ID}_{TASK_NAME}.md`.
 3. Run `EXECUTE` to follow the PRD, run tests/linting, and commit.
-4. Repeat. When a task finishes, move it to `SPECS/ARCHIVE/` via ARCHIVE.
+4. Run the remaining `FLOW.md` steps through `ARCHIVE-REVIEW`.
+5. Push the branch and open or update the GitHub PR as the final Flow step.
 
 ## Installation
 
