@@ -1,12 +1,13 @@
-# Next Task: P2-T2 — Add Per-File Analyzer Cache Keyed by File Digest and Analyzer Version
+# Selected Task: P2-T2 — Add Per-File Analyzer Cache Keyed by File Digest and Analyzer Version
 
 **Priority:** P2
 **Phase:** Analyzer Policy and Cache
 **Effort:** Medium
 **Dependencies:** P1-T1, P1-T2, P1-T3, P1-T4, P1-T5
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P2-T2-add-per-file-analyzer-cache-keyed-by-file-digest-and-analyzer-version`
+**Branch:** `feature/P2-T2-add-per-file-analyzer-cache-keyed-by-file-digest-and-analyzer-version`
+**Review Subject:** `p2_t2_per_file_analyzer_cache`
 
 ## Description
 
@@ -24,5 +25,5 @@ package content or package scripts.
 
 ## Next Step
 
-Run SELECT to confirm this task or choose a higher-priority item from
-`SPECS/Workplan.md`.
+Run PLAN for `P2-T2` and create
+`SPECS/INPROGRESS/P2-T2_Add_Per_File_Analyzer_Cache_Keyed_by_File_Digest_and_Analyzer_Version.md`.
