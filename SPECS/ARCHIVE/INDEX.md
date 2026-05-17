@@ -51,3 +51,4 @@
 | 2026-05-17 | P3-T1 | Archived Read Repository Source Manifests from inputs/*.yml (PASS) |
 | 2026-05-17 | P3-T1 | Archived REVIEW_p3_t1_repository_source_manifests report |
 | 2026-05-17 | P3-T2 | Archived Collect Snapshots for Selected Repositories into Deterministic Candidate Paths (PASS) |
+| 2026-05-17 | P3-T2 | Archived REVIEW_p3_t2_batch_snapshot_collection report |
