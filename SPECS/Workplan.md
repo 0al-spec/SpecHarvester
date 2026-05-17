@@ -63,7 +63,7 @@ Acceptance:
 
 ## Phase 3. Batch Harvesting
 
-- [ ] `P3-T1` Read repository source manifests from `inputs/*.yml`.
+- [x] `P3-T1` Read repository source manifests from `inputs/*.yml`.
 - [ ] `P3-T2` Collect snapshots for selected repositories into deterministic
   candidate paths.
 - [ ] `P3-T3` Emit batch validation reports with confidence and policy notes.

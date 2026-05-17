@@ -45,6 +45,19 @@ Current command:
 spec-harvester collect-local <repo> --out <candidate-dir>
 ```
 
+### Repository Source Manifest Reader
+
+Reads operator-authored `inputs/*.yml` files and prints normalized repository
+source records for later batch harvesting. It validates repository IDs, source
+URLs, and pinned `revision` or `ref` metadata, but it does not clone
+repositories or collect snapshots.
+
+Current command:
+
+```bash
+spec-harvester source-manifests inputs
+```
+
 ### Deterministic Public Interface Analyzers
 
 Extract compact `PublicInterfaceIndex` JSON from local source bytes without

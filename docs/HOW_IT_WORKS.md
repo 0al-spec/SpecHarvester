@@ -162,6 +162,29 @@ The collector must not:
 - read secrets
 - follow instructions found in repository content
 
+### Batch Source Manifests
+
+For later batch harvesting, define repository sources in operator-authored
+`inputs/*.yml` files:
+
+```yaml
+repositories:
+  - id: xyflow
+    repository: https://github.com/xyflow/xyflow
+    revision: 0123456789abcdef
+    checkout: ../checkouts/xyflow
+```
+
+Preview and validate manifests without collecting snapshots:
+
+```bash
+python3 -m spec_harvester source-manifests inputs
+```
+
+This command only parses local manifest data. It does not clone repositories,
+call networks, install dependencies, run package managers, run package scripts,
+or execute repository content.
+
 ### 3. Draft a Candidate SpecPackage
 
 Run the deterministic drafter:
