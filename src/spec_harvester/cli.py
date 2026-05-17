@@ -17,6 +17,7 @@ from spec_harvester.drafter import (
     draft_spec_package,
 )
 from spec_harvester.promoter import PromoteOptions, promote_candidate
+from spec_harvester.source_manifest import read_repository_source_manifests
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -124,6 +125,22 @@ def build_parser() -> argparse.ArgumentParser:
         help="Replace an existing promoted package directory.",
     )
     promote.set_defaults(func=run_promote)
+
+    source_manifests = subcommands.add_parser(
+        "source-manifests",
+        help="Read repository source manifests from an inputs directory and print JSON.",
+    )
+    source_manifests.add_argument(
+        "inputs",
+        type=Path,
+        help="Directory containing repository source manifests matching *.yml.",
+    )
+    source_manifests.add_argument(
+        "--include-disabled",
+        action="store_true",
+        help="Include entries with enabled: false in the JSON output.",
+    )
+    source_manifests.set_defaults(func=run_source_manifests)
     return parser
 
 
@@ -185,6 +202,26 @@ def run_promote(args: argparse.Namespace) -> int:
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_source_manifests(args: argparse.Namespace) -> int:
+    repositories = read_repository_source_manifests(
+        args.inputs,
+        include_disabled=args.include_disabled,
+    )
+    print(
+        json.dumps(
+            {
+                "status": "ok",
+                "input": str(args.inputs),
+                "repositoryCount": len(repositories),
+                "repositories": repositories,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
     return 0
 
 

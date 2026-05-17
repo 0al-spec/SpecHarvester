@@ -53,6 +53,14 @@ python3 -m spec_harvester collect-local /path/to/repo \
   --out candidates/github.com/example/project
 ```
 
+Validate batch repository source manifests without collecting snapshots:
+
+```bash
+python3 -m spec_harvester source-manifests inputs
+```
+
+See <doc:RepositorySourceManifests> for the supported `inputs/*.yml` schema.
+
 Draft a reviewable candidate package:
 
 ```bash
@@ -104,4 +112,5 @@ Every generated candidate should be checked for:
 - `docs/HOW_IT_WORKS.md`
 - `README.md`
 - <doc:TrustBoundary>
+- <doc:RepositorySourceManifests>
 - <doc:ProposalAutomation>
