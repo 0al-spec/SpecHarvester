@@ -1,13 +1,13 @@
-# Recommended Task: P3-T1 — Read Repository Source Manifests from inputs/*.yml
+# Selected Task: P3-T1 — Read Repository Source Manifests from inputs/*.yml
 
 **Priority:** P3
 **Phase:** Batch Harvesting
 **Effort:** Medium
 **Dependencies:** P0-T1, P1-T1, P2-T1
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P3-T1-read-repository-source-manifests-from-inputs-yml`
-**Suggested Review Subject:** `p3_t1_repository_source_manifests`
+**Branch:** `feature/P3-T1-read-repository-source-manifests-from-inputs-yml`
+**Review Subject:** `p3_t1_repository_source_manifests`
 
 ## Description
 
@@ -31,4 +31,5 @@ decline.
 
 ## Next Step
 
-Run BRANCH for `P3-T1` when ready.
+Run PLAN for `P3-T1` and create
+`SPECS/INPROGRESS/P3-T1_Read_Repository_Source_Manifests_from_inputs_yml.md`.
