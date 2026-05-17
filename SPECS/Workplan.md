@@ -34,7 +34,7 @@ Acceptance:
 - [x] `P1-T1` Define `PublicInterfaceIndex` snapshot schema.
 - [x] `P1-T2` Add Python static public API analyzer using `ast`.
 - [x] `P1-T3` Add JavaScript and TypeScript manifest/export analyzer.
-- [ ] `P1-T4` Evaluate Tree-sitter as the shared syntax indexing layer.
+- [x] `P1-T4` Evaluate Tree-sitter as the shared syntax indexing layer.
 - [ ] `P1-T5` Integrate public interface evidence into deterministic drafting.
 
 Acceptance:
