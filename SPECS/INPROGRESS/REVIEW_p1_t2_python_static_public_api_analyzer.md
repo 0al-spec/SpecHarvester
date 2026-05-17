@@ -5,18 +5,18 @@
 
 ### Summary Verdict
 - [ ] Approve
-- [ ] Approve with comments
-- [x] Request changes
+- [x] Approve with comments
+- [ ] Request changes
 - [ ] Block
 
 ### Critical Issues
-- [High] `src/spec_harvester/python_public_api.py:50` catches only
-  `SyntaxError` from `ast.parse`, but CPython raises `ValueError` for source
-  strings containing null bytes. A single malformed `.py` file can therefore
-  abort the whole analyzer instead of producing a diagnostic, which violates the
-  PRD acceptance criterion that parse errors are recorded as `diagnostics[]`.
-  Fix by normalizing non-syntax AST parse failures into the same diagnostic
-  shape and add a regression test with a null byte source file.
+- [High][Resolved in follow-up] `src/spec_harvester/python_public_api.py:50`
+  caught only `SyntaxError` from `ast.parse`, but CPython raises `ValueError`
+  for source strings containing null bytes. A single malformed `.py` file could
+  therefore abort the whole analyzer instead of producing a diagnostic, which
+  violated the PRD acceptance criterion that parse errors are recorded as
+  `diagnostics[]`. The analyzer now normalizes `ValueError` into the same
+  diagnostic shape, with a regression test covering a null byte source file.
 
 ### Secondary Issues
 - None.
@@ -27,11 +27,18 @@
   code, run package scripts, or require network access.
 
 ### Tests
-- Existing validation covers ordinary syntax errors but not AST parse
-  `ValueError` cases.
-- Coverage threshold was met during EXECUTE: 43 tests, total coverage 92.77%.
+- `PYTHONPATH=src python -m pytest tests/test_python_public_api.py`: pass, 4
+  tests.
+- `ruff check src tests`: pass.
+- `ruff format --check src tests`: pass.
+- `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`:
+  pass, 43 tests, total coverage 92.79%.
+- `swift package dump-package`: pass.
+- `swift build --target SpecHarvesterDocs`: pass.
+- `git diff --check`: pass.
+- Type checking is not configured in `.flow/params.yaml` or `pyproject.toml`.
 
 ### Next Steps
-- Add the null byte parse diagnostic regression test.
-- Update the analyzer to catch and report `ValueError` from `ast.parse`.
-- Re-run targeted analyzer tests and full Flow validation gates before PR.
+- No remaining actionable review findings.
+- No new Workplan task is required because the only finding was fixed in this
+  branch during FOLLOW-UP.

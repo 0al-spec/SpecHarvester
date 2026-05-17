@@ -49,7 +49,7 @@ def analyze_python_public_api(
         text = data.decode("utf-8", errors="replace")
         try:
             module = ast.parse(text, filename=relative)
-        except SyntaxError as exc:
+        except (SyntaxError, ValueError) as exc:
             diagnostics.append(parse_diagnostic(relative, digest, exc))
             continue
 
@@ -104,10 +104,13 @@ def should_skip(path: Path, root: Path) -> bool:
     return any(part in IGNORED_DIR_NAMES for part in relative.parts[:-1])
 
 
-def parse_diagnostic(path: str, digest: str, exc: SyntaxError) -> dict[str, Any]:
-    message = exc.msg
-    if exc.lineno is not None:
-        message = f"{message} at line {exc.lineno}"
+def parse_diagnostic(path: str, digest: str, exc: SyntaxError | ValueError) -> dict[str, Any]:
+    if isinstance(exc, SyntaxError):
+        message = exc.msg
+        if exc.lineno is not None:
+            message = f"{message} at line {exc.lineno}"
+    else:
+        message = str(exc)
     return {
         "level": "error",
         "path": path,
