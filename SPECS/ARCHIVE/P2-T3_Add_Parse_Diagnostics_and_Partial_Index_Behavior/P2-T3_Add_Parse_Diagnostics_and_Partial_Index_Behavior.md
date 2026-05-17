@@ -81,3 +81,7 @@ runtime behavior, or publish generated specs as accepted registry truth.
 - No CLI analyzer orchestration command.
 - No change to analyzer cache keying.
 - No remote/shared cache.
+
+---
+**Archived:** 2026-05-17
+**Verdict:** PASS

@@ -14,6 +14,7 @@
 | P1-T5 | [P1-T5_Integrate_Public_Interface_Evidence_into_Deterministic_Drafting/](P1-T5_Integrate_Public_Interface_Evidence_into_Deterministic_Drafting/) | 2026-05-17 | PASS |
 | P2-T1 | [P2-T1_Add_Analyzer_Trust_Policy_Fields_to_Harvest_Snapshots/](P2-T1_Add_Analyzer_Trust_Policy_Fields_to_Harvest_Snapshots/) | 2026-05-17 | PASS |
 | P2-T2 | [P2-T2_Add_Per_File_Analyzer_Cache_Keyed_by_File_Digest_and_Analyzer_Version/](P2-T2_Add_Per_File_Analyzer_Cache_Keyed_by_File_Digest_and_Analyzer_Version/) | 2026-05-17 | PASS |
+| P2-T3 | [P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/](P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/) | 2026-05-17 | PASS |
 
 ## Historical Artifacts
 
@@ -40,3 +41,4 @@
 | 2026-05-17 | P2-T1 | Archived REVIEW_p2_t1_analyzer_trust_policy_fields report |
 | 2026-05-17 | P2-T2 | Archived Add Per-File Analyzer Cache Keyed by File Digest and Analyzer Version (PASS) |
 | 2026-05-17 | P2-T2 | Archived REVIEW_p2_t2_per_file_analyzer_cache report |
+| 2026-05-17 | P2-T3 | Archived Add Parse Diagnostics and Partial-Index Behavior (PASS) |

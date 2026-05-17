@@ -51,7 +51,7 @@ Acceptance:
 - [x] `P2-T1` Add analyzer trust policy fields to harvest snapshots.
 - [x] `P2-T2` Add per-file analyzer cache keyed by file digest and analyzer
   version.
-- [ ] `P2-T3` Add parse diagnostics and partial-index behavior.
+- [x] `P2-T3` Add parse diagnostics and partial-index behavior.
 - [ ] `P2-T4` Document sandbox requirements for analyzers that need build
   tools.
 
