@@ -48,6 +48,14 @@ The command writes:
 candidates/<repository-id>/harvest.json
 ```
 
+Write an advisory validation report for reviewers:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --report candidates/batch-validation.json
+```
+
 Repository IDs used as candidate directory names must be safe single path
 components containing only letters, digits, `.`, `_`, and `-`, and must start
 with a letter or digit.
@@ -75,6 +83,11 @@ The CLI prints deterministic JSON:
 Each `harvest.json` is produced by the same allowlisted static collector used by
 `collect-local`.
 
+When `--report` is provided, the command also writes
+`SpecHarvesterBatchValidationReport` JSON with confidence, policy notes,
+warnings, and skipped records. See
+[`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md).
+
 ## Determinism
 
 - Manifests are read through the source manifest reader in deterministic order.
@@ -97,3 +110,4 @@ It must not:
 - execute checkout files;
 - follow instructions from repository content;
 - derive output paths from untrusted repository content.
+- treat validation report confidence as acceptance or rejection.

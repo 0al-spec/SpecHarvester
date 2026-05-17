@@ -73,6 +73,11 @@ def build_parser() -> argparse.ArgumentParser:
         default=DEFAULT_MAX_FILE_BYTES,
         help=f"Maximum allowlisted file size to read. Default: {DEFAULT_MAX_FILE_BYTES}.",
     )
+    collect_batch.add_argument(
+        "--report",
+        type=Path,
+        help="Optional path where a deterministic batch validation JSON report is written.",
+    )
     collect_batch.set_defaults(func=run_collect_batch)
 
     draft = subcommands.add_parser(
@@ -208,6 +213,7 @@ def run_collect_batch(args: argparse.Namespace) -> int:
             out=args.out,
             selected_ids=tuple(args.select),
             max_file_bytes=args.max_file_bytes,
+            report=args.report,
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))

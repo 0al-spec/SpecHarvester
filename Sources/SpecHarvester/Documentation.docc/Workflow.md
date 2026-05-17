@@ -78,6 +78,17 @@ python3 -m spec_harvester collect-batch inputs \
 This writes deterministic `candidates/<repository-id>/harvest.json` paths. See
 <doc:BatchCollection>.
 
+Write a batch validation report:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --report candidates/batch-validation.json
+```
+
+The report records confidence, policy notes, warning codes, and skipped records.
+See <doc:BatchValidationReports>.
+
 Draft a reviewable candidate package:
 
 ```bash
@@ -131,4 +142,5 @@ Every generated candidate should be checked for:
 - <doc:TrustBoundary>
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
+- <doc:BatchValidationReports>
 - <doc:ProposalAutomation>

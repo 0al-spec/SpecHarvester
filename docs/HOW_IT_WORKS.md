@@ -209,6 +209,18 @@ Batch collection uses only operator-managed local checkouts. It does not clone,
 fetch, run package managers, run package scripts, or execute repository content.
 See [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md).
 
+Optionally write an advisory validation report:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --report candidates/batch-validation.json
+```
+
+The report includes confidence, policy notes, stable warning codes, and skipped
+records for reviewer inspection. See
+[`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md).
+
 ### 3. Draft a Candidate SpecPackage
 
 Run the deterministic drafter:

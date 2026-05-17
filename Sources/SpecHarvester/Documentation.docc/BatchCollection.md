@@ -24,6 +24,14 @@ python3 -m spec_harvester collect-batch inputs \
   --select xyflow
 ```
 
+Write an advisory validation report:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --report candidates/batch-validation.json
+```
+
 ## Output Layout
 
 Each collected repository writes:
@@ -54,6 +62,7 @@ derive output paths from repository content.
 ## References
 
 - `docs/BATCH_COLLECTION.md`
+- <doc:BatchValidationReports>
 - <doc:RepositorySourceManifests>
 - <doc:Workflow>
 - <doc:TrustBoundary>

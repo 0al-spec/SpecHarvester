@@ -80,6 +80,24 @@ The batch collector does not clone repositories, contact networks, install
 dependencies, run package managers, run package scripts, execute checkout files,
 or derive output paths from repository content.
 
+### Batch Validation Reporter
+
+Builds advisory `SpecHarvesterBatchValidationReport` JSON for `collect-batch`
+output. Reports summarize confidence, policy notes, warning codes, evidence
+counts, and skipped records for reviewer inspection.
+
+Current command:
+
+```bash
+spec-harvester collect-batch inputs \
+  --out candidates \
+  --report candidates/batch-validation.json
+```
+
+Report confidence is not an acceptance decision. It is review metadata that
+helps maintainers decide what to inspect before drafting, validation, or
+promotion.
+
 ### Deterministic Public Interface Analyzers
 
 Extract compact `PublicInterfaceIndex` JSON from local source bytes without

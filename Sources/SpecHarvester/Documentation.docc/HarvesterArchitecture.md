@@ -45,6 +45,14 @@ Current command:
 spec-harvester collect-local <repo> --out <candidate-dir>
 ```
 
+### Batch Validation Reporter
+
+Builds advisory `SpecHarvesterBatchValidationReport` JSON for `collect-batch`
+output. Reports summarize confidence, policy notes, warning codes, evidence
+counts, and skipped records for reviewer inspection.
+
+Report confidence is not an acceptance decision. It is review metadata.
+
 ### Deterministic Public Interface Analyzers
 
 Extract compact `PublicInterfaceIndex` artifacts from local source bytes
@@ -107,4 +115,5 @@ generated specs canonical by itself.
 
 - `docs/ARCHITECTURE.md`
 - <doc:TrustBoundary>
+- <doc:BatchValidationReports>
 - <doc:Roadmap>

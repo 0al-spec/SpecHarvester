@@ -252,6 +252,50 @@ repositories:
     assert (out / "demo" / "harvest.json").is_file()
 
 
+def test_cli_collect_batch_writes_validation_report(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    report_path = out / "batch-validation.json"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "package.json").write_text(
+        json.dumps({"name": "@example/demo", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = main(
+        [
+            "collect-batch",
+            str(inputs),
+            "--out",
+            str(out),
+            "--report",
+            str(report_path),
+        ]
+    )
+
+    assert result == 0
+    summary = json.loads(capsys.readouterr().out)
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    assert summary["validationReport"] == str(report_path)
+    assert report["summary"]["collectedCount"] == 1
+    assert report["summary"]["highConfidenceCount"] == 1
+    assert report["records"][0]["id"] == "demo"
+
+
 def make_checkout(path: Path, readme: str) -> Path:
     path.mkdir(parents=True)
     (path / "README.md").write_text(readme, encoding="utf-8")
