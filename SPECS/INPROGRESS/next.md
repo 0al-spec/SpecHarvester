@@ -4,10 +4,12 @@
 **Phase:** SpecPM Proposal Integration
 **Effort:** Medium
 **Dependencies:** P4-T1
-**Status:** Recommended
-**Updated:** 2026-05-17
+**Status:** In Progress
+**Updated:** 2026-05-18
 **Suggested Branch:** `feature/P4-T2-add-proposal-preflight-checks-for-accepted-source-diffs`
-**Suggested Review Subject:** `p4_t2_add_proposal_preflight_checks`
+**Review Subject:** `p4_t2_add_proposal_preflight_checks`
+
+**Current Phase:** SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → ARCHIVE-REVIEW
 
 ## Description
 
