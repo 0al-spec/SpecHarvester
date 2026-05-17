@@ -60,3 +60,4 @@
 | 2026-05-17 | P4-T1 | Archived Prepare PR-ready Accepted Package Manifest Entries (PASS) |
 | 2026-05-17 | P4-T1 | Archived REVIEW_p4_t1_pr_ready_accepted_manifest_entries report |
 | 2026-05-18 | P4-T2 | Archived Add Proposal Preflight Checks for Accepted-Source Diffs (PASS) |
+| 2026-05-18 | P4-T2 | Archived REVIEW_p4_t2_add_proposal_preflight_checks report |
