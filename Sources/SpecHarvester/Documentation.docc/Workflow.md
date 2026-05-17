@@ -61,6 +61,23 @@ python3 -m spec_harvester source-manifests inputs
 
 See <doc:RepositorySourceManifests> for the supported `inputs/*.yml` schema.
 
+Collect snapshots for all enabled manifest records with local checkouts:
+
+```bash
+python3 -m spec_harvester collect-batch inputs --out candidates
+```
+
+Collect selected repository IDs:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --select xyflow
+```
+
+This writes deterministic `candidates/<repository-id>/harvest.json` paths. See
+<doc:BatchCollection>.
+
 Draft a reviewable candidate package:
 
 ```bash
@@ -113,4 +130,5 @@ Every generated candidate should be checked for:
 - `README.md`
 - <doc:TrustBoundary>
 - <doc:RepositorySourceManifests>
+- <doc:BatchCollection>
 - <doc:ProposalAutomation>

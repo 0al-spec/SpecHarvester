@@ -5,6 +5,7 @@ import json
 from collections.abc import Sequence
 from pathlib import Path
 
+from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.collector import (
     DEFAULT_MAX_FILE_BYTES,
     HarvestOptions,
@@ -44,6 +45,35 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"Maximum allowlisted file size to read. Default: {DEFAULT_MAX_FILE_BYTES}.",
     )
     collect_local.set_defaults(func=run_collect_local)
+
+    collect_batch = subcommands.add_parser(
+        "collect-batch",
+        help="Collect harvest snapshots from repository source manifests.",
+    )
+    collect_batch.add_argument(
+        "inputs",
+        type=Path,
+        help="Directory containing repository source manifests matching *.yml.",
+    )
+    collect_batch.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output root where deterministic candidate directories are written.",
+    )
+    collect_batch.add_argument(
+        "--select",
+        action="append",
+        default=[],
+        help="Repository id to collect. Can be passed multiple times.",
+    )
+    collect_batch.add_argument(
+        "--max-file-bytes",
+        type=int,
+        default=DEFAULT_MAX_FILE_BYTES,
+        help=f"Maximum allowlisted file size to read. Default: {DEFAULT_MAX_FILE_BYTES}.",
+    )
+    collect_batch.set_defaults(func=run_collect_batch)
 
     draft = subcommands.add_parser(
         "draft",
@@ -168,6 +198,19 @@ def run_collect_local(args: argparse.Namespace) -> int:
             sort_keys=True,
         )
     )
+    return 0
+
+
+def run_collect_batch(args: argparse.Namespace) -> int:
+    result = collect_batch_snapshots(
+        BatchCollectOptions(
+            inputs=args.inputs,
+            out=args.out,
+            selected_ids=tuple(args.select),
+            max_file_bytes=args.max_file_bytes,
+        )
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 
 

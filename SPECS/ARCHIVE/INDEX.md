@@ -17,6 +17,7 @@
 | P2-T3 | [P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/](P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/) | 2026-05-17 | PASS |
 | P2-T4 | [P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools/](P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools/) | 2026-05-17 | PASS |
 | P3-T1 | [P3-T1_Read_Repository_Source_Manifests_from_inputs_yml/](P3-T1_Read_Repository_Source_Manifests_from_inputs_yml/) | 2026-05-17 | PASS |
+| P3-T2 | [P3-T2_Collect_Snapshots_for_Selected_Repositories_into_Deterministic_Candidate_Paths/](P3-T2_Collect_Snapshots_for_Selected_Repositories_into_Deterministic_Candidate_Paths/) | 2026-05-17 | PASS |
 
 ## Historical Artifacts
 
@@ -49,3 +50,5 @@
 | 2026-05-17 | P2-T4 | Archived REVIEW_p2_t4_analyzer_sandbox_requirements report |
 | 2026-05-17 | P3-T1 | Archived Read Repository Source Manifests from inputs/*.yml (PASS) |
 | 2026-05-17 | P3-T1 | Archived REVIEW_p3_t1_repository_source_manifests report |
+| 2026-05-17 | P3-T2 | Archived Collect Snapshots for Selected Repositories into Deterministic Candidate Paths (PASS) |
+| 2026-05-17 | P3-T2 | Archived REVIEW_p3_t2_batch_snapshot_collection report |
