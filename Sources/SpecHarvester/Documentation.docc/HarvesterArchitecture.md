@@ -48,11 +48,17 @@ spec-harvester collect-local <repo> --out <candidate-dir>
 ### Deterministic Candidate Drafter
 
 Consumes evidence snapshots and drafts `specpm.yaml` plus
-`specs/*.spec.yaml`.
+`specs/*.spec.yaml`. It can also consume a precomputed
+`PublicInterfaceIndex` artifact and copy it into the candidate as
+`public-interface-index.json`.
 
 The draft is intentionally conservative. It records observed package metadata,
-inferred capability IDs, inferred `intent.*` IDs, provenance, and review
-constraints. It does not claim upstream endorsement.
+inferred capability IDs, inferred `intent.*` IDs, provenance, review
+constraints, and analyzer-backed inbound interface summaries when a valid index
+is provided. It does not claim upstream endorsement.
+
+The drafter validates compact analyzer output; it does not run analyzers or
+inspect raw repository source during candidate drafting.
 
 ### AI Draft Generator
 

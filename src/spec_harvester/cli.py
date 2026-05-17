@@ -70,6 +70,14 @@ def build_parser() -> argparse.ArgumentParser:
         default=DEFAULT_AUTHOR,
         help=f"Generated SpecPackage author. Default: {DEFAULT_AUTHOR}.",
     )
+    draft.add_argument(
+        "--interface-index",
+        type=Path,
+        help=(
+            "Optional PublicInterfaceIndex JSON artifact used to enrich "
+            "generated interfaces.inbound entries."
+        ),
+    )
     draft.set_defaults(func=run_draft)
 
     promote = subcommands.add_parser(
@@ -155,6 +163,7 @@ def run_draft(args: argparse.Namespace) -> int:
             name=args.name,
             version=args.version,
             author=args.author,
+            interface_index=args.interface_index,
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))

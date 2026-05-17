@@ -61,6 +61,21 @@ python3 -m spec_harvester draft candidates/github.com/example/project \
   --out candidates/github.com/example/project
 ```
 
+If a static analyzer has already emitted a `PublicInterfaceIndex`, pass it to
+the drafter to enrich `interfaces.inbound` with package, entrypoint, and symbol
+summaries:
+
+```bash
+python3 -m spec_harvester draft candidates/github.com/example/project \
+  --package-id project.core \
+  --interface-index candidates/github.com/example/project/public-interface-index.json \
+  --out candidates/github.com/example/project
+```
+
+The drafter validates the index, writes a normalized
+`public-interface-index.json` artifact into the candidate directory, and records
+it as BoundarySpec evidence. It does not run analyzers during drafting.
+
 Promote a reviewed candidate into accepted-source staging:
 
 ```bash
