@@ -1,20 +1,20 @@
-# Recommended Task: P5-T1 — Add Duplicate Intent and Capability Claim Report
+# Recommended Task: P5-T2 — Add Namespace and Upstream Relationship Review Report
 
-**Priority:** P4
-**Phase:** SpecPM Proposal Integration
+**Priority:** P5
+**Phase:** Governance Reports
 **Effort:** Medium
-**Dependencies:** P4-T3
+**Dependencies:** P5-T1
 **Status:** In Progress
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P5-T1-add-duplicate-intent-and-capability-claim-report`
-**Review Subject:** `p5_t1_duplicate_intent_capability_claim_report`
+**Suggested Branch:** `feature/P5-T2-add-namespace-and-upstream-relationship-review-report`
+**Review Subject:** `p5_t2_namespace_upstream_review_report`
 
 **Current Phase:** SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → ARCHIVE-REVIEW
 
 ## Description
 
-Add deterministic duplicate intent and capability claim reporting across harvested
-and candidate metadata to support governance review before acceptance.
+Add namespace and upstream dependency relationship review signals to support
+dependency-level governance review before package acceptance.
 
 ## Coverage Note
 
@@ -35,7 +35,9 @@ coverage does not decline.
   `SPECS/ARCHIVE/P4-T2_Add_Proposal_Preflight_Checks_for_Accepted_Source_Diffs/`.
 - `P4-T3` Extend GitHub proposal automation documentation and validation: PASS,
   `SPECS/ARCHIVE/P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/`.
+- `P5-T1` Add duplicate intent and capability claim report: PASS,
+  `SPECS/ARCHIVE/P5-T1_Add_Duplicate_Intent_and_Capability_Claim_Report/`.
 
 ## Next Step
 
-Plan task `P5-T1` when ready.
+Plan task `P5-T2` when ready.
