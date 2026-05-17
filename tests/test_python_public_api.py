@@ -149,6 +149,7 @@ def test_analyze_python_public_api_records_parse_diagnostics_and_skips_cache_dir
     package.mkdir()
     (package / "valid.py").write_text("def ok():\n    return True\n", encoding="utf-8")
     (package / "broken.py").write_text("def broken(:\n", encoding="utf-8")
+    (package / "null_byte.py").write_bytes(b"\x00")
     cache = package / "__pycache__"
     cache.mkdir()
     (cache / "ignored.py").write_text("def ignored():\n    pass\n", encoding="utf-8")
@@ -160,19 +161,23 @@ def test_analyze_python_public_api_records_parse_diagnostics_and_skips_cache_dir
         "packageCount": 1,
         "entrypointCount": 1,
         "symbolCount": 1,
-        "diagnosticCount": 1,
+        "diagnosticCount": 2,
     }
     assert [entrypoint["path"] for entrypoint in index["packages"][0]["entrypoints"]] == [
         "valid.py"
     ]
     assert index["packages"][0]["entrypoints"][0]["symbols"][0]["name"] == "ok"
 
-    diagnostic = index["diagnostics"][0]
-    assert diagnostic["level"] == "error"
-    assert diagnostic["path"] == "broken.py"
-    assert "invalid syntax" in diagnostic["message"]
-    assert diagnostic["evidence"]["path"] == "broken.py"
-    assert len(diagnostic["evidence"]["sha256"]) == 64
+    diagnostics = {diagnostic["path"]: diagnostic for diagnostic in index["diagnostics"]}
+    assert sorted(diagnostics) == ["broken.py", "null_byte.py"]
+    assert diagnostics["broken.py"]["level"] == "error"
+    assert "invalid syntax" in diagnostics["broken.py"]["message"]
+    assert diagnostics["broken.py"]["evidence"]["path"] == "broken.py"
+    assert len(diagnostics["broken.py"]["evidence"]["sha256"]) == 64
+    assert diagnostics["null_byte.py"]["level"] == "error"
+    assert "null bytes" in diagnostics["null_byte.py"]["message"]
+    assert diagnostics["null_byte.py"]["evidence"]["path"] == "null_byte.py"
+    assert len(diagnostics["null_byte.py"]["evidence"]["sha256"]) == 64
 
 
 def test_analyze_python_public_api_rejects_non_directory_source(tmp_path: Path) -> None:
