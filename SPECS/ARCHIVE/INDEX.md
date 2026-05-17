@@ -24,3 +24,4 @@
 | 2026-05-17 | P1-T1 | Archived Define PublicInterfaceIndex Snapshot Schema (PASS) |
 | 2026-05-17 | P1-T1 | Archived REVIEW_p1_t1_public_interface_index_schema report |
 | 2026-05-17 | P1-T2 | Archived Add Python Static Public API Analyzer Using ast (PASS) |
+| 2026-05-17 | P1-T2 | Archived REVIEW_p1_t2_python_static_public_api_analyzer report |
