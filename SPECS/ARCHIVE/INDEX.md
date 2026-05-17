@@ -28,8 +28,7 @@
 
 | Folder | Description |
 |--------|-------------|
-| [_Historical/](_Historical/) | Non-task artifacts |
-| [_Historical/](_Historical/) | `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md` |
+| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md` |
 
 ## Archive Log
 
