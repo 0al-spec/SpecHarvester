@@ -8,7 +8,9 @@ from spec_harvester.license_provenance_reports import (
 )
 
 
-def test_build_license_provenance_risk_report_flags_license_and_provenance_issues(tmp_path: Path) -> None:
+def test_build_license_provenance_risk_report_flags_license_and_provenance_issues(
+    tmp_path: Path,
+) -> None:
     accepted_root = tmp_path / "accepted"
     candidates_root = tmp_path / "candidates"
     accepted_root.mkdir(parents=True)

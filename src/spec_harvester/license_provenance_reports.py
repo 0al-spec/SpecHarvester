@@ -13,7 +13,10 @@ LICENSE_PROVENANCE_REPORT_SCHEMA_VERSION = 1
 
 TRUST_BOUNDARY_NOTES = [
     "Report generation reads local `specpm.yaml` metadata only.",
-    "No repository code execution, dependency installation, network access, or analyzer execution is performed.",
+    (
+        "No repository code execution, dependency installation, "
+        "network access, or analyzer execution is performed."
+    ),
     "The report is advisory and does not mutate candidate or accepted package content.",
 ]
 
