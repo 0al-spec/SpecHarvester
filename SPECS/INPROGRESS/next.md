@@ -4,9 +4,10 @@
 **Phase:** Public Interface Indexing
 **Effort:** Medium
 **Dependencies:** P1-T1
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P1-T3-js-ts-manifest-export-analyzer`
+**Branch:** `feature/P1-T3-js-ts-manifest-export-analyzer`
+**Review Subject:** `p1_t3_js_ts_manifest_export_analyzer`
 
 ## Description
 
@@ -21,5 +22,4 @@ package scripts or installing dependencies.
 
 ## Next Step
 
-Run SELECT to confirm this task or choose a higher-priority item from
-`SPECS/Workplan.md`.
+Run PLAN to create `SPECS/INPROGRESS/P1-T3_Add_JavaScript_and_TypeScript_Manifest_Export_Analyzer.md`.
