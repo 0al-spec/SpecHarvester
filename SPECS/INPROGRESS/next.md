@@ -1,10 +1,10 @@
-# Recommended Task: P3-T2 — Collect Snapshots for Selected Repositories into Deterministic Candidate Paths
+# Selected Task: P3-T2 — Collect Snapshots for Selected Repositories into Deterministic Candidate Paths
 
 **Priority:** P3
 **Phase:** Batch Harvesting
 **Effort:** Medium
 **Dependencies:** P3-T1, P0-T1, P2-T1
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
 **Suggested Branch:** `feature/P3-T2-collect-snapshots-for-selected-repositories-into-deterministic-candidate-paths`
 **Suggested Review Subject:** `p3_t2_batch_snapshot_collection`
@@ -31,4 +31,4 @@ coverage does not decline.
 
 ## Next Step
 
-Run BRANCH for `P3-T2` when ready.
+Proceed with PLAN for `P3-T2`.
