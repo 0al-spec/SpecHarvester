@@ -4,9 +4,10 @@
 **Phase:** Public Interface Indexing
 **Effort:** Medium
 **Dependencies:** P1-T1, P1-T2, P1-T3
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P1-T4-evaluate-tree-sitter-syntax-indexing-layer`
+**Branch:** `feature/P1-T4-evaluate-tree-sitter-syntax-indexing-layer`
+**Review Subject:** `p1_t4_tree_sitter_syntax_indexing_layer`
 
 ## Description
 
@@ -23,5 +24,4 @@ should replace or complement language-specific static scanners.
 
 ## Next Step
 
-Run SELECT to confirm this task or choose a higher-priority item from
-`SPECS/Workplan.md`.
+Run PLAN to create `SPECS/INPROGRESS/P1-T4_Evaluate_Tree_sitter_as_the_Shared_Syntax_Indexing_Layer.md`.
