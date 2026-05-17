@@ -92,3 +92,7 @@ annotations, or inspect runtime objects.
   package scripts.
 - No full ECMAScript parser or Tree-sitter integration.
 - No JavaScript type inference or runtime value evaluation.
+
+---
+**Archived:** 2026-05-17
+**Verdict:** PASS
