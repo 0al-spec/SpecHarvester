@@ -54,3 +54,4 @@
 | 2026-05-17 | P3-T2 | Archived Collect Snapshots for Selected Repositories into Deterministic Candidate Paths (PASS) |
 | 2026-05-17 | P3-T2 | Archived REVIEW_p3_t2_batch_snapshot_collection report |
 | 2026-05-17 | P3-T3 | Archived Emit Batch Validation Reports with Confidence and Policy Notes (PASS) |
+| 2026-05-17 | P3-T3 | Archived REVIEW_p3_t3_batch_validation_reports report |
