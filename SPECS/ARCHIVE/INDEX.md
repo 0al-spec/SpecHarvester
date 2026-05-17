@@ -36,3 +36,4 @@
 | 2026-05-17 | P1-T5 | Archived Integrate Public Interface Evidence into Deterministic Drafting (PASS) |
 | 2026-05-17 | P1-T5 | Archived REVIEW_p1_t5_public_interface_evidence_drafting report |
 | 2026-05-17 | P2-T1 | Archived Add Analyzer Trust Policy Fields to Harvest Snapshots (PASS) |
+| 2026-05-17 | P2-T1 | Archived REVIEW_p2_t1_analyzer_trust_policy_fields report |
