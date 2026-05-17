@@ -53,6 +53,7 @@ and maintainer review before they are treated as accepted registry source.
 - [`docs/SPECPM_PROPOSAL_AUTOMATION.md`](docs/SPECPM_PROPOSAL_AUTOMATION.md):
   trusted cross-repository proposal flow
 - [`docs/ROADMAP.md`](docs/ROADMAP.md): planned delivery phases
+- [`SPECS/README.md`](SPECS/README.md): Flow task workflow, PRD, and workplan
 
 ## Current Workflow
 
@@ -132,6 +133,7 @@ This repository uses GitHub as an operational surface similar to SpecPM:
 src/spec_harvester/       CLI, collector, drafter, promoter
 tests/                    unit tests
 docs/                     operator docs, architecture, trust boundary, roadmap
+SPECS/                    Flow PRD, workplan, commands, and task archives
 inputs/                   example repository lists
 candidates/               generated candidate evidence and specs
 accepted/                 reviewed generated specs and accepted-source staging
