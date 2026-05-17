@@ -27,3 +27,4 @@
 | 2026-05-17 | P1-T2 | Archived Add Python Static Public API Analyzer Using ast (PASS) |
 | 2026-05-17 | P1-T2 | Archived REVIEW_p1_t2_python_static_public_api_analyzer report |
 | 2026-05-17 | P1-T3 | Archived Add JavaScript and TypeScript Manifest Export Analyzer (PASS) |
+| 2026-05-17 | P1-T3 | Archived REVIEW_p1_t3_js_ts_manifest_export_analyzer report |
