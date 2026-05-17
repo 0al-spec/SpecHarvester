@@ -324,6 +324,50 @@ def test_draft_spec_package_keeps_interfaces_matched_to_valid_packages(tmp_path:
     assert "Observed import surface for @example/core." in spec
 
 
+def test_draft_spec_package_keeps_interface_ids_unique_for_scoped_name_collisions(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    first_package_dir = repo / "packages" / "scope-a"
+    second_package_dir = repo / "packages" / "scope-b"
+    first_package_dir.mkdir(parents=True)
+    second_package_dir.mkdir(parents=True)
+    (first_package_dir / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@scope-a/core",
+                "version": "1.0.0",
+                "description": "First scoped core package.",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (second_package_dir / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@scope-b/core",
+                "version": "1.0.0",
+                "description": "Second scoped core package.",
+            }
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="example.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    assert "id: package.core\n" in spec
+    assert "id: package.core_2\n" in spec
+    assert "Observed import surface for @scope-a/core." in spec
+    assert "Observed import surface for @scope-b/core." in spec
+
+
 def test_draft_spec_package_enriches_interfaces_from_public_interface_index(
     tmp_path: Path,
 ) -> None:

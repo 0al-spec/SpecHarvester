@@ -349,23 +349,44 @@ def build_interfaces(
 ) -> list[dict[str, Any]]:
     interfaces_by_id: dict[str, dict[str, Any]] = {}
     interface_order: list[str] = []
+    seen_interface_ids: set[str] = set()
+    manifest_interface_ids_by_key: dict[tuple[str, str], str] = {}
+    manifest_interface_ids_by_name: dict[str, list[str]] = {}
     for record in package_records:
         entry = manifest_interface_entry(record)
         if entry is None:
             continue
-        interfaces_by_id[entry["id"]] = entry
-        interface_order.append(entry["id"])
+        interface_id = unique_id(entry["id"], seen_interface_ids)
+        entry["id"] = interface_id
+        interfaces_by_id[interface_id] = entry
+        interface_order.append(interface_id)
+
+        package_name = manifest_package_name(record)
+        if package_name is not None:
+            manifest_interface_ids_by_name.setdefault(package_name, []).append(interface_id)
+            manifest_interface_ids_by_key[manifest_package_key(record)] = interface_id
 
     if public_interface_index is not None:
+        enriched_manifest_ids: set[str] = set()
         packages = public_interface_index.get("packages", [])
         for package in sorted(packages, key=public_interface_package_sort_key):
             if not isinstance(package, dict):
                 continue
-            interface_id = public_interface_id(package)
-            base = interfaces_by_id.get(interface_id)
-            if base is None:
+            interface_id = matched_manifest_interface_id(
+                package,
+                manifest_interface_ids_by_key,
+                manifest_interface_ids_by_name,
+            )
+            if interface_id is not None and interface_id in enriched_manifest_ids:
+                interface_id = None
+
+            base = interfaces_by_id.get(interface_id) if interface_id is not None else None
+            if interface_id is None:
+                interface_id = unique_id(public_interface_id(package), seen_interface_ids)
                 interface_order.append(interface_id)
-            interfaces_by_id[interface_id] = public_interface_entry(package, base)
+            else:
+                enriched_manifest_ids.add(interface_id)
+            interfaces_by_id[interface_id] = public_interface_entry(package, base, interface_id)
 
     return [interfaces_by_id[interface_id] for interface_id in interface_order]
 
@@ -399,13 +420,14 @@ def manifest_interface_entry(record: dict[str, Any]) -> dict[str, Any] | None:
 def public_interface_entry(
     package: dict[str, Any],
     base: dict[str, Any] | None,
+    interface_id: str,
 ) -> dict[str, Any]:
     package_id = public_interface_package_name(package)
     entrypoints = public_interface_entrypoints(package)
     entrypoint_count = len(entrypoints)
     symbol_count = sum(entrypoint["symbolCount"] for entrypoint in entrypoints)
     entry = {
-        "id": public_interface_id(package),
+        "id": interface_id,
         "kind": "library",
         "summary": f"Observed public interface for {package_id} from PublicInterfaceIndex.",
         "source": "public_interface_index",
@@ -512,14 +534,63 @@ def public_interface_id(package: dict[str, Any]) -> str:
     return slug_id(f"package.{package_label(public_interface_package_name(package))}")
 
 
+def matched_manifest_interface_id(
+    package: dict[str, Any],
+    manifest_interface_ids_by_key: dict[tuple[str, str], str],
+    manifest_interface_ids_by_name: dict[str, list[str]],
+) -> str | None:
+    package_name = public_interface_package_name(package)
+    package_path = public_interface_package_path(package)
+    interface_id = manifest_interface_ids_by_key.get((package_name, package_path))
+    if interface_id is not None:
+        return interface_id
+
+    candidates = manifest_interface_ids_by_name.get(package_name, [])
+    if len(candidates) == 1:
+        return candidates[0]
+    return None
+
+
+def manifest_package_key(record: dict[str, Any]) -> tuple[str, str]:
+    return (manifest_package_name(record) or "", manifest_package_root(record))
+
+
+def manifest_package_name(record: dict[str, Any]) -> str | None:
+    package = record.get("package")
+    if not isinstance(package, dict):
+        return None
+    package_name = package.get("name")
+    if not isinstance(package_name, str) or not package_name.strip():
+        return None
+    return package_name.strip()
+
+
+def manifest_package_root(record: dict[str, Any]) -> str:
+    path = record.get("path")
+    if not isinstance(path, str) or not path.strip():
+        return "."
+    if path == "package.json":
+        return "."
+    if path.endswith("/package.json"):
+        return path[: -len("/package.json")]
+    return path
+
+
 def public_interface_package_name(package: dict[str, Any]) -> str:
     package_id = package.get("id")
     if isinstance(package_id, str) and package_id.strip():
-        return package_id
+        return package_id.strip()
     package_path = package.get("path")
     if isinstance(package_path, str) and package_path.strip() and package_path != ".":
-        return package_path
+        return package_path.strip()
     return "public_interface"
+
+
+def public_interface_package_path(package: dict[str, Any]) -> str:
+    package_path = package.get("path")
+    if not isinstance(package_path, str) or not package_path.strip():
+        return "."
+    return package_path.strip()
 
 
 def public_interface_package_sort_key(package: Any) -> tuple[str, str]:
