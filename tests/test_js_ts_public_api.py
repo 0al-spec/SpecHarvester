@@ -348,6 +348,31 @@ def test_analyze_js_ts_public_api_records_unreadable_entrypoint_diagnostics(
     assert diagnostic["evidence"]["path"] == "package.json"
 
 
+def test_analyze_js_ts_public_api_reuses_cached_entrypoint_symbols(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "package.json").write_text(
+        json.dumps({"name": "cached", "main": "./index.js"}),
+        encoding="utf-8",
+    )
+    (package / "index.js").write_text("export function ok() {}\n", encoding="utf-8")
+    cache_dir = tmp_path / "cache"
+
+    first = analyze_js_ts_public_api(package, cache_dir=cache_dir)
+
+    def fail_source_symbols(*args, **kwargs):  # type: ignore[no-untyped-def]
+        raise AssertionError("cache miss")
+
+    monkeypatch.setattr("spec_harvester.js_ts_public_api.source_symbols", fail_source_symbols)
+
+    second = analyze_js_ts_public_api(package, cache_dir=cache_dir)
+
+    assert second == first
+
+
 def test_analyze_js_ts_public_api_rejects_non_directory_source(tmp_path: Path) -> None:
     source = tmp_path / "package.json"
     source.write_text("{}", encoding="utf-8")

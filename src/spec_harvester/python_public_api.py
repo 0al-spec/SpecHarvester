@@ -5,6 +5,7 @@ import hashlib
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.analyzer_cache import AnalyzerCache
 from spec_harvester.interface_index import (
     analyzer_record,
     evidence_record,
@@ -35,31 +36,43 @@ def analyze_python_public_api(
     *,
     package_id: str | None = None,
     source_revision: str | None = None,
+    cache_dir: Path | None = None,
 ) -> dict[str, Any]:
     root = source.resolve()
     if not root.exists() or not root.is_dir():
         raise ValueError(f"Python source root does not exist or is not a directory: {source}")
 
+    cache = AnalyzerCache(cache_dir) if cache_dir is not None else None
     entrypoints: list[dict[str, Any]] = []
     diagnostics: list[dict[str, Any]] = []
     for path in python_source_files(root):
         relative = path.relative_to(root).as_posix()
         data = path.read_bytes()
         digest = hashlib.sha256(data).hexdigest()
+        cached_payload = read_cached_python_payload(cache, relative, digest)
+        if cached_payload is not None:
+            entrypoint, file_diagnostics = cached_payload
+            if entrypoint is not None:
+                entrypoints.append(entrypoint)
+            diagnostics.extend(file_diagnostics)
+            continue
+
         text = data.decode("utf-8", errors="replace")
         try:
             module = ast.parse(text, filename=relative)
         except (SyntaxError, ValueError) as exc:
-            diagnostics.append(parse_diagnostic(relative, digest, exc))
+            diagnostic = parse_diagnostic(relative, digest, exc)
+            diagnostics.append(diagnostic)
+            write_cached_python_payload(cache, digest, None, [diagnostic])
             continue
 
         symbols = module_symbols(module, relative, digest)
-        entrypoints.append(
-            {
-                "path": relative,
-                "symbols": symbols,
-            }
-        )
+        entrypoint = {
+            "path": relative,
+            "symbols": symbols,
+        }
+        entrypoints.append(entrypoint)
+        write_cached_python_payload(cache, digest, entrypoint, [])
 
     index = new_public_interface_index(
         source_revision=source_revision,
@@ -83,6 +96,72 @@ def analyze_python_public_api(
     )
     validate_public_interface_index(index)
     return index
+
+
+def read_cached_python_payload(
+    cache: AnalyzerCache | None,
+    path: str,
+    digest: str,
+) -> tuple[dict[str, Any] | None, list[dict[str, Any]]] | None:
+    if cache is None:
+        return None
+    payload = cache.read(
+        analyzer_id=PYTHON_PUBLIC_API_ANALYZER_ID,
+        analyzer_version=PYTHON_PUBLIC_API_ANALYZER_VERSION,
+        file_digest=digest,
+    )
+    if not isinstance(payload, dict):
+        return None
+    entrypoint = payload.get("entrypoint")
+    diagnostics = payload.get("diagnostics")
+    if not isinstance(diagnostics, list):
+        return None
+    if entrypoint is not None:
+        if not is_entrypoint_for_path(entrypoint, path):
+            return None
+    for diagnostic in diagnostics:
+        if not is_diagnostic_for_path(diagnostic, path):
+            return None
+    return entrypoint, diagnostics
+
+
+def write_cached_python_payload(
+    cache: AnalyzerCache | None,
+    digest: str,
+    entrypoint: dict[str, Any] | None,
+    diagnostics: list[dict[str, Any]],
+) -> None:
+    if cache is None:
+        return
+    cache.write(
+        analyzer_id=PYTHON_PUBLIC_API_ANALYZER_ID,
+        analyzer_version=PYTHON_PUBLIC_API_ANALYZER_VERSION,
+        file_digest=digest,
+        payload={"entrypoint": entrypoint, "diagnostics": diagnostics},
+    )
+
+
+def is_entrypoint_for_path(value: Any, path: str) -> bool:
+    if not isinstance(value, dict):
+        return False
+    symbols = value.get("symbols")
+    if value.get("path") != path or not isinstance(symbols, list):
+        return False
+    return all(is_symbol_for_path(symbol, path) for symbol in symbols)
+
+
+def is_symbol_for_path(value: Any, path: str) -> bool:
+    if not isinstance(value, dict):
+        return False
+    evidence = value.get("evidence")
+    return isinstance(evidence, dict) and evidence.get("path") == path
+
+
+def is_diagnostic_for_path(value: Any, path: str) -> bool:
+    if not isinstance(value, dict) or value.get("path") != path:
+        return False
+    evidence = value.get("evidence")
+    return isinstance(evidence, dict) and evidence.get("path") == path
 
 
 def python_source_files(root: Path) -> list[Path]:

@@ -50,6 +50,17 @@ Analyzer output remains untrusted evidence. It can support reviewable candidate
 metadata, but it is not proof of runtime behavior and does not override the
 collection trust boundary.
 
+## Analyzer Cache
+
+Analyzer caches are local derived metadata stores. They can speed up
+deterministic public interface extraction, but they do not allow repository
+code execution, dependency installation, network access, or package scripts.
+
+Cache entries are accepted only when the schema version, analyzer id, analyzer
+version, and file digest match. Analyzers also validate cached path/evidence
+metadata before reuse. Malformed or mismatched cache entries are ignored and
+recomputed.
+
 ## Generated Candidate Status
 
 Generated specs should use conservative language:
