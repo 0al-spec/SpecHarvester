@@ -22,7 +22,9 @@ Published DocC site:
    collection from local checkouts
 7. [`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md): advisory
    confidence and policy reports for batch output
-8. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+8. [`ACCEPTED_MANIFEST_ENTRIES.md`](ACCEPTED_MANIFEST_ENTRIES.md): prepare
+   PR-ready accepted package manifest entries
+9. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
    implementing, validating, and archiving tasks
 
 ## Design References
@@ -49,4 +51,5 @@ Published DocC site:
 - Draft deterministic candidate SpecPM files.
 - Validate the candidate with SpecPM.
 - Review provenance, scope, and inferred metadata.
+- Prepare PR-ready accepted manifest entries for reviewed candidates.
 - Promote only reviewed candidates into accepted-source staging.

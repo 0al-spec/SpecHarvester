@@ -19,6 +19,7 @@
 | P3-T1 | [P3-T1_Read_Repository_Source_Manifests_from_inputs_yml/](P3-T1_Read_Repository_Source_Manifests_from_inputs_yml/) | 2026-05-17 | PASS |
 | P3-T2 | [P3-T2_Collect_Snapshots_for_Selected_Repositories_into_Deterministic_Candidate_Paths/](P3-T2_Collect_Snapshots_for_Selected_Repositories_into_Deterministic_Candidate_Paths/) | 2026-05-17 | PASS |
 | P3-T3 | [P3-T3_Emit_Batch_Validation_Reports_with_Confidence_and_Policy_Notes/](P3-T3_Emit_Batch_Validation_Reports_with_Confidence_and_Policy_Notes/) | 2026-05-17 | PASS |
+| P4-T1 | [P4-T1_Prepare_PR-ready_Accepted_Package_Manifest_Entries/](P4-T1_Prepare_PR-ready_Accepted_Package_Manifest_Entries/) | 2026-05-17 | PASS |
 
 ## Historical Artifacts
 
@@ -55,3 +56,5 @@
 | 2026-05-17 | P3-T2 | Archived REVIEW_p3_t2_batch_snapshot_collection report |
 | 2026-05-17 | P3-T3 | Archived Emit Batch Validation Reports with Confidence and Policy Notes (PASS) |
 | 2026-05-17 | P3-T3 | Archived REVIEW_p3_t3_batch_validation_reports report |
+| 2026-05-17 | P4-T1 | Archived Prepare PR-ready Accepted Package Manifest Entries (PASS) |
+| 2026-05-17 | P4-T1 | Archived REVIEW_p4_t1_pr_ready_accepted_manifest_entries report |

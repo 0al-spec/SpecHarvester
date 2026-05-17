@@ -23,6 +23,47 @@ class PromoteOptions:
     force: bool = False
 
 
+@dataclass(frozen=True)
+class PrepareAcceptedManifestEntryOptions:
+    candidate: Path
+    manifest: Path
+    manifest_entry_path: str | None = None
+    manifest_entry_prefix: str = "public-index/generated"
+    package_subdir: str | None = None
+
+
+def prepare_accepted_manifest_entry(options: PrepareAcceptedManifestEntryOptions) -> dict[str, Any]:
+    candidate = options.candidate.resolve()
+    if not candidate.is_dir():
+        raise ValueError(f"Candidate directory does not exist: {candidate}")
+    manifest_path = candidate / "specpm.yaml"
+    if not manifest_path.is_file():
+        raise ValueError(f"Candidate is missing specpm.yaml: {candidate}")
+
+    manifest = options.manifest.resolve()
+    identity = read_manifest_identity(manifest_path)
+    package_id = identity["id"]
+    version = identity["version"]
+    package_subdir = options.package_subdir
+    if not package_subdir:
+        package_subdir = f"{package_id}/{version}"
+    entry_prefix = options.manifest_entry_prefix.strip().strip("/")
+    manifest_entry_path = options.manifest_entry_path
+    if not manifest_entry_path:
+        manifest_entry_path = f"{entry_prefix}/{package_subdir}" if entry_prefix else package_subdir
+
+    manifest_result = append_local_manifest_entry(manifest, manifest_entry_path)
+
+    return {
+        "status": "ok",
+        "candidate": str(candidate),
+        "manifest": manifest_result,
+        "packageId": package_id,
+        "packageVersion": version,
+        "packageSubdir": package_subdir,
+    }
+
+
 def promote_candidate(options: PromoteOptions) -> dict[str, Any]:
     candidate = options.candidate.resolve()
     if not candidate.is_dir():

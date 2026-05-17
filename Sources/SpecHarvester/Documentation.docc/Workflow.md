@@ -21,13 +21,13 @@ harvest.json
 draft
         |
         v
-specpm.yaml + specs/*.spec.yaml
-        |
-        v
 specpm validate
         |
         v
 human review
+        |
+        v
+prepare-accepted-entry
         |
         v
 promote
@@ -117,6 +117,19 @@ it as BoundarySpec evidence. It does not run analyzers during drafting.
 emitted while package evidence remains available, and `failed` means diagnostics
 were emitted without any package record.
 
+Prepare a deterministic manifest entry for a reviewed candidate:
+
+```bash
+python3 -m spec_harvester prepare-accepted-entry candidates/github.com/example/project \
+  --manifest accepted/accepted-packages.yml
+```
+
+This command:
+
+- derives `packageId` and `packageVersion` from `specpm.yaml`;
+- infers `public-index/generated/<packageId>/<version>` as the default entry path;
+- updates the accepted manifest deterministically.
+
 Promote a reviewed candidate into accepted-source staging:
 
 ```bash
@@ -143,4 +156,5 @@ Every generated candidate should be checked for:
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>
+- <doc:AcceptedManifestEntries>
 - <doc:ProposalAutomation>

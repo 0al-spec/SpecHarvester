@@ -165,6 +165,9 @@ Generated packages should not be accepted into a public registry without a
 review gate. Reviewers should check scope, evidence, provenance, package IDs,
 intent IDs, upstream relationship, and licensing statements.
 
+For accepted-source PR review, `prepare-accepted-entry` can deterministically add
+an accepted manifest path before running `promote`.
+
 ### Promotion Gate
 
 Copies a reviewed candidate into an accepted source root and optionally appends

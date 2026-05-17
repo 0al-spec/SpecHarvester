@@ -17,7 +17,12 @@ from spec_harvester.drafter import (
     DraftOptions,
     draft_spec_package,
 )
-from spec_harvester.promoter import PromoteOptions, promote_candidate
+from spec_harvester.promoter import (
+    PrepareAcceptedManifestEntryOptions,
+    PromoteOptions,
+    prepare_accepted_manifest_entry,
+    promote_candidate,
+)
 from spec_harvester.source_manifest import read_repository_source_manifests
 
 
@@ -161,6 +166,40 @@ def build_parser() -> argparse.ArgumentParser:
     )
     promote.set_defaults(func=run_promote)
 
+    prepare_manifest_entry = subcommands.add_parser(
+        "prepare-accepted-entry",
+        help="Prepare a PR-ready accepted-packages.yml entry for a reviewed candidate.",
+    )
+    prepare_manifest_entry.add_argument(
+        "candidate", type=Path, help="Reviewed candidate SpecPackage directory."
+    )
+    prepare_manifest_entry.add_argument(
+        "--manifest",
+        required=True,
+        type=Path,
+        help="Accepted-packages manifest file to update.",
+    )
+    prepare_manifest_entry.add_argument(
+        "--manifest-entry-path",
+        help=(
+            "Explicit manifest entry path to write. If set, --manifest-entry-prefix "
+            "and --package-subdir are ignored."
+        ),
+    )
+    prepare_manifest_entry.add_argument(
+        "--manifest-entry-prefix",
+        default="public-index/generated",
+        help="Path prefix for inferred manifest entry. Default: public-index/generated.",
+    )
+    prepare_manifest_entry.add_argument(
+        "--package-subdir",
+        help=(
+            "Package subdirectory used with --manifest-entry-prefix "
+            "(defaults to <packageId>/<version>)."
+        ),
+    )
+    prepare_manifest_entry.set_defaults(func=run_prepare_accepted_manifest_entry)
+
     source_manifests = subcommands.add_parser(
         "source-manifests",
         help="Read repository source manifests from an inputs directory and print JSON.",
@@ -271,6 +310,20 @@ def run_source_manifests(args: argparse.Namespace) -> int:
             sort_keys=True,
         )
     )
+    return 0
+
+
+def run_prepare_accepted_manifest_entry(args: argparse.Namespace) -> int:
+    result = prepare_accepted_manifest_entry(
+        PrepareAcceptedManifestEntryOptions(
+            candidate=args.candidate,
+            manifest=args.manifest,
+            manifest_entry_path=args.manifest_entry_path,
+            manifest_entry_prefix=args.manifest_entry_prefix,
+            package_subdir=args.package_subdir,
+        )
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 
 
