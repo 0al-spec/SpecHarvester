@@ -33,3 +33,4 @@
 | 2026-05-17 | P1-T4 | Archived Evaluate Tree-sitter as the Shared Syntax Indexing Layer (PASS) |
 | 2026-05-17 | P1-T4 | Archived REVIEW_p1_t4_tree_sitter_syntax_indexing_layer report |
 | 2026-05-17 | P1-T5 | Archived Integrate Public Interface Evidence into Deterministic Drafting (PASS) |
+| 2026-05-17 | P1-T5 | Archived REVIEW_p1_t5_public_interface_evidence_drafting report |
