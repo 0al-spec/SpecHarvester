@@ -168,6 +168,15 @@ intent IDs, upstream relationship, and licensing statements.
 For accepted-source PR review, `prepare-accepted-entry` can deterministically add
 an accepted manifest path before running `promote`.
 
+Governance reports can also be generated after drafting:
+
+```bash
+spec-harvester governance-report --accepted-root <accepted-root> --candidates-root <candidates-root>
+```
+
+The report summarizes duplicate `intent.*` and `provides.capabilities` claims
+across accepted and candidate metadata to support human review before proposal.
+
 ### Promotion Gate
 
 Copies a reviewed candidate into an accepted source root and optionally appends

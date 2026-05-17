@@ -138,6 +138,18 @@ python3 -m spec_harvester promote candidates/github.com/example/project \
   --manifest accepted/accepted-packages.yml
 ```
 
+Build a duplicate governance claim report for accepted and candidate metadata:
+
+```bash
+python3 -m spec_harvester governance-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output candidates/governance-claims.json
+```
+
+The report summarizes overlapping `intent.*` and `capability` claims for review
+prioritization before proposal and promotion.
+
 ## Review Gates
 
 Every generated candidate should be checked for:

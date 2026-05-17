@@ -221,6 +221,19 @@ The report includes confidence, policy notes, stable warning codes, and skipped
 records for reviewer inspection. See
 [`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md).
 
+Optionally write a governance duplicate claim report:
+
+```bash
+python3 -m spec_harvester governance-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output candidates/governance-claims.json
+```
+
+The report summarizes overlapping `intent.*` and `provides.capabilities` claims
+across accepted and candidate metadata for review prioritization.
+See [`GOVERNANCE_REPORTS.md`](GOVERNANCE_REPORTS.md).
+
 ### 3. Draft a Candidate SpecPackage
 
 Run the deterministic drafter:
