@@ -32,6 +32,7 @@ The canonical source files remain in the repository:
 - `docs/HOW_IT_WORKS.md`
 - `docs/ARCHITECTURE.md`
 - `docs/TRUST_BOUNDARY.md`
+- `docs/ANALYZER_SANDBOX_REQUIREMENTS.md`
 - `docs/SPECPM_PROPOSAL_AUTOMATION.md`
 - `docs/ROADMAP.md`
 
@@ -56,5 +57,6 @@ the host.
 
 - <doc:HarvesterArchitecture>
 - <doc:TrustBoundary>
+- <doc:AnalyzerSandboxRequirements>
 - <doc:TreeSitterEvaluation>
 - <doc:Roadmap>

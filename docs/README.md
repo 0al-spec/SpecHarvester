@@ -14,6 +14,8 @@ Published DocC site:
 1. [`../README.md`](../README.md): repository overview and GitHub workflow surface
 2. [`HOW_IT_WORKS.md`](HOW_IT_WORKS.md): end-to-end operator flow
 3. [`TRUST_BOUNDARY.md`](TRUST_BOUNDARY.md): non-negotiable execution rules
+4. [`ANALYZER_SANDBOX_REQUIREMENTS.md`](ANALYZER_SANDBOX_REQUIREMENTS.md):
+   requirements for future metadata-tool and build-tool analyzers
 4. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
    implementing, validating, and archiving tasks
 
