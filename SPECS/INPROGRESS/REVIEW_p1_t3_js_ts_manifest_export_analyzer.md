@@ -5,25 +5,23 @@
 
 ### Summary Verdict
 - [ ] Approve
-- [ ] Approve with comments
-- [x] Request changes
+- [x] Approve with comments
+- [ ] Request changes
 - [ ] Block
 
 ### Critical Issues
-- [High] `src/spec_harvester/js_ts_public_api.py:51` recognizes
-  `export default` only when the default export is a function/class-style
-  declaration. JavaScript and TypeScript commonly use expression defaults such
-  as `export default createClient;` or `export default memo(Component);`. The
-  PRD acceptance criteria require `export default` support broadly, so these
-  entrypoints currently omit a public default export. Add a fallback default
-  export scanner that emits `default` with `kind: unknown` when no declaration
-  kind is available.
-- [Medium] `src/spec_harvester/js_ts_public_api.py:270` reads existing
-  entrypoint files without catching `OSError`. If a harvested repository has a
-  referenced file that exists but cannot be read, analysis aborts instead of
-  recording a diagnostic. This violates the deliverable for unreadable static
-  entrypoints. Catch read failures and record an `error` diagnostic for that
-  path while continuing the package.
+- [High][Resolved in follow-up] `src/spec_harvester/js_ts_public_api.py:51`
+  recognized `export default` only when the default export was a
+  function/class-style declaration. JavaScript and TypeScript commonly use
+  expression defaults such as `export default createClient;` or
+  `export default memo(Component);`. The analyzer now records expression-style
+  default exports as `default` with `kind: unknown`, with a regression test.
+- [Medium][Resolved in follow-up] `src/spec_harvester/js_ts_public_api.py:270`
+  read existing entrypoint files without catching `OSError`. If a harvested
+  repository had a referenced file that existed but could not be read, analysis
+  aborted instead of recording a diagnostic. The analyzer now records an
+  `error` diagnostic for unreadable entrypoints and continues the package, with
+  a regression test.
 
 ### Secondary Issues
 - None.
@@ -37,11 +35,19 @@
   will evaluate whether Tree-sitter should replace or complement this approach.
 
 ### Tests
-- Current validation passes but does not cover expression-style default exports
-  or read failures from existing entrypoint files.
-- Coverage threshold was met during EXECUTE: 48 tests, total coverage 92.24%.
+- `PYTHONPATH=src python -m pytest tests/test_js_ts_public_api.py`: pass, 5
+  tests.
+- `PYTHONPATH=src python -m pytest`: pass, 50 tests.
+- `ruff check src tests`: pass.
+- `ruff format --check src tests`: pass.
+- `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`:
+  pass, 50 tests, total coverage 92.41%.
+- `swift package dump-package >/dev/null`: pass.
+- `swift build --target SpecHarvesterDocs`: pass.
+- `git diff --check`: pass.
+- Type checking is not configured in `.flow/params.yaml` or `pyproject.toml`.
 
 ### Next Steps
-- Add a regression test for `export default <expression>`.
-- Add a regression test for unreadable entrypoint diagnostics.
-- Re-run targeted analyzer tests and full Flow validation gates before PR.
+- No remaining actionable review findings.
+- No new Workplan task is required because both findings were fixed in this
+  branch during FOLLOW-UP.

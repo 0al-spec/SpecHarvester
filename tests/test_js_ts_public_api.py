@@ -209,6 +209,70 @@ def test_analyze_js_ts_public_api_records_manifest_and_missing_entrypoint_diagno
     assert "does not exist" in diagnostics["packages/valid/missing.js"]["message"]
 
 
+def test_analyze_js_ts_public_api_records_default_expression_exports(tmp_path: Path) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "package.json").write_text(
+        json.dumps({"name": "default-expression", "main": "./index.js"}),
+        encoding="utf-8",
+    )
+    (package / "index.js").write_text(
+        """
+const createClient = () => ({});
+export default createClient;
+""",
+        encoding="utf-8",
+    )
+
+    index = analyze_js_ts_public_api(package)
+
+    validate_public_interface_index(index)
+    symbols = {
+        symbol["name"]: symbol
+        for entrypoint in index["packages"][0]["entrypoints"]
+        for symbol in entrypoint["symbols"]
+    }
+    assert sorted(symbols) == ["default"]
+    assert symbols["default"]["kind"] == "unknown"
+
+
+def test_analyze_js_ts_public_api_records_unreadable_entrypoint_diagnostics(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    entrypoint = package / "index.js"
+    (package / "package.json").write_text(
+        json.dumps({"name": "unreadable", "main": "./index.js"}),
+        encoding="utf-8",
+    )
+    entrypoint.write_text("export function ok() {}\n", encoding="utf-8")
+    original_read_bytes = Path.read_bytes
+
+    def read_bytes_or_fail(path: Path) -> bytes:
+        if path == entrypoint:
+            raise OSError("permission denied")
+        return original_read_bytes(path)
+
+    monkeypatch.setattr(Path, "read_bytes", read_bytes_or_fail)
+
+    index = analyze_js_ts_public_api(package)
+
+    validate_public_interface_index(index)
+    assert index["summary"] == {
+        "packageCount": 1,
+        "entrypointCount": 0,
+        "symbolCount": 0,
+        "diagnosticCount": 1,
+    }
+    diagnostic = index["diagnostics"][0]
+    assert diagnostic["level"] == "error"
+    assert diagnostic["path"] == "index.js"
+    assert "Unable to read manifest entrypoint" in diagnostic["message"]
+    assert diagnostic["evidence"]["path"] == "package.json"
+
+
 def test_analyze_js_ts_public_api_rejects_non_directory_source(tmp_path: Path) -> None:
     source = tmp_path / "package.json"
     source.write_text("{}", encoding="utf-8")

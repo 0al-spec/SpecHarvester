@@ -62,6 +62,11 @@ NAMED_EXPORT_RE = re.compile(
     r"^\s*export\s+(?P<type_only>type\s+)?\{(?P<specifiers>[^}]+)\}",
     re.MULTILINE | re.DOTALL,
 )
+DEFAULT_EXPRESSION_EXPORT_RE = re.compile(
+    r"^\s*export\s+default\b"
+    r"(?!\s+(?:async\s+)?(?:function|class|interface|type|enum)\b)",
+    re.MULTILINE,
+)
 LINE_COMMENT_RE = re.compile(r"//.*?$", re.MULTILINE)
 BLOCK_COMMENT_RE = re.compile(r"/\*.*?\*/", re.DOTALL)
 
@@ -217,9 +222,18 @@ def package_entrypoints(
             continue
         entrypoint_paths[relative] = entrypoint_path
 
-    return [
-        source_entrypoint(root, entrypoint_paths[relative]) for relative in sorted(entrypoint_paths)
-    ]
+    entrypoints: list[dict[str, Any]] = []
+    for relative in sorted(entrypoint_paths):
+        entrypoint = source_entrypoint(
+            root,
+            entrypoint_paths[relative],
+            manifest_path,
+            manifest_digest,
+            diagnostics,
+        )
+        if entrypoint is not None:
+            entrypoints.append(entrypoint)
+    return entrypoints
 
 
 def manifest_entrypoint_targets(manifest: dict[str, Any]) -> list[str]:
@@ -267,9 +281,26 @@ def resolve_manifest_target(root: Path, package_root: Path, target: str) -> Path
     return candidate
 
 
-def source_entrypoint(root: Path, path: Path) -> dict[str, Any]:
+def source_entrypoint(
+    root: Path,
+    path: Path,
+    manifest_path: str,
+    manifest_digest: str,
+    diagnostics: list[dict[str, Any]],
+) -> dict[str, Any] | None:
     relative = path.relative_to(root).as_posix()
-    data = path.read_bytes()
+    try:
+        data = path.read_bytes()
+    except OSError as exc:
+        diagnostics.append(
+            {
+                "level": "error",
+                "path": relative,
+                "message": f"Unable to read manifest entrypoint: {exc}",
+                "evidence": evidence_record(manifest_path, manifest_digest),
+            }
+        )
+        return None
     digest = hashlib.sha256(data).hexdigest()
     text = data.decode("utf-8", errors="replace")
     return {
@@ -287,6 +318,9 @@ def source_symbols(text: str, path: str, digest: str) -> list[dict[str, Any]]:
     for match in NAMED_EXPORT_RE.finditer(clean_text):
         for symbol in named_export_symbols(match, path, digest):
             symbols[symbol["name"]] = symbol
+    for _match in DEFAULT_EXPRESSION_EXPORT_RE.finditer(clean_text):
+        symbol = base_symbol("default", "unknown", path, digest)
+        symbols[symbol["name"]] = symbol
     return [symbols[name] for name in sorted(symbols)]
 
 
