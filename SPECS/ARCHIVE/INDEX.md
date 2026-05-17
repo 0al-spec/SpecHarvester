@@ -21,3 +21,4 @@
 |------|---------|--------|
 | 2026-05-17 | P0-T1 | Archived Configure Flow Operating Scaffold (PASS) |
 | 2026-05-17 | P1-T1 | Archived Define PublicInterfaceIndex Snapshot Schema (PASS) |
+| 2026-05-17 | P1-T1 | Archived REVIEW_p1_t1_public_interface_index_schema report |
