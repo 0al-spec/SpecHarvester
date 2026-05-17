@@ -54,6 +54,7 @@ ruff format --check src tests
 ## Next Topics
 
 - <doc:Workflow>
+- <doc:AcceptedManifestEntries>
 - <doc:HarvesterArchitecture>
 - <doc:TrustBoundary>
 - <doc:ProposalAutomation>

@@ -75,7 +75,7 @@ Acceptance:
 
 ## Phase 4. SpecPM Proposal Integration
 
-- [ ] `P4-T1` Prepare PR-ready accepted package manifest entries.
+- [x] `P4-T1` Prepare PR-ready accepted package manifest entries.
 - [ ] `P4-T2` Add proposal preflight checks for accepted-source diffs.
 - [ ] `P4-T3` Extend GitHub proposal automation documentation and validation.
 

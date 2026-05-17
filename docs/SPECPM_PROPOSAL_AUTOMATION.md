@@ -46,6 +46,9 @@ It can run in two trusted modes:
 
 It must not run with write credentials on ordinary `pull_request` events.
 
+For review safety, manifest-path decisions can be prepared from the reviewed
+candidate using `prepare-accepted-entry` before running proposal automation.
+
 ## Required Secret
 
 To create a PR in SpecPM, configure:

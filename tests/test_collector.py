@@ -21,9 +21,11 @@ from spec_harvester.interface_index import (
     render_public_interface_index_json,
 )
 from spec_harvester.promoter import (
+    PrepareAcceptedManifestEntryOptions,
     PromoteOptions,
     append_local_manifest_entry,
     infer_manifest_entry_path,
+    prepare_accepted_manifest_entry,
     promote_candidate,
     validate_with_specpm,
 )
@@ -868,6 +870,150 @@ def test_cli_promote_writes_json_result(tmp_path: Path, capsys) -> None:  # type
     assert output["packageId"] == "example.core"
     assert output["validationStatus"] == "skipped"
     assert (accepted_root / "example.core" / "0.1.0" / "specpm.yaml").exists()
+
+
+def test_prepare_accepted_manifest_entry_defaults_to_public_index_generated_path(
+    tmp_path: Path,
+) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    manifest = tmp_path / "accepted-packages.yml"
+
+    result = prepare_accepted_manifest_entry(
+        PrepareAcceptedManifestEntryOptions(
+            candidate=candidate,
+            manifest=manifest,
+        )
+    )
+
+    assert result["status"] == "ok"
+    assert result["packageId"] == "example.core"
+    assert result["packageVersion"] == "0.1.0"
+    assert result["packageSubdir"] == "example.core/0.1.0"
+    assert result["manifest"]["entry"] == "public-index/generated/example.core/0.1.0"
+    assert result["manifest"]["updated"] is True
+    assert "  - path: public-index/generated/example.core/0.1.0\n" in manifest.read_text(
+        encoding="utf-8"
+    )
+
+
+def test_prepare_accepted_manifest_entry_supports_custom_prefix_and_subdir(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    manifest = tmp_path / "accepted-packages.yml"
+
+    result = prepare_accepted_manifest_entry(
+        PrepareAcceptedManifestEntryOptions(
+            candidate=candidate,
+            manifest=manifest,
+            manifest_entry_prefix="review/generated",
+            package_subdir="review/example.core/0.2.0",
+        )
+    )
+
+    assert result["manifest"]["entry"] == "review/generated/review/example.core/0.2.0"
+    assert "  - path: review/generated/review/example.core/0.2.0\n" in manifest.read_text(
+        encoding="utf-8"
+    )
+
+
+def test_prepare_accepted_manifest_entry_supports_explicit_entry_path(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    manifest = tmp_path / "accepted-packages.yml"
+
+    result = prepare_accepted_manifest_entry(
+        PrepareAcceptedManifestEntryOptions(
+            candidate=candidate,
+            manifest=manifest,
+            manifest_entry_path="overrides/example.core/0.1.0",
+        )
+    )
+
+    assert result["manifest"]["entry"] == "overrides/example.core/0.1.0"
+    assert "  - path: overrides/example.core/0.1.0\n" in manifest.read_text(encoding="utf-8")
+
+
+def test_prepare_accepted_manifest_entry_leaves_manifest_idempotent_when_entry_exists(
+    tmp_path: Path,
+) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    manifest = tmp_path / "accepted-packages.yml"
+    manifest.write_text(
+        "schemaVersion: 1\n"
+        "packages:\n"
+        "  - path: public-index/generated/example.core/0.1.0\n"
+        "metadata:\n"
+        "  owner: test\n",
+        encoding="utf-8",
+    )
+
+    result = prepare_accepted_manifest_entry(
+        PrepareAcceptedManifestEntryOptions(
+            candidate=candidate,
+            manifest=manifest,
+        )
+    )
+
+    assert result["manifest"]["updated"] is False
+    assert (
+        manifest.read_text(encoding="utf-8").count(
+            "  - path: public-index/generated/example.core/0.1.0\n"
+        )
+        == 1
+    )
+
+
+def test_prepare_accepted_manifest_entry_rejects_invalid_candidate(tmp_path: Path) -> None:
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+
+    with pytest.raises(ValueError, match="Candidate is missing specpm.yaml"):
+        prepare_accepted_manifest_entry(
+            PrepareAcceptedManifestEntryOptions(
+                candidate=candidate,
+                manifest=tmp_path / "accepted-packages.yml",
+            )
+        )
+
+
+def test_prepare_accepted_manifest_entry_rejects_candidate_symlinks(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    external_manifest = tmp_path / "external-specpm.yaml"
+    external_manifest.write_text(
+        "schemaVersion: 1\nmetadata:\n  id: external.core\n  version: 9.9.9\n",
+        encoding="utf-8",
+    )
+    (candidate / "specpm.yaml").unlink()
+    (candidate / "specpm.yaml").symlink_to(external_manifest)
+
+    with pytest.raises(ValueError, match="unsupported symlink"):
+        prepare_accepted_manifest_entry(
+            PrepareAcceptedManifestEntryOptions(
+                candidate=candidate,
+                manifest=tmp_path / "accepted-packages.yml",
+            )
+        )
+
+
+def test_cli_prepare_accepted_manifest_entry_writes_json_result(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
+    candidate = draft_demo_candidate(tmp_path)
+    manifest = tmp_path / "accepted-packages.yml"
+
+    result = main(
+        [
+            "prepare-accepted-entry",
+            str(candidate),
+            "--manifest",
+            str(manifest),
+            "--manifest-entry-prefix",
+            "public-index/generated",
+            "--package-subdir",
+            "example.core/0.1.0",
+        ]
+    )
+
+    output = json.loads(capsys.readouterr().out)
+    assert result == 0
+    assert output["manifest"]["entry"] == "public-index/generated/example.core/0.1.0"
+    assert output["manifest"]["updated"] is True
 
 
 def draft_demo_candidate(tmp_path: Path) -> Path:

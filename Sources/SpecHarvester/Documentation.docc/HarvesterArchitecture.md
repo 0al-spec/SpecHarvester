@@ -106,6 +106,11 @@ Promotion copies a reviewed candidate into an accepted source root and can
 append a local path entry to an accepted package manifest. It is not direct
 publication.
 
+Before promotion, `prepare-accepted-entry` can generate and append a PR-ready
+manifest entry from reviewed candidate metadata without mutating accepted-source
+directories. The command supports deterministic `packageId/version` inference and
+explicit `manifest-entry-path` overrides.
+
 ## Non-Goals
 
 SpecHarvester does not replace SpecPM, define the remote registry API, or make

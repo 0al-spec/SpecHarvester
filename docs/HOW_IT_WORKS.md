@@ -354,7 +354,27 @@ validated candidate -> human decision
 
 The current repository does not publish directly into an accepted registry.
 
-### 7. Promote a Reviewed Candidate
+### 7. Prepare PR-Ready Manifest Entry
+
+After review, prepare an accepted package manifest entry without copying the
+candidate:
+
+```bash
+python3 -m spec_harvester prepare-accepted-entry candidates/github.com/example/project \
+  --manifest /Users/egor/Development/GitHub/0AL/SpecPM/public-index/accepted-packages.yml
+```
+
+This command reads `<candidate>/specpm.yaml` metadata, derives
+`<packageId>/<packageVersion>`, and writes:
+
+```text
+public-index/generated/<packageId>/<packageVersion>
+```
+
+as an accepted-packages manifest path when no explicit `--manifest-entry-path` is
+provided.
+
+### 8. Promote a Reviewed Candidate
 
 After review, copy the candidate into an accepted source root:
 
@@ -386,7 +406,7 @@ PYTHONPATH=src python3 -m spec_harvester promote \
 
 That still creates a reviewable git diff. It does not mutate a live registry.
 
-### 8. Publish Through SpecPM
+### 9. Publish Through SpecPM
 
 SpecPM registry publication remains a SpecPM repository operation:
 
@@ -568,6 +588,7 @@ For one repository:
 [ ] Run specpm validate.
 [ ] Review generated package and BoundarySpec.
 [ ] Decide reject, revise, or promote.
+[ ] Prepare PR-ready manifest entry.
 [ ] Run promote into an accepted source root.
 [ ] Open or update a maintainer PR for registry publication.
 ```
@@ -599,6 +620,10 @@ PYTHONPATH=src python3 -m spec_harvester promote \
   --accepted-root accepted \
   --manifest accepted/accepted-packages.yml \
   --skip-validation
+
+python3 -m spec_harvester prepare-accepted-entry \
+  candidates/github.com/xyflow/xyflow \
+  --manifest /Users/egor/Development/GitHub/0AL/SpecPM/public-index/accepted-packages.yml
 ```
 
 ## Relationship to SpecPM and SpecGraph

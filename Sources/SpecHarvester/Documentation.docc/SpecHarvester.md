@@ -37,6 +37,7 @@ The canonical source files remain in the repository:
 - `docs/BATCH_COLLECTION.md`
 - `docs/BATCH_VALIDATION_REPORTS.md`
 - `docs/SPECPM_PROPOSAL_AUTOMATION.md`
+- `docs/ACCEPTED_MANIFEST_ENTRIES.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -57,6 +58,7 @@ the host.
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>
+- <doc:AcceptedManifestEntries>
 - <doc:ProposalAutomation>
 
 ### Architecture
