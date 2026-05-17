@@ -73,3 +73,7 @@ managers, or inspect runtime objects.
 - No JavaScript, TypeScript, Swift, Rust, Go, or Tree-sitter analyzers.
 - No type resolution beyond AST shape.
 - No runtime imports or execution.
+
+---
+**Archived:** 2026-05-17
+**Verdict:** PASS
