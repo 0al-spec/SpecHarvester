@@ -77,3 +77,7 @@ so future non-static tools can be reviewed separately.
 
 Future tasks should consume this schema rather than introducing analyzer-specific
 output formats.
+
+---
+**Archived:** 2026-05-17
+**Verdict:** PASS

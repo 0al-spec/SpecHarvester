@@ -31,7 +31,7 @@ Acceptance:
 
 ## Phase 1. Public Interface Indexing
 
-- [ ] `P1-T1` Define `PublicInterfaceIndex` snapshot schema.
+- [x] `P1-T1` Define `PublicInterfaceIndex` snapshot schema.
 - [ ] `P1-T2` Add Python static public API analyzer using `ast`.
 - [ ] `P1-T3` Add JavaScript and TypeScript manifest/export analyzer.
 - [ ] `P1-T4` Evaluate Tree-sitter as the shared syntax indexing layer.

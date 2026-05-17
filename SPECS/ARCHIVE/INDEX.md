@@ -1,14 +1,23 @@
-# SpecHarvester Flow Archive Index
+# Tasks Archive
 
-Status: Active
-Created: 2026-05-17
+**Last Updated:** 2026-05-17
 
-## Tasks
+## Archived Tasks
 
-- `P0-T1` Configure Flow Operating Scaffold:
-  `SPECS/ARCHIVE/P0-T1_Configure_Flow_Operating_Scaffold/`, verdict `PASS`.
+| Task ID | Folder | Archived | Verdict |
+|---------|--------|----------|---------|
+| P0-T1 | [P0-T1_Configure_Flow_Operating_Scaffold/](P0-T1_Configure_Flow_Operating_Scaffold/) | 2026-05-17 | PASS |
+| P1-T1 | [P1-T1_Define_PublicInterfaceIndex_Snapshot_Schema/](P1-T1_Define_PublicInterfaceIndex_Snapshot_Schema/) | 2026-05-17 | PASS |
 
-## Historical Reviews
+## Historical Artifacts
 
-- `_Historical/`: cross-cutting review reports that are not tied to a single
-  task archive.
+| Folder | Description |
+|--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifacts |
+
+## Archive Log
+
+| Date | Task ID | Action |
+|------|---------|--------|
+| 2026-05-17 | P0-T1 | Archived Configure Flow Operating Scaffold (PASS) |
+| 2026-05-17 | P1-T1 | Archived Define PublicInterfaceIndex Snapshot Schema (PASS) |
