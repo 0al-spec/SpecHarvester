@@ -19,7 +19,7 @@ reports that help maintainers prioritize manual inspection.
 
 ## Coverage Note
 
-P5-T2 finished with 90.93% total coverage (still above project floor). Future
+P5-T2 finished with 90.72% total coverage (still above project floor). Future
 implementation tasks should continue to add focused tests so coverage does not
 decline.
 

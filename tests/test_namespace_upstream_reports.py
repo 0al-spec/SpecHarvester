@@ -77,6 +77,31 @@ def test_build_namespace_upstream_report_reports_missing_upstream(tmp_path: Path
     assert report["issues"][0]["packageId"] == "demo.core"
 
 
+def test_namespace_upstream_report_preserves_artifact_before_next_top_level_block(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    accepted_root.mkdir(parents=True)
+    manifest = accepted_root / "demo" / "1.0.0" / "specpm.yaml"
+    write_manifest(
+        manifest,
+        "demo.core",
+        "1.0.0",
+        upstream_uri="https://github.com/demo/demo",
+        trailing_keywords=True,
+    )
+
+    report = build_namespace_upstream_report(
+        accepted_root=accepted_root,
+        candidates_root=None,
+    )
+
+    assert report["summary"]["records"] == 1
+    assert report["summary"]["missingUpstreamCount"] == 0
+    assert report["issues"] == []
+    assert report["records"][0]["upstreamArtifacts"][0]["uri"] == "https://github.com/demo/demo"
+
+
 def test_cli_namespace_upstream_report_emits_json(tmp_path: Path) -> None:
     candidates_root = tmp_path / "candidates"
     accepted_root = tmp_path / "accepted"
@@ -107,6 +132,7 @@ def write_manifest(
     package_id: str,
     version: str,
     upstream_uri: str | None,
+    trailing_keywords: bool = False,
 ) -> None:
     path.parent.mkdir(parents=True)
     upstream_block = ""
@@ -129,7 +155,7 @@ def write_manifest(
             "  provides:\n"
             "    capabilities: []\n"
             "  intents: []\n"
-            f"{upstream_block}"
+            f"{upstream_block}" + ("keywords:\n  - demo\n" if trailing_keywords else "")
         ),
         encoding="utf-8",
     )

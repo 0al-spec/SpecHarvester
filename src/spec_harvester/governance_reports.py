@@ -177,12 +177,26 @@ def parse_specpm_claims(manifest_path: Path, source: str) -> PackageClaimRecord:
                 if indent == 4 and text == "capabilities:":
                     mode = "capabilities"
                     continue
+                if indent == 4 and text == "intents:":
+                    mode = "provides_intents"
+                    continue
                 if indent <= 2:
                     mode = ""
             if mode == "capabilities":
                 if indent == 6 and text.startswith("- "):
                     for capability in normalize_scalar_list_item(text):
                         capabilities.add(capability)
+                    continue
+                if indent == 4 and text == "intents:":
+                    mode = "provides_intents"
+                    continue
+                if indent <= 4:
+                    mode = "index"
+                    parse_state = "index"
+            if mode == "provides_intents":
+                if indent == 6 and text.startswith("- "):
+                    for intent in normalize_scalar_list_item(text):
+                        intents.add(intent)
                     continue
                 if indent <= 4:
                     mode = "index"

@@ -287,16 +287,16 @@ def parse_specpm_namespace_upstream(
         text = line.strip()
 
         if indent == 0:
+            if parse_state == "foreignArtifacts" and current_artifact is not None:
+                artifacts.append(_normalize_artifact(current_artifact))
+                current_artifact = None
             if text == "metadata:":
                 parse_state = "metadata"
-                current_artifact = None
                 continue
             if text == "foreignArtifacts:":
                 parse_state = "foreignArtifacts"
-                current_artifact = None
                 continue
             parse_state = "root"
-            current_artifact = None
             continue
 
         if parse_state == "metadata":

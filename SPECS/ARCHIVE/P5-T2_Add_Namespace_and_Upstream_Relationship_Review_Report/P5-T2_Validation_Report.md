@@ -31,9 +31,9 @@ Verdict: PASS
 
 - `ruff check src tests` → PASS
 - `ruff format --check src tests` → PASS
-- `PYTHONPATH=src python -m pytest` → PASS, 105 passed
+- `PYTHONPATH=src python -m pytest` → PASS, 107 passed
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
-  → PASS, 105 passed, total coverage 90.93%
+  → PASS, 107 passed, total coverage 90.72%
 - `swift package dump-package >/dev/null` → PASS
 - `swift build --target SpecHarvesterDocs` → PASS
 - `git diff --check` → PASS

@@ -71,6 +71,23 @@ def test_parse_specpm_claims_rejects_missing_metadata(tmp_path: Path) -> None:
         raise AssertionError("Expected ValueError for missing metadata")
 
 
+def test_parse_specpm_claims_reads_provides_intents(tmp_path: Path) -> None:
+    manifest = tmp_path / "specpm.yaml"
+    write_manifest(
+        manifest,
+        "demo.core",
+        "1.0.0",
+        intents=["intent.package.workflow", "intent.package.utility"],
+        capabilities=["cap.workflow"],
+        nested_provides_intents=True,
+    )
+
+    record = parse_specpm_claims(manifest, "candidate")
+
+    assert record.intents == ("intent.package.utility", "intent.package.workflow")
+    assert record.capabilities == ("cap.workflow",)
+
+
 def test_cli_governance_report_emits_json(tmp_path: Path) -> None:
     candidates_root = tmp_path / "candidates"
     accepted_root = tmp_path / "accepted"
@@ -103,8 +120,14 @@ def write_manifest(
     version: str,
     intents: list[str],
     capabilities: list[str],
+    nested_provides_intents: bool = False,
 ) -> None:
-    path.parent.mkdir(parents=True)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    intents_block = (
+        "    intents:\n" + "".join(f"      - {intent}\n" for intent in intents)
+        if nested_provides_intents
+        else "  intents:\n" + "".join(f"    - {intent}\n" for intent in intents)
+    )
     path.write_text(
         (
             "apiVersion: specpm.dev/v0.1\n"
@@ -117,8 +140,7 @@ def write_manifest(
             "  provides:\n"
             "    capabilities:\n"
             + "".join(f"      - {capability}\n" for capability in capabilities)
-            + "  intents:\n"
-            + "".join(f"    - {intent}\n" for intent in intents)
+            + intents_block
         ),
         encoding="utf-8",
     )
