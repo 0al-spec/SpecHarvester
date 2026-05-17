@@ -39,6 +39,15 @@ SAFE_GLOBS = [
     "examples/README.md",
 ]
 
+IGNORED_NESTED_SWIFT_MANIFEST_DIRS = {
+    ".build",
+    ".git",
+    ".swiftpm",
+    "DerivedData",
+    "build",
+    "node_modules",
+}
+
 MARKDOWN_EXTENSIONS = {".md", ".markdown"}
 PACKAGE_MANIFEST_NAMES = {"package.json"}
 
@@ -152,7 +161,27 @@ def candidate_files(root: Path) -> list[Path]:
         for path in root.glob(pattern):
             if path.exists():
                 seen[path.resolve().as_posix()] = path
+    for path in nested_swift_package_manifests(root):
+        seen[path.resolve().as_posix()] = path
     return list(seen.values())
+
+
+def nested_swift_package_manifests(root: Path) -> list[Path]:
+    manifests: list[Path] = []
+    for path in root.rglob("Package.swift"):
+        if not path.exists():
+            continue
+        relative = path.relative_to(root)
+        if len(relative.parts) == 1:
+            continue
+        parent_parts = relative.parts[:-1]
+        if any(
+            part.startswith(".") or part in IGNORED_NESTED_SWIFT_MANIFEST_DIRS
+            for part in parent_parts
+        ):
+            continue
+        manifests.append(path)
+    return manifests
 
 
 def is_inside(root: Path, path: Path) -> bool:

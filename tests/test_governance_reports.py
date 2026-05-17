@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from spec_harvester.cli import main
@@ -112,6 +113,33 @@ def test_cli_governance_report_emits_json(tmp_path: Path) -> None:
     )
 
     assert exit_code == 0
+
+
+def test_cli_governance_report_writes_output_file(tmp_path: Path) -> None:
+    accepted_root = tmp_path / "accepted"
+    output = tmp_path / "governance.json"
+    accepted_root.mkdir()
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        "demo",
+        "1.0.0",
+        intents=["intent.package.workflow"],
+        capabilities=["cap.workflow"],
+    )
+
+    exit_code = main(
+        [
+            "governance-report",
+            "--accepted-root",
+            str(accepted_root),
+            "--output",
+            str(output),
+        ]
+    )
+
+    assert exit_code == 0
+    report = json.loads(output.read_text(encoding="utf-8"))
+    assert report["summary"]["records"] == 1
 
 
 def write_manifest(

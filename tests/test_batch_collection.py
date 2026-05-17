@@ -296,6 +296,52 @@ repositories:
     assert report["records"][0]["id"] == "demo"
 
 
+def test_cli_collect_batch_treats_nested_swift_manifest_as_package_evidence(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    report_path = out / "batch-validation.json"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    package_dir = checkout / "Packages"
+    package_dir.mkdir()
+    (package_dir / "Package.swift").write_text(
+        "// swift-tools-version: 6.0\nimport PackageDescription\n",
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: swift-demo
+    repository: https://github.com/example/swift-demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = main(
+        [
+            "collect-batch",
+            str(inputs),
+            "--out",
+            str(out),
+            "--report",
+            str(report_path),
+        ]
+    )
+
+    assert result == 0
+    capsys.readouterr()
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    assert report["summary"]["highConfidenceCount"] == 1
+    record = report["records"][0]
+    assert record["evidence"]["packageManifestCount"] == 1
+    assert record["warnings"] == []
+
+
 def make_checkout(path: Path, readme: str) -> Path:
     path.mkdir(parents=True)
     (path / "README.md").write_text(readme, encoding="utf-8")
