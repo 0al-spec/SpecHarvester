@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -90,18 +91,9 @@ def build_license_provenance_risk_report(
         "low": sum(1 for issue in issues if issue.get("severity") == "low"),
     }
 
+    issue_codes = sorted({issue["code"] for issue in issues})
     issue_counts = {
-        code: sum(1 for issue in issues if issue["code"] == code)
-        for code in {
-            "missing_license",
-            "unknown_license",
-            "non_standard_license",
-            "missing_upstream_repository",
-            "duplicate_upstream_repository_entries",
-            "invalid_upstream_repository_uri",
-            "upstream_namespace_mismatch",
-            "non_github_upstream_repository",
-        }
+        code: sum(1 for issue in issues if issue["code"] == code) for code in issue_codes
     }
 
     return {
@@ -289,22 +281,50 @@ def evaluate_provenance_risks(
     return sorted(issues, key=lambda item: (item["path"], item["code"]))
 
 
+_SPDX_OPERATOR_PATTERN = re.compile(r"\s+(?:and|or|with)\s+", re.IGNORECASE)
+_SPDX_EXCEPTION_PATTERN = re.compile(r"^[a-z0-9][a-z0-9.+_-]*-exception(?:-[a-z0-9.+_-]+)?$")
+
+
 def _is_non_standard_license(license_text: str) -> bool:
-    if license_text in KNOWN_LICENSE_HINTS:
+    normalized_license = license_text.strip().lower()
+    if normalized_license in KNOWN_LICENSE_HINTS:
         return False
 
-    if " " in license_text:
+    no_paren = normalized_license.replace("(", " ").replace(")", " ").strip()
+    if _SPDX_OPERATOR_PATTERN.search(no_paren):
+        parts = [part.strip() for part in _SPDX_OPERATOR_PATTERN.split(no_paren)]
+        if not parts:
+            return True
+
+        if any(not part for part in parts):
+            return True
+
+        operators = [m.group(0).strip().lower() for m in _SPDX_OPERATOR_PATTERN.finditer(no_paren)]
+        if not operators:
+            return True
+
+        if any(operator == "with" for operator in operators):
+            if len(parts) < 2:
+                return True
+            if parts[0] not in KNOWN_LICENSE_HINTS:
+                return True
+            return not all(_is_spdx_exception_term(part) for part in parts[1:])
+
+        return any(part not in KNOWN_LICENSE_HINTS for part in parts)
+
+    if any(prefix in no_paren for prefix in ("license:", "see", "file:", "http://", "https://")):
         return True
 
-    if any(
-        prefix in license_text for prefix in ("license:", "see", "file:", "http://", "https://")
-    ):
+    if any(token in f" {normalized_license} " for token in (" with ", " or ", " and ")):
         return True
 
-    if any(token in f" {license_text} " for token in (" with ", " or ", " and ")):
-        return True
+    return True
 
-    return not all(char.isalnum() or char in ".-+_" for char in license_text)
+
+def _is_spdx_exception_term(term: str) -> bool:
+    if term in KNOWN_LICENSE_HINTS:
+        return True
+    return bool(_SPDX_EXCEPTION_PATTERN.fullmatch(term))
 
 
 def _report_issue(

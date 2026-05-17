@@ -20,7 +20,7 @@ def test_build_license_provenance_risk_report_flags_license_and_provenance_issue
         accepted_root / "good" / "1.0.0" / "specpm.yaml",
         "good.core",
         "1.0.0",
-        "MIT",
+        "MIT OR Apache-2.0",
         upstream_uri="https://github.com/good/good",
     )
     write_manifest(
@@ -58,6 +58,31 @@ def test_build_license_provenance_risk_report_flags_license_and_provenance_issue
     missing = [item for item in issues if item["code"] == "non_standard_license"]
     assert len(missing) == 1
     assert missing[0]["packageId"] == "odd.core"
+
+
+def test_report_summary_counts_dynamic_issue_codes(tmp_path: Path) -> None:
+    accepted_root = tmp_path / "accepted"
+    accepted_root.mkdir(parents=True)
+
+    malformed_manifest = accepted_root / "malformed" / "1.0.0" / "specpm.yaml"
+    malformed_manifest.parent.mkdir(parents=True)
+    malformed_manifest.write_text("{invalid: [\n", encoding="utf-8")
+
+    target = accepted_root / "target.yaml"
+    target.write_text("placeholder\n", encoding="utf-8")
+    symlink = accepted_root / "linked" / "1.0.0" / "specpm.yaml"
+    symlink.parent.mkdir(parents=True)
+    symlink.symlink_to(target)
+
+    report = build_license_provenance_risk_report(
+        accepted_root=accepted_root,
+    )
+
+    issues_by_code = report["summary"]["issuesByCode"]
+    assert "invalid_specpm_manifest" in issues_by_code
+    assert "specpm_symlink" in issues_by_code
+    assert issues_by_code["invalid_specpm_manifest"] == 1
+    assert issues_by_code["specpm_symlink"] == 1
 
 
 def test_cli_license_provenance_report_emits_json(tmp_path: Path) -> None:
