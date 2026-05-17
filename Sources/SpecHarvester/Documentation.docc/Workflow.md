@@ -162,6 +162,18 @@ python3 -m spec_harvester governance-upstream-report \
 This report highlights namespace collisions, missing `upstream_repository`
 artifacts, and namespace-vs-upstream-owner mismatches.
 
+Build a license and provenance risk review report:
+
+```bash
+python3 -m spec_harvester governance-license-provenance-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output candidates/license-provenance-risk.json
+```
+
+The report highlights missing/standardized license metadata and upstream
+provenance risks.
+
 ## Review Gates
 
 Every generated candidate should be checked for:

@@ -29,9 +29,11 @@ Published DocC site:
 10. [`NAMESPACE_UPSTREAM_REPORTS.md`](NAMESPACE_UPSTREAM_REPORTS.md): review
    namespace consistency and upstream relationship metadata across roots
 11. [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
-   proposal automation with preflight validation and diff-scope guardrails
-12. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
-   implementing, validating, and archiving tasks
+    proposal automation with preflight validation and diff-scope guardrails
+12. [`LICENSE_PROVENANCE_RISK_REPORTS.md`](LICENSE_PROVENANCE_RISK_REPORTS.md):
+    review candidate and accepted packages for licensing and provenance risk
+13. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+    implementing, validating, and archiving tasks
 
 ## Design References
 
