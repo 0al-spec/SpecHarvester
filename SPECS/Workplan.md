@@ -48,7 +48,7 @@ Acceptance:
 
 ## Phase 2. Analyzer Policy and Cache
 
-- [ ] `P2-T1` Add analyzer trust policy fields to harvest snapshots.
+- [x] `P2-T1` Add analyzer trust policy fields to harvest snapshots.
 - [ ] `P2-T2` Add per-file analyzer cache keyed by file digest and analyzer
   version.
 - [ ] `P2-T3` Add parse diagnostics and partial-index behavior.

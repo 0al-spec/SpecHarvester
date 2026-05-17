@@ -75,3 +75,7 @@ treat analyzer claims as runtime behavior.
 - No analyzer execution orchestration.
 - No changes to `PublicInterfaceIndex` schema version.
 - No promotion or registry policy changes.
+
+---
+**Archived:** 2026-05-17
+**Verdict:** PASS
