@@ -4,12 +4,12 @@
 
 ## Overview
 
-This workflow provides a documentation-driven, linear process for software development: select a task, plan it fully, execute with validations, and archive the PRD when done. Each major step ends with a commit.
+This workflow provides a documentation-driven, linear process for software development: select a task, plan it fully, execute with validations, archive the PRD, and open a pull request when the task is ready for review.
 
 ```
-BRANCH → SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → ARCHIVE-REVIEW
-   ↓        ↓       ↓        ↓         ↓         ↓          ↓             ↓
- COMMIT   COMMIT  COMMIT   COMMIT    COMMIT    COMMIT     COMMIT        COMMIT
+BRANCH → SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → FOLLOW-UP → ARCHIVE-REVIEW → PULL REQUEST
+   ↓        ↓       ↓        ↓         ↓         ↓          ↓             ↓               ↓
+ COMMIT   COMMIT  COMMIT   COMMIT    COMMIT    COMMIT     COMMIT        COMMIT          PR
 ```
 
 ---
@@ -159,6 +159,35 @@ Archive REVIEW_{subject} report
 
 ---
 
+### 9. PULL REQUEST
+
+Open or update a GitHub pull request after all Flow artifacts are committed.
+
+**Actions:**
+- Confirm the working tree is clean: `git status -sb`
+- Push the feature branch: `git push -u origin feature/{TASK_ID}-{short-description}`
+- Read the project PR template configured in `.flow/params.yaml` under `github.pr_template`
+- Create or update the pull request body using only factual completed validation results
+- Open the pull request against the configured default branch
+- Verify the PR URL and state with `gh pr view`
+
+**Recommended command:**
+```bash
+gh pr create --base main --head feature/{TASK_ID}-{short-description} \
+  --title "{TASK_ID}: {TASK_NAME}" \
+  --body-file {body_file}
+```
+
+If a PR already exists, update it instead:
+```bash
+gh pr edit {PR_NUMBER_OR_URL} --body-file {body_file}
+```
+
+**No commit is required for this step** unless PR preparation discovers missing
+documentation, validation, or archive artifacts that must be fixed in the branch.
+
+---
+
 ## Project Configuration
 
 Flow reads project-specific values from `.flow/params.yaml` at the repo root. This file is yours — update Flow by replacing `SPECS/`, not this file.
@@ -198,6 +227,7 @@ Commands reference it as `[Params](.flow/params.yaml)` and read only the section
 | REVIEW | `REVIEW_{subject}.md` created | `Review {TASK_ID}: {SUBJECT}` |
 | FOLLOW-UP | New tasks in workplan | `Follow-up {TASK_ID}: {SUBJECT}` |
 | ARCHIVE-REVIEW | Review report archived | `Archive REVIEW_{subject} report` |
+| PULL REQUEST | GitHub PR opened or updated | no commit required |
 
 ## Extensions
 

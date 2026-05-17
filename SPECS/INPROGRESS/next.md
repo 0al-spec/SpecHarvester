@@ -1,17 +1,25 @@
-# Next Task
+# Next Task: P1-T2 — Add Python Static Public API Analyzer Using `ast`
 
-Status: No active Flow task selected
-Updated: 2026-05-17
+**Priority:** P1
+**Phase:** Public Interface Indexing
+**Effort:** Medium
+**Dependencies:** P1-T1
+**Status:** Recommended
+**Updated:** 2026-05-17
+**Suggested Branch:** `feature/P1-T2-python-static-public-api-analyzer`
 
-## Recommended Next Task
+## Description
 
-- Task ID: `P1-T1`
-- Name: Define `PublicInterfaceIndex` snapshot schema
-- Source: `SPECS/Workplan.md`
-- Suggested branch: `feature/P1-T1-public-interface-index-schema`
+Implement the first language-specific analyzer that emits
+`PublicInterfaceIndex` package, entrypoint, symbol, diagnostic, and evidence
+records from Python source files using the standard-library `ast` module.
 
-## Notes
+## Recently Archived
 
-- Select this task during the `SELECT` step unless a higher-priority task is
-  added to `SPECS/Workplan.md`.
-- This file is the handoff point for `flow-run` task selection.
+- `P1-T1` Define `PublicInterfaceIndex` snapshot schema: PASS,
+  `SPECS/ARCHIVE/P1-T1_Define_PublicInterfaceIndex_Snapshot_Schema/`.
+
+## Next Step
+
+Run SELECT to confirm this task or choose a higher-priority item from
+`SPECS/Workplan.md`.
