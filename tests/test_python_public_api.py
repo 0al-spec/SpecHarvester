@@ -142,6 +142,59 @@ class _PrivateClass:
     assert symbols["public_func"]["signature"] == "public_func(a: int, b: str = 'x') -> str"
 
 
+def test_analyze_python_public_api_honors_final_all_assignment(tmp_path: Path) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "api.py").write_text(
+        """
+__all__ = ["old_export"]
+
+def old_export():
+    return "old"
+
+def final_export():
+    return "final"
+
+__all__ = ["final_export"]
+""",
+        encoding="utf-8",
+    )
+
+    index = analyze_python_public_api(package)
+    symbols = {
+        symbol["name"]: symbol
+        for entrypoint in index["packages"][0]["entrypoints"]
+        for symbol in entrypoint["symbols"]
+    }
+
+    assert sorted(symbols) == ["final_export"]
+
+
+def test_analyze_python_public_api_preserves_positional_only_signature_marker(
+    tmp_path: Path,
+) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "api.py").write_text(
+        """
+def callable_shape(a, b=1, /, c: int = 2, *, d, e=3):
+    return a, b, c, d, e
+""",
+        encoding="utf-8",
+    )
+
+    index = analyze_python_public_api(package)
+    symbols = {
+        symbol["name"]: symbol
+        for entrypoint in index["packages"][0]["entrypoints"]
+        for symbol in entrypoint["symbols"]
+    }
+
+    assert (
+        symbols["callable_shape"]["signature"] == "callable_shape(a, b=1, /, c: int = 2, *, d, e=3)"
+    )
+
+
 def test_analyze_python_public_api_records_parse_diagnostics_and_skips_cache_dirs(
     tmp_path: Path,
 ) -> None:
