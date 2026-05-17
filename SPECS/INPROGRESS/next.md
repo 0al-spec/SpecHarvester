@@ -1,13 +1,13 @@
-# Recommended Task: P2-T4 — Document Sandbox Requirements for Analyzers That Need Build Tools
+# Selected Task: P2-T4 — Document Sandbox Requirements for Analyzers That Need Build Tools
 
 **Priority:** P2
 **Phase:** Analyzer Policy and Cache
 **Effort:** Medium
 **Dependencies:** P2-T1, P2-T2, P2-T3
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P2-T4-document-sandbox-requirements-for-analyzers-that-need-build-tools`
-**Suggested Review Subject:** `p2_t4_analyzer_sandbox_requirements`
+**Branch:** `feature/P2-T4-document-sandbox-requirements-for-analyzers-that-need-build-tools`
+**Review Subject:** `p2_t4_analyzer_sandbox_requirements`
 
 ## Description
 
@@ -31,4 +31,5 @@ by adding focused tests for any new behavior.
 
 ## Next Step
 
-Run BRANCH for `P2-T4` when ready.
+Run PLAN for `P2-T4` and create
+`SPECS/INPROGRESS/P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools.md`.
