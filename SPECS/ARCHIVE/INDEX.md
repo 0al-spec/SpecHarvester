@@ -15,6 +15,7 @@
 | P2-T1 | [P2-T1_Add_Analyzer_Trust_Policy_Fields_to_Harvest_Snapshots/](P2-T1_Add_Analyzer_Trust_Policy_Fields_to_Harvest_Snapshots/) | 2026-05-17 | PASS |
 | P2-T2 | [P2-T2_Add_Per_File_Analyzer_Cache_Keyed_by_File_Digest_and_Analyzer_Version/](P2-T2_Add_Per_File_Analyzer_Cache_Keyed_by_File_Digest_and_Analyzer_Version/) | 2026-05-17 | PASS |
 | P2-T3 | [P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/](P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/) | 2026-05-17 | PASS |
+| P2-T4 | [P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools/](P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools/) | 2026-05-17 | PASS |
 
 ## Historical Artifacts
 
@@ -43,3 +44,4 @@
 | 2026-05-17 | P2-T2 | Archived REVIEW_p2_t2_per_file_analyzer_cache report |
 | 2026-05-17 | P2-T3 | Archived Add Parse Diagnostics and Partial-Index Behavior (PASS) |
 | 2026-05-17 | P2-T3 | Archived REVIEW_p2_t3_parse_diagnostics_partial_index report |
+| 2026-05-17 | P2-T4 | Archived Document Sandbox Requirements for Analyzers That Need Build Tools (PASS) |

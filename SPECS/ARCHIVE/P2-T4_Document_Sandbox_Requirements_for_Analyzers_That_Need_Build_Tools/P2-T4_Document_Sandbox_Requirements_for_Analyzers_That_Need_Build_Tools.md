@@ -77,3 +77,7 @@ the analyzer policy intentionally.
 - No dependency installation.
 - No changes to default `collect-local` behavior.
 - No changes to analyzer cache keying.
+
+---
+**Archived:** 2026-05-17
+**Verdict:** PASS

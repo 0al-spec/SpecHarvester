@@ -1,35 +1,34 @@
-# Selected Task: P2-T4 — Document Sandbox Requirements for Analyzers That Need Build Tools
+# Recommended Task: P3-T1 — Read Repository Source Manifests from inputs/*.yml
 
-**Priority:** P2
-**Phase:** Analyzer Policy and Cache
+**Priority:** P3
+**Phase:** Batch Harvesting
 **Effort:** Medium
-**Dependencies:** P2-T1, P2-T2, P2-T3
-**Status:** Selected
+**Dependencies:** P0-T1, P1-T1, P2-T1
+**Status:** Recommended
 **Updated:** 2026-05-17
-**Branch:** `feature/P2-T4-document-sandbox-requirements-for-analyzers-that-need-build-tools`
-**Review Subject:** `p2_t4_analyzer_sandbox_requirements`
+**Suggested Branch:** `feature/P3-T1-read-repository-source-manifests-from-inputs-yml`
+**Suggested Review Subject:** `p3_t1_repository_source_manifests`
 
 ## Description
 
-Document sandbox requirements for analyzers that cannot stay purely static and
-need metadata-only build tools, while preserving the no package-script,
-no-network, no-untrusted-code-execution trust boundary.
+Add the first batch-harvesting input surface by reading repository source
+manifests from `inputs/*.yml` without executing package content or contacting
+repository package managers.
 
 ## Coverage Note
 
-P2-T3 finished with 90.62% total coverage, improving on the P2-T2 baseline of
-90.57%. Future implementation tasks should continue to avoid coverage decline
-by adding focused tests for any new behavior.
+P2-T4 finished with 90.62% total coverage, matching the P2-T3 baseline.
+Implementation tasks should continue to add focused tests so coverage does not
+decline.
 
 ## Recently Archived
 
+- `P2-T4` Document sandbox requirements for analyzers that need build tools:
+  PASS,
+  `SPECS/ARCHIVE/P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools/`.
 - `P2-T3` Add parse diagnostics and partial-index behavior: PASS,
   `SPECS/ARCHIVE/P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/`.
-- `P2-T2` Add per-file analyzer cache keyed by file digest and analyzer
-  version: PASS,
-  `SPECS/ARCHIVE/P2-T2_Add_Per_File_Analyzer_Cache_Keyed_by_File_Digest_and_Analyzer_Version/`.
 
 ## Next Step
 
-Run PLAN for `P2-T4` and create
-`SPECS/INPROGRESS/P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools.md`.
+Run BRANCH for `P3-T1` when ready.

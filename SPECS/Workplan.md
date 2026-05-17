@@ -52,7 +52,7 @@ Acceptance:
 - [x] `P2-T2` Add per-file analyzer cache keyed by file digest and analyzer
   version.
 - [x] `P2-T3` Add parse diagnostics and partial-index behavior.
-- [ ] `P2-T4` Document sandbox requirements for analyzers that need build
+- [x] `P2-T4` Document sandbox requirements for analyzers that need build
   tools.
 
 Acceptance:
