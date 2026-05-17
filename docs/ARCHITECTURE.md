@@ -56,6 +56,11 @@ Analyzers can use an optional per-file cache keyed by analyzer id, analyzer
 version, and file SHA-256 digest. The cache is treated as derived untrusted
 metadata and is ignored when metadata or path/evidence validation fails.
 
+`PublicInterfaceIndex.summary.status` records static analysis coverage:
+`complete` means no diagnostics were emitted, `partial` means diagnostics were
+emitted while package evidence remains available for review, and `failed` means
+diagnostics were emitted without any package record.
+
 ### Deterministic Candidate Drafter
 
 Consumes evidence snapshots and drafts `specpm.yaml` plus

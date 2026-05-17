@@ -76,6 +76,11 @@ The drafter validates the index, writes a normalized
 `public-interface-index.json` artifact into the candidate directory, and records
 it as BoundarySpec evidence. It does not run analyzers during drafting.
 
+`PublicInterfaceIndex.summary.status` is preserved as review metadata:
+`complete` means no diagnostics were emitted, `partial` means diagnostics were
+emitted while package evidence remains available, and `failed` means diagnostics
+were emitted without any package record.
+
 Promote a reviewed candidate into accepted-source staging:
 
 ```bash
