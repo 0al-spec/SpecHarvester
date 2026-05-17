@@ -48,3 +48,4 @@
 | 2026-05-17 | P2-T4 | Archived Document Sandbox Requirements for Analyzers That Need Build Tools (PASS) |
 | 2026-05-17 | P2-T4 | Archived REVIEW_p2_t4_analyzer_sandbox_requirements report |
 | 2026-05-17 | P3-T1 | Archived Read Repository Source Manifests from inputs/*.yml (PASS) |
+| 2026-05-17 | P3-T1 | Archived REVIEW_p3_t1_repository_source_manifests report |
