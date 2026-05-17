@@ -21,6 +21,7 @@
 | P3-T3 | [P3-T3_Emit_Batch_Validation_Reports_with_Confidence_and_Policy_Notes/](P3-T3_Emit_Batch_Validation_Reports_with_Confidence_and_Policy_Notes/) | 2026-05-17 | PASS |
 | P4-T1 | [P4-T1_Prepare_PR-ready_Accepted_Package_Manifest_Entries/](P4-T1_Prepare_PR-ready_Accepted_Package_Manifest_Entries/) | 2026-05-17 | PASS |
 | P4-T2 | [P4-T2_Add_Proposal_Preflight_Checks_for_Accepted_Source_Diffs/](P4-T2_Add_Proposal_Preflight_Checks_for_Accepted_Source_Diffs/) | 2026-05-18 | PASS |
+| P4-T3 | [P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/](P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/) | 2026-05-18 | PASS |
 
 ## Historical Artifacts
 
@@ -61,3 +62,4 @@
 | 2026-05-17 | P4-T1 | Archived REVIEW_p4_t1_pr_ready_accepted_manifest_entries report |
 | 2026-05-18 | P4-T2 | Archived Add Proposal Preflight Checks for Accepted-Source Diffs (PASS) |
 | 2026-05-18 | P4-T2 | Archived REVIEW_p4_t2_add_proposal_preflight_checks report |
+| 2026-05-18 | P4-T3 | Archived Add Proposal Automation Documentation and Validation (PASS) |

@@ -1,21 +1,20 @@
-# Recommended Task: P4-T3 — Extend GitHub Proposal Automation Documentation and Validation
+# Recommended Task: P5-T1 — Add Duplicate Intent and Capability Claim Report
 
 **Priority:** P4
 **Phase:** SpecPM Proposal Integration
 **Effort:** Medium
-**Dependencies:** P4-T2
+**Dependencies:** P4-T3
 **Status:** In Progress
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P4-T3-extend-github-proposal-automation-documentation-and-validation`
-**Review Subject:** `p4_t3_extend_proposal_automation_docs`
+**Suggested Branch:** `feature/P5-T1-add-duplicate-intent-and-capability-claim-report`
+**Review Subject:** `p5_t1_duplicate_intent_capability_claim_report`
 
 **Current Phase:** SELECT → PLAN → EXECUTE → ARCHIVE → REVIEW → ARCHIVE-REVIEW
 
 ## Description
 
-Extend GitHub proposal automation documentation with deterministic usage guidance,
-preflight semantics, trust-boundary expectations, and validation evidence
-references for accepted-source proposals.
+Add deterministic duplicate intent and capability claim reporting across harvested
+and candidate metadata to support governance review before acceptance.
 
 ## Coverage Note
 
@@ -34,7 +33,9 @@ coverage does not decline.
   `SPECS/ARCHIVE/P3-T2_Collect_Snapshots_for_Selected_Repositories_into_Deterministic_Candidate_Paths/`.
 - `P4-T2` Add proposal preflight checks for accepted-source diffs: PASS,
   `SPECS/ARCHIVE/P4-T2_Add_Proposal_Preflight_Checks_for_Accepted_Source_Diffs/`.
+- `P4-T3` Extend GitHub proposal automation documentation and validation: PASS,
+  `SPECS/ARCHIVE/P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/`.
 
 ## Next Step
 
-Plan task `P4-T3` when ready.
+Plan task `P5-T1` when ready.
