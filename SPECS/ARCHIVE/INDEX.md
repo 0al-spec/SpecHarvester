@@ -16,6 +16,7 @@
 | P2-T2 | [P2-T2_Add_Per_File_Analyzer_Cache_Keyed_by_File_Digest_and_Analyzer_Version/](P2-T2_Add_Per_File_Analyzer_Cache_Keyed_by_File_Digest_and_Analyzer_Version/) | 2026-05-17 | PASS |
 | P2-T3 | [P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/](P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/) | 2026-05-17 | PASS |
 | P2-T4 | [P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools/](P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools/) | 2026-05-17 | PASS |
+| P3-T1 | [P3-T1_Read_Repository_Source_Manifests_from_inputs_yml/](P3-T1_Read_Repository_Source_Manifests_from_inputs_yml/) | 2026-05-17 | PASS |
 
 ## Historical Artifacts
 
@@ -46,3 +47,4 @@
 | 2026-05-17 | P2-T3 | Archived REVIEW_p2_t3_parse_diagnostics_partial_index report |
 | 2026-05-17 | P2-T4 | Archived Document Sandbox Requirements for Analyzers That Need Build Tools (PASS) |
 | 2026-05-17 | P2-T4 | Archived REVIEW_p2_t4_analyzer_sandbox_requirements report |
+| 2026-05-17 | P3-T1 | Archived Read Repository Source Manifests from inputs/*.yml (PASS) |

@@ -103,3 +103,7 @@ scripts.
 - No package script execution.
 - No `*.yaml` support unless added intentionally in a later task.
 - No remote manifest fetching.
+
+---
+**Archived:** 2026-05-17
+**Verdict:** PASS

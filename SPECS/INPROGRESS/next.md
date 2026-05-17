@@ -1,35 +1,34 @@
-# Selected Task: P3-T1 — Read Repository Source Manifests from inputs/*.yml
+# Recommended Task: P3-T2 — Collect Snapshots for Selected Repositories into Deterministic Candidate Paths
 
 **Priority:** P3
 **Phase:** Batch Harvesting
 **Effort:** Medium
-**Dependencies:** P0-T1, P1-T1, P2-T1
-**Status:** Selected
+**Dependencies:** P3-T1, P0-T1, P2-T1
+**Status:** Recommended
 **Updated:** 2026-05-17
-**Branch:** `feature/P3-T1-read-repository-source-manifests-from-inputs-yml`
-**Review Subject:** `p3_t1_repository_source_manifests`
+**Suggested Branch:** `feature/P3-T2-collect-snapshots-for-selected-repositories-into-deterministic-candidate-paths`
+**Suggested Review Subject:** `p3_t2_batch_snapshot_collection`
 
 ## Description
 
-Add the first batch-harvesting input surface by reading repository source
-manifests from `inputs/*.yml` without executing package content or contacting
-repository package managers.
+Use validated repository source manifests to collect snapshots for selected
+local checkouts into deterministic candidate paths without executing package
+content or contacting package managers.
 
 ## Coverage Note
 
-P2-T4 finished with 90.62% total coverage, matching the P2-T3 baseline.
-Implementation tasks should continue to add focused tests so coverage does not
-decline.
+P3-T1 finished with 91.40% total coverage, improving on the P2-T4 baseline of
+90.62%. Future implementation tasks should continue to add focused tests so
+coverage does not decline.
 
 ## Recently Archived
 
+- `P3-T1` Read repository source manifests from `inputs/*.yml`: PASS,
+  `SPECS/ARCHIVE/P3-T1_Read_Repository_Source_Manifests_from_inputs_yml/`.
 - `P2-T4` Document sandbox requirements for analyzers that need build tools:
   PASS,
   `SPECS/ARCHIVE/P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools/`.
-- `P2-T3` Add parse diagnostics and partial-index behavior: PASS,
-  `SPECS/ARCHIVE/P2-T3_Add_Parse_Diagnostics_and_Partial_Index_Behavior/`.
 
 ## Next Step
 
-Run PLAN for `P3-T1` and create
-`SPECS/INPROGRESS/P3-T1_Read_Repository_Source_Manifests_from_inputs_yml.md`.
+Run BRANCH for `P3-T2` when ready.
