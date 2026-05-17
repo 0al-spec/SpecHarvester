@@ -1,12 +1,13 @@
-# Next Task: P1-T5 — Integrate Public Interface Evidence into Deterministic Drafting
+# Selected Task: P1-T5 — Integrate Public Interface Evidence into Deterministic Drafting
 
 **Priority:** P1
 **Phase:** Public Interface Indexing
 **Effort:** Medium
 **Dependencies:** P1-T1, P1-T2, P1-T3, P1-T4
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P1-T5-integrate-public-interface-evidence-into-drafting`
+**Branch:** `feature/P1-T5-integrate-public-interface-evidence-into-drafting`
+**Review Subject:** `p1_t5_public_interface_evidence_drafting`
 
 ## Description
 
@@ -23,5 +24,5 @@ analyzer output instead of raw source inspection.
 
 ## Next Step
 
-Run SELECT to confirm this task or choose a higher-priority item from
-`SPECS/Workplan.md`.
+Run PLAN for `P1-T5` and create
+`SPECS/INPROGRESS/P1-T5_Integrate_Public_Interface_Evidence_into_Deterministic_Drafting.md`.
