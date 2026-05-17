@@ -1,34 +1,34 @@
-# Selected Task: P3-T2 — Collect Snapshots for Selected Repositories into Deterministic Candidate Paths
+# Recommended Task: P3-T3 — Emit Batch Validation Reports with Confidence and Policy Notes
 
 **Priority:** P3
 **Phase:** Batch Harvesting
 **Effort:** Medium
-**Dependencies:** P3-T1, P0-T1, P2-T1
-**Status:** Selected
+**Dependencies:** P3-T2, P3-T1, P2-T1
+**Status:** Recommended
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P3-T2-collect-snapshots-for-selected-repositories-into-deterministic-candidate-paths`
-**Suggested Review Subject:** `p3_t2_batch_snapshot_collection`
+**Suggested Branch:** `feature/P3-T3-emit-batch-validation-reports-with-confidence-and-policy-notes`
+**Suggested Review Subject:** `p3_t3_batch_validation_reports`
 
 ## Description
 
-Use validated repository source manifests to collect snapshots for selected
-local checkouts into deterministic candidate paths without executing package
-content or contacting package managers.
+Emit deterministic validation reports for batch collection output, including
+confidence summaries, policy notes, skipped records, and trust-boundary
+warnings that reviewers can inspect before drafting or promotion.
 
 ## Coverage Note
 
-P3-T1 finished with 91.40% total coverage, improving on the P2-T4 baseline of
-90.62%. Future implementation tasks should continue to add focused tests so
+P3-T2 finished with 91.81% total coverage, improving on the P3-T1 baseline of
+91.48%. Future implementation tasks should continue to add focused tests so
 coverage does not decline.
 
 ## Recently Archived
 
+- `P3-T2` Collect snapshots for selected repositories into deterministic
+  candidate paths: PASS,
+  `SPECS/ARCHIVE/P3-T2_Collect_Snapshots_for_Selected_Repositories_into_Deterministic_Candidate_Paths/`.
 - `P3-T1` Read repository source manifests from `inputs/*.yml`: PASS,
   `SPECS/ARCHIVE/P3-T1_Read_Repository_Source_Manifests_from_inputs_yml/`.
-- `P2-T4` Document sandbox requirements for analyzers that need build tools:
-  PASS,
-  `SPECS/ARCHIVE/P2-T4_Document_Sandbox_Requirements_for_Analyzers_That_Need_Build_Tools/`.
 
 ## Next Step
 
-Proceed with PLAN for `P3-T2`.
+Run BRANCH for `P3-T3` when ready.
