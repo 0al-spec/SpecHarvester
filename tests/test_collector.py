@@ -974,6 +974,25 @@ def test_prepare_accepted_manifest_entry_rejects_invalid_candidate(tmp_path: Pat
         )
 
 
+def test_prepare_accepted_manifest_entry_rejects_candidate_symlinks(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    external_manifest = tmp_path / "external-specpm.yaml"
+    external_manifest.write_text(
+        "schemaVersion: 1\nmetadata:\n  id: external.core\n  version: 9.9.9\n",
+        encoding="utf-8",
+    )
+    (candidate / "specpm.yaml").unlink()
+    (candidate / "specpm.yaml").symlink_to(external_manifest)
+
+    with pytest.raises(ValueError, match="unsupported symlink"):
+        prepare_accepted_manifest_entry(
+            PrepareAcceptedManifestEntryOptions(
+                candidate=candidate,
+                manifest=tmp_path / "accepted-packages.yml",
+            )
+        )
+
+
 def test_cli_prepare_accepted_manifest_entry_writes_json_result(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
     candidate = draft_demo_candidate(tmp_path)
     manifest = tmp_path / "accepted-packages.yml"

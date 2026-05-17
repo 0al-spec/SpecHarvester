@@ -39,6 +39,7 @@ def prepare_accepted_manifest_entry(options: PrepareAcceptedManifestEntryOptions
     manifest_path = candidate / "specpm.yaml"
     if not manifest_path.is_file():
         raise ValueError(f"Candidate is missing specpm.yaml: {candidate}")
+    reject_symlinks(candidate)
 
     manifest = options.manifest.resolve()
     identity = read_manifest_identity(manifest_path)
