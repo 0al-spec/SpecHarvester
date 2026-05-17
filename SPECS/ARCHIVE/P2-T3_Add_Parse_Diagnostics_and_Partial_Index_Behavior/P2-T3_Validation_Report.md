@@ -10,6 +10,8 @@ Verdict: PASS
 Implemented explicit partial-index status in `PublicInterfaceIndex` summaries:
 
 - Added deterministic `summary.status` derivation.
+- Bumped `PublicInterfaceIndex` schema version to `2` because `summary.status`
+  is now required.
 - `complete` is emitted when no diagnostics are present.
 - `partial` is emitted when diagnostics are present and at least one package
   record remains available for review.
