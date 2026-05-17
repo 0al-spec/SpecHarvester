@@ -11,9 +11,14 @@ tasks.
 
 ## Delivered
 
+- Installed Flow 1.5.0 managed files with `/Users/egor/Development/GitHub/Flow/install.sh`.
+- Added `.flow/params.yaml` for SpecHarvester's Python, Swift, DocC, and GitHub gates.
+- Added Flow-managed skills under `.agents/skills/flow-*`.
+- Added the Flow plugin under `plugins/flow`.
+- Added Flow command prompts under `SPECS/COMMANDS/`.
+- Added Flow role prompts under `SPECS/ROLES/`.
 - Added `SPECS/PRD.md`.
 - Added `SPECS/Workplan.md`.
-- Added Flow command procedures under `SPECS/COMMANDS/`.
 - Added `SPECS/INPROGRESS/next.md`.
 - Added `SPECS/ARCHIVE/INDEX.md`.
 - Linked the Flow entrypoint from `README.md` and `docs/README.md`.

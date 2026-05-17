@@ -1,54 +1,108 @@
-# ARCHIVE
+# ARCHIVE — Archive Completed Tasks
 
-Status: Active
+**Version:** 1.5.0
 
-Archive completed task artifacts after `EXECUTE`.
+## Purpose
+
+Scan for completed tasks and archive them from `SPECS/INPROGRESS/` to `SPECS/ARCHIVE/`.
 
 ## Inputs
 
-- `TASK_ID`
-- `TASK_NAME`
-- `VERDICT`: `PASS`, `PASS_WITH_NOTES`, or `FAIL`
-- Task PRD path under `SPECS/INPROGRESS/`
-- Validation report path under `SPECS/INPROGRESS/`
+- `SPECS/Workplan.md` — roadmap with task status
+- `SPECS/INPROGRESS/next.md` — current task pointer
+- `SPECS/INPROGRESS/{TASK_ID}_*.md` — task files to archive
 
-## Procedure
+## Algorithm
 
-1. Create the task archive directory:
+1. **Scan for completed tasks** in workplan:
+   - Check validation report exists with PASS/FAIL/PARTIAL verdict
+   - Confirm all deliverables are addressed
 
-```text
-SPECS/ARCHIVE/{TASK_ID}_{TASK_NAME}/
+2. **For each completed task:**
+   - **MUST create the archive folder first:**
+     ```bash
+     mkdir -p "SPECS/ARCHIVE/${TASK_ID}_${TASK_NAME}"
+     ```
+   - Execute [`ARCHIVE_TASK`](PRIMITIVES/ARCHIVE_TASK.md) primitive with:
+     - `TASK_ID` — task identifier (e.g., `P1-T1`)
+     - `TASK_NAME` — task name
+     - `VERDICT` — from validation report
+     - `DATE` — current date
+   - When updating `SPECS/ARCHIVE/INDEX.md`, preserve the Archive Log header separator row directly beneath the header.
+
+3. **Update `SPECS/INPROGRESS/next.md`:**
+   - Clear current task block
+   - Add entry to "Recently Archived" section
+   - Suggest next tasks from workplan
+
+4. **For non-task artifacts** (code reviews, reports):
+   ```bash
+   # Ensure historical folder exists
+   mkdir -p "SPECS/ARCHIVE/_Historical"
+
+   # Move artifact
+   git mv "SPECS/INPROGRESS/{artifact}.md" "SPECS/ARCHIVE/_Historical/"
+   ```
+   - Add entry to Historical Artifacts table in INDEX.md
+
+5. **Commit** via `COMMIT` primitive if desired.
+
+## Modes
+
+| Mode | Description |
+|------|-------------|
+| **Auto** | Archive all completed tasks |
+| **Single `{TASK_ID}`** | Archive only specified task |
+| **Dry run** | Report without modifying files |
+
+## Archive Structure
+
+```
+SPECS/
+├── ARCHIVE/
+│   ├── INDEX.md
+│   ├── {TASK_ID}_{TASK_NAME}/
+│   │   ├── {TASK_ID}_{TASK_NAME}.md
+│   │   └── {TASK_ID}_Validation_Report.md
+│   └── _Historical/
+└── INPROGRESS/
+    └── next.md
 ```
 
-2. Move or copy task artifacts into the archive directory:
+## INDEX.md Format
 
-```text
-SPECS/INPROGRESS/{TASK_ID}_{TASK_NAME}.md
-SPECS/INPROGRESS/{TASK_ID}_Validation_Report.md
+```markdown
+# Tasks Archive
+
+**Last Updated:** YYYY-MM-DD
+
+## Archived Tasks
+
+| Task ID | Folder | Archived | Verdict |
+|---------|--------|----------|---------|
+
+## Historical Artifacts
+
+| Folder | Description |
+|--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifacts |
+
+## Archive Log
+
+| Date | Task ID | Action |
+|------|---------|--------|
 ```
 
-3. Add `SUMMARY.md` with:
-   - task ID and name;
-   - branch;
-   - implementation summary;
-   - validation commands and outcomes;
-   - final verdict;
-   - follow-up requirement.
+## Example Output
 
-4. Update `SPECS/Workplan.md`:
-   - mark the task complete when `VERDICT` is `PASS` or `PASS_WITH_NOTES`;
-   - leave it incomplete and add a note when `VERDICT` is `FAIL`.
+```
+ARCHIVE: Scanning for completed tasks...
 
-5. Update `SPECS/INPROGRESS/next.md`:
-   - clear the active task;
-   - point to the next unchecked task from `SPECS/Workplan.md`.
+Found 1 completed task: P1-T1_Create_Project_Structure
+  → Executing ARCHIVE_TASK primitive
+  ✓ Archived to SPECS/ARCHIVE/P1-T1_Create_Project_Structure/
 
-6. Update `SPECS/ARCHIVE/INDEX.md` with the archive path and verdict.
+Updated SPECS/INPROGRESS/next.md
 
-## Completion Criteria
-
-- Task archive directory exists.
-- Validation report is archived.
-- Workplan reflects the task verdict.
-- `next.md` no longer points to completed work as active.
-- Archive index links the task archive.
+ARCHIVE complete: 1 task archived
+```
