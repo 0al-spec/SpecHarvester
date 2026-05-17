@@ -49,6 +49,26 @@ It must not run with write credentials on ordinary `pull_request` events.
 For review safety, manifest-path decisions can be prepared from the reviewed
 candidate using `prepare-accepted-entry` before running proposal automation.
 
+## Preflight Validation
+
+The trusted proposal run performs explicit preflight checks before cross-repository
+proposal writes:
+
+- candidate directory existence;
+- candidate validation with `python -m specpm.cli validate <candidate_dir> --json`;
+- metadata identity check:
+  - `specpm.yaml` `metadata.id` must match `package_id`;
+  - `specpm.yaml` `metadata.version` must match `package_version`;
+- symlink rejection for candidate `specpm.yaml` input paths.
+
+After promotion, the workflow runs `specpm public-index generate` and validates the
+resulting SpecPM diff scope. Allowed changed paths are:
+
+- `public-index/generated/<packageId>/<packageVersion>/*`
+- `public-index/accepted-packages.yml`
+
+Any other changed path causes immediate failure.
+
 ## Required Secret
 
 To create a PR in SpecPM, configure:
@@ -109,6 +129,17 @@ The workflow will:
 - print the SpecPM diff.
 
 It will not push a branch or create a PR.
+
+Troubleshooting notes:
+
+- Identity mismatch: verify `candidates/<pkg>/specpm.yaml` metadata against workflow
+  inputs before running proposal.
+- No changes: candidate promotion is deterministic; review upstream expected effects
+  and re-run after `prepare-accepted-entry` if manifest path was absent.
+- Scope failure: the changed files were outside `public-index/generated/<id>/<ver>`
+  and `public-index/accepted-packages.yml`.
+- Symlink validation failure: copy candidate content to a normal path and avoid
+  symlinked manifest inputs.
 
 ## Manual PR Creation
 

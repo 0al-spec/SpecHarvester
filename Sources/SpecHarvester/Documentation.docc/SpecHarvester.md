@@ -38,6 +38,8 @@ The canonical source files remain in the repository:
 - `docs/BATCH_VALIDATION_REPORTS.md`
 - `docs/SPECPM_PROPOSAL_AUTOMATION.md`
 - `docs/ACCEPTED_MANIFEST_ENTRIES.md`
+- `docs/GOVERNANCE_REPORTS.md`
+- `docs/NAMESPACE_UPSTREAM_REPORTS.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -59,6 +61,8 @@ the host.
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>
 - <doc:AcceptedManifestEntries>
+- <doc:GovernanceReports>
+- <doc:NamespaceUpstreamReports>
 - <doc:ProposalAutomation>
 
 ### Architecture

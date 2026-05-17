@@ -106,6 +106,56 @@ jobs:
           test -d "${{ steps.config.outputs.candidate_dir }}"
           python -m specpm.cli validate "${{ steps.config.outputs.candidate_dir }}" --json
 
+      - name: Preflight candidate identity and proposal inputs
+        working-directory: SpecHarvester
+        run: |
+          python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          from spec_harvester.promoter import read_manifest_identity, reject_symlinks
+
+          candidate_dir = Path("${{ steps.config.outputs.candidate_dir }}")
+          expected_id = "${{ steps.config.outputs.package_id }}"
+          expected_version = "${{ steps.config.outputs.package_version }}"
+
+          reject_symlinks(candidate_dir)
+
+          identity = read_manifest_identity(candidate_dir / "specpm.yaml")
+          if identity["id"] != expected_id:
+              print(
+                  json.dumps(
+                      {
+                          "error": "candidate id mismatch",
+                          "candidateId": identity["id"],
+                          "expectedId": expected_id,
+                      }
+                  ),
+                  file=sys.stderr,
+              )
+              raise SystemExit(1)
+          if identity["version"] != expected_version:
+              print(
+                  json.dumps(
+                      {
+                          "error": "candidate version mismatch",
+                          "candidateVersion": identity["version"],
+                          "expectedVersion": expected_version,
+                      }
+                  ),
+                  file=sys.stderr,
+              )
+              raise SystemExit(1)
+          print(
+              json.dumps(
+                  {
+                      "status": "ok",
+                      "packageId": identity["id"],
+                      "packageVersion": identity["version"],
+                  }
+              )
+          )
+
       - name: Promote into SpecPM checkout
         working-directory: SpecHarvester
         run: |
@@ -129,11 +179,30 @@ jobs:
           test -f "/tmp/specpm-public-index/v0/packages/${{ steps.config.outputs.package_id }}/index.json"
           test -f /tmp/specpm-public-index/v0/intents/index.json
 
-      - name: Summarize SpecPM diff
+      - name: Summarize and preflight SpecPM diff
         id: diff
         working-directory: SpecPM
         run: |
+          expected_package_dir="public-index/generated/${{ steps.config.outputs.package_subdir }}"
           git status --short
+          changed_files="$(git diff --name-only -- public-index)"
+          if [ -n "$changed_files" ]; then
+            while IFS= read -r file; do
+              if [ -z "$file" ]; then
+                continue
+              fi
+              case "$file" in
+                "${expected_package_dir}"*)
+                  ;;
+                public-index/accepted-packages.yml)
+                  ;;
+                *)
+                  echo "::error ::Unexpected proposal diff path: ${file}"
+                  exit 1
+                  ;;
+              esac
+            done <<< "$changed_files"
+          fi
           if [ -n "$(git status --porcelain)" ]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
             git diff -- public-index

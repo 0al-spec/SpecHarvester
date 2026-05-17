@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-05-17
+Updated: 2026-05-18
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -76,8 +76,8 @@ Acceptance:
 ## Phase 4. SpecPM Proposal Integration
 
 - [x] `P4-T1` Prepare PR-ready accepted package manifest entries.
-- [ ] `P4-T2` Add proposal preflight checks for accepted-source diffs.
-- [ ] `P4-T3` Extend GitHub proposal automation documentation and validation.
+- [x] `P4-T2` Add proposal preflight checks for accepted-source diffs.
+- [x] `P4-T3` Extend GitHub proposal automation documentation and validation.
 
 Acceptance:
 
@@ -87,8 +87,8 @@ Acceptance:
 
 ## Phase 5. Governance Reports
 
-- [ ] `P5-T1` Add duplicate intent and capability claim report.
-- [ ] `P5-T2` Add namespace and upstream relationship review report.
+- [x] `P5-T1` Add duplicate intent and capability claim report.
+- [x] `P5-T2` Add namespace and upstream relationship review report.
 - [ ] `P5-T3` Add license and provenance risk report.
 
 Acceptance:
