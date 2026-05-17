@@ -39,3 +39,4 @@
 | 2026-05-17 | P2-T1 | Archived Add Analyzer Trust Policy Fields to Harvest Snapshots (PASS) |
 | 2026-05-17 | P2-T1 | Archived REVIEW_p2_t1_analyzer_trust_policy_fields report |
 | 2026-05-17 | P2-T2 | Archived Add Per-File Analyzer Cache Keyed by File Digest and Analyzer Version (PASS) |
+| 2026-05-17 | P2-T2 | Archived REVIEW_p2_t2_per_file_analyzer_cache report |
