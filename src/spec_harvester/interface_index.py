@@ -5,7 +5,7 @@ import re
 from typing import Any
 
 PUBLIC_INTERFACE_INDEX_KIND = "SpecHarvesterPublicInterfaceIndex"
-PUBLIC_INTERFACE_INDEX_SCHEMA_VERSION = 1
+PUBLIC_INTERFACE_INDEX_SCHEMA_VERSION = 2
 
 ALLOWED_ANALYZER_EXECUTIONS = {"none", "metadata_tool_only", "build_tool_sandboxed"}
 ALLOWED_NETWORK_ACCESS = {"none"}

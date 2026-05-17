@@ -143,7 +143,7 @@ def test_public_interface_index_rejects_bad_top_level_shape() -> None:
     errors = public_interface_index_errors(index)
 
     assert "kind must be SpecHarvesterPublicInterfaceIndex" in errors
-    assert "schemaVersion must be 1" in errors
+    assert f"schemaVersion must be {PUBLIC_INTERFACE_INDEX_SCHEMA_VERSION}" in errors
     with pytest.raises(ValueError, match="Invalid PublicInterfaceIndex"):
         validate_public_interface_index(index)
 
