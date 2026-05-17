@@ -297,15 +297,11 @@ def _is_non_standard_license(license_text: str) -> bool:
         return True
 
     if any(
-        prefix in license_text
-        for prefix in ("license:", "see", "file:", "http://", "https://")
+        prefix in license_text for prefix in ("license:", "see", "file:", "http://", "https://")
     ):
         return True
 
-    if any(
-        token in f" {license_text} "
-        for token in (" with ", " or ", " and ")
-    ):
+    if any(token in f" {license_text} " for token in (" with ", " or ", " and ")):
         return True
 
     return not all(char.isalnum() or char in ".-+_" for char in license_text)

@@ -55,9 +55,7 @@ def test_build_license_provenance_risk_report_flags_license_and_provenance_issue
         "non_standard_license",
     }
 
-    missing = [
-        item for item in issues if item["code"] == "non_standard_license"
-    ]
+    missing = [item for item in issues if item["code"] == "non_standard_license"]
     assert len(missing) == 1
     assert missing[0]["packageId"] == "odd.core"
 
@@ -101,7 +99,7 @@ def write_manifest(
         upstream_block = (
             "foreignArtifacts:\n"
             "  - id: upstream_repository\n"
-            f"    uri: \"{upstream_uri}\"\n"
+            f'    uri: "{upstream_uri}"\n'
             "    role: primary_intent_source\n"
         )
 
