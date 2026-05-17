@@ -76,6 +76,16 @@ analyzers to declare:
 
 The policy is declarative. `collect-local` does not run analyzers.
 
+### Analyzer Cache
+
+Deterministic public interface analyzers may use an optional local cache to
+avoid reparsing unchanged source files. Cache entries are keyed by analyzer id,
+analyzer version, and file SHA-256 digest, and include a cache schema version.
+
+The cache is only an optimization. Analyzer output remains untrusted evidence:
+malformed entries, metadata mismatches, digest mismatches, and path/evidence
+mismatches are ignored and recomputed.
+
 ### Candidate SpecPackage
 
 `specpm.yaml` plus `specs/*.spec.yaml` is a generated SpecPM candidate package.

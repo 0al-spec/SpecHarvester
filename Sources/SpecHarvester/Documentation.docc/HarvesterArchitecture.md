@@ -45,6 +45,17 @@ Current command:
 spec-harvester collect-local <repo> --out <candidate-dir>
 ```
 
+### Deterministic Public Interface Analyzers
+
+Extract compact `PublicInterfaceIndex` artifacts from local source bytes
+without executing package code. Python uses the standard-library `ast` module,
+and JavaScript/TypeScript uses package manifest entrypoints plus static export
+scanning.
+
+Analyzers can use an optional per-file cache keyed by analyzer id, analyzer
+version, and file SHA-256 digest. The cache is derived untrusted metadata and
+is ignored when metadata or path/evidence validation fails.
+
 ### Deterministic Candidate Drafter
 
 Consumes evidence snapshots and drafts `specpm.yaml` plus

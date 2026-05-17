@@ -7,6 +7,7 @@ from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.analyzer_cache import AnalyzerCache
 from spec_harvester.interface_index import (
     analyzer_record,
     evidence_record,
@@ -88,6 +89,7 @@ def analyze_js_ts_public_api(
     *,
     package_id: str | None = None,
     source_revision: str | None = None,
+    cache_dir: Path | None = None,
 ) -> dict[str, Any]:
     root = source.resolve()
     if not root.exists() or not root.is_dir():
@@ -95,6 +97,7 @@ def analyze_js_ts_public_api(
             f"JavaScript/TypeScript source root does not exist or is not a directory: {source}"
         )
 
+    cache = AnalyzerCache(cache_dir) if cache_dir is not None else None
     packages: list[dict[str, Any]] = []
     diagnostics: list[dict[str, Any]] = []
     for manifest_path in package_manifest_files(root):
@@ -103,6 +106,7 @@ def analyze_js_ts_public_api(
             manifest_path,
             package_id=package_id,
             diagnostics=diagnostics,
+            cache=cache,
         )
         if package_record is not None:
             packages.append(package_record)
@@ -149,6 +153,7 @@ def analyze_package_manifest(
     *,
     package_id: str | None,
     diagnostics: list[dict[str, Any]],
+    cache: AnalyzerCache | None,
 ) -> dict[str, Any] | None:
     relative_manifest = manifest_path.relative_to(root).as_posix()
     try:
@@ -195,6 +200,7 @@ def analyze_package_manifest(
         relative_manifest,
         digest,
         diagnostics,
+        cache,
     )
     package_path = package_root.relative_to(root).as_posix()
     if package_path == "":
@@ -221,6 +227,7 @@ def package_entrypoints(
     manifest_path: str,
     manifest_digest: str,
     diagnostics: list[dict[str, Any]],
+    cache: AnalyzerCache | None,
 ) -> list[dict[str, Any]]:
     entrypoint_paths: dict[str, Path] = {}
     for target in manifest_entrypoint_targets(manifest):
@@ -265,6 +272,7 @@ def package_entrypoints(
             manifest_path,
             manifest_digest,
             diagnostics,
+            cache,
         )
         if entrypoint is not None:
             entrypoints.append(entrypoint)
@@ -332,6 +340,7 @@ def source_entrypoint(
     manifest_path: str,
     manifest_digest: str,
     diagnostics: list[dict[str, Any]],
+    cache: AnalyzerCache | None,
 ) -> dict[str, Any] | None:
     relative = path.relative_to(root).as_posix()
     try:
@@ -347,11 +356,64 @@ def source_entrypoint(
         )
         return None
     digest = hashlib.sha256(data).hexdigest()
+    cached_symbols = read_cached_js_ts_symbols(cache, relative, digest)
+    if cached_symbols is not None:
+        return {
+            "path": relative,
+            "symbols": cached_symbols,
+        }
+
     text = data.decode("utf-8", errors="replace")
+    symbols = source_symbols(text, relative, digest)
+    write_cached_js_ts_symbols(cache, digest, symbols)
     return {
         "path": relative,
-        "symbols": source_symbols(text, relative, digest),
+        "symbols": symbols,
     }
+
+
+def read_cached_js_ts_symbols(
+    cache: AnalyzerCache | None,
+    path: str,
+    digest: str,
+) -> list[dict[str, Any]] | None:
+    if cache is None:
+        return None
+    payload = cache.read(
+        analyzer_id=JS_TS_PUBLIC_API_ANALYZER_ID,
+        analyzer_version=JS_TS_PUBLIC_API_ANALYZER_VERSION,
+        file_digest=digest,
+    )
+    if not isinstance(payload, dict):
+        return None
+    symbols = payload.get("symbols")
+    if not isinstance(symbols, list):
+        return None
+    if not all(is_symbol_for_path(symbol, path) for symbol in symbols):
+        return None
+    return symbols
+
+
+def write_cached_js_ts_symbols(
+    cache: AnalyzerCache | None,
+    digest: str,
+    symbols: list[dict[str, Any]],
+) -> None:
+    if cache is None:
+        return
+    cache.write(
+        analyzer_id=JS_TS_PUBLIC_API_ANALYZER_ID,
+        analyzer_version=JS_TS_PUBLIC_API_ANALYZER_VERSION,
+        file_digest=digest,
+        payload={"symbols": symbols},
+    )
+
+
+def is_symbol_for_path(value: Any, path: str) -> bool:
+    if not isinstance(value, dict):
+        return False
+    evidence = value.get("evidence")
+    return isinstance(evidence, dict) and evidence.get("path") == path
 
 
 def source_symbols(text: str, path: str, digest: str) -> list[dict[str, Any]]:

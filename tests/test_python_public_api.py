@@ -233,6 +233,27 @@ def test_analyze_python_public_api_records_parse_diagnostics_and_skips_cache_dir
     assert len(diagnostics["null_byte.py"]["evidence"]["sha256"]) == 64
 
 
+def test_analyze_python_public_api_reuses_cached_file_results(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "api.py").write_text("def ok():\n    return True\n", encoding="utf-8")
+    cache_dir = tmp_path / "cache"
+
+    first = analyze_python_public_api(package, cache_dir=cache_dir)
+
+    def fail_parse(*args, **kwargs):  # type: ignore[no-untyped-def]
+        raise AssertionError("cache miss")
+
+    monkeypatch.setattr("spec_harvester.python_public_api.ast.parse", fail_parse)
+
+    second = analyze_python_public_api(package, cache_dir=cache_dir)
+
+    assert second == first
+
+
 def test_analyze_python_public_api_rejects_non_directory_source(tmp_path: Path) -> None:
     source = tmp_path / "module.py"
     source.write_text("def ok():\n    return True\n", encoding="utf-8")
