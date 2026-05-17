@@ -89,7 +89,7 @@ Acceptance:
 
 - [x] `P5-T1` Add duplicate intent and capability claim report.
 - [x] `P5-T2` Add namespace and upstream relationship review report.
-- [ ] `P5-T3` Add license and provenance risk report.
+- [x] `P5-T3` Add license and provenance risk report.
 
 Acceptance:
 

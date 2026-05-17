@@ -24,6 +24,7 @@
 | P4-T3 | [P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/](P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/) | 2026-05-18 | PASS |
 | P5-T1 | [P5-T1_Add_Duplicate_Intent_and_Capability_Claim_Report/](P5-T1_Add_Duplicate_Intent_and_Capability_Claim_Report/) | 2026-05-18 | PASS |
 | P5-T2 | [P5-T2_Add_Namespace_and_Upstream_Relationship_Review_Report/](P5-T2_Add_Namespace_and_Upstream_Relationship_Review_Report/) | 2026-05-18 | PASS |
+| P5-T3 | [P5-T3_Add_License_and_Provenance_Risk_Report/](P5-T3_Add_License_and_Provenance_Risk_Report/) | 2026-05-18 | PASS |
 
 ## Historical Artifacts
 
