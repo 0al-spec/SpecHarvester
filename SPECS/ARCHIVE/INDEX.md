@@ -45,3 +45,4 @@
 | 2026-05-17 | P2-T3 | Archived Add Parse Diagnostics and Partial-Index Behavior (PASS) |
 | 2026-05-17 | P2-T3 | Archived REVIEW_p2_t3_parse_diagnostics_partial_index report |
 | 2026-05-17 | P2-T4 | Archived Document Sandbox Requirements for Analyzers That Need Build Tools (PASS) |
+| 2026-05-17 | P2-T4 | Archived REVIEW_p2_t4_analyzer_sandbox_requirements report |
