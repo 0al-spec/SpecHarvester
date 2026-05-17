@@ -58,6 +58,28 @@ Current command:
 spec-harvester source-manifests inputs
 ```
 
+### Batch Snapshot Collector
+
+Reads validated repository source records and collects `harvest.json` snapshots
+from operator-managed local checkouts into deterministic candidate directories.
+It uses the same allowlisted static file collector as `collect-local`.
+
+Current command:
+
+```bash
+spec-harvester collect-batch inputs --out candidates
+```
+
+Outputs are written as:
+
+```text
+candidates/<repository-id>/harvest.json
+```
+
+The batch collector does not clone repositories, contact networks, install
+dependencies, run package managers, run package scripts, execute checkout files,
+or derive output paths from repository content.
+
 ### Deterministic Public Interface Analyzers
 
 Extract compact `PublicInterfaceIndex` JSON from local source bytes without

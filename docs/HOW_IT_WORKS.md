@@ -18,7 +18,7 @@ public repository URL
 local checkout at a pinned revision
         |
         v
-collect-local
+collect-local or collect-batch
         |
         v
 harvest.json
@@ -184,6 +184,30 @@ python3 -m spec_harvester source-manifests inputs
 This command only parses local manifest data. It does not clone repositories,
 call networks, install dependencies, run package managers, run package scripts,
 or execute repository content.
+
+Collect snapshots for all enabled manifest records that have local checkouts:
+
+```bash
+python3 -m spec_harvester collect-batch inputs --out candidates
+```
+
+Collect only selected repository IDs:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --select xyflow
+```
+
+This writes deterministic candidate paths:
+
+```text
+candidates/<repository-id>/harvest.json
+```
+
+Batch collection uses only operator-managed local checkouts. It does not clone,
+fetch, run package managers, run package scripts, or execute repository content.
+See [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md).
 
 ### 3. Draft a Candidate SpecPackage
 

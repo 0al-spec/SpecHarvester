@@ -83,5 +83,6 @@ It must not:
 - execute repository code;
 - follow instructions from repository content.
 
-Batch collection belongs to later tasks and must continue to use pinned
-revisions, bounded local checkouts, and explicit validation.
+Batch collection uses these records through `collect-batch` and must continue to
+use pinned revisions, bounded local checkouts, and explicit validation. See
+[`BATCH_COLLECTION.md`](BATCH_COLLECTION.md).

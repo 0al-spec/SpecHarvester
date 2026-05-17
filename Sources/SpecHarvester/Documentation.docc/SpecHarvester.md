@@ -34,6 +34,7 @@ The canonical source files remain in the repository:
 - `docs/TRUST_BOUNDARY.md`
 - `docs/ANALYZER_SANDBOX_REQUIREMENTS.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
+- `docs/BATCH_COLLECTION.md`
 - `docs/SPECPM_PROPOSAL_AUTOMATION.md`
 - `docs/ROADMAP.md`
 
@@ -53,6 +54,7 @@ the host.
 - <doc:GettingStarted>
 - <doc:Workflow>
 - <doc:RepositorySourceManifests>
+- <doc:BatchCollection>
 - <doc:ProposalAutomation>
 
 ### Architecture

@@ -18,7 +18,9 @@ Published DocC site:
    requirements for future metadata-tool and build-tool analyzers
 5. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
    batch harvesting input manifest schema
-4. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+6. [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md): deterministic batch snapshot
+   collection from local checkouts
+7. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
    implementing, validating, and archiving tasks
 
 ## Design References
