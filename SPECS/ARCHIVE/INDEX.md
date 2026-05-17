@@ -12,6 +12,7 @@
 | P1-T3 | [P1-T3_Add_JavaScript_and_TypeScript_Manifest_Export_Analyzer/](P1-T3_Add_JavaScript_and_TypeScript_Manifest_Export_Analyzer/) | 2026-05-17 | PASS |
 | P1-T4 | [P1-T4_Evaluate_Tree_sitter_as_the_Shared_Syntax_Indexing_Layer/](P1-T4_Evaluate_Tree_sitter_as_the_Shared_Syntax_Indexing_Layer/) | 2026-05-17 | PASS |
 | P1-T5 | [P1-T5_Integrate_Public_Interface_Evidence_into_Deterministic_Drafting/](P1-T5_Integrate_Public_Interface_Evidence_into_Deterministic_Drafting/) | 2026-05-17 | PASS |
+| P2-T1 | [P2-T1_Add_Analyzer_Trust_Policy_Fields_to_Harvest_Snapshots/](P2-T1_Add_Analyzer_Trust_Policy_Fields_to_Harvest_Snapshots/) | 2026-05-17 | PASS |
 
 ## Historical Artifacts
 
@@ -34,3 +35,5 @@
 | 2026-05-17 | P1-T4 | Archived REVIEW_p1_t4_tree_sitter_syntax_indexing_layer report |
 | 2026-05-17 | P1-T5 | Archived Integrate Public Interface Evidence into Deterministic Drafting (PASS) |
 | 2026-05-17 | P1-T5 | Archived REVIEW_p1_t5_public_interface_evidence_drafting report |
+| 2026-05-17 | P2-T1 | Archived Add Analyzer Trust Policy Fields to Harvest Snapshots (PASS) |
+| 2026-05-17 | P2-T1 | Archived REVIEW_p2_t1_analyzer_trust_policy_fields report |

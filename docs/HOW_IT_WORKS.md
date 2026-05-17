@@ -58,10 +58,23 @@ Publication into a registry is intentionally still a SpecPM maintainer PR.
 ### Harvest Snapshot
 
 `harvest.json` is a static evidence snapshot. It records allowlisted file paths,
-checksums, bounded metadata, source repository information, and collection
-policy.
+checksums, bounded metadata, source repository information, collection policy,
+and analyzer trust policy.
 
 It is evidence, not a spec.
+
+The `analyzerPolicy` record declares which analyzer artifacts later pipeline
+steps may consider compatible with the snapshot. The bootstrap default requires
+analyzers to declare:
+
+- `execution: none`
+- `networkAccess: none`
+- `packageScripts: not_run`
+- analyzer id and version metadata
+- source revision metadata
+- source digest evidence
+
+The policy is declarative. `collect-local` does not run analyzers.
 
 ### Candidate SpecPackage
 

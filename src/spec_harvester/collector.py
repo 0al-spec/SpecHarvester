@@ -9,6 +9,7 @@ from typing import Any
 
 SNAPSHOT_KIND = "SpecHarvesterEvidenceSnapshot"
 SNAPSHOT_SCHEMA_VERSION = 1
+ANALYZER_TRUST_POLICY_SCHEMA_VERSION = 1
 DEFAULT_MAX_FILE_BYTES = 512 * 1024
 
 ROOT_FILES = [
@@ -114,6 +115,7 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
             "packageScripts": "not_run",
             "contentAuthority": "untrusted_metadata",
         },
+        "analyzerPolicy": default_analyzer_trust_policy(),
         "files": files,
         "skippedFiles": skipped_files,
         "summary": {
@@ -121,6 +123,22 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
             "skippedFileCount": len(skipped_files),
             "packageManifestCount": sum(1 for item in files if item["kind"] == "package_manifest"),
         },
+    }
+
+
+def default_analyzer_trust_policy() -> dict[str, Any]:
+    return {
+        "schemaVersion": ANALYZER_TRUST_POLICY_SCHEMA_VERSION,
+        "inputAuthority": "untrusted_repository_content",
+        "outputAuthority": "untrusted_analyzer_metadata",
+        "allowedExecutions": ["none"],
+        "networkAccess": "none",
+        "packageScripts": "not_run",
+        "allowedConfidence": ["high", "medium", "low"],
+        "requiresAnalyzerId": True,
+        "requiresAnalyzerVersion": True,
+        "requiresSourceRevision": True,
+        "requiresSourceDigests": True,
     }
 
 

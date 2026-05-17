@@ -1,4 +1,4 @@
-# Next Task: P2-T1 — Add Analyzer Trust Policy Fields to Harvest Snapshots
+# Next Task: P2-T2 — Add Per-File Analyzer Cache Keyed by File Digest and Analyzer Version
 
 **Priority:** P2
 **Phase:** Analyzer Policy and Cache
@@ -6,21 +6,21 @@
 **Dependencies:** P1-T1, P1-T2, P1-T3, P1-T4, P1-T5
 **Status:** Recommended
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P2-T1-add-analyzer-trust-policy-fields-to-harvest-snapshots`
+**Suggested Branch:** `feature/P2-T2-add-per-file-analyzer-cache-keyed-by-file-digest-and-analyzer-version`
 
 ## Description
 
-Add analyzer trust policy fields to harvest snapshots so static analyzer output
-can be governed consistently with repository collection policy before cache,
-diagnostic, and sandbox extensions are introduced.
+Add a deterministic per-file analyzer cache keyed by file digest and analyzer
+version so unchanged analyzer inputs can be reused safely without executing
+package content or package scripts.
 
 ## Recently Archived
 
+- `P2-T1` Add analyzer trust policy fields to harvest snapshots: PASS,
+  `SPECS/ARCHIVE/P2-T1_Add_Analyzer_Trust_Policy_Fields_to_Harvest_Snapshots/`.
 - `P1-T5` Integrate public interface evidence into deterministic drafting:
   PASS,
   `SPECS/ARCHIVE/P1-T5_Integrate_Public_Interface_Evidence_into_Deterministic_Drafting/`.
-- `P1-T4` Evaluate Tree-sitter as the shared syntax indexing layer: PASS,
-  `SPECS/ARCHIVE/P1-T4_Evaluate_Tree_sitter_as_the_Shared_Syntax_Indexing_Layer/`.
 
 ## Next Step
 
