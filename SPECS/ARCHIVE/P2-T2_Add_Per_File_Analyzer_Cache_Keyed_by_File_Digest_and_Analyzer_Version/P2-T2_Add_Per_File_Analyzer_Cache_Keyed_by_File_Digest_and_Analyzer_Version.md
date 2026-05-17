@@ -77,3 +77,7 @@ records under the operator-supplied cache directory.
 - No Tree-sitter parser integration.
 - No sandbox implementation.
 - No cache use in `collect-local`.
+
+---
+**Archived:** 2026-05-17
+**Verdict:** PASS
