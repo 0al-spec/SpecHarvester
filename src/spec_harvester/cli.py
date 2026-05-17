@@ -21,6 +21,10 @@ from spec_harvester.governance_reports import (
     build_duplicate_claim_report,
     write_governance_report,
 )
+from spec_harvester.license_provenance_reports import (
+    build_license_provenance_risk_report,
+    write_license_provenance_report,
+)
 from spec_harvester.namespace_reports import (
     build_namespace_upstream_report,
     write_namespace_upstream_report,
@@ -268,6 +272,30 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where namespace/upstream report JSON is written.",
     )
     namespace_upstream.set_defaults(func=run_namespace_upstream_report)
+
+    license_risk = subcommands.add_parser(
+        "governance-license-provenance-report",
+        help=(
+            "Build license and upstream provenance risk review report from candidate/accepted "
+            "metadata."
+        ),
+    )
+    license_risk.add_argument(
+        "--accepted-root",
+        type=Path,
+        help="Accepted package source root for risk input.",
+    )
+    license_risk.add_argument(
+        "--candidates-root",
+        type=Path,
+        help="Candidate package root for risk input.",
+    )
+    license_risk.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where license and provenance risk report JSON is written.",
+    )
+    license_risk.set_defaults(func=run_license_provenance_report)
     return parser
 
 
@@ -390,6 +418,20 @@ def run_namespace_upstream_report(args: argparse.Namespace) -> int:
     )
     if args.output is not None:
         write_namespace_upstream_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_license_provenance_report(args: argparse.Namespace) -> int:
+    if args.accepted_root is None and args.candidates_root is None:
+        raise ValueError("At least one of --accepted-root or --candidates-root must be set.")
+
+    result = build_license_provenance_risk_report(
+        accepted_root=args.accepted_root,
+        candidates_root=args.candidates_root,
+    )
+    if args.output is not None:
+        write_license_provenance_report(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 

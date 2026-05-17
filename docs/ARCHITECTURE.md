@@ -188,6 +188,17 @@ spec-harvester governance-upstream-report \
 The report lists namespace collisions, packages missing upstream relationship
 links, and namespace-vs-upstream owner mismatches.
 
+Build a license and provenance risk review report:
+
+```bash
+python3 -m spec_harvester governance-license-provenance-report \
+  --accepted-root <accepted-root> \
+  --candidates-root <candidates-root>
+```
+
+The report flags missing or suspicious licenses and upstream provenance signals
+that should be reviewed before proposal.
+
 ### Promotion Gate
 
 Copies a reviewed candidate into an accepted source root and optionally appends
