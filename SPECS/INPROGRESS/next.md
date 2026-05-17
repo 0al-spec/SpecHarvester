@@ -1,35 +1,47 @@
-# Recommended Task: [NEW] Define next governance/reporting task
+# Recommended Task: P6-T1 - Discover nested Swift package manifests during static harvest
 
-**Priority:** P5
-**Phase:** Governance Reports (pending)
-**Effort:** To be defined
+**Priority:** P6
+**Phase:** Smoke-Test Feedback
+**Effort:** Medium
+**Dependencies:** P3-T2, P3-T3
 **Status:** Open
 **Updated:** 2026-05-18
-**Suggested Branch:** to be assigned
-**Review Subject:** to be assigned
+**Suggested Branch:** `feature/P6-T1-discover-nested-swift-package-manifests`
+**Review Subject:** `p6_t1_nested_swift_package_manifest_discovery`
 
 **Current Phase:** SELECT
 
 ## Description
 
-No explicit pending task is currently queued in `SPECS/Workplan.md` after completing `P5-T3`.
+The local smoke test against `cupertino`, `xyflow`, `docc2context`, and `Puzzle`
+showed that `cupertino` was downgraded to medium confidence because the current
+collector did not recognize its nested `Packages/Package.swift` file as package
+manifest evidence.
 
-The repository now needs a new task definition before selecting the next implementation branch.
+Add deterministic static discovery for nested Swift package manifests while
+preserving the current trust boundary: no SwiftPM invocation, no package-script
+execution, no network access, and no dependency installation.
 
-## Coverage Note
+## Acceptance Criteria
 
-P5-T3 completed with tests passing on the merged branch; latest focused validation remains green.
+- `collect-local` and `collect-batch` can collect allowlisted nested
+  `Package.swift` files.
+- Batch validation confidence recognizes nested Swift package manifests as
+  package-manifest evidence.
+- Existing JavaScript/TypeScript package manifest behavior is unchanged.
+- Focused tests cover nested Swift package discovery and confidence reporting.
+- Coverage remains above the project threshold.
+
+## Smoke-Test Evidence
+
+- `cupertino`: collected 3 files but `packageManifestCount` was `0`; warning
+  `no_package_manifests`.
+- `xyflow`: high confidence with 4 package manifests.
+- `docc2context`: high confidence with 1 package manifest.
+- `Puzzle`: high confidence with 1 package manifest.
 
 ## Recently Archived
 
-- `P4-T1` Prepare PR-ready accepted package manifest entries: PASS,
-  `SPECS/ARCHIVE/P4-T1_Prepare_PR-ready_Accepted_Package_Manifest_Entries/`.
-- `P3-T3` Emit batch validation reports with confidence and policy notes: PASS,
-  `SPECS/ARCHIVE/P3-T3_Emit_Batch_Validation_Reports_with_Confidence_and_Policy_Notes/`.
-- `P4-T2` Add proposal preflight checks for accepted-source diffs: PASS,
-  `SPECS/ARCHIVE/P4-T2_Add_Proposal_Preflight_Checks_for_Accepted_Source_Diffs/`.
-- `P4-T3` Extend GitHub proposal automation documentation and validation: PASS,
-  `SPECS/ARCHIVE/P4-T3_Extend_GitHub_Proposal_Automation_Documentation_and_Validation/`.
 - `P5-T1` Add duplicate intent and capability claim report: PASS,
   `SPECS/ARCHIVE/P5-T1_Add_Duplicate_Intent_and_Capability_Claim_Report/`.
 - `P5-T2` Add namespace and upstream relationship review report: PASS,
@@ -39,4 +51,4 @@ P5-T3 completed with tests passing on the merged branch; latest focused validati
 
 ## Next Step
 
-Define a new task in `SPECS/Workplan.md` before proceeding to execution.
+Plan task `P6-T1` when ready.

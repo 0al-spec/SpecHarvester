@@ -95,3 +95,21 @@ Acceptance:
 
 - Generated reports remain advisory review artifacts.
 - Reports do not accept, reject, publish, install, or execute package content.
+
+## Phase 6. Smoke-Test Feedback
+
+- [ ] `P6-T1` Discover nested Swift package manifests during static harvest.
+- [ ] `P6-T2` Infer candidate license metadata from allowlisted LICENSE files.
+- [ ] `P6-T3` Make namespace and upstream owner comparison case-insensitive.
+- [ ] `P6-T4` Add reproducible local smoke-test fixture documentation.
+
+Acceptance:
+
+- Swift repositories with nested `Package.swift` files are collected with useful
+  package-manifest evidence without executing SwiftPM or package code.
+- Generated candidates can infer common license identifiers from static LICENSE
+  files when package manifests do not provide license metadata.
+- Governance namespace/upstream reports do not flag casing-only GitHub owner
+  differences as mismatches.
+- Smoke testing remains local-only, deterministic, and clearly separated from
+  committed generated candidate outputs.
