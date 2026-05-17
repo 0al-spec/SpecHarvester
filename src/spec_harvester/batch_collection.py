@@ -26,7 +26,7 @@ class BatchCollectOptions:
 
 def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
     inputs_root = options.inputs.resolve()
-    out_root = options.out.resolve()
+    out_root = options.out
     repositories = read_repository_source_manifests(options.inputs)
     selected_ids = tuple(options.selected_ids)
     selected_set = set(selected_ids)
