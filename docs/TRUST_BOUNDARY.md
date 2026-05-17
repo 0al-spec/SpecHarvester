@@ -51,6 +51,10 @@ Analyzer output remains untrusted evidence. It can support reviewable candidate
 metadata, but it is not proof of runtime behavior and does not override the
 collection trust boundary.
 
+Analyzers that need metadata-only build tools must satisfy
+[`ANALYZER_SANDBOX_REQUIREMENTS.md`](ANALYZER_SANDBOX_REQUIREMENTS.md) before
+they can be enabled. `collect-local` still does not run analyzers.
+
 ## Analyzer Cache
 
 Analyzer caches are local derived metadata stores. They may speed up

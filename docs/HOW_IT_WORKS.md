@@ -412,6 +412,10 @@ SpecHarvester currently avoids the dangerous operations by design:
 - no private credential access
 - no automatic publishing
 
+Future analyzers that require metadata-only build tools must satisfy
+[`ANALYZER_SANDBOX_REQUIREMENTS.md`](ANALYZER_SANDBOX_REQUIREMENTS.md) before
+they can be enabled.
+
 ## Failure Modes
 
 ### Snapshot Fails

@@ -61,6 +61,11 @@ metadata and is ignored when metadata or path/evidence validation fails.
 emitted while package evidence remains available for review, and `failed` means
 diagnostics were emitted without any package record.
 
+Analyzers that require metadata-only build tools are future optional
+components. They must meet
+[`ANALYZER_SANDBOX_REQUIREMENTS.md`](ANALYZER_SANDBOX_REQUIREMENTS.md) before
+use.
+
 ### Deterministic Candidate Drafter
 
 Consumes evidence snapshots and drafts `specpm.yaml` plus
