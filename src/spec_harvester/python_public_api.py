@@ -141,6 +141,7 @@ def module_symbols(module: ast.Module, path: str, digest: str) -> list[dict[str,
 
 
 def module_all_exports(module: ast.Module) -> set[str] | None:
+    exports: set[str] | None = None
     for node in module.body:
         if not isinstance(node, (ast.Assign, ast.AnnAssign)):
             continue
@@ -154,9 +155,7 @@ def module_all_exports(module: ast.Module) -> set[str] | None:
         if not any(isinstance(target, ast.Name) and target.id == "__all__" for target in targets):
             continue
         exports = string_sequence(value)
-        if exports is not None:
-            return exports
-    return None
+    return exports
 
 
 def string_sequence(node: ast.AST | None) -> set[str] | None:
@@ -257,8 +256,11 @@ def function_signature(node: ast.FunctionDef | ast.AsyncFunctionDef, name: str) 
 
     positional = list(args.posonlyargs) + list(args.args)
     defaults = [None] * (len(positional) - len(args.defaults)) + list(args.defaults)
-    for arg, default in zip(positional, defaults):
+    posonly_count = len(args.posonlyargs)
+    for index, (arg, default) in enumerate(zip(positional, defaults), start=1):
         parts.append(argument_text(arg, default))
+        if index == posonly_count:
+            parts.append("/")
 
     if args.vararg is not None:
         parts.append("*" + annotated_name(args.vararg))
