@@ -1,10 +1,10 @@
-# Recommended Task: P3-T3 — Emit Batch Validation Reports with Confidence and Policy Notes
+# Selected Task: P3-T3 — Emit Batch Validation Reports with Confidence and Policy Notes
 
 **Priority:** P3
 **Phase:** Batch Harvesting
 **Effort:** Medium
 **Dependencies:** P3-T2, P3-T1, P2-T1
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
 **Suggested Branch:** `feature/P3-T3-emit-batch-validation-reports-with-confidence-and-policy-notes`
 **Suggested Review Subject:** `p3_t3_batch_validation_reports`
@@ -31,4 +31,4 @@ coverage does not decline.
 
 ## Next Step
 
-Run BRANCH for `P3-T3` when ready.
+Proceed with PLAN for `P3-T3`.
