@@ -63,3 +63,4 @@
 | 2026-05-18 | P4-T2 | Archived Add Proposal Preflight Checks for Accepted-Source Diffs (PASS) |
 | 2026-05-18 | P4-T2 | Archived REVIEW_p4_t2_add_proposal_preflight_checks report |
 | 2026-05-18 | P4-T3 | Archived Add Proposal Automation Documentation and Validation (PASS) |
+| 2026-05-18 | P4-T3 | Archived REVIEW_p4_t3_extend_proposal_automation_docs report |
