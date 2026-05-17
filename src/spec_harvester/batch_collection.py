@@ -38,7 +38,7 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
     if unknown_ids:
         raise ValueError(f"Unknown selected repository id: {', '.join(unknown_ids)}")
 
-    collected: list[dict[str, Any]] = []
+    plans: list[dict[str, Any]] = []
     skipped: list[dict[str, str]] = []
     for repository in repositories:
         repository_id = repository["id"]
@@ -48,16 +48,36 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
 
         output_dir = candidate_directory(out_root, repository_id)
         checkout = resolve_checkout(inputs_root, repository)
+        plans.append(
+            {
+                "repository": repository,
+                "checkout": checkout,
+                "outputDir": output_dir,
+                "outputPath": output_dir / "harvest.json",
+            }
+        )
+
+    prepared: list[dict[str, Any]] = []
+    for plan in plans:
+        repository = plan["repository"]
         snapshot = collect_local_repository(
             HarvestOptions(
-                source=checkout,
+                source=plan["checkout"],
                 repository=repository["repository"],
                 revision=repository["revision"] or repository["ref"],
                 max_file_bytes=options.max_file_bytes,
             )
         )
-        output_dir.mkdir(parents=True, exist_ok=True)
-        output_path = output_dir / "harvest.json"
+        prepared.append({**plan, "snapshot": snapshot})
+
+    collected: list[dict[str, Any]] = []
+    for plan in prepared:
+        repository = plan["repository"]
+        repository_id = repository["id"]
+        checkout = plan["checkout"]
+        snapshot = plan["snapshot"]
+        output_path = plan["outputPath"]
+        plan["outputDir"].mkdir(parents=True, exist_ok=True)
         output_path.write_text(
             json.dumps(snapshot, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",

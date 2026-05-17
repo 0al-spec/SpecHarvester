@@ -18,6 +18,8 @@ Implemented deterministic batch snapshot collection:
 - Rejected unknown selected IDs, duplicate selected IDs, missing checkout
   fields, missing checkout directories, and unsafe repository IDs for candidate
   directory names.
+- Added two-phase planning and snapshot preparation before writing outputs, so
+  late validation failures do not leave partial candidate trees.
 - Added `spec-harvester collect-batch <inputs> --out <candidates>` CLI command
   with repeated `--select` support.
 - Added GitHub docs and DocC documentation for batch collection.
@@ -25,19 +27,19 @@ Implemented deterministic batch snapshot collection:
 
 ## Coverage Baseline
 
-P3-T1 finished at 91.48% total coverage. P3-T2 finished at 91.81% total
+P3-T1 finished at 91.48% total coverage. P3-T2 finished at 91.85% total
 coverage, so coverage improved.
 
 ## Validation Commands
 
 | Command | Result |
 |---------|--------|
-| `PYTHONPATH=src python -m pytest tests/test_batch_collection.py -q` | PASS, 8 passed |
+| `PYTHONPATH=src python -m pytest tests/test_batch_collection.py -q` | PASS, 9 passed |
 | `PYTHONPATH=src python -m pytest tests/test_batch_collection.py tests/test_docs_contracts.py -q` | PASS, 10 passed |
-| `PYTHONPATH=src python -m pytest` | PASS, 86 passed |
+| `PYTHONPATH=src python -m pytest` | PASS, 87 passed |
 | `ruff check src tests` | PASS |
 | `ruff format --check src tests` | PASS, 20 files already formatted |
-| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 86 passed, total coverage 91.81% |
+| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 87 passed, total coverage 91.85% |
 | `swift package dump-package >/dev/null` | PASS |
 | `swift build --target SpecHarvesterDocs` | PASS |
 | `git diff --check` | PASS |
@@ -51,6 +53,8 @@ coverage, so coverage improved.
   repository code execution was added.
 - Candidate output paths are derived from safe repository IDs, not checkout
   paths or repository content.
+- Output files are written only after selected records validate and snapshots
+  are prepared.
 - Snapshot contents are produced through the existing allowlisted static
   collector.
 

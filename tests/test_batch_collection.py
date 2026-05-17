@@ -173,6 +173,34 @@ repositories:
         collect_batch_snapshots(BatchCollectOptions(inputs=inputs, out=out))
 
 
+def test_collect_batch_snapshots_does_not_write_partial_outputs_on_validation_failure(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: valid
+    repository: https://github.com/example/valid
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+  - id: missing
+    repository: https://github.com/example/missing
+    revision: def
+    checkout: ../missing
+""",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="checkout does not exist"):
+        collect_batch_snapshots(BatchCollectOptions(inputs=inputs, out=out))
+
+    assert not (out / "valid").exists()
+
+
 def test_collect_batch_snapshots_rejects_unsafe_candidate_directory_ids(
     tmp_path: Path,
 ) -> None:
