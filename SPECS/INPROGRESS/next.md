@@ -1,12 +1,13 @@
-# Next Task: P2-T1 — Add Analyzer Trust Policy Fields to Harvest Snapshots
+# Selected Task: P2-T1 — Add Analyzer Trust Policy Fields to Harvest Snapshots
 
 **Priority:** P2
 **Phase:** Analyzer Policy and Cache
 **Effort:** Medium
 **Dependencies:** P1-T1, P1-T2, P1-T3, P1-T4, P1-T5
-**Status:** Recommended
+**Status:** Selected
 **Updated:** 2026-05-17
-**Suggested Branch:** `feature/P2-T1-add-analyzer-trust-policy-fields-to-harvest-snapshots`
+**Branch:** `feature/P2-T1-add-analyzer-trust-policy-fields-to-harvest-snapshots`
+**Review Subject:** `p2_t1_analyzer_trust_policy_fields`
 
 ## Description
 
@@ -24,5 +25,5 @@ diagnostic, and sandbox extensions are introduced.
 
 ## Next Step
 
-Run SELECT to confirm this task or choose a higher-priority item from
-`SPECS/Workplan.md`.
+Run PLAN for `P2-T1` and create
+`SPECS/INPROGRESS/P2-T1_Add_Analyzer_Trust_Policy_Fields_to_Harvest_Snapshots.md`.
