@@ -141,6 +141,43 @@ def test_build_accepted_package_update_proposal_records_validation_failures(
     assert {issue["code"] for issue in result["issues"]} == {"specpm_validation_failed"}
 
 
+def test_build_accepted_package_update_proposal_ignores_promoted_candidate_path(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = accepted_root / "demo" / "1.1.0"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_manifest(
+        accepted_root / "demo" / "1.1.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.1.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.utility"],
+        upstream_revision="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    )
+
+    result = build_accepted_package_update_proposal(
+        AcceptedPackageUpdateProposalOptions(
+            candidate=candidate,
+            accepted_root=accepted_root,
+            skip_validation=True,
+        )
+    )
+
+    assert result["oldPackageVersion"] == "1.0.0"
+    assert result["newPackageVersion"] == "1.1.0"
+    assert result["updateKind"] == "upstream_revision"
+    assert result["changedClaims"] == ["capability:demo.stream"]
+
+
 def test_cli_accepted_package_update_proposal_writes_json_and_markdown(
     tmp_path: Path,
 ) -> None:

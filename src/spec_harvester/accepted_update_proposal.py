@@ -60,8 +60,11 @@ def build_accepted_package_update_proposal(
         options.accepted_root.resolve(),
         "accepted",
     )
-    accepted_by_id = latest_accepted_by_package_id(accepted_records)
-    prior_record = accepted_by_id.get(candidate_record.package_id)
+    prior_record = _find_prior_accepted_record(
+        candidate_record=candidate_record,
+        accepted_records=accepted_records,
+        candidate_path=candidate,
+    )
 
     comparison = build_candidate_comparison(candidate_record, prior_record)
     update_kind = _normalize_update_kind(
@@ -126,6 +129,28 @@ def build_accepted_package_update_proposal(
         "issues": sorted(issues, key=lambda issue: (issue["path"], issue["code"])),
         "trustBoundary": TRUST_BOUNDARY_NOTES,
     }
+
+
+def _find_prior_accepted_record(
+    *,
+    candidate_record: PackageDiffInputRecord,
+    accepted_records: list[PackageDiffInputRecord],
+    candidate_path: Path,
+) -> PackageDiffInputRecord | None:
+    if not accepted_records:
+        return None
+
+    candidate_manifest_path = (candidate_path / "specpm.yaml").resolve()
+    accepted_for_package = [
+        record
+        for record in accepted_records
+        if record.package_id == candidate_record.package_id
+        and Path(record.path).resolve() != candidate_manifest_path
+    ]
+    if not accepted_for_package:
+        return None
+
+    return latest_accepted_by_package_id(accepted_for_package).get(candidate_record.package_id)
 
 
 def build_accepted_package_update_proposal_markdown(report: dict[str, Any]) -> str:
