@@ -215,6 +215,32 @@ python3 -m spec_harvester governance-license-provenance-report \
 The report flags missing or suspicious licenses and upstream provenance signals
 that should be reviewed before proposal.
 
+### PR-Ready Update Proposal Builder
+
+After review and promotion preparation, SpecHarvester can produce a review artifact
+for the accepted-package mutation:
+
+```bash
+python3 -m spec_harvester accepted-package-update-proposal \
+  CANDIDATE_DIR \
+  --accepted-root <accepted-root> \
+  --output report/accepted-package-update-proposal.json \
+  --proposal-body report/accepted-package-update-proposal.md
+```
+
+The builder compares candidate metadata against the latest accepted record for the
+same package ID and includes:
+
+- `oldPackageVersion` / `newPackageVersion`
+- `sourceRevision`
+- evidence digests for `specpm.yaml` and optional `harvest.json`
+- changed capability and intent claims
+- validation status
+- reviewer notes and issues
+
+This command is deterministic and reads only local files plus optional SpecPM
+validation.
+
 ### Promotion Gate
 
 Copies a reviewed candidate into an accepted source root and optionally appends

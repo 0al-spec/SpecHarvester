@@ -13,6 +13,13 @@ from spec_harvester.accepted_diff import (
     build_accepted_candidate_diff_report,
     write_accepted_candidate_diff_report,
 )
+from spec_harvester.accepted_update_proposal import (
+    AcceptedPackageUpdateProposalOptions,
+    build_accepted_package_update_proposal,
+    build_accepted_package_update_proposal_markdown,
+    write_accepted_package_update_proposal,
+    write_accepted_package_update_proposal_markdown,
+)
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.collector import (
     DEFAULT_MAX_FILE_BYTES,
@@ -355,6 +362,61 @@ def build_parser() -> argparse.ArgumentParser:
     )
     accepted_candidate_impact.set_defaults(func=run_accepted_candidate_impact_report)
 
+    accepted_package_update_proposal = subcommands.add_parser(
+        "accepted-package-update-proposal",
+        help="Build a PR-ready SpecPM update proposal payload for a reviewed candidate.",
+    )
+    accepted_package_update_proposal.add_argument(
+        "candidate",
+        type=Path,
+        help="Reviewed candidate directory containing specpm.yaml.",
+    )
+    accepted_package_update_proposal.add_argument(
+        "--accepted-root",
+        type=Path,
+        required=True,
+        help="Accepted package source root used for latest accepted comparison.",
+    )
+    accepted_package_update_proposal.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where proposal JSON payload is written.",
+    )
+    accepted_package_update_proposal.add_argument(
+        "--proposal-body",
+        type=Path,
+        help="Optional path for generated markdown proposal body.",
+    )
+    accepted_package_update_proposal.add_argument(
+        "--skip-validation",
+        action="store_true",
+        help=(
+            "Skip SpecPM validation. Intended only for CI smoke contexts and tests "
+            "that need deterministic pre-validation artifacts."
+        ),
+    )
+    accepted_package_update_proposal.add_argument(
+        "--update-kind",
+        choices=sorted({"upstream_revision", "metadata_errata", "correction"}),
+        help="Override update kind when reviewer context is known.",
+    )
+    accepted_package_update_proposal.add_argument(
+        "--reviewer-notes",
+        action="append",
+        default=[],
+        help="Optional reviewer note for this proposal (repeatable).",
+    )
+    accepted_package_update_proposal.add_argument(
+        "--specpm-command",
+        default="specpm",
+        help="SpecPM validation command. Default: specpm.",
+    )
+    accepted_package_update_proposal.add_argument(
+        "--specpm-pythonpath",
+        help="Optional PYTHONPATH prefix for local SpecPM checkout.",
+    )
+    accepted_package_update_proposal.set_defaults(func=run_accepted_package_update_proposal)
+
     smoke_triage = subcommands.add_parser(
         "smoke-triage-summary",
         help="Build a compact local smoke triage summary from existing report JSON files.",
@@ -547,6 +609,27 @@ def run_accepted_candidate_impact_report(args: argparse.Namespace) -> int:
     )
     if args.output is not None:
         write_accepted_candidate_impact_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_accepted_package_update_proposal(args: argparse.Namespace) -> int:
+    result = build_accepted_package_update_proposal(
+        AcceptedPackageUpdateProposalOptions(
+            candidate=args.candidate,
+            accepted_root=args.accepted_root,
+            specpm_command=args.specpm_command,
+            specpm_pythonpath=args.specpm_pythonpath,
+            skip_validation=args.skip_validation,
+            update_kind=args.update_kind,
+            reviewer_notes=tuple(args.reviewer_notes),
+        )
+    )
+    if args.output is not None:
+        write_accepted_package_update_proposal(args.output, result)
+    if args.proposal_body is not None:
+        body = build_accepted_package_update_proposal_markdown(result)
+        write_accepted_package_update_proposal_markdown(args.proposal_body, body)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 

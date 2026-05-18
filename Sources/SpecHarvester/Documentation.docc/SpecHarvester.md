@@ -39,6 +39,7 @@ The canonical source files remain in the repository:
 - `docs/SPECPM_PROPOSAL_AUTOMATION.md`
 - `docs/ACCEPTED_MANIFEST_ENTRIES.md`
 - `docs/ACCEPTED_PACKAGE_UPDATE_LIFECYCLE.md`
+- `docs/ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md`
 - `docs/ACCEPTED_CANDIDATE_DIFF_REPORTS.md`
 - `docs/GOVERNANCE_REPORTS.md`
 - `docs/NAMESPACE_UPSTREAM_REPORTS.md`
@@ -66,6 +67,7 @@ the host.
 - <doc:BatchValidationReports>
 - <doc:AcceptedManifestEntries>
 - <doc:AcceptedPackageUpdateLifecycle>
+- <doc:AcceptedPackageUpdateProposals>
 - <doc:AcceptedCandidateDiffReports>
 - <doc:AcceptedCandidateImpactClassificationReports>
 - <doc:GovernanceReports>

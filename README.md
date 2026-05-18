@@ -54,6 +54,8 @@ and maintainer review before they are treated as accepted registry source.
   trusted cross-repository proposal flow
 - [`docs/ACCEPTED_CANDIDATE_DIFF_REPORTS.md`](docs/ACCEPTED_CANDIDATE_DIFF_REPORTS.md):
   accepted-vs-candidate update review reports
+- [`docs/ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md`](docs/ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md):
+  build PR-ready accepted package update proposal artifacts
 - [`docs/LOCAL_SMOKE_FIXTURES.md`](docs/LOCAL_SMOKE_FIXTURES.md): reproducible
   local smoke fixtures for adjacent repository checkouts
 - [`docs/ROADMAP.md`](docs/ROADMAP.md): planned delivery phases
