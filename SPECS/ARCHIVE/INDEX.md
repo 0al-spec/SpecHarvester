@@ -91,3 +91,4 @@
 | 2026-05-18 | P7-T3 | Archived Distinguish Absent License Evidence from Ambiguous Unknown License Evidence (PASS) |
 | 2026-05-18 | P7-T3 | Archived REVIEW_p7_t3_license_evidence_classification report |
 | 2026-05-18 | P7-T4 | Archived Add a Compact Local Smoke Triage Summary for Batch and Governance Report Output (PASS) |
+| 2026-05-18 | P7-T4 | Archived REVIEW_p7_t4_local_smoke_triage_summary report |
