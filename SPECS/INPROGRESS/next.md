@@ -9,7 +9,7 @@
 **Suggested Branch:** `feature/P7-T2-swift-package-product-intents`
 **Review Subject:** `p7_t2_swift_package_product_intents`
 
-**Current Phase:** SELECT
+**Current Phase:** PLAN
 
 ## Description
 
@@ -41,7 +41,8 @@ intents when product names or manifest metadata provide reviewable signals.
 
 ## Next Step
 
-Plan task `P7-T2` when ready.
+Create `SPECS/INPROGRESS/P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests.md`
+with implementation scope and validation gates.
 
 ## Backlog Note
 
