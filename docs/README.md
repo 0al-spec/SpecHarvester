@@ -32,11 +32,13 @@ Published DocC site:
     proposal automation with preflight validation and diff-scope guardrails
 12. [`ACCEPTED_PACKAGE_UPDATE_LIFECYCLE.md`](ACCEPTED_PACKAGE_UPDATE_LIFECYCLE.md):
    accepted package version immutability and update decision policy
-13. [`LICENSE_PROVENANCE_RISK_REPORTS.md`](LICENSE_PROVENANCE_RISK_REPORTS.md):
+13. [`ACCEPTED_CANDIDATE_DIFF_REPORTS.md`](ACCEPTED_CANDIDATE_DIFF_REPORTS.md):
+    compare accepted and candidate package metadata before update proposals
+14. [`LICENSE_PROVENANCE_RISK_REPORTS.md`](LICENSE_PROVENANCE_RISK_REPORTS.md):
     review candidate and accepted packages for licensing and provenance risk
-14. [`LOCAL_SMOKE_FIXTURES.md`](LOCAL_SMOKE_FIXTURES.md): reproducible local
+15. [`LOCAL_SMOKE_FIXTURES.md`](LOCAL_SMOKE_FIXTURES.md): reproducible local
     smoke fixtures for adjacent real repository checkouts
-15. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+16. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References

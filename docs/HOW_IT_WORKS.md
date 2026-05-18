@@ -137,6 +137,15 @@ For each update, capture:
 Updates are complete only after SpecPM PR review and merge; SpecHarvester and its
 promotion/proposal steps remain pre-acceptance preparation.
 
+Before update proposal work, compare accepted and candidate metadata:
+
+```bash
+python3 -m spec_harvester accepted-candidate-diff-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output report/accepted-candidate-diff.json
+```
+
 ## Current Commands
 
 ### 1. Prepare a Local Checkout

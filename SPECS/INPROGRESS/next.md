@@ -1,54 +1,47 @@
-# Recommended Task: P8-T1 - Document accepted package update lifecycle and immutability policy
+# Recommended Task: P8-T3 - Classify update proposals by metadata, interface, license, provenance, capability, and intent impact
 
 **Priority:** P8
 **Phase:** Accepted Specification Update Lifecycle
 **Effort:** Medium
-**Dependencies:** P7-T4
+**Dependencies:** P8-T2
 **Status:** Open
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P8-T1-accepted-update-lifecycle-docs`
-**Review Subject:** `p8_t1_accepted_update_lifecycle_docs`
+**Suggested Branch:** `feature/P8-T3-update-impact-classification`
+**Review Subject:** `p8_t3_update_impact_classification`
 
-**Current Phase:** ARCHIVE
+**Current Phase:** SELECT
 
 ## Execution Progress
 
-- `2026-05-18`: task selected from `SPECS/Workplan.md`.
-- `2026-05-18`: PRD created in `SPECS/INPROGRESS/...`.
-- `2026-05-18`: accepted package update lifecycle documentation implemented in
-  `docs/` and DocC mirrors.
-- `2026-05-18`: validation report written to
-  `SPECS/ARCHIVE/P8-T1_Document_accepted_package_update_lifecycle_and_immutability_policy/`.
+- `2026-05-18`: `P8-T2` completed and archived.
 
 ## Description
 
-Accepted SpecPM package metadata needs an explicit update lifecycle now that
-SpecHarvester can generate, validate, and smoke-triage candidate metadata from
-pinned upstream revisions.
-
-Document how accepted package versions remain immutable, when upstream changes
-should produce a new candidate/version, and how metadata corrections or errata
-should be handled without pretending upstream content changed.
+Classify accepted/candidate update diffs by metadata, interface, license,
+provenance, capability, and intent impact so reviewers can prioritize update
+proposal risk before SpecPM review.
 
 ## Acceptance Criteria
 
-- Documentation defines accepted package immutability expectations.
-- Documentation separates upstream updates from metadata corrections.
-- The lifecycle records expected audit trail fields for future automation:
-  source revision, evidence digests, old/new package version, changed claims,
-  validation status, and reviewer notes.
-- The lifecycle keeps SpecPM review/merge as the acceptance boundary.
+- Classification consumes accepted/candidate diff report output or equivalent
+  deterministic comparison data.
+- Classification separates metadata, interface, license, provenance, capability,
+  and intent impact buckets.
+- Classification remains advisory and does not mutate package content.
+- Report output remains deterministic and reviewable.
 - Coverage and docs checks remain green.
 
 ## Recently Archived
 
-- `P7-T3` Distinguish absent license evidence from ambiguous unknown license
-  evidence: PASS,
-  `SPECS/ARCHIVE/P7-T3_Distinguish_Absent_License_Evidence_from_Ambiguous_Unknown_License_Evidence/`.
 - `P7-T4` Add a compact local smoke triage summary for batch and governance
   report output: PASS,
   `SPECS/ARCHIVE/P7-T4_Add_a_Compact_Local_Smoke_Triage_Summary_for_Batch_and_Governance_Report_Output/`.
+- `P8-T1` Document accepted package update lifecycle and immutability policy:
+  PASS,
+  `SPECS/ARCHIVE/P8-T1_Document_accepted_package_update_lifecycle_and_immutability_policy/`.
+- `P8-T2` Add accepted-vs-candidate package diff report: PASS,
+  `SPECS/ARCHIVE/P8-T2_Add_accepted-vs-candidate_package_diff_report/`.
 
 ## Next Step
 
-Next task in sequence: `P8-T2`.
+Plan task `P8-T3` when ready.
