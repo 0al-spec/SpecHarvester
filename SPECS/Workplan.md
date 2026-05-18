@@ -146,6 +146,8 @@ Acceptance:
   versions.
 - [ ] `P8-T5` Add correction and errata path for fixing accepted metadata
   without treating upstream content as changed.
+- [ ] `P8-T6` Add accepted package version immutability guard for update
+  proposals.
 
 Acceptance:
 
@@ -159,3 +161,6 @@ Acceptance:
   notes.
 - SpecHarvester can propose update PRs to SpecPM, but SpecPM review and merge
   remain the acceptance boundary.
+- Update preflight rejects silent mutation of an already accepted
+  `package_id@version` unless an explicit correction path and audit record are
+  present.
