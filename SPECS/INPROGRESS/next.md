@@ -9,7 +9,7 @@
 **Suggested Branch:** `feature/P7-T1-upstream-repository-name-namespace-evidence`
 **Review Subject:** `p7_t1_upstream_repository_name_namespace_evidence`
 
-**Current Phase:** SELECT
+**Current Phase:** PLAN
 
 ## Description
 
@@ -59,7 +59,8 @@ evidence and should not be reported as an owner mismatch.
 
 ## Next Step
 
-Plan task `P7-T1` when ready.
+Create `SPECS/INPROGRESS/P7-T1_Treat_Package_Namespace_Matches_Against_Upstream_Repository_Names_as_Valid_Namespace_Evidence.md`
+with implementation scope and validation gates.
 
 ## Backlog Note
 
