@@ -9,7 +9,7 @@
 **Suggested Branch:** `feature/P7-T3-license-evidence-classification`
 **Review Subject:** `p7_t3_license_evidence_classification`
 
-**Current Phase:** SELECT
+**Current Phase:** PLAN
 
 ## Description
 
@@ -43,7 +43,8 @@ unclassifiable license text.
 
 ## Next Step
 
-Plan task `P7-T3` when ready.
+Create the task PRD for `P7-T3` and define evidence classification behavior,
+report output changes, and validation commands.
 
 ## Backlog Note
 
