@@ -173,6 +173,28 @@ If SpecHarvester is compromised or generates a bad candidate, the result is
 still only a SpecPM PR. The package becomes registry input only after SpecPM
 review and merge.
 
+## Accepted Package Update Lifecycle
+
+The accepted package lifecycle keeps SpecPM path versions immutable. Proposal
+automation should therefore submit updates as new accepted version paths rather
+than replacing prior version paths.
+
+A stable update record should include:
+
+- `sourceRevision`: pinned upstream revision used for candidate generation;
+- `evidenceDigests`: digests for `harvest.json` and other promoted evidence artifacts;
+- `oldPackageVersion` / `newPackageVersion`;
+- `changedClaims`: a list of materially changed intent/capability/scope claims;
+- `validationStatus`: candidate validation and governance smoke outcomes;
+- `reviewerNotes`: rationale and risk notes for this update.
+
+When the update is only metadata correction:
+
+- preserve `sourceRevision` if applicable;
+- still create a new accepted package version path;
+- document why this is metadata-only to avoid confusing upstream content changes
+  with editorial errata.
+
 ## Maintainer Review
 
 SpecPM maintainers should still review:

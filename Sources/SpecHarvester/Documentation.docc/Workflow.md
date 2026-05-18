@@ -130,6 +130,16 @@ This command:
 - infers `public-index/generated/<packageId>/<version>` as the default entry path;
 - updates the accepted manifest deterministically.
 
+Follow the immutability policy before proposing any accepted update:
+
+- never mutate an accepted `<packageId>/<packageVersion>` path directly;
+- publish updates as new accepted version paths, including metadata-only
+  corrections.
+
+Required audit fields for each proposal include source revision, evidence digests,
+old/new package version, changed claims, validation status, and reviewer notes.
+See <doc:AcceptedPackageUpdateLifecycle>.
+
 Promote a reviewed candidate into accepted-source staging:
 
 ```bash
@@ -193,4 +203,5 @@ Every generated candidate should be checked for:
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>
 - <doc:AcceptedManifestEntries>
+- <doc:AcceptedPackageUpdateLifecycle>
 - <doc:ProposalAutomation>

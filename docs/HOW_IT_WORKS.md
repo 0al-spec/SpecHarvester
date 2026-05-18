@@ -109,6 +109,33 @@ through a SpecPM registry source.
 
 That acceptance step is not automated in the current bootstrap.
 
+### Accepted Package Update Lifecycle
+
+Accepted package versions are immutable once accepted:
+
+- do not overwrite `public-index/generated/<packageId>/<packageVersion>`.
+- new upstream reality or corrections always create a new accepted version
+  publication path.
+
+When upstream evidence changes (new revision, new capabilities, new claims),
+operators should run a fresh candidate loop and propose a higher package version.
+
+When correcting metadata issues (for example, fixed license or capability
+inference), operators should still create an explicit update candidate and a new
+version publication path instead of mutating the previous accepted source.
+
+For each update, capture:
+
+- pinned source revision,
+- evidence digests (`harvest.json` plus any derived artifacts),
+- old/new package version,
+- changed claims,
+- validation status, and
+- reviewer notes.
+
+Updates are complete only after SpecPM PR review and merge; SpecHarvester and its
+promotion/proposal steps remain pre-acceptance preparation.
+
 ## Current Commands
 
 ### 1. Prepare a Local Checkout
