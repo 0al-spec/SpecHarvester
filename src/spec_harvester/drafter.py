@@ -305,7 +305,7 @@ def build_capability_entries(
 ) -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
     seen_ids: set[str] = set()
-    for record in package_records:
+    for record in capability_source_records(package_records):
         package = record["package"]
         package_name = package.get("name")
         if not isinstance(package_name, str) or not package_name.strip():
@@ -324,7 +324,7 @@ def build_capability_entries(
                 "id": capability_id,
                 "role": role,
                 "summary": summary,
-                "intentIds": infer_intent_ids(package_name, summary),
+                "intentIds": infer_intent_ids(package_name, summary, package),
             }
         )
 
@@ -333,10 +333,54 @@ def build_capability_entries(
     return entries
 
 
-def infer_intent_ids(package_name: str, summary: str) -> list[str]:
+def capability_source_records(package_records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    swift_records = [
+        record
+        for record in package_records
+        if isinstance(record.get("package"), dict) and record["package"].get("ecosystem") == "swift"
+    ]
+    if not swift_records:
+        return package_records
+
+    non_swift_records = [
+        record
+        for record in package_records
+        if not (
+            isinstance(record.get("package"), dict)
+            and record["package"].get("ecosystem") == "swift"
+        )
+    ]
+    root_records = [record for record in swift_records if record.get("path") == "Package.swift"]
+    if root_records:
+        return [*non_swift_records, *root_records[:1]]
+
+    reviewable_records = [
+        record for record in swift_records if is_reviewable_swift_manifest(record)
+    ]
+    if reviewable_records:
+        return [*non_swift_records, reviewable_records[0]]
+    return [*non_swift_records, swift_records[0]]
+
+
+def is_reviewable_swift_manifest(record: dict[str, Any]) -> bool:
+    path = str(record.get("path") or "")
+    parts = set(path.split("/"))
+    if {"SourcePackages", "checkouts"}.issubset(parts):
+        return False
+    return not (path.startswith("Derived/") or path.startswith("Tests/"))
+
+
+def infer_intent_ids(
+    package_name: str,
+    summary: str,
+    package: dict[str, Any] | None = None,
+) -> list[str]:
     # Bootstrap-only baseline over package manifest name/description.
     # Other harvested files, including workflow files, are provenance evidence and do not
     # participate in intent inference.
+    if package is not None and package.get("ecosystem") == "swift":
+        return infer_swift_intent_ids(package_name, package)
+
     text = f"{package_name} {summary}".lower()
     intents = {"intent.package.javascript_library"}
     if "monorepo" in text or "workspace" in text:
@@ -354,6 +398,27 @@ def infer_intent_ids(package_name: str, summary: str) -> list[str]:
     if "core system" in text or package_name.endswith("/system"):
         intents.add("intent.ui.flow_system_utilities")
     return sorted(intents)
+
+
+def infer_swift_intent_ids(package_name: str, package: dict[str, Any]) -> list[str]:
+    products = package.get("products")
+    product_names = (
+        [
+            product["name"]
+            for product in products
+            if isinstance(product, dict)
+            and isinstance(product.get("name"), str)
+            and product["name"].strip()
+        ]
+        if isinstance(products, list)
+        else []
+    )
+
+    if product_names:
+        return sorted(
+            f"intent.swift.product.{package_label(product_name)}" for product_name in product_names
+        )
+    return [f"intent.swift.package.{package_label(package_name)}"]
 
 
 def build_interfaces(

@@ -55,6 +55,10 @@ LICENSE_TEXT_HINTS = (
     ("MIT", ("permission is hereby granted", "copyright")),
     ("Apache-2.0", ("apache license", "version 2.0")),
 )
+SWIFT_PACKAGE_NAME_PATTERN = re.compile(r"\bPackage\s*\(\s*name\s*:\s*\"([^\"]+)\"")
+SWIFT_PRODUCT_PATTERN = re.compile(
+    r"\.(library|executable|plugin|macro)\s*\(\s*name\s*:\s*\"([^\"]+)\""
+)
 
 
 @dataclass(frozen=True)
@@ -226,6 +230,10 @@ def collect_file(root: Path, path: Path) -> dict[str, Any]:
         package = parse_package_json(text)
         if package:
             record["package"] = package
+    elif path.name == "Package.swift":
+        package = parse_swift_package_manifest(text)
+        if package:
+            record["package"] = package
     elif path.name.lower().startswith(("license", "copying")):
         license_hint = infer_license_hint(text)
         if license_hint is not None:
@@ -310,4 +318,80 @@ def parse_package_json(text: str) -> dict[str, Any] | None:
     elif isinstance(exports, str):
         package["exports"] = ["."]
 
+    return package
+
+
+def strip_swift_comments(text: str) -> str:
+    result: list[str] = []
+    index = 0
+    in_string = False
+    in_multiline_string = False
+    while index < len(text):
+        if not in_string and not in_multiline_string and text.startswith("//", index):
+            while index < len(text) and text[index] != "\n":
+                result.append(" ")
+                index += 1
+            continue
+        if not in_string and not in_multiline_string and text.startswith("/*", index):
+            depth = 1
+            result.extend("  ")
+            index += 2
+            while index < len(text) and depth > 0:
+                if text.startswith("/*", index):
+                    depth += 1
+                    result.extend("  ")
+                    index += 2
+                    continue
+                if text.startswith("*/", index):
+                    depth -= 1
+                    result.extend("  ")
+                    index += 2
+                    continue
+                result.append("\n" if text[index] == "\n" else " ")
+                index += 1
+            continue
+
+        if text.startswith('"""', index):
+            in_multiline_string = not in_multiline_string
+            result.extend('"""')
+            index += 3
+            continue
+        if not in_multiline_string and text[index] == '"' and not is_escaped(text, index):
+            in_string = not in_string
+
+        result.append(text[index])
+        index += 1
+    return "".join(result)
+
+
+def is_escaped(text: str, index: int) -> bool:
+    slash_count = 0
+    cursor = index - 1
+    while cursor >= 0 and text[cursor] == "\\":
+        slash_count += 1
+        cursor -= 1
+    return slash_count % 2 == 1
+
+
+def parse_swift_package_manifest(text: str) -> dict[str, Any] | None:
+    package: dict[str, Any] = {
+        "ecosystem": "swift",
+        "language": "swift",
+    }
+
+    uncommented_text = strip_swift_comments(text)
+
+    name_match = SWIFT_PACKAGE_NAME_PATTERN.search(uncommented_text)
+    if name_match is not None:
+        package["name"] = name_match.group(1)
+
+    products = [
+        {"type": product_type, "name": product_name}
+        for product_type, product_name in SWIFT_PRODUCT_PATTERN.findall(uncommented_text)
+    ]
+    if products:
+        package["products"] = sorted(products, key=lambda item: (item["type"], item["name"]))
+
+    if "name" not in package and not products:
+        return None
     return package

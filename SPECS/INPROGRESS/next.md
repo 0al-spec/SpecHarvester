@@ -1,47 +1,49 @@
-# Recommended Task: P7-T2 - Derive less generic Swift package intents from package products and manifests
+# Recommended Task: P7-T3 - Distinguish absent license evidence from ambiguous unknown license evidence
 
 **Priority:** P7
 **Phase:** Smoke-Test Signal Quality
 **Effort:** Medium
-**Dependencies:** P6-T1, P7-T1
+**Dependencies:** P6-T2, P7-T1
 **Status:** Open
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P7-T2-swift-package-product-intents`
-**Review Subject:** `p7_t2_swift_package_product_intents`
+**Suggested Branch:** `feature/P7-T3-license-evidence-classification`
+**Review Subject:** `p7_t3_license_evidence_classification`
 
 **Current Phase:** SELECT
 
 ## Description
 
-The local smoke governance report still shows duplicate generic
-`intent.package.public_repository_metadata` claims across Swift candidates.
-Swift package manifests already expose product and package metadata that can
-support more specific deterministic intent claims for candidates such as
-Cupertino, docc2context, and Puzzle.
+The local smoke license/provenance report now has one remaining medium-risk
+`unknown_license` issue for `puzzle.core`. The current report does not explain
+whether `UNKNOWN` means no license evidence was found or license-like evidence
+was present but could not be classified.
 
-Use static Swift package manifest evidence to derive less generic package
-intents when product names or manifest metadata provide reviewable signals.
+Distinguish absent license evidence from ambiguous unknown license evidence so
+reviewers can prioritize missing upstream metadata differently from
+unclassifiable license text.
 
 ## Acceptance Criteria
 
-- Swift package candidates avoid duplicate generic metadata intents when package
-  product evidence supports a more specific deterministic intent.
-- Intent derivation remains static and does not execute SwiftPM or package code.
-- Existing JavaScript/TypeScript intent behavior remains unchanged.
-- Generated intent IDs stay deterministic and sorted.
+- License provenance records include enough evidence classification to separate
+  absent license metadata from ambiguous license evidence.
+- `UNKNOWN` generated from no manifest license and no license file hint is
+  reported differently from unrecognized license-like evidence.
+- Existing SPDX-like known license handling remains unchanged.
+- Report output remains deterministic and sorted.
 - Coverage remains above the project threshold.
 
 ## Recently Archived
 
-- `P6-T4` Add reproducible local smoke-test fixture documentation: PASS,
-  `SPECS/ARCHIVE/P6-T4_Add_Reproducible_Local_Smoke-Test_Fixture_Documentation/`.
 - `P7-T1` Treat package namespace matches against upstream repository names as
   valid namespace evidence: PASS,
   `SPECS/ARCHIVE/P7-T1_Treat_Package_Namespace_Matches_Against_Upstream_Repository_Names_as_Valid_Namespace_Evidence/`.
+- `P7-T2` Derive less generic Swift package intents from package products and
+  manifests: PASS,
+  `SPECS/ARCHIVE/P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests/`.
 
 ## Next Step
 
-Plan task `P7-T2` when ready.
+Plan task `P7-T3` when ready.
 
 ## Backlog Note
 

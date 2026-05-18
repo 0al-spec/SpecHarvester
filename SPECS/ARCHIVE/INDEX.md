@@ -30,6 +30,7 @@
 | P6-T3 | [P6-T3_Make_Namespace_Upstream_Owner_Comparison_Case_Insensitive/](P6-T3_Make_Namespace_Upstream_Owner_Comparison_Case_Insensitive/) | 2026-05-18 | PASS |
 | P6-T4 | [P6-T4_Add_Reproducible_Local_Smoke-Test_Fixture_Documentation/](P6-T4_Add_Reproducible_Local_Smoke-Test_Fixture_Documentation/) | 2026-05-18 | PASS |
 | P7-T1 | [P7-T1_Treat_Package_Namespace_Matches_Against_Upstream_Repository_Names_as_Valid_Namespace_Evidence/](P7-T1_Treat_Package_Namespace_Matches_Against_Upstream_Repository_Names_as_Valid_Namespace_Evidence/) | 2026-05-18 | PASS |
+| P7-T2 | [P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests/](P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests/) | 2026-05-18 | PASS |
 
 ## Historical Artifacts
 
@@ -83,3 +84,5 @@
 | 2026-05-18 | P6-T4 | Archived REVIEW_p6_t4_smoke_test_fixture_docs report |
 | 2026-05-18 | P7-T1 | Archived Treat Package Namespace Matches Against Upstream Repository Names as Valid Namespace Evidence (PASS) |
 | 2026-05-18 | P7-T1 | Archived REVIEW_p7_t1_upstream_repository_name_namespace_evidence report |
+| 2026-05-18 | P7-T2 | Archived Derive Less Generic Swift Package Intents from Package Products and Manifests (PASS) |
+| 2026-05-18 | P7-T2 | Archived REVIEW_p7_t2_swift_package_product_intents report |
