@@ -32,7 +32,9 @@ Published DocC site:
     proposal automation with preflight validation and diff-scope guardrails
 12. [`LICENSE_PROVENANCE_RISK_REPORTS.md`](LICENSE_PROVENANCE_RISK_REPORTS.md):
     review candidate and accepted packages for licensing and provenance risk
-13. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+13. [`LOCAL_SMOKE_FIXTURES.md`](LOCAL_SMOKE_FIXTURES.md): reproducible local
+    smoke fixtures for adjacent real repository checkouts
+14. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References

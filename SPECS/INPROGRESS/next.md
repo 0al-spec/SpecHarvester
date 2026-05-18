@@ -9,7 +9,7 @@
 **Suggested Branch:** `feature/P6-T4-add-reproducible-local-smoke-test-fixture-documentation`
 **Review Subject:** `p6_t4_smoke_test_fixture_docs`
 
-**Current Phase:** PLAN
+**Current Phase:** ARCHIVE
 
 ## Description
 
@@ -44,5 +44,4 @@ runs do not pollute repository state or depend on ad-hoc file placement.
 
 ## Next Step
 
-Create `SPECS/INPROGRESS/P6-T4_Add_Reproducible_Local_Smoke-Test_Fixture_Documentation.md`
-with deliverables, acceptance criteria, and validation gates.
+Archive task `P6-T4` with PASS verdict and update the Workplan.

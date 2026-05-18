@@ -39,3 +39,40 @@ def test_docc_topics_link_analyzer_sandbox_requirements() -> None:
 
     assert "<doc:AnalyzerSandboxRequirements>" in root_page.read_text(encoding="utf-8")
     assert "<doc:AnalyzerSandboxRequirements>" in trust_boundary.read_text(encoding="utf-8")
+
+
+def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:
+    github_doc = ROOT / "docs" / "LOCAL_SMOKE_FIXTURES.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "LocalSmokeFixtures.md"
+    docs_index = ROOT / "docs" / "README.md"
+    root_readme = ROOT / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    gitignore = ROOT / ".gitignore"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            ".smoke/inputs",
+            ".smoke/output",
+            "Cupertino".lower(),
+            "xyflow",
+            "docc2context",
+            "Puzzle".lower(),
+            "collect-batch",
+            "batch-validation.json",
+            "governance-upstream-report",
+            "governance-license-provenance-report",
+            "Do not install harvested dependencies",
+            "Do not run harvested package scripts",
+            "Do not execute harvested repository code",
+        ):
+            assert required in text
+
+    assert "LOCAL_SMOKE_FIXTURES.md" in docs_index.read_text(encoding="utf-8")
+    assert "LOCAL_SMOKE_FIXTURES.md" in root_readme.read_text(encoding="utf-8")
+    assert "<doc:LocalSmokeFixtures>" in docc_root.read_text(encoding="utf-8")
+
+    ignored_paths = gitignore.read_text(encoding="utf-8")
+    assert ".smoke/" in ignored_paths
+    assert "smoke-inputs/" in ignored_paths
+    assert "smoke-output*/" in ignored_paths

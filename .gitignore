@@ -11,3 +11,6 @@ build/
 .build/
 Package.resolved
 *.egg-info/
+.smoke/
+smoke-inputs/
+smoke-output*/
