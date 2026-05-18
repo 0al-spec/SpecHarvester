@@ -5,6 +5,10 @@ import json
 from collections.abc import Sequence
 from pathlib import Path
 
+from spec_harvester.accepted_diff import (
+    build_accepted_candidate_diff_report,
+    write_accepted_candidate_diff_report,
+)
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.collector import (
     DEFAULT_MAX_FILE_BYTES,
@@ -301,6 +305,29 @@ def build_parser() -> argparse.ArgumentParser:
     )
     license_risk.set_defaults(func=run_license_provenance_report)
 
+    accepted_diff = subcommands.add_parser(
+        "accepted-candidate-diff-report",
+        help="Build accepted-vs-candidate package metadata diff report.",
+    )
+    accepted_diff.add_argument(
+        "--accepted-root",
+        type=Path,
+        required=True,
+        help="Accepted package source root for diff input.",
+    )
+    accepted_diff.add_argument(
+        "--candidates-root",
+        type=Path,
+        required=True,
+        help="Candidate package root for diff input.",
+    )
+    accepted_diff.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where accepted/candidate diff report JSON is written.",
+    )
+    accepted_diff.set_defaults(func=run_accepted_candidate_diff_report)
+
     smoke_triage = subcommands.add_parser(
         "smoke-triage-summary",
         help="Build a compact local smoke triage summary from existing report JSON files.",
@@ -471,6 +498,17 @@ def run_license_provenance_report(args: argparse.Namespace) -> int:
     )
     if args.output is not None:
         write_license_provenance_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_accepted_candidate_diff_report(args: argparse.Namespace) -> int:
+    result = build_accepted_candidate_diff_report(
+        accepted_root=args.accepted_root,
+        candidates_root=args.candidates_root,
+    )
+    if args.output is not None:
+        write_accepted_candidate_diff_report(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 

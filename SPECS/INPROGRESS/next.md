@@ -9,11 +9,14 @@
 **Suggested Branch:** `feature/P8-T2-accepted-candidate-diff-report`
 **Review Subject:** `p8_t2_accepted_candidate_diff_report`
 
-**Current Phase:** SELECT
+**Current Phase:** EXECUTE
 
 ## Execution Progress
 
 - `2026-05-18`: task selected from `SPECS/Workplan.md`.
+- `2026-05-18`: PRD created in `SPECS/INPROGRESS/...`.
+- `2026-05-18`: implementation started for
+  `accepted-candidate-diff-report`.
 
 ## Description
 

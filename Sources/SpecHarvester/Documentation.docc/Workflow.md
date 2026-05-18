@@ -140,6 +140,17 @@ Required audit fields for each proposal include source revision, evidence digest
 old/new package version, changed claims, validation status, and reviewer notes.
 See <doc:AcceptedPackageUpdateLifecycle>.
 
+Compare accepted and candidate metadata before update proposal work:
+
+```bash
+python3 -m spec_harvester accepted-candidate-diff-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output report/accepted-candidate-diff.json
+```
+
+See <doc:AcceptedCandidateDiffReports>.
+
 Promote a reviewed candidate into accepted-source staging:
 
 ```bash
@@ -204,4 +215,5 @@ Every generated candidate should be checked for:
 - <doc:BatchValidationReports>
 - <doc:AcceptedManifestEntries>
 - <doc:AcceptedPackageUpdateLifecycle>
+- <doc:AcceptedCandidateDiffReports>
 - <doc:ProposalAutomation>
