@@ -1,4 +1,4 @@
-# Recommended Task: P6-T2 - Infer candidate license metadata from allowlisted LICENSE files
+# Recommended Task: P6-T3 - Make namespace and upstream owner comparison case-insensitive
 
 **Priority:** P6
 **Phase:** Smoke-Test Feedback
@@ -6,31 +6,28 @@
 **Dependencies:** P5-T3, P6-T1
 **Status:** Open
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P6-T2-infer-candidate-license-metadata-from-license-files`
-**Review Subject:** `p6_t2_license_file_metadata_inference`
+**Suggested Branch:** `feature/P6-T3-make-namespace-upstream-owner-comparison-case-insensitive`
+**Review Subject:** `p6_t3_namespace_owner_case_insensitive`
 
 **Current Phase:** SELECT
 
 ## Description
 
-The local smoke test against `cupertino`, `xyflow`, `docc2context`, and `Puzzle`
-showed that Swift-oriented candidates often get `metadata.license: UNKNOWN`
-even when allowlisted `LICENSE` files are present in the harvested evidence.
+The local smoke test feedback surfaced owner-case mismatches between
+candidate manifest namespaces and upstream URLs (for example `SoundBlaster` vs
+`soundblaster`) which can be treated as false positives in review reports.
 
-Add deterministic license inference from collected static license files so the
-candidate drafter can avoid avoidable `unknown_license` advisory findings
-without executing repository code or trusting unreviewed content as authority.
+Make namespace and upstream owner comparison case-insensitive in the namespace
+review report while preserving all existing behavior around missing or conflicting
+ownership evidence.
 
 ## Acceptance Criteria
 
-- The collector continues to collect allowlisted `LICENSE`, `LICENSE.md`, and
-  `COPYING` files as static evidence.
-- The drafter can infer common license identifiers from bounded license-file
-  text when package manifest metadata has no license.
-- License inference records only conservative identifiers and leaves ambiguous
-  files as `UNKNOWN`.
-- Existing package-manifest license metadata remains preferred.
-- Focused tests cover MIT-style license-file inference and ambiguous fallback.
+- The namespace comparison in `src/spec_harvester/namespace_reports.py` ignores
+  case for namespace strings derived from package records and upstream owners.
+- Existing behavior around missing upstream info and explicit ownership conflicts is
+  preserved.
+- Review report output remains deterministic and sorted.
 - Coverage remains above the project threshold.
 
 ## Recently Archived
@@ -41,7 +38,9 @@ without executing repository code or trusting unreviewed content as authority.
   `SPECS/ARCHIVE/P5-T3_Add_License_and_Provenance_Risk_Report/`.
 - `P6-T1` Discover nested Swift package manifests during static harvest: PASS,
   `SPECS/ARCHIVE/P6-T1_Discover_Nested_Swift_Package_Manifests_during_Static_Harvest/`.
+- `P6-T2` Infer candidate license metadata from allowlisted LICENSE files: PASS,
+  `SPECS/ARCHIVE/P6-T2_Infer_Candidate_License_Metadata_from_License_Files/`.
 
 ## Next Step
 
-Plan task `P6-T2` when ready.
+Plan task `P6-T3` when ready.

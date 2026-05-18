@@ -56,6 +56,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     spec_path = f"specs/{bounded_context}.spec.yaml"
 
     package_records = package_manifest_records(snapshot)
+    license_records = license_file_records(snapshot)
     capability_entries = build_capability_entries(package_id, package_records)
     if not capability_entries:
         capability_entries = [
@@ -74,7 +75,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     manifest_intents = sorted(
         {intent_id for entry in capability_entries for intent_id in entry.get("intentIds", [])}
     )
-    license_name = infer_license(package_records)
+    license_name = infer_license(package_records, license_records)
     package_name = options.name or display_name(repository_name)
     package_summary = (
         f"Unofficial generated SpecPackage for {package_name} public package metadata."
@@ -284,6 +285,18 @@ def package_manifest_records(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
         if not isinstance(package, dict):
             continue
         records.append({"path": item.get("path"), "package": package})
+    return sorted(records, key=lambda item: str(item.get("path") or ""))
+
+
+def license_file_records(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
+    files = snapshot.get("files")
+    if not isinstance(files, list):
+        return []
+    records: list[dict[str, Any]] = []
+    for item in files:
+        if not isinstance(item, dict) or item.get("kind") != "license":
+            continue
+        records.append(item)
     return sorted(records, key=lambda item: str(item.get("path") or ""))
 
 
@@ -668,13 +681,26 @@ def public_interface_provenance(index: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def infer_license(package_records: list[dict[str, Any]]) -> str:
+def infer_license(
+    package_records: list[dict[str, Any]],
+    license_records: list[dict[str, Any]],
+) -> str:
     licenses = [
         package["license"]
         for package in (record["package"] for record in package_records)
         if isinstance(package.get("license"), str) and package["license"].strip()
     ]
-    return licenses[0] if licenses else "UNKNOWN"
+    if licenses:
+        return licenses[0]
+
+    license_hints = [
+        hint
+        for hint in (record.get("licenseHint") for record in license_records)
+        if isinstance(hint, str) and hint.strip()
+    ]
+    if license_hints:
+        return license_hints[0]
+    return "UNKNOWN"
 
 
 def infer_compatibility(package_records: list[dict[str, Any]]) -> dict[str, list[str]]:

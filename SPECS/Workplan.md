@@ -99,7 +99,7 @@ Acceptance:
 ## Phase 6. Smoke-Test Feedback
 
 - [x] `P6-T1` Discover nested Swift package manifests during static harvest.
-- [ ] `P6-T2` Infer candidate license metadata from allowlisted LICENSE files.
+- [x] `P6-T2` Infer candidate license metadata from allowlisted LICENSE files.
 - [ ] `P6-T3` Make namespace and upstream owner comparison case-insensitive.
 - [ ] `P6-T4` Add reproducible local smoke-test fixture documentation.
 

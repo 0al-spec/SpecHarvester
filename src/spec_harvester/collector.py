@@ -51,6 +51,10 @@ IGNORED_NESTED_SWIFT_MANIFEST_DIRS = {
 
 MARKDOWN_EXTENSIONS = {".md", ".markdown"}
 PACKAGE_MANIFEST_NAMES = {"package.json"}
+LICENSE_TEXT_HINTS = (
+    ("MIT", ("permission is hereby granted", "copyright")),
+    ("Apache-2.0", ("apache license", "version 2.0")),
+)
 
 
 @dataclass(frozen=True)
@@ -222,8 +226,20 @@ def collect_file(root: Path, path: Path) -> dict[str, Any]:
         package = parse_package_json(text)
         if package:
             record["package"] = package
+    elif path.name.lower().startswith(("license", "copying")):
+        license_hint = infer_license_hint(text)
+        if license_hint is not None:
+            record["licenseHint"] = license_hint
 
     return record
+
+
+def infer_license_hint(text: str) -> str | None:
+    normalized = re.sub(r"\s+", " ", text.lower())
+    for license_name, requirements in LICENSE_TEXT_HINTS:
+        if all(requirement in normalized for requirement in requirements):
+            return license_name
+    return None
 
 
 def classify_file(path: Path) -> str:
