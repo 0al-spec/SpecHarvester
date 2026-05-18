@@ -86,6 +86,28 @@ def test_report_summary_counts_dynamic_issue_codes(tmp_path: Path) -> None:
     assert issues_by_code["specpm_symlink"] == 1
 
 
+def test_license_provenance_report_accepts_upstream_repository_name_match(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    accepted_root.mkdir(parents=True)
+    write_manifest(
+        accepted_root / "xyflow" / "1.0.0" / "specpm.yaml",
+        "xyflow.core",
+        "1.0.0",
+        "MIT",
+        upstream_uri="https://github.com/SoundBlaster/xyflow",
+    )
+
+    report = build_license_provenance_risk_report(
+        accepted_root=accepted_root,
+    )
+
+    assert report["summary"]["issueCount"] == 0
+    assert "upstream_namespace_mismatch" not in report["summary"]["issuesByCode"]
+    assert report["issues"] == []
+
+
 def test_cli_license_provenance_report_emits_json(tmp_path: Path) -> None:
     candidates_root = tmp_path / "candidates"
     accepted_root = tmp_path / "accepted"

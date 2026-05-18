@@ -28,6 +28,12 @@ class UpstreamArtifactRecord:
 
 
 @dataclass(frozen=True)
+class UpstreamRepositoryReference:
+    owner: str
+    name: str
+
+
+@dataclass(frozen=True)
 class PackageNamespaceUpstreamRecord:
     path: str
     source: str
@@ -189,8 +195,8 @@ def namespace_upstream_checks(
                     }
                 )
                 continue
-            owner = parse_upstream_owner(entry.uri)
-            if owner is None:
+            upstream = parse_upstream_repository_reference(entry.uri)
+            if upstream is None:
                 issues.append(
                     {
                         "path": record.path,
@@ -201,7 +207,7 @@ def namespace_upstream_checks(
                     }
                 )
                 continue
-            if owner.lower() != record.namespace.lower():
+            if not namespace_matches_upstream(record.namespace, upstream):
                 issues.append(
                     {
                         "path": record.path,
@@ -210,7 +216,8 @@ def namespace_upstream_checks(
                         "code": "upstream_namespace_mismatch",
                         "message": (
                             f"Package namespace `{record.namespace}` does not match inferred "
-                            f"upstream owner `{owner}`."
+                            f"upstream owner `{upstream.owner}` or repository "
+                            f"`{upstream.name}`."
                         ),
                     }
                 )
@@ -218,7 +225,19 @@ def namespace_upstream_checks(
     return sorted(issues, key=lambda item: (item["path"], item["code"]))
 
 
+def namespace_matches_upstream(namespace: str, upstream: UpstreamRepositoryReference) -> bool:
+    normalized_namespace = namespace.strip().lower()
+    return normalized_namespace in {upstream.owner.lower(), upstream.name.lower()}
+
+
 def parse_upstream_owner(uri: str) -> str | None:
+    upstream = parse_upstream_repository_reference(uri)
+    if upstream is None:
+        return None
+    return upstream.owner
+
+
+def parse_upstream_repository_reference(uri: str) -> UpstreamRepositoryReference | None:
     text = uri.strip().strip("'\"")
     if text.startswith("git@github.com:"):
         body = text.removeprefix("git@github.com:")
@@ -229,9 +248,18 @@ def parse_upstream_owner(uri: str) -> str | None:
     else:
         return None
 
-    if len(parts) < 2 or not parts[0]:
+    if len(parts) < 2 or not parts[0] or not parts[1]:
         return None
-    return parts[0]
+    repository_name = strip_git_suffix(parts[1])
+    if not repository_name:
+        return None
+    return UpstreamRepositoryReference(owner=parts[0], name=repository_name)
+
+
+def strip_git_suffix(name: str) -> str:
+    if name.endswith(".git"):
+        return name.removesuffix(".git")
+    return name
 
 
 def _collect_source_records(

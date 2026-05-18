@@ -6,7 +6,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from spec_harvester.namespace_reports import parse_upstream_owner
+from spec_harvester.namespace_reports import (
+    namespace_matches_upstream,
+    parse_upstream_repository_reference,
+)
 from spec_harvester.promoter import parse_yaml_scalar
 
 LICENSE_PROVENANCE_REPORT_KIND = "SpecHarvesterLicenseProvenanceRiskReport"
@@ -233,8 +236,8 @@ def evaluate_provenance_risks(
                 )
                 continue
 
-            owner = parse_upstream_owner(entry.uri)
-            if owner is None:
+            upstream = parse_upstream_repository_reference(entry.uri)
+            if upstream is None:
                 if "github.com" in entry.uri.lower():
                     issues.append(
                         _report_issue(
@@ -255,7 +258,7 @@ def evaluate_provenance_risks(
                     )
                 continue
 
-            if owner.lower() != record.namespace.lower():
+            if not namespace_matches_upstream(record.namespace, upstream):
                 issues.append(
                     _report_issue(
                         record,
@@ -263,7 +266,8 @@ def evaluate_provenance_risks(
                         "low",
                         (
                             f"Package namespace `{record.namespace}` does not match inferred "
-                            f"upstream owner `{owner}`."
+                            f"upstream owner `{upstream.owner}` or repository "
+                            f"`{upstream.name}`."
                         ),
                     )
                 )
