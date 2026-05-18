@@ -17,6 +17,7 @@ Use one ignored workspace:
     governance-claims.json
     namespace-upstream.json
     license-provenance.json
+    smoke-triage.json
 ```
 
 The `.smoke/` directory is ignored by Git. Legacy local scratch directories
@@ -134,6 +135,23 @@ PYTHONPATH=src python -m spec_harvester governance-license-provenance-report \
   --candidates-root .smoke/output/candidates \
   --output .smoke/output/license-provenance.json
 ```
+
+## Triage Summary
+
+Build a compact review summary from the detailed smoke reports:
+
+```bash
+PYTHONPATH=src python -m spec_harvester smoke-triage-summary \
+  --batch-validation .smoke/output/batch-validation.json \
+  --governance-claims .smoke/output/governance-claims.json \
+  --namespace-upstream .smoke/output/namespace-upstream.json \
+  --license-provenance .smoke/output/license-provenance.json \
+  --output .smoke/output/smoke-triage.json
+```
+
+The summary keeps the detailed report paths and groups batch, duplicate,
+namespace/upstream, and license/provenance signals into one reviewable JSON
+object.
 
 ## Reproducibility Checklist
 
