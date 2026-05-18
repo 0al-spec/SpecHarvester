@@ -88,3 +88,4 @@
 | 2026-05-18 | P7-T2 | Archived Derive Less Generic Swift Package Intents from Package Products and Manifests (PASS) |
 | 2026-05-18 | P7-T2 | Archived REVIEW_p7_t2_swift_package_product_intents report |
 | 2026-05-18 | P7-T3 | Archived Distinguish Absent License Evidence from Ambiguous Unknown License Evidence (PASS) |
+| 2026-05-18 | P7-T3 | Archived REVIEW_p7_t3_license_evidence_classification report |
