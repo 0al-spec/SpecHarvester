@@ -122,6 +122,11 @@ def test_parse_upstream_repository_reference_supports_github_url_forms() -> None
     assert ssh.name == "docc2context"
 
 
+def test_parse_upstream_repository_reference_rejects_empty_repository_name() -> None:
+    assert parse_upstream_repository_reference("https://github.com/SoundBlaster/.git") is None
+    assert parse_upstream_repository_reference("git@github.com:SoundBlaster/.git") is None
+
+
 def test_build_namespace_upstream_report_reports_missing_upstream(tmp_path: Path) -> None:
     accepted_root = tmp_path / "accepted"
     accepted_root.mkdir(parents=True)

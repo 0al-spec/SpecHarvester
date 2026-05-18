@@ -226,7 +226,7 @@ def namespace_upstream_checks(
 
 
 def namespace_matches_upstream(namespace: str, upstream: UpstreamRepositoryReference) -> bool:
-    normalized_namespace = namespace.lower()
+    normalized_namespace = namespace.strip().lower()
     return normalized_namespace in {upstream.owner.lower(), upstream.name.lower()}
 
 
@@ -250,7 +250,10 @@ def parse_upstream_repository_reference(uri: str) -> UpstreamRepositoryReference
 
     if len(parts) < 2 or not parts[0] or not parts[1]:
         return None
-    return UpstreamRepositoryReference(owner=parts[0], name=strip_git_suffix(parts[1]))
+    repository_name = strip_git_suffix(parts[1])
+    if not repository_name:
+        return None
+    return UpstreamRepositoryReference(owner=parts[0], name=repository_name)
 
 
 def strip_git_suffix(name: str) -> str:
