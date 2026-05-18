@@ -11,6 +11,7 @@ from spec_harvester.collector import (
     classify_file,
     collect_local_repository,
     markdown_headings,
+    nested_swift_package_manifests,
     parse_package_json,
 )
 from spec_harvester.drafter import DraftOptions, draft_spec_package, render_scalar
@@ -110,6 +111,51 @@ def test_collect_local_repository_snapshot_is_deterministic(tmp_path: Path) -> N
     )
 
     assert collect_local_repository(options) == collect_local_repository(options)
+
+
+def test_collect_local_repository_discovers_nested_swift_package_manifest(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    nested = repo / "Packages"
+    nested.mkdir()
+    (nested / "Package.swift").write_text(
+        "// swift-tools-version: 6.0\nimport PackageDescription\n",
+        encoding="utf-8",
+    )
+    ignored = repo / ".build" / "checkouts" / "dependency"
+    ignored.mkdir(parents=True)
+    (ignored / "Package.swift").write_text(
+        "// swift-tools-version: 6.0\n",
+        encoding="utf-8",
+    )
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    assert snapshot["summary"]["fileCount"] == 1
+    assert snapshot["summary"]["packageManifestCount"] == 1
+    assert snapshot["files"][0]["path"] == "Packages/Package.swift"
+    assert snapshot["files"][0]["kind"] == "package_manifest"
+
+
+def test_nested_swift_manifest_discovery_ignores_root_and_broken_symlinks(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "Package.swift").write_text("// root\n", encoding="utf-8")
+    nested = repo / "Feature"
+    nested.mkdir()
+    nested_manifest = nested / "Package.swift"
+    nested_manifest.write_text("// nested\n", encoding="utf-8")
+    broken = repo / "Broken"
+    broken.mkdir()
+    (broken / "Package.swift").symlink_to(repo / "missing")
+
+    manifests = nested_swift_package_manifests(repo)
+
+    assert manifests == [nested_manifest]
 
 
 def test_collect_local_repository_rejects_missing_source(tmp_path: Path) -> None:

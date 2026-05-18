@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from spec_harvester.cli import main
@@ -125,6 +126,32 @@ def test_cli_namespace_upstream_report_emits_json(tmp_path: Path) -> None:
     )
 
     assert exit_code == 0
+
+
+def test_cli_namespace_upstream_report_writes_output_file(tmp_path: Path) -> None:
+    accepted_root = tmp_path / "accepted"
+    output = tmp_path / "namespace-upstream.json"
+    accepted_root.mkdir()
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        "demo.core",
+        "1.0.0",
+        upstream_uri="https://github.com/demo/demo",
+    )
+
+    exit_code = main(
+        [
+            "governance-upstream-report",
+            "--accepted-root",
+            str(accepted_root),
+            "--output",
+            str(output),
+        ]
+    )
+
+    assert exit_code == 0
+    report = json.loads(output.read_text(encoding="utf-8"))
+    assert report["summary"]["records"] == 1
 
 
 def write_manifest(

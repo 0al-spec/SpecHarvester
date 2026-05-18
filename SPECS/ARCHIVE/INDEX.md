@@ -25,6 +25,7 @@
 | P5-T1 | [P5-T1_Add_Duplicate_Intent_and_Capability_Claim_Report/](P5-T1_Add_Duplicate_Intent_and_Capability_Claim_Report/) | 2026-05-18 | PASS |
 | P5-T2 | [P5-T2_Add_Namespace_and_Upstream_Relationship_Review_Report/](P5-T2_Add_Namespace_and_Upstream_Relationship_Review_Report/) | 2026-05-18 | PASS |
 | P5-T3 | [P5-T3_Add_License_and_Provenance_Risk_Report/](P5-T3_Add_License_and_Provenance_Risk_Report/) | 2026-05-18 | PASS |
+| P6-T1 | [P6-T1_Discover_Nested_Swift_Package_Manifests_during_Static_Harvest/](P6-T1_Discover_Nested_Swift_Package_Manifests_during_Static_Harvest/) | 2026-05-18 | PASS |
 
 ## Historical Artifacts
 
@@ -71,3 +72,4 @@
 | 2026-05-18 | P5-T1 | Archived REVIEW_p5_t1_duplicate_intent_capability_claim_report report |
 | 2026-05-18 | P5-T2 | Archived Add Namespace and Upstream Relationship Review Report (PASS) |
 | 2026-05-18 | P5-T2 | Archived REVIEW_p5_t2_namespace_upstream_review_report report |
+| 2026-05-18 | P6-T1 | Archived Discover Nested Swift Package Manifests during Static Harvest (PASS) |
