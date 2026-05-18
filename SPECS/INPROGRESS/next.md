@@ -60,3 +60,10 @@ evidence and should not be reported as an owner mismatch.
 ## Next Step
 
 Plan task `P7-T1` when ready.
+
+## Backlog Note
+
+`P8` is planned for accepted specification update lifecycle work after the
+smoke-test signal quality tasks. It covers immutable accepted versions,
+accepted-vs-candidate diffing, update impact classification, PR-ready SpecPM
+update proposals, and correction/errata handling for accepted metadata fixes.
