@@ -34,6 +34,7 @@
 | P7-T3 | [P7-T3_Distinguish_Absent_License_Evidence_from_Ambiguous_Unknown_License_Evidence/](P7-T3_Distinguish_Absent_License_Evidence_from_Ambiguous_Unknown_License_Evidence/) | 2026-05-18 | PASS |
 | P7-T4 | [P7-T4_Add_a_Compact_Local_Smoke_Triage_Summary_for_Batch_and_Governance_Report_Output/](P7-T4_Add_a_Compact_Local_Smoke_Triage_Summary_for_Batch_and_Governance_Report_Output/) | 2026-05-18 | PASS |
 | P8-T1 | [P8-T1_Document_accepted_package_update_lifecycle_and_immutability_policy/](P8-T1_Document_accepted_package_update_lifecycle_and_immutability_policy/) | 2026-05-18 | PASS |
+| P8-T2 | [P8-T2_Add_accepted-vs-candidate_package_diff_report/](P8-T2_Add_accepted-vs-candidate_package_diff_report/) | 2026-05-18 | PASS |
 
 ## Historical Artifacts
 
@@ -95,3 +96,4 @@
 | 2026-05-18 | P7-T4 | Archived REVIEW_p7_t4_local_smoke_triage_summary report |
 | 2026-05-18 | P8-T1 | Archived Document accepted package update lifecycle and immutability policy (PASS) |
 | 2026-05-18 | P8-T1 | Archived REVIEW_p8_t1_accepted_update_lifecycle_docs report |
+| 2026-05-18 | P8-T2 | Archived Add accepted-vs-candidate package diff report (PASS) |

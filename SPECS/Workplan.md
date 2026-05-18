@@ -139,7 +139,7 @@ Acceptance:
 ## Phase 8. Accepted Specification Update Lifecycle
 
 - [x] `P8-T1` Document accepted package update lifecycle and immutability policy.
-- [ ] `P8-T2` Add accepted-vs-candidate package diff report.
+- [x] `P8-T2` Add accepted-vs-candidate package diff report.
 - [ ] `P8-T3` Classify update proposals by metadata, interface, license,
   provenance, capability, and intent impact.
 - [ ] `P8-T4` Add PR-ready SpecPM update proposal flow for new accepted package
