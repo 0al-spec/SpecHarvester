@@ -1,4 +1,4 @@
-# Recommended Task: P6-T2 - Infer candidate license metadata from allowlisted LICENSE files
+# Recommended Task: P6-T4 - Add reproducible local smoke-test fixture documentation
 
 **Priority:** P6
 **Phase:** Smoke-Test Feedback
@@ -6,32 +6,28 @@
 **Dependencies:** P5-T3, P6-T1
 **Status:** Open
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P6-T2-infer-candidate-license-metadata-from-license-files`
-**Review Subject:** `p6_t2_license_file_metadata_inference`
+**Suggested Branch:** `feature/P6-T4-add-reproducible-local-smoke-test-fixture-documentation`
+**Review Subject:** `p6_t4_smoke_test_fixture_docs`
 
 **Current Phase:** SELECT
 
 ## Description
 
-The local smoke test against `cupertino`, `xyflow`, `docc2context`, and `Puzzle`
-showed that Swift-oriented candidates often get `metadata.license: UNKNOWN`
-even when allowlisted `LICENSE` files are present in the harvested evidence.
+Formalize how local smoke tests are authored, executed, and documented for
+repeatability across machines and repositories.
 
-Add deterministic license inference from collected static license files so the
-candidate drafter can avoid avoidable `unknown_license` advisory findings
-without executing repository code or trusting unreviewed content as authority.
+Create deterministic fixture instructions and canonical artifact folders so repeat
+runs do not pollute repository state or depend on ad-hoc file placement.
 
 ## Acceptance Criteria
 
-- The collector continues to collect allowlisted `LICENSE`, `LICENSE.md`, and
-  `COPYING` files as static evidence.
-- The drafter can infer common license identifiers from bounded license-file
-  text when package manifest metadata has no license.
-- License inference records only conservative identifiers and leaves ambiguous
-  files as `UNKNOWN`.
-- Existing package-manifest license metadata remains preferred.
-- Focused tests cover MIT-style license-file inference and ambiguous fallback.
-- Coverage remains above the project threshold.
+- Repository-level documentation explains smoke fixture directories and command
+  conventions.
+- Reproducible command snippets are available for the locally validated Cupertino,
+  xyflow, docc2context, and Puzzle repositories.
+- Generated smoke output is clearly separated from committed artifacts and ignored
+  by version control by default.
+- The process remains local-only and low-cost to rerun.
 
 ## Recently Archived
 
@@ -41,7 +37,11 @@ without executing repository code or trusting unreviewed content as authority.
   `SPECS/ARCHIVE/P5-T3_Add_License_and_Provenance_Risk_Report/`.
 - `P6-T1` Discover nested Swift package manifests during static harvest: PASS,
   `SPECS/ARCHIVE/P6-T1_Discover_Nested_Swift_Package_Manifests_during_Static_Harvest/`.
+- `P6-T2` Infer candidate license metadata from allowlisted LICENSE files: PASS,
+  `SPECS/ARCHIVE/P6-T2_Infer_Candidate_License_Metadata_from_License_Files/`.
+- `P6-T3` Make namespace and upstream owner comparison case-insensitive: PASS,
+  `SPECS/ARCHIVE/P6-T3_Make_Namespace_Upstream_Owner_Comparison_Case_Insensitive/`.
 
 ## Next Step
 
-Plan task `P6-T2` when ready.
+Plan task `P6-T4` when ready.

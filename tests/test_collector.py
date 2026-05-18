@@ -583,6 +583,95 @@ def test_draft_spec_package_uses_fallback_metadata_without_package_manifests(
     assert "intent.package.public_repository_metadata" in spec
 
 
+def test_draft_spec_package_prefers_manifest_license_over_license_file(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/system",
+                "description": "Core system",
+                "license": "Apache-2.0",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (repo / "LICENSE").write_text("MIT License\nPermission is hereby granted.\n")
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            repository="https://github.com/example/system",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    manifest = Path(result["manifest"]).read_text(encoding="utf-8")
+    assert "license: Apache-2.0" in manifest
+
+
+def test_draft_spec_package_infers_license_from_license_file(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/system",
+                "description": "Core system",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (repo / "LICENSE").write_text(
+        "MIT License\n"
+        "Copyright 2026 Example\n"
+        "Permission is hereby granted, free of charge, to any person\n"
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            repository="https://github.com/example/system",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    manifest = Path(result["manifest"]).read_text(encoding="utf-8")
+    assert "license: MIT" in manifest
+
+
+def test_draft_spec_package_keeps_unknown_for_ambiguous_license_file(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "LICENSE").write_text("All rights reserved. Internal use only.")
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            repository="https://github.com/example/system",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    manifest = Path(result["manifest"]).read_text(encoding="utf-8")
+    assert "license: UNKNOWN" in manifest
+
+
 def test_draft_spec_package_rejects_unsupported_snapshot_kind(tmp_path: Path) -> None:
     snapshot = tmp_path / "harvest.json"
     snapshot.write_text(json.dumps({"kind": "OtherSnapshot"}), encoding="utf-8")
