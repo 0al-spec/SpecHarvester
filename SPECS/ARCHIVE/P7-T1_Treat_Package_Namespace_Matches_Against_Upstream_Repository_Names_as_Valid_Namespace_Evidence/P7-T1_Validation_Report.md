@@ -4,11 +4,11 @@
 
 | Command | Result |
 |---------|--------|
-| `PYTHONPATH=src python -m pytest tests/test_namespace_upstream_reports.py tests/test_license_provenance_risk_reports.py -q` | PASS, 13 passed |
-| `PYTHONPATH=src python -m pytest` | PASS, 124 passed |
+| `PYTHONPATH=src python -m pytest tests/test_namespace_upstream_reports.py tests/test_license_provenance_risk_reports.py -q` | PASS, 14 passed |
+| `PYTHONPATH=src python -m pytest` | PASS, 125 passed |
 | `ruff check src tests` | PASS |
 | `ruff format --check src tests` | PASS |
-| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 90.32% total coverage |
+| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 90.33% total coverage |
 | `swift package dump-package >/dev/null` | PASS |
 | `swift build --target SpecHarvesterDocs` | PASS |
 
