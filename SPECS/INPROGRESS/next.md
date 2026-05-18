@@ -9,11 +9,16 @@
 **Suggested Branch:** `feature/P8-T1-accepted-update-lifecycle-docs`
 **Review Subject:** `p8_t1_accepted_update_lifecycle_docs`
 
-**Current Phase:** EXECUTE
+**Current Phase:** ARCHIVE
 
 ## Execution Progress
 
 - `2026-05-18`: task selected from `SPECS/Workplan.md`.
+- `2026-05-18`: PRD created in `SPECS/INPROGRESS/...`.
+- `2026-05-18`: accepted package update lifecycle documentation implemented in
+  `docs/` and DocC mirrors.
+- `2026-05-18`: validation report written to
+  `SPECS/ARCHIVE/P8-T1_Document_accepted_package_update_lifecycle_and_immutability_policy/`.
 
 ## Description
 
@@ -46,4 +51,4 @@ should be handled without pretending upstream content changed.
 
 ## Next Step
 
-Plan task `P8-T1` when ready.
+Next task in sequence: `P8-T2`.
