@@ -9,7 +9,7 @@
 **Suggested Branch:** `feature/P7-T4-local-smoke-triage-summary`
 **Review Subject:** `p7_t4_local_smoke_triage_summary`
 
-**Current Phase:** SELECT
+**Current Phase:** PLAN
 
 ## Description
 
@@ -42,7 +42,8 @@ existing local smoke output without committing generated candidates.
 
 ## Next Step
 
-Plan task `P7-T4` when ready.
+Create the task PRD for `P7-T4` and define the summary inputs, output schema,
+CLI behavior, documentation, and validation commands.
 
 ## Backlog Note
 
