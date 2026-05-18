@@ -122,7 +122,7 @@ Acceptance:
   and manifests.
 - [x] `P7-T3` Distinguish absent license evidence from ambiguous unknown license
   evidence.
-- [ ] `P7-T4` Add a compact local smoke triage summary for batch and governance
+- [x] `P7-T4` Add a compact local smoke triage summary for batch and governance
   report output.
 
 Acceptance:

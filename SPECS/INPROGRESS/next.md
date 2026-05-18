@@ -1,53 +1,45 @@
-# Recommended Task: P7-T4 - Add a compact local smoke triage summary for batch and governance report output
+# Recommended Task: P8-T1 - Document accepted package update lifecycle and immutability policy
 
-**Priority:** P7
-**Phase:** Smoke-Test Signal Quality
+**Priority:** P8
+**Phase:** Accepted Specification Update Lifecycle
 **Effort:** Medium
-**Dependencies:** P6-T4, P7-T1, P7-T2, P7-T3
+**Dependencies:** P7-T4
 **Status:** Open
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P7-T4-local-smoke-triage-summary`
-**Review Subject:** `p7_t4_local_smoke_triage_summary`
+**Suggested Branch:** `feature/P8-T1-accepted-update-lifecycle-docs`
+**Review Subject:** `p8_t1_accepted_update_lifecycle_docs`
 
-**Current Phase:** PLAN
+**Current Phase:** SELECT
 
 ## Description
 
-Local smoke runs now generate batch validation, duplicate governance,
-namespace/upstream, and license/provenance outputs. Reviewers still need to
-open multiple JSON reports to understand whether a run is clean, which issues
-remain, and whether those issues are expected review signals.
+Accepted SpecPM package metadata needs an explicit update lifecycle now that
+SpecHarvester can generate, validate, and smoke-triage candidate metadata from
+pinned upstream revisions.
 
-Add a compact deterministic smoke triage summary that can be generated from the
-existing local smoke output without committing generated candidates.
+Document how accepted package versions remain immutable, when upstream changes
+should produce a new candidate/version, and how metadata corrections or errata
+should be handled without pretending upstream content changed.
 
 ## Acceptance Criteria
 
-- Smoke triage output summarizes batch status and governance issue counts in a
-  compact reviewable format.
-- The summary distinguishes duplicate, namespace/upstream, and
-  license/provenance signals.
-- The summary can point reviewers to the detailed report files.
-- The command or documented workflow remains local-only and deterministic.
-- Coverage remains above the project threshold.
+- Documentation defines accepted package immutability expectations.
+- Documentation separates upstream updates from metadata corrections.
+- The lifecycle records expected audit trail fields for future automation:
+  source revision, evidence digests, old/new package version, changed claims,
+  validation status, and reviewer notes.
+- The lifecycle keeps SpecPM review/merge as the acceptance boundary.
+- Coverage and docs checks remain green.
 
 ## Recently Archived
 
-- `P7-T2` Derive less generic Swift package intents from package products and
-  manifests: PASS,
-  `SPECS/ARCHIVE/P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests/`.
 - `P7-T3` Distinguish absent license evidence from ambiguous unknown license
   evidence: PASS,
   `SPECS/ARCHIVE/P7-T3_Distinguish_Absent_License_Evidence_from_Ambiguous_Unknown_License_Evidence/`.
+- `P7-T4` Add a compact local smoke triage summary for batch and governance
+  report output: PASS,
+  `SPECS/ARCHIVE/P7-T4_Add_a_Compact_Local_Smoke_Triage_Summary_for_Batch_and_Governance_Report_Output/`.
 
 ## Next Step
 
-Create the task PRD for `P7-T4` and define the summary inputs, output schema,
-CLI behavior, documentation, and validation commands.
-
-## Backlog Note
-
-`P8` is planned for accepted specification update lifecycle work after the
-smoke-test signal quality tasks. It covers immutable accepted versions,
-accepted-vs-candidate diffing, update impact classification, PR-ready SpecPM
-update proposals, and correction/errata handling for accepted metadata fixes.
+Plan task `P8-T1` when ready.
