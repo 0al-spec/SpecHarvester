@@ -39,7 +39,7 @@
 
 | Folder | Description |
 |--------|-------------|
-| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
+| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
 
 ## Archive Log
 
@@ -94,3 +94,4 @@
 | 2026-05-18 | P7-T4 | Archived Add a Compact Local Smoke Triage Summary for Batch and Governance Report Output (PASS) |
 | 2026-05-18 | P7-T4 | Archived REVIEW_p7_t4_local_smoke_triage_summary report |
 | 2026-05-18 | P8-T1 | Archived Document accepted package update lifecycle and immutability policy (PASS) |
+| 2026-05-18 | P8-T1 | Archived REVIEW_p8_t1_accepted_update_lifecycle_docs report |
