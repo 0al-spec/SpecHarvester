@@ -79,3 +79,4 @@
 | 2026-05-18 | P6-T2 | Archived Infer Candidate License Metadata from License Files (PASS) |
 | 2026-05-18 | P6-T3 | Archived Make Namespace and Upstream Owner Comparison Case-Insensitive (PASS) |
 | 2026-05-18 | P6-T4 | Archived Add Reproducible Local Smoke-Test Fixture Documentation (PASS) |
+| 2026-05-18 | P6-T4 | Archived REVIEW_p6_t4_smoke_test_fixture_docs report |
