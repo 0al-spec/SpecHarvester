@@ -328,7 +328,7 @@ def diff_records(
 
 
 def diff_metadata(old: dict[str, str], new: dict[str, str]) -> list[dict[str, str | None]]:
-    fields = ("id", "name", "version", "summary", "license")
+    fields = sorted(set(old) | set(new))
     changes = []
     for field in fields:
         old_value = old.get(field)

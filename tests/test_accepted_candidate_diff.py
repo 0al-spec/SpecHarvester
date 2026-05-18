@@ -38,6 +38,7 @@ def test_build_accepted_candidate_diff_report_detects_changed_candidate(
         capabilities=["demo.read", "demo.stream"],
         intents=["intent.package.utility", "intent.package.workflow"],
         upstream_revision="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        extra_metadata={"licenseEvidence": "evidence.txt"},
     )
 
     report = build_accepted_candidate_diff_report(
@@ -65,6 +66,7 @@ def test_build_accepted_candidate_diff_report_detects_changed_candidate(
     }
     assert {item["field"] for item in comparison["changes"]["metadata"]} == {
         "version",
+        "licenseEvidence",
         "summary",
         "license",
     }
@@ -284,7 +286,11 @@ def write_manifest(
     summary: str = "Demo package",
     license_name: str = "MIT",
     upstream_revision: str = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    extra_metadata: dict[str, str] | None = None,
 ) -> None:
+    metadata_lines = ""
+    if extra_metadata:
+        metadata_lines = "".join(f"  {key}: {value}\n" for key, value in extra_metadata.items())
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         (
@@ -296,6 +302,7 @@ def write_manifest(
             f"  version: {version}\n"
             f"  summary: {summary}\n"
             f"  license: {license_name}\n"
+            f"{metadata_lines}"
             "index:\n"
             "  provides:\n"
             "    capabilities:\n"
