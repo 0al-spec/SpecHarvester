@@ -101,7 +101,7 @@ Acceptance:
 - [x] `P6-T1` Discover nested Swift package manifests during static harvest.
 - [x] `P6-T2` Infer candidate license metadata from allowlisted LICENSE files.
 - [x] `P6-T3` Make namespace and upstream owner comparison case-insensitive.
-- [ ] `P6-T4` Add reproducible local smoke-test fixture documentation.
+- [x] `P6-T4` Add reproducible local smoke-test fixture documentation.
 
 Acceptance:
 
