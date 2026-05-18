@@ -113,3 +113,49 @@ Acceptance:
   differences as mismatches.
 - Smoke testing remains local-only, deterministic, and clearly separated from
   committed generated candidate outputs.
+
+## Phase 7. Smoke-Test Signal Quality
+
+- [ ] `P7-T1` Treat package namespace matches against upstream repository names
+  as valid namespace evidence.
+- [ ] `P7-T2` Derive less generic Swift package intents from package products
+  and manifests.
+- [ ] `P7-T3` Distinguish absent license evidence from ambiguous unknown license
+  evidence.
+- [ ] `P7-T4` Add a compact local smoke triage summary for batch and governance
+  report output.
+
+Acceptance:
+
+- Governance namespace/upstream reports avoid false positives when a package
+  namespace matches the upstream repository name but not the GitHub owner.
+- Swift-only candidates avoid duplicate generic metadata intents when static
+  product or manifest evidence can support a more specific claim.
+- License provenance reports explain whether `UNKNOWN` means no license evidence
+  was found or license-like evidence was present but not classifiable.
+- Local smoke output can be summarized into a stable review artifact without
+  committing generated candidates.
+
+## Phase 8. Accepted Specification Update Lifecycle
+
+- [ ] `P8-T1` Document accepted package update lifecycle and immutability policy.
+- [ ] `P8-T2` Add accepted-vs-candidate package diff report.
+- [ ] `P8-T3` Classify update proposals by metadata, interface, license,
+  provenance, capability, and intent impact.
+- [ ] `P8-T4` Add PR-ready SpecPM update proposal flow for new accepted package
+  versions.
+- [ ] `P8-T5` Add correction and errata path for fixing accepted metadata
+  without treating upstream content as changed.
+
+Acceptance:
+
+- Accepted SpecPM package versions are treated as immutable registry evidence
+  unless a correction path explicitly records the reason for metadata repair.
+- Noticeable upstream module changes produce a new reviewed candidate from a
+  pinned source revision and a reviewable diff against the currently accepted
+  package version.
+- Update proposals preserve audit trail: source revision, evidence digests,
+  old/new package version, changed claims, validation status, and reviewer
+  notes.
+- SpecHarvester can propose update PRs to SpecPM, but SpecPM review and merge
+  remain the acceptance boundary.
