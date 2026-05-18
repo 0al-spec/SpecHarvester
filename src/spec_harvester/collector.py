@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import hashlib
 import json
 import re
@@ -168,19 +169,25 @@ def candidate_files(root: Path) -> list[Path]:
 
 def nested_swift_package_manifests(root: Path) -> list[Path]:
     manifests: list[Path] = []
-    for path in root.rglob("Package.swift"):
-        if not path.exists():
-            continue
-        relative = path.relative_to(root)
-        if len(relative.parts) == 1:
-            continue
-        parent_parts = relative.parts[:-1]
-        if any(
-            part.startswith(".") or part in IGNORED_NESTED_SWIFT_MANIFEST_DIRS
-            for part in parent_parts
-        ):
-            continue
-        manifests.append(path)
+    for current_root, dirs, filenames in os.walk(root):
+        dirs[:] = [
+            name
+            for name in sorted(dirs)
+            if not (name.startswith(".") or name in IGNORED_NESTED_SWIFT_MANIFEST_DIRS)
+        ]
+        for filename in sorted(filenames):
+            if filename != "Package.swift":
+                continue
+            path = Path(current_root, filename)
+            if not path.exists():
+                continue
+            relative = path.relative_to(root)
+            if len(relative.parts) == 1:
+                continue
+            parent_parts = relative.parts[:-1]
+            if any(part.startswith(".") for part in parent_parts):
+                continue
+            manifests.append(path)
     return manifests
 
 
