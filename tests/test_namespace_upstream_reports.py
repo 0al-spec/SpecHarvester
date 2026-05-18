@@ -58,6 +58,29 @@ def test_build_namespace_upstream_report_detects_duplicates_and_mismatches(tmp_p
     assert mismatch[0]["packageId"] == "xyflow.utils"
 
 
+def test_build_namespace_upstream_report_ignores_owner_case(tmp_path: Path) -> None:
+    accepted_root = tmp_path / "accepted"
+    accepted_root.mkdir(parents=True)
+    write_manifest(
+        accepted_root / "case" / "1.0.0" / "specpm.yaml",
+        "SoundBlaster.core",
+        "1.0.0",
+        upstream_uri="https://github.com/soundblaster/soundblaster",
+    )
+
+    report = build_namespace_upstream_report(
+        accepted_root=accepted_root,
+        candidates_root=None,
+    )
+
+    mismatch = [
+        issue for issue in report["issues"] if issue["code"] == "upstream_namespace_mismatch"
+    ]
+    assert report["summary"]["records"] == 1
+    assert report["summary"]["upstreamMismatchCount"] == 0
+    assert mismatch == []
+
+
 def test_build_namespace_upstream_report_reports_missing_upstream(tmp_path: Path) -> None:
     accepted_root = tmp_path / "accepted"
     accepted_root.mkdir(parents=True)

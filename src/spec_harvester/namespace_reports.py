@@ -201,7 +201,7 @@ def namespace_upstream_checks(
                     }
                 )
                 continue
-            if owner != record.namespace:
+            if owner.lower() != record.namespace.lower():
                 issues.append(
                     {
                         "path": record.path,
