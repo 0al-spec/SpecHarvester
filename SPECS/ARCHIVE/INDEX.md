@@ -82,3 +82,4 @@
 | 2026-05-18 | P6-T4 | Archived Add Reproducible Local Smoke-Test Fixture Documentation (PASS) |
 | 2026-05-18 | P6-T4 | Archived REVIEW_p6_t4_smoke_test_fixture_docs report |
 | 2026-05-18 | P7-T1 | Archived Treat Package Namespace Matches Against Upstream Repository Names as Valid Namespace Evidence (PASS) |
+| 2026-05-18 | P7-T1 | Archived REVIEW_p7_t1_upstream_repository_name_namespace_evidence report |
