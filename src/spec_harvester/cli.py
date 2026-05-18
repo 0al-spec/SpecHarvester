@@ -35,6 +35,10 @@ from spec_harvester.promoter import (
     prepare_accepted_manifest_entry,
     promote_candidate,
 )
+from spec_harvester.smoke_triage import (
+    build_smoke_triage_summary,
+    write_smoke_triage_summary,
+)
 from spec_harvester.source_manifest import read_repository_source_manifests
 
 
@@ -296,6 +300,41 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where license and provenance risk report JSON is written.",
     )
     license_risk.set_defaults(func=run_license_provenance_report)
+
+    smoke_triage = subcommands.add_parser(
+        "smoke-triage-summary",
+        help="Build a compact local smoke triage summary from existing report JSON files.",
+    )
+    smoke_triage.add_argument(
+        "--batch-validation",
+        type=Path,
+        required=True,
+        help="Path to batch-validation.json.",
+    )
+    smoke_triage.add_argument(
+        "--governance-claims",
+        type=Path,
+        required=True,
+        help="Path to governance-claims.json.",
+    )
+    smoke_triage.add_argument(
+        "--namespace-upstream",
+        type=Path,
+        required=True,
+        help="Path to namespace-upstream.json.",
+    )
+    smoke_triage.add_argument(
+        "--license-provenance",
+        type=Path,
+        required=True,
+        help="Path to license-provenance.json.",
+    )
+    smoke_triage.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where local smoke triage summary JSON is written.",
+    )
+    smoke_triage.set_defaults(func=run_smoke_triage_summary)
     return parser
 
 
@@ -432,6 +471,19 @@ def run_license_provenance_report(args: argparse.Namespace) -> int:
     )
     if args.output is not None:
         write_license_provenance_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_smoke_triage_summary(args: argparse.Namespace) -> int:
+    result = build_smoke_triage_summary(
+        batch_validation=args.batch_validation,
+        governance_claims=args.governance_claims,
+        namespace_upstream=args.namespace_upstream,
+        license_provenance=args.license_provenance,
+    )
+    if args.output is not None:
+        write_smoke_triage_summary(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 
