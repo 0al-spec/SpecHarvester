@@ -13,6 +13,7 @@ from spec_harvester.collector import (
     markdown_headings,
     nested_swift_package_manifests,
     parse_package_json,
+    parse_swift_package_manifest,
 )
 from spec_harvester.drafter import DraftOptions, draft_spec_package, render_scalar
 from spec_harvester.interface_index import (
@@ -137,6 +138,43 @@ def test_collect_local_repository_discovers_nested_swift_package_manifest(
     assert snapshot["summary"]["packageManifestCount"] == 1
     assert snapshot["files"][0]["path"] == "Packages/Package.swift"
     assert snapshot["files"][0]["kind"] == "package_manifest"
+
+
+def test_collect_local_repository_extracts_swift_package_products(tmp_path: Path) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "Package.swift").write_text(
+        """
+        // swift-tools-version: 6.0
+        import PackageDescription
+
+        let package = Package(
+            name: "Puzzle",
+            products: [
+                .library(name: "PuzzleCore", targets: ["PuzzleCore"]),
+                .library(name: "PuzzleUIKit", targets: ["PuzzleUIKit"]),
+                .executable(name: "PuzzleTool", targets: ["PuzzleTool"]),
+            ]
+        )
+        """,
+        encoding="utf-8",
+    )
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    package = snapshot["files"][0]["package"]
+    assert package["ecosystem"] == "swift"
+    assert package["language"] == "swift"
+    assert package["name"] == "Puzzle"
+    assert package["products"] == [
+        {"name": "PuzzleTool", "type": "executable"},
+        {"name": "PuzzleCore", "type": "library"},
+        {"name": "PuzzleUIKit", "type": "library"},
+    ]
+
+
+def test_parse_swift_package_manifest_returns_none_without_package_metadata() -> None:
+    assert parse_swift_package_manifest("// swift-tools-version: 6.0\n") is None
 
 
 def test_nested_swift_manifest_discovery_ignores_root_and_broken_symlinks(
@@ -581,6 +619,90 @@ def test_draft_spec_package_uses_fallback_metadata_without_package_manifests(
     assert "id: generated_package.core" in manifest
     assert "license: UNKNOWN" in manifest
     assert "intent.package.public_repository_metadata" in spec
+
+
+def test_draft_spec_package_uses_swift_product_intents(tmp_path: Path) -> None:
+    repo = tmp_path / "puzzle"
+    repo.mkdir()
+    (repo / "Package.swift").write_text(
+        """
+        // swift-tools-version: 6.0
+        import PackageDescription
+
+        let package = Package(
+            name: "Puzzle",
+            products: [
+                .library(name: "PuzzleCore", targets: ["PuzzleCore"]),
+                .library(name: "PuzzleUIKit", targets: ["PuzzleUIKit"]),
+            ]
+        )
+        """,
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            repository="https://github.com/SoundBlaster/Puzzle",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="puzzle.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.swift.product.puzzlecore" in spec
+    assert "intent.swift.product.puzzleuikit" in spec
+    assert "intent.package.public_repository_metadata" not in spec
+    assert "intent.swift.product.puzzlecore" in manifest
+    assert "intent.swift.product.puzzleuikit" in manifest
+
+
+def test_draft_spec_package_uses_root_swift_manifest_for_capability_intents(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "puzzle"
+    repo.mkdir()
+    (repo / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "Puzzle",
+            products: [.library(name: "PuzzleCore", targets: ["PuzzleCore"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    dependency = repo / "Derived" / "SourcePackages" / "checkouts" / "swift-syntax"
+    dependency.mkdir(parents=True)
+    (dependency / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "swift-syntax",
+            products: [.library(name: "SwiftSyntax", targets: ["SwiftSyntax"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="puzzle.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.swift.product.puzzlecore" in manifest
+    assert "intent.swift.product.swiftsyntax" not in manifest
+    assert "puzzle.core.swift_syntax" not in spec
 
 
 def test_draft_spec_package_prefers_manifest_license_over_license_file(
