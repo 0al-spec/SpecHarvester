@@ -118,7 +118,7 @@ Acceptance:
 
 - [x] `P7-T1` Treat package namespace matches against upstream repository names
   as valid namespace evidence.
-- [ ] `P7-T2` Derive less generic Swift package intents from package products
+- [x] `P7-T2` Derive less generic Swift package intents from package products
   and manifests.
 - [ ] `P7-T3` Distinguish absent license evidence from ambiguous unknown license
   evidence.
