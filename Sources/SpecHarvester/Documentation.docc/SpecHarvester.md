@@ -41,6 +41,7 @@ The canonical source files remain in the repository:
 - `docs/GOVERNANCE_REPORTS.md`
 - `docs/NAMESPACE_UPSTREAM_REPORTS.md`
 - `docs/LICENSE_PROVENANCE_RISK_REPORTS.md`
+- `docs/LOCAL_SMOKE_FIXTURES.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -65,6 +66,7 @@ the host.
 - <doc:GovernanceReports>
 - <doc:NamespaceUpstreamReports>
 - <doc:LicenseProvenanceRiskReports>
+- <doc:LocalSmokeFixtures>
 - <doc:ProposalAutomation>
 
 ### Architecture

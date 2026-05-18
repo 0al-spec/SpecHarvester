@@ -28,6 +28,7 @@
 | P6-T1 | [P6-T1_Discover_Nested_Swift_Package_Manifests_during_Static_Harvest/](P6-T1_Discover_Nested_Swift_Package_Manifests_during_Static_Harvest/) | 2026-05-18 | PASS |
 | P6-T2 | [P6-T2_Infer_Candidate_License_Metadata_from_License_Files/](P6-T2_Infer_Candidate_License_Metadata_from_License_Files/) | 2026-05-18 | PASS |
 | P6-T3 | [P6-T3_Make_Namespace_Upstream_Owner_Comparison_Case_Insensitive/](P6-T3_Make_Namespace_Upstream_Owner_Comparison_Case_Insensitive/) | 2026-05-18 | PASS |
+| P6-T4 | [P6-T4_Add_Reproducible_Local_Smoke-Test_Fixture_Documentation/](P6-T4_Add_Reproducible_Local_Smoke-Test_Fixture_Documentation/) | 2026-05-18 | PASS |
 
 ## Historical Artifacts
 
@@ -77,3 +78,5 @@
 | 2026-05-18 | P6-T1 | Archived Discover Nested Swift Package Manifests during Static Harvest (PASS) |
 | 2026-05-18 | P6-T2 | Archived Infer Candidate License Metadata from License Files (PASS) |
 | 2026-05-18 | P6-T3 | Archived Make Namespace and Upstream Owner Comparison Case-Insensitive (PASS) |
+| 2026-05-18 | P6-T4 | Archived Add Reproducible Local Smoke-Test Fixture Documentation (PASS) |
+| 2026-05-18 | P6-T4 | Archived REVIEW_p6_t4_smoke_test_fixture_docs report |

@@ -52,6 +52,8 @@ and maintainer review before they are treated as accepted registry source.
 - [`docs/TRUST_BOUNDARY.md`](docs/TRUST_BOUNDARY.md): zero-trust handling rules
 - [`docs/SPECPM_PROPOSAL_AUTOMATION.md`](docs/SPECPM_PROPOSAL_AUTOMATION.md):
   trusted cross-repository proposal flow
+- [`docs/LOCAL_SMOKE_FIXTURES.md`](docs/LOCAL_SMOKE_FIXTURES.md): reproducible
+  local smoke fixtures for adjacent repository checkouts
 - [`docs/ROADMAP.md`](docs/ROADMAP.md): planned delivery phases
 - [`SPECS/README.md`](SPECS/README.md): Flow task workflow, PRD, and workplan
 
@@ -135,6 +137,7 @@ tests/                    unit tests
 docs/                     operator docs, architecture, trust boundary, roadmap
 SPECS/                    Flow PRD, workplan, commands, and task archives
 inputs/                   example repository lists
+.smoke/                   ignored local smoke inputs, candidates, and reports
 candidates/               generated candidate evidence and specs
 accepted/                 reviewed generated specs and accepted-source staging
 generated/                transient generated artifacts, future
