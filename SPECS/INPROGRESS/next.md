@@ -1,65 +1,47 @@
-# Recommended Task: P7-T1 - Treat package namespace matches against upstream repository names as valid namespace evidence
+# Recommended Task: P7-T2 - Derive less generic Swift package intents from package products and manifests
 
 **Priority:** P7
 **Phase:** Smoke-Test Signal Quality
 **Effort:** Medium
-**Dependencies:** P5-T2, P6-T3, P6-T4
+**Dependencies:** P6-T1, P7-T1
 **Status:** Open
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P7-T1-upstream-repository-name-namespace-evidence`
-**Review Subject:** `p7_t1_upstream_repository_name_namespace_evidence`
+**Suggested Branch:** `feature/P7-T2-swift-package-product-intents`
+**Review Subject:** `p7_t2_swift_package_product_intents`
 
-**Current Phase:** ARCHIVE
+**Current Phase:** SELECT
 
 ## Description
 
-The reproducible local smoke run collected and drafted Cupertino, xyflow,
-docc2context, and Puzzle successfully with high batch confidence, but namespace
-governance reports still emitted four `upstream_namespace_mismatch` issues.
+The local smoke governance report still shows duplicate generic
+`intent.package.public_repository_metadata` claims across Swift candidates.
+Swift package manifests already expose product and package metadata that can
+support more specific deterministic intent claims for candidates such as
+Cupertino, docc2context, and Puzzle.
 
-The current report compares the package namespace only against the GitHub owner
-parsed from `upstream_repository`. For smoke candidates such as `xyflow.core`,
-`docc2context.core`, and `puzzle.core`, the package namespace matches the
-repository name rather than the repository owner. That is valid namespace
-evidence and should not be reported as an owner mismatch.
-
-## Smoke Triage Context
-
-- `batch-validation.json`: `collectedCount=4`, `highConfidenceCount=4`,
-  `warningCount=0`.
-- `governance-claims.json`: one duplicate generic intent claim across Swift
-  candidates.
-- `namespace-upstream.json`: four namespace/upstream mismatch issues caused by
-  owner-vs-repository-name comparison.
-- `license-provenance.json`: one `unknown_license` issue for `puzzle.core` and
-  four low-severity namespace mismatch echoes.
+Use static Swift package manifest evidence to derive less generic package
+intents when product names or manifest metadata provide reviewable signals.
 
 ## Acceptance Criteria
 
-- Namespace/upstream report parsing extracts both upstream owner and upstream
-  repository name for GitHub HTTPS and SSH URLs.
-- Namespace mismatch checks treat a package namespace as valid when it matches
-  either upstream owner or upstream repository name case-insensitively.
-- Existing behavior around missing upstream info, duplicate upstream artifacts,
-  malformed URIs, and deterministic sorting is preserved.
-- License provenance report no longer echoes namespace mismatch risk when the
-  namespace matches the upstream repository name.
+- Swift package candidates avoid duplicate generic metadata intents when package
+  product evidence supports a more specific deterministic intent.
+- Intent derivation remains static and does not execute SwiftPM or package code.
+- Existing JavaScript/TypeScript intent behavior remains unchanged.
+- Generated intent IDs stay deterministic and sorted.
 - Coverage remains above the project threshold.
 
 ## Recently Archived
 
-- `P6-T1` Discover nested Swift package manifests during static harvest: PASS,
-  `SPECS/ARCHIVE/P6-T1_Discover_Nested_Swift_Package_Manifests_during_Static_Harvest/`.
-- `P6-T2` Infer candidate license metadata from allowlisted LICENSE files: PASS,
-  `SPECS/ARCHIVE/P6-T2_Infer_Candidate_License_Metadata_from_License_Files/`.
-- `P6-T3` Make namespace and upstream owner comparison case-insensitive: PASS,
-  `SPECS/ARCHIVE/P6-T3_Make_Namespace_Upstream_Owner_Comparison_Case_Insensitive/`.
 - `P6-T4` Add reproducible local smoke-test fixture documentation: PASS,
   `SPECS/ARCHIVE/P6-T4_Add_Reproducible_Local_Smoke-Test_Fixture_Documentation/`.
+- `P7-T1` Treat package namespace matches against upstream repository names as
+  valid namespace evidence: PASS,
+  `SPECS/ARCHIVE/P7-T1_Treat_Package_Namespace_Matches_Against_Upstream_Repository_Names_as_Valid_Namespace_Evidence/`.
 
 ## Next Step
 
-Archive task `P7-T1` with PASS verdict and update the Workplan.
+Plan task `P7-T2` when ready.
 
 ## Backlog Note
 

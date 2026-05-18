@@ -116,7 +116,7 @@ Acceptance:
 
 ## Phase 7. Smoke-Test Signal Quality
 
-- [ ] `P7-T1` Treat package namespace matches against upstream repository names
+- [x] `P7-T1` Treat package namespace matches against upstream repository names
   as valid namespace evidence.
 - [ ] `P7-T2` Derive less generic Swift package intents from package products
   and manifests.
