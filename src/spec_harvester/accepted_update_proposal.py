@@ -37,6 +37,8 @@ class AcceptedPackageUpdateProposalOptions:
     specpm_pythonpath: str | None = None
     skip_validation: bool = False
     update_kind: str | None = None
+    allow_correction: bool = False
+    correction_notes: tuple[str, ...] = ()
     reviewer_notes: tuple[str, ...] = ()
 
 
@@ -67,11 +69,27 @@ def build_accepted_package_update_proposal(
     )
 
     comparison = build_candidate_comparison(candidate_record, prior_record)
+    requires_correction = _requires_correction_mode(
+        candidate_record=candidate_record,
+        prior_record=prior_record,
+        comparison=comparison,
+    )
+
+    if requires_correction:
+        if not options.allow_correction:
+            raise ValueError(
+                "Same package version and no upstream revision change require explicit "
+                "correction mode using --allow-correction."
+            )
+        if not options.correction_notes:
+            raise ValueError("Correction mode requires at least one --correction-note.")
+
     update_kind = _normalize_update_kind(
         provided=options.update_kind,
         comparison=comparison,
         candidate_source_revision=_extract_source_revision(candidate_record),
         prior_source_revision=_extract_source_revision(prior_record) if prior_record else None,
+        requires_correction=requires_correction,
     )
     validation_status, validation_issues = _validate_candidate(
         candidate,
@@ -82,7 +100,7 @@ def build_accepted_package_update_proposal(
     issues = accepted_issues + validation_issues
 
     comparison_payload = {
-        "status": comparison["status"],
+        "status": "correction" if requires_correction else comparison["status"],
         "capabilities": {
             "added": comparison["changes"]["capabilities"]["added"],
             "removed": comparison["changes"]["capabilities"]["removed"],
@@ -97,7 +115,7 @@ def build_accepted_package_update_proposal(
     package_version = candidate_identity["version"]
     package_subdir = f"{package_id}/{package_version}"
 
-    return {
+    report: dict[str, Any] = {
         "schemaVersion": ACCEPTED_PACKAGE_UPDATE_PROPOSAL_SCHEMA_VERSION,
         "kind": ACCEPTED_PACKAGE_UPDATE_PROPOSAL_KIND,
         "status": "partial" if issues else "ok",
@@ -129,6 +147,16 @@ def build_accepted_package_update_proposal(
         "issues": sorted(issues, key=lambda issue: (issue["path"], issue["code"])),
         "trustBoundary": TRUST_BOUNDARY_NOTES,
     }
+
+    if requires_correction:
+        report["correction"] = {
+            "enabled": True,
+            "reason": list(options.correction_notes),
+            "source": "manual_review",
+        }
+        report["reviewerNotes"] = list(options.reviewer_notes) + list(options.correction_notes)
+
+    return report
 
 
 def _find_prior_accepted_record(
@@ -187,6 +215,18 @@ def build_accepted_package_update_proposal_markdown(report: dict[str, Any]) -> s
     if not validation_block:
         validation_block.append(" - none")
 
+    correction_block: list[str] = []
+    if report.get("correction"):
+        correction = report["correction"]
+        correction_block = [
+            "",
+            "## Correction",
+            f"- enabled: {str(correction['enabled']).lower()}",
+            f"- source: {correction['source']}",
+            "- reason:",
+            *[f"  - {note}" for note in correction["reason"]],
+        ]
+
     trust_boundary_block = "\n".join(f"- {item}" for item in trust_boundary)
     issue_lines = []
     for issue in report["issues"]:
@@ -228,6 +268,7 @@ def build_accepted_package_update_proposal_markdown(report: dict[str, Any]) -> s
                 "- specpm:",
                 *validation_block,
                 "```",
+                *correction_block,
                 "",
                 "## Reviewer Notes",
                 notes_block,
@@ -275,13 +316,37 @@ def _build_changed_claims(changes: dict[str, Any]) -> list[str]:
     return sorted(claims)
 
 
+def _requires_correction_mode(
+    *,
+    candidate_record: PackageDiffInputRecord,
+    prior_record: PackageDiffInputRecord | None,
+    comparison: dict[str, Any],
+) -> bool:
+    if prior_record is None:
+        return False
+    if candidate_record.package_version != prior_record.package_version:
+        return False
+    if comparison["changes"]["upstreamArtifacts"]["changed"]:
+        return False
+    return True
+
+
 def _normalize_update_kind(
     *,
     provided: str | None,
     comparison: dict[str, Any],
     candidate_source_revision: str | None,
     prior_source_revision: str | None,
+    requires_correction: bool,
 ) -> str:
+    if requires_correction and provided is not None and provided != "correction":
+        raise ValueError(
+            "Manual correction mode requires --allow-correction and --correction-note."
+        )
+
+    if requires_correction:
+        return "correction"
+
     if provided is not None:
         if provided not in VALID_UPDATE_KINDS:
             raise ValueError(f"Unknown update kind: {provided}")

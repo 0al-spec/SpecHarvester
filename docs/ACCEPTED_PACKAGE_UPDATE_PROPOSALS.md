@@ -24,6 +24,8 @@ python3 -m spec_harvester accepted-package-update-proposal \
   --proposal-body report/accepted-package-update-proposal.md \
   [--skip-validation] \
   [--update-kind upstream_revision|metadata_errata|correction] \
+  [--allow-correction] \
+  [--correction-note "metadata typo fix"] \
   [--reviewer-notes "upstream revision changed"]
 ```
 
@@ -59,6 +61,7 @@ Required fields:
 - `candidate` and `accepted` reference objects.
 - `issues`: validation and parsing issues collected during report generation.
 - `trustBoundary` notes.
+- `correction` block with manual correction evidence when correction mode is enabled.
 
 `validationStatus` is at least:
 
@@ -71,6 +74,16 @@ Required fields:
 - `upstream_revision` by default for new candidates or changed upstream revision.
 - `metadata_errata` for unchanged source revision (when revision is extractable).
 - `correction` as an explicit manual override only.
+
+For same `packageId@version` updates without upstream artifact change, the
+command requires `--allow-correction` and at least one `--correction-note`:
+
+- `updateKind` is `correction`.
+- `comparison.status` is `correction`.
+- `correction` block is included with:
+  - `enabled: true`
+  - `source: manual_review`
+  - `reason: [...]`.
 
 ## Trust Boundary
 

@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from spec_harvester.accepted_update_proposal import (
     AcceptedPackageUpdateProposalOptions,
     build_accepted_package_update_proposal,
@@ -96,6 +98,124 @@ def test_build_accepted_package_update_proposal_infers_metadata_errata(
     assert result["status"] == "ok"
     assert result["reviewerNotes"] == ["metadata-only review reason"]
     assert "intent:intent.package.workflow" in result["changedClaims"]
+
+
+def test_build_accepted_package_update_proposal_requires_correction_for_same_version(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="correction mode",
+    ):
+        build_accepted_package_update_proposal(
+            AcceptedPackageUpdateProposalOptions(
+                candidate=candidate,
+                accepted_root=accepted_root,
+                skip_validation=True,
+            )
+        )
+
+
+def test_build_accepted_package_update_proposal_accepts_correction_with_notes(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        extra_metadata={"licenseEvidence": "evidence.txt"},
+    )
+
+    result = build_accepted_package_update_proposal(
+        AcceptedPackageUpdateProposalOptions(
+            candidate=candidate,
+            accepted_root=accepted_root,
+            skip_validation=True,
+            allow_correction=True,
+            correction_notes=("metadata cleanup",),
+        )
+    )
+
+    assert result["updateKind"] == "correction"
+    assert result["oldPackageVersion"] == "1.0.0"
+    assert result["newPackageVersion"] == "1.0.0"
+    assert result["comparison"]["status"] == "correction"
+    assert result["correction"] == {
+        "enabled": True,
+        "reason": ["metadata cleanup"],
+        "source": "manual_review",
+    }
+    assert "metadata cleanup" in result["reviewerNotes"]
+
+
+def test_build_accepted_package_update_proposal_rejects_invalid_correction_override(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+
+    with pytest.raises(ValueError, match="Manual correction"):
+        build_accepted_package_update_proposal(
+            AcceptedPackageUpdateProposalOptions(
+                candidate=candidate,
+                accepted_root=accepted_root,
+                skip_validation=True,
+                allow_correction=True,
+                correction_notes=("metadata cleanup",),
+                update_kind="metadata_errata",
+            )
+        )
 
 
 def test_build_accepted_package_update_proposal_records_validation_failures(
