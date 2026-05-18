@@ -211,6 +211,19 @@ Current command:
 spec-harvester promote <candidate-dir> --accepted-root <accepted-root>
 ```
 
+### Accepted Package Immutability
+
+Accepted package versions are immutable evidence snapshots in accepted-source form.
+When upstream revision or reviewed metadata changes require an update, SpecHarvester
+does not mutate existing `<packageId>/<version>` trees in place.
+
+Update flow is:
+
+1. generate and validate a new candidate,
+2. promote into a new accepted version location,
+3. prepare the corresponding manifest path update,
+4. deliver through SpecPM review and merge.
+
 ## Non-Goals
 
 SpecHarvester does not replace SpecPM.

@@ -33,12 +33,13 @@
 | P7-T2 | [P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests/](P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests/) | 2026-05-18 | PASS |
 | P7-T3 | [P7-T3_Distinguish_Absent_License_Evidence_from_Ambiguous_Unknown_License_Evidence/](P7-T3_Distinguish_Absent_License_Evidence_from_Ambiguous_Unknown_License_Evidence/) | 2026-05-18 | PASS |
 | P7-T4 | [P7-T4_Add_a_Compact_Local_Smoke_Triage_Summary_for_Batch_and_Governance_Report_Output/](P7-T4_Add_a_Compact_Local_Smoke_Triage_Summary_for_Batch_and_Governance_Report_Output/) | 2026-05-18 | PASS |
+| P8-T1 | [P8-T1_Document_accepted_package_update_lifecycle_and_immutability_policy/](P8-T1_Document_accepted_package_update_lifecycle_and_immutability_policy/) | 2026-05-18 | PASS |
 
 ## Historical Artifacts
 
 | Folder | Description |
 |--------|-------------|
-| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
+| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
 
 ## Archive Log
 
@@ -92,3 +93,5 @@
 | 2026-05-18 | P7-T3 | Archived REVIEW_p7_t3_license_evidence_classification report |
 | 2026-05-18 | P7-T4 | Archived Add a Compact Local Smoke Triage Summary for Batch and Governance Report Output (PASS) |
 | 2026-05-18 | P7-T4 | Archived REVIEW_p7_t4_local_smoke_triage_summary report |
+| 2026-05-18 | P8-T1 | Archived Document accepted package update lifecycle and immutability policy (PASS) |
+| 2026-05-18 | P8-T1 | Archived REVIEW_p8_t1_accepted_update_lifecycle_docs report |
