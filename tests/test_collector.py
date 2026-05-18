@@ -177,6 +177,43 @@ def test_parse_swift_package_manifest_returns_none_without_package_metadata() ->
     assert parse_swift_package_manifest("// swift-tools-version: 6.0\n") is None
 
 
+def test_parse_swift_package_manifest_ignores_commented_declarations() -> None:
+    package = parse_swift_package_manifest(
+        """
+        // let package = Package(name: "Template")
+        /*
+        let package = Package(name: "BlockTemplate")
+        /*
+        .library(name: "NestedDisabledCore", targets: ["NestedDisabledCore"])
+        */
+        .library(name: "DisabledCore", targets: ["DisabledCore"])
+        */
+        import PackageDescription
+
+        let package = Package(
+            name: "Real",
+            products: [
+                // .library(name: "OldCore", targets: ["OldCore"]),
+                .library(name: "RealCore", targets: ["RealCore"]),
+            ],
+            targets: [
+                .target(
+                    name: "RealCore",
+                    swiftSettings: [.define("URL", to: "https://example.com")]
+                )
+            ]
+        )
+        """
+    )
+
+    assert package == {
+        "ecosystem": "swift",
+        "language": "swift",
+        "name": "Real",
+        "products": [{"name": "RealCore", "type": "library"}],
+    }
+
+
 def test_nested_swift_manifest_discovery_ignores_root_and_broken_symlinks(
     tmp_path: Path,
 ) -> None:
