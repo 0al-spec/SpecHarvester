@@ -41,10 +41,15 @@ def build_smoke_triage_summary(
     duplicate_claim_count = int_value(duplicate_summary, "duplicateIntentCount") + int_value(
         duplicate_summary, "duplicateCapabilityCount"
     )
+    duplicate_issue_count = int_value(duplicate_summary, "issueCount")
     namespace_issue_count = int_value(namespace_summary, "issueCount")
     license_issue_count = int_value(license_summary, "issueCount")
     total_issue_count = (
-        batch_warning_count + duplicate_claim_count + namespace_issue_count + license_issue_count
+        batch_warning_count
+        + duplicate_claim_count
+        + duplicate_issue_count
+        + namespace_issue_count
+        + license_issue_count
     )
 
     return {
@@ -54,6 +59,7 @@ def build_smoke_triage_summary(
         "summary": {
             "batchWarningCount": batch_warning_count,
             "duplicateClaimCount": duplicate_claim_count,
+            "duplicateIssueCount": duplicate_issue_count,
             "namespaceIssueCount": namespace_issue_count,
             "licenseIssueCount": license_issue_count,
             "totalIssueCount": total_issue_count,

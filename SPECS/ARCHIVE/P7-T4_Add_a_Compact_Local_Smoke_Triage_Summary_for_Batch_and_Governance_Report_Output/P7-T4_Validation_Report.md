@@ -29,6 +29,7 @@ Status: PASS
 
 - Added `smoke-triage-summary` as a read-only aggregation command over existing
   smoke report JSON files.
-- Summary output keeps detailed report paths for drill-down review.
+- Summary output keeps detailed report paths for drill-down review and includes
+  duplicate governance parser issues separately from duplicate claim counts.
 - Local smoke currently reports only the expected license/provenance signal:
   `absent_license_evidence` for `puzzle.core`.
