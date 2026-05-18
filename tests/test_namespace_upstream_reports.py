@@ -4,7 +4,10 @@ import json
 from pathlib import Path
 
 from spec_harvester.cli import main
-from spec_harvester.namespace_reports import build_namespace_upstream_report
+from spec_harvester.namespace_reports import (
+    build_namespace_upstream_report,
+    parse_upstream_repository_reference,
+)
 
 
 def test_build_namespace_upstream_report_detects_duplicates_and_mismatches(tmp_path: Path) -> None:
@@ -79,6 +82,44 @@ def test_build_namespace_upstream_report_ignores_owner_case(tmp_path: Path) -> N
     assert report["summary"]["records"] == 1
     assert report["summary"]["upstreamMismatchCount"] == 0
     assert mismatch == []
+
+
+def test_build_namespace_upstream_report_accepts_repository_name_match(tmp_path: Path) -> None:
+    accepted_root = tmp_path / "accepted"
+    accepted_root.mkdir(parents=True)
+    write_manifest(
+        accepted_root / "xyflow" / "1.0.0" / "specpm.yaml",
+        "xyflow.core",
+        "1.0.0",
+        upstream_uri="https://github.com/SoundBlaster/xyflow",
+    )
+    write_manifest(
+        accepted_root / "docc2context" / "1.0.0" / "specpm.yaml",
+        "docc2context.core",
+        "1.0.0",
+        upstream_uri="git@github.com:SoundBlaster/docc2context.git",
+    )
+
+    report = build_namespace_upstream_report(
+        accepted_root=accepted_root,
+        candidates_root=None,
+    )
+
+    assert report["summary"]["records"] == 2
+    assert report["summary"]["upstreamMismatchCount"] == 0
+    assert report["issues"] == []
+
+
+def test_parse_upstream_repository_reference_supports_github_url_forms() -> None:
+    https = parse_upstream_repository_reference("https://github.com/SoundBlaster/xyflow.git")
+    ssh = parse_upstream_repository_reference("git@github.com:SoundBlaster/docc2context.git")
+
+    assert https is not None
+    assert https.owner == "SoundBlaster"
+    assert https.name == "xyflow"
+    assert ssh is not None
+    assert ssh.owner == "SoundBlaster"
+    assert ssh.name == "docc2context"
 
 
 def test_build_namespace_upstream_report_reports_missing_upstream(tmp_path: Path) -> None:
