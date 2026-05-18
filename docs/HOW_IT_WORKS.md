@@ -146,6 +146,15 @@ python3 -m spec_harvester accepted-candidate-diff-report \
   --output report/accepted-candidate-diff.json
 ```
 
+Then classify changed packages into review buckets:
+
+```bash
+python3 -m spec_harvester accepted-candidate-impact-classification-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output report/accepted-candidate-impact-classification.json
+```
+
 ## Current Commands
 
 ### 1. Prepare a Local Checkout

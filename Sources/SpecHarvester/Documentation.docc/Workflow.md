@@ -151,6 +151,17 @@ python3 -m spec_harvester accepted-candidate-diff-report \
 
 See <doc:AcceptedCandidateDiffReports>.
 
+Classify update impact before proposal triage:
+
+```bash
+python3 -m spec_harvester accepted-candidate-impact-classification-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output report/accepted-candidate-impact-classification.json
+```
+
+See <doc:AcceptedCandidateImpactClassificationReports>.
+
 Promote a reviewed candidate into accepted-source staging:
 
 ```bash
@@ -216,4 +227,5 @@ Every generated candidate should be checked for:
 - <doc:AcceptedManifestEntries>
 - <doc:AcceptedPackageUpdateLifecycle>
 - <doc:AcceptedCandidateDiffReports>
+- <doc:AcceptedCandidateImpactClassificationReports>
 - <doc:ProposalAutomation>

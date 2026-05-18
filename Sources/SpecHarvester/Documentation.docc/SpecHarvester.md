@@ -67,6 +67,7 @@ the host.
 - <doc:AcceptedManifestEntries>
 - <doc:AcceptedPackageUpdateLifecycle>
 - <doc:AcceptedCandidateDiffReports>
+- <doc:AcceptedCandidateImpactClassificationReports>
 - <doc:GovernanceReports>
 - <doc:NamespaceUpstreamReports>
 - <doc:LicenseProvenanceRiskReports>

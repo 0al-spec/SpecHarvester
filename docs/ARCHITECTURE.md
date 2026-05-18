@@ -168,6 +168,22 @@ intent IDs, upstream relationship, and licensing statements.
 For accepted-source PR review, `prepare-accepted-entry` can deterministically add
 an accepted manifest path before running `promote`.
 
+Build an accepted-vs-candidate diff report before proposal prep:
+
+```bash
+python3 -m spec_harvester accepted-candidate-diff-report \
+  --accepted-root <accepted-root> \
+  --candidates-root <candidates-root>
+```
+
+Then classify impact by contract bucket:
+
+```bash
+python3 -m spec_harvester accepted-candidate-impact-classification-report \
+  --accepted-root <accepted-root> \
+  --candidates-root <candidates-root>
+```
+
 Governance reports can also be generated after drafting:
 
 ```bash

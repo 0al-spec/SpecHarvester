@@ -5,6 +5,10 @@ import json
 from collections.abc import Sequence
 from pathlib import Path
 
+from spec_harvester.accepted_candidate_impact import (
+    build_accepted_candidate_impact_report,
+    write_accepted_candidate_impact_report,
+)
 from spec_harvester.accepted_diff import (
     build_accepted_candidate_diff_report,
     write_accepted_candidate_diff_report,
@@ -328,6 +332,29 @@ def build_parser() -> argparse.ArgumentParser:
     )
     accepted_diff.set_defaults(func=run_accepted_candidate_diff_report)
 
+    accepted_candidate_impact = subcommands.add_parser(
+        "accepted-candidate-impact-classification-report",
+        help=("Build bucketed accepted-vs-candidate update impact classification report."),
+    )
+    accepted_candidate_impact.add_argument(
+        "--accepted-root",
+        type=Path,
+        required=True,
+        help="Accepted package source root for impact input.",
+    )
+    accepted_candidate_impact.add_argument(
+        "--candidates-root",
+        type=Path,
+        required=True,
+        help="Candidate package root for impact input.",
+    )
+    accepted_candidate_impact.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where accepted/candidate impact report JSON is written.",
+    )
+    accepted_candidate_impact.set_defaults(func=run_accepted_candidate_impact_report)
+
     smoke_triage = subcommands.add_parser(
         "smoke-triage-summary",
         help="Build a compact local smoke triage summary from existing report JSON files.",
@@ -509,6 +536,17 @@ def run_accepted_candidate_diff_report(args: argparse.Namespace) -> int:
     )
     if args.output is not None:
         write_accepted_candidate_diff_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_accepted_candidate_impact_report(args: argparse.Namespace) -> int:
+    result = build_accepted_candidate_impact_report(
+        accepted_root=args.accepted_root,
+        candidates_root=args.candidates_root,
+    )
+    if args.output is not None:
+        write_accepted_candidate_impact_report(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 
