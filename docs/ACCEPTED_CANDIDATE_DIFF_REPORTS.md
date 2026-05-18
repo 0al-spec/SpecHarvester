@@ -49,8 +49,14 @@ Each comparison has one of these statuses:
 - `unchanged`: candidate matches the latest accepted metadata for compared fields;
 - `changed`: candidate differs from the latest accepted metadata.
 
-Impact classification is intentionally separate and belongs to later update
-lifecycle tooling.
+Impact classification is now available via:
+
+```shell
+python3 -m spec_harvester accepted-candidate-impact-classification-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output report/accepted-candidate-impact-classification.json
+```
 
 ## Trust Boundary
 

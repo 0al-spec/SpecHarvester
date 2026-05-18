@@ -151,6 +151,29 @@ python3 -m spec_harvester accepted-candidate-diff-report \
 
 See <doc:AcceptedCandidateDiffReports>.
 
+Classify update impact before proposal triage:
+
+```bash
+python3 -m spec_harvester accepted-candidate-impact-classification-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output report/accepted-candidate-impact-classification.json
+```
+
+See <doc:AcceptedCandidateImpactClassificationReports>.
+
+Build a PR-ready accepted-package update artifact:
+
+```bash
+python3 -m spec_harvester accepted-package-update-proposal \
+  candidates/github.com/example/project \
+  --accepted-root accepted \
+  --output candidates/accepted-package-update-proposal.json \
+  --proposal-body candidates/accepted-package-update-proposal.md
+```
+
+See <doc:AcceptedPackageUpdateProposals>.
+
 Promote a reviewed candidate into accepted-source staging:
 
 ```bash
@@ -216,4 +239,6 @@ Every generated candidate should be checked for:
 - <doc:AcceptedManifestEntries>
 - <doc:AcceptedPackageUpdateLifecycle>
 - <doc:AcceptedCandidateDiffReports>
+- <doc:AcceptedCandidateImpactClassificationReports>
+- <doc:AcceptedPackageUpdateProposals>
 - <doc:ProposalAutomation>

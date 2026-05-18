@@ -41,6 +41,72 @@ def test_docc_topics_link_analyzer_sandbox_requirements() -> None:
     assert "<doc:AnalyzerSandboxRequirements>" in trust_boundary.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_accepted_candidate_impact_classification() -> None:
+    github_doc = ROOT / "docs" / "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AcceptedCandidateImpactClassificationReports.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "accepted-candidate-impact-classification-report",
+            "metadata",
+            "interface",
+            "license",
+            "provenance",
+            "capability",
+            "intent",
+        ):
+            assert required in text
+
+    assert "<doc:AcceptedCandidateImpactClassificationReports>" in root_page.read_text(
+        encoding="utf-8"
+    )
+    assert "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+
+
+def test_docc_and_github_docs_cover_accepted_package_update_proposals() -> None:
+    github_doc = ROOT / "docs" / "ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AcceptedPackageUpdateProposals.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    workflow_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "accepted-package-update-proposal",
+            "sourceRevision",
+            "evidenceDigests",
+            "oldPackageVersion",
+            "newPackageVersion",
+            "changedClaims",
+            "validationStatus",
+            "reviewerNotes",
+            "updateKind",
+        ):
+            assert required in text
+
+    assert "<doc:AcceptedPackageUpdateProposals>" in root_page.read_text(encoding="utf-8")
+    assert "<doc:AcceptedPackageUpdateProposals>" in workflow_page.read_text(encoding="utf-8")
+    assert "ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md" in docs_index.read_text(encoding="utf-8")
+
+
 def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:
     github_doc = ROOT / "docs" / "LOCAL_SMOKE_FIXTURES.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "LocalSmokeFixtures.md"

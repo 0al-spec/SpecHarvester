@@ -146,6 +146,29 @@ python3 -m spec_harvester accepted-candidate-diff-report \
   --output report/accepted-candidate-diff.json
 ```
 
+Then classify changed packages into review buckets:
+
+```bash
+python3 -m spec_harvester accepted-candidate-impact-classification-report \
+  --accepted-root accepted \
+  --candidates-root candidates \
+  --output report/accepted-candidate-impact-classification.json
+```
+
+Then build a deterministic update proposal payload for the reviewed candidate:
+
+```bash
+python3 -m spec_harvester accepted-package-update-proposal \
+  candidates/github.com/example/project \
+  --accepted-root accepted \
+  --output report/accepted-package-update-proposal.json \
+  --proposal-body report/accepted-package-update-proposal.md \
+  --reviewer-notes "Upstream changed; capabilities expanded."
+```
+
+The generated payload captures source revision and evidence digests, old/new package
+versions, changed claims, validation status, and reviewer notes.
+
 ## Current Commands
 
 ### 1. Prepare a Local Checkout

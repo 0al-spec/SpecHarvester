@@ -113,5 +113,6 @@ This avoids bypassing maintainers when content or metadata changes.
 - decide if the change is upstream-driven or metadata correction;
 - create a fresh candidate context with pinned revision and reviewable command output;
 - compare accepted and candidate metadata with `accepted-candidate-diff-report`;
+- build the proposal artifact with `accepted-package-update-proposal`;
 - include the audit fields above in the change record or PR body;
 - submit through SpecPM proposal path, not direct registry mutation.

@@ -168,6 +168,22 @@ intent IDs, upstream relationship, and licensing statements.
 For accepted-source PR review, `prepare-accepted-entry` can deterministically add
 an accepted manifest path before running `promote`.
 
+Build an accepted-vs-candidate diff report before proposal prep:
+
+```bash
+python3 -m spec_harvester accepted-candidate-diff-report \
+  --accepted-root <accepted-root> \
+  --candidates-root <candidates-root>
+```
+
+Then classify impact by contract bucket:
+
+```bash
+python3 -m spec_harvester accepted-candidate-impact-classification-report \
+  --accepted-root <accepted-root> \
+  --candidates-root <candidates-root>
+```
+
 Governance reports can also be generated after drafting:
 
 ```bash
@@ -198,6 +214,32 @@ python3 -m spec_harvester governance-license-provenance-report \
 
 The report flags missing or suspicious licenses and upstream provenance signals
 that should be reviewed before proposal.
+
+### PR-Ready Update Proposal Builder
+
+After review and promotion preparation, SpecHarvester can produce a review artifact
+for the accepted-package mutation:
+
+```bash
+python3 -m spec_harvester accepted-package-update-proposal \
+  CANDIDATE_DIR \
+  --accepted-root <accepted-root> \
+  --output report/accepted-package-update-proposal.json \
+  --proposal-body report/accepted-package-update-proposal.md
+```
+
+The builder compares candidate metadata against the latest accepted record for the
+same package ID and includes:
+
+- `oldPackageVersion` / `newPackageVersion`
+- `sourceRevision`
+- evidence digests for `specpm.yaml` and optional `harvest.json`
+- changed capability and intent claims
+- validation status
+- reviewer notes and issues
+
+This command is deterministic and reads only local files plus optional SpecPM
+validation.
 
 ### Promotion Gate
 
