@@ -120,7 +120,7 @@ Acceptance:
   as valid namespace evidence.
 - [x] `P7-T2` Derive less generic Swift package intents from package products
   and manifests.
-- [ ] `P7-T3` Distinguish absent license evidence from ambiguous unknown license
+- [x] `P7-T3` Distinguish absent license evidence from ambiguous unknown license
   evidence.
 - [ ] `P7-T4` Add a compact local smoke triage summary for batch and governance
   report output.

@@ -14,11 +14,22 @@ python3 -m spec_harvester governance-license-provenance-report \
 
 ## Detection Behavior
 
-- Reads package `metadata.id`, `metadata.version`, `metadata.license`.
+- Reads package `metadata.id`, `metadata.version`, `metadata.license`, and
+  `metadata.licenseEvidence`.
 - Reads `foreignArtifacts` and focuses on `id: upstream_repository` records.
-- Emits risk issues for missing or unknown license metadata.
+- Emits distinct risk issues for absent license evidence and ambiguous
+  unclassified license-like evidence.
 - Emits risk issues for invalid, missing, or out-of-policy upstream provenance.
 - Produces deterministic JSON with package provenance context and issue severity.
+
+## License Evidence
+
+Generated candidates can include `metadata.licenseEvidence`:
+
+- `manifest`: package manifest provided the license string.
+- `license_file_hint`: an allowlisted license file produced a known static hint.
+- `ambiguous_license_file`: a license-like file existed but was not classifiable.
+- `absent`: no manifest license or license-like file evidence was found.
 
 ## Trust Boundary
 

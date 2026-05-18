@@ -35,6 +35,12 @@ class DraftOptions:
     interface_index: Path | None = None
 
 
+@dataclass(frozen=True)
+class LicenseInference:
+    name: str
+    evidence: dict[str, Any]
+
+
 def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     snapshot_path = resolve_snapshot_path(options.snapshot)
     snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
@@ -75,7 +81,8 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     manifest_intents = sorted(
         {intent_id for entry in capability_entries for intent_id in entry.get("intentIds", [])}
     )
-    license_name = infer_license(package_records, license_records)
+    license_inference = infer_license_with_evidence(package_records, license_records)
+    license_name = license_inference.name
     package_name = options.name or display_name(repository_name)
     package_summary = (
         f"Unofficial generated SpecPackage for {package_name} public package metadata."
@@ -90,6 +97,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
             "version": options.version,
             "summary": package_summary,
             "license": license_name,
+            "licenseEvidence": license_inference.evidence,
             "authors": [{"name": options.author}],
         },
         "preview_only": True,
@@ -750,22 +758,67 @@ def infer_license(
     package_records: list[dict[str, Any]],
     license_records: list[dict[str, Any]],
 ) -> str:
+    return infer_license_with_evidence(package_records, license_records).name
+
+
+def infer_license_with_evidence(
+    package_records: list[dict[str, Any]],
+    license_records: list[dict[str, Any]],
+) -> LicenseInference:
     licenses = [
-        package["license"]
-        for package in (record["package"] for record in package_records)
-        if isinstance(package.get("license"), str) and package["license"].strip()
+        (record.get("path"), record["package"]["license"])
+        for record in package_records
+        if isinstance(record["package"].get("license"), str)
+        and record["package"]["license"].strip()
     ]
     if licenses:
-        return licenses[0]
+        path, license_name = licenses[0]
+        return LicenseInference(
+            name=license_name,
+            evidence={
+                "source": "manifest",
+                "confidence": "high",
+                "paths": [path] if isinstance(path, str) and path else [],
+            },
+        )
 
     license_hints = [
-        hint
-        for hint in (record.get("licenseHint") for record in license_records)
-        if isinstance(hint, str) and hint.strip()
+        (record.get("path"), record.get("licenseHint"))
+        for record in license_records
+        if isinstance(record.get("licenseHint"), str) and record["licenseHint"].strip()
     ]
     if license_hints:
-        return license_hints[0]
-    return "UNKNOWN"
+        path, hint = license_hints[0]
+        return LicenseInference(
+            name=hint,
+            evidence={
+                "source": "license_file_hint",
+                "confidence": "medium",
+                "paths": [path] if isinstance(path, str) and path else [],
+            },
+        )
+
+    license_paths = [
+        path for path in (record.get("path") for record in license_records) if isinstance(path, str)
+    ]
+    if license_paths:
+        return LicenseInference(
+            name="UNKNOWN",
+            evidence={
+                "source": "ambiguous_license_file",
+                "confidence": "low",
+                "paths": license_paths,
+            },
+        )
+
+    return LicenseInference(
+        name="UNKNOWN",
+        evidence={
+            "source": "absent",
+            "confidence": "high",
+            "paths": [],
+        },
+    )
 
 
 def infer_compatibility(package_records: list[dict[str, Any]]) -> dict[str, list[str]]:
