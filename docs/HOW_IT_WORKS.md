@@ -113,7 +113,8 @@ That acceptance step is not automated in the current bootstrap.
 
 Accepted package versions are immutable once accepted:
 
-- do not overwrite `public-index/generated/<packageId>/<packageVersion>`.
+- do not overwrite the accepted manifest package path for
+  `<packageId>/<packageVersion>`.
 - new upstream reality or corrections always create a new accepted version
   publication path.
 

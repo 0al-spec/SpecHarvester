@@ -4,7 +4,8 @@ Accepted packages are reviewed SpecPM metadata snapshots.
 
 In the current bootstrap, accepted package versions are immutable once published:
 
-- do not mutate `public-index/generated/<packageId>/<packageVersion>` in place,
+- do not mutate the accepted manifest package path for
+  `<packageId>/<packageVersion>` in place,
 - create a new package version for any upstream-driven change or metadata correction.
 
 ## Update Kinds

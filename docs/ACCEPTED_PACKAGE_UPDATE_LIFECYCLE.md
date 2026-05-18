@@ -5,8 +5,8 @@ Status: Bootstrap policy
 Accepted packages are reviewed artifacts in the SpecPM public-index flow. In the
 current bootstrap, accepted package versions are immutable once published:
 
-- a package version path such as `public-index/generated/<packageId>/<packageVersion>`
-  is treated as immutable registry evidence;
+- an accepted manifest package path for `<packageId>/<packageVersion>` is treated
+  as immutable registry evidence;
 - operators should not mutate that path in place;
 - a new accepted package version should be introduced for any update that changes
   accepted package source content or accepted metadata.
@@ -70,10 +70,13 @@ For each accepted update proposal, collect at least these fields:
 
 Suggested shape:
 
+The example below uses `upstream_revision`; use `metadata_errata` for correction
+proposals that do not represent upstream content changes.
+
 ```json
 {
   "packageId": "xyflow.core",
-  "updateKind": "upstream_revision" | "metadata_errata",
+  "updateKind": "upstream_revision",
   "sourceRevision": "0123456789abcdef",
   "evidenceDigests": {
     "harvestJson": "sha256:...",
