@@ -85,3 +85,4 @@
 | 2026-05-18 | P7-T1 | Archived Treat Package Namespace Matches Against Upstream Repository Names as Valid Namespace Evidence (PASS) |
 | 2026-05-18 | P7-T1 | Archived REVIEW_p7_t1_upstream_repository_name_namespace_evidence report |
 | 2026-05-18 | P7-T2 | Archived Derive Less Generic Swift Package Intents from Package Products and Manifests (PASS) |
+| 2026-05-18 | P7-T2 | Archived REVIEW_p7_t2_swift_package_product_intents report |
