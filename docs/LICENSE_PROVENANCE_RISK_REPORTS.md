@@ -19,8 +19,8 @@ python3 -m spec_harvester governance-license-provenance-report \
 The command:
 
 - scans every `specpm.yaml` under both roots;
-- extracts `metadata.id`, `metadata.version`, `metadata.license`, and
-  `foreignArtifacts` upstream declarations;
+- extracts `metadata.id`, `metadata.version`, `metadata.license`,
+  `metadata.licenseEvidence`, and `foreignArtifacts` upstream declarations;
 - flags license and provenance risk signals;
 - returns deterministic JSON on stdout.
 
@@ -39,7 +39,7 @@ The report is a deterministic JSON object with:
   - `issueCount`
   - `riskCounts` (high/medium/low)
   - `issuesByCode`
-- `records` with package and upstream artifact context;
+- `records` with package, license evidence, and upstream artifact context;
 - `issues` list of review risk codes with severities; and
 - `trustBoundary` advisory notes.
 
@@ -47,6 +47,10 @@ The report is a deterministic JSON object with:
 
 - `missing_license`: package metadata has no `license` field.
 - `unknown_license`: license uses placeholder values (`unknown`, `n/a`, etc.).
+- `absent_license_evidence`: license is `UNKNOWN` because no manifest license or
+  license-like file evidence was found.
+- `ambiguous_unknown_license`: license is `UNKNOWN` because license-like file
+  evidence was present but could not be classified deterministically.
 - `non_standard_license`: license is not recognized as a common SPDX-like identifier.
 - `missing_upstream_repository`: no `id: upstream_repository` in `foreignArtifacts`.
 - `duplicate_upstream_repository_entries`: more than one upstream artifact present.
@@ -61,4 +65,3 @@ The report is a deterministic JSON object with:
 - no network calls;
 - no analyzer execution;
 - no mutation of candidate or accepted content.
-

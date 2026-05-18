@@ -71,6 +71,7 @@ class PackageLicenseProvenanceRecord:
     package_version: str
     namespace: str
     license_name: str
+    license_evidence: dict[str, Any] | None
     upstream_artifacts: tuple[LicenseProvenanceArtifact, ...]
 
 
@@ -140,6 +141,7 @@ def license_provenance_record_to_dict(record: PackageLicenseProvenanceRecord) ->
         "packageVersion": record.package_version,
         "namespace": record.namespace,
         "license": record.license_name,
+        **({"licenseEvidence": record.license_evidence} if record.license_evidence else {}),
         "upstreamArtifacts": [
             {
                 "id": artifact.artifact_id,
@@ -170,6 +172,33 @@ def evaluate_license_risks(
 
         normalized = license_value.lower().strip()
         if normalized in {"unknown", "proprietary", "not specified", "unspecified", "n/a"}:
+            evidence_source = license_evidence_source(record)
+            if normalized == "unknown" and evidence_source == "absent":
+                issues.append(
+                    _report_issue(
+                        record,
+                        "absent_license_evidence",
+                        "medium",
+                        (
+                            "License is UNKNOWN because no manifest license or "
+                            "license-like file evidence was found."
+                        ),
+                    )
+                )
+                continue
+            if normalized == "unknown" and evidence_source == "ambiguous_license_file":
+                issues.append(
+                    _report_issue(
+                        record,
+                        "ambiguous_unknown_license",
+                        "medium",
+                        (
+                            "License is UNKNOWN because license-like file evidence was "
+                            "present but unclassified."
+                        ),
+                    )
+                )
+                continue
             issues.append(
                 _report_issue(
                     record,
@@ -191,6 +220,16 @@ def evaluate_license_risks(
             )
 
     return sorted(issues, key=lambda item: (item["path"], item["code"]))
+
+
+def license_evidence_source(record: PackageLicenseProvenanceRecord) -> str | None:
+    evidence = record.license_evidence
+    if not isinstance(evidence, dict):
+        return None
+    source = evidence.get("source")
+    if isinstance(source, str) and source.strip():
+        return source.strip()
+    return None
 
 
 def evaluate_provenance_risks(
@@ -389,10 +428,12 @@ def parse_specpm_license_provenance(
     source: str,
 ) -> PackageLicenseProvenanceRecord:
     metadata: dict[str, str] = {}
+    license_evidence: dict[str, Any] | None = None
     artifacts: list[LicenseProvenanceArtifact] = []
 
     parse_state = "root"
     current_artifact: dict[str, str] | None = None
+    collecting_license_evidence_paths = False
 
     for raw_line in manifest_path.read_text(encoding="utf-8").splitlines():
         line = raw_line.split("#", 1)[0].rstrip()
@@ -409,19 +450,67 @@ def parse_specpm_license_provenance(
 
             if text == "metadata:":
                 parse_state = "metadata"
+                collecting_license_evidence_paths = False
                 continue
             if text == "foreignArtifacts:":
                 parse_state = "foreignArtifacts"
+                collecting_license_evidence_paths = False
                 continue
             parse_state = "root"
+            collecting_license_evidence_paths = False
             continue
 
         if parse_state == "metadata":
             if indent != 2 or ":" not in text:
                 continue
             key, raw_value = text.split(":", 1)
+            if key.strip() == "licenseEvidence" and not raw_value.strip():
+                license_evidence = {}
+                parse_state = "metadata_license_evidence"
+                collecting_license_evidence_paths = False
+                continue
             metadata[key.strip()] = parse_yaml_scalar(raw_value.strip())
             continue
+
+        if parse_state == "metadata_license_evidence":
+            if indent == 2:
+                collecting_license_evidence_paths = False
+                if ":" not in text:
+                    parse_state = "metadata"
+                    continue
+                key, raw_value = text.split(":", 1)
+                if key.strip() == "licenseEvidence" and not raw_value.strip():
+                    license_evidence = {}
+                    continue
+                metadata[key.strip()] = parse_yaml_scalar(raw_value.strip())
+                parse_state = "metadata"
+                continue
+
+            if license_evidence is None:
+                license_evidence = {}
+
+            if indent == 4 and ":" in text:
+                key, raw_value = text.split(":", 1)
+                key = key.strip()
+                value = raw_value.strip()
+                collecting_license_evidence_paths = False
+                if key == "paths":
+                    if value == "[]":
+                        license_evidence["paths"] = []
+                    elif value:
+                        license_evidence["paths"] = [parse_yaml_scalar(value)]
+                    else:
+                        license_evidence["paths"] = []
+                        collecting_license_evidence_paths = True
+                    continue
+                license_evidence[key] = parse_yaml_scalar(value)
+                continue
+
+            if indent == 6 and collecting_license_evidence_paths and text.startswith("- "):
+                paths = license_evidence.setdefault("paths", [])
+                if isinstance(paths, list):
+                    paths.append(parse_yaml_scalar(text[2:].strip()))
+                continue
 
         if parse_state == "foreignArtifacts":
             if indent == 2:
@@ -469,8 +558,29 @@ def parse_specpm_license_provenance(
         package_version=package_version,
         namespace=namespace,
         license_name=license_name,
+        license_evidence=normalize_license_evidence(license_evidence),
         upstream_artifacts=tuple(artifacts),
     )
+
+
+def normalize_license_evidence(evidence: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not isinstance(evidence, dict) or not evidence:
+        return None
+
+    normalized: dict[str, Any] = {}
+    source = evidence.get("source")
+    if isinstance(source, str) and source.strip():
+        normalized["source"] = source.strip()
+
+    confidence = evidence.get("confidence")
+    if isinstance(confidence, str) and confidence.strip():
+        normalized["confidence"] = confidence.strip()
+
+    paths = evidence.get("paths")
+    if isinstance(paths, list):
+        normalized["paths"] = sorted(str(path) for path in paths if str(path).strip())
+
+    return normalized or None
 
 
 def _normalize_artifact(values: dict[str, str]) -> LicenseProvenanceArtifact:

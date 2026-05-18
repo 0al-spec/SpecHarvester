@@ -807,6 +807,10 @@ def test_draft_spec_package_infers_license_from_license_file(
 
     manifest = Path(result["manifest"]).read_text(encoding="utf-8")
     assert "license: MIT" in manifest
+    assert "licenseEvidence:" in manifest
+    assert "source: license_file_hint" in manifest
+    assert "paths:" in manifest
+    assert "- LICENSE" in manifest
 
 
 def test_draft_spec_package_keeps_unknown_for_ambiguous_license_file(
@@ -829,6 +833,31 @@ def test_draft_spec_package_keeps_unknown_for_ambiguous_license_file(
 
     manifest = Path(result["manifest"]).read_text(encoding="utf-8")
     assert "license: UNKNOWN" in manifest
+    assert "licenseEvidence:" in manifest
+    assert "source: ambiguous_license_file" in manifest
+    assert "- LICENSE" in manifest
+
+
+def test_draft_spec_package_marks_absent_license_evidence(tmp_path: Path) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            repository="https://github.com/example/system",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    manifest = Path(result["manifest"]).read_text(encoding="utf-8")
+    assert "license: UNKNOWN" in manifest
+    assert "licenseEvidence:" in manifest
+    assert "source: absent" in manifest
+    assert "paths: []" in manifest
 
 
 def test_draft_spec_package_rejects_unsupported_snapshot_kind(tmp_path: Path) -> None:
