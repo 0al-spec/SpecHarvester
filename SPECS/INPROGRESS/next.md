@@ -1,50 +1,48 @@
-# Recommended Task: P7-T3 - Distinguish absent license evidence from ambiguous unknown license evidence
+# Recommended Task: P7-T4 - Add a compact local smoke triage summary for batch and governance report output
 
 **Priority:** P7
 **Phase:** Smoke-Test Signal Quality
 **Effort:** Medium
-**Dependencies:** P6-T2, P7-T1
+**Dependencies:** P6-T4, P7-T1, P7-T2, P7-T3
 **Status:** Open
 **Updated:** 2026-05-18
-**Suggested Branch:** `feature/P7-T3-license-evidence-classification`
-**Review Subject:** `p7_t3_license_evidence_classification`
+**Suggested Branch:** `feature/P7-T4-local-smoke-triage-summary`
+**Review Subject:** `p7_t4_local_smoke_triage_summary`
 
-**Current Phase:** PLAN
+**Current Phase:** SELECT
 
 ## Description
 
-The local smoke license/provenance report now has one remaining medium-risk
-`unknown_license` issue for `puzzle.core`. The current report does not explain
-whether `UNKNOWN` means no license evidence was found or license-like evidence
-was present but could not be classified.
+Local smoke runs now generate batch validation, duplicate governance,
+namespace/upstream, and license/provenance outputs. Reviewers still need to
+open multiple JSON reports to understand whether a run is clean, which issues
+remain, and whether those issues are expected review signals.
 
-Distinguish absent license evidence from ambiguous unknown license evidence so
-reviewers can prioritize missing upstream metadata differently from
-unclassifiable license text.
+Add a compact deterministic smoke triage summary that can be generated from the
+existing local smoke output without committing generated candidates.
 
 ## Acceptance Criteria
 
-- License provenance records include enough evidence classification to separate
-  absent license metadata from ambiguous license evidence.
-- `UNKNOWN` generated from no manifest license and no license file hint is
-  reported differently from unrecognized license-like evidence.
-- Existing SPDX-like known license handling remains unchanged.
-- Report output remains deterministic and sorted.
+- Smoke triage output summarizes batch status and governance issue counts in a
+  compact reviewable format.
+- The summary distinguishes duplicate, namespace/upstream, and
+  license/provenance signals.
+- The summary can point reviewers to the detailed report files.
+- The command or documented workflow remains local-only and deterministic.
 - Coverage remains above the project threshold.
 
 ## Recently Archived
 
-- `P7-T1` Treat package namespace matches against upstream repository names as
-  valid namespace evidence: PASS,
-  `SPECS/ARCHIVE/P7-T1_Treat_Package_Namespace_Matches_Against_Upstream_Repository_Names_as_Valid_Namespace_Evidence/`.
 - `P7-T2` Derive less generic Swift package intents from package products and
   manifests: PASS,
   `SPECS/ARCHIVE/P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests/`.
+- `P7-T3` Distinguish absent license evidence from ambiguous unknown license
+  evidence: PASS,
+  `SPECS/ARCHIVE/P7-T3_Distinguish_Absent_License_Evidence_from_Ambiguous_Unknown_License_Evidence/`.
 
 ## Next Step
 
-Create the task PRD for `P7-T3` and define evidence classification behavior,
-report output changes, and validation commands.
+Plan task `P7-T4` when ready.
 
 ## Backlog Note
 

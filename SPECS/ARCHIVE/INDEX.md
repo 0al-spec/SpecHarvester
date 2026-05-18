@@ -31,6 +31,7 @@
 | P6-T4 | [P6-T4_Add_Reproducible_Local_Smoke-Test_Fixture_Documentation/](P6-T4_Add_Reproducible_Local_Smoke-Test_Fixture_Documentation/) | 2026-05-18 | PASS |
 | P7-T1 | [P7-T1_Treat_Package_Namespace_Matches_Against_Upstream_Repository_Names_as_Valid_Namespace_Evidence/](P7-T1_Treat_Package_Namespace_Matches_Against_Upstream_Repository_Names_as_Valid_Namespace_Evidence/) | 2026-05-18 | PASS |
 | P7-T2 | [P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests/](P7-T2_Derive_Less_Generic_Swift_Package_Intents_from_Package_Products_and_Manifests/) | 2026-05-18 | PASS |
+| P7-T3 | [P7-T3_Distinguish_Absent_License_Evidence_from_Ambiguous_Unknown_License_Evidence/](P7-T3_Distinguish_Absent_License_Evidence_from_Ambiguous_Unknown_License_Evidence/) | 2026-05-18 | PASS |
 
 ## Historical Artifacts
 
@@ -86,3 +87,4 @@
 | 2026-05-18 | P7-T1 | Archived REVIEW_p7_t1_upstream_repository_name_namespace_evidence report |
 | 2026-05-18 | P7-T2 | Archived Derive Less Generic Swift Package Intents from Package Products and Manifests (PASS) |
 | 2026-05-18 | P7-T2 | Archived REVIEW_p7_t2_swift_package_product_intents report |
+| 2026-05-18 | P7-T3 | Archived Distinguish Absent License Evidence from Ambiguous Unknown License Evidence (PASS) |
