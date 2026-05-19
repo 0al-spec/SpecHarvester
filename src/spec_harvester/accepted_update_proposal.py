@@ -78,8 +78,9 @@ def build_accepted_package_update_proposal(
     if requires_correction:
         if not options.allow_correction:
             raise ValueError(
-                "Same package version and no upstream revision change require explicit "
-                "correction mode using --allow-correction."
+                "Accepted package version is immutable. Updates that target an already "
+                "accepted package version require explicit correction mode "
+                "--allow-correction."
             )
         if not options.correction_notes:
             raise ValueError("Correction mode requires at least one --correction-note.")
@@ -177,6 +178,16 @@ def _find_prior_accepted_record(
     ]
     if not accepted_for_package:
         return None
+
+    accepted_for_candidate_version = [
+        record
+        for record in accepted_for_package
+        if record.package_version == candidate_record.package_version
+    ]
+    if accepted_for_candidate_version:
+        return latest_accepted_by_package_id(accepted_for_candidate_version).get(
+            candidate_record.package_id
+        )
 
     return latest_accepted_by_package_id(accepted_for_package).get(candidate_record.package_id)
 
@@ -326,7 +337,7 @@ def _requires_correction_mode(
         return False
     if candidate_record.package_version != prior_record.package_version:
         return False
-    if comparison["changes"]["upstreamArtifacts"]["changed"]:
+    if comparison["status"] == "unchanged":
         return False
     return True
 

@@ -71,11 +71,12 @@ Required fields:
 
 `updateKind` inference:
 
-- `upstream_revision` by default for new candidates or changed upstream revision.
+- `upstream_revision` by default for new candidates or changed upstream revision
+  when the package version is also new.
 - `metadata_errata` for unchanged source revision (when revision is extractable).
 - `correction` as an explicit manual override only.
 
-For same `packageId@version` updates without upstream artifact change, the
+For any proposal that targets an already accepted `packageId@version`, the
 command requires `--allow-correction` and at least one `--correction-note`:
 
 - `updateKind` is `correction`.

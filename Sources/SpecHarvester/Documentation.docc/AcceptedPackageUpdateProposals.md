@@ -37,7 +37,8 @@ Optional:
 - `--proposal-body` for markdown proposal body.
 - `--skip-validation` for offline runs.
 - `--update-kind` override (`upstream_revision`, `metadata_errata`, `correction`).
-- `--allow-correction` to permit same-version accepted updates without upstream changes.
+- `--allow-correction` to permit explicit review of updates targeting an already
+  accepted package version.
 - `--correction-note` repeatable rationale note, required in correction mode.
 - `--reviewer-notes` repeatable.
 

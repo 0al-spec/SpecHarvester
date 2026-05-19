@@ -7,6 +7,8 @@ In the current bootstrap, accepted package versions are immutable once published
 - do not mutate the accepted manifest package path for
   `<packageId>/<packageVersion>` in place,
 - create a new package version for any upstream-driven change or metadata correction.
+- if the candidate targets an already-accepted `packageId@version`, require explicit
+  correction flow to proceed.
 
 ## Update Kinds
 

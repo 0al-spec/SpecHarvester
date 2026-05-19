@@ -404,7 +404,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--allow-correction",
         action="store_true",
         help=(
-            "Allow same-version accepted updates when upstream artifacts are unchanged. "
+            "Allow updates that target an already-accepted package version. "
             "Must be paired with --correction-note."
         ),
     )
