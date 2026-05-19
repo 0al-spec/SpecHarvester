@@ -180,12 +180,15 @@ def orchestration_status(
     plan_entries: list[dict[str, Any]],
     skipped_plans: list[dict[str, str]],
 ) -> str:
+    has_orchestration_error = any(diagnostic.get("level") == "error" for diagnostic in diagnostics)
     if index is not None:
         summary = index.get("summary")
         if isinstance(summary, dict) and isinstance(summary.get("status"), str):
+            if has_orchestration_error and summary["status"] == "complete":
+                return "partial"
             return summary["status"]
         return "partial"
-    if any(diagnostic.get("level") == "error" for diagnostic in diagnostics):
+    if has_orchestration_error:
         return "failed"
     if plan_entries or skipped_plans:
         return "skipped"
