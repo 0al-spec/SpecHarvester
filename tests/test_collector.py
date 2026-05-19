@@ -841,6 +841,99 @@ def test_draft_spec_package_does_not_assign_ios_intents_without_ios_evidence(
     assert "intent.package.javascript_library" in manifest
 
 
+def test_draft_spec_package_uses_semantic_evidence_index_for_specification_pattern(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "SpecificationKit"
+    repo.mkdir()
+    (repo / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "SpecificationKit",
+            products: [
+                .library(name: "SpecificationKit", targets: ["SpecificationKit"]),
+                .macro(name: "SpecificationKitMacros", targets: ["SpecificationKitMacros"]),
+            ]
+        )
+        """,
+        encoding="utf-8",
+    )
+    (repo / "README.md").write_text(
+        textwrap.dedent(
+            """
+            # SpecificationKit
+
+            ## Core Components
+            ## Specifications
+            ## PredicateSpec
+            ## @ConditionalSatisfies - Runtime Specification Selection
+            ## Feature Flag System
+            ## Enhanced Reactive Wrappers
+            ## SpecificationTracer
+            """
+        ),
+        encoding="utf-8",
+    )
+    docc = repo / "Sources" / "SpecificationKit" / "Documentation.docc"
+    docc.mkdir(parents=True)
+    (docc / "SpecificationKit.md").write_text(
+        textwrap.dedent(
+            """
+            # ``SpecificationKit``
+
+            ## Composable Business Logic
+            ## Decision Making
+            ## Composition and Reusability
+            ## Reactive Integration
+            """
+        ),
+        encoding="utf-8",
+    )
+    (docc / "CompositeContextProvider.md").write_text(
+        "# CompositeContextProvider\n\n## Context Providers\n",
+        encoding="utf-8",
+    )
+    (docc / "ThresholdSpec.md").write_text(
+        "# ThresholdSpec\n\n## Feature Gating\n",
+        encoding="utf-8",
+    )
+    (docc / "SpecificationTracer.md").write_text(
+        "# SpecificationTracer\n\n## Tracing\n\n## Performance Analysis\n",
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(source=repo, repository="git@github.com:SoundBlaster/SpecificationKit.git")
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="specificationkit.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.swift.specification_pattern" in manifest
+    assert "intent.swift.predicate_composition" in manifest
+    assert "intent.swift.context_driven_decisioning" in manifest
+    assert "intent.swift.feature_gating" in manifest
+    assert "intent.swift.reactive_specification_evaluation" in manifest
+    assert "intent.swift.specification_tracing" in manifest
+    assert "intent.swift.product.specificationkit" not in manifest
+    assert (
+        "Provide a Swift Specification Pattern toolkit for composing reusable "
+        "predicates, context-driven decisions, feature gates, reactive evaluation, "
+        "and diagnostic tracing."
+    ) in spec
+    assert "semanticEvidenceIndex:" in spec
+    assert "id: swift.specification_pattern" in spec
+    assert "id: swift.context_driven_decisioning" in spec
+    assert "README.md" in spec
+    assert "Sources/SpecificationKit/Documentation.docc/SpecificationKit.md" in spec
+
+
 def test_draft_spec_package_preserves_reviewable_nested_swift_interfaces(
     tmp_path: Path,
 ) -> None:

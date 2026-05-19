@@ -169,7 +169,7 @@ Acceptance:
 
 - [x] `P9-T1` Derive semantic intent claims from trusted static documentation and
   public API evidence.
-- [ ] `P9-T2` Build a deterministic semantic evidence index for domain-level
+- [x] `P9-T2` Build a deterministic semantic evidence index for domain-level
   draft intent generation.
 
 Acceptance:
@@ -188,3 +188,43 @@ Acceptance:
   workflows without treating model output as registry authority.
 - Generated candidates still remain preview-only and never execute package code,
   dependency installers, build scripts, or network probes.
+
+## Phase 10. Language and Package Ecosystem Profiling
+
+- [ ] `P10-T1` Define a deterministic `ProjectProfile` schema for language,
+  package ecosystem, package manager, manifest, confidence, provenance, and
+  analyzer-plan evidence.
+- [ ] `P10-T2` Add manifest-first ecosystem detectors for Swift/SPM, JavaScript
+  and TypeScript package managers, Python, Java/Kotlin, Go, PHP, C/C++,
+  Objective-C/iOS, Ruby, and Rust without executing package code.
+- [ ] `P10-T3` Evaluate and integrate trusted language classification and
+  vendored/generated-file filtering from established tools such as
+  GitHub Linguist-compatible classifiers, `go-enry`, `Syft`, `ScanCode`, and
+  Universal Ctags where licensing and deterministic operation are acceptable.
+- [ ] `P10-T4` Wire `ProjectProfile` into analyzer orchestration so
+  `collect-batch` can recommend or emit public-interface indexes from existing
+  static analyzers, including Python `ast` and JavaScript/TypeScript export
+  analyzers, before `draft` runs.
+- [ ] `P10-T5` Add language-neutral semantic extraction for documentation-first
+  repositories so README/API-contract evidence can produce meaningful intent
+  clusters even when no supported package manifest is present.
+- [ ] `P10-T6` Add a multi-language smoke matrix covering local repositories and
+  synthetic fixtures for npm, SPM, Gradle/Maven, Go modules, Composer, CMake,
+  Xcode/CocoaPods, RubyGems, and Python packaging.
+
+Acceptance:
+
+- Repository classification is deterministic, local-only, and never executes
+  package scripts, build systems, dependency installers, or network probes.
+- `ProjectProfile` preserves evidence paths, file digests, detector versions,
+  confidence reasons, and ambiguity diagnostics.
+- Manifest evidence is primary when present, while language classifiers and file
+  statistics only refine confidence or identify missing manifests.
+- Analyzer orchestration produces compact public-interface and semantic evidence
+  for weak-model drafting without requiring raw source dumps.
+- External tool adoption is documented with license, trust boundary,
+  determinism, vendored/generated filtering behavior, and fallback behavior when
+  the tool is unavailable.
+- Smoke coverage includes Swift, JavaScript/TypeScript, Python, Java/Kotlin, Go,
+  PHP, C/C++, Objective-C/iOS, Ruby, and at least one documentation-first
+  repository with no recognized package manifest.
