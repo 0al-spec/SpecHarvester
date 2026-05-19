@@ -5,8 +5,8 @@
 
 ### Summary Verdict
 
-- [ ] Approve
-- [x] Approve with comments
+- [x] Approve
+- [ ] Approve with comments
 - [ ] Request changes
 - [ ] Block
 
@@ -16,7 +16,7 @@
 
 ### Secondary Issues
 
-- [Low] `Makefile` is a weak language signal when it appears without CMake,
+- [Low, resolved] `Makefile` is a weak language signal when it appears without CMake,
   Meson, Conan, vcpkg, or source-language evidence. Treating it as high
   confidence C/C++ can overstate the profile for repositories that use make as
   a generic task runner. Fix: keep `Makefile` as make ecosystem evidence but
@@ -37,12 +37,12 @@
 
 - `ruff check src tests`: passed.
 - `ruff format --check src tests`: passed.
-- `PYTHONPATH=src python -m pytest tests/test_collector.py -q`: passed, 63 tests.
+- `PYTHONPATH=src python -m pytest tests/test_collector.py -q`: passed, 64 tests after follow-up.
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`: passed, 182 tests, 90.71% coverage.
 - `swift package dump-package >/dev/null`: passed.
 - `swift build --target SpecHarvesterDocs`: passed.
 
 ### Next Steps
 
-- Apply the low-confidence `Makefile` follow-up before opening the PR.
+- Low-confidence `Makefile` follow-up applied before opening the PR.
 - Before merge, ensure the PR body follows `.github/PULL_REQUEST_TEMPLATE.md`.
