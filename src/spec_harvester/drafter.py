@@ -46,6 +46,98 @@ class SemanticIntentProfile:
     summary: str
     intent_ids: list[str]
     evidence_paths: list[str]
+    clusters: list[dict[str, Any]]
+
+
+@dataclass(frozen=True)
+class SemanticDomainRule:
+    cluster_id: str
+    intent_id: str
+    label: str
+    terms: tuple[str, ...]
+
+
+SEMANTIC_DOMAIN_RULES = (
+    SemanticDomainRule(
+        cluster_id="swift.specification_pattern",
+        intent_id="intent.swift.specification_pattern",
+        label="Swift Specification Pattern",
+        terms=(
+            "specification",
+            "specifications",
+            "specificationkit",
+            "satisfies",
+            "conditional satisfies",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="swift.predicate_composition",
+        intent_id="intent.swift.predicate_composition",
+        label="Predicate Composition",
+        terms=(
+            "predicate",
+            "predicates",
+            "composable business logic",
+            "composition and reusability",
+            "composite specification",
+            "firstmatchspec",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="swift.context_driven_decisioning",
+        intent_id="intent.swift.context_driven_decisioning",
+        label="Context-Driven Decisioning",
+        terms=(
+            "context provider",
+            "context providers",
+            "compositecontextprovider",
+            "networkcontextprovider",
+            "persistentcontextprovider",
+            "platform-specific context providers",
+            "decision making",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="swift.feature_gating",
+        intent_id="intent.swift.feature_gating",
+        label="Feature Gating",
+        terms=(
+            "feature gating",
+            "feature flag",
+            "feature flags",
+            "conditional",
+            "thresholdspec",
+            "weightedspec",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="swift.reactive_specification_evaluation",
+        intent_id="intent.swift.reactive_specification_evaluation",
+        label="Reactive Specification Evaluation",
+        terms=(
+            "reactive wrappers",
+            "reactive integration",
+            "observedsatisfies",
+            "observedmaybe",
+            "swiftui integration",
+            "combine",
+            "observation",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="swift.specification_tracing",
+        intent_id="intent.swift.specification_tracing",
+        label="Specification Tracing",
+        terms=(
+            "specificationtracer",
+            "tracing",
+            "trace",
+            "debugging",
+            "performance analysis",
+            "dot graph",
+        ),
+    ),
+)
 
 
 def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
@@ -480,39 +572,23 @@ def infer_semantic_intent_profile(
     documentation_records: list[dict[str, Any]],
     public_interface_index: dict[str, Any] | None,
 ) -> SemanticIntentProfile | None:
-    corpus_parts = [repository_name]
-    evidence_paths: set[str] = set()
-
-    for record in capability_source_records(package_records):
-        package = record.get("package")
-        if not isinstance(package, dict):
-            continue
-        evidence_paths.add(str(record.get("path") or ""))
-        for key in ("name", "description", "ecosystem", "language"):
-            value = package.get(key)
-            if isinstance(value, str):
-                corpus_parts.append(value)
-        products = package.get("products")
-        if isinstance(products, list):
-            for product in products:
-                if isinstance(product, dict) and isinstance(product.get("name"), str):
-                    corpus_parts.append(product["name"])
-
-    for record in documentation_records:
-        path = str(record.get("path") or "")
-        if not is_semantic_documentation_path(path):
-            continue
-        evidence_paths.add(path)
-        corpus_parts.append(path)
-        headings = record.get("headings")
-        if isinstance(headings, list):
-            corpus_parts.extend(str(heading) for heading in headings if isinstance(heading, str))
-
-    if public_interface_index is not None:
-        corpus_parts.extend(public_interface_symbol_names(public_interface_index))
-
-    corpus = " ".join(corpus_parts).lower()
-    intents: set[str] = set()
+    semantic_entries = semantic_text_entries(
+        repository_name,
+        package_records,
+        documentation_records,
+        public_interface_index,
+    )
+    corpus = " ".join(entry["text"] for entry in semantic_entries).lower()
+    clusters = build_semantic_evidence_clusters(semantic_entries)
+    evidence_paths: set[str] = {
+        path
+        for cluster in clusters
+        for path in cluster.get("evidencePaths", [])
+        if isinstance(path, str) and path
+    }
+    intents: set[str] = {
+        str(cluster["intentId"]) for cluster in clusters if isinstance(cluster.get("intentId"), str)
+    }
 
     has_screen = has_any(corpus, "screen", "screens")
     has_uikit = "uikit" in corpus or "ui kit" in corpus
@@ -558,8 +634,94 @@ def infer_semantic_intent_profile(
     return SemanticIntentProfile(
         summary=summary,
         intent_ids=sorted(intents),
-        evidence_paths=sorted(path for path in evidence_paths if path),
+        evidence_paths=sorted(evidence_paths or semantic_profile_paths(semantic_entries)),
+        clusters=clusters,
     )
+
+
+def semantic_text_entries(
+    repository_name: str,
+    package_records: list[dict[str, Any]],
+    documentation_records: list[dict[str, Any]],
+    public_interface_index: dict[str, Any] | None,
+) -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = [{"path": "repository", "text": repository_name}]
+
+    for record in capability_source_records(package_records):
+        package = record.get("package")
+        if not isinstance(package, dict):
+            continue
+        path = str(record.get("path") or "")
+        parts: list[str] = []
+        for key in ("name", "description", "ecosystem", "language"):
+            value = package.get(key)
+            if isinstance(value, str):
+                parts.append(value)
+        products = package.get("products")
+        if isinstance(products, list):
+            for product in products:
+                if isinstance(product, dict) and isinstance(product.get("name"), str):
+                    parts.append(product["name"])
+        if parts:
+            entries.append({"path": path, "text": " ".join(parts)})
+
+    for record in documentation_records:
+        path = str(record.get("path") or "")
+        if not is_semantic_documentation_path(path):
+            continue
+        parts = [path]
+        headings = record.get("headings")
+        if isinstance(headings, list):
+            parts.extend(str(heading) for heading in headings if isinstance(heading, str))
+        entries.append({"path": path, "text": " ".join(parts)})
+
+    if public_interface_index is not None:
+        symbol_names = public_interface_symbol_names(public_interface_index)
+        if symbol_names:
+            entries.append(
+                {
+                    "path": PUBLIC_INTERFACE_INDEX_OUTPUT,
+                    "text": " ".join(symbol_names),
+                }
+            )
+
+    return entries
+
+
+def build_semantic_evidence_clusters(entries: list[dict[str, str]]) -> list[dict[str, Any]]:
+    clusters: list[dict[str, Any]] = []
+    for rule in SEMANTIC_DOMAIN_RULES:
+        matched_terms: set[str] = set()
+        evidence_paths: set[str] = set()
+        score = 0
+        for entry in entries:
+            text = entry["text"].lower()
+            entry_matches = [term for term in rule.terms if term in text]
+            if not entry_matches:
+                continue
+            matched_terms.update(entry_matches)
+            if entry["path"] != "repository":
+                evidence_paths.add(entry["path"])
+            score += len(entry_matches)
+        if score < 2:
+            continue
+        clusters.append(
+            {
+                "id": rule.cluster_id,
+                "intentId": rule.intent_id,
+                "label": rule.label,
+                "score": score,
+                "matchedTerms": sorted(matched_terms),
+                "evidencePaths": sorted(path for path in evidence_paths if path),
+            }
+        )
+    return sorted(clusters, key=lambda item: (-int(item["score"]), str(item["id"])))
+
+
+def semantic_profile_paths(entries: list[dict[str, str]]) -> set[str]:
+    return {
+        entry["path"] for entry in entries if entry.get("path") and entry["path"] != "repository"
+    }
 
 
 def is_semantic_documentation_path(path: str) -> bool:
@@ -605,6 +767,12 @@ def has_any(text: str, *needles: str) -> bool:
 
 def semantic_summary(repository_name: str, intents: set[str]) -> str:
     package_name = display_name(repository_name)
+    if "intent.swift.specification_pattern" in intents:
+        return (
+            "Provide a Swift Specification Pattern toolkit for composing reusable "
+            "predicates, context-driven decisions, feature gates, reactive evaluation, "
+            "and diagnostic tracing."
+        )
     if "intent.ios.uikit_swiftui_migration" in intents:
         return (
             "Provide a screen-level composition framework for incrementally migrating "
@@ -965,6 +1133,10 @@ def build_evidence(
                 "id": "semantic_intent_static_evidence",
                 "kind": "documentation",
                 "paths": semantic_profile.evidence_paths,
+                "semanticEvidenceIndex": {
+                    "schemaVersion": 1,
+                    "clusters": semantic_profile.clusters,
+                },
                 "supports": [
                     "intent.summary",
                     "provides.capabilities.intentIds",
