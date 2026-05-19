@@ -169,7 +169,7 @@ Acceptance:
 
 - [x] `P9-T1` Derive semantic intent claims from trusted static documentation and
   public API evidence.
-- [ ] `P9-T2` Build a deterministic semantic evidence index for domain-level
+- [x] `P9-T2` Build a deterministic semantic evidence index for domain-level
   draft intent generation.
 
 Acceptance:
