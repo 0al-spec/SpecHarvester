@@ -396,7 +396,7 @@ def collect_file(root: Path, path: Path) -> dict[str, Any]:
 
     if path.name in PACKAGE_MANIFEST_NAMES:
         package = parse_package_json(text)
-        if package:
+        if package is not None:
             record["package"] = package
     elif path.name == "Package.swift":
         package = parse_swift_package_manifest(text)
