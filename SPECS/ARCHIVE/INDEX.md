@@ -50,7 +50,7 @@
 
 | Folder | Description |
 |--------|-------------|
-| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p10_t3_trusted_classifier_evaluation.md`, `REVIEW_p10_t2_manifest_first_ecosystem_detectors.md`, `REVIEW_p10_t1_project_profile_schema.md`, `REVIEW_p9_t2_semantic_evidence_index.md`, `REVIEW_p9_t1_semantic_intent_drafting.md`, `REVIEW_p8_t3_update_impact_classification.md`, `REVIEW_p8_t2_accepted_candidate_diff_report.md`, `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
+| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p10_t4_projectprofile_analyzer_orchestration.md`, `REVIEW_p10_t3_trusted_classifier_evaluation.md`, `REVIEW_p10_t2_manifest_first_ecosystem_detectors.md`, `REVIEW_p10_t1_project_profile_schema.md`, `REVIEW_p9_t2_semantic_evidence_index.md`, `REVIEW_p9_t1_semantic_intent_drafting.md`, `REVIEW_p8_t3_update_impact_classification.md`, `REVIEW_p8_t2_accepted_candidate_diff_report.md`, `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
 
 ## Archive Log
 
@@ -124,3 +124,4 @@
 | 2026-05-19 | P10-T3 | Archived Trusted Classifier Evaluation (PASS) |
 | 2026-05-19 | P10-T3 | Archived REVIEW_p10_t3_trusted_classifier_evaluation report |
 | 2026-05-20 | P10-T4 | Archived ProjectProfile Analyzer Orchestration (PASS) |
+| 2026-05-20 | P10-T4 | Archived REVIEW_p10_t4_projectprofile_analyzer_orchestration report |
