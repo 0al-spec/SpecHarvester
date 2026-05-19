@@ -91,6 +91,68 @@ def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None
     }
     assert snapshot["summary"]["fileCount"] == 4
     assert snapshot["summary"]["packageManifestCount"] == 2
+    assert snapshot["projectProfile"] == {
+        "schemaVersion": 1,
+        "languages": [
+            {
+                "id": "javascript",
+                "confidence": "high",
+                "reason": "package.json manifest parsed as npm package evidence.",
+                "evidencePaths": ["package.json", "packages/core/package.json"],
+            }
+        ],
+        "ecosystems": [
+            {
+                "id": "npm",
+                "language": "javascript",
+                "packageManager": "npm",
+                "confidence": "high",
+                "reason": "package.json manifest parsed as npm package evidence.",
+                "evidencePaths": ["package.json", "packages/core/package.json"],
+            }
+        ],
+        "manifests": [
+            {
+                "path": "package.json",
+                "kind": "package_manifest",
+                "language": "javascript",
+                "ecosystem": "npm",
+                "packageManager": "npm",
+                "confidence": "high",
+                "reason": "package.json manifest parsed as npm package evidence.",
+                "sha256": next(
+                    item["sha256"] for item in snapshot["files"] if item["path"] == "package.json"
+                ),
+                "parser": "spec_harvester.package_json",
+            },
+            {
+                "path": "packages/core/package.json",
+                "kind": "package_manifest",
+                "language": "javascript",
+                "ecosystem": "npm",
+                "packageManager": "npm",
+                "confidence": "high",
+                "reason": "package.json manifest parsed as npm package evidence.",
+                "sha256": next(
+                    item["sha256"]
+                    for item in snapshot["files"]
+                    if item["path"] == "packages/core/package.json"
+                ),
+                "parser": "spec_harvester.package_json",
+            },
+        ],
+        "analyzerPlan": [
+            {
+                "id": "spec_harvester.js_ts_public_api",
+                "language": "javascript",
+                "ecosystem": "npm",
+                "status": "recommended",
+                "reason": "package.json evidence can feed JavaScript/TypeScript export analysis.",
+                "evidencePaths": ["package.json", "packages/core/package.json"],
+            }
+        ],
+        "diagnostics": [],
+    }
 
     by_path = {item["path"]: item for item in snapshot["files"]}
     assert by_path["README.md"]["headings"] == ["Demo", "Usage"]
@@ -172,6 +234,75 @@ def test_collect_local_repository_extracts_swift_package_products(tmp_path: Path
         {"name": "PuzzleCore", "type": "library"},
         {"name": "PuzzleUIKit", "type": "library"},
     ]
+    assert snapshot["projectProfile"]["languages"] == [
+        {
+            "id": "swift",
+            "confidence": "high",
+            "reason": "Package.swift manifest parsed as SwiftPM evidence.",
+            "evidencePaths": ["Package.swift"],
+        }
+    ]
+    assert snapshot["projectProfile"]["ecosystems"] == [
+        {
+            "id": "swiftpm",
+            "language": "swift",
+            "packageManager": "swiftpm",
+            "confidence": "high",
+            "reason": "Package.swift manifest parsed as SwiftPM evidence.",
+            "evidencePaths": ["Package.swift"],
+        }
+    ]
+    assert snapshot["projectProfile"]["manifests"] == [
+        {
+            "path": "Package.swift",
+            "kind": "package_manifest",
+            "language": "swift",
+            "ecosystem": "swiftpm",
+            "packageManager": "swiftpm",
+            "confidence": "high",
+            "reason": "Package.swift manifest parsed as SwiftPM evidence.",
+            "sha256": snapshot["files"][0]["sha256"],
+            "parser": "spec_harvester.swift_package_manifest",
+        }
+    ]
+    assert snapshot["projectProfile"]["analyzerPlan"] == [
+        {
+            "id": "spec_harvester.swift_manifest_public_interface",
+            "language": "swift",
+            "ecosystem": "swiftpm",
+            "status": "manifest_only",
+            "reason": (
+                "SwiftPM manifest evidence is available; no Swift AST analyzer is configured yet."
+            ),
+            "evidencePaths": ["Package.swift"],
+        }
+    ]
+    assert snapshot["projectProfile"]["diagnostics"] == []
+
+
+def test_collect_local_repository_project_profile_reports_missing_manifest(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "README.md").write_text("# Demo\n", encoding="utf-8")
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    assert snapshot["projectProfile"] == {
+        "schemaVersion": 1,
+        "languages": [],
+        "ecosystems": [],
+        "manifests": [],
+        "analyzerPlan": [],
+        "diagnostics": [
+            {
+                "id": "no_supported_package_manifest",
+                "level": "info",
+                "message": "No supported package manifest evidence was found for ProjectProfile.",
+            }
+        ],
+    }
 
 
 def test_parse_swift_package_manifest_returns_none_without_package_metadata() -> None:

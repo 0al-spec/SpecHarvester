@@ -11,6 +11,7 @@ from typing import Any
 SNAPSHOT_KIND = "SpecHarvesterEvidenceSnapshot"
 SNAPSHOT_SCHEMA_VERSION = 1
 ANALYZER_TRUST_POLICY_SCHEMA_VERSION = 1
+PROJECT_PROFILE_SCHEMA_VERSION = 1
 DEFAULT_MAX_FILE_BYTES = 512 * 1024
 
 ROOT_FILES = [
@@ -139,6 +140,7 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
             "contentAuthority": "untrusted_metadata",
         },
         "analyzerPolicy": default_analyzer_trust_policy(),
+        "projectProfile": build_project_profile(files),
         "files": files,
         "skippedFiles": skipped_files,
         "summary": {
@@ -148,6 +150,166 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
             "licenseFileCount": sum(1 for item in files if item["kind"] == "license"),
         },
     }
+
+
+def build_project_profile(files: list[dict[str, Any]]) -> dict[str, Any]:
+    languages: dict[str, dict[str, Any]] = {}
+    ecosystems: dict[str, dict[str, Any]] = {}
+    analyzer_plan: dict[str, dict[str, Any]] = {}
+    manifests: list[dict[str, Any]] = []
+    diagnostics: list[dict[str, Any]] = []
+
+    for item in files:
+        if item.get("kind") != "package_manifest":
+            continue
+        manifest = project_manifest_entry(item)
+        if manifest is None:
+            diagnostics.append(
+                {
+                    "id": "unsupported_package_manifest",
+                    "level": "info",
+                    "message": (
+                        "Package manifest is collected but not yet mapped into ProjectProfile."
+                    ),
+                    "path": item.get("path"),
+                }
+            )
+            continue
+        manifests.append(manifest)
+        merge_profile_evidence(
+            languages,
+            manifest["language"],
+            manifest["confidence"],
+            manifest["reason"],
+            manifest["path"],
+        )
+        merge_profile_evidence(
+            ecosystems,
+            manifest["ecosystem"],
+            manifest["confidence"],
+            manifest["reason"],
+            manifest["path"],
+            extra={
+                "language": manifest["language"],
+                "packageManager": manifest["packageManager"],
+            },
+        )
+        plan = analyzer_plan_entry(manifest)
+        if plan is not None:
+            merge_analyzer_plan(analyzer_plan, plan)
+
+    if not manifests:
+        diagnostics.append(
+            {
+                "id": "no_supported_package_manifest",
+                "level": "info",
+                "message": "No supported package manifest evidence was found for ProjectProfile.",
+            }
+        )
+
+    return {
+        "schemaVersion": PROJECT_PROFILE_SCHEMA_VERSION,
+        "languages": sorted_profile_entries(languages),
+        "ecosystems": sorted_profile_entries(ecosystems),
+        "manifests": sorted(manifests, key=lambda item: item["path"]),
+        "analyzerPlan": sorted(analyzer_plan.values(), key=lambda item: item["id"]),
+        "diagnostics": sorted(
+            diagnostics, key=lambda item: (item["id"], str(item.get("path", "")))
+        ),
+    }
+
+
+def project_manifest_entry(item: dict[str, Any]) -> dict[str, Any] | None:
+    path = str(item.get("path") or "")
+    sha256 = item.get("sha256")
+    if path.endswith("Package.swift") and isinstance(item.get("package"), dict):
+        return {
+            "path": path,
+            "kind": "package_manifest",
+            "language": "swift",
+            "ecosystem": "swiftpm",
+            "packageManager": "swiftpm",
+            "confidence": "high",
+            "reason": "Package.swift manifest parsed as SwiftPM evidence.",
+            "sha256": sha256,
+            "parser": "spec_harvester.swift_package_manifest",
+        }
+    if path.endswith("package.json") and isinstance(item.get("package"), dict):
+        return {
+            "path": path,
+            "kind": "package_manifest",
+            "language": "javascript",
+            "ecosystem": "npm",
+            "packageManager": "npm",
+            "confidence": "high",
+            "reason": "package.json manifest parsed as npm package evidence.",
+            "sha256": sha256,
+            "parser": "spec_harvester.package_json",
+        }
+    return None
+
+
+def merge_profile_evidence(
+    entries: dict[str, dict[str, Any]],
+    entry_id: str,
+    confidence: str,
+    reason: str,
+    path: str,
+    *,
+    extra: dict[str, Any] | None = None,
+) -> None:
+    entry = entries.setdefault(
+        entry_id,
+        {
+            "id": entry_id,
+            "confidence": confidence,
+            "reason": reason,
+            "evidencePaths": [],
+            **(extra or {}),
+        },
+    )
+    if path not in entry["evidencePaths"]:
+        entry["evidencePaths"].append(path)
+        entry["evidencePaths"].sort()
+
+
+def sorted_profile_entries(entries: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    return sorted(entries.values(), key=lambda item: item["id"])
+
+
+def analyzer_plan_entry(manifest: dict[str, Any]) -> dict[str, Any] | None:
+    if manifest["language"] == "javascript":
+        return {
+            "id": "spec_harvester.js_ts_public_api",
+            "language": "javascript",
+            "ecosystem": "npm",
+            "status": "recommended",
+            "reason": "package.json evidence can feed JavaScript/TypeScript export analysis.",
+            "evidencePaths": [manifest["path"]],
+        }
+    if manifest["language"] == "swift":
+        return {
+            "id": "spec_harvester.swift_manifest_public_interface",
+            "language": "swift",
+            "ecosystem": "swiftpm",
+            "status": "manifest_only",
+            "reason": (
+                "SwiftPM manifest evidence is available; no Swift AST analyzer is configured yet."
+            ),
+            "evidencePaths": [manifest["path"]],
+        }
+    return None
+
+
+def merge_analyzer_plan(
+    entries: dict[str, dict[str, Any]],
+    plan: dict[str, Any],
+) -> None:
+    entry = entries.setdefault(plan["id"], {**plan, "evidencePaths": []})
+    for path in plan["evidencePaths"]:
+        if path not in entry["evidencePaths"]:
+            entry["evidencePaths"].append(path)
+            entry["evidencePaths"].sort()
 
 
 def default_analyzer_trust_policy() -> dict[str, Any]:
