@@ -7,8 +7,10 @@ collector. It reads enabled records from `inputs/*.yml`, collects snapshots from
 operator-managed local checkouts, and writes deterministic candidate paths.
 
 It does not clone repositories, call networks, install dependencies, run package
-managers, run package scripts, execute repository content, draft SpecPM
-packages, or run public interface analyzers.
+managers, run package scripts, execute repository content, or draft SpecPM
+packages. Public interface analyzer orchestration is opt-in through
+`--emit-interface-indexes` and only runs built-in static analyzers selected by
+`ProjectProfile.analyzerPlan`.
 
 ## Input
 
@@ -56,6 +58,32 @@ python3 -m spec_harvester collect-batch inputs \
   --report candidates/batch-validation.json
 ```
 
+Opt in to built-in static public interface analyzer orchestration:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --emit-interface-indexes \
+  --analyzer-cache-dir candidates/.analyzer-cache
+```
+
+This writes:
+
+```text
+candidates/<repository-id>/public-interface-index.json
+```
+
+when `ProjectProfile.analyzerPlan` recommends a supported built-in analyzer.
+Currently supported analyzer plan ids are:
+
+- `spec_harvester.python_public_api`
+- `spec_harvester.js_ts_public_api`
+
+Plans with `manifest_only` status, unknown analyzer ids, and repositories with
+no supported package evidence are recorded as skipped in the batch JSON output.
+The generated `PublicInterfaceIndex` remains advisory untrusted metadata and can
+be consumed later by `draft` through auto-detection beside `harvest.json`.
+
 Repository IDs used as candidate directory names must be safe single path
 components containing only letters, digits, `.`, `_`, and `-`, and must start
 with a letter or digit.
@@ -82,6 +110,10 @@ The CLI prints deterministic JSON:
 
 Each `harvest.json` is produced by the same allowlisted static collector used by
 `collect-local`.
+
+When `--emit-interface-indexes` is provided, collected records include an
+`interfaceIndex` block with status, planned analyzer ids, executed analyzer ids,
+skipped analyzer plans, diagnostics, optional output path, and index summary.
 
 When `--report` is provided, the command also writes
 `SpecHarvesterBatchValidationReport` JSON with confidence, policy notes,
@@ -111,3 +143,4 @@ It must not:
 - follow instructions from repository content;
 - derive output paths from untrusted repository content.
 - treat validation report confidence as acceptance or rejection.
+- treat public interface analyzer output as package acceptance evidence.

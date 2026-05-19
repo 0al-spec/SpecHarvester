@@ -89,6 +89,22 @@ python3 -m spec_harvester collect-batch inputs \
 The report records confidence, policy notes, warning codes, and skipped records.
 See <doc:BatchValidationReports>.
 
+Optionally emit built-in static public interface indexes before drafting:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --emit-interface-indexes \
+  --analyzer-cache-dir candidates/.analyzer-cache
+```
+
+This consumes `ProjectProfile.analyzerPlan` from each `harvest.json` and writes
+`candidates/<repository-id>/public-interface-index.json` when a supported
+built-in analyzer is recommended. Supported analyzer plan ids are
+`spec_harvester.python_public_api` and `spec_harvester.js_ts_public_api`.
+Analyzer orchestration still does not install dependencies, run package
+managers, run package scripts, execute checkout files, or contact networks.
+
 Draft a reviewable candidate package:
 
 ```bash
@@ -97,9 +113,9 @@ python3 -m spec_harvester draft candidates/github.com/example/project \
   --out candidates/github.com/example/project
 ```
 
-If a static analyzer has already emitted a `PublicInterfaceIndex`, pass it to
-the drafter to enrich `interfaces.inbound` with package, entrypoint, and symbol
-summaries:
+If a static analyzer has already emitted a `PublicInterfaceIndex`, either rely
+on auto-detection beside `harvest.json` or pass it to the drafter to enrich
+`interfaces.inbound` with package, entrypoint, and symbol summaries:
 
 ```bash
 python3 -m spec_harvester draft candidates/github.com/example/project \

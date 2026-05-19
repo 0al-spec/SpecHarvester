@@ -75,6 +75,43 @@ def test_docc_and_github_docs_cover_trusted_classifier_evaluation() -> None:
     assert "<doc:TrustedClassifierEvaluation>" in trust_boundary.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_project_profile_analyzer_orchestration() -> None:
+    github_doc = ROOT / "docs" / "BATCH_COLLECTION.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BatchCollection.md"
+    architecture_doc = ROOT / "docs" / "ARCHITECTURE.md"
+    architecture_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "HarvesterArchitecture.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc, architecture_doc, architecture_docc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "--emit-interface-indexes",
+            "ProjectProfile.analyzerPlan",
+            "public-interface-index.json",
+            "spec_harvester.python_public_api",
+            "spec_harvester.js_ts_public_api",
+            "manifest_only",
+            "advisory",
+        ):
+            assert required in text
+
+    for path in (workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "--emit-interface-indexes",
+            "--analyzer-cache-dir",
+            "PublicInterfaceIndex",
+            "does not install dependencies",
+            "run package scripts",
+            "execute checkout files",
+            "contact networks",
+        ):
+            assert required in text
+
+
 def test_docc_and_github_docs_cover_accepted_candidate_impact_classification() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md"
     docc_doc = (

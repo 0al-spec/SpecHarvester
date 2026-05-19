@@ -283,6 +283,22 @@ The report includes confidence, policy notes, stable warning codes, and skipped
 records for reviewer inspection. See
 [`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md).
 
+Optionally emit built-in static public interface indexes before drafting:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --emit-interface-indexes \
+  --analyzer-cache-dir candidates/.analyzer-cache
+```
+
+This consumes `ProjectProfile.analyzerPlan` from each `harvest.json` and writes
+`candidates/<repository-id>/public-interface-index.json` when a supported
+built-in analyzer is recommended. Supported analyzer plan ids are
+`spec_harvester.python_public_api` and `spec_harvester.js_ts_public_api`.
+Analyzer orchestration still does not install dependencies, run package
+managers, run package scripts, execute checkout files, or contact networks.
+
 Optionally write a governance duplicate claim report:
 
 ```bash
@@ -321,7 +337,8 @@ python3 -m spec_harvester draft candidates/github.com/example/project \
 ```
 
 If a deterministic analyzer has already produced a compact
-`PublicInterfaceIndex`, pass it explicitly:
+`PublicInterfaceIndex`, either rely on auto-detection beside `harvest.json` or
+pass it explicitly:
 
 ```bash
 python3 -m spec_harvester draft candidates/github.com/example/project \
