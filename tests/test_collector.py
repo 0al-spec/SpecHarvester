@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import textwrap
 from pathlib import Path
 
 import pytest
@@ -697,6 +698,204 @@ def test_draft_spec_package_uses_swift_product_intents(tmp_path: Path) -> None:
     assert "intent.package.public_repository_metadata" not in spec
     assert "intent.swift.product.puzzlecore" in manifest
     assert "intent.swift.product.puzzleuikit" in manifest
+
+
+def test_draft_spec_package_prefers_semantic_ios_screen_intents(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "puzzle"
+    repo.mkdir()
+    (repo / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "Puzzle",
+            products: [
+                .library(name: "PuzzleCore", targets: ["PuzzleCore"]),
+                .library(name: "PuzzleUIKit", targets: ["PuzzleUIKit"]),
+            ]
+        )
+        """,
+        encoding="utf-8",
+    )
+    prd = repo / "SPECS" / "PRD"
+    prd.mkdir(parents=True)
+    (prd / "Puzzle-Framework-PRD.md").write_text(
+        textwrap.dedent(
+            """
+        # Puzzle Framework PRD
+
+        ## Migration Glue at the Screen Boundary, Not App Framework
+
+        ## Objective
+
+        ## Collection Layer
+
+        ## State Layer
+        """
+        ),
+        encoding="utf-8",
+    )
+    docc = repo / "Sources" / "PuzzleUIKit" / "Documentation.docc"
+    docc.mkdir(parents=True)
+    (docc / "PuzzleUIKit.md").write_text(
+        textwrap.dedent(
+            """
+        # PuzzleUIKit
+
+        ## Compose UIKit and SwiftUI screens
+
+        ## Collection layouts
+
+        ## Diagnostics overlay
+        """
+        ),
+        encoding="utf-8",
+    )
+    dependency = repo / "Derived" / "SourcePackages" / "checkouts" / "swift-syntax"
+    dependency.mkdir(parents=True)
+    (dependency / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "swift-syntax",
+            products: [.library(name: "SwiftSyntax", targets: ["SwiftSyntax"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    fixture = repo / "Tests" / "CompileFixtures" / "FixturePackage"
+    fixture.mkdir(parents=True)
+    (fixture / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "PuzzleFixture",
+            products: [.library(name: "PuzzleFixture", targets: ["PuzzleFixture"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(source=repo, repository="https://github.com/SoundBlaster/Puzzle")
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="puzzle.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.ios.screen_level_composition" in spec
+    assert "intent.ios.uikit_swiftui_migration" in spec
+    assert "intent.ios.collection_layout_composition" in spec
+    assert "intent.ios.screen_state_binding" in spec
+    assert "intent.ios.screen_diagnostics" in spec
+    assert "intent.swift.product.puzzlecore" not in spec
+    assert "intent.swift.product.puzzleuikit" not in manifest
+    assert (
+        "Provide a screen-level composition framework for incrementally migrating "
+        "UIKit-heavy iOS screens to mixed UIKit/SwiftUI surfaces."
+    ) in spec
+    assert "id: semantic_intent_static_evidence" in spec
+    assert "SPECS/PRD/Puzzle-Framework-PRD.md" in spec
+    assert "Sources/PuzzleUIKit/Documentation.docc/PuzzleUIKit.md" in spec
+    assert "package.swift_syntax" not in spec
+    assert "package.puzzlefixture" not in spec
+
+
+def test_draft_spec_package_does_not_assign_ios_intents_without_ios_evidence(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "screen-composer"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "screen-composer",
+                "description": "Compose screen layouts for web dashboards.",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (repo / "README.md").write_text(
+        "# Screen Composer\n\n## Screen composition\n\n## Container layout\n",
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="screen_composer.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.ios.screen_level_composition" not in spec
+    assert "intent.ios.collection_layout_composition" not in spec
+    assert "intent.package.javascript_library" in manifest
+
+
+def test_draft_spec_package_preserves_reviewable_nested_swift_interfaces(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "workspace"
+    repo.mkdir()
+    (repo / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "Workspace",
+            products: [.library(name: "Workspace", targets: ["Workspace"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    feature = repo / "Packages" / "Feature"
+    feature.mkdir(parents=True)
+    (feature / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "Feature",
+            products: [.library(name: "Feature", targets: ["Feature"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    generated = repo / "Derived" / "SourcePackages" / "checkouts" / "swift-syntax"
+    generated.mkdir(parents=True)
+    (generated / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "swift-syntax",
+            products: [.library(name: "SwiftSyntax", targets: ["SwiftSyntax"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="workspace.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "workspace.core.workspace" in manifest
+    assert "workspace.core.feature" not in manifest
+    assert "package.workspace" in spec
+    assert "package.feature" in spec
+    assert "package.swift_syntax" not in spec
 
 
 def test_draft_spec_package_uses_root_swift_manifest_for_capability_intents(

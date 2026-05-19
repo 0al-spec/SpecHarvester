@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-05-18
+Updated: 2026-05-19
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -164,3 +164,27 @@ Acceptance:
 - Update preflight rejects silent mutation of an already accepted
   `package_id@version` unless an explicit correction path and audit record are
   present.
+
+## Phase 9. Semantic Draft Quality
+
+- [x] `P9-T1` Derive semantic intent claims from trusted static documentation and
+  public API evidence.
+- [ ] `P9-T2` Build a deterministic semantic evidence index for domain-level
+  draft intent generation.
+
+Acceptance:
+
+- Drafts prefer meaningful domain-level intent claims when deterministic DocC,
+  PRD, README, or public interface evidence supports them.
+- Swift package product intents remain available as fallback evidence, not as the
+  primary claim when richer intent evidence exists.
+- Harvested package-manifest evidence excludes generated dependency checkouts,
+  build directories, fixtures, and historical drafts from primary package
+  interface claims.
+- Semantic draft generation receives compact ranked domain clusters from
+  deterministic utilities rather than raw markdown heading bags or LLM
+  inference.
+- Domain clusters preserve evidence paths and support weak-model/refinement
+  workflows without treating model output as registry authority.
+- Generated candidates still remain preview-only and never execute package code,
+  dependency installers, build scripts, or network probes.
