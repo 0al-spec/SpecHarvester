@@ -41,6 +41,40 @@ def test_docc_topics_link_analyzer_sandbox_requirements() -> None:
     assert "<doc:AnalyzerSandboxRequirements>" in trust_boundary.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_trusted_classifier_evaluation() -> None:
+    github_doc = ROOT / "docs" / "TRUSTED_CLASSIFIER_EVALUATION.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "TrustedClassifierEvaluation.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    trust_boundary = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "TrustBoundary.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "classifierPolicy",
+            "ProjectProfile",
+            "manifest-first",
+            "advisory untrusted metadata",
+            "go-enry",
+            "Syft",
+            "ScanCode",
+            "Universal Ctags",
+            "Tree-sitter",
+            "pinned tool version",
+            "no network",
+            "no package scripts",
+            "no harvested dependency installation",
+            "source digest evidence",
+        ):
+            assert required in text
+
+    assert "TRUSTED_CLASSIFIER_EVALUATION.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:TrustedClassifierEvaluation>" in root_page.read_text(encoding="utf-8")
+    assert "<doc:TrustedClassifierEvaluation>" in trust_boundary.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_accepted_candidate_impact_classification() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md"
     docc_doc = (
