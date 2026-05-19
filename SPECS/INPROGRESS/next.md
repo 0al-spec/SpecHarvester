@@ -1,20 +1,20 @@
-# Next Task: P8-T5 - Add correction and errata path for accepted metadata
+# Next Task: P8-T6 - Add accepted package version immutability guard for update proposals
 
 **Priority:** P8
 **Phase:** Accepted Specification Update Lifecycle
 **Effort:** Medium
-**Dependencies:** P8-T4
+**Dependencies:** P8-T5
 **Status:** SELECT
 
 **Updated:** 2026-05-19
-**Suggested Branch:** `feature/P8-T5-correction-and-errata-path`
+**Suggested Branch:** `feature/P8-T6-accepted-package-version-immutability-guard`
 
 ## Description
 
-Add an explicit correction/errata proposal path for metadata edits that do not
-change upstream package source content, and require explicit operator intent to
-allow same-version accepted-package mutation prevention.
+Add a strict preflight guard so proposals cannot silently mutate an already
+accepted `package_id@version`. Same-version updates must use explicit correction
+mode with rationale notes; all other same-version mutations should fail fast.
 
 ## Next Step
 
-Run the PLAN command to create the P8-T5 implementation PRD.
+Run the PLAN command to create the P8-T6 implementation PRD.

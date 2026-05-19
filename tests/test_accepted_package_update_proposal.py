@@ -136,6 +136,131 @@ def test_build_accepted_package_update_proposal_requires_correction_for_same_ver
         )
 
 
+def test_build_proposal_rejects_same_version_upstream_mutation(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.utility"],
+        upstream_revision="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="Accepted package version is immutable",
+    ):
+        build_accepted_package_update_proposal(
+            AcceptedPackageUpdateProposalOptions(
+                candidate=candidate,
+                accepted_root=accepted_root,
+                skip_validation=True,
+            )
+        )
+
+
+def test_build_accepted_package_update_proposal_accepts_correction_with_upstream_change(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.utility"],
+        upstream_revision="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    )
+
+    result = build_accepted_package_update_proposal(
+        AcceptedPackageUpdateProposalOptions(
+            candidate=candidate,
+            accepted_root=accepted_root,
+            skip_validation=True,
+            allow_correction=True,
+            correction_notes=("upstream hash corrected",),
+        )
+    )
+
+    assert result["updateKind"] == "correction"
+    assert result["oldPackageVersion"] == "1.0.0"
+    assert result["newPackageVersion"] == "1.0.0"
+    assert result["comparison"]["status"] == "correction"
+    assert result["correction"] == {
+        "enabled": True,
+        "reason": ["upstream hash corrected"],
+        "source": "manual_review",
+    }
+    assert "upstream hash corrected" in result["reviewerNotes"]
+
+
+def test_build_accepted_package_update_proposal_rejects_mutating_previous_accepted_version(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_manifest(
+        accepted_root / "demo" / "1.1.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.1.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.utility"],
+        upstream_revision="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    )
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="Accepted package version is immutable",
+    ):
+        build_accepted_package_update_proposal(
+            AcceptedPackageUpdateProposalOptions(
+                candidate=candidate,
+                accepted_root=accepted_root,
+                skip_validation=True,
+            )
+        )
+
+
 def test_build_accepted_package_update_proposal_accepts_correction_with_notes(
     tmp_path: Path,
 ) -> None:

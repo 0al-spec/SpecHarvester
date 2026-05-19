@@ -10,6 +10,8 @@ current bootstrap, accepted package versions are immutable once published:
 - operators should not mutate that path in place;
 - a new accepted package version should be introduced for any update that changes
   accepted package source content or accepted metadata.
+- Same-version mutations are blocked unless the update is explicitly emitted as a
+  correction with rationale.
 
 ## Why immutability
 

@@ -117,6 +117,8 @@ Accepted package versions are immutable once accepted:
   `<packageId>/<packageVersion>`.
 - new upstream reality or corrections always create a new accepted version
   publication path.
+- if a candidate reuses an already accepted `packageId@version`, the update must
+  pass an explicit correction flow.
 
 When upstream evidence changes (new revision, new capabilities, new claims),
 operators should run a fresh candidate loop and propose a higher package version.
