@@ -1,12 +1,14 @@
-# Next Task: None Selected
+# Next Task: P10-T1 ProjectProfile Schema
 
-**Status:** CLEAN
+**Status:** SELECTED
 
 **Updated:** 2026-05-19
 
 ## Description
 
-`P9-T2` is complete and archived. No next task is selected.
+Define a deterministic `ProjectProfile` schema that records language,
+ecosystem, package manager, manifest, confidence, provenance, diagnostics, and
+recommended analyzer-plan evidence before language-specific detectors are added.
 
 ## Recently Archived
 
@@ -15,5 +17,5 @@
 
 ## Next Step
 
-Review local smoke output across additional repositories and add the next Phase
-9 task if another semantic draft quality gap appears.
+Run Flow for `P10-T1`, starting with the schema and CLI/reporting contract before
+implementing broad ecosystem detectors.
