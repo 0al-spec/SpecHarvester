@@ -1,18 +1,21 @@
-# Next Task: P10-T4 ProjectProfile Analyzer Orchestration
+# Next Task: P10-T5 Language-Neutral Semantic Extraction
 
-**Status:** SELECTED
+**Status:** READY
 
 **Updated:** 2026-05-20
 
 ## Description
 
-Wire `ProjectProfile` into analyzer orchestration so `collect-batch` can
-recommend or emit public-interface indexes from existing static analyzers,
-including Python `ast` and JavaScript/TypeScript export analyzers, before
-`draft` runs.
+Add language-neutral semantic extraction for documentation-first repositories
+so README/API-contract evidence can produce meaningful intent clusters even
+when no supported package manifest is present.
 
 ## Recently Archived
 
+- `P10-T4` Wire `ProjectProfile` into analyzer orchestration so `collect-batch`
+  can recommend or emit public-interface indexes from existing static
+  analyzers, including Python `ast` and JavaScript/TypeScript export analyzers,
+  before `draft` runs.
 - `P10-T3` Evaluate and integrate trusted language classification and
   vendored/generated-file filtering from established tools such as GitHub
   Linguist-compatible classifiers, `go-enry`, `Syft`, `ScanCode`, and
@@ -20,13 +23,9 @@ including Python `ast` and JavaScript/TypeScript export analyzers, before
 - `P10-T2` Add manifest-first ecosystem detectors for Swift/SPM, JavaScript and
   TypeScript package managers, Python, Java/Kotlin, Go, PHP, C/C++,
   Objective-C/iOS, Ruby, and Rust without executing package code.
-- `P10-T1` Define a deterministic `ProjectProfile` schema for language,
-  package ecosystem, package manager, manifest, confidence, provenance, and
-  analyzer-plan evidence.
 
 ## Next Step
 
-Plan `P10-T4`, then implement analyzer orchestration that consumes
-`ProjectProfile.analyzerPlan` to emit existing static public-interface indexes
-before drafting without executing harvested package code or installing
-dependencies.
+Plan `P10-T5`, focusing on deterministic documentation/API-contract evidence
+that can improve intent clusters for documentation-first or manifest-poor
+repositories without relying on model-only inference.

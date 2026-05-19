@@ -44,6 +44,7 @@
 | P10-T1 | [P10-T1_ProjectProfile_Schema/](P10-T1_ProjectProfile_Schema/) | 2026-05-19 | PASS |
 | P10-T2 | [P10-T2_Manifest_First_Ecosystem_Detectors/](P10-T2_Manifest_First_Ecosystem_Detectors/) | 2026-05-19 | PASS |
 | P10-T3 | [P10-T3_Trusted_Classifier_Evaluation/](P10-T3_Trusted_Classifier_Evaluation/) | 2026-05-19 | PASS |
+| P10-T4 | [P10-T4_ProjectProfile_Analyzer_Orchestration/](P10-T4_ProjectProfile_Analyzer_Orchestration/) | 2026-05-20 | PASS |
 
 ## Historical Artifacts
 
@@ -122,3 +123,4 @@
 | 2026-05-19 | P10-T2 | Archived REVIEW_p10_t2_manifest_first_ecosystem_detectors report |
 | 2026-05-19 | P10-T3 | Archived Trusted Classifier Evaluation (PASS) |
 | 2026-05-19 | P10-T3 | Archived REVIEW_p10_t3_trusted_classifier_evaluation report |
+| 2026-05-20 | P10-T4 | Archived ProjectProfile Analyzer Orchestration (PASS) |
