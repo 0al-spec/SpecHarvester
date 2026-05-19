@@ -884,6 +884,47 @@ def test_draft_spec_package_does_not_assign_swift_semantic_intents_without_swift
     assert "intent.package.javascript_library" in manifest
 
 
+def test_draft_spec_package_does_not_assign_swift_context_from_uikit_heading(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "ui-interop"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "ui-interop",
+                "description": "Utilities for custom web UI widgets.",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (repo / "README.md").write_text(
+        textwrap.dedent(
+            """
+            # UI Interop
+
+            ## UIKit Integration
+            ## Conditional feature flags
+            """
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="ui_interop.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.swift.specification_pattern" not in spec
+    assert "intent.swift.feature_gating" not in spec
+    assert "intent.package.javascript_library" in manifest
+
+
 def test_draft_spec_package_uses_semantic_evidence_index_for_specification_pattern(
     tmp_path: Path,
 ) -> None:
