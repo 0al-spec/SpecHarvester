@@ -399,6 +399,9 @@ def test_collect_local_repository_project_profile_detects_manifest_first_ecosyst
         "ruby",
         "rust",
     }
+    c_cpp_language = next(item for item in profile["languages"] if item["id"] == "c-cpp")
+    assert c_cpp_language["confidence"] == "high"
+    assert c_cpp_language["reason"] != "Makefile collected as ambiguous make project evidence."
     assert {item["id"] for item in profile["ecosystems"]} == {
         "autotools",
         "bun",

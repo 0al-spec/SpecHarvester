@@ -13,6 +13,7 @@ SNAPSHOT_SCHEMA_VERSION = 1
 ANALYZER_TRUST_POLICY_SCHEMA_VERSION = 1
 PROJECT_PROFILE_SCHEMA_VERSION = 1
 DEFAULT_MAX_FILE_BYTES = 512 * 1024
+CONFIDENCE_RANK = {"low": 0, "medium": 1, "high": 2}
 
 ROOT_FILES = [
     "README.md",
@@ -619,6 +620,9 @@ def merge_profile_evidence(
             **(extra or {}),
         },
     )
+    if CONFIDENCE_RANK.get(confidence, -1) > CONFIDENCE_RANK.get(entry["confidence"], -1):
+        entry["confidence"] = confidence
+        entry["reason"] = reason
     if path not in entry["evidencePaths"]:
         entry["evidencePaths"].append(path)
         entry["evidencePaths"].sort()
