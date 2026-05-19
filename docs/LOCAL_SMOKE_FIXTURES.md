@@ -90,6 +90,16 @@ PYTHONPATH=src python -m spec_harvester collect-batch .smoke/inputs \
   --report .smoke/output/batch-validation.json
 ```
 
+This default is strict for public SpecPM.dev intake:
+
+- staged git changes in any checkout fail preflight;
+- missing allowlisted `LICENSE`/`COPYING` evidence produces
+  `missing_license_file` and `status: error` in `batch-validation.json`.
+- a generated batch report with `status: error` makes `collect-batch` exit
+  non-zero.
+
+For private-code spec coverage, add `--relaxed-private` explicitly.
+
 Collect one repository when iterating on a targeted bug:
 
 ```bash
@@ -160,6 +170,7 @@ PYTHONPATH=src python -m spec_harvester smoke-triage-summary \
 
 The summary reports:
 
+- batch error count;
 - batch warning count;
 - duplicate intent/capability claim count;
 - namespace/upstream issue count;
@@ -172,6 +183,8 @@ The summary reports:
 - Keep `checkout` paths operator-owned and local.
 - Keep generated files under `.smoke/output/`.
 - Recreate `.smoke/inputs/repositories.yml` when fixture revisions change.
+- Keep checkout staging areas empty before strict public smoke runs.
+- Ensure public candidates include allowlisted `LICENSE`/`COPYING` evidence.
 - Do not run package managers inside harvested checkouts.
 - Do not run harvested package scripts, tests, or build commands from harvested
   repositories.

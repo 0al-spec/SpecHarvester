@@ -3,8 +3,8 @@
 Status: Bootstrap batch review artifact
 
 Batch validation reports summarize `collect-batch` output for human review.
-They record confidence, policy notes, warning codes, collected evidence counts,
-and skipped records before any drafting or promotion step.
+They record confidence, policy notes, error/warning codes, collected evidence
+counts, and skipped records before any drafting or promotion step.
 
 The report step does not clone repositories, call networks, install
 dependencies, run package managers, run package scripts, execute repository
@@ -24,15 +24,29 @@ python3 -m spec_harvester collect-batch inputs \
 The command still prints the batch summary to stdout. The `--report` path writes
 a deterministic JSON review artifact.
 
+By default, `collect-batch` runs in `strict_public` mode for public SpecPM.dev
+intake:
+
+- staged git changes in a checkout fail preflight before snapshots are written;
+- missing allowlisted `LICENSE`/`COPYING` evidence is reported as
+  `missing_license_file` and makes the batch validation report `status: error`.
+
+For private-code spec coverage, pass `--relaxed-private` to disable those public
+registry gates. The report then records `mode: relaxed_private`.
+
+When a generated report has `status: error`, the `collect-batch` command also
+prints `status: error` and exits non-zero.
+
 ## Report Contents
 
 The report includes:
 
 - `schemaVersion`
 - `kind: SpecHarvesterBatchValidationReport`
+- `mode`: `strict_public` or `relaxed_private`
 - batch input and output root
 - selected repository IDs
-- summary counts for collected, skipped, confidence, and warnings
+- summary counts for collected, skipped, confidence, errors, and warnings
 - collected records with evidence counts and policy notes
 - skipped records with stable reasons
 - trust-boundary statements
@@ -47,6 +61,7 @@ Each collected record includes:
 - `confidence`
 - `confidenceReasons`
 - `policyNotes`
+- `errors`
 - `warnings`
 
 ## Confidence
@@ -57,9 +72,19 @@ Confidence is advisory review metadata:
   at least one package manifest was observed, and no warnings were emitted.
 - `medium`: snapshot is usable but has review warnings, such as a source `ref`
   instead of a pinned `revision`, skipped files, or no package manifests.
-- `low`: snapshot has a policy mismatch or no collected files.
+- `low`: snapshot has a strict public error, policy mismatch, or no collected files.
 
 Confidence does not accept or reject a package. It only helps prioritize human
+review.
+
+## Stable Error Codes
+
+Current error codes:
+
+- `missing_license_file`
+
+In `strict_public` mode, this means no allowlisted `LICENSE`, `LICENSE.md`, or
+`COPYING` file was collected for a candidate intended for public SpecPM.dev
 review.
 
 ## Stable Warning Codes

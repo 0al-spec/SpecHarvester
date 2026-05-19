@@ -84,6 +84,12 @@ PYTHONPATH=src python -m spec_harvester collect-batch .smoke/inputs \
   --report .smoke/output/batch-validation.json
 ```
 
+The default mode is strict for public SpecPM.dev intake. staged git changes fail
+preflight, and missing allowlisted `LICENSE`/`COPYING` evidence is reported as
+`missing_license_file` with `status: error`. Use `--relaxed-private` only for
+private-code spec coverage. A generated batch report with `status: error` makes
+`collect-batch` exit non-zero.
+
 Collect one target while iterating:
 
 ```bash
@@ -159,6 +165,8 @@ object.
 - Keep `checkout` paths local and operator-owned.
 - Keep generated files under `.smoke/output/`.
 - Recreate `.smoke/inputs/repositories.yml` when fixture revisions change.
+- Keep checkout staging areas empty before strict public smoke runs.
+- Ensure public candidates include allowlisted `LICENSE`/`COPYING` evidence.
 - Do not install harvested dependencies.
 - Do not run harvested package managers.
 - Do not run harvested package scripts.

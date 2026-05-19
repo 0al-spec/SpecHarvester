@@ -30,12 +30,16 @@ def test_build_batch_validation_report_marks_complete_pinned_snapshot_high_confi
         "mediumConfidenceCount": 0,
         "lowConfidenceCount": 0,
         "warningCount": 0,
+        "errorCount": 0,
     }
+    assert report["mode"] == "strict_public"
     assert report["skippedRecords"] == [{"id": "beta", "reason": "not_selected"}]
     record = report["records"][0]
     assert record["id"] == "alpha"
     assert record["confidence"] == "high"
+    assert record["errors"] == []
     assert record["warnings"] == []
+    assert record["evidence"]["licenseFileCount"] == 1
     assert "execution=none" in record["policyNotes"]
     assert "networkAccess=none" in record["policyNotes"]
     assert "packageScripts=not_run" in record["policyNotes"]
@@ -65,6 +69,52 @@ def test_build_batch_validation_report_records_medium_confidence_warnings() -> N
         "files_skipped",
         "no_package_manifests",
     ]
+
+
+def test_build_batch_validation_report_errors_without_license_in_strict_public_mode() -> None:
+    report = build_batch_validation_report(
+        batch_result=batch_result_fixture(),
+        snapshots_by_id={
+            "alpha": snapshot_fixture(
+                file_count=1,
+                skipped_file_count=0,
+                package_manifest_count=1,
+                license_file_count=0,
+            )
+        },
+    )
+
+    assert report["status"] == "error"
+    assert report["summary"]["errorCount"] == 1
+    record = report["records"][0]
+    assert record["confidence"] == "low"
+    assert record["errors"] == [
+        {
+            "code": "missing_license_file",
+            "message": "Strict public registry mode requires an allowlisted LICENSE/COPYING file.",
+        }
+    ]
+    assert "error:missing_license_file" in record["confidenceReasons"]
+
+
+def test_build_batch_validation_report_allows_missing_license_in_relaxed_private_mode() -> None:
+    report = build_batch_validation_report(
+        batch_result=batch_result_fixture(),
+        snapshots_by_id={
+            "alpha": snapshot_fixture(
+                file_count=1,
+                skipped_file_count=0,
+                package_manifest_count=1,
+                license_file_count=0,
+            )
+        },
+        strict_public=False,
+    )
+
+    assert report["status"] == "ok"
+    assert report["mode"] == "relaxed_private"
+    assert report["summary"]["errorCount"] == 0
+    assert report["records"][0]["errors"] == []
 
 
 def test_build_batch_validation_report_marks_empty_or_policy_mismatch_low_confidence() -> None:
@@ -142,6 +192,7 @@ def snapshot_fixture(
     file_count: int,
     skipped_file_count: int,
     package_manifest_count: int,
+    license_file_count: int = 1,
 ) -> dict:
     return {
         "kind": "SpecHarvesterEvidenceSnapshot",
@@ -167,5 +218,6 @@ def snapshot_fixture(
             "fileCount": file_count,
             "skippedFileCount": skipped_file_count,
             "packageManifestCount": package_manifest_count,
+            "licenseFileCount": license_file_count,
         },
     }

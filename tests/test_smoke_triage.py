@@ -16,6 +16,7 @@ def test_build_smoke_triage_summary_groups_report_signals(tmp_path: Path) -> Non
             "summary": {
                 "collectedCount": 4,
                 "skippedCount": 0,
+                "errorCount": 1,
                 "warningCount": 1,
             },
         },
@@ -71,14 +72,16 @@ def test_build_smoke_triage_summary_groups_report_signals(tmp_path: Path) -> Non
     assert summary["kind"] == "SpecHarvesterLocalSmokeTriageSummary"
     assert summary["status"] == "attention_required"
     assert summary["summary"] == {
+        "batchErrorCount": 1,
         "batchWarningCount": 1,
         "duplicateClaimCount": 3,
         "duplicateIssueCount": 1,
         "namespaceIssueCount": 0,
         "licenseIssueCount": 1,
-        "totalIssueCount": 6,
+        "totalIssueCount": 7,
     }
     assert summary["reports"]["batchValidation"]["path"] == str(batch)
+    assert summary["reports"]["batchValidation"]["errorCount"] == 1
     assert summary["reports"]["duplicateClaims"]["duplicateIntentCount"] == 2
     assert summary["reports"]["duplicateClaims"]["issueCount"] == 1
     assert summary["reports"]["licenseProvenance"]["issuesByCode"] == {"absent_license_evidence": 1}
