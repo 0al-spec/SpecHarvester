@@ -807,6 +807,97 @@ def test_draft_spec_package_prefers_semantic_ios_screen_intents(
     assert "package.puzzlefixture" not in spec
 
 
+def test_draft_spec_package_does_not_assign_ios_intents_without_ios_evidence(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "screen-composer"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "screen-composer",
+                "description": "Compose screen layouts for web dashboards.",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (repo / "README.md").write_text(
+        "# Screen Composer\n\n## Screen composition\n\n## Container layout\n",
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="screen_composer.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.ios.screen_level_composition" not in spec
+    assert "intent.ios.collection_layout_composition" not in spec
+    assert "intent.package.javascript_library" in manifest
+
+
+def test_draft_spec_package_preserves_reviewable_nested_swift_interfaces(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "workspace"
+    repo.mkdir()
+    (repo / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "Workspace",
+            products: [.library(name: "Workspace", targets: ["Workspace"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    feature = repo / "Packages" / "Feature"
+    feature.mkdir(parents=True)
+    (feature / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "Feature",
+            products: [.library(name: "Feature", targets: ["Feature"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    generated = repo / "Derived" / "SourcePackages" / "checkouts" / "swift-syntax"
+    generated.mkdir(parents=True)
+    (generated / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "swift-syntax",
+            products: [.library(name: "SwiftSyntax", targets: ["SwiftSyntax"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="workspace.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "workspace.core.workspace" in manifest
+    assert "workspace.core.feature" not in manifest
+    assert "package.workspace" in spec
+    assert "package.feature" in spec
+    assert "package.swift_syntax" not in spec
+
+
 def test_draft_spec_package_uses_root_swift_manifest_for_capability_intents(
     tmp_path: Path,
 ) -> None:

@@ -133,7 +133,10 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "keywords": ["generated", "specharvester", bounded_context],
     }
 
-    inbound_interfaces = build_interfaces(primary_package_records, public_interface_index)
+    inbound_interfaces = build_interfaces(
+        interface_source_records(package_records),
+        public_interface_index,
+    )
     evidence = build_evidence(
         manifest_capabilities,
         inbound_interfaces,
@@ -426,6 +429,35 @@ def capability_source_records(package_records: list[dict[str, Any]]) -> list[dic
     return [*non_swift_records, swift_records[0]]
 
 
+def interface_source_records(package_records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    swift_records = [
+        record
+        for record in package_records
+        if isinstance(record.get("package"), dict) and record["package"].get("ecosystem") == "swift"
+    ]
+    if not swift_records:
+        return package_records
+
+    records: list[dict[str, Any]] = [
+        record
+        for record in package_records
+        if not (
+            isinstance(record.get("package"), dict)
+            and record["package"].get("ecosystem") == "swift"
+        )
+    ]
+    root_records = [record for record in swift_records if record.get("path") == "Package.swift"]
+    records.extend(root_records[:1])
+    records.extend(
+        record
+        for record in swift_records
+        if record.get("path") != "Package.swift" and is_reviewable_swift_manifest(record)
+    )
+    if records:
+        return records
+    return swift_records[:1]
+
+
 def is_reviewable_swift_manifest(record: dict[str, Any]) -> bool:
     path = str(record.get("path") or "")
     parts = set(path.split("/"))
@@ -485,6 +517,7 @@ def infer_semantic_intent_profile(
     has_screen = has_any(corpus, "screen", "screens")
     has_uikit = "uikit" in corpus or "ui kit" in corpus
     has_swiftui = "swiftui" in corpus or "swift ui" in corpus
+    has_ios_evidence = has_uikit or has_swiftui
     has_migration = has_any(corpus, "migration", "migrating", "legacy", "incremental")
     has_collection = has_any(
         corpus,
@@ -497,15 +530,23 @@ def infer_semantic_intent_profile(
     )
     has_state = has_any(corpus, "state", "binding", "bindings", "observation", "observable")
 
-    if has_screen and has_any(corpus, "composition", "compose", "composable", "container"):
+    if (
+        has_ios_evidence
+        and has_screen
+        and has_any(corpus, "composition", "compose", "composable", "container")
+    ):
         intents.add("intent.ios.screen_level_composition")
-    if has_screen and has_uikit and has_swiftui and has_migration:
+    if has_ios_evidence and has_screen and has_uikit and has_swiftui and has_migration:
         intents.add("intent.ios.uikit_swiftui_migration")
-    if has_screen and has_collection:
+    if has_ios_evidence and has_screen and has_collection:
         intents.add("intent.ios.collection_layout_composition")
-    if has_screen and has_state:
+    if has_ios_evidence and has_screen and has_state:
         intents.add("intent.ios.screen_state_binding")
-    if has_screen and has_any(corpus, "diagnostic", "diagnostics", "debug", "debugging"):
+    if (
+        has_ios_evidence
+        and has_screen
+        and has_any(corpus, "diagnostic", "diagnostics", "debug", "debugging")
+    ):
         intents.add("intent.ios.screen_diagnostics")
     if has_any(corpus, "macro", "macros", "#screen"):
         intents.add("intent.swift.macro_developer_experience")
