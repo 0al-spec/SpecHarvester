@@ -48,7 +48,7 @@
 
 | Folder | Description |
 |--------|-------------|
-| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p10_t1_project_profile_schema.md`, `REVIEW_p9_t2_semantic_evidence_index.md`, `REVIEW_p9_t1_semantic_intent_drafting.md`, `REVIEW_p8_t3_update_impact_classification.md`, `REVIEW_p8_t2_accepted_candidate_diff_report.md`, `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
+| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p10_t2_manifest_first_ecosystem_detectors.md`, `REVIEW_p10_t1_project_profile_schema.md`, `REVIEW_p9_t2_semantic_evidence_index.md`, `REVIEW_p9_t1_semantic_intent_drafting.md`, `REVIEW_p8_t3_update_impact_classification.md`, `REVIEW_p8_t2_accepted_candidate_diff_report.md`, `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
 
 ## Archive Log
 
@@ -118,3 +118,4 @@
 | 2026-05-19 | P10-T1 | Archived ProjectProfile Schema (PASS) |
 | 2026-05-19 | P10-T1 | Archived REVIEW_p10_t1_project_profile_schema report |
 | 2026-05-19 | P10-T2 | Archived Manifest-First Ecosystem Detectors (PASS) |
+| 2026-05-19 | P10-T2 | Archived REVIEW_p10_t2_manifest_first_ecosystem_detectors report |
