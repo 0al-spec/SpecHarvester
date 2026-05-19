@@ -1,8 +1,8 @@
 # Next Task: P10-T4 ProjectProfile Analyzer Orchestration
 
-**Status:** READY
+**Status:** SELECTED
 
-**Updated:** 2026-05-19
+**Updated:** 2026-05-20
 
 ## Description
 
@@ -26,6 +26,7 @@ including Python `ast` and JavaScript/TypeScript export analyzers, before
 
 ## Next Step
 
-Plan `P10-T4`, focusing on how `ProjectProfile.analyzerPlan` selects existing
-static analyzers without executing harvested package code or installing
+Plan `P10-T4`, then implement analyzer orchestration that consumes
+`ProjectProfile.analyzerPlan` to emit existing static public-interface indexes
+before drafting without executing harvested package code or installing
 dependencies.
