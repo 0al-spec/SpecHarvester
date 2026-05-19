@@ -136,6 +136,82 @@ def test_build_accepted_package_update_proposal_requires_correction_for_same_ver
         )
 
 
+def test_build_accepted_package_update_proposal_rejects_same_version_evidence_mutation(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_harvest_json(accepted_root / "demo" / "1.0.0", content='{"snapshot":"old"}')
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_harvest_json(candidate, content='{"snapshot":"new"}')
+
+    with pytest.raises(
+        ValueError,
+        match="Accepted package version is immutable",
+    ):
+        build_accepted_package_update_proposal(
+            AcceptedPackageUpdateProposalOptions(
+                candidate=candidate,
+                accepted_root=accepted_root,
+                skip_validation=True,
+            )
+        )
+
+
+def test_build_accepted_package_update_proposal_allows_identical_same_version_evidence(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_harvest_json(accepted_root / "demo" / "1.0.0", content='{"snapshot":"same"}')
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+        upstream_revision="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    )
+    write_harvest_json(candidate, content='{"snapshot":"same"}')
+
+    result = build_accepted_package_update_proposal(
+        AcceptedPackageUpdateProposalOptions(
+            candidate=candidate,
+            accepted_root=accepted_root,
+            skip_validation=True,
+        )
+    )
+
+    assert result["updateKind"] == "metadata_errata"
+    assert result["comparison"]["status"] == "unchanged"
+    assert "correction" not in result
+
+
 def test_build_proposal_rejects_same_version_upstream_mutation(
     tmp_path: Path,
 ) -> None:
@@ -509,6 +585,6 @@ def write_manifest(
     )
 
 
-def write_harvest_json(directory: Path) -> None:
+def write_harvest_json(directory: Path, *, content: str = "{}") -> None:
     directory.mkdir(parents=True, exist_ok=True)
-    (directory / "harvest.json").write_text("{}", encoding="utf-8")
+    (directory / "harvest.json").write_text(content, encoding="utf-8")

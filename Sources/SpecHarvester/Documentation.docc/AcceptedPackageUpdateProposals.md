@@ -11,6 +11,8 @@ accepted version and before cross-repository proposal operations.
 - Generates a deterministic JSON payload with comparison summary and validation state.
 - Detects changed claims from `intent` and `capability` deltas.
 - Includes evidence digests from `specpm.yaml` and optional `harvest.json`.
+- Detects same-version changes in copied package evidence before allowing a
+  correction proposal.
 - Optionally renders a deterministic markdown body for operator review.
 - Does not mutate candidate or accepted directories.
 

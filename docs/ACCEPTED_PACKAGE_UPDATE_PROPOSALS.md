@@ -90,8 +90,9 @@ command requires `--allow-correction` and at least one `--correction-note`:
 
 The command is advisory/read-only:
 
-- Reads local `specpm.yaml` from `candidate` and `accepted-root`.
-- Reads optional `harvest.json` only for digesting evidence.
+- Reads local package files from `candidate` and `accepted-root` to detect
+  immutable same-version evidence changes.
+- Reads optional `harvest.json` for digesting proposal evidence.
 - Optionally runs `specpm validate` when not skipped.
 - Does not write candidate or accepted package directories.
 
