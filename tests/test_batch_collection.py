@@ -255,6 +255,76 @@ repositories:
     assert not out.exists()
 
 
+def test_collect_batch_snapshots_ignores_staged_changes_outside_subdirectory_checkout(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    worktree = tmp_path / "worktree"
+    checkout = make_checkout(worktree / "packages" / "demo", "# Demo\n")
+    inputs.mkdir()
+    (checkout / "package.json").write_text(
+        json.dumps({"name": "@example/demo", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (checkout / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (worktree / "outside.txt").write_text("staged but unrelated\n", encoding="utf-8")
+    subprocess.run(["git", "init"], cwd=worktree, check=True, capture_output=True)
+    subprocess.run(["git", "add", "outside.txt"], cwd=worktree, check=True, capture_output=True)
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(BatchCollectOptions(inputs=inputs, out=out))
+
+    assert result["status"] == "ok"
+    assert (out / "demo" / "harvest.json").is_file()
+
+
+def test_collect_batch_snapshots_rejects_staged_changes_inside_subdirectory_checkout(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    worktree = tmp_path / "worktree"
+    checkout = make_checkout(worktree / "packages" / "demo", "# Demo\n")
+    inputs.mkdir()
+    (checkout / "package.json").write_text(
+        json.dumps({"name": "@example/demo", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (checkout / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    subprocess.run(["git", "init"], cwd=worktree, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "add", "packages/demo/README.md"],
+        cwd=worktree,
+        check=True,
+        capture_output=True,
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="packages/demo/README.md"):
+        collect_batch_snapshots(BatchCollectOptions(inputs=inputs, out=out))
+
+    assert not out.exists()
+
+
 def test_collect_batch_snapshots_allows_staged_checkout_changes_in_relaxed_private_mode(
     tmp_path: Path,
 ) -> None:
