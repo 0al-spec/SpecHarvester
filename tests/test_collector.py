@@ -89,6 +89,10 @@ def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None
         "requiresSourceRevision": True,
         "requiresSourceDigests": True,
     }
+    assert snapshot["classifierPolicy"]["defaultMode"] == "disabled"
+    assert snapshot["classifierPolicy"]["allowedExecutions"] == ["none"]
+    assert snapshot["classifierPolicy"]["outputAuthority"] == "advisory_untrusted_metadata"
+    assert snapshot["classifierPolicy"]["manifestEvidencePrecedence"] == "manifest_first"
     assert snapshot["summary"]["fileCount"] == 4
     assert snapshot["summary"]["packageManifestCount"] == 2
     assert snapshot["projectProfile"] == {

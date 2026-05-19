@@ -197,7 +197,7 @@ Acceptance:
 - [x] `P10-T2` Add manifest-first ecosystem detectors for Swift/SPM, JavaScript
   and TypeScript package managers, Python, Java/Kotlin, Go, PHP, C/C++,
   Objective-C/iOS, Ruby, and Rust without executing package code.
-- [ ] `P10-T3` Evaluate and integrate trusted language classification and
+- [x] `P10-T3` Evaluate and integrate trusted language classification and
   vendored/generated-file filtering from established tools such as
   GitHub Linguist-compatible classifiers, `go-enry`, `Syft`, `ScanCode`, and
   Universal Ctags where licensing and deterministic operation are acceptable.

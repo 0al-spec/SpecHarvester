@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.classifier_registry import default_classifier_policy
+
 SNAPSHOT_KIND = "SpecHarvesterEvidenceSnapshot"
 SNAPSHOT_SCHEMA_VERSION = 1
 ANALYZER_TRUST_POLICY_SCHEMA_VERSION = 1
@@ -487,6 +489,7 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
             "contentAuthority": "untrusted_metadata",
         },
         "analyzerPolicy": default_analyzer_trust_policy(),
+        "classifierPolicy": default_classifier_policy(),
         "projectProfile": build_project_profile(files),
         "files": files,
         "skippedFiles": skipped_files,

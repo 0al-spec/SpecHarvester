@@ -37,6 +37,13 @@ Harvest snapshots include an `analyzerPolicy` record. It is a declarative
 allowlist for future analyzer artifacts, not permission to execute analyzers
 during collection.
 
+Harvest snapshots also include a `classifierPolicy` record for optional
+external classifiers such as GitHub Linguist-compatible tools, go-enry, Syft,
+ScanCode, Universal Ctags, and Tree-sitter. This policy is disabled by default:
+external classifier output is advisory untrusted metadata, must be pinned, must
+carry source digest evidence, and must not override manifest-first
+`ProjectProfile` evidence.
+
 The bootstrap policy accepts only analyzer metadata that declares:
 
 - no repository code execution;
@@ -53,6 +60,10 @@ collection trust boundary.
 Analyzers that need metadata-only build tools must satisfy
 <doc:AnalyzerSandboxRequirements> before they can be enabled. `collect-local`
 still does not run analyzers.
+
+Optional external classifiers must also satisfy
+<doc:TrustedClassifierEvaluation>. That contract preserves no network, no
+package scripts, and no harvested dependency installation as hard requirements.
 
 ## Analyzer Cache
 
@@ -85,4 +96,5 @@ the host.
 - `docs/TRUST_BOUNDARY.md`
 - <doc:Workflow>
 - <doc:AnalyzerSandboxRequirements>
+- <doc:TrustedClassifierEvaluation>
 - <doc:ProposalAutomation>
