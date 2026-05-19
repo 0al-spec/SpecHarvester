@@ -305,6 +305,47 @@ def test_collect_local_repository_project_profile_reports_missing_manifest(
     }
 
 
+def test_collect_local_repository_project_profile_treats_empty_package_json_as_npm(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text("{}", encoding="utf-8")
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    assert snapshot["files"][0]["package"] == {}
+    assert snapshot["projectProfile"]["languages"] == [
+        {
+            "id": "javascript",
+            "confidence": "high",
+            "reason": "package.json manifest parsed as npm package evidence.",
+            "evidencePaths": ["package.json"],
+        }
+    ]
+    assert snapshot["projectProfile"]["ecosystems"] == [
+        {
+            "id": "npm",
+            "language": "javascript",
+            "packageManager": "npm",
+            "confidence": "high",
+            "reason": "package.json manifest parsed as npm package evidence.",
+            "evidencePaths": ["package.json"],
+        }
+    ]
+    assert snapshot["projectProfile"]["analyzerPlan"] == [
+        {
+            "id": "spec_harvester.js_ts_public_api",
+            "language": "javascript",
+            "ecosystem": "npm",
+            "status": "recommended",
+            "reason": "package.json evidence can feed JavaScript/TypeScript export analysis.",
+            "evidencePaths": ["package.json"],
+        }
+    ]
+    assert snapshot["projectProfile"]["diagnostics"] == []
+
+
 def test_parse_swift_package_manifest_returns_none_without_package_metadata() -> None:
     assert parse_swift_package_manifest("// swift-tools-version: 6.0\n") is None
 
