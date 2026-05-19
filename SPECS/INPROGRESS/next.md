@@ -1,6 +1,6 @@
 # Next Task: P10-T3 Trusted Classifier Evaluation
 
-**Status:** READY
+**Status:** SELECTED
 
 **Updated:** 2026-05-19
 
@@ -24,4 +24,5 @@ and deterministic operation are acceptable.
 
 ## Next Step
 
-Run Flow for `P10-T3` after `P10-T2` is merged.
+Plan `P10-T3`, starting with a deterministic tool-evaluation record and adapter
+contract before optional external classifier integration.
