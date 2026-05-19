@@ -194,7 +194,7 @@ Acceptance:
 - [x] `P10-T1` Define a deterministic `ProjectProfile` schema for language,
   package ecosystem, package manager, manifest, confidence, provenance, and
   analyzer-plan evidence.
-- [ ] `P10-T2` Add manifest-first ecosystem detectors for Swift/SPM, JavaScript
+- [x] `P10-T2` Add manifest-first ecosystem detectors for Swift/SPM, JavaScript
   and TypeScript package managers, Python, Java/Kotlin, Go, PHP, C/C++,
   Objective-C/iOS, Ruby, and Rust without executing package code.
 - [ ] `P10-T3` Evaluate and integrate trusted language classification and

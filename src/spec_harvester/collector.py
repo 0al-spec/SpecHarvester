@@ -13,6 +13,7 @@ SNAPSHOT_SCHEMA_VERSION = 1
 ANALYZER_TRUST_POLICY_SCHEMA_VERSION = 1
 PROJECT_PROFILE_SCHEMA_VERSION = 1
 DEFAULT_MAX_FILE_BYTES = 512 * 1024
+CONFIDENCE_RANK = {"low": 0, "medium": 1, "high": 2}
 
 ROOT_FILES = [
     "README.md",
@@ -21,12 +22,42 @@ ROOT_FILES = [
     "LICENSE.md",
     "COPYING",
     "package.json",
+    "package-lock.json",
+    "npm-shrinkwrap.json",
     "pyproject.toml",
+    "setup.py",
+    "setup.cfg",
+    "requirements.txt",
     "Package.swift",
     "pnpm-workspace.yaml",
+    "pnpm-lock.yaml",
+    "yarn.lock",
+    "bun.lock",
+    "bun.lockb",
     "turbo.json",
+    "pom.xml",
+    "build.gradle",
+    "build.gradle.kts",
+    "settings.gradle",
+    "settings.gradle.kts",
+    "gradle.properties",
     "Cargo.toml",
+    "Cargo.lock",
     "go.mod",
+    "composer.json",
+    "composer.lock",
+    "CMakeLists.txt",
+    "meson.build",
+    "configure.ac",
+    "configure.in",
+    "Makefile",
+    "conanfile.txt",
+    "conanfile.py",
+    "vcpkg.json",
+    "Podfile",
+    "Podfile.lock",
+    "Gemfile",
+    "Gemfile.lock",
 ]
 
 SAFE_GLOBS = [
@@ -38,10 +69,29 @@ SAFE_GLOBS = [
     "Sources/*/Documentation.docc/Concepts/*.md",
     "packages/*/README.md",
     "packages/*/package.json",
+    "packages/*/pyproject.toml",
+    "packages/*/Package.swift",
+    "packages/*/Cargo.toml",
+    "packages/*/go.mod",
+    "packages/*/composer.json",
+    "packages/*/CMakeLists.txt",
+    "packages/*/Gemfile",
+    "packages/*/*.gemspec",
     "packages/*/src/index.ts",
     "packages/*/src/index.tsx",
     "packages/*/src/index.js",
     "apps/*/package.json",
+    "apps/*/pyproject.toml",
+    "apps/*/Package.swift",
+    "apps/*/Cargo.toml",
+    "apps/*/go.mod",
+    "apps/*/composer.json",
+    "apps/*/CMakeLists.txt",
+    "apps/*/Podfile",
+    "apps/*/*.xcodeproj/project.pbxproj",
+    "*.gemspec",
+    "*.xcodeproj/project.pbxproj",
+    "*.xcworkspace/contents.xcworkspacedata",
     "examples/README.md",
 ]
 
@@ -56,7 +106,7 @@ IGNORED_NESTED_SWIFT_MANIFEST_DIRS = {
 }
 
 MARKDOWN_EXTENSIONS = {".md", ".markdown"}
-PACKAGE_MANIFEST_NAMES = {"package.json"}
+PROJECT_PROFILE_MANIFEST_KINDS = {"package_manifest", "workspace_manifest"}
 LICENSE_TEXT_HINTS = (
     ("MIT", ("permission is hereby granted", "copyright")),
     ("Apache-2.0", ("apache license", "version 2.0")),
@@ -73,6 +123,303 @@ class HarvestOptions:
     repository: str | None = None
     revision: str | None = None
     max_file_bytes: int = DEFAULT_MAX_FILE_BYTES
+
+
+@dataclass(frozen=True)
+class ManifestDetector:
+    language: str
+    ecosystem: str
+    package_manager: str
+    parser: str
+    reason: str
+    kind: str = "package_manifest"
+    confidence: str = "high"
+    requires_package: bool = False
+
+
+MANIFEST_DETECTORS_BY_NAME: dict[str, ManifestDetector] = {
+    "package.json": ManifestDetector(
+        language="javascript",
+        ecosystem="npm",
+        package_manager="npm",
+        parser="spec_harvester.package_json",
+        reason="package.json manifest parsed as npm package evidence.",
+        requires_package=True,
+    ),
+    "package-lock.json": ManifestDetector(
+        language="javascript",
+        ecosystem="npm",
+        package_manager="npm",
+        parser="spec_harvester.manifest_path",
+        reason="package-lock.json collected as npm lockfile evidence.",
+    ),
+    "npm-shrinkwrap.json": ManifestDetector(
+        language="javascript",
+        ecosystem="npm",
+        package_manager="npm",
+        parser="spec_harvester.manifest_path",
+        reason="npm-shrinkwrap.json collected as npm lockfile evidence.",
+    ),
+    "pnpm-workspace.yaml": ManifestDetector(
+        language="javascript",
+        ecosystem="pnpm",
+        package_manager="pnpm",
+        parser="spec_harvester.manifest_path",
+        reason="pnpm-workspace.yaml collected as pnpm workspace evidence.",
+        kind="workspace_manifest",
+    ),
+    "pnpm-lock.yaml": ManifestDetector(
+        language="javascript",
+        ecosystem="pnpm",
+        package_manager="pnpm",
+        parser="spec_harvester.manifest_path",
+        reason="pnpm-lock.yaml collected as pnpm lockfile evidence.",
+    ),
+    "yarn.lock": ManifestDetector(
+        language="javascript",
+        ecosystem="yarn",
+        package_manager="yarn",
+        parser="spec_harvester.manifest_path",
+        reason="yarn.lock collected as Yarn lockfile evidence.",
+    ),
+    "bun.lock": ManifestDetector(
+        language="javascript",
+        ecosystem="bun",
+        package_manager="bun",
+        parser="spec_harvester.manifest_path",
+        reason="bun.lock collected as Bun lockfile evidence.",
+    ),
+    "bun.lockb": ManifestDetector(
+        language="javascript",
+        ecosystem="bun",
+        package_manager="bun",
+        parser="spec_harvester.manifest_path",
+        reason="bun.lockb collected as Bun lockfile evidence.",
+    ),
+    "pyproject.toml": ManifestDetector(
+        language="python",
+        ecosystem="pypi",
+        package_manager="python-packaging",
+        parser="spec_harvester.manifest_path",
+        reason="pyproject.toml collected as Python packaging evidence.",
+    ),
+    "setup.py": ManifestDetector(
+        language="python",
+        ecosystem="pypi",
+        package_manager="setuptools",
+        parser="spec_harvester.manifest_path",
+        reason="setup.py collected as setuptools evidence.",
+    ),
+    "setup.cfg": ManifestDetector(
+        language="python",
+        ecosystem="pypi",
+        package_manager="setuptools",
+        parser="spec_harvester.manifest_path",
+        reason="setup.cfg collected as setuptools evidence.",
+    ),
+    "requirements.txt": ManifestDetector(
+        language="python",
+        ecosystem="pypi",
+        package_manager="pip",
+        parser="spec_harvester.manifest_path",
+        reason="requirements.txt collected as pip dependency evidence.",
+    ),
+    "Package.swift": ManifestDetector(
+        language="swift",
+        ecosystem="swiftpm",
+        package_manager="swiftpm",
+        parser="spec_harvester.swift_package_manifest",
+        reason="Package.swift manifest parsed as SwiftPM evidence.",
+        requires_package=True,
+    ),
+    "pom.xml": ManifestDetector(
+        language="java-kotlin",
+        ecosystem="maven",
+        package_manager="maven",
+        parser="spec_harvester.manifest_path",
+        reason="pom.xml collected as Maven project evidence.",
+    ),
+    "build.gradle": ManifestDetector(
+        language="java-kotlin",
+        ecosystem="gradle",
+        package_manager="gradle",
+        parser="spec_harvester.manifest_path",
+        reason="build.gradle collected as Gradle project evidence.",
+    ),
+    "build.gradle.kts": ManifestDetector(
+        language="java-kotlin",
+        ecosystem="gradle",
+        package_manager="gradle",
+        parser="spec_harvester.manifest_path",
+        reason="build.gradle.kts collected as Gradle Kotlin DSL project evidence.",
+    ),
+    "settings.gradle": ManifestDetector(
+        language="java-kotlin",
+        ecosystem="gradle",
+        package_manager="gradle",
+        parser="spec_harvester.manifest_path",
+        reason="settings.gradle collected as Gradle workspace evidence.",
+        kind="workspace_manifest",
+    ),
+    "settings.gradle.kts": ManifestDetector(
+        language="java-kotlin",
+        ecosystem="gradle",
+        package_manager="gradle",
+        parser="spec_harvester.manifest_path",
+        reason="settings.gradle.kts collected as Gradle workspace evidence.",
+        kind="workspace_manifest",
+    ),
+    "gradle.properties": ManifestDetector(
+        language="java-kotlin",
+        ecosystem="gradle",
+        package_manager="gradle",
+        parser="spec_harvester.manifest_path",
+        reason="gradle.properties collected as Gradle project evidence.",
+    ),
+    "go.mod": ManifestDetector(
+        language="go",
+        ecosystem="go",
+        package_manager="go",
+        parser="spec_harvester.manifest_path",
+        reason="go.mod collected as Go module evidence.",
+    ),
+    "composer.json": ManifestDetector(
+        language="php",
+        ecosystem="composer",
+        package_manager="composer",
+        parser="spec_harvester.manifest_path",
+        reason="composer.json collected as Composer package evidence.",
+    ),
+    "composer.lock": ManifestDetector(
+        language="php",
+        ecosystem="composer",
+        package_manager="composer",
+        parser="spec_harvester.manifest_path",
+        reason="composer.lock collected as Composer lockfile evidence.",
+    ),
+    "CMakeLists.txt": ManifestDetector(
+        language="c-cpp",
+        ecosystem="cmake",
+        package_manager="cmake",
+        parser="spec_harvester.manifest_path",
+        reason="CMakeLists.txt collected as CMake project evidence.",
+    ),
+    "meson.build": ManifestDetector(
+        language="c-cpp",
+        ecosystem="meson",
+        package_manager="meson",
+        parser="spec_harvester.manifest_path",
+        reason="meson.build collected as Meson project evidence.",
+    ),
+    "configure.ac": ManifestDetector(
+        language="c-cpp",
+        ecosystem="autotools",
+        package_manager="autotools",
+        parser="spec_harvester.manifest_path",
+        reason="configure.ac collected as Autotools project evidence.",
+    ),
+    "configure.in": ManifestDetector(
+        language="c-cpp",
+        ecosystem="autotools",
+        package_manager="autotools",
+        parser="spec_harvester.manifest_path",
+        reason="configure.in collected as Autotools project evidence.",
+    ),
+    "Makefile": ManifestDetector(
+        language="c-cpp",
+        ecosystem="make",
+        package_manager="make",
+        parser="spec_harvester.manifest_path",
+        reason="Makefile collected as ambiguous make project evidence.",
+        confidence="low",
+    ),
+    "conanfile.txt": ManifestDetector(
+        language="c-cpp",
+        ecosystem="conan",
+        package_manager="conan",
+        parser="spec_harvester.manifest_path",
+        reason="conanfile.txt collected as Conan package evidence.",
+    ),
+    "conanfile.py": ManifestDetector(
+        language="c-cpp",
+        ecosystem="conan",
+        package_manager="conan",
+        parser="spec_harvester.manifest_path",
+        reason="conanfile.py collected as Conan package evidence.",
+    ),
+    "vcpkg.json": ManifestDetector(
+        language="c-cpp",
+        ecosystem="vcpkg",
+        package_manager="vcpkg",
+        parser="spec_harvester.manifest_path",
+        reason="vcpkg.json collected as vcpkg package evidence.",
+    ),
+    "Podfile": ManifestDetector(
+        language="objective-c",
+        ecosystem="cocoapods",
+        package_manager="cocoapods",
+        parser="spec_harvester.manifest_path",
+        reason="Podfile collected as CocoaPods project evidence.",
+    ),
+    "Podfile.lock": ManifestDetector(
+        language="objective-c",
+        ecosystem="cocoapods",
+        package_manager="cocoapods",
+        parser="spec_harvester.manifest_path",
+        reason="Podfile.lock collected as CocoaPods lockfile evidence.",
+    ),
+    "Gemfile": ManifestDetector(
+        language="ruby",
+        ecosystem="bundler",
+        package_manager="bundler",
+        parser="spec_harvester.manifest_path",
+        reason="Gemfile collected as Bundler dependency evidence.",
+    ),
+    "Gemfile.lock": ManifestDetector(
+        language="ruby",
+        ecosystem="bundler",
+        package_manager="bundler",
+        parser="spec_harvester.manifest_path",
+        reason="Gemfile.lock collected as Bundler lockfile evidence.",
+    ),
+    "Cargo.toml": ManifestDetector(
+        language="rust",
+        ecosystem="cargo",
+        package_manager="cargo",
+        parser="spec_harvester.manifest_path",
+        reason="Cargo.toml collected as Cargo package evidence.",
+    ),
+    "Cargo.lock": ManifestDetector(
+        language="rust",
+        ecosystem="cargo",
+        package_manager="cargo",
+        parser="spec_harvester.manifest_path",
+        reason="Cargo.lock collected as Cargo lockfile evidence.",
+    ),
+}
+
+GEMSPEC_DETECTOR = ManifestDetector(
+    language="ruby",
+    ecosystem="rubygems",
+    package_manager="rubygems",
+    parser="spec_harvester.manifest_path",
+    reason="*.gemspec collected as RubyGems package evidence.",
+)
+XCODEPROJ_DETECTOR = ManifestDetector(
+    language="objective-c",
+    ecosystem="xcode",
+    package_manager="xcodebuild",
+    parser="spec_harvester.manifest_path",
+    reason="*.xcodeproj/project.pbxproj collected as Xcode project evidence.",
+)
+XCWORKSPACE_DETECTOR = ManifestDetector(
+    language="objective-c",
+    ecosystem="xcode",
+    package_manager="xcodebuild",
+    parser="spec_harvester.manifest_path",
+    reason="*.xcworkspace workspace metadata collected as Xcode workspace evidence.",
+    kind="workspace_manifest",
+)
 
 
 def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
@@ -160,7 +507,7 @@ def build_project_profile(files: list[dict[str, Any]]) -> dict[str, Any]:
     diagnostics: list[dict[str, Any]] = []
 
     for item in files:
-        if item.get("kind") != "package_manifest":
+        if item.get("kind") not in PROJECT_PROFILE_MANIFEST_KINDS:
             continue
         manifest = project_manifest_entry(item)
         if manifest is None:
@@ -221,31 +568,36 @@ def build_project_profile(files: list[dict[str, Any]]) -> dict[str, Any]:
 
 def project_manifest_entry(item: dict[str, Any]) -> dict[str, Any] | None:
     path = str(item.get("path") or "")
+    detector = manifest_detector_for_path(path)
+    if detector is None:
+        return None
+    if detector.requires_package and not isinstance(item.get("package"), dict):
+        return None
     sha256 = item.get("sha256")
-    if path.endswith("Package.swift") and isinstance(item.get("package"), dict):
-        return {
-            "path": path,
-            "kind": "package_manifest",
-            "language": "swift",
-            "ecosystem": "swiftpm",
-            "packageManager": "swiftpm",
-            "confidence": "high",
-            "reason": "Package.swift manifest parsed as SwiftPM evidence.",
-            "sha256": sha256,
-            "parser": "spec_harvester.swift_package_manifest",
-        }
-    if path.endswith("package.json") and isinstance(item.get("package"), dict):
-        return {
-            "path": path,
-            "kind": "package_manifest",
-            "language": "javascript",
-            "ecosystem": "npm",
-            "packageManager": "npm",
-            "confidence": "high",
-            "reason": "package.json manifest parsed as npm package evidence.",
-            "sha256": sha256,
-            "parser": "spec_harvester.package_json",
-        }
+    return {
+        "path": path,
+        "kind": detector.kind,
+        "language": detector.language,
+        "ecosystem": detector.ecosystem,
+        "packageManager": detector.package_manager,
+        "confidence": detector.confidence,
+        "reason": detector.reason,
+        "sha256": sha256,
+        "parser": detector.parser,
+    }
+
+
+def manifest_detector_for_path(path: str) -> ManifestDetector | None:
+    path_obj = Path(path)
+    detector = MANIFEST_DETECTORS_BY_NAME.get(path_obj.name)
+    if detector is not None:
+        return detector
+    if path_obj.name.endswith(".gemspec"):
+        return GEMSPEC_DETECTOR
+    if path.endswith(".xcodeproj/project.pbxproj"):
+        return XCODEPROJ_DETECTOR
+    if path.endswith(".xcworkspace/contents.xcworkspacedata"):
+        return XCWORKSPACE_DETECTOR
     return None
 
 
@@ -268,6 +620,9 @@ def merge_profile_evidence(
             **(extra or {}),
         },
     )
+    if CONFIDENCE_RANK.get(confidence, -1) > CONFIDENCE_RANK.get(entry["confidence"], -1):
+        entry["confidence"] = confidence
+        entry["reason"] = reason
     if path not in entry["evidencePaths"]:
         entry["evidencePaths"].append(path)
         entry["evidencePaths"].sort()
@@ -298,7 +653,27 @@ def analyzer_plan_entry(manifest: dict[str, Any]) -> dict[str, Any] | None:
             ),
             "evidencePaths": [manifest["path"]],
         }
-    return None
+    if manifest["language"] == "python":
+        return {
+            "id": "spec_harvester.python_public_api",
+            "language": "python",
+            "ecosystem": manifest["ecosystem"],
+            "status": "recommended",
+            "reason": "Python packaging evidence can feed Python ast public API analysis.",
+            "evidencePaths": [manifest["path"]],
+        }
+    analyzer_id = f"spec_harvester.{manifest['language'].replace('-', '_')}_manifest_profile"
+    return {
+        "id": analyzer_id,
+        "language": manifest["language"],
+        "ecosystem": manifest["ecosystem"],
+        "status": "manifest_only",
+        "reason": (
+            f"{manifest['ecosystem']} manifest evidence is available; no static public API "
+            "analyzer is configured yet."
+        ),
+        "evidencePaths": [manifest["path"]],
+    }
 
 
 def merge_analyzer_plan(
@@ -394,7 +769,7 @@ def collect_file(root: Path, path: Path) -> dict[str, Any]:
         if headings:
             record["headings"] = headings
 
-    if path.name in PACKAGE_MANIFEST_NAMES:
+    if path.name == "package.json":
         package = parse_package_json(text)
         if package is not None:
             record["package"] = package
@@ -419,8 +794,9 @@ def infer_license_hint(text: str) -> str | None:
 
 
 def classify_file(path: Path) -> str:
-    if path.name in PACKAGE_MANIFEST_NAMES:
-        return "package_manifest"
+    detector = manifest_detector_for_path(path.as_posix())
+    if detector is not None:
+        return detector.kind
     path_text = path.as_posix()
     if path.name.lower().startswith("readme") or (
         path.suffix.lower() in MARKDOWN_EXTENSIONS
@@ -435,9 +811,7 @@ def classify_file(path: Path) -> str:
         return "license"
     if path.suffix in {".yml", ".yaml"} and ".github/workflows" in path.as_posix():
         return "workflow"
-    if path.name in {"pyproject.toml", "Package.swift", "Cargo.toml", "go.mod"}:
-        return "package_manifest"
-    if path.name in {"pnpm-workspace.yaml", "turbo.json"}:
+    if path.name == "turbo.json":
         return "workspace_manifest"
     if path.name.startswith("index."):
         return "source_entrypoint"
