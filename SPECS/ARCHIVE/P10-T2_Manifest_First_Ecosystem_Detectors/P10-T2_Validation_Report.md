@@ -27,7 +27,7 @@ ecosystem matrix:
 - `ruff format --check src tests`
   - Result: Passed.
 - `PYTHONPATH=src python -m pytest tests/test_collector.py -q`
-  - Result: Passed, 63 tests.
+  - Result: Passed, 64 tests after follow-up.
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
   - Result: Passed, 182 tests.
   - Coverage: 90.71%.
@@ -43,3 +43,5 @@ ecosystem matrix:
   or network probes were executed.
 - Analyzer plan entries remain advisory; only existing Python and JS/TS public
   API analyzers are recommended for execution by later workflow steps.
+- Review follow-up lowered standalone `Makefile` evidence to low confidence and
+  added regression coverage for make-only repositories.

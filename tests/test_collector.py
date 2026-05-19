@@ -439,6 +439,35 @@ def test_collect_local_repository_project_profile_detects_manifest_first_ecosyst
     assert profile["diagnostics"] == []
 
 
+def test_collect_local_repository_project_profile_treats_makefile_as_low_confidence(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "make-only"
+    repo.mkdir()
+    (repo / "Makefile").write_text("all:\n", encoding="utf-8")
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    assert snapshot["projectProfile"]["languages"] == [
+        {
+            "id": "c-cpp",
+            "confidence": "low",
+            "reason": "Makefile collected as ambiguous make project evidence.",
+            "evidencePaths": ["Makefile"],
+        }
+    ]
+    assert snapshot["projectProfile"]["ecosystems"] == [
+        {
+            "id": "make",
+            "language": "c-cpp",
+            "packageManager": "make",
+            "confidence": "low",
+            "reason": "Makefile collected as ambiguous make project evidence.",
+            "evidencePaths": ["Makefile"],
+        }
+    ]
+
+
 def test_parse_swift_package_manifest_returns_none_without_package_metadata() -> None:
     assert parse_swift_package_manifest("// swift-tools-version: 6.0\n") is None
 

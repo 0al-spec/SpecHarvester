@@ -329,7 +329,8 @@ MANIFEST_DETECTORS_BY_NAME: dict[str, ManifestDetector] = {
         ecosystem="make",
         package_manager="make",
         parser="spec_harvester.manifest_path",
-        reason="Makefile collected as make project evidence.",
+        reason="Makefile collected as ambiguous make project evidence.",
+        confidence="low",
     ),
     "conanfile.txt": ManifestDetector(
         language="c-cpp",
