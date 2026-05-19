@@ -1,6 +1,6 @@
 # Next Task: P10-T2 Manifest-First Ecosystem Detectors
 
-**Status:** READY
+**Status:** SELECTED
 
 **Updated:** 2026-05-19
 
@@ -20,4 +20,5 @@ and Rust without executing package code.
 
 ## Next Step
 
-Run Flow for `P10-T2` after `P10-T1` is merged.
+Plan `P10-T2`, starting with manifest-only detectors and synthetic fixtures for
+the requested language/package-manager matrix.
