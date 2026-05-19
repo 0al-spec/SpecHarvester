@@ -762,7 +762,7 @@ def has_swift_semantic_context(
             return True
         headings = record.get("headings")
         if isinstance(headings, list) and any(
-            isinstance(heading, str) and has_any(heading.lower(), "swift", "swiftui", "uikit")
+            isinstance(heading, str) and has_any(heading.lower(), "swift", "swiftui")
             for heading in headings
         ):
             return True
