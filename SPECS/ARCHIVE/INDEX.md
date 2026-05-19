@@ -43,6 +43,7 @@
 | P9-T2 | [P9-T2_Build_Semantic_Evidence_Index/](P9-T2_Build_Semantic_Evidence_Index/) | 2026-05-19 | PASS |
 | P10-T1 | [P10-T1_ProjectProfile_Schema/](P10-T1_ProjectProfile_Schema/) | 2026-05-19 | PASS |
 | P10-T2 | [P10-T2_Manifest_First_Ecosystem_Detectors/](P10-T2_Manifest_First_Ecosystem_Detectors/) | 2026-05-19 | PASS |
+| P10-T3 | [P10-T3_Trusted_Classifier_Evaluation/](P10-T3_Trusted_Classifier_Evaluation/) | 2026-05-19 | PASS |
 
 ## Historical Artifacts
 
@@ -119,3 +120,4 @@
 | 2026-05-19 | P10-T1 | Archived REVIEW_p10_t1_project_profile_schema report |
 | 2026-05-19 | P10-T2 | Archived Manifest-First Ecosystem Detectors (PASS) |
 | 2026-05-19 | P10-T2 | Archived REVIEW_p10_t2_manifest_first_ecosystem_detectors report |
+| 2026-05-19 | P10-T3 | Archived Trusted Classifier Evaluation (PASS) |
