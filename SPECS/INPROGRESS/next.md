@@ -1,23 +1,19 @@
-# Next Task: P9-T1 Derive semantic intent claims from trusted static documentation and public API evidence
+# Next Task: None Selected
 
-**Status:** SELECTED
+**Status:** CLEAN
 
 **Updated:** 2026-05-19
 
 ## Description
 
-Generated SpecPM drafts currently infer Swift package product intents such as
-`intent.swift.product.puzzlecore` even when repositories include deterministic
-DocC, PRD, README, or public API evidence that describes a clearer domain-level
-purpose. This task improves draft intent quality without using runtime execution
-or LLM inference.
+`P9-T1` is complete and archived. No next task is selected.
 
-## Acceptance
+## Recently Archived
 
-- Drafts prefer meaningful domain-level intent claims when deterministic static
-  documentation or public interface evidence supports them.
-- Swift package product intents remain fallback evidence for packages without
-  richer intent signals.
-- Primary package interface claims ignore generated dependency checkouts,
-  fixture manifests, build directories, and historical drafts.
-- Quality gates pass and validation includes a Puzzle-like fixture.
+- `P9-T1` Derive semantic intent claims from trusted static documentation and
+  public API evidence.
+
+## Next Step
+
+Review smoke output from `Puzzle`, `SpecificationKit`, and other local
+repositories, then add the next Phase 9 semantic draft quality task if needed.

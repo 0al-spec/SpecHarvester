@@ -39,6 +39,7 @@
 | P8-T4 | [P8-T4_Add_PR-ready_SpecPM_update_proposal_flow_for_new_accepted_package_versions/](P8-T4_Add_PR-ready_SpecPM_update_proposal_flow_for_new_accepted_package_versions/) | 2026-05-19 | PASS |
 | P8-T5 | [P8-T5_Add_Correction_and_Errata_Path/](P8-T5_Add_Correction_and_Errata_Path/) | 2026-05-19 | PASS |
 | P8-T6 | [P8-T6_Add_Accepted_Package_Version_Immutability_Guard/](P8-T6_Add_Accepted_Package_Version_Immutability_Guard/) | 2026-05-19 | PASS |
+| P9-T1 | [P9-T1_Derive_Semantic_Intent_Claims/](P9-T1_Derive_Semantic_Intent_Claims/) | 2026-05-19 | PASS |
 
 ## Historical Artifacts
 
@@ -107,3 +108,4 @@
 | 2026-05-19 | P8-T4 | Archived Add PR-ready SpecPM update proposal flow for new accepted package versions (PASS) |
 | 2026-05-19 | P8-T5 | Archived Add correction and errata path for fixing accepted metadata without treating upstream content as changed (PASS) |
 | 2026-05-19 | P8-T6 | Archived Add accepted package version immutability guard for update proposals (PASS) |
+| 2026-05-19 | P9-T1 | Archived Derive semantic intent claims from trusted static documentation and public API evidence (PASS) |

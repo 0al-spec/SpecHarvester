@@ -167,7 +167,7 @@ Acceptance:
 
 ## Phase 9. Semantic Draft Quality
 
-- [ ] `P9-T1` Derive semantic intent claims from trusted static documentation and
+- [x] `P9-T1` Derive semantic intent claims from trusted static documentation and
   public API evidence.
 
 Acceptance:
