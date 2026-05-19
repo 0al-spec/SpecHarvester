@@ -119,10 +119,11 @@ _REGISTRY: tuple[dict[str, Any], ...] = (
             "provenance_evidence",
         ],
         "license": {
-            "spdx": "Apache-2.0",
+            "spdx": "NOASSERTION",
             "notes": (
-                "Overall license is Apache-2.0; reference datasets and bundled "
-                "third-party materials require secondary license review."
+                "Repository includes Apache-2.0 and CC-BY-4.0 license materials; "
+                "reference datasets and bundled third-party materials require "
+                "secondary license review."
             ),
         },
         "source": "https://github.com/aboutcode-org/scancode-toolkit",

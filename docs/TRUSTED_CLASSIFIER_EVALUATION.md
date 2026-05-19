@@ -42,7 +42,7 @@ does not inflate routine prompt context. The full reviewed registry remains in
 | GitHub Linguist | `approved_optional` | language classification, vendored/generated filtering | MIT core repository; bundled grammars need upstream license awareness | Good reference-compatible source, but not required by default. |
 | go-enry | `approved_optional` | Linguist-compatible classification and vendored/generated filtering | Apache-2.0 | Preferred future adapter candidate because it can be pinned as a Go module or CLI without Ruby setup. |
 | Syft | `approved_optional` | package cataloging and SBOM-like dependency evidence | Apache-2.0 | Useful for local directory package inventory when pinned and sandboxed. |
-| ScanCode Toolkit | `deferred` | license, copyright, package, and provenance evidence | Apache-2.0 project; datasets and bundled materials need secondary review | Deferred until runtime cost and license-data provenance are reviewed. |
+| ScanCode Toolkit | `deferred` | license, copyright, package, and provenance evidence | `NOASSERTION`; repository includes Apache-2.0 and CC-BY-4.0 materials, datasets and bundled materials need secondary review | Deferred until runtime cost and license-data provenance are reviewed. |
 | Universal Ctags | `deferred` | broad symbol extraction | GPL-2.0 CLI boundary needs review | Deferred until JSON Lines output, parser variance, and distribution constraints are resolved. |
 | Tree-sitter | `deferred` | syntax indexing and AST extraction | MIT core; each grammar needs license review | Deferred here because AST ingestion belongs to later language-neutral analyzer work. |
 

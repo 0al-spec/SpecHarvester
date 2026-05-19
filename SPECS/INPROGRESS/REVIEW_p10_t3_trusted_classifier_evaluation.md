@@ -52,6 +52,7 @@
 
 ### Next Steps
 
-- Run FOLLOW-UP for the two low-severity documentation/registry precision
-  issues before opening the PR.
+- FOLLOW-UP completed in this branch: ScanCode license metadata now uses
+  `NOASSERTION` with mixed-license notes, and the DocC mirror includes external
+  source references.
 - Verify the PR body matches `.github/PULL_REQUEST_TEMPLATE.md`.
