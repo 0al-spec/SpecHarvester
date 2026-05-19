@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -223,6 +224,69 @@ repositories:
         collect_batch_snapshots(BatchCollectOptions(inputs=inputs, out=out))
 
 
+def test_collect_batch_snapshots_rejects_staged_checkout_changes_in_strict_mode(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "package.json").write_text(
+        json.dumps({"name": "@example/demo", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (checkout / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    subprocess.run(["git", "init"], cwd=checkout, check=True, capture_output=True)
+    subprocess.run(["git", "add", "README.md"], cwd=checkout, check=True, capture_output=True)
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="staged changes"):
+        collect_batch_snapshots(BatchCollectOptions(inputs=inputs, out=out))
+
+    assert not out.exists()
+
+
+def test_collect_batch_snapshots_allows_staged_checkout_changes_in_relaxed_private_mode(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "package.json").write_text(
+        json.dumps({"name": "@example/demo", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    subprocess.run(["git", "init"], cwd=checkout, check=True, capture_output=True)
+    subprocess.run(["git", "add", "README.md"], cwd=checkout, check=True, capture_output=True)
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, strict_public=False)
+    )
+
+    assert result["status"] == "ok"
+    assert (out / "demo" / "harvest.json").is_file()
+
+
 def test_cli_collect_batch_prints_summary_and_writes_harvest_json(
     tmp_path: Path,
     capsys,
@@ -265,6 +329,7 @@ def test_cli_collect_batch_writes_validation_report(
         json.dumps({"name": "@example/demo", "version": "1.0.0"}),
         encoding="utf-8",
     )
+    (checkout / "LICENSE").write_text("MIT\n", encoding="utf-8")
     (inputs / "repos.yml").write_text(
         f"""
 repositories:
@@ -293,7 +358,51 @@ repositories:
     assert summary["validationReport"] == str(report_path)
     assert report["summary"]["collectedCount"] == 1
     assert report["summary"]["highConfidenceCount"] == 1
+    assert report["summary"]["errorCount"] == 0
     assert report["records"][0]["id"] == "demo"
+
+
+def test_cli_collect_batch_returns_error_for_missing_license_in_strict_report(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    report_path = out / "batch-validation.json"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "package.json").write_text(
+        json.dumps({"name": "@example/demo", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = main(
+        [
+            "collect-batch",
+            str(inputs),
+            "--out",
+            str(out),
+            "--report",
+            str(report_path),
+        ]
+    )
+
+    assert result == 1
+    summary = json.loads(capsys.readouterr().out)
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    assert summary["status"] == "error"
+    assert report["status"] == "error"
+    assert report["records"][0]["errors"][0]["code"] == "missing_license_file"
 
 
 def test_cli_collect_batch_treats_nested_swift_manifest_as_package_evidence(
@@ -311,6 +420,7 @@ def test_cli_collect_batch_treats_nested_swift_manifest_as_package_evidence(
         "// swift-tools-version: 6.0\nimport PackageDescription\n",
         encoding="utf-8",
     )
+    (checkout / "LICENSE").write_text("MIT\n", encoding="utf-8")
     (inputs / "repos.yml").write_text(
         f"""
 repositories:
@@ -340,6 +450,7 @@ repositories:
     record = report["records"][0]
     assert record["evidence"]["packageManifestCount"] == 1
     assert record["warnings"] == []
+    assert record["errors"] == []
 
 
 def make_checkout(path: Path, readme: str) -> Path:

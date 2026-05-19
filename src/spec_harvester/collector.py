@@ -140,6 +140,7 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
             "fileCount": len(files),
             "skippedFileCount": len(skipped_files),
             "packageManifestCount": sum(1 for item in files if item["kind"] == "package_manifest"),
+            "licenseFileCount": sum(1 for item in files if item["kind"] == "license"),
         },
     }
 

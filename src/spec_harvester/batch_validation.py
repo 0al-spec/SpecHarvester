@@ -27,9 +27,10 @@ def build_batch_validation_report(
     *,
     batch_result: dict[str, Any],
     snapshots_by_id: dict[str, dict[str, Any]],
+    strict_public: bool = True,
 ) -> dict[str, Any]:
     records = [
-        validation_record(collected, snapshots_by_id[collected["id"]])
+        validation_record(collected, snapshots_by_id[collected["id"]], strict_public=strict_public)
         for collected in batch_result["collected"]
     ]
     confidence_counts = {
@@ -38,14 +39,16 @@ def build_batch_validation_report(
         "low": sum(1 for record in records if record["confidence"] == "low"),
     }
     warning_count = sum(len(record["warnings"]) for record in records)
+    error_count = sum(len(record["errors"]) for record in records)
 
     return {
         "schemaVersion": BATCH_VALIDATION_REPORT_SCHEMA_VERSION,
         "kind": BATCH_VALIDATION_REPORT_KIND,
-        "status": batch_result["status"],
+        "status": "error" if error_count else batch_result["status"],
         "input": batch_result["input"],
         "outputRoot": batch_result["outputRoot"],
         "selectedIds": batch_result["selectedIds"],
+        "mode": "strict_public" if strict_public else "relaxed_private",
         "summary": {
             "collectedCount": len(records),
             "skippedCount": len(batch_result["skipped"]),
@@ -53,6 +56,7 @@ def build_batch_validation_report(
             "mediumConfidenceCount": confidence_counts["medium"],
             "lowConfidenceCount": confidence_counts["low"],
             "warningCount": warning_count,
+            "errorCount": error_count,
         },
         "records": records,
         "skippedRecords": batch_result["skipped"],
@@ -60,15 +64,22 @@ def build_batch_validation_report(
     }
 
 
-def validation_record(collected: dict[str, Any], snapshot: dict[str, Any]) -> dict[str, Any]:
+def validation_record(
+    collected: dict[str, Any],
+    snapshot: dict[str, Any],
+    *,
+    strict_public: bool,
+) -> dict[str, Any]:
     summary = snapshot.get("summary", {})
     evidence = {
         "fileCount": int(summary.get("fileCount", 0)),
         "skippedFileCount": int(summary.get("skippedFileCount", 0)),
         "packageManifestCount": int(summary.get("packageManifestCount", 0)),
+        "licenseFileCount": int(summary.get("licenseFileCount", 0)),
     }
     warnings = validation_warnings(collected, snapshot, evidence)
-    confidence = confidence_level(warnings, evidence)
+    errors = validation_errors(evidence, strict_public=strict_public)
+    confidence = confidence_level(warnings, errors, evidence)
     return {
         "id": collected["id"],
         "repository": collected["repository"],
@@ -78,8 +89,9 @@ def validation_record(collected: dict[str, Any], snapshot: dict[str, Any]) -> di
         "sourceManifest": collected["sourceManifest"],
         "evidence": evidence,
         "confidence": confidence,
-        "confidenceReasons": confidence_reasons(confidence, warnings, evidence),
+        "confidenceReasons": confidence_reasons(confidence, warnings, errors, evidence),
         "policyNotes": policy_notes(snapshot),
+        "errors": errors,
         "warnings": warnings,
     }
 
@@ -128,6 +140,23 @@ def validation_warnings(
     return warnings
 
 
+def validation_errors(
+    evidence: dict[str, int],
+    *,
+    strict_public: bool,
+) -> list[dict[str, str]]:
+    if not strict_public or evidence["licenseFileCount"] > 0:
+        return []
+    return [
+        {
+            "code": "missing_license_file",
+            "message": (
+                "Strict public registry mode requires an allowlisted LICENSE/COPYING file."
+            ),
+        }
+    ]
+
+
 def policy_mismatches(snapshot: dict[str, Any]) -> dict[str, Any]:
     policy = snapshot.get("policy", {})
     return {
@@ -137,7 +166,13 @@ def policy_mismatches(snapshot: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def confidence_level(warnings: list[dict[str, str]], evidence: dict[str, int]) -> str:
+def confidence_level(
+    warnings: list[dict[str, str]],
+    errors: list[dict[str, str]],
+    evidence: dict[str, int],
+) -> str:
+    if errors:
+        return "low"
     warning_codes = {warning["code"] for warning in warnings}
     if "collector_policy_mismatch" in warning_codes or evidence["fileCount"] == 0:
         return "low"
@@ -149,6 +184,7 @@ def confidence_level(warnings: list[dict[str, str]], evidence: dict[str, int]) -
 def confidence_reasons(
     confidence: str,
     warnings: list[dict[str, str]],
+    errors: list[dict[str, str]],
     evidence: dict[str, int],
 ) -> list[str]:
     if confidence == "high":
@@ -157,7 +193,8 @@ def confidence_reasons(
             "Snapshot has collected files and at least one package manifest.",
             "No review warnings were emitted.",
         ]
-    reasons = [f"warning:{warning['code']}" for warning in warnings]
+    reasons = [f"error:{error['code']}" for error in errors]
+    reasons.extend(f"warning:{warning['code']}" for warning in warnings)
     if evidence["fileCount"] == 0 and "warning:no_files_collected" not in reasons:
         reasons.append("warning:no_files_collected")
     return reasons

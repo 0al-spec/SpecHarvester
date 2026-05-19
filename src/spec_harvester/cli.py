@@ -114,6 +114,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Optional path where a deterministic batch validation JSON report is written.",
     )
+    collect_batch.add_argument(
+        "--relaxed-private",
+        action="store_true",
+        help=("Disable strict public registry preflight checks for private-code spec coverage."),
+    )
     collect_batch.set_defaults(func=run_collect_batch)
 
     draft = subcommands.add_parser(
@@ -503,10 +508,11 @@ def run_collect_batch(args: argparse.Namespace) -> int:
             selected_ids=tuple(args.select),
             max_file_bytes=args.max_file_bytes,
             report=args.report,
+            strict_public=not args.relaxed_private,
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))
-    return 0
+    return 1 if result.get("status") == "error" else 0
 
 
 def run_draft(args: argparse.Namespace) -> int:

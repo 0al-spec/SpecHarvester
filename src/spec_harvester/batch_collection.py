@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -27,6 +28,7 @@ class BatchCollectOptions:
     selected_ids: tuple[str, ...] = ()
     max_file_bytes: int = DEFAULT_MAX_FILE_BYTES
     report: Path | None = None
+    strict_public: bool = True
 
 
 def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
@@ -53,6 +55,8 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
 
         output_dir = candidate_directory(out_root, repository_id)
         checkout = resolve_checkout(inputs_root, repository)
+        if options.strict_public:
+            reject_staged_changes(checkout, repository_id)
         plans.append(
             {
                 "repository": repository,
@@ -117,8 +121,10 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
         report = build_batch_validation_report(
             batch_result=result,
             snapshots_by_id={plan["repository"]["id"]: plan["snapshot"] for plan in prepared},
+            strict_public=options.strict_public,
         )
         write_batch_validation_report(options.report, report)
+        result["status"] = report["status"]
         result["validationReport"] = str(options.report)
     return result
 
@@ -143,3 +149,39 @@ def resolve_checkout(inputs_root: Path, repository: dict[str, Any]) -> Path:
     if not checkout.exists() or not checkout.is_dir():
         raise ValueError(f"Repository id {repository['id']!r} checkout does not exist: {checkout}")
     return checkout
+
+
+def reject_staged_changes(checkout: Path, repository_id: str) -> None:
+    staged_paths = git_staged_paths(checkout)
+    if not staged_paths:
+        return
+    preview = ", ".join(staged_paths[:5])
+    suffix = "" if len(staged_paths) <= 5 else f", and {len(staged_paths) - 5} more"
+    raise ValueError(
+        f"Repository id {repository_id!r} has staged changes in strict public mode: "
+        f"{preview}{suffix}"
+    )
+
+
+def git_staged_paths(checkout: Path) -> list[str]:
+    if not is_git_worktree(checkout):
+        return []
+    result = subprocess.run(  # noqa: S603
+        ["git", "-C", str(checkout), "diff", "--cached", "--name-only"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return []
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def is_git_worktree(checkout: Path) -> bool:
+    result = subprocess.run(  # noqa: S603
+        ["git", "-C", str(checkout), "rev-parse", "--is-inside-work-tree"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return result.returncode == 0 and result.stdout.strip() == "true"

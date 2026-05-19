@@ -38,6 +38,7 @@ def build_smoke_triage_summary(
     license_summary = dict_summary(license_report)
 
     batch_warning_count = int_value(batch_summary, "warningCount")
+    batch_error_count = int_value(batch_summary, "errorCount")
     duplicate_claim_count = int_value(duplicate_summary, "duplicateIntentCount") + int_value(
         duplicate_summary, "duplicateCapabilityCount"
     )
@@ -45,7 +46,8 @@ def build_smoke_triage_summary(
     namespace_issue_count = int_value(namespace_summary, "issueCount")
     license_issue_count = int_value(license_summary, "issueCount")
     total_issue_count = (
-        batch_warning_count
+        batch_error_count
+        + batch_warning_count
         + duplicate_claim_count
         + duplicate_issue_count
         + namespace_issue_count
@@ -57,6 +59,7 @@ def build_smoke_triage_summary(
         "kind": SMOKE_TRIAGE_SUMMARY_KIND,
         "status": "attention_required" if total_issue_count else "ok",
         "summary": {
+            "batchErrorCount": batch_error_count,
             "batchWarningCount": batch_warning_count,
             "duplicateClaimCount": duplicate_claim_count,
             "duplicateIssueCount": duplicate_issue_count,
@@ -70,6 +73,7 @@ def build_smoke_triage_summary(
                 "status": str(batch_report.get("status", "unknown")),
                 "collectedCount": int_value(batch_summary, "collectedCount"),
                 "skippedCount": int_value(batch_summary, "skippedCount"),
+                "errorCount": batch_error_count,
                 "warningCount": batch_warning_count,
             },
             "duplicateClaims": {
