@@ -346,6 +346,99 @@ def test_collect_local_repository_project_profile_treats_empty_package_json_as_n
     assert snapshot["projectProfile"]["diagnostics"] == []
 
 
+def test_collect_local_repository_project_profile_detects_manifest_first_ecosystems(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "polyglot"
+    repo.mkdir()
+    files = {
+        "pnpm-lock.yaml": "lockfileVersion: '9.0'\n",
+        "yarn.lock": "# yarn lockfile\n",
+        "bun.lock": "",
+        "pyproject.toml": "[project]\nname = 'demo'\n",
+        "setup.cfg": "[metadata]\nname = demo\n",
+        "requirements.txt": "requests\n",
+        "pom.xml": "<project />\n",
+        "build.gradle.kts": "plugins {}\n",
+        "settings.gradle": "rootProject.name = 'demo'\n",
+        "go.mod": "module example.com/demo\n",
+        "composer.json": "{}\n",
+        "CMakeLists.txt": "project(demo)\n",
+        "meson.build": "project('demo', 'cpp')\n",
+        "configure.ac": "AC_INIT([demo], [1.0])\n",
+        "conanfile.txt": "[requires]\n",
+        "vcpkg.json": "{}\n",
+        "Makefile": "all:\n",
+        "Podfile": "platform :ios, '17.0'\n",
+        "Gemfile": "source 'https://rubygems.org'\n",
+        "demo.gemspec": "Gem::Specification.new do |s|\nend\n",
+        "Cargo.toml": "[package]\nname = 'demo'\n",
+    }
+    for relative, content in files.items():
+        path = repo / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+    xcodeproj = repo / "Demo.xcodeproj"
+    xcodeproj.mkdir()
+    (xcodeproj / "project.pbxproj").write_text("// !$*UTF8*$!\n", encoding="utf-8")
+    xcworkspace = repo / "Demo.xcworkspace"
+    xcworkspace.mkdir()
+    (xcworkspace / "contents.xcworkspacedata").write_text("<Workspace />\n", encoding="utf-8")
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    profile = snapshot["projectProfile"]
+
+    assert {item["id"] for item in profile["languages"]} == {
+        "c-cpp",
+        "go",
+        "java-kotlin",
+        "javascript",
+        "objective-c",
+        "php",
+        "python",
+        "ruby",
+        "rust",
+    }
+    assert {item["id"] for item in profile["ecosystems"]} == {
+        "autotools",
+        "bun",
+        "bundler",
+        "cargo",
+        "cmake",
+        "cocoapods",
+        "composer",
+        "conan",
+        "go",
+        "gradle",
+        "maven",
+        "meson",
+        "make",
+        "pnpm",
+        "pypi",
+        "rubygems",
+        "vcpkg",
+        "xcode",
+        "yarn",
+    }
+    assert {item["path"] for item in profile["manifests"]} == {
+        *files.keys(),
+        "Demo.xcodeproj/project.pbxproj",
+        "Demo.xcworkspace/contents.xcworkspacedata",
+    }
+    assert {item["id"] for item in profile["analyzerPlan"]} == {
+        "spec_harvester.c_cpp_manifest_profile",
+        "spec_harvester.go_manifest_profile",
+        "spec_harvester.java_kotlin_manifest_profile",
+        "spec_harvester.js_ts_public_api",
+        "spec_harvester.objective_c_manifest_profile",
+        "spec_harvester.php_manifest_profile",
+        "spec_harvester.python_public_api",
+        "spec_harvester.ruby_manifest_profile",
+        "spec_harvester.rust_manifest_profile",
+    }
+    assert profile["diagnostics"] == []
+
+
 def test_parse_swift_package_manifest_returns_none_without_package_metadata() -> None:
     assert parse_swift_package_manifest("// swift-tools-version: 6.0\n") is None
 
