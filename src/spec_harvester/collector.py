@@ -31,6 +31,10 @@ ROOT_FILES = [
 SAFE_GLOBS = [
     ".github/workflows/*.yml",
     ".github/workflows/*.yaml",
+    "docs/*.md",
+    "SPECS/PRD/*.md",
+    "Sources/*/Documentation.docc/*.md",
+    "Sources/*/Documentation.docc/Concepts/*.md",
     "packages/*/README.md",
     "packages/*/package.json",
     "packages/*/src/index.ts",
@@ -44,6 +48,7 @@ IGNORED_NESTED_SWIFT_MANIFEST_DIRS = {
     ".build",
     ".git",
     ".swiftpm",
+    "Derived",
     "DerivedData",
     "build",
     "node_modules",
@@ -254,7 +259,15 @@ def infer_license_hint(text: str) -> str | None:
 def classify_file(path: Path) -> str:
     if path.name in PACKAGE_MANIFEST_NAMES:
         return "package_manifest"
-    if path.name.lower().startswith("readme"):
+    path_text = path.as_posix()
+    if path.name.lower().startswith("readme") or (
+        path.suffix.lower() in MARKDOWN_EXTENSIONS
+        and (
+            "/Documentation.docc/" in path_text
+            or "/SPECS/PRD/" in path_text
+            or "/docs/" in path_text
+        )
+    ):
         return "documentation"
     if path.name.lower().startswith(("license", "copying")):
         return "license"

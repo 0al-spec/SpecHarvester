@@ -41,6 +41,13 @@ class LicenseInference:
     evidence: dict[str, Any]
 
 
+@dataclass(frozen=True)
+class SemanticIntentProfile:
+    summary: str
+    intent_ids: list[str]
+    evidence_paths: list[str]
+
+
 def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     snapshot_path = resolve_snapshot_path(options.snapshot)
     snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
@@ -63,7 +70,19 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
 
     package_records = package_manifest_records(snapshot)
     license_records = license_file_records(snapshot)
-    capability_entries = build_capability_entries(package_id, package_records)
+    documentation_records = documentation_file_records(snapshot)
+    semantic_profile = infer_semantic_intent_profile(
+        repository_name,
+        package_records,
+        documentation_records,
+        public_interface_index,
+    )
+    primary_package_records = capability_source_records(package_records)
+    capability_entries = build_capability_entries(
+        package_id,
+        primary_package_records,
+        semantic_profile,
+    )
     if not capability_entries:
         capability_entries = [
             {
@@ -114,8 +133,13 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "keywords": ["generated", "specharvester", bounded_context],
     }
 
-    inbound_interfaces = build_interfaces(package_records, public_interface_index)
-    evidence = build_evidence(manifest_capabilities, inbound_interfaces, public_interface_index)
+    inbound_interfaces = build_interfaces(primary_package_records, public_interface_index)
+    evidence = build_evidence(
+        manifest_capabilities,
+        inbound_interfaces,
+        public_interface_index,
+        semantic_profile,
+    )
     provenance = {
         "sourceConfidence": {
             "intent": "medium",
@@ -140,7 +164,13 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
             "status": "draft",
             "authors": [{"name": options.author}],
         },
-        "intent": {"summary": infer_intent_summary(package_name, package_records)},
+        "intent": {
+            "summary": (
+                semantic_profile.summary
+                if semantic_profile is not None
+                else infer_intent_summary(package_name, primary_package_records)
+            )
+        },
         "scope": {
             "boundedContext": bounded_context,
             "includes": [
@@ -308,8 +338,22 @@ def license_file_records(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
     return sorted(records, key=lambda item: str(item.get("path") or ""))
 
 
+def documentation_file_records(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
+    files = snapshot.get("files")
+    if not isinstance(files, list):
+        return []
+    records: list[dict[str, Any]] = []
+    for item in files:
+        if not isinstance(item, dict) or item.get("kind") != "documentation":
+            continue
+        records.append(item)
+    return sorted(records, key=lambda item: str(item.get("path") or ""))
+
+
 def build_capability_entries(
-    package_id: str, package_records: list[dict[str, Any]]
+    package_id: str,
+    package_records: list[dict[str, Any]],
+    semantic_profile: SemanticIntentProfile | None = None,
 ) -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
     seen_ids: set[str] = set()
@@ -321,24 +365,36 @@ def build_capability_entries(
         label = package_label(package_name)
         capability_id = unique_id(f"{package_id}.{label}", seen_ids)
         description = package.get("description")
-        summary = (
-            description.strip()
-            if isinstance(description, str) and description.strip()
-            else f"Provide observed package metadata for {package_name}."
-        )
+        summary = capability_summary(package_name, description, semantic_profile)
         role = "secondary" if label in {"monorepo", "workspace", "root"} else "primary"
         entries.append(
             {
                 "id": capability_id,
                 "role": role,
                 "summary": summary,
-                "intentIds": infer_intent_ids(package_name, summary, package),
+                "intentIds": (
+                    semantic_profile.intent_ids
+                    if semantic_profile is not None
+                    else infer_intent_ids(package_name, summary, package)
+                ),
             }
         )
 
     if entries and all(entry.get("role") != "primary" for entry in entries):
         entries[0]["role"] = "primary"
     return entries
+
+
+def capability_summary(
+    package_name: str,
+    description: Any,
+    semantic_profile: SemanticIntentProfile | None,
+) -> str:
+    if semantic_profile is not None:
+        return semantic_profile.summary
+    if isinstance(description, str) and description.strip():
+        return description.strip()
+    return f"Provide observed package metadata for {package_name}."
 
 
 def capability_source_records(package_records: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -375,7 +431,153 @@ def is_reviewable_swift_manifest(record: dict[str, Any]) -> bool:
     parts = set(path.split("/"))
     if {"SourcePackages", "checkouts"}.issubset(parts):
         return False
-    return not (path.startswith("Derived/") or path.startswith("Tests/"))
+    ignored_parts = {"Derived", "DerivedData", "Fixtures", "CompileFixtures"}
+    if parts.intersection(ignored_parts):
+        return False
+    return not (
+        path.startswith("Derived/")
+        or path.startswith("Tests/")
+        or path.startswith("old_")
+        or "/old_" in path
+    )
+
+
+def infer_semantic_intent_profile(
+    repository_name: str,
+    package_records: list[dict[str, Any]],
+    documentation_records: list[dict[str, Any]],
+    public_interface_index: dict[str, Any] | None,
+) -> SemanticIntentProfile | None:
+    corpus_parts = [repository_name]
+    evidence_paths: set[str] = set()
+
+    for record in capability_source_records(package_records):
+        package = record.get("package")
+        if not isinstance(package, dict):
+            continue
+        evidence_paths.add(str(record.get("path") or ""))
+        for key in ("name", "description", "ecosystem", "language"):
+            value = package.get(key)
+            if isinstance(value, str):
+                corpus_parts.append(value)
+        products = package.get("products")
+        if isinstance(products, list):
+            for product in products:
+                if isinstance(product, dict) and isinstance(product.get("name"), str):
+                    corpus_parts.append(product["name"])
+
+    for record in documentation_records:
+        path = str(record.get("path") or "")
+        if not is_semantic_documentation_path(path):
+            continue
+        evidence_paths.add(path)
+        corpus_parts.append(path)
+        headings = record.get("headings")
+        if isinstance(headings, list):
+            corpus_parts.extend(str(heading) for heading in headings if isinstance(heading, str))
+
+    if public_interface_index is not None:
+        corpus_parts.extend(public_interface_symbol_names(public_interface_index))
+
+    corpus = " ".join(corpus_parts).lower()
+    intents: set[str] = set()
+
+    has_screen = has_any(corpus, "screen", "screens")
+    has_uikit = "uikit" in corpus or "ui kit" in corpus
+    has_swiftui = "swiftui" in corpus or "swift ui" in corpus
+    has_migration = has_any(corpus, "migration", "migrating", "legacy", "incremental")
+    has_collection = has_any(
+        corpus,
+        "collection",
+        "collections",
+        "list",
+        "grid",
+        "carousel",
+        "waterfall",
+    )
+    has_state = has_any(corpus, "state", "binding", "bindings", "observation", "observable")
+
+    if has_screen and has_any(corpus, "composition", "compose", "composable", "container"):
+        intents.add("intent.ios.screen_level_composition")
+    if has_screen and has_uikit and has_swiftui and has_migration:
+        intents.add("intent.ios.uikit_swiftui_migration")
+    if has_screen and has_collection:
+        intents.add("intent.ios.collection_layout_composition")
+    if has_screen and has_state:
+        intents.add("intent.ios.screen_state_binding")
+    if has_screen and has_any(corpus, "diagnostic", "diagnostics", "debug", "debugging"):
+        intents.add("intent.ios.screen_diagnostics")
+    if has_any(corpus, "macro", "macros", "#screen"):
+        intents.add("intent.swift.macro_developer_experience")
+
+    if not intents:
+        return None
+
+    summary = semantic_summary(repository_name, intents)
+    return SemanticIntentProfile(
+        summary=summary,
+        intent_ids=sorted(intents),
+        evidence_paths=sorted(path for path in evidence_paths if path),
+    )
+
+
+def is_semantic_documentation_path(path: str) -> bool:
+    if not path:
+        return False
+    lowered = path.lower()
+    if any(part in lowered for part in ("/claude.md", "/agents.md", "/tasks_archive/")):
+        return False
+    return (
+        lowered.startswith("readme")
+        or lowered.startswith("docs/")
+        or lowered.startswith("specs/prd/")
+        or "/documentation.docc/" in lowered
+    )
+
+
+def public_interface_symbol_names(public_interface_index: dict[str, Any]) -> list[str]:
+    names: list[str] = []
+    packages = public_interface_index.get("packages")
+    if not isinstance(packages, list):
+        return names
+    for package in packages:
+        if not isinstance(package, dict):
+            continue
+        entrypoints = package.get("entrypoints")
+        if not isinstance(entrypoints, list):
+            continue
+        for entrypoint in entrypoints:
+            if not isinstance(entrypoint, dict):
+                continue
+            symbols = entrypoint.get("symbols")
+            if not isinstance(symbols, list):
+                continue
+            for symbol in symbols:
+                if isinstance(symbol, dict) and isinstance(symbol.get("name"), str):
+                    names.append(symbol["name"])
+    return names
+
+
+def has_any(text: str, *needles: str) -> bool:
+    return any(needle in text for needle in needles)
+
+
+def semantic_summary(repository_name: str, intents: set[str]) -> str:
+    package_name = display_name(repository_name)
+    if "intent.ios.uikit_swiftui_migration" in intents:
+        return (
+            "Provide a screen-level composition framework for incrementally migrating "
+            "UIKit-heavy iOS screens to mixed UIKit/SwiftUI surfaces."
+        )
+    if "intent.ios.screen_level_composition" in intents:
+        return (
+            "Provide a screen-level composition framework for declarative iOS screen "
+            "state, layout, bindings, and lifecycle hooks."
+        )
+    return (
+        "Provide deterministic public package metadata and semantic intent evidence "
+        f"for {package_name}."
+    )
 
 
 def infer_intent_ids(
@@ -705,6 +907,7 @@ def build_evidence(
     manifest_capabilities: list[str],
     inbound_interfaces: list[dict[str, Any]],
     public_interface_index: dict[str, Any] | None,
+    semantic_profile: SemanticIntentProfile | None = None,
 ) -> list[dict[str, Any]]:
     evidence = [
         {
@@ -715,6 +918,18 @@ def build_evidence(
             + [f"provides.capabilities.{capability_id}" for capability_id in manifest_capabilities],
         }
     ]
+    if semantic_profile is not None:
+        evidence.append(
+            {
+                "id": "semantic_intent_static_evidence",
+                "kind": "documentation",
+                "paths": semantic_profile.evidence_paths,
+                "supports": [
+                    "intent.summary",
+                    "provides.capabilities.intentIds",
+                ],
+            }
+        )
     if public_interface_index is None:
         return evidence
 
