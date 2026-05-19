@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-05-18
+**Last Updated:** 2026-05-19
 
 ## Archived Tasks
 
@@ -36,6 +36,9 @@
 | P8-T1 | [P8-T1_Document_accepted_package_update_lifecycle_and_immutability_policy/](P8-T1_Document_accepted_package_update_lifecycle_and_immutability_policy/) | 2026-05-18 | PASS |
 | P8-T2 | [P8-T2_Add_accepted-vs-candidate_package_diff_report/](P8-T2_Add_accepted-vs-candidate_package_diff_report/) | 2026-05-18 | PASS |
 | P8-T3 | [P8-T3_Classify_update_impact_by_metadata_interface_license_and_claims/](P8-T3_Classify_update_impact_by_metadata_interface_license_and_claims/) | 2026-05-18 | PASS |
+| P8-T4 | [P8-T4_Add_PR-ready_SpecPM_update_proposal_flow_for_new_accepted_package_versions/](P8-T4_Add_PR-ready_SpecPM_update_proposal_flow_for_new_accepted_package_versions/) | 2026-05-19 | PASS |
+| P8-T5 | [P8-T5_Add_Correction_and_Errata_Path/](P8-T5_Add_Correction_and_Errata_Path/) | 2026-05-19 | PASS |
+| P8-T6 | [P8-T6_Add_Accepted_Package_Version_Immutability_Guard/](P8-T6_Add_Accepted_Package_Version_Immutability_Guard/) | 2026-05-19 | PASS |
 
 ## Historical Artifacts
 
@@ -101,3 +104,6 @@
 | 2026-05-18 | P8-T2 | Archived REVIEW_p8_t2_accepted_candidate_diff_report report |
 | 2026-05-18 | P8-T3 | Archived Classify update proposals by metadata, interface, license, provenance, capability, and intent impact (PASS) |
 | 2026-05-18 | P8-T3 | Archived REVIEW_p8_t3_update_impact_classification report |
+| 2026-05-19 | P8-T4 | Archived Add PR-ready SpecPM update proposal flow for new accepted package versions (PASS) |
+| 2026-05-19 | P8-T5 | Archived Add correction and errata path for fixing accepted metadata without treating upstream content as changed (PASS) |
+| 2026-05-19 | P8-T6 | Archived Add accepted package version immutability guard for update proposals (PASS) |

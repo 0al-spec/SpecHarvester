@@ -142,11 +142,11 @@ Acceptance:
 - [x] `P8-T2` Add accepted-vs-candidate package diff report.
 - [x] `P8-T3` Classify update proposals by metadata, interface, license,
   provenance, capability, and intent impact.
-- [ ] `P8-T4` Add PR-ready SpecPM update proposal flow for new accepted package
+- [x] `P8-T4` Add PR-ready SpecPM update proposal flow for new accepted package
   versions.
-- [ ] `P8-T5` Add correction and errata path for fixing accepted metadata
+- [x] `P8-T5` Add correction and errata path for fixing accepted metadata
   without treating upstream content as changed.
-- [ ] `P8-T6` Add accepted package version immutability guard for update
+- [x] `P8-T6` Add accepted package version immutability guard for update
   proposals.
 
 Acceptance:

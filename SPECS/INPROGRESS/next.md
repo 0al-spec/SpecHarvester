@@ -1,20 +1,21 @@
-# Next Task: P8-T6 - Add accepted package version immutability guard for update proposals
+# Next Task: None Selected
 
-**Priority:** P8
-**Phase:** Accepted Specification Update Lifecycle
-**Effort:** Medium
-**Dependencies:** P8-T5
-**Status:** SELECT
+**Status:** CLEAN
 
 **Updated:** 2026-05-19
-**Suggested Branch:** `feature/P8-T6-accepted-package-version-immutability-guard`
 
 ## Description
 
-Add a strict preflight guard so proposals cannot silently mutate an already
-accepted `package_id@version`. Same-version updates must use explicit correction
-mode with rationale notes; all other same-version mutations should fail fast.
+All currently listed P8 workplan tasks are complete and archived. No next task is
+selected.
+
+## Recently Archived
+
+- `P8-T4` Add PR-ready SpecPM update proposal flow for new accepted package versions.
+- `P8-T5` Add correction and errata path for fixing accepted metadata without treating
+  upstream content as changed.
+- `P8-T6` Add accepted package version immutability guard for update proposals.
 
 ## Next Step
 
-Run the PLAN command to create the P8-T6 implementation PRD.
+Create the next phase/tasks before running the Flow SELECT step again.
