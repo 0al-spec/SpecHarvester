@@ -166,8 +166,13 @@ def reject_staged_changes(checkout: Path, repository_id: str) -> None:
 def git_staged_paths(checkout: Path) -> list[str]:
     if not is_git_worktree(checkout):
         return []
+    worktree_root = git_worktree_root(checkout)
+    if worktree_root is None:
+        return []
+    relative_checkout = checkout.resolve().relative_to(worktree_root)
+    pathspec = relative_checkout.as_posix() if relative_checkout.parts else "."
     result = subprocess.run(  # noqa: S603
-        ["git", "-C", str(checkout), "diff", "--cached", "--name-only"],
+        ["git", "-C", str(worktree_root), "diff", "--cached", "--name-only", "--", pathspec],
         check=False,
         capture_output=True,
         text=True,
@@ -185,3 +190,18 @@ def is_git_worktree(checkout: Path) -> bool:
         text=True,
     )
     return result.returncode == 0 and result.stdout.strip() == "true"
+
+
+def git_worktree_root(checkout: Path) -> Path | None:
+    result = subprocess.run(  # noqa: S603
+        ["git", "-C", str(checkout), "rev-parse", "--show-toplevel"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None
+    value = result.stdout.strip()
+    if not value:
+        return None
+    return Path(value).resolve()
