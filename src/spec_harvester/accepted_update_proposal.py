@@ -22,8 +22,11 @@ VALID_UPDATE_KINDS = {"upstream_revision", "metadata_errata", "correction"}
 DEFAULT_MANIFEST_ENTRY_PREFIX = "public-index/generated"
 
 TRUST_BOUNDARY_NOTES = [
-    "Report generation reads local candidate/accepted specpm.yaml files only.",
-    "Source revision and evidence digests are derived from local manifest artifacts.",
+    (
+        "Report generation reads local candidate/accepted package files for immutable "
+        "evidence comparison."
+    ),
+    "Source revision and evidence digests are derived from local package artifacts.",
     "No candidate or accepted package files are written during report generation.",
     "SpecPM validation is optional and can be explicitly skipped.",
 ]
@@ -70,6 +73,7 @@ def build_accepted_package_update_proposal(
 
     comparison = build_candidate_comparison(candidate_record, prior_record)
     requires_correction = _requires_correction_mode(
+        candidate_path=candidate,
         candidate_record=candidate_record,
         prior_record=prior_record,
         comparison=comparison,
@@ -329,6 +333,7 @@ def _build_changed_claims(changes: dict[str, Any]) -> list[str]:
 
 def _requires_correction_mode(
     *,
+    candidate_path: Path,
     candidate_record: PackageDiffInputRecord,
     prior_record: PackageDiffInputRecord | None,
     comparison: dict[str, Any],
@@ -337,9 +342,30 @@ def _requires_correction_mode(
         return False
     if candidate_record.package_version != prior_record.package_version:
         return False
-    if comparison["status"] == "unchanged":
-        return False
-    return True
+    if comparison["status"] != "unchanged":
+        return True
+    return _package_tree_digests(candidate_path) != _package_tree_digests(
+        Path(prior_record.path).parent
+    )
+
+
+def _package_tree_digests(root: Path) -> dict[str, str]:
+    files: dict[str, str] = {}
+    for path in sorted(root.rglob("*"), key=lambda item: item.relative_to(root).as_posix()):
+        relative = path.relative_to(root)
+        if _is_ignored_package_path(relative):
+            continue
+        relative_path = relative.as_posix()
+        if path.is_symlink():
+            files[relative_path] = f"symlink:{path.readlink()}"
+            continue
+        if path.is_file():
+            files[relative_path] = _file_digest(path)
+    return files
+
+
+def _is_ignored_package_path(relative_path: Path) -> bool:
+    return ".git" in relative_path.parts or relative_path.name == ".DS_Store"
 
 
 def _normalize_update_kind(
