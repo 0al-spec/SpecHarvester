@@ -50,10 +50,17 @@ Required behavior:
 - create a new candidate from the same or updated evidence set as appropriate;
 - generate a new accepted version for the correction path;
 - update accepted sources only through the normal acceptance gate.
+- use `accepted-package-update-proposal` with:
+  - `--allow-correction`
+  - one or more `--correction-note` entries.
 
 The boundary is that a metadata correction is still a revision event for the
 accepted registry snapshot and must not be silently applied to an existing
 version path.
+
+For correction events, proposal artifacts include `updateKind: correction` and an
+explicit `correction` block with `enabled`, `source: manual_review`, and
+`reason` details.
 
 ## Required Audit Trail Fields
 

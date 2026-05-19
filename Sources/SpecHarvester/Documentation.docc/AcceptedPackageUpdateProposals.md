@@ -19,7 +19,11 @@ accepted version and before cross-repository proposal operations.
 ```bash
 python3 -m spec_harvester accepted-package-update-proposal \
   --accepted-root accepted \
-  CANDIDATE_DIR
+  CANDIDATE_DIR \
+  [--update-kind upstream_revision|metadata_errata|correction] \
+  [--allow-correction] \
+  [--correction-note "metadata typo fix"] \
+  [--reviewer-notes "rationale"]
 ```
 
 Required:
@@ -33,6 +37,8 @@ Optional:
 - `--proposal-body` for markdown proposal body.
 - `--skip-validation` for offline runs.
 - `--update-kind` override (`upstream_revision`, `metadata_errata`, `correction`).
+- `--allow-correction` to permit same-version accepted updates without upstream changes.
+- `--correction-note` repeatable rationale note, required in correction mode.
 - `--reviewer-notes` repeatable.
 
 ## Output
@@ -47,6 +53,7 @@ The payload includes:
 - `validationStatus`
 - `reviewerNotes`
 - `comparison`, `candidate`, `accepted`, `issues`, `trustBoundary`
+- optional `correction` object when correction mode is explicitly enabled
 
 `--skip-validation` is explicit and should be used only for CI smoke fixtures or
 operator-specific deterministic flows.

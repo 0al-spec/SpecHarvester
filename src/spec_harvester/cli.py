@@ -401,6 +401,20 @@ def build_parser() -> argparse.ArgumentParser:
         help="Override update kind when reviewer context is known.",
     )
     accepted_package_update_proposal.add_argument(
+        "--allow-correction",
+        action="store_true",
+        help=(
+            "Allow same-version accepted updates when upstream artifacts are unchanged. "
+            "Must be paired with --correction-note."
+        ),
+    )
+    accepted_package_update_proposal.add_argument(
+        "--correction-note",
+        action="append",
+        default=[],
+        help="Correction rationale note. Repeatable. Required when --allow-correction is set.",
+    )
+    accepted_package_update_proposal.add_argument(
         "--reviewer-notes",
         action="append",
         default=[],
@@ -622,6 +636,8 @@ def run_accepted_package_update_proposal(args: argparse.Namespace) -> int:
             specpm_pythonpath=args.specpm_pythonpath,
             skip_validation=args.skip_validation,
             update_kind=args.update_kind,
+            allow_correction=args.allow_correction,
+            correction_notes=tuple(args.correction_note),
             reviewer_notes=tuple(args.reviewer_notes),
         )
     )
