@@ -191,7 +191,7 @@ Acceptance:
 
 ## Phase 10. Language and Package Ecosystem Profiling
 
-- [ ] `P10-T1` Define a deterministic `ProjectProfile` schema for language,
+- [x] `P10-T1` Define a deterministic `ProjectProfile` schema for language,
   package ecosystem, package manager, manifest, confidence, provenance, and
   analyzer-plan evidence.
 - [ ] `P10-T2` Add manifest-first ecosystem detectors for Swift/SPM, JavaScript
