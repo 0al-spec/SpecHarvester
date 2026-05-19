@@ -55,6 +55,7 @@ class SemanticDomainRule:
     intent_id: str
     label: str
     terms: tuple[str, ...]
+    required_context: str | None = None
 
 
 SEMANTIC_DOMAIN_RULES = (
@@ -69,6 +70,7 @@ SEMANTIC_DOMAIN_RULES = (
             "satisfies",
             "conditional satisfies",
         ),
+        required_context="swift",
     ),
     SemanticDomainRule(
         cluster_id="swift.predicate_composition",
@@ -82,6 +84,7 @@ SEMANTIC_DOMAIN_RULES = (
             "composite specification",
             "firstmatchspec",
         ),
+        required_context="swift",
     ),
     SemanticDomainRule(
         cluster_id="swift.context_driven_decisioning",
@@ -96,6 +99,7 @@ SEMANTIC_DOMAIN_RULES = (
             "platform-specific context providers",
             "decision making",
         ),
+        required_context="swift",
     ),
     SemanticDomainRule(
         cluster_id="swift.feature_gating",
@@ -109,6 +113,7 @@ SEMANTIC_DOMAIN_RULES = (
             "thresholdspec",
             "weightedspec",
         ),
+        required_context="swift",
     ),
     SemanticDomainRule(
         cluster_id="swift.reactive_specification_evaluation",
@@ -123,6 +128,7 @@ SEMANTIC_DOMAIN_RULES = (
             "combine",
             "observation",
         ),
+        required_context="swift",
     ),
     SemanticDomainRule(
         cluster_id="swift.specification_tracing",
@@ -136,6 +142,7 @@ SEMANTIC_DOMAIN_RULES = (
             "performance analysis",
             "dot graph",
         ),
+        required_context="swift",
     ),
 )
 
@@ -579,7 +586,16 @@ def infer_semantic_intent_profile(
         public_interface_index,
     )
     corpus = " ".join(entry["text"] for entry in semantic_entries).lower()
-    clusters = build_semantic_evidence_clusters(semantic_entries)
+    enabled_contexts = (
+        {"swift"}
+        if has_swift_semantic_context(
+            package_records,
+            documentation_records,
+            public_interface_index,
+        )
+        else set()
+    )
+    clusters = build_semantic_evidence_clusters(semantic_entries, enabled_contexts)
     evidence_paths: set[str] = {
         path
         for cluster in clusters
@@ -624,7 +640,7 @@ def infer_semantic_intent_profile(
         and has_any(corpus, "diagnostic", "diagnostics", "debug", "debugging")
     ):
         intents.add("intent.ios.screen_diagnostics")
-    if has_any(corpus, "macro", "macros", "#screen"):
+    if "swift" in enabled_contexts and has_any(corpus, "macro", "macros", "#screen"):
         intents.add("intent.swift.macro_developer_experience")
 
     if not intents:
@@ -688,9 +704,14 @@ def semantic_text_entries(
     return entries
 
 
-def build_semantic_evidence_clusters(entries: list[dict[str, str]]) -> list[dict[str, Any]]:
+def build_semantic_evidence_clusters(
+    entries: list[dict[str, str]],
+    enabled_contexts: set[str],
+) -> list[dict[str, Any]]:
     clusters: list[dict[str, Any]] = []
     for rule in SEMANTIC_DOMAIN_RULES:
+        if rule.required_context is not None and rule.required_context not in enabled_contexts:
+            continue
         matched_terms: set[str] = set()
         evidence_paths: set[str] = set()
         score = 0
@@ -716,6 +737,47 @@ def build_semantic_evidence_clusters(entries: list[dict[str, str]]) -> list[dict
             }
         )
     return sorted(clusters, key=lambda item: (-int(item["score"]), str(item["id"])))
+
+
+def has_swift_semantic_context(
+    package_records: list[dict[str, Any]],
+    documentation_records: list[dict[str, Any]],
+    public_interface_index: dict[str, Any] | None,
+) -> bool:
+    for record in package_records:
+        path = str(record.get("path") or "").lower()
+        package = record.get("package")
+        if path.endswith("package.swift"):
+            return True
+        if not isinstance(package, dict):
+            continue
+        for key in ("ecosystem", "language"):
+            value = package.get(key)
+            if isinstance(value, str) and value.lower() == "swift":
+                return True
+
+    for record in documentation_records:
+        path = str(record.get("path") or "").lower()
+        if path.endswith("package.swift") or "/documentation.docc/" in path:
+            return True
+        headings = record.get("headings")
+        if isinstance(headings, list) and any(
+            isinstance(heading, str) and has_any(heading.lower(), "swift", "swiftui", "uikit")
+            for heading in headings
+        ):
+            return True
+
+    if public_interface_index is None:
+        return False
+    packages = public_interface_index.get("packages")
+    if not isinstance(packages, list):
+        return False
+    return any(
+        isinstance(package, dict)
+        and isinstance(package.get("language"), str)
+        and package["language"].lower() == "swift"
+        for package in packages
+    )
 
 
 def semantic_profile_paths(entries: list[dict[str, str]]) -> set[str]:
