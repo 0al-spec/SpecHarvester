@@ -208,7 +208,7 @@ Acceptance:
 - [x] `P10-T5` Add language-neutral semantic extraction for documentation-first
   repositories so README/API-contract evidence can produce meaningful intent
   clusters even when no supported package manifest is present.
-- [ ] `P10-T6` Add a multi-language smoke matrix covering local repositories and
+- [x] `P10-T6` Add a multi-language smoke matrix covering local repositories and
   synthetic fixtures for npm, SPM, Gradle/Maven, Go modules, Composer, CMake,
   Xcode/CocoaPods, RubyGems, and Python packaging.
 
