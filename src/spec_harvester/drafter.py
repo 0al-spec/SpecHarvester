@@ -317,7 +317,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
             },
             "requires": {"capabilities": []},
         },
-        "compatibility": infer_compatibility(package_records),
+        "compatibility": infer_compatibility(package_records, snapshot, manifest_intents),
         "foreignArtifacts": [foreign_repository_artifact(source)],
         "keywords": ["generated", "specharvester", bounded_context],
     }
@@ -1451,17 +1451,137 @@ def infer_license_with_evidence(
     )
 
 
-def infer_compatibility(package_records: list[dict[str, Any]]) -> dict[str, list[str]]:
+def infer_compatibility(
+    package_records: list[dict[str, Any]],
+    snapshot: dict[str, Any] | None = None,
+    intent_ids: list[str] | None = None,
+) -> dict[str, list[str]]:
+    languages = compatibility_languages(package_records, snapshot)
+    platforms = compatibility_platforms(languages, intent_ids or [])
+    return {"platforms": platforms, "languages": languages}
+
+
+def compatibility_languages(
+    package_records: list[dict[str, Any]],
+    snapshot: dict[str, Any] | None,
+) -> list[str]:
+    detected: set[str] = set()
+    project_profile = snapshot.get("projectProfile") if isinstance(snapshot, dict) else None
+    profile_languages = (
+        project_profile.get("languages") if isinstance(project_profile, dict) else None
+    )
+    if isinstance(profile_languages, list):
+        high_signal_languages = [
+            item
+            for item in profile_languages
+            if isinstance(item, dict) and item.get("confidence") != "low"
+        ]
+        selected_profile_languages = high_signal_languages or profile_languages
+        for item in profile_languages:
+            if item not in selected_profile_languages:
+                continue
+            if not isinstance(item, dict):
+                continue
+            language_id = item.get("id")
+            if isinstance(language_id, str) and language_id.strip():
+                detected.update(compatibility_language_names(language_id))
+
+    for record in package_records:
+        package = record.get("package")
+        if not isinstance(package, dict):
+            continue
+        for key in ("language", "ecosystem"):
+            value = package.get(key)
+            if isinstance(value, str) and value.strip():
+                detected.update(compatibility_language_names(value))
+
     dependencies = {
         dependency
         for record in package_records
         for dependency in package_dependency_names(record["package"])
     }
-    languages = ["javascript"]
-    if dependencies & {"typescript", "tslib"}:
-        languages.insert(0, "typescript")
-    platforms = ["web", "node"]
-    return {"platforms": platforms, "languages": languages}
+    if dependencies & {"typescript", "tslib"} or (
+        "javascript" in detected and any("typescript" in dependency for dependency in dependencies)
+    ):
+        detected.add("typescript")
+    if not detected:
+        return []
+    ordered_languages = [
+        language for language in COMPATIBILITY_LANGUAGE_ORDER if language in detected
+    ]
+    return ordered_languages + sorted(detected - set(COMPATIBILITY_LANGUAGE_ORDER))
+
+
+COMPATIBILITY_LANGUAGE_ORDER = (
+    "typescript",
+    "javascript",
+    "swift",
+    "objective-c",
+    "python",
+    "java",
+    "kotlin",
+    "go",
+    "php",
+    "c",
+    "c++",
+    "ruby",
+)
+
+
+def compatibility_language_names(language_id: str) -> set[str]:
+    normalized = language_id.strip().lower()
+    if normalized in {"javascript-typescript", "javascript", "typescript", "npm", "pnpm"}:
+        return {"javascript"}
+    if normalized in {"swift", "swiftpm"}:
+        return {"swift"}
+    if normalized in {"objective-c", "objc", "xcode", "cocoapods"}:
+        return {"objective-c"}
+    if normalized in {"python", "pypi"}:
+        return {"python"}
+    if normalized == "java-kotlin":
+        return {"java", "kotlin"}
+    if normalized in {"java", "kotlin", "go", "php", "ruby"}:
+        return {normalized}
+    if normalized in {"c-cpp", "cpp", "c++"}:
+        return {"c", "c++"}
+    if normalized == "c":
+        return {"c"}
+    return {normalized}
+
+
+def compatibility_platforms(languages: list[str], intent_ids: list[str]) -> list[str]:
+    platforms: set[str] = set()
+    if any(intent_id.startswith("intent.ios.") for intent_id in intent_ids):
+        platforms.update({"ios", "macos"})
+    if "javascript" in languages or "typescript" in languages:
+        platforms.update({"web", "node"})
+    apple_project = "objective-c" in languages
+    if "swift" in languages and not apple_project and not platforms.intersection({"ios", "macos"}):
+        platforms.update({"macos", "linux"})
+    if "objective-c" in languages:
+        platforms.update({"ios", "macos"})
+    if {"java", "kotlin"} & set(languages):
+        platforms.add("jvm")
+    if any(language in languages for language in ("python", "go", "php", "ruby", "c", "c++")):
+        platforms.add("any")
+    if not platforms:
+        return []
+    ordered_platforms = [
+        platform for platform in COMPATIBILITY_PLATFORM_ORDER if platform in platforms
+    ]
+    return ordered_platforms + sorted(platforms - set(COMPATIBILITY_PLATFORM_ORDER))
+
+
+COMPATIBILITY_PLATFORM_ORDER = (
+    "ios",
+    "macos",
+    "linux",
+    "windows",
+    "web",
+    "node",
+    "jvm",
+    "any",
+)
 
 
 def package_dependency_names(package: dict[str, Any]) -> list[str]:

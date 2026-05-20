@@ -1197,6 +1197,72 @@ def test_draft_spec_package_uses_swift_product_intents(tmp_path: Path) -> None:
     assert "intent.package.public_repository_metadata" not in spec
     assert "intent.swift.product.puzzlecore" in manifest
     assert "intent.swift.product.puzzleuikit" in manifest
+    assert "    - swift\n" in manifest
+    assert "    - javascript\n" not in manifest
+    assert "    - web\n" not in manifest
+    assert "    - node\n" not in manifest
+
+
+def test_draft_spec_package_infers_python_compatibility_from_project_profile(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "page-index"
+    repo.mkdir()
+    (repo / "pyproject.toml").write_text(
+        "[project]\nname = 'page-index'\n",
+        encoding="utf-8",
+    )
+    (repo / "Makefile").write_text("test:\n\tpython -m pytest\n", encoding="utf-8")
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(source=repo, repository="https://github.com/example/page-index")
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="page_index.core")
+    )
+
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "  languages:\n    - python\n" in manifest
+    assert "  platforms:\n    - any\n" in manifest
+    assert "    - c\n" not in manifest
+    assert "    - c++\n" not in manifest
+    assert "    - javascript\n" not in manifest
+    assert "    - web\n" not in manifest
+    assert "    - node\n" not in manifest
+
+
+def test_draft_spec_package_infers_apple_compatibility_from_xcode_evidence(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "apple-kit"
+    repo.mkdir()
+    (repo / "Package.swift").write_text(
+        """
+        import PackageDescription
+        let package = Package(
+            name: "AppleKit",
+            products: [.library(name: "AppleKit", targets: ["AppleKit"])]
+        )
+        """,
+        encoding="utf-8",
+    )
+    xcode_project = repo / "AppleKit.xcodeproj"
+    xcode_project.mkdir()
+    (xcode_project / "project.pbxproj").write_text("// !$*UTF8*$!\n", encoding="utf-8")
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    draft_spec_package(DraftOptions(snapshot=candidate, out=candidate, package_id="apple_kit.core"))
+
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "  platforms:\n    - ios\n    - macos\n" in manifest
+    assert "  languages:\n    - swift\n    - objective-c\n" in manifest
+    assert "    - linux\n" not in manifest
 
 
 def test_draft_spec_package_prefers_semantic_ios_screen_intents(
@@ -1295,6 +1361,8 @@ def test_draft_spec_package_prefers_semantic_ios_screen_intents(
     assert "intent.ios.screen_diagnostics" in spec
     assert "intent.swift.product.puzzlecore" not in spec
     assert "intent.swift.product.puzzleuikit" not in manifest
+    assert "  platforms:\n    - ios\n    - macos\n" in manifest
+    assert "  languages:\n    - swift\n" in manifest
     assert (
         "Provide a screen-level composition framework for incrementally migrating "
         "UIKit-heavy iOS screens to mixed UIKit/SwiftUI surfaces."
