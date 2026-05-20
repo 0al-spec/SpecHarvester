@@ -1,6 +1,6 @@
 # P12-T2 Go Public Interface Evidence
 
-Status: In Progress
+Status: Archived
 Created: 2026-05-21
 Task: `P12-T2` Add a deterministic Go public interface analyzer or
 manifest-plus-source fallback for `go.mod` projects.

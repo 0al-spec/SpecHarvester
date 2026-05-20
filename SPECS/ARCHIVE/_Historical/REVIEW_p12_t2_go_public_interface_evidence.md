@@ -40,8 +40,11 @@ No Blocker or High findings.
   `PYTHONPATH=src python -m pytest`, ruff, format, coverage `90.66%`, SwiftPM
   manifest dump, and DocC build.
 - Follow-up validation after excluding `internal/` passed:
-  `PYTHONPATH=src python -m pytest`, ruff, format, coverage `90.66%`, SwiftPM
-  manifest dump, DocC build, and Gin smoke.
+  `PYTHONPATH=src python -m pytest`, ruff, format, coverage `90.44%`, SwiftPM
+  manifest dump, DocC build, and Gin smoke. Additional GitHub review fixes
+  covered generics, multi-name declarations, symlinked directories, string-safe
+  comment stripping, cached diagnostics, nested-module fallback, no-source
+  `go.mod` planning, and archived status wording.
 
 ### Next Steps
 

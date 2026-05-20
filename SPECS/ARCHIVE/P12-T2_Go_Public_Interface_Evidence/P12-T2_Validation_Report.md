@@ -18,8 +18,10 @@ scripts, tests, builds, or network operations.
 
 - Added Go analyzer tests for exported functions, methods, structs,
   interfaces, types, constants, variables, grouped declarations, unexported
-  filtering, generated-file skipping, `_test.go` skipping, vendor/testdata
-  skipping, cache reuse, no-source diagnostics, and bad source roots.
+  filtering, generic functions/types/receivers, multi-name const/var
+  declarations, generated-file skipping, `_test.go` skipping, vendor/testdata
+  skipping, symlinked-directory traversal avoidance, cache reuse, cached parse
+  diagnostics, no-source diagnostics, and bad source roots.
 - Added analyzer orchestration coverage for `spec_harvester.go_public_api`.
 - Updated multi-language smoke matrix expectations so Go modules now recommend
   the Go public API analyzer.
@@ -29,10 +31,10 @@ scripts, tests, builds, or network operations.
 
 | Gate | Result |
 | --- | --- |
-| `PYTHONPATH=src python -m pytest` | PASS, `215 passed in 3.70s` |
+| `PYTHONPATH=src python -m pytest` | PASS, `219 passed in 4.02s` |
 | `ruff check src tests` | PASS |
 | `ruff format --check src tests` | PASS, `43 files already formatted` |
-| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, `215 passed`, total coverage `90.66%` |
+| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, `219 passed`, total coverage `90.44%` |
 | `swift package dump-package >/dev/null` | PASS |
 | `swift build --target SpecHarvesterDocs` | PASS |
 
@@ -73,3 +75,6 @@ Repository revision:
   checking, build-tag resolution, cgo handling, or dependency loading.
 - Go `internal/` packages are excluded from public interface extraction because
   they are not part of the external import surface.
+- `go.mod` manifests without non-generated Go source files remain
+  `manifest_only` so analyzer orchestration skips them instead of producing a
+  failed empty interface index.

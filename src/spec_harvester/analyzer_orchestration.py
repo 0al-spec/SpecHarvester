@@ -42,7 +42,6 @@ ANALYZER_ADAPTERS: dict[str, AnalyzerAdapter] = {
     GO_PROJECT_PROFILE_ANALYZER_ID: AnalyzerAdapter(
         plan_id=GO_PROJECT_PROFILE_ANALYZER_ID,
         analyze=analyze_go_public_api,
-        uses_manifest_package_ids=True,
     ),
 }
 
