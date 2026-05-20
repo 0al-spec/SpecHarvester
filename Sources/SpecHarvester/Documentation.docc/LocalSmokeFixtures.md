@@ -68,6 +68,34 @@ If a checkout moves, update only its `checkout` value. If the local `Puzzle`
 checkout later gets an `origin` remote, keep `repository` aligned with that
 public URL. The URL is provenance metadata and is not fetched.
 
+## Multi-Language Synthetic Matrix
+
+The test suite includes a synthetic multi-language smoke matrix that creates
+tiny local checkouts under `tmp_path`, runs `collect-batch`, and verifies
+`ProjectProfile` output without cloning repositories or committing generated
+candidates.
+
+The matrix covers:
+
+- npm JavaScript/TypeScript package evidence
+- SPM Swift package evidence
+- Gradle/Maven Java/Kotlin project evidence
+- Go modules evidence
+- Composer PHP package evidence
+- CMake C/C++ project evidence
+- Xcode/CocoaPods Objective-C/iOS project evidence
+- RubyGems/Bundler package evidence
+- Python packaging evidence
+- a documentation-first manifest-poor README fixture with `semanticHints` and
+  language-neutral `semantic_intent_static_evidence`
+
+The matrix verifies languages, ecosystems, analyzer plan ids/statuses,
+diagnostics, strict public license evidence, and documentation semantic fallback
+behavior. Generated smoke outputs remain ignored local artifacts and should not
+be committed.
+
+Do not commit generated smoke outputs.
+
 ## Collection
 
 Validate the manifest:

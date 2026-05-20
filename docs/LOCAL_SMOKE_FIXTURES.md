@@ -74,6 +74,38 @@ checkout later receives an `origin` remote, keep `repository` aligned with that
 public URL. The collector records the URL as provenance metadata and does not
 fetch it.
 
+## Multi-Language Synthetic Matrix
+
+The committed test suite also carries a synthetic multi-language smoke matrix.
+It creates tiny local checkouts under `tmp_path`, runs `collect-batch`, and
+verifies `ProjectProfile` output without cloning repositories or writing
+generated candidates into the repository.
+
+The matrix covers:
+
+- npm JavaScript/TypeScript package evidence;
+- SPM Swift package evidence;
+- Gradle/Maven Java/Kotlin project evidence;
+- Go modules evidence;
+- Composer PHP package evidence;
+- CMake C/C++ project evidence;
+- Xcode/CocoaPods Objective-C/iOS project evidence;
+- RubyGems/Bundler package evidence;
+- Python packaging evidence;
+- a documentation-first manifest-poor README fixture with `semanticHints` and
+  language-neutral `semantic_intent_static_evidence`.
+
+The matrix verifies languages, ecosystems, analyzer plan ids/statuses,
+diagnostics, strict public license evidence, and documentation semantic fallback
+behavior. It is a regression guard for the deterministic collector and drafter;
+it is not a registry acceptance decision.
+
+Generated smoke outputs remain ignored local artifacts. Do not commit
+`.smoke/output/`, `smoke-output*/`, synthetic batch output, or generated
+candidate directories.
+
+Do not commit generated smoke outputs.
+
 ## Collection
 
 Validate the manifest without reading checkout files:
