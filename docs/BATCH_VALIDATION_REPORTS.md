@@ -28,7 +28,9 @@ By default, `collect-batch` runs in `strict_public` mode for public SpecPM.dev
 intake:
 
 - staged git changes in a checkout fail preflight before snapshots are written;
-- missing allowlisted `LICENSE`/`COPYING` evidence is reported as
+- missing allowlisted license-like evidence, including common root filenames
+  such as `LICENSE`, `LICENSE.txt`, `LICENSE.md`, `COPYING`, `COPYING.txt`,
+  or `COPYING.md`, is reported as
   `missing_license_file` and makes the batch validation report `status: error`.
 
 For private-code spec coverage, pass `--relaxed-private` to disable those public

@@ -22,8 +22,10 @@ JSON review artifact at the report path.
 
 `collect-batch` defaults to `strict_public` mode for public SpecPM.dev intake.
 In this mode staged git changes fail preflight, and missing allowlisted
-`LICENSE`/`COPYING` evidence is reported as `missing_license_file` with
-`status: error`. Use `--relaxed-private` for private-code spec coverage.
+license-like evidence is reported as `missing_license_file` with
+`status: error`. Allowlisted root filenames include `LICENSE`, `LICENSE.txt`,
+`LICENSE.md`, `COPYING`, `COPYING.txt`, and `COPYING.md`. Use
+`--relaxed-private` for private-code spec coverage.
 When a generated report has `status: error`, `collect-batch` exits non-zero.
 
 ## Confidence

@@ -91,7 +91,7 @@ def test_build_batch_validation_report_errors_without_license_in_strict_public_m
     assert record["errors"] == [
         {
             "code": "missing_license_file",
-            "message": "Strict public registry mode requires an allowlisted LICENSE/COPYING file.",
+            "message": "Strict public registry mode requires an allowlisted license-like file.",
         }
     ]
     assert "error:missing_license_file" in record["confidenceReasons"]

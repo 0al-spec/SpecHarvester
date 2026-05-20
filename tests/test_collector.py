@@ -11,6 +11,7 @@ from spec_harvester.collector import (
     HarvestOptions,
     classify_file,
     collect_local_repository,
+    is_license_filename,
     markdown_headings,
     markdown_semantic_hints,
     nested_swift_package_manifests,
@@ -663,7 +664,13 @@ def test_metadata_helpers_cover_static_file_variants(tmp_path: Path) -> None:
     assert classify_file(workflow) == "workflow"
     assert classify_file(tmp_path / "pnpm-workspace.yaml") == "workspace_manifest"
     assert classify_file(tmp_path / "index.ts") == "source_entrypoint"
+    assert classify_file(tmp_path / "LICENSE.txt") == "license"
+    assert classify_file(tmp_path / "COPYING.md") == "license"
     assert classify_file(tmp_path / "notes.txt") == "metadata"
+    assert is_license_filename(tmp_path / "LICENSE.txt")
+    assert is_license_filename(tmp_path / "copying.rst")
+    assert not is_license_filename(tmp_path / "LICENSE.png")
+    assert not is_license_filename(tmp_path / "THIRD_PARTY_LICENSES.txt")
     assert markdown_headings("# One\n## Two\n### Three\n", limit=2) == ["One", "Two"]
     semantic_hints = markdown_semantic_hints(
         "# API Contract\n\nOpenAPI JSON Schema supports request and response validation metadata.\n"

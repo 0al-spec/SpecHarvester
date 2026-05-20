@@ -637,6 +637,56 @@ repositories:
     assert report["records"][0]["errors"][0]["code"] == "missing_license_file"
 
 
+def test_cli_collect_batch_accepts_license_txt_in_strict_report(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    report_path = out / "batch-validation.json"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "pyproject.toml").write_text("[project]\nname = 'demo'\n", encoding="utf-8")
+    (checkout / "LICENSE.txt").write_text(
+        "MIT License\n\nPermission is hereby granted, copyright demo.\n",
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = main(
+        [
+            "collect-batch",
+            str(inputs),
+            "--out",
+            str(out),
+            "--report",
+            str(report_path),
+        ]
+    )
+
+    assert result == 0
+    summary = json.loads(capsys.readouterr().out)
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    harvest = json.loads((out / "demo" / "harvest.json").read_text(encoding="utf-8"))
+    license_record = next(item for item in harvest["files"] if item["path"] == "LICENSE.txt")
+    assert summary["status"] == "ok"
+    assert report["status"] == "ok"
+    assert report["summary"]["highConfidenceCount"] == 1
+    assert report["records"][0]["evidence"]["licenseFileCount"] == 1
+    assert report["records"][0]["errors"] == []
+    assert license_record["kind"] == "license"
+    assert license_record["licenseHint"] == "MIT"
+
+
 def test_cli_collect_batch_treats_nested_swift_manifest_as_package_evidence(
     tmp_path: Path,
     capsys,

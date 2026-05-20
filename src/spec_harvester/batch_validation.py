@@ -150,9 +150,7 @@ def validation_errors(
     return [
         {
             "code": "missing_license_file",
-            "message": (
-                "Strict public registry mode requires an allowlisted LICENSE/COPYING file."
-            ),
+            "message": ("Strict public registry mode requires an allowlisted license-like file."),
         }
     ]
 
