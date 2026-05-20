@@ -135,6 +135,9 @@ def test_go_public_api_skips_tests_generated_vendor_and_testdata(tmp_path: Path)
     vendor = repo / "vendor" / "example.com" / "dependency"
     vendor.mkdir(parents=True)
     (vendor / "dep.go").write_text("package dependency\n\nfunc External() {}\n", encoding="utf-8")
+    internal = repo / "internal" / "secret"
+    internal.mkdir(parents=True)
+    (internal / "secret.go").write_text("package secret\n\nfunc Internal() {}\n", encoding="utf-8")
     testdata = repo / "testdata"
     testdata.mkdir()
     (testdata / "fixture.go").write_text("package fixture\n\nfunc Fixture() {}\n", encoding="utf-8")

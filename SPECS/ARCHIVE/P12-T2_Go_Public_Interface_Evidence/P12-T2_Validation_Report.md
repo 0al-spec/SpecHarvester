@@ -29,7 +29,7 @@ scripts, tests, builds, or network operations.
 
 | Gate | Result |
 | --- | --- |
-| `PYTHONPATH=src python -m pytest` | PASS, `215 passed in 2.56s` |
+| `PYTHONPATH=src python -m pytest` | PASS, `215 passed in 3.70s` |
 | `ruff check src tests` | PASS |
 | `ruff format --check src tests` | PASS, `43 files already formatted` |
 | `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, `215 passed`, total coverage `90.66%` |
@@ -54,9 +54,9 @@ Result: PASS, batch `status: ok`.
 Gin interface index summary:
 
 - `status: complete`
-- `packageCount: 7`
-- `entrypointCount: 58`
-- `symbolCount: 460`
+- `packageCount: 5`
+- `entrypointCount: 56`
+- `symbolCount: 456`
 - `diagnosticCount: 0`
 - `executedAnalyzerIds: ["spec_harvester.go_public_api"]`
 
@@ -71,3 +71,5 @@ Repository revision:
   skipped by analyzer orchestration.
 - The Go analyzer is intentionally syntax-light and does not perform Go type
   checking, build-tag resolution, cgo handling, or dependency loading.
+- Go `internal/` packages are excluded from public interface extraction because
+  they are not part of the external import surface.

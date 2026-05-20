@@ -20,7 +20,8 @@ No Blocker or High findings.
 - [Medium] The initial Go analyzer included exported symbols from `internal/`
   packages. Go `internal` packages are not part of the external public import
   surface, so including them makes the evidence noisier than the intended
-  public interface contract.
+  public interface contract. Follow-up fixed this by excluding `internal/`
+  directories from Go source discovery.
 
 ### Architectural Notes
 
@@ -38,11 +39,10 @@ No Blocker or High findings.
 - Pre-review validation passed before the internal-package scope finding:
   `PYTHONPATH=src python -m pytest`, ruff, format, coverage `90.66%`, SwiftPM
   manifest dump, and DocC build.
-- Follow-up validation must rerun after excluding `internal/`.
+- Follow-up validation after excluding `internal/` passed:
+  `PYTHONPATH=src python -m pytest`, ruff, format, coverage `90.66%`, SwiftPM
+  manifest dump, DocC build, and Gin smoke.
 
 ### Next Steps
 
-- Apply a follow-up patch excluding `internal/` directories from Go public API
-  extraction.
-- Rerun the configured gates and Gin smoke, then update the archived validation
-  report with the post-follow-up counts.
+- No remaining actionable follow-up is required.

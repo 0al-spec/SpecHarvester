@@ -22,6 +22,7 @@ IGNORED_DIR_NAMES = {
     ".ruff_cache",
     "build",
     "dist",
+    "internal",
     "node_modules",
     "testdata",
     "tmp",
