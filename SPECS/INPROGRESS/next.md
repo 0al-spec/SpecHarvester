@@ -1,6 +1,6 @@
 # Next Task: P10-T6 Multi-Language Smoke Matrix
 
-**Status:** READY
+**Status:** SELECTED
 
 **Updated:** 2026-05-20
 
@@ -29,6 +29,6 @@ Xcode/CocoaPods, RubyGems, and Python packaging.
 
 ## Next Step
 
-Plan `P10-T6`, then add reproducible multi-language smoke coverage across
-supported manifest-first ecosystems and at least one documentation-first
+Create the P10-T6 PRD, then add reproducible multi-language smoke coverage
+across supported manifest-first ecosystems and at least one documentation-first
 manifest-poor repository.
