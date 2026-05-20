@@ -829,7 +829,7 @@ def build_semantic_evidence_clusters(
         score = 0
         for entry in entries:
             text = entry["text"].lower()
-            entry_matches = [term for term in rule.terms if term in text]
+            entry_matches = [term for term in rule.terms if semantic_rule_term_matches(text, term)]
             if not entry_matches:
                 continue
             matched_terms.update(entry_matches)
@@ -849,6 +849,12 @@ def build_semantic_evidence_clusters(
             }
         )
     return sorted(clusters, key=lambda item: (-int(item["score"]), str(item["id"])))
+
+
+def semantic_rule_term_matches(text: str, term: str) -> bool:
+    if " " in term or "-" in term:
+        return term in text
+    return re.search(rf"\b{re.escape(term)}\b", text) is not None
 
 
 def has_swift_semantic_context(

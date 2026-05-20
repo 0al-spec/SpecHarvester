@@ -1082,6 +1082,37 @@ def test_draft_spec_package_uses_documentation_semantics_without_package_manifes
     assert "README.md" in spec
 
 
+def test_draft_spec_package_does_not_double_count_singular_plural_semantic_terms(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "commands-only"
+    repo.mkdir()
+    (repo / "README.md").write_text(
+        "# Commands Only\n\n## Commands\n\nUse commands.\n",
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(source=repo, repository="https://github.com/example/commands-only")
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="commands_only.core")
+    )
+
+    readme = next(item for item in snapshot["files"] if item["path"] == "README.md")
+    assert readme["semanticHints"] == ["commands"]
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.workflow.automation_pipeline" not in manifest
+    assert "intent.developer.tooling_surface" not in manifest
+    assert "semantic_intent_static_evidence" not in spec
+    assert "intent.package.public_repository_metadata" in manifest
+
+
 def test_draft_spec_package_keeps_manifest_intents_with_language_neutral_docs(
     tmp_path: Path,
 ) -> None:
