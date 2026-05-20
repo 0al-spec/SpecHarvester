@@ -266,7 +266,7 @@ Acceptance:
 - [x] `P12-T1` Accept common public license filenames such as `LICENSE.txt` in
   strict public mode while keeping the current hard failure for repositories
   with no license-like file.
-- [ ] `P12-T2` Add a deterministic Go public interface analyzer or
+- [x] `P12-T2` Add a deterministic Go public interface analyzer or
   manifest-plus-source fallback for `go.mod` projects, producing compact
   package/function/type
   evidence without executing `go`, package scripts, tests, or network probes.

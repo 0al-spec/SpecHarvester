@@ -87,3 +87,7 @@ probes.
 - `swift package dump-package >/dev/null`
 - `swift build --target SpecHarvesterDocs`
 - Local smoke rerun for Gin if `/Users/egor/Development/GitHub/gin` is available.
+
+---
+**Archived:** 2026-05-21
+**Verdict:** PASS

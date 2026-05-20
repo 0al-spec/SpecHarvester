@@ -1,17 +1,21 @@
-# Next Task: P12-T2 Go Public Interface Evidence
+# Next Task: P12-T3 Domain Intent Inference
 
-**Status:** IN PROGRESS
+**Status:** READY
 
 **Updated:** 2026-05-21
 
 ## Description
 
-Add a deterministic Go public interface analyzer or manifest-plus-source
-fallback for `go.mod` projects, producing compact package/function/type evidence
-without executing `go`, package scripts, tests, or network probes.
+Improve domain intent inference from public interface indexes, package metadata,
+README headings, and documentation evidence so popular web frameworks such as
+Flask and Gin do not collapse to only generic
+`intent.api.contract_surface` / `intent.developer.tooling_surface` claims.
 
 ## Recently Archived
 
+- `P12-T2` Added deterministic Go public interface evidence for `go.mod`
+  projects without executing `go`, package scripts, tests, builds, or network
+  probes.
 - `P12-T1` Accepted common public license filenames such as `LICENSE.txt` in
   strict public mode while preserving the hard failure for repositories with no
   license-like file.
@@ -38,8 +42,6 @@ without executing `go`, package scripts, tests, or network probes.
 
 ## Newly Observed Smoke Gaps
 
-- `gin-gonic/gin` is detected as Go from `go.mod`, but public interface
-  extraction is still `manifest_only`.
 - Generated Flask/Gin intents are too generic for popular web frameworks.
 - SpecPM validation warns on `kind: public_interface_index` because the SpecPM
   evidence-kind vocabulary does not yet include that generated artifact type.
@@ -49,6 +51,6 @@ without executing `go`, package scripts, tests, or network probes.
 
 ## Next Step
 
-Execute `P12-T2` through Flow and PR: add deterministic Go public interface
-evidence or a manifest-plus-source fallback, rerun the Gin smoke path, and
-capture validation evidence.
+Implement `P12-T3` through Flow and PR: improve domain intent inference from
+public interface indexes and static documentation, then rerun the Flask/Gin
+smoke path.
