@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-05-19
+**Last Updated:** 2026-05-20
 
 ## Archived Tasks
 
@@ -45,6 +45,7 @@
 | P10-T2 | [P10-T2_Manifest_First_Ecosystem_Detectors/](P10-T2_Manifest_First_Ecosystem_Detectors/) | 2026-05-19 | PASS |
 | P10-T3 | [P10-T3_Trusted_Classifier_Evaluation/](P10-T3_Trusted_Classifier_Evaluation/) | 2026-05-19 | PASS |
 | P10-T4 | [P10-T4_ProjectProfile_Analyzer_Orchestration/](P10-T4_ProjectProfile_Analyzer_Orchestration/) | 2026-05-20 | PASS |
+| P10-T5 | [P10-T5_Language_Neutral_Semantic_Extraction/](P10-T5_Language_Neutral_Semantic_Extraction/) | 2026-05-20 | PASS |
 
 ## Historical Artifacts
 
@@ -125,3 +126,4 @@
 | 2026-05-19 | P10-T3 | Archived REVIEW_p10_t3_trusted_classifier_evaluation report |
 | 2026-05-20 | P10-T4 | Archived ProjectProfile Analyzer Orchestration (PASS) |
 | 2026-05-20 | P10-T4 | Archived REVIEW_p10_t4_projectprofile_analyzer_orchestration report |
+| 2026-05-20 | P10-T5 | Archived Language-Neutral Semantic Extraction (PASS) |

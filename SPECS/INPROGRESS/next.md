@@ -1,17 +1,20 @@
-# Next Task: P10-T5 Language-Neutral Semantic Extraction
+# Next Task: P10-T6 Multi-Language Smoke Matrix
 
-**Status:** SELECTED
+**Status:** READY
 
 **Updated:** 2026-05-20
 
 ## Description
 
-Add language-neutral semantic extraction for documentation-first repositories
-so README/API-contract evidence can produce meaningful intent clusters even
-when no supported package manifest is present.
+Add a multi-language smoke matrix covering local repositories and synthetic
+fixtures for npm, SPM, Gradle/Maven, Go modules, Composer, CMake,
+Xcode/CocoaPods, RubyGems, and Python packaging.
 
 ## Recently Archived
 
+- `P10-T5` Add language-neutral semantic extraction for documentation-first
+  repositories so README/API-contract evidence can produce meaningful intent
+  clusters even when no supported package manifest is present.
 - `P10-T4` Wire `ProjectProfile` into analyzer orchestration so `collect-batch`
   can recommend or emit public-interface indexes from existing static
   analyzers, including Python `ast` and JavaScript/TypeScript export analyzers,
@@ -26,6 +29,6 @@ when no supported package manifest is present.
 
 ## Next Step
 
-Plan `P10-T5`, then implement deterministic language-neutral documentation and
-API-contract evidence extraction for documentation-first or manifest-poor
-repositories without relying on model-only inference.
+Plan `P10-T6`, then add reproducible multi-language smoke coverage across
+supported manifest-first ecosystems and at least one documentation-first
+manifest-poor repository.
