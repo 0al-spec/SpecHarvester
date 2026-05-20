@@ -112,6 +112,49 @@ def test_docc_and_github_docs_cover_project_profile_analyzer_orchestration() -> 
             assert required in text
 
 
+def test_docc_and_github_docs_cover_language_neutral_semantic_extraction() -> None:
+    github_doc = ROOT / "docs" / "LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LanguageNeutralSemanticExtraction.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "semanticHints",
+            "language-neutral",
+            "README",
+            "API contract",
+            "OpenAPI",
+            "schema validation",
+            "workflow automation",
+            "developer tooling",
+            "documentation knowledge base",
+            "semantic_intent_static_evidence",
+            "intent.api.contract_surface",
+            "intent.metadata.schema_validation",
+            "manifest-poor",
+            "raw documentation bodies",
+        ):
+            assert required in text
+
+    assert "LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:LanguageNeutralSemanticExtraction>" in root_page.read_text(encoding="utf-8")
+    for path in (workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "semanticHints" in text
+        assert "intent.api.contract_surface" in text
+        assert "raw documentation" in text
+
+
 def test_docc_and_github_docs_cover_accepted_candidate_impact_classification() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md"
     docc_doc = (

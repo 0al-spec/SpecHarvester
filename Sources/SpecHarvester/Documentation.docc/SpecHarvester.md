@@ -34,6 +34,7 @@ The canonical source files remain in the repository:
 - `docs/TRUST_BOUNDARY.md`
 - `docs/ANALYZER_SANDBOX_REQUIREMENTS.md`
 - `docs/TRUSTED_CLASSIFIER_EVALUATION.md`
+- `docs/LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
 - `docs/BATCH_VALIDATION_REPORTS.md`
@@ -83,5 +84,6 @@ the host.
 - <doc:TrustBoundary>
 - <doc:AnalyzerSandboxRequirements>
 - <doc:TrustedClassifierEvaluation>
+- <doc:LanguageNeutralSemanticExtraction>
 - <doc:TreeSitterEvaluation>
 - <doc:Roadmap>

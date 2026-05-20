@@ -45,6 +45,11 @@ Current command:
 spec-harvester collect-local <repo> --out <candidate-dir>
 ```
 
+For allowlisted Markdown, the collector can add bounded `semanticHints` for
+language-neutral README, API contract, OpenAPI, schema validation, workflow
+automation, developer tooling, and documentation knowledge base evidence. It
+stores compact terms and file digests, not raw documentation bodies.
+
 ### Batch Validation Reporter
 
 Builds advisory `SpecHarvesterBatchValidationReport` JSON for `collect-batch`
@@ -92,6 +97,12 @@ The draft is intentionally conservative. It records observed package metadata,
 inferred capability IDs, inferred `intent.*` IDs, provenance, review
 constraints, and analyzer-backed inbound interface summaries when a valid index
 is provided. It does not claim upstream endorsement.
+
+When no supported package manifest exists, the drafter may use documentation
+`semanticHints` as advisory `semantic_intent_static_evidence`. Language-neutral
+clusters such as `api.contract_surface`, `metadata.schema_validation`,
+`workflow.automation_pipeline`, and `developer.tooling_surface` can replace the
+generic metadata fallback while remaining review evidence, not registry truth.
 
 The drafter validates compact analyzer output; it does not run analyzers or
 inspect raw repository source during candidate drafting.

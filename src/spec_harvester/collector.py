@@ -113,6 +113,42 @@ LICENSE_TEXT_HINTS = (
     ("MIT", ("permission is hereby granted", "copyright")),
     ("Apache-2.0", ("apache license", "version 2.0")),
 )
+SEMANTIC_HINT_TERMS = (
+    "api contract",
+    "json schema",
+    "api",
+    "contract",
+    "schema",
+    "openapi",
+    "endpoint",
+    "request",
+    "response",
+    "webhook",
+    "graphql",
+    "validation",
+    "validator",
+    "metadata",
+    "manifest",
+    "configuration",
+    "config",
+    "workflow",
+    "automation",
+    "pipeline",
+    "task",
+    "cli",
+    "command",
+    "commands",
+    "developer tool",
+    "tooling",
+    "plugin",
+    "extension",
+    "sdk",
+    "documentation",
+    "guide",
+    "reference",
+    "tutorial",
+    "manual",
+)
 SWIFT_PACKAGE_NAME_PATTERN = re.compile(r"\bPackage\s*\(\s*name\s*:\s*\"([^\"]+)\"")
 SWIFT_PRODUCT_PATTERN = re.compile(
     r"\.(library|executable|plugin|macro)\s*\(\s*name\s*:\s*\"([^\"]+)\""
@@ -771,6 +807,9 @@ def collect_file(root: Path, path: Path) -> dict[str, Any]:
         headings = markdown_headings(text)
         if headings:
             record["headings"] = headings
+        semantic_hints = markdown_semantic_hints(text)
+        if semantic_hints:
+            record["semanticHints"] = semantic_hints
 
     if path.name == "package.json":
         package = parse_package_json(text)
@@ -840,6 +879,18 @@ def markdown_headings(text: str, limit: int = 30) -> list[str]:
         if len(headings) >= limit:
             break
     return headings
+
+
+def markdown_semantic_hints(text: str, limit: int = 40) -> list[str]:
+    normalized = re.sub(r"\s+", " ", text.lower())
+    hints = [term for term in SEMANTIC_HINT_TERMS if semantic_term_matches(normalized, term)]
+    return hints[:limit]
+
+
+def semantic_term_matches(normalized_text: str, term: str) -> bool:
+    if " " in term or "-" in term:
+        return term in normalized_text
+    return re.search(rf"\b{re.escape(term)}\b", normalized_text) is not None
 
 
 def parse_package_json(text: str) -> dict[str, Any] | None:
