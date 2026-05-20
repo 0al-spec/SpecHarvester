@@ -1,6 +1,6 @@
 # Next Task: P12-T2 Go Public Interface Evidence
 
-**Status:** READY
+**Status:** IN PROGRESS
 
 **Updated:** 2026-05-21
 
@@ -49,5 +49,6 @@ without executing `go`, package scripts, tests, or network probes.
 
 ## Next Step
 
-Implement `P12-T2` through Flow and PR: add deterministic Go public interface
-evidence or a manifest-plus-source fallback, then rerun the Gin smoke path.
+Execute `P12-T2` through Flow and PR: add deterministic Go public interface
+evidence or a manifest-plus-source fallback, rerun the Gin smoke path, and
+capture validation evidence.
