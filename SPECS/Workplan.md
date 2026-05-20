@@ -228,3 +228,35 @@ Acceptance:
 - Smoke coverage includes Swift, JavaScript/TypeScript, Python, Java/Kotlin, Go,
   PHP, C/C++, Objective-C/iOS, Ruby, and at least one documentation-first
   repository with no recognized package manifest.
+
+## Phase 11. SpecNode Integration Bridge
+
+- [ ] `P11-T1` Define the SpecHarvester-to-SpecNode artifact bundle and typed
+  job contract for model-assisted candidate refinement without granting model
+  output file-system or shell authority.
+- [ ] `P11-T2` Add a bounded `refine-preview` planning contract that packages
+  `harvest.json`, `ProjectProfile`, optional `PublicInterfaceIndex`,
+  `semanticEvidenceIndex`, validation reports, and draft candidate metadata as
+  compact model input.
+- [ ] `P11-T3` Add an OpenAI-compatible provider adapter boundary for local
+  SpecNode execution, including LM Studio discovery, model listing, health
+  checks, timeout, retry, temperature, and token-budget policy.
+- [ ] `P11-T4` Define schema-validated model output for candidate patch
+  proposals, provenance, usage receipts, and rejection reasons before any
+  generated changes can be applied.
+- [ ] `P11-T5` Add integration smoke coverage using a local SpecNode-compatible
+  provider with weak-model drafting inputs, while preserving deterministic
+  fallback when no provider is available.
+
+Acceptance:
+
+- SpecHarvester remains the deterministic evidence producer and never treats
+  model output as accepted registry truth.
+- SpecNode owns local provider discovery, model execution, typed job policy,
+  provenance, and usage receipt generation.
+- Model-assisted refinement consumes compact deterministic artifacts instead of
+  raw repository source dumps.
+- The bridge rejects arbitrary prompts, shell execution, LLM tools, network
+  expansion, and filesystem access outside the candidate workspace.
+- Provider-specific behavior is optional and can be disabled without breaking
+  `collect-local`, `collect-batch`, `draft`, validation, or smoke tests.
