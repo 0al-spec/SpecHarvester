@@ -7,6 +7,7 @@ import pytest
 
 from spec_harvester.analyzer_orchestration import (
     ANALYZER_ADAPTERS,
+    GO_PROJECT_PROFILE_ANALYZER_ID,
     PYTHON_PROJECT_PROFILE_ANALYZER_ID,
     AnalyzerAdapter,
     run_project_profile_analyzers,
@@ -80,6 +81,33 @@ def test_run_project_profile_analyzers_emits_js_ts_public_interface_index(
     assert index["packages"][0]["language"] == "javascript-typescript"
     assert index["packages"][0]["entrypoints"][0]["path"] == "src/index.ts"
     assert index["summary"]["symbolCount"] == 1
+
+
+def test_run_project_profile_analyzers_emits_go_public_interface_index(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "go-demo"
+    repo.mkdir()
+    (repo / "go.mod").write_text("module example.com/demo\n\ngo 1.24\n", encoding="utf-8")
+    (repo / "api.go").write_text(
+        "package demo\n\ntype Engine struct {}\nfunc New() *Engine { return &Engine{} }\n",
+        encoding="utf-8",
+    )
+    snapshot = collect_local_repository(HarvestOptions(source=repo, revision="abc123"))
+
+    result = run_project_profile_analyzers(source=repo, snapshot=snapshot)
+
+    index = result["index"]
+    assert result["status"] == "complete"
+    assert result["plannedAnalyzerIds"] == [GO_PROJECT_PROFILE_ANALYZER_ID]
+    assert result["executedAnalyzerIds"] == [GO_PROJECT_PROFILE_ANALYZER_ID]
+    assert result["skippedAnalyzerPlans"] == []
+    assert index["sourceRevision"] == "abc123"
+    assert index["analyzers"][0]["id"] == "go-source-public-api"
+    assert index["packages"][0]["id"] == "example.com/demo"
+    assert index["packages"][0]["language"] == "go"
+    assert index["packages"][0]["entrypoints"][0]["path"] == "api.go"
+    assert index["summary"]["symbolCount"] == 2
 
 
 def test_run_project_profile_analyzers_merges_multiple_recommended_indexes(

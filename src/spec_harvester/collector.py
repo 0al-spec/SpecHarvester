@@ -700,6 +700,15 @@ def analyzer_plan_entry(manifest: dict[str, Any]) -> dict[str, Any] | None:
             "reason": "Python packaging evidence can feed Python ast public API analysis.",
             "evidencePaths": [manifest["path"]],
         }
+    if manifest["language"] == "go":
+        return {
+            "id": "spec_harvester.go_public_api",
+            "language": "go",
+            "ecosystem": "go",
+            "status": "recommended",
+            "reason": "go.mod evidence can feed deterministic Go source public API analysis.",
+            "evidencePaths": [manifest["path"]],
+        }
     analyzer_id = f"spec_harvester.{manifest['language'].replace('-', '_')}_manifest_profile"
     return {
         "id": analyzer_id,
