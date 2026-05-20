@@ -93,6 +93,7 @@ def test_docc_and_github_docs_cover_project_profile_analyzer_orchestration() -> 
             "public-interface-index.json",
             "spec_harvester.python_public_api",
             "spec_harvester.js_ts_public_api",
+            "spec_harvester.go_public_api",
             "manifest_only",
             "advisory",
         ):

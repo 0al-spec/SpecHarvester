@@ -436,7 +436,7 @@ def test_collect_local_repository_project_profile_detects_manifest_first_ecosyst
     }
     assert {item["id"] for item in profile["analyzerPlan"]} == {
         "spec_harvester.c_cpp_manifest_profile",
-        "spec_harvester.go_manifest_profile",
+        "spec_harvester.go_public_api",
         "spec_harvester.java_kotlin_manifest_profile",
         "spec_harvester.js_ts_public_api",
         "spec_harvester.objective_c_manifest_profile",

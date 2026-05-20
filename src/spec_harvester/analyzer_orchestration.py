@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
 
+from spec_harvester.go_public_api import analyze_go_public_api
 from spec_harvester.interface_index import (
     new_public_interface_index,
     validate_public_interface_index,
@@ -15,6 +16,7 @@ PUBLIC_INTERFACE_INDEX_FILENAME = "public-interface-index.json"
 
 PYTHON_PROJECT_PROFILE_ANALYZER_ID = "spec_harvester.python_public_api"
 JS_TS_PROJECT_PROFILE_ANALYZER_ID = "spec_harvester.js_ts_public_api"
+GO_PROJECT_PROFILE_ANALYZER_ID = "spec_harvester.go_public_api"
 RECOMMENDED_ANALYZER_STATUS = "recommended"
 
 AnalyzerFunction = Callable[..., dict[str, Any]]
@@ -35,6 +37,11 @@ ANALYZER_ADAPTERS: dict[str, AnalyzerAdapter] = {
     JS_TS_PROJECT_PROFILE_ANALYZER_ID: AnalyzerAdapter(
         plan_id=JS_TS_PROJECT_PROFILE_ANALYZER_ID,
         analyze=analyze_js_ts_public_api,
+        uses_manifest_package_ids=True,
+    ),
+    GO_PROJECT_PROFILE_ANALYZER_ID: AnalyzerAdapter(
+        plan_id=GO_PROJECT_PROFILE_ANALYZER_ID,
+        analyze=analyze_go_public_api,
         uses_manifest_package_ids=True,
     ),
 }
