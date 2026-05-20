@@ -1,6 +1,6 @@
 # Next Task: P10-T5 Language-Neutral Semantic Extraction
 
-**Status:** READY
+**Status:** SELECTED
 
 **Updated:** 2026-05-20
 
@@ -26,6 +26,6 @@ when no supported package manifest is present.
 
 ## Next Step
 
-Plan `P10-T5`, focusing on deterministic documentation/API-contract evidence
-that can improve intent clusters for documentation-first or manifest-poor
+Plan `P10-T5`, then implement deterministic language-neutral documentation and
+API-contract evidence extraction for documentation-first or manifest-poor
 repositories without relying on model-only inference.
