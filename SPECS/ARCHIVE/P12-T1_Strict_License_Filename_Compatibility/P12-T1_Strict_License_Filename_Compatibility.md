@@ -85,3 +85,7 @@ are evidence, not absence.
 - `swift build --target SpecHarvesterDocs`
 - Local smoke rerun for Flask/Gin if `/Users/egor/Development/GitHub/flask`
   and `/Users/egor/Development/GitHub/gin` are available.
+
+---
+**Archived:** 2026-05-21
+**Verdict:** PASS

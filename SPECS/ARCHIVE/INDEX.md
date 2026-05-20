@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-05-20
+**Last Updated:** 2026-05-21
 
 ## Archived Tasks
 
@@ -47,6 +47,7 @@
 | P10-T4 | [P10-T4_ProjectProfile_Analyzer_Orchestration/](P10-T4_ProjectProfile_Analyzer_Orchestration/) | 2026-05-20 | PASS |
 | P10-T5 | [P10-T5_Language_Neutral_Semantic_Extraction/](P10-T5_Language_Neutral_Semantic_Extraction/) | 2026-05-20 | PASS |
 | P10-T6 | [P10-T6_Multi_Language_Smoke_Matrix/](P10-T6_Multi_Language_Smoke_Matrix/) | 2026-05-20 | PASS |
+| P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 
 ## Historical Artifacts
 
@@ -131,3 +132,4 @@
 | 2026-05-20 | P10-T5 | Archived REVIEW_p10_t5_language_neutral_semantic_extraction report |
 | 2026-05-20 | P10-T6 | Archived Multi-Language Smoke Matrix (PASS) |
 | 2026-05-20 | P10-T6 | Archived REVIEW_p10_t6_multi_language_smoke_matrix report |
+| 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
