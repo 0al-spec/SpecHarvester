@@ -1,4 +1,4 @@
-# Next Task: P11-T1 SpecNode Integration Contract
+# Next Task: P12-T1 Strict License Filename Compatibility
 
 **Status:** READY
 
@@ -6,9 +6,9 @@
 
 ## Description
 
-Define the SpecHarvester-to-SpecNode artifact bundle and typed job contract for
-model-assisted candidate refinement without granting model output filesystem or
-shell authority.
+Accept common public license filenames such as `LICENSE.txt` in strict public
+mode while keeping the current hard failure for repositories with no license-like
+file.
 
 ## Recently Archived
 
@@ -28,8 +28,26 @@ shell authority.
   GitHub Linguist-compatible classifiers, `go-enry`, `Syft`, `ScanCode`, and
   Universal Ctags where licensing and deterministic operation are acceptable.
 
+## Parked
+
+- `P11-T1` SpecNode Integration Contract remains parked until deterministic
+  popular-repository smoke hardening is complete.
+
+## Newly Observed Smoke Gaps
+
+- `pallets/flask` has `LICENSE.txt`; strict public mode currently reports
+  `missing_license_file` even though license evidence is present by common
+  GitHub convention.
+- `gin-gonic/gin` is detected as Go from `go.mod`, but public interface
+  extraction is still `manifest_only`.
+- Generated Flask/Gin intents are too generic for popular web frameworks.
+- SpecPM validation warns on `kind: public_interface_index` because the SpecPM
+  evidence-kind vocabulary does not yet include that generated artifact type.
+- SpecPM validation warns on `provides.capabilities.intentIds` because the
+  generated evidence support target is not declared by the current BoundarySpec
+  support-target grammar.
+
 ## Next Step
 
-Keep `P11-T1` parked until SpecNode integration work starts. For now, use the
-completed smoke matrix and ignored `.smoke/` output directories for local
-repository runs.
+Implement `P12-T1` through Flow and PR: update strict license filename detection,
+add regression coverage for `LICENSE.txt`, and rerun the Flask/Gin smoke path.
