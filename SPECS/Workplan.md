@@ -260,3 +260,41 @@ Acceptance:
   expansion, and filesystem access outside the candidate workspace.
 - Provider-specific behavior is optional and can be disabled without breaking
   `collect-local`, `collect-batch`, `draft`, validation, or smoke tests.
+
+## Phase 12. Popular Repository Smoke Hardening
+
+- [ ] `P12-T1` Accept common public license filenames such as `LICENSE.txt` in
+  strict public mode while keeping the current hard failure for repositories
+  with no license-like file.
+- [ ] `P12-T2` Add a deterministic Go public interface analyzer or manifest-plus-
+  source fallback for `go.mod` projects, producing compact package/function/type
+  evidence without executing `go`, package scripts, tests, or network probes.
+- [ ] `P12-T3` Improve domain intent inference from public interface indexes,
+  package metadata, README headings, and documentation evidence so popular web
+  frameworks such as Flask and Gin do not collapse to only generic
+  `intent.api.contract_surface` / `intent.developer.tooling_surface` claims.
+- [ ] `P12-T4` Align `PublicInterfaceIndex` evidence with the SpecPM validation
+  contract: either teach SpecPM that `public_interface_index` is a known evidence
+  kind or emit a currently accepted evidence kind until the registry vocabulary
+  is updated.
+- [ ] `P12-T5` Remove or remap generated evidence support targets that SpecPM does
+  not currently declare, including `provides.capabilities.intentIds`, so
+  generated candidates validate without avoidable advisory warnings.
+- [ ] `P12-T6` Promote the Flask/Gin popular-repository smoke scenario into
+  reproducible local smoke documentation or synthetic tests covering Python with
+  `LICENSE.txt`, Go module manifest-only behavior, SpecPM validation warnings,
+  and governance triage output.
+
+Acceptance:
+
+- Strict public mode accepts allowlisted license filenames with safe extensions
+  such as `.txt`, but still rejects repositories with no license evidence.
+- Go repositories produce deterministic, local-only public interface or fallback
+  evidence that is useful to weak-model drafting.
+- Generated intents for popular web frameworks identify framework/domain
+  semantics when supported by static evidence.
+- SpecPM validation warnings caused by `public_interface_index` and generated
+  support-target vocabulary are either eliminated or tracked as explicit
+  cross-repository contract work.
+- Flask and Gin smoke runs are reproducible and documented without committing
+  generated `.smoke/` output.
