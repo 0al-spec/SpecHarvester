@@ -20,9 +20,6 @@ CONFIDENCE_RANK = {"low": 0, "medium": 1, "high": 2}
 ROOT_FILES = [
     "README.md",
     "README",
-    "LICENSE",
-    "LICENSE.md",
-    "COPYING",
     "package.json",
     "package-lock.json",
     "npm-shrinkwrap.json",
@@ -108,6 +105,8 @@ IGNORED_NESTED_SWIFT_MANIFEST_DIRS = {
 }
 
 MARKDOWN_EXTENSIONS = {".md", ".markdown"}
+LICENSE_FILE_BASENAMES = {"LICENSE", "COPYING"}
+LICENSE_FILE_TEXT_EXTENSIONS = {"", ".txt", ".md", ".markdown", ".rst"}
 PROJECT_PROFILE_MANIFEST_KINDS = {"package_manifest", "workspace_manifest"}
 LICENSE_TEXT_HINTS = (
     ("MIT", ("permission is hereby granted", "copyright")),
@@ -748,6 +747,9 @@ def candidate_files(root: Path) -> list[Path]:
         path = root / relative
         if path.exists():
             seen[path.resolve().as_posix()] = path
+    for path in root.iterdir():
+        if path.exists() and is_license_filename(path):
+            seen[path.resolve().as_posix()] = path
     for pattern in SAFE_GLOBS:
         for path in root.glob(pattern):
             if path.exists():
@@ -819,7 +821,7 @@ def collect_file(root: Path, path: Path) -> dict[str, Any]:
         package = parse_swift_package_manifest(text)
         if package:
             record["package"] = package
-    elif path.name.lower().startswith(("license", "copying")):
+    elif is_license_filename(path):
         license_hint = infer_license_hint(text)
         if license_hint is not None:
             record["licenseHint"] = license_hint
@@ -849,7 +851,7 @@ def classify_file(path: Path) -> str:
         )
     ):
         return "documentation"
-    if path.name.lower().startswith(("license", "copying")):
+    if is_license_filename(path):
         return "license"
     if path.suffix in {".yml", ".yaml"} and ".github/workflows" in path.as_posix():
         return "workflow"
@@ -858,6 +860,15 @@ def classify_file(path: Path) -> str:
     if path.name.startswith("index."):
         return "source_entrypoint"
     return "metadata"
+
+
+def is_license_filename(path: Path) -> bool:
+    name = path.name
+    suffix = path.suffix.lower()
+    if suffix not in LICENSE_FILE_TEXT_EXTENSIONS:
+        return False
+    stem = path.stem if suffix else name
+    return stem.upper() in LICENSE_FILE_BASENAMES
 
 
 def decode_text(data: bytes) -> str | None:

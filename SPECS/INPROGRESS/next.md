@@ -1,17 +1,20 @@
-# Next Task: P12-T1 Strict License Filename Compatibility
+# Next Task: P12-T2 Go Public Interface Evidence
 
 **Status:** READY
 
-**Updated:** 2026-05-20
+**Updated:** 2026-05-21
 
 ## Description
 
-Accept common public license filenames such as `LICENSE.txt` in strict public
-mode while keeping the current hard failure for repositories with no license-like
-file.
+Add a deterministic Go public interface analyzer or manifest-plus-source
+fallback for `go.mod` projects, producing compact package/function/type evidence
+without executing `go`, package scripts, tests, or network probes.
 
 ## Recently Archived
 
+- `P12-T1` Accepted common public license filenames such as `LICENSE.txt` in
+  strict public mode while preserving the hard failure for repositories with no
+  license-like file.
 - `P10-T6` Add a multi-language smoke matrix covering local repositories and
   synthetic fixtures for npm, SPM, Gradle/Maven, Go modules, Composer, CMake,
   Xcode/CocoaPods, RubyGems, Python packaging, and a documentation-first
@@ -35,9 +38,6 @@ file.
 
 ## Newly Observed Smoke Gaps
 
-- `pallets/flask` has `LICENSE.txt`; strict public mode currently reports
-  `missing_license_file` even though license evidence is present by common
-  GitHub convention.
 - `gin-gonic/gin` is detected as Go from `go.mod`, but public interface
   extraction is still `manifest_only`.
 - Generated Flask/Gin intents are too generic for popular web frameworks.
@@ -49,5 +49,5 @@ file.
 
 ## Next Step
 
-Implement `P12-T1` through Flow and PR: update strict license filename detection,
-add regression coverage for `LICENSE.txt`, and rerun the Flask/Gin smoke path.
+Implement `P12-T2` through Flow and PR: add deterministic Go public interface
+evidence or a manifest-plus-source fallback, then rerun the Gin smoke path.
