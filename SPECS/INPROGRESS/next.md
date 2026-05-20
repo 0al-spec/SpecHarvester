@@ -1,12 +1,14 @@
-# Next Task: None
+# Next Task: P11-T1 SpecNode Integration Contract
 
-**Status:** COMPLETE
+**Status:** READY
 
 **Updated:** 2026-05-20
 
 ## Description
 
-All currently planned tasks in `SPECS/Workplan.md` are complete.
+Define the SpecHarvester-to-SpecNode artifact bundle and typed job contract for
+model-assisted candidate refinement without granting model output filesystem or
+shell authority.
 
 ## Recently Archived
 
@@ -28,5 +30,6 @@ All currently planned tasks in `SPECS/Workplan.md` are complete.
 
 ## Next Step
 
-Add new tasks to `SPECS/Workplan.md` before starting another Flow run, or use
-the completed smoke matrix to plan the next project phase.
+Keep `P11-T1` parked until SpecNode integration work starts. For now, use the
+completed smoke matrix and ignored `.smoke/` output directories for local
+repository runs.
