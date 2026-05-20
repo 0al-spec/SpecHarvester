@@ -119,6 +119,22 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help=("Disable strict public registry preflight checks for private-code spec coverage."),
     )
+    collect_batch.add_argument(
+        "--emit-interface-indexes",
+        action="store_true",
+        help=(
+            "Opt in to running built-in static analyzers recommended by "
+            "ProjectProfile.analyzerPlan and write public-interface-index.json."
+        ),
+    )
+    collect_batch.add_argument(
+        "--analyzer-cache-dir",
+        type=Path,
+        help=(
+            "Optional root for per-repository static analyzer caches when "
+            "--emit-interface-indexes is set."
+        ),
+    )
     collect_batch.set_defaults(func=run_collect_batch)
 
     draft = subcommands.add_parser(
@@ -509,6 +525,8 @@ def run_collect_batch(args: argparse.Namespace) -> int:
             max_file_bytes=args.max_file_bytes,
             report=args.report,
             strict_public=not args.relaxed_private,
+            emit_interface_indexes=args.emit_interface_indexes,
+            analyzer_cache_dir=args.analyzer_cache_dir,
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))

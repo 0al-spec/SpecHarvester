@@ -93,6 +93,116 @@ repositories:
     assert not (out / "beta").exists()
 
 
+def test_collect_batch_snapshots_does_not_emit_interface_indexes_by_default(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "pyproject.toml").write_text("[project]\nname = 'demo'\n", encoding="utf-8")
+    (checkout / "demo.py").write_text("def public_api():\n    return None\n", encoding="utf-8")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(BatchCollectOptions(inputs=inputs, out=out))
+
+    assert "interfaceIndex" not in result["collected"][0]
+    assert not (out / "demo" / "public-interface-index.json").exists()
+
+
+def test_collect_batch_snapshots_emits_python_interface_index_when_requested(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    cache = tmp_path / "cache"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "pyproject.toml").write_text("[project]\nname = 'demo'\n", encoding="utf-8")
+    (checkout / "demo.py").write_text("def public_api():\n    return None\n", encoding="utf-8")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+    packageId: demo.python
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(
+        BatchCollectOptions(
+            inputs=inputs,
+            out=out,
+            emit_interface_indexes=True,
+            analyzer_cache_dir=cache,
+        )
+    )
+
+    index_path = out / "demo" / "public-interface-index.json"
+    assert index_path.is_file()
+    interface_index = result["collected"][0]["interfaceIndex"]
+    index = json.loads(index_path.read_text(encoding="utf-8"))
+    assert interface_index["status"] == "complete"
+    assert interface_index["output"] == str(index_path)
+    assert interface_index["executedAnalyzerIds"] == ["spec_harvester.python_public_api"]
+    assert interface_index["summary"]["symbolCount"] == 1
+    assert index["packages"][0]["id"] == "demo.python"
+    assert index["analyzers"][0]["execution"] == "none"
+    assert any(cache.joinpath("demo").glob("*.json"))
+
+
+def test_collect_batch_snapshots_records_interface_index_skips(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "Package.swift").write_text(
+        """
+        // swift-tools-version: 6.0
+        import PackageDescription
+        let package = Package(name: "Demo")
+        """,
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_interface_indexes=True)
+    )
+
+    interface_index = result["collected"][0]["interfaceIndex"]
+    assert interface_index["status"] == "skipped"
+    assert "output" not in interface_index
+    assert interface_index["executedAnalyzerIds"] == []
+    assert interface_index["skippedAnalyzerPlans"][0]["id"] == (
+        "spec_harvester.swift_manifest_public_interface"
+    )
+    assert not (out / "demo" / "public-interface-index.json").exists()
+
+
 def test_collect_batch_snapshots_rejects_unknown_selected_ids(tmp_path: Path) -> None:
     inputs = tmp_path / "inputs"
     out = tmp_path / "candidates"
@@ -430,6 +540,58 @@ repositories:
     assert report["summary"]["highConfidenceCount"] == 1
     assert report["summary"]["errorCount"] == 0
     assert report["records"][0]["id"] == "demo"
+
+
+def test_cli_collect_batch_emits_js_ts_interface_index_when_requested(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/demo",
+                "version": "1.0.0",
+                "exports": {".": "./src/index.ts"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    src = checkout / "src"
+    src.mkdir()
+    (src / "index.ts").write_text("export const answer = 42\n", encoding="utf-8")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = main(
+        [
+            "collect-batch",
+            str(inputs),
+            "--out",
+            str(out),
+            "--emit-interface-indexes",
+        ]
+    )
+
+    assert result == 0
+    summary = json.loads(capsys.readouterr().out)
+    index_path = out / "demo" / "public-interface-index.json"
+    index = json.loads(index_path.read_text(encoding="utf-8"))
+    assert summary["collected"][0]["interfaceIndex"]["output"] == str(index_path)
+    assert summary["collected"][0]["interfaceIndex"]["status"] == "complete"
+    assert index["packages"][0]["id"] == "@example/demo"
+    assert index["summary"]["symbolCount"] == 1
 
 
 def test_cli_collect_batch_returns_error_for_missing_license_in_strict_report(

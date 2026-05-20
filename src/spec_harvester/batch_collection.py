@@ -7,6 +7,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.analyzer_orchestration import (
+    PUBLIC_INTERFACE_INDEX_FILENAME,
+    interface_index_batch_record,
+    run_project_profile_analyzers,
+)
 from spec_harvester.batch_validation import (
     build_batch_validation_report,
     write_batch_validation_report,
@@ -16,6 +21,7 @@ from spec_harvester.collector import (
     HarvestOptions,
     collect_local_repository,
 )
+from spec_harvester.interface_index import render_public_interface_index_json
 from spec_harvester.source_manifest import read_repository_source_manifests
 
 SAFE_REPOSITORY_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
@@ -29,6 +35,8 @@ class BatchCollectOptions:
     max_file_bytes: int = DEFAULT_MAX_FILE_BYTES
     report: Path | None = None
     strict_public: bool = True
+    emit_interface_indexes: bool = False
+    analyzer_cache_dir: Path | None = None
 
 
 def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
@@ -77,7 +85,24 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
                 max_file_bytes=options.max_file_bytes,
             )
         )
-        prepared.append({**plan, "snapshot": snapshot})
+        interface_index_result = None
+        if options.emit_interface_indexes:
+            interface_index_result = run_project_profile_analyzers(
+                source=plan["checkout"],
+                snapshot=snapshot,
+                package_id=repository["packageId"],
+                cache_dir=repository_analyzer_cache_dir(
+                    options.analyzer_cache_dir,
+                    repository["id"],
+                ),
+            )
+        prepared.append(
+            {
+                **plan,
+                "snapshot": snapshot,
+                "interfaceIndexResult": interface_index_result,
+            }
+        )
 
     collected: list[dict[str, Any]] = []
     for plan in prepared:
@@ -91,21 +116,37 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
             json.dumps(snapshot, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
-        collected.append(
-            {
-                "id": repository_id,
-                "repository": repository["repository"],
-                "revision": repository["revision"],
-                "ref": repository["ref"],
-                "checkout": str(checkout),
-                "packageId": repository["packageId"],
-                "labels": repository["labels"],
-                "sourceManifest": repository["sourceManifest"],
-                "output": str(output_path),
-                "fileCount": snapshot["summary"]["fileCount"],
-                "skippedFileCount": snapshot["summary"]["skippedFileCount"],
-            }
-        )
+        interface_index_record = None
+        interface_index_result = plan["interfaceIndexResult"]
+        if interface_index_result is not None:
+            interface_index_output = None
+            interface_index = interface_index_result.get("index")
+            if isinstance(interface_index, dict):
+                interface_index_output = plan["outputDir"] / PUBLIC_INTERFACE_INDEX_FILENAME
+                interface_index_output.write_text(
+                    render_public_interface_index_json(interface_index),
+                    encoding="utf-8",
+                )
+            interface_index_record = interface_index_batch_record(
+                interface_index_result,
+                output_path=interface_index_output,
+            )
+        collected_record = {
+            "id": repository_id,
+            "repository": repository["repository"],
+            "revision": repository["revision"],
+            "ref": repository["ref"],
+            "checkout": str(checkout),
+            "packageId": repository["packageId"],
+            "labels": repository["labels"],
+            "sourceManifest": repository["sourceManifest"],
+            "output": str(output_path),
+            "fileCount": snapshot["summary"]["fileCount"],
+            "skippedFileCount": snapshot["summary"]["skippedFileCount"],
+        }
+        if interface_index_record is not None:
+            collected_record["interfaceIndex"] = interface_index_record
+        collected.append(collected_record)
 
     result = {
         "status": "ok",
@@ -135,6 +176,16 @@ def candidate_directory(out_root: Path, repository_id: str) -> Path:
             f"Repository id {repository_id!r} is unsafe repository id for candidate directory"
         )
     return out_root / repository_id
+
+
+def repository_analyzer_cache_dir(cache_root: Path | None, repository_id: str) -> Path | None:
+    if cache_root is None:
+        return None
+    if not SAFE_REPOSITORY_ID.match(repository_id):
+        raise ValueError(
+            f"Repository id {repository_id!r} is unsafe repository id for analyzer cache directory"
+        )
+    return cache_root / repository_id
 
 
 def resolve_checkout(inputs_root: Path, repository: dict[str, Any]) -> Path:

@@ -201,7 +201,7 @@ Acceptance:
   vendored/generated-file filtering from established tools such as
   GitHub Linguist-compatible classifiers, `go-enry`, `Syft`, `ScanCode`, and
   Universal Ctags where licensing and deterministic operation are acceptable.
-- [ ] `P10-T4` Wire `ProjectProfile` into analyzer orchestration so
+- [x] `P10-T4` Wire `ProjectProfile` into analyzer orchestration so
   `collect-batch` can recommend or emit public-interface indexes from existing
   static analyzers, including Python `ast` and JavaScript/TypeScript export
   analyzers, before `draft` runs.

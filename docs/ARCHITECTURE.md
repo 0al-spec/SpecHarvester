@@ -119,6 +119,15 @@ components. They must meet
 [`ANALYZER_SANDBOX_REQUIREMENTS.md`](ANALYZER_SANDBOX_REQUIREMENTS.md) before
 use.
 
+`collect-batch --emit-interface-indexes` can opt in to analyzer orchestration
+driven by `ProjectProfile.analyzerPlan`. The orchestrator runs only built-in
+static analyzers with `recommended` plan status, currently Python `ast` and
+JavaScript/TypeScript static export analysis, then writes
+`public-interface-index.json` beside `harvest.json`. Plans that are
+`manifest_only` or unsupported are recorded as skipped. Supported plan ids are
+`spec_harvester.python_public_api` and `spec_harvester.js_ts_public_api`; their
+output remains advisory review evidence.
+
 ### Deterministic Candidate Drafter
 
 Consumes evidence snapshots and drafts `specpm.yaml` plus
