@@ -18,34 +18,36 @@ Published DocC site:
    requirements for future metadata-tool and build-tool analyzers
 5. [`TRUSTED_CLASSIFIER_EVALUATION.md`](TRUSTED_CLASSIFIER_EVALUATION.md):
    registry and trust contract for optional external classifiers
-6. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
+6. [`LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md`](LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md):
+   bounded README/API-contract semantic hints for manifest-poor repositories
+7. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
    batch harvesting input manifest schema
-7. [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md): deterministic batch snapshot
+8. [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md): deterministic batch snapshot
    collection from local checkouts
-8. [`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md): advisory
+9. [`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md): advisory
    confidence and policy reports for batch output
-9. [`ACCEPTED_MANIFEST_ENTRIES.md`](ACCEPTED_MANIFEST_ENTRIES.md): prepare
+10. [`ACCEPTED_MANIFEST_ENTRIES.md`](ACCEPTED_MANIFEST_ENTRIES.md): prepare
    PR-ready accepted package manifest entries
-10. [`GOVERNANCE_REPORTS.md`](GOVERNANCE_REPORTS.md): detect duplicate intent
+11. [`GOVERNANCE_REPORTS.md`](GOVERNANCE_REPORTS.md): detect duplicate intent
    and capability claims across accepted and candidate metadata
-11. [`NAMESPACE_UPSTREAM_REPORTS.md`](NAMESPACE_UPSTREAM_REPORTS.md): review
+12. [`NAMESPACE_UPSTREAM_REPORTS.md`](NAMESPACE_UPSTREAM_REPORTS.md): review
    namespace consistency and upstream relationship metadata across roots
-12. [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
+13. [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
     proposal automation with preflight validation and diff-scope guardrails
-13. [`ACCEPTED_PACKAGE_UPDATE_LIFECYCLE.md`](ACCEPTED_PACKAGE_UPDATE_LIFECYCLE.md):
+14. [`ACCEPTED_PACKAGE_UPDATE_LIFECYCLE.md`](ACCEPTED_PACKAGE_UPDATE_LIFECYCLE.md):
    accepted package version immutability and update decision policy
-14. [`ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md`](ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md):
+15. [`ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md`](ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md):
    build PR-ready accepted package update artifacts
-15. [`ACCEPTED_CANDIDATE_DIFF_REPORTS.md`](ACCEPTED_CANDIDATE_DIFF_REPORTS.md):
+16. [`ACCEPTED_CANDIDATE_DIFF_REPORTS.md`](ACCEPTED_CANDIDATE_DIFF_REPORTS.md):
     compare accepted and candidate package metadata before update proposals
-16. [`ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md`](ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md):
+17. [`ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md`](ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md):
     classify accepted-candidate diff output by metadata, interface, license,
     provenance, capability, and intent impact
-17. [`LICENSE_PROVENANCE_RISK_REPORTS.md`](LICENSE_PROVENANCE_RISK_REPORTS.md):
+18. [`LICENSE_PROVENANCE_RISK_REPORTS.md`](LICENSE_PROVENANCE_RISK_REPORTS.md):
     review candidate and accepted packages for licensing and provenance risk
-18. [`LOCAL_SMOKE_FIXTURES.md`](LOCAL_SMOKE_FIXTURES.md): reproducible local
+19. [`LOCAL_SMOKE_FIXTURES.md`](LOCAL_SMOKE_FIXTURES.md): reproducible local
     smoke fixtures for adjacent real repository checkouts
-19. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+20. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -57,6 +59,8 @@ Published DocC site:
 - [`TRUSTED_CLASSIFIER_EVALUATION.md`](TRUSTED_CLASSIFIER_EVALUATION.md):
   evaluation record for Linguist-compatible classifiers, Syft, ScanCode,
   Universal Ctags, and Tree-sitter
+- [`LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md`](LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md):
+  README/API-contract semantic extraction for manifest-poor repositories
 - [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
   automation for proposing accepted-source diffs into SpecPM
 

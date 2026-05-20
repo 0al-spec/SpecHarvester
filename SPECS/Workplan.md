@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-05-19
+Updated: 2026-05-20
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -205,7 +205,7 @@ Acceptance:
   `collect-batch` can recommend or emit public-interface indexes from existing
   static analyzers, including Python `ast` and JavaScript/TypeScript export
   analyzers, before `draft` runs.
-- [ ] `P10-T5` Add language-neutral semantic extraction for documentation-first
+- [x] `P10-T5` Add language-neutral semantic extraction for documentation-first
   repositories so README/API-contract evidence can produce meaningful intent
   clusters even when no supported package manifest is present.
 - [ ] `P10-T6` Add a multi-language smoke matrix covering local repositories and

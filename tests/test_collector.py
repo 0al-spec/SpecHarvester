@@ -12,6 +12,7 @@ from spec_harvester.collector import (
     classify_file,
     collect_local_repository,
     markdown_headings,
+    markdown_semantic_hints,
     nested_swift_package_manifests,
     parse_package_json,
     parse_swift_package_manifest,
@@ -664,9 +665,62 @@ def test_metadata_helpers_cover_static_file_variants(tmp_path: Path) -> None:
     assert classify_file(tmp_path / "index.ts") == "source_entrypoint"
     assert classify_file(tmp_path / "notes.txt") == "metadata"
     assert markdown_headings("# One\n## Two\n### Three\n", limit=2) == ["One", "Two"]
+    semantic_hints = markdown_semantic_hints(
+        "# API Contract\n\nOpenAPI JSON Schema supports request and response validation metadata.\n"
+    )
+    assert {
+        "api contract",
+        "json schema",
+        "api",
+        "contract",
+        "schema",
+        "openapi",
+        "request",
+        "response",
+        "validation",
+        "metadata",
+    }.issubset(set(semantic_hints))
     assert parse_package_json("{") is None
     assert parse_package_json("[]") is None
     assert parse_package_json('{"exports":"./dist/index.js"}') == {"exports": ["."]}
+
+
+def test_collect_local_repository_records_markdown_semantic_hints(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "contract-hub"
+    repo.mkdir()
+    (repo / "README.md").write_text(
+        textwrap.dedent(
+            """
+            # Contract Hub
+
+            ## API Contract
+
+            OpenAPI JSON Schema supports request and response validation metadata.
+            """
+        ),
+        encoding="utf-8",
+    )
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    readme = snapshot["files"][0]
+    assert readme["path"] == "README.md"
+    assert readme["kind"] == "documentation"
+    assert readme["headings"] == ["Contract Hub", "API Contract"]
+    assert {
+        "api contract",
+        "json schema",
+        "api",
+        "contract",
+        "schema",
+        "openapi",
+        "request",
+        "response",
+        "validation",
+        "metadata",
+    }.issubset(set(readme["semanticHints"]))
 
 
 def test_cli_writes_harvest_snapshot(tmp_path: Path, capsys) -> None:  # type: ignore[no-untyped-def]
@@ -958,6 +1012,150 @@ def test_draft_spec_package_uses_fallback_metadata_without_package_manifests(
     assert "id: generated_package.core" in manifest
     assert "license: UNKNOWN" in manifest
     assert "intent.package.public_repository_metadata" in spec
+
+
+def test_draft_spec_package_uses_documentation_semantics_without_package_manifests(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "contract-hub"
+    repo.mkdir()
+    (repo / "README.md").write_text(
+        textwrap.dedent(
+            """
+            # Contract Hub
+
+            ## API Contract
+
+            OpenAPI JSON Schema describes endpoint request and response payloads.
+
+            ## Workflow Automation
+
+            CLI commands run schema validation for metadata manifest configuration.
+            """
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            repository="https://github.com/example/contract-hub",
+            revision="abc123",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="contract_hub.core")
+    )
+
+    readme = next(item for item in snapshot["files"] if item["path"] == "README.md")
+    assert {
+        "api contract",
+        "openapi",
+        "schema",
+        "request",
+        "response",
+        "validation",
+        "workflow",
+        "automation",
+        "cli",
+        "commands",
+        "manifest",
+        "configuration",
+    }.issubset(set(readme["semanticHints"]))
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.api.contract_surface" in manifest
+    assert "intent.metadata.schema_validation" in manifest
+    assert "intent.workflow.automation_pipeline" in manifest
+    assert "intent.developer.tooling_surface" in manifest
+    assert "intent.package.public_repository_metadata" not in manifest
+    assert "Provide language-neutral API contract documentation" in spec
+    assert "id: semantic_intent_static_evidence" in spec
+    assert "id: api.contract_surface" in spec
+    assert "id: metadata.schema_validation" in spec
+    assert "id: workflow.automation_pipeline" in spec
+    assert "id: developer.tooling_surface" in spec
+    assert "README.md" in spec
+
+
+def test_draft_spec_package_does_not_double_count_singular_plural_semantic_terms(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "commands-only"
+    repo.mkdir()
+    (repo / "README.md").write_text(
+        "# Commands Only\n\n## Commands\n\nUse commands.\n",
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(source=repo, repository="https://github.com/example/commands-only")
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="commands_only.core")
+    )
+
+    readme = next(item for item in snapshot["files"] if item["path"] == "README.md")
+    assert readme["semanticHints"] == ["commands"]
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.workflow.automation_pipeline" not in manifest
+    assert "intent.developer.tooling_surface" not in manifest
+    assert "semantic_intent_static_evidence" not in spec
+    assert "intent.package.public_repository_metadata" in manifest
+
+
+def test_draft_spec_package_keeps_manifest_intents_with_language_neutral_docs(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "react-contracts"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/react-contracts",
+                "version": "1.0.0",
+                "description": "React library for rendering contract docs.",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (repo / "README.md").write_text(
+        textwrap.dedent(
+            """
+            # React Contracts
+
+            ## API Contract
+
+            OpenAPI schema request and response validation.
+            """
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="react_contracts.core")
+    )
+
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    assert "intent.javascript.react_library" in manifest
+    assert "intent.api.contract_surface" not in manifest
+    assert "React library for rendering contract docs." in spec
+    assert "id: semantic_intent_static_evidence" in spec
+    assert "id: api.contract_surface" in spec
 
 
 def test_draft_spec_package_uses_swift_product_intents(tmp_path: Path) -> None:

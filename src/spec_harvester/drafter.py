@@ -60,6 +60,80 @@ class SemanticDomainRule:
 
 SEMANTIC_DOMAIN_RULES = (
     SemanticDomainRule(
+        cluster_id="api.contract_surface",
+        intent_id="intent.api.contract_surface",
+        label="API Contract Surface",
+        terms=(
+            "api contract",
+            "api",
+            "contract",
+            "schema",
+            "openapi",
+            "endpoint",
+            "request",
+            "response",
+            "webhook",
+            "graphql",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="metadata.schema_validation",
+        intent_id="intent.metadata.schema_validation",
+        label="Metadata Schema Validation",
+        terms=(
+            "metadata",
+            "schema",
+            "validation",
+            "validator",
+            "manifest",
+            "configuration",
+            "config",
+            "json schema",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="workflow.automation_pipeline",
+        intent_id="intent.workflow.automation_pipeline",
+        label="Workflow Automation Pipeline",
+        terms=(
+            "workflow",
+            "automation",
+            "pipeline",
+            "task",
+            "validation",
+            "command",
+            "commands",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="developer.tooling_surface",
+        intent_id="intent.developer.tooling_surface",
+        label="Developer Tooling Surface",
+        terms=(
+            "cli",
+            "command",
+            "commands",
+            "developer tool",
+            "tooling",
+            "plugin",
+            "extension",
+            "sdk",
+            "configuration",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="documentation.knowledge_base",
+        intent_id="intent.documentation.knowledge_base",
+        label="Documentation Knowledge Base",
+        terms=(
+            "documentation",
+            "guide",
+            "reference",
+            "tutorial",
+            "manual",
+        ),
+    ),
+    SemanticDomainRule(
         cluster_id="swift.specification_pattern",
         intent_id="intent.swift.specification_pattern",
         label="Swift Specification Pattern",
@@ -170,28 +244,44 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     package_records = package_manifest_records(snapshot)
     license_records = license_file_records(snapshot)
     documentation_records = documentation_file_records(snapshot)
+    primary_package_records = capability_source_records(package_records)
     semantic_profile = infer_semantic_intent_profile(
         repository_name,
         package_records,
         documentation_records,
         public_interface_index,
     )
-    primary_package_records = capability_source_records(package_records)
     capability_entries = build_capability_entries(
         package_id,
         primary_package_records,
         semantic_profile,
     )
+    semantic_profile_for_summary = (
+        semantic_profile
+        if semantic_profile is not None
+        and (
+            semantic_profile_applies_to_manifest_capabilities(semantic_profile)
+            or not capability_entries
+        )
+        else None
+    )
     if not capability_entries:
+        fallback_summary = (
+            semantic_profile.summary
+            if semantic_profile is not None
+            else (f"Describe observed public package metadata for {display_name(repository_name)}.")
+        )
+        fallback_intents = (
+            semantic_profile.intent_ids
+            if semantic_profile is not None
+            else ["intent.package.public_repository_metadata"]
+        )
         capability_entries = [
             {
                 "id": package_id,
                 "role": "primary",
-                "summary": (
-                    "Describe observed public package metadata for "
-                    f"{display_name(repository_name)}."
-                ),
-                "intentIds": ["intent.package.public_repository_metadata"],
+                "summary": fallback_summary,
+                "intentIds": fallback_intents,
             }
         ]
 
@@ -268,8 +358,8 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         },
         "intent": {
             "summary": (
-                semantic_profile.summary
-                if semantic_profile is not None
+                semantic_profile_for_summary.summary
+                if semantic_profile_for_summary is not None
                 else infer_intent_summary(package_name, primary_package_records)
             )
         },
@@ -459,6 +549,12 @@ def build_capability_entries(
 ) -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
     seen_ids: set[str] = set()
+    semantic_profile_for_manifest_capabilities = (
+        semantic_profile
+        if semantic_profile is not None
+        and semantic_profile_applies_to_manifest_capabilities(semantic_profile)
+        else None
+    )
     for record in capability_source_records(package_records):
         package = record["package"]
         package_name = package.get("name")
@@ -467,7 +563,11 @@ def build_capability_entries(
         label = package_label(package_name)
         capability_id = unique_id(f"{package_id}.{label}", seen_ids)
         description = package.get("description")
-        summary = capability_summary(package_name, description, semantic_profile)
+        summary = capability_summary(
+            package_name,
+            description,
+            semantic_profile_for_manifest_capabilities,
+        )
         role = "secondary" if label in {"monorepo", "workspace", "root"} else "primary"
         entries.append(
             {
@@ -475,8 +575,8 @@ def build_capability_entries(
                 "role": role,
                 "summary": summary,
                 "intentIds": (
-                    semantic_profile.intent_ids
-                    if semantic_profile is not None
+                    semantic_profile_for_manifest_capabilities.intent_ids
+                    if semantic_profile_for_manifest_capabilities is not None
                     else infer_intent_ids(package_name, summary, package)
                 ),
             }
@@ -485,6 +585,15 @@ def build_capability_entries(
     if entries and all(entry.get("role") != "primary" for entry in entries):
         entries[0]["role"] = "primary"
     return entries
+
+
+def semantic_profile_applies_to_manifest_capabilities(
+    semantic_profile: SemanticIntentProfile,
+) -> bool:
+    return any(
+        intent_id.startswith(("intent.swift.", "intent.ios."))
+        for intent_id in semantic_profile.intent_ids
+    )
 
 
 def capability_summary(
@@ -689,6 +798,9 @@ def semantic_text_entries(
         headings = record.get("headings")
         if isinstance(headings, list):
             parts.extend(str(heading) for heading in headings if isinstance(heading, str))
+        semantic_hints = record.get("semanticHints")
+        if isinstance(semantic_hints, list):
+            parts.extend(str(hint) for hint in semantic_hints if isinstance(hint, str))
         entries.append({"path": path, "text": " ".join(parts)})
 
     if public_interface_index is not None:
@@ -717,7 +829,7 @@ def build_semantic_evidence_clusters(
         score = 0
         for entry in entries:
             text = entry["text"].lower()
-            entry_matches = [term for term in rule.terms if term in text]
+            entry_matches = [term for term in rule.terms if semantic_rule_term_matches(text, term)]
             if not entry_matches:
                 continue
             matched_terms.update(entry_matches)
@@ -737,6 +849,12 @@ def build_semantic_evidence_clusters(
             }
         )
     return sorted(clusters, key=lambda item: (-int(item["score"]), str(item["id"])))
+
+
+def semantic_rule_term_matches(text: str, term: str) -> bool:
+    if " " in term or "-" in term:
+        return term in text
+    return re.search(rf"\b{re.escape(term)}\b", text) is not None
 
 
 def has_swift_semantic_context(
@@ -845,6 +963,28 @@ def semantic_summary(repository_name: str, intents: set[str]) -> str:
             "Provide a screen-level composition framework for declarative iOS screen "
             "state, layout, bindings, and lifecycle hooks."
         )
+    if "intent.api.contract_surface" in intents:
+        return (
+            "Provide language-neutral API contract documentation and schema evidence "
+            f"for {package_name}."
+        )
+    if "intent.metadata.schema_validation" in intents:
+        return (
+            "Provide language-neutral metadata schema validation and manifest evidence "
+            f"for {package_name}."
+        )
+    if "intent.workflow.automation_pipeline" in intents:
+        return (
+            "Provide language-neutral workflow automation and validation pipeline evidence "
+            f"for {package_name}."
+        )
+    if "intent.developer.tooling_surface" in intents:
+        return (
+            "Provide language-neutral developer tooling, CLI, and configuration evidence "
+            f"for {package_name}."
+        )
+    if "intent.documentation.knowledge_base" in intents:
+        return f"Provide language-neutral documentation knowledge-base evidence for {package_name}."
     return (
         "Provide deterministic public package metadata and semantic intent evidence "
         f"for {package_name}."

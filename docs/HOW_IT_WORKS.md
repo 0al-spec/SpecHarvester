@@ -102,6 +102,22 @@ Observed intent IDs are useful for search, duplicate detection, and future
 authoring assistance, but they are not canonical semantic authority by
 themselves.
 
+For manifest-poor repositories, observed intent can also come from bounded
+language-neutral documentation hints. `collect-local` may record compact
+`semanticHints` from allowlisted README, API contract, OpenAPI, schema
+validation, workflow automation, developer tooling, or documentation knowledge
+base Markdown. `draft` may convert those hints into
+`semantic_intent_static_evidence` clusters such as
+`intent.api.contract_surface`, `intent.metadata.schema_validation`,
+`intent.workflow.automation_pipeline`, and
+`intent.developer.tooling_surface`.
+
+This path stores terms and evidence paths only. It does not store raw
+documentation bodies, execute repository code, install dependencies, run package
+scripts, or contact networks.
+
+raw documentation bodies remain excluded from generated evidence artifacts.
+
 ### Accepted Package
 
 An accepted package is a reviewed candidate that maintainers choose to publish
@@ -209,6 +225,11 @@ The collector may read allowlisted static files such as:
 - workspace manifests
 - public source entrypoints
 - GitHub workflow files
+
+For allowlisted Markdown, the collector can store headings and compact
+`semanticHints` for language-neutral review signals such as API contract,
+OpenAPI, schema validation, workflow automation, developer tooling, and
+documentation knowledge base evidence.
 
 The bootstrap allowlist is intentionally biased toward JavaScript and package
 workspace repositories. Python, Rust, Go, and other ecosystem-specific
