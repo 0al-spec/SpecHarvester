@@ -20,13 +20,13 @@ def test_analyze_go_public_api_extracts_exported_declarations(tmp_path: Path) ->
 package demo
 
 const (
-    Version = "1.0.0"
+    Version, BuildNumber = "1.0.0", 7
     privateConst = "hidden"
 )
 
 const Build = "dev"
 
-var DefaultWriter Writer
+var DefaultWriter, DefaultReader Writer
 
 var (
     DefaultMode = "debug"
@@ -44,11 +44,15 @@ type (
     Binder interface { Bind(any) error }
 )
 
+type Set[T any] struct {}
+
 type router struct {}
 
 func New() *Engine { return &Engine{} }
+func Map[T any](items []T, fn func(T) T) []T { return items }
 func hidden() {}
 func (engine *Engine) Run(addr ...string) error { return nil }
+func (set *Set[T]) Add(item T) {}
 func (router *router) HiddenReceiver() {}
 """,
         encoding="utf-8",
@@ -85,7 +89,7 @@ func Default(method string, contentType string) Binding { return nil }
         "status": "complete",
         "packageCount": 2,
         "entrypointCount": 2,
-        "symbolCount": 12,
+        "symbolCount": 17,
         "diagnosticCount": 0,
     }
     packages = {package["path"]: package for package in index["packages"]}
@@ -96,22 +100,30 @@ func Default(method string, contentType string) Binding { return nil }
     assert sorted(root_symbols) == [
         "Binder",
         "Build",
+        "BuildNumber",
         "DefaultMode",
+        "DefaultReader",
         "DefaultWriter",
         "Engine",
         "Engine.Run",
         "HandlerFunc",
+        "Map",
         "New",
         "RouterGroup",
+        "Set",
+        "Set.Add",
         "Version",
     ]
     assert root_symbols["Binder"]["kind"] == "interface"
     assert root_symbols["Engine"]["kind"] == "struct"
     assert root_symbols["HandlerFunc"]["kind"] == "type"
     assert root_symbols["RouterGroup"]["kind"] == "struct"
+    assert root_symbols["Set"]["kind"] == "struct"
+    assert root_symbols["Map"]["signature"] == "func Map[T any](items []T, fn func(T) T) []T"
     assert (
         root_symbols["Engine.Run"]["signature"] == "func (engine *Engine) Run(addr ...string) error"
     )
+    assert root_symbols["Set.Add"]["signature"] == "func (set *Set[T]) Add(item T)"
     assert "hidden" not in root_symbols
     assert "router.HiddenReceiver" not in root_symbols
 
@@ -146,7 +158,6 @@ def test_go_public_api_skips_tests_generated_vendor_and_testdata(tmp_path: Path)
 
     assert [path.relative_to(repo).as_posix() for path in go_source_files(repo)] == [
         "api.go",
-        "generated.go",
     ]
     package = index["packages"][0]
     assert package["entrypoints"] == [
@@ -203,10 +214,39 @@ def test_go_public_api_reports_missing_package_declaration(tmp_path: Path) -> No
     (repo / "go.mod").write_text("module example.com/demo\n", encoding="utf-8")
     (repo / "broken.go").write_text("func MissingPackage() {}\n", encoding="utf-8")
 
-    index = analyze_go_public_api(repo)
+    index = analyze_go_public_api(repo, cache_dir=tmp_path / "cache")
+    cached = analyze_go_public_api(repo, cache_dir=tmp_path / "cache")
 
     assert index["summary"]["status"] == "failed"
+    assert cached == index
     assert index["packages"] == []
     assert index["diagnostics"][0]["level"] == "error"
     assert index["diagnostics"][0]["path"] == "broken.go"
     assert "package declaration" in index["diagnostics"][0]["message"]
+
+
+def test_go_public_api_preserves_comment_markers_inside_strings(tmp_path: Path) -> None:
+    repo = tmp_path / "go-demo"
+    repo.mkdir()
+    (repo / "go.mod").write_text("module example.com/demo\n", encoding="utf-8")
+    (repo / "api.go").write_text(
+        'package demo\n\nconst URL = "https://example.com/path"\nfunc Visible() {}\n',
+        encoding="utf-8",
+    )
+
+    index = analyze_go_public_api(repo)
+
+    symbols = index["packages"][0]["entrypoints"][0]["symbols"]
+    assert [symbol["name"] for symbol in symbols] == ["URL", "Visible"]
+
+
+def test_go_source_files_does_not_traverse_symlinked_directories(tmp_path: Path) -> None:
+    repo = tmp_path / "go-demo"
+    outside = tmp_path / "outside"
+    repo.mkdir()
+    outside.mkdir()
+    (repo / "api.go").write_text("package demo\n\nfunc Visible() {}\n", encoding="utf-8")
+    (outside / "outside.go").write_text("package outside\n\nfunc External() {}\n", encoding="utf-8")
+    (repo / "linked").symlink_to(outside, target_is_directory=True)
+
+    assert [path.relative_to(repo).as_posix() for path in go_source_files(repo)] == ["api.go"]

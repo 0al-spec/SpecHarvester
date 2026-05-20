@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from spec_harvester.classifier_registry import default_classifier_policy
+from spec_harvester.go_public_api import go_source_files
 
 SNAPSHOT_KIND = "SpecHarvesterEvidenceSnapshot"
 SNAPSHOT_SCHEMA_VERSION = 1
@@ -525,7 +526,7 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
         },
         "analyzerPolicy": default_analyzer_trust_policy(),
         "classifierPolicy": default_classifier_policy(),
-        "projectProfile": build_project_profile(files),
+        "projectProfile": build_project_profile(files, source=source),
         "files": files,
         "skippedFiles": skipped_files,
         "summary": {
@@ -537,7 +538,9 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
     }
 
 
-def build_project_profile(files: list[dict[str, Any]]) -> dict[str, Any]:
+def build_project_profile(
+    files: list[dict[str, Any]], *, source: Path | None = None
+) -> dict[str, Any]:
     languages: dict[str, dict[str, Any]] = {}
     ecosystems: dict[str, dict[str, Any]] = {}
     analyzer_plan: dict[str, dict[str, Any]] = {}
@@ -579,7 +582,7 @@ def build_project_profile(files: list[dict[str, Any]]) -> dict[str, Any]:
                 "packageManager": manifest["packageManager"],
             },
         )
-        plan = analyzer_plan_entry(manifest)
+        plan = analyzer_plan_entry(manifest, source=source)
         if plan is not None:
             merge_analyzer_plan(analyzer_plan, plan)
 
@@ -670,7 +673,9 @@ def sorted_profile_entries(entries: dict[str, dict[str, Any]]) -> list[dict[str,
     return sorted(entries.values(), key=lambda item: item["id"])
 
 
-def analyzer_plan_entry(manifest: dict[str, Any]) -> dict[str, Any] | None:
+def analyzer_plan_entry(
+    manifest: dict[str, Any], *, source: Path | None = None
+) -> dict[str, Any] | None:
     if manifest["language"] == "javascript":
         return {
             "id": "spec_harvester.js_ts_public_api",
@@ -701,6 +706,17 @@ def analyzer_plan_entry(manifest: dict[str, Any]) -> dict[str, Any] | None:
             "evidencePaths": [manifest["path"]],
         }
     if manifest["language"] == "go":
+        if source is not None and not has_go_source_for_manifest(source, manifest["path"]):
+            return {
+                "id": "spec_harvester.go_public_api",
+                "language": "go",
+                "ecosystem": "go",
+                "status": "manifest_only",
+                "reason": (
+                    "go.mod evidence is available, but no non-generated Go source files were found."
+                ),
+                "evidencePaths": [manifest["path"]],
+            }
         return {
             "id": "spec_harvester.go_public_api",
             "language": "go",
@@ -721,6 +737,13 @@ def analyzer_plan_entry(manifest: dict[str, Any]) -> dict[str, Any] | None:
         ),
         "evidencePaths": [manifest["path"]],
     }
+
+
+def has_go_source_for_manifest(source: Path, manifest_path: str) -> bool:
+    manifest_root = (source / manifest_path).parent
+    if not manifest_root.exists() or not manifest_root.is_dir():
+        return False
+    return bool(go_source_files(manifest_root))
 
 
 def merge_analyzer_plan(

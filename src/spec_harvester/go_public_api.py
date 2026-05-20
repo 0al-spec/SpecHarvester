@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import re
 from pathlib import Path
 from typing import Any
@@ -35,18 +36,21 @@ GENERATED_MARKERS = (
 )
 
 IDENTIFIER_RE = r"[A-Za-z_][A-Za-z0-9_]*"
+TYPE_PARAMETERS_RE = r"(?:\s*\[[^\]]+\])?"
 PACKAGE_RE = re.compile(r"^\s*package\s+(?P<name>" + IDENTIFIER_RE + r")\b", re.MULTILINE)
 MODULE_RE = re.compile(r"^\s*module\s+(?P<module>\S+)\s*$", re.MULTILINE)
 FUNC_RE = re.compile(
     r"^func\s+"
     r"(?:(?P<receiver>\([^)]*\))\s*)?"
-    r"(?P<name>" + IDENTIFIER_RE + r")\s*"
+    r"(?P<name>" + IDENTIFIER_RE + r")" + TYPE_PARAMETERS_RE + r"\s*"
     r"(?P<params>\([^{}]*\))\s*"
     r"(?P<returns>.*)$",
     re.DOTALL,
 )
-TYPE_RE = re.compile(r"^type\s+(?P<name>" + IDENTIFIER_RE + r")\s*(?:=\s*)?(?P<body>.*)$")
-VALUE_RE = re.compile(r"^(?P<name>" + IDENTIFIER_RE + r")\b(?P<body>.*)$")
+TYPE_RE = re.compile(
+    r"^type\s+(?P<name>" + IDENTIFIER_RE + r")" + TYPE_PARAMETERS_RE + r"\s*(?:=\s*)?(?P<body>.*)$"
+)
+VALUE_NAME_RE = re.compile(r"(?P<name>" + IDENTIFIER_RE + r")\b")
 
 
 def analyze_go_public_api(
@@ -74,7 +78,8 @@ def analyze_go_public_api(
         cached_payload = read_cached_go_payload(cache, relative, digest)
         if cached_payload is not None:
             package_path, _package_name, entrypoint, file_diagnostics = cached_payload
-            package_entrypoints.setdefault(package_path, []).append(entrypoint)
+            if package_path is not None and entrypoint is not None:
+                package_entrypoints.setdefault(package_path, []).append(entrypoint)
             diagnostics.extend(file_diagnostics)
             continue
 
@@ -150,14 +155,30 @@ def go_module_path(root: Path) -> str | None:
 
 def go_source_files(root: Path) -> list[Path]:
     files: list[Path] = []
-    for path in root.rglob("*.go"):
-        if should_skip_go_source(path, root):
-            continue
-        files.append(path)
+    for current_root, dirs, filenames in os.walk(root, followlinks=False):
+        current = Path(current_root)
+        dirs[:] = [dirname for dirname in sorted(dirs) if not should_skip_go_dir(current / dirname)]
+        for filename in sorted(filenames):
+            path = current / filename
+            if should_skip_go_source(path, root):
+                continue
+            try:
+                data = path.read_bytes()
+            except OSError:
+                continue
+            if is_generated_go_file(data):
+                continue
+            files.append(path)
     return sorted(files, key=lambda item: item.relative_to(root).as_posix())
 
 
+def should_skip_go_dir(path: Path) -> bool:
+    return path.is_symlink() or path.name.startswith(".") or path.name in IGNORED_DIR_NAMES
+
+
 def should_skip_go_source(path: Path, root: Path) -> bool:
+    if not path.name.endswith(".go"):
+        return True
     if path.is_symlink() or not path.is_file() or path.name.endswith("_test.go"):
         return True
     try:
@@ -173,7 +194,7 @@ def is_generated_go_file(data: bytes) -> bool:
 
 
 def package_name_from_source(text: str) -> str | None:
-    clean = strip_block_comments(strip_line_comments(text))
+    clean = strip_go_non_code(text)
     match = PACKAGE_RE.search(clean)
     return match.group("name") if match is not None else None
 
@@ -190,7 +211,7 @@ def package_import_path(module_path: str, package_path: str) -> str:
 
 
 def go_symbols(text: str, path: str, digest: str) -> list[dict[str, Any]]:
-    clean = strip_strings(strip_block_comments(strip_line_comments(text)))
+    clean = strip_go_non_code(text)
     symbols: dict[str, dict[str, Any]] = {}
     lines = clean.splitlines()
     index = 0
@@ -219,10 +240,9 @@ def go_symbols(text: str, path: str, digest: str) -> list[dict[str, Any]]:
                     symbols[symbol["name"]] = symbol
                 continue
             elif stripped.startswith("const "):
-                symbol = value_symbol(
+                for symbol in value_symbols(
                     stripped.removeprefix("const ").strip(), "constant", path, digest
-                )
-                if symbol is not None:
+                ):
                     symbols[symbol["name"]] = symbol
             elif stripped.startswith("var ("):
                 block, index = collect_parenthesized_declaration(lines, index)
@@ -230,10 +250,9 @@ def go_symbols(text: str, path: str, digest: str) -> list[dict[str, Any]]:
                     symbols[symbol["name"]] = symbol
                 continue
             elif stripped.startswith("var "):
-                symbol = value_symbol(
+                for symbol in value_symbols(
                     stripped.removeprefix("var ").strip(), "variable", path, digest
-                )
-                if symbol is not None:
+                ):
                     symbols[symbol["name"]] = symbol
         brace_depth = max(0, brace_depth + lines[index].count("{") - lines[index].count("}"))
         index += 1
@@ -287,8 +306,7 @@ def grouped_value_symbols(
 ) -> list[dict[str, Any]]:
     symbols: list[dict[str, Any]] = []
     for line in lines:
-        symbol = value_symbol(line, kind, path, digest)
-        if symbol is not None:
+        for symbol in value_symbols(line, kind, path, digest):
             symbols.append(symbol)
     return symbols
 
@@ -327,19 +345,30 @@ def type_symbol(declaration: str, path: str, digest: str) -> dict[str, Any] | No
     return base_symbol(name, kind, path, digest, signature=normalize_spaces(declaration))
 
 
-def value_symbol(
+def value_symbols(
     declaration: str,
     kind: str,
     path: str,
     digest: str,
-) -> dict[str, Any] | None:
-    match = VALUE_RE.match(declaration)
-    if match is None:
-        return None
-    name = match.group("name")
-    if not is_exported_identifier(name):
-        return None
-    return base_symbol(name, kind, path, digest, signature=normalize_spaces(declaration))
+) -> list[dict[str, Any]]:
+    symbols: list[dict[str, Any]] = []
+    for name in value_names(declaration):
+        if not is_exported_identifier(name):
+            continue
+        symbols.append(
+            base_symbol(name, kind, path, digest, signature=normalize_spaces(declaration))
+        )
+    return symbols
+
+
+def value_names(declaration: str) -> list[str]:
+    left_side = declaration.split("=", 1)[0]
+    names: list[str] = []
+    for part in left_side.split(","):
+        match = VALUE_NAME_RE.search(part.strip())
+        if match is not None:
+            names.append(match.group("name"))
+    return names
 
 
 def receiver_type_name(receiver: str | None) -> str | None:
@@ -350,7 +379,11 @@ def receiver_type_name(receiver: str | None) -> str | None:
     parts = [part for part in clean.split() if part]
     if not parts:
         return None
-    return parts[-1]
+    return strip_type_parameters(parts[-1])
+
+
+def strip_type_parameters(name: str) -> str:
+    return re.sub(r"\[.*\]$", "", name)
 
 
 def is_exported_identifier(name: str) -> bool:
@@ -380,11 +413,7 @@ def strip_line_comments(text: str) -> str:
     return re.sub(r"//.*?$", "", text, flags=re.MULTILINE)
 
 
-def strip_block_comments(text: str) -> str:
-    return re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
-
-
-def strip_strings(text: str) -> str:
+def strip_go_non_code(text: str) -> str:
     result: list[str] = []
     index = 0
     quote: str | None = None
@@ -392,6 +421,21 @@ def strip_strings(text: str) -> str:
     while index < len(text):
         char = text[index]
         if quote is None:
+            if text.startswith("//", index):
+                while index < len(text) and text[index] != "\n":
+                    result.append(" ")
+                    index += 1
+                continue
+            if text.startswith("/*", index):
+                result.extend("  ")
+                index += 2
+                while index < len(text) - 1 and not text.startswith("*/", index):
+                    result.append("\n" if text[index] == "\n" else " ")
+                    index += 1
+                if index < len(text) - 1:
+                    result.extend("  ")
+                    index += 2
+                continue
             if char in {'"', "'", "`"}:
                 quote = char
                 result.append(" ")
@@ -424,7 +468,7 @@ def read_cached_go_payload(
     cache: AnalyzerCache | None,
     path: str,
     digest: str,
-) -> tuple[str, str, dict[str, Any], list[dict[str, Any]]] | None:
+) -> tuple[str | None, str | None, dict[str, Any] | None, list[dict[str, Any]]] | None:
     if cache is None:
         return None
     payload = cache.read(
@@ -441,7 +485,12 @@ def read_cached_go_payload(
     if not isinstance(diagnostics, list):
         return None
     if entrypoint is None:
-        return None
+        if not diagnostics:
+            return None
+        for diagnostic in diagnostics:
+            if not is_diagnostic_for_path(diagnostic, path):
+                return None
+        return None, None, None, diagnostics
     if not isinstance(package_path, str) or not isinstance(package_name, str):
         return None
     if not is_entrypoint_for_path(entrypoint, path):

@@ -110,6 +110,30 @@ def test_run_project_profile_analyzers_emits_go_public_interface_index(
     assert index["summary"]["symbolCount"] == 2
 
 
+def test_run_project_profile_analyzers_uses_package_id_fallback_for_nested_go_module(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "monorepo"
+    repo.mkdir()
+    package = repo / "packages" / "service"
+    package.mkdir(parents=True)
+    (package / "go.mod").write_text("module example.com/service\n", encoding="utf-8")
+    (package / "api.go").write_text("package service\n\nfunc Visible() {}\n", encoding="utf-8")
+    snapshot = collect_local_repository(HarvestOptions(source=repo, revision="abc123"))
+
+    result = run_project_profile_analyzers(
+        source=repo,
+        snapshot=snapshot,
+        package_id="fallback.go",
+    )
+
+    index = result["index"]
+    assert result["status"] == "complete"
+    assert result["plannedAnalyzerIds"] == [GO_PROJECT_PROFILE_ANALYZER_ID]
+    assert index["packages"][0]["id"] == "fallback.go/packages/service"
+    assert index["summary"]["symbolCount"] == 1
+
+
 def test_run_project_profile_analyzers_merges_multiple_recommended_indexes(
     tmp_path: Path,
 ) -> None:
@@ -226,6 +250,27 @@ def test_run_project_profile_analyzers_skips_manifest_only_plans(tmp_path: Path)
     assert result["skippedAnalyzerPlans"] == [
         {
             "id": "spec_harvester.swift_manifest_public_interface",
+            "status": "manifest_only",
+            "reason": "project_profile_plan_not_recommended",
+        }
+    ]
+
+
+def test_run_project_profile_analyzers_skips_go_manifest_without_sources(tmp_path: Path) -> None:
+    repo = tmp_path / "go-demo"
+    repo.mkdir()
+    (repo / "go.mod").write_text("module example.com/demo\n", encoding="utf-8")
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    result = run_project_profile_analyzers(source=repo, snapshot=snapshot)
+
+    assert result["status"] == "skipped"
+    assert result["index"] is None
+    assert result["plannedAnalyzerIds"] == [GO_PROJECT_PROFILE_ANALYZER_ID]
+    assert result["executedAnalyzerIds"] == []
+    assert result["skippedAnalyzerPlans"] == [
+        {
+            "id": GO_PROJECT_PROFILE_ANALYZER_ID,
             "status": "manifest_only",
             "reason": "project_profile_plan_not_recommended",
         }
