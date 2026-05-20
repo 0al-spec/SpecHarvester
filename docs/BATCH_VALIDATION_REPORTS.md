@@ -28,9 +28,10 @@ By default, `collect-batch` runs in `strict_public` mode for public SpecPM.dev
 intake:
 
 - staged git changes in a checkout fail preflight before snapshots are written;
-- missing allowlisted license-like evidence, including common root filenames
-  such as `LICENSE`, `LICENSE.txt`, `LICENSE.md`, `COPYING`, `COPYING.txt`,
-  or `COPYING.md`, is reported as
+- missing allowlisted license-like evidence. The allowlisted root filenames are
+  `LICENSE`, `LICENSE.txt`, `LICENSE.md`, `LICENSE.markdown`, `LICENSE.rst`,
+  `COPYING`, `COPYING.txt`, `COPYING.md`, `COPYING.markdown`, and
+  `COPYING.rst`; absence is reported as
   `missing_license_file` and makes the batch validation report `status: error`.
 
 For private-code spec coverage, pass `--relaxed-private` to disable those public
@@ -85,9 +86,10 @@ Current error codes:
 
 - `missing_license_file`
 
-In `strict_public` mode, this means no allowlisted `LICENSE`, `LICENSE.md`, or
-`COPYING` file was collected for a candidate intended for public SpecPM.dev
-review.
+In `strict_public` mode, this means no allowlisted license-like root filename
+was collected for a candidate intended for public SpecPM.dev review. The shared
+allowlist is `LICENSE` or `COPYING` with no extension or with one of `.txt`,
+`.md`, `.markdown`, or `.rst`.
 
 ## Stable Warning Codes
 
