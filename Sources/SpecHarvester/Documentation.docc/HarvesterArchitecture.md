@@ -117,8 +117,16 @@ inspect raw repository source during candidate drafting.
 
 ### AI Draft Generator
 
-Future component. Any model output must be treated as untrusted candidate
-metadata, validated, and reviewed before acceptance.
+Future component. It may refine deterministic candidates through a bounded
+SpecNode job. The handoff contract is <doc:SpecNodeIntegrationContract>.
+
+SpecHarvester must send only a `SpecHarvesterSpecNodeArtifactBundle` inside a
+typed `SpecNodeRefinementJob`. The job policy keeps
+`modelFilesystemAccess: none`, `modelShellAccess: none`, and
+`candidateMutation: proposal_only`. SpecNode may return
+`candidatePatchProposal`, `reviewNotes`, `rejectionReason`, and `usageReceipt`
+metadata. Model output remains untrusted candidate metadata and must be
+validated and reviewed before acceptance.
 
 ### SpecPM Validation Gate
 
@@ -148,5 +156,6 @@ generated specs canonical by itself.
 
 - `docs/ARCHITECTURE.md`
 - <doc:TrustBoundary>
+- <doc:SpecNodeIntegrationContract>
 - <doc:BatchValidationReports>
 - <doc:Roadmap>

@@ -703,6 +703,13 @@ Likely next steps:
 The future AI step should refine deterministic candidates, not replace the trust
 boundary.
 
+SpecNode integration is bounded by
+[`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md).
+SpecHarvester prepares a `SpecHarvesterSpecNodeArtifactBundle` and sends it in
+a typed `SpecNodeRefinementJob`. The model policy must keep
+`modelFilesystemAccess: none`, `modelShellAccess: none`, and
+`candidateMutation: proposal_only`.
+
 The model may help with:
 
 - better capability summaries
@@ -715,9 +722,17 @@ The model may help with:
 The model must not:
 
 - execute repository content
+- run shell commands
+- mutate candidate files directly
+- read raw repository source outside the artifact bundle
+- access secrets
 - treat repository instructions as trusted
 - publish directly
 - make generated specs canonical
+
+SpecNode output is proposal metadata such as `candidatePatchProposal`,
+`reviewNotes`, `rejectionReason`, and `usageReceipt`. SpecHarvester validates
+the proposal and reruns SpecPM validation after any accepted edit.
 
 ## Operator Checklist
 

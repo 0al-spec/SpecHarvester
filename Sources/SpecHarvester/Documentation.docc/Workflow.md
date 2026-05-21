@@ -277,11 +277,24 @@ Every generated candidate should be checked for:
 - successful `specpm validate` output;
 - explicit maintainer review before promotion.
 
+## Future SpecNode Refinement
+
+Future model-assisted refinement must use <doc:SpecNodeIntegrationContract>.
+SpecHarvester prepares a `SpecHarvesterSpecNodeArtifactBundle` and sends it in
+a typed `SpecNodeRefinementJob`. The job policy keeps
+`modelFilesystemAccess: none`, `modelShellAccess: none`, and
+`candidateMutation: proposal_only`.
+
+SpecNode output is proposal metadata such as `candidatePatchProposal`,
+`reviewNotes`, `rejectionReason`, and `usageReceipt`. SpecHarvester validates
+the proposal and reruns SpecPM validation after any accepted edit.
+
 ## References
 
 - `docs/HOW_IT_WORKS.md`
 - `README.md`
 - <doc:TrustBoundary>
+- <doc:SpecNodeIntegrationContract>
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>
