@@ -270,7 +270,7 @@ Acceptance:
   manifest-plus-source fallback for `go.mod` projects, producing compact
   package/function/type
   evidence without executing `go`, package scripts, tests, or network probes.
-- [ ] `P12-T3` Improve domain intent inference from public interface indexes,
+- [x] `P12-T3` Improve domain intent inference from public interface indexes,
   package metadata, README headings, and documentation evidence so popular web
   frameworks such as Flask and Gin do not collapse to only generic
   `intent.api.contract_surface` / `intent.developer.tooling_surface` claims.

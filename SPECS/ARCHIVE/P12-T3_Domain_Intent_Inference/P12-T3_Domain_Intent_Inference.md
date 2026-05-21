@@ -1,6 +1,6 @@
 # P12-T3 Domain Intent Inference
 
-Status: In Progress
+Status: Archived
 Created: 2026-05-21
 Task: `P12-T3` Improve domain intent inference from public interface indexes,
 package metadata, README headings, and documentation evidence.
@@ -84,3 +84,7 @@ metadata.
 - `swift build --target SpecHarvesterDocs`
 - Local Flask/Gin smoke rerun if the `.smoke/inputs` entries and repository
   checkouts are available.
+
+---
+**Archived:** 2026-05-21
+**Verdict:** PASS

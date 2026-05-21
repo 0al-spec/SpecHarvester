@@ -49,6 +49,7 @@
 | P10-T6 | [P10-T6_Multi_Language_Smoke_Matrix/](P10-T6_Multi_Language_Smoke_Matrix/) | 2026-05-20 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
+| P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
 
 ## Historical Artifacts
 
@@ -137,3 +138,4 @@
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
 | 2026-05-21 | P12-T2 | Archived REVIEW_p12_t2_go_public_interface_evidence report |
+| 2026-05-21 | P12-T3 | Archived Domain Intent Inference (PASS) |

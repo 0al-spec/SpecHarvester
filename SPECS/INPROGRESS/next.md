@@ -1,18 +1,22 @@
-# Next Task: P12-T3 Domain Intent Inference
+# Next Task: P12-T4 PublicInterfaceIndex Evidence Contract Alignment
 
-**Status:** IN_PROGRESS
+**Status:** READY
 
 **Updated:** 2026-05-21
 
 ## Description
 
-Improve domain intent inference from public interface indexes, package metadata,
-README headings, and documentation evidence so popular web frameworks such as
-Flask and Gin do not collapse to only generic
-`intent.api.contract_surface` / `intent.developer.tooling_surface` claims.
+Align generated `PublicInterfaceIndex` evidence with the current SpecPM
+validation contract. SpecPM validation currently warns on
+`kind: public_interface_index` because the evidence-kind vocabulary does not
+yet include that generated artifact type.
 
 ## Recently Archived
 
+- `P12-T3` Added deterministic web-framework domain intent inference from
+  documentation hints and public interface indexes so Flask/Gin candidates now
+  include web framework, routing, middleware, and request/response context
+  intents instead of only generic API/tooling claims.
 - `P12-T2` Added deterministic Go public interface evidence for `go.mod`
   projects without executing `go`, package scripts, tests, builds, or network
   probes.
@@ -30,10 +34,6 @@ Flask and Gin do not collapse to only generic
   can recommend or emit public-interface indexes from existing static
   analyzers, including Python `ast` and JavaScript/TypeScript export analyzers,
   before `draft` runs.
-- `P10-T3` Evaluate and integrate trusted language classification and
-  vendored/generated-file filtering from established tools such as
-  GitHub Linguist-compatible classifiers, `go-enry`, `Syft`, `ScanCode`, and
-  Universal Ctags where licensing and deterministic operation are acceptable.
 
 ## Parked
 
@@ -42,7 +42,6 @@ Flask and Gin do not collapse to only generic
 
 ## Newly Observed Smoke Gaps
 
-- Generated Flask/Gin intents are too generic for popular web frameworks.
 - SpecPM validation warns on `kind: public_interface_index` because the SpecPM
   evidence-kind vocabulary does not yet include that generated artifact type.
 - SpecPM validation warns on `provides.capabilities.intentIds` because the
@@ -51,6 +50,6 @@ Flask and Gin do not collapse to only generic
 
 ## Next Step
 
-Implement `P12-T3` through Flow and PR: improve domain intent inference from
-public interface indexes and static documentation, then rerun the Flask/Gin
-smoke path.
+Implement `P12-T4` through Flow and PR: align `PublicInterfaceIndex` evidence
+emission with the SpecPM validation contract or emit a compatible evidence kind
+until the registry vocabulary is updated.
