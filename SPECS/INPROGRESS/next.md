@@ -1,6 +1,6 @@
 # Next Task: P11-T1 SpecNode Integration Contract
 
-**Status:** READY
+**Status:** IN_PROGRESS
 
 **Updated:** 2026-05-21
 
