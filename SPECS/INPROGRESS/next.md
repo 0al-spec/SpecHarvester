@@ -1,8 +1,8 @@
 # Next Task: P11-T5 SpecNode-Compatible Provider Smoke Coverage
 
-**Status:** READY
+**Status:** SELECTED
 
-**Updated:** 2026-05-21
+**Updated:** 2026-05-22
 
 ## Description
 
