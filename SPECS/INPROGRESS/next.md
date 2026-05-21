@@ -1,17 +1,21 @@
-# Next Task: P11-T4 Candidate Patch Proposal Output Schema
+# Next Task: P11-T5 SpecNode-Compatible Provider Smoke Coverage
 
-**Status:** IN_PROGRESS
+**Status:** READY
 
 **Updated:** 2026-05-21
 
 ## Description
 
-Define schema-validated model output for candidate patch proposals, provenance,
-usage receipts, and rejection reasons before any generated changes can be
-applied.
+Add integration smoke coverage using a local SpecNode-compatible provider with
+weak-model drafting inputs, while preserving deterministic fallback when no
+provider is available.
 
 ## Recently Archived
 
+- `P11-T4` Defined schema-validated model output for
+  `SpecNodeCandidatePatchProposal`, `SpecNodeCandidatePatchOperation`,
+  proposal provenance, usage receipts, review notes, and
+  `SpecNodeRejectionReason` before any generated change can be applied.
 - `P11-T3` Defined the OpenAI-compatible provider adapter boundary for local
   SpecNode execution, including LM Studio discovery, endpoint allowlisting,
   health checks, model listing, timeout, retry, temperature, token-budget
@@ -67,6 +71,6 @@ applied.
 
 ## Next Step
 
-Implement `P11-T4` through Flow and PR: define schema-validated model output
-for candidate patch proposals, provenance, usage receipts, and rejection
-reasons before any generated changes can be applied.
+Implement `P11-T5` through Flow and PR: add integration smoke coverage using a
+local SpecNode-compatible provider with weak-model drafting inputs, while
+preserving deterministic fallback when no provider is available.

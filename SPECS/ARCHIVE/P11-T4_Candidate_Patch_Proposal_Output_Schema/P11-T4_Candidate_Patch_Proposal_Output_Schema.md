@@ -1,6 +1,6 @@
 # P11-T4 Candidate Patch Proposal Output Schema
 
-Status: In Progress
+Status: Archived
 Created: 2026-05-21
 Task: `P11-T4` Define schema-validated model output for candidate patch
 proposals, provenance, usage receipts, and rejection reasons before any
@@ -85,3 +85,6 @@ or applying any local edit.
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
 - `swift package dump-package >/dev/null`
 - `swift build --target SpecHarvesterDocs`
+
+Archived: 2026-05-21
+Verdict: PASS

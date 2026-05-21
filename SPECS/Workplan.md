@@ -241,7 +241,7 @@ Acceptance:
 - [x] `P11-T3` Add an OpenAI-compatible provider adapter boundary for local
   SpecNode execution, including LM Studio discovery, model listing, health
   checks, timeout, retry, temperature, and token-budget policy.
-- [ ] `P11-T4` Define schema-validated model output for candidate patch
+- [x] `P11-T4` Define schema-validated model output for candidate patch
   proposals, provenance, usage receipts, and rejection reasons before any
   generated changes can be applied.
 - [ ] `P11-T5` Add integration smoke coverage using a local SpecNode-compatible
