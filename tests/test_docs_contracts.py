@@ -553,6 +553,124 @@ def test_docc_and_github_docs_cover_specnode_patch_proposal_contract() -> None:
         assert "direct file writes" in text
 
 
+def test_docc_and_github_docs_cover_specnode_provider_smoke_coverage() -> None:
+    github_doc = ROOT / "docs" / "SPECNODE_PROVIDER_SMOKE_COVERAGE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeProviderSmokeCoverage.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    integration_doc = ROOT / "docs" / "SPECNODE_INTEGRATION_CONTRACT.md"
+    integration_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecNodeIntegrationContract.md"
+    )
+    refine_doc = ROOT / "docs" / "SPECNODE_REFINE_PREVIEW_CONTRACT.md"
+    refine_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeRefinePreviewContract.md"
+    )
+    provider_doc = ROOT / "docs" / "SPECNODE_PROVIDER_ADAPTER_CONTRACT.md"
+    provider_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeProviderAdapterContract.md"
+    )
+    patch_doc = ROOT / "docs" / "SPECNODE_PATCH_PROPOSAL_CONTRACT.md"
+    patch_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodePatchProposalContract.md"
+    )
+    architecture_doc = ROOT / "docs" / "ARCHITECTURE.md"
+    architecture_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "HarvesterArchitecture.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecNodeProviderSmokeRun",
+            "SpecNode-compatible provider",
+            "SpecHarvesterSpecNodeArtifactBundle",
+            "SpecHarvesterRefinePreviewPlan",
+            "SpecNodeRefinementJob",
+            "SpecNodeRefinementResult",
+            "SpecNodeCandidatePatchProposal",
+            "SpecNodeRejectionReason",
+            "provider_unavailable",
+            "compactModelInput",
+            "weak-model",
+            "rawRepositorySource: excluded",
+            "documentationBodies: excluded",
+            "dependencyDirectories: excluded",
+            "providerLogs: excluded",
+            "secrets: excluded",
+            "arbitraryPrompts: excluded",
+            "usageReceipt",
+            "SpecNodeProviderUsageReceipt",
+            "requiresSchemaValidation: true",
+            "requiresHumanReview: true",
+            "requiresSpecPMValidationAfterApply: true",
+            "specpm.yaml",
+            "specs/*.spec.yaml",
+            "rawUnifiedDiff",
+            "fullFileReplacement",
+            "shellCommand",
+            "gitCommand",
+            "networkFetch",
+            "providerCall",
+            "packageManagerCommand",
+            "testRunnerCommand",
+            "buildToolCommand",
+            "direct file writes",
+            "does not call LM Studio",
+            "does not mutate candidate files",
+            "SpecHarvester does not contact providers",
+        ):
+            assert required in text
+
+    assert "SPECNODE_PROVIDER_SMOKE_COVERAGE.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecNodeProviderSmokeCoverage>" in root_page.read_text(encoding="utf-8")
+
+    for path in (
+        integration_doc,
+        integration_docc,
+        refine_doc,
+        refine_docc,
+        provider_doc,
+        provider_docc,
+        patch_doc,
+        patch_docc,
+        architecture_doc,
+        architecture_docc,
+        workflow_doc,
+        workflow_docc,
+    ):
+        text = path.read_text(encoding="utf-8")
+        assert (
+            "SpecNodeProviderSmokeCoverage" in text or "SPECNODE_PROVIDER_SMOKE_COVERAGE.md" in text
+        )
+
+    for path in (architecture_doc, architecture_docc, workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecNodeProviderSmokeRun" in text
+        assert "SpecNodeRefinementResult" in text
+        assert "provider_unavailable" in text
+
+
 def test_docc_and_github_docs_cover_accepted_candidate_impact_classification() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md"
     docc_doc = (

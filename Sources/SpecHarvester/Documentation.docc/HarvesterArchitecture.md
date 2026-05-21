@@ -122,6 +122,7 @@ SpecNode job. The handoff contract is <doc:SpecNodeIntegrationContract>.
 The compact planning contract is <doc:SpecNodeRefinePreviewContract>.
 The provider adapter contract is <doc:SpecNodeProviderAdapterContract>.
 The patch proposal output contract is <doc:SpecNodePatchProposalContract>.
+Executable provider smoke coverage is <doc:SpecNodeProviderSmokeCoverage>.
 
 SpecHarvester must send only a `SpecHarvesterSpecNodeArtifactBundle` inside a
 typed `SpecNodeRefinementJob`. The job policy keeps
@@ -148,6 +149,15 @@ Model output must conform to `SpecNodeCandidatePatchProposal` or
 `SpecNodeRejectionReason`. Candidate changes are structured operations against
 `specpm.yaml` and `specs/*.spec.yaml`, not raw diffs, shell commands, provider
 calls, or direct file writes.
+
+The local `SpecNodeProviderSmokeRun` harness exercises this bridge with an
+in-process SpecNode-compatible provider stub. It validates a
+`SpecNodeRefinementResult` and returns a deterministic
+`provider_unavailable` `SpecNodeRejectionReason` when no provider is
+configured. The smoke path still uses compact `SpecHarvesterRefinePreviewPlan`
+input and keeps `rawRepositorySource: excluded`, `documentationBodies:
+excluded`, `providerLogs: excluded`, `secrets: excluded`, and
+`arbitraryPrompts: excluded`.
 
 ### SpecPM Validation Gate
 
@@ -181,5 +191,6 @@ generated specs canonical by itself.
 - <doc:SpecNodeRefinePreviewContract>
 - <doc:SpecNodeProviderAdapterContract>
 - <doc:SpecNodePatchProposalContract>
+- <doc:SpecNodeProviderSmokeCoverage>
 - <doc:BatchValidationReports>
 - <doc:Roadmap>

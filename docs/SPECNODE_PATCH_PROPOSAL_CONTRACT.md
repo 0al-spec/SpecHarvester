@@ -327,6 +327,9 @@ accepted-source proposal.
 P11-T4 does not implement JSON Schema validators, model execution, provider
 calls, local patch application, or accepted-source mutation. It defines the
 output boundary that later implementation must enforce.
+P11-T5 adds structural smoke validation for local provider-stub output in
+[`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md);
+that validation is a smoke gate, not accepted registry truth.
 
 ## Review Rule
 

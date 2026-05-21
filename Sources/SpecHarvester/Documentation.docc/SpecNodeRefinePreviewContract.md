@@ -174,5 +174,6 @@ validation status.
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeProviderAdapterContract>
 - <doc:SpecNodePatchProposalContract>
+- <doc:SpecNodeProviderSmokeCoverage>
 - <doc:Workflow>
 - <doc:TrustBoundary>

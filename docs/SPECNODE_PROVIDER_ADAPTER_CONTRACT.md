@@ -341,6 +341,10 @@ the final `candidatePatchProposal` schema, or add real provider smoke coverage.
 Those are later implementation tasks.
 P11-T4 defines the schema-validated patch proposal output boundary in
 [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md).
+P11-T5 adds local in-process SpecNode-compatible provider smoke coverage in
+[`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md);
+that smoke coverage does not call LM Studio or make SpecHarvester own provider
+execution.
 
 ## Review Rule
 
