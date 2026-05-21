@@ -12,8 +12,8 @@ uses those hints only as advisory static evidence.
 
 This path is meant for public SpecPM.dev candidates where a README, API
 contract, OpenAPI guide, schema validation guide, workflow automation document,
-developer tooling manual, or documentation knowledge base may be the strongest
-public signal available.
+developer tooling manual, web framework public API, or documentation knowledge
+base may be the strongest public signal available.
 
 ## Evidence Contract
 
@@ -26,7 +26,8 @@ Supported documentation paths include root `README` files, `docs/*.md`,
 
 - normalized language-neutral terms such as `api contract`, `OpenAPI`,
   `schema`, `request`, `response`, `validation`, `workflow automation`, `CLI`,
-  `developer tooling`, and `documentation`;
+  `developer tooling`, `web framework`, `route`, `middleware`, `handler`, and
+  `documentation`;
 - bounded by a fixed limit;
 - sorted by the project-owned term order;
 - derived without executing repository code, package managers, package scripts,
@@ -45,6 +46,11 @@ small semantic corpus.
 Language-neutral clusters do not require Swift, Python, JavaScript, or any
 other language context. Current deterministic clusters are:
 
+- `web.framework_surface` with `intent.web.framework_surface`;
+- `web.http_routing` with `intent.web.http_routing`;
+- `web.middleware_pipeline` with `intent.web.middleware_pipeline`;
+- `web.request_response_context` with
+  `intent.web.request_response_context`;
 - `api.contract_surface` with `intent.api.contract_surface`;
 - `metadata.schema_validation` with `intent.metadata.schema_validation`;
 - `workflow.automation_pipeline` with
@@ -58,12 +64,19 @@ generic `intent.package.public_repository_metadata` fallback. The generated
 BoundarySpec then records `semantic_intent_static_evidence` with evidence paths
 and a `semanticEvidenceIndex` cluster list.
 
+When a supported package manifest exists, only domain-specific semantic clusters
+that are strong enough to describe the package capability, such as Swift/iOS or
+web framework clusters, replace the manifest's generic intent IDs. Generic
+language-neutral API or tooling clusters remain review evidence unless no better
+manifest capability exists.
+
 ## Review Semantics
 
-These intent IDs are advisory. They help reviewers find likely API contract,
-schema validation, workflow automation, developer tooling, or documentation
-knowledge base packages. They are not registry acceptance, upstream endorsement,
-runtime behavior evidence, or proof that a schema or API is valid.
+These intent IDs are advisory. They help reviewers find likely web frameworks,
+API contract, schema validation, workflow automation, developer tooling, or
+documentation knowledge base packages. They are not registry acceptance,
+upstream endorsement, runtime behavior evidence, or proof that a schema, API, or
+HTTP route is valid.
 
 Reviewers should check:
 

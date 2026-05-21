@@ -36,6 +36,15 @@ from spec_harvester.promoter import (
 )
 
 
+def public_symbol(name: str, kind: str, path: str) -> dict[str, object]:
+    return {
+        "name": name,
+        "kind": kind,
+        "visibility": "public",
+        "evidence": evidence_record(path, "a" * 64),
+    }
+
+
 def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None:
     repo = tmp_path / "demo"
     repo.mkdir()
@@ -673,7 +682,8 @@ def test_metadata_helpers_cover_static_file_variants(tmp_path: Path) -> None:
     assert not is_license_filename(tmp_path / "THIRD_PARTY_LICENSES.txt")
     assert markdown_headings("# One\n## Two\n### Three\n", limit=2) == ["One", "Two"]
     semantic_hints = markdown_semantic_hints(
-        "# API Contract\n\nOpenAPI JSON Schema supports request and response validation metadata.\n"
+        "# API Contract\n\nOpenAPI JSON Schema supports request and response validation "
+        "metadata for a web framework route, routes, and middleware.\n"
     )
     assert {
         "api contract",
@@ -686,6 +696,10 @@ def test_metadata_helpers_cover_static_file_variants(tmp_path: Path) -> None:
         "response",
         "validation",
         "metadata",
+        "web framework",
+        "route",
+        "routes",
+        "middleware",
     }.issubset(set(semantic_hints))
     assert parse_package_json("{") is None
     assert parse_package_json("[]") is None
@@ -1163,6 +1177,189 @@ def test_draft_spec_package_keeps_manifest_intents_with_language_neutral_docs(
     assert "React library for rendering contract docs." in spec
     assert "id: semantic_intent_static_evidence" in spec
     assert "id: api.contract_surface" in spec
+
+
+def test_draft_spec_package_uses_web_framework_intents_from_flask_like_index(
+    tmp_path: Path,
+) -> None:
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = {
+        "kind": "SpecHarvesterEvidenceSnapshot",
+        "source": {
+            "repository": "https://github.com/pallets/flask",
+            "revision": "abc123",
+            "label": "flask",
+        },
+        "policy": {"execution": "none"},
+        "files": [],
+    }
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+    index = new_public_interface_index(
+        source_revision="abc123",
+        analyzers=[analyzer_record("spec_harvester.python_public_api", "0.1.0")],
+        packages=[
+            {
+                "id": "flask.core",
+                "path": ".",
+                "language": "python",
+                "entrypoints": [
+                    {
+                        "path": "src/flask/app.py",
+                        "symbols": [
+                            public_symbol("Flask", "class", "src/flask/app.py"),
+                            public_symbol("Blueprint", "class", "src/flask/blueprints.py"),
+                            public_symbol("Flask.route", "function", "src/flask/app.py"),
+                            public_symbol("Flask.add_url_rule", "function", "src/flask/app.py"),
+                            public_symbol("RequestContext", "class", "src/flask/ctx.py"),
+                            public_symbol("after_this_request", "function", "src/flask/ctx.py"),
+                            public_symbol("before_request", "function", "src/flask/app.py"),
+                            public_symbol("after_request", "function", "src/flask/app.py"),
+                            public_symbol("jsonify", "function", "src/flask/json/__init__.py"),
+                            public_symbol("render_template", "function", "src/flask/templating.py"),
+                            public_symbol("session", "variable", "src/flask/globals.py"),
+                            public_symbol("endpoint", "variable", "src/flask/app.py"),
+                        ],
+                    }
+                ],
+            }
+        ],
+    )
+    (candidate / "public-interface-index.json").write_text(
+        render_public_interface_index_json(index),
+        encoding="utf-8",
+    )
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="flask.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.web.framework_surface" in manifest
+    assert "intent.web.http_routing" in manifest
+    assert "intent.web.middleware_pipeline" in manifest
+    assert "intent.web.request_response_context" in manifest
+    assert "intent.package.public_repository_metadata" not in manifest
+    assert "Provide a statically evidenced web framework surface" in spec
+    assert "id: web.framework_surface" in spec
+    assert "id: web.http_routing" in spec
+    assert "id: web.middleware_pipeline" in spec
+    assert "id: web.request_response_context" in spec
+    assert "public-interface-index.json" in spec
+
+
+def test_draft_spec_package_uses_web_framework_intents_from_gin_like_index(
+    tmp_path: Path,
+) -> None:
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = {
+        "kind": "SpecHarvesterEvidenceSnapshot",
+        "source": {
+            "repository": "https://github.com/gin-gonic/gin",
+            "revision": "abc123",
+            "label": "gin",
+        },
+        "policy": {"execution": "none"},
+        "files": [{"path": "go.mod", "kind": "package_manifest"}],
+    }
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+    index = new_public_interface_index(
+        source_revision="abc123",
+        analyzers=[analyzer_record("spec_harvester.go_public_api", "0.1.0")],
+        packages=[
+            {
+                "id": "github.com/gin-gonic/gin",
+                "path": ".",
+                "language": "go",
+                "entrypoints": [
+                    {
+                        "path": "gin.go",
+                        "symbols": [
+                            public_symbol("Engine", "struct", "gin.go"),
+                            public_symbol("RouterGroup", "struct", "routergroup.go"),
+                            public_symbol("IRoutes", "interface", "routergroup.go"),
+                            public_symbol("RouteInfo", "struct", "routes.go"),
+                            public_symbol("HandlerFunc", "type", "gin.go"),
+                            public_symbol("HandlersChain", "type", "gin.go"),
+                            public_symbol("Middleware", "function", "middleware.go"),
+                            public_symbol("Context", "struct", "context.go"),
+                            public_symbol("Context.Request", "variable", "context.go"),
+                            public_symbol("Context.JSON", "function", "context.go"),
+                            public_symbol("Context.BindJSON", "function", "context.go"),
+                            public_symbol("RouterGroup.GET", "function", "routergroup.go"),
+                            public_symbol("RouterGroup.Handle", "function", "routergroup.go"),
+                        ],
+                    }
+                ],
+            }
+        ],
+    )
+    (candidate / "public-interface-index.json").write_text(
+        render_public_interface_index_json(index),
+        encoding="utf-8",
+    )
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="gin.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.web.framework_surface" in manifest
+    assert "intent.web.http_routing" in manifest
+    assert "intent.web.middleware_pipeline" in manifest
+    assert "intent.web.request_response_context" in manifest
+    assert "intent.package.public_repository_metadata" not in manifest
+    assert "id: web.framework_surface" in spec
+    assert "matchedTerms:" in spec
+
+
+def test_draft_spec_package_applies_web_semantics_to_manifest_capabilities(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "web-adapter"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "web-adapter",
+                "version": "1.0.0",
+                "description": "Adapter package.",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (repo / "README.md").write_text(
+        textwrap.dedent(
+            """
+            # Web Adapter
+
+            ## Web Framework
+
+            Routes, router endpoints, and middleware handlers manage request
+            and response context.
+            """
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(snapshot=candidate, out=candidate, package_id="web_adapter.core")
+    )
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.web.framework_surface" in manifest
+    assert "intent.web.http_routing" in manifest
+    assert "intent.package.javascript_library" not in manifest
+    assert "Adapter package." not in spec
+    assert "Provide a statically evidenced web framework surface" in spec
 
 
 def test_draft_spec_package_uses_swift_product_intents(tmp_path: Path) -> None:

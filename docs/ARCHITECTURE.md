@@ -149,9 +149,13 @@ endorsement.
 
 When no supported package manifest exists, the drafter may use documentation
 `semanticHints` as advisory `semantic_intent_static_evidence`. Language-neutral
-clusters such as `api.contract_surface`, `metadata.schema_validation`,
+clusters such as `web.framework_surface`, `web.http_routing`,
+`api.contract_surface`, `metadata.schema_validation`,
 `workflow.automation_pipeline`, and `developer.tooling_surface` can replace the
 generic metadata fallback while remaining review evidence, not registry truth.
+For supported package manifests, only stronger domain clusters such as Swift/iOS
+or web framework clusters replace generic manifest intent IDs; broad API or
+tooling clusters remain advisory evidence.
 
 Current command:
 

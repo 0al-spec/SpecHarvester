@@ -56,9 +56,93 @@ class SemanticDomainRule:
     label: str
     terms: tuple[str, ...]
     required_context: str | None = None
+    minimum_score: int = 2
 
 
 SEMANTIC_DOMAIN_RULES = (
+    SemanticDomainRule(
+        cluster_id="web.framework_surface",
+        intent_id="intent.web.framework_surface",
+        label="Web Framework Surface",
+        terms=(
+            "web framework",
+            "http framework",
+            "microframework",
+            "wsgi",
+            "asgi",
+            "flask",
+            "gin",
+            "blueprint",
+            "route",
+            "routes",
+            "routing",
+            "router",
+            "router group",
+            "middleware",
+            "handler",
+            "handlers",
+            "request context",
+            "application context",
+        ),
+        minimum_score=4,
+    ),
+    SemanticDomainRule(
+        cluster_id="web.http_routing",
+        intent_id="intent.web.http_routing",
+        label="HTTP Routing Surface",
+        terms=(
+            "route",
+            "routes",
+            "routing",
+            "router",
+            "router group",
+            "url rule",
+            "url map",
+            "url for",
+            "endpoint",
+            "handler",
+            "handlers",
+            "handle",
+        ),
+        minimum_score=3,
+    ),
+    SemanticDomainRule(
+        cluster_id="web.middleware_pipeline",
+        intent_id="intent.web.middleware_pipeline",
+        label="Middleware Pipeline",
+        terms=(
+            "middleware",
+            "middlewares",
+            "handler chain",
+            "handlers chain",
+            "before request",
+            "after request",
+            "request hook",
+            "response pipeline",
+        ),
+    ),
+    SemanticDomainRule(
+        cluster_id="web.request_response_context",
+        intent_id="intent.web.request_response_context",
+        label="Request/Response Context",
+        terms=(
+            "request",
+            "response",
+            "context",
+            "request context",
+            "application context",
+            "session",
+            "cookie",
+            "cookies",
+            "json",
+            "jsonify",
+            "bind json",
+            "render template",
+            "template",
+            "templates",
+        ),
+        minimum_score=4,
+    ),
     SemanticDomainRule(
         cluster_id="api.contract_surface",
         intent_id="intent.api.contract_surface",
@@ -591,7 +675,7 @@ def semantic_profile_applies_to_manifest_capabilities(
     semantic_profile: SemanticIntentProfile,
 ) -> bool:
     return any(
-        intent_id.startswith(("intent.swift.", "intent.ios."))
+        intent_id.startswith(("intent.swift.", "intent.ios.", "intent.web."))
         for intent_id in semantic_profile.intent_ids
     )
 
@@ -804,12 +888,12 @@ def semantic_text_entries(
         entries.append({"path": path, "text": " ".join(parts)})
 
     if public_interface_index is not None:
-        symbol_names = public_interface_symbol_names(public_interface_index)
-        if symbol_names:
+        symbol_terms = public_interface_semantic_terms(public_interface_index)
+        if symbol_terms:
             entries.append(
                 {
                     "path": PUBLIC_INTERFACE_INDEX_OUTPUT,
-                    "text": " ".join(symbol_names),
+                    "text": " ".join(symbol_terms),
                 }
             )
 
@@ -836,7 +920,7 @@ def build_semantic_evidence_clusters(
             if entry["path"] != "repository":
                 evidence_paths.add(entry["path"])
             score += len(entry_matches)
-        if score < 2:
+        if score < rule.minimum_score:
             continue
         clusters.append(
             {
@@ -918,27 +1002,67 @@ def is_semantic_documentation_path(path: str) -> bool:
     )
 
 
-def public_interface_symbol_names(public_interface_index: dict[str, Any]) -> list[str]:
-    names: list[str] = []
+def public_interface_semantic_terms(public_interface_index: dict[str, Any]) -> list[str]:
+    terms: list[str] = []
+    seen: set[str] = set()
+
+    def add(value: Any) -> None:
+        if not isinstance(value, str) or not value.strip():
+            return
+        for term in semantic_identifier_terms(value):
+            if term in seen:
+                continue
+            seen.add(term)
+            terms.append(term)
+
     packages = public_interface_index.get("packages")
     if not isinstance(packages, list):
-        return names
+        return terms
     for package in packages:
         if not isinstance(package, dict):
             continue
+        add(package.get("id"))
+        add(package.get("path"))
+        add(package.get("language"))
         entrypoints = package.get("entrypoints")
         if not isinstance(entrypoints, list):
             continue
         for entrypoint in entrypoints:
             if not isinstance(entrypoint, dict):
                 continue
+            add(entrypoint.get("path"))
             symbols = entrypoint.get("symbols")
             if not isinstance(symbols, list):
                 continue
             for symbol in symbols:
-                if isinstance(symbol, dict) and isinstance(symbol.get("name"), str):
-                    names.append(symbol["name"])
-    return names
+                if not isinstance(symbol, dict):
+                    continue
+                add(symbol.get("name"))
+                add(symbol.get("kind"))
+                add(symbol.get("signature"))
+    return terms
+
+
+def semantic_identifier_terms(value: str) -> list[str]:
+    normalized = value.strip()
+    if not normalized:
+        return []
+
+    variants = {normalized.lower()}
+    separated = re.sub(r"[_./:@#-]+", " ", normalized)
+    separated = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", separated)
+    separated = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", separated)
+    separated = re.sub(r"\s+", " ", separated).strip().lower()
+    if separated:
+        variants.add(separated)
+
+    tokens = [token for token in separated.split(" ") if token]
+    variants.update(tokens)
+    for size in (2, 3):
+        for index in range(0, max(len(tokens) - size + 1, 0)):
+            variants.add(" ".join(tokens[index : index + size]))
+
+    return sorted(variant for variant in variants if variant)
 
 
 def has_any(text: str, *needles: str) -> bool:
@@ -947,6 +1071,11 @@ def has_any(text: str, *needles: str) -> bool:
 
 def semantic_summary(repository_name: str, intents: set[str]) -> str:
     package_name = display_name(repository_name)
+    if "intent.web.framework_surface" in intents:
+        return (
+            "Provide a statically evidenced web framework surface for HTTP routing, "
+            f"middleware, handlers, and request/response context in {package_name}."
+        )
     if "intent.swift.specification_pattern" in intents:
         return (
             "Provide a Swift Specification Pattern toolkit for composing reusable "
@@ -1553,6 +1682,8 @@ def compatibility_platforms(languages: list[str], intent_ids: list[str]) -> list
     platforms: set[str] = set()
     if any(intent_id.startswith("intent.ios.") for intent_id in intent_ids):
         platforms.update({"ios", "macos"})
+    if any(intent_id.startswith("intent.web.") for intent_id in intent_ids):
+        platforms.update({"web", "any"})
     if "javascript" in languages or "typescript" in languages:
         platforms.update({"web", "node"})
     apple_project = "objective-c" in languages
