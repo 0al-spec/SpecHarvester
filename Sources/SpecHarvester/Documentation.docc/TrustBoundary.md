@@ -102,7 +102,7 @@ typed `SpecNodeRefinementJob`, but the model must keep
 
 SpecNode output is untrusted proposal metadata, not accepted registry truth. It
 cannot run shell commands, mutate candidate files directly, install
-dependencies, fetch networks, read secrets, or bypass SpecPM validation and
+dependencies, perform network fetches, read secrets, or bypass SpecPM validation and
 human review.
 
 ## References
