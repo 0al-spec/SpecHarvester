@@ -1,6 +1,6 @@
 # P11-T2 Refine Preview Planning Contract
 
-Status: In Progress
+Status: Archived
 Created: 2026-05-21
 Task: `P11-T2` Add a bounded `refine-preview` planning contract that packages
 `harvest.json`, `ProjectProfile`, optional `PublicInterfaceIndex`,
@@ -82,3 +82,6 @@ only after deterministic utilities have prepared bounded review material.
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
 - `swift package dump-package >/dev/null`
 - `swift build --target SpecHarvesterDocs`
+
+Archived: 2026-05-21
+Verdict: PASS

@@ -234,7 +234,7 @@ Acceptance:
 - [x] `P11-T1` Define the SpecHarvester-to-SpecNode artifact bundle and typed
   job contract for model-assisted candidate refinement without granting model
   output file-system or shell authority.
-- [ ] `P11-T2` Add a bounded `refine-preview` planning contract that packages
+- [x] `P11-T2` Add a bounded `refine-preview` planning contract that packages
   `harvest.json`, `ProjectProfile`, optional `PublicInterfaceIndex`,
   `semanticEvidenceIndex`, validation reports, and draft candidate metadata as
   compact model input.

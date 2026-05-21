@@ -48,6 +48,7 @@
 | P10-T5 | [P10-T5_Language_Neutral_Semantic_Extraction/](P10-T5_Language_Neutral_Semantic_Extraction/) | 2026-05-20 | PASS |
 | P10-T6 | [P10-T6_Multi_Language_Smoke_Matrix/](P10-T6_Multi_Language_Smoke_Matrix/) | 2026-05-20 | PASS |
 | P11-T1 | [P11-T1_SpecNode_Integration_Contract/](P11-T1_SpecNode_Integration_Contract/) | 2026-05-21 | PASS |
+| P11-T2 | [P11-T2_Refine_Preview_Planning_Contract/](P11-T2_Refine_Preview_Planning_Contract/) | 2026-05-21 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
@@ -140,6 +141,7 @@
 | 2026-05-20 | P10-T6 | Archived REVIEW_p10_t6_multi_language_smoke_matrix report |
 | 2026-05-21 | P11-T1 | Archived SpecNode Integration Contract (PASS) |
 | 2026-05-21 | P11-T1 | Archived REVIEW_p11_t1_specnode_integration_contract report |
+| 2026-05-21 | P11-T2 | Archived Refine Preview Planning Contract (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
