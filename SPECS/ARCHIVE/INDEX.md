@@ -51,6 +51,7 @@
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
 | P12-T4 | [P12-T4_PublicInterfaceIndex_Evidence_Contract_Alignment/](P12-T4_PublicInterfaceIndex_Evidence_Contract_Alignment/) | 2026-05-21 | PASS |
+| P12-T5 | [P12-T5_Evidence_Support_Target_Contract_Alignment/](P12-T5_Evidence_Support_Target_Contract_Alignment/) | 2026-05-21 | PASS |
 
 ## Historical Artifacts
 
@@ -143,3 +144,4 @@
 | 2026-05-21 | P12-T3 | Archived REVIEW_p12_t3_domain_intent_inference report |
 | 2026-05-21 | P12-T4 | Archived PublicInterfaceIndex Evidence Contract Alignment (PASS) |
 | 2026-05-21 | P12-T4 | Archived REVIEW_p12_t4_public_interface_evidence_contract report |
+| 2026-05-21 | P12-T5 | Archived Evidence Support Target Contract Alignment (PASS) |

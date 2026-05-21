@@ -1,6 +1,6 @@
 # P12-T5 Evidence Support Target Contract Alignment
 
-Status: In Progress
+Status: Archived
 Created: 2026-05-21
 Task: `P12-T5` Remove or remap generated evidence support targets that SpecPM
 does not currently declare.
@@ -81,3 +81,7 @@ emit an avoidable `evidence_support_target_unknown` warning.
 - `swift build --target SpecHarvesterDocs`
 - Local SpecPM validation of a generated candidate containing
   `semantic_intent_static_evidence`.
+
+---
+**Archived:** 2026-05-21
+**Verdict:** PASS

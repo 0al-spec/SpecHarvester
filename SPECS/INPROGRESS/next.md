@@ -1,18 +1,22 @@
-# Next Task: P12-T5 Evidence Support Target Contract Alignment
+# Next Task: P12-T6 Popular Repository Smoke Scenario Promotion
 
-**Status:** IN_PROGRESS
+**Status:** READY
 
 **Updated:** 2026-05-21
 
 ## Description
 
-Remove or remap generated evidence support targets that the current SpecPM
-BoundarySpec support-target grammar does not declare, including
-`provides.capabilities.intentIds`, so generated candidates validate without
-avoidable advisory warnings.
+Promote the Flask/Gin popular-repository smoke scenario into reproducible local
+smoke documentation or synthetic tests covering Python with `LICENSE.txt`, Go
+module manifest-only behavior, SpecPM validation warnings, and governance
+triage output.
 
 ## Recently Archived
 
+- `P12-T5` Removed the unsupported
+  `provides.capabilities.intentIds` evidence support target, remapped semantic
+  evidence to declared SpecPM support targets, and added CI coverage for
+  `semantic_intent_static_evidence` validation.
 - `P12-T4` Kept `kind: public_interface_index` for SpecPM `0.2.0+`, added
   explicit `PublicInterfaceIndex` artifact metadata to BoundarySpec evidence,
   and added CI coverage that validates a candidate containing
@@ -46,11 +50,10 @@ avoidable advisory warnings.
 
 ## Newly Observed Smoke Gaps
 
-- SpecPM validation warns on `provides.capabilities.intentIds` because the
-  generated evidence support target is not declared by the current BoundarySpec
-  support-target grammar.
+- No currently open avoidable SpecPM validation warning remains from
+  `PublicInterfaceIndex` evidence kind or semantic evidence support targets.
 
 ## Next Step
 
-Implement `P12-T5` through Flow and PR: align generated evidence `supports`
-targets with the current SpecPM BoundarySpec support-target grammar.
+Implement `P12-T6` through Flow and PR: promote the Flask/Gin smoke scenario
+into reproducible local smoke documentation or synthetic tests.
