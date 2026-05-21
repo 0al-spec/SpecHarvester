@@ -309,6 +309,13 @@ may return `SpecNodeCandidatePatchProposal` with structured operations or
 rejects raw diffs, direct file writes, shell commands, provider calls, missing
 `usageReceipt`, and proposals without provenance or digest binding.
 
+Executable smoke coverage follows <doc:SpecNodeProviderSmokeCoverage>. The
+`SpecNodeProviderSmokeRun` harness builds compact weak-model drafting input
+from deterministic artifacts, validates `SpecNodeRefinementResult`, and uses a
+deterministic `provider_unavailable` fallback when no local
+SpecNode-compatible provider is configured. The smoke path does not contact LM
+Studio, execute a model, apply patches, or mutate candidate files.
+
 ## References
 
 - `docs/HOW_IT_WORKS.md`
@@ -318,6 +325,7 @@ rejects raw diffs, direct file writes, shell commands, provider calls, missing
 - <doc:SpecNodeRefinePreviewContract>
 - <doc:SpecNodeProviderAdapterContract>
 - <doc:SpecNodePatchProposalContract>
+- <doc:SpecNodeProviderSmokeCoverage>
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>

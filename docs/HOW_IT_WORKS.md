@@ -757,6 +757,14 @@ SpecHarvester rejects raw diffs, direct file writes, shell commands, provider
 calls, missing `usageReceipt`, and proposals without provenance or digest
 binding.
 
+Executable smoke coverage is governed by
+[`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md).
+The `SpecNodeProviderSmokeRun` harness builds compact weak-model drafting input
+from deterministic artifacts, validates `SpecNodeRefinementResult`, and uses a
+deterministic `provider_unavailable` fallback when no local
+SpecNode-compatible provider is configured. The smoke path does not contact LM
+Studio, execute a model, apply patches, or mutate candidate files.
+
 ## Operator Checklist
 
 For one repository:

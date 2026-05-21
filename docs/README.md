@@ -56,7 +56,10 @@ Published DocC site:
     OpenAI-compatible provider adapter boundary for local SpecNode execution
 23. [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md):
     schema-validated candidate patch proposal output contract
-24. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+24. [`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md):
+    local SpecNode-compatible provider smoke coverage and deterministic
+    provider-unavailable fallback
+25. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -83,6 +86,9 @@ Published DocC site:
 - [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md):
   schema-validated `candidatePatchProposal`, provenance, usage receipt, and
   rejection reason output boundary
+- [`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md):
+  executable local provider-stub smoke coverage for compact weak-model inputs,
+  structural validation, and deterministic fallback
 
 ## GitHub Process Surface
 

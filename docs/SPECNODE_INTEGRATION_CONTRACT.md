@@ -270,7 +270,11 @@ This contract intentionally leaves implementation details to later tasks:
   `SpecNodeCandidatePatchOperation`, `SpecNodeProposalProvenance`,
   `SpecNodeProposalUsageReceipt`, `SpecNodeRejectionReason`, `reviewNotes`,
   `usageReceipt`, and validation-before-apply rules.
-- `P11-T5` will add integration smoke coverage with deterministic fallback.
+- `P11-T5` adds integration smoke coverage with deterministic fallback in
+  [`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md).
+  It fixes `SpecNodeProviderSmokeRun`, local SpecNode-compatible provider stub
+  coverage, structural `SpecNodeRefinementResult` validation, compact
+  weak-model drafting input checks, and the `provider_unavailable` fallback.
 
 The compatibility rule is stable: model-assisted refinement consumes compact
 deterministic artifacts instead of raw repository source dumps.

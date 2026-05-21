@@ -168,11 +168,16 @@ authority.
 Schema-validated patch proposal output is defined separately in
 <doc:SpecNodePatchProposalContract>.
 
+Local in-process SpecNode-compatible provider smoke coverage is defined in
+<doc:SpecNodeProviderSmokeCoverage>. That smoke coverage does not call LM
+Studio or make SpecHarvester own provider execution.
+
 ## References
 
 - `docs/SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>
 - <doc:SpecNodePatchProposalContract>
+- <doc:SpecNodeProviderSmokeCoverage>
 - <doc:Workflow>
 - <doc:TrustBoundary>

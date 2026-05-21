@@ -43,6 +43,9 @@ That later boundary names `SpecNodeOpenAICompatibleProviderAdapter`, but this
 preview contract still does not contact providers.
 Schema-validated model output is defined separately in
 [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md).
+Executable smoke coverage that verifies compact input and deterministic
+provider-unavailable fallback is defined in
+[`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md).
 
 ## Plan Shape
 

@@ -170,11 +170,16 @@ After a human accepts a proposal and SpecHarvester applies the corresponding
 local edit, SpecHarvester must rerun SpecPM validation before any promotion or
 accepted-source proposal.
 
+Structural smoke validation for local provider-stub output is defined in
+<doc:SpecNodeProviderSmokeCoverage>. That validation is a smoke gate, not
+accepted registry truth.
+
 ## References
 
 - `docs/SPECNODE_PATCH_PROPOSAL_CONTRACT.md`
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>
 - <doc:SpecNodeProviderAdapterContract>
+- <doc:SpecNodeProviderSmokeCoverage>
 - <doc:Workflow>
 - <doc:TrustBoundary>

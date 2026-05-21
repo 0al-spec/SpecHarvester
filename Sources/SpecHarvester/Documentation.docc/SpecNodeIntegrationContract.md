@@ -186,6 +186,14 @@ Schema-validated model output is defined in
 `SpecNodeRejectionReason`, `reviewNotes`, `usageReceipt`, and
 validation-before-apply rules.
 
+## Provider Smoke Coverage
+
+Executable smoke coverage is defined in
+<doc:SpecNodeProviderSmokeCoverage>. It fixes `SpecNodeProviderSmokeRun`, local
+SpecNode-compatible provider stub coverage, structural
+`SpecNodeRefinementResult` validation, compact weak-model drafting input
+checks, and deterministic `provider_unavailable` fallback behavior.
+
 ## Rejection Conditions
 
 Reject the handoff or returned proposal if bundle digests do not match, paths
@@ -202,3 +210,4 @@ run commands or fetch dependencies, or the future `usageReceipt` is missing.
 - <doc:Workflow>
 - <doc:SpecNodeProviderAdapterContract>
 - <doc:SpecNodePatchProposalContract>
+- <doc:SpecNodeProviderSmokeCoverage>
