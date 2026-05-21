@@ -1,6 +1,6 @@
 # P12-T4 PublicInterfaceIndex Evidence Contract Alignment
 
-Status: In Progress
+Status: Archived
 Created: 2026-05-21
 Task: `P12-T4` Align `PublicInterfaceIndex` evidence with the SpecPM
 validation contract.
@@ -86,3 +86,7 @@ guards against regressions in the cross-repository contract.
 - `swift package dump-package >/dev/null`
 - `swift build --target SpecHarvesterDocs`
 - Local Flask/Gin or synthetic candidate validation with interface evidence.
+
+---
+**Archived:** 2026-05-21
+**Verdict:** PASS

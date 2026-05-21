@@ -1,18 +1,22 @@
-# Next Task: P12-T4 PublicInterfaceIndex Evidence Contract Alignment
+# Next Task: P12-T5 Evidence Support Target Contract Alignment
 
-**Status:** IN_PROGRESS
+**Status:** READY
 
 **Updated:** 2026-05-21
 
 ## Description
 
-Align generated `PublicInterfaceIndex` evidence with the current SpecPM
-validation contract. SpecPM validation currently warns on
-`kind: public_interface_index` because the evidence-kind vocabulary does not
-yet include that generated artifact type.
+Remove or remap generated evidence support targets that the current SpecPM
+BoundarySpec support-target grammar does not declare, including
+`provides.capabilities.intentIds`, so generated candidates validate without
+avoidable advisory warnings.
 
 ## Recently Archived
 
+- `P12-T4` Kept `kind: public_interface_index` for SpecPM `0.2.0+`, added
+  explicit `PublicInterfaceIndex` artifact metadata to BoundarySpec evidence,
+  and added CI coverage that validates a candidate containing
+  `public-interface-index.json`.
 - `P12-T3` Added deterministic web-framework domain intent inference from
   documentation hints and public interface indexes so Flask/Gin candidates now
   include web framework, routing, middleware, and request/response context
@@ -42,14 +46,11 @@ yet include that generated artifact type.
 
 ## Newly Observed Smoke Gaps
 
-- SpecPM validation warns on `kind: public_interface_index` because the SpecPM
-  evidence-kind vocabulary does not yet include that generated artifact type.
 - SpecPM validation warns on `provides.capabilities.intentIds` because the
   generated evidence support target is not declared by the current BoundarySpec
   support-target grammar.
 
 ## Next Step
 
-Implement `P12-T4` through Flow and PR: align `PublicInterfaceIndex` evidence
-emission with the SpecPM validation contract or emit a compatible evidence kind
-until the registry vocabulary is updated.
+Implement `P12-T5` through Flow and PR: align generated evidence `supports`
+targets with the current SpecPM BoundarySpec support-target grammar.

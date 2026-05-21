@@ -274,10 +274,9 @@ Acceptance:
   package metadata, README headings, and documentation evidence so popular web
   frameworks such as Flask and Gin do not collapse to only generic
   `intent.api.contract_surface` / `intent.developer.tooling_surface` claims.
-- [ ] `P12-T4` Align `PublicInterfaceIndex` evidence with the SpecPM validation
-  contract: either teach SpecPM that `public_interface_index` is a known evidence
-  kind or emit a currently accepted evidence kind until the registry vocabulary
-  is updated.
+- [x] `P12-T4` Align `PublicInterfaceIndex` evidence with the SpecPM validation
+  contract by keeping SpecPM `0.2.0`'s known `public_interface_index` kind,
+  preserving explicit artifact metadata, and adding CI validation coverage.
 - [ ] `P12-T5` Remove or remap generated evidence support targets that SpecPM does
   not currently declare, including `provides.capabilities.intentIds`, so
   generated candidates validate without avoidable advisory warnings.
