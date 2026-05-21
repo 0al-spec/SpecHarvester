@@ -120,6 +120,7 @@ inspect raw repository source during candidate drafting.
 Future component. It may refine deterministic candidates through a bounded
 SpecNode job. The handoff contract is <doc:SpecNodeIntegrationContract>.
 The compact planning contract is <doc:SpecNodeRefinePreviewContract>.
+The provider adapter contract is <doc:SpecNodeProviderAdapterContract>.
 
 SpecHarvester must send only a `SpecHarvesterSpecNodeArtifactBundle` inside a
 typed `SpecNodeRefinementJob`. The job policy keeps
@@ -135,6 +136,12 @@ Before any model provider is contacted, `refine-preview` planning may produce a
 `semanticEvidenceIndex`, `validationSummaries`, and
 `draftCandidateMetadata`. That plan excludes raw repository source and raw
 documentation bodies.
+
+When provider execution is added, SpecNode must use
+`SpecNodeOpenAICompatibleProviderAdapter` policy for LM Studio or other
+OpenAI-compatible local endpoints. Provider execution is `localhost_only` by
+default, limited to `/v1/models` and `/v1/chat/completions`, and recorded in
+`SpecNodeProviderUsageReceipt`. SpecHarvester does not contact providers.
 
 ### SpecPM Validation Gate
 
@@ -166,5 +173,6 @@ generated specs canonical by itself.
 - <doc:TrustBoundary>
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>
+- <doc:SpecNodeProviderAdapterContract>
 - <doc:BatchValidationReports>
 - <doc:Roadmap>

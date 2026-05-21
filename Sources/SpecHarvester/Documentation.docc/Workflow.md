@@ -292,6 +292,13 @@ Before that handoff, `refine-preview` planning must follow
 `semanticEvidenceIndex`, validation summaries, and draft candidate metadata.
 It excludes raw repository source and raw documentation bodies.
 
+Provider execution must follow <doc:SpecNodeProviderAdapterContract>. SpecNode
+may use `SpecNodeOpenAICompatibleProviderAdapter` for LM Studio or other
+OpenAI-compatible local providers, but only through explicit or
+`localhost_only` discovery, `/v1/models`, `/v1/chat/completions`,
+`timeoutPolicy`, `retryPolicy`, `temperature`, `maxOutputTokens`, and
+`promptBudget`. SpecHarvester does not contact providers.
+
 SpecNode output is proposal metadata such as `candidatePatchProposal`,
 `reviewNotes`, `rejectionReason`, and `usageReceipt`. SpecHarvester validates
 the proposal and reruns SpecPM validation after any accepted edit.
@@ -303,6 +310,7 @@ the proposal and reruns SpecPM validation after any accepted edit.
 - <doc:TrustBoundary>
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>
+- <doc:SpecNodeProviderAdapterContract>
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>

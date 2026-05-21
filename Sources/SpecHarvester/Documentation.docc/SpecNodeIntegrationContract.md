@@ -167,6 +167,16 @@ reruns SpecPM validation after any accepted local edit.
 It produces a deterministic `SpecHarvesterRefinePreviewPlan` with
 `compactModelInput` before any model provider is contacted.
 
+## Provider Adapter Boundary
+
+OpenAI-compatible provider execution is defined in
+<doc:SpecNodeProviderAdapterContract>. It fixes
+`SpecNodeOpenAICompatibleProviderAdapter`, `SpecNodeProviderHealth`,
+`SpecNodeModelListing`, `SpecNodeGenerationPolicy`,
+`SpecNodeProviderUsageReceipt`, `timeoutPolicy`, `retryPolicy`, `temperature`,
+`maxOutputTokens`, and `promptBudget` while keeping provider execution owned by
+SpecNode rather than SpecHarvester.
+
 ## Rejection Conditions
 
 Reject the handoff or returned proposal if bundle digests do not match, paths
@@ -181,3 +191,4 @@ run commands or fetch dependencies, or the future `usageReceipt` is missing.
 - <doc:HarvesterArchitecture>
 - <doc:TrustBoundary>
 - <doc:Workflow>
+- <doc:SpecNodeProviderAdapterContract>

@@ -37,6 +37,10 @@ candidate workspace
 
 SpecHarvester still owns deterministic evidence production and preview planning.
 SpecNode owns provider discovery and model execution in later tasks.
+The OpenAI-compatible provider adapter boundary is defined in
+[`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md).
+That later boundary names `SpecNodeOpenAICompatibleProviderAdapter`, but this
+preview contract still does not contact providers.
 
 ## Plan Shape
 
@@ -273,6 +277,7 @@ SpecHarvester must reject the plan when:
 P11-T2 does not implement the `refine-preview` command. It does not execute
 SpecNode, call LM Studio, discover models, invoke OpenAI-compatible providers,
 define the final `candidatePatchProposal` schema, or apply generated changes.
+P11-T3 defines the future provider adapter boundary separately.
 
 ## Review Rule
 

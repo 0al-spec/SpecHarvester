@@ -184,6 +184,8 @@ SpecNode job. The handoff contract is
 [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md).
 The compact planning contract is
 [`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md).
+The provider adapter contract is
+[`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md).
 
 SpecHarvester must send only a `SpecHarvesterSpecNodeArtifactBundle` inside a
 typed `SpecNodeRefinementJob`. The job policy keeps
@@ -199,6 +201,12 @@ Before any model provider is contacted, `refine-preview` planning may produce a
 `semanticEvidenceIndex`, `validationSummaries`, and
 `draftCandidateMetadata`. That plan excludes raw repository source and raw
 documentation bodies.
+
+When provider execution is added, SpecNode must use
+`SpecNodeOpenAICompatibleProviderAdapter` policy for LM Studio or other
+OpenAI-compatible local endpoints. Provider execution is `localhost_only` by
+default, limited to `/v1/models` and `/v1/chat/completions`, and recorded in
+`SpecNodeProviderUsageReceipt`. SpecHarvester does not contact providers.
 
 ### SpecPM Validation Gate
 
