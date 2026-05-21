@@ -1,6 +1,6 @@
 # Next Task: P11-T2 Refine Preview Planning Contract
 
-**Status:** READY
+**Status:** IN_PROGRESS
 
 **Updated:** 2026-05-21
 
