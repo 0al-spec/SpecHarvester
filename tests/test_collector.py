@@ -18,7 +18,12 @@ from spec_harvester.collector import (
     parse_package_json,
     parse_swift_package_manifest,
 )
-from spec_harvester.drafter import DraftOptions, draft_spec_package, render_scalar
+from spec_harvester.drafter import (
+    DraftOptions,
+    draft_spec_package,
+    public_interface_semantic_terms,
+    render_scalar,
+)
 from spec_harvester.interface_index import (
     analyzer_record,
     evidence_record,
@@ -1247,6 +1252,12 @@ def test_draft_spec_package_uses_web_framework_intents_from_flask_like_index(
     assert "id: web.middleware_pipeline" in spec
     assert "id: web.request_response_context" in spec
     assert "public-interface-index.json" in spec
+    semantic_evidence = spec.split("id: semantic_intent_static_evidence", 1)[1].split(
+        "id: public_interface_index", 1
+    )[0]
+    assert "public-interface-index.json" not in semantic_evidence
+    assert "evidenceKinds:" in semantic_evidence
+    assert "- public_interface_index" in semantic_evidence
 
 
 def test_draft_spec_package_uses_web_framework_intents_from_gin_like_index(
@@ -1314,6 +1325,41 @@ def test_draft_spec_package_uses_web_framework_intents_from_gin_like_index(
     assert "intent.package.public_repository_metadata" not in manifest
     assert "id: web.framework_surface" in spec
     assert "matchedTerms:" in spec
+
+
+def test_public_interface_semantic_terms_are_bounded_for_large_indexes() -> None:
+    index = new_public_interface_index(
+        source_revision="abc123",
+        analyzers=[analyzer_record("spec_harvester.python_public_api", "0.1.0")],
+        packages=[
+            {
+                "id": "huge.framework",
+                "path": ".",
+                "language": "python",
+                "entrypoints": [
+                    {
+                        "path": "src/huge.py",
+                        "symbols": [
+                            public_symbol(
+                                f"VeryLargeRouterHandlerSymbol{item}",
+                                "function",
+                                "src/huge.py",
+                            )
+                            | {"signature": "handle(" + "x: RequestContext, " * 80 + ")"}
+                            for item in range(1_000)
+                        ],
+                    }
+                ],
+            }
+        ],
+    )
+
+    terms = public_interface_semantic_terms(index)
+
+    assert len(terms) == 2_000
+    assert sum(len(term) + 1 for term in terms) <= 60_000
+    assert all(len(term) <= 160 for term in terms)
+    assert not any("x: requestcontext" in term for term in terms)
 
 
 def test_draft_spec_package_applies_web_semantics_to_manifest_capabilities(

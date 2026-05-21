@@ -22,6 +22,9 @@ PUBLIC_INTERFACE_INDEX_DISCOVERY_NAMES = (
 )
 PUBLIC_INTERFACE_INDEX_MEDIA_TYPE = "application/vnd.spec-harvester.public-interface-index+json"
 YAML_RESERVED_SCALARS = {"true", "false", "null", "yes", "no", "on", "off", "~"}
+PUBLIC_INTERFACE_SEMANTIC_TERM_LIMIT = 2_000
+PUBLIC_INTERFACE_SEMANTIC_TEXT_CHAR_LIMIT = 60_000
+PUBLIC_INTERFACE_SEMANTIC_IDENTIFIER_CHAR_LIMIT = 160
 
 
 @dataclass(frozen=True)
@@ -854,7 +857,9 @@ def semantic_text_entries(
     documentation_records: list[dict[str, Any]],
     public_interface_index: dict[str, Any] | None,
 ) -> list[dict[str, str]]:
-    entries: list[dict[str, str]] = [{"path": "repository", "text": repository_name}]
+    entries: list[dict[str, str]] = [
+        {"path": "repository", "kind": "repository", "text": repository_name}
+    ]
 
     for record in capability_source_records(package_records):
         package = record.get("package")
@@ -872,7 +877,7 @@ def semantic_text_entries(
                 if isinstance(product, dict) and isinstance(product.get("name"), str):
                     parts.append(product["name"])
         if parts:
-            entries.append({"path": path, "text": " ".join(parts)})
+            entries.append({"path": path, "kind": "package_manifest", "text": " ".join(parts)})
 
     for record in documentation_records:
         path = str(record.get("path") or "")
@@ -885,7 +890,7 @@ def semantic_text_entries(
         semantic_hints = record.get("semanticHints")
         if isinstance(semantic_hints, list):
             parts.extend(str(hint) for hint in semantic_hints if isinstance(hint, str))
-        entries.append({"path": path, "text": " ".join(parts)})
+        entries.append({"path": path, "kind": "documentation", "text": " ".join(parts)})
 
     if public_interface_index is not None:
         symbol_terms = public_interface_semantic_terms(public_interface_index)
@@ -893,6 +898,7 @@ def semantic_text_entries(
             entries.append(
                 {
                     "path": PUBLIC_INTERFACE_INDEX_OUTPUT,
+                    "kind": "public_interface_index",
                     "text": " ".join(symbol_terms),
                 }
             )
@@ -910,6 +916,7 @@ def build_semantic_evidence_clusters(
             continue
         matched_terms: set[str] = set()
         evidence_paths: set[str] = set()
+        evidence_kinds: set[str] = set()
         score = 0
         for entry in entries:
             text = entry["text"].lower()
@@ -917,7 +924,10 @@ def build_semantic_evidence_clusters(
             if not entry_matches:
                 continue
             matched_terms.update(entry_matches)
-            if entry["path"] != "repository":
+            evidence_kind = entry.get("kind", "documentation")
+            if evidence_kind != "repository":
+                evidence_kinds.add(evidence_kind)
+            if entry["path"] != "repository" and evidence_kind != "public_interface_index":
                 evidence_paths.add(entry["path"])
             score += len(entry_matches)
         if score < rule.minimum_score:
@@ -929,6 +939,7 @@ def build_semantic_evidence_clusters(
                 "label": rule.label,
                 "score": score,
                 "matchedTerms": sorted(matched_terms),
+                "evidenceKinds": sorted(evidence_kinds),
                 "evidencePaths": sorted(path for path in evidence_paths if path),
             }
         )
@@ -984,7 +995,11 @@ def has_swift_semantic_context(
 
 def semantic_profile_paths(entries: list[dict[str, str]]) -> set[str]:
     return {
-        entry["path"] for entry in entries if entry.get("path") and entry["path"] != "repository"
+        entry["path"]
+        for entry in entries
+        if entry.get("path")
+        and entry["path"] != "repository"
+        and entry.get("kind") != "public_interface_index"
     }
 
 
@@ -1005,15 +1020,34 @@ def is_semantic_documentation_path(path: str) -> bool:
 def public_interface_semantic_terms(public_interface_index: dict[str, Any]) -> list[str]:
     terms: list[str] = []
     seen: set[str] = set()
+    char_count = 0
 
-    def add(value: Any) -> None:
+    def add(
+        value: Any,
+        *,
+        include_ngrams: bool = True,
+        max_chars: int = PUBLIC_INTERFACE_SEMANTIC_IDENTIFIER_CHAR_LIMIT,
+    ) -> None:
+        nonlocal char_count
+        if len(terms) >= PUBLIC_INTERFACE_SEMANTIC_TERM_LIMIT:
+            return
         if not isinstance(value, str) or not value.strip():
             return
-        for term in semantic_identifier_terms(value):
+        for term in semantic_identifier_terms(
+            value,
+            include_ngrams=include_ngrams,
+            max_chars=max_chars,
+        ):
+            if len(terms) >= PUBLIC_INTERFACE_SEMANTIC_TERM_LIMIT:
+                break
             if term in seen:
                 continue
+            next_char_count = char_count + len(term) + 1
+            if next_char_count > PUBLIC_INTERFACE_SEMANTIC_TEXT_CHAR_LIMIT:
+                break
             seen.add(term)
             terms.append(term)
+            char_count = next_char_count
 
     packages = public_interface_index.get("packages")
     if not isinstance(packages, list):
@@ -1039,12 +1073,16 @@ def public_interface_semantic_terms(public_interface_index: dict[str, Any]) -> l
                     continue
                 add(symbol.get("name"))
                 add(symbol.get("kind"))
-                add(symbol.get("signature"))
     return terms
 
 
-def semantic_identifier_terms(value: str) -> list[str]:
-    normalized = value.strip()
+def semantic_identifier_terms(
+    value: str,
+    *,
+    include_ngrams: bool = True,
+    max_chars: int = PUBLIC_INTERFACE_SEMANTIC_IDENTIFIER_CHAR_LIMIT,
+) -> list[str]:
+    normalized = value.strip()[:max_chars]
     if not normalized:
         return []
 
@@ -1058,9 +1096,10 @@ def semantic_identifier_terms(value: str) -> list[str]:
 
     tokens = [token for token in separated.split(" ") if token]
     variants.update(tokens)
-    for size in (2, 3):
-        for index in range(0, max(len(tokens) - size + 1, 0)):
-            variants.add(" ".join(tokens[index : index + size]))
+    if include_ngrams:
+        for size in (2, 3):
+            for index in range(0, max(len(tokens) - size + 1, 0)):
+                variants.add(" ".join(tokens[index : index + size]))
 
     return sorted(variant for variant in variants if variant)
 

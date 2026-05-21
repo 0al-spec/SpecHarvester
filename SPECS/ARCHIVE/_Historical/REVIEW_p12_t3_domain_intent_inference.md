@@ -27,6 +27,12 @@
 - Web framework clusters use explicit score thresholds above the default where
   broad terms could otherwise overmatch. This is important because `request`,
   `response`, `handler`, and `route` can appear in unrelated API libraries.
+- Interface-index-derived semantic matches are not emitted as documentation
+  paths. Clusters record `evidenceKinds`, and the separate
+  `public_interface_index` evidence record remains responsible for interface
+  artifact provenance.
+- Public interface semantic token extraction is bounded by hard term and text
+  size limits, and does not expand signatures into semantic terms.
 - Strong domain clusters such as `intent.web.*`, `intent.swift.*`, and
   `intent.ios.*` can replace generic manifest capability intents. Broad
   language-neutral API/tooling clusters remain advisory evidence for
@@ -38,11 +44,11 @@
 
 ### Tests
 
-- `PYTHONPATH=src python -m pytest` passed with `222 passed in 3.53s`.
+- `PYTHONPATH=src python -m pytest` passed with `223 passed in 3.33s`.
 - `ruff check src tests` passed.
 - `ruff format --check src tests` passed with `43 files already formatted`.
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
-  passed with total coverage `90.48%`.
+  passed with total coverage `90.46%`.
 - `swift package dump-package >/dev/null` passed.
 - `swift build --target SpecHarvesterDocs` passed.
 - Local Flask/Gin smoke passed and generated `intent.web.framework_surface`,

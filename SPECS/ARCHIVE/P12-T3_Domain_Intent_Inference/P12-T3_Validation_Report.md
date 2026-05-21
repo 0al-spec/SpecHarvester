@@ -35,6 +35,11 @@ repository code.
   middleware, and request/response context intents.
 - Gin-like Go `PublicInterfaceIndex` fixture produces the same web domain
   intents from router, handler, middleware, and context symbols.
+- Semantic intent evidence no longer reports `public-interface-index.json` as a
+  documentation path; clusters carry `evidenceKinds` and rely on the separate
+  public interface evidence record for interface-index provenance.
+- `PublicInterfaceIndex` semantic terms are bounded by hard term and text-size
+  limits, and signatures are excluded from semantic term expansion.
 - A manifest-backed package with strong web documentation replaces generic
   JavaScript manifest intents with web domain intents.
 - Existing language-neutral API-contract documentation remains advisory for
@@ -45,10 +50,10 @@ repository code.
 
 | Gate | Result |
 | --- | --- |
-| `PYTHONPATH=src python -m pytest` | PASS, `222 passed in 3.53s` |
+| `PYTHONPATH=src python -m pytest` | PASS, `223 passed in 3.33s` |
 | `ruff check src tests` | PASS |
 | `ruff format --check src tests` | PASS, `43 files already formatted` |
-| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, `222 passed`, total coverage `90.48%` |
+| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, `223 passed`, total coverage `90.46%` |
 | `swift package dump-package >/dev/null` | PASS |
 | `swift build --target SpecHarvesterDocs` | PASS |
 
@@ -114,6 +119,10 @@ Repository revisions:
 - Generic language-neutral clusters such as API contract or developer tooling
   may still appear as additional advisory evidence when static terms support
   them. They no longer remain the only inferred intent family for Flask/Gin.
+- Interface-index-derived semantic matches no longer appear as documentation
+  paths in `semantic_intent_static_evidence`; the separate
+  `public_interface_index` evidence record remains the provenance source for
+  the generated interface index artifact.
 - The change does not alter SpecPM evidence-kind vocabulary or support-target
   grammar; those warnings remain tracked by `P12-T4` and `P12-T5`.
 - Generated candidates remain preview-only and require SpecPM review before
