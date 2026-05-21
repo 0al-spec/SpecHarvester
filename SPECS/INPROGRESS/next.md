@@ -1,17 +1,21 @@
-# Next Task: P11-T3 OpenAI-Compatible Provider Adapter Boundary
+# Next Task: P11-T4 Candidate Patch Proposal Output Schema
 
-**Status:** IN_PROGRESS
+**Status:** READY
 
 **Updated:** 2026-05-21
 
 ## Description
 
-Add an OpenAI-compatible provider adapter boundary for local SpecNode execution,
-including LM Studio discovery, model listing, health checks, timeout, retry,
-temperature, and token-budget policy.
+Define schema-validated model output for candidate patch proposals, provenance,
+usage receipts, and rejection reasons before any generated changes can be
+applied.
 
 ## Recently Archived
 
+- `P11-T3` Defined the OpenAI-compatible provider adapter boundary for local
+  SpecNode execution, including LM Studio discovery, endpoint allowlisting,
+  health checks, model listing, timeout, retry, temperature, token-budget
+  policy, usage receipts, and authority limits.
 - `P11-T2` Defined the deterministic `SpecHarvesterRefinePreviewPlan` contract
   with compact model input sections, artifact digests, prompt-budget controls,
   excluded raw content, and DocC/GitHub documentation contract coverage.
@@ -63,7 +67,6 @@ temperature, and token-budget policy.
 
 ## Next Step
 
-Implement `P11-T3` through Flow and PR: define the OpenAI-compatible provider
-adapter boundary for local SpecNode execution, including LM Studio discovery,
-model listing, health checks, timeout, retry, temperature, and token-budget
-policy.
+Implement `P11-T4` through Flow and PR: define schema-validated model output
+for candidate patch proposals, provenance, usage receipts, and rejection
+reasons before any generated changes can be applied.
