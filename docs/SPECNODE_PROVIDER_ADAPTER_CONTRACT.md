@@ -53,7 +53,7 @@ provider discovery and model execution belong to SpecNode.
   "kind": "SpecNodeOpenAICompatibleProviderAdapter",
   "providerKind": "openai_compatible",
   "providerName": "lm_studio",
-  "baseUrl": "http://127.0.0.1:1234/v1",
+  "baseUrl": "http://127.0.0.1:1234",
   "endpointAllowlist": [
     "/v1/models",
     "/v1/chat/completions"
@@ -112,8 +112,8 @@ OpenAI-compatible API on a standard local port.
 
 Default discovery candidates:
 
-- `http://127.0.0.1:1234/v1`
-- `http://localhost:1234/v1`
+- `http://127.0.0.1:1234`
+- `http://localhost:1234`
 
 Discovery rules:
 
@@ -132,6 +132,14 @@ The adapter may use only these OpenAI-compatible endpoints for this job class:
 
 - `/v1/models`
 - `/v1/chat/completions`
+
+Endpoint joining rule: `baseUrl` is the provider origin without the OpenAI API
+version path, and allowlisted endpoints are absolute API paths beginning with
+`/v1/`. Implementations must join them by trimming exactly one slash between
+`baseUrl` and the endpoint. For example,
+`http://127.0.0.1:1234` + `/v1/models` becomes
+`http://127.0.0.1:1234/v1/models`; `baseUrl` values ending in `/v1` must be
+rejected or normalized before use.
 
 Forbidden endpoints and behaviors:
 
@@ -155,7 +163,7 @@ enough for a refinement job.
 {
   "kind": "SpecNodeProviderHealth",
   "providerKind": "openai_compatible",
-  "baseUrl": "http://127.0.0.1:1234/v1",
+  "baseUrl": "http://127.0.0.1:1234",
   "checkedAt": "2026-05-21T00:00:00Z",
   "status": "healthy",
   "httpStatus": 200,
@@ -188,7 +196,7 @@ names as capability claims.
   "kind": "SpecNodeModelListing",
   "providerKind": "openai_compatible",
   "providerName": "lm_studio",
-  "baseUrl": "http://127.0.0.1:1234/v1",
+  "baseUrl": "http://127.0.0.1:1234",
   "retrievedAt": "2026-05-21T00:00:00Z",
   "models": [
     {
