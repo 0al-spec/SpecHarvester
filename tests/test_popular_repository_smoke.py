@@ -179,6 +179,7 @@ def assert_popular_collection_record(
     assert index["summary"]["status"] == "complete"
     assert index["summary"]["packageCount"] == 1
     assert index["summary"]["symbolCount"] > 0
+    assert len(index["analyzers"]) == 1
     assert all(analyzer["execution"] == "none" for analyzer in index["analyzers"])
     assert all(analyzer["networkAccess"] == "none" for analyzer in index["analyzers"])
     assert all(analyzer["packageScripts"] == "not_run" for analyzer in index["analyzers"])
