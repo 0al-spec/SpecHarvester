@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-05-21
+**Last Updated:** 2026-05-22
 
 ## Archived Tasks
 
@@ -51,6 +51,7 @@
 | P11-T2 | [P11-T2_Refine_Preview_Planning_Contract/](P11-T2_Refine_Preview_Planning_Contract/) | 2026-05-21 | PASS |
 | P11-T3 | [P11-T3_OpenAI-Compatible_Provider_Adapter_Boundary/](P11-T3_OpenAI-Compatible_Provider_Adapter_Boundary/) | 2026-05-21 | PASS |
 | P11-T4 | [P11-T4_Candidate_Patch_Proposal_Output_Schema/](P11-T4_Candidate_Patch_Proposal_Output_Schema/) | 2026-05-21 | PASS |
+| P11-T5 | [P11-T5_SpecNode-Compatible_Provider_Smoke_Coverage/](P11-T5_SpecNode-Compatible_Provider_Smoke_Coverage/) | 2026-05-22 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
@@ -149,6 +150,7 @@
 | 2026-05-21 | P11-T3 | Archived REVIEW_p11_t3_provider_adapter_boundary report |
 | 2026-05-21 | P11-T4 | Archived Candidate Patch Proposal Output Schema (PASS) |
 | 2026-05-21 | P11-T4 | Archived REVIEW_p11_t4_patch_proposal_output_schema report |
+| 2026-05-22 | P11-T5 | Archived SpecNode-Compatible Provider Smoke Coverage (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

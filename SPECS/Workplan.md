@@ -244,7 +244,7 @@ Acceptance:
 - [x] `P11-T4` Define schema-validated model output for candidate patch
   proposals, provenance, usage receipts, and rejection reasons before any
   generated changes can be applied.
-- [ ] `P11-T5` Add integration smoke coverage using a local SpecNode-compatible
+- [x] `P11-T5` Add integration smoke coverage using a local SpecNode-compatible
   provider with weak-model drafting inputs, while preserving deterministic
   fallback when no provider is available.
 
