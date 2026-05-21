@@ -179,9 +179,17 @@ during drafting.
 
 ### AI Draft Generator
 
-Future component. It may refine deterministic candidates using a bounded model
-adapter. Model output must be treated as untrusted candidate metadata. It must
-be validated and reviewed before acceptance.
+Future component. It may refine deterministic candidates using a bounded
+SpecNode job. The handoff contract is
+[`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md).
+
+SpecHarvester must send only a `SpecHarvesterSpecNodeArtifactBundle` inside a
+typed `SpecNodeRefinementJob`. The job policy keeps
+`modelFilesystemAccess: none`, `modelShellAccess: none`, and
+`candidateMutation: proposal_only`. SpecNode may return
+`candidatePatchProposal`, `reviewNotes`, `rejectionReason`, and `usageReceipt`
+metadata. Model output remains untrusted candidate metadata and must be
+validated and reviewed before acceptance.
 
 ### SpecPM Validation Gate
 

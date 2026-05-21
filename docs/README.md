@@ -47,7 +47,10 @@ Published DocC site:
     review candidate and accepted packages for licensing and provenance risk
 19. [`LOCAL_SMOKE_FIXTURES.md`](LOCAL_SMOKE_FIXTURES.md): reproducible local
     smoke fixtures for adjacent real repository checkouts
-20. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+20. [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md):
+    typed artifact bundle and job contract for future SpecNode-assisted
+    candidate refinement
+21. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -63,6 +66,9 @@ Published DocC site:
   README/API-contract semantic extraction for manifest-poor repositories
 - [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
   automation for proposing accepted-source diffs into SpecPM
+- [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md):
+  trust boundary for future model-assisted candidate refinement through
+  SpecNode
 
 ## GitHub Process Surface
 

@@ -91,3 +91,18 @@ Not endorsed by upstream maintainers.
 
 SpecGraph or downstream governance may later curate observed intent IDs, but a
 generated package declaration does not make an intent ID canonical.
+
+## SpecNode Refinement Boundary
+
+Future model-assisted refinement must use the
+[`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md) handoff.
+SpecHarvester may provide a `SpecHarvesterSpecNodeArtifactBundle` through a
+typed `SpecNodeRefinementJob`, but the model must keep
+`modelFilesystemAccess: none`, `modelShellAccess: none`,
+`candidateMutation: proposal_only`, `rawSourceAccess: none`, and
+`secretAccess: none`.
+
+SpecNode output is untrusted proposal metadata, not accepted registry truth. It
+cannot run shell commands, mutate candidate files directly, install
+dependencies, fetch networks, read secrets, or bypass SpecPM validation and
+human review.

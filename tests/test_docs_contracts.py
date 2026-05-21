@@ -170,6 +170,76 @@ def test_docc_and_github_docs_cover_language_neutral_semantic_extraction() -> No
         assert "raw documentation" in text
 
 
+def test_docc_and_github_docs_cover_specnode_integration_contract() -> None:
+    github_doc = ROOT / "docs" / "SPECNODE_INTEGRATION_CONTRACT.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecNodeIntegrationContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    architecture_doc = ROOT / "docs" / "ARCHITECTURE.md"
+    architecture_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "HarvesterArchitecture.md"
+    )
+    trust_doc = ROOT / "docs" / "TRUST_BOUNDARY.md"
+    trust_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "TrustBoundary.md"
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecHarvesterSpecNodeArtifactBundle",
+            "SpecNodeRefinementJob",
+            "candidatePatchProposal",
+            "usageReceipt",
+            "modelFilesystemAccess: none",
+            "modelShellAccess: none",
+            "modelNetworkAccess: provider_only",
+            "allowedTools",
+            "candidateMutation: proposal_only",
+            "rawSourceAccess: none",
+            "secretAccess: none",
+            "proposal_only",
+            "ProjectProfile",
+            "PublicInterfaceIndex",
+            "public-interface-index.json",
+            "harvest.json",
+            "specpm.yaml",
+            "specs/*.spec.yaml",
+            "no authority",
+            "cannot run shell commands",
+            "mutate files",
+            "read raw repository source",
+            "read secrets",
+            "install dependencies",
+            "run package scripts",
+            "expand network access",
+            "SpecPM validation",
+            "human review",
+        ):
+            assert required in text
+
+    assert "SPECNODE_INTEGRATION_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecNodeIntegrationContract>" in root_page.read_text(encoding="utf-8")
+
+    for path in (architecture_doc, architecture_docc, trust_doc, trust_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecNode" in text
+        assert "SpecHarvesterSpecNodeArtifactBundle" in text
+        assert "SpecNodeRefinementJob" in text
+        assert "modelFilesystemAccess: none" in text
+        assert "modelShellAccess: none" in text
+
+    for path in (workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecNode" in text
+        assert "SpecHarvesterSpecNodeArtifactBundle" in text
+        assert "SpecNodeRefinementJob" in text
+        assert "candidatePatchProposal" in text
+        assert "usageReceipt" in text
+
+
 def test_docc_and_github_docs_cover_accepted_candidate_impact_classification() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md"
     docc_doc = (
