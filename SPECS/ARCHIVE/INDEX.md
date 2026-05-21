@@ -58,7 +58,7 @@
 
 | Folder | Description |
 |--------|-------------|
-| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p12_t5_evidence_support_target_contract.md`, `REVIEW_p12_t4_public_interface_evidence_contract.md`, `REVIEW_p12_t3_domain_intent_inference.md`, `REVIEW_p12_t2_go_public_interface_evidence.md`, `REVIEW_p12_t1_strict_license_filename_compatibility.md`, `REVIEW_p10_t6_multi_language_smoke_matrix.md`, `REVIEW_p10_t5_language_neutral_semantic_extraction.md`, `REVIEW_p10_t4_projectprofile_analyzer_orchestration.md`, `REVIEW_p10_t3_trusted_classifier_evaluation.md`, `REVIEW_p10_t2_manifest_first_ecosystem_detectors.md`, `REVIEW_p10_t1_project_profile_schema.md`, `REVIEW_p9_t2_semantic_evidence_index.md`, `REVIEW_p9_t1_semantic_intent_drafting.md`, `REVIEW_p8_t3_update_impact_classification.md`, `REVIEW_p8_t2_accepted_candidate_diff_report.md`, `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
+| [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p12_t6_popular_smoke_scenario.md`, `REVIEW_p12_t5_evidence_support_target_contract.md`, `REVIEW_p12_t4_public_interface_evidence_contract.md`, `REVIEW_p12_t3_domain_intent_inference.md`, `REVIEW_p12_t2_go_public_interface_evidence.md`, `REVIEW_p12_t1_strict_license_filename_compatibility.md`, `REVIEW_p10_t6_multi_language_smoke_matrix.md`, `REVIEW_p10_t5_language_neutral_semantic_extraction.md`, `REVIEW_p10_t4_projectprofile_analyzer_orchestration.md`, `REVIEW_p10_t3_trusted_classifier_evaluation.md`, `REVIEW_p10_t2_manifest_first_ecosystem_detectors.md`, `REVIEW_p10_t1_project_profile_schema.md`, `REVIEW_p9_t2_semantic_evidence_index.md`, `REVIEW_p9_t1_semantic_intent_drafting.md`, `REVIEW_p8_t3_update_impact_classification.md`, `REVIEW_p8_t2_accepted_candidate_diff_report.md`, `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
 
 ## Archive Log
 
@@ -148,3 +148,4 @@
 | 2026-05-21 | P12-T5 | Archived Evidence Support Target Contract Alignment (PASS) |
 | 2026-05-21 | P12-T5 | Archived REVIEW_p12_t5_evidence_support_target_contract report |
 | 2026-05-21 | P12-T6 | Archived Popular Repository Smoke Scenario Promotion (PASS) |
+| 2026-05-21 | P12-T6 | Archived REVIEW_p12_t6_popular_smoke_scenario report |
