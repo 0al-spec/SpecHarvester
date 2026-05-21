@@ -1,6 +1,6 @@
 # P11-T1 SpecNode Integration Contract
 
-Status: In Progress
+Status: Archived
 Created: 2026-05-21
 Task: `P11-T1` Define the SpecHarvester-to-SpecNode artifact bundle and typed
 job contract for model-assisted candidate refinement without granting model
@@ -83,3 +83,8 @@ pipe with unclear provenance, unclear authority, and unsafe mutation paths.
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
 - `swift package dump-package >/dev/null`
 - `swift build --target SpecHarvesterDocs`
+
+---
+
+**Archived:** 2026-05-21
+**Verdict:** PASS

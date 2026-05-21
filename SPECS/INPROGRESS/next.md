@@ -1,17 +1,21 @@
-# Next Task: P11-T1 SpecNode Integration Contract
+# Next Task: P11-T2 Refine Preview Planning Contract
 
-**Status:** IN_PROGRESS
+**Status:** READY
 
 **Updated:** 2026-05-21
 
 ## Description
 
-Define the SpecHarvester-to-SpecNode artifact bundle and typed job contract for
-model-assisted candidate refinement without granting model output file-system or
-shell authority.
+Add a bounded `refine-preview` planning contract that packages `harvest.json`,
+`ProjectProfile`, optional `PublicInterfaceIndex`, `semanticEvidenceIndex`,
+validation reports, and draft candidate metadata as compact model input.
 
 ## Recently Archived
 
+- `P11-T1` Defined the `SpecHarvesterSpecNodeArtifactBundle` and
+  `SpecNodeRefinementJob` contract for future SpecNode-assisted candidate
+  refinement without granting the model shell, filesystem, raw source, secret,
+  or direct mutation authority.
 - `P12-T6` Promoted Flask/Gin popular-repository smoke coverage into committed
   synthetic tests and mirrored the reproducible real-checkout recipe in GitHub
   docs and DocC.
@@ -56,5 +60,6 @@ shell authority.
 
 ## Next Step
 
-Implement `P11-T1` through Flow and PR: define the SpecHarvester-to-SpecNode
-artifact bundle and typed job contract.
+Implement `P11-T2` through Flow and PR: define the bounded `refine-preview`
+planning contract that packages compact deterministic artifacts for model
+input.
