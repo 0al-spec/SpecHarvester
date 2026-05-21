@@ -238,7 +238,7 @@ Acceptance:
   `harvest.json`, `ProjectProfile`, optional `PublicInterfaceIndex`,
   `semanticEvidenceIndex`, validation reports, and draft candidate metadata as
   compact model input.
-- [ ] `P11-T3` Add an OpenAI-compatible provider adapter boundary for local
+- [x] `P11-T3` Add an OpenAI-compatible provider adapter boundary for local
   SpecNode execution, including LM Studio discovery, model listing, health
   checks, timeout, retry, temperature, and token-budget policy.
 - [ ] `P11-T4` Define schema-validated model output for candidate patch
