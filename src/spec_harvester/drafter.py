@@ -8,6 +8,7 @@ from typing import Any
 from urllib.parse import urlparse
 
 from spec_harvester.interface_index import (
+    PUBLIC_INTERFACE_INDEX_KIND,
     render_public_interface_index_json,
     validate_public_interface_index,
 )
@@ -1526,7 +1527,7 @@ def build_evidence(
             "id": "public_interface_index",
             "kind": "public_interface_index",
             "path": PUBLIC_INTERFACE_INDEX_OUTPUT,
-            "artifactKind": "SpecHarvesterPublicInterfaceIndex",
+            "artifactKind": PUBLIC_INTERFACE_INDEX_KIND,
             "mediaType": PUBLIC_INTERFACE_INDEX_MEDIA_TYPE,
             "schemaVersion": public_interface_index.get("schemaVersion"),
             "summary": public_interface_index.get("summary"),
