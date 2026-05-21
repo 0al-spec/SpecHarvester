@@ -67,7 +67,36 @@ usage receipt.
       "candidateId": "flask.core",
       "candidateVersion": "0.1.0",
       "baseCandidateDigest": "sha256:64-hex-digest",
-      "operations": []
+      "sourceJobDigest": "sha256:64-hex-digest",
+      "sourcePreviewPlanDigest": "sha256:64-hex-digest",
+      "sourceArtifactDigests": [
+        {
+          "id": "boundary_spec",
+          "path": "specs/flask.spec.yaml",
+          "sha256": "64-hex-digest"
+        }
+      ],
+      "operations": [],
+      "provenance": {
+        "kind": "SpecNodeProposalProvenance",
+        "sourceJobDigest": "sha256:64-hex-digest",
+        "sourceBundleDigest": "sha256:64-hex-digest",
+        "sourcePreviewPlanDigest": "sha256:64-hex-digest",
+        "sourceArtifactDigests": [],
+        "baseCandidateDigest": "sha256:64-hex-digest",
+        "providerReceiptDigest": "sha256:64-hex-digest",
+        "modelId": "local-model-id",
+        "createdAt": "2026-05-21T00:00:00Z",
+        "policyDigest": "sha256:64-hex-digest",
+        "promptBudget": {},
+        "redactionPolicy": "path_digest_and_summary_only",
+        "schemaVersion": 1
+      },
+      "validationExpectations": {
+        "requiresSchemaValidation": true,
+        "requiresHumanReview": true,
+        "requiresSpecPMValidationAfterApply": true
+      }
     }
   },
   "reviewNotes": [],
