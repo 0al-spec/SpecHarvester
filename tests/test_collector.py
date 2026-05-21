@@ -50,6 +50,34 @@ def public_symbol(name: str, kind: str, path: str) -> dict[str, object]:
     }
 
 
+def rendered_evidence_item(spec: str, evidence_id: str) -> str:
+    in_evidence = False
+    current_block: list[str] = []
+    evidence_blocks: list[list[str]] = []
+    for line in spec.splitlines():
+        if line == "evidence:":
+            in_evidence = True
+            continue
+        if not in_evidence:
+            continue
+        if line and not line.startswith(" "):
+            break
+        if line.startswith("  - "):
+            if current_block:
+                evidence_blocks.append(current_block)
+            current_block = [line]
+        elif current_block:
+            current_block.append(line)
+    if current_block:
+        evidence_blocks.append(current_block)
+
+    expected_header = f"- id: {evidence_id}"
+    for block in evidence_blocks:
+        if block and block[0].strip() == expected_header:
+            return "\n".join(block)
+    raise AssertionError(f"Evidence item not found: {evidence_id}")
+
+
 def test_collect_local_repository_extracts_safe_metadata(tmp_path: Path) -> None:
     repo = tmp_path / "demo"
     repo.mkdir()
@@ -1107,6 +1135,10 @@ def test_draft_spec_package_uses_documentation_semantics_without_package_manifes
     assert "intent.package.public_repository_metadata" not in manifest
     assert "Provide language-neutral API contract documentation" in spec
     assert "id: semantic_intent_static_evidence" in spec
+    semantic_evidence = rendered_evidence_item(spec, "semantic_intent_static_evidence")
+    assert "provides.capabilities.intentIds" not in semantic_evidence
+    assert "provides.capabilities" in semantic_evidence
+    assert "provides.capabilities.contract_hub.core" in semantic_evidence
     assert "id: api.contract_surface" in spec
     assert "id: metadata.schema_validation" in spec
     assert "id: workflow.automation_pipeline" in spec
@@ -1258,10 +1290,10 @@ def test_draft_spec_package_uses_web_framework_intents_from_flask_like_index(
     assert "id: web.middleware_pipeline" in spec
     assert "id: web.request_response_context" in spec
     assert "public-interface-index.json" in spec
-    semantic_evidence = spec.split("id: semantic_intent_static_evidence", 1)[1].split(
-        "id: public_interface_index", 1
-    )[0]
+    semantic_evidence = rendered_evidence_item(spec, "semantic_intent_static_evidence")
     assert "public-interface-index.json" not in semantic_evidence
+    assert "provides.capabilities.intentIds" not in semantic_evidence
+    assert "provides.capabilities.flask.core" in semantic_evidence
     assert "evidenceKinds:" in semantic_evidence
     assert "- public_interface_index" in semantic_evidence
 

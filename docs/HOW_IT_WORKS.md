@@ -118,6 +118,12 @@ tokens. This lets static names such as `RouterGroup`, `HandlerFunc`,
 `RequestContext`, or `Blueprint` support web framework intent claims without
 reading raw source bodies during drafting.
 
+Semantic evidence `supports` entries are constrained to declared SpecPM support
+targets: `intent.summary`, `provides.capabilities`, and
+`provides.capabilities.<capability_id>`. The drafter does not emit
+`provides.capabilities.intentIds` because nested `intentIds` is not part of the
+current SpecPM BoundarySpec support-target grammar.
+
 This path stores terms and evidence paths only. It does not store raw
 documentation bodies, execute repository code, install dependencies, run package
 scripts, or contact networks.

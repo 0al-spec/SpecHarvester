@@ -84,6 +84,14 @@ jobs:
           # Flow Fixture
 
           Test fixture for SpecHarvester CI.
+
+          ## API Contract
+
+          OpenAPI schema request and response validation.
+
+          ## Workflow Automation
+
+          CLI commands automate configuration validation workflows.
           EOF
           cat > "$fixture/LICENSE" <<'EOF'
           MIT
@@ -201,16 +209,22 @@ jobs:
           codes = {item.get("code") for item in diagnostics}
           if "unknown_evidence_kind" in codes:
               raise SystemExit(f"unexpected unknown public interface evidence kind: {report}")
+          if "evidence_support_target_unknown" in codes:
+              raise SystemExit(f"unexpected unknown evidence support target: {report}")
           spec_path = next(Path("/tmp/spec-harvester-candidate/specs").glob("*.spec.yaml"))
           spec = spec_path.read_text(encoding="utf-8")
           for required in (
+              "id: semantic_intent_static_evidence",
               "kind: public_interface_index",
               "artifactKind: SpecHarvesterPublicInterfaceIndex",
               "mediaType: application/vnd.spec-harvester.public-interface-index+json",
               "schemaVersion: 2",
+              "provides.capabilities.flow_fixture.core.flow_fixture",
           ):
               if required not in spec:
                   raise SystemExit(f"{required!r} missing from {spec_path}")
+          if "provides.capabilities.intentIds" in spec:
+              raise SystemExit("unsupported nested intentIds support target was emitted")
           PY
 
       - name: Promote candidate
