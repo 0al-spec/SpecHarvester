@@ -280,7 +280,7 @@ Acceptance:
 - [x] `P12-T5` Remove or remap generated evidence support targets that SpecPM does
   not currently declare, including `provides.capabilities.intentIds`, so
   generated candidates validate without avoidable advisory warnings.
-- [ ] `P12-T6` Promote the Flask/Gin popular-repository smoke scenario into
+- [x] `P12-T6` Promote the Flask/Gin popular-repository smoke scenario into
   reproducible local smoke documentation or synthetic tests covering Python with
   `LICENSE.txt`, Go module manifest-only behavior, SpecPM validation warnings,
   and governance triage output.

@@ -1,18 +1,20 @@
-# Next Task: P12-T6 Popular Repository Smoke Scenario Promotion
+# Next Task: P11-T1 SpecNode Integration Contract
 
-**Status:** IN_PROGRESS
+**Status:** READY
 
 **Updated:** 2026-05-21
 
 ## Description
 
-Promote the Flask/Gin popular-repository smoke scenario into reproducible local
-smoke documentation or synthetic tests covering Python with `LICENSE.txt`, Go
-module manifest-only behavior, SpecPM validation warnings, and governance
-triage output.
+Define the SpecHarvester-to-SpecNode artifact bundle and typed job contract for
+model-assisted candidate refinement without granting model output file-system or
+shell authority.
 
 ## Recently Archived
 
+- `P12-T6` Promoted Flask/Gin popular-repository smoke coverage into committed
+  synthetic tests and mirrored the reproducible real-checkout recipe in GitHub
+  docs and DocC.
 - `P12-T5` Removed the unsupported
   `provides.capabilities.intentIds` evidence support target, remapped semantic
   evidence to declared SpecPM support targets, and added CI coverage for
@@ -45,8 +47,7 @@ triage output.
 
 ## Parked
 
-- `P11-T1` SpecNode Integration Contract remains parked until deterministic
-  popular-repository smoke hardening is complete.
+- None.
 
 ## Newly Observed Smoke Gaps
 
@@ -55,5 +56,5 @@ triage output.
 
 ## Next Step
 
-Implement `P12-T6` through Flow and PR: promote the Flask/Gin smoke scenario
-into reproducible local smoke documentation or synthetic tests.
+Implement `P11-T1` through Flow and PR: define the SpecHarvester-to-SpecNode
+artifact bundle and typed job contract.

@@ -1,6 +1,6 @@
 # P12-T6 Popular Repository Smoke Scenario Promotion
 
-Status: In Progress
+Status: Archived
 Created: 2026-05-21
 Task: `P12-T6` Promote the Flask/Gin popular-repository smoke scenario into
 reproducible local smoke documentation or synthetic tests.
@@ -86,3 +86,8 @@ or a convenient operator recipe.
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
 - `swift package dump-package >/dev/null`
 - `swift build --target SpecHarvesterDocs`
+
+---
+
+**Archived:** 2026-05-21
+**Verdict:** PASS
