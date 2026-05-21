@@ -1499,6 +1499,11 @@ def build_evidence(
         }
     ]
     if semantic_profile is not None:
+        semantic_supports = [
+            "intent.summary",
+            "provides.capabilities",
+            *[f"provides.capabilities.{capability_id}" for capability_id in manifest_capabilities],
+        ]
         evidence.append(
             {
                 "id": "semantic_intent_static_evidence",
@@ -1508,10 +1513,7 @@ def build_evidence(
                     "schemaVersion": 1,
                     "clusters": semantic_profile.clusters,
                 },
-                "supports": [
-                    "intent.summary",
-                    "provides.capabilities.intentIds",
-                ],
+                "supports": semantic_supports,
             }
         )
     if public_interface_index is None:

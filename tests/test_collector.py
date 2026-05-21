@@ -1107,6 +1107,12 @@ def test_draft_spec_package_uses_documentation_semantics_without_package_manifes
     assert "intent.package.public_repository_metadata" not in manifest
     assert "Provide language-neutral API contract documentation" in spec
     assert "id: semantic_intent_static_evidence" in spec
+    semantic_evidence = spec.split("id: semantic_intent_static_evidence", 1)[1].split(
+        "id: harvest_snapshot", 1
+    )[0]
+    assert "provides.capabilities.intentIds" not in semantic_evidence
+    assert "provides.capabilities" in semantic_evidence
+    assert "provides.capabilities.contract_hub.core" in semantic_evidence
     assert "id: api.contract_surface" in spec
     assert "id: metadata.schema_validation" in spec
     assert "id: workflow.automation_pipeline" in spec
@@ -1262,6 +1268,8 @@ def test_draft_spec_package_uses_web_framework_intents_from_flask_like_index(
         "id: public_interface_index", 1
     )[0]
     assert "public-interface-index.json" not in semantic_evidence
+    assert "provides.capabilities.intentIds" not in semantic_evidence
+    assert "provides.capabilities.flask.core" in semantic_evidence
     assert "evidenceKinds:" in semantic_evidence
     assert "- public_interface_index" in semantic_evidence
 

@@ -156,6 +156,12 @@ bodies, run package scripts, execute checkout files, or contact networks.
 semantic tokens for web framework intent evidence without reading raw source
 bodies.
 
+Semantic evidence `supports` entries are constrained to declared SpecPM support
+targets: `intent.summary`, `provides.capabilities`, and
+`provides.capabilities.<capability_id>`. The drafter does not emit
+`provides.capabilities.intentIds` because nested `intentIds` is not part of the
+current SpecPM BoundarySpec support-target grammar.
+
 raw documentation bodies remain excluded from generated evidence artifacts.
 
 See <doc:LanguageNeutralSemanticExtraction>.

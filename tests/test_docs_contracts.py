@@ -147,6 +147,9 @@ def test_docc_and_github_docs_cover_language_neutral_semantic_extraction() -> No
             "web framework",
             "documentation knowledge base",
             "semantic_intent_static_evidence",
+            "declared SpecPM support targets",
+            "provides.capabilities.<capability_id>",
+            "provides.capabilities.intentIds",
             "intent.web.framework_surface",
             "intent.api.contract_surface",
             "intent.metadata.schema_validation",
@@ -162,6 +165,8 @@ def test_docc_and_github_docs_cover_language_neutral_semantic_extraction() -> No
         assert "semanticHints" in text
         assert "intent.web.framework_surface" in text
         assert "intent.api.contract_surface" in text
+        assert "provides.capabilities.<capability_id>" in text
+        assert "provides.capabilities.intentIds" in text
         assert "raw documentation" in text
 
 

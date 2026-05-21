@@ -69,6 +69,12 @@ the generic `intent.package.public_repository_metadata` fallback. The generated
 BoundarySpec records `semantic_intent_static_evidence` and
 `semanticEvidenceIndex.clusters` with evidence paths and matched terms.
 
+`semantic_intent_static_evidence` uses only declared SpecPM support targets:
+`intent.summary`, `provides.capabilities`, and
+`provides.capabilities.<capability_id>`. It does not emit
+`provides.capabilities.intentIds` because nested `intentIds` is not a declared
+BoundarySpec support target in SpecPM `0.2.0`.
+
 When a supported package manifest exists, only stronger domain clusters such as
 Swift/iOS or web framework clusters replace generic manifest intent IDs. Broad
 API/tooling clusters remain review evidence unless no manifest capability is
