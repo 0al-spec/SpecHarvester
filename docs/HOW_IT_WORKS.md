@@ -710,6 +710,13 @@ a typed `SpecNodeRefinementJob`. The model policy must keep
 `modelFilesystemAccess: none`, `modelShellAccess: none`, and
 `candidateMutation: proposal_only`.
 
+Before that handoff, `refine-preview` planning is defined by
+[`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md).
+It produces a `SpecHarvesterRefinePreviewPlan` with `compactModelInput` derived
+from `harvest.json`, `ProjectProfile`, optional `PublicInterfaceIndex`,
+`semanticEvidenceIndex`, validation summaries, and draft candidate metadata.
+It excludes raw repository source and raw documentation bodies.
+
 The model may help with:
 
 - better capability summaries

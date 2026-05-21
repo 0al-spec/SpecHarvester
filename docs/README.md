@@ -50,7 +50,9 @@ Published DocC site:
 20. [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md):
     typed artifact bundle and job contract for future SpecNode-assisted
     candidate refinement
-21. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+21. [`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md):
+    bounded `refine-preview` planning contract for compact model input
+22. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -69,6 +71,8 @@ Published DocC site:
 - [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md):
   trust boundary for future model-assisted candidate refinement through
   SpecNode
+- [`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md):
+  deterministic `refine-preview` plan shape for compact model input
 
 ## GitHub Process Surface
 

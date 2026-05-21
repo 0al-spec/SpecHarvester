@@ -285,6 +285,13 @@ a typed `SpecNodeRefinementJob`. The job policy keeps
 `modelFilesystemAccess: none`, `modelShellAccess: none`, and
 `candidateMutation: proposal_only`.
 
+Before that handoff, `refine-preview` planning must follow
+<doc:SpecNodeRefinePreviewContract>. It produces a
+`SpecHarvesterRefinePreviewPlan` with `compactModelInput` derived from
+`harvest.json`, `ProjectProfile`, optional `PublicInterfaceIndex`,
+`semanticEvidenceIndex`, validation summaries, and draft candidate metadata.
+It excludes raw repository source and raw documentation bodies.
+
 SpecNode output is proposal metadata such as `candidatePatchProposal`,
 `reviewNotes`, `rejectionReason`, and `usageReceipt`. SpecHarvester validates
 the proposal and reruns SpecPM validation after any accepted edit.
@@ -295,6 +302,7 @@ the proposal and reruns SpecPM validation after any accepted edit.
 - `README.md`
 - <doc:TrustBoundary>
 - <doc:SpecNodeIntegrationContract>
+- <doc:SpecNodeRefinePreviewContract>
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>

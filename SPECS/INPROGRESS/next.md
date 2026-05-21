@@ -1,4 +1,4 @@
-# Next Task: P11-T2 Refine Preview Planning Contract
+# Next Task: P11-T3 OpenAI-Compatible Provider Adapter Boundary
 
 **Status:** READY
 
@@ -6,12 +6,15 @@
 
 ## Description
 
-Add a bounded `refine-preview` planning contract that packages `harvest.json`,
-`ProjectProfile`, optional `PublicInterfaceIndex`, `semanticEvidenceIndex`,
-validation reports, and draft candidate metadata as compact model input.
+Add an OpenAI-compatible provider adapter boundary for local SpecNode execution,
+including LM Studio discovery, model listing, health checks, timeout, retry,
+temperature, and token-budget policy.
 
 ## Recently Archived
 
+- `P11-T2` Defined the deterministic `SpecHarvesterRefinePreviewPlan` contract
+  with compact model input sections, artifact digests, prompt-budget controls,
+  excluded raw content, and DocC/GitHub documentation contract coverage.
 - `P11-T1` Defined the `SpecHarvesterSpecNodeArtifactBundle` and
   `SpecNodeRefinementJob` contract for future SpecNode-assisted candidate
   refinement without granting the model shell, filesystem, raw source, secret,
@@ -60,6 +63,7 @@ validation reports, and draft candidate metadata as compact model input.
 
 ## Next Step
 
-Implement `P11-T2` through Flow and PR: define the bounded `refine-preview`
-planning contract that packages compact deterministic artifacts for model
-input.
+Implement `P11-T3` through Flow and PR: define the OpenAI-compatible provider
+adapter boundary for local SpecNode execution, including LM Studio discovery,
+model listing, health checks, timeout, retry, temperature, and token-budget
+policy.
