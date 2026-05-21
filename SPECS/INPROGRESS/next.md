@@ -1,6 +1,6 @@
 # Next Task: P11-T4 Candidate Patch Proposal Output Schema
 
-**Status:** READY
+**Status:** IN_PROGRESS
 
 **Updated:** 2026-05-21
 
