@@ -303,6 +303,12 @@ SpecNode output is proposal metadata such as `candidatePatchProposal`,
 `reviewNotes`, `rejectionReason`, and `usageReceipt`. SpecHarvester validates
 the proposal and reruns SpecPM validation after any accepted edit.
 
+Patch proposal output must follow <doc:SpecNodePatchProposalContract>. SpecNode
+may return `SpecNodeCandidatePatchProposal` with structured operations or
+`SpecNodeRejectionReason` when no safe proposal can be produced. SpecHarvester
+rejects raw diffs, direct file writes, shell commands, provider calls, missing
+`usageReceipt`, and proposals without provenance or digest binding.
+
 ## References
 
 - `docs/HOW_IT_WORKS.md`
@@ -311,6 +317,7 @@ the proposal and reruns SpecPM validation after any accepted edit.
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>
 - <doc:SpecNodeProviderAdapterContract>
+- <doc:SpecNodePatchProposalContract>
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>

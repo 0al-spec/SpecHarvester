@@ -177,6 +177,15 @@ OpenAI-compatible provider execution is defined in
 `maxOutputTokens`, and `promptBudget` while keeping provider execution owned by
 SpecNode rather than SpecHarvester.
 
+## Patch Proposal Output
+
+Schema-validated model output is defined in
+<doc:SpecNodePatchProposalContract>. It fixes
+`SpecNodeCandidatePatchProposal`, `SpecNodeCandidatePatchOperation`,
+`SpecNodeProposalProvenance`, `SpecNodeProposalUsageReceipt`,
+`SpecNodeRejectionReason`, `reviewNotes`, `usageReceipt`, and
+validation-before-apply rules.
+
 ## Rejection Conditions
 
 Reject the handoff or returned proposal if bundle digests do not match, paths
@@ -192,3 +201,4 @@ run commands or fetch dependencies, or the future `usageReceipt` is missing.
 - <doc:TrustBoundary>
 - <doc:Workflow>
 - <doc:SpecNodeProviderAdapterContract>
+- <doc:SpecNodePatchProposalContract>

@@ -264,7 +264,12 @@ This contract intentionally leaves implementation details to later tasks:
   `timeoutPolicy`, `retryPolicy`, `temperature`, `maxOutputTokens`, and
   `promptBudget` without granting provider execution authority to
   SpecHarvester.
-- `P11-T4` will define schema-validated patch proposal output.
+- `P11-T4` defines schema-validated patch proposal output in
+  [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md).
+  It fixes `SpecNodeCandidatePatchProposal`,
+  `SpecNodeCandidatePatchOperation`, `SpecNodeProposalProvenance`,
+  `SpecNodeProposalUsageReceipt`, `SpecNodeRejectionReason`, `reviewNotes`,
+  `usageReceipt`, and validation-before-apply rules.
 - `P11-T5` will add integration smoke coverage with deterministic fallback.
 
 The compatibility rule is stable: model-assisted refinement consumes compact

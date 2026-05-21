@@ -121,6 +121,7 @@ Future component. It may refine deterministic candidates through a bounded
 SpecNode job. The handoff contract is <doc:SpecNodeIntegrationContract>.
 The compact planning contract is <doc:SpecNodeRefinePreviewContract>.
 The provider adapter contract is <doc:SpecNodeProviderAdapterContract>.
+The patch proposal output contract is <doc:SpecNodePatchProposalContract>.
 
 SpecHarvester must send only a `SpecHarvesterSpecNodeArtifactBundle` inside a
 typed `SpecNodeRefinementJob`. The job policy keeps
@@ -142,6 +143,11 @@ When provider execution is added, SpecNode must use
 OpenAI-compatible local endpoints. Provider execution is `localhost_only` by
 default, limited to `/v1/models` and `/v1/chat/completions`, and recorded in
 `SpecNodeProviderUsageReceipt`. SpecHarvester does not contact providers.
+
+Model output must conform to `SpecNodeCandidatePatchProposal` or
+`SpecNodeRejectionReason`. Candidate changes are structured operations against
+`specpm.yaml` and `specs/*.spec.yaml`, not raw diffs, shell commands, provider
+calls, or direct file writes.
 
 ### SpecPM Validation Gate
 
@@ -174,5 +180,6 @@ generated specs canonical by itself.
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>
 - <doc:SpecNodeProviderAdapterContract>
+- <doc:SpecNodePatchProposalContract>
 - <doc:BatchValidationReports>
 - <doc:Roadmap>
