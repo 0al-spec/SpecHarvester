@@ -255,8 +255,15 @@ This contract intentionally leaves implementation details to later tasks:
   It emits a deterministic `SpecHarvesterRefinePreviewPlan` with
   `compactModelInput` derived from trusted local artifacts before any provider
   adapter is contacted.
-- `P11-T3` will define the OpenAI-compatible provider adapter and LM Studio
-  discovery boundary.
+- `P11-T3` defines the OpenAI-compatible provider adapter and LM Studio
+  discovery boundary in
+  [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md).
+  It fixes `SpecNodeOpenAICompatibleProviderAdapter`,
+  `SpecNodeProviderHealth`, `SpecNodeModelListing`,
+  `SpecNodeGenerationPolicy`, `SpecNodeProviderUsageReceipt`,
+  `timeoutPolicy`, `retryPolicy`, `temperature`, `maxOutputTokens`, and
+  `promptBudget` without granting provider execution authority to
+  SpecHarvester.
 - `P11-T4` will define schema-validated patch proposal output.
 - `P11-T5` will add integration smoke coverage with deterministic fallback.
 

@@ -317,6 +317,115 @@ def test_docc_and_github_docs_cover_refine_preview_planning_contract() -> None:
         assert "PublicInterfaceIndex" in text
 
 
+def test_docc_and_github_docs_cover_specnode_provider_adapter_contract() -> None:
+    github_doc = ROOT / "docs" / "SPECNODE_PROVIDER_ADAPTER_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeProviderAdapterContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    integration_doc = ROOT / "docs" / "SPECNODE_INTEGRATION_CONTRACT.md"
+    integration_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecNodeIntegrationContract.md"
+    )
+    refine_doc = ROOT / "docs" / "SPECNODE_REFINE_PREVIEW_CONTRACT.md"
+    refine_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeRefinePreviewContract.md"
+    )
+    architecture_doc = ROOT / "docs" / "ARCHITECTURE.md"
+    architecture_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "HarvesterArchitecture.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecNodeOpenAICompatibleProviderAdapter",
+            "SpecNodeProviderDiscoveryResult",
+            "SpecNodeProviderHealth",
+            "SpecNodeModelListing",
+            "SpecNodeGenerationPolicy",
+            "SpecNodeProviderUsageReceipt",
+            "OpenAI-compatible",
+            "LM Studio",
+            "lm_studio",
+            "http://127.0.0.1:1234/v1",
+            "http://localhost:1234/v1",
+            "endpointAllowlist",
+            "/v1/models",
+            "/v1/chat/completions",
+            "localhost_only",
+            "allowRemoteEndpoints",
+            "modelNetworkAccess: provider_only",
+            "toolNetworkAccess: none",
+            "timeoutPolicy",
+            "retryPolicy",
+            "temperature",
+            "maxOutputTokens",
+            "promptBudget",
+            "maxPromptTokens",
+            "maxPromptBytes",
+            "inputTokens",
+            "outputTokens",
+            "totalTokens",
+            "responseSha256",
+            "redactionPolicy",
+            "allowedTools: []",
+            "modelFilesystemAccess: none",
+            "modelShellAccess: none",
+            "rawSourceAccess: none",
+            "secretAccess: none",
+            "candidateMutation: proposal_only",
+            "SpecHarvesterRefinePreviewPlan",
+            "usageReceipt",
+            "SpecHarvester does not contact providers",
+            "explicit operator opt-in",
+            "raw repository source",
+            "provider logs",
+        ):
+            assert required in text
+
+    assert "SPECNODE_PROVIDER_ADAPTER_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecNodeProviderAdapterContract>" in root_page.read_text(encoding="utf-8")
+
+    for path in (integration_doc, integration_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecNodeOpenAICompatibleProviderAdapter" in text
+        assert "SpecNodeProviderUsageReceipt" in text
+        assert "timeoutPolicy" in text
+        assert "retryPolicy" in text
+        assert "SpecHarvester" in text
+
+    for path in (refine_doc, refine_docc, architecture_doc, architecture_docc):
+        text = path.read_text(encoding="utf-8")
+        assert (
+            "SpecNodeProviderAdapterContract" in text
+            or "SPECNODE_PROVIDER_ADAPTER_CONTRACT.md" in text
+        )
+        assert "SpecNodeOpenAICompatibleProviderAdapter" in text
+
+    for path in (workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert (
+            "SpecNodeProviderAdapterContract" in text
+            or "SPECNODE_PROVIDER_ADAPTER_CONTRACT.md" in text
+        )
+        assert "SpecNodeOpenAICompatibleProviderAdapter" in text
+        assert "/v1/models" in text
+        assert "/v1/chat/completions" in text
+        assert "SpecHarvester does not contact providers" in text
+
+
 def test_docc_and_github_docs_cover_accepted_candidate_impact_classification() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md"
     docc_doc = (

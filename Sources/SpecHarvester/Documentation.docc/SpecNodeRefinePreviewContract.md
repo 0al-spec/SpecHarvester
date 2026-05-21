@@ -89,6 +89,11 @@ update proposal metadata.
 
 Every used artifact must be recorded in `artifactDigests`.
 
+The OpenAI-compatible provider adapter boundary is defined separately in
+<doc:SpecNodeProviderAdapterContract>.
+That later boundary names `SpecNodeOpenAICompatibleProviderAdapter`, but this
+preview contract still does not contact providers.
+
 ## Compact Model Input
 
 `harvestSummary` includes source repository metadata, pinned revision, collector
@@ -165,5 +170,6 @@ validation status.
 
 - `docs/SPECNODE_REFINE_PREVIEW_CONTRACT.md`
 - <doc:SpecNodeIntegrationContract>
+- <doc:SpecNodeProviderAdapterContract>
 - <doc:Workflow>
 - <doc:TrustBoundary>

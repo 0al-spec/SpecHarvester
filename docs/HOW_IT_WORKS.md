@@ -717,6 +717,14 @@ from `harvest.json`, `ProjectProfile`, optional `PublicInterfaceIndex`,
 `semanticEvidenceIndex`, validation summaries, and draft candidate metadata.
 It excludes raw repository source and raw documentation bodies.
 
+Provider execution is governed by
+[`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md).
+SpecNode may use `SpecNodeOpenAICompatibleProviderAdapter` for LM Studio or
+other OpenAI-compatible local providers, but only through explicit or
+`localhost_only` discovery, `/v1/models`, `/v1/chat/completions`,
+`timeoutPolicy`, `retryPolicy`, `temperature`, `maxOutputTokens`, and
+`promptBudget`. SpecHarvester does not contact providers.
+
 The model may help with:
 
 - better capability summaries

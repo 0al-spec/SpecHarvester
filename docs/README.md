@@ -52,7 +52,9 @@ Published DocC site:
     candidate refinement
 21. [`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md):
     bounded `refine-preview` planning contract for compact model input
-22. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+22. [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md):
+    OpenAI-compatible provider adapter boundary for local SpecNode execution
+23. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -73,6 +75,9 @@ Published DocC site:
   SpecNode
 - [`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md):
   deterministic `refine-preview` plan shape for compact model input
+- [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md):
+  LM Studio/OpenAI-compatible provider discovery, health, model listing, and
+  execution policy boundary for SpecNode
 
 ## GitHub Process Surface
 
