@@ -28,8 +28,16 @@ SpecHarvester does not contact providers.
   "kind": "SpecNodeOpenAICompatibleProviderAdapter",
   "providerKind": "openai_compatible",
   "providerName": "lm_studio",
-  "baseUrl": "http://127.0.0.1:1234/v1",
+  "baseUrl": "http://127.0.0.1:1234",
   "endpointAllowlist": ["/v1/models", "/v1/chat/completions"],
+  "defaultHeaders": {
+    "Content-Type": "application/json"
+  },
+  "authPolicy": {
+    "mode": "none_or_local_token",
+    "secretSource": "specnode_runtime_only",
+    "redactHeaders": ["Authorization"]
+  },
   "networkPolicy": {
     "scope": "localhost_only",
     "allowRemoteEndpoints": false,
@@ -51,7 +59,8 @@ SpecHarvester does not contact providers.
     "retryPolicy": {
       "maxAttempts": 2,
       "retryOnStatus": [408, 429, 500, 502, 503, 504],
-      "backoff": "bounded_exponential"
+      "backoff": "bounded_exponential",
+      "maxBackoffSeconds": 5
     }
   },
   "authorityPolicy": {
@@ -67,8 +76,8 @@ SpecHarvester does not contact providers.
 
 ## LM Studio Discovery
 
-Default LM Studio discovery candidates are `http://127.0.0.1:1234/v1` and
-`http://localhost:1234/v1`.
+Default LM Studio discovery candidates are `http://127.0.0.1:1234` and
+`http://localhost:1234`.
 
 Rules:
 
@@ -82,6 +91,14 @@ Rules:
 ## Endpoint Allowlist
 
 The adapter may use only `/v1/models` and `/v1/chat/completions`.
+
+Endpoint joining rule: `baseUrl` is the provider origin without the OpenAI API
+version path, and allowlisted endpoints are absolute API paths beginning with
+`/v1/`. Implementations must join them by trimming exactly one slash between
+`baseUrl` and the endpoint. For example,
+`http://127.0.0.1:1234` + `/v1/models` becomes
+`http://127.0.0.1:1234/v1/models`; `baseUrl` values ending in `/v1` must be
+rejected or normalized before use.
 
 `modelNetworkAccess: provider_only` allows SpecNode to contact the configured
 provider endpoint. It does not allow the model to browse repositories, fetch
