@@ -1,6 +1,6 @@
 # Next Task: P12-T3 Domain Intent Inference
 
-**Status:** READY
+**Status:** IN_PROGRESS
 
 **Updated:** 2026-05-21
 
