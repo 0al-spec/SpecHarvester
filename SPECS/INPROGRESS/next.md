@@ -1,6 +1,6 @@
 # Next Task: P11-T3 OpenAI-Compatible Provider Adapter Boundary
 
-**Status:** READY
+**Status:** IN_PROGRESS
 
 **Updated:** 2026-05-21
 
