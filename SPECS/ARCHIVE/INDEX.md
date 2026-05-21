@@ -52,6 +52,7 @@
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
 | P12-T4 | [P12-T4_PublicInterfaceIndex_Evidence_Contract_Alignment/](P12-T4_PublicInterfaceIndex_Evidence_Contract_Alignment/) | 2026-05-21 | PASS |
 | P12-T5 | [P12-T5_Evidence_Support_Target_Contract_Alignment/](P12-T5_Evidence_Support_Target_Contract_Alignment/) | 2026-05-21 | PASS |
+| P12-T6 | [P12-T6_Popular_Repository_Smoke_Scenario_Promotion/](P12-T6_Popular_Repository_Smoke_Scenario_Promotion/) | 2026-05-21 | PASS |
 
 ## Historical Artifacts
 
@@ -146,3 +147,4 @@
 | 2026-05-21 | P12-T4 | Archived REVIEW_p12_t4_public_interface_evidence_contract report |
 | 2026-05-21 | P12-T5 | Archived Evidence Support Target Contract Alignment (PASS) |
 | 2026-05-21 | P12-T5 | Archived REVIEW_p12_t5_evidence_support_target_contract report |
+| 2026-05-21 | P12-T6 | Archived Popular Repository Smoke Scenario Promotion (PASS) |
