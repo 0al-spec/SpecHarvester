@@ -55,6 +55,11 @@ no supported package evidence are recorded as skipped in the batch JSON output.
 The generated `PublicInterfaceIndex` remains advisory untrusted metadata and can
 be consumed later by `draft` through auto-detection beside `harvest.json`.
 
+When drafted, this artifact is recorded as BoundarySpec evidence with
+`kind: public_interface_index`, which is recognized by SpecPM `0.2.0+`, plus
+`artifactKind: SpecHarvesterPublicInterfaceIndex`, `mediaType`,
+`schemaVersion`, and `summary` metadata.
+
 ## Output Layout
 
 Each collected repository writes:

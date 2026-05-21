@@ -16,18 +16,19 @@ evidence:
     path: public-interface-index.json
 ```
 
-Current SpecPM validation does not recognize `public_interface_index` as an
-accepted evidence kind, so candidate validation emits an avoidable advisory
-warning even when the interface index itself is deterministic and valid.
+Earlier smoke runs with an older SpecPM validator treated
+`public_interface_index` as an unknown evidence kind, so candidate validation
+could emit an avoidable advisory warning even when the interface index itself
+was deterministic and valid.
 
-Until SpecPM's vocabulary is updated, SpecHarvester should emit a contract-safe
-evidence kind while preserving enough metadata for reviewers to recognize the
-artifact as a generated `PublicInterfaceIndex`.
+SpecPM `0.2.0` now recognizes `public_interface_index`, so SpecHarvester should
+keep emitting the precise evidence kind and add compatibility coverage that
+guards against regressions in the cross-repository contract.
 
 ## Goals
 
-- Eliminate the avoidable SpecPM warning caused by
-  `kind: public_interface_index`.
+- Eliminate the avoidable SpecPM warning caused by older validators treating
+  `kind: public_interface_index` as unknown.
 - Preserve generated interface index provenance, media type, path, analyzer
   summary, and supported BoundarySpec targets.
 - Keep the emitted candidate compatible with the current SpecPM validation
@@ -48,15 +49,14 @@ artifact as a generated `PublicInterfaceIndex`.
 
 - Keep `id: public_interface_index` stable for review tooling and generated
   candidate readability.
-- Change the emitted evidence `kind` to a currently accepted generic artifact
-  kind if the current SpecPM contract supports one.
-- Add explicit metadata fields to preserve the original generated artifact type,
-  media type, and schema identity.
-- Add tests that prove generated specs no longer contain
-  `kind: public_interface_index` while still emitting `public-interface-index.json`
-  and interface support links.
-- Run SpecPM validation on a candidate with interface evidence to confirm the
-  evidence-kind warning is gone.
+- Keep `kind: public_interface_index` because SpecPM `0.2.0` recognizes it as a
+  known evidence kind.
+- Add explicit metadata fields that preserve the generated artifact type, media
+  type, schema identity, schema version, and analyzer summary.
+- Add tests that prove generated specs emit the accepted evidence kind plus the
+  additional artifact metadata.
+- Extend SpecPM integration coverage so CI validates a candidate that includes
+  `public-interface-index.json` evidence.
 
 ## Deliverables
 
@@ -67,8 +67,8 @@ artifact as a generated `PublicInterfaceIndex`.
 
 ## Acceptance Criteria
 
-- Generated candidates with `PublicInterfaceIndex` evidence do not emit
-  `kind: public_interface_index` in BoundarySpec evidence records.
+- Generated candidates with `PublicInterfaceIndex` evidence keep
+  `kind: public_interface_index`.
 - The evidence record still identifies the artifact as a generated
   `PublicInterfaceIndex` through explicit metadata.
 - SpecPM validation no longer warns about an unknown evidence kind for

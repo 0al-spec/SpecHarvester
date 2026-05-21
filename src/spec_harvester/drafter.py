@@ -1526,6 +1526,10 @@ def build_evidence(
             "id": "public_interface_index",
             "kind": "public_interface_index",
             "path": PUBLIC_INTERFACE_INDEX_OUTPUT,
+            "artifactKind": "SpecHarvesterPublicInterfaceIndex",
+            "mediaType": PUBLIC_INTERFACE_INDEX_MEDIA_TYPE,
+            "schemaVersion": public_interface_index.get("schemaVersion"),
+            "summary": public_interface_index.get("summary"),
             "supports": ["interfaces.inbound", *supported_interfaces],
         }
     )

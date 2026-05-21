@@ -99,6 +99,13 @@ inferred capability IDs, inferred `intent.*` IDs, provenance, review
 constraints, and analyzer-backed inbound interface summaries when a valid index
 is provided. It does not claim upstream endorsement.
 
+When a `PublicInterfaceIndex` is present, BoundarySpec evidence keeps
+`kind: public_interface_index`, which is recognized by SpecPM `0.2.0+`, and
+adds explicit artifact metadata: `artifactKind: SpecHarvesterPublicInterfaceIndex`,
+`mediaType`, `schemaVersion`, and
+`summary`. Older SpecPM validators may warn on that evidence kind; current
+public-interface candidates should be checked with SpecPM `0.2.0+`.
+
 When no supported package manifest exists, the drafter may use documentation
 `semanticHints` as advisory `semantic_intent_static_evidence`. Language-neutral
 clusters such as `api.contract_surface`, `metadata.schema_validation`,

@@ -129,6 +129,12 @@ The drafter validates the index, writes a normalized
 `public-interface-index.json` artifact into the candidate directory, and records
 it as BoundarySpec evidence. It does not run analyzers during drafting.
 
+The BoundarySpec evidence record for this artifact uses
+`kind: public_interface_index`, which is recognized by SpecPM `0.2.0+`, and
+includes `artifactKind: SpecHarvesterPublicInterfaceIndex`, `mediaType`,
+`schemaVersion`, and `summary` so reviewers can identify the deterministic
+artifact contract without opening the JSON first.
+
 `PublicInterfaceIndex.summary.status` is preserved as review metadata:
 `complete` means no diagnostics were emitted, `partial` means diagnostics were
 emitted while package evidence remains available, and `failed` means diagnostics

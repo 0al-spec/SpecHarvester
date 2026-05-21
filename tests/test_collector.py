@@ -929,6 +929,12 @@ def test_draft_spec_package_enriches_interfaces_from_public_interface_index(
     assert copied_index.exists()
     assert result["interfaceIndex"] == str(copied_index)
     assert "id: public_interface_index" in spec
+    assert "kind: public_interface_index" in spec
+    assert "artifactKind: SpecHarvesterPublicInterfaceIndex" in spec
+    assert "mediaType: application/vnd.spec-harvester.public-interface-index+json" in spec
+    assert "schemaVersion: 2" in spec
+    assert "summary:" in spec
+    assert "packageCount: 1" in spec
     assert "path: public-interface-index.json" in spec
     assert "interfaces.inbound.package.core" in spec
     assert "Observed public interface for @example/core from PublicInterfaceIndex." in spec
