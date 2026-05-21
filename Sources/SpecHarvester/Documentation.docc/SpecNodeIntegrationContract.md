@@ -161,6 +161,12 @@ accepted registry truth.
 SpecHarvester validates returned proposal metadata, shows it for review, and
 reruns SpecPM validation after any accepted local edit.
 
+## Refine Preview Planning
+
+`refine-preview` planning is defined in <doc:SpecNodeRefinePreviewContract>.
+It produces a deterministic `SpecHarvesterRefinePreviewPlan` with
+`compactModelInput` before any model provider is contacted.
+
 ## Rejection Conditions
 
 Reject the handoff or returned proposal if bundle digests do not match, paths

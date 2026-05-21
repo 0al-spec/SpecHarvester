@@ -119,6 +119,7 @@ inspect raw repository source during candidate drafting.
 
 Future component. It may refine deterministic candidates through a bounded
 SpecNode job. The handoff contract is <doc:SpecNodeIntegrationContract>.
+The compact planning contract is <doc:SpecNodeRefinePreviewContract>.
 
 SpecHarvester must send only a `SpecHarvesterSpecNodeArtifactBundle` inside a
 typed `SpecNodeRefinementJob`. The job policy keeps
@@ -127,6 +128,13 @@ typed `SpecNodeRefinementJob`. The job policy keeps
 `candidatePatchProposal`, `reviewNotes`, `rejectionReason`, and `usageReceipt`
 metadata. Model output remains untrusted candidate metadata and must be
 validated and reviewed before acceptance.
+
+Before any model provider is contacted, `refine-preview` planning may produce a
+`SpecHarvesterRefinePreviewPlan` with `compactModelInput` sections such as
+`harvestSummary`, `projectProfile`, `publicInterfaceSummary`,
+`semanticEvidenceIndex`, `validationSummaries`, and
+`draftCandidateMetadata`. That plan excludes raw repository source and raw
+documentation bodies.
 
 ### SpecPM Validation Gate
 
@@ -157,5 +165,6 @@ generated specs canonical by itself.
 - `docs/ARCHITECTURE.md`
 - <doc:TrustBoundary>
 - <doc:SpecNodeIntegrationContract>
+- <doc:SpecNodeRefinePreviewContract>
 - <doc:BatchValidationReports>
 - <doc:Roadmap>

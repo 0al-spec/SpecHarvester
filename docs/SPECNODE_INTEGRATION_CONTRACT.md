@@ -250,7 +250,11 @@ SpecHarvester should reject a job or returned proposal when:
 
 This contract intentionally leaves implementation details to later tasks:
 
-- `P11-T2` will define a concrete `refine-preview` planning contract.
+- `P11-T2` defines the concrete `refine-preview` planning contract in
+  [`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md).
+  It emits a deterministic `SpecHarvesterRefinePreviewPlan` with
+  `compactModelInput` derived from trusted local artifacts before any provider
+  adapter is contacted.
 - `P11-T3` will define the OpenAI-compatible provider adapter and LM Studio
   discovery boundary.
 - `P11-T4` will define schema-validated patch proposal output.

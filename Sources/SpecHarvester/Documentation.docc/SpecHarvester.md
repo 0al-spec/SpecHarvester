@@ -48,6 +48,7 @@ The canonical source files remain in the repository:
 - `docs/LICENSE_PROVENANCE_RISK_REPORTS.md`
 - `docs/LOCAL_SMOKE_FIXTURES.md`
 - `docs/SPECNODE_INTEGRATION_CONTRACT.md`
+- `docs/SPECNODE_REFINE_PREVIEW_CONTRACT.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -78,6 +79,7 @@ the host.
 - <doc:LicenseProvenanceRiskReports>
 - <doc:LocalSmokeFixtures>
 - <doc:SpecNodeIntegrationContract>
+- <doc:SpecNodeRefinePreviewContract>
 - <doc:ProposalAutomation>
 
 ### Architecture

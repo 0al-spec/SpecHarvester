@@ -240,6 +240,83 @@ def test_docc_and_github_docs_cover_specnode_integration_contract() -> None:
         assert "usageReceipt" in text
 
 
+def test_docc_and_github_docs_cover_refine_preview_planning_contract() -> None:
+    github_doc = ROOT / "docs" / "SPECNODE_REFINE_PREVIEW_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeRefinePreviewContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    integration_doc = ROOT / "docs" / "SPECNODE_INTEGRATION_CONTRACT.md"
+    integration_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecNodeIntegrationContract.md"
+    )
+    architecture_doc = ROOT / "docs" / "ARCHITECTURE.md"
+    architecture_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "HarvesterArchitecture.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecHarvesterRefinePreviewPlan",
+            "refine-preview",
+            "compactModelInput",
+            "harvestSummary",
+            "projectProfile",
+            "publicInterfaceSummary",
+            "semanticEvidenceIndex",
+            "validationSummaries",
+            "draftCandidateMetadata",
+            "artifactDigests",
+            "promptBudget",
+            "maxPromptBytes",
+            "maxPromptTokens",
+            "maxPublicSymbols",
+            "maxSemanticClusters",
+            "truncationPolicy",
+            "redactionPolicy",
+            "rawRepositorySource: excluded",
+            "documentationBodies: excluded",
+            "providerLogs: excluded",
+            "arbitraryPrompts: excluded",
+            "modelFilesystemAccess: none",
+            "modelShellAccess: none",
+            "candidateMutation: proposal_only",
+            "SpecHarvesterSpecNodeArtifactBundle",
+            "SpecNodeRefinementJob",
+            "harvest.json",
+            "ProjectProfile",
+            "PublicInterfaceIndex",
+            "public-interface-index.json",
+            "SpecHarvesterEvidenceSnapshot",
+            "does not execute models",
+            "deterministic local planning step",
+            "perform network fetches",
+        ):
+            assert required in text
+
+    assert "SPECNODE_REFINE_PREVIEW_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecNodeRefinePreviewContract>" in root_page.read_text(encoding="utf-8")
+
+    for path in (integration_doc, integration_docc, architecture_doc, architecture_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecHarvesterRefinePreviewPlan" in text
+        assert "compactModelInput" in text
+
+    for path in (workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecHarvesterRefinePreviewPlan" in text
+        assert "compactModelInput" in text
+        assert "PublicInterfaceIndex" in text
+
+
 def test_docc_and_github_docs_cover_accepted_candidate_impact_classification() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md"
     docc_doc = (
