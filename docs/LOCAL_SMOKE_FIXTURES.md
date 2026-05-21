@@ -106,6 +106,131 @@ candidate directories.
 
 Do not commit generated smoke outputs.
 
+## Popular Flask/Gin Smoke
+
+Use this scenario when validating popular repository shapes that previously
+exposed gaps in strict public intake, deterministic analyzers, web-framework
+intent inference, SpecPM validation, and governance triage output. The committed
+test suite covers synthetic Flask/Gin fixtures; this recipe is for real local
+checkouts in the adjacent `~/Development/GitHub` layout.
+
+Create a dedicated manifest for the popular smoke pair:
+
+```bash
+mkdir -p .smoke/inputs .smoke/output
+checkout_root="$(cd ../.. && pwd)"
+flask_revision="$(git -C "${checkout_root}/flask" rev-parse HEAD)"
+gin_revision="$(git -C "${checkout_root}/gin" rev-parse HEAD)"
+
+cat > .smoke/inputs/popular.yml <<YAML
+repositories:
+  - id: flask
+    repository: https://github.com/pallets/flask
+    revision: ${flask_revision}
+    checkout: "${checkout_root}/flask"
+    packageId: flask.core
+    labels: [python, flask, popular-smoke, license-txt]
+
+  - id: gin
+    repository: https://github.com/gin-gonic/gin
+    revision: ${gin_revision}
+    checkout: "${checkout_root}/gin"
+    packageId: gin.core
+    labels: [go, gin, popular-smoke]
+YAML
+```
+
+If local directories use different names, update only `checkout`. Keep
+`repository` aligned with the public upstream URL so namespace/upstream reports
+can compare `flask.core` with `pallets/flask` and `gin.core` with
+`gin-gonic/gin`.
+
+Run the strict public preflight before collection:
+
+```bash
+git -C "${checkout_root}/flask" diff --cached --quiet
+git -C "${checkout_root}/gin" diff --cached --quiet
+```
+
+Collect only the popular pair and emit deterministic public interface indexes:
+
+```bash
+PYTHONPATH=src python -m spec_harvester collect-batch .smoke/inputs \
+  --out .smoke/output/popular-candidates \
+  --report .smoke/output/popular-batch-validation.json \
+  --emit-interface-indexes \
+  --analyzer-cache-dir .smoke/output/analyzer-cache \
+  --select flask \
+  --select gin
+```
+
+Expected collection checks:
+
+- Flask strict public collection accepts `LICENSE.txt` as allowlisted license
+  evidence.
+- Gin collection reads `go.mod` and emits `public-interface-index.json` through
+  `spec_harvester.go_public_api`.
+- Both analyzers use `execution: none`, `networkAccess: none`, and
+  `packageScripts: not_run`.
+- Generated outputs stay under `.smoke/output/` and remain ignored.
+
+Draft preview-only candidates explicitly:
+
+```bash
+PYTHONPATH=src python -m spec_harvester draft .smoke/output/popular-candidates/flask \
+  --package-id flask.core \
+  --name Flask \
+  --out .smoke/output/popular-candidates/flask
+
+PYTHONPATH=src python -m spec_harvester draft .smoke/output/popular-candidates/gin \
+  --package-id gin.core \
+  --name Gin \
+  --out .smoke/output/popular-candidates/gin
+```
+
+Expected draft checks:
+
+- Both candidates include `preview_only: true`.
+- Both candidates include web-framework intents such as
+  `intent.web.framework_surface`, `intent.web.http_routing`,
+  `intent.web.middleware_pipeline`, and
+  `intent.web.request_response_context`.
+- Both candidates keep `kind: public_interface_index` evidence with
+  `artifactKind: SpecHarvesterPublicInterfaceIndex`.
+- SpecPM validation may still report the expected `preview_only_package`
+  warning, but should not report `unknown_evidence_kind` or
+  `evidence_support_target_unknown`.
+
+Run SpecPM validation when the local `specpm` CLI is available:
+
+```bash
+specpm validate .smoke/output/popular-candidates/flask --json
+specpm validate .smoke/output/popular-candidates/gin --json
+```
+
+Generate the popular governance reports and smoke triage summary:
+
+```bash
+PYTHONPATH=src python -m spec_harvester governance-report \
+  --candidates-root .smoke/output/popular-candidates \
+  --output .smoke/output/popular-governance-claims.json
+
+PYTHONPATH=src python -m spec_harvester governance-upstream-report \
+  --candidates-root .smoke/output/popular-candidates \
+  --output .smoke/output/popular-namespace-upstream.json
+
+PYTHONPATH=src python -m spec_harvester governance-license-provenance-report \
+  --candidates-root .smoke/output/popular-candidates \
+  --output .smoke/output/popular-license-provenance.json
+
+PYTHONPATH=src python -m spec_harvester smoke-triage-summary \
+  --batch-validation .smoke/output/popular-batch-validation.json \
+  --governance-claims .smoke/output/popular-governance-claims.json \
+  --namespace-upstream .smoke/output/popular-namespace-upstream.json \
+  --license-provenance .smoke/output/popular-license-provenance.json \
+  --output .smoke/output/popular-smoke-triage.json
+```
+
 ## Collection
 
 Validate the manifest without reading checkout files:

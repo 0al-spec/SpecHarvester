@@ -96,6 +96,120 @@ be committed.
 
 Do not commit generated smoke outputs.
 
+## Popular Flask/Gin Smoke
+
+Use this scenario for popular web-framework repository shapes. The committed
+pytest coverage uses synthetic Flask/Gin fixtures; this recipe describes the
+real local checkout run with generated smoke outputs kept under `.smoke/output/`.
+
+Create a dedicated manifest:
+
+```bash
+mkdir -p .smoke/inputs .smoke/output
+checkout_root="$(cd ../.. && pwd)"
+flask_revision="$(git -C "${checkout_root}/flask" rev-parse HEAD)"
+gin_revision="$(git -C "${checkout_root}/gin" rev-parse HEAD)"
+
+cat > .smoke/inputs/popular.yml <<YAML
+repositories:
+  - id: flask
+    repository: https://github.com/pallets/flask
+    revision: ${flask_revision}
+    checkout: "${checkout_root}/flask"
+    packageId: flask.core
+    labels: [python, flask, popular-smoke, license-txt]
+
+  - id: gin
+    repository: https://github.com/gin-gonic/gin
+    revision: ${gin_revision}
+    checkout: "${checkout_root}/gin"
+    packageId: gin.core
+    labels: [go, gin, popular-smoke]
+YAML
+```
+
+Keep strict public preflight enabled:
+
+```bash
+git -C "${checkout_root}/flask" diff --cached --quiet
+git -C "${checkout_root}/gin" diff --cached --quiet
+```
+
+Collect with deterministic public interface indexes:
+
+```bash
+PYTHONPATH=src python -m spec_harvester collect-batch .smoke/inputs \
+  --out .smoke/output/popular-candidates \
+  --report .smoke/output/popular-batch-validation.json \
+  --emit-interface-indexes \
+  --analyzer-cache-dir .smoke/output/analyzer-cache \
+  --select flask \
+  --select gin
+```
+
+Expected collection checks:
+
+- Flask accepts `LICENSE.txt` as strict public license evidence.
+- Gin reads `go.mod` and emits `public-interface-index.json` through
+  `spec_harvester.go_public_api`.
+- Analyzers keep `execution: none`, `networkAccess: none`, and
+  `packageScripts: not_run`.
+
+Draft preview-only candidates:
+
+```bash
+PYTHONPATH=src python -m spec_harvester draft .smoke/output/popular-candidates/flask \
+  --package-id flask.core \
+  --name Flask \
+  --out .smoke/output/popular-candidates/flask
+
+PYTHONPATH=src python -m spec_harvester draft .smoke/output/popular-candidates/gin \
+  --package-id gin.core \
+  --name Gin \
+  --out .smoke/output/popular-candidates/gin
+```
+
+Expected draft checks:
+
+- Both candidates include `preview_only: true`.
+- Both candidates include `intent.web.framework_surface`,
+  `intent.web.http_routing`, `intent.web.middleware_pipeline`, and
+  `intent.web.request_response_context`.
+- Both candidates keep `kind: public_interface_index` evidence with
+  `artifactKind: SpecHarvesterPublicInterfaceIndex`.
+- SpecPM validation may still report `preview_only_package`, but should not
+  report `unknown_evidence_kind` or `evidence_support_target_unknown`.
+
+Validate with SpecPM when available:
+
+```bash
+specpm validate .smoke/output/popular-candidates/flask --json
+specpm validate .smoke/output/popular-candidates/gin --json
+```
+
+Generate governance reports and a smoke triage summary:
+
+```bash
+PYTHONPATH=src python -m spec_harvester governance-report \
+  --candidates-root .smoke/output/popular-candidates \
+  --output .smoke/output/popular-governance-claims.json
+
+PYTHONPATH=src python -m spec_harvester governance-upstream-report \
+  --candidates-root .smoke/output/popular-candidates \
+  --output .smoke/output/popular-namespace-upstream.json
+
+PYTHONPATH=src python -m spec_harvester governance-license-provenance-report \
+  --candidates-root .smoke/output/popular-candidates \
+  --output .smoke/output/popular-license-provenance.json
+
+PYTHONPATH=src python -m spec_harvester smoke-triage-summary \
+  --batch-validation .smoke/output/popular-batch-validation.json \
+  --governance-claims .smoke/output/popular-governance-claims.json \
+  --namespace-upstream .smoke/output/popular-namespace-upstream.json \
+  --license-provenance .smoke/output/popular-license-provenance.json \
+  --output .smoke/output/popular-smoke-triage.json
+```
+
 ## Collection
 
 Validate the manifest:
