@@ -54,7 +54,9 @@ Published DocC site:
     bounded `refine-preview` planning contract for compact model input
 22. [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md):
     OpenAI-compatible provider adapter boundary for local SpecNode execution
-23. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+23. [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md):
+    schema-validated candidate patch proposal output contract
+24. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -78,6 +80,9 @@ Published DocC site:
 - [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md):
   LM Studio/OpenAI-compatible provider discovery, health, model listing, and
   execution policy boundary for SpecNode
+- [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md):
+  schema-validated `candidatePatchProposal`, provenance, usage receipt, and
+  rejection reason output boundary
 
 ## GitHub Process Surface
 

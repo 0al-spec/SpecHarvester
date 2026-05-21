@@ -431,6 +431,128 @@ def test_docc_and_github_docs_cover_specnode_provider_adapter_contract() -> None
         assert "SpecHarvester does not contact providers" in text
 
 
+def test_docc_and_github_docs_cover_specnode_patch_proposal_contract() -> None:
+    github_doc = ROOT / "docs" / "SPECNODE_PATCH_PROPOSAL_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodePatchProposalContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    integration_doc = ROOT / "docs" / "SPECNODE_INTEGRATION_CONTRACT.md"
+    integration_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecNodeIntegrationContract.md"
+    )
+    refine_doc = ROOT / "docs" / "SPECNODE_REFINE_PREVIEW_CONTRACT.md"
+    refine_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeRefinePreviewContract.md"
+    )
+    provider_doc = ROOT / "docs" / "SPECNODE_PROVIDER_ADAPTER_CONTRACT.md"
+    provider_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeProviderAdapterContract.md"
+    )
+    architecture_doc = ROOT / "docs" / "ARCHITECTURE.md"
+    architecture_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "HarvesterArchitecture.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecNodeCandidatePatchProposal",
+            "candidatePatchProposal",
+            "SpecNodeCandidatePatchOperation",
+            "SpecNodeProposalProvenance",
+            "SpecNodeProposalUsageReceipt",
+            "SpecNodeProviderUsageReceipt",
+            "SpecNodeRejectionReason",
+            "reviewNotes",
+            "usageReceipt",
+            "SpecNodeRefinementResult",
+            "SpecNodeRefinementJob",
+            "baseCandidateDigest",
+            "sourceJobDigest",
+            "sourcePreviewPlanDigest",
+            "sourceArtifactDigests",
+            "providerReceiptDigest",
+            "policyDigest",
+            "promptBudget",
+            "redactionPolicy",
+            "inputTokens",
+            "outputTokens",
+            "totalTokens",
+            "responseSha256",
+            "specpm.yaml",
+            "specs/*.spec.yaml",
+            "expectedCurrentValueSha256",
+            "targetPointer",
+            "evidenceRefs",
+            "add_field",
+            "replace_field",
+            "remove_field",
+            "append_unique",
+            "replace_list_item_by_id",
+            "remove_list_item_by_id",
+            "rawUnifiedDiff",
+            "fullFileReplacement",
+            "shellCommand",
+            "gitCommand",
+            "networkFetch",
+            "providerCall",
+            "packageManagerCommand",
+            "testRunnerCommand",
+            "buildToolCommand",
+            "direct file writes",
+            "raw repository source",
+            "provider logs",
+            "insufficient_evidence",
+            "prompt_budget_exceeded",
+            "provider_unavailable",
+            "model_output_invalid",
+            "policy_violation",
+            "unsupported_candidate_shape",
+            "schema_validation_failed",
+            "safety_boundary_triggered",
+            "SpecPM validation",
+        ):
+            assert required in text
+
+    assert "SPECNODE_PATCH_PROPOSAL_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecNodePatchProposalContract>" in root_page.read_text(encoding="utf-8")
+
+    for path in (integration_doc, integration_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecNodeCandidatePatchProposal" in text
+        assert "SpecNodeProposalUsageReceipt" in text
+        assert "SpecNodeRejectionReason" in text
+        assert "validation-before-apply" in text
+
+    for path in (refine_doc, refine_docc, provider_doc, provider_docc):
+        text = path.read_text(encoding="utf-8")
+        assert (
+            "SpecNodePatchProposalContract" in text or "SPECNODE_PATCH_PROPOSAL_CONTRACT.md" in text
+        )
+
+    for path in (architecture_doc, architecture_docc, workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecNodeCandidatePatchProposal" in text
+        assert "SpecNodeRejectionReason" in text
+        assert "direct file writes" in text
+
+
 def test_docc_and_github_docs_cover_accepted_candidate_impact_classification() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_CANDIDATE_IMPACT_CLASSIFICATION_REPORTS.md"
     docc_doc = (

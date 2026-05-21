@@ -165,10 +165,14 @@ preview plan budget, request content includes excluded raw content, or policy
 grants shell, filesystem, tool, raw-source, secret, or network-expansion
 authority.
 
+Schema-validated patch proposal output is defined separately in
+<doc:SpecNodePatchProposalContract>.
+
 ## References
 
 - `docs/SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>
+- <doc:SpecNodePatchProposalContract>
 - <doc:Workflow>
 - <doc:TrustBoundary>

@@ -339,6 +339,8 @@ SpecNode must reject provider execution when:
 P11-T3 does not implement an HTTP client, call LM Studio, execute models, define
 the final `candidatePatchProposal` schema, or add real provider smoke coverage.
 Those are later implementation tasks.
+P11-T4 defines the schema-validated patch proposal output boundary in
+[`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md).
 
 ## Review Rule
 

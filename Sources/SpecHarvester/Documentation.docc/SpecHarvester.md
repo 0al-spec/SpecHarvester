@@ -50,6 +50,7 @@ The canonical source files remain in the repository:
 - `docs/SPECNODE_INTEGRATION_CONTRACT.md`
 - `docs/SPECNODE_REFINE_PREVIEW_CONTRACT.md`
 - `docs/SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`
+- `docs/SPECNODE_PATCH_PROPOSAL_CONTRACT.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -82,6 +83,7 @@ the host.
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>
 - <doc:SpecNodeProviderAdapterContract>
+- <doc:SpecNodePatchProposalContract>
 - <doc:ProposalAutomation>
 
 ### Architecture

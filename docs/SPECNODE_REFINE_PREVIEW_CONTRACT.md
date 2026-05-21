@@ -41,6 +41,8 @@ The OpenAI-compatible provider adapter boundary is defined in
 [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md).
 That later boundary names `SpecNodeOpenAICompatibleProviderAdapter`, but this
 preview contract still does not contact providers.
+Schema-validated model output is defined separately in
+[`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md).
 
 ## Plan Shape
 
@@ -278,6 +280,7 @@ P11-T2 does not implement the `refine-preview` command. It does not execute
 SpecNode, call LM Studio, discover models, invoke OpenAI-compatible providers,
 define the final `candidatePatchProposal` schema, or apply generated changes.
 P11-T3 defines the future provider adapter boundary separately.
+P11-T4 defines the future patch proposal output boundary separately.
 
 ## Review Rule
 

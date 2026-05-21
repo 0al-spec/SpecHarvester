@@ -93,6 +93,8 @@ The OpenAI-compatible provider adapter boundary is defined separately in
 <doc:SpecNodeProviderAdapterContract>.
 That later boundary names `SpecNodeOpenAICompatibleProviderAdapter`, but this
 preview contract still does not contact providers.
+Schema-validated model output is defined separately in
+<doc:SpecNodePatchProposalContract>.
 
 ## Compact Model Input
 
@@ -171,5 +173,6 @@ validation status.
 - `docs/SPECNODE_REFINE_PREVIEW_CONTRACT.md`
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeProviderAdapterContract>
+- <doc:SpecNodePatchProposalContract>
 - <doc:Workflow>
 - <doc:TrustBoundary>
