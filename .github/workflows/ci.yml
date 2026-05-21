@@ -79,7 +79,7 @@ jobs:
       - name: Build fixture repository
         run: |
           fixture=/tmp/spec-harvester-fixture
-          mkdir -p "$fixture/packages/react"
+          mkdir -p "$fixture/packages/react/src"
           cat > "$fixture/README.md" <<'EOF'
           # Flow Fixture
 
@@ -97,6 +97,11 @@ jobs:
             "devDependencies": {
               "typescript": "^5.0.0"
             }
+          }
+          EOF
+          cat > "$fixture/packages/react/src/index.js" <<'EOF'
+          export function createFlowFixture(options) {
+            return { options };
           }
           EOF
           cat > "$fixture/packages/react/package.json" <<'EOF'
@@ -122,6 +127,59 @@ jobs:
             --repository https://github.com/example/flow-fixture \
             --revision "$fixture_revision" \
             --out /tmp/spec-harvester-candidate
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+
+          from spec_harvester.interface_index import (
+              analyzer_record,
+              evidence_record,
+              new_public_interface_index,
+              render_public_interface_index_json,
+          )
+
+          source_path = Path("/tmp/spec-harvester-fixture/packages/react/src/index.js")
+          source_digest = sha256(source_path.read_bytes()).hexdigest()
+          index = new_public_interface_index(
+              source_revision="0000000000000000000000000000000000000000",
+              analyzers=[
+                  analyzer_record(
+                      "ci-static-public-api-fixture",
+                      "0.1.0",
+                      execution="none",
+                      confidence="high",
+                  )
+              ],
+              packages=[
+                  {
+                      "id": "@example/flow-fixture-react",
+                      "path": "packages/react",
+                      "language": "javascript",
+                      "entrypoints": [
+                          {
+                              "path": "packages/react/src/index.js",
+                              "symbols": [
+                                  {
+                                      "name": "createFlowFixture",
+                                      "kind": "function",
+                                      "visibility": "public",
+                                      "signature": "createFlowFixture(options)",
+                                      "evidence": evidence_record(
+                                          "packages/react/src/index.js",
+                                          source_digest,
+                                      ),
+                                  }
+                              ],
+                          }
+                      ],
+                  }
+              ],
+          )
+          Path("/tmp/spec-harvester-candidate/public-interface-index.json").write_text(
+              render_public_interface_index_json(index),
+              encoding="utf-8",
+          )
+          PY
           python -m spec_harvester draft /tmp/spec-harvester-candidate \
             --package-id flow_fixture.core \
             --name "Flow Fixture" \
@@ -129,7 +187,31 @@ jobs:
 
       - name: Validate candidate with SpecPM
         run: |
-          python -m specpm.cli validate /tmp/spec-harvester-candidate --json
+          set -o pipefail
+          python -m specpm.cli validate /tmp/spec-harvester-candidate --json \
+            | tee /tmp/specpm-validation.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path("/tmp/specpm-validation.json").read_text(encoding="utf-8"))
+          if report.get("error_count"):
+              raise SystemExit(f"SpecPM validation errors: {report}")
+          diagnostics = report.get("errors", []) + report.get("warnings", [])
+          codes = {item.get("code") for item in diagnostics}
+          if "unknown_evidence_kind" in codes:
+              raise SystemExit(f"unexpected unknown public interface evidence kind: {report}")
+          spec_path = next(Path("/tmp/spec-harvester-candidate/specs").glob("*.spec.yaml"))
+          spec = spec_path.read_text(encoding="utf-8")
+          for required in (
+              "kind: public_interface_index",
+              "artifactKind: SpecHarvesterPublicInterfaceIndex",
+              "mediaType: application/vnd.spec-harvester.public-interface-index+json",
+              "schemaVersion: 2",
+          ):
+              if required not in spec:
+                  raise SystemExit(f"{required!r} missing from {spec_path}")
+          PY
 
       - name: Promote candidate
         run: |

@@ -96,6 +96,9 @@ def test_docc_and_github_docs_cover_project_profile_analyzer_orchestration() -> 
             "spec_harvester.go_public_api",
             "manifest_only",
             "advisory",
+            "kind: public_interface_index",
+            "artifactKind: SpecHarvesterPublicInterfaceIndex",
+            "SpecPM `0.2.0+`",
         ):
             assert required in text
 
@@ -109,6 +112,9 @@ def test_docc_and_github_docs_cover_project_profile_analyzer_orchestration() -> 
             "run package scripts",
             "execute checkout files",
             "contact networks",
+            "kind: public_interface_index",
+            "artifactKind: SpecHarvesterPublicInterfaceIndex",
+            "SpecPM `0.2.0+`",
         ):
             assert required in text
 

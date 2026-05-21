@@ -418,6 +418,12 @@ The draft step does not run analyzers. It only reads and validates the supplied
 and uses its package, entrypoint, symbol, analyzer, and diagnostic summary as
 reviewable metadata.
 
+The BoundarySpec evidence record for this artifact uses
+`kind: public_interface_index`, which is recognized by SpecPM `0.2.0+`, and
+includes `artifactKind: SpecHarvesterPublicInterfaceIndex`, `mediaType`,
+`schemaVersion`, and `summary` so reviewers can identify the deterministic
+artifact contract without opening the JSON first.
+
 `PublicInterfaceIndex.summary.status` makes partial analysis explicit:
 
 - `complete` means no diagnostics were emitted.
