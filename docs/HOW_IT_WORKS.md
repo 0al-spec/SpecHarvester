@@ -105,12 +105,18 @@ themselves.
 For manifest-poor repositories, observed intent can also come from bounded
 language-neutral documentation hints. `collect-local` may record compact
 `semanticHints` from allowlisted README, API contract, OpenAPI, schema
-validation, workflow automation, developer tooling, or documentation knowledge
-base Markdown. `draft` may convert those hints into
+validation, workflow automation, developer tooling, web framework, or
+documentation knowledge base Markdown. `draft` may convert those hints into
 `semantic_intent_static_evidence` clusters such as
+`intent.web.framework_surface`, `intent.web.http_routing`,
 `intent.api.contract_surface`, `intent.metadata.schema_validation`,
 `intent.workflow.automation_pipeline`, and
 `intent.developer.tooling_surface`.
+
+`draft` also normalizes `PublicInterfaceIndex` symbols into compact semantic
+tokens. This lets static names such as `RouterGroup`, `HandlerFunc`,
+`RequestContext`, or `Blueprint` support web framework intent claims without
+reading raw source bodies during drafting.
 
 This path stores terms and evidence paths only. It does not store raw
 documentation bodies, execute repository code, install dependencies, run package

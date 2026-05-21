@@ -138,8 +138,10 @@ def test_docc_and_github_docs_cover_language_neutral_semantic_extraction() -> No
             "schema validation",
             "workflow automation",
             "developer tooling",
+            "web framework",
             "documentation knowledge base",
             "semantic_intent_static_evidence",
+            "intent.web.framework_surface",
             "intent.api.contract_surface",
             "intent.metadata.schema_validation",
             "manifest-poor",
@@ -152,6 +154,7 @@ def test_docc_and_github_docs_cover_language_neutral_semantic_extraction() -> No
     for path in (workflow_doc, workflow_docc):
         text = path.read_text(encoding="utf-8")
         assert "semanticHints" in text
+        assert "intent.web.framework_surface" in text
         assert "intent.api.contract_surface" in text
         assert "raw documentation" in text
 

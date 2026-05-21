@@ -136,13 +136,19 @@ were emitted without any package record.
 
 For manifest-poor repositories, `collect-local` may also record compact
 `semanticHints` from allowlisted README, API contract, OpenAPI, schema
-validation, workflow automation, developer tooling, or documentation knowledge
-base Markdown. `draft` can use those hints as
+validation, workflow automation, developer tooling, web framework, or
+documentation knowledge base Markdown. `draft` can use those hints as
 `semantic_intent_static_evidence` for reviewable intent IDs such as
+`intent.web.framework_surface`, `intent.web.http_routing`,
 `intent.api.contract_surface`, `intent.metadata.schema_validation`,
 `intent.workflow.automation_pipeline`, and
 `intent.developer.tooling_surface`. This does not store raw documentation
 bodies, run package scripts, execute checkout files, or contact networks.
+
+`draft` can also normalize `PublicInterfaceIndex` symbols such as
+`RouterGroup`, `HandlerFunc`, `RequestContext`, and `Blueprint` into compact
+semantic tokens for web framework intent evidence without reading raw source
+bodies.
 
 raw documentation bodies remain excluded from generated evidence artifacts.
 
