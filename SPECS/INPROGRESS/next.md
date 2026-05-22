@@ -1,13 +1,15 @@
-# Next Task: None
+# Next Task: P11-T6 LM Studio JSON Schema Compatibility
 
-**Status:** COMPLETE
+**Status:** SELECTED
 
 **Updated:** 2026-05-22
 
 ## Description
 
-No READY task remains in `SPECS/Workplan.md`. Phase 11 and Phase 12 are fully
-checked off after `P11-T5`.
+Capture LM Studio `openai/gpt-oss-20b` runtime compatibility by requiring
+OpenAI-compatible `json_schema` response format for structured provider output
+and adding a safe parser fallback for `gpt-oss` channel-wrapped JSON returned in
+plain text mode.
 
 ## Recently Archived
 
@@ -31,9 +33,6 @@ checked off after `P11-T5`.
   `SpecNodeRefinementJob` contract for future SpecNode-assisted candidate
   refinement without granting the model shell, filesystem, raw source, secret,
   or direct mutation authority.
-- `P12-T6` Promoted Flask/Gin popular-repository smoke coverage into committed
-  synthetic tests and mirrored the reproducible real-checkout recipe in GitHub
-  docs and DocC.
 
 ## Parked
 
@@ -41,8 +40,13 @@ checked off after `P11-T5`.
 
 ## Newly Observed Smoke Gaps
 
-- None.
+- LM Studio `openai/gpt-oss-20b` rejects `response_format.type: json_object`
+  and accepts `response_format.type: json_schema`.
+- In plain text mode, `openai/gpt-oss-20b` may wrap JSON as
+  `<|channel|>final <|constrain|>JSON<|message|>{...}`.
 
 ## Next Step
 
-Create or select the next Workplan phase before running Flow again.
+Implement `P11-T6` through Flow and PR: document `json_schema` as the preferred
+structured-output mode, add deterministic parser fallback for channel-wrapped
+JSON, and cover both paths with tests.
