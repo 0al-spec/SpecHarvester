@@ -400,6 +400,61 @@ def test_specnode_semantic_review_validation_accepts_typed_findings(
     )
 
 
+def test_specnode_semantic_review_validation_rejects_contaminated_review_jobs(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+    job = build_specnode_refinement_job(bundle, preview_plan)
+    refinement_result = successful_refinement_result(job, preview_plan)
+    review_job = build_specnode_semantic_review_job(bundle, preview_plan, refinement_result)
+    review_result = semantic_review_result(
+        review_job, refinement_result, verdict="approve", findings=[]
+    )
+
+    cases = [
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["sourceBundle"].update({"providerLogs": []}),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["sourceBundle"].update({"artifactDigests": []}),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["previewPlan"].update({"providerLogs": []}),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["previewPlan"].update({"compactModelInput": {}}),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["reviewedRefinementResult"].update(
+                {"reviewNotes": refinement_result["reviewNotes"]}
+            ),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["reviewedRefinementResult"].update(
+                {"usageReceipt": refinement_result["usageReceipt"]}
+            ),
+        ),
+    ]
+
+    for contaminated_job in cases:
+        with pytest.raises(SpecNodeSemanticReviewValidationError):
+            validate_specnode_semantic_review_result(
+                review_result,
+                review_job=contaminated_job,
+                preview_plan=preview_plan,
+                refinement_result=refinement_result,
+                bundle=bundle,
+            )
+
+
 def test_specnode_semantic_review_validation_rejects_mutating_or_unknown_findings(
     tmp_path: Path,
 ) -> None:
@@ -430,6 +485,12 @@ def test_specnode_semantic_review_validation_rejects_mutating_or_unknown_finding
         malformed_result_case(
             valid_result,
             lambda result: result["findings"][0].update({"evidenceRefs": ["note-001"]}),
+        ),
+        semantic_review_result(
+            review_job,
+            refinement_result,
+            verdict="needs_revision",
+            findings=[semantic_review_finding(evidence_refs=[])],
         ),
         semantic_review_result(
             review_job,
@@ -702,6 +763,8 @@ def semantic_review_finding(
     severity: str = "warning",
     evidence_refs: list[str] | None = None,
 ) -> dict[str, Any]:
+    if evidence_refs is None:
+        evidence_refs = ["harvest_snapshot", "op-001"]
     return {
         "kind": "SpecNodeSemanticReviewFinding",
         "findingId": "finding-001",
@@ -712,7 +775,7 @@ def semantic_review_finding(
             "kind": "candidate_patch_operation",
             "operationId": "op-001",
         },
-        "evidenceRefs": evidence_refs or ["harvest_snapshot", "op-001"],
+        "evidenceRefs": evidence_refs,
     }
 
 

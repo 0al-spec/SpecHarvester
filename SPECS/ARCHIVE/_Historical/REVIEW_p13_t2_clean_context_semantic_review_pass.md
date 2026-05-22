@@ -44,13 +44,13 @@ Resolved during review:
 ### Tests
 
 - `PYTHONPATH=src python -m pytest tests/test_specnode_refinement_smoke.py tests/test_docs_contracts.py -q`
-  - PASS, 35 passed.
+  - PASS, 36 passed.
 - `ruff check src tests`
   - PASS.
 - `ruff format --check src tests`
   - PASS.
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
-  - PASS, 251 passed, total coverage 90.73%.
+  - PASS, 252 passed, total coverage 90.67%.
 - `swift package dump-package >/dev/null`
   - PASS.
 - `swift build --target SpecHarvesterDocs`

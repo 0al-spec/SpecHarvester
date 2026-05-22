@@ -26,11 +26,11 @@ The implementation adds:
 
 | Gate | Command | Result |
 | --- | --- | --- |
-| Targeted tests | `PYTHONPATH=src python -m pytest tests/test_specnode_refinement_smoke.py tests/test_docs_contracts.py -q` | PASS, 35 passed |
-| Full tests | `PYTHONPATH=src python -m pytest` | PASS, 251 passed |
+| Targeted tests | `PYTHONPATH=src python -m pytest tests/test_specnode_refinement_smoke.py tests/test_docs_contracts.py -q` | PASS, 36 passed |
+| Full tests | `PYTHONPATH=src python -m pytest` | PASS via coverage run, 252 passed |
 | Lint | `ruff check src tests` | PASS |
 | Format | `ruff format --check src tests` | PASS |
-| Coverage | `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 251 passed, total coverage 90.73% |
+| Coverage | `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 252 passed, total coverage 90.67% |
 | Swift manifest | `swift package dump-package >/dev/null` | PASS |
 | Swift docs target | `swift build --target SpecHarvesterDocs` | PASS |
 

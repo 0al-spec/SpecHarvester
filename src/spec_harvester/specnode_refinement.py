@@ -931,6 +931,26 @@ def _validate_semantic_review_job(
     refinement_result: dict[str, Any],
     bundle: dict[str, Any],
 ) -> None:
+    _validate_exact_keys(
+        review_job,
+        {
+            "schemaVersion",
+            "kind",
+            "jobId",
+            "createdAt",
+            "producer",
+            "contract",
+            "sourceBundle",
+            "previewPlan",
+            "reviewedRefinementResult",
+            "policy",
+            "excludedContent",
+            "rubric",
+            "requestedOutputs",
+        },
+        errors=errors,
+        label="semantic review source job",
+    )
     if review_job.get("kind") != "SpecNodeSemanticReviewJob":
         errors.append("semantic review source job kind must be SpecNodeSemanticReviewJob")
     if review_job.get("schemaVersion") != SPECNODE_SCHEMA_VERSION:
@@ -944,6 +964,12 @@ def _validate_semantic_review_job(
     if not isinstance(contract, dict):
         errors.append("semantic review source job contract must be an object")
     else:
+        _validate_exact_keys(
+            contract,
+            {"kind", "semanticReviewContractVersion", "outputKind"},
+            errors=errors,
+            label="semantic review source job contract",
+        )
         if contract.get("kind") != "SpecNodeSemanticReviewContract":
             errors.append("semantic review source job contract kind is invalid")
         if contract.get("semanticReviewContractVersion") != SEMANTIC_REVIEW_CONTRACT_VERSION:
@@ -955,22 +981,87 @@ def _validate_semantic_review_job(
     expected_bundle_digest = canonical_json_sha256_digest(bundle)
     if not isinstance(source_bundle, dict):
         errors.append("semantic review sourceBundle must be an object")
-    elif source_bundle.get("digest") != expected_bundle_digest:
-        errors.append("semantic review sourceBundle digest must match bundle")
+    else:
+        _validate_exact_keys(
+            source_bundle,
+            {"kind", "digest", "artifactDigests"},
+            errors=errors,
+            label="semantic review sourceBundle",
+        )
+        if source_bundle.get("kind") != "SpecHarvesterSpecNodeArtifactBundle":
+            errors.append("semantic review sourceBundle kind is invalid")
+        if source_bundle.get("digest") != expected_bundle_digest:
+            errors.append("semantic review sourceBundle digest must match bundle")
+        if source_bundle.get("artifactDigests") != _artifact_digest_records(bundle):
+            errors.append("semantic review sourceBundle artifactDigests must match bundle")
 
     source_preview = review_job.get("previewPlan")
     expected_preview_digest = canonical_json_sha256_digest(preview_plan)
     if not isinstance(source_preview, dict):
         errors.append("semantic review previewPlan must be an object")
-    elif source_preview.get("digest") != expected_preview_digest:
-        errors.append("semantic review previewPlan digest must match preview plan")
+    else:
+        _validate_exact_keys(
+            source_preview,
+            {"kind", "digest", "candidate", "compactModelInput", "artifactDigests"},
+            errors=errors,
+            label="semantic review previewPlan",
+        )
+        if source_preview.get("kind") != "SpecHarvesterRefinePreviewPlan":
+            errors.append("semantic review previewPlan kind is invalid")
+        if source_preview.get("digest") != expected_preview_digest:
+            errors.append("semantic review previewPlan digest must match preview plan")
+        if source_preview.get("candidate") != preview_plan.get("candidate", {}):
+            errors.append("semantic review previewPlan candidate must match preview plan")
+        if source_preview.get("compactModelInput") != preview_plan.get("compactModelInput", {}):
+            errors.append("semantic review previewPlan compactModelInput must match preview plan")
+        if source_preview.get("artifactDigests") != preview_plan.get("artifactDigests", []):
+            errors.append("semantic review previewPlan artifactDigests must match preview plan")
 
     reviewed = review_job.get("reviewedRefinementResult")
     expected_refinement_digest = canonical_json_sha256_digest(refinement_result)
+    expected_usage_receipt = refinement_result.get("usageReceipt")
+    expected_usage_receipt_digest = (
+        canonical_json_sha256_digest(expected_usage_receipt)
+        if isinstance(expected_usage_receipt, dict)
+        else None
+    )
     if not isinstance(reviewed, dict):
         errors.append("semantic review reviewedRefinementResult must be an object")
-    elif reviewed.get("digest") != expected_refinement_digest:
-        errors.append("semantic review reviewedRefinementResult digest must match result")
+    else:
+        _validate_exact_keys(
+            reviewed,
+            {"kind", "digest", "job", "result", "usageReceiptDigest"},
+            errors=errors,
+            label="semantic review reviewedRefinementResult",
+        )
+        if reviewed.get("kind") != "SpecNodeReviewedRefinementResult":
+            errors.append("semantic review reviewedRefinementResult kind is invalid")
+        if reviewed.get("digest") != expected_refinement_digest:
+            errors.append("semantic review reviewedRefinementResult digest must match result")
+        if reviewed.get("job") != refinement_result.get("job", {}):
+            errors.append("semantic review reviewedRefinementResult job must match result")
+        if reviewed.get("result") != refinement_result.get("result", {}):
+            errors.append("semantic review reviewedRefinementResult result must match result")
+        if reviewed.get("usageReceiptDigest") != expected_usage_receipt_digest:
+            errors.append(
+                "semantic review reviewedRefinementResult usageReceiptDigest must match result"
+            )
+
+
+def _validate_exact_keys(
+    value: dict[str, Any],
+    allowed_keys: set[str],
+    *,
+    errors: list[str],
+    label: str,
+) -> None:
+    actual_keys = set(value)
+    missing_keys = allowed_keys - actual_keys
+    extra_keys = actual_keys - allowed_keys
+    for key in sorted(missing_keys):
+        errors.append(f"{label} missing allowed-shape field: {key}")
+    for key in sorted(extra_keys):
+        errors.append(f"{label} contains unexpected clean-context field: {key}")
 
 
 def _validate_semantic_review_finding_refs(
