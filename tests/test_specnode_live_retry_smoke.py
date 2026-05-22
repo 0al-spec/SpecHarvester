@@ -31,6 +31,16 @@ def test_live_smoke_config_requires_explicit_environment() -> None:
             require_run_flag=True,
         )
 
+    with pytest.raises(live_smoke.LiveSmokeConfigError, match="local provider"):
+        live_smoke.LiveSmokeConfig.from_env(
+            {
+                live_smoke.RUN_FLAG_ENV: "1",
+                live_smoke.BASE_URL_ENV: "https://api.example.com",
+                live_smoke.MODEL_ENV: "openai/gpt-oss-20b",
+            },
+            require_run_flag=True,
+        )
+
     config = live_smoke.LiveSmokeConfig.from_env(
         {
             live_smoke.RUN_FLAG_ENV: "1",

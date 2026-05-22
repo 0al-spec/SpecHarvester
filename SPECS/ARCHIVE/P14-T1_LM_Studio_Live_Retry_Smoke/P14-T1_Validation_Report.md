@@ -45,7 +45,7 @@ Executed locally against LM Studio on `http://127.0.0.1:1234` with
 
 | Command | Result |
 | --- | --- |
-| `PYTHONPATH=src SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234 SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b python scripts/specnode_live_retry_smoke.py` | PASS, status `approved`, 2 attempts, retry context seen on attempt 2, token usage 1120 |
+| `PYTHONPATH=src SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234 SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b python scripts/specnode_live_retry_smoke.py` | PASS, status `approved`, 2 attempts, retry context seen on attempt 2, token usage 1109 |
 | `PYTHONPATH=src SPECHARVESTER_RUN_LIVE_LM_STUDIO_SMOKE=1 SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234 SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b python -m pytest tests/test_specnode_live_retry_smoke.py -q` | PASS, 4 passed |
 
 Live script summary:
@@ -66,6 +66,8 @@ Live script summary:
 - PASS: Ordinary `pytest` skips live provider calls unless
   `SPECHARVESTER_RUN_LIVE_LM_STUDIO_SMOKE=1` is set.
 - PASS: Missing environment variables fail fast with actionable messages.
+- PASS: Live smoke base URL is restricted to local provider hosts
+  `localhost`, `127.0.0.1`, or `::1`.
 - PASS: A successful live run prints compact JSON with model, attempt count,
   statuses, verdict sequence, retry context presence, usage, and final digests.
 - PASS: Direct JSON and observed `gpt-oss` channel-wrapped JSON parsing are

@@ -161,6 +161,9 @@ SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234
 SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b
 ```
 
+The base URL must target a local provider host: `localhost`, `127.0.0.1`, or
+`::1`.
+
 Run the standalone script:
 
 ```bash

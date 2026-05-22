@@ -10,6 +10,7 @@ import sys
 import tempfile
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
@@ -36,6 +37,7 @@ MODEL_ENV = "SPECHARVESTER_SPECNODE_MODEL"
 TIMEOUT_ENV = "SPECHARVESTER_LIVE_SMOKE_TIMEOUT_SECONDS"
 DEFAULT_TEMPERATURE = 0.0
 DEFAULT_MAX_OUTPUT_TOKENS = 256
+LOCAL_PROVIDER_HOSTS = {"localhost", "127.0.0.1", "::1"}
 
 
 class LiveSmokeConfigError(ValueError):
@@ -70,6 +72,7 @@ class LiveSmokeConfig:
             raise LiveSmokeConfigError(f"set {BASE_URL_ENV}, for example http://127.0.0.1:1234")
         if not model:
             raise LiveSmokeConfigError(f"set {MODEL_ENV}, for example openai/gpt-oss-20b")
+        _validate_local_base_url(base_url)
         timeout = float(env.get(TIMEOUT_ENV, "60"))
         return cls(base_url=base_url, model=model, timeout_seconds=timeout)
 
@@ -644,6 +647,15 @@ def _sum_usage(calls: list[dict[str, Any]]) -> dict[str, int]:
     return totals
 
 
+def _validate_local_base_url(base_url: str) -> None:
+    parsed = urllib.parse.urlparse(base_url)
+    if parsed.scheme not in {"http", "https"} or parsed.hostname not in LOCAL_PROVIDER_HOSTS:
+        raise LiveSmokeConfigError(
+            f"{BASE_URL_ENV} must target a local provider host: "
+            f"{', '.join(sorted(LOCAL_PROVIDER_HOSTS))}"
+        )
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base-url", default=os.environ.get(BASE_URL_ENV, ""))
@@ -664,6 +676,7 @@ def main(argv: list[str] | None = None) -> int:
             raise LiveSmokeConfigError(
                 f"set {BASE_URL_ENV} and {MODEL_ENV}, or pass --base-url and --model"
             )
+        _validate_local_base_url(config.base_url)
         summary = run_live_retry_smoke(config)
     except (LiveSmokeConfigError, LiveSmokeProviderError, SpecNodeProviderUnavailable) as exc:
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2), file=sys.stderr)
