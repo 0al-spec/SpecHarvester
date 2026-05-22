@@ -438,6 +438,124 @@ def test_docc_and_github_docs_cover_specnode_refinement_prompt_contract() -> Non
         assert "overconfident" in text
 
 
+def test_docc_and_github_docs_cover_specnode_semantic_review_contract() -> None:
+    github_doc = ROOT / "docs" / "SPECNODE_SEMANTIC_REVIEW_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeSemanticReviewContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    integration_doc = ROOT / "docs" / "SPECNODE_INTEGRATION_CONTRACT.md"
+    integration_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecNodeIntegrationContract.md"
+    )
+    prompt_doc = ROOT / "docs" / "SPECNODE_REFINEMENT_PROMPT_CONTRACT.md"
+    prompt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeRefinementPromptContract.md"
+    )
+    patch_doc = ROOT / "docs" / "SPECNODE_PATCH_PROPOSAL_CONTRACT.md"
+    patch_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodePatchProposalContract.md"
+    )
+    architecture_doc = ROOT / "docs" / "ARCHITECTURE.md"
+    architecture_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "HarvesterArchitecture.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecNodeSemanticReviewContract",
+            "semanticReviewContractVersion",
+            "SpecNodeSemanticReviewJob",
+            "SpecNodeSemanticReviewRubric",
+            "SpecNodeSemanticReviewResult",
+            "SpecNodeSemanticReviewFinding",
+            "SpecNodeSemanticReviewVerdict",
+            "SpecNodeRefinementResult",
+            "compactModelInput",
+            "response_format.type: json_schema",
+            "response_format.type: json_object",
+            "approve",
+            "needs_revision",
+            "reject",
+            "wrong_package_intent",
+            "unsupported_capability_claim",
+            "missing_evidence_reference",
+            "overconfident_confidence_score",
+            "unsafe_negative_claim",
+            "schema_policy_mismatch",
+            "authority_boundary_violation",
+            "prompt_contract_violation",
+            "generate_specpm",
+            "firstPassPromptTranscript: excluded",
+            "chainOfThought: excluded",
+            "firstPassProviderLogs: excluded",
+            "providerLogs: excluded",
+            "rawRepositorySource: excluded",
+            "arbitraryPrompts: excluded",
+            "candidateMutation: none",
+            "candidatePatchProposal",
+            "operations",
+            "retryDirective",
+            "rawUnifiedDiff",
+            "shellCommand",
+            "networkFetch",
+            "providerCall",
+            "packageManagerCommand",
+            "testRunnerCommand",
+            "buildToolCommand",
+            "direct file writes",
+            "reviewed_refinement_result",
+            "semantic_evidence_index",
+            "human review",
+        ):
+            assert required in text
+
+    assert "SPECNODE_SEMANTIC_REVIEW_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecNodeSemanticReviewContract>" in root_page.read_text(encoding="utf-8")
+
+    for path in (
+        integration_doc,
+        integration_docc,
+        prompt_doc,
+        prompt_docc,
+        patch_doc,
+        patch_docc,
+        architecture_doc,
+        architecture_docc,
+        workflow_doc,
+        workflow_docc,
+    ):
+        text = path.read_text(encoding="utf-8")
+        assert (
+            "SpecNodeSemanticReviewContract" in text
+            or "SPECNODE_SEMANTIC_REVIEW_CONTRACT.md" in text
+        )
+
+    for path in (workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecNodeSemanticReviewRubric" in text
+        assert "SpecNodeSemanticReviewFinding" in text
+        assert "wrong_package_intent" in text
+        assert "authority_boundary_violation" in text
+        assert "direct file writes" in text
+
+
 def test_docc_and_github_docs_cover_specnode_provider_adapter_contract() -> None:
     github_doc = ROOT / "docs" / "SPECNODE_PROVIDER_ADAPTER_CONTRACT.md"
     docc_doc = (

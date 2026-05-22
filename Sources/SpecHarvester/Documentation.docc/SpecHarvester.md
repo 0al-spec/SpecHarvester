@@ -50,6 +50,7 @@ The canonical source files remain in the repository:
 - `docs/SPECNODE_INTEGRATION_CONTRACT.md`
 - `docs/SPECNODE_REFINE_PREVIEW_CONTRACT.md`
 - `docs/SPECNODE_REFINEMENT_PROMPT_CONTRACT.md`
+- `docs/SPECNODE_SEMANTIC_REVIEW_CONTRACT.md`
 - `docs/SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`
 - `docs/SPECNODE_PATCH_PROPOSAL_CONTRACT.md`
 - `docs/SPECNODE_PROVIDER_SMOKE_COVERAGE.md`
@@ -85,6 +86,7 @@ the host.
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>
 - <doc:SpecNodeRefinementPromptContract>
+- <doc:SpecNodeSemanticReviewContract>
 - <doc:SpecNodeProviderAdapterContract>
 - <doc:SpecNodePatchProposalContract>
 - <doc:SpecNodeProviderSmokeCoverage>

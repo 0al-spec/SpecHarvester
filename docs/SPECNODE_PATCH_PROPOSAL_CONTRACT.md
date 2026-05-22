@@ -47,6 +47,12 @@ SpecNode output remains untrusted proposal metadata.
 The prompt that asks for this output is governed by
 [`SPECNODE_REFINEMENT_PROMPT_CONTRACT.md`](SPECNODE_REFINEMENT_PROMPT_CONTRACT.md),
 including evidence-reference, negative-claim, and confidence-calibration rules.
+After this structural output validates, clean-context semantic review is
+governed by
+[`SPECNODE_SEMANTIC_REVIEW_CONTRACT.md`](SPECNODE_SEMANTIC_REVIEW_CONTRACT.md).
+The reviewer emits `SpecNodeSemanticReviewResult` findings only and cannot add
+`candidatePatchProposal`, `operations`, retry directives, or direct file
+writes.
 
 ## Output Envelope
 

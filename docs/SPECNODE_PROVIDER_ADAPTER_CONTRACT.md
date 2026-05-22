@@ -255,6 +255,9 @@ The provider request body may include only:
 - bounded messages derived from `compactModelInput` through the
   `SpecNodeRefinementPromptContract`;
 - explicit output schema instructions for future `candidatePatchProposal`;
+- bounded clean-context review messages through
+  `SpecNodeSemanticReviewContract` when the requested output is
+  `SpecNodeSemanticReviewResult`;
 - `temperature`;
 - `max_tokens` or OpenAI-compatible equivalent;
 - no tool calls.

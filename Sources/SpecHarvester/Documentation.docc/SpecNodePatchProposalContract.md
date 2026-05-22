@@ -9,6 +9,11 @@ output accepted registry truth.
 The prompt that asks for this output is governed by
 <doc:SpecNodeRefinementPromptContract>, including evidence-reference,
 negative-claim, and confidence-calibration rules.
+After this structural output validates, clean-context semantic review is
+governed by <doc:SpecNodeSemanticReviewContract>. The reviewer emits
+`SpecNodeSemanticReviewResult` findings only and cannot add
+`candidatePatchProposal`, `operations`, retry directives, or direct file
+writes.
 
 ## Contract Names
 

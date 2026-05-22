@@ -11,6 +11,7 @@ PRODUCER_NAME = "SpecHarvester"
 DEFAULT_PRODUCER_VERSION = "0.1.0"
 SPECNODE_SCHEMA_VERSION = 1
 PUBLIC_INTERFACE_INDEX_FILENAME = "public-interface-index.json"
+SEMANTIC_REVIEW_CONTRACT_VERSION = "1.0.0"
 
 PROMPT_BUDGET = {
     "maxPromptBytes": 60_000,
@@ -37,6 +38,18 @@ JOB_POLICY = {
     "tokenBudget": 8_192,
     "timeoutSeconds": 120,
 }
+SEMANTIC_REVIEW_POLICY = {
+    "modelFilesystemAccess": "none",
+    "modelShellAccess": "none",
+    "modelNetworkAccess": "provider_only",
+    "allowedTools": [],
+    "rawSourceAccess": "none",
+    "secretAccess": "none",
+    "candidateMutation": "none",
+    "temperature": 0.0,
+    "tokenBudget": 4_096,
+    "timeoutSeconds": 120,
+}
 EXCLUDED_CONTENT = {
     "rawRepositorySource": "excluded",
     "documentationBodies": "excluded",
@@ -44,6 +57,13 @@ EXCLUDED_CONTENT = {
     "providerLogs": "excluded",
     "secrets": "excluded",
     "arbitraryPrompts": "excluded",
+}
+SEMANTIC_REVIEW_EXCLUDED_CONTENT = {
+    **EXCLUDED_CONTENT,
+    "firstPassPromptTranscript": "excluded",
+    "chainOfThought": "excluded",
+    "firstPassProviderLogs": "excluded",
+    "retryDirectives": "excluded",
 }
 ALLOWED_PATCH_OPERATIONS = {
     "add_field",
@@ -73,6 +93,41 @@ ALLOWED_REJECTION_CODES = {
     "unsupported_candidate_shape",
     "schema_validation_failed",
     "safety_boundary_triggered",
+}
+ALLOWED_SEMANTIC_REVIEW_VERDICTS = {
+    "approve",
+    "needs_revision",
+    "reject",
+}
+ALLOWED_SEMANTIC_REVIEW_SEVERITIES = {
+    "info",
+    "warning",
+    "blocking",
+}
+ALLOWED_SEMANTIC_REVIEW_CODES = {
+    "wrong_package_intent",
+    "unsupported_capability_claim",
+    "missing_evidence_reference",
+    "overconfident_confidence_score",
+    "unsafe_negative_claim",
+    "schema_policy_mismatch",
+    "authority_boundary_violation",
+    "prompt_contract_violation",
+}
+SEMANTIC_REVIEW_FORBIDDEN_KEYS = {
+    *FORBIDDEN_OPERATION_MARKERS,
+    "candidatePatchProposal",
+    "candidatePatch",
+    "candidateMutation",
+    "operations",
+    "patch",
+    "patches",
+    "proposal",
+    "retryDirective",
+    "retryDirectives",
+    "apply",
+    "applyPatch",
+    "directFileWrites",
 }
 USAGE_RECEIPT_REQUIRED_FIELDS = {
     "kind",
@@ -133,6 +188,10 @@ class SpecNodeProviderUnavailable(RuntimeError):
 
 class SpecNodeRefinementValidationError(ValueError):
     """Raised when SpecNode output does not satisfy the smoke validation contract."""
+
+
+class SpecNodeSemanticReviewValidationError(SpecNodeRefinementValidationError):
+    """Raised when semantic review output violates the clean-context contract."""
 
 
 class SpecNodeModelJSONParseError(ValueError):
@@ -362,6 +421,75 @@ def build_specnode_refinement_job(
     }
 
 
+def build_specnode_semantic_review_job(
+    bundle: dict[str, Any],
+    preview_plan: dict[str, Any],
+    refinement_result: dict[str, Any],
+    *,
+    producer_version: str = DEFAULT_PRODUCER_VERSION,
+) -> dict[str, Any]:
+    bundle_digest = canonical_json_sha256_digest(bundle)
+    preview_digest = canonical_json_sha256_digest(preview_plan)
+    refinement_digest = canonical_json_sha256_digest(refinement_result)
+    usage_receipt = refinement_result.get("usageReceipt")
+    usage_receipt_digest = (
+        canonical_json_sha256_digest(usage_receipt) if isinstance(usage_receipt, dict) else None
+    )
+    return {
+        "schemaVersion": SPECNODE_SCHEMA_VERSION,
+        "kind": "SpecNodeSemanticReviewJob",
+        "jobId": f"specnode-semantic-review-{refinement_digest.removeprefix('sha256:')[:16]}",
+        "createdAt": "2026-05-22T00:00:00Z",
+        "producer": {"name": PRODUCER_NAME, "version": producer_version},
+        "contract": {
+            "kind": "SpecNodeSemanticReviewContract",
+            "semanticReviewContractVersion": SEMANTIC_REVIEW_CONTRACT_VERSION,
+            "outputKind": "SpecNodeSemanticReviewResult",
+        },
+        "sourceBundle": {
+            "kind": "SpecHarvesterSpecNodeArtifactBundle",
+            "digest": bundle_digest,
+            "artifactDigests": _artifact_digest_records(bundle),
+        },
+        "previewPlan": {
+            "kind": "SpecHarvesterRefinePreviewPlan",
+            "digest": preview_digest,
+            "candidate": preview_plan.get("candidate", {}),
+            "compactModelInput": preview_plan.get("compactModelInput", {}),
+            "artifactDigests": preview_plan.get("artifactDigests", []),
+        },
+        "reviewedRefinementResult": {
+            "kind": "SpecNodeReviewedRefinementResult",
+            "digest": refinement_digest,
+            "job": refinement_result.get("job", {}),
+            "result": refinement_result.get("result", {}),
+            "reviewNotes": refinement_result.get("reviewNotes", []),
+            "usageReceiptDigest": usage_receipt_digest,
+        },
+        "policy": dict(SEMANTIC_REVIEW_POLICY),
+        "excludedContent": dict(SEMANTIC_REVIEW_EXCLUDED_CONTENT),
+        "rubric": {
+            "kind": "SpecNodeSemanticReviewRubric",
+            "verdicts": sorted(ALLOWED_SEMANTIC_REVIEW_VERDICTS),
+            "findingSeverities": sorted(ALLOWED_SEMANTIC_REVIEW_SEVERITIES),
+            "findingCodes": sorted(ALLOWED_SEMANTIC_REVIEW_CODES),
+            "reviewChecks": [
+                "target package intent matches deterministic evidence",
+                "capability claims are supported by known evidence references",
+                "negative claims are not inferred from absence alone",
+                "confidence values are calibrated to evidence coverage",
+                "output obeys SpecNodePatchProposalContract authority boundaries",
+                "review emits findings only and cannot mutate candidates",
+            ],
+        },
+        "requestedOutputs": [
+            "verdict",
+            "findings",
+            "summary",
+        ],
+    }
+
+
 def build_provider_unavailable_result(
     job: dict[str, Any],
     preview_plan: dict[str, Any],
@@ -515,6 +643,107 @@ def validate_specnode_refinement_result(
 
     if errors:
         raise SpecNodeRefinementValidationError("; ".join(errors))
+
+
+def validate_specnode_semantic_review_result(
+    result: dict[str, Any],
+    *,
+    review_job: dict[str, Any],
+    preview_plan: dict[str, Any],
+    refinement_result: dict[str, Any],
+    bundle: dict[str, Any],
+) -> None:
+    errors: list[str] = []
+    _validate_semantic_review_job(
+        review_job,
+        errors=errors,
+        preview_plan=preview_plan,
+        refinement_result=refinement_result,
+        bundle=bundle,
+    )
+    for path, key in _forbidden_semantic_review_keys(result):
+        errors.append(f"semantic review result contains forbidden mutation key: {path}.{key}")
+
+    if result.get("kind") != "SpecNodeSemanticReviewResult":
+        errors.append("semantic review kind must be SpecNodeSemanticReviewResult")
+    if result.get("schemaVersion") != SPECNODE_SCHEMA_VERSION:
+        errors.append("semantic review schemaVersion must be 1")
+
+    expected_job_digest = canonical_json_sha256_digest(review_job)
+    result_job = result.get("job")
+    if not isinstance(result_job, dict):
+        errors.append("semantic review job must be an object")
+    else:
+        if result_job.get("kind") != "SpecNodeSemanticReviewJob":
+            errors.append("semantic review job kind must be SpecNodeSemanticReviewJob")
+        if result_job.get("jobId") != review_job.get("jobId"):
+            errors.append("semantic review jobId must match source review job")
+        if result_job.get("digest") != expected_job_digest:
+            errors.append("semantic review job digest must match source review job")
+
+    reviewed = result.get("reviewedRefinementResult")
+    expected_refinement_digest = canonical_json_sha256_digest(refinement_result)
+    if not isinstance(reviewed, dict):
+        errors.append("reviewedRefinementResult must be an object")
+    else:
+        if reviewed.get("kind") != "SpecNodeRefinementResult":
+            errors.append("reviewedRefinementResult kind must be SpecNodeRefinementResult")
+        if reviewed.get("digest") != expected_refinement_digest:
+            errors.append("reviewedRefinementResult digest must match source result")
+
+    verdict = result.get("verdict")
+    if verdict not in ALLOWED_SEMANTIC_REVIEW_VERDICTS:
+        errors.append("semantic review verdict is not allowed")
+
+    findings = result.get("findings")
+    blocking_count = 0
+    if not isinstance(findings, list):
+        errors.append("semantic review findings must be a list")
+        findings = []
+    else:
+        allowed_refs = _allowed_semantic_review_evidence_refs(
+            bundle, preview_plan, refinement_result
+        )
+        for index, finding in enumerate(findings):
+            if not isinstance(finding, dict):
+                errors.append(f"semantic review finding {index} must be an object")
+                continue
+            if finding.get("kind") != "SpecNodeSemanticReviewFinding":
+                errors.append(f"semantic review finding {index} kind is invalid")
+            if not isinstance(finding.get("findingId"), str) or not finding["findingId"].strip():
+                errors.append(f"semantic review finding {index} requires findingId")
+            if finding.get("code") not in ALLOWED_SEMANTIC_REVIEW_CODES:
+                errors.append(f"semantic review finding {index} code is not allowed")
+            severity = finding.get("severity")
+            if severity not in ALLOWED_SEMANTIC_REVIEW_SEVERITIES:
+                errors.append(f"semantic review finding {index} severity is not allowed")
+            if severity == "blocking":
+                blocking_count += 1
+            if not isinstance(finding.get("message"), str) or not finding["message"].strip():
+                errors.append(f"semantic review finding {index} requires message")
+            _validate_semantic_review_finding_refs(
+                finding.get("evidenceRefs"),
+                errors=errors,
+                index=index,
+                allowed_refs=allowed_refs,
+            )
+            target = finding.get("target")
+            if target is not None and not isinstance(target, dict):
+                errors.append(f"semantic review finding {index} target must be an object")
+
+    if verdict == "approve" and blocking_count:
+        errors.append("approve verdict cannot contain blocking findings")
+    if verdict in {"needs_revision", "reject"} and not findings:
+        errors.append(f"{verdict} verdict requires at least one finding")
+    if verdict == "reject" and not blocking_count:
+        errors.append("reject verdict requires at least one blocking finding")
+
+    summary = result.get("summary")
+    if summary is not None and (not isinstance(summary, str) or not summary.strip()):
+        errors.append("semantic review summary must be a non-empty string when present")
+
+    if errors:
+        raise SpecNodeSemanticReviewValidationError("; ".join(errors))
 
 
 def canonical_json_sha256_digest(value: Any) -> str:
@@ -693,6 +922,151 @@ def _validate_rejection(
         errors.append("usageReceipt rejectionId must match rejection")
     if not isinstance(rejection.get("evidenceRefs"), list):
         errors.append("rejection evidenceRefs must be a list")
+
+
+def _validate_semantic_review_job(
+    review_job: dict[str, Any],
+    *,
+    errors: list[str],
+    preview_plan: dict[str, Any],
+    refinement_result: dict[str, Any],
+    bundle: dict[str, Any],
+) -> None:
+    if review_job.get("kind") != "SpecNodeSemanticReviewJob":
+        errors.append("semantic review source job kind must be SpecNodeSemanticReviewJob")
+    if review_job.get("schemaVersion") != SPECNODE_SCHEMA_VERSION:
+        errors.append("semantic review source job schemaVersion must be 1")
+    if review_job.get("policy") != SEMANTIC_REVIEW_POLICY:
+        errors.append("semantic review source job policy must match clean-context policy")
+    if review_job.get("excludedContent") != SEMANTIC_REVIEW_EXCLUDED_CONTENT:
+        errors.append("semantic review source job excludedContent must match clean-context policy")
+
+    contract = review_job.get("contract")
+    if not isinstance(contract, dict):
+        errors.append("semantic review source job contract must be an object")
+    else:
+        if contract.get("kind") != "SpecNodeSemanticReviewContract":
+            errors.append("semantic review source job contract kind is invalid")
+        if contract.get("semanticReviewContractVersion") != SEMANTIC_REVIEW_CONTRACT_VERSION:
+            errors.append("semantic review source job contract version is invalid")
+        if contract.get("outputKind") != "SpecNodeSemanticReviewResult":
+            errors.append("semantic review source job outputKind is invalid")
+
+    source_bundle = review_job.get("sourceBundle")
+    expected_bundle_digest = canonical_json_sha256_digest(bundle)
+    if not isinstance(source_bundle, dict):
+        errors.append("semantic review sourceBundle must be an object")
+    elif source_bundle.get("digest") != expected_bundle_digest:
+        errors.append("semantic review sourceBundle digest must match bundle")
+
+    source_preview = review_job.get("previewPlan")
+    expected_preview_digest = canonical_json_sha256_digest(preview_plan)
+    if not isinstance(source_preview, dict):
+        errors.append("semantic review previewPlan must be an object")
+    elif source_preview.get("digest") != expected_preview_digest:
+        errors.append("semantic review previewPlan digest must match preview plan")
+
+    reviewed = review_job.get("reviewedRefinementResult")
+    expected_refinement_digest = canonical_json_sha256_digest(refinement_result)
+    if not isinstance(reviewed, dict):
+        errors.append("semantic review reviewedRefinementResult must be an object")
+    elif reviewed.get("digest") != expected_refinement_digest:
+        errors.append("semantic review reviewedRefinementResult digest must match result")
+
+
+def _validate_semantic_review_finding_refs(
+    value: Any,
+    *,
+    errors: list[str],
+    index: int,
+    allowed_refs: set[str],
+) -> None:
+    if not isinstance(value, list) or not value:
+        errors.append(f"semantic review finding {index} requires non-empty evidenceRefs")
+        return
+    for item in value:
+        if not isinstance(item, str):
+            errors.append(f"semantic review finding {index} evidenceRefs must be strings")
+        elif item not in allowed_refs:
+            errors.append(f"semantic review finding {index} uses unknown evidenceRef: {item}")
+
+
+def _allowed_semantic_review_evidence_refs(
+    bundle: dict[str, Any],
+    preview_plan: dict[str, Any],
+    refinement_result: dict[str, Any],
+) -> set[str]:
+    refs = {
+        "source_bundle",
+        "preview_plan",
+        "compact_model_input",
+        "harvest_summary",
+        "project_profile",
+        "public_interface_summary",
+        "semantic_evidence_index",
+        "validation_summaries",
+        "draft_candidate_metadata",
+        "reviewed_refinement_result",
+        "refinement_result",
+    }
+    artifacts = bundle.get("artifacts")
+    if isinstance(artifacts, list):
+        refs.update(
+            item["id"]
+            for item in artifacts
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        )
+
+    compact_input = preview_plan.get("compactModelInput")
+    if isinstance(compact_input, dict):
+        semantic_index = compact_input.get("semanticEvidenceIndex")
+        if isinstance(semantic_index, dict):
+            semantic_ids = semantic_index.get("semanticEvidenceIds")
+            if isinstance(semantic_ids, list):
+                refs.update(item for item in semantic_ids if isinstance(item, str))
+
+    result_body = refinement_result.get("result")
+    if isinstance(result_body, dict):
+        proposal = result_body.get("proposal")
+        if isinstance(proposal, dict):
+            proposal_id = proposal.get("proposalId")
+            if isinstance(proposal_id, str):
+                refs.add(proposal_id)
+            operations = proposal.get("operations")
+            if isinstance(operations, list):
+                refs.update(
+                    operation["operationId"]
+                    for operation in operations
+                    if isinstance(operation, dict) and isinstance(operation.get("operationId"), str)
+                )
+        rejection = result_body.get("rejection")
+        if isinstance(rejection, dict) and isinstance(rejection.get("rejectionId"), str):
+            refs.add(rejection["rejectionId"])
+
+    review_notes = refinement_result.get("reviewNotes")
+    if isinstance(review_notes, list):
+        refs.update(
+            note["noteId"]
+            for note in review_notes
+            if isinstance(note, dict) and isinstance(note.get("noteId"), str)
+        )
+    return refs
+
+
+def _forbidden_semantic_review_keys(value: Any, *, path: str = "$") -> list[tuple[str, str]]:
+    if isinstance(value, dict):
+        findings: list[tuple[str, str]] = []
+        for key, child in value.items():
+            if key in SEMANTIC_REVIEW_FORBIDDEN_KEYS:
+                findings.append((path, key))
+            findings.extend(_forbidden_semantic_review_keys(child, path=f"{path}.{key}"))
+        return findings
+    if isinstance(value, list):
+        findings = []
+        for index, child in enumerate(value):
+            findings.extend(_forbidden_semantic_review_keys(child, path=f"{path}[{index}]"))
+        return findings
+    return []
 
 
 def _validate_usage_receipt(

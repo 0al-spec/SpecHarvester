@@ -121,6 +121,8 @@ Future component. It may refine deterministic candidates through a bounded
 SpecNode job. The handoff contract is <doc:SpecNodeIntegrationContract>.
 The compact planning contract is <doc:SpecNodeRefinePreviewContract>.
 The versioned prompt contract is <doc:SpecNodeRefinementPromptContract>.
+The clean-context semantic review contract is
+<doc:SpecNodeSemanticReviewContract>.
 The provider adapter contract is <doc:SpecNodeProviderAdapterContract>.
 The patch proposal output contract is <doc:SpecNodePatchProposalContract>.
 Executable provider smoke coverage is <doc:SpecNodeProviderSmokeCoverage>.
@@ -150,6 +152,16 @@ Model output must conform to `SpecNodeCandidatePatchProposal` or
 `SpecNodeRejectionReason`. Candidate changes are structured operations against
 `specpm.yaml` and `specs/*.spec.yaml`, not raw diffs, shell commands, provider
 calls, or direct file writes.
+
+After structural `SpecNodeRefinementResult` validation, SpecHarvester can build
+a `SpecNodeSemanticReviewJob` from the same deterministic artifacts, the
+reviewed result, and a fixed `SpecNodeSemanticReviewRubric`. The semantic
+reviewer emits only a `SpecNodeSemanticReviewResult` with `approve`,
+`needs_revision`, or `reject` plus typed `SpecNodeSemanticReviewFinding`
+records. It cannot emit `candidatePatchProposal`, `operations`,
+`retryDirective`, shell commands, network fetches, provider calls, package
+manager commands, test runner commands, build tool commands, or direct file
+writes.
 
 The local `SpecNodeProviderSmokeRun` harness exercises this bridge with an
 in-process SpecNode-compatible provider stub. It validates a

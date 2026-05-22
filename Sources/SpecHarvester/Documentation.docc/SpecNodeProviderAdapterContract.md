@@ -11,6 +11,9 @@ SpecHarvester does not contact providers.
 Versioned prompt rendering from `compactModelInput` is governed by
 <doc:SpecNodeRefinementPromptContract>. Provider requests may include only
 bounded messages produced by that `SpecNodeRefinementPromptContract`.
+Clean-context semantic review messages are governed by
+<doc:SpecNodeSemanticReviewContract> when the requested output is
+`SpecNodeSemanticReviewResult`.
 
 ## Contract Names
 
