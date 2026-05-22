@@ -95,6 +95,8 @@ That later boundary names `SpecNodeOpenAICompatibleProviderAdapter`, but this
 preview contract still does not contact providers.
 Schema-validated model output is defined separately in
 <doc:SpecNodePatchProposalContract>.
+Versioned prompt rendering from `compactModelInput` is defined separately in
+<doc:SpecNodeRefinementPromptContract>.
 
 ## Compact Model Input
 

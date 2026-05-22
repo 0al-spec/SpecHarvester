@@ -13,6 +13,7 @@ execute a real model, or apply generated changes.
 - `SpecNodeProviderSmokeRun`
 - `SpecHarvesterSpecNodeArtifactBundle`
 - `SpecHarvesterRefinePreviewPlan`
+- `SpecNodeRefinementPromptContract`
 - `SpecNodeRefinementJob`
 - `SpecNodeRefinementResult`
 - `SpecNodeRejectionReason`
@@ -33,6 +34,10 @@ The provider stub is an in-process test double for SpecNode behavior. It is not
 an OpenAI-compatible HTTP client and not a direct LM Studio call. SpecHarvester does not contact providers;
 SpecNode owns provider discovery, model execution, provenance, and usage receipt
 generation.
+
+Prompt rendering policy is defined by <doc:SpecNodeRefinementPromptContract>.
+That contract covers target-package intent inference, evidence references,
+negative claims, and confidence calibration.
 
 ## Compact Input Boundary
 

@@ -717,6 +717,13 @@ from `harvest.json`, `ProjectProfile`, optional `PublicInterfaceIndex`,
 `semanticEvidenceIndex`, validation summaries, and draft candidate metadata.
 It excludes raw repository source and raw documentation bodies.
 
+Prompt rendering is governed by
+[`SPECNODE_REFINEMENT_PROMPT_CONTRACT.md`](SPECNODE_REFINEMENT_PROMPT_CONTRACT.md).
+The `SpecNodeRefinementPromptContract` keeps prompt text versioned, requires
+target-package intent inference instead of task self-description, and rejects
+unknown evidence references, unsupported negative claims, and overconfident
+claims without deterministic evidence.
+
 Provider execution is governed by
 [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md).
 SpecNode may use `SpecNodeOpenAICompatibleProviderAdapter` for LM Studio or

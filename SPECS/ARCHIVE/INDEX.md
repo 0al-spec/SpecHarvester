@@ -53,6 +53,7 @@
 | P11-T4 | [P11-T4_Candidate_Patch_Proposal_Output_Schema/](P11-T4_Candidate_Patch_Proposal_Output_Schema/) | 2026-05-21 | PASS |
 | P11-T5 | [P11-T5_SpecNode-Compatible_Provider_Smoke_Coverage/](P11-T5_SpecNode-Compatible_Provider_Smoke_Coverage/) | 2026-05-22 | PASS |
 | P11-T6 | [P11-T6_LM_Studio_JSON_Schema_Compatibility/](P11-T6_LM_Studio_JSON_Schema_Compatibility/) | 2026-05-22 | PASS |
+| P13-T1 | [P13-T1_SpecNode_Refinement_Prompt_Contract/](P13-T1_SpecNode_Refinement_Prompt_Contract/) | 2026-05-22 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
@@ -64,6 +65,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p13_t1_specnode_refinement_prompt_contract.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p11_t6_lm_studio_json_schema_compatibility.md` |
 | [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p11_t5_specnode_provider_smoke_coverage.md`, `REVIEW_p11_t4_patch_proposal_output_schema.md`, `REVIEW_p11_t3_provider_adapter_boundary.md`, `REVIEW_p11_t2_refine_preview_planning_contract.md`, `REVIEW_p11_t1_specnode_integration_contract.md`, `REVIEW_p12_t6_popular_smoke_scenario.md`, `REVIEW_p12_t5_evidence_support_target_contract.md`, `REVIEW_p12_t4_public_interface_evidence_contract.md`, `REVIEW_p12_t3_domain_intent_inference.md`, `REVIEW_p12_t2_go_public_interface_evidence.md`, `REVIEW_p12_t1_strict_license_filename_compatibility.md`, `REVIEW_p10_t6_multi_language_smoke_matrix.md`, `REVIEW_p10_t5_language_neutral_semantic_extraction.md`, `REVIEW_p10_t4_projectprofile_analyzer_orchestration.md`, `REVIEW_p10_t3_trusted_classifier_evaluation.md`, `REVIEW_p10_t2_manifest_first_ecosystem_detectors.md`, `REVIEW_p10_t1_project_profile_schema.md`, `REVIEW_p9_t2_semantic_evidence_index.md`, `REVIEW_p9_t1_semantic_intent_drafting.md`, `REVIEW_p8_t3_update_impact_classification.md`, `REVIEW_p8_t2_accepted_candidate_diff_report.md`, `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
 
@@ -156,6 +158,8 @@
 | 2026-05-22 | P11-T5 | Archived REVIEW_p11_t5_specnode_provider_smoke_coverage report |
 | 2026-05-22 | P11-T6 | Archived LM Studio JSON Schema Compatibility (PASS) |
 | 2026-05-22 | P11-T6 | Archived REVIEW_p11_t6_lm_studio_json_schema_compatibility report |
+| 2026-05-22 | P13-T1 | Archived SpecNode Refinement Prompt Contract (PASS) |
+| 2026-05-22 | P13-T1 | Archived REVIEW_p13_t1_specnode_refinement_prompt_contract report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

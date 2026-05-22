@@ -120,6 +120,7 @@ inspect raw repository source during candidate drafting.
 Future component. It may refine deterministic candidates through a bounded
 SpecNode job. The handoff contract is <doc:SpecNodeIntegrationContract>.
 The compact planning contract is <doc:SpecNodeRefinePreviewContract>.
+The versioned prompt contract is <doc:SpecNodeRefinementPromptContract>.
 The provider adapter contract is <doc:SpecNodeProviderAdapterContract>.
 The patch proposal output contract is <doc:SpecNodePatchProposalContract>.
 Executable provider smoke coverage is <doc:SpecNodeProviderSmokeCoverage>.

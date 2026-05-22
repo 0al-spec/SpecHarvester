@@ -44,6 +44,9 @@ SpecHarvesterSpecNodeArtifactBundle
 
 SpecHarvester must validate this output before any local file mutation.
 SpecNode output remains untrusted proposal metadata.
+The prompt that asks for this output is governed by
+[`SPECNODE_REFINEMENT_PROMPT_CONTRACT.md`](SPECNODE_REFINEMENT_PROMPT_CONTRACT.md),
+including evidence-reference, negative-claim, and confidence-calibration rules.
 
 ## Output Envelope
 
