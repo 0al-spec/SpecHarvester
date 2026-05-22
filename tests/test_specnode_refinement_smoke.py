@@ -11,6 +11,7 @@ import pytest
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.drafter import DraftOptions, draft_spec_package
 from spec_harvester.specnode_refinement import (
+    SpecNodeModelJSONParseError,
     SpecNodeProviderUnavailable,
     SpecNodeRefinementSmokeOptions,
     SpecNodeRefinementValidationError,
@@ -19,6 +20,7 @@ from spec_harvester.specnode_refinement import (
     build_specnode_artifact_bundle,
     build_specnode_refinement_job,
     canonical_json_sha256_digest,
+    parse_specnode_model_json_object,
     run_specnode_refinement_smoke,
     validate_specnode_refinement_result,
 )
@@ -120,6 +122,42 @@ def test_specnode_refinement_smoke_supports_absent_public_interface_index(
     assert result["status"] == "provider_unavailable"
     compact_input = result["previewPlan"]["compactModelInput"]
     assert compact_input["publicInterfaceSummary"] == {"status": "absent"}
+
+
+def test_specnode_model_json_parser_accepts_direct_and_gpt_oss_wrapped_objects() -> None:
+    direct = parse_specnode_model_json_object(
+        '{"kind":"SpecNodeProviderProbe","status":"ok","candidateId":"demo.core"}'
+    )
+    wrapped = parse_specnode_model_json_object(
+        "<|channel|>final <|constrain|>JSON<|message|>"
+        '{"kind":"SpecNodeProviderProbe","status":"ok","candidateId":"demo.core"}'
+    )
+
+    assert direct == {
+        "kind": "SpecNodeProviderProbe",
+        "status": "ok",
+        "candidateId": "demo.core",
+    }
+    assert wrapped == direct
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "",
+        "[]",
+        '"scalar"',
+        "{} {}",
+        "<|channel|>final <|constrain|>JSON<|message|>not-json",
+        '<|channel|>final<|message|>{"a":1}<|channel|>analysis<|message|>{"b":2}',
+        '<|channel|>final<|message|>[{"a":1}]',
+    ],
+)
+def test_specnode_model_json_parser_rejects_unsafe_or_ambiguous_content(
+    content: str,
+) -> None:
+    with pytest.raises(SpecNodeModelJSONParseError):
+        parse_specnode_model_json_object(content)
 
 
 def test_specnode_refinement_smoke_rejects_unsafe_provider_output(

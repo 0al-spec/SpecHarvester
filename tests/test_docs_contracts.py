@@ -395,6 +395,13 @@ def test_docc_and_github_docs_cover_specnode_provider_adapter_contract() -> None
             "usageReceipt",
             "SpecHarvester does not contact providers",
             "explicit operator opt-in",
+            "openai/gpt-oss-20b",
+            "response_format.type: json_schema",
+            "SpecNodeRefinementResult",
+            "response_format.type: json_object",
+            "json_object",
+            "<|message|>",
+            "multiple objects",
             "raw repository source",
             "provider logs",
         ):
@@ -639,6 +646,13 @@ def test_docc_and_github_docs_cover_specnode_provider_smoke_coverage() -> None:
             "does not call LM Studio",
             "does not mutate candidate files",
             "SpecHarvester does not contact providers",
+            "openai/gpt-oss-20b",
+            "response_format.type: json_schema",
+            "response_format.type: json_object",
+            "parse_specnode_model_json_object",
+            "<|message|>",
+            "multiple object payloads",
+            "trailing non-JSON text",
         ):
             assert required in text
 
