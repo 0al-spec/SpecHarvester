@@ -13,18 +13,24 @@ from spec_harvester.drafter import DraftOptions, draft_spec_package
 from spec_harvester.specnode_refinement import (
     SpecNodeModelJSONParseError,
     SpecNodeProviderUnavailable,
+    SpecNodeRefinementRetryOptions,
     SpecNodeRefinementSmokeOptions,
     SpecNodeRefinementValidationError,
+    SpecNodeRetryOrchestrationValidationError,
     SpecNodeSemanticReviewValidationError,
     build_provider_unavailable_result,
     build_refine_preview_plan,
     build_specnode_artifact_bundle,
     build_specnode_refinement_job,
+    build_specnode_retry_directives,
+    build_specnode_retry_refinement_job,
     build_specnode_semantic_review_job,
     canonical_json_sha256_digest,
     parse_specnode_model_json_object,
+    run_specnode_refinement_retry_orchestration,
     run_specnode_refinement_smoke,
     validate_specnode_refinement_result,
+    validate_specnode_refinement_retry_run,
     validate_specnode_semantic_review_result,
 )
 
@@ -517,10 +523,302 @@ def test_specnode_semantic_review_validation_rejects_mutating_or_unknown_finding
             )
 
 
+def test_specnode_retry_orchestration_approves_without_retry(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    provider = ScriptedSpecNodeProvider()
+    reviewer = ScriptedSemanticReviewer([("approve", [])])
+
+    run = run_specnode_refinement_retry_orchestration(
+        SpecNodeRefinementRetryOptions(
+            candidate_workspace=candidate,
+            provider=provider,
+            reviewer=reviewer,
+            max_attempts=3,
+        )
+    )
+
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+    validate_specnode_refinement_retry_run(run, bundle=bundle, preview_plan=preview_plan)
+    assert run["kind"] == "SpecNodeRefinementRetryRun"
+    assert run["status"] == "approved"
+    assert run["retryPolicy"]["maxAttempts"] == 3
+    assert len(run["attempts"]) == 1
+    assert run["attempts"][0]["status"] == "approved"
+    assert run["attempts"][0]["retryDirectiveSet"]["directives"] == []
+    assert len(provider.received_jobs) == 1
+    assert len(reviewer.received_review_jobs) == 1
+
+
+def test_specnode_retry_orchestration_converts_findings_to_bounded_retry_directives(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    provider = ScriptedSpecNodeProvider()
+    reviewer = ScriptedSemanticReviewer(
+        [
+            (
+                "needs_revision",
+                [
+                    semantic_review_finding(
+                        code="wrong_package_intent",
+                        severity="blocking",
+                        evidence_refs=["public_interface_index", "op-001"],
+                    )
+                ],
+            ),
+            ("approve", []),
+        ]
+    )
+
+    run = run_specnode_refinement_retry_orchestration(
+        SpecNodeRefinementRetryOptions(
+            candidate_workspace=candidate,
+            provider=provider,
+            reviewer=reviewer,
+            max_attempts=3,
+        )
+    )
+
+    assert run["status"] == "approved"
+    assert len(run["attempts"]) == 2
+    assert run["attempts"][0]["status"] == "retry_scheduled"
+    assert run["attempts"][1]["status"] == "approved"
+    directive = run["attempts"][0]["retryDirectiveSet"]["directives"][0]
+    assert directive["code"] == "refocus_target_package_intent"
+    assert directive["sourceFindingCode"] == "wrong_package_intent"
+    assert "target-package behavior" in directive["boundedInstruction"]
+
+    first_job = provider.received_jobs[0]
+    retry_job = provider.received_jobs[1]
+    assert "retryContext" not in first_job
+    assert retry_job["retryContext"]["attemptIndex"] == 1
+    assert retry_job["retryContext"]["sourceBundleDigest"] == first_job["bundle"]["digest"]
+    assert (
+        retry_job["retryContext"]["sourcePreviewPlanDigest"] == (first_job["previewPlan"]["digest"])
+    )
+    assert all(
+        attempt["sourceBundleDigest"] == first_job["bundle"]["digest"]
+        for attempt in run["attempts"]
+    )
+    assert all(
+        attempt["sourcePreviewPlanDigest"] == first_job["previewPlan"]["digest"]
+        for attempt in run["attempts"]
+    )
+
+
+def test_specnode_retry_orchestration_stops_at_retry_cap(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    provider = ScriptedSpecNodeProvider()
+    reviewer = ScriptedSemanticReviewer(
+        [
+            ("reject", [semantic_review_finding(severity="blocking")]),
+            ("reject", [semantic_review_finding(severity="blocking")]),
+        ]
+    )
+
+    run = run_specnode_refinement_retry_orchestration(
+        SpecNodeRefinementRetryOptions(
+            candidate_workspace=candidate,
+            provider=provider,
+            reviewer=reviewer,
+            max_attempts=2,
+        )
+    )
+
+    assert run["status"] == "retry_limit_reached"
+    assert len(run["attempts"]) == 2
+    assert [attempt["status"] for attempt in run["attempts"]] == [
+        "retry_scheduled",
+        "retry_limit_reached",
+    ]
+    assert len(provider.received_jobs) == 2
+
+
+def test_specnode_retry_orchestration_converts_provider_unavailable_to_reviewed_fallback(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    reviewer = ScriptedSemanticReviewer([("approve", [])])
+
+    run = run_specnode_refinement_retry_orchestration(
+        SpecNodeRefinementRetryOptions(
+            candidate_workspace=candidate,
+            provider=UnavailableSpecNodeProvider(),
+            reviewer=reviewer,
+            max_attempts=2,
+        )
+    )
+
+    assert run["status"] == "approved"
+    assert run["attempts"][0]["status"] == "approved"
+    assert len(reviewer.received_review_jobs) == 1
+    assert reviewer.last_refinement_result is not None
+    assert reviewer.last_refinement_result["result"]["rejection"]["code"] == "provider_unavailable"
+
+
+def test_specnode_retry_orchestration_rejects_invalid_retry_bounds(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    provider = ScriptedSpecNodeProvider()
+    reviewer = ScriptedSemanticReviewer([("approve", [])])
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+    job = build_specnode_refinement_job(bundle, preview_plan)
+    refinement_result = successful_refinement_result(job, preview_plan)
+    review_job = build_specnode_semantic_review_job(bundle, preview_plan, refinement_result)
+    review_result = semantic_review_result(
+        review_job,
+        refinement_result,
+        verdict="approve",
+        findings=[],
+    )
+
+    with pytest.raises(ValueError, match="max_attempts"):
+        run_specnode_refinement_retry_orchestration(
+            SpecNodeRefinementRetryOptions(
+                candidate_workspace=candidate,
+                provider=provider,
+                reviewer=reviewer,
+                max_attempts=0,
+            )
+        )
+
+    with pytest.raises(ValueError, match="attempt_index"):
+        build_specnode_retry_refinement_job(
+            bundle,
+            preview_plan,
+            build_specnode_retry_directives(review_result),
+            attempt_index=0,
+        )
+
+
+def test_specnode_retry_orchestration_validation_rejects_drift_and_bad_directives(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    provider = ScriptedSpecNodeProvider()
+    reviewer = ScriptedSemanticReviewer(
+        [
+            ("reject", [semantic_review_finding(severity="blocking")]),
+        ]
+    )
+    run = run_specnode_refinement_retry_orchestration(
+        SpecNodeRefinementRetryOptions(
+            candidate_workspace=candidate,
+            provider=provider,
+            reviewer=reviewer,
+            max_attempts=1,
+        )
+    )
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+
+    cases = [
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0].update(
+                {"sourceBundleDigest": "sha256:" + "0" * 64}
+            ),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0]["retryDirectiveSet"]["directives"][0].update(
+                {"code": "invented_retry"}
+            ),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0].update(
+                {"sourcePreviewPlanDigest": "sha256:" + "0" * 64}
+            ),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed.update(
+                {"finalRefinementResultDigest": "sha256:" + "0" * 64}
+            ),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0].update({"attemptIndex": 9}),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0].update({"retryDirectiveSetDigest": "bad"}),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0]["retryDirectiveSet"]["policy"].update(
+                {"rawTextPropagation": "allowed"}
+            ),
+        ),
+        malformed_result_case(run, lambda malformed: malformed["attempts"].append({})),
+    ]
+
+    for malformed in cases:
+        with pytest.raises(SpecNodeRetryOrchestrationValidationError):
+            validate_specnode_refinement_retry_run(
+                malformed,
+                bundle=bundle,
+                preview_plan=preview_plan,
+            )
+
+
+def test_specnode_retry_directives_reject_unknown_finding_codes(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+    job = build_specnode_refinement_job(bundle, preview_plan)
+    refinement_result = successful_refinement_result(job, preview_plan)
+    review_job = build_specnode_semantic_review_job(bundle, preview_plan, refinement_result)
+    review_result = semantic_review_result(
+        review_job,
+        refinement_result,
+        verdict="needs_revision",
+        findings=[semantic_review_finding(code="unknown_finding")],
+    )
+
+    with pytest.raises(SpecNodeRetryOrchestrationValidationError):
+        build_specnode_retry_directives(review_result)
+
+
+def test_specnode_retry_directives_reject_forbidden_retry_content(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+    job = build_specnode_refinement_job(bundle, preview_plan)
+    refinement_result = successful_refinement_result(job, preview_plan)
+    review_job = build_specnode_semantic_review_job(bundle, preview_plan, refinement_result)
+    review_result = semantic_review_result(
+        review_job,
+        refinement_result,
+        verdict="needs_revision",
+        findings=[
+            semantic_review_finding(
+                target={"kind": "candidate_patch_operation", "shellCommand": "cat ~/.ssh/id_rsa"}
+            )
+        ],
+    )
+
+    with pytest.raises(SpecNodeRetryOrchestrationValidationError, match="forbidden key"):
+        build_specnode_retry_directives(review_result)
+
+
 class ScriptedSpecNodeProvider:
     def __init__(self, *, unsafe: bool = False) -> None:
         self.unsafe = unsafe
         self.received_job: dict[str, Any] | None = None
+        self.received_jobs: list[dict[str, Any]] = []
         self.received_preview_plan: dict[str, Any] | None = None
 
     def refine(
@@ -530,6 +828,7 @@ class ScriptedSpecNodeProvider:
         preview_plan: dict[str, Any],
     ) -> dict[str, Any]:
         self.received_job = job
+        self.received_jobs.append(deepcopy(job))
         self.received_preview_plan = preview_plan
         result = successful_refinement_result(job, preview_plan)
         if self.unsafe:
@@ -537,6 +836,35 @@ class ScriptedSpecNodeProvider:
             operation["op"] = "shellCommand"
             operation["shellCommand"] = "cat ~/.ssh/id_rsa"
         return result
+
+
+class ScriptedSemanticReviewer:
+    def __init__(
+        self,
+        outcomes: list[tuple[str, list[dict[str, Any]]]],
+    ) -> None:
+        self.outcomes = outcomes
+        self.received_review_jobs: list[dict[str, Any]] = []
+        self.last_refinement_result: dict[str, Any] | None = None
+
+    def review(
+        self,
+        *,
+        review_job: dict[str, Any],
+        preview_plan: dict[str, Any],
+        refinement_result: dict[str, Any],
+    ) -> dict[str, Any]:
+        del preview_plan
+        self.received_review_jobs.append(deepcopy(review_job))
+        self.last_refinement_result = deepcopy(refinement_result)
+        outcome_index = min(len(self.received_review_jobs) - 1, len(self.outcomes) - 1)
+        verdict, findings = self.outcomes[outcome_index]
+        return semantic_review_result(
+            review_job,
+            refinement_result,
+            verdict=verdict,
+            findings=deepcopy(findings),
+        )
 
 
 class UnavailableSpecNodeProvider:
@@ -762,19 +1090,22 @@ def semantic_review_finding(
     code: str = "unsupported_capability_claim",
     severity: str = "warning",
     evidence_refs: list[str] | None = None,
+    target: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if evidence_refs is None:
         evidence_refs = ["harvest_snapshot", "op-001"]
+    if target is None:
+        target = {
+            "kind": "candidate_patch_operation",
+            "operationId": "op-001",
+        }
     return {
         "kind": "SpecNodeSemanticReviewFinding",
         "findingId": "finding-001",
         "code": code,
         "severity": severity,
         "message": "The proposal claim needs deterministic evidence before acceptance.",
-        "target": {
-            "kind": "candidate_patch_operation",
-            "operationId": "op-001",
-        },
+        "target": target,
         "evidenceRefs": evidence_refs,
     }
 

@@ -204,6 +204,13 @@ Clean-context semantic review is defined in
 `SpecNodeSemanticReviewFinding` records, verdicts, evidence-reference rules,
 and review-only mutation boundaries.
 
+Feedback-driven retry orchestration is defined in
+<doc:SpecNodeRefinementRetryOrchestration>. It fixes
+`SpecNodeRefinementRetryRun`, `SpecNodeRefinementRetryPolicy`,
+`SpecNodeRefinementRetryAttempt`, `SpecNodeRetryDirectiveSet`,
+`SpecNodeRetryDirective`, `SpecNodeRetryContext`, immutable artifact reuse,
+max-attempt caps, and audit trail validation.
+
 ## Rejection Conditions
 
 Reject the handoff or returned proposal if bundle digests do not match, paths

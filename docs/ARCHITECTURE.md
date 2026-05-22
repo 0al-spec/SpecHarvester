@@ -231,6 +231,17 @@ records. It cannot emit `candidatePatchProposal`, `operations`,
 manager commands, test runner commands, build tool commands, or direct file
 writes.
 
+Feedback-driven retry orchestration is governed by
+[`SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md`](SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md).
+`SpecNodeRefinementRetryRun` converts typed
+`SpecNodeSemanticReviewFinding` records into bounded `SpecNodeRetryDirective`
+data, preserves `sourceBundleDigest` and `sourcePreviewPlanDigest` across
+attempts, caps `maxAttempts`, and records a deterministic
+`SpecNodeRefinementRetryAttempt` audit trail. Retry context remains data only:
+it keeps `candidateMutation: proposal_only` and cannot add raw source, provider
+logs, shell commands, network fetches, package manager commands, test runner
+commands, build tool commands, or direct file writes.
+
 The local `SpecNodeProviderSmokeRun` harness exercises this bridge with an
 in-process SpecNode-compatible provider stub. It validates a
 `SpecNodeRefinementResult` and returns a deterministic

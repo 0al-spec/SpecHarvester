@@ -12,6 +12,9 @@ DEFAULT_PRODUCER_VERSION = "0.1.0"
 SPECNODE_SCHEMA_VERSION = 1
 PUBLIC_INTERFACE_INDEX_FILENAME = "public-interface-index.json"
 SEMANTIC_REVIEW_CONTRACT_VERSION = "1.0.0"
+RETRY_ORCHESTRATION_CONTRACT_VERSION = "1.0.0"
+DEFAULT_RETRY_MAX_ATTEMPTS = 2
+MAX_RETRY_ATTEMPTS_LIMIT = 5
 
 PROMPT_BUDGET = {
     "maxPromptBytes": 60_000,
@@ -129,6 +132,53 @@ SEMANTIC_REVIEW_FORBIDDEN_KEYS = {
     "applyPatch",
     "directFileWrites",
 }
+RETRY_DIRECTIVE_BY_FINDING_CODE = {
+    "wrong_package_intent": "refocus_target_package_intent",
+    "unsupported_capability_claim": "remove_or_evidence_capability_claim",
+    "missing_evidence_reference": "add_evidence_reference_or_drop_claim",
+    "overconfident_confidence_score": "lower_confidence_or_add_evidence",
+    "unsafe_negative_claim": "remove_unsupported_negative_claim",
+    "schema_policy_mismatch": "align_with_schema_policy",
+    "authority_boundary_violation": "remove_authority_request",
+    "prompt_contract_violation": "restore_prompt_contract_boundary",
+}
+RETRY_DIRECTIVE_INSTRUCTIONS = {
+    "refocus_target_package_intent": (
+        "Revise only target-package behavior claims using deterministic evidence."
+    ),
+    "remove_or_evidence_capability_claim": (
+        "Remove unsupported capability claims or attach known evidence references."
+    ),
+    "add_evidence_reference_or_drop_claim": (
+        "Attach known evidence references to the claim or drop the claim."
+    ),
+    "lower_confidence_or_add_evidence": (
+        "Lower confidence or add deterministic evidence before retaining the claim."
+    ),
+    "remove_unsupported_negative_claim": (
+        "Remove negative claims unless explicit absence evidence exists."
+    ),
+    "align_with_schema_policy": (
+        "Align proposed metadata with schema, SpecPM, and validation policy."
+    ),
+    "remove_authority_request": (
+        "Remove any request for shell, network, provider, tool, or file-write authority."
+    ),
+    "restore_prompt_contract_boundary": (
+        "Return to target-package intent inference and schema-bound proposal output."
+    ),
+}
+ALLOWED_RETRY_DIRECTIVE_CODES = set(RETRY_DIRECTIVE_INSTRUCTIONS)
+RETRY_FORBIDDEN_KEYS = {
+    *SEMANTIC_REVIEW_FORBIDDEN_KEYS,
+    "rawRepositorySource",
+    "documentationBodies",
+    "providerLogs",
+    "firstPassPromptTranscript",
+    "chainOfThought",
+    "arbitraryPrompt",
+    "arbitraryPrompts",
+}
 USAGE_RECEIPT_REQUIRED_FIELDS = {
     "kind",
     "jobId",
@@ -194,6 +244,10 @@ class SpecNodeSemanticReviewValidationError(SpecNodeRefinementValidationError):
     """Raised when semantic review output violates the clean-context contract."""
 
 
+class SpecNodeRetryOrchestrationValidationError(SpecNodeRefinementValidationError):
+    """Raised when retry orchestration output violates bounded retry policy."""
+
+
 class SpecNodeModelJSONParseError(ValueError):
     """Raised when provider message content cannot be parsed as one JSON object."""
 
@@ -208,10 +262,30 @@ class SpecNodeCompatibleProvider(Protocol):
         """Return a SpecNodeRefinementResult for a typed refinement job."""
 
 
+class SpecNodeSemanticReviewer(Protocol):
+    def review(
+        self,
+        *,
+        review_job: dict[str, Any],
+        preview_plan: dict[str, Any],
+        refinement_result: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Return a SpecNodeSemanticReviewResult for a clean-context review job."""
+
+
 @dataclass(frozen=True)
 class SpecNodeRefinementSmokeOptions:
     candidate_workspace: Path
     provider: SpecNodeCompatibleProvider | None = None
+    producer_version: str = DEFAULT_PRODUCER_VERSION
+
+
+@dataclass(frozen=True)
+class SpecNodeRefinementRetryOptions:
+    candidate_workspace: Path
+    provider: SpecNodeCompatibleProvider
+    reviewer: SpecNodeSemanticReviewer
+    max_attempts: int = DEFAULT_RETRY_MAX_ATTEMPTS
     producer_version: str = DEFAULT_PRODUCER_VERSION
 
 
@@ -269,6 +343,151 @@ def run_specnode_refinement_smoke(options: SpecNodeRefinementSmokeOptions) -> di
         "refinementResult": result,
         "diagnostics": diagnostics,
     }
+
+
+def run_specnode_refinement_retry_orchestration(
+    options: SpecNodeRefinementRetryOptions,
+) -> dict[str, Any]:
+    _validate_retry_max_attempts(options.max_attempts)
+    bundle = build_specnode_artifact_bundle(
+        options.candidate_workspace,
+        producer_version=options.producer_version,
+    )
+    preview_plan = build_refine_preview_plan(bundle, options.candidate_workspace)
+    bundle_digest = canonical_json_sha256_digest(bundle)
+    preview_digest = canonical_json_sha256_digest(preview_plan)
+
+    attempts: list[dict[str, Any]] = []
+    retry_directive_set: dict[str, Any] | None = None
+    status = "retry_limit_reached"
+    final_refinement_result: dict[str, Any] | None = None
+    final_semantic_review_result: dict[str, Any] | None = None
+
+    for attempt_index in range(options.max_attempts):
+        if attempt_index == 0:
+            refinement_job = build_specnode_refinement_job(
+                bundle,
+                preview_plan,
+                producer_version=options.producer_version,
+            )
+        else:
+            if retry_directive_set is None:
+                raise SpecNodeRetryOrchestrationValidationError(
+                    "retry attempt requires retry directive set"
+                )
+            refinement_job = build_specnode_retry_refinement_job(
+                bundle,
+                preview_plan,
+                retry_directive_set,
+                attempt_index=attempt_index,
+                producer_version=options.producer_version,
+            )
+
+        try:
+            refinement_result = options.provider.refine(
+                job=refinement_job,
+                preview_plan=preview_plan,
+            )
+        except SpecNodeProviderUnavailable:
+            refinement_result = build_provider_unavailable_result(refinement_job, preview_plan)
+        validate_specnode_refinement_result(
+            refinement_result,
+            job=refinement_job,
+            preview_plan=preview_plan,
+            bundle=bundle,
+        )
+
+        review_job = build_specnode_semantic_review_job(
+            bundle,
+            preview_plan,
+            refinement_result,
+            producer_version=options.producer_version,
+        )
+        semantic_review_result = options.reviewer.review(
+            review_job=review_job,
+            preview_plan=preview_plan,
+            refinement_result=refinement_result,
+        )
+        validate_specnode_semantic_review_result(
+            semantic_review_result,
+            review_job=review_job,
+            preview_plan=preview_plan,
+            refinement_result=refinement_result,
+            bundle=bundle,
+        )
+
+        retry_directive_set = build_specnode_retry_directives(semantic_review_result)
+        verdict = semantic_review_result.get("verdict")
+        is_final_attempt = attempt_index + 1 >= options.max_attempts
+        if verdict == "approve":
+            attempt_status = "approved"
+            status = "approved"
+        elif is_final_attempt:
+            attempt_status = "retry_limit_reached"
+            status = "retry_limit_reached"
+        else:
+            attempt_status = "retry_scheduled"
+            status = "retry_scheduled"
+
+        attempts.append(
+            _retry_attempt_record(
+                attempt_index=attempt_index,
+                source_bundle_digest=bundle_digest,
+                source_preview_plan_digest=preview_digest,
+                refinement_job=refinement_job,
+                refinement_result=refinement_result,
+                review_job=review_job,
+                semantic_review_result=semantic_review_result,
+                retry_directive_set=retry_directive_set,
+                status=attempt_status,
+            )
+        )
+        final_refinement_result = refinement_result
+        final_semantic_review_result = semantic_review_result
+        if status in {"approved", "retry_limit_reached"}:
+            break
+
+    run = {
+        "schemaVersion": SPECNODE_SCHEMA_VERSION,
+        "kind": "SpecNodeRefinementRetryRun",
+        "contract": {
+            "kind": "SpecNodeRefinementRetryOrchestrationContract",
+            "retryOrchestrationContractVersion": RETRY_ORCHESTRATION_CONTRACT_VERSION,
+        },
+        "status": status,
+        "retryPolicy": {
+            "kind": "SpecNodeRefinementRetryPolicy",
+            "maxAttempts": options.max_attempts,
+            "attemptCount": len(attempts),
+            "artifactReuse": "same_bundle_and_preview_plan",
+            "retryDirectiveSource": "SpecNodeSemanticReviewFinding",
+        },
+        "sourceBundle": {
+            "kind": "SpecHarvesterSpecNodeArtifactBundle",
+            "digest": bundle_digest,
+        },
+        "previewPlan": {
+            "kind": "SpecHarvesterRefinePreviewPlan",
+            "digest": preview_digest,
+        },
+        "attempts": attempts,
+        "finalRefinementResultDigest": (
+            canonical_json_sha256_digest(final_refinement_result)
+            if final_refinement_result is not None
+            else None
+        ),
+        "finalSemanticReviewResultDigest": (
+            canonical_json_sha256_digest(final_semantic_review_result)
+            if final_semantic_review_result is not None
+            else None
+        ),
+    }
+    validate_specnode_refinement_retry_run(
+        run,
+        bundle=bundle,
+        preview_plan=preview_plan,
+    )
+    return run
 
 
 def build_specnode_artifact_bundle(
@@ -487,6 +706,95 @@ def build_specnode_semantic_review_job(
             "summary",
         ],
     }
+
+
+def build_specnode_retry_directives(
+    semantic_review_result: dict[str, Any],
+    *,
+    max_directives: int = 10,
+) -> dict[str, Any]:
+    verdict = semantic_review_result.get("verdict")
+    findings = semantic_review_result.get("findings")
+    if not isinstance(findings, list):
+        findings = []
+    directives: list[dict[str, Any]] = []
+    if verdict in {"needs_revision", "reject"}:
+        for index, finding in enumerate(findings[:max_directives], start=1):
+            if not isinstance(finding, dict):
+                continue
+            source_code = finding.get("code")
+            directive_code = RETRY_DIRECTIVE_BY_FINDING_CODE.get(str(source_code))
+            if directive_code is None:
+                raise SpecNodeRetryOrchestrationValidationError(
+                    f"unsupported semantic review finding code for retry: {source_code!r}"
+                )
+            directive = {
+                "kind": "SpecNodeRetryDirective",
+                "directiveId": f"retry-directive-{index:03d}",
+                "code": directive_code,
+                "sourceFindingId": finding.get("findingId"),
+                "sourceFindingCode": source_code,
+                "sourceFindingSeverity": finding.get("severity"),
+                "target": finding.get("target", {}),
+                "evidenceRefs": finding.get("evidenceRefs", []),
+                "boundedInstruction": RETRY_DIRECTIVE_INSTRUCTIONS[directive_code],
+            }
+            _reject_forbidden_retry_content(directive)
+            directives.append(directive)
+
+    directive_set = {
+        "schemaVersion": SPECNODE_SCHEMA_VERSION,
+        "kind": "SpecNodeRetryDirectiveSet",
+        "sourceSemanticReviewResultDigest": canonical_json_sha256_digest(semantic_review_result),
+        "sourceVerdict": verdict,
+        "policy": {
+            "kind": "SpecNodeRetryDirectivePolicy",
+            "maxDirectives": max_directives,
+            "rawTextPropagation": "forbidden",
+            "candidateOutputAuthority": "proposal_only",
+        },
+        "directives": directives,
+    }
+    errors: list[str] = []
+    _validate_retry_directive_set(directive_set, errors=errors)
+    if errors:
+        raise SpecNodeRetryOrchestrationValidationError("; ".join(errors))
+    return directive_set
+
+
+def build_specnode_retry_refinement_job(
+    bundle: dict[str, Any],
+    preview_plan: dict[str, Any],
+    retry_directive_set: dict[str, Any],
+    *,
+    attempt_index: int,
+    producer_version: str = DEFAULT_PRODUCER_VERSION,
+) -> dict[str, Any]:
+    if attempt_index <= 0:
+        raise ValueError("retry attempt_index must be greater than zero")
+    plan_digest = canonical_json_sha256_digest(preview_plan)
+    directive_digest = canonical_json_sha256_digest(retry_directive_set)
+    job = build_specnode_refinement_job(
+        bundle,
+        preview_plan,
+        producer_version=producer_version,
+    )
+    job.update(
+        {
+            "jobId": (
+                f"specnode-retry-{plan_digest.removeprefix('sha256:')[:16]}-{attempt_index:02d}"
+            ),
+            "retryContext": {
+                "kind": "SpecNodeRetryContext",
+                "attemptIndex": attempt_index,
+                "sourceBundleDigest": canonical_json_sha256_digest(bundle),
+                "sourcePreviewPlanDigest": plan_digest,
+                "retryDirectiveSetDigest": directive_digest,
+                "retryDirectiveSet": retry_directive_set,
+            },
+        }
+    )
+    return job
 
 
 def build_provider_unavailable_result(
@@ -743,6 +1051,91 @@ def validate_specnode_semantic_review_result(
 
     if errors:
         raise SpecNodeSemanticReviewValidationError("; ".join(errors))
+
+
+def validate_specnode_refinement_retry_run(
+    run: dict[str, Any],
+    *,
+    bundle: dict[str, Any],
+    preview_plan: dict[str, Any],
+) -> None:
+    errors: list[str] = []
+    if run.get("kind") != "SpecNodeRefinementRetryRun":
+        errors.append("retry run kind must be SpecNodeRefinementRetryRun")
+    if run.get("schemaVersion") != SPECNODE_SCHEMA_VERSION:
+        errors.append("retry run schemaVersion must be 1")
+    contract = run.get("contract")
+    if not isinstance(contract, dict):
+        errors.append("retry run contract must be an object")
+    else:
+        if contract.get("kind") != "SpecNodeRefinementRetryOrchestrationContract":
+            errors.append("retry run contract kind is invalid")
+        if contract.get("retryOrchestrationContractVersion") != (
+            RETRY_ORCHESTRATION_CONTRACT_VERSION
+        ):
+            errors.append("retry run contract version is invalid")
+
+    source_bundle_digest = canonical_json_sha256_digest(bundle)
+    preview_plan_digest = canonical_json_sha256_digest(preview_plan)
+    source_bundle = run.get("sourceBundle")
+    if not isinstance(source_bundle, dict) or source_bundle.get("digest") != source_bundle_digest:
+        errors.append("retry run sourceBundle digest must match bundle")
+    source_preview = run.get("previewPlan")
+    if not isinstance(source_preview, dict) or source_preview.get("digest") != preview_plan_digest:
+        errors.append("retry run previewPlan digest must match preview plan")
+
+    retry_policy = run.get("retryPolicy")
+    max_attempts = None
+    if not isinstance(retry_policy, dict):
+        errors.append("retry run retryPolicy must be an object")
+    else:
+        max_attempts = retry_policy.get("maxAttempts")
+        if not isinstance(max_attempts, int) or not (1 <= max_attempts <= MAX_RETRY_ATTEMPTS_LIMIT):
+            errors.append("retry run retryPolicy.maxAttempts is invalid")
+        if retry_policy.get("artifactReuse") != "same_bundle_and_preview_plan":
+            errors.append("retry run retryPolicy.artifactReuse must require immutable artifacts")
+
+    attempts = run.get("attempts")
+    if not isinstance(attempts, list) or not attempts:
+        errors.append("retry run attempts must be a non-empty list")
+        attempts = []
+    elif isinstance(max_attempts, int) and len(attempts) > max_attempts:
+        errors.append("retry run attempts exceed maxAttempts")
+
+    final_refinement_digest = None
+    final_review_digest = None
+    for expected_index, attempt in enumerate(attempts):
+        if not isinstance(attempt, dict):
+            errors.append(f"retry attempt {expected_index} must be an object")
+            continue
+        if attempt.get("kind") != "SpecNodeRefinementRetryAttempt":
+            errors.append(f"retry attempt {expected_index} kind is invalid")
+        if attempt.get("attemptIndex") != expected_index:
+            errors.append(f"retry attempt {expected_index} index is not sequential")
+        if attempt.get("sourceBundleDigest") != source_bundle_digest:
+            errors.append(f"retry attempt {expected_index} source bundle digest drifted")
+        if attempt.get("sourcePreviewPlanDigest") != preview_plan_digest:
+            errors.append(f"retry attempt {expected_index} preview plan digest drifted")
+        _validate_retry_attempt_digest_refs(attempt, errors=errors, index=expected_index)
+        directive_set = attempt.get("retryDirectiveSet")
+        if directive_set is not None:
+            _validate_retry_directive_set(directive_set, errors=errors)
+        final_refinement_digest = _nested_digest(attempt, "refinementResult")
+        final_review_digest = _nested_digest(attempt, "semanticReviewResult")
+
+    if attempts:
+        if run.get("finalRefinementResultDigest") != final_refinement_digest:
+            errors.append("retry run finalRefinementResultDigest must match last attempt")
+        if run.get("finalSemanticReviewResultDigest") != final_review_digest:
+            errors.append("retry run finalSemanticReviewResultDigest must match last attempt")
+        final_status = attempts[-1].get("status") if isinstance(attempts[-1], dict) else None
+        if run.get("status") == "approved" and final_status != "approved":
+            errors.append("approved retry run requires final approved attempt")
+        if run.get("status") == "retry_limit_reached" and final_status != "retry_limit_reached":
+            errors.append("retry_limit_reached run requires final retry_limit_reached attempt")
+
+    if errors:
+        raise SpecNodeRetryOrchestrationValidationError("; ".join(errors))
 
 
 def canonical_json_sha256_digest(value: Any) -> str:
@@ -1062,6 +1455,179 @@ def _validate_exact_keys(
         errors.append(f"{label} missing allowed-shape field: {key}")
     for key in sorted(extra_keys):
         errors.append(f"{label} contains unexpected clean-context field: {key}")
+
+
+def _retry_attempt_record(
+    *,
+    attempt_index: int,
+    source_bundle_digest: str,
+    source_preview_plan_digest: str,
+    refinement_job: dict[str, Any],
+    refinement_result: dict[str, Any],
+    review_job: dict[str, Any],
+    semantic_review_result: dict[str, Any],
+    retry_directive_set: dict[str, Any],
+    status: str,
+) -> dict[str, Any]:
+    return {
+        "kind": "SpecNodeRefinementRetryAttempt",
+        "attemptIndex": attempt_index,
+        "status": status,
+        "sourceBundleDigest": source_bundle_digest,
+        "sourcePreviewPlanDigest": source_preview_plan_digest,
+        "refinementJob": {
+            "kind": refinement_job.get("kind"),
+            "jobId": refinement_job.get("jobId"),
+            "digest": canonical_json_sha256_digest(refinement_job),
+        },
+        "refinementResult": {
+            "kind": refinement_result.get("kind"),
+            "digest": canonical_json_sha256_digest(refinement_result),
+        },
+        "semanticReviewJob": {
+            "kind": review_job.get("kind"),
+            "jobId": review_job.get("jobId"),
+            "digest": canonical_json_sha256_digest(review_job),
+        },
+        "semanticReviewResult": {
+            "kind": semantic_review_result.get("kind"),
+            "digest": canonical_json_sha256_digest(semantic_review_result),
+            "verdict": semantic_review_result.get("verdict"),
+        },
+        "retryDirectiveSet": retry_directive_set,
+        "retryDirectiveSetDigest": canonical_json_sha256_digest(retry_directive_set),
+    }
+
+
+def _validate_retry_max_attempts(max_attempts: int) -> None:
+    if not isinstance(max_attempts, int) or not (1 <= max_attempts <= MAX_RETRY_ATTEMPTS_LIMIT):
+        raise ValueError(
+            f"max_attempts must be between 1 and {MAX_RETRY_ATTEMPTS_LIMIT}, got {max_attempts!r}"
+        )
+
+
+def _reject_forbidden_retry_content(value: Any) -> None:
+    findings = _forbidden_retry_keys(value)
+    if findings:
+        path, key = findings[0]
+        raise SpecNodeRetryOrchestrationValidationError(
+            f"retry directive contains forbidden key: {path}.{key}"
+        )
+
+
+def _forbidden_retry_keys(value: Any, *, path: str = "$") -> list[tuple[str, str]]:
+    if isinstance(value, dict):
+        findings: list[tuple[str, str]] = []
+        for key, child in value.items():
+            if key in RETRY_FORBIDDEN_KEYS:
+                findings.append((path, key))
+            findings.extend(_forbidden_retry_keys(child, path=f"{path}.{key}"))
+        return findings
+    if isinstance(value, list):
+        findings = []
+        for index, child in enumerate(value):
+            findings.extend(_forbidden_retry_keys(child, path=f"{path}[{index}]"))
+        return findings
+    return []
+
+
+def _validate_retry_directive_set(
+    directive_set: Any,
+    *,
+    errors: list[str],
+) -> None:
+    if not isinstance(directive_set, dict):
+        errors.append("retry directive set must be an object")
+        return
+    for path, key in _forbidden_retry_keys(directive_set):
+        errors.append(f"retry directive set contains forbidden key: {path}.{key}")
+    if directive_set.get("kind") != "SpecNodeRetryDirectiveSet":
+        errors.append("retry directive set kind is invalid")
+    if directive_set.get("schemaVersion") != SPECNODE_SCHEMA_VERSION:
+        errors.append("retry directive set schemaVersion must be 1")
+    if not _is_digest(directive_set.get("sourceSemanticReviewResultDigest")):
+        errors.append("retry directive set sourceSemanticReviewResultDigest must be a digest")
+    if directive_set.get("sourceVerdict") not in ALLOWED_SEMANTIC_REVIEW_VERDICTS:
+        errors.append("retry directive set sourceVerdict is invalid")
+
+    policy = directive_set.get("policy")
+    if not isinstance(policy, dict):
+        errors.append("retry directive set policy must be an object")
+    else:
+        if policy.get("rawTextPropagation") != "forbidden":
+            errors.append("retry directive set policy must forbid raw text propagation")
+        if policy.get("candidateOutputAuthority") != "proposal_only":
+            errors.append(
+                "retry directive set policy candidateOutputAuthority must be proposal_only"
+            )
+
+    directives = directive_set.get("directives")
+    if not isinstance(directives, list):
+        errors.append("retry directive set directives must be a list")
+        return
+    if directive_set.get("sourceVerdict") == "approve" and directives:
+        errors.append("approve retry directive set must not contain directives")
+    if directive_set.get("sourceVerdict") in {"needs_revision", "reject"} and not directives:
+        errors.append("non-approve retry directive set requires directives")
+
+    for index, directive in enumerate(directives):
+        if not isinstance(directive, dict):
+            errors.append(f"retry directive {index} must be an object")
+            continue
+        if directive.get("kind") != "SpecNodeRetryDirective":
+            errors.append(f"retry directive {index} kind is invalid")
+        if directive.get("code") not in ALLOWED_RETRY_DIRECTIVE_CODES:
+            errors.append(f"retry directive {index} code is not allowed")
+        if directive.get("boundedInstruction") != RETRY_DIRECTIVE_INSTRUCTIONS.get(
+            directive.get("code")
+        ):
+            errors.append(f"retry directive {index} boundedInstruction is invalid")
+        if not isinstance(directive.get("sourceFindingId"), str):
+            errors.append(f"retry directive {index} sourceFindingId must be a string")
+        if directive.get("sourceFindingCode") not in ALLOWED_SEMANTIC_REVIEW_CODES:
+            errors.append(f"retry directive {index} sourceFindingCode is invalid")
+        evidence_refs = directive.get("evidenceRefs")
+        if (
+            not isinstance(evidence_refs, list)
+            or not evidence_refs
+            or not all(isinstance(item, str) for item in evidence_refs)
+        ):
+            errors.append(f"retry directive {index} evidenceRefs must be non-empty strings")
+
+
+def _validate_retry_attempt_digest_refs(
+    attempt: dict[str, Any],
+    *,
+    errors: list[str],
+    index: int,
+) -> None:
+    for field, expected_kind in (
+        ("refinementJob", "SpecNodeRefinementJob"),
+        ("refinementResult", "SpecNodeRefinementResult"),
+        ("semanticReviewJob", "SpecNodeSemanticReviewJob"),
+        ("semanticReviewResult", "SpecNodeSemanticReviewResult"),
+    ):
+        value = attempt.get(field)
+        if not isinstance(value, dict):
+            errors.append(f"retry attempt {index} {field} must be an object")
+            continue
+        if value.get("kind") != expected_kind:
+            errors.append(f"retry attempt {index} {field} kind is invalid")
+        if not _is_digest(value.get("digest")):
+            errors.append(f"retry attempt {index} {field} digest must be a digest")
+    directive_set = attempt.get("retryDirectiveSet")
+    directive_digest = attempt.get("retryDirectiveSetDigest")
+    if directive_set is not None and directive_digest != canonical_json_sha256_digest(
+        directive_set
+    ):
+        errors.append(f"retry attempt {index} retryDirectiveSetDigest must match directive set")
+
+
+def _nested_digest(value: dict[str, Any], key: str) -> Any:
+    nested = value.get(key)
+    if not isinstance(nested, dict):
+        return None
+    return nested.get("digest")
 
 
 def _validate_semantic_review_finding_refs(

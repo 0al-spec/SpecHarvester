@@ -123,6 +123,8 @@ The compact planning contract is <doc:SpecNodeRefinePreviewContract>.
 The versioned prompt contract is <doc:SpecNodeRefinementPromptContract>.
 The clean-context semantic review contract is
 <doc:SpecNodeSemanticReviewContract>.
+The feedback-driven retry orchestration contract is
+<doc:SpecNodeRefinementRetryOrchestration>.
 The provider adapter contract is <doc:SpecNodeProviderAdapterContract>.
 The patch proposal output contract is <doc:SpecNodePatchProposalContract>.
 Executable provider smoke coverage is <doc:SpecNodeProviderSmokeCoverage>.
@@ -162,6 +164,16 @@ records. It cannot emit `candidatePatchProposal`, `operations`,
 `retryDirective`, shell commands, network fetches, provider calls, package
 manager commands, test runner commands, build tool commands, or direct file
 writes.
+
+Feedback-driven retry orchestration is governed by
+<doc:SpecNodeRefinementRetryOrchestration>. `SpecNodeRefinementRetryRun`
+converts typed `SpecNodeSemanticReviewFinding` records into bounded
+`SpecNodeRetryDirective` data, preserves `sourceBundleDigest` and
+`sourcePreviewPlanDigest` across attempts, caps `maxAttempts`, and records a
+deterministic `SpecNodeRefinementRetryAttempt` audit trail. Retry context
+remains data only: it keeps `candidateMutation: proposal_only` and cannot add
+raw source, provider logs, shell commands, network fetches, package manager
+commands, test runner commands, build tool commands, or direct file writes.
 
 The local `SpecNodeProviderSmokeRun` harness exercises this bridge with an
 in-process SpecNode-compatible provider stub. It validates a

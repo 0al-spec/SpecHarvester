@@ -285,6 +285,13 @@ This contract intentionally leaves implementation details to later tasks:
   `SpecNodeSemanticReviewResult`, typed `SpecNodeSemanticReviewFinding`
   records, verdicts, evidence-reference rules, and review-only mutation
   boundaries.
+- `P13-T3` defines feedback-driven retry orchestration in
+  [`SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md`](SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md).
+  It fixes `SpecNodeRefinementRetryRun`,
+  `SpecNodeRefinementRetryPolicy`, `SpecNodeRefinementRetryAttempt`,
+  `SpecNodeRetryDirectiveSet`, `SpecNodeRetryDirective`,
+  `SpecNodeRetryContext`, immutable artifact reuse, max-attempt caps, and audit
+  trail validation.
 
 The compatibility rule is stable: model-assisted refinement consumes compact
 deterministic artifacts instead of raw repository source dumps.
