@@ -169,6 +169,8 @@ def test_specnode_refinement_validation_rejects_malformed_results(
             valid_result,
             lambda result: result.update({"usageReceipt": {"kind": "bad"}}),
         ),
+        malformed_result_case(valid_result, mutate_usage_receipt_to_remove_required_fields),
+        malformed_result_case(valid_result, mutate_usage_receipt_to_break_digest_binding),
         malformed_result_case(valid_result, lambda result: result.update({"result": "bad"})),
         malformed_result_case(
             valid_result,
@@ -266,6 +268,7 @@ def test_specnode_refinement_validation_rejects_malformed_rejections(
             lambda rejection: rejection.update({"sourcePreviewPlanDigest": "sha256:" + "0" * 64})
         ),
         rejection_case(lambda rejection: rejection.update({"usageReceipt": {"kind": "bad"}})),
+        rejection_case(mutate_rejection_usage_receipt_to_break_identity),
         rejection_case(lambda rejection: rejection.update({"evidenceRefs": "bad"})),
     ]
 
@@ -317,6 +320,21 @@ def malformed_result_case(source: dict[str, Any], mutator) -> dict[str, Any]:
     return result
 
 
+def mutate_usage_receipt_to_remove_required_fields(result: dict[str, Any]) -> None:
+    usage_receipt = result["usageReceipt"]
+    usage_receipt.pop("jobId")
+    usage_receipt.pop("providerReceiptDigest")
+    usage_receipt["providerReceipt"].pop("modelId")
+
+
+def mutate_usage_receipt_to_break_digest_binding(result: dict[str, Any]) -> None:
+    usage_receipt = result["usageReceipt"]
+    usage_receipt["providerReceiptDigest"] = "sha256:" + "0" * 64
+    usage_receipt["responseSha256"] = "bad"
+    usage_receipt["providerReceipt"]["responseSha256"] = "bad"
+    usage_receipt["proposalId"] = "other-proposal"
+
+
 def mutate_provenance_to_break_digest_binding(proposal: dict[str, Any]) -> None:
     provenance = proposal["provenance"]
     provenance["kind"] = "WrongProvenance"
@@ -343,6 +361,10 @@ def mutate_operation_to_break_shape(proposal: dict[str, Any]) -> None:
     operation["expectedCurrentValueSha256"] = "bad"
     operation["rationale"] = ""
     operation["evidenceRefs"] = ["harvest_snapshot", 1]
+
+
+def mutate_rejection_usage_receipt_to_break_identity(rejection: dict[str, Any]) -> None:
+    rejection["usageReceipt"]["rejectionId"] = "other-rejection"
 
 
 def successful_refinement_result(
