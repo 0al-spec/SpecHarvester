@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-05-22
+Updated: 2026-05-23
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -361,3 +361,45 @@ Acceptance:
   secrets, or model chain-of-thought.
 - Unit coverage exercises the adapter and skip behavior without requiring LM
   Studio; the live pytest path is explicitly opt-in and safe to skip in CI.
+
+## Phase 15. Real Repository Refinement Validation
+
+- [ ] `P15-T1` Add a reproducible real-repository refinement validation plan
+  that defines local checkout selection, safe input manifests, command
+  sequences, expected artifacts, scoring rubric, and non-committed output
+  policy for `collect -> draft -> SpecNode refine -> semantic review -> retry`
+  runs.
+- [ ] `P15-T2` Add a local-only validation runner or script template that can
+  execute the full refinement loop against operator-supplied public repository
+  checkouts without executing harvested package code, installing dependencies,
+  contacting package registries, or committing generated candidate outputs.
+- [ ] `P15-T3` Add a structured quality report format for real-repository
+  refinement runs, including package intent accuracy, capability/evidence
+  support quality, SpecPM validation status, retry effectiveness, token usage,
+  deterministic analyzer coverage, and human-review notes.
+- [ ] `P15-T4` Run and document a representative local validation matrix across
+  several repository shapes such as Swift/SPM, JavaScript/TypeScript, Python,
+  Go, documentation-first, and mixed-language projects, recording only compact
+  triage summaries and failure classes.
+- [ ] `P15-T5` Convert repeated real-repository validation failures into
+  follow-up Workplan tasks for deterministic analyzers, prompt contracts,
+  SpecNode provider integration, SpecPM compatibility, or documentation,
+  instead of tuning ad-hoc prompts from individual outputs.
+
+Acceptance:
+
+- Real-repository validation remains local-only, opt-in, and safe for public
+  checkout analysis: no package scripts, dependency installers, tests, build
+  commands, registry calls, or arbitrary network probes are executed.
+- The validation plan uses operator-supplied repository paths or manifests and
+  does not commit harvested source snapshots, generated `.smoke/` outputs, raw
+  prompts, provider transcripts, secrets, or model chain-of-thought.
+- Each run preserves deterministic artifact references, source revisions,
+  analyzer versions, file digests, SpecPM validation status, retry audit state,
+  provider/model metadata, and token usage where available.
+- Quality reporting distinguishes deterministic evidence gaps from model
+  interpretation failures, SpecPM contract mismatches, and repository-specific
+  ambiguity.
+- Repeated failure classes become explicit Workplan follow-ups so improvements
+  happen through analyzers, schemas, prompt contracts, or validation policy
+  rather than hidden manual edits.

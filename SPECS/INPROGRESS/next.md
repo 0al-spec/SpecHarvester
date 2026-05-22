@@ -1,21 +1,25 @@
-# Next Task: None Selected
+# Next Task: P15-T1 Real-Repository Refinement Validation Plan
 
-**Status:** Idle
+**Status:** Selected
 **Workplan:** `SPECS/Workplan.md`
 
 ## Description
 
-All currently planned Workplan tasks are archived. Select or add a new Workplan
-task before running the next Flow cycle.
+Add a reproducible real-repository refinement validation plan for running the
+local `collect -> draft -> SpecNode refine -> semantic review -> retry` loop
+against operator-supplied public repository checkouts without committing
+generated candidate outputs or expanding the trust boundary.
 
-## Recently Archived
+## Scope
 
-- `P14-T1` LM Studio Live Retry Smoke — archived 2026-05-22 with verdict PASS.
-- `P13-T3` Feedback-Driven Refinement Retry Orchestration — archived 2026-05-22
-  with verdict PASS.
-- `P13-T2` Clean-Context Semantic Review Pass — archived 2026-05-22 with
-  verdict PASS.
+- Define repository selection rules and safe input manifest shape.
+- Define exact command sequence and expected local artifacts.
+- Define a quality scoring rubric for real-repository outputs.
+- Define non-committed output policy for `.smoke/`, raw prompts, provider logs,
+  generated candidates, and model chain-of-thought.
+- Identify validation metrics that separate deterministic evidence gaps,
+  SpecPM contract mismatches, and model interpretation failures.
 
 ## Next Step
 
-Add or select the next task in `SPECS/Workplan.md`, then run SELECT.
+Run the Flow SELECT step for `P15-T1`, then create the task PRD.
