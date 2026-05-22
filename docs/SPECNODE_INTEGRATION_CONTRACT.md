@@ -17,6 +17,10 @@ SpecHarvester validates it and a human reviewer accepts it.
 - `SpecNodeRefinementJob`: the typed job envelope sent to SpecNode.
 - `candidatePatchProposal`: a future schema-validated model output containing
   proposed candidate changes.
+- `SpecNodeSemanticReviewJob`: the clean-context review job for a generated
+  `SpecNodeRefinementResult`.
+- `SpecNodeSemanticReviewResult`: typed semantic verdict and findings emitted
+  after structural proposal validation.
 - `usageReceipt`: a future SpecNode output containing provider/model identity,
   token usage, timing, and policy metadata.
 
@@ -275,6 +279,12 @@ This contract intentionally leaves implementation details to later tasks:
   It fixes `SpecNodeProviderSmokeRun`, local SpecNode-compatible provider stub
   coverage, structural `SpecNodeRefinementResult` validation, compact
   weak-model drafting input checks, and the `provider_unavailable` fallback.
+- `P13-T2` defines clean-context semantic review in
+  [`SPECNODE_SEMANTIC_REVIEW_CONTRACT.md`](SPECNODE_SEMANTIC_REVIEW_CONTRACT.md).
+  It fixes `SpecNodeSemanticReviewJob`, `SpecNodeSemanticReviewRubric`,
+  `SpecNodeSemanticReviewResult`, typed `SpecNodeSemanticReviewFinding`
+  records, verdicts, evidence-reference rules, and review-only mutation
+  boundaries.
 
 The compatibility rule is stable: model-assisted refinement consumes compact
 deterministic artifacts instead of raw repository source dumps.

@@ -16,6 +16,10 @@ SpecHarvester validates it and a human reviewer accepts it.
 - `SpecNodeRefinementJob`: typed job envelope sent to SpecNode.
 - `candidatePatchProposal`: future schema-validated model output containing
   proposed candidate changes.
+- `SpecNodeSemanticReviewJob`: clean-context review job for a generated
+  `SpecNodeRefinementResult`.
+- `SpecNodeSemanticReviewResult`: typed semantic verdict and findings emitted
+  after structural proposal validation.
 - `usageReceipt`: future SpecNode output with provider/model identity, token
   usage, timing, and policy metadata.
 
@@ -193,6 +197,12 @@ Executable smoke coverage is defined in
 SpecNode-compatible provider stub coverage, structural
 `SpecNodeRefinementResult` validation, compact weak-model drafting input
 checks, and deterministic `provider_unavailable` fallback behavior.
+
+Clean-context semantic review is defined in
+<doc:SpecNodeSemanticReviewContract>. It fixes `SpecNodeSemanticReviewJob`,
+`SpecNodeSemanticReviewRubric`, `SpecNodeSemanticReviewResult`, typed
+`SpecNodeSemanticReviewFinding` records, verdicts, evidence-reference rules,
+and review-only mutation boundaries.
 
 ## Rejection Conditions
 

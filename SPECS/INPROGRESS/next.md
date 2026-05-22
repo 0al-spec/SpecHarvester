@@ -1,18 +1,23 @@
-# Next Task: P13-T2 — Clean-Context Semantic Review Pass
+# Next Task: P13-T3 — Feedback-Driven Refinement Retry Orchestration
 
 **Priority:** P1
 **Phase:** Phase 13. Prompted Refinement Quality Loop
 **Effort:** 8 hours
-**Dependencies:** P13-T1
+**Dependencies:** P13-T2
 **Status:** Selected
-**Workplan:** `SPECS/Workplan.md` — Phase 13, `P13-T2`
+**Workplan:** `SPECS/Workplan.md` — Phase 13, `P13-T3`
 
 ## Description
 
-Add a clean-context semantic review pass for generated `SpecNodeRefinementResult`
-proposals. A second model should see only the deterministic evidence bundle, the
-generated candidate or patch proposal, and a strict review rubric, then emit
-typed findings instead of mutating the candidate directly.
+Add feedback-driven refinement retry orchestration that reuses the same
+immutable deterministic artifacts, converts semantic review findings into
+bounded retry directives, caps retry attempts, and records an audit trail from
+initial refinement through review and retry.
+
+## Recently Archived
+
+- `P13-T2` Clean-Context Semantic Review Pass — archived 2026-05-22 with
+  verdict PASS.
 
 ## Next Step
 

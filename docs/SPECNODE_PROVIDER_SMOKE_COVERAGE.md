@@ -25,6 +25,10 @@ does not execute a real model, and does not apply generated changes.
   stub.
 - `SpecNodeRefinementResult`: typed provider output containing either
   `candidatePatchProposal` or `rejectionReason`.
+- `SpecNodeSemanticReviewJob`: clean-context review job that may be built after
+  structural `SpecNodeRefinementResult` validation.
+- `SpecNodeSemanticReviewResult`: typed semantic verdict and findings emitted
+  by the review-only pass.
 - `SpecNodeRejectionReason`: deterministic fallback when no provider is
   configured.
 
@@ -38,6 +42,8 @@ candidate workspace
   -> local SpecNode-compatible provider stub
   -> SpecNodeRefinementResult
   -> structural validation before apply
+  -> optional SpecNodeSemanticReviewJob
+  -> optional SpecNodeSemanticReviewResult
 ```
 
 The provider stub is an in-process test double for SpecNode behavior. It is not
@@ -45,6 +51,10 @@ an OpenAI-compatible HTTP client and not a direct LM Studio call. Production
 ownership remains unchanged: SpecHarvester does not contact providers;
 SpecNode owns provider discovery, model execution, provenance, and usage
 receipt generation.
+Clean-context semantic review is defined by
+[`SPECNODE_SEMANTIC_REVIEW_CONTRACT.md`](SPECNODE_SEMANTIC_REVIEW_CONTRACT.md).
+It consumes validated `SpecNodeRefinementResult` data and emits typed
+review-only findings.
 
 ## Compact Input Boundary
 

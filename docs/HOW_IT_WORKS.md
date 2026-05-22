@@ -724,6 +724,19 @@ target-package intent inference instead of task self-description, and rejects
 unknown evidence references, unsupported negative claims, and overconfident
 claims without deterministic evidence.
 
+Clean-context semantic review is governed by
+[`SPECNODE_SEMANTIC_REVIEW_CONTRACT.md`](SPECNODE_SEMANTIC_REVIEW_CONTRACT.md).
+After structural `SpecNodeRefinementResult` validation, a second model may see
+only deterministic evidence, the generated candidate or patch proposal, and a
+fixed `SpecNodeSemanticReviewRubric`. It emits `approve`, `needs_revision`, or
+`reject` with typed `SpecNodeSemanticReviewFinding` records for issues such as
+`wrong_package_intent`, `unsupported_capability_claim`,
+`missing_evidence_reference`, `overconfident_confidence_score`,
+`unsafe_negative_claim`, `schema_policy_mismatch`, and
+`authority_boundary_violation`. The semantic review pass cannot emit patch
+operations, retry directives, shell commands, network fetches, provider calls,
+or direct file writes.
+
 Provider execution is governed by
 [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md).
 SpecNode may use `SpecNodeOpenAICompatibleProviderAdapter` for LM Studio or

@@ -16,6 +16,8 @@ execute a real model, or apply generated changes.
 - `SpecNodeRefinementPromptContract`
 - `SpecNodeRefinementJob`
 - `SpecNodeRefinementResult`
+- `SpecNodeSemanticReviewJob`
+- `SpecNodeSemanticReviewResult`
 - `SpecNodeRejectionReason`
 
 ## Sequence
@@ -28,6 +30,8 @@ candidate workspace
   -> local SpecNode-compatible provider stub
   -> SpecNodeRefinementResult
   -> structural validation before apply
+  -> optional SpecNodeSemanticReviewJob
+  -> optional SpecNodeSemanticReviewResult
 ```
 
 The provider stub is an in-process test double for SpecNode behavior. It is not
@@ -38,6 +42,9 @@ generation.
 Prompt rendering policy is defined by <doc:SpecNodeRefinementPromptContract>.
 That contract covers target-package intent inference, evidence references,
 negative claims, and confidence calibration.
+Clean-context semantic review is defined by
+<doc:SpecNodeSemanticReviewContract>. It consumes validated
+`SpecNodeRefinementResult` data and emits typed review-only findings.
 
 ## Compact Input Boundary
 

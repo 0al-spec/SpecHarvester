@@ -44,6 +44,9 @@ SpecHarvesterSpecNodeArtifactBundle
 `SpecNodeOpenAICompatibleProviderAdapter` defines local provider execution.
 `SpecNodePatchProposalContract` defines `SpecNodeRefinementResult`,
 `SpecNodeCandidatePatchProposal`, and `SpecNodeRejectionReason`.
+<doc:SpecNodeSemanticReviewContract> defines the clean-context second pass that
+reviews a structurally valid `SpecNodeRefinementResult` without seeing the
+first-pass prompt transcript.
 
 This contract does not execute the model. It defines how the future SpecNode
 runtime must render the prompt before calling a provider.

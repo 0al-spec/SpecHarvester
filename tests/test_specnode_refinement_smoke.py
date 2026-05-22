@@ -15,14 +15,17 @@ from spec_harvester.specnode_refinement import (
     SpecNodeProviderUnavailable,
     SpecNodeRefinementSmokeOptions,
     SpecNodeRefinementValidationError,
+    SpecNodeSemanticReviewValidationError,
     build_provider_unavailable_result,
     build_refine_preview_plan,
     build_specnode_artifact_bundle,
     build_specnode_refinement_job,
+    build_specnode_semantic_review_job,
     canonical_json_sha256_digest,
     parse_specnode_model_json_object,
     run_specnode_refinement_smoke,
     validate_specnode_refinement_result,
+    validate_specnode_semantic_review_result,
 )
 
 
@@ -327,6 +330,193 @@ def test_specnode_refinement_validation_rejects_malformed_rejections(
             )
 
 
+def test_specnode_semantic_review_job_uses_clean_context_and_review_only_policy(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+    job = build_specnode_refinement_job(bundle, preview_plan)
+    refinement_result = successful_refinement_result(job, preview_plan)
+    review_job = build_specnode_semantic_review_job(bundle, preview_plan, refinement_result)
+
+    assert review_job["kind"] == "SpecNodeSemanticReviewJob"
+    assert review_job["contract"]["kind"] == "SpecNodeSemanticReviewContract"
+    assert review_job["contract"]["outputKind"] == "SpecNodeSemanticReviewResult"
+    assert review_job["policy"]["candidateMutation"] == "none"
+    assert review_job["excludedContent"]["firstPassPromptTranscript"] == "excluded"
+    assert review_job["excludedContent"]["chainOfThought"] == "excluded"
+    assert review_job["reviewedRefinementResult"]["digest"] == canonical_json_sha256_digest(
+        refinement_result
+    )
+    assert "wrong_package_intent" in review_job["rubric"]["findingCodes"]
+    assert "authority_boundary_violation" in review_job["rubric"]["findingCodes"]
+
+    serialized_job = json.dumps(review_job, sort_keys=True)
+    assert "class DemoApp" not in serialized_job
+    assert "def route" not in serialized_job
+    assert "Scripted smoke provider returned review-only metadata" not in serialized_job
+    assert "firstPassProviderLogs" in serialized_job
+
+
+def test_specnode_semantic_review_validation_accepts_typed_findings(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+    job = build_specnode_refinement_job(bundle, preview_plan)
+    refinement_result = successful_refinement_result(job, preview_plan)
+    review_job = build_specnode_semantic_review_job(bundle, preview_plan, refinement_result)
+
+    validate_specnode_semantic_review_result(
+        semantic_review_result(review_job, refinement_result, verdict="approve", findings=[]),
+        review_job=review_job,
+        preview_plan=preview_plan,
+        refinement_result=refinement_result,
+        bundle=bundle,
+    )
+    validate_specnode_semantic_review_result(
+        semantic_review_result(
+            review_job,
+            refinement_result,
+            verdict="needs_revision",
+            findings=[
+                semantic_review_finding(
+                    code="wrong_package_intent",
+                    severity="blocking",
+                    evidence_refs=[
+                        "public_interface_index",
+                        "op-001",
+                        "reviewed_refinement_result",
+                    ],
+                )
+            ],
+        ),
+        review_job=review_job,
+        preview_plan=preview_plan,
+        refinement_result=refinement_result,
+        bundle=bundle,
+    )
+
+
+def test_specnode_semantic_review_validation_rejects_contaminated_review_jobs(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+    job = build_specnode_refinement_job(bundle, preview_plan)
+    refinement_result = successful_refinement_result(job, preview_plan)
+    review_job = build_specnode_semantic_review_job(bundle, preview_plan, refinement_result)
+    review_result = semantic_review_result(
+        review_job, refinement_result, verdict="approve", findings=[]
+    )
+
+    cases = [
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["sourceBundle"].update({"providerLogs": []}),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["sourceBundle"].update({"artifactDigests": []}),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["previewPlan"].update({"providerLogs": []}),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["previewPlan"].update({"compactModelInput": {}}),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["reviewedRefinementResult"].update(
+                {"reviewNotes": refinement_result["reviewNotes"]}
+            ),
+        ),
+        malformed_result_case(
+            review_job,
+            lambda contaminated: contaminated["reviewedRefinementResult"].update(
+                {"usageReceipt": refinement_result["usageReceipt"]}
+            ),
+        ),
+    ]
+
+    for contaminated_job in cases:
+        with pytest.raises(SpecNodeSemanticReviewValidationError):
+            validate_specnode_semantic_review_result(
+                review_result,
+                review_job=contaminated_job,
+                preview_plan=preview_plan,
+                refinement_result=refinement_result,
+                bundle=bundle,
+            )
+
+
+def test_specnode_semantic_review_validation_rejects_mutating_or_unknown_findings(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+    job = build_specnode_refinement_job(bundle, preview_plan)
+    refinement_result = successful_refinement_result(job, preview_plan)
+    review_job = build_specnode_semantic_review_job(bundle, preview_plan, refinement_result)
+    valid_result = semantic_review_result(
+        review_job,
+        refinement_result,
+        verdict="needs_revision",
+        findings=[semantic_review_finding()],
+    )
+
+    cases = [
+        malformed_result_case(valid_result, lambda result: result.update({"operations": []})),
+        malformed_result_case(valid_result, lambda result: result.update({"retryDirective": {}})),
+        malformed_result_case(
+            valid_result,
+            lambda result: result["findings"][0].update({"code": "invented_code"}),
+        ),
+        malformed_result_case(
+            valid_result,
+            lambda result: result["findings"][0].update({"evidenceRefs": ["unknown"]}),
+        ),
+        malformed_result_case(
+            valid_result,
+            lambda result: result["findings"][0].update({"evidenceRefs": ["note-001"]}),
+        ),
+        semantic_review_result(
+            review_job,
+            refinement_result,
+            verdict="needs_revision",
+            findings=[semantic_review_finding(evidence_refs=[])],
+        ),
+        semantic_review_result(
+            review_job,
+            refinement_result,
+            verdict="approve",
+            findings=[semantic_review_finding(severity="blocking")],
+        ),
+        semantic_review_result(
+            review_job,
+            refinement_result,
+            verdict="reject",
+            findings=[semantic_review_finding(severity="warning")],
+        ),
+    ]
+
+    for malformed in cases:
+        with pytest.raises(SpecNodeSemanticReviewValidationError):
+            validate_specnode_semantic_review_result(
+                malformed,
+                review_job=review_job,
+                preview_plan=preview_plan,
+                refinement_result=refinement_result,
+                bundle=bundle,
+            )
+
+
 class ScriptedSpecNodeProvider:
     def __init__(self, *, unsafe: bool = False) -> None:
         self.unsafe = unsafe
@@ -539,6 +729,53 @@ def successful_refinement_result(
             }
         ],
         "usageReceipt": usage_receipt,
+    }
+
+
+def semantic_review_result(
+    review_job: dict[str, Any],
+    refinement_result: dict[str, Any],
+    *,
+    verdict: str,
+    findings: list[dict[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "schemaVersion": 1,
+        "kind": "SpecNodeSemanticReviewResult",
+        "job": {
+            "kind": "SpecNodeSemanticReviewJob",
+            "jobId": review_job["jobId"],
+            "digest": canonical_json_sha256_digest(review_job),
+        },
+        "reviewedRefinementResult": {
+            "kind": "SpecNodeRefinementResult",
+            "digest": canonical_json_sha256_digest(refinement_result),
+        },
+        "verdict": verdict,
+        "findings": findings,
+        "summary": "Semantic review completed against clean deterministic context.",
+    }
+
+
+def semantic_review_finding(
+    *,
+    code: str = "unsupported_capability_claim",
+    severity: str = "warning",
+    evidence_refs: list[str] | None = None,
+) -> dict[str, Any]:
+    if evidence_refs is None:
+        evidence_refs = ["harvest_snapshot", "op-001"]
+    return {
+        "kind": "SpecNodeSemanticReviewFinding",
+        "findingId": "finding-001",
+        "code": code,
+        "severity": severity,
+        "message": "The proposal claim needs deterministic evidence before acceptance.",
+        "target": {
+            "kind": "candidate_patch_operation",
+            "operationId": "op-001",
+        },
+        "evidenceRefs": evidence_refs,
     }
 
 
