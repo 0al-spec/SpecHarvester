@@ -1,13 +1,19 @@
-# Next Task: None
+# Next Task: P13-T1 SpecNode Refinement Prompt Contract
 
-**Status:** COMPLETE
+**Status:** READY
 
 **Updated:** 2026-05-22
 
 ## Description
 
-No READY task remains in `SPECS/Workplan.md`. Phase 11 now includes the LM
-Studio `openai/gpt-oss-20b` compatibility correction from `P11-T6`.
+The next recommended task is `P13-T1`: define a versioned SpecNode refinement
+prompt contract so model-facing prompt templates become repository-owned,
+reviewable artifacts instead of ad-hoc runtime wording.
+
+This should preserve the existing SpecNode trust boundary: prompts consume only
+bounded deterministic `compactModelInput`, require schema-bound output, enforce
+evidence-reference rules, and calibrate confidence without granting model output
+registry authority.
 
 ## Recently Archived
 
@@ -38,8 +44,11 @@ Studio `openai/gpt-oss-20b` compatibility correction from `P11-T6`.
 
 ## Newly Observed Smoke Gaps
 
-- None.
+- Live LM Studio probing showed `openai/gpt-oss-20b` can follow
+  `json_schema`, but semantic quality is prompt-sensitive: a weak prompt can
+  make the model describe SpecPM generation instead of the target package.
 
 ## Next Step
 
-Create or select the next Workplan phase before running Flow again.
+Run Flow for `P13-T1`, then follow with `P13-T2` semantic review and `P13-T3`
+feedback-driven retry orchestration.
