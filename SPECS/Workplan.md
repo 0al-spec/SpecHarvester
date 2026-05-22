@@ -342,7 +342,7 @@ Acceptance:
 
 ## Phase 14. Live SpecNode Provider Smoke
 
-- [ ] `P14-T1` Add a manual LM Studio live retry smoke harness that exercises
+- [x] `P14-T1` Add a manual LM Studio live retry smoke harness that exercises
   the SpecNode refinement feedback loop through an OpenAI-compatible local
   endpoint without making ordinary CI depend on local model infrastructure.
 

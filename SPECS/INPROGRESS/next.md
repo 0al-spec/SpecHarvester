@@ -1,20 +1,16 @@
-# Next Task: P14-T1 — LM Studio Live Retry Smoke
+# Next Task: None Selected
 
-**Priority:** P1
-**Phase:** Phase 14. Live SpecNode Provider Smoke
-**Effort:** 8 hours
-**Dependencies:** P13-T3
-**Status:** Selected
-**Workplan:** `SPECS/Workplan.md` — Phase 14, `P14-T1`
+**Status:** Idle
+**Workplan:** `SPECS/Workplan.md`
 
 ## Description
 
-Add a manual LM Studio live retry smoke harness that exercises the SpecNode
-refinement feedback loop through an OpenAI-compatible local endpoint without
-making ordinary CI depend on local model infrastructure.
+All currently planned Workplan tasks are archived. Select or add a new Workplan
+task before running the next Flow cycle.
 
 ## Recently Archived
 
+- `P14-T1` LM Studio Live Retry Smoke — archived 2026-05-22 with verdict PASS.
 - `P13-T3` Feedback-Driven Refinement Retry Orchestration — archived 2026-05-22
   with verdict PASS.
 - `P13-T2` Clean-Context Semantic Review Pass — archived 2026-05-22 with
@@ -22,4 +18,4 @@ making ordinary CI depend on local model infrastructure.
 
 ## Next Step
 
-Run the PLAN command to generate the implementation-ready PRD.
+Add or select the next task in `SPECS/Workplan.md`, then run SELECT.

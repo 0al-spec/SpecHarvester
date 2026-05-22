@@ -1,11 +1,13 @@
 # P14-T1 LM Studio Live Retry Smoke
 
-Status: Planned
+Status: Archived
 Task: `P14-T1`
 Phase: Phase 14. Live SpecNode Provider Smoke
 Priority: P1
 Effort: 8 hours
 Dependencies: `P13-T3`
+Archived: 2026-05-22
+Verdict: PASS
 
 ## Problem
 
