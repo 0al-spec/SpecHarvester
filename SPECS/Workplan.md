@@ -339,3 +339,25 @@ Acceptance:
 - Retry orchestration reuses the original deterministic evidence snapshot unless
   source artifacts changed, preserves attempt linkage, enforces a maximum retry
   count, and keeps all model output proposal-only.
+
+## Phase 14. Live SpecNode Provider Smoke
+
+- [ ] `P14-T1` Add a manual LM Studio live retry smoke harness that exercises
+  the SpecNode refinement feedback loop through an OpenAI-compatible local
+  endpoint without making ordinary CI depend on local model infrastructure.
+
+Acceptance:
+
+- Live smoke is disabled by default and runs only when explicit environment
+  variables provide a local OpenAI-compatible base URL and model ID.
+- The harness can call LM Studio `/v1/chat/completions`, parse direct JSON or
+  observed `gpt-oss` channel-wrapped JSON, and adapt responses into
+  `SpecNodeCompatibleProvider` and `SpecNodeSemanticReviewer` test doubles.
+- The smoke scenario proves a two-attempt feedback loop: first review requests
+  revision, retry context is passed into the second provider call, and the final
+  run records an approved or capped deterministic audit trail.
+- The harness records provider/model metadata and token usage in local output
+  without committing generated candidate artifacts, raw prompts, provider logs,
+  secrets, or model chain-of-thought.
+- Unit coverage exercises the adapter and skip behavior without requiring LM
+  Studio; the live pytest path is explicitly opt-in and safe to skip in CI.
