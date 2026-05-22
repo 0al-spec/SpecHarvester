@@ -307,10 +307,10 @@ Acceptance:
 
 ## Phase 13. Prompted Refinement Quality Loop
 
-- [ ] `P13-T1` Define a versioned SpecNode refinement prompt contract that turns
-  `compactModelInput`, output schema, evidence-reference rules, negative-claim
-  policy, and confidence calibration into repository-owned deterministic prompt
-  templates instead of ad-hoc runtime wording.
+- [ ] `P13-T1` **INPROGRESS** Define a versioned SpecNode refinement prompt
+  contract that turns `compactModelInput`, output schema, evidence-reference
+  rules, negative-claim policy, and confidence calibration into repository-owned
+  deterministic prompt templates instead of ad-hoc runtime wording.
 - [ ] `P13-T2` Add a clean-context semantic review pass for generated
   `SpecNodeRefinementResult` proposals, where a second model sees only the
   deterministic evidence bundle, the generated candidate or patch proposal, and

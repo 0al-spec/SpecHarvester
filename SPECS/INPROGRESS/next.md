@@ -5,6 +5,7 @@
 **Effort:** 6 hours
 **Dependencies:** P11-T6
 **Status:** Selected
+**Workplan:** `SPECS/Workplan.md` — Phase 13, `P13-T1`
 
 ## Description
 
