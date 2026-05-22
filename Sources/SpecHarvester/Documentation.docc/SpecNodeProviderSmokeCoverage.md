@@ -5,8 +5,9 @@ SpecNode refinement bridge.
 
 The coverage verifies that deterministic candidate artifacts can become
 weak-model drafting inputs, pass through a local SpecNode-compatible provider
-test double, and return validated untrusted proposal metadata. It does not call LM Studio,
-execute a real model, or apply generated changes.
+test double, and return validated untrusted proposal metadata. Ordinary CI
+coverage does not call LM Studio, execute a real model, or apply generated
+changes.
 
 ## Contract Names
 
@@ -35,9 +36,10 @@ candidate workspace
 ```
 
 The provider stub is an in-process test double for SpecNode behavior. It is not
-an OpenAI-compatible HTTP client and not a direct LM Studio call. SpecHarvester does not contact providers;
-SpecNode owns provider discovery, model execution, provenance, and usage receipt
-generation.
+an OpenAI-compatible HTTP client and not a direct LM Studio call. Production
+ownership remains unchanged: SpecNode owns provider discovery, model execution,
+provenance, and usage receipt generation. The separate manual live smoke is a
+local opt-in harness for testing provider transport only.
 
 Prompt rendering policy is defined by <doc:SpecNodeRefinementPromptContract>.
 That contract covers target-package intent inference, evidence references,
@@ -119,12 +121,63 @@ malformed wrappers, and trailing non-JSON text. Parsed content is still only
 provider output; structural `SpecNodeRefinementResult` validation and human
 review remain required.
 
+## Manual LM Studio Live Retry Smoke
+
+`scripts/specnode_live_retry_smoke.py` provides an opt-in live smoke for a local
+OpenAI-compatible provider such as LM Studio. It is intentionally not part of
+ordinary CI because CI must not depend on developer-local model infrastructure.
+
+Required environment for manual runs:
+
+```bash
+SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234
+SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b
+```
+
+Run the standalone script:
+
+```bash
+PYTHONPATH=src \
+SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234 \
+SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b \
+python scripts/specnode_live_retry_smoke.py
+```
+
+Run the env-gated pytest path:
+
+```bash
+PYTHONPATH=src \
+SPECHARVESTER_RUN_LIVE_LM_STUDIO_SMOKE=1 \
+SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234 \
+SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b \
+python -m pytest tests/test_specnode_live_retry_smoke.py -q
+```
+
+The live smoke uses the existing
+`run_specnode_refinement_retry_orchestration(...)` controller. The first
+semantic review pass intentionally emits `needs_revision`, the controller turns
+that finding into a bounded `SpecNodeRetryDirectiveSet`, and the second
+refinement call receives `SpecNodeRetryContext`.
+
+A successful run prints a compact JSON summary with model ID, provider base URL,
+attempt count, attempt statuses, review verdict sequence, retry context
+presence, token usage totals, and final result digests.
+
+The adapter calls LM Studio for compact JSON signals, then deterministically
+wraps those signals into existing SpecNode protocol objects. This keeps the
+smoke focused on provider transport, `gpt-oss` JSON parsing,
+`SpecNodeRetryContext` plumbing, and audit validation.
+
+The live smoke still does not send raw repository source, secrets, provider
+logs, arbitrary prompts, shell commands, package managers, build tools, test
+runners, generated candidate artifacts, or accepted registry truth.
+
 ## Non-Goals
 
-The smoke coverage does not implement SpecNode, call LM Studio, discover
-providers, stream provider logs, run shell commands, read secrets, read raw
-repository source outside deterministic artifacts, apply patches, publish, or
-promote candidates.
+The ordinary CI smoke coverage does not implement SpecNode, call LM Studio,
+discover providers, stream provider logs, run shell commands, read secrets, read
+raw repository source outside deterministic artifacts, apply patches, publish,
+or promote candidates.
 
 ## See Also
 
