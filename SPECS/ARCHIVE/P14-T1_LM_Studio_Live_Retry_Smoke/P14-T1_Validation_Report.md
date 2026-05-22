@@ -29,12 +29,12 @@ path is skipped unless `SPECHARVESTER_RUN_LIVE_LM_STUDIO_SMOKE=1` is set.
 
 | Gate | Command | Result |
 | --- | --- | --- |
-| Targeted live-smoke tests | `PYTHONPATH=src python -m pytest tests/test_specnode_live_retry_smoke.py -q` | PASS, 3 passed, 1 skipped |
-| Targeted docs/live tests | `PYTHONPATH=src python -m pytest tests/test_specnode_live_retry_smoke.py tests/test_docs_contracts.py -q` | PASS, 19 passed, 1 skipped |
-| Tests | `PYTHONPATH=src python -m pytest` | PASS, 264 passed, 1 skipped |
+| Targeted live-smoke tests | `PYTHONPATH=src python -m pytest tests/test_specnode_live_retry_smoke.py -q` | PASS, 6 passed, 1 skipped |
+| Targeted docs/live tests | `PYTHONPATH=src python -m pytest tests/test_specnode_live_retry_smoke.py tests/test_docs_contracts.py -q` | PASS, 22 passed, 1 skipped |
+| Tests | `PYTHONPATH=src python -m pytest` | PASS, 267 passed, 1 skipped |
 | Lint | `ruff check src tests` | PASS |
 | Format | `ruff format --check src tests` | PASS, 47 files already formatted |
-| Coverage | `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 264 passed, 1 skipped, 90.43% total coverage |
+| Coverage | `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 267 passed, 1 skipped, 90.43% total coverage |
 | Swift manifest | `swift package dump-package >/dev/null` | PASS |
 | Swift docs target | `swift build --target SpecHarvesterDocs` | PASS |
 
@@ -45,8 +45,8 @@ Executed locally against LM Studio on `http://127.0.0.1:1234` with
 
 | Command | Result |
 | --- | --- |
-| `PYTHONPATH=src SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234 SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b python scripts/specnode_live_retry_smoke.py` | PASS, status `approved`, 2 attempts, retry context seen on attempt 2, token usage 1109 |
-| `PYTHONPATH=src SPECHARVESTER_RUN_LIVE_LM_STUDIO_SMOKE=1 SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234 SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b python -m pytest tests/test_specnode_live_retry_smoke.py -q` | PASS, 4 passed |
+| `PYTHONPATH=src SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234 SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b python scripts/specnode_live_retry_smoke.py` | PASS, status `approved`, 2 attempts, retry context seen on attempt 2, token usage 1103 |
+| `PYTHONPATH=src SPECHARVESTER_RUN_LIVE_LM_STUDIO_SMOKE=1 SPECHARVESTER_LM_STUDIO_BASE_URL=http://127.0.0.1:1234 SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b python -m pytest tests/test_specnode_live_retry_smoke.py -q` | PASS, 7 passed |
 
 Live script summary:
 
@@ -67,7 +67,8 @@ Live script summary:
   `SPECHARVESTER_RUN_LIVE_LM_STUDIO_SMOKE=1` is set.
 - PASS: Missing environment variables fail fast with actionable messages.
 - PASS: Live smoke base URL is restricted to local provider hosts
-  `localhost`, `127.0.0.1`, or `::1`.
+  `localhost`, `127.0.0.1`, or `::1`, and must not include a path, query
+  string, or fragment.
 - PASS: A successful live run prints compact JSON with model, attempt count,
   statuses, verdict sequence, retry context presence, usage, and final digests.
 - PASS: Direct JSON and observed `gpt-oss` channel-wrapped JSON parsing are

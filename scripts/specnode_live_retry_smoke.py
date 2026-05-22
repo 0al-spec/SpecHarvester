@@ -23,6 +23,7 @@ if str(SRC_ROOT) not in sys.path:
 
 from spec_harvester.specnode_refinement import (  # noqa: E402
     SPECNODE_SCHEMA_VERSION,
+    SpecNodeModelJSONParseError,
     SpecNodeProviderUnavailable,
     SpecNodeRefinementRetryOptions,
     canonical_json_sha256_digest,
@@ -73,7 +74,7 @@ class LiveSmokeConfig:
         if not model:
             raise LiveSmokeConfigError(f"set {MODEL_ENV}, for example openai/gpt-oss-20b")
         _validate_local_base_url(base_url)
-        timeout = float(env.get(TIMEOUT_ENV, "60"))
+        timeout = _parse_timeout_seconds(env.get(TIMEOUT_ENV, "60"))
         return cls(base_url=base_url, model=model, timeout_seconds=timeout)
 
 
@@ -119,7 +120,10 @@ class OpenAICompatibleChatClient:
         if not isinstance(raw_content, str):
             raise LiveSmokeProviderError(f"{purpose} response content must be a string")
 
-        parsed = parse_specnode_model_json_object(raw_content)
+        try:
+            parsed = parse_specnode_model_json_object(raw_content)
+        except SpecNodeModelJSONParseError as exc:
+            raise LiveSmokeProviderError(f"{purpose} response JSON parse failed: {exc}") from exc
         return ChatJSONResult(
             payload=parsed,
             raw_content=raw_content,
@@ -169,6 +173,8 @@ class LMStudioRefinementProvider:
             },
         ]
         chat = self.client.chat_json(purpose="refinement", messages=messages)
+        _require_payload_value(chat.payload, "decision", "propose", purpose="refinement")
+        _require_payload_string(chat.payload, "summary", purpose="refinement")
         self.calls.append(
             {
                 "attemptIndex": attempt_index,
@@ -181,8 +187,7 @@ class LMStudioRefinementProvider:
             job=job,
             preview_plan=preview_plan,
             chat=chat,
-            base_url=self.client.config.base_url,
-            model=self.client.config.model,
+            config=self.client.config,
             endpoint="chat.completions/refine",
             attempt_index=attempt_index,
         )
@@ -226,6 +231,13 @@ class LMStudioSemanticReviewer:
             },
         ]
         chat = self.client.chat_json(purpose="semantic-review", messages=messages)
+        _require_payload_value(
+            chat.payload,
+            "verdict",
+            expected_verdict,
+            purpose="semantic-review",
+        )
+        _require_payload_string(chat.payload, "summary", purpose="semantic-review")
         self.calls.append(
             {
                 "reviewIndex": review_index,
@@ -305,8 +317,7 @@ def build_live_refinement_result(
     job: dict[str, Any],
     preview_plan: dict[str, Any],
     chat: ChatJSONResult,
-    base_url: str,
-    model: str,
+    config: LiveSmokeConfig,
     endpoint: str,
     attempt_index: int,
 ) -> dict[str, Any]:
@@ -322,9 +333,8 @@ def build_live_refinement_result(
     proposal_id = f"proposal-live-smoke-{attempt_index + 1:03d}"
     operation_id = "op-001"
     provider_receipt = _provider_receipt(
-        base_url=base_url,
+        config=config,
         endpoint=endpoint,
-        model=model,
         request_id=f"live-refine-{attempt_index + 1:03d}",
         chat=chat,
         response_digest=response_digest,
@@ -335,7 +345,7 @@ def build_live_refinement_result(
         job_id=str(job["jobId"]),
         result_id_field="proposalId",
         result_id=proposal_id,
-        model=model,
+        config=config,
         chat=chat,
         provider_receipt=provider_receipt,
         provider_receipt_digest=provider_receipt_digest,
@@ -385,7 +395,7 @@ def build_live_refinement_result(
                     "sourceArtifactDigests": source_artifacts,
                     "baseCandidateDigest": base_digest,
                     "providerReceiptDigest": provider_receipt_digest,
-                    "modelId": model,
+                    "modelId": config.model,
                     "createdAt": "2026-05-22T00:00:00Z",
                     "policyDigest": canonical_json_sha256_digest(job["policy"]),
                     "promptBudget": preview_plan["promptBudget"],
@@ -565,9 +575,8 @@ def create_live_smoke_candidate_workspace(root: Path) -> Path:
 
 def _provider_receipt(
     *,
-    base_url: str,
+    config: LiveSmokeConfig,
     endpoint: str,
-    model: str,
     request_id: str,
     chat: ChatJSONResult,
     response_digest: str,
@@ -577,19 +586,19 @@ def _provider_receipt(
         "kind": "SpecNodeProviderUsageReceipt",
         "providerKind": "openai_compatible",
         "providerName": "lm_studio_live_smoke",
-        "baseUrl": base_url,
+        "baseUrl": config.base_url,
         "endpoint": endpoint,
-        "modelId": model,
+        "modelId": config.model,
         "requestId": request_id,
         "startedAt": "2026-05-22T00:00:00Z",
         "completedAt": "2026-05-22T00:00:00Z",
         "durationMs": chat.duration_ms,
         "status": "ok",
         "attempts": 1,
-        "timeoutPolicy": {"totalTimeoutSeconds": 60},
+        "timeoutPolicy": {"totalTimeoutSeconds": config.timeout_seconds},
         "retryPolicy": {"maxAttempts": 1},
-        "temperature": DEFAULT_TEMPERATURE,
-        "maxOutputTokens": DEFAULT_MAX_OUTPUT_TOKENS,
+        "temperature": config.temperature,
+        "maxOutputTokens": config.max_output_tokens,
         "promptBudget": prompt_budget,
         "inputTokens": int(chat.usage.get("prompt_tokens", 0)),
         "outputTokens": int(chat.usage.get("completion_tokens", 0)),
@@ -605,7 +614,7 @@ def _usage_receipt(
     job_id: str,
     result_id_field: str,
     result_id: str,
-    model: str,
+    config: LiveSmokeConfig,
     chat: ChatJSONResult,
     provider_receipt: dict[str, Any],
     provider_receipt_digest: str,
@@ -618,7 +627,7 @@ def _usage_receipt(
         result_id_field: result_id,
         "providerReceipt": provider_receipt,
         "providerReceiptDigest": provider_receipt_digest,
-        "modelId": model,
+        "modelId": config.model,
         "inputTokens": int(chat.usage.get("prompt_tokens", 0)),
         "outputTokens": int(chat.usage.get("completion_tokens", 0)),
         "totalTokens": int(chat.usage.get("total_tokens", 0)),
@@ -627,10 +636,10 @@ def _usage_receipt(
         "startedAt": "2026-05-22T00:00:00Z",
         "completedAt": "2026-05-22T00:00:00Z",
         "durationMs": chat.duration_ms,
-        "timeoutPolicy": {"totalTimeoutSeconds": 60},
+        "timeoutPolicy": {"totalTimeoutSeconds": config.timeout_seconds},
         "retryPolicy": {"maxAttempts": 1},
-        "temperature": DEFAULT_TEMPERATURE,
-        "maxOutputTokens": DEFAULT_MAX_OUTPUT_TOKENS,
+        "temperature": config.temperature,
+        "maxOutputTokens": config.max_output_tokens,
         "promptBudget": prompt_budget,
         "responseSha256": response_digest,
         "redactionPolicy": "path_digest_and_summary_only",
@@ -654,6 +663,36 @@ def _validate_local_base_url(base_url: str) -> None:
             f"{BASE_URL_ENV} must target a local provider host: "
             f"{', '.join(sorted(LOCAL_PROVIDER_HOSTS))}"
         )
+    if parsed.path not in {"", "/"} or parsed.params or parsed.query or parsed.fragment:
+        raise LiveSmokeConfigError(f"{BASE_URL_ENV} must not include path, query, or fragment")
+
+
+def _parse_timeout_seconds(value: str | float) -> float:
+    try:
+        timeout = float(value)
+    except (TypeError, ValueError) as exc:
+        raise LiveSmokeConfigError(f"{TIMEOUT_ENV} must be a number") from exc
+    if timeout <= 0:
+        raise LiveSmokeConfigError(f"{TIMEOUT_ENV} must be greater than zero")
+    return timeout
+
+
+def _require_payload_value(
+    payload: dict[str, Any],
+    field: str,
+    expected: str,
+    *,
+    purpose: str,
+) -> None:
+    if payload.get(field) != expected:
+        raise LiveSmokeProviderError(
+            f"{purpose} response must include {field}={expected!r}, got {payload.get(field)!r}"
+        )
+
+
+def _require_payload_string(payload: dict[str, Any], field: str, *, purpose: str) -> None:
+    if not isinstance(payload.get(field), str) or not payload[field].strip():
+        raise LiveSmokeProviderError(f"{purpose} response must include non-empty {field}")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -662,15 +701,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--model", default=os.environ.get(MODEL_ENV, ""))
     parser.add_argument(
         "--timeout-seconds",
-        type=float,
-        default=float(os.environ.get(TIMEOUT_ENV, "60")),
+        default=os.environ.get(TIMEOUT_ENV, "60"),
     )
     args = parser.parse_args(argv)
     try:
+        timeout_seconds = _parse_timeout_seconds(args.timeout_seconds)
         config = LiveSmokeConfig(
             base_url=args.base_url.strip().rstrip("/"),
             model=args.model.strip(),
-            timeout_seconds=args.timeout_seconds,
+            timeout_seconds=timeout_seconds,
         )
         if not config.base_url or not config.model:
             raise LiveSmokeConfigError(

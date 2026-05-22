@@ -28,23 +28,24 @@
   wraps those signals into existing SpecNode protocol objects. This avoids
   letting a weak model author the full audit schema directly.
 - The provider base URL is restricted to local hosts (`localhost`, `127.0.0.1`,
-  `::1`) to avoid turning a manual smoke helper into an arbitrary network client.
+  `::1`) and rejects paths, query strings, and fragments to avoid turning a
+  manual smoke helper into an arbitrary network client.
 - The two-attempt smoke proves feedback-loop plumbing: first review schedules a
   retry, the second provider call sees `SpecNodeRetryContext`, and the final run
   validates as `approved`.
 
 ### Tests
 
-- `PYTHONPATH=src python -m pytest tests/test_specnode_live_retry_smoke.py -q` — PASS, 3 passed, 1 skipped.
-- `PYTHONPATH=src python -m pytest tests/test_specnode_live_retry_smoke.py tests/test_docs_contracts.py -q` — PASS, 19 passed, 1 skipped.
-- `PYTHONPATH=src python -m pytest` — PASS, 264 passed, 1 skipped.
+- `PYTHONPATH=src python -m pytest tests/test_specnode_live_retry_smoke.py -q` — PASS, 6 passed, 1 skipped.
+- `PYTHONPATH=src python -m pytest tests/test_specnode_live_retry_smoke.py tests/test_docs_contracts.py -q` — PASS, 22 passed, 1 skipped.
+- `PYTHONPATH=src python -m pytest` — PASS, 267 passed, 1 skipped.
 - `ruff check src tests` — PASS.
 - `ruff format --check src tests` — PASS.
-- `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` — PASS, 264 passed, 1 skipped, 90.43% total coverage.
+- `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` — PASS, 267 passed, 1 skipped, 90.43% total coverage.
 - `swift package dump-package >/dev/null` — PASS.
 - `swift build --target SpecHarvesterDocs` — PASS.
 - Manual LM Studio script against `http://127.0.0.1:1234` / `openai/gpt-oss-20b` — PASS, status `approved`, 2 attempts.
-- Env-gated live pytest against LM Studio — PASS, 4 passed.
+- Env-gated live pytest against LM Studio — PASS, 7 passed.
 
 ### Next Steps
 

@@ -162,7 +162,7 @@ SPECHARVESTER_SPECNODE_MODEL=openai/gpt-oss-20b
 ```
 
 The base URL must target a local provider host: `localhost`, `127.0.0.1`, or
-`::1`.
+`::1`. It must not include a path, query string, or fragment.
 
 Run the standalone script:
 
