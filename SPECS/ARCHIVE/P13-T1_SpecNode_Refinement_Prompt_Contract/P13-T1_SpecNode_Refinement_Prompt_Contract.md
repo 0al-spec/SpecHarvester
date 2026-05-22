@@ -1,8 +1,10 @@
 # P13-T1 SpecNode Refinement Prompt Contract
 
-Status: Planned
+Status: Archived
 Task: `P13-T1`
 Phase: Phase 13. Prompted Refinement Quality Loop
+Archived: 2026-05-22
+Verdict: PASS
 
 ## Problem
 

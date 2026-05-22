@@ -1,18 +1,18 @@
-# Next Task: P13-T1 — SpecNode Refinement Prompt Contract
+# Next Task: P13-T2 — Clean-Context Semantic Review Pass
 
 **Priority:** P1
 **Phase:** Phase 13. Prompted Refinement Quality Loop
-**Effort:** 6 hours
-**Dependencies:** P11-T6
+**Effort:** 8 hours
+**Dependencies:** P13-T1
 **Status:** Selected
-**Workplan:** `SPECS/Workplan.md` — Phase 13, `P13-T1`
+**Workplan:** `SPECS/Workplan.md` — Phase 13, `P13-T2`
 
 ## Description
 
-Define a versioned SpecNode refinement prompt contract that turns
-`compactModelInput`, output schema, evidence-reference rules, negative-claim
-policy, and confidence calibration into repository-owned deterministic prompt
-templates instead of ad-hoc runtime wording.
+Add a clean-context semantic review pass for generated `SpecNodeRefinementResult`
+proposals. A second model should see only the deterministic evidence bundle, the
+generated candidate or patch proposal, and a strict review rubric, then emit
+typed findings instead of mutating the candidate directly.
 
 ## Next Step
 
