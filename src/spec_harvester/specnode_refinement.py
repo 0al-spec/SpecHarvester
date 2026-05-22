@@ -528,12 +528,18 @@ def parse_specnode_model_json_object(content: str) -> dict[str, Any]:
     if not text:
         raise SpecNodeModelJSONParseError("model content is empty")
 
-    if GPT_OSS_MESSAGE_MARKER in text:
+    try:
+        return _parse_exact_json_object(text)
+    except SpecNodeModelJSONParseError as direct_error:
+        if not _looks_like_gpt_oss_wrapped_message(text):
+            raise
+
         payloads = _gpt_oss_message_payloads(text)
         if len(payloads) != 1:
-            raise SpecNodeModelJSONParseError("expected exactly one gpt-oss JSON message payload")
+            raise SpecNodeModelJSONParseError(
+                "expected exactly one gpt-oss JSON message payload"
+            ) from direct_error
         return _parse_exact_json_object(payloads[0])
-    return _parse_exact_json_object(text)
 
 
 def _validate_patch_proposal(
@@ -743,6 +749,12 @@ def _gpt_oss_message_payloads(text: str) -> list[str]:
         if payload:
             payloads.append(payload)
     return payloads
+
+
+def _looks_like_gpt_oss_wrapped_message(text: str) -> bool:
+    channel_index = text.find(GPT_OSS_CHANNEL_MARKER)
+    message_index = text.find(GPT_OSS_MESSAGE_MARKER)
+    return channel_index == 0 and message_index > channel_index
 
 
 def _parse_exact_json_object(text: str) -> dict[str, Any]:
