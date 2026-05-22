@@ -463,7 +463,6 @@ def build_specnode_semantic_review_job(
             "digest": refinement_digest,
             "job": refinement_result.get("job", {}),
             "result": refinement_result.get("result", {}),
-            "reviewNotes": refinement_result.get("reviewNotes", []),
             "usageReceiptDigest": usage_receipt_digest,
         },
         "policy": dict(SEMANTIC_REVIEW_POLICY),
@@ -1043,13 +1042,6 @@ def _allowed_semantic_review_evidence_refs(
         if isinstance(rejection, dict) and isinstance(rejection.get("rejectionId"), str):
             refs.add(rejection["rejectionId"])
 
-    review_notes = refinement_result.get("reviewNotes")
-    if isinstance(review_notes, list):
-        refs.update(
-            note["noteId"]
-            for note in review_notes
-            if isinstance(note, dict) and isinstance(note.get("noteId"), str)
-        )
     return refs
 
 

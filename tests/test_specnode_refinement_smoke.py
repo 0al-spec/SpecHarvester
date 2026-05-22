@@ -355,6 +355,7 @@ def test_specnode_semantic_review_job_uses_clean_context_and_review_only_policy(
     serialized_job = json.dumps(review_job, sort_keys=True)
     assert "class DemoApp" not in serialized_job
     assert "def route" not in serialized_job
+    assert "Scripted smoke provider returned review-only metadata" not in serialized_job
     assert "firstPassProviderLogs" in serialized_job
 
 
@@ -425,6 +426,10 @@ def test_specnode_semantic_review_validation_rejects_mutating_or_unknown_finding
         malformed_result_case(
             valid_result,
             lambda result: result["findings"][0].update({"evidenceRefs": ["unknown"]}),
+        ),
+        malformed_result_case(
+            valid_result,
+            lambda result: result["findings"][0].update({"evidenceRefs": ["note-001"]}),
         ),
         semantic_review_result(
             review_job,

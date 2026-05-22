@@ -194,7 +194,7 @@ Allowed references include artifact IDs such as `harvest_snapshot`,
 preview-plan sections such as `compact_model_input`, `harvest_summary`,
 `project_profile`, `public_interface_summary`, `semantic_evidence_index`,
 `validation_summaries`, and `draft_candidate_metadata`; semantic evidence IDs;
-operation IDs, proposal IDs, note IDs, or rejection IDs in the reviewed
+operation IDs, proposal IDs, or rejection IDs in the reviewed
 `SpecNodeRefinementResult`; and `reviewed_refinement_result` or
 `refinement_result`.
 
