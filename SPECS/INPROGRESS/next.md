@@ -1,18 +1,20 @@
-# Next Task: P11-T6 LM Studio JSON Schema Compatibility
+# Next Task: None
 
-**Status:** SELECTED
+**Status:** COMPLETE
 
 **Updated:** 2026-05-22
 
 ## Description
 
-Capture LM Studio `openai/gpt-oss-20b` runtime compatibility by requiring
-OpenAI-compatible `json_schema` response format for structured provider output
-and adding a safe parser fallback for `gpt-oss` channel-wrapped JSON returned in
-plain text mode.
+No READY task remains in `SPECS/Workplan.md`. Phase 11 now includes the LM
+Studio `openai/gpt-oss-20b` compatibility correction from `P11-T6`.
 
 ## Recently Archived
 
+- `P11-T6` Captured LM Studio `openai/gpt-oss-20b` compatibility by documenting
+  `response_format.type: json_schema` as the preferred structured-output mode,
+  avoiding assumptions about `json_object`, and adding strict parser fallback
+  for direct JSON object content and `gpt-oss` channel-wrapped JSON.
 - `P11-T5` Added executable SpecNode provider smoke coverage with deterministic
   artifact bundle assembly, compact `SpecHarvesterRefinePreviewPlan` input,
   local SpecNode-compatible provider-stub validation, structural
@@ -29,10 +31,6 @@ plain text mode.
 - `P11-T2` Defined the deterministic `SpecHarvesterRefinePreviewPlan` contract
   with compact model input sections, artifact digests, prompt-budget controls,
   excluded raw content, and DocC/GitHub documentation contract coverage.
-- `P11-T1` Defined the `SpecHarvesterSpecNodeArtifactBundle` and
-  `SpecNodeRefinementJob` contract for future SpecNode-assisted candidate
-  refinement without granting the model shell, filesystem, raw source, secret,
-  or direct mutation authority.
 
 ## Parked
 
@@ -40,13 +38,8 @@ plain text mode.
 
 ## Newly Observed Smoke Gaps
 
-- LM Studio `openai/gpt-oss-20b` rejects `response_format.type: json_object`
-  and accepts `response_format.type: json_schema`.
-- In plain text mode, `openai/gpt-oss-20b` may wrap JSON as
-  `<|channel|>final <|constrain|>JSON<|message|>{...}`.
+- None.
 
 ## Next Step
 
-Implement `P11-T6` through Flow and PR: document `json_schema` as the preferred
-structured-output mode, add deterministic parser fallback for channel-wrapped
-JSON, and cover both paths with tests.
+Create or select the next Workplan phase before running Flow again.
