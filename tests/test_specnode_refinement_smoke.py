@@ -128,6 +128,9 @@ def test_specnode_model_json_parser_accepts_direct_and_gpt_oss_wrapped_objects()
     direct = parse_specnode_model_json_object(
         '{"kind":"SpecNodeProviderProbe","status":"ok","candidateId":"demo.core"}'
     )
+    direct_with_marker_literal = parse_specnode_model_json_object(
+        '{"kind":"SpecNodeProviderProbe","note":"literal <|message|> marker"}'
+    )
     wrapped = parse_specnode_model_json_object(
         "<|channel|>final <|constrain|>JSON<|message|>"
         '{"kind":"SpecNodeProviderProbe","status":"ok","candidateId":"demo.core"}'
@@ -137,6 +140,10 @@ def test_specnode_model_json_parser_accepts_direct_and_gpt_oss_wrapped_objects()
         "kind": "SpecNodeProviderProbe",
         "status": "ok",
         "candidateId": "demo.core",
+    }
+    assert direct_with_marker_literal == {
+        "kind": "SpecNodeProviderProbe",
+        "note": "literal <|message|> marker",
     }
     assert wrapped == direct
 
