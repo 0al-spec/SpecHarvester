@@ -765,6 +765,17 @@ def test_specnode_retry_orchestration_validation_rejects_drift_and_bad_directive
         malformed_result_case(run, lambda malformed: malformed.update({"status": "invented"})),
         malformed_result_case(
             run,
+            lambda malformed: malformed.update({"status": "retry_scheduled"}),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: (
+                malformed.update({"status": "retry_scheduled"}),
+                malformed["attempts"][0].update({"status": "retry_scheduled"}),
+            ),
+        ),
+        malformed_result_case(
+            run,
             lambda malformed: malformed["retryPolicy"].update({"attemptCount": 9}),
         ),
         malformed_result_case(
@@ -781,6 +792,37 @@ def test_specnode_retry_orchestration_validation_rejects_drift_and_bad_directive
             run,
             lambda malformed: malformed["attempts"][0]["retryDirectiveSet"].update(
                 {"sourceVerdict": "needs_revision"}
+            ),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0].pop("retryDirectiveSet"),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0].pop("retryDirectiveSetDigest"),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0]["retryDirectiveSet"]["policy"].pop(
+                "maxDirectives"
+            ),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0]["retryDirectiveSet"]["policy"].update(
+                {"maxDirectives": 0}
+            ),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: (
+                malformed["attempts"][0]["retryDirectiveSet"]["policy"].update(
+                    {"maxDirectives": 1}
+                ),
+                malformed["attempts"][0]["retryDirectiveSet"]["directives"].append(
+                    deepcopy(malformed["attempts"][0]["retryDirectiveSet"]["directives"][0])
+                ),
             ),
         ),
         malformed_result_case(

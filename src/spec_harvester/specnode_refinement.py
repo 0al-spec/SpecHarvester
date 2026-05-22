@@ -1134,7 +1134,9 @@ def validate_specnode_refinement_retry_run(
             errors.append(f"retry attempt {expected_index} preview plan digest drifted")
         _validate_retry_attempt_digest_refs(attempt, errors=errors, index=expected_index)
         directive_set = attempt.get("retryDirectiveSet")
-        if directive_set is not None:
+        if not isinstance(directive_set, dict):
+            errors.append(f"retry attempt {expected_index} retryDirectiveSet must be an object")
+        else:
             _validate_retry_directive_set(directive_set, errors=errors)
             semantic_review_result = attempt.get("semanticReviewResult")
             if isinstance(semantic_review_result, dict):
@@ -1155,6 +1157,14 @@ def validate_specnode_refinement_retry_run(
         final_status = attempts[-1].get("status") if isinstance(attempts[-1], dict) else None
         if run.get("status") == "approved" and final_status != "approved":
             errors.append("approved retry run requires final approved attempt")
+        if run.get("status") == "retry_scheduled" and final_status != "retry_scheduled":
+            errors.append("retry_scheduled run requires final retry_scheduled attempt")
+        if (
+            run.get("status") == "retry_scheduled"
+            and isinstance(max_attempts, int)
+            and len(attempts) >= max_attempts
+        ):
+            errors.append("retry_scheduled run requires remaining retry capacity")
         if run.get("status") == "retry_limit_reached" and final_status != "retry_limit_reached":
             errors.append("retry_limit_reached run requires final retry_limit_reached attempt")
 
@@ -1577,7 +1587,11 @@ def _validate_retry_directive_set(
     policy = directive_set.get("policy")
     if not isinstance(policy, dict):
         errors.append("retry directive set policy must be an object")
+        max_directives = None
     else:
+        max_directives = policy.get("maxDirectives")
+        if not isinstance(max_directives, int) or max_directives < 1:
+            errors.append("retry directive set policy.maxDirectives is invalid")
         if policy.get("rawTextPropagation") != "forbidden":
             errors.append("retry directive set policy must forbid raw text propagation")
         if policy.get("candidateOutputAuthority") != "proposal_only":
@@ -1593,6 +1607,8 @@ def _validate_retry_directive_set(
         errors.append("approve retry directive set must not contain directives")
     if directive_set.get("sourceVerdict") in {"needs_revision", "reject"} and not directives:
         errors.append("non-approve retry directive set requires directives")
+    if isinstance(max_directives, int) and len(directives) > max_directives:
+        errors.append("retry directive set directives exceed policy.maxDirectives")
 
     for index, directive in enumerate(directives):
         if not isinstance(directive, dict):
@@ -1641,7 +1657,9 @@ def _validate_retry_attempt_digest_refs(
             errors.append(f"retry attempt {index} {field} digest must be a digest")
     directive_set = attempt.get("retryDirectiveSet")
     directive_digest = attempt.get("retryDirectiveSetDigest")
-    if directive_set is not None and directive_digest != canonical_json_sha256_digest(
+    if not _is_digest(directive_digest):
+        errors.append(f"retry attempt {index} retryDirectiveSetDigest must be a digest")
+    if isinstance(directive_set, dict) and directive_digest != canonical_json_sha256_digest(
         directive_set
     ):
         errors.append(f"retry attempt {index} retryDirectiveSetDigest must match directive set")

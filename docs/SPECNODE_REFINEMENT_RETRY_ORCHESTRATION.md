@@ -99,7 +99,60 @@ If source artifacts change, the caller must start a new
     "kind": "SpecHarvesterRefinePreviewPlan",
     "digest": "sha256:64-hex-digest"
   },
-  "attempts": [],
+  "attempts": [
+    {
+      "kind": "SpecNodeRefinementRetryAttempt",
+      "attemptIndex": 1,
+      "status": "retry_limit_reached",
+      "sourceBundleDigest": "sha256:64-hex-digest",
+      "sourcePreviewPlanDigest": "sha256:64-hex-digest",
+      "refinementJob": {
+        "kind": "SpecNodeRefinementJob",
+        "jobId": "specnode-retry-example-01",
+        "digest": "sha256:64-hex-digest"
+      },
+      "refinementResult": {
+        "kind": "SpecNodeRefinementResult",
+        "digest": "sha256:64-hex-digest"
+      },
+      "semanticReviewJob": {
+        "kind": "SpecNodeSemanticReviewJob",
+        "jobId": "specnode-review-example-01",
+        "digest": "sha256:64-hex-digest"
+      },
+      "semanticReviewResult": {
+        "kind": "SpecNodeSemanticReviewResult",
+        "digest": "sha256:64-hex-digest",
+        "verdict": "reject"
+      },
+      "retryDirectiveSet": {
+        "schemaVersion": 1,
+        "kind": "SpecNodeRetryDirectiveSet",
+        "sourceSemanticReviewResultDigest": "sha256:64-hex-digest",
+        "sourceVerdict": "reject",
+        "policy": {
+          "kind": "SpecNodeRetryDirectivePolicy",
+          "maxDirectives": 10,
+          "rawTextPropagation": "forbidden",
+          "candidateOutputAuthority": "proposal_only"
+        },
+        "directives": [
+          {
+            "kind": "SpecNodeRetryDirective",
+            "directiveId": "retry-directive-001",
+            "code": "remove_or_evidence_capability_claim",
+            "sourceFindingId": "finding-001",
+            "sourceFindingCode": "unsupported_capability_claim",
+            "sourceFindingSeverity": "blocking",
+            "target": {"kind": "candidate_patch_operation"},
+            "evidenceRefs": ["public_interface_index"],
+            "boundedInstruction": "Remove unsupported capability claims or attach known evidence references."
+          }
+        ]
+      },
+      "retryDirectiveSetDigest": "sha256:64-hex-digest"
+    }
+  ],
   "finalRefinementResultDigest": "sha256:64-hex-digest",
   "finalSemanticReviewResultDigest": "sha256:64-hex-digest"
 }

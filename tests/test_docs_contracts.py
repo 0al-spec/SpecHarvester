@@ -219,6 +219,7 @@ def test_docc_and_github_docs_cover_specnode_integration_contract() -> None:
             "human review",
         ):
             assert required in text
+        assert '"attempts": []' not in text
 
     assert "SPECNODE_INTEGRATION_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:SpecNodeIntegrationContract>" in root_page.read_text(encoding="utf-8")
