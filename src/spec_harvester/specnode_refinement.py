@@ -74,6 +74,53 @@ ALLOWED_REJECTION_CODES = {
     "schema_validation_failed",
     "safety_boundary_triggered",
 }
+USAGE_RECEIPT_REQUIRED_FIELDS = {
+    "kind",
+    "jobId",
+    "providerReceipt",
+    "providerReceiptDigest",
+    "modelId",
+    "inputTokens",
+    "outputTokens",
+    "totalTokens",
+    "finishReason",
+    "attempts",
+    "startedAt",
+    "completedAt",
+    "durationMs",
+    "timeoutPolicy",
+    "retryPolicy",
+    "temperature",
+    "maxOutputTokens",
+    "promptBudget",
+    "responseSha256",
+    "redactionPolicy",
+}
+PROVIDER_RECEIPT_REQUIRED_FIELDS = {
+    "kind",
+    "providerKind",
+    "providerName",
+    "baseUrl",
+    "endpoint",
+    "modelId",
+    "requestId",
+    "startedAt",
+    "completedAt",
+    "durationMs",
+    "status",
+    "attempts",
+    "timeoutPolicy",
+    "retryPolicy",
+    "temperature",
+    "maxOutputTokens",
+    "promptBudget",
+    "inputTokens",
+    "outputTokens",
+    "totalTokens",
+    "finishReason",
+    "responseSha256",
+    "redactionPolicy",
+}
 _DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _MANIFEST_METADATA_KEYS = {"id", "name", "version", "summary", "license"}
 
@@ -169,8 +216,9 @@ def build_specnode_artifact_bundle(
         raise ValueError(f"Candidate workspace does not exist: {candidate_workspace}")
 
     manifest = _required_file(workspace, "specpm.yaml")
-    manifest_metadata = _parse_manifest_metadata(manifest.read_text(encoding="utf-8"))
-    spec_paths = _parse_manifest_spec_paths(manifest.read_text(encoding="utf-8"))
+    manifest_text = manifest.read_text(encoding="utf-8")
+    manifest_metadata = _parse_manifest_metadata(manifest_text)
+    spec_paths = _parse_manifest_spec_paths(manifest_text)
     if not spec_paths:
         spec_paths = sorted(
             path.relative_to(workspace).as_posix()
@@ -414,8 +462,11 @@ def validate_specnode_refinement_result(
             errors.append("result job digest must match source job")
 
     usage_receipt = result.get("usageReceipt")
-    if not _is_usage_receipt(usage_receipt):
-        errors.append("usageReceipt is required and must be SpecNodeProposalUsageReceipt")
+    _validate_usage_receipt(
+        usage_receipt,
+        errors=errors,
+        expected_job_id=job.get("jobId"),
+    )
 
     result_body = result.get("result")
     if not isinstance(result_body, dict):
@@ -435,6 +486,7 @@ def validate_specnode_refinement_result(
                     expected_job_digest=expected_job_digest,
                     expected_bundle_digest=expected_bundle_digest,
                     expected_preview_digest=expected_preview_digest,
+                    usage_receipt=usage_receipt,
                 )
         elif result_kind == "rejectionReason":
             rejection = result_body.get("rejection")
@@ -446,6 +498,7 @@ def validate_specnode_refinement_result(
                     errors=errors,
                     expected_job_digest=expected_job_digest,
                     expected_preview_digest=expected_preview_digest,
+                    usage_receipt=usage_receipt,
                 )
         else:
             errors.append("result kind must be candidatePatchProposal or rejectionReason")
@@ -472,6 +525,7 @@ def _validate_patch_proposal(
     expected_job_digest: str,
     expected_bundle_digest: str,
     expected_preview_digest: str,
+    usage_receipt: Any,
 ) -> None:
     for field in (
         "proposalId",
@@ -521,8 +575,17 @@ def _validate_patch_proposal(
             errors.append("provenance baseCandidateDigest must match proposal")
         if not _is_digest(provenance.get("providerReceiptDigest")):
             errors.append("provenance providerReceiptDigest must be a sha256 digest")
+        if isinstance(usage_receipt, dict) and provenance.get(
+            "providerReceiptDigest"
+        ) != usage_receipt.get("providerReceiptDigest"):
+            errors.append("provenance providerReceiptDigest must match usageReceipt")
         if provenance.get("redactionPolicy") != "path_digest_and_summary_only":
             errors.append("provenance redactionPolicy must be path_digest_and_summary_only")
+
+    if isinstance(usage_receipt, dict) and usage_receipt.get("proposalId") != proposal.get(
+        "proposalId"
+    ):
+        errors.append("usageReceipt proposalId must match proposal")
 
     expectations = proposal.get("validationExpectations")
     if not isinstance(expectations, dict):
@@ -580,6 +643,7 @@ def _validate_rejection(
     errors: list[str],
     expected_job_digest: str,
     expected_preview_digest: str,
+    usage_receipt: Any,
 ) -> None:
     if rejection.get("kind") != "SpecNodeRejectionReason":
         errors.append("rejection kind must be SpecNodeRejectionReason")
@@ -589,19 +653,56 @@ def _validate_rejection(
         errors.append("rejection sourceJobDigest must match job digest")
     if rejection.get("sourcePreviewPlanDigest") != expected_preview_digest:
         errors.append("rejection sourcePreviewPlanDigest must match preview plan digest")
-    if not _is_usage_receipt(rejection.get("usageReceipt")):
-        errors.append("rejection usageReceipt is required")
+    rejection_usage_receipt = rejection.get("usageReceipt")
+    _validate_usage_receipt(
+        rejection_usage_receipt,
+        errors=errors,
+        expected_job_id=usage_receipt.get("jobId") if isinstance(usage_receipt, dict) else None,
+    )
+    if isinstance(usage_receipt, dict) and rejection_usage_receipt != usage_receipt:
+        errors.append("rejection usageReceipt must match top-level usageReceipt")
+    if isinstance(usage_receipt, dict) and usage_receipt.get("rejectionId") != rejection.get(
+        "rejectionId"
+    ):
+        errors.append("usageReceipt rejectionId must match rejection")
     if not isinstance(rejection.get("evidenceRefs"), list):
         errors.append("rejection evidenceRefs must be a list")
 
 
-def _is_usage_receipt(value: Any) -> bool:
-    if not isinstance(value, dict) or value.get("kind") != "SpecNodeProposalUsageReceipt":
-        return False
+def _validate_usage_receipt(
+    value: Any,
+    *,
+    errors: list[str],
+    expected_job_id: Any,
+) -> None:
+    if not isinstance(value, dict):
+        errors.append("usageReceipt is required and must be an object")
+        return
+    if value.get("kind") != "SpecNodeProposalUsageReceipt":
+        errors.append("usageReceipt kind must be SpecNodeProposalUsageReceipt")
+    for field in sorted(USAGE_RECEIPT_REQUIRED_FIELDS):
+        if field not in value:
+            errors.append(f"usageReceipt missing required field: {field}")
+    if value.get("jobId") != expected_job_id:
+        errors.append("usageReceipt jobId must match source job")
+
     provider_receipt = value.get("providerReceipt")
-    return isinstance(provider_receipt, dict) and provider_receipt.get("kind") == (
-        "SpecNodeProviderUsageReceipt"
-    )
+    if not isinstance(provider_receipt, dict):
+        errors.append("usageReceipt providerReceipt must be an object")
+        return
+    if provider_receipt.get("kind") != "SpecNodeProviderUsageReceipt":
+        errors.append("providerReceipt kind must be SpecNodeProviderUsageReceipt")
+    for field in sorted(PROVIDER_RECEIPT_REQUIRED_FIELDS):
+        if field not in provider_receipt:
+            errors.append(f"providerReceipt missing required field: {field}")
+
+    provider_digest = value.get("providerReceiptDigest")
+    if provider_digest != canonical_json_sha256_digest(provider_receipt):
+        errors.append("usageReceipt providerReceiptDigest must match providerReceipt")
+    if not _is_digest(value.get("responseSha256")):
+        errors.append("usageReceipt responseSha256 must be a sha256 digest")
+    if not _is_digest(provider_receipt.get("responseSha256")):
+        errors.append("providerReceipt responseSha256 must be a sha256 digest")
 
 
 def _is_allowed_target_file(value: str) -> bool:
