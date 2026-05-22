@@ -67,6 +67,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p13_t3_feedback_driven_refinement_retry_orchestration.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p13_t2_clean_context_semantic_review_pass.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p13_t1_specnode_refinement_prompt_contract.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p11_t6_lm_studio_json_schema_compatibility.md` |
@@ -166,6 +167,7 @@
 | 2026-05-22 | P13-T2 | Archived Clean-Context Semantic Review Pass (PASS) |
 | 2026-05-22 | P13-T2 | Archived REVIEW_p13_t2_clean_context_semantic_review_pass report |
 | 2026-05-22 | P13-T3 | Archived Feedback-Driven Refinement Retry Orchestration (PASS) |
+| 2026-05-22 | P13-T3 | Archived REVIEW_p13_t3_feedback_driven_refinement_retry_orchestration report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
