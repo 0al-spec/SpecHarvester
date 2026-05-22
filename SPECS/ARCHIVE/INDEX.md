@@ -54,6 +54,7 @@
 | P11-T5 | [P11-T5_SpecNode-Compatible_Provider_Smoke_Coverage/](P11-T5_SpecNode-Compatible_Provider_Smoke_Coverage/) | 2026-05-22 | PASS |
 | P11-T6 | [P11-T6_LM_Studio_JSON_Schema_Compatibility/](P11-T6_LM_Studio_JSON_Schema_Compatibility/) | 2026-05-22 | PASS |
 | P13-T1 | [P13-T1_SpecNode_Refinement_Prompt_Contract/](P13-T1_SpecNode_Refinement_Prompt_Contract/) | 2026-05-22 | PASS |
+| P13-T2 | [P13-T2_Clean_Context_Semantic_Review_Pass/](P13-T2_Clean_Context_Semantic_Review_Pass/) | 2026-05-22 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
@@ -160,6 +161,7 @@
 | 2026-05-22 | P11-T6 | Archived REVIEW_p11_t6_lm_studio_json_schema_compatibility report |
 | 2026-05-22 | P13-T1 | Archived SpecNode Refinement Prompt Contract (PASS) |
 | 2026-05-22 | P13-T1 | Archived REVIEW_p13_t1_specnode_refinement_prompt_contract report |
+| 2026-05-22 | P13-T2 | Archived Clean-Context Semantic Review Pass (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

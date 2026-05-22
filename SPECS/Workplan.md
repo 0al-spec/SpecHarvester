@@ -311,7 +311,7 @@ Acceptance:
   `compactModelInput`, output schema, evidence-reference rules, negative-claim
   policy, and confidence calibration into repository-owned deterministic prompt
   templates instead of ad-hoc runtime wording.
-- [ ] `P13-T2` Add a clean-context semantic review pass for generated
+- [x] `P13-T2` Add a clean-context semantic review pass for generated
   `SpecNodeRefinementResult` proposals, where a second model sees only the
   deterministic evidence bundle, the generated candidate or patch proposal, and
   a strict review rubric, then emits typed findings instead of mutating the
