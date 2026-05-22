@@ -261,6 +261,31 @@ bodies, dependency directories, provider logs, local credentials, environment
 dumps, SSH keys, access tokens, arbitrary prompts, or model-generated
 instructions from previous runs.
 
+## Structured Output Compatibility
+
+LM Studio compatibility is pinned from local runtime probing of
+`openai/gpt-oss-20b` on the standard `http://127.0.0.1:1234` endpoint.
+
+For structured proposal output, SpecNode should request OpenAI-compatible
+`response_format.type: json_schema` with a strict schema for
+`SpecNodeRefinementResult`.
+
+SpecNode must not assume `response_format.type: json_object` is available for
+LM Studio. The observed LM Studio endpoint rejects `json_object` and accepts
+`json_schema` or `text`.
+
+When forced into text mode, `openai/gpt-oss-20b` may wrap JSON as:
+
+```text
+<|channel|>final <|constrain|>JSON<|message|>{"kind":"SpecNodeRefinementResult"}
+```
+
+A compatibility parser may extract the payload after `<|message|>` only when
+there is exactly one JSON object payload. It must reject arrays, scalar JSON,
+multiple objects, malformed wrappers, trailing text, and any content that cannot
+be parsed as one object. This fallback does not relax schema validation;
+`SpecNodeRefinementResult` validation still runs afterwards.
+
 ## Usage Receipt
 
 `SpecNodeProviderUsageReceipt` is embedded in the future `usageReceipt` output.

@@ -125,6 +125,26 @@ repository source, tools, or endpoints. The `promptBudget` must not exceed the
 Provider requests and receipts must not include raw repository source, raw
 documentation bodies, secrets, dependency directories, or provider logs.
 
+## Structured Output Compatibility
+
+LM Studio compatibility is pinned from local runtime probing of
+`openai/gpt-oss-20b` on `http://127.0.0.1:1234`.
+
+For structured proposal output, SpecNode should request
+`response_format.type: json_schema` with a strict schema for
+`SpecNodeRefinementResult`.
+
+SpecNode must not assume `response_format.type: json_object` is available for
+LM Studio. The observed endpoint rejects `json_object` and accepts
+`json_schema` or `text`.
+
+When forced into text mode, `openai/gpt-oss-20b` may wrap JSON as
+`<|channel|>final <|constrain|>JSON<|message|>{"kind":"SpecNodeRefinementResult"}`.
+A compatibility parser may extract the payload after `<|message|>` only when
+there is exactly one JSON object payload. It must reject arrays, scalar JSON,
+multiple objects, malformed wrappers, trailing text, and any content that cannot
+be parsed as one object.
+
 ## Usage Receipt
 
 `SpecNodeProviderUsageReceipt` records `providerKind`, `providerName`,

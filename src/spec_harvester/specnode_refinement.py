@@ -123,6 +123,8 @@ PROVIDER_RECEIPT_REQUIRED_FIELDS = {
 }
 _DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _MANIFEST_METADATA_KEYS = {"id", "name", "version", "summary", "license"}
+GPT_OSS_MESSAGE_MARKER = "<|message|>"
+GPT_OSS_CHANNEL_MARKER = "<|channel|>"
 
 
 class SpecNodeProviderUnavailable(RuntimeError):
@@ -131,6 +133,10 @@ class SpecNodeProviderUnavailable(RuntimeError):
 
 class SpecNodeRefinementValidationError(ValueError):
     """Raised when SpecNode output does not satisfy the smoke validation contract."""
+
+
+class SpecNodeModelJSONParseError(ValueError):
+    """Raised when provider message content cannot be parsed as one JSON object."""
 
 
 class SpecNodeCompatibleProvider(Protocol):
@@ -516,6 +522,20 @@ def canonical_json_sha256_digest(value: Any) -> str:
     return f"sha256:{hashlib.sha256(payload.encode('utf-8')).hexdigest()}"
 
 
+def parse_specnode_model_json_object(content: str) -> dict[str, Any]:
+    """Parse direct JSON or the observed gpt-oss channel-wrapped JSON object."""
+    text = content.strip()
+    if not text:
+        raise SpecNodeModelJSONParseError("model content is empty")
+
+    if GPT_OSS_MESSAGE_MARKER in text:
+        payloads = _gpt_oss_message_payloads(text)
+        if len(payloads) != 1:
+            raise SpecNodeModelJSONParseError("expected exactly one gpt-oss JSON message payload")
+        return _parse_exact_json_object(payloads[0])
+    return _parse_exact_json_object(text)
+
+
 def _validate_patch_proposal(
     proposal: dict[str, Any],
     *,
@@ -712,6 +732,30 @@ def _is_allowed_target_file(value: str) -> bool:
     return value == "specpm.yaml" or (
         value.startswith("specs/") and value.endswith(".spec.yaml") and len(path.parts) == 2
     )
+
+
+def _gpt_oss_message_payloads(text: str) -> list[str]:
+    payloads: list[str] = []
+    for segment in text.split(GPT_OSS_MESSAGE_MARKER)[1:]:
+        end = segment.find(GPT_OSS_CHANNEL_MARKER)
+        payload = segment[:end] if end != -1 else segment
+        payload = payload.strip()
+        if payload:
+            payloads.append(payload)
+    return payloads
+
+
+def _parse_exact_json_object(text: str) -> dict[str, Any]:
+    decoder = json.JSONDecoder()
+    try:
+        value, index = decoder.raw_decode(text)
+    except json.JSONDecodeError as exc:
+        raise SpecNodeModelJSONParseError(f"model content is not valid JSON: {exc.msg}") from exc
+    if text[index:].strip():
+        raise SpecNodeModelJSONParseError("model content contains trailing non-JSON text")
+    if not isinstance(value, dict):
+        raise SpecNodeModelJSONParseError("model content JSON payload must be an object")
+    return value
 
 
 def _is_digest(value: Any) -> bool:

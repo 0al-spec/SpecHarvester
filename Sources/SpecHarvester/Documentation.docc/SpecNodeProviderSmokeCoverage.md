@@ -88,6 +88,25 @@ Rejected operation markers include `rawUnifiedDiff`, `fullFileReplacement`,
 `shellCommand`, `gitCommand`, `networkFetch`, `providerCall`,
 `packageManagerCommand`, `testRunnerCommand`, `buildToolCommand`, and direct file writes.
 
+## LM Studio JSON Compatibility
+
+Local probing with LM Studio showed `openai/gpt-oss-20b` is available through
+`/v1/models` and `/v1/chat/completions`, but structured output compatibility
+requires `response_format.type: json_schema`. The smoke contract must not
+assume `response_format.type: json_object`.
+
+The smoke helper `parse_specnode_model_json_object` accepts direct JSON object
+content and the observed text-mode `gpt-oss` channel wrapper:
+
+```text
+<|channel|>final <|constrain|>JSON<|message|>{"kind":"SpecNodeProviderProbe"}
+```
+
+The parser rejects empty content, arrays, scalar JSON, multiple object payloads,
+malformed wrappers, and trailing non-JSON text. Parsed content is still only
+provider output; structural `SpecNodeRefinementResult` validation and human
+review remain required.
+
 ## Non-Goals
 
 The smoke coverage does not implement SpecNode, call LM Studio, discover
