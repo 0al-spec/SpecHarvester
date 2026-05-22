@@ -8,6 +8,10 @@ deterministic artifacts; SpecNode owns provider discovery, health checks, model
 listing, model execution policy, provenance, and usage receipt generation.
 SpecHarvester does not contact providers.
 
+Versioned prompt rendering from `compactModelInput` is governed by
+<doc:SpecNodeRefinementPromptContract>. Provider requests may include only
+bounded messages produced by that `SpecNodeRefinementPromptContract`.
+
 ## Contract Names
 
 - `SpecNodeOpenAICompatibleProviderAdapter`: OpenAI-compatible local provider

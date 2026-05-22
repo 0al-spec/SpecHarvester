@@ -317,6 +317,127 @@ def test_docc_and_github_docs_cover_refine_preview_planning_contract() -> None:
         assert "PublicInterfaceIndex" in text
 
 
+def test_docc_and_github_docs_cover_specnode_refinement_prompt_contract() -> None:
+    github_doc = ROOT / "docs" / "SPECNODE_REFINEMENT_PROMPT_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeRefinementPromptContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    refine_doc = ROOT / "docs" / "SPECNODE_REFINE_PREVIEW_CONTRACT.md"
+    refine_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeRefinePreviewContract.md"
+    )
+    provider_doc = ROOT / "docs" / "SPECNODE_PROVIDER_ADAPTER_CONTRACT.md"
+    provider_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeProviderAdapterContract.md"
+    )
+    patch_doc = ROOT / "docs" / "SPECNODE_PATCH_PROPOSAL_CONTRACT.md"
+    patch_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodePatchProposalContract.md"
+    )
+    smoke_doc = ROOT / "docs" / "SPECNODE_PROVIDER_SMOKE_COVERAGE.md"
+    smoke_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeProviderSmokeCoverage.md"
+    )
+    architecture_doc = ROOT / "docs" / "ARCHITECTURE.md"
+    architecture_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "HarvesterArchitecture.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecNodeRefinementPromptContract",
+            "promptContractVersion",
+            "SpecNodeRefinementPromptTemplate",
+            "SpecNodeRefinementPromptInput",
+            "SpecNodeRefinementPromptInstructions",
+            "compactModelInput",
+            "SpecHarvesterRefinePreviewPlan",
+            "SpecNodeRefinementResult",
+            "SpecNodeCandidatePatchProposal",
+            "SpecNodeRejectionReason",
+            "response_format.type: json_schema",
+            "response_format.type: json_object",
+            "generate_specpm",
+            "target package behavior",
+            "evidence_reference_rules",
+            "negative_claim_policy",
+            "confidence_calibration",
+            "Evidence Reference Rules",
+            "Negative-Claim Policy",
+            "Confidence Calibration",
+            "unknown IDs",
+            "collapsed ranges",
+            "invented evidence references",
+            "no network calls",
+            "no authentication",
+            "chain-of-thought",
+            "provider logs",
+            "raw repository source",
+            "arbitrary prompts",
+            "modelFilesystemAccess: none",
+            "modelShellAccess: none",
+            "candidateMutation: proposal_only",
+            "schema validation",
+            "SpecPM validation",
+            "human review",
+        ):
+            assert required in text
+
+    assert "SPECNODE_REFINEMENT_PROMPT_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecNodeRefinementPromptContract>" in root_page.read_text(encoding="utf-8")
+
+    for path in (
+        refine_doc,
+        refine_docc,
+        provider_doc,
+        provider_docc,
+        patch_doc,
+        patch_docc,
+        smoke_doc,
+        smoke_docc,
+        architecture_doc,
+        architecture_docc,
+        workflow_doc,
+        workflow_docc,
+    ):
+        text = path.read_text(encoding="utf-8")
+        assert (
+            "SpecNodeRefinementPromptContract" in text
+            or "SPECNODE_REFINEMENT_PROMPT_CONTRACT.md" in text
+        )
+
+    for path in (workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "target-package intent inference" in text
+        assert "unsupported negative claims" in text
+        assert "overconfident" in text
+
+
 def test_docc_and_github_docs_cover_specnode_provider_adapter_contract() -> None:
     github_doc = ROOT / "docs" / "SPECNODE_PROVIDER_ADAPTER_CONTRACT.md"
     docc_doc = (

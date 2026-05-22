@@ -6,6 +6,9 @@ SpecNode-assisted candidate refinement.
 The model may propose candidate metadata changes only as data. It cannot write
 files, run commands, publish packages, bypass SpecPM validation, or make its
 output accepted registry truth.
+The prompt that asks for this output is governed by
+<doc:SpecNodeRefinementPromptContract>, including evidence-reference,
+negative-claim, and confidence-calibration rules.
 
 ## Contract Names
 

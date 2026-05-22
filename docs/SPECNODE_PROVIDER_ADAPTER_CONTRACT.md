@@ -40,6 +40,8 @@ SpecHarvesterSpecNodeArtifactBundle
 in [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md).
 `SpecHarvesterRefinePreviewPlan` is defined in
 [`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md).
+Versioned prompt rendering and evidence-reference rules are defined in
+[`SPECNODE_REFINEMENT_PROMPT_CONTRACT.md`](SPECNODE_REFINEMENT_PROMPT_CONTRACT.md).
 
 SpecHarvester does not contact providers. It may request provider metadata
 through a typed SpecNode job or show a provider status supplied by SpecNode, but
@@ -250,7 +252,8 @@ Policy rules:
 The provider request body may include only:
 
 - model ID selected by SpecNode policy;
-- bounded messages derived from `compactModelInput`;
+- bounded messages derived from `compactModelInput` through the
+  `SpecNodeRefinementPromptContract`;
 - explicit output schema instructions for future `candidatePatchProposal`;
 - `temperature`;
 - `max_tokens` or OpenAI-compatible equivalent;

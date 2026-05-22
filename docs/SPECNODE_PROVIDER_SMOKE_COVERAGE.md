@@ -18,6 +18,9 @@ does not execute a real model, and does not apply generated changes.
   optional `public-interface-index.json`.
 - `SpecHarvesterRefinePreviewPlan`: compact weak-model input plan containing
   `compactModelInput` sections and prompt budget policy.
+- `SpecNodeRefinementPromptContract`: versioned prompt rendering policy for
+  target-package intent inference, evidence references, negative claims, and
+  confidence calibration.
 - `SpecNodeRefinementJob`: typed job passed to a SpecNode-compatible provider
   stub.
 - `SpecNodeRefinementResult`: typed provider output containing either

@@ -292,6 +292,12 @@ Before that handoff, `refine-preview` planning must follow
 `semanticEvidenceIndex`, validation summaries, and draft candidate metadata.
 It excludes raw repository source and raw documentation bodies.
 
+Prompt rendering must follow <doc:SpecNodeRefinementPromptContract>. The
+`SpecNodeRefinementPromptContract` keeps prompt text versioned, requires
+target-package intent inference instead of task self-description, and rejects
+unknown evidence references, unsupported negative claims, and overconfident
+claims without deterministic evidence.
+
 Provider execution must follow <doc:SpecNodeProviderAdapterContract>. SpecNode
 may use `SpecNodeOpenAICompatibleProviderAdapter` for LM Studio or other
 OpenAI-compatible local providers, but only through explicit or
