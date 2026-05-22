@@ -219,6 +219,7 @@ def test_docc_and_github_docs_cover_specnode_integration_contract() -> None:
             "human review",
         ):
             assert required in text
+        assert '"attempts": []' not in text
 
     assert "SPECNODE_INTEGRATION_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:SpecNodeIntegrationContract>" in root_page.read_text(encoding="utf-8")
@@ -554,6 +555,121 @@ def test_docc_and_github_docs_cover_specnode_semantic_review_contract() -> None:
         assert "wrong_package_intent" in text
         assert "authority_boundary_violation" in text
         assert "direct file writes" in text
+
+
+def test_docc_and_github_docs_cover_specnode_retry_orchestration_contract() -> None:
+    github_doc = ROOT / "docs" / "SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeRefinementRetryOrchestration.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    integration_doc = ROOT / "docs" / "SPECNODE_INTEGRATION_CONTRACT.md"
+    integration_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecNodeIntegrationContract.md"
+    )
+    semantic_doc = ROOT / "docs" / "SPECNODE_SEMANTIC_REVIEW_CONTRACT.md"
+    semantic_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecNodeSemanticReviewContract.md"
+    )
+    architecture_doc = ROOT / "docs" / "ARCHITECTURE.md"
+    architecture_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "HarvesterArchitecture.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecNodeRefinementRetryOrchestrationContract",
+            "retryOrchestrationContractVersion",
+            "SpecNodeRefinementRetryRun",
+            "SpecNodeRefinementRetryPolicy",
+            "SpecNodeRefinementRetryAttempt",
+            "SpecNodeRetryDirectiveSet",
+            "SpecNodeRetryDirective",
+            "SpecNodeRetryContext",
+            "SpecNodeRefinementResult",
+            "SpecNodeSemanticReviewResult",
+            "SpecNodeSemanticReviewFinding",
+            "maxAttempts",
+            "attemptCount",
+            "artifactReuse: same_bundle_and_preview_plan",
+            "sourceBundleDigest",
+            "sourcePreviewPlanDigest",
+            "sourceSemanticReviewResultDigest",
+            "sourceFindingId",
+            "boundedInstruction",
+            "rawTextPropagation: forbidden",
+            "candidateOutputAuthority: proposal_only",
+            "approved",
+            "retry_scheduled",
+            "retry_limit_reached",
+            "needs_revision",
+            "reject",
+            "refocus_target_package_intent",
+            "remove_or_evidence_capability_claim",
+            "add_evidence_reference_or_drop_claim",
+            "lower_confidence_or_add_evidence",
+            "remove_unsupported_negative_claim",
+            "align_with_schema_policy",
+            "remove_authority_request",
+            "restore_prompt_contract_boundary",
+            "raw repository source",
+            "provider logs",
+            "first-pass prompt transcripts",
+            "chain-of-thought",
+            "candidatePatchProposal",
+            "operations",
+            "retryDirective",
+            "rawUnifiedDiff",
+            "shellCommand",
+            "networkFetch",
+            "providerCall",
+            "packageManagerCommand",
+            "testRunnerCommand",
+            "buildToolCommand",
+            "direct file writes",
+            "SpecPM validation",
+            "human review",
+        ):
+            assert required in text
+
+    assert "SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecNodeRefinementRetryOrchestration>" in root_page.read_text(encoding="utf-8")
+
+    for path in (
+        integration_doc,
+        integration_docc,
+        semantic_doc,
+        semantic_docc,
+        architecture_doc,
+        architecture_docc,
+        workflow_doc,
+        workflow_docc,
+    ):
+        text = path.read_text(encoding="utf-8")
+        assert (
+            "SpecNodeRefinementRetryOrchestration" in text
+            or "SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md" in text
+        )
+
+    for path in (workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "SpecNodeRefinementRetryRun" in text
+        assert "SpecNodeRetryDirective" in text
+        assert "sourceBundleDigest" in text
+        assert "sourcePreviewPlanDigest" in text
+        assert "maxAttempts" in text
 
 
 def test_docc_and_github_docs_cover_specnode_provider_adapter_contract() -> None:

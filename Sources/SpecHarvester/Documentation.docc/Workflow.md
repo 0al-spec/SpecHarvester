@@ -310,6 +310,15 @@ fixed `SpecNodeSemanticReviewRubric`. It emits `approve`, `needs_revision`, or
 operations, retry directives, shell commands, network fetches, provider calls,
 or direct file writes.
 
+Feedback-driven retry orchestration must follow
+<doc:SpecNodeRefinementRetryOrchestration>. `SpecNodeRefinementRetryRun`
+converts typed review findings into bounded `SpecNodeRetryDirective` data,
+reuses the same `sourceBundleDigest` and `sourcePreviewPlanDigest`, caps
+`maxAttempts`, and records each `SpecNodeRefinementRetryAttempt` in an audit
+trail. Retry context remains data only and cannot add raw source, provider
+logs, shell commands, network fetches, package manager commands, test runner
+commands, build tool commands, or direct file writes.
+
 Provider execution must follow <doc:SpecNodeProviderAdapterContract>. SpecNode
 may use `SpecNodeOpenAICompatibleProviderAdapter` for LM Studio or other
 OpenAI-compatible local providers, but only through explicit or

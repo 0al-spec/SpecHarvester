@@ -56,14 +56,16 @@ Published DocC site:
     versioned prompt contract for schema-bound SpecNode refinement
 23. [`SPECNODE_SEMANTIC_REVIEW_CONTRACT.md`](SPECNODE_SEMANTIC_REVIEW_CONTRACT.md):
     clean-context semantic review contract for generated SpecNode proposals
-24. [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md):
+24. [`SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md`](SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md):
+    feedback-driven retry orchestration for bounded SpecNode refinement loops
+25. [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md):
     OpenAI-compatible provider adapter boundary for local SpecNode execution
-25. [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md):
+26. [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md):
     schema-validated candidate patch proposal output contract
-26. [`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md):
+27. [`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md):
     local SpecNode-compatible provider smoke coverage and deterministic
     provider-unavailable fallback
-27. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+28. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -90,6 +92,9 @@ Published DocC site:
 - [`SPECNODE_SEMANTIC_REVIEW_CONTRACT.md`](SPECNODE_SEMANTIC_REVIEW_CONTRACT.md):
   clean-context semantic review pass with typed verdicts and findings for
   generated `SpecNodeRefinementResult` proposals
+- [`SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md`](SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md):
+  bounded feedback-driven retry controller that converts semantic review
+  findings into deterministic retry directives
 - [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md):
   LM Studio/OpenAI-compatible provider discovery, health, model listing, and
   execution policy boundary for SpecNode

@@ -258,8 +258,10 @@ It must not contain:
 - direct file writes;
 - any instruction to apply, publish, merge, or mutate candidate files.
 
-Follow-up retry orchestration belongs to a later bounded controller and must
-consume findings as data. The semantic reviewer itself cannot request a retry.
+Follow-up retry orchestration is defined by
+[`SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md`](SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md).
+The bounded controller consumes findings as data. The semantic reviewer itself
+cannot request a retry.
 
 ## Rejection Conditions
 

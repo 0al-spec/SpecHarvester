@@ -212,8 +212,9 @@ It must not contain `candidatePatchProposal`, `proposal`, `operations`, `patch`,
 `buildToolCommand`, direct file writes, or instructions to apply, publish,
 merge, or mutate candidate files.
 
-Follow-up retry orchestration belongs to a later bounded controller and must
-consume findings as data. The semantic reviewer itself cannot request a retry.
+Follow-up retry orchestration is defined by
+<doc:SpecNodeRefinementRetryOrchestration>. The bounded controller consumes
+findings as data. The semantic reviewer itself cannot request a retry.
 
 ## Rejection Conditions
 
