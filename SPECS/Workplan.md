@@ -364,11 +364,11 @@ Acceptance:
 
 ## Phase 15. Real Repository Refinement Validation
 
-- [ ] `P15-T1` Add a reproducible real-repository refinement validation plan
-  that defines local checkout selection, safe input manifests, command
-  sequences, expected artifacts, scoring rubric, and non-committed output
-  policy for `collect -> draft -> SpecNode refine -> semantic review -> retry`
-  runs.
+- [ ] `P15-T1` **INPROGRESS** Add a reproducible real-repository refinement
+  validation plan that defines local checkout selection, safe input manifests,
+  command sequences, expected artifacts, scoring rubric, and non-committed
+  output policy for `collect -> draft -> SpecNode refine -> semantic review ->
+  retry` runs.
 - [ ] `P15-T2` Add a local-only validation runner or script template that can
   execute the full refinement loop against operator-supplied public repository
   checkouts without executing harvested package code, installing dependencies,
