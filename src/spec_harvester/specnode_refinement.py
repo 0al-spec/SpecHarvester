@@ -169,6 +169,8 @@ RETRY_DIRECTIVE_INSTRUCTIONS = {
     ),
 }
 ALLOWED_RETRY_DIRECTIVE_CODES = set(RETRY_DIRECTIVE_INSTRUCTIONS)
+ALLOWED_RETRY_RUN_STATUSES = {"approved", "retry_scheduled", "retry_limit_reached"}
+ALLOWED_RETRY_ATTEMPT_STATUSES = {"approved", "retry_scheduled", "retry_limit_reached"}
 RETRY_FORBIDDEN_KEYS = {
     *SEMANTIC_REVIEW_FORBIDDEN_KEYS,
     "rawRepositorySource",
@@ -772,6 +774,11 @@ def build_specnode_retry_refinement_job(
 ) -> dict[str, Any]:
     if attempt_index <= 0:
         raise ValueError("retry attempt_index must be greater than zero")
+    errors: list[str] = []
+    _validate_retry_directive_set(retry_directive_set, errors=errors)
+    if errors:
+        raise SpecNodeRetryOrchestrationValidationError("; ".join(errors))
+
     plan_digest = canonical_json_sha256_digest(preview_plan)
     directive_digest = canonical_json_sha256_digest(retry_directive_set)
     job = build_specnode_refinement_job(
@@ -1064,6 +1071,9 @@ def validate_specnode_refinement_retry_run(
         errors.append("retry run kind must be SpecNodeRefinementRetryRun")
     if run.get("schemaVersion") != SPECNODE_SCHEMA_VERSION:
         errors.append("retry run schemaVersion must be 1")
+    run_status = run.get("status")
+    if run_status not in ALLOWED_RETRY_RUN_STATUSES:
+        errors.append("retry run status is invalid")
     contract = run.get("contract")
     if not isinstance(contract, dict):
         errors.append("retry run contract must be an object")
@@ -1092,6 +1102,8 @@ def validate_specnode_refinement_retry_run(
         max_attempts = retry_policy.get("maxAttempts")
         if not isinstance(max_attempts, int) or not (1 <= max_attempts <= MAX_RETRY_ATTEMPTS_LIMIT):
             errors.append("retry run retryPolicy.maxAttempts is invalid")
+        if not isinstance(retry_policy.get("attemptCount"), int):
+            errors.append("retry run retryPolicy.attemptCount is invalid")
         if retry_policy.get("artifactReuse") != "same_bundle_and_preview_plan":
             errors.append("retry run retryPolicy.artifactReuse must require immutable artifacts")
 
@@ -1101,6 +1113,8 @@ def validate_specnode_refinement_retry_run(
         attempts = []
     elif isinstance(max_attempts, int) and len(attempts) > max_attempts:
         errors.append("retry run attempts exceed maxAttempts")
+    if isinstance(retry_policy, dict) and retry_policy.get("attemptCount") != len(attempts):
+        errors.append("retry run retryPolicy.attemptCount must match attempts length")
 
     final_refinement_digest = None
     final_review_digest = None
@@ -1112,6 +1126,8 @@ def validate_specnode_refinement_retry_run(
             errors.append(f"retry attempt {expected_index} kind is invalid")
         if attempt.get("attemptIndex") != expected_index:
             errors.append(f"retry attempt {expected_index} index is not sequential")
+        if attempt.get("status") not in ALLOWED_RETRY_ATTEMPT_STATUSES:
+            errors.append(f"retry attempt {expected_index} status is invalid")
         if attempt.get("sourceBundleDigest") != source_bundle_digest:
             errors.append(f"retry attempt {expected_index} source bundle digest drifted")
         if attempt.get("sourcePreviewPlanDigest") != preview_plan_digest:
@@ -1120,6 +1136,14 @@ def validate_specnode_refinement_retry_run(
         directive_set = attempt.get("retryDirectiveSet")
         if directive_set is not None:
             _validate_retry_directive_set(directive_set, errors=errors)
+            semantic_review_result = attempt.get("semanticReviewResult")
+            if isinstance(semantic_review_result, dict):
+                if directive_set.get("sourceSemanticReviewResultDigest") != (
+                    semantic_review_result.get("digest")
+                ):
+                    errors.append(f"retry attempt {expected_index} directive digest mismatch")
+                if directive_set.get("sourceVerdict") != semantic_review_result.get("verdict"):
+                    errors.append(f"retry attempt {expected_index} directive verdict mismatch")
         final_refinement_digest = _nested_digest(attempt, "refinementResult")
         final_review_digest = _nested_digest(attempt, "semanticReviewResult")
 

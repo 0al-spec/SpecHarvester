@@ -29,7 +29,7 @@ attempt audit trail.
 | Tests | `PYTHONPATH=src python -m pytest` | PASS, 261 passed |
 | Lint | `ruff check src tests` | PASS |
 | Format | `ruff format --check src tests` | PASS, 46 files already formatted |
-| Coverage | `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 261 passed, 90.37% total coverage |
+| Coverage | `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 261 passed, 90.39% total coverage |
 | Swift manifest | `swift package dump-package >/dev/null` | PASS |
 | Swift docs target | `swift build --target SpecHarvesterDocs` | PASS |
 
@@ -47,6 +47,9 @@ attempt audit trail.
   semantic review result digest, retry directive digest, verdict, and status.
 - PASS: Validation rejects digest drift, invalid retry caps, unsupported directive
   codes, and malformed attempt linkage.
+- PASS: Validation rejects invalid run or attempt statuses, stale attempt counts,
+  malformed retry directive sets embedded into retry jobs, and directive sets
+  that do not match the source semantic review digest or verdict.
 - PASS: Documentation contract is mirrored in GitHub docs and DocC.
 
 ## Notes

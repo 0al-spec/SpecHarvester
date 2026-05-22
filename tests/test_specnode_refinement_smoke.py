@@ -697,6 +697,16 @@ def test_specnode_retry_orchestration_rejects_invalid_retry_bounds(
             attempt_index=0,
         )
 
+    invalid_directive_set = build_specnode_retry_directives(review_result)
+    invalid_directive_set["policy"]["rawTextPropagation"] = "allowed"
+    with pytest.raises(SpecNodeRetryOrchestrationValidationError, match="raw text"):
+        build_specnode_retry_refinement_job(
+            bundle,
+            preview_plan,
+            invalid_directive_set,
+            attempt_index=1,
+        )
+
 
 def test_specnode_retry_orchestration_validation_rejects_drift_and_bad_directives(
     tmp_path: Path,
@@ -751,6 +761,27 @@ def test_specnode_retry_orchestration_validation_rejects_drift_and_bad_directive
         malformed_result_case(
             run,
             lambda malformed: malformed["attempts"][0].update({"retryDirectiveSetDigest": "bad"}),
+        ),
+        malformed_result_case(run, lambda malformed: malformed.update({"status": "invented"})),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["retryPolicy"].update({"attemptCount": 9}),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0].update({"status": "invented"}),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0]["retryDirectiveSet"].update(
+                {"sourceSemanticReviewResultDigest": "sha256:" + "0" * 64}
+            ),
+        ),
+        malformed_result_case(
+            run,
+            lambda malformed: malformed["attempts"][0]["retryDirectiveSet"].update(
+                {"sourceVerdict": "needs_revision"}
+            ),
         ),
         malformed_result_case(
             run,
