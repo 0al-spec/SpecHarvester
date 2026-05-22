@@ -247,6 +247,9 @@ Acceptance:
 - [x] `P11-T5` Add integration smoke coverage using a local SpecNode-compatible
   provider with weak-model drafting inputs, while preserving deterministic
   fallback when no provider is available.
+- [ ] `P11-T6` Capture LM Studio `gpt-oss` response compatibility by requiring
+  OpenAI-compatible `json_schema` response format for structured output and a
+  safe parser fallback for `gpt-oss` channel-wrapped JSON in text mode.
 
 Acceptance:
 
@@ -260,6 +263,9 @@ Acceptance:
   expansion, and filesystem access outside the candidate workspace.
 - Provider-specific behavior is optional and can be disabled without breaking
   `collect-local`, `collect-batch`, `draft`, validation, or smoke tests.
+- LM Studio compatibility guidance documents that `json_object` is not assumed
+  and that `json_schema` is the preferred structured-output mode for
+  `openai/gpt-oss-20b`.
 
 ## Phase 12. Popular Repository Smoke Hardening
 
