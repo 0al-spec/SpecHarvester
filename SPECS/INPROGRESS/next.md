@@ -10,6 +10,7 @@ task before running the next Flow cycle.
 
 ## Recently Archived
 
+- `P14-T1` LM Studio Live Retry Smoke — archived 2026-05-22 with verdict PASS.
 - `P13-T3` Feedback-Driven Refinement Retry Orchestration — archived 2026-05-22
   with verdict PASS.
 - `P13-T2` Clean-Context Semantic Review Pass — archived 2026-05-22 with
