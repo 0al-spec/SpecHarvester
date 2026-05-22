@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-05-20
+Updated: 2026-05-22
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -304,3 +304,38 @@ Acceptance:
   cross-repository contract work.
 - Flask and Gin smoke runs are reproducible and documented without committing
   generated `.smoke/` output.
+
+## Phase 13. Prompted Refinement Quality Loop
+
+- [ ] `P13-T1` **INPROGRESS** Define a versioned SpecNode refinement prompt
+  contract that turns `compactModelInput`, output schema, evidence-reference
+  rules, negative-claim policy, and confidence calibration into repository-owned
+  deterministic prompt templates instead of ad-hoc runtime wording.
+- [ ] `P13-T2` Add a clean-context semantic review pass for generated
+  `SpecNodeRefinementResult` proposals, where a second model sees only the
+  deterministic evidence bundle, the generated candidate or patch proposal, and
+  a strict review rubric, then emits typed findings instead of mutating the
+  candidate directly.
+- [ ] `P13-T3` Add feedback-driven refinement retry orchestration that reuses the
+  same immutable deterministic artifacts, converts semantic review findings into
+  bounded retry directives, caps retry attempts, and records an audit trail from
+  initial refinement through review and retry.
+
+Acceptance:
+
+- Prompt text used for SpecNode refinement is a versioned, reviewable contract
+  with deterministic inputs, schema-bound outputs, and tests covering known
+  weak-model failure modes such as describing SpecPM generation instead of the
+  target package behavior.
+- Evidence references are constrained to known artifact IDs or generated
+  evidence IDs; unknown, collapsed, or invented references are rejected before a
+  proposal can be considered reviewable.
+- Semantic review runs with clean context: no first-pass prompt transcript, no
+  chain-of-thought, no provider logs, no raw source access, and no authority to
+  directly edit candidate files.
+- Review findings use a typed taxonomy such as wrong package intent, unsupported
+  capability claim, missing evidence reference, overconfident confidence score,
+  unsafe negative claim, and schema-policy mismatch.
+- Retry orchestration reuses the original deterministic evidence snapshot unless
+  source artifacts changed, preserves attempt linkage, enforces a maximum retry
+  count, and keeps all model output proposal-only.
