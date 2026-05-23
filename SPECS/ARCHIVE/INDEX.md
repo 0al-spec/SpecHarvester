@@ -70,6 +70,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p15_t3_structured_quality_report_format.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p15_t1_real_repository_refinement_validation_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p14_t1_lm_studio_live_retry_smoke.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p13_t3_feedback_driven_refinement_retry_orchestration.md` |
