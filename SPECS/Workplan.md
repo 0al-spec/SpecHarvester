@@ -366,13 +366,14 @@ Acceptance:
 
 - [ ] `P15-T1` **INPROGRESS** Add a reproducible real-repository refinement
   validation plan that defines local checkout selection, safe input manifests,
-  command sequences, expected artifacts, scoring rubric, and non-committed
-  output policy for `collect -> draft -> SpecNode refine -> semantic review ->
-  retry` runs.
+  command sequences, expected SpecHarvester-side artifacts, scoring rubric, and
+  non-committed output policy for `collect -> draft -> artifact bundle ->
+  optional external refinement -> semantic review report` runs.
 - [ ] `P15-T2` Add a local-only validation runner or script template that can
-  execute the full refinement loop against operator-supplied public repository
-  checkouts without executing harvested package code, installing dependencies,
-  contacting package registries, or committing generated candidate outputs.
+  orchestrate SpecHarvester-owned collection, drafting, artifact packaging,
+  validation, and reporting steps against operator-supplied public repository
+  checkouts, optionally invoking an existing external SpecNode-compatible
+  provider boundary without implementing SpecNode runtime responsibilities.
 - [ ] `P15-T3` Add a structured quality report format for real-repository
   refinement runs, including package intent accuracy, capability/evidence
   support quality, SpecPM validation status, retry effectiveness, token usage,
@@ -383,7 +384,7 @@ Acceptance:
   triage summaries and failure classes.
 - [ ] `P15-T5` Convert repeated real-repository validation failures into
   follow-up Workplan tasks for deterministic analyzers, prompt contracts,
-  SpecNode provider integration, SpecPM compatibility, or documentation,
+  external SpecNode contract integration, SpecPM compatibility, or documentation,
   instead of tuning ad-hoc prompts from individual outputs.
 
 Acceptance:
@@ -394,6 +395,9 @@ Acceptance:
 - The validation plan uses operator-supplied repository paths or manifests and
   does not commit harvested source snapshots, generated `.smoke/` outputs, raw
   prompts, provider transcripts, secrets, or model chain-of-thought.
+- SpecHarvester does not implement SpecNode runtime, provider discovery, model
+  execution, scheduling, provider lifecycle, or provider-specific orchestration;
+  those remain SpecNode responsibilities behind the existing external contract.
 - Each run preserves deterministic artifact references, source revisions,
   analyzer versions, file digests, SpecPM validation status, retry audit state,
   provider/model metadata, and token usage where available.

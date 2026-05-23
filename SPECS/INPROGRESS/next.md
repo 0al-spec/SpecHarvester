@@ -9,7 +9,8 @@
 ## Description
 
 Add the Phase 15 Workplan planning artifact for reproducible, local-only
-real-repository refinement validation.
+SpecHarvester-side real-repository refinement validation that treats SpecNode as
+an external contract boundary.
 
 ## Next Step
 
