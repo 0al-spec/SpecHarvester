@@ -733,9 +733,17 @@ def run_smoke_triage_summary(args: argparse.Namespace) -> int:
 
 
 def run_quality_report(args: argparse.Namespace) -> int:
-    run_report_text = args.run_report.read_text(encoding="utf-8")
     try:
+        run_report_text = args.run_report.read_text(encoding="utf-8")
         run_report = json.loads(run_report_text)
+    except OSError as exc:
+        print(
+            json.dumps(
+                {"status": "error", "message": f"Cannot read run report: {exc}"},
+                indent=2,
+            )
+        )
+        return 2
     except json.JSONDecodeError as exc:
         print(
             json.dumps(
@@ -753,10 +761,15 @@ def run_quality_report(args: argparse.Namespace) -> int:
         )
         return 2
 
-    human_notes = _parse_quality_report_notes(args.notes)
+    try:
+        human_notes = _parse_quality_report_notes(args.notes)
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
     result = build_quality_report(
         run_report,
         candidates_root=args.candidates_root,
+        run_report_path=args.run_report,
         human_notes=human_notes,
     )
     if args.output is not None:
@@ -780,11 +793,13 @@ def _parse_quality_report_notes(raw_notes: list[str]) -> dict[str, str]:
         notes_path = Path(raw_notes[0][1:])
         try:
             data = json.loads(notes_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            return {}
+        except OSError as exc:
+            raise ValueError(f"Cannot read notes file: {exc}") from exc
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"Invalid notes JSON: {exc.msg}") from exc
         if isinstance(data, dict):
             return {str(k): str(v) for k, v in data.items()}
-        return {}
+        raise ValueError("Notes file must be a JSON object mapping package ids to notes")
 
     notes: dict[str, str] = {}
     for entry in raw_notes:

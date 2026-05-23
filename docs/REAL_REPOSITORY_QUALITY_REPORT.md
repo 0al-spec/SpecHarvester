@@ -31,7 +31,8 @@ directories and emits a quality report covering:
 {
   "schemaVersion": 1,
   "kind": "SpecHarvesterRealRepositoryQualityReport",
-  "runReport": "<inputs path from run report>",
+  "runReport": "<execution report path when supplied>",
+  "inputs": "<inputs path from run report>",
   "candidatesRoot": "<path>",
   "dryRun": false,
   "packageCount": 2,
@@ -89,8 +90,9 @@ directories and emits a quality report covering:
 **`capabilityEvidenceQuality`**:
 - `strong` — all capabilities have ≥1 evidence source.
 - `partial` — some capabilities have evidence sources.
-- `weak` — no capabilities, or none have evidence sources.
-- `unscored` — draft not available.
+- `weak` — draft step failed, `draft.json` is absent, no capabilities are
+  present, or none have evidence sources.
+- `unscored` — dry_run mode.
 
 **`specpmStatus`**: derived directly from the `specpm` step outcome in the
 execution report.

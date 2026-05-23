@@ -63,6 +63,7 @@ def build_quality_report(
     run_report: dict[str, Any],
     *,
     candidates_root: Path | None = None,
+    run_report_path: str | Path | None = None,
     human_notes: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Build a quality report dict from an execution run report.
@@ -71,6 +72,7 @@ def build_quality_report(
         run_report: The JSON execution report produced by the P15-T2 runner.
         candidates_root: Optional override for the candidate output root
             directory.  Defaults to ``run_report["out"]`` when not provided.
+        run_report_path: Optional source path for the execution report.
         human_notes: Optional mapping of package id → free-text human-review
             notes to embed in each package record.
 
@@ -83,7 +85,12 @@ def build_quality_report(
     dry_run = bool(run_report.get("dryRun", False))
 
     packages = []
-    for pkg_record in run_report.get("packages", []):
+    package_records = run_report.get("packages", [])
+    if not isinstance(package_records, list):
+        package_records = []
+    for pkg_record in package_records:
+        if not isinstance(pkg_record, dict):
+            continue
         pkg_id = str(pkg_record.get("id", ""))
         candidate_dir = root / pkg_id if root is not None else None
         record = build_package_quality_record(
@@ -99,7 +106,10 @@ def build_quality_report(
     return {
         "schemaVersion": QUALITY_REPORT_SCHEMA_VERSION,
         "kind": QUALITY_REPORT_KIND,
-        "runReport": run_report.get("inputs"),
+        "runReport": str(run_report_path)
+        if run_report_path is not None
+        else run_report.get("runReport"),
+        "inputs": run_report.get("inputs"),
         "candidatesRoot": str(root) if root is not None else None,
         "dryRun": dry_run,
         "packageCount": len(packages),
@@ -123,7 +133,7 @@ def build_package_quality_record(
     quality dimensions.
     """
     pkg_id = str(package_record.get("id", ""))
-    steps: list[dict[str, Any]] = package_record.get("steps", [])
+    steps = _coerce_step_records(package_record.get("steps", []))
 
     draft_data = _read_candidate_json(candidate_dir, "draft.json") if not dry_run else None
     harvest_data = _read_candidate_json(candidate_dir, "harvest.json") if not dry_run else None
@@ -197,6 +207,17 @@ def _read_candidate_json(candidate_dir: Path | None, filename: str) -> dict[str,
     return data if isinstance(data, dict) else None
 
 
+def _coerce_step_records(raw_steps: Any) -> list[dict[str, Any]]:
+    if not isinstance(raw_steps, list):
+        return []
+    return [step for step in raw_steps if isinstance(step, dict)]
+
+
+def _candidate_payload(draft_data: dict[str, Any]) -> dict[str, Any] | None:
+    candidate = draft_data.get("candidate", draft_data)
+    return candidate if isinstance(candidate, dict) else None
+
+
 def _step_outcome(steps: list[dict[str, Any]], step_name: str) -> str | None:
     """Return the status of *step_name* from the steps list, or None."""
     for step in steps:
@@ -220,7 +241,9 @@ def _derive_intent_rating(
     if draft_data is None:
         return RATING_WEAK, "draft.json not found after successful draft step"
 
-    candidate = draft_data.get("candidate") or draft_data
+    candidate = _candidate_payload(draft_data)
+    if candidate is None:
+        return RATING_WEAK, "draft.json candidate field is not an object"
     intent = candidate.get("intent") or ""
     if not isinstance(intent, str) or not intent.strip():
         return RATING_WEAK, "draft.json has no intent field"
@@ -249,7 +272,9 @@ def _derive_capability_rating(
     if draft_data is None:
         return RATING_WEAK, "draft.json not found after successful draft step"
 
-    candidate = draft_data.get("candidate") or draft_data
+    candidate = _candidate_payload(draft_data)
+    if candidate is None:
+        return RATING_WEAK, "draft.json candidate field is not an object"
     capabilities = candidate.get("capabilities") or []
     if not isinstance(capabilities, list) or not capabilities:
         return RATING_WEAK, "draft.json has no capabilities"

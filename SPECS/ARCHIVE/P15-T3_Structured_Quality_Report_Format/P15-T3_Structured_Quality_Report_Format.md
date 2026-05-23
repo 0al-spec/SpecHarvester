@@ -149,15 +149,17 @@ and stays composable with the existing execution report.
   `intent` field with ≥1 evidence reference
 - `partial` — draft step succeeded but intent is present without evidence
   references
-- `weak` — draft step failed or intent is missing
-- `unscored` — dry_run mode or draft step not attempted
+- `weak` — draft step failed, draft step was not attempted, `draft.json` is
+  absent, or intent is missing
+- `unscored` — dry_run mode
 
 **capabilityEvidenceQuality**:
 - `strong` — `draft.json` has ≥1 capability and all capabilities have
   ≥1 evidence reference
 - `partial` — ≥1 capability present but some lack evidence
-- `weak` — no capabilities or all capabilities lack evidence
-- `unscored` — draft not available
+- `weak` — draft step failed, draft step was not attempted, `draft.json` is
+  absent, no capabilities are present, or all capabilities lack evidence
+- `unscored` — dry_run mode
 
 **specpmStatus**:
 - `passed` — specpm step in run report exited 0
@@ -179,8 +181,8 @@ and stays composable with the existing execution report.
 - `unscored` — harvest.json absent or dry_run
 
 **overallVerdict**:
-- `pass` — specpmStatus==passed AND intentAccuracy in (strong, partial)
-  AND capabilityEvidenceQuality in (strong, partial)
+- `pass` — specpmStatus in (passed, not_run, skipped) AND intentAccuracy in
+  (strong, partial) AND capabilityEvidenceQuality in (strong, partial)
 - `fail` — specpmStatus==failed OR intentAccuracy==weak
 - `review` — everything else non-unscored
 - `unscored` — dry_run or all dimensions unscored

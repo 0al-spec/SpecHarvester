@@ -507,6 +507,34 @@ def test_build_package_quality_record_with_candidate_files(tmp_path: Path) -> No
     assert record["overallVerdict"] == VERDICT_PASS
 
 
+def test_build_package_quality_record_invalid_steps_are_ignored(tmp_path: Path) -> None:
+    record = build_package_quality_record(
+        {"id": "my-pkg", "packageId": None, "steps": None},
+        candidate_dir=None,
+        dry_run=False,
+    )
+    assert record["intentAccuracy"] == RATING_WEAK
+    assert record["specpmStatus"] == SPECPM_NOT_RUN
+
+
+def test_build_package_quality_record_invalid_candidate_schema(tmp_path: Path) -> None:
+    candidate_dir = tmp_path / "my-pkg"
+    _write_json(candidate_dir / "draft.json", {"candidate": []})
+    pkg_record: dict = {
+        "id": "my-pkg",
+        "packageId": None,
+        "steps": [_ok_step("draft")],
+    }
+    record = build_package_quality_record(
+        pkg_record,
+        candidate_dir=candidate_dir,
+        dry_run=False,
+    )
+    assert record["intentAccuracy"] == RATING_WEAK
+    assert record["capabilityEvidenceQuality"] == RATING_WEAK
+    assert "not an object" in record["intentNotes"]
+
+
 # ---------------------------------------------------------------------------
 # build_quality_report
 # ---------------------------------------------------------------------------
@@ -555,6 +583,29 @@ def test_build_quality_report_candidates_root_override(tmp_path: Path) -> None:
     override = tmp_path / "override"
     report = build_quality_report(run_report, candidates_root=override)
     assert report["candidatesRoot"] == str(override)
+
+
+def test_build_quality_report_records_run_report_path(tmp_path: Path) -> None:
+    run_report = _minimal_run_report(tmp_path)
+    run_report_path = tmp_path / "run-report.json"
+    report = build_quality_report(run_report, run_report_path=run_report_path)
+    assert report["runReport"] == str(run_report_path)
+    assert report["inputs"] == str(tmp_path / "inputs")
+
+
+def test_build_quality_report_skips_malformed_package_entries(tmp_path: Path) -> None:
+    run_report = _minimal_run_report(tmp_path)
+    run_report["packages"] = ["not-a-package", {"id": "pkg-b", "steps": None}]
+    report = build_quality_report(run_report)
+    assert report["packageCount"] == 1
+    assert report["packages"][0]["id"] == "pkg-b"
+
+
+def test_build_quality_report_non_list_packages_is_empty(tmp_path: Path) -> None:
+    run_report = _minimal_run_report(tmp_path)
+    run_report["packages"] = {"id": "pkg-a"}
+    report = build_quality_report(run_report)
+    assert report["packageCount"] == 0
 
 
 # ---------------------------------------------------------------------------
@@ -684,9 +735,41 @@ def test_cli_quality_report_notes_from_file(tmp_path: Path, capsys) -> None:
     assert data["packages"][0]["humanReviewNotes"] == "file note"
 
 
+def test_cli_quality_report_missing_notes_file_errors(tmp_path: Path, capsys) -> None:
+    run_report = _minimal_run_report(tmp_path, dry_run=True)
+    run_report_path = tmp_path / "run-report.json"
+    _write_json(run_report_path, run_report)
+
+    result = main(
+        [
+            "quality-report",
+            "--run-report",
+            str(run_report_path),
+            "--notes",
+            f"@{tmp_path / 'missing-notes.json'}",
+        ]
+    )
+    assert result == 2
+    captured = capsys.readouterr()
+    data = json.loads(captured.out)
+    assert data["status"] == "error"
+    assert "Cannot read notes file" in data["message"]
+
+
 def test_cli_quality_report_invalid_json(tmp_path: Path, capsys) -> None:
     bad_path = tmp_path / "bad.json"
     bad_path.write_text("not json", encoding="utf-8")
 
     result = main(["quality-report", "--run-report", str(bad_path)])
     assert result == 2
+
+
+def test_cli_quality_report_missing_run_report_errors(tmp_path: Path, capsys) -> None:
+    missing_path = tmp_path / "missing-run-report.json"
+
+    result = main(["quality-report", "--run-report", str(missing_path)])
+    assert result == 2
+    captured = capsys.readouterr()
+    data = json.loads(captured.out)
+    assert data["status"] == "error"
+    assert "Cannot read run report" in data["message"]

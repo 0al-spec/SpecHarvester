@@ -14,8 +14,8 @@ Status: PASS
 
 ## Deliverables Verified
 
-- `src/spec_harvester/real_repo_quality_report.py` — 185 lines, 95% test
-  coverage. Exports `build_quality_report`, `build_package_quality_record`,
+- `src/spec_harvester/real_repo_quality_report.py` — exports
+  `build_quality_report`, `build_package_quality_record`,
   `write_quality_report`, and all rating/status/verdict constants.
 - `src/spec_harvester/cli.py` — `quality-report` subcommand added with
   `--run-report`, `--candidates-root`, `--notes`, `--output` arguments.

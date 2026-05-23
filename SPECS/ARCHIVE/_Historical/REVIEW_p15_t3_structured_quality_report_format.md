@@ -14,27 +14,14 @@ None.
 
 ### Secondary Issues
 
-**[Low] `_derive_analyzer_coverage` uses a narrow fixed set of field names**
+None open.
 
-The function checks only four hardcoded keys (`pythonPublicApi`, `jsPublicApi`,
-`publicInterface`, `semanticEvidence`) when scanning file entries.  If new
-analyzer output types are added (e.g., a Go analyzer field), coverage will
-silently read `minimal` instead of `partial` or `strong`.
+Resolved during PR follow-up:
 
-Fix suggestion: Extend the key list when new analyzer fields are added, or
-alternatively scan for any non-standard dict-valued field under each file entry
-as a heuristic.  Low priority because the `summary.analyzersUsed` fallback
-provides partial relief.
-
-**[Nit] Notes parsing with commas in notes text is fragile**
-
-`_parse_quality_report_notes` splits on `,` to extract `id=` and `notes=`
-parts.  A notes value containing a comma (e.g., `"good intent, but thin
-evidence"`) will be silently truncated.
-
-Fix suggestion: Use `notes=` as a trailing key by splitting on the first
-occurrence of `,notes=` rather than splitting all commas.  Very low priority
-as the `@file` JSON shorthand is the recommended path for non-trivial notes.
+- `_derive_analyzer_coverage` now detects generic dict-valued analyzer fields
+  while still ignoring metadata fields.
+- `_parse_quality_report_notes` now splits on the first `,notes=` so commas in
+  free-form notes are preserved.
 
 ### Architectural Notes
 
