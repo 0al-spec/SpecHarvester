@@ -110,6 +110,23 @@ SpecNode-compatible implementation exists. SpecHarvester records and validates
 the contract-facing artifacts; SpecNode owns provider execution and usage
 receipt production.
 
+For a reproducible one-command orchestration, use
+`python3 scripts/run_real_repository_validation.py`.
+
+```bash
+python3 scripts/run_real_repository_validation.py \
+  --inputs .smoke/inputs \
+  --out .smoke/output/real-repository-validation \
+  --emit-interface-indexes \
+  --analyzer-cache-dir .smoke/output/analyzer-cache \
+  --select flask \
+  --select gin
+```
+
+The default execution report is
+`.smoke/output/real-repository-validation/run-report.json`. Each drafted
+candidate also receives `draft-summary.json` for structured quality reporting.
+
 ## Expected Local Outputs
 
 All generated outputs remain under `.smoke/output` and are not committed:
@@ -120,6 +137,8 @@ All generated outputs remain under `.smoke/output` and are not committed:
 - `semanticEvidenceIndex` evidence inside drafted specs when available
 - `specpm.yaml`
 - `specs/*.spec.yaml`
+- `draft-summary.json`
+- `run-report.json`
 - `batch-validation.json`
 - `governance-claims.json`
 - `namespace-upstream.json`

@@ -23,6 +23,10 @@ per-candidate artifact directories and emits a quality report covering:
   the harvest snapshot?
 - **Human-review notes** — free-text annotations supplied by the operator.
 
+The P15-T2 runner writes per-candidate `draft-summary.json` files from the
+generated `specpm.yaml` and `specs/*.spec.yaml` artifacts.  The report uses that
+summary for intent and capability evidence scoring.
+
 ## Rating Scales
 
 | Dimension | Values |
@@ -59,6 +63,10 @@ python -m spec_harvester quality-report \
 The execution report captures **what ran** and whether each step succeeded.
 The quality report captures **how good** the output is.  Both are local-only
 advisory artifacts and must not be committed to the repository.
+
+When `--candidates-root` is not supplied, package artifact lookup uses each
+package record's `candidateDir` from `run-report.json`; otherwise it falls back
+to `<candidatesRoot>/<package-id>`.
 
 ## Safety Rules
 

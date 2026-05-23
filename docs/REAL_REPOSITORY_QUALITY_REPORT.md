@@ -80,18 +80,19 @@ directories and emits a quality report covering:
 ### Derivation Rules
 
 **`intentAccuracy`**:
-- `strong` — draft step succeeded and `draft.json` has a non-empty `intent`
-  field with ≥1 `evidenceSources` reference.
+- `strong` — draft step succeeded and `draft-summary.json` has a non-empty
+  `intent` field with ≥1 `evidenceSources` reference.
 - `partial` — draft step succeeded and intent is present but no evidence
   references.
-- `weak` — draft step failed, intent is missing, or `draft.json` is absent.
+- `weak` — draft step failed, intent is missing, or the draft summary artifact
+  is absent.
 - `unscored` — dry_run mode.
 
 **`capabilityEvidenceQuality`**:
 - `strong` — all capabilities have ≥1 evidence source.
 - `partial` — some capabilities have evidence sources.
-- `weak` — draft step failed, `draft.json` is absent, no capabilities are
-  present, or none have evidence sources.
+- `weak` — draft step failed, `draft-summary.json` is absent, no capabilities
+  are present, or none have evidence sources.
 - `unscored` — dry_run mode.
 
 **`specpmStatus`**: derived directly from the `specpm` step outcome in the
@@ -152,6 +153,10 @@ The execution report (from the P15-T2 real-repository validation runner)
 captures **what ran** and whether each step succeeded.  The quality report
 captures **how good** the output is.  Both are local-only advisory artifacts
 and must not be committed to the repository.
+
+When `--candidates-root` is not supplied, package artifact lookup uses each
+package record's `candidateDir` from `run-report.json`; otherwise it falls back
+to `<candidatesRoot>/<package-id>`.
 
 ## Safety Rules
 
