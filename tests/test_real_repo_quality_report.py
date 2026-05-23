@@ -321,6 +321,47 @@ def test_analyzer_coverage_two_types() -> None:
     assert len(used) == 2
 
 
+def test_analyzer_coverage_unknown_analyzer_type_detected() -> None:
+    """An unknown/new analyzer output field (dict-valued) is detected generically."""
+    harvest = {
+        "files": [
+            {"rustPublicApi": {"functions": ["foo", "bar"]}},
+            {"semanticEvidence": {"clusters": []}},
+        ]
+    }
+    rating, notes, used = _derive_analyzer_coverage(harvest, dry_run=False)
+    assert rating == RATING_STRONG
+    assert "rustPublicApi" in used
+    assert "semanticEvidence" in used
+
+
+def test_analyzer_coverage_non_analyzer_dict_fields_ignored() -> None:
+    """Standard file metadata keys (path, digest, etc.) are not counted as analyzers."""
+    harvest = {
+        "files": [
+            {
+                "path": "src/main.rs",
+                "digest": "abc123",
+                "size": 1024,
+                "language": "Rust",
+                "encoding": "utf-8",
+                "skipped": False,
+            }
+        ]
+    }
+    rating, _, used = _derive_analyzer_coverage(harvest, dry_run=False)
+    assert rating == RATING_WEAK
+    assert used == []
+
+
+def test_analyzer_coverage_empty_dict_field_not_counted() -> None:
+    """Empty dict-valued fields are not counted as analyzer output."""
+    harvest = {"files": [{"pythonPublicApi": {}}]}
+    rating, _, used = _derive_analyzer_coverage(harvest, dry_run=False)
+    assert rating == RATING_WEAK
+    assert used == []
+
+
 # ---------------------------------------------------------------------------
 # _derive_overall_verdict
 # ---------------------------------------------------------------------------
@@ -592,6 +633,26 @@ def test_cli_quality_report_notes_parsed(tmp_path: Path, capsys) -> None:
     captured = capsys.readouterr()
     data = json.loads(captured.out)
     assert data["packages"][0]["humanReviewNotes"] == "needs review"
+
+
+def test_cli_quality_report_notes_with_comma_in_text(tmp_path: Path, capsys) -> None:
+    """Commas inside the notes text must not truncate the value."""
+    run_report = _minimal_run_report(tmp_path, dry_run=True)
+    run_report_path = tmp_path / "run-report.json"
+    _write_json(run_report_path, run_report)
+
+    main(
+        [
+            "quality-report",
+            "--run-report",
+            str(run_report_path),
+            "--notes",
+            "id=pkg-a,notes=good intent, but thin evidence",
+        ]
+    )
+    captured = capsys.readouterr()
+    data = json.loads(captured.out)
+    assert data["packages"][0]["humanReviewNotes"] == "good intent, but thin evidence"
 
 
 def test_cli_quality_report_notes_from_file(tmp_path: Path, capsys) -> None:

@@ -340,8 +340,15 @@ def _derive_analyzer_coverage(
     for f in files:
         if not isinstance(f, dict):
             continue
-        for key in ("pythonPublicApi", "jsPublicApi", "publicInterface", "semanticEvidence"):
-            if f.get(key):
+        # Check well-known analyzer output keys explicitly, then fall back to
+        # any dict-valued field that isn't a standard file metadata key.
+        _KNOWN_NON_ANALYZER_KEYS = frozenset(
+            ("path", "digest", "size", "language", "encoding", "skipped", "error")
+        )
+        for key, val in f.items():
+            if key in _KNOWN_NON_ANALYZER_KEYS:
+                continue
+            if isinstance(val, dict) and val:
                 analyzer_types.add(key)
 
     summary = harvest_data.get("summary") or {}

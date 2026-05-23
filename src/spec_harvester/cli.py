@@ -788,13 +788,20 @@ def _parse_quality_report_notes(raw_notes: list[str]) -> dict[str, str]:
 
     notes: dict[str, str] = {}
     for entry in raw_notes:
+        # Split on the first occurrence of ",notes=" so that commas inside
+        # the notes text are preserved correctly.
+        sep = ",notes="
+        sep_idx = entry.find(sep)
+        if sep_idx != -1:
+            head = entry[:sep_idx]
+            text = entry[sep_idx + len(sep) :]
+        else:
+            head = entry
+            text = ""
         pkg_id = ""
-        text = ""
-        for part in entry.split(","):
+        for part in head.split(","):
             if part.startswith("id="):
                 pkg_id = part[3:]
-            elif part.startswith("notes="):
-                text = part[6:]
         if pkg_id:
             notes[pkg_id] = text
     return notes
