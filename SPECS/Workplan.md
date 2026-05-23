@@ -386,6 +386,13 @@ Acceptance:
   follow-up Workplan tasks for deterministic analyzers, prompt contracts,
   external SpecNode contract integration, SpecPM compatibility, or documentation,
   instead of tuning ad-hoc prompts from individual outputs.
+- [ ] `P15-T6` Align the P15-T2 local validation runner with the P15-T3
+  structured quality report contract, ensuring the runner writes a stable
+  `run-report.json`, records candidate artifact locations and step outcomes in
+  the shape consumed by `quality-report`, and resolves the current
+  `draft.json` mismatch by either deriving quality input from generated
+  `specpm.yaml` and `specs/*.spec.yaml` artifacts or explicitly producing a
+  documented draft summary artifact.
 
 Acceptance:
 
