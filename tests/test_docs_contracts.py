@@ -1184,3 +1184,63 @@ def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:
     assert ".smoke/" in ignored_paths
     assert "smoke-inputs/" in ignored_paths
     assert "smoke-output*/" in ignored_paths
+
+
+def test_real_repository_refinement_validation_docs_cover_boundaries() -> None:
+    github_doc = ROOT / "docs" / "REAL_REPOSITORY_REFINEMENT_VALIDATION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RealRepositoryRefinementValidation.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecHarvester-side",
+            "external SpecNode contract boundary",
+            "SpecNode runtime",
+            "provider discovery",
+            "model execution",
+            "provider lifecycle",
+            ".smoke/inputs",
+            ".smoke/output",
+            "source-manifests",
+            "collect-batch",
+            "--emit-interface-indexes",
+            "draft",
+            "smoke-triage-summary",
+            "ProjectProfile",
+            "PublicInterfaceIndex",
+            "semanticEvidenceIndex",
+            "SpecHarvesterSpecNodeArtifactBundle",
+            "SpecHarvesterRefinePreviewPlan",
+            "SpecNodeRefinementRetryRun",
+            "SpecPM validation",
+            "intent accuracy",
+            "capability/evidence support",
+            "token usage",
+            "Platform",
+            "workspace catalog",
+            ".0al",
+            "Do not install harvested dependencies",
+            "Do not run harvested package scripts",
+            "Do not execute harvested repository code",
+            "Do not commit generated candidates",
+        ):
+            assert required in text
+
+    assert "REAL_REPOSITORY_REFINEMENT_VALIDATION.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:RealRepositoryRefinementValidation>" in docc_root.read_text(encoding="utf-8")
+
+    for path in (workflow_doc, workflow_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "RealRepositoryRefinementValidation" in text
+        assert "SpecHarvester-side" in text
+        assert "provider-specific orchestration" in text
