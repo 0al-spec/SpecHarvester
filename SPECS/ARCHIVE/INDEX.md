@@ -69,6 +69,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p15_t1_real_repository_refinement_validation_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p14_t1_lm_studio_live_retry_smoke.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p13_t3_feedback_driven_refinement_retry_orchestration.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p13_t2_clean_context_semantic_review_pass.md` |
@@ -174,6 +175,7 @@
 | 2026-05-22 | P14-T1 | Archived LM Studio Live Retry Smoke (PASS) |
 | 2026-05-22 | P14-T1 | Archived REVIEW_p14_t1_lm_studio_live_retry_smoke report |
 | 2026-05-23 | P15-T1 | Archived Real-Repository Refinement Validation Plan (PASS) |
+| 2026-05-23 | P15-T1 | Archived REVIEW_p15_t1_real_repository_refinement_validation_plan report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
