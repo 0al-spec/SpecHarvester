@@ -65,7 +65,10 @@ Published DocC site:
 27. [`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md):
     local SpecNode-compatible provider smoke coverage and deterministic
     provider-unavailable fallback
-28. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+28. [`REAL_REPOSITORY_REFINEMENT_VALIDATION.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION.md):
+    local-only real repository validation plan for SpecHarvester-side evidence,
+    draft, reporting, and external SpecNode contract boundary checks
+29. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -104,6 +107,10 @@ Published DocC site:
 - [`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md):
   executable local provider-stub smoke coverage for compact weak-model inputs,
   structural validation, and deterministic fallback
+- [`REAL_REPOSITORY_REFINEMENT_VALIDATION.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION.md):
+  real repository validation plan that keeps SpecHarvester on deterministic
+  evidence, artifact bundle, validation, and reporting responsibilities while
+  treating SpecNode as an external contract boundary
 
 ## GitHub Process Surface
 
