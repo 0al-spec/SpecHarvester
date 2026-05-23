@@ -1246,3 +1246,44 @@ def test_real_repository_refinement_validation_docs_cover_boundaries() -> None:
         assert "RealRepositoryRefinementValidation" in text
         assert "SpecHarvester-side" in text
         assert "provider-specific orchestration" in text
+
+
+def test_real_repository_quality_report_docs_cover_required_fields() -> None:
+    github_doc = ROOT / "docs" / "REAL_REPOSITORY_QUALITY_REPORT.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "RealRepositoryQualityReport.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "quality-report",
+            "intentAccuracy",
+            "capabilityEvidenceQuality",
+            "specpmStatus",
+            "retryOutcome",
+            "tokenUsage",
+            "analyzerCoverage",
+            "humanReviewNotes",
+            "overallVerdict",
+            "strong",
+            "partial",
+            "weak",
+            "unscored",
+            "passed",
+            "failed",
+            "not_run",
+            "not_attempted",
+            "improved",
+            "pass",
+            "review",
+            "fail",
+            "--run-report",
+            "must not be committed",
+        ):
+            assert required in text, f"Required term {required!r} not found in {path}"
+
+    assert "REAL_REPOSITORY_QUALITY_REPORT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:RealRepositoryQualityReport>" in docc_root.read_text(encoding="utf-8")

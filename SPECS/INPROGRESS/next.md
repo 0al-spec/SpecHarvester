@@ -1,19 +1,22 @@
-# Next Task: P15-T2 — Local-Only Validation Runner Template
+# Next Task: P15-T4 — Local Validation Matrix
 
 **Priority:** P1
 **Phase:** Phase 15. Real Repository Refinement Validation
-**Effort:** 4-6 hours
-**Dependencies:** P15-T1
+**Effort:** 4-8 hours
+**Dependencies:** P15-T3
 **Status:** Suggested
 
 ## Description
 
-Add a local-only validation runner or script template that can orchestrate
-SpecHarvester-owned collection, drafting, artifact packaging, validation, and
-reporting steps against operator-supplied public repository checkouts,
-optionally invoking an existing external SpecNode-compatible provider boundary
-without implementing SpecNode runtime responsibilities.
+Run and document a representative local validation matrix across several
+repository shapes such as Swift/SPM, JavaScript/TypeScript, Python, Go,
+documentation-first, and mixed-language projects, recording only compact
+triage summaries and failure classes.
+
+## Recently Archived
+
+- P15-T3: Structured Quality Report Format (PASS, 2026-05-23)
 
 ## Next Step
 
-Run the SELECT command for `P15-T2`, then run PLAN.
+Run SELECT for `P15-T4`, then PLAN.

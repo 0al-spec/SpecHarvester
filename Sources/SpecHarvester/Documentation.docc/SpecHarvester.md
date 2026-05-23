@@ -94,6 +94,7 @@ the host.
 - <doc:SpecNodePatchProposalContract>
 - <doc:SpecNodeProviderSmokeCoverage>
 - <doc:RealRepositoryRefinementValidation>
+- <doc:RealRepositoryQualityReport>
 - <doc:ProposalAutomation>
 
 ### Architecture

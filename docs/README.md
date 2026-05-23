@@ -68,7 +68,11 @@ Published DocC site:
 28. [`REAL_REPOSITORY_REFINEMENT_VALIDATION.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION.md):
     local-only real repository validation plan for SpecHarvester-side evidence,
     draft, reporting, and external SpecNode contract boundary checks
-29. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+29. [`REAL_REPOSITORY_QUALITY_REPORT.md`](REAL_REPOSITORY_QUALITY_REPORT.md):
+    structured quality report format for real-repository refinement runs,
+    covering intent accuracy, capability evidence, SpecPM status, retry
+    effectiveness, token usage, analyzer coverage, and human-review notes
+30. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References

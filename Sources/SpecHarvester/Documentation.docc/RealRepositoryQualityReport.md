@@ -1,0 +1,72 @@
+# Real Repository Quality Report
+
+Status: Phase 15 plan
+
+This page mirrors the GitHub documentation for the structured quality report
+format added in P15-T3.  The quality report captures the semantic quality of
+SpecHarvester output for a real-repository refinement validation run and
+complements the execution report produced by the P15-T2 runner.
+
+## Purpose
+
+``python -m spec_harvester quality-report`` reads an execution report and
+per-candidate artifact directories and emits a quality report covering:
+
+- **Package intent accuracy** — is the drafted intent plausible and backed by
+  evidence?
+- **Capability/evidence support quality** — do capability claims reference
+  deterministic evidence?
+- **SpecPM validation status** — did the candidate pass ``specpm validate``?
+- **Retry effectiveness** — did external SpecNode refinement improve the result?
+- **Token usage** — prompt and completion token counts (when available).
+- **Deterministic analyzer coverage** — how many analyzer types contributed to
+  the harvest snapshot?
+- **Human-review notes** — free-text annotations supplied by the operator.
+
+## Rating Scales
+
+| Dimension | Values |
+|---|---|
+| `intentAccuracy` | `strong`, `partial`, `weak`, `unscored` |
+| `capabilityEvidenceQuality` | `strong`, `partial`, `weak`, `unscored` |
+| `analyzerCoverage` | `strong`, `partial`, `weak`, `unscored` |
+| `specpmStatus` | `passed`, `failed`, `skipped`, `not_run` |
+| `retryOutcome` | `improved`, `unchanged`, `degraded`, `not_attempted` |
+| `overallVerdict` | `pass`, `review`, `fail`, `unscored` |
+| `tokenUsage` | `{ "prompt": <int or null>, "completion": <int or null> }` |
+| `humanReviewNotes` | free-text string; empty string when not supplied |
+
+## CLI Usage
+
+```bash
+python -m spec_harvester quality-report \
+  --run-report .smoke/output/real-repository-validation/run-report.json \
+  --candidates-root .smoke/output/real-repository-validation \
+  --notes "id=my-package,notes=intent looks good" \
+  --output quality-report.json
+```
+
+Notes can also be supplied from a JSON file mapping package ids to notes text:
+
+```bash
+python -m spec_harvester quality-report \
+  --run-report run-report.json \
+  --notes @notes.json
+```
+
+## Relationship to Execution Report
+
+The execution report captures **what ran** and whether each step succeeded.
+The quality report captures **how good** the output is.  Both are local-only
+advisory artifacts and must not be committed to the repository.
+
+## Safety Rules
+
+- Reads only existing local JSON artifact files.
+- Does not execute repository code, install packages, or contact external
+  services.
+- Does not embed raw source, prompts, provider transcripts, chain-of-thought,
+  or secrets.
+- Generated quality report files must not be committed.
+- Does not implement SpecNode runtime, provider discovery, model execution,
+  scheduling, or lifecycle management.

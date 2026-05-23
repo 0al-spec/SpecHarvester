@@ -374,7 +374,7 @@ Acceptance:
   validation, and reporting steps against operator-supplied public repository
   checkouts, optionally invoking an existing external SpecNode-compatible
   provider boundary without implementing SpecNode runtime responsibilities.
-- [ ] `P15-T3` Add a structured quality report format for real-repository
+- [x] `P15-T3` Add a structured quality report format for real-repository
   refinement runs, including package intent accuracy, capability/evidence
   support quality, SpecPM validation status, retry effectiveness, token usage,
   deterministic analyzer coverage, and human-review notes.
