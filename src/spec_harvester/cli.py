@@ -50,6 +50,10 @@ from spec_harvester.promoter import (
     prepare_accepted_manifest_entry,
     promote_candidate,
 )
+from spec_harvester.real_repo_quality_report import (
+    build_quality_report,
+    write_quality_report,
+)
 from spec_harvester.smoke_triage import (
     build_smoke_triage_summary,
     write_smoke_triage_summary,
@@ -486,6 +490,47 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where local smoke triage summary JSON is written.",
     )
     smoke_triage.set_defaults(func=run_smoke_triage_summary)
+
+    quality_report = subcommands.add_parser(
+        "quality-report",
+        help=(
+            "Build a structured quality report for a real-repository refinement "
+            "validation run from an existing execution report JSON."
+        ),
+    )
+    quality_report.add_argument(
+        "--run-report",
+        type=Path,
+        required=True,
+        help="Path to the execution report JSON produced by the P15-T2 runner.",
+    )
+    quality_report.add_argument(
+        "--candidates-root",
+        type=Path,
+        help=(
+            "Override the candidate output root directory used to locate "
+            "per-package artifact files. Defaults to the 'out' field in the "
+            "run report."
+        ),
+    )
+    quality_report.add_argument(
+        "--notes",
+        action="append",
+        default=[],
+        metavar="ID=TEXT",
+        help=(
+            "Human-review note for one package in the form 'id=<pkg_id>,notes=<text>'. "
+            "May be repeated for multiple packages. Alternatively pass a single "
+            "@<path> argument to read a JSON file mapping package ids to notes."
+        ),
+    )
+    quality_report.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where quality report JSON is written.",
+    )
+    quality_report.set_defaults(func=run_quality_report)
+
     return parser
 
 
@@ -685,6 +730,74 @@ def run_smoke_triage_summary(args: argparse.Namespace) -> int:
         write_smoke_triage_summary(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
+
+
+def run_quality_report(args: argparse.Namespace) -> int:
+    run_report_text = args.run_report.read_text(encoding="utf-8")
+    try:
+        run_report = json.loads(run_report_text)
+    except json.JSONDecodeError as exc:
+        print(
+            json.dumps(
+                {"status": "error", "message": f"Invalid run report JSON: {exc.msg}"},
+                indent=2,
+            )
+        )
+        return 2
+    if not isinstance(run_report, dict):
+        print(
+            json.dumps(
+                {"status": "error", "message": "Run report must be a JSON object"},
+                indent=2,
+            )
+        )
+        return 2
+
+    human_notes = _parse_quality_report_notes(args.notes)
+    result = build_quality_report(
+        run_report,
+        candidates_root=args.candidates_root,
+        human_notes=human_notes,
+    )
+    if args.output is not None:
+        write_quality_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def _parse_quality_report_notes(raw_notes: list[str]) -> dict[str, str]:
+    """Parse ``--notes`` arguments into a mapping of package id → notes text.
+
+    Accepts either:
+    - ``id=<pkg_id>,notes=<text>`` pairs (one per ``--notes`` flag), or
+    - a single ``@<path>`` argument pointing to a JSON file mapping ids to notes.
+    """
+    if not raw_notes:
+        return {}
+
+    # Single @file shorthand
+    if len(raw_notes) == 1 and raw_notes[0].startswith("@"):
+        notes_path = Path(raw_notes[0][1:])
+        try:
+            data = json.loads(notes_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return {}
+        if isinstance(data, dict):
+            return {str(k): str(v) for k, v in data.items()}
+        return {}
+
+    notes: dict[str, str] = {}
+    for entry in raw_notes:
+        pkg_id = ""
+        text = ""
+        for part in entry.split(","):
+            if part.startswith("id="):
+                pkg_id = part[3:]
+            elif part.startswith("notes="):
+                text = part[6:]
+        if pkg_id:
+            notes[pkg_id] = text
+    return notes
 
 
 def run_prepare_accepted_manifest_entry(args: argparse.Namespace) -> int:
