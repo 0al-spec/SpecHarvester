@@ -1,17 +1,19 @@
-# Next Task: P15-T1 — Real-Repository Refinement Validation Plan
+# Next Task: P15-T2 — Local-Only Validation Runner Template
 
 **Priority:** P1
 **Phase:** Phase 15. Real Repository Refinement Validation
-**Effort:** 2-4 hours
-**Dependencies:** P14-T1
-**Status:** Selected
+**Effort:** 4-6 hours
+**Dependencies:** P15-T1
+**Status:** Suggested
 
 ## Description
 
-Add the Phase 15 Workplan planning artifact for reproducible, local-only
-SpecHarvester-side real-repository refinement validation that treats SpecNode as
-an external contract boundary.
+Add a local-only validation runner or script template that can orchestrate
+SpecHarvester-owned collection, drafting, artifact packaging, validation, and
+reporting steps against operator-supplied public repository checkouts,
+optionally invoking an existing external SpecNode-compatible provider boundary
+without implementing SpecNode runtime responsibilities.
 
 ## Next Step
 
-Run the PLAN command to generate the implementation-ready PRD.
+Run the SELECT command for `P15-T2`, then run PLAN.

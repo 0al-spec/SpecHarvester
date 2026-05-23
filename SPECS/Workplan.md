@@ -364,7 +364,7 @@ Acceptance:
 
 ## Phase 15. Real Repository Refinement Validation
 
-- [ ] `P15-T1` **INPROGRESS** Add a reproducible real-repository refinement
+- [x] `P15-T1` Add a reproducible real-repository refinement
   validation plan that defines local checkout selection, safe input manifests,
   command sequences, expected SpecHarvester-side artifacts, scoring rubric, and
   non-committed output policy for `collect -> draft -> artifact bundle ->
