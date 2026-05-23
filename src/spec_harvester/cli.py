@@ -517,7 +517,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--notes",
         action="append",
         default=[],
-        metavar="ID=TEXT",
+        metavar="id=PKG,notes=TEXT",
         help=(
             "Human-review note for one package in the form 'id=<pkg_id>,notes=<text>'. "
             "May be repeated for multiple packages. Alternatively pass a single "

@@ -10,7 +10,7 @@ evidence-based quality dimensions for each package.
 ## Purpose
 
 `python -m spec_harvester quality-report` reads an execution report (produced by
-`scripts/run_real_repository_validation.py`) and per-candidate artifact
+the P15-T2 real-repository validation runner) and per-candidate artifact
 directories and emits a quality report covering:
 
 - **Package intent accuracy** — is the drafted intent plausible and backed by
@@ -146,7 +146,7 @@ python -m spec_harvester quality-report \
 
 ## Relationship to Execution Report
 
-The execution report (from `scripts/run_real_repository_validation.py`)
+The execution report (from the P15-T2 real-repository validation runner)
 captures **what ran** and whether each step succeeded.  The quality report
 captures **how good** the output is.  Both are local-only advisory artifacts
 and must not be committed to the repository.

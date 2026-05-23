@@ -315,10 +315,15 @@ def _extract_token_usage(specnode_result: dict[str, Any] | None) -> dict[str, in
     if not isinstance(usage, dict):
         usage = {}
 
-    prompt = usage.get("prompt") or usage.get("promptTokens") or usage.get("input_tokens")
-    completion = (
-        usage.get("completion") or usage.get("completionTokens") or usage.get("output_tokens")
-    )
+    def _first_present(d: dict, *keys: str) -> int | float | None:
+        for k in keys:
+            v = d.get(k)
+            if v is not None:
+                return v
+        return None
+
+    prompt = _first_present(usage, "prompt", "promptTokens", "input_tokens")
+    completion = _first_present(usage, "completion", "completionTokens", "output_tokens")
     return {
         "prompt": int(prompt) if isinstance(prompt, (int, float)) else None,
         "completion": int(completion) if isinstance(completion, (int, float)) else None,

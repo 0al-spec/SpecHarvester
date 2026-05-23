@@ -1,6 +1,8 @@
 # P15-T3 Structured Quality Report Format
 
-Status: In Progress
+Status: Archived
+Archived: 2026-05-23
+Verdict: PASS
 Task: `P15-T3`
 Phase: Phase 15. Real Repository Refinement Validation
 Priority: P1
@@ -130,9 +132,9 @@ and stays composable with the existing execution report.
       "retryOutcome": "not_attempted",
       "retryNotes": "...",
       "tokenUsage": { "prompt": null, "completion": null },
-      "analyzerCoverage": "full",
+      "analyzerCoverage": "strong",
       "analyzerCoverageNotes": "...",
-      "analyzersUsed": ["python_public_api", "semantic_evidence"],
+      "analyzersUsed": ["pythonPublicApi", "semanticEvidence"],
       "humanReviewNotes": "...",
       "overallVerdict": "review"
     }
@@ -171,9 +173,9 @@ and stays composable with the existing execution report.
 - `degraded` — specnode step failed after retry
 
 **analyzerCoverage** (derived from `harvest.json` analyzer evidence):
-- `full` — harvest.json present and has ≥2 analyzer types
+- `strong` — harvest.json present and has ≥2 analyzer types
 - `partial` — harvest.json present with 1 analyzer type
-- `minimal` — harvest.json present but no analyzer output
+- `weak` — harvest.json present but no analyzer output
 - `unscored` — harvest.json absent or dry_run
 
 **overallVerdict**:

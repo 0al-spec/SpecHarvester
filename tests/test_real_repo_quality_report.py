@@ -279,6 +279,13 @@ def test_token_usage_missing_fields() -> None:
     assert usage == {"prompt": None, "completion": None}
 
 
+def test_token_usage_zero_counts_preserved() -> None:
+    """Zero token counts must not be treated as missing."""
+    result = {"tokenUsage": {"prompt": 0, "completion": 0}}
+    usage = _extract_token_usage(result)
+    assert usage == {"prompt": 0, "completion": 0}
+
+
 # ---------------------------------------------------------------------------
 # _derive_analyzer_coverage
 # ---------------------------------------------------------------------------
