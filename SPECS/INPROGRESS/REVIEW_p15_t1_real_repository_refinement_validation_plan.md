@@ -6,8 +6,8 @@
 
 ### Summary Verdict
 
-- [ ] Approve
-- [x] Approve with comments
+- [x] Approve
+- [ ] Approve with comments
 - [ ] Request changes
 - [ ] Block
 
@@ -48,7 +48,7 @@
 
 ### Next Steps
 
-- FOLLOW-UP required: apply the manifest example correction in the GitHub and
-  DocC validation plan and keep docs contract coverage for `packageId` and
-  `--relaxed-private`.
-- After FOLLOW-UP, rerun the full Flow quality gates before opening the PR.
+- FOLLOW-UP completed: the manifest example correction was applied in the
+  GitHub and DocC validation plan, with docs contract coverage for `packageId`
+  and `--relaxed-private`.
+- Full Flow quality gates were rerun after the correction.

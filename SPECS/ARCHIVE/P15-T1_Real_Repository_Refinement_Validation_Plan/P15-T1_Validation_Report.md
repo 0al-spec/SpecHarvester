@@ -46,6 +46,9 @@ without assigning SpecNode runtime/provider responsibilities to SpecHarvester.
   provider lifecycle, or provider-specific orchestration.
 - PASS: The plan includes local manifest examples, command examples, expected
   `.smoke/output` artifacts, quality scoring categories, and routing rules.
+- PASS: Manifest examples use supported source-manifest keys such as
+  `packageId`, and document strict public mode as `collect-batch` CLI policy
+  rather than a manifest key.
 - PASS: Routing distinguishes SpecHarvester, SpecNode, Platform, SpecPM, and
   `.0al` ownership.
 - PASS: Existing docs contract tests and full Flow quality gates pass.
@@ -54,3 +57,5 @@ without assigning SpecNode runtime/provider responsibilities to SpecHarvester.
 
 - No generated real-repository outputs were produced or committed by this task.
 - No sibling repository files were modified.
+- Review follow-up corrected the source-manifest example after detecting
+  unsupported `package_id` and `strict_public` keys.

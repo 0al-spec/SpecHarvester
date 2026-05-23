@@ -1209,6 +1209,8 @@ def test_real_repository_refinement_validation_docs_cover_boundaries() -> None:
             "provider discovery",
             "model execution",
             "provider lifecycle",
+            "packageId",
+            "--relaxed-private",
             ".smoke/inputs",
             ".smoke/output",
             "source-manifests",

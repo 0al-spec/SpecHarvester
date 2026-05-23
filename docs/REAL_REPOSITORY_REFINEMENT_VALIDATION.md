@@ -35,19 +35,19 @@ repositories:
     repository: https://github.com/pallets/flask
     checkout: ../../flask
     revision: "<commit-sha>"
-    package_id: flask.core
-    strict_public: true
+    packageId: flask.core
 
   - id: gin
     repository: https://github.com/gin-gonic/gin
     checkout: ../../gin
     revision: "<commit-sha>"
-    package_id: gin.core
-    strict_public: true
+    packageId: gin.core
 ```
 
 The checkout path is local operator input. The path is not a stable contract and
 must not be committed with machine-specific values.
+Strict public mode is the `collect-batch` default; use `--relaxed-private` only
+when intentionally validating private-code spec coverage.
 
 ## Command Sequence
 
