@@ -63,7 +63,7 @@ Collect deterministic evidence and analyzer summaries:
 PYTHONPATH=src python -m spec_harvester collect-batch .smoke/inputs \
   --out .smoke/output/real-repository-validation \
   --emit-interface-indexes \
-  --analyzer-cache-dir .smoke/output/.analyzer-cache \
+  --analyzer-cache-dir .smoke/output/analyzer-cache \
   --report .smoke/output/real-repository-validation/batch-validation.json
 ```
 
