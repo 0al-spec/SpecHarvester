@@ -1,21 +1,17 @@
-# Next Task: None Selected
+# Next Task: P15-T1 — Real-Repository Refinement Validation Plan
 
-**Status:** Idle
-**Workplan:** `SPECS/Workplan.md`
+**Priority:** P1
+**Phase:** Phase 15. Real Repository Refinement Validation
+**Effort:** 2-4 hours
+**Dependencies:** P14-T1
+**Status:** Selected
 
 ## Description
 
-All currently planned Workplan tasks are archived. Select or add a new Workplan
-task before running the next Flow cycle.
-
-## Recently Archived
-
-- `P14-T1` LM Studio Live Retry Smoke — archived 2026-05-22 with verdict PASS.
-- `P13-T3` Feedback-Driven Refinement Retry Orchestration — archived 2026-05-22
-  with verdict PASS.
-- `P13-T2` Clean-Context Semantic Review Pass — archived 2026-05-22 with
-  verdict PASS.
+Add the Phase 15 Workplan planning artifact for reproducible, local-only
+SpecHarvester-side real-repository refinement validation that treats SpecNode as
+an external contract boundary.
 
 ## Next Step
 
-Add or select the next task in `SPECS/Workplan.md`, then run SELECT.
+Run the PLAN command to generate the implementation-ready PRD.
