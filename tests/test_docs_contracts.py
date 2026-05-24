@@ -1325,3 +1325,41 @@ def test_real_repository_refinement_validation_runner_docs_cover_execution_entry
         encoding="utf-8"
     )
     assert "<doc:RealRepositoryRefinementValidationRunner>" in docc_root.read_text(encoding="utf-8")
+
+
+def test_real_repository_local_validation_matrix_docs_cover_observed_results() -> None:
+    github_doc = ROOT / "docs" / "REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RealRepositoryLocalValidationMatrix.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "cupertino",
+            "navigation-split-view",
+            "xyflow",
+            "flask",
+            "gin",
+            "docc2context",
+            "attention_required",
+            "duplicate intent",
+            "LICENSE.txt",
+            "navigation_split_view",
+            "quality-report analyzer coverage undercounts",
+            "SpecPM validation",
+            ".smoke/",
+            "No harvested package scripts",
+        ):
+            assert required in text, f"Required term {required!r} not found in {path}"
+
+    assert "REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:RealRepositoryLocalValidationMatrix>" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:RealRepositoryLocalValidationMatrix>" in workflow_docc.read_text(encoding="utf-8")
