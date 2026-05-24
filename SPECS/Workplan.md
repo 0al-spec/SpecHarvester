@@ -382,7 +382,7 @@ Acceptance:
   several repository shapes such as Swift/SPM, JavaScript/TypeScript, Python,
   Go, documentation-first, and mixed-language projects, recording only compact
   triage summaries and failure classes.
-- [ ] `P15-T5` Convert repeated real-repository validation failures into
+- [x] `P15-T5` Convert repeated real-repository validation failures into
   follow-up Workplan tasks for deterministic analyzers, prompt contracts,
   external SpecNode contract integration, SpecPM compatibility, or documentation,
   instead of tuning ad-hoc prompts from individual outputs.
@@ -414,3 +414,36 @@ Acceptance:
 - Repeated failure classes become explicit Workplan follow-ups so improvements
   happen through analyzers, schemas, prompt contracts, or validation policy
   rather than hidden manual edits.
+
+## Phase 16. Real Repository Signal Quality Hardening
+
+- [ ] `P16-T1` Count generated `public-interface-index.json` artifacts in
+  structured quality-report analyzer coverage so Python and Go candidates with
+  executed public API analyzers are not downgraded to `weak` coverage only
+  because the coverage derivation misses colocated interface-index evidence.
+- [ ] `P16-T2` Improve license provenance classification for collected license
+  files such as Flask's `LICENSE.txt`, preserving strict missing-license errors
+  while distinguishing recognizable license text from genuinely ambiguous
+  unknown license evidence in governance reports.
+- [ ] `P16-T3` Normalize package identity and namespace/upstream comparisons
+  across hyphen, underscore, separator, and case variants so generated package
+  IDs like `navigation_split_view.core` do not create low-signal namespace
+  advisories for upstream repositories such as `NavigationSplitView`.
+- [ ] `P16-T4` Reduce broad duplicate semantic intent claims by adding
+  deterministic evidence thresholds or repository-shape constraints for generic
+  documentation/API/tooling intents before candidates are compared in
+  governance reports.
+- [ ] `P16-T5` Rerun the representative local validation matrix after P16-T1
+  through P16-T4 and document whether advisory counts, analyzer coverage, and
+  failure classes improved without committing generated `.smoke/` artifacts.
+
+Acceptance:
+
+- Signal-quality improvements are implemented through deterministic analyzers,
+  report logic, normalization policy, or semantic evidence rules rather than
+  one-off prompt edits.
+- Each follow-up includes regression coverage using fixtures or scoped local
+  smoke inputs for the real failure class it addresses.
+- The local validation matrix can show whether advisory noise decreased while
+  preserving strict public-source safety guarantees.
+- Generated `.smoke/` inputs and outputs remain local-only and uncommitted.
