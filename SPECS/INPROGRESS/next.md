@@ -4,7 +4,7 @@
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
 **Dependencies:** P15-T4, P15-T5, P12-T1, P12-T6
-**Status:** Suggested
+**Status:** In Progress
 
 ## Description
 
@@ -20,5 +20,5 @@ license evidence in governance reports.
 
 ## Next Step
 
-Run SELECT for `P16-T2`, then add a focused regression around governance license
+Create the P16-T2 plan, then add a focused regression around governance license
 provenance classification for collected `LICENSE.txt` evidence.
