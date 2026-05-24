@@ -466,8 +466,8 @@ def _add_public_interface_index_analyzer(
     except ValueError:
         return ""
 
-    analyzer_types.add(PUBLIC_INTERFACE_INDEX_ANALYZER_TYPE)
     analyzers = index_data.get("analyzers")
+    added_analyzer_id = False
     if isinstance(analyzers, list):
         for analyzer in analyzers:
             if not isinstance(analyzer, dict):
@@ -475,6 +475,9 @@ def _add_public_interface_index_analyzer(
             analyzer_id = analyzer.get("id")
             if isinstance(analyzer_id, str) and analyzer_id.strip():
                 analyzer_types.add(analyzer_id.strip())
+                added_analyzer_id = True
+    if not added_analyzer_id:
+        analyzer_types.add(PUBLIC_INTERFACE_INDEX_ANALYZER_TYPE)
     return f"{PUBLIC_INTERFACE_INDEX_FILENAME} counted"
 
 

@@ -30,8 +30,9 @@ summary for intent and capability evidence scoring.
 For analyzer coverage, the report reads `harvest.json` analyzer fields and a
 candidate-local `public-interface-index.json` when present.  The public
 interface index must validate as `SpecHarvesterPublicInterfaceIndex` before it
-is counted as `publicInterfaceIndex` coverage; invalid or missing index
-artifacts are ignored.
+contributes coverage.  The report counts analyzer ids declared in the index, or
+`publicInterfaceIndex` when no analyzer ids are present; invalid or missing
+index artifacts are ignored.
 
 ## Rating Scales
 

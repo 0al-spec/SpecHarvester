@@ -390,9 +390,27 @@ def test_analyzer_coverage_counts_public_interface_index_artifact(tmp_path: Path
         {"files": []}, dry_run=False, candidate_dir=candidate_dir
     )
 
-    assert rating == RATING_STRONG
-    assert "publicInterfaceIndex" in used
+    assert rating == RATING_PARTIAL
+    assert "publicInterfaceIndex" not in used
     assert "spec_harvester.go_public_api" in used
+    assert "public-interface-index.json counted" in notes
+
+
+def test_analyzer_coverage_counts_public_interface_index_without_analyzer_ids(
+    tmp_path: Path,
+) -> None:
+    candidate_dir = tmp_path / "candidate"
+    _write_json(
+        candidate_dir / "public-interface-index.json",
+        new_public_interface_index(),
+    )
+
+    rating, notes, used = _derive_analyzer_coverage(
+        {"files": []}, dry_run=False, candidate_dir=candidate_dir
+    )
+
+    assert rating == RATING_PARTIAL
+    assert used == ["publicInterfaceIndex"]
     assert "public-interface-index.json counted" in notes
 
 
@@ -422,7 +440,7 @@ def test_analyzer_coverage_combines_harvest_and_public_interface_index(
 
     assert rating == RATING_STRONG
     assert "semanticEvidence" in used
-    assert "publicInterfaceIndex" in used
+    assert "spec_harvester.python_public_api" in used
 
 
 def test_analyzer_coverage_ignores_invalid_public_interface_index(tmp_path: Path) -> None:
@@ -615,8 +633,8 @@ def test_build_package_quality_record_counts_public_interface_index(tmp_path: Pa
         dry_run=False,
     )
 
-    assert record["analyzerCoverage"] == RATING_STRONG
-    assert "publicInterfaceIndex" in record["analyzersUsed"]
+    assert record["analyzerCoverage"] == RATING_PARTIAL
+    assert "publicInterfaceIndex" not in record["analyzersUsed"]
     assert "spec_harvester.python_public_api" in record["analyzersUsed"]
 
 

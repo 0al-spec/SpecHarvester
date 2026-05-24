@@ -10,8 +10,9 @@ Branch: `feature/P16-T1-quality-report-public-interface-coverage`
   candidate-local `public-interface-index.json`.
 - The public interface index is counted only after validating it as
   `SpecHarvesterPublicInterfaceIndex`.
-- Valid public interface index artifacts add `publicInterfaceIndex` and any
-  declared analyzer ids to `analyzersUsed`.
+- Valid public interface index artifacts add declared analyzer ids to
+  `analyzersUsed`, or `publicInterfaceIndex` when no analyzer ids are present,
+  to avoid double-counting the artifact and its producer.
 - Invalid, missing, or unreadable public interface index artifacts are ignored
   and do not create false analyzer coverage.
 - Updated GitHub and DocC quality-report documentation plus docs contract
@@ -23,6 +24,10 @@ Branch: `feature/P16-T1-quality-report-public-interface-coverage`
   `public-interface-index.json` now receives analyzer coverage from the index.
 - Candidate with harvest analyzer evidence plus valid public interface index
   reaches `strong` coverage.
+- Candidate with analyzer ids in `public-interface-index.json` counts the
+  declared analyzer id rather than double-counting `publicInterfaceIndex`.
+- Candidate with no analyzer ids in `public-interface-index.json` falls back to
+  `publicInterfaceIndex` coverage.
 - Invalid public interface index artifacts do not affect coverage.
 - End-to-end `build_package_quality_record` coverage verifies the candidate
   artifact path is used.
@@ -37,11 +42,11 @@ Branch: `feature/P16-T1-quality-report-public-interface-coverage`
 ## Quality Gates
 
 - `PYTHONPATH=src python -m pytest tests/test_real_repo_quality_report.py tests/test_docs_contracts.py -q`:
-  92 passed
-- `PYTHONPATH=src python -m pytest`: 353 passed, 1 skipped
+  93 passed
+- `PYTHONPATH=src python -m pytest`: 354 passed, 1 skipped
 - `ruff check src tests`: passed
 - `ruff format --check src tests`: passed
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`:
-  353 passed, 1 skipped; total coverage 90.61%
+  354 passed, 1 skipped; total coverage 90.63%
 - `swift package dump-package >/dev/null`: passed
 - `swift build --target SpecHarvesterDocs`: passed

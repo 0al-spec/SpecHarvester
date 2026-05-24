@@ -56,8 +56,8 @@ directories and emits a quality report covering:
       "retryNotes": "no specnode step in run report",
       "tokenUsage": { "prompt": null, "completion": null },
       "analyzerCoverage": "strong",
-      "analyzerCoverageNotes": "3 analyzer type(s) found: publicInterfaceIndex, pythonPublicApi, semanticEvidence",
-      "analyzersUsed": ["publicInterfaceIndex", "pythonPublicApi", "semanticEvidence"],
+      "analyzerCoverageNotes": "2 analyzer type(s) found: pythonPublicApi, semanticEvidence",
+      "analyzersUsed": ["pythonPublicApi", "semanticEvidence"],
       "humanReviewNotes": "intent matches README; capability evidence is thin",
       "overallVerdict": "review"
     }
@@ -112,8 +112,9 @@ fields.
 
 When `public-interface-index.json` is present beside the candidate artifacts,
 `quality-report` validates it as `SpecHarvesterPublicInterfaceIndex` before
-counting it.  Invalid, empty, or missing public interface index artifacts do
-not create analyzer coverage.
+counting the analyzer ids declared in the index.  If the index has no analyzer
+ids, it is counted as `publicInterfaceIndex` coverage.  Invalid, empty, or
+missing public interface index artifacts do not create analyzer coverage.
 
 **`overallVerdict`**:
 - `pass` — SpecPM passed (or not run/skipped) **and** intent is strong/partial
