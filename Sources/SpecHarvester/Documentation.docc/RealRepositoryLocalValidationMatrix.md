@@ -31,7 +31,7 @@ PYTHONPATH=src python -m spec_harvester quality-report \
 | Repository | Shape | Runner | Public index | Quality verdict | Manual SpecPM | Failure class |
 |---|---|---|---|---|---|---|
 | `cupertino` | Swift/SPM + Xcode workspace | `ok` | no (`manifest_only`) | `pass` | pass | Broad documentation/API intent duplication |
-| `navigation-split-view` | Swift/SPM + Xcode project | `ok` | no (`manifest_only`) | `pass` | pass | Package id normalization created `navigation_split_view` namespace/upstream mismatch |
+| `navigation-split-view` | Swift/SPM + Xcode project | `ok` | no (`manifest_only`) | `pass` | pass | Package ID normalization created `navigation_split_view` namespace/upstream mismatch |
 | `xyflow` | JavaScript/TypeScript npm/pnpm monorepo | `ok` | yes | `pass` | pass | none |
 | `flask` | Python `pyproject.toml` web framework | `ok` | yes | `pass` | pass | `LICENSE.txt` ambiguous; quality-report analyzer coverage undercounts generated public index |
 | `gin` | Go module web framework | `ok` | yes | `pass` | pass | quality-report analyzer coverage undercounts generated public index |

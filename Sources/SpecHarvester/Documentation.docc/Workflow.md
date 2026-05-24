@@ -351,8 +351,7 @@ runs local-only and SpecHarvester-side: `.smoke/inputs`, `.smoke/output`,
 deterministic evidence, draft candidates, SpecPM validation, compact quality
 reporting, and optional external SpecNode contract-boundary checks.
 SpecHarvester still does not implement SpecNode runtime, provider discovery,
-model execution, scheduling, provider lifecycle, or provider-specific
-orchestration, including provider-specific orchestration.
+model execution, scheduling, provider lifecycle, or provider-specific orchestration.
 
 ## References
 

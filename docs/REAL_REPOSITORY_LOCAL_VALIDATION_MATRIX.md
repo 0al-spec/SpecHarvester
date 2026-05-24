@@ -42,7 +42,7 @@ PYTHONPATH=../SpecPM/src python -m specpm.cli validate \
 | Repository | Shape | Runner | Public index | Quality verdict | Manual SpecPM | Failure class |
 |---|---|---|---|---|---|---|
 | `cupertino` | Swift/SPM + Xcode workspace | `ok` | no (`manifest_only`) | `pass` (`strong` intent, `strong` capabilities, `partial` analyzer coverage) | pass | Broad documentation/API intent duplication |
-| `navigation-split-view` | Swift/SPM + Xcode project | `ok` | no (`manifest_only`) | `pass` (`strong`, `strong`, `partial`) | pass | Package id normalized from hyphen to underscore, causing namespace/upstream mismatch |
+| `navigation-split-view` | Swift/SPM + Xcode project | `ok` | no (`manifest_only`) | `pass` (`strong`, `strong`, `partial`) | pass | Package ID normalized from hyphen to underscore, causing namespace/upstream mismatch |
 | `xyflow` | JavaScript/TypeScript npm/pnpm monorepo | `ok` | yes | `pass` (`strong`, `strong`, `partial`) | pass | none |
 | `flask` | Python `pyproject.toml` web framework | `ok` | yes | `pass` (`strong`, `strong`, `weak`) | pass | `LICENSE.txt` classified as ambiguous unknown license; quality-report analyzer coverage undercounts generated public index |
 | `gin` | Go module web framework | `ok` | yes | `pass` (`strong`, `strong`, `weak`) | pass | quality-report analyzer coverage undercounts generated public index |
