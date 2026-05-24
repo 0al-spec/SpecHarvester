@@ -74,7 +74,10 @@ Published DocC site:
     effectiveness, token usage, analyzer coverage, and human-review notes
 30. [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
     local-only runner for deterministic orchestration of real-repository checks
-31. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+31. [`REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`](REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md):
+    compact P15-T4 local validation matrix across Swift/SPM, JS/TS, Python,
+    Go, and documentation-first repository shapes
+32. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
