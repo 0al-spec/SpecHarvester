@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-05-23
+Updated: 2026-05-24
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -378,7 +378,7 @@ Acceptance:
   refinement runs, including package intent accuracy, capability/evidence
   support quality, SpecPM validation status, retry effectiveness, token usage,
   deterministic analyzer coverage, and human-review notes.
-- [ ] `P15-T4` Run and document a representative local validation matrix across
+- [x] `P15-T4` Run and document a representative local validation matrix across
   several repository shapes such as Swift/SPM, JavaScript/TypeScript, Python,
   Go, documentation-first, and mixed-language projects, recording only compact
   triage summaries and failure classes.
