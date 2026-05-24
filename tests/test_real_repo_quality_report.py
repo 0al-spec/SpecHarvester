@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from spec_harvester.cli import main
+from spec_harvester.interface_index import analyzer_record, new_public_interface_index
 from spec_harvester.real_repo_quality_report import (
     QUALITY_REPORT_KIND,
     QUALITY_REPORT_SCHEMA_VERSION,
@@ -369,6 +370,91 @@ def test_analyzer_coverage_empty_dict_field_not_counted() -> None:
     assert used == []
 
 
+def test_analyzer_coverage_counts_public_interface_index_artifact(tmp_path: Path) -> None:
+    candidate_dir = tmp_path / "candidate"
+    _write_json(
+        candidate_dir / "public-interface-index.json",
+        new_public_interface_index(
+            analyzers=[
+                analyzer_record(
+                    "spec_harvester.go_public_api",
+                    "1.0.0",
+                    execution="metadata_tool_only",
+                    confidence="high",
+                )
+            ]
+        ),
+    )
+
+    rating, notes, used = _derive_analyzer_coverage(
+        {"files": []}, dry_run=False, candidate_dir=candidate_dir
+    )
+
+    assert rating == RATING_PARTIAL
+    assert "publicInterfaceIndex" not in used
+    assert "spec_harvester.go_public_api" in used
+    assert "public-interface-index.json counted" in notes
+
+
+def test_analyzer_coverage_counts_public_interface_index_without_analyzer_ids(
+    tmp_path: Path,
+) -> None:
+    candidate_dir = tmp_path / "candidate"
+    _write_json(
+        candidate_dir / "public-interface-index.json",
+        new_public_interface_index(),
+    )
+
+    rating, notes, used = _derive_analyzer_coverage(
+        {"files": []}, dry_run=False, candidate_dir=candidate_dir
+    )
+
+    assert rating == RATING_PARTIAL
+    assert used == ["publicInterfaceIndex"]
+    assert "public-interface-index.json counted" in notes
+
+
+def test_analyzer_coverage_combines_harvest_and_public_interface_index(
+    tmp_path: Path,
+) -> None:
+    candidate_dir = tmp_path / "candidate"
+    _write_json(
+        candidate_dir / "public-interface-index.json",
+        new_public_interface_index(
+            analyzers=[
+                analyzer_record(
+                    "spec_harvester.python_public_api",
+                    "1.0.0",
+                    execution="metadata_tool_only",
+                    confidence="high",
+                )
+            ]
+        ),
+    )
+
+    rating, _, used = _derive_analyzer_coverage(
+        {"files": [{"semanticEvidence": {"clusters": []}}]},
+        dry_run=False,
+        candidate_dir=candidate_dir,
+    )
+
+    assert rating == RATING_STRONG
+    assert "semanticEvidence" in used
+    assert "spec_harvester.python_public_api" in used
+
+
+def test_analyzer_coverage_ignores_invalid_public_interface_index(tmp_path: Path) -> None:
+    candidate_dir = tmp_path / "candidate"
+    _write_json(candidate_dir / "public-interface-index.json", {"kind": "wrong"})
+
+    rating, _, used = _derive_analyzer_coverage(
+        {"files": []}, dry_run=False, candidate_dir=candidate_dir
+    )
+
+    assert rating == RATING_WEAK
+    assert used == []
+
+
 # ---------------------------------------------------------------------------
 # _derive_overall_verdict
 # ---------------------------------------------------------------------------
@@ -506,6 +592,50 @@ def test_build_package_quality_record_with_candidate_files(tmp_path: Path) -> No
     assert record["retryOutcome"] == RETRY_NOT_ATTEMPTED
     assert record["analyzerCoverage"] == RATING_STRONG
     assert record["overallVerdict"] == VERDICT_PASS
+
+
+def test_build_package_quality_record_counts_public_interface_index(tmp_path: Path) -> None:
+    candidate_dir = tmp_path / "my-pkg"
+    _write_json(
+        candidate_dir / "draft-summary.json",
+        {
+            "candidate": {
+                "intent": "A great package",
+                "evidenceSources": ["README.md"],
+                "capabilities": [
+                    {"name": "parse", "evidenceSources": ["api.md"]},
+                ],
+            },
+        },
+    )
+    _write_json(candidate_dir / "harvest.json", {"files": []})
+    _write_json(
+        candidate_dir / "public-interface-index.json",
+        new_public_interface_index(
+            analyzers=[
+                analyzer_record(
+                    "spec_harvester.python_public_api",
+                    "1.0.0",
+                    execution="metadata_tool_only",
+                    confidence="high",
+                )
+            ]
+        ),
+    )
+
+    record = build_package_quality_record(
+        {
+            "id": "my-pkg",
+            "packageId": "com.example.my-pkg",
+            "steps": [_ok_step("draft"), _ok_step("specpm")],
+        },
+        candidate_dir=candidate_dir,
+        dry_run=False,
+    )
+
+    assert record["analyzerCoverage"] == RATING_PARTIAL
+    assert "publicInterfaceIndex" not in record["analyzersUsed"]
+    assert "spec_harvester.python_public_api" in record["analyzersUsed"]
 
 
 def test_build_package_quality_record_invalid_steps_are_ignored(tmp_path: Path) -> None:

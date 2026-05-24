@@ -417,7 +417,7 @@ Acceptance:
 
 ## Phase 16. Real Repository Signal Quality Hardening
 
-- [ ] `P16-T1` Count generated `public-interface-index.json` artifacts in
+- [x] `P16-T1` Count generated `public-interface-index.json` artifacts in
   structured quality-report analyzer coverage so Python and Go candidates with
   executed public API analyzers are not downgraded to `weak` coverage only
   because the coverage derivation misses colocated interface-index evidence.

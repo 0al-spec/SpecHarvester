@@ -20,12 +20,19 @@ per-candidate artifact directories and emits a quality report covering:
 - **Retry effectiveness** — did external SpecNode refinement improve the result?
 - **Token usage** — prompt and completion token counts (when available).
 - **Deterministic analyzer coverage** — how many analyzer types contributed to
-  the harvest snapshot?
+  the harvest snapshot or colocated public interface index artifact?
 - **Human-review notes** — free-text annotations supplied by the operator.
 
 The P15-T2 runner writes per-candidate `draft-summary.json` files from the
 generated `specpm.yaml` and `specs/*.spec.yaml` artifacts.  The report uses that
 summary for intent and capability evidence scoring.
+
+For analyzer coverage, the report reads `harvest.json` analyzer fields and a
+candidate-local `public-interface-index.json` when present.  The public
+interface index must validate as `SpecHarvesterPublicInterfaceIndex` before it
+contributes coverage.  The report counts analyzer ids declared in the index, or
+`publicInterfaceIndex` when no analyzer ids are present; invalid or missing
+index artifacts are ignored.
 
 ## Rating Scales
 
