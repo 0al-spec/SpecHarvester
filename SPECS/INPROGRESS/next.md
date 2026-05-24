@@ -4,7 +4,7 @@
 **Phase:** Phase 15. Real Repository Refinement Validation
 **Effort:** 4-8 hours
 **Dependencies:** P15-T3
-**Status:** Suggested
+**Status:** In Progress
 
 ## Description
 
@@ -19,4 +19,5 @@ triage summaries and failure classes.
 
 ## Next Step
 
-Run SELECT for `P15-T4`, then PLAN.
+Create the P15-T4 plan, then run the local validation matrix with generated
+outputs kept under ignored `.smoke/output`.
