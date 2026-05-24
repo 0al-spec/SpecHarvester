@@ -454,11 +454,8 @@ def _add_public_interface_index_analyzer(
     if not index_path.exists():
         return ""
 
-    try:
-        index_data = json.loads(index_path.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return ""
-    if not isinstance(index_data, dict):
+    index_data = _read_candidate_json(candidate_dir, PUBLIC_INTERFACE_INDEX_FILENAME)
+    if index_data is None:
         return ""
 
     try:
