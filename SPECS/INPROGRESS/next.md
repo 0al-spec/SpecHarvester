@@ -15,7 +15,7 @@ coverage derivation misses colocated interface-index evidence.
 
 ## Recently Archived
 
-- P15-T5: Convert Validation Failures into Follow-Up Workplan Tasks (pending archive)
+- P15-T5: Convert Validation Failures into Follow-Up Workplan Tasks (PASS, 2026-05-24)
 - P15-T4: Local Validation Matrix (PASS, 2026-05-24)
 
 ## Next Step

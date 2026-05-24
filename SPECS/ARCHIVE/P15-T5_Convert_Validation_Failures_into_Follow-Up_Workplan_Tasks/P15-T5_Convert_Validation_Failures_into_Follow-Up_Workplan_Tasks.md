@@ -1,11 +1,13 @@
 # P15-T5 Convert Validation Failures into Follow-Up Workplan Tasks
 
-Status: Planned
+Status: Archived
 Task: `P15-T5`
 Phase: Phase 15. Real Repository Refinement Validation
 Priority: P1
 Effort: 2-4 hours
 Dependencies: `P15-T4`
+Archived: 2026-05-24
+Verdict: PASS
 
 ## Problem
 

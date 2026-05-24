@@ -382,7 +382,7 @@ Acceptance:
   several repository shapes such as Swift/SPM, JavaScript/TypeScript, Python,
   Go, documentation-first, and mixed-language projects, recording only compact
   triage summaries and failure classes.
-- [ ] `P15-T5` Convert repeated real-repository validation failures into
+- [x] `P15-T5` Convert repeated real-repository validation failures into
   follow-up Workplan tasks for deterministic analyzers, prompt contracts,
   external SpecNode contract integration, SpecPM compatibility, or documentation,
   instead of tuning ad-hoc prompts from individual outputs.
