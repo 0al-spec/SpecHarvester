@@ -4,7 +4,7 @@
 **Phase:** Phase 15. Real Repository Refinement Validation
 **Effort:** 2-4 hours
 **Dependencies:** P15-T4
-**Status:** Suggested
+**Status:** In Progress
 
 ## Description
 
@@ -20,5 +20,5 @@ prompts from individual outputs.
 
 ## Next Step
 
-Review the P15-T4 matrix failure classes and add focused, non-duplicate
-follow-up tasks for the actionable structural gaps.
+Create the P15-T5 plan, then convert P15-T4 failure classes into focused,
+non-duplicate Workplan tasks.
