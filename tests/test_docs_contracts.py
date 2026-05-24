@@ -1254,6 +1254,7 @@ def test_real_repository_quality_report_docs_cover_required_fields() -> None:
         ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "RealRepositoryQualityReport.md"
     )
     docs_index = ROOT / "docs" / "README.md"
+
     docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
 
     for path in (github_doc, docc_doc):
@@ -1281,9 +1282,46 @@ def test_real_repository_quality_report_docs_cover_required_fields() -> None:
             "review",
             "fail",
             "--run-report",
+            "draft-summary.json",
+            "candidateDir",
             "must not be committed",
         ):
             assert required in text, f"Required term {required!r} not found in {path}"
 
     assert "REAL_REPOSITORY_QUALITY_REPORT.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:RealRepositoryQualityReport>" in docc_root.read_text(encoding="utf-8")
+
+
+def test_real_repository_refinement_validation_runner_docs_cover_execution_entrypoint() -> None:
+    github_doc = ROOT / "docs" / "REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RealRepositoryRefinementValidationRunner.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "run_real_repository_validation.py",
+            "degraded",
+            "optional",
+            "local-only",
+            "run-report.json",
+            "draft-summary.json",
+            "quality-report",
+        ):
+            assert required in text
+
+    assert "REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:RealRepositoryRefinementValidationRunner>" in workflow_docc.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:RealRepositoryRefinementValidationRunner>" in docc_root.read_text(encoding="utf-8")

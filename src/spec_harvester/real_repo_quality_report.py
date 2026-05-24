@@ -20,6 +20,8 @@ from typing import Any
 
 QUALITY_REPORT_KIND = "SpecHarvesterRealRepositoryQualityReport"
 QUALITY_REPORT_SCHEMA_VERSION = 1
+DRAFT_SUMMARY_FILENAME = "draft-summary.json"
+LEGACY_DRAFT_FILENAME = "draft.json"
 
 # QualityRating literals
 RATING_STRONG = "strong"
@@ -92,7 +94,12 @@ def build_quality_report(
         if not isinstance(pkg_record, dict):
             continue
         pkg_id = str(pkg_record.get("id", ""))
-        candidate_dir = root / pkg_id if root is not None else None
+        candidate_dir = _package_candidate_dir(
+            pkg_record,
+            candidates_root=root,
+            package_id=pkg_id,
+            prefer_report_path=candidates_root is None,
+        )
         record = build_package_quality_record(
             pkg_record,
             candidate_dir=candidate_dir,
@@ -128,14 +135,14 @@ def build_package_quality_record(
 ) -> dict[str, Any]:
     """Derive a quality record for one package from its execution record.
 
-    Reads ``draft.json``, ``harvest.json``, and the optional SpecNode result
-    file from *candidate_dir* (when not dry_run and not None) to populate the
-    quality dimensions.
+    Reads ``draft-summary.json`` (or legacy ``draft.json``), ``harvest.json``,
+    and the optional SpecNode result file from *candidate_dir* (when not dry_run
+    and not None) to populate the quality dimensions.
     """
     pkg_id = str(package_record.get("id", ""))
     steps = _coerce_step_records(package_record.get("steps", []))
 
-    draft_data = _read_candidate_json(candidate_dir, "draft.json") if not dry_run else None
+    draft_data = _read_draft_summary(candidate_dir) if not dry_run else None
     harvest_data = _read_candidate_json(candidate_dir, "harvest.json") if not dry_run else None
     specnode_result = (
         _read_candidate_json(candidate_dir, "specnode-refinement-result.json")
@@ -194,6 +201,22 @@ def _run_report_root(run_report: dict[str, Any]) -> Path | None:
     return Path(out) if out else None
 
 
+def _package_candidate_dir(
+    package_record: dict[str, Any],
+    *,
+    candidates_root: Path | None,
+    package_id: str,
+    prefer_report_path: bool,
+) -> Path | None:
+    if prefer_report_path:
+        candidate_dir = package_record.get("candidateDir")
+        if isinstance(candidate_dir, str) and candidate_dir:
+            return Path(candidate_dir)
+    if candidates_root is None:
+        return None
+    return candidates_root / package_id
+
+
 def _read_candidate_json(candidate_dir: Path | None, filename: str) -> dict[str, Any] | None:
     if candidate_dir is None:
         return None
@@ -205,6 +228,14 @@ def _read_candidate_json(candidate_dir: Path | None, filename: str) -> dict[str,
     except (json.JSONDecodeError, OSError):
         return None
     return data if isinstance(data, dict) else None
+
+
+def _read_draft_summary(candidate_dir: Path | None) -> dict[str, Any] | None:
+    for filename in (DRAFT_SUMMARY_FILENAME, LEGACY_DRAFT_FILENAME):
+        data = _read_candidate_json(candidate_dir, filename)
+        if data is not None:
+            return data
+    return None
 
 
 def _coerce_step_records(raw_steps: Any) -> list[dict[str, Any]]:
@@ -239,14 +270,14 @@ def _derive_intent_rating(
         return RATING_WEAK, "draft step did not complete successfully"
 
     if draft_data is None:
-        return RATING_WEAK, "draft.json not found after successful draft step"
+        return RATING_WEAK, "draft summary artifact not found after successful draft step"
 
     candidate = _candidate_payload(draft_data)
     if candidate is None:
-        return RATING_WEAK, "draft.json candidate field is not an object"
+        return RATING_WEAK, "draft summary candidate field is not an object"
     intent = candidate.get("intent") or ""
     if not isinstance(intent, str) or not intent.strip():
-        return RATING_WEAK, "draft.json has no intent field"
+        return RATING_WEAK, "draft summary has no intent field"
 
     evidence_sources = candidate.get("evidenceSources") or []
     if not isinstance(evidence_sources, list):
@@ -270,14 +301,14 @@ def _derive_capability_rating(
         return RATING_WEAK, "draft step did not complete successfully"
 
     if draft_data is None:
-        return RATING_WEAK, "draft.json not found after successful draft step"
+        return RATING_WEAK, "draft summary artifact not found after successful draft step"
 
     candidate = _candidate_payload(draft_data)
     if candidate is None:
-        return RATING_WEAK, "draft.json candidate field is not an object"
+        return RATING_WEAK, "draft summary candidate field is not an object"
     capabilities = candidate.get("capabilities") or []
     if not isinstance(capabilities, list) or not capabilities:
-        return RATING_WEAK, "draft.json has no capabilities"
+        return RATING_WEAK, "draft summary has no capabilities"
 
     total = len(capabilities)
     with_evidence = sum(

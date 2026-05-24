@@ -797,7 +797,10 @@ Studio, execute a model, apply patches, or mutate candidate files.
 
 Real repository validation is governed by
 [`REAL_REPOSITORY_REFINEMENT_VALIDATION.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION.md).
-The DocC mirror is `RealRepositoryRefinementValidation`.
+The DocC mirror is `RealRepositoryRefinementValidation`, and the local entry point is
+[`run_real_repository_validation.py`](../scripts/run_real_repository_validation.py).
+See [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md)
+for command examples and safety flags.
 That plan keeps runs local-only and SpecHarvester-side: `.smoke/inputs`,
 `.smoke/output`, deterministic evidence, draft candidates, SpecPM validation,
 compact quality reporting, and optional external SpecNode contract-boundary

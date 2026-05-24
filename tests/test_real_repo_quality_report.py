@@ -468,15 +468,16 @@ def test_build_package_quality_record_with_candidate_files(tmp_path: Path) -> No
     candidate_dir = tmp_path / "my-pkg"
     candidate_dir.mkdir()
     _write_json(
-        candidate_dir / "draft.json",
+        candidate_dir / "draft-summary.json",
         {
+            "kind": "SpecHarvesterDraftSummary",
             "candidate": {
                 "intent": "A great package",
                 "evidenceSources": ["README.md"],
                 "capabilities": [
                     {"name": "parse", "evidenceSources": ["api.md"]},
                 ],
-            }
+            },
         },
     )
     _write_json(
@@ -583,6 +584,33 @@ def test_build_quality_report_candidates_root_override(tmp_path: Path) -> None:
     override = tmp_path / "override"
     report = build_quality_report(run_report, candidates_root=override)
     assert report["candidatesRoot"] == str(override)
+
+
+def test_build_quality_report_uses_candidate_dir_from_run_report(tmp_path: Path) -> None:
+    candidate_dir = tmp_path / "custom-candidate-dir"
+    candidate_dir.mkdir()
+    _write_json(
+        candidate_dir / "draft-summary.json",
+        {
+            "candidate": {
+                "intent": "Custom candidate intent",
+                "evidenceSources": ["specpm.yaml"],
+                "capabilities": [
+                    {"id": "pkg-a.core.parse", "evidenceSources": ["specs/pkg-a.spec.yaml"]}
+                ],
+            }
+        },
+    )
+    _write_json(candidate_dir / "harvest.json", {"files": [{"pythonPublicApi": {}}]})
+    run_report = _minimal_run_report(tmp_path)
+    run_report["packages"][0]["candidateDir"] = str(candidate_dir)
+    run_report["packages"][0]["steps"] = [_ok_step("draft"), _ok_step("specpm")]
+
+    report = build_quality_report(run_report)
+
+    assert report["packages"][0]["intentAccuracy"] == RATING_STRONG
+    assert report["packages"][0]["capabilityEvidenceQuality"] == RATING_STRONG
+    assert report["packages"][0]["overallVerdict"] == VERDICT_PASS
 
 
 def test_build_quality_report_records_run_report_path(tmp_path: Path) -> None:

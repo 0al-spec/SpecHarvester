@@ -72,7 +72,9 @@ Published DocC site:
     structured quality report format for real-repository refinement runs,
     covering intent accuracy, capability evidence, SpecPM status, retry
     effectiveness, token usage, analyzer coverage, and human-review notes
-30. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+30. [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
+    local-only runner for deterministic orchestration of real-repository checks
+31. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -115,6 +117,8 @@ Published DocC site:
   real repository validation plan that keeps SpecHarvester on deterministic
   evidence, artifact bundle, validation, and reporting responsibilities while
   treating SpecNode as an external contract boundary
+- [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
+  local runner for executing real-repository validation steps from manifests
 
 ## GitHub Process Surface
 

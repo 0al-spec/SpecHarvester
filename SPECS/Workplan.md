@@ -369,7 +369,7 @@ Acceptance:
   command sequences, expected SpecHarvester-side artifacts, scoring rubric, and
   non-committed output policy for `collect -> draft -> artifact bundle ->
   optional external refinement -> semantic review report` runs.
-- [ ] `P15-T2` Add a local-only validation runner or script template that can
+- [x] `P15-T2` Add a local-only validation runner or script template that can
   orchestrate SpecHarvester-owned collection, drafting, artifact packaging,
   validation, and reporting steps against operator-supplied public repository
   checkouts, optionally invoking an existing external SpecNode-compatible
@@ -386,6 +386,13 @@ Acceptance:
   follow-up Workplan tasks for deterministic analyzers, prompt contracts,
   external SpecNode contract integration, SpecPM compatibility, or documentation,
   instead of tuning ad-hoc prompts from individual outputs.
+- [x] `P15-T6` Align the P15-T2 local validation runner with the P15-T3
+  structured quality report contract, ensuring the runner writes a stable
+  `run-report.json`, records candidate artifact locations and step outcomes in
+  the shape consumed by `quality-report`, and resolves the current
+  `draft.json` mismatch by either deriving quality input from generated
+  `specpm.yaml` and `specs/*.spec.yaml` artifacts or explicitly producing a
+  documented draft summary artifact.
 
 Acceptance:
 

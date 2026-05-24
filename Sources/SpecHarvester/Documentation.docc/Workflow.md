@@ -344,10 +344,11 @@ SpecNode-compatible provider is configured. The smoke path does not contact LM
 Studio, execute a model, apply patches, or mutate candidate files.
 
 Real repository validation is governed by
-<doc:RealRepositoryRefinementValidation>. That plan keeps runs local-only and
-SpecHarvester-side: `.smoke/inputs`, `.smoke/output`, deterministic evidence,
-draft candidates, SpecPM validation, compact quality reporting, and optional
-external SpecNode contract-boundary checks. SpecHarvester still does not
+<doc:RealRepositoryRefinementValidation>. The runner entry point is
+<doc:RealRepositoryRefinementValidationRunner>. That plan keeps runs local-only
+and SpecHarvester-side: `.smoke/inputs`, `.smoke/output`, deterministic
+evidence, draft candidates, SpecPM validation, compact quality reporting, and
+optional external SpecNode contract-boundary checks. SpecHarvester still does not
 implement SpecNode runtime, provider discovery, model execution, scheduling,
 provider lifecycle, or provider-specific orchestration.
 
@@ -362,6 +363,7 @@ provider lifecycle, or provider-specific orchestration.
 - <doc:SpecNodePatchProposalContract>
 - <doc:SpecNodeProviderSmokeCoverage>
 - <doc:RealRepositoryRefinementValidation>
+- <doc:RealRepositoryRefinementValidationRunner>
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>
 - <doc:BatchValidationReports>
