@@ -55,6 +55,9 @@ KNOWN_LICENSE_HINTS = {
     "unlicense",
 }
 
+LICENSE_FILE_BASENAMES = {"LICENSE", "COPYING"}
+LICENSE_FILE_TEXT_EXTENSIONS = {"", ".txt", ".md", ".markdown", ".rst"}
+
 
 @dataclass(frozen=True)
 class LicenseProvenanceArtifact:
@@ -187,6 +190,20 @@ def evaluate_license_risks(
                 )
                 continue
             if normalized == "unknown" and evidence_source == "ambiguous_license_file":
+                if has_collected_license_file_evidence(record):
+                    issues.append(
+                        _report_issue(
+                            record,
+                            "collected_unknown_license_evidence",
+                            "low",
+                            (
+                                "License is UNKNOWN but standard collected license-file "
+                                "evidence is present; deterministic SPDX classification "
+                                "still needs review."
+                            ),
+                        )
+                    )
+                    continue
                 issues.append(
                     _report_issue(
                         record,
@@ -230,6 +247,28 @@ def license_evidence_source(record: PackageLicenseProvenanceRecord) -> str | Non
     if isinstance(source, str) and source.strip():
         return source.strip()
     return None
+
+
+def has_collected_license_file_evidence(record: PackageLicenseProvenanceRecord) -> bool:
+    evidence = record.license_evidence
+    if not isinstance(evidence, dict):
+        return False
+    paths = evidence.get("paths")
+    if not isinstance(paths, list):
+        return False
+    return any(is_standard_license_evidence_path(path) for path in paths)
+
+
+def is_standard_license_evidence_path(path: object) -> bool:
+    if not isinstance(path, str) or not path.strip():
+        return False
+    candidate = Path(path.strip())
+    name = candidate.name
+    suffix = candidate.suffix.lower()
+    if suffix not in LICENSE_FILE_TEXT_EXTENSIONS:
+        return False
+    stem = candidate.stem if suffix else name
+    return stem.upper() in LICENSE_FILE_BASENAMES
 
 
 def evaluate_provenance_risks(
