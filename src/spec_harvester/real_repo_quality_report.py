@@ -18,10 +18,14 @@ import json
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.interface_index import validate_public_interface_index
+
 QUALITY_REPORT_KIND = "SpecHarvesterRealRepositoryQualityReport"
 QUALITY_REPORT_SCHEMA_VERSION = 1
 DRAFT_SUMMARY_FILENAME = "draft-summary.json"
 LEGACY_DRAFT_FILENAME = "draft.json"
+PUBLIC_INTERFACE_INDEX_FILENAME = "public-interface-index.json"
+PUBLIC_INTERFACE_INDEX_ANALYZER_TYPE = "publicInterfaceIndex"
 
 # QualityRating literals
 RATING_STRONG = "strong"
@@ -156,7 +160,7 @@ def build_package_quality_record(
     retry_outcome, retry_notes = _derive_retry_outcome(steps, specnode_result)
     token_usage = _extract_token_usage(specnode_result)
     analyzer_coverage, analyzer_notes, analyzers_used = _derive_analyzer_coverage(
-        harvest_data, dry_run
+        harvest_data, dry_run, candidate_dir=candidate_dir
     )
     overall = _derive_overall_verdict(
         intent_rating=intent_rating,
@@ -389,6 +393,8 @@ def _extract_token_usage(specnode_result: dict[str, Any] | None) -> dict[str, in
 def _derive_analyzer_coverage(
     harvest_data: dict[str, Any] | None,
     dry_run: bool,
+    *,
+    candidate_dir: Path | None = None,
 ) -> tuple[str, str, list[str]]:
     if dry_run or harvest_data is None:
         return RATING_UNSCORED, "harvest.json not available", []
@@ -419,14 +425,57 @@ def _derive_analyzer_coverage(
             if isinstance(val, list):
                 analyzer_types.update(str(v) for v in val)
 
+    public_index_notes = _add_public_interface_index_analyzer(candidate_dir, analyzer_types)
+
     analyzers = sorted(analyzer_types)
     count = len(analyzers)
 
     if count >= 2:
-        return RATING_STRONG, f"{count} analyzer type(s) found: {', '.join(analyzers)}", analyzers
+        notes = f"{count} analyzer type(s) found: {', '.join(analyzers)}"
+        if public_index_notes:
+            notes = f"{notes}; {public_index_notes}"
+        return RATING_STRONG, notes, analyzers
     if count == 1:
-        return RATING_PARTIAL, f"1 analyzer type found: {analyzers[0]}", analyzers
+        notes = f"1 analyzer type found: {analyzers[0]}"
+        if public_index_notes:
+            notes = f"{notes}; {public_index_notes}"
+        return RATING_PARTIAL, notes, analyzers
     return RATING_WEAK, "harvest.json present but no analyzer output detected", []
+
+
+def _add_public_interface_index_analyzer(
+    candidate_dir: Path | None,
+    analyzer_types: set[str],
+) -> str:
+    if candidate_dir is None:
+        return ""
+
+    index_path = candidate_dir / PUBLIC_INTERFACE_INDEX_FILENAME
+    if not index_path.exists():
+        return ""
+
+    try:
+        index_data = json.loads(index_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return ""
+    if not isinstance(index_data, dict):
+        return ""
+
+    try:
+        validate_public_interface_index(index_data)
+    except ValueError:
+        return ""
+
+    analyzer_types.add(PUBLIC_INTERFACE_INDEX_ANALYZER_TYPE)
+    analyzers = index_data.get("analyzers")
+    if isinstance(analyzers, list):
+        for analyzer in analyzers:
+            if not isinstance(analyzer, dict):
+                continue
+            analyzer_id = analyzer.get("id")
+            if isinstance(analyzer_id, str) and analyzer_id.strip():
+                analyzer_types.add(analyzer_id.strip())
+    return f"{PUBLIC_INTERFACE_INDEX_FILENAME} counted"
 
 
 def _derive_overall_verdict(

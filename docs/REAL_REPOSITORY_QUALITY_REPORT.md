@@ -22,7 +22,7 @@ directories and emits a quality report covering:
 - **Token usage** — prompt and completion token counts (when available from the
   SpecNode result file).
 - **Deterministic analyzer coverage** — how many analyzer types contributed to
-  the harvest snapshot?
+  the harvest snapshot or colocated public interface index artifact?
 - **Human-review notes** — free-text annotations supplied by the operator.
 
 ## Schema
@@ -56,8 +56,8 @@ directories and emits a quality report covering:
       "retryNotes": "no specnode step in run report",
       "tokenUsage": { "prompt": null, "completion": null },
       "analyzerCoverage": "strong",
-      "analyzerCoverageNotes": "2 analyzer type(s) found: pythonPublicApi, semanticEvidence",
-      "analyzersUsed": ["pythonPublicApi", "semanticEvidence"],
+      "analyzerCoverageNotes": "3 analyzer type(s) found: publicInterfaceIndex, pythonPublicApi, semanticEvidence",
+      "analyzersUsed": ["publicInterfaceIndex", "pythonPublicApi", "semanticEvidence"],
       "humanReviewNotes": "intent matches README; capability evidence is thin",
       "overallVerdict": "review"
     }
@@ -103,10 +103,17 @@ available, the `specnode-refinement-result.json` `retryCount` and `improved`
 fields.
 
 **`analyzerCoverage`**:
-- `strong` — ≥2 distinct analyzer types found in `harvest.json`.
+- `strong` — ≥2 distinct analyzer types found in `harvest.json` and/or a valid
+  candidate-local `public-interface-index.json`.
 - `partial` — 1 analyzer type found.
-- `weak` — harvest present but no analyzer output.
+- `weak` — harvest present but no analyzer output and no valid
+  `public-interface-index.json`.
 - `unscored` — harvest absent or dry_run.
+
+When `public-interface-index.json` is present beside the candidate artifacts,
+`quality-report` validates it as `SpecHarvesterPublicInterfaceIndex` before
+counting it.  Invalid, empty, or missing public interface index artifacts do
+not create analyzer coverage.
 
 **`overallVerdict`**:
 - `pass` — SpecPM passed (or not run/skipped) **and** intent is strong/partial
