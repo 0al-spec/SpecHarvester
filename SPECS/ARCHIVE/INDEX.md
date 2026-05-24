@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25
 
 ## Archived Tasks
 
@@ -62,6 +62,7 @@
 | P15-T4 | [P15-T4_Local_Validation_Matrix/](P15-T4_Local_Validation_Matrix/) | 2026-05-24 | PASS |
 | P15-T5 | [P15-T5_Convert_Validation_Failures_into_Follow-Up_Workplan_Tasks/](P15-T5_Convert_Validation_Failures_into_Follow-Up_Workplan_Tasks/) | 2026-05-24 | PASS |
 | P16-T1 | [P16-T1_Quality_Report_Public_Interface_Coverage/](P16-T1_Quality_Report_Public_Interface_Coverage/) | 2026-05-24 | PASS |
+| P16-T2 | [P16-T2_License_Provenance_Classification_for_Collected_License_Files/](P16-T2_License_Provenance_Classification_for_Collected_License_Files/) | 2026-05-25 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
@@ -188,6 +189,7 @@
 | 2026-05-24 | P15-T5 | Archived REVIEW_p15_t5_validation_follow_up_workplan report |
 | 2026-05-24 | P16-T1 | Archived Quality Report Public Interface Coverage (PASS) |
 | 2026-05-24 | P16-T1 | Archived REVIEW_p16_t1_quality_report_public_interface_coverage report |
+| 2026-05-25 | P16-T2 | Archived License Provenance Classification for Collected License Files (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

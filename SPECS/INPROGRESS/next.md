@@ -1,24 +1,24 @@
-# Next Task: P16-T2 — License Provenance Classification for Collected License Files
+# Next Task: P16-T3 — Package Identity and Namespace Normalization
 
 **Priority:** P1
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
-**Dependencies:** P15-T4, P15-T5, P12-T1, P12-T6
-**Status:** In Progress
+**Dependencies:** P15-T4, P15-T5
+**Status:** Suggested
 
 ## Description
 
-Improve license provenance classification for collected license files such as
-Flask's `LICENSE.txt`, preserving strict missing-license errors while
-distinguishing recognizable license text from genuinely ambiguous unknown
-license evidence in governance reports.
+Normalize package identity and namespace/upstream comparisons across hyphen,
+underscore, separator, and case variants so generated package IDs like
+`navigation_split_view.core` do not create low-signal namespace advisories for
+upstream repositories such as `NavigationSplitView`.
 
 ## Recently Archived
 
+- P16-T2: License Provenance Classification for Collected License Files (PASS, 2026-05-25)
 - P16-T1: Quality Report Public Interface Coverage (PASS, 2026-05-24)
-- P15-T5: Convert Validation Failures into Follow-Up Workplan Tasks (PASS, 2026-05-24)
 
 ## Next Step
 
-Create the P16-T2 plan, then add a focused regression around governance license
-provenance classification for collected `LICENSE.txt` evidence.
+Run SELECT for `P16-T3`, then add a focused regression around
+hyphen/underscore/case normalization in namespace/upstream governance reports.

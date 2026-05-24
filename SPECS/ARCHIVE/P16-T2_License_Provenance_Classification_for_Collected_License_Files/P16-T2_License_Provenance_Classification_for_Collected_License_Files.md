@@ -1,11 +1,13 @@
 # P16-T2 License Provenance Classification for Collected License Files
 
-Status: Planned
+Status: Archived
 Task: `P16-T2`
 Phase: Phase 16. Real Repository Signal Quality Hardening
 Priority: P1
 Effort: 2-4 hours
 Dependencies: `P15-T4`, `P15-T5`, `P12-T1`, `P12-T6`
+Archived: 2026-05-25
+Verdict: PASS
 
 ## Problem
 
