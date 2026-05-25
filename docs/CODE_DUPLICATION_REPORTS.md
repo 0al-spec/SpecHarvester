@@ -9,6 +9,7 @@ codes, and similar deterministic logic.
 
 ```shell
 python3 -m spec_harvester code-duplication-report \
+  --backend pylint \
   --path src/spec_harvester \
   --min-lines 8 \
   --output report/code-duplication.json
@@ -17,13 +18,19 @@ python3 -m spec_harvester code-duplication-report \
 ## Detection Behavior
 
 - The report scans local source files only.
-- The current built-in detector is dependency-free and Python-oriented.
-- Blank lines, comments, imports, and simple punctuation-only lines are ignored
+- `--backend pylint` runs the established Python `pylint`
+  `duplicate-code` / `R0801` checker and converts its JSON output into the
+  stable `SpecHarvesterCodeDuplicationReport` shape.
+- `--backend builtin` remains available as a dependency-free fallback that
+  ignores blank lines, comments, imports, and simple punctuation-only lines
   before repeated line windows are fingerprinted.
 - The default behavior is advisory and exits successfully even when duplicates
   are found.
 - Passing `--fail-on-duplicates` returns a non-zero exit code when duplicate
   blocks are detected, which allows future baseline-aware CI enforcement.
+- CI runs the `pylint` backend as a non-blocking baseline check. It should not
+  become blocking until baseline suppression or fail-on-new-duplicates semantics
+  are defined.
 
 ## Trust Boundary
 

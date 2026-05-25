@@ -22,6 +22,8 @@ from spec_harvester.accepted_update_proposal import (
 )
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.code_duplication_report import (
+    BACKEND_BUILTIN,
+    BACKEND_PYLINT,
     DEFAULT_MIN_LINES,
     build_code_duplication_report,
     write_code_duplication_report,
@@ -371,6 +373,20 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where duplicate-code report JSON is written.",
     )
     code_duplication.add_argument(
+        "--backend",
+        choices=(BACKEND_BUILTIN, BACKEND_PYLINT),
+        default=BACKEND_BUILTIN,
+        help=(
+            "Duplicate-code detector backend. Use 'pylint' for the established "
+            "Python R0801 checker. Default: builtin."
+        ),
+    )
+    code_duplication.add_argument(
+        "--pylint-command",
+        default="pylint",
+        help="Pylint executable to use when --backend pylint is selected. Default: pylint.",
+    )
+    code_duplication.add_argument(
         "--fail-on-duplicates",
         action="store_true",
         help="Return exit code 1 when duplicate blocks are detected.",
@@ -713,7 +729,12 @@ def run_license_provenance_report(args: argparse.Namespace) -> int:
 def run_code_duplication_report(args: argparse.Namespace) -> int:
     paths = args.path or [Path("src/spec_harvester")]
     try:
-        result = build_code_duplication_report(paths, min_lines=args.min_lines)
+        result = build_code_duplication_report(
+            paths,
+            min_lines=args.min_lines,
+            backend=args.backend,
+            pylint_command=args.pylint_command,
+        )
     except ValueError as exc:
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
         return 2

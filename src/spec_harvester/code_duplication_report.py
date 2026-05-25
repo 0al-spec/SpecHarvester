@@ -13,6 +13,7 @@ import io
 import json
 import os
 import re
+import subprocess
 import tokenize
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,6 +23,8 @@ CODE_DUPLICATION_REPORT_KIND = "SpecHarvesterCodeDuplicationReport"
 CODE_DUPLICATION_REPORT_SCHEMA_VERSION = 1
 DEFAULT_MIN_LINES = 8
 DEFAULT_EXTENSIONS = (".py",)
+BACKEND_BUILTIN = "builtin"
+BACKEND_PYLINT = "pylint"
 EXCLUDED_DIR_NAMES = {
     ".git",
     ".mypy_cache",
@@ -55,11 +58,22 @@ def build_code_duplication_report(
     *,
     min_lines: int = DEFAULT_MIN_LINES,
     extensions: tuple[str, ...] = DEFAULT_EXTENSIONS,
+    backend: str = BACKEND_BUILTIN,
+    pylint_command: str = "pylint",
 ) -> dict[str, Any]:
     if min_lines < 2:
         raise ValueError("--min-lines must be at least 2.")
     if not paths:
         raise ValueError("At least one path must be provided.")
+    if backend == BACKEND_PYLINT:
+        return build_pylint_code_duplication_report(
+            paths,
+            min_lines=min_lines,
+            extensions=extensions,
+            pylint_command=pylint_command,
+        )
+    if backend != BACKEND_BUILTIN:
+        raise ValueError(f"Unsupported duplicate-code backend: {backend}")
 
     files = list_source_files(paths, extensions=extensions)
     windows: dict[tuple[str, ...], list[dict[str, Any]]] = {}
@@ -105,6 +119,7 @@ def build_code_duplication_report(
         "kind": CODE_DUPLICATION_REPORT_KIND,
         "status": "attention" if duplicate_blocks else "ok",
         "summary": {
+            "backend": BACKEND_BUILTIN,
             "pathCount": len(paths),
             "fileCount": len(files),
             "minLines": min_lines,
@@ -114,6 +129,78 @@ def build_code_duplication_report(
         "duplicates": duplicate_blocks,
         "trustBoundary": TRUST_BOUNDARY_NOTES,
     }
+
+
+def build_pylint_code_duplication_report(
+    paths: list[Path],
+    *,
+    min_lines: int = DEFAULT_MIN_LINES,
+    extensions: tuple[str, ...] = DEFAULT_EXTENSIONS,
+    pylint_command: str = "pylint",
+) -> dict[str, Any]:
+    files = list_source_files(paths, extensions=extensions)
+    if not files:
+        return _new_report(
+            paths=paths,
+            files=files,
+            min_lines=min_lines,
+            backend=BACKEND_PYLINT,
+            duplicates=[],
+            tool={"name": "pylint", "messageCount": 0},
+        )
+
+    command = [
+        pylint_command,
+        "--disable=all",
+        "--enable=duplicate-code",
+        f"--min-similarity-lines={min_lines}",
+        "--output-format=json",
+        *[path.as_posix() for path in files],
+    ]
+    try:
+        completed = subprocess.run(
+            command,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except FileNotFoundError as exc:
+        raise ValueError(f"Cannot run pylint duplicate-code backend: {exc}") from exc
+
+    try:
+        messages = json.loads(completed.stdout or "[]")
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid pylint JSON output: {exc.msg}") from exc
+    if not isinstance(messages, list):
+        raise ValueError("Invalid pylint JSON output: expected a list.")
+
+    module_map = _source_file_module_map(files)
+    duplicates = [
+        _pylint_message_to_duplicate_block(message, module_map)
+        for message in messages
+        if isinstance(message, dict) and message.get("message-id") == "R0801"
+    ]
+    duplicate_blocks = [block for block in duplicates if block is not None]
+    duplicate_blocks.sort(
+        key=lambda block: (
+            block["occurrences"][0]["path"],
+            block["occurrences"][0]["startLine"],
+            block["fingerprint"],
+        )
+    )
+
+    return _new_report(
+        paths=paths,
+        files=files,
+        min_lines=min_lines,
+        backend=BACKEND_PYLINT,
+        duplicates=duplicate_blocks,
+        tool={
+            "name": "pylint",
+            "messageCount": len(messages),
+            "returnCode": completed.returncode,
+        },
+    )
 
 
 def write_code_duplication_report(path: Path, report: dict[str, Any]) -> None:
@@ -172,6 +259,110 @@ def _is_supported_source_file(path: Path, extensions: tuple[str, ...]) -> bool:
 def _fingerprint(window: tuple[str, ...]) -> str:
     payload = "\n".join(window).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()[:16]
+
+
+def _fingerprint_text(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
+
+
+def _new_report(
+    *,
+    paths: list[Path],
+    files: list[Path],
+    min_lines: int,
+    backend: str,
+    duplicates: list[dict[str, Any]],
+    tool: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    occurrence_count = sum(len(block["occurrences"]) for block in duplicates)
+    summary: dict[str, Any] = {
+        "backend": backend,
+        "pathCount": len(paths),
+        "fileCount": len(files),
+        "minLines": min_lines,
+        "duplicateBlockCount": len(duplicates),
+        "duplicateOccurrenceCount": occurrence_count,
+    }
+    if tool is not None:
+        summary["tool"] = tool
+    return {
+        "schemaVersion": CODE_DUPLICATION_REPORT_SCHEMA_VERSION,
+        "kind": CODE_DUPLICATION_REPORT_KIND,
+        "status": "attention" if duplicates else "ok",
+        "summary": summary,
+        "duplicates": duplicates,
+        "trustBoundary": TRUST_BOUNDARY_NOTES,
+    }
+
+
+def _source_file_module_map(files: list[Path]) -> dict[str, Path]:
+    module_map: dict[str, Path] = {}
+    for path in files:
+        without_suffix = path.with_suffix("")
+        posix_key = without_suffix.as_posix()
+        dotted_key = ".".join(without_suffix.parts)
+        for key in {
+            path.stem,
+            posix_key,
+            dotted_key,
+            _strip_src_prefix(dotted_key),
+        }:
+            module_map[key] = path
+    return module_map
+
+
+def _strip_src_prefix(value: str) -> str:
+    return value[4:] if value.startswith("src.") else value
+
+
+def _pylint_message_to_duplicate_block(
+    message: dict[str, Any],
+    module_map: dict[str, Path],
+) -> dict[str, Any] | None:
+    message_text = str(message.get("message", ""))
+    occurrences = []
+    for line in message_text.splitlines():
+        match = re.match(r"^==(?P<module>.+):\[(?P<start>\d+):(?P<end>\d+)\]$", line)
+        if match is None:
+            continue
+        module = match.group("module")
+        occurrences.append(
+            {
+                "path": _pylint_module_path(module, module_map),
+                "startLine": int(match.group("start")),
+                "endLine": int(match.group("end")),
+            }
+        )
+    occurrences = _unique_occurrences(occurrences)
+    if len(occurrences) < 2:
+        return None
+
+    preview = _pylint_message_preview(message_text)
+    return {
+        "fingerprint": _fingerprint_text(message_text),
+        "lineCount": max(0, occurrences[0]["endLine"] - occurrences[0]["startLine"]),
+        "normalizedPreview": preview[:3],
+        "occurrences": occurrences,
+    }
+
+
+def _pylint_module_path(module: str, module_map: dict[str, Path]) -> str:
+    path = module_map.get(module)
+    if path is not None:
+        return path.as_posix()
+    for key, candidate in module_map.items():
+        if key.endswith(f".{module}") or module.endswith(f".{key}"):
+            return candidate.as_posix()
+    return module
+
+
+def _pylint_message_preview(message: str) -> list[str]:
+    preview = []
+    for line in message.splitlines():
+        if not line.strip() or line.startswith("Similar lines") or line.startswith("=="):
+            continue
+        preview.append(line.strip())
+    return preview
 
 
 def _strip_python_comment(line: str) -> str:
