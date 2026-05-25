@@ -448,6 +448,10 @@ Acceptance:
   backend such as `jscpd` behind `SpecHarvesterCodeDuplicationReport`, including
   licensing, deterministic JSON output, npm supply-chain, and CI ergonomics
   review before enabling it as an advisory baseline.
+- [ ] `P16-T9` Add lightweight architecture lint guardrails for the planned
+  Elegant Objects refactor, covering helper/manager naming relapse,
+  constructor I/O, static domain helpers, and duplicated manifest parser
+  patterns before broad report-layer restructuring begins.
 
 Acceptance:
 
@@ -462,6 +466,8 @@ Acceptance:
 - Established duplicate-code tools are preferred as primary detectors when
   their licensing, deterministic output, local-only execution, and CI ergonomics
   fit the repository.
+- Architecture lint guardrails keep structural refactors reviewable by catching
+  project-specific relapse risks that generic style linters do not understand.
 - The local validation matrix can show whether advisory noise decreased while
   preserving strict public-source safety guarantees.
 - Generated `.smoke/` inputs and outputs remain local-only and uncommitted.
