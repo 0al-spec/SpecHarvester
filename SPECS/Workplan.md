@@ -436,6 +436,10 @@ Acceptance:
 - [ ] `P16-T5` Rerun the representative local validation matrix after P16-T1
   through P16-T4 and document whether advisory counts, analyzer coverage, and
   failure classes improved without committing generated `.smoke/` artifacts.
+- [ ] `P16-T6` Add an advisory duplicate-code quality report that detects
+  repeated implementation blocks in repository source, starts non-blocking for
+  baseline collection, and can later be promoted to a fail-on-new-duplicates CI
+  gate.
 
 Acceptance:
 
@@ -444,6 +448,9 @@ Acceptance:
   one-off prompt edits.
 - Each follow-up includes regression coverage using fixtures or scoped local
   smoke inputs for the real failure class it addresses.
+- Static quality hardening can flag duplicated implementation policy such as
+  allowlists, normalization predicates, schema fragments, and report issue-code
+  logic before review has to catch drift manually.
 - The local validation matrix can show whether advisory noise decreased while
   preserving strict public-source safety guarantees.
 - Generated `.smoke/` inputs and outputs remain local-only and uncommitted.
