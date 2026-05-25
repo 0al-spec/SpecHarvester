@@ -1,25 +1,27 @@
-# Next Task: P16-T3 — Package Identity and Namespace Normalization
+# Next Task: P16-T10 — SpecPackageManifest Object Seam
 
 **Priority:** P1
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
-**Dependencies:** P15-T4, P15-T5
-**Status:** Suggested
+**Dependencies:** P16-T9
+**Status:** Selected
 
 ## Description
 
-Normalize package identity and namespace/upstream comparisons across hyphen,
-underscore, separator, and case variants so generated package IDs like
-`navigation_split_view.core` do not create low-signal namespace advisories for
-upstream repositories such as `NavigationSplitView`.
+Introduce a behavior-rich `SpecPackageManifest` object for reading
+`specpm.yaml` metadata, foreign artifacts, and claim sections as the first
+Elegant Objects seam before report modules are rewritten.
+
+This task should preserve existing report behavior. Existing report modules may
+continue to use their procedural parsers until follow-up stacked PRs switch them
+to the new object.
 
 ## Recently Archived
 
 - P16-T9: Architecture Lint Guardrails (PASS, 2026-05-25)
 - P16-T7: Pylint Duplicate-Code Backend (PASS, 2026-05-25)
-- P16-T6: Duplicate-Code Quality Report (PASS, 2026-05-25)
 
 ## Next Step
 
-Run SELECT for `P16-T3`, then add a focused regression around
-hyphen/underscore/case normalization in namespace/upstream governance reports.
+Plan and implement the manifest object with characterization tests and keep
+architecture lint baseline non-blocking.
