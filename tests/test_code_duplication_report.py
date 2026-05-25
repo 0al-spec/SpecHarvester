@@ -221,6 +221,7 @@ def test_pylint_backend_converts_r0801_output(
     assert report["summary"]["tool"]["returnCode"] == 8
     assert report["summary"]["duplicateBlockCount"] == 1
     duplicate = report["duplicates"][0]
+    assert duplicate["lineCount"] == 3
     assert duplicate["normalizedPreview"] == ["a = 1", "b = 2"]
     assert [Path(item["path"]).name for item in duplicate["occurrences"]] == [
         "alpha.py",
@@ -238,6 +239,48 @@ def test_pylint_backend_reports_missing_tool(tmp_path: Path) -> None:
             min_lines=3,
             pylint_command="missing-pylint-command",
         )
+
+
+def test_pylint_backend_fails_closed_on_usage_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source.py"
+    source.write_text("a = 1\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess(command, 32, "[]", "bad invocation")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    with pytest.raises(ValueError, match="return code 32"):
+        build_pylint_code_duplication_report([source], min_lines=3)
+
+
+def test_pylint_backend_fails_closed_on_empty_error_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source.py"
+    source.write_text("a = 1\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess(command, 8, "", "duplicate-code failed")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    with pytest.raises(ValueError, match="without JSON output"):
+        build_pylint_code_duplication_report([source], min_lines=3)
 
 
 def test_cli_code_duplication_report_accepts_pylint_backend(

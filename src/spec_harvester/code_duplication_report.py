@@ -167,8 +167,10 @@ def build_pylint_code_duplication_report(
     except FileNotFoundError as exc:
         raise ValueError(f"Cannot run pylint duplicate-code backend: {exc}") from exc
 
+    _validate_pylint_result(completed)
+    stdout = completed.stdout.strip()
     try:
-        messages = json.loads(completed.stdout or "[]")
+        messages = json.loads(stdout or "[]")
     except json.JSONDecodeError as exc:
         raise ValueError(f"Invalid pylint JSON output: {exc.msg}") from exc
     if not isinstance(messages, list):
@@ -265,6 +267,22 @@ def _fingerprint_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
 
 
+def _validate_pylint_result(completed: subprocess.CompletedProcess[str]) -> None:
+    if completed.returncode not in {0, 8}:
+        stderr = completed.stderr.strip()
+        detail = f" stderr: {stderr}" if stderr else ""
+        raise ValueError(
+            f"Pylint duplicate-code backend failed with return code {completed.returncode}.{detail}"
+        )
+    if completed.returncode != 0 and not completed.stdout.strip():
+        stderr = completed.stderr.strip()
+        detail = f" stderr: {stderr}" if stderr else ""
+        raise ValueError(
+            "Pylint duplicate-code backend failed without JSON output "
+            f"(return code {completed.returncode}).{detail}"
+        )
+
+
 def _new_report(
     *,
     paths: list[Path],
@@ -340,7 +358,7 @@ def _pylint_message_to_duplicate_block(
     preview = _pylint_message_preview(message_text)
     return {
         "fingerprint": _fingerprint_text(message_text),
-        "lineCount": max(0, occurrences[0]["endLine"] - occurrences[0]["startLine"]),
+        "lineCount": max(0, occurrences[0]["endLine"] - occurrences[0]["startLine"] + 1),
         "normalizedPreview": preview[:3],
         "occurrences": occurrences,
     }
