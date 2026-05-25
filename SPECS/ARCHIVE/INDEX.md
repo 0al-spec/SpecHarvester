@@ -205,6 +205,7 @@
 | 2026-05-26 | P16-T10 | Archived SpecPackageManifest Object Seam (PASS) |
 | 2026-05-26 | P16-T10 | Archived REVIEW_p16_t10_specpackage_manifest_object_seam report |
 | 2026-05-26 | P16-T11 | Archived Report Manifest Parser Refactor (PASS) |
+| 2026-05-26 | P16-T11 | Archived REVIEW_p16_t11_report_manifest_parser_refactor report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
