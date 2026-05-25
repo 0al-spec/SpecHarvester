@@ -45,6 +45,12 @@ jobs:
             --min-lines 8 \
             --output /tmp/spec-harvester-pylint-duplicates.json
 
+      - name: Architecture lint baseline
+        run: |
+          python -m spec_harvester architecture-lint \
+            --path src/spec_harvester \
+            --output /tmp/spec-harvester-architecture-lint.json
+
       - name: Pytest
         run: pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90
 

@@ -47,6 +47,7 @@ The canonical source files remain in the repository:
 - `docs/NAMESPACE_UPSTREAM_REPORTS.md`
 - `docs/LICENSE_PROVENANCE_RISK_REPORTS.md`
 - `docs/CODE_DUPLICATION_REPORTS.md`
+- `docs/ARCHITECTURE_LINT_GUARDRAILS.md`
 - `docs/LOCAL_SMOKE_FIXTURES.md`
 - `docs/SPECNODE_INTEGRATION_CONTRACT.md`
 - `docs/SPECNODE_REFINE_PREVIEW_CONTRACT.md`
@@ -88,6 +89,7 @@ the host.
 - <doc:NamespaceUpstreamReports>
 - <doc:LicenseProvenanceRiskReports>
 - <doc:CodeDuplicationReports>
+- <doc:ArchitectureLintGuardrails>
 - <doc:LocalSmokeFixtures>
 - <doc:SpecNodeIntegrationContract>
 - <doc:SpecNodeRefinePreviewContract>

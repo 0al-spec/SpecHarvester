@@ -20,6 +20,10 @@ from spec_harvester.accepted_update_proposal import (
     write_accepted_package_update_proposal,
     write_accepted_package_update_proposal_markdown,
 )
+from spec_harvester.architecture_lint import (
+    build_architecture_lint_report,
+    write_architecture_lint_report,
+)
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.code_duplication_report import (
     BACKEND_BUILTIN,
@@ -393,6 +397,29 @@ def build_parser() -> argparse.ArgumentParser:
     )
     code_duplication.set_defaults(func=run_code_duplication_report)
 
+    architecture_lint = subcommands.add_parser(
+        "architecture-lint",
+        help="Build an advisory architecture lint report for local source files.",
+    )
+    architecture_lint.add_argument(
+        "--path",
+        action="append",
+        type=Path,
+        default=[],
+        help=("Source file or directory to scan. May be repeated. Defaults to src/spec_harvester."),
+    )
+    architecture_lint.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where architecture lint report JSON is written.",
+    )
+    architecture_lint.add_argument(
+        "--fail-on-issues",
+        action="store_true",
+        help="Return exit code 1 when architecture lint issues are detected.",
+    )
+    architecture_lint.set_defaults(func=run_architecture_lint)
+
     accepted_diff = subcommands.add_parser(
         "accepted-candidate-diff-report",
         help="Build accepted-vs-candidate package metadata diff report.",
@@ -742,6 +769,21 @@ def run_code_duplication_report(args: argparse.Namespace) -> int:
         write_code_duplication_report(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     if args.fail_on_duplicates and result["summary"]["duplicateBlockCount"] > 0:
+        return 1
+    return 0
+
+
+def run_architecture_lint(args: argparse.Namespace) -> int:
+    paths = args.path or [Path("src/spec_harvester")]
+    try:
+        result = build_architecture_lint_report(paths)
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    if args.output is not None:
+        write_architecture_lint_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    if args.fail_on_issues and result["summary"]["issueCount"] > 0:
         return 1
     return 0
 
