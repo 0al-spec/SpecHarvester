@@ -1,25 +1,28 @@
-# Next Task: P16-T3 — Package Identity and Namespace Normalization
+# Next Task: P16-T7 — Pylint Duplicate-Code Backend
 
 **Priority:** P1
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
-**Dependencies:** P15-T4, P15-T5
-**Status:** Suggested
+**Dependencies:** P16-T6
+**Status:** Selected
 
 ## Description
 
-Normalize package identity and namespace/upstream comparisons across hyphen,
-underscore, separator, and case variants so generated package IDs like
-`navigation_split_view.core` do not create low-signal namespace advisories for
-upstream repositories such as `NavigationSplitView`.
+Integrate an established duplicate-code detector backend, starting with Python
+`pylint` `duplicate-code`/`R0801`, behind the existing
+`SpecHarvesterCodeDuplicationReport` contract.
+
+The built-in detector remains a lightweight fallback. The new backend should
+provide a more standard quality signal and run as a non-blocking CI baseline
+check until baseline suppression or fail-on-new-duplicates semantics are
+defined.
 
 ## Recently Archived
 
 - P16-T6: Duplicate-Code Quality Report (PASS, 2026-05-25)
 - P16-T2: License Provenance Classification for Collected License Files (PASS, 2026-05-25)
-- P16-T1: Quality Report Public Interface Coverage (PASS, 2026-05-24)
 
 ## Next Step
 
-Run SELECT for `P16-T3`, then add a focused regression around
-hyphen/underscore/case normalization in namespace/upstream governance reports.
+Plan and implement the `pylint` backend, add regression coverage for parsing
+`R0801` output, and wire an advisory CI baseline command.
