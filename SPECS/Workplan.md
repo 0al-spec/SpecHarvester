@@ -436,7 +436,7 @@ Acceptance:
 - [ ] `P16-T5` Rerun the representative local validation matrix after P16-T1
   through P16-T4 and document whether advisory counts, analyzer coverage, and
   failure classes improved without committing generated `.smoke/` artifacts.
-- [ ] `P16-T6` Add an advisory duplicate-code quality report that detects
+- [x] `P16-T6` Add an advisory duplicate-code quality report that detects
   repeated implementation blocks in repository source, starts non-blocking for
   baseline collection, and can later be promoted to a fail-on-new-duplicates CI
   gate.
