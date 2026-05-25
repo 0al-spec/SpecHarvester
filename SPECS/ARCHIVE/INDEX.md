@@ -202,6 +202,7 @@
 | 2026-05-25 | P16-T9 | Archived Architecture Lint Guardrails (PASS) |
 | 2026-05-25 | P16-T9 | Archived REVIEW_p16_t9_architecture_lint_guardrails report |
 | 2026-05-26 | P16-T10 | Archived SpecPackageManifest Object Seam (PASS) |
+| 2026-05-26 | P16-T10 | Archived REVIEW_p16_t10_specpackage_manifest_object_seam report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
