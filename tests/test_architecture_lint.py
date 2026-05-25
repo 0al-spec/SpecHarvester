@@ -97,6 +97,36 @@ def test_architecture_lint_rejects_missing_paths(tmp_path: Path) -> None:
         python_source_paths([tmp_path / "missing"])
 
 
+def test_architecture_lint_deduplicates_overlapping_paths(tmp_path: Path) -> None:
+    package = tmp_path / "package"
+    package.mkdir()
+    source = package / "source.py"
+    source.write_text("class Clean:\n    pass\n", encoding="utf-8")
+
+    paths = python_source_paths([tmp_path, package, source])
+    report = build_architecture_lint_report([tmp_path, package, source])
+
+    assert paths == [source]
+    assert report["summary"]["fileCount"] == 1
+    assert report["summary"]["analyzedFileCount"] == 1
+    assert report["summary"]["skippedFileCount"] == 0
+
+
+def test_architecture_lint_reports_unparsed_sources(tmp_path: Path) -> None:
+    source = tmp_path / "broken.py"
+    source.write_text("def broken(:\n    pass\n", encoding="utf-8")
+
+    report = build_architecture_lint_report([source])
+
+    assert report["status"] == "attention"
+    assert report["summary"]["fileCount"] == 1
+    assert report["summary"]["analyzedFileCount"] == 0
+    assert report["summary"]["skippedFileCount"] == 1
+    assert report["summary"]["issuesByCode"] == {"source_file_unavailable": 1}
+    assert report["skippedFiles"][0]["path"] == source.as_posix()
+    assert report["skippedFiles"][0]["reason"] == "syntax_error"
+
+
 def test_cli_architecture_lint_writes_output_file(tmp_path: Path, capsys) -> None:
     source = tmp_path / "source.py"
     source.write_text("class Clean:\n    pass\n", encoding="utf-8")
@@ -129,3 +159,14 @@ def test_cli_architecture_lint_missing_path_errors(tmp_path: Path, capsys) -> No
     assert result == 2
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
+
+
+def test_cli_architecture_lint_can_fail_on_unparsed_sources(tmp_path: Path, capsys) -> None:
+    source = tmp_path / "broken.py"
+    source.write_text("def broken(:\n    pass\n", encoding="utf-8")
+
+    result = main(["architecture-lint", "--path", str(source), "--fail-on-issues"])
+
+    assert result == 1
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["summary"]["skippedFileCount"] == 1

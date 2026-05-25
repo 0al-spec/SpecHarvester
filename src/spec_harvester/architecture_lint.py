@@ -46,10 +46,26 @@ class SourceFile:
     tree: ast.AST
 
 
+@dataclass(frozen=True)
+class SkippedSourceFile:
+    path: Path
+    reason: str
+    message: str
+
+
+@dataclass(frozen=True)
+class SourceScan:
+    paths: list[Path]
+    files: list[SourceFile]
+    skipped_files: list[SkippedSourceFile]
+
+
 def build_architecture_lint_report(paths: list[Path] | None = None) -> dict[str, Any]:
     roots = paths or list(DEFAULT_PATHS)
-    files = read_source_files(roots)
+    scan = scan_source_files(roots)
+    files = scan.files
     issues = []
+    issues.extend(skipped_source_file_issues(scan.skipped_files))
     for source in files:
         issues.extend(helper_name_relapse_issues(source))
         issues.extend(constructor_io_issues(source))
@@ -68,10 +84,13 @@ def build_architecture_lint_report(paths: list[Path] | None = None) -> dict[str,
         "status": "attention" if issues else "ok",
         "summary": {
             "pathCount": len(roots),
-            "fileCount": len(files),
+            "fileCount": len(scan.paths),
+            "analyzedFileCount": len(files),
+            "skippedFileCount": len(scan.skipped_files),
             "issueCount": len(issues),
             "issuesByCode": issue_counts,
         },
+        "skippedFiles": [skipped_source_file_to_dict(skipped) for skipped in scan.skipped_files],
         "issues": issues,
         "trustBoundary": TRUST_BOUNDARY_NOTES,
     }
@@ -83,33 +102,90 @@ def write_architecture_lint_report(path: Path, report: dict[str, Any]) -> None:
 
 
 def read_source_files(paths: list[Path]) -> list[SourceFile]:
+    return scan_source_files(paths).files
+
+
+def scan_source_files(paths: list[Path]) -> SourceScan:
+    source_paths = python_source_paths(paths)
     files = []
-    for path in python_source_paths(paths):
+    skipped_files = []
+    for path in source_paths:
         try:
             text = path.read_text(encoding="utf-8")
             tree = ast.parse(text, filename=path.as_posix())
-        except (OSError, SyntaxError, UnicodeDecodeError):
+        except OSError as exc:
+            skipped_files.append(
+                SkippedSourceFile(path=path, reason="read_error", message=str(exc))
+            )
+            continue
+        except SyntaxError as exc:
+            skipped_files.append(
+                SkippedSourceFile(
+                    path=path,
+                    reason="syntax_error",
+                    message=f"{exc.msg} at line {exc.lineno or 1}",
+                )
+            )
+            continue
+        except UnicodeDecodeError as exc:
+            skipped_files.append(
+                SkippedSourceFile(path=path, reason="decode_error", message=str(exc))
+            )
             continue
         files.append(SourceFile(path=path, text=text, tree=tree))
-    return files
+    return SourceScan(paths=source_paths, files=files, skipped_files=skipped_files)
 
 
 def python_source_paths(paths: list[Path]) -> list[Path]:
     source_paths: list[Path] = []
+    seen_paths: set[str] = set()
+
+    def append_unique(path: Path) -> None:
+        key = path.resolve(strict=False).as_posix()
+        if key in seen_paths:
+            return
+        seen_paths.add(key)
+        source_paths.append(path)
+
     for root in paths:
         if not root.exists():
             raise ValueError(f"Architecture lint path does not exist: {root}")
         if root.is_file():
             if root.suffix == ".py":
-                source_paths.append(root)
+                append_unique(root)
             continue
         for current_root, dir_names, file_names in os.walk(root):
             dir_names[:] = sorted(name for name in dir_names if name not in {".git", "__pycache__"})
             for file_name in sorted(file_names):
                 candidate = Path(current_root) / file_name
                 if candidate.suffix == ".py":
-                    source_paths.append(candidate)
+                    append_unique(candidate)
     return sorted(source_paths, key=lambda item: item.as_posix())
+
+
+def skipped_source_file_issues(skipped_files: list[SkippedSourceFile]) -> list[dict[str, Any]]:
+    return [
+        {
+            "code": "source_file_unavailable",
+            "path": skipped.path.as_posix(),
+            "line": 1,
+            "name": skipped.path.name,
+            "severity": "advisory",
+            "message": (
+                "Architecture lint could not read or parse this source file; "
+                f"report coverage is incomplete ({skipped.reason}: {skipped.message})."
+            ),
+        }
+        for skipped in skipped_files
+    ]
+
+
+def skipped_source_file_to_dict(skipped: SkippedSourceFile) -> dict[str, str]:
+    return {
+        "path": skipped.path.as_posix(),
+        "reason": skipped.reason,
+        "message": skipped.message,
+    }
 
 
 def helper_name_relapse_issues(source: SourceFile) -> list[dict[str, Any]]:

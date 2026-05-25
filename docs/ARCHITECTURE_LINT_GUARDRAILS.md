@@ -21,10 +21,13 @@ python3 -m spec_harvester architecture-lint \
 ## Detection Behavior
 
 - The report scans local Python source files only.
+- Repeated or overlapping `--path` values are deduplicated before analysis.
+- Files that cannot be read or parsed are reported as explicit advisory issues
+  with `skippedFileCount` and `skippedFiles`; they are not silently ignored.
 - The default behavior is advisory and exits successfully even when issues are
   found.
 - Passing `--fail-on-issues` returns a non-zero exit code when architecture lint
-  issues are detected.
+  issues are detected, including unreadable or unparseable files.
 - CI runs this command as a non-blocking baseline check. It should not become
   blocking until current baseline findings are either resolved or explicitly
   allowlisted.
@@ -45,6 +48,7 @@ The report is a deterministic JSON object with:
 - `kind: SpecHarvesterArchitectureLintReport`
 - `status`
 - `summary`
+- `skippedFiles`
 - `issues`
 - `trustBoundary`
 
