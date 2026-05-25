@@ -1141,6 +1141,33 @@ def test_docc_and_github_docs_cover_code_duplication_reports() -> None:
     assert "<doc:CodeDuplicationReports>" in root_page.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_architecture_lint_guardrails() -> None:
+    github_doc = ROOT / "docs" / "ARCHITECTURE_LINT_GUARDRAILS.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ArchitectureLintGuardrails.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecHarvesterArchitectureLintReport",
+            "architecture-lint",
+            "--fail-on-issues",
+            "Helper",
+            "constructor",
+            "static/class",
+            "specpm.yaml",
+            "No repository code execution",
+            "No imports from scanned modules",
+        ):
+            assert required in text, f"Required term {required!r} not found in {path}"
+
+    assert "ARCHITECTURE_LINT_GUARDRAILS.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:ArchitectureLintGuardrails>" in root_page.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_accepted_package_update_proposals() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md"
     docc_doc = (
