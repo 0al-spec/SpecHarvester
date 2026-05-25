@@ -21,6 +21,11 @@ from spec_harvester.accepted_update_proposal import (
     write_accepted_package_update_proposal_markdown,
 )
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
+from spec_harvester.code_duplication_report import (
+    DEFAULT_MIN_LINES,
+    build_code_duplication_report,
+    write_code_duplication_report,
+)
 from spec_harvester.collector import (
     DEFAULT_MAX_FILE_BYTES,
     HarvestOptions,
@@ -340,6 +345,37 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where license and provenance risk report JSON is written.",
     )
     license_risk.set_defaults(func=run_license_provenance_report)
+
+    code_duplication = subcommands.add_parser(
+        "code-duplication-report",
+        help="Build an advisory duplicate-code report from local source files.",
+    )
+    code_duplication.add_argument(
+        "--path",
+        action="append",
+        type=Path,
+        default=[],
+        help=("Source file or directory to scan. May be repeated. Defaults to src/spec_harvester."),
+    )
+    code_duplication.add_argument(
+        "--min-lines",
+        type=int,
+        default=DEFAULT_MIN_LINES,
+        help=(
+            f"Minimum normalized line window to treat as a duplicate. Default: {DEFAULT_MIN_LINES}."
+        ),
+    )
+    code_duplication.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where duplicate-code report JSON is written.",
+    )
+    code_duplication.add_argument(
+        "--fail-on-duplicates",
+        action="store_true",
+        help="Return exit code 1 when duplicate blocks are detected.",
+    )
+    code_duplication.set_defaults(func=run_code_duplication_report)
 
     accepted_diff = subcommands.add_parser(
         "accepted-candidate-diff-report",
@@ -671,6 +707,21 @@ def run_license_provenance_report(args: argparse.Namespace) -> int:
     if args.output is not None:
         write_license_provenance_report(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_code_duplication_report(args: argparse.Namespace) -> int:
+    paths = args.path or [Path("src/spec_harvester")]
+    try:
+        result = build_code_duplication_report(paths, min_lines=args.min_lines)
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    if args.output is not None:
+        write_code_duplication_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    if args.fail_on_duplicates and result["summary"]["duplicateBlockCount"] > 0:
+        return 1
     return 0
 
 
