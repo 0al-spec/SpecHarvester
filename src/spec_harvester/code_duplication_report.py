@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import os
 import re
 import tokenize
 from dataclasses import dataclass
@@ -34,7 +35,10 @@ EXCLUDED_DIR_NAMES = {
 
 TRUST_BOUNDARY_NOTES = [
     "Code duplication report generation reads local text files only.",
-    "No repository code execution, dependency installation, network access, or imports occur.",
+    (
+        "No repository code execution, dependency installation, network access, "
+        "or imports from scanned modules occur."
+    ),
     "The report is advisory by default and does not mutate source files.",
 ]
 
@@ -121,26 +125,26 @@ def list_source_files(paths: list[Path], *, extensions: tuple[str, ...]) -> list
     files: list[Path] = []
     normalized_extensions = tuple(extension.lower() for extension in extensions)
     for root in paths:
+        if not root.exists():
+            raise ValueError(f"Scan path does not exist: {root}")
         if root.is_file():
             if _is_supported_source_file(root, normalized_extensions):
                 files.append(root)
             continue
-        if not root.exists():
-            continue
-        for candidate in root.rglob("*"):
-            if not candidate.is_file():
-                continue
-            if EXCLUDED_DIR_NAMES.intersection(candidate.parts):
-                continue
-            if _is_supported_source_file(candidate, normalized_extensions):
-                files.append(candidate)
+        for current_root, dir_names, file_names in os.walk(root):
+            dir_names[:] = sorted(name for name in dir_names if name not in EXCLUDED_DIR_NAMES)
+            current_path = Path(current_root)
+            for file_name in sorted(file_names):
+                candidate = current_path / file_name
+                if _is_supported_source_file(candidate, normalized_extensions):
+                    files.append(candidate)
     return sorted(files, key=lambda path: path.as_posix())
 
 
 def normalized_source_lines(path: Path) -> list[NormalizedLine]:
     try:
         raw_lines = path.read_text(encoding="utf-8").splitlines()
-    except UnicodeDecodeError:
+    except (OSError, UnicodeDecodeError):
         return []
 
     normalized = []

@@ -3,10 +3,15 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
+import spec_harvester.code_duplication_report as code_duplication_report
 from spec_harvester.cli import main
 from spec_harvester.code_duplication_report import (
     build_code_duplication_report,
+    list_source_files,
     normalize_source_line,
+    normalized_source_lines,
 )
 
 
@@ -90,6 +95,39 @@ def test_normalize_source_line_removes_comments_and_collapses_spacing() -> None:
     assert normalize_source_line("   # comment only") == ""
 
 
+def test_list_source_files_rejects_missing_paths(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="Scan path does not exist"):
+        list_source_files([tmp_path / "missing"], extensions=(".py",))
+
+
+def test_list_source_files_prunes_excluded_children_but_not_explicit_root(
+    tmp_path: Path,
+) -> None:
+    explicit_build_root = tmp_path / "build" / "project"
+    explicit_build_root.mkdir(parents=True)
+    explicit_file = explicit_build_root / "alpha.py"
+    explicit_file.write_text("a = 1\n", encoding="utf-8")
+    nested_excluded = explicit_build_root / "node_modules"
+    nested_excluded.mkdir()
+    (nested_excluded / "ignored.py").write_text("b = 2\n", encoding="utf-8")
+
+    assert list_source_files([explicit_build_root], extensions=(".py",)) == [explicit_file]
+
+
+def test_normalized_source_lines_skips_io_errors(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source.py"
+    source.write_text("a = 1\n", encoding="utf-8")
+
+    def raise_os_error(path: Path, *, encoding: str) -> str:
+        raise OSError("not readable")
+
+    monkeypatch.setattr(code_duplication_report.Path, "read_text", raise_os_error)
+
+    assert normalized_source_lines(source) == []
+
+
 def test_cli_code_duplication_report_writes_output_file(tmp_path: Path, capsys) -> None:
     source = tmp_path / "src"
     source.mkdir()
@@ -144,3 +182,12 @@ def test_cli_code_duplication_report_rejects_tiny_windows(capsys) -> None:
     assert result == 2
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
+
+
+def test_cli_code_duplication_report_rejects_missing_path(tmp_path: Path, capsys) -> None:
+    result = main(["code-duplication-report", "--path", str(tmp_path / "missing")])
+
+    assert result == 2
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["status"] == "error"
+    assert "Scan path does not exist" in payload["message"]
