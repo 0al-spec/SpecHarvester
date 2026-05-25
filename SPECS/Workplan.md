@@ -448,7 +448,7 @@ Acceptance:
   backend such as `jscpd` behind `SpecHarvesterCodeDuplicationReport`, including
   licensing, deterministic JSON output, npm supply-chain, and CI ergonomics
   review before enabling it as an advisory baseline.
-- [ ] `P16-T9` Add lightweight architecture lint guardrails for the planned
+- [x] `P16-T9` Add lightweight architecture lint guardrails for the planned
   Elegant Objects refactor, covering helper/manager naming relapse,
   constructor I/O, static domain helpers, and duplicated manifest parser
   patterns before broad report-layer restructuring begins.
