@@ -440,10 +440,14 @@ Acceptance:
   repeated implementation blocks in repository source, starts non-blocking for
   baseline collection, and can later be promoted to a fail-on-new-duplicates CI
   gate.
-- [ ] `P16-T7` Integrate an established duplicate-code detector backend,
+- [x] `P16-T7` Integrate an established duplicate-code detector backend,
   starting with Python `pylint` `duplicate-code`/`R0801`, behind the existing
   `SpecHarvesterCodeDuplicationReport` contract and run it as a non-blocking
   CI baseline check.
+- [ ] `P16-T8` Evaluate and integrate a multi-language duplicate-code detector
+  backend such as `jscpd` behind `SpecHarvesterCodeDuplicationReport`, including
+  licensing, deterministic JSON output, npm supply-chain, and CI ergonomics
+  review before enabling it as an advisory baseline.
 
 Acceptance:
 

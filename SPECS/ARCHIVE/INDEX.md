@@ -64,6 +64,7 @@
 | P16-T1 | [P16-T1_Quality_Report_Public_Interface_Coverage/](P16-T1_Quality_Report_Public_Interface_Coverage/) | 2026-05-24 | PASS |
 | P16-T2 | [P16-T2_License_Provenance_Classification_for_Collected_License_Files/](P16-T2_License_Provenance_Classification_for_Collected_License_Files/) | 2026-05-25 | PASS |
 | P16-T6 | [P16-T6_Duplicate_Code_Quality_Report/](P16-T6_Duplicate_Code_Quality_Report/) | 2026-05-25 | PASS |
+| P16-T7 | [P16-T7_Pylint_Duplicate_Code_Backend/](P16-T7_Pylint_Duplicate_Code_Backend/) | 2026-05-25 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
@@ -194,6 +195,7 @@
 | 2026-05-25 | P16-T2 | Archived REVIEW_p16_t2_license_provenance_classification report |
 | 2026-05-25 | P16-T6 | Archived Duplicate-Code Quality Report (PASS) |
 | 2026-05-25 | P16-T6 | Archived REVIEW_p16_t6_duplicate_code_quality_report report |
+| 2026-05-25 | P16-T7 | Archived Pylint Duplicate-Code Backend (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
