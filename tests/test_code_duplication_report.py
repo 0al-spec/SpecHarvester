@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,7 @@ import spec_harvester.code_duplication_report as code_duplication_report
 from spec_harvester.cli import main
 from spec_harvester.code_duplication_report import (
     build_code_duplication_report,
+    build_pylint_code_duplication_report,
     list_source_files,
     normalize_source_line,
     normalized_source_lines,
@@ -174,6 +176,144 @@ def test_cli_code_duplication_report_can_fail_on_duplicates(tmp_path: Path, caps
     assert result == 1
     report = json.loads(capsys.readouterr().out)
     assert report["status"] == "attention"
+
+
+def test_pylint_backend_converts_r0801_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "src"
+    source.mkdir()
+    alpha = source / "alpha.py"
+    beta = source / "beta.py"
+    alpha.write_text("a = 1\nb = 2\nc = 3\n", encoding="utf-8")
+    beta.write_text("a = 1\nb = 2\nc = 3\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        assert command[:4] == [
+            "pylint",
+            "--disable=all",
+            "--enable=duplicate-code",
+            "--min-similarity-lines=3",
+        ]
+        assert check is False
+        assert capture_output is True
+        assert text is True
+        payload = [
+            {
+                "message-id": "R0801",
+                "message": ("Similar lines in 2 files\n==alpha:[1:3]\n==beta:[1:3]\na = 1\nb = 2"),
+            }
+        ]
+        return subprocess.CompletedProcess(command, 8, json.dumps(payload), "")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    report = build_pylint_code_duplication_report([source], min_lines=3)
+
+    assert report["summary"]["backend"] == "pylint"
+    assert report["summary"]["tool"]["name"] == "pylint"
+    assert report["summary"]["tool"]["returnCode"] == 8
+    assert report["summary"]["duplicateBlockCount"] == 1
+    duplicate = report["duplicates"][0]
+    assert duplicate["lineCount"] == 3
+    assert duplicate["normalizedPreview"] == ["a = 1", "b = 2"]
+    assert [Path(item["path"]).name for item in duplicate["occurrences"]] == [
+        "alpha.py",
+        "beta.py",
+    ]
+
+
+def test_pylint_backend_reports_missing_tool(tmp_path: Path) -> None:
+    source = tmp_path / "source.py"
+    source.write_text("a = 1\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="Cannot run pylint duplicate-code backend"):
+        build_pylint_code_duplication_report(
+            [source],
+            min_lines=3,
+            pylint_command="missing-pylint-command",
+        )
+
+
+def test_pylint_backend_fails_closed_on_usage_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source.py"
+    source.write_text("a = 1\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess(command, 32, "[]", "bad invocation")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    with pytest.raises(ValueError, match="return code 32"):
+        build_pylint_code_duplication_report([source], min_lines=3)
+
+
+def test_pylint_backend_fails_closed_on_empty_error_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source.py"
+    source.write_text("a = 1\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess(command, 8, "", "duplicate-code failed")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    with pytest.raises(ValueError, match="without JSON output"):
+        build_pylint_code_duplication_report([source], min_lines=3)
+
+
+def test_cli_code_duplication_report_accepts_pylint_backend(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys
+) -> None:
+    source = tmp_path / "source.py"
+    source.write_text("a = 1\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess(command, 0, "[]", "")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    result = main(
+        [
+            "code-duplication-report",
+            "--backend",
+            "pylint",
+            "--path",
+            str(source),
+        ]
+    )
+
+    assert result == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["summary"]["backend"] == "pylint"
+    assert report["summary"]["duplicateBlockCount"] == 0
 
 
 def test_cli_code_duplication_report_rejects_tiny_windows(capsys) -> None:

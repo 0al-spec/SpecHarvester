@@ -1128,6 +1128,8 @@ def test_docc_and_github_docs_cover_code_duplication_reports() -> None:
         for required in (
             "SpecHarvesterCodeDuplicationReport",
             "code-duplication-report",
+            "--backend pylint",
+            "R0801",
             "--fail-on-duplicates",
             "advisory",
             "No repository code execution",

@@ -440,6 +440,14 @@ Acceptance:
   repeated implementation blocks in repository source, starts non-blocking for
   baseline collection, and can later be promoted to a fail-on-new-duplicates CI
   gate.
+- [x] `P16-T7` Integrate an established duplicate-code detector backend,
+  starting with Python `pylint` `duplicate-code`/`R0801`, behind the existing
+  `SpecHarvesterCodeDuplicationReport` contract and run it as a non-blocking
+  CI baseline check.
+- [ ] `P16-T8` Evaluate and integrate a multi-language duplicate-code detector
+  backend such as `jscpd` behind `SpecHarvesterCodeDuplicationReport`, including
+  licensing, deterministic JSON output, npm supply-chain, and CI ergonomics
+  review before enabling it as an advisory baseline.
 
 Acceptance:
 
@@ -451,6 +459,9 @@ Acceptance:
 - Static quality hardening can flag duplicated implementation policy such as
   allowlists, normalization predicates, schema fragments, and report issue-code
   logic before review has to catch drift manually.
+- Established duplicate-code tools are preferred as primary detectors when
+  their licensing, deterministic output, local-only execution, and CI ergonomics
+  fit the repository.
 - The local validation matrix can show whether advisory noise decreased while
   preserving strict public-source safety guarantees.
 - Generated `.smoke/` inputs and outputs remain local-only and uncommitted.

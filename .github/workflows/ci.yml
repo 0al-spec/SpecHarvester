@@ -37,6 +37,14 @@ jobs:
       - name: Ruff format
         run: ruff format --check src tests
 
+      - name: Duplicate-code baseline
+        run: |
+          python -m spec_harvester code-duplication-report \
+            --backend pylint \
+            --path src/spec_harvester \
+            --min-lines 8 \
+            --output /tmp/spec-harvester-pylint-duplicates.json
+
       - name: Pytest
         run: pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90
 
