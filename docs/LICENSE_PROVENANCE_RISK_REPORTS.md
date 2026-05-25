@@ -51,6 +51,11 @@ The report is a deterministic JSON object with:
   license-like file evidence was found.
 - `ambiguous_unknown_license`: license is `UNKNOWN` because license-like file
   evidence was present but could not be classified deterministically.
+- `collected_unknown_license_evidence`: license is `UNKNOWN` but a standard
+  collected license filename such as `LICENSE`, `LICENSE.txt`, `LICENSE.md`,
+  `COPYING`, or `COPYING.rst` is present.  This remains a review advisory
+  because the report does not parse full license text, but it is lower severity
+  than genuinely ambiguous license-like evidence.
 - `non_standard_license`: license is not recognized as a common SPDX-like identifier.
 - `missing_upstream_repository`: no `id: upstream_repository` in `foreignArtifacts`.
 - `duplicate_upstream_repository_entries`: more than one upstream artifact present.

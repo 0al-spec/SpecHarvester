@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.license_files import is_license_filename
 from spec_harvester.namespace_reports import (
     namespace_matches_upstream,
     parse_upstream_repository_reference,
@@ -187,6 +188,20 @@ def evaluate_license_risks(
                 )
                 continue
             if normalized == "unknown" and evidence_source == "ambiguous_license_file":
+                if has_collected_license_file_evidence(record):
+                    issues.append(
+                        _report_issue(
+                            record,
+                            "collected_unknown_license_evidence",
+                            "low",
+                            (
+                                "License is UNKNOWN but standard collected license-file "
+                                "evidence is present; deterministic SPDX classification "
+                                "still needs review."
+                            ),
+                        )
+                    )
+                    continue
                 issues.append(
                     _report_issue(
                         record,
@@ -230,6 +245,22 @@ def license_evidence_source(record: PackageLicenseProvenanceRecord) -> str | Non
     if isinstance(source, str) and source.strip():
         return source.strip()
     return None
+
+
+def has_collected_license_file_evidence(record: PackageLicenseProvenanceRecord) -> bool:
+    evidence = record.license_evidence
+    if not isinstance(evidence, dict):
+        return False
+    paths = evidence.get("paths")
+    if not isinstance(paths, list):
+        return False
+    return any(is_standard_license_evidence_path(path) for path in paths)
+
+
+def is_standard_license_evidence_path(path: object) -> bool:
+    if not isinstance(path, str) or not path.strip():
+        return False
+    return is_license_filename(Path(path.strip()))
 
 
 def evaluate_provenance_risks(

@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-05-24
+Updated: 2026-05-25
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -421,7 +421,7 @@ Acceptance:
   structured quality-report analyzer coverage so Python and Go candidates with
   executed public API analyzers are not downgraded to `weak` coverage only
   because the coverage derivation misses colocated interface-index evidence.
-- [ ] `P16-T2` Improve license provenance classification for collected license
+- [x] `P16-T2` Improve license provenance classification for collected license
   files such as Flask's `LICENSE.txt`, preserving strict missing-license errors
   while distinguishing recognizable license text from genuinely ambiguous
   unknown license evidence in governance reports.

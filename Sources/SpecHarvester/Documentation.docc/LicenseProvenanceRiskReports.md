@@ -17,8 +17,8 @@ python3 -m spec_harvester governance-license-provenance-report \
 - Reads package `metadata.id`, `metadata.version`, `metadata.license`, and
   `metadata.licenseEvidence`.
 - Reads `foreignArtifacts` and focuses on `id: upstream_repository` records.
-- Emits distinct risk issues for absent license evidence and ambiguous
-  unclassified license-like evidence.
+- Emits distinct risk issues for absent license evidence, collected standard
+  license-file evidence, and ambiguous unclassified license-like evidence.
 - Emits risk issues for invalid, missing, or out-of-policy upstream provenance.
 - Produces deterministic JSON with package provenance context and issue severity.
 
@@ -30,6 +30,18 @@ Generated candidates can include `metadata.licenseEvidence`:
 - `license_file_hint`: an allowlisted license file produced a known static hint.
 - `ambiguous_license_file`: a license-like file existed but was not classifiable.
 - `absent`: no manifest license or license-like file evidence was found.
+
+When `metadata.license` is still `UNKNOWN`, standard collected license
+filenames such as `LICENSE`, `LICENSE.txt`, `LICENSE.md`, `COPYING`, and
+`COPYING.rst` produce `collected_unknown_license_evidence`.  This remains a
+review advisory, but it is lower severity than `ambiguous_unknown_license`
+because deterministic collection found an allowlisted public license file.
+
+Issue classes include:
+
+- `absent_license_evidence`
+- `ambiguous_unknown_license`
+- `collected_unknown_license_evidence`
 
 ## Trust Boundary
 

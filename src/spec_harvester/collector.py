@@ -10,6 +10,7 @@ from typing import Any
 
 from spec_harvester.classifier_registry import default_classifier_policy
 from spec_harvester.go_public_api import go_source_files
+from spec_harvester.license_files import is_license_filename
 
 SNAPSHOT_KIND = "SpecHarvesterEvidenceSnapshot"
 SNAPSHOT_SCHEMA_VERSION = 1
@@ -106,8 +107,6 @@ IGNORED_NESTED_SWIFT_MANIFEST_DIRS = {
 }
 
 MARKDOWN_EXTENSIONS = {".md", ".markdown"}
-LICENSE_FILE_BASENAMES = {"LICENSE", "COPYING"}
-LICENSE_FILE_TEXT_EXTENSIONS = {"", ".txt", ".md", ".markdown", ".rst"}
 PROJECT_PROFILE_MANIFEST_KINDS = {"package_manifest", "workspace_manifest"}
 LICENSE_TEXT_HINTS = (
     ("MIT", ("permission is hereby granted", "copyright")),
@@ -915,15 +914,6 @@ def classify_file(path: Path) -> str:
     if path.name.startswith("index."):
         return "source_entrypoint"
     return "metadata"
-
-
-def is_license_filename(path: Path) -> bool:
-    name = path.name
-    suffix = path.suffix.lower()
-    if suffix not in LICENSE_FILE_TEXT_EXTENSIONS:
-        return False
-    stem = path.stem if suffix else name
-    return stem.upper() in LICENSE_FILE_BASENAMES
 
 
 def decode_text(data: bytes) -> str | None:

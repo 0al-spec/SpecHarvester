@@ -156,7 +156,19 @@ def test_license_provenance_report_distinguishes_unknown_evidence_classes(
         license_evidence={
             "source": "ambiguous_license_file",
             "confidence": "low",
-            "paths": ["LICENSE"],
+            "paths": ["LICENSE.custom"],
+        },
+    )
+    write_manifest(
+        candidates_root / "collected" / "0.1.0" / "specpm.yaml",
+        "collected.core",
+        "0.1.0",
+        "UNKNOWN",
+        upstream_uri="https://github.com/collected/collected",
+        license_evidence={
+            "source": "ambiguous_license_file",
+            "confidence": "low",
+            "paths": ["LICENSE.txt"],
         },
     )
     write_manifest(
@@ -172,6 +184,7 @@ def test_license_provenance_report_distinguishes_unknown_evidence_classes(
     assert report["summary"]["issuesByCode"] == {
         "absent_license_evidence": 1,
         "ambiguous_unknown_license": 1,
+        "collected_unknown_license_evidence": 1,
         "unknown_license": 1,
     }
     by_package = {record["packageId"]: record for record in report["records"]}
@@ -183,13 +196,55 @@ def test_license_provenance_report_distinguishes_unknown_evidence_classes(
     assert by_package["ambiguous.core"]["licenseEvidence"] == {
         "source": "ambiguous_license_file",
         "confidence": "low",
-        "paths": ["LICENSE"],
+        "paths": ["LICENSE.custom"],
+    }
+    assert by_package["collected.core"]["licenseEvidence"] == {
+        "source": "ambiguous_license_file",
+        "confidence": "low",
+        "paths": ["LICENSE.txt"],
     }
 
     issue_by_package = {issue["packageId"]: issue for issue in report["issues"]}
     assert issue_by_package["absent.core"]["code"] == "absent_license_evidence"
     assert issue_by_package["ambiguous.core"]["code"] == "ambiguous_unknown_license"
+    assert issue_by_package["collected.core"]["code"] == "collected_unknown_license_evidence"
+    assert issue_by_package["collected.core"]["severity"] == "low"
     assert issue_by_package["legacy.core"]["code"] == "unknown_license"
+
+
+def test_license_provenance_report_accepts_collected_license_path_variants(
+    tmp_path: Path,
+) -> None:
+    candidates_root = tmp_path / "candidates"
+    candidates_root.mkdir(parents=True)
+    for index, license_path in enumerate(
+        (
+            "LICENSE",
+            "LICENSE.txt",
+            "LICENSE.md",
+            "LICENSE.markdown",
+            "COPYING",
+            "COPYING.rst",
+        ),
+        start=1,
+    ):
+        write_manifest(
+            candidates_root / f"collected-{index}" / "0.1.0" / "specpm.yaml",
+            f"collected-{index}.core",
+            "0.1.0",
+            "UNKNOWN",
+            upstream_uri=f"https://github.com/collected-{index}/collected-{index}",
+            license_evidence={
+                "source": "ambiguous_license_file",
+                "confidence": "low",
+                "paths": [license_path],
+            },
+        )
+
+    report = build_license_provenance_risk_report(candidates_root=candidates_root)
+
+    assert report["summary"]["issuesByCode"] == {"collected_unknown_license_evidence": 6}
+    assert {issue["severity"] for issue in report["issues"]} == {"low"}
 
 
 def test_parse_license_evidence_accepts_inline_path_and_artifact_alias(
