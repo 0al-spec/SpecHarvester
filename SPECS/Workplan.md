@@ -452,6 +452,9 @@ Acceptance:
   Elegant Objects refactor, covering helper/manager naming relapse,
   constructor I/O, static domain helpers, and duplicated manifest parser
   patterns before broad report-layer restructuring begins.
+- [x] `P16-T10` Introduce a behavior-rich `SpecPackageManifest` object for
+  reading `specpm.yaml` metadata, foreign artifacts, and claim sections as the
+  first Elegant Objects seam before report modules are rewritten.
 
 Acceptance:
 

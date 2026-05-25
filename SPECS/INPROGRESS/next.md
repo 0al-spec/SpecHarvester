@@ -15,9 +15,9 @@ upstream repositories such as `NavigationSplitView`.
 
 ## Recently Archived
 
+- P16-T10: SpecPackageManifest Object Seam (PASS, 2026-05-26)
 - P16-T9: Architecture Lint Guardrails (PASS, 2026-05-25)
 - P16-T7: Pylint Duplicate-Code Backend (PASS, 2026-05-25)
-- P16-T6: Duplicate-Code Quality Report (PASS, 2026-05-25)
 
 ## Next Step
 

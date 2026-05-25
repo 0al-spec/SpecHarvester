@@ -259,7 +259,7 @@ def static_domain_helper_issues(source: SourceFile) -> list[dict[str, Any]]:
 
 
 def manifest_parser_pattern_issues(source: SourceFile) -> list[dict[str, Any]]:
-    if source.path.name == "architecture_lint.py":
+    if source.path.name in {"architecture_lint.py", "specpm_manifest.py"}:
         return []
     if not all(term in source.text for term in MANIFEST_PATTERN_TERMS):
         return []
