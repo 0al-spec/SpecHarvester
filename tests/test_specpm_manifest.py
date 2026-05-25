@@ -127,6 +127,7 @@ metadata:
         "confidence": "low",
         "paths": ["LICENSE.txt", "COPYING.rst"],
     }
+    assert manifest.metadata_strings()["licenseEvidence"] == ""
 
 
 def test_spec_package_manifest_supports_inline_license_evidence_path(tmp_path: Path) -> None:

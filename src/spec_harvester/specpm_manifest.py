@@ -80,7 +80,14 @@ class SpecPackageManifest:
         return package_id.split(".")[0] if "." in package_id else package_id
 
     def metadata_strings(self) -> dict[str, str]:
-        return {key: str(value) for key, value in self.metadata.items()}
+        result: dict[str, str] = {}
+        for key, value in self.metadata.items():
+            if isinstance(value, str):
+                result[key] = value
+                continue
+            if key == "licenseEvidence" and isinstance(value, dict):
+                result[key] = ""
+        return result
 
     def license_evidence(self) -> dict[str, Any] | None:
         evidence = self.metadata.get("licenseEvidence")
