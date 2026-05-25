@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-from spec_harvester.promoter import parse_yaml_scalar
+from spec_harvester.specpm_manifest import ManifestArtifact, SpecPackageManifest
 
 NAMESPACE_UPSTREAM_REPORT_KIND = "SpecHarvesterNamespaceUpstreamReviewReport"
 NAMESPACE_UPSTREAM_REPORT_SCHEMA_VERSION = 1
@@ -300,105 +300,25 @@ def parse_specpm_namespace_upstream(
     manifest_path: Path,
     source: str,
 ) -> PackageNamespaceUpstreamRecord:
-    metadata: dict[str, str] = {}
-    artifacts: list[UpstreamArtifactRecord] = []
-
-    parse_state = "root"
-    current_artifact: dict[str, str] | None = None
-
-    for raw_line in manifest_path.read_text(encoding="utf-8").splitlines():
-        line = raw_line.split("#", 1)[0].rstrip()
-        if not line.strip():
-            continue
-
-        indent = len(line) - len(line.lstrip(" "))
-        text = line.strip()
-
-        if indent == 0:
-            if parse_state == "foreignArtifacts" and current_artifact is not None:
-                artifacts.append(_normalize_artifact(current_artifact))
-                current_artifact = None
-            if text == "metadata:":
-                parse_state = "metadata"
-                continue
-            if text == "foreignArtifacts:":
-                parse_state = "foreignArtifacts"
-                continue
-            parse_state = "root"
-            continue
-
-        if parse_state == "metadata":
-            if indent != 2 or ":" not in text:
-                continue
-            key, raw_value = text.split(":", 1)
-            metadata[key.strip()] = parse_yaml_scalar(raw_value.strip())
-            continue
-
-        if parse_state == "foreignArtifacts":
-            if indent == 2:
-                if text.startswith("- "):
-                    if current_artifact is not None:
-                        artifacts.append(_normalize_artifact(current_artifact))
-                    current_artifact = {}
-                    text = text[2:].strip()
-                    if ":" in text:
-                        key, raw_value = text.split(":", 1)
-                        current_artifact[key.strip()] = parse_yaml_scalar(raw_value.strip())
-                    continue
-                parse_state = "root"
-                if current_artifact is not None:
-                    artifacts.append(_normalize_artifact(current_artifact))
-                    current_artifact = None
-                continue
-
-            if indent >= 4 and current_artifact is not None and ":" in text:
-                key, raw_value = text.split(":", 1)
-                current_artifact[key.strip()] = parse_yaml_scalar(raw_value.strip())
-                continue
-
-            if indent < 4:
-                if current_artifact is not None:
-                    artifacts.append(_normalize_artifact(current_artifact))
-                    current_artifact = None
-                parse_state = "root"
-
-    if current_artifact is not None:
-        artifacts.append(_normalize_artifact(current_artifact))
-
-    package_id = metadata.get("id", "").strip()
-    package_version = metadata.get("version", "").strip()
-    if not package_id or not package_version:
-        raise ValueError("specpm.yaml must contain metadata.id and metadata.version.")
-
-    namespace = package_id.split(".")[0] if "." in package_id else package_id
+    manifest = SpecPackageManifest.from_path(manifest_path)
+    package_id, package_version = manifest.require_identity()
 
     return PackageNamespaceUpstreamRecord(
         path=str(manifest_path),
         source=source,
         package_id=package_id,
         package_version=package_version,
-        namespace=namespace,
-        upstream_artifacts=tuple(artifacts),
+        namespace=manifest.namespace(),
+        upstream_artifacts=tuple(_normalize_artifact(artifact) for artifact in manifest.artifacts),
     )
 
 
-def _normalize_artifact(values: dict[str, str]) -> UpstreamArtifactRecord:
-    artifact_id = str(values.get("id", "")).strip()
-    if not artifact_id:
-        artifact_id = str(values.get("artifact", "")).strip()
-
-    uri = values.get("uri")
-    uri_value = str(uri).strip() if uri is not None else ""
-    role = values.get("role")
-    role_value = str(role).strip() if role is not None else None
-    revision = values.get("revision")
-    revision_value = str(revision).strip() if revision is not None else None
-
+def _normalize_artifact(artifact: ManifestArtifact) -> UpstreamArtifactRecord:
     return UpstreamArtifactRecord(
-        artifact_id=artifact_id,
-        uri=uri_value,
-        role=role_value,
-        revision=revision_value,
+        artifact_id=artifact.artifact_id(),
+        uri=artifact.uri(),
+        role=artifact.role(),
+        revision=artifact.revision(),
     )
 
 

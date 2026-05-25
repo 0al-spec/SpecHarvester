@@ -455,6 +455,9 @@ Acceptance:
 - [x] `P16-T10` Introduce a behavior-rich `SpecPackageManifest` object for
   reading `specpm.yaml` metadata, foreign artifacts, and claim sections as the
   first Elegant Objects seam before report modules are rewritten.
+- [x] `P16-T11` Refactor accepted diff and namespace upstream reports to read
+  manifests through `SpecPackageManifest`, reducing duplicated manifest parser
+  code while preserving report JSON behavior.
 
 Acceptance:
 

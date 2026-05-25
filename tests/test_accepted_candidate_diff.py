@@ -233,6 +233,40 @@ def test_parse_specpm_diff_record_reads_nested_intents_and_artifact_role(
     )
 
 
+def test_accepted_candidate_diff_normalizes_nested_license_evidence_metadata(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidates_root = tmp_path / "candidates"
+    write_nested_license_evidence_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        license_evidence_lines=[
+            "    source: collected_license_file",
+            "    confidence: high",
+            "    paths:",
+            "      - LICENSE",
+        ],
+    )
+    write_nested_license_evidence_manifest(
+        candidates_root / "demo" / "1.0.0" / "specpm.yaml",
+        license_evidence_lines=[
+            "    paths:",
+            "      - LICENSE",
+            "    confidence: high",
+            "    source: collected_license_file",
+        ],
+    )
+
+    report = build_accepted_candidate_diff_report(
+        accepted_root=accepted_root,
+        candidates_root=candidates_root,
+    )
+
+    comparison = report["comparisons"][0]
+    assert comparison["status"] == "unchanged"
+    assert comparison["changes"]["metadata"] == []
+
+
 def test_semver_sort_key_orders_prerelease_and_handles_invalid_versions() -> None:
     assert semver_sort_key("1.0.0") > semver_sort_key("1.0.0-rc.1")
     assert semver_sort_key("1.0.0-rc.2") > semver_sort_key("1.0.0-rc.1")
@@ -313,6 +347,32 @@ def write_manifest(
             "  - id: upstream_repository\n"
             "    uri: https://github.com/example/demo\n"
             f"    revision: {upstream_revision}\n"
+        ),
+        encoding="utf-8",
+    )
+
+
+def write_nested_license_evidence_manifest(
+    path: Path,
+    *,
+    license_evidence_lines: list[str],
+) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        (
+            "apiVersion: specpm.dev/v0.1\n"
+            "kind: SpecPackage\n"
+            "metadata:\n"
+            "  id: demo.core\n"
+            "  name: Demo\n"
+            "  version: 1.0.0\n"
+            "  summary: Demo package\n"
+            "  license: MIT\n"
+            "  licenseEvidence:\n" + "\n".join(license_evidence_lines) + "\n"
+            "index:\n"
+            "  provides:\n"
+            "    capabilities:\n"
+            "      - demo.read\n"
         ),
         encoding="utf-8",
     )

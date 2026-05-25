@@ -6,9 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from spec_harvester.governance_reports import normalize_scalar_list_item
-from spec_harvester.namespace_reports import _normalize_artifact
-from spec_harvester.promoter import parse_yaml_scalar
+from spec_harvester.specpm_manifest import SpecPackageManifest
 
 ACCEPTED_CANDIDATE_DIFF_REPORT_KIND = "SpecHarvesterAcceptedCandidateDiffReport"
 ACCEPTED_CANDIDATE_DIFF_REPORT_SCHEMA_VERSION = 1
@@ -109,144 +107,21 @@ def collect_package_diff_records(
 
 
 def parse_specpm_diff_record(manifest_path: Path, source: str) -> PackageDiffInputRecord:
-    metadata: dict[str, str] = {}
-    intents: set[str] = set()
-    capabilities: set[str] = set()
-    artifacts: list[dict[str, str]] = []
-
-    parse_state = "root"
-    mode = ""
-    current_artifact: dict[str, str] | None = None
-
-    for raw_line in manifest_path.read_text(encoding="utf-8").splitlines():
-        line = raw_line.split("#", 1)[0].rstrip()
-        if not line.strip():
-            continue
-        indent = len(line) - len(line.lstrip(" "))
-        text = line.strip()
-
-        if indent == 0:
-            if parse_state == "foreignArtifacts" and current_artifact is not None:
-                artifacts.append(artifact_to_dict(current_artifact))
-                current_artifact = None
-            parse_state = "root"
-            mode = ""
-            if text == "metadata:":
-                parse_state = "metadata"
-            elif text == "index:":
-                parse_state = "index"
-            elif text == "foreignArtifacts:":
-                parse_state = "foreignArtifacts"
-            continue
-
-        if parse_state == "metadata":
-            if indent == 2 and ":" in text:
-                key, raw_value = text.split(":", 1)
-                metadata[key.strip()] = str(parse_yaml_scalar(raw_value.strip()))
-            continue
-
-        if parse_state == "index":
-            mode = update_index_claims_mode(
-                indent,
-                text,
-                mode,
-                intents,
-                capabilities,
-            )
-            continue
-
-        if parse_state == "foreignArtifacts":
-            if indent == 2 and text.startswith("- "):
-                if current_artifact is not None:
-                    artifacts.append(artifact_to_dict(current_artifact))
-                current_artifact = {}
-                item_text = text[2:].strip()
-                if ":" in item_text:
-                    key, raw_value = item_text.split(":", 1)
-                    current_artifact[key.strip()] = str(parse_yaml_scalar(raw_value.strip()))
-                continue
-            if indent >= 4 and current_artifact is not None and ":" in text:
-                key, raw_value = text.split(":", 1)
-                current_artifact[key.strip()] = str(parse_yaml_scalar(raw_value.strip()))
-                continue
-            if current_artifact is not None:
-                artifacts.append(artifact_to_dict(current_artifact))
-                current_artifact = None
-            parse_state = "root"
-
-    if current_artifact is not None:
-        artifacts.append(artifact_to_dict(current_artifact))
-
-    package_id = metadata.get("id", "").strip()
-    package_version = metadata.get("version", "").strip()
-    if not package_id or not package_version:
-        raise ValueError("specpm.yaml must contain metadata.id and metadata.version.")
+    manifest = SpecPackageManifest.from_path(manifest_path)
+    package_id, package_version = manifest.require_identity()
 
     return PackageDiffInputRecord(
         path=str(manifest_path),
         source=source,
         package_id=package_id,
         package_version=package_version,
-        metadata=metadata,
-        intents=tuple(sorted(intents)),
-        capabilities=tuple(sorted(capabilities)),
-        upstream_artifacts=tuple(sorted(artifacts, key=artifact_sort_key)),
+        metadata=manifest.metadata_strings(),
+        intents=manifest.intents,
+        capabilities=manifest.capabilities,
+        upstream_artifacts=tuple(
+            sorted((artifact.as_dict() for artifact in manifest.artifacts), key=artifact_sort_key)
+        ),
     )
-
-
-def update_index_claims_mode(
-    indent: int,
-    text: str,
-    mode: str,
-    intents: set[str],
-    capabilities: set[str],
-) -> str:
-    if indent == 2 and text == "provides:":
-        return "provides"
-    if indent == 2 and text == "intents:":
-        return "intents"
-
-    if mode == "intents":
-        if indent == 4 and text.startswith("- "):
-            intents.update(normalize_scalar_list_item(text))
-            return mode
-        if indent <= 2:
-            return ""
-    if mode == "provides":
-        if indent == 4 and text == "capabilities:":
-            return "capabilities"
-        if indent == 4 and text == "intents:":
-            return "provides_intents"
-        if indent <= 2:
-            return ""
-    if mode == "capabilities":
-        if indent == 6 and text.startswith("- "):
-            capabilities.update(normalize_scalar_list_item(text))
-            return mode
-        if indent == 4 and text == "intents:":
-            return "provides_intents"
-        if indent <= 4:
-            return "provides"
-    if mode == "provides_intents":
-        if indent == 6 and text.startswith("- "):
-            intents.update(normalize_scalar_list_item(text))
-            return mode
-        if indent <= 4:
-            return "provides"
-    return mode
-
-
-def artifact_to_dict(values: dict[str, str]) -> dict[str, str]:
-    artifact = _normalize_artifact(values)
-    result = {
-        "id": artifact.artifact_id,
-        "uri": artifact.uri,
-    }
-    if artifact.role is not None:
-        result["role"] = artifact.role
-    if artifact.revision is not None:
-        result["revision"] = artifact.revision
-    return result
 
 
 def latest_accepted_by_package_id(
