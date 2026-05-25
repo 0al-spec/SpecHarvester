@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.license_files import is_license_filename
 from spec_harvester.namespace_reports import (
     namespace_matches_upstream,
     parse_upstream_repository_reference,
@@ -54,9 +55,6 @@ KNOWN_LICENSE_HINTS = {
     "mpl-2.0",
     "unlicense",
 }
-
-LICENSE_FILE_BASENAMES = {"LICENSE", "COPYING"}
-LICENSE_FILE_TEXT_EXTENSIONS = {"", ".txt", ".md", ".markdown", ".rst"}
 
 
 @dataclass(frozen=True)
@@ -262,13 +260,7 @@ def has_collected_license_file_evidence(record: PackageLicenseProvenanceRecord) 
 def is_standard_license_evidence_path(path: object) -> bool:
     if not isinstance(path, str) or not path.strip():
         return False
-    candidate = Path(path.strip())
-    name = candidate.name
-    suffix = candidate.suffix.lower()
-    if suffix not in LICENSE_FILE_TEXT_EXTENSIONS:
-        return False
-    stem = candidate.stem if suffix else name
-    return stem.upper() in LICENSE_FILE_BASENAMES
+    return is_license_filename(Path(path.strip()))
 
 
 def evaluate_provenance_risks(

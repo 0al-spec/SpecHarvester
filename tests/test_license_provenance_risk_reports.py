@@ -218,7 +218,14 @@ def test_license_provenance_report_accepts_collected_license_path_variants(
     candidates_root = tmp_path / "candidates"
     candidates_root.mkdir(parents=True)
     for index, license_path in enumerate(
-        ("LICENSE", "LICENSE.txt", "LICENSE.md", "COPYING", "COPYING.rst"),
+        (
+            "LICENSE",
+            "LICENSE.txt",
+            "LICENSE.md",
+            "LICENSE.markdown",
+            "COPYING",
+            "COPYING.rst",
+        ),
         start=1,
     ):
         write_manifest(
@@ -236,7 +243,7 @@ def test_license_provenance_report_accepts_collected_license_path_variants(
 
     report = build_license_provenance_risk_report(candidates_root=candidates_root)
 
-    assert report["summary"]["issuesByCode"] == {"collected_unknown_license_evidence": 5}
+    assert report["summary"]["issuesByCode"] == {"collected_unknown_license_evidence": 6}
     assert {issue["severity"] for issue in report["issues"]} == {"low"}
 
 
