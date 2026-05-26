@@ -4,8 +4,8 @@
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
 **Dependencies:** P16-T15
-**Status:** Suggested
-**Suggested:** 2026-05-26
+**Status:** Selected
+**Selected:** 2026-05-26
 
 ## Description
 
@@ -26,5 +26,5 @@ report issue generation and real repository quality rating guards.
 
 ## Next Step
 
-Run SELECT for `P16-T16`, then refactor namespace and license provenance
+Create the P16-T16 PRD, then refactor namespace and license provenance
 upstream issue generation into a shared behavior-rich object.
