@@ -4,7 +4,8 @@
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
 **Dependencies:** P16-T13
-**Status:** Suggested
+**Status:** Selected
+**Selected:** 2026-05-26
 
 ## Description
 
@@ -23,4 +24,3 @@ semantic cluster generation.
 Run SELECT for `P16-T14`, then refactor the remaining `pylint` duplicate-code
 cluster in `collector.py` and `drafter.py` without changing semantic evidence
 output.
-
