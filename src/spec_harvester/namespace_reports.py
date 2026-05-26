@@ -6,6 +6,10 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
+from spec_harvester.report_source_records import (
+    ReportSourceIssuePolicy,
+    SpecpmReportSourceRecords,
+)
 from spec_harvester.specpm_manifest import ManifestArtifact, SpecPackageManifest
 
 NAMESPACE_UPSTREAM_REPORT_KIND = "SpecHarvesterNamespaceUpstreamReviewReport"
@@ -89,16 +93,15 @@ def collect_namespace_upstream_records(
     accepted_root: Path | None,
     candidates_root: Path | None,
 ) -> tuple[list[PackageNamespaceUpstreamRecord], list[dict[str, str]]]:
-    records: list[PackageNamespaceUpstreamRecord] = []
-    issues: list[dict[str, str]] = []
-
-    if accepted_root is not None:
-        _collect_source_records(accepted_root, "accepted", records, issues)
-    if candidates_root is not None:
-        _collect_source_records(candidates_root, "candidate", records, issues)
-
-    records.sort(key=lambda item: (item.source, item.path))
-    return records, issues
+    return SpecpmReportSourceRecords(
+        accepted_root=accepted_root,
+        candidates_root=candidates_root,
+        parse_manifest=parse_specpm_namespace_upstream,
+        issue_policy=ReportSourceIssuePolicy(
+            symlink_message="Skip symlinked specpm.yaml in namespace/upstream report scan.",
+        ),
+        sort_key=lambda item: (item.source, item.path),
+    ).collect()
 
 
 def namespace_record_to_dict(record: PackageNamespaceUpstreamRecord) -> dict[str, Any]:
@@ -269,40 +272,6 @@ def strip_git_suffix(name: str) -> str:
     if name.endswith(".git"):
         return name.removesuffix(".git")
     return name
-
-
-def _collect_source_records(
-    source_root: Path,
-    source: str,
-    records: list[PackageNamespaceUpstreamRecord],
-    issues: list[dict[str, str]],
-) -> None:
-    root = source_root.resolve()
-    if not root.exists() or not root.is_dir():
-        raise ValueError(f"Source root does not exist or is not a directory: {root}")
-
-    for manifest_path in sorted(root.rglob("specpm.yaml"), key=lambda item: str(item)):
-        if manifest_path.is_symlink():
-            issues.append(
-                {
-                    "path": str(manifest_path),
-                    "code": "specpm_symlink",
-                    "message": "Skip symlinked specpm.yaml in namespace/upstream report scan.",
-                }
-            )
-            continue
-        try:
-            package = parse_specpm_namespace_upstream(manifest_path, source)
-        except ValueError as exc:
-            issues.append(
-                {
-                    "path": str(manifest_path),
-                    "code": "invalid_specpm_manifest",
-                    "message": str(exc),
-                }
-            )
-            continue
-        records.append(package)
 
 
 def parse_specpm_namespace_upstream(

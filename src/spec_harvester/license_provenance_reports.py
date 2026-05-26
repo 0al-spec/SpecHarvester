@@ -12,6 +12,10 @@ from spec_harvester.namespace_reports import (
     parse_upstream_repository_reference,
 )
 from spec_harvester.promoter import parse_yaml_scalar
+from spec_harvester.report_source_records import (
+    ReportSourceIssuePolicy,
+    SpecpmReportSourceRecords,
+)
 
 LICENSE_PROVENANCE_REPORT_KIND = "SpecHarvesterLicenseProvenanceRiskReport"
 LICENSE_PROVENANCE_REPORT_SCHEMA_VERSION = 1
@@ -122,16 +126,17 @@ def collect_license_provenance_records(
     accepted_root: Path | None,
     candidates_root: Path | None,
 ) -> tuple[list[PackageLicenseProvenanceRecord], list[dict[str, str]]]:
-    records: list[PackageLicenseProvenanceRecord] = []
-    issues: list[dict[str, str]] = []
-
-    if accepted_root is not None:
-        _collect_source_records(accepted_root, "accepted", records, issues)
-    if candidates_root is not None:
-        _collect_source_records(candidates_root, "candidate", records, issues)
-
-    records.sort(key=lambda item: (item.source, item.path))
-    return records, issues
+    return SpecpmReportSourceRecords(
+        accepted_root=accepted_root,
+        candidates_root=candidates_root,
+        parse_manifest=parse_specpm_license_provenance,
+        issue_policy=ReportSourceIssuePolicy(
+            symlink_message="Skip symlinked specpm.yaml in license provenance risk scan.",
+            symlink_severity="low",
+            invalid_manifest_severity="low",
+        ),
+        sort_key=lambda item: (item.source, item.path),
+    ).collect()
 
 
 def license_provenance_record_to_dict(record: PackageLicenseProvenanceRecord) -> dict[str, Any]:
@@ -415,43 +420,6 @@ def _report_issue(
         "severity": severity,
         "message": message,
     }
-
-
-def _collect_source_records(
-    source_root: Path,
-    source: str,
-    records: list[PackageLicenseProvenanceRecord],
-    issues: list[dict[str, str]],
-) -> None:
-    root = source_root.resolve()
-    if not root.exists() or not root.is_dir():
-        raise ValueError(f"Source root does not exist or is not a directory: {root}")
-
-    for manifest_path in sorted(root.rglob("specpm.yaml"), key=lambda item: str(item)):
-        if manifest_path.is_symlink():
-            issues.append(
-                {
-                    "path": str(manifest_path),
-                    "code": "specpm_symlink",
-                    "severity": "low",
-                    "message": "Skip symlinked specpm.yaml in license provenance risk scan.",
-                }
-            )
-            continue
-
-        try:
-            package = parse_specpm_license_provenance(manifest_path, source)
-        except ValueError as exc:
-            issues.append(
-                {
-                    "path": str(manifest_path),
-                    "code": "invalid_specpm_manifest",
-                    "severity": "low",
-                    "message": str(exc),
-                }
-            )
-            continue
-        records.append(package)
 
 
 def parse_specpm_license_provenance(
