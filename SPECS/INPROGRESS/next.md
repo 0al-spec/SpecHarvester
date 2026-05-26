@@ -1,31 +1,30 @@
-# Next Task: P16-T15 — Public API Analyzer Options Object
+# Next Task: P16-T16 — Upstream Issue Evaluation Object
 
 **Priority:** P1
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
-**Dependencies:** P16-T14
-**Status:** Selected
-**Selected:** 2026-05-26
+**Dependencies:** P16-T15
+**Status:** Suggested
+**Suggested:** 2026-05-26
 
 ## Description
 
-Introduce a shared public API analyzer options object for common
-source/package/output/trust inputs currently repeated across Python, Go, and
-JS/TS public interface analyzers.
+Introduce a shared upstream issue evaluation object for namespace and license
+provenance reports so verified-upstream issue generation is represented once.
 
 ## Recently Archived
 
+- P16-T15: Public API Analyzer Options Object (PASS, 2026-05-26)
 - P16-T14: Semantic Keyword Taxonomy Object (PASS, 2026-05-26)
 - P16-T13: Public API Payload Records (PASS, 2026-05-26)
-- P16-T12: Report Source Records Object (PASS, 2026-05-26)
 
 ## Rationale
 
-P16-T14 reduced the trusted `pylint` duplicate-code backend to zero duplicate
-blocks. The builtin advisory backend still reports one analyzer option-shape
-cluster plus report-layer clusters outside the semantic taxonomy scope.
+P16-T15 removed the analyzer option-shape duplicate cluster. The builtin
+duplicate-code backend now reports remaining advisory clusters in upstream
+report issue generation and real repository quality rating guards.
 
 ## Next Step
 
-Create the P16-T15 PRD, then refactor the shared analyzer option shape without
-obscuring language-specific analyzer behavior.
+Run SELECT for `P16-T16`, then refactor namespace and license provenance
+upstream issue generation into a shared behavior-rich object.
