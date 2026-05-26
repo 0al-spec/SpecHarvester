@@ -13,6 +13,7 @@ from spec_harvester.interface_index import (
     new_public_interface_index,
     validate_public_interface_index,
 )
+from spec_harvester.public_api_payload_records import PublicApiPayloadPath
 
 GO_PUBLIC_API_ANALYZER_ID = "go-source-public-api"
 GO_PUBLIC_API_ANALYZER_VERSION = "0.1.0"
@@ -484,19 +485,20 @@ def read_cached_go_payload(
     diagnostics = payload.get("diagnostics")
     if not isinstance(diagnostics, list):
         return None
+    payload_path = PublicApiPayloadPath(path)
     if entrypoint is None:
         if not diagnostics:
             return None
         for diagnostic in diagnostics:
-            if not is_diagnostic_for_path(diagnostic, path):
+            if not payload_path.matches_diagnostic(diagnostic):
                 return None
         return None, None, None, diagnostics
     if not isinstance(package_path, str) or not isinstance(package_name, str):
         return None
-    if not is_entrypoint_for_path(entrypoint, path):
+    if not payload_path.matches_entrypoint(entrypoint):
         return None
     for diagnostic in diagnostics:
-        if not is_diagnostic_for_path(diagnostic, path):
+        if not payload_path.matches_diagnostic(diagnostic):
             return None
     return package_path, package_name, entrypoint, diagnostics
 
@@ -522,26 +524,3 @@ def write_cached_go_payload(
             "diagnostics": diagnostics,
         },
     )
-
-
-def is_entrypoint_for_path(value: Any, path: str) -> bool:
-    if not isinstance(value, dict) or value.get("path") != path:
-        return False
-    symbols = value.get("symbols")
-    if not isinstance(symbols, list):
-        return False
-    return all(is_symbol_for_path(symbol, path) for symbol in symbols)
-
-
-def is_symbol_for_path(value: Any, path: str) -> bool:
-    if not isinstance(value, dict):
-        return False
-    evidence = value.get("evidence")
-    return isinstance(evidence, dict) and evidence.get("path") == path
-
-
-def is_diagnostic_for_path(value: Any, path: str) -> bool:
-    if not isinstance(value, dict) or value.get("path") != path:
-        return False
-    evidence = value.get("evidence")
-    return isinstance(evidence, dict) and evidence.get("path") == path

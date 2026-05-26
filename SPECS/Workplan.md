@@ -462,6 +462,12 @@ Acceptance:
   accepted/candidate `specpm.yaml` traversal, symlink handling, invalid manifest
   issue reporting, and deterministic record sorting across governance,
   namespace/upstream, and license provenance reports.
+- [x] `P16-T13` Introduce a shared public API payload record object for
+  validating cached analyzer entrypoints, symbols, diagnostics, and evidence
+  paths across Python and Go public interface analyzers.
+- [ ] `P16-T14` Introduce a shared semantic keyword taxonomy object for
+  documentation/API/tooling term groups currently duplicated between collector
+  evidence extraction and draft semantic cluster generation.
 
 Acceptance:
 
