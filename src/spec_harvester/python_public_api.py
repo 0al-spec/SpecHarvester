@@ -12,6 +12,7 @@ from spec_harvester.interface_index import (
     new_public_interface_index,
     validate_public_interface_index,
 )
+from spec_harvester.public_api_payload_records import PublicApiPayloadPath
 
 PYTHON_PUBLIC_API_ANALYZER_ID = "python-ast-public-api"
 PYTHON_PUBLIC_API_ANALYZER_VERSION = "0.1.0"
@@ -116,11 +117,12 @@ def read_cached_python_payload(
     diagnostics = payload.get("diagnostics")
     if not isinstance(diagnostics, list):
         return None
+    payload_path = PublicApiPayloadPath(path)
     if entrypoint is not None:
-        if not is_entrypoint_for_path(entrypoint, path):
+        if not payload_path.matches_entrypoint(entrypoint):
             return None
     for diagnostic in diagnostics:
-        if not is_diagnostic_for_path(diagnostic, path):
+        if not payload_path.matches_diagnostic(diagnostic):
             return None
     return entrypoint, diagnostics
 
@@ -139,29 +141,6 @@ def write_cached_python_payload(
         file_digest=digest,
         payload={"entrypoint": entrypoint, "diagnostics": diagnostics},
     )
-
-
-def is_entrypoint_for_path(value: Any, path: str) -> bool:
-    if not isinstance(value, dict):
-        return False
-    symbols = value.get("symbols")
-    if value.get("path") != path or not isinstance(symbols, list):
-        return False
-    return all(is_symbol_for_path(symbol, path) for symbol in symbols)
-
-
-def is_symbol_for_path(value: Any, path: str) -> bool:
-    if not isinstance(value, dict):
-        return False
-    evidence = value.get("evidence")
-    return isinstance(evidence, dict) and evidence.get("path") == path
-
-
-def is_diagnostic_for_path(value: Any, path: str) -> bool:
-    if not isinstance(value, dict) or value.get("path") != path:
-        return False
-    evidence = value.get("evidence")
-    return isinstance(evidence, dict) and evidence.get("path") == path
 
 
 def python_source_files(root: Path) -> list[Path]:
