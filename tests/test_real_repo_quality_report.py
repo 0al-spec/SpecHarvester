@@ -9,6 +9,12 @@ import pytest
 
 from spec_harvester.cli import main
 from spec_harvester.interface_index import analyzer_record, new_public_interface_index
+from spec_harvester.real_repo_quality_rating_policy import (
+    CapabilityRatingPolicy,
+    DraftRatingPreflight,
+    IntentRatingPolicy,
+    step_outcome,
+)
 from spec_harvester.real_repo_quality_report import (
     QUALITY_REPORT_KIND,
     QUALITY_REPORT_SCHEMA_VERSION,
@@ -71,6 +77,52 @@ def _skipped_step(name: str) -> dict:
 def test_schema_version_and_kind() -> None:
     assert QUALITY_REPORT_SCHEMA_VERSION == 1
     assert QUALITY_REPORT_KIND == "SpecHarvesterRealRepositoryQualityReport"
+
+
+# ---------------------------------------------------------------------------
+# Rating policy objects
+# ---------------------------------------------------------------------------
+
+
+def test_step_outcome_returns_matching_step_status() -> None:
+    assert step_outcome([_ok_step("draft")], "draft") == "ok"
+    assert step_outcome([_ok_step("draft")], "specpm") is None
+
+
+def test_draft_rating_preflight_blocks_invalid_candidate_payload() -> None:
+    resolution = DraftRatingPreflight([_ok_step("draft")], {"candidate": []}, False).resolve()
+    assert resolution.blocked is not None
+    assert resolution.blocked.as_tuple() == (
+        RATING_WEAK,
+        "draft summary candidate field is not an object",
+    )
+
+
+def test_intent_policy_treats_non_list_evidence_as_missing_evidence() -> None:
+    rating, notes = IntentRatingPolicy.from_inputs(
+        [_ok_step("draft")],
+        {"candidate": {"intent": "Process HTTP requests", "evidenceSources": "README.md"}},
+        False,
+    ).evaluate()
+    assert rating == RATING_PARTIAL
+    assert "no evidenceSources" in notes
+
+
+def test_capability_policy_scores_direct_inputs() -> None:
+    rating, notes = CapabilityRatingPolicy.from_inputs(
+        [_ok_step("draft")],
+        {
+            "candidate": {
+                "capabilities": [
+                    {"name": "fetch", "evidenceSources": ["README.md"]},
+                    {"name": "parse"},
+                ]
+            }
+        },
+        False,
+    ).evaluate()
+    assert rating == RATING_PARTIAL
+    assert "1/2" in notes
 
 
 # ---------------------------------------------------------------------------
