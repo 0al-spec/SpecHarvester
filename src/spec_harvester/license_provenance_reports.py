@@ -7,14 +7,19 @@ from pathlib import Path
 from typing import Any
 
 from spec_harvester.license_files import is_license_filename
-from spec_harvester.namespace_reports import (
-    namespace_matches_upstream,
-    parse_upstream_repository_reference,
-)
 from spec_harvester.promoter import parse_yaml_scalar
 from spec_harvester.report_source_records import (
     ReportSourceIssuePolicy,
     SpecpmReportSourceRecords,
+)
+from spec_harvester.upstream_issue_evaluation import (
+    DUPLICATE_UPSTREAM_REPOSITORY_ENTRIES,
+    INVALID_UPSTREAM_REPOSITORY_URI,
+    MISSING_UPSTREAM_REPOSITORY,
+    NON_GITHUB_UPSTREAM_REPOSITORY,
+    UPSTREAM_NAMESPACE_MISMATCH,
+    UpstreamIssuePolicy,
+    upstream_issue_subjects,
 )
 
 LICENSE_PROVENANCE_REPORT_KIND = "SpecHarvesterLicenseProvenanceRiskReport"
@@ -271,93 +276,18 @@ def is_standard_license_evidence_path(path: object) -> bool:
 def evaluate_provenance_risks(
     records: list[PackageLicenseProvenanceRecord],
 ) -> list[dict[str, str]]:
-    issues: list[dict[str, str]] = []
-    for record in records:
-        upstream_entries = [
-            entry
-            for entry in record.upstream_artifacts
-            if entry.artifact_id == "upstream_repository"
-        ]
-        if not upstream_entries:
-            issues.append(
-                _report_issue(
-                    record,
-                    "missing_upstream_repository",
-                    "medium",
-                    "No upstream_repository artifact found in foreignArtifacts.",
-                )
-            )
-            continue
-
-        if len(upstream_entries) > 1:
-            issues.append(
-                _report_issue(
-                    record,
-                    "duplicate_upstream_repository_entries",
-                    "low",
-                    "Multiple upstream_repository artifacts found.",
-                )
-            )
-
-        for entry in upstream_entries:
-            if not entry.uri:
-                issues.append(
-                    _report_issue(
-                        record,
-                        "invalid_upstream_repository_uri",
-                        "medium",
-                        "upstream_repository artifact missing URI.",
-                    )
-                )
-                continue
-
-            upstream = parse_upstream_repository_reference(entry.uri)
-            if upstream is None:
-                if "github.com" in entry.uri.lower():
-                    issues.append(
-                        _report_issue(
-                            record,
-                            "invalid_upstream_repository_uri",
-                            "medium",
-                            f"Could not parse upstream owner from URI: {entry.uri}",
-                        )
-                    )
-                else:
-                    issues.append(
-                        _report_issue(
-                            record,
-                            "non_github_upstream_repository",
-                            "low",
-                            f"Upstream URI is not a GitHub source: {entry.uri}",
-                        )
-                    )
-                continue
-
-            if not namespace_matches_upstream(record.namespace, upstream):
-                issues.append(
-                    _report_issue(
-                        record,
-                        "upstream_namespace_mismatch",
-                        "low",
-                        (
-                            f"Package namespace `{record.namespace}` does not match inferred "
-                            f"upstream owner `{upstream.owner}` or repository "
-                            f"`{upstream.name}`."
-                        ),
-                    )
-                )
-
-            if "github.com" not in entry.uri.lower():
-                issues.append(
-                    _report_issue(
-                        record,
-                        "non_github_upstream_repository",
-                        "low",
-                        f"Upstream URI is not a GitHub source: {entry.uri}",
-                    )
-                )
-
-    return sorted(issues, key=lambda item: (item["path"], item["code"]))
+    policy = UpstreamIssuePolicy(
+        missing_message="No upstream_repository artifact found in foreignArtifacts.",
+        report_non_github=True,
+        severity_by_code=(
+            (MISSING_UPSTREAM_REPOSITORY, "medium"),
+            (DUPLICATE_UPSTREAM_REPOSITORY_ENTRIES, "low"),
+            (INVALID_UPSTREAM_REPOSITORY_URI, "medium"),
+            (UPSTREAM_NAMESPACE_MISMATCH, "low"),
+            (NON_GITHUB_UPSTREAM_REPOSITORY, "low"),
+        ),
+    )
+    return policy.evaluate(upstream_issue_subjects(records))
 
 
 _SPDX_OPERATOR_PATTERN = re.compile(r"\s+(?:and|or|with)\s+", re.IGNORECASE)
