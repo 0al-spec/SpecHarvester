@@ -24,8 +24,8 @@
   mismatches.
 
 ### Tests
-- Targeted namespace/upstream tests: PASS, 11 passed.
-- Full tests: PASS, 393 passed, 1 skipped.
+- Targeted namespace/upstream tests: PASS, 12 passed.
+- Full tests: PASS, 394 passed, 1 skipped.
 - Coverage: PASS, 91.13%.
 - Ruff lint and format: PASS.
 - Swift manifest and docs target build: PASS.
@@ -33,4 +33,3 @@
 ### Next Steps
 - FOLLOW-UP skipped: no actionable findings.
 - Open one focused PR; no stack split is needed for this task.
-
