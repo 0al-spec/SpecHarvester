@@ -4,8 +4,11 @@
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
 **Dependencies:** P16-T16
-**Status:** Suggested
+**Status:** Selected
 **Suggested:** 2026-05-26
+**Selected:** 2026-05-26
+**Branch:** `feature/P16-T17-real-repo-quality-rating-policy`
+**Review Subject:** `p16_t17_real_repo_quality_rating_policy_objects`
 
 ## Description
 
@@ -26,5 +29,5 @@ guard clusters.
 
 ## Next Step
 
-Run SELECT for `P16-T17`, then refactor duplicated real repository quality
-rating guards into explicit policy objects.
+Run PLAN for `P16-T17`, then refactor duplicated real repository quality rating
+guards into explicit policy objects.
