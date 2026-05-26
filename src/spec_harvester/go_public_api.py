@@ -13,6 +13,7 @@ from spec_harvester.interface_index import (
     new_public_interface_index,
     validate_public_interface_index,
 )
+from spec_harvester.public_api_analyzer_options import PublicApiAnalyzerOptions
 from spec_harvester.public_api_payload_records import PublicApiPayloadPath
 
 GO_PUBLIC_API_ANALYZER_ID = "go-source-public-api"
@@ -55,18 +56,17 @@ VALUE_NAME_RE = re.compile(r"(?P<name>" + IDENTIFIER_RE + r")\b")
 
 
 def analyze_go_public_api(
-    source: Path,
-    *,
-    package_id: str | None = None,
-    source_revision: str | None = None,
-    cache_dir: Path | None = None,
+    source: Path | PublicApiAnalyzerOptions,
+    **kwargs: Any,
 ) -> dict[str, Any]:
-    root = source.resolve()
-    if not root.exists() or not root.is_dir():
-        raise ValueError(f"Go source root does not exist or is not a directory: {source}")
+    options = PublicApiAnalyzerOptions.from_call(source, **kwargs)
+    return analyze_go_public_api_with_options(options)
 
-    cache = AnalyzerCache(cache_dir) if cache_dir is not None else None
-    module_path = go_module_path(root) or package_id or root.name
+
+def analyze_go_public_api_with_options(options: PublicApiAnalyzerOptions) -> dict[str, Any]:
+    root = options.root("Go")
+    cache = options.cache()
+    module_path = go_module_path(root) or options.package_id_or(root.name)
     package_entrypoints: dict[str, list[dict[str, Any]]] = {}
     diagnostics: list[dict[str, Any]] = []
 
@@ -125,7 +125,7 @@ def analyze_go_public_api(
         )
 
     index = new_public_interface_index(
-        source_revision=source_revision,
+        source_revision=options.source_revision,
         analyzers=[
             analyzer_record(
                 GO_PUBLIC_API_ANALYZER_ID,

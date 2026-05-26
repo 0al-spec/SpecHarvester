@@ -468,7 +468,7 @@ Acceptance:
 - [x] `P16-T14` Introduce a shared semantic keyword taxonomy object for
   documentation/API/tooling term groups currently duplicated between collector
   evidence extraction and draft semantic cluster generation.
-- [ ] `P16-T15` Introduce a shared public API analyzer options object for common
+- [x] `P16-T15` Introduce a shared public API analyzer options object for common
   source/package/output/trust inputs across Python, Go, and JS/TS analyzers
   while preserving language-specific analyzer behavior.
 - [ ] `P16-T16` Introduce a shared upstream issue evaluation object for
