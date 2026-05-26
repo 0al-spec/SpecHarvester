@@ -458,6 +458,10 @@ Acceptance:
 - [x] `P16-T11` Refactor accepted diff and namespace upstream reports to read
   manifests through `SpecPackageManifest`, reducing duplicated manifest parser
   code while preserving report JSON behavior.
+- [ ] `P16-T12` Introduce a behavior-rich report source records object for
+  accepted/candidate `specpm.yaml` traversal, symlink handling, invalid manifest
+  issue reporting, and deterministic record sorting across governance,
+  namespace/upstream, and license provenance reports.
 
 Acceptance:
 

@@ -1,16 +1,18 @@
-# Next Task: P16-T4 — Semantic Intent Claim Thresholds
+# Next Task: P16-T12 — Report Source Records Object
 
 **Priority:** P1
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
-**Dependencies:** P16-T3
-**Status:** Suggested
+**Dependencies:** P16-T10, P16-T11
+**Status:** Selected
+**Selected:** 2026-05-26
 
 ## Description
 
-Reduce broad duplicate semantic intent claims by adding deterministic evidence
-thresholds or repository-shape constraints for generic documentation/API/tooling
-intents before candidates are compared in governance reports.
+Introduce a behavior-rich report source records object for accepted/candidate
+`specpm.yaml` traversal, symlink handling, invalid manifest issue reporting, and
+deterministic record sorting across governance, namespace/upstream, and license
+provenance reports.
 
 ## Recently Archived
 
@@ -20,6 +22,6 @@ intents before candidates are compared in governance reports.
 
 ## Next Step
 
-Run SELECT for `P16-T4`, then add focused regressions around broad duplicate
-semantic intent claims observed during real-repository validation.
+Run PLAN for `P16-T12`, then refactor duplicated report source collection while
+preserving report schemas and issue codes.
 
