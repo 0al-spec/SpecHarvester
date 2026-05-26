@@ -4,8 +4,8 @@
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
 **Dependencies:** P16-T14
-**Status:** Suggested
-**Suggested:** 2026-05-26
+**Status:** Selected
+**Selected:** 2026-05-26
 
 ## Description
 
@@ -27,5 +27,5 @@ cluster plus report-layer clusters outside the semantic taxonomy scope.
 
 ## Next Step
 
-Run SELECT for `P16-T15`, then refactor the shared analyzer option shape without
+Create the P16-T15 PRD, then refactor the shared analyzer option shape without
 obscuring language-specific analyzer behavior.
