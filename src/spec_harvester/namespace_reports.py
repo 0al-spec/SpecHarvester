@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -10,6 +11,7 @@ from spec_harvester.specpm_manifest import ManifestArtifact, SpecPackageManifest
 
 NAMESPACE_UPSTREAM_REPORT_KIND = "SpecHarvesterNamespaceUpstreamReviewReport"
 NAMESPACE_UPSTREAM_REPORT_SCHEMA_VERSION = 1
+IDENTIFIER_SEPARATOR_RE = re.compile(r"[^a-z0-9]+")
 
 TRUST_BOUNDARY_NOTES = [
     "Report generation reads local `specpm.yaml` metadata only.",
@@ -226,8 +228,17 @@ def namespace_upstream_checks(
 
 
 def namespace_matches_upstream(namespace: str, upstream: UpstreamRepositoryReference) -> bool:
-    normalized_namespace = namespace.strip().lower()
-    return normalized_namespace in {upstream.owner.lower(), upstream.name.lower()}
+    normalized_namespace = normalized_identifier_key(namespace)
+    if not normalized_namespace:
+        return False
+    return normalized_namespace in {
+        normalized_identifier_key(upstream.owner),
+        normalized_identifier_key(upstream.name),
+    }
+
+
+def normalized_identifier_key(value: str) -> str:
+    return IDENTIFIER_SEPARATOR_RE.sub("", value.strip().lower())
 
 
 def parse_upstream_owner(uri: str) -> str | None:
