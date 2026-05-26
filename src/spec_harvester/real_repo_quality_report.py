@@ -19,6 +19,15 @@ from pathlib import Path
 from typing import Any
 
 from spec_harvester.interface_index import validate_public_interface_index
+from spec_harvester.real_repo_quality_rating_policy import (
+    RATING_PARTIAL,
+    RATING_STRONG,
+    RATING_UNSCORED,
+    RATING_WEAK,
+    CapabilityRatingPolicy,
+    IntentRatingPolicy,
+    step_outcome,
+)
 
 QUALITY_REPORT_KIND = "SpecHarvesterRealRepositoryQualityReport"
 QUALITY_REPORT_SCHEMA_VERSION = 1
@@ -26,12 +35,6 @@ DRAFT_SUMMARY_FILENAME = "draft-summary.json"
 LEGACY_DRAFT_FILENAME = "draft.json"
 PUBLIC_INTERFACE_INDEX_FILENAME = "public-interface-index.json"
 PUBLIC_INTERFACE_INDEX_ANALYZER_TYPE = "publicInterfaceIndex"
-
-# QualityRating literals
-RATING_STRONG = "strong"
-RATING_PARTIAL = "partial"
-RATING_WEAK = "weak"
-RATING_UNSCORED = "unscored"
 
 # SpecPMStatus literals
 SPECPM_PASSED = "passed"
@@ -248,48 +251,12 @@ def _coerce_step_records(raw_steps: Any) -> list[dict[str, Any]]:
     return [step for step in raw_steps if isinstance(step, dict)]
 
 
-def _candidate_payload(draft_data: dict[str, Any]) -> dict[str, Any] | None:
-    candidate = draft_data.get("candidate", draft_data)
-    return candidate if isinstance(candidate, dict) else None
-
-
-def _step_outcome(steps: list[dict[str, Any]], step_name: str) -> str | None:
-    """Return the status of *step_name* from the steps list, or None."""
-    for step in steps:
-        if step.get("step") == step_name:
-            return str(step.get("status", ""))
-    return None
-
-
 def _derive_intent_rating(
     steps: list[dict[str, Any]],
     draft_data: dict[str, Any] | None,
     dry_run: bool,
 ) -> tuple[str, str]:
-    if dry_run:
-        return RATING_UNSCORED, "dry_run mode; draft not executed"
-
-    draft_status = _step_outcome(steps, "draft")
-    if draft_status is None or draft_status != "ok":
-        return RATING_WEAK, "draft step did not complete successfully"
-
-    if draft_data is None:
-        return RATING_WEAK, "draft summary artifact not found after successful draft step"
-
-    candidate = _candidate_payload(draft_data)
-    if candidate is None:
-        return RATING_WEAK, "draft summary candidate field is not an object"
-    intent = candidate.get("intent") or ""
-    if not isinstance(intent, str) or not intent.strip():
-        return RATING_WEAK, "draft summary has no intent field"
-
-    evidence_sources = candidate.get("evidenceSources") or []
-    if not isinstance(evidence_sources, list):
-        evidence_sources = []
-
-    if evidence_sources:
-        return RATING_STRONG, f"intent present with {len(evidence_sources)} evidence source(s)"
-    return RATING_PARTIAL, "intent present but no evidenceSources references found"
+    return IntentRatingPolicy.from_inputs(steps, draft_data, dry_run).evaluate()
 
 
 def _derive_capability_rating(
@@ -297,40 +264,11 @@ def _derive_capability_rating(
     draft_data: dict[str, Any] | None,
     dry_run: bool,
 ) -> tuple[str, str]:
-    if dry_run:
-        return RATING_UNSCORED, "dry_run mode; draft not executed"
-
-    draft_status = _step_outcome(steps, "draft")
-    if draft_status is None or draft_status != "ok":
-        return RATING_WEAK, "draft step did not complete successfully"
-
-    if draft_data is None:
-        return RATING_WEAK, "draft summary artifact not found after successful draft step"
-
-    candidate = _candidate_payload(draft_data)
-    if candidate is None:
-        return RATING_WEAK, "draft summary candidate field is not an object"
-    capabilities = candidate.get("capabilities") or []
-    if not isinstance(capabilities, list) or not capabilities:
-        return RATING_WEAK, "draft summary has no capabilities"
-
-    total = len(capabilities)
-    with_evidence = sum(
-        1 for cap in capabilities if isinstance(cap, dict) and cap.get("evidenceSources")
-    )
-
-    if with_evidence == total:
-        return RATING_STRONG, f"all {total} capability/ies have evidence sources"
-    if with_evidence > 0:
-        return (
-            RATING_PARTIAL,
-            f"{with_evidence}/{total} capabilities have evidence sources",
-        )
-    return RATING_WEAK, f"{total} capability/ies found but none have evidence sources"
+    return CapabilityRatingPolicy.from_inputs(steps, draft_data, dry_run).evaluate()
 
 
 def _derive_specpm_status(steps: list[dict[str, Any]]) -> tuple[str, str]:
-    outcome = _step_outcome(steps, "specpm")
+    outcome = step_outcome(steps, "specpm")
     if outcome is None:
         return SPECPM_NOT_RUN, "specpm step was not present in the run report"
     if outcome == "skipped":
@@ -344,7 +282,7 @@ def _derive_retry_outcome(
     steps: list[dict[str, Any]],
     specnode_result: dict[str, Any] | None,
 ) -> tuple[str, str]:
-    specnode_step = _step_outcome(steps, "specnode")
+    specnode_step = step_outcome(steps, "specnode")
     if specnode_step is None:
         return RETRY_NOT_ATTEMPTED, "no specnode step in run report"
 
