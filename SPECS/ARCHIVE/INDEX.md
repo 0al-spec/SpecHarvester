@@ -210,6 +210,7 @@
 | 2026-05-26 | P16-T11 | Archived REVIEW_p16_t11_report_manifest_parser_refactor report |
 | 2026-05-26 | P16-T12 | Archived Report Source Records Object (PASS) |
 | 2026-05-26 | P16-T12 | Archived REVIEW_p16_t12_report_source_records_object report |
+| 2026-05-26 | P16-T13 | Archived Public API Payload Records (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
