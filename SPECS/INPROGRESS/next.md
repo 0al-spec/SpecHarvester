@@ -6,6 +6,9 @@
 **Dependencies:** P16-T17
 **Status:** Suggested
 **Suggested:** 2026-05-26
+**Selected:** 2026-05-26
+**Branch:** `feature/P16-T18-duplicate-code-practical-minimum-audit`
+**Review Subject:** `p16_t18_duplicate_code_practical_minimum_audit`
 
 ## Description
 
@@ -28,5 +31,5 @@ move from refactoring to periodic audit.
 
 ## Next Step
 
-Run SELECT for `P16-T18`, then capture the duplicate-code baseline, architecture
+Run PLAN for `P16-T18`, then capture the duplicate-code baseline, architecture
 lint advisory state, and follow-up decision.
