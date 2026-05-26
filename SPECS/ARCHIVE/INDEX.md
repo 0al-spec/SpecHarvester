@@ -82,6 +82,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t16_upstream_issue_evaluation_object.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t15_public_api_analyzer_options_object.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t14_semantic_keyword_taxonomy_object.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p15_t3_structured_quality_report_format.md` |
@@ -222,6 +223,7 @@
 | 2026-05-26 | P16-T15 | Archived Public API Analyzer Options Object (PASS) |
 | 2026-05-26 | P16-T15 | Archived REVIEW_p16_t15_public_api_analyzer_options_object report |
 | 2026-05-26 | P16-T16 | Archived Upstream Issue Evaluation Object (PASS) |
+| 2026-05-26 | P16-T16 | Archived REVIEW_p16_t16_upstream_issue_evaluation_object report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
