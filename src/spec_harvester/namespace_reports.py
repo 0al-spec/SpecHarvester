@@ -12,10 +12,10 @@ from spec_harvester.report_source_records import (
 from spec_harvester.specpm_manifest import ManifestArtifact, SpecPackageManifest
 from spec_harvester.upstream_issue_evaluation import (
     UpstreamIssuePolicy,
-    namespace_matches_upstream,
-    normalized_identifier_key,
-    parse_upstream_owner,
-    parse_upstream_repository_reference,
+    namespace_matches_upstream,  # noqa: F401 - re-exported for existing callers.
+    normalized_identifier_key,  # noqa: F401 - re-exported for existing callers.
+    parse_upstream_owner,  # noqa: F401 - re-exported for existing callers.
+    parse_upstream_repository_reference,  # noqa: F401 - re-exported for existing callers.
     upstream_issue_subjects,
 )
 
@@ -27,15 +27,6 @@ TRUST_BOUNDARY_NOTES = [
     "No repository code execution, network access, dependency installation, "
     "or analyzer execution is performed.",
     "The report is advisory and does not update or validate any accepted content.",
-]
-
-__all__ = [
-    "build_namespace_upstream_report",
-    "namespace_matches_upstream",
-    "normalized_identifier_key",
-    "parse_upstream_owner",
-    "parse_upstream_repository_reference",
-    "write_namespace_upstream_report",
 ]
 
 
