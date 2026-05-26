@@ -197,6 +197,7 @@
 | 2026-05-25 | P16-T2 | Archived License Provenance Classification for Collected License Files (PASS) |
 | 2026-05-25 | P16-T2 | Archived REVIEW_p16_t2_license_provenance_classification report |
 | 2026-05-26 | P16-T3 | Archived Package Identity and Namespace Normalization (PASS) |
+| 2026-05-26 | P16-T3 | Archived REVIEW_p16_t3_package_identity_namespace_normalization report |
 | 2026-05-25 | P16-T6 | Archived Duplicate-Code Quality Report (PASS) |
 | 2026-05-25 | P16-T6 | Archived REVIEW_p16_t6_duplicate_code_quality_report report |
 | 2026-05-25 | P16-T7 | Archived Pylint Duplicate-Code Backend (PASS) |
