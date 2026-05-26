@@ -12,6 +12,7 @@ from spec_harvester.interface_index import (
     new_public_interface_index,
     validate_public_interface_index,
 )
+from spec_harvester.public_api_analyzer_options import PublicApiAnalyzerOptions
 from spec_harvester.public_api_payload_records import PublicApiPayloadPath
 
 PYTHON_PUBLIC_API_ANALYZER_ID = "python-ast-public-api"
@@ -33,17 +34,16 @@ IGNORED_DIR_NAMES = {
 
 
 def analyze_python_public_api(
-    source: Path,
-    *,
-    package_id: str | None = None,
-    source_revision: str | None = None,
-    cache_dir: Path | None = None,
+    source: Path | PublicApiAnalyzerOptions,
+    **kwargs: Any,
 ) -> dict[str, Any]:
-    root = source.resolve()
-    if not root.exists() or not root.is_dir():
-        raise ValueError(f"Python source root does not exist or is not a directory: {source}")
+    options = PublicApiAnalyzerOptions.from_call(source, **kwargs)
+    return analyze_python_public_api_with_options(options)
 
-    cache = AnalyzerCache(cache_dir) if cache_dir is not None else None
+
+def analyze_python_public_api_with_options(options: PublicApiAnalyzerOptions) -> dict[str, Any]:
+    root = options.root("Python")
+    cache = options.cache()
     entrypoints: list[dict[str, Any]] = []
     diagnostics: list[dict[str, Any]] = []
     for path in python_source_files(root):
@@ -76,7 +76,7 @@ def analyze_python_public_api(
         write_cached_python_payload(cache, digest, entrypoint, [])
 
     index = new_public_interface_index(
-        source_revision=source_revision,
+        source_revision=options.source_revision,
         analyzers=[
             analyzer_record(
                 PYTHON_PUBLIC_API_ANALYZER_ID,
@@ -87,7 +87,7 @@ def analyze_python_public_api(
         ],
         packages=[
             {
-                "id": package_id or root.name,
+                "id": options.package_id_or(root.name),
                 "path": ".",
                 "language": "python",
                 "entrypoints": entrypoints,

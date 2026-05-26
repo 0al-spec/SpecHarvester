@@ -14,6 +14,7 @@ from spec_harvester.interface_index import (
     new_public_interface_index,
     validate_public_interface_index,
 )
+from spec_harvester.public_api_analyzer_options import PublicApiAnalyzerOptions
 
 JS_TS_PUBLIC_API_ANALYZER_ID = "js-ts-manifest-export-analyzer"
 JS_TS_PUBLIC_API_ANALYZER_VERSION = "0.1.0"
@@ -85,26 +86,23 @@ BLOCK_COMMENT_RE = re.compile(r"/\*.*?\*/", re.DOTALL)
 
 
 def analyze_js_ts_public_api(
-    source: Path,
-    *,
-    package_id: str | None = None,
-    source_revision: str | None = None,
-    cache_dir: Path | None = None,
+    source: Path | PublicApiAnalyzerOptions,
+    **kwargs: Any,
 ) -> dict[str, Any]:
-    root = source.resolve()
-    if not root.exists() or not root.is_dir():
-        raise ValueError(
-            f"JavaScript/TypeScript source root does not exist or is not a directory: {source}"
-        )
+    options = PublicApiAnalyzerOptions.from_call(source, **kwargs)
+    return analyze_js_ts_public_api_with_options(options)
 
-    cache = AnalyzerCache(cache_dir) if cache_dir is not None else None
+
+def analyze_js_ts_public_api_with_options(options: PublicApiAnalyzerOptions) -> dict[str, Any]:
+    root = options.root("JavaScript/TypeScript")
+    cache = options.cache()
     packages: list[dict[str, Any]] = []
     diagnostics: list[dict[str, Any]] = []
     for manifest_path in package_manifest_files(root):
         package_record = analyze_package_manifest(
             root,
             manifest_path,
-            package_id=package_id,
+            package_id=options.package_id,
             diagnostics=diagnostics,
             cache=cache,
         )
@@ -112,7 +110,7 @@ def analyze_js_ts_public_api(
             packages.append(package_record)
 
     index = new_public_interface_index(
-        source_revision=source_revision,
+        source_revision=options.source_revision,
         analyzers=[
             analyzer_record(
                 JS_TS_PUBLIC_API_ANALYZER_ID,
