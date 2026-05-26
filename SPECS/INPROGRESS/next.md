@@ -4,7 +4,8 @@
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
 **Dependencies:** P15-T4, P15-T5
-**Status:** Suggested
+**Status:** Selected
+**Selected:** 2026-05-26
 
 ## Description
 
