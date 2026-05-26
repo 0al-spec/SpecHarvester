@@ -11,6 +11,7 @@ from typing import Any
 from spec_harvester.classifier_registry import default_classifier_policy
 from spec_harvester.go_public_api import go_source_files
 from spec_harvester.license_files import is_license_filename
+from spec_harvester.semantic_keyword_taxonomy import SEMANTIC_KEYWORD_TAXONOMY
 
 SNAPSHOT_KIND = "SpecHarvesterEvidenceSnapshot"
 SNAPSHOT_SCHEMA_VERSION = 1
@@ -111,65 +112,6 @@ PROJECT_PROFILE_MANIFEST_KINDS = {"package_manifest", "workspace_manifest"}
 LICENSE_TEXT_HINTS = (
     ("MIT", ("permission is hereby granted", "copyright")),
     ("Apache-2.0", ("apache license", "version 2.0")),
-)
-SEMANTIC_HINT_TERMS = (
-    "api contract",
-    "json schema",
-    "api",
-    "contract",
-    "schema",
-    "openapi",
-    "endpoint",
-    "request",
-    "response",
-    "webhook",
-    "graphql",
-    "validation",
-    "validator",
-    "metadata",
-    "manifest",
-    "configuration",
-    "config",
-    "workflow",
-    "automation",
-    "pipeline",
-    "task",
-    "cli",
-    "command",
-    "commands",
-    "developer tool",
-    "tooling",
-    "plugin",
-    "extension",
-    "sdk",
-    "documentation",
-    "guide",
-    "reference",
-    "tutorial",
-    "manual",
-    "web framework",
-    "http framework",
-    "microframework",
-    "wsgi",
-    "asgi",
-    "http server",
-    "route",
-    "routes",
-    "routing",
-    "router",
-    "middleware",
-    "middlewares",
-    "handler",
-    "handlers",
-    "request context",
-    "application context",
-    "blueprint",
-    "template",
-    "templates",
-    "json",
-    "session",
-    "cookie",
-    "cookies",
 )
 SWIFT_PACKAGE_NAME_PATTERN = re.compile(r"\bPackage\s*\(\s*name\s*:\s*\"([^\"]+)\"")
 SWIFT_PRODUCT_PATTERN = re.compile(
@@ -939,7 +881,11 @@ def markdown_headings(text: str, limit: int = 30) -> list[str]:
 
 def markdown_semantic_hints(text: str, limit: int = 40) -> list[str]:
     normalized = re.sub(r"\s+", " ", text.lower())
-    hints = [term for term in SEMANTIC_HINT_TERMS if semantic_term_matches(normalized, term)]
+    hints = [
+        term
+        for term in SEMANTIC_KEYWORD_TAXONOMY.markdown_hint_terms()
+        if semantic_term_matches(normalized, term)
+    ]
     return hints[:limit]
 
 
