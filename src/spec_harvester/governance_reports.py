@@ -6,6 +6,10 @@ from pathlib import Path
 from typing import Any
 
 from spec_harvester.promoter import parse_yaml_scalar
+from spec_harvester.report_source_records import (
+    ReportSourceIssuePolicy,
+    SpecpmReportSourceRecords,
+)
 
 GOVERNANCE_DUPLICATE_REPORT_KIND = "SpecHarvesterGovernanceDuplicateClaimReport"
 GOVERNANCE_DUPLICATE_REPORT_SCHEMA_VERSION = 1
@@ -64,16 +68,15 @@ def collect_claim_records(
     accepted_root: Path | None,
     candidates_root: Path | None,
 ) -> tuple[list[PackageClaimRecord], list[dict[str, str]]]:
-    records: list[PackageClaimRecord] = []
-    issues: list[dict[str, str]] = []
-
-    if accepted_root is not None:
-        _collect_source_records(accepted_root, "accepted", records, issues)
-    if candidates_root is not None:
-        _collect_source_records(candidates_root, "candidate", records, issues)
-
-    records.sort(key=lambda item: (item.source, item.path))
-    return records, issues
+    return SpecpmReportSourceRecords(
+        accepted_root=accepted_root,
+        candidates_root=candidates_root,
+        parse_manifest=parse_specpm_claims,
+        issue_policy=ReportSourceIssuePolicy(
+            symlink_message="Skip symlinked specpm.yaml in governance report scan.",
+        ),
+        sort_key=lambda item: (item.source, item.path),
+    ).collect()
 
 
 def claim_record_to_dict(record: PackageClaimRecord) -> dict[str, Any]:
@@ -85,40 +88,6 @@ def claim_record_to_dict(record: PackageClaimRecord) -> dict[str, Any]:
         "intents": list(record.intents),
         "capabilities": list(record.capabilities),
     }
-
-
-def _collect_source_records(
-    source_root: Path,
-    source: str,
-    records: list[PackageClaimRecord],
-    issues: list[dict[str, str]],
-) -> None:
-    root = source_root.resolve()
-    if not root.exists() or not root.is_dir():
-        raise ValueError(f"Source root does not exist or is not a directory: {root}")
-
-    for manifest_path in sorted(root.rglob("specpm.yaml"), key=lambda item: str(item)):
-        if manifest_path.is_symlink():
-            issues.append(
-                {
-                    "path": str(manifest_path),
-                    "code": "specpm_symlink",
-                    "message": "Skip symlinked specpm.yaml in governance report scan.",
-                }
-            )
-            continue
-        try:
-            package = parse_specpm_claims(manifest_path, source)
-        except ValueError as exc:
-            issues.append(
-                {
-                    "path": str(manifest_path),
-                    "code": "invalid_specpm_manifest",
-                    "message": str(exc),
-                }
-            )
-            continue
-        records.append(package)
 
 
 def parse_specpm_claims(manifest_path: Path, source: str) -> PackageClaimRecord:

@@ -14,9 +14,9 @@ intents before candidates are compared in governance reports.
 
 ## Recently Archived
 
+- P16-T12: Report Source Records Object (PASS, 2026-05-26)
 - P16-T3: Package Identity and Namespace Normalization (PASS, 2026-05-26)
 - P16-T11: Report Manifest Parser Refactor (PASS, 2026-05-26)
-- P16-T10: SpecPackageManifest Object Seam (PASS, 2026-05-26)
 
 ## Next Step
 
