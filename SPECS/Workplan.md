@@ -476,7 +476,7 @@ Acceptance:
   is represented once.
 - [x] `P16-T17` Introduce behavior-rich real repository quality rating policy
   objects for duplicated draft/spec/source scoring guard clauses.
-- [ ] `P16-T18` Run a duplicate-code practical-minimum audit after P16-T15
+- [x] `P16-T18` Run a duplicate-code practical-minimum audit after P16-T15
   through P16-T17 and document whether any remaining builtin duplicate windows
   are intentional detector noise or require another refactor.
 
