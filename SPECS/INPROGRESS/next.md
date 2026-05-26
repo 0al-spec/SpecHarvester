@@ -1,26 +1,31 @@
-# Next Task: P16-T14 — Semantic Keyword Taxonomy Object
+# Next Task: P16-T15 — Public API Analyzer Options Object
 
 **Priority:** P1
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
-**Dependencies:** P16-T13
-**Status:** Selected
-**Selected:** 2026-05-26
+**Dependencies:** P16-T14
+**Status:** Suggested
+**Suggested:** 2026-05-26
 
 ## Description
 
-Introduce a shared semantic keyword taxonomy object for documentation/API/tooling
-term groups currently duplicated between collector evidence extraction and draft
-semantic cluster generation.
+Introduce a shared public API analyzer options object for common
+source/package/output/trust inputs currently repeated across Python, Go, and
+JS/TS public interface analyzers.
 
 ## Recently Archived
 
+- P16-T14: Semantic Keyword Taxonomy Object (PASS, 2026-05-26)
 - P16-T13: Public API Payload Records (PASS, 2026-05-26)
 - P16-T12: Report Source Records Object (PASS, 2026-05-26)
-- P16-T3: Package Identity and Namespace Normalization (PASS, 2026-05-26)
+
+## Rationale
+
+P16-T14 reduced the trusted `pylint` duplicate-code backend to zero duplicate
+blocks. The builtin advisory backend still reports one analyzer option-shape
+cluster plus report-layer clusters outside the semantic taxonomy scope.
 
 ## Next Step
 
-Run SELECT for `P16-T14`, then refactor the remaining `pylint` duplicate-code
-cluster in `collector.py` and `drafter.py` without changing semantic evidence
-output.
+Run SELECT for `P16-T15`, then refactor the shared analyzer option shape without
+obscuring language-specific analyzer behavior.

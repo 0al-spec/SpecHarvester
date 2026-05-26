@@ -465,9 +465,20 @@ Acceptance:
 - [x] `P16-T13` Introduce a shared public API payload record object for
   validating cached analyzer entrypoints, symbols, diagnostics, and evidence
   paths across Python and Go public interface analyzers.
-- [ ] `P16-T14` Introduce a shared semantic keyword taxonomy object for
+- [x] `P16-T14` Introduce a shared semantic keyword taxonomy object for
   documentation/API/tooling term groups currently duplicated between collector
   evidence extraction and draft semantic cluster generation.
+- [ ] `P16-T15` Introduce a shared public API analyzer options object for common
+  source/package/output/trust inputs across Python, Go, and JS/TS analyzers
+  while preserving language-specific analyzer behavior.
+- [ ] `P16-T16` Introduce a shared upstream issue evaluation object for
+  namespace and license provenance reports so verified-upstream issue generation
+  is represented once.
+- [ ] `P16-T17` Introduce behavior-rich real repository quality rating policy
+  objects for duplicated draft/spec/source scoring guard clauses.
+- [ ] `P16-T18` Run a duplicate-code practical-minimum audit after P16-T15
+  through P16-T17 and document whether any remaining builtin duplicate windows
+  are intentional detector noise or require another refactor.
 
 Acceptance:
 
