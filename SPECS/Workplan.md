@@ -471,7 +471,7 @@ Acceptance:
 - [x] `P16-T15` Introduce a shared public API analyzer options object for common
   source/package/output/trust inputs across Python, Go, and JS/TS analyzers
   while preserving language-specific analyzer behavior.
-- [ ] `P16-T16` Introduce a shared upstream issue evaluation object for
+- [x] `P16-T16` Introduce a shared upstream issue evaluation object for
   namespace and license provenance reports so verified-upstream issue generation
   is represented once.
 - [ ] `P16-T17` Introduce behavior-rich real repository quality rating policy
