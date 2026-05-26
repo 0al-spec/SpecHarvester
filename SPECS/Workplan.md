@@ -462,6 +462,9 @@ Acceptance:
   accepted/candidate `specpm.yaml` traversal, symlink handling, invalid manifest
   issue reporting, and deterministic record sorting across governance,
   namespace/upstream, and license provenance reports.
+- [ ] `P16-T13` Introduce a shared public API payload record object for
+  validating cached analyzer entrypoints, symbols, diagnostics, and evidence
+  paths across Python and Go public interface analyzers.
 
 Acceptance:
 
