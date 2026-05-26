@@ -425,7 +425,7 @@ Acceptance:
   files such as Flask's `LICENSE.txt`, preserving strict missing-license errors
   while distinguishing recognizable license text from genuinely ambiguous
   unknown license evidence in governance reports.
-- [ ] `P16-T3` Normalize package identity and namespace/upstream comparisons
+- [x] `P16-T3` Normalize package identity and namespace/upstream comparisons
   across hyphen, underscore, separator, and case variants so generated package
   IDs like `navigation_split_view.core` do not create low-signal namespace
   advisories for upstream repositories such as `NavigationSplitView`.
