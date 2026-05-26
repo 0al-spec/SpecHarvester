@@ -70,6 +70,7 @@
 | P16-T11 | [P16-T11_Report_Manifest_Parser_Refactor/](P16-T11_Report_Manifest_Parser_Refactor/) | 2026-05-26 | PASS |
 | P16-T14 | [P16-T14_Semantic_Keyword_Taxonomy_Object/](P16-T14_Semantic_Keyword_Taxonomy_Object/) | 2026-05-26 | PASS |
 | P16-T15 | [P16-T15_Public_API_Analyzer_Options_Object/](P16-T15_Public_API_Analyzer_Options_Object/) | 2026-05-26 | PASS |
+| P16-T16 | [P16-T16_Upstream_Issue_Evaluation_Object/](P16-T16_Upstream_Issue_Evaluation_Object/) | 2026-05-26 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
@@ -220,6 +221,7 @@
 | 2026-05-26 | P16-T14 | Archived REVIEW_p16_t14_semantic_keyword_taxonomy_object report |
 | 2026-05-26 | P16-T15 | Archived Public API Analyzer Options Object (PASS) |
 | 2026-05-26 | P16-T15 | Archived REVIEW_p16_t15_public_api_analyzer_options_object report |
+| 2026-05-26 | P16-T16 | Archived Upstream Issue Evaluation Object (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
