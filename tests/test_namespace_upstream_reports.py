@@ -110,6 +110,88 @@ def test_build_namespace_upstream_report_accepts_repository_name_match(tmp_path:
     assert report["issues"] == []
 
 
+def test_build_namespace_upstream_report_accepts_separator_variants(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    accepted_root.mkdir(parents=True)
+    write_manifest(
+        accepted_root / "navigation" / "1.0.0" / "specpm.yaml",
+        "navigation_split_view.core",
+        "1.0.0",
+        upstream_uri="https://github.com/example/NavigationSplitView",
+    )
+    write_manifest(
+        accepted_root / "page-index" / "1.0.0" / "specpm.yaml",
+        "page_index_instance.core",
+        "1.0.0",
+        upstream_uri="https://github.com/example/page-index-instance",
+    )
+    write_manifest(
+        accepted_root / "nested" / "1.0.0" / "specpm.yaml",
+        "nested-swiftui-a11y.core",
+        "1.0.0",
+        upstream_uri="https://github.com/example/NestedSwiftUIA11y",
+    )
+
+    report = build_namespace_upstream_report(
+        accepted_root=accepted_root,
+        candidates_root=None,
+    )
+
+    assert report["summary"]["records"] == 3
+    assert report["summary"]["upstreamMismatchCount"] == 0
+    assert report["issues"] == []
+
+
+def test_build_namespace_upstream_report_keeps_true_mismatch(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    accepted_root.mkdir(parents=True)
+    write_manifest(
+        accepted_root / "navigation" / "1.0.0" / "specpm.yaml",
+        "navigation_split_view.core",
+        "1.0.0",
+        upstream_uri="https://github.com/example/OtherNavigation",
+    )
+
+    report = build_namespace_upstream_report(
+        accepted_root=accepted_root,
+        candidates_root=None,
+    )
+
+    assert report["summary"]["upstreamMismatchCount"] == 1
+    assert report["issues"][0]["code"] == "upstream_namespace_mismatch"
+
+
+def test_build_namespace_upstream_report_preserves_unicode_letters(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    accepted_root.mkdir(parents=True)
+    write_manifest(
+        accepted_root / "unicode-match" / "1.0.0" / "specpm.yaml",
+        "ø.core",
+        "1.0.0",
+        upstream_uri="https://github.com/example/ø",
+    )
+    write_manifest(
+        accepted_root / "unicode-mismatch" / "1.0.0" / "specpm.yaml",
+        "caf.core",
+        "1.0.0",
+        upstream_uri="https://github.com/example/café",
+    )
+
+    report = build_namespace_upstream_report(
+        accepted_root=accepted_root,
+        candidates_root=None,
+    )
+
+    assert report["summary"]["upstreamMismatchCount"] == 1
+    assert report["issues"][0]["packageId"] == "caf.core"
+
+
 def test_parse_upstream_repository_reference_supports_github_url_forms() -> None:
     https = parse_upstream_repository_reference("https://github.com/SoundBlaster/xyflow.git")
     ssh = parse_upstream_repository_reference("git@github.com:SoundBlaster/docc2context.git")

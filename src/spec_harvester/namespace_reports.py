@@ -226,8 +226,17 @@ def namespace_upstream_checks(
 
 
 def namespace_matches_upstream(namespace: str, upstream: UpstreamRepositoryReference) -> bool:
-    normalized_namespace = namespace.strip().lower()
-    return normalized_namespace in {upstream.owner.lower(), upstream.name.lower()}
+    normalized_namespace = normalized_identifier_key(namespace)
+    if not normalized_namespace:
+        return False
+    return normalized_namespace in {
+        normalized_identifier_key(upstream.owner),
+        normalized_identifier_key(upstream.name),
+    }
+
+
+def normalized_identifier_key(value: str) -> str:
+    return "".join(character.casefold() for character in value.strip() if character.isalnum())
 
 
 def parse_upstream_owner(uri: str) -> str | None:
