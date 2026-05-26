@@ -26,7 +26,7 @@
 ### Tests
 - Targeted namespace/upstream tests: PASS, 12 passed.
 - Full tests: PASS, 394 passed, 1 skipped.
-- Coverage: PASS, 91.13%.
+- Coverage: PASS, 91.12%.
 - Ruff lint and format: PASS.
 - Swift manifest and docs target build: PASS.
 

@@ -25,7 +25,7 @@ Verdict: PASS
 | --- | --- |
 | `PYTHONPATH=src python -m pytest tests/test_namespace_upstream_reports.py -q` | PASS, 12 passed |
 | `PYTHONPATH=src python -m pytest` | PASS, 394 passed, 1 skipped |
-| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 393 passed, 1 skipped, total coverage 91.13% |
+| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 394 passed, 1 skipped, total coverage 91.12% |
 | `ruff check src tests` | PASS |
 | `ruff format --check src tests` | PASS |
 | `swift package dump-package >/dev/null` | PASS |
