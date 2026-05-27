@@ -17,11 +17,8 @@ SpecHarvester code should be written in the local Elegant Objects style.
 
 ## Guardrails
 
-Run architecture lint when a change affects project structure. Use the
-canonical command from
-[Architecture Lint Guardrails](ARCHITECTURE_LINT_GUARDRAILS.md) to avoid drift
-in invocation details.
+Run architecture lint when a change affects project structure.
 
 The lint is advisory and intentionally narrower than the full style guide. See
 [Architecture Lint Guardrails](ARCHITECTURE_LINT_GUARDRAILS.md) for the exact
-rules and trust boundary.
+rules, trust boundary, and canonical invocation details.
