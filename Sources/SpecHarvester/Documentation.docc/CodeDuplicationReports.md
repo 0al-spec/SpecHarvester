@@ -69,7 +69,9 @@ python3 -m spec_harvester code-duplication-report \
 
 Operators who choose `--backend jscpd` must provide a trusted local `jscpd`
 executable; SpecHarvester does not fetch it, install it, or audit its transitive
-npm dependencies at runtime.
+npm dependencies at runtime. If `--jscpd-command` points at a wrapper such as
+`npx`, any registry access or package installation is outside SpecHarvester's
+trust boundary and should not be used in default CI.
 
 ## Report Format
 

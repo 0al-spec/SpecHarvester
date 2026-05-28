@@ -47,6 +47,15 @@ TRUST_BOUNDARY_NOTES = [
     ),
     "The report is advisory by default and does not mutate source files.",
 ]
+JSCPD_TRUST_BOUNDARY_NOTES = [
+    "SpecHarvester converts jscpd JSON output and does not execute or import scanned modules.",
+    "The operator-provided jscpd command is an external tool trust boundary.",
+    (
+        "Network access or package installation by wrapper commands such as npx "
+        "is outside SpecHarvester."
+    ),
+    "The report is advisory by default and does not mutate source files.",
+]
 
 
 @dataclass(frozen=True)
@@ -279,6 +288,7 @@ def build_jscpd_code_duplication_report(
         backend=BACKEND_JSCPD,
         duplicates=duplicates,
         file_count=reported_source_count,
+        trust_boundary=JSCPD_TRUST_BOUNDARY_NOTES,
         tool={
             "name": "jscpd",
             "returnCode": completed.returncode,
@@ -382,6 +392,7 @@ def _new_report(
     backend: str,
     duplicates: list[dict[str, Any]],
     file_count: int | None = None,
+    trust_boundary: list[str] | None = None,
     tool: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     occurrence_count = sum(len(block["occurrences"]) for block in duplicates)
@@ -401,7 +412,7 @@ def _new_report(
         "status": "attention" if duplicates else "ok",
         "summary": summary,
         "duplicates": duplicates,
-        "trustBoundary": TRUST_BOUNDARY_NOTES,
+        "trustBoundary": TRUST_BOUNDARY_NOTES if trust_boundary is None else trust_boundary,
     }
 
 

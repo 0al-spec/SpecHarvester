@@ -334,6 +334,7 @@ def test_jscpd_backend_converts_json_output(
     assert report["summary"]["fileCount"] == 2
     assert report["summary"]["tool"]["name"] == "jscpd"
     assert report["summary"]["tool"]["reportedSourceCount"] == 2
+    assert "external tool trust boundary" in " ".join(report["trustBoundary"])
     assert report["summary"]["duplicateBlockCount"] == 1
     duplicate = report["duplicates"][0]
     assert duplicate["lineCount"] == 2

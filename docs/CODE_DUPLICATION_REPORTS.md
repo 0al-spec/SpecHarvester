@@ -74,7 +74,9 @@ The `jscpd` backend was added as an optional adapter rather than a dependency:
 The trust boundary above applies to SpecHarvester report conversion. Operators
 who choose `--backend jscpd` must provide a trusted local `jscpd` executable;
 SpecHarvester does not fetch it, install it, or audit its transitive npm
-dependencies at runtime.
+dependencies at runtime. If `--jscpd-command` points at a wrapper such as
+`npx`, any registry access or package installation is outside SpecHarvester's
+trust boundary and should not be used in default CI.
 
 ## Report Format
 

@@ -14,6 +14,9 @@ Verdict: PASS
 - Kept `jscpd` out of project dependencies and default CI.
 - Documented licensing, npm supply-chain boundary, deterministic JSON
   conversion, and opt-in CI posture in GitHub docs and DocC.
+- Added a `jscpd`-specific trust-boundary note so report output does not imply
+  that operator-supplied wrapper commands such as `npx` are dependency-free or
+  network-free.
 
 ## Backend Evaluation
 
@@ -42,6 +45,7 @@ Verdict: PASS
   - `jscpd-report.json` conversion into the stable report schema;
   - deterministic source occurrence and preview mapping;
   - `summary.fileCount` from `statistic.total.sources`;
+  - `jscpd`-specific external-tool trust-boundary reporting;
   - missing command failures;
   - empty command failures;
   - invalid JSON failures;
