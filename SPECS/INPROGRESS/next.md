@@ -6,6 +6,9 @@
 **Dependencies:** P16-T1, P16-T2, P16-T3
 **Status:** Suggested
 **Suggested:** 2026-05-26
+**Selected:** 2026-05-28
+**Branch:** `feature/P16-T4-reduce-broad-semantic-intents`
+**Review Subject:** `p16_t4_reduce_broad_semantic_intent_claims`
 
 ## Description
 
@@ -27,5 +30,5 @@ semantic intent claims found in real repository validation.
 
 ## Next Step
 
-Run SELECT for `P16-T4`, then inspect current semantic intent derivation and
+Run PLAN for `P16-T4`, then inspect current semantic intent derivation and
 governance duplicate-claim behavior before making threshold changes.
