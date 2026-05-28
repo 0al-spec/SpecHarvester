@@ -60,6 +60,70 @@ def test_build_duplicate_claim_report_merges_accepted_and_candidates(tmp_path: P
     assert capability_duplicate["count"] == 2
 
 
+def test_build_duplicate_claim_report_treats_broad_language_neutral_intents_as_record_only(
+    tmp_path: Path,
+) -> None:
+    candidates_root = tmp_path / "candidates"
+    candidates_root.mkdir(parents=True)
+
+    write_manifest(
+        candidates_root / "docs-a" / "1.0.0" / "specpm.yaml",
+        "example.docs_a",
+        "1.0.0",
+        intents=[
+            "intent.api.contract_surface",
+            "intent.metadata.schema_validation",
+            "intent.package.public_repository_metadata",
+        ],
+        capabilities=["cap.docs_a"],
+    )
+    write_manifest(
+        candidates_root / "docs-b" / "1.0.0" / "specpm.yaml",
+        "example.docs_b",
+        "1.0.0",
+        intents=[
+            "intent.api.contract_surface",
+            "intent.metadata.schema_validation",
+            "intent.package.public_repository_metadata",
+        ],
+        capabilities=["cap.docs_b"],
+    )
+
+    report = build_duplicate_claim_report(candidates_root=candidates_root)
+
+    assert report["summary"]["records"] == 2
+    assert report["summary"]["duplicateIntentCount"] == 0
+    assert report["duplicates"]["intent"] == []
+    assert all("intent.api.contract_surface" in record["intents"] for record in report["records"])
+
+
+def test_build_duplicate_claim_report_keeps_specific_intent_duplicates(tmp_path: Path) -> None:
+    candidates_root = tmp_path / "candidates"
+    candidates_root.mkdir(parents=True)
+
+    write_manifest(
+        candidates_root / "web-a" / "1.0.0" / "specpm.yaml",
+        "example.web_a",
+        "1.0.0",
+        intents=["intent.web.framework_surface", "intent.api.contract_surface"],
+        capabilities=["cap.web_a"],
+    )
+    write_manifest(
+        candidates_root / "web-b" / "1.0.0" / "specpm.yaml",
+        "example.web_b",
+        "1.0.0",
+        intents=["intent.web.framework_surface", "intent.api.contract_surface"],
+        capabilities=["cap.web_b"],
+    )
+
+    report = build_duplicate_claim_report(candidates_root=candidates_root)
+
+    assert report["summary"]["duplicateIntentCount"] == 1
+    duplicate = report["duplicates"]["intent"][0]
+    assert duplicate["claim"] == "intent.web.framework_surface"
+    assert duplicate["count"] == 2
+
+
 def test_parse_specpm_claims_rejects_missing_metadata(tmp_path: Path) -> None:
     manifest = tmp_path / "missing-specpm.yaml"
     manifest.write_text("kind: SpecPackage\nindex: {}\n", encoding="utf-8")

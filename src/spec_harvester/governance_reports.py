@@ -21,6 +21,15 @@ TRUST_BOUNDARY_NOTES = [
     "The report is advisory and does not change any package content.",
 ]
 
+BROAD_LANGUAGE_NEUTRAL_INTENTS = (
+    "intent.api.contract_surface",
+    "intent.developer.tooling_surface",
+    "intent.documentation.knowledge_base",
+    "intent.metadata.schema_validation",
+    "intent.package.public_repository_metadata",
+    "intent.workflow.automation_pipeline",
+)
+
 
 @dataclass(frozen=True)
 class PackageClaimRecord:
@@ -32,6 +41,19 @@ class PackageClaimRecord:
     capabilities: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class DuplicateClaimComparisonPolicy:
+    record_only_intents: tuple[str, ...] = BROAD_LANGUAGE_NEUTRAL_INTENTS
+
+    def comparable_claims(self, record: PackageClaimRecord, claim_key: str) -> tuple[str, ...]:
+        claims = getattr(record, claim_key)
+        if claim_key != "intents":
+            return claims
+
+        record_only = set(self.record_only_intents)
+        return tuple(claim for claim in claims if claim not in record_only)
+
+
 def build_duplicate_claim_report(
     *,
     accepted_root: Path | None = None,
@@ -41,7 +63,8 @@ def build_duplicate_claim_report(
         raise ValueError("At least one of accepted_root or candidates_root must be provided.")
 
     records, issues = collect_claim_records(accepted_root, candidates_root)
-    duplicate_intents = duplicate_claims(records, "intents")
+    comparison_policy = DuplicateClaimComparisonPolicy()
+    duplicate_intents = duplicate_claims(records, "intents", comparison_policy=comparison_policy)
     duplicate_capabilities = duplicate_claims(records, "capabilities")
 
     return {
@@ -194,10 +217,16 @@ def normalize_scalar_list_item(text: str) -> list[str]:
     return [str(parsed)]
 
 
-def duplicate_claims(records: list[PackageClaimRecord], claim_key: str) -> list[dict[str, Any]]:
+def duplicate_claims(
+    records: list[PackageClaimRecord],
+    claim_key: str,
+    *,
+    comparison_policy: DuplicateClaimComparisonPolicy | None = None,
+) -> list[dict[str, Any]]:
+    policy = comparison_policy or DuplicateClaimComparisonPolicy(record_only_intents=())
     claim_map: dict[str, list[dict[str, Any]]] = {}
     for record in records:
-        for claim in getattr(record, claim_key):
+        for claim in policy.comparable_claims(record, claim_key):
             claim_map.setdefault(claim, []).append(
                 {
                     "packageId": record.package_id,
