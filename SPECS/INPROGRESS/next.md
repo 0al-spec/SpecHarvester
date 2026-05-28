@@ -4,8 +4,11 @@
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 4-8 hours
 **Dependencies:** P16-T6, P16-T7, P16-T18
-**Status:** Suggested
+**Status:** Selected
 **Suggested:** 2026-05-28
+**Selected:** 2026-05-28
+**Branch:** `feature/P16-T8-multilanguage-duplicate-code-detector`
+**Review Subject:** `p16_t8_multilanguage_duplicate_code_detector`
 
 ## Description
 
