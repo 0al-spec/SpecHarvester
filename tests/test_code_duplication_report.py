@@ -10,6 +10,7 @@ import spec_harvester.code_duplication_report as code_duplication_report
 from spec_harvester.cli import main
 from spec_harvester.code_duplication_report import (
     build_code_duplication_report,
+    build_jscpd_code_duplication_report,
     build_pylint_code_duplication_report,
     list_source_files,
     normalize_source_line,
@@ -283,6 +284,140 @@ def test_pylint_backend_fails_closed_on_empty_error_output(
         build_pylint_code_duplication_report([source], min_lines=3)
 
 
+def test_jscpd_backend_converts_json_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "src"
+    source.mkdir()
+    alpha = source / "alpha.ts"
+    beta = source / "beta.ts"
+    alpha.write_text("export const a = 1;\nexport const b = 2;\n", encoding="utf-8")
+    beta.write_text("export const a = 1;\nexport const b = 2;\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        assert command[:2] == ["custom-jscpd", "--reporters"]
+        assert "--ignore" in command
+        assert check is False
+        assert capture_output is True
+        assert text is True
+        output = Path(command[command.index("--output") + 1])
+        payload = {
+            "duplicates": [
+                {
+                    "format": "typescript",
+                    "lines": 2,
+                    "fragment": "export const a = 1;\nexport const b = 2;",
+                    "firstFile": {"name": alpha.as_posix(), "start": 1, "end": 2},
+                    "secondFile": {"name": beta.as_posix(), "start": 1, "end": 2},
+                }
+            ],
+            "statistic": {"total": {"sources": 2}},
+        }
+        (output / "jscpd-report.json").write_text(json.dumps(payload), encoding="utf-8")
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    report = build_jscpd_code_duplication_report(
+        [source],
+        min_lines=2,
+        jscpd_command="custom-jscpd",
+    )
+
+    assert report["summary"]["backend"] == "jscpd"
+    assert report["summary"]["fileCount"] == 2
+    assert report["summary"]["tool"]["name"] == "jscpd"
+    assert report["summary"]["tool"]["reportedSourceCount"] == 2
+    assert report["summary"]["duplicateBlockCount"] == 1
+    duplicate = report["duplicates"][0]
+    assert duplicate["lineCount"] == 2
+    assert duplicate["normalizedPreview"] == [
+        "export const a = 1;",
+        "export const b = 2;",
+    ]
+    assert [Path(item["path"]).name for item in duplicate["occurrences"]] == [
+        "alpha.ts",
+        "beta.ts",
+    ]
+
+
+def test_jscpd_backend_reports_missing_tool(tmp_path: Path) -> None:
+    source = tmp_path / "source.ts"
+    source.write_text("const a = 1;\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="Cannot run jscpd duplicate-code backend"):
+        build_jscpd_code_duplication_report(
+            [source],
+            min_lines=3,
+            jscpd_command="missing-jscpd-command",
+        )
+
+
+def test_jscpd_backend_rejects_empty_command(tmp_path: Path) -> None:
+    source = tmp_path / "source.ts"
+    source.write_text("const a = 1;\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="command is empty"):
+        build_jscpd_code_duplication_report(
+            [source],
+            min_lines=3,
+            jscpd_command="",
+        )
+
+
+def test_jscpd_backend_fails_closed_on_invalid_json(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source.ts"
+    source.write_text("const a = 1;\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        output = Path(command[command.index("--output") + 1])
+        (output / "jscpd-report.json").write_text("{", encoding="utf-8")
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    with pytest.raises(ValueError, match="Invalid jscpd JSON output"):
+        build_jscpd_code_duplication_report([source], min_lines=3)
+
+
+def test_jscpd_backend_fails_closed_on_malformed_duplicate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source.ts"
+    source.write_text("const a = 1;\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        output = Path(command[command.index("--output") + 1])
+        payload = {"duplicates": [{"firstFile": {"name": "a.ts", "start": 2, "end": 1}}]}
+        (output / "jscpd-report.json").write_text(json.dumps(payload), encoding="utf-8")
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    with pytest.raises(ValueError, match="Invalid jscpd JSON output"):
+        build_jscpd_code_duplication_report([source], min_lines=3)
+
+
 def test_cli_code_duplication_report_accepts_pylint_backend(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys
 ) -> None:
@@ -314,6 +449,47 @@ def test_cli_code_duplication_report_accepts_pylint_backend(
     report = json.loads(capsys.readouterr().out)
     assert report["summary"]["backend"] == "pylint"
     assert report["summary"]["duplicateBlockCount"] == 0
+
+
+def test_cli_code_duplication_report_accepts_jscpd_backend(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys
+) -> None:
+    source = tmp_path / "source.ts"
+    source.write_text("const a = 1;\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        assert command[:2] == ["custom-jscpd", "--reporters"]
+        output = Path(command[command.index("--output") + 1])
+        (output / "jscpd-report.json").write_text(
+            json.dumps({"duplicates": [], "statistic": {"total": {"sources": 1}}}),
+            encoding="utf-8",
+        )
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    result = main(
+        [
+            "code-duplication-report",
+            "--backend",
+            "jscpd",
+            "--jscpd-command",
+            "custom-jscpd",
+            "--path",
+            str(source),
+        ]
+    )
+
+    assert result == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["summary"]["backend"] == "jscpd"
+    assert report["summary"]["tool"]["reportedSourceCount"] == 1
 
 
 def test_cli_code_duplication_report_rejects_tiny_windows(capsys) -> None:

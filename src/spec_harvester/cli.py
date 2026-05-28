@@ -27,6 +27,7 @@ from spec_harvester.architecture_lint import (
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.code_duplication_report import (
     BACKEND_BUILTIN,
+    BACKEND_JSCPD,
     BACKEND_PYLINT,
     DEFAULT_MIN_LINES,
     build_code_duplication_report,
@@ -378,17 +379,26 @@ def build_parser() -> argparse.ArgumentParser:
     )
     code_duplication.add_argument(
         "--backend",
-        choices=(BACKEND_BUILTIN, BACKEND_PYLINT),
+        choices=(BACKEND_BUILTIN, BACKEND_PYLINT, BACKEND_JSCPD),
         default=BACKEND_BUILTIN,
         help=(
             "Duplicate-code detector backend. Use 'pylint' for the established "
-            "Python R0801 checker. Default: builtin."
+            "Python R0801 checker or 'jscpd' for an optional multi-language "
+            "detector. Default: builtin."
         ),
     )
     code_duplication.add_argument(
         "--pylint-command",
         default="pylint",
         help="Pylint executable to use when --backend pylint is selected. Default: pylint.",
+    )
+    code_duplication.add_argument(
+        "--jscpd-command",
+        default="jscpd",
+        help=(
+            "jscpd command to use when --backend jscpd is selected. "
+            "May include command words such as 'npx --yes jscpd@4.2.4'. Default: jscpd."
+        ),
     )
     code_duplication.add_argument(
         "--fail-on-duplicates",
@@ -761,6 +771,7 @@ def run_code_duplication_report(args: argparse.Namespace) -> int:
             min_lines=args.min_lines,
             backend=args.backend,
             pylint_command=args.pylint_command,
+            jscpd_command=args.jscpd_command,
         )
     except ValueError as exc:
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
