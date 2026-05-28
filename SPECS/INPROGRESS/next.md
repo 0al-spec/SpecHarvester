@@ -4,8 +4,11 @@
 **Phase:** Phase 16. Real Repository Signal Quality Hardening
 **Effort:** 2-4 hours
 **Dependencies:** P16-T1, P16-T2, P16-T3, P16-T4
-**Status:** Suggested
+**Status:** Selected
 **Suggested:** 2026-05-28
+**Selected:** 2026-05-28
+**Branch:** `feature/P16-T5-rerun-local-validation-matrix`
+**Review Subject:** `p16_t5_rerun_local_validation_matrix`
 
 ## Description
 
