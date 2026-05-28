@@ -86,6 +86,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t5_rerun_local_validation_matrix.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t4_reduce_broad_semantic_intent_claims.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t18_duplicate_code_practical_minimum_audit.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t17_real_repo_quality_rating_policy_objects.md` |
@@ -214,6 +215,7 @@
 | 2026-05-28 | P16-T4 | Archived Reduce Broad Duplicate Semantic Intent Claims (PASS) |
 | 2026-05-28 | P16-T4 | Archived REVIEW_p16_t4_reduce_broad_semantic_intent_claims report |
 | 2026-05-28 | P16-T5 | Archived Rerun Representative Local Validation Matrix (PASS) |
+| 2026-05-28 | P16-T5 | Archived REVIEW_p16_t5_rerun_local_validation_matrix report |
 | 2026-05-25 | P16-T6 | Archived Duplicate-Code Quality Report (PASS) |
 | 2026-05-25 | P16-T6 | Archived REVIEW_p16_t6_duplicate_code_quality_report report |
 | 2026-05-25 | P16-T7 | Archived Pylint Duplicate-Code Backend (PASS) |
