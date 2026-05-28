@@ -5,8 +5,18 @@ from pathlib import Path
 
 from spec_harvester.cli import main
 from spec_harvester.governance_reports import (
+    BROAD_LANGUAGE_NEUTRAL_INTENTS,
     build_duplicate_claim_report,
     parse_specpm_claims,
+)
+
+EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS = (
+    "intent.api.contract_surface",
+    "intent.developer.tooling_surface",
+    "intent.documentation.knowledge_base",
+    "intent.metadata.schema_validation",
+    "intent.package.public_repository_metadata",
+    "intent.workflow.automation_pipeline",
 )
 
 
@@ -70,22 +80,14 @@ def test_build_duplicate_claim_report_treats_broad_language_neutral_intents_as_r
         candidates_root / "docs-a" / "1.0.0" / "specpm.yaml",
         "example.docs_a",
         "1.0.0",
-        intents=[
-            "intent.api.contract_surface",
-            "intent.metadata.schema_validation",
-            "intent.package.public_repository_metadata",
-        ],
+        intents=EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS,
         capabilities=["cap.docs_a"],
     )
     write_manifest(
         candidates_root / "docs-b" / "1.0.0" / "specpm.yaml",
         "example.docs_b",
         "1.0.0",
-        intents=[
-            "intent.api.contract_surface",
-            "intent.metadata.schema_validation",
-            "intent.package.public_repository_metadata",
-        ],
+        intents=EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS,
         capabilities=["cap.docs_b"],
     )
 
@@ -94,7 +96,11 @@ def test_build_duplicate_claim_report_treats_broad_language_neutral_intents_as_r
     assert report["summary"]["records"] == 2
     assert report["summary"]["duplicateIntentCount"] == 0
     assert report["duplicates"]["intent"] == []
-    assert all("intent.api.contract_surface" in record["intents"] for record in report["records"])
+    assert BROAD_LANGUAGE_NEUTRAL_INTENTS == EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS
+    assert all(
+        set(EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS).issubset(record["intents"])
+        for record in report["records"]
+    )
 
 
 def test_build_duplicate_claim_report_keeps_specific_intent_duplicates(tmp_path: Path) -> None:
