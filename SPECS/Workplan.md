@@ -429,7 +429,7 @@ Acceptance:
   across hyphen, underscore, separator, and case variants so generated package
   IDs like `navigation_split_view.core` do not create low-signal namespace
   advisories for upstream repositories such as `NavigationSplitView`.
-- [ ] `P16-T4` Reduce broad duplicate semantic intent claims by adding
+- [x] `P16-T4` Reduce broad duplicate semantic intent claims by adding
   deterministic evidence thresholds or repository-shape constraints for generic
   documentation/API/tooling intents before candidates are compared in
   governance reports.

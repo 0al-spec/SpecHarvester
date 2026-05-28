@@ -5,8 +5,18 @@ from pathlib import Path
 
 from spec_harvester.cli import main
 from spec_harvester.governance_reports import (
+    BROAD_LANGUAGE_NEUTRAL_INTENTS,
     build_duplicate_claim_report,
     parse_specpm_claims,
+)
+
+EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS = (
+    "intent.api.contract_surface",
+    "intent.developer.tooling_surface",
+    "intent.documentation.knowledge_base",
+    "intent.metadata.schema_validation",
+    "intent.package.public_repository_metadata",
+    "intent.workflow.automation_pipeline",
 )
 
 
@@ -58,6 +68,66 @@ def test_build_duplicate_claim_report_merges_accepted_and_candidates(tmp_path: P
     capability_duplicate = report["duplicates"]["capability"][0]
     assert capability_duplicate["claim"] == "cap.shared"
     assert capability_duplicate["count"] == 2
+
+
+def test_build_duplicate_claim_report_treats_broad_language_neutral_intents_as_record_only(
+    tmp_path: Path,
+) -> None:
+    candidates_root = tmp_path / "candidates"
+    candidates_root.mkdir(parents=True)
+
+    write_manifest(
+        candidates_root / "docs-a" / "1.0.0" / "specpm.yaml",
+        "example.docs_a",
+        "1.0.0",
+        intents=EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS,
+        capabilities=["cap.docs_a"],
+    )
+    write_manifest(
+        candidates_root / "docs-b" / "1.0.0" / "specpm.yaml",
+        "example.docs_b",
+        "1.0.0",
+        intents=EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS,
+        capabilities=["cap.docs_b"],
+    )
+
+    report = build_duplicate_claim_report(candidates_root=candidates_root)
+
+    assert report["summary"]["records"] == 2
+    assert report["summary"]["duplicateIntentCount"] == 0
+    assert report["duplicates"]["intent"] == []
+    assert BROAD_LANGUAGE_NEUTRAL_INTENTS == EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS
+    assert all(
+        set(EXPECTED_BROAD_LANGUAGE_NEUTRAL_INTENTS).issubset(record["intents"])
+        for record in report["records"]
+    )
+
+
+def test_build_duplicate_claim_report_keeps_specific_intent_duplicates(tmp_path: Path) -> None:
+    candidates_root = tmp_path / "candidates"
+    candidates_root.mkdir(parents=True)
+
+    write_manifest(
+        candidates_root / "web-a" / "1.0.0" / "specpm.yaml",
+        "example.web_a",
+        "1.0.0",
+        intents=["intent.web.framework_surface", "intent.api.contract_surface"],
+        capabilities=["cap.web_a"],
+    )
+    write_manifest(
+        candidates_root / "web-b" / "1.0.0" / "specpm.yaml",
+        "example.web_b",
+        "1.0.0",
+        intents=["intent.web.framework_surface", "intent.api.contract_surface"],
+        capabilities=["cap.web_b"],
+    )
+
+    report = build_duplicate_claim_report(candidates_root=candidates_root)
+
+    assert report["summary"]["duplicateIntentCount"] == 1
+    duplicate = report["duplicates"]["intent"][0]
+    assert duplicate["claim"] == "intent.web.framework_surface"
+    assert duplicate["count"] == 2
 
 
 def test_parse_specpm_claims_rejects_missing_metadata(tmp_path: Path) -> None:

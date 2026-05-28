@@ -170,6 +170,27 @@ def test_docc_and_github_docs_cover_language_neutral_semantic_extraction() -> No
         assert "raw documentation" in text
 
 
+def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
+    github_doc = ROOT / "docs" / "GOVERNANCE_REPORTS.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "GovernanceReports.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Broad language-neutral semantic intents",
+            "API contract",
+            "metadata schema validation",
+            "workflow automation",
+            "developer tooling",
+            "documentation",
+            "public repository metadata",
+            "records",
+            "duplicate findings",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+
 def test_docc_and_github_docs_cover_specnode_integration_contract() -> None:
     github_doc = ROOT / "docs" / "SPECNODE_INTEGRATION_CONTRACT.md"
     docc_doc = (

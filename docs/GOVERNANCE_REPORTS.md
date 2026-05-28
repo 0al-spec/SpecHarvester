@@ -24,6 +24,10 @@ The command:
 - extracts package `metadata.id`, `metadata.version`, `index.intents`, and
   `index.provides.capabilities`;
 - aggregates duplicate claim IDs and emits claimant provenance;
+- treats broad language-neutral semantic intents such as API contracts,
+  metadata schema validation, workflow automation, developer tooling,
+  documentation knowledge bases, and public repository metadata as record-only
+  signals rather than duplicate findings;
 - returns deterministic JSON on stdout.
 
 If `--output` is provided, the report is written as stable JSON to that path.
@@ -39,10 +43,14 @@ The report contains:
 - `status`: `ok` or `partial` if malformed manifests were skipped;
 - `summary` with counts (total records, duplicate counts, issue count);
 - `records` for all parsed claims;
-- `duplicates.intent` for overlapping intent IDs;
+- `duplicates.intent` for overlapping comparable intent IDs;
 - `duplicates.capability` for overlapping capabilities;
 - `issues` when manifests could not be parsed; and
 - `trustBoundary` advisory notes.
+
+Broad language-neutral semantic intents remain visible in `records`. They are
+not counted in `duplicates.intent` because they are valid evidence but weak
+cross-package duplicate signals.
 
 ## Trust Boundary
 
