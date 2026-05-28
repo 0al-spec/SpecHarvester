@@ -1450,6 +1450,8 @@ def test_real_repository_local_validation_matrix_docs_cover_observed_results() -
     for path in (github_doc, docc_doc):
         text = path.read_text(encoding="utf-8")
         for required in (
+            "P16-T5",
+            "Delta from P15-T4",
             "cupertino",
             "navigation-split-view",
             "xyflow",
@@ -1459,8 +1461,11 @@ def test_real_repository_local_validation_matrix_docs_cover_observed_results() -
             "attention_required",
             "duplicate intent",
             "LICENSE.txt",
+            "collected_unknown_license_evidence",
             "navigation_split_view",
-            "quality-report analyzer coverage undercounts",
+            "public-interface-index.json counted",
+            "namespaceIssueCount=0",
+            "5 total advisory issues",
             "SpecPM validation",
             ".smoke/",
             "No harvested package scripts",
