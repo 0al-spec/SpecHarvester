@@ -1,22 +1,24 @@
 # Real Repository Local Validation Matrix
 
-Status: Phase 15 local validation summary
+Status: Phase 16 rerun summary
 
-This page records the compact P15-T4 real-repository validation matrix.  The
-run used operator-managed local checkouts under `~/Development/GitHub` and kept
-all generated manifests, candidates, run reports, quality reports, and triage
-JSON under ignored `.smoke/` paths.
+This page records the compact real-repository validation matrix.  The original
+P15-T4 run established the baseline; P16-T5 reran the same six checkout shapes
+after the P16-T1 through P16-T4 signal-quality fixes.  Both runs used
+operator-managed local checkouts under `~/Development/GitHub` and kept all
+generated manifests, candidates, run reports, quality reports, and triage JSON
+under ignored `.smoke/` paths.
 
 ## Command Pattern
 
-The local manifest was staged only under ignored `.smoke/p15-t4-inputs`.
+The P16-T5 local manifest was staged only under ignored `.smoke/p16-t5-inputs`.
 
 ```bash
 PYTHONPATH=src python scripts/run_real_repository_validation.py \
-  --inputs .smoke/p15-t4-inputs \
-  --out .smoke/output/p15-t4-local-validation \
+  --inputs .smoke/p16-t5-inputs \
+  --out .smoke/output/p16-t5-local-validation \
   --emit-interface-indexes \
-  --analyzer-cache-dir .smoke/output/p15-t4-analyzer-cache \
+  --analyzer-cache-dir .smoke/output/p16-t5-analyzer-cache \
   --skip-specpm-validation
 ```
 
@@ -25,8 +27,9 @@ report:
 
 ```bash
 PYTHONPATH=src python -m spec_harvester quality-report \
-  --run-report .smoke/output/p15-t4-local-validation/run-report.json \
-  --output .smoke/output/p15-t4-local-validation/quality-report.json
+  --run-report .smoke/output/p16-t5-local-validation/run-report.json \
+  --candidates-root .smoke/output/p16-t5-local-validation \
+  --output .smoke/output/p16-t5-local-validation/quality-report.json
 ```
 
 Manual per-candidate SpecPM validation was run separately with the adjacent
@@ -34,65 +37,78 @@ local SpecPM checkout:
 
 ```bash
 PYTHONPATH=../SpecPM/src python -m specpm.cli validate \
-  .smoke/output/p15-t4-local-validation/<candidate> --json
+  .smoke/output/p16-t5-local-validation/<candidate> --json
 ```
 
-## Matrix
+## P16-T5 Matrix Rerun
 
 | Repository | Shape | Runner | Public index | Quality verdict | Manual SpecPM | Failure class |
 |---|---|---|---|---|---|---|
-| `cupertino` | Swift/SPM + Xcode workspace | `ok` | no (`manifest_only`) | `pass` (`strong` intent, `strong` capabilities, `partial` analyzer coverage) | pass | Broad documentation/API intent duplication |
-| `navigation-split-view` | Swift/SPM + Xcode project | `ok` | no (`manifest_only`) | `pass` (`strong`, `strong`, `partial`) | pass | Package ID normalized from hyphen to underscore, causing namespace/upstream mismatch |
-| `xyflow` | JavaScript/TypeScript npm/pnpm monorepo | `ok` | yes | `pass` (`strong`, `strong`, `partial`) | pass | none |
-| `flask` | Python `pyproject.toml` web framework | `ok` | yes | `pass` (`strong`, `strong`, `weak`) | pass | `LICENSE.txt` classified as ambiguous unknown license; quality-report analyzer coverage undercounts generated public index |
-| `gin` | Go module web framework | `ok` | yes | `pass` (`strong`, `strong`, `weak`) | pass | quality-report analyzer coverage undercounts generated public index |
-| `docc2context` | Swift/SPM documentation-first CLI | `ok` | no (`manifest_only`) | `pass` (`strong`, `strong`, `partial`) | pass | Broad documentation/API intent duplication |
+| `cupertino` | Swift/SPM + Xcode workspace | `ok` | no (`manifest_only`) | `pass` (`strong` intent, `strong` capabilities, `partial` analyzer coverage) | warning-only (`preview_only_package`) | residual specific web intent overlap |
+| `navigation-split-view` | Swift/SPM + Xcode project | `ok` | no (`manifest_only`) | `pass` (`strong`, `strong`, `partial`) | warning-only (`preview_only_package`) | none; namespace/upstream mismatch cleared |
+| `xyflow` | JavaScript/TypeScript npm/pnpm monorepo | `ok` | yes | `pass` (`strong`, `strong`, `strong`; `public-interface-index.json` counted) | warning-only (`preview_only_package`) | none |
+| `flask` | Python `pyproject.toml` web framework | `ok` | yes | `pass` (`strong`, `strong`, `partial`; `public-interface-index.json` counted) | warning-only (`preview_only_package`) | low `collected_unknown_license_evidence` |
+| `gin` | Go module web framework | `ok` | yes | `pass` (`strong`, `strong`, `partial`; `public-interface-index.json` counted) | warning-only (`preview_only_package`) | none |
+| `docc2context` | Swift/SPM documentation-first CLI | `ok` | no (`manifest_only`) | `pass` (`strong`, `strong`, `partial`) | warning-only (`preview_only_package`) | residual specific web intent overlap |
 
-## Aggregate Outcome
+## P16-T5 Aggregate Outcome
 
 - Runner status: `ok`
 - Packages attempted: 6
 - Packages drafted: 6
 - Quality report summary: 6 pass, 0 review, 0 fail, 0 unscored
-- Manual SpecPM validation: 6 pass
+- Manual SpecPM validation: 6 warning-only, each with the expected
+  `preview_only_package` warning and no errors
 - Smoke triage status: `attention_required`
-- Smoke triage counts: 0 batch errors, 0 batch warnings, 9 duplicate intent
-  claims, 0 duplicate claim issues, 2 license/provenance issues, 1 namespace
-  issue, 12 total advisory issues
+- Smoke triage counts: 0 batch errors, 0 batch warnings, 4 duplicate intent
+  claims, 0 duplicate claim issues, 1 license/provenance issue, 0 namespace
+  issues, 5 total advisory issues
 
-## Failure Classes
+## Delta from P15-T4
 
-### Broad Intent Duplication
+| Signal | P15-T4 baseline | P16-T5 rerun | Result |
+|---|---:|---:|---|
+| Total advisory issues | 12 | 5 | improved |
+| Duplicate intent claims | 9 | 4 | improved |
+| License/provenance issues | 2 | 1 | improved |
+| Namespace/upstream issues | 1 | 0 | cleared |
+| Quality pass count | 6 | 6 | preserved |
 
-The governance report found repeated broad intent claims such as
-`intent.api.contract_surface`, `intent.developer.tooling_surface`, and
-`intent.documentation.knowledge_base` across unrelated candidates.  This points
-to a useful follow-up area for making language-neutral semantic extraction less
-eager with generic documentation/API/tooling intents.
+The broad language-neutral duplicate intent noise from P15-T4 is gone from
+`duplicates.intent`.  Remaining duplicate intent findings are specific web
+claims: `intent.web.framework_surface`, `intent.web.http_routing`,
+`intent.web.middleware_pipeline`, and `intent.web.request_response_context`.
 
-### Analyzer Coverage Undercount
+## Remaining Review Signals
 
-`flask` and `gin` generated `public-interface-index.json`, and the runner
-reported executed Python/Go public API analyzers.  The quality report still
-classified analyzer coverage as `weak` for both.  In short, quality-report
-analyzer coverage undercounts generated public index artifacts because its
-coverage derivation does not yet account for the colocated public interface
-index.  The generated candidate quality is stronger than the quality-report
-rating suggests.
+### Specific Web Intent Overlap
 
-### License Filename Classification
+The governance report still finds four specific duplicate web intent claims.
+Three are expected overlap between `flask` and `gin`.  The fourth,
+`intent.web.request_response_context`, also appears on `cupertino` and
+`docc2context`, so it remains a candidate for later semantic intent tightening
+if this signal proves noisy in future matrices.
 
-`flask` uses `LICENSE.txt`; the governance license report classified it as
-`ambiguous_unknown_license` even though it is a standard public project license
-file shape.  This is a deterministic classifier compatibility gap.
+### Analyzer Coverage
 
-### Package ID Normalization
+The P16-T1 fix is visible.  `xyflow`, `flask`, and `gin` all report
+`public-interface-index.json counted`; `xyflow` reaches `strong` analyzer
+coverage, while `flask` and `gin` move from misleading `weak` classification to
+`partial` single-analyzer coverage.
 
-`navigation-split-view` was supplied as `navigation-split-view.core`, while the
-drafter normalized the generated package identity to
-`navigation_split_view.core`.  The namespace/upstream report then flagged a
-low-severity mismatch against the upstream repository name
-`NavigationSplitView`.
+### License Provenance
+
+`flask` now reports low-severity `collected_unknown_license_evidence` for
+`LICENSE.txt` instead of the noisier P15-T4 ambiguous license classification.
+This is the expected P16-T2 behavior: the report recognizes standard collected
+license-file evidence but does not parse full license text or infer SPDX
+identifiers.
+
+### Namespace Normalization
+
+The P16-T3 normalization fix cleared the previous
+`navigation_split_view.core` namespace/upstream mismatch.  P16-T5 reports
+`namespaceIssueCount=0`.
 
 ## Safety Notes
 

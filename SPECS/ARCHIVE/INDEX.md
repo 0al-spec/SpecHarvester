@@ -64,6 +64,7 @@
 | P16-T1 | [P16-T1_Quality_Report_Public_Interface_Coverage/](P16-T1_Quality_Report_Public_Interface_Coverage/) | 2026-05-24 | PASS |
 | P16-T2 | [P16-T2_License_Provenance_Classification_for_Collected_License_Files/](P16-T2_License_Provenance_Classification_for_Collected_License_Files/) | 2026-05-25 | PASS |
 | P16-T4 | [P16-T4_Reduce_Broad_Duplicate_Semantic_Intent_Claims/](P16-T4_Reduce_Broad_Duplicate_Semantic_Intent_Claims/) | 2026-05-28 | PASS |
+| P16-T5 | [P16-T5_Rerun_Representative_Local_Validation_Matrix/](P16-T5_Rerun_Representative_Local_Validation_Matrix/) | 2026-05-28 | PASS |
 | P16-T6 | [P16-T6_Duplicate_Code_Quality_Report/](P16-T6_Duplicate_Code_Quality_Report/) | 2026-05-25 | PASS |
 | P16-T7 | [P16-T7_Pylint_Duplicate_Code_Backend/](P16-T7_Pylint_Duplicate_Code_Backend/) | 2026-05-25 | PASS |
 | P16-T9 | [P16-T9_Architecture_Lint_Guardrails/](P16-T9_Architecture_Lint_Guardrails/) | 2026-05-25 | PASS |
@@ -85,6 +86,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t5_rerun_local_validation_matrix.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t4_reduce_broad_semantic_intent_claims.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t18_duplicate_code_practical_minimum_audit.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t17_real_repo_quality_rating_policy_objects.md` |
@@ -212,6 +214,8 @@
 | 2026-05-26 | P16-T3 | Archived REVIEW_p16_t3_package_identity_namespace_normalization report |
 | 2026-05-28 | P16-T4 | Archived Reduce Broad Duplicate Semantic Intent Claims (PASS) |
 | 2026-05-28 | P16-T4 | Archived REVIEW_p16_t4_reduce_broad_semantic_intent_claims report |
+| 2026-05-28 | P16-T5 | Archived Rerun Representative Local Validation Matrix (PASS) |
+| 2026-05-28 | P16-T5 | Archived REVIEW_p16_t5_rerun_local_validation_matrix report |
 | 2026-05-25 | P16-T6 | Archived Duplicate-Code Quality Report (PASS) |
 | 2026-05-25 | P16-T6 | Archived REVIEW_p16_t6_duplicate_code_quality_report report |
 | 2026-05-25 | P16-T7 | Archived Pylint Duplicate-Code Backend (PASS) |

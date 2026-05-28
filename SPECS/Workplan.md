@@ -433,7 +433,7 @@ Acceptance:
   deterministic evidence thresholds or repository-shape constraints for generic
   documentation/API/tooling intents before candidates are compared in
   governance reports.
-- [ ] `P16-T5` Rerun the representative local validation matrix after P16-T1
+- [x] `P16-T5` Rerun the representative local validation matrix after P16-T1
   through P16-T4 and document whether advisory counts, analyzer coverage, and
   failure classes improved without committing generated `.smoke/` artifacts.
 - [x] `P16-T6` Add an advisory duplicate-code quality report that detects
