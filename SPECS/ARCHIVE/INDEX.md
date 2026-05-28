@@ -87,6 +87,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t5_rerun_local_validation_matrix.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t4_reduce_broad_semantic_intent_claims.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t18_duplicate_code_practical_minimum_audit.md` |
@@ -222,6 +223,7 @@
 | 2026-05-25 | P16-T7 | Archived Pylint Duplicate-Code Backend (PASS) |
 | 2026-05-25 | P16-T7 | Archived REVIEW_p16_t7_pylint_duplicate_code_backend report |
 | 2026-05-28 | P16-T8 | Archived Evaluate Multi-Language Duplicate-Code Detector (PASS) |
+| 2026-05-28 | P16-T8 | Archived REVIEW_p16_t8_multilanguage_duplicate_code_detector report |
 | 2026-05-25 | P16-T9 | Archived Architecture Lint Guardrails (PASS) |
 | 2026-05-25 | P16-T9 | Archived REVIEW_p16_t9_architecture_lint_guardrails report |
 | 2026-05-26 | P16-T10 | Archived SpecPackageManifest Object Seam (PASS) |
