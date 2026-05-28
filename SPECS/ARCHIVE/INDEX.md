@@ -85,6 +85,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t4_reduce_broad_semantic_intent_claims.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t18_duplicate_code_practical_minimum_audit.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t17_real_repo_quality_rating_policy_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t16_upstream_issue_evaluation_object.md` |
@@ -210,6 +211,7 @@
 | 2026-05-26 | P16-T3 | Archived Package Identity and Namespace Normalization (PASS) |
 | 2026-05-26 | P16-T3 | Archived REVIEW_p16_t3_package_identity_namespace_normalization report |
 | 2026-05-28 | P16-T4 | Archived Reduce Broad Duplicate Semantic Intent Claims (PASS) |
+| 2026-05-28 | P16-T4 | Archived REVIEW_p16_t4_reduce_broad_semantic_intent_claims report |
 | 2026-05-25 | P16-T6 | Archived Duplicate-Code Quality Report (PASS) |
 | 2026-05-25 | P16-T6 | Archived REVIEW_p16_t6_duplicate_code_quality_report report |
 | 2026-05-25 | P16-T7 | Archived Pylint Duplicate-Code Backend (PASS) |
