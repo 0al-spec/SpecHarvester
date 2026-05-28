@@ -63,6 +63,7 @@
 | P15-T5 | [P15-T5_Convert_Validation_Failures_into_Follow-Up_Workplan_Tasks/](P15-T5_Convert_Validation_Failures_into_Follow-Up_Workplan_Tasks/) | 2026-05-24 | PASS |
 | P16-T1 | [P16-T1_Quality_Report_Public_Interface_Coverage/](P16-T1_Quality_Report_Public_Interface_Coverage/) | 2026-05-24 | PASS |
 | P16-T2 | [P16-T2_License_Provenance_Classification_for_Collected_License_Files/](P16-T2_License_Provenance_Classification_for_Collected_License_Files/) | 2026-05-25 | PASS |
+| P16-T4 | [P16-T4_Reduce_Broad_Duplicate_Semantic_Intent_Claims/](P16-T4_Reduce_Broad_Duplicate_Semantic_Intent_Claims/) | 2026-05-28 | PASS |
 | P16-T6 | [P16-T6_Duplicate_Code_Quality_Report/](P16-T6_Duplicate_Code_Quality_Report/) | 2026-05-25 | PASS |
 | P16-T7 | [P16-T7_Pylint_Duplicate_Code_Backend/](P16-T7_Pylint_Duplicate_Code_Backend/) | 2026-05-25 | PASS |
 | P16-T9 | [P16-T9_Architecture_Lint_Guardrails/](P16-T9_Architecture_Lint_Guardrails/) | 2026-05-25 | PASS |
@@ -208,6 +209,7 @@
 | 2026-05-25 | P16-T2 | Archived REVIEW_p16_t2_license_provenance_classification report |
 | 2026-05-26 | P16-T3 | Archived Package Identity and Namespace Normalization (PASS) |
 | 2026-05-26 | P16-T3 | Archived REVIEW_p16_t3_package_identity_namespace_normalization report |
+| 2026-05-28 | P16-T4 | Archived Reduce Broad Duplicate Semantic Intent Claims (PASS) |
 | 2026-05-25 | P16-T6 | Archived Duplicate-Code Quality Report (PASS) |
 | 2026-05-25 | P16-T6 | Archived REVIEW_p16_t6_duplicate_code_quality_report report |
 | 2026-05-25 | P16-T7 | Archived Pylint Duplicate-Code Backend (PASS) |
