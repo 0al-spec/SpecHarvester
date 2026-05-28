@@ -67,6 +67,7 @@
 | P16-T5 | [P16-T5_Rerun_Representative_Local_Validation_Matrix/](P16-T5_Rerun_Representative_Local_Validation_Matrix/) | 2026-05-28 | PASS |
 | P16-T6 | [P16-T6_Duplicate_Code_Quality_Report/](P16-T6_Duplicate_Code_Quality_Report/) | 2026-05-25 | PASS |
 | P16-T7 | [P16-T7_Pylint_Duplicate_Code_Backend/](P16-T7_Pylint_Duplicate_Code_Backend/) | 2026-05-25 | PASS |
+| P16-T8 | [P16-T8_Evaluate_Multi_Language_Duplicate_Code_Detector/](P16-T8_Evaluate_Multi_Language_Duplicate_Code_Detector/) | 2026-05-28 | PASS |
 | P16-T9 | [P16-T9_Architecture_Lint_Guardrails/](P16-T9_Architecture_Lint_Guardrails/) | 2026-05-25 | PASS |
 | P16-T10 | [P16-T10_SpecPackageManifest_Object_Seam/](P16-T10_SpecPackageManifest_Object_Seam/) | 2026-05-26 | PASS |
 | P16-T11 | [P16-T11_Report_Manifest_Parser_Refactor/](P16-T11_Report_Manifest_Parser_Refactor/) | 2026-05-26 | PASS |
@@ -220,6 +221,7 @@
 | 2026-05-25 | P16-T6 | Archived REVIEW_p16_t6_duplicate_code_quality_report report |
 | 2026-05-25 | P16-T7 | Archived Pylint Duplicate-Code Backend (PASS) |
 | 2026-05-25 | P16-T7 | Archived REVIEW_p16_t7_pylint_duplicate_code_backend report |
+| 2026-05-28 | P16-T8 | Archived Evaluate Multi-Language Duplicate-Code Detector (PASS) |
 | 2026-05-25 | P16-T9 | Archived Architecture Lint Guardrails (PASS) |
 | 2026-05-25 | P16-T9 | Archived REVIEW_p16_t9_architecture_lint_guardrails report |
 | 2026-05-26 | P16-T10 | Archived SpecPackageManifest Object Seam (PASS) |
