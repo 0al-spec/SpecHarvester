@@ -11,12 +11,14 @@ from spec_harvester.interface_index import (
 )
 from spec_harvester.js_ts_public_api import analyze_js_ts_public_api
 from spec_harvester.python_public_api import analyze_python_public_api
+from spec_harvester.swift_public_api import analyze_swift_public_api
 
 PUBLIC_INTERFACE_INDEX_FILENAME = "public-interface-index.json"
 
 PYTHON_PROJECT_PROFILE_ANALYZER_ID = "spec_harvester.python_public_api"
 JS_TS_PROJECT_PROFILE_ANALYZER_ID = "spec_harvester.js_ts_public_api"
 GO_PROJECT_PROFILE_ANALYZER_ID = "spec_harvester.go_public_api"
+SWIFT_PROJECT_PROFILE_ANALYZER_ID = "spec_harvester.swift_public_api"
 RECOMMENDED_ANALYZER_STATUS = "recommended"
 
 AnalyzerFunction = Callable[..., dict[str, Any]]
@@ -42,6 +44,10 @@ ANALYZER_ADAPTERS: dict[str, AnalyzerAdapter] = {
     GO_PROJECT_PROFILE_ANALYZER_ID: AnalyzerAdapter(
         plan_id=GO_PROJECT_PROFILE_ANALYZER_ID,
         analyze=analyze_go_public_api,
+    ),
+    SWIFT_PROJECT_PROFILE_ANALYZER_ID: AnalyzerAdapter(
+        plan_id=SWIFT_PROJECT_PROFILE_ANALYZER_ID,
+        analyze=analyze_swift_public_api,
     ),
 }
 

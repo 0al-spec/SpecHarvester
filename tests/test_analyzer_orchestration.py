@@ -9,6 +9,7 @@ from spec_harvester.analyzer_orchestration import (
     ANALYZER_ADAPTERS,
     GO_PROJECT_PROFILE_ANALYZER_ID,
     PYTHON_PROJECT_PROFILE_ANALYZER_ID,
+    SWIFT_PROJECT_PROFILE_ANALYZER_ID,
     AnalyzerAdapter,
     run_project_profile_analyzers,
 )
@@ -245,15 +246,50 @@ def test_run_project_profile_analyzers_skips_manifest_only_plans(tmp_path: Path)
 
     assert result["status"] == "skipped"
     assert result["index"] is None
-    assert result["plannedAnalyzerIds"] == ["spec_harvester.swift_manifest_public_interface"]
+    assert result["plannedAnalyzerIds"] == [SWIFT_PROJECT_PROFILE_ANALYZER_ID]
     assert result["executedAnalyzerIds"] == []
     assert result["skippedAnalyzerPlans"] == [
         {
-            "id": "spec_harvester.swift_manifest_public_interface",
+            "id": SWIFT_PROJECT_PROFILE_ANALYZER_ID,
             "status": "manifest_only",
             "reason": "project_profile_plan_not_recommended",
         }
     ]
+
+
+def test_run_project_profile_analyzers_emits_swift_public_interface_index(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "swift-demo"
+    source = repo / "Sources" / "SwiftDemo"
+    source.mkdir(parents=True)
+    (repo / "Package.swift").write_text(
+        """
+        // swift-tools-version: 6.0
+        import PackageDescription
+        let package = Package(name: "SwiftDemo")
+        """,
+        encoding="utf-8",
+    )
+    (source / "API.swift").write_text(
+        "public struct Engine {}\npublic func makeEngine() -> Engine { Engine() }\n",
+        encoding="utf-8",
+    )
+    snapshot = collect_local_repository(HarvestOptions(source=repo, revision="abc123"))
+
+    result = run_project_profile_analyzers(source=repo, snapshot=snapshot)
+
+    index = result["index"]
+    assert result["status"] == "complete"
+    assert result["plannedAnalyzerIds"] == [SWIFT_PROJECT_PROFILE_ANALYZER_ID]
+    assert result["executedAnalyzerIds"] == [SWIFT_PROJECT_PROFILE_ANALYZER_ID]
+    assert result["skippedAnalyzerPlans"] == []
+    assert index["sourceRevision"] == "abc123"
+    assert index["analyzers"][0]["id"] == "swift-source-public-api"
+    assert index["packages"][0]["id"] == "SwiftDemo"
+    assert index["packages"][0]["language"] == "swift"
+    assert index["packages"][0]["entrypoints"][0]["path"] == "Sources/SwiftDemo/API.swift"
+    assert index["summary"]["symbolCount"] == 2
 
 
 def test_run_project_profile_analyzers_skips_go_manifest_without_sources(tmp_path: Path) -> None:

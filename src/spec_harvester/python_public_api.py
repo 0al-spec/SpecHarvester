@@ -13,7 +13,10 @@ from spec_harvester.interface_index import (
     validate_public_interface_index,
 )
 from spec_harvester.public_api_analyzer_options import PublicApiAnalyzerOptions
-from spec_harvester.public_api_payload_records import PublicApiPayloadPath
+from spec_harvester.public_api_entrypoint_cache import (
+    read_cached_public_api_entrypoint,
+    write_cached_public_api_entrypoint,
+)
 
 PYTHON_PUBLIC_API_ANALYZER_ID = "python-ast-public-api"
 PYTHON_PUBLIC_API_ANALYZER_VERSION = "0.1.0"
@@ -104,27 +107,13 @@ def read_cached_python_payload(
     path: str,
     digest: str,
 ) -> tuple[dict[str, Any] | None, list[dict[str, Any]]] | None:
-    if cache is None:
-        return None
-    payload = cache.read(
+    return read_cached_public_api_entrypoint(
+        cache,
         analyzer_id=PYTHON_PUBLIC_API_ANALYZER_ID,
         analyzer_version=PYTHON_PUBLIC_API_ANALYZER_VERSION,
-        file_digest=digest,
+        path=path,
+        digest=digest,
     )
-    if not isinstance(payload, dict):
-        return None
-    entrypoint = payload.get("entrypoint")
-    diagnostics = payload.get("diagnostics")
-    if not isinstance(diagnostics, list):
-        return None
-    payload_path = PublicApiPayloadPath(path)
-    if entrypoint is not None:
-        if not payload_path.matches_entrypoint(entrypoint):
-            return None
-    for diagnostic in diagnostics:
-        if not payload_path.matches_diagnostic(diagnostic):
-            return None
-    return entrypoint, diagnostics
 
 
 def write_cached_python_payload(
@@ -133,13 +122,13 @@ def write_cached_python_payload(
     entrypoint: dict[str, Any] | None,
     diagnostics: list[dict[str, Any]],
 ) -> None:
-    if cache is None:
-        return
-    cache.write(
+    write_cached_public_api_entrypoint(
+        cache,
         analyzer_id=PYTHON_PUBLIC_API_ANALYZER_ID,
         analyzer_version=PYTHON_PUBLIC_API_ANALYZER_VERSION,
-        file_digest=digest,
-        payload={"entrypoint": entrypoint, "diagnostics": diagnostics},
+        digest=digest,
+        entrypoint=entrypoint,
+        diagnostics=diagnostics,
     )
 
 

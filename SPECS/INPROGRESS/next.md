@@ -1,21 +1,19 @@
-# Next Task: None — Workplan Complete
+# Next Task: P17-T1 — Procedural Style Metrics Report
 
-**Status:** Idle
-**Suggested:** 2026-05-28
+**Status:** Pending
+**Suggested:** 2026-05-29
 
 ## Recently Archived
 
-- P16-T8: Evaluate Multi-Language Duplicate-Code Detector (PASS, 2026-05-28)
-- P16-T5: Rerun Representative Local Validation Matrix (PASS, 2026-05-28)
-- P16-T4: Reduce Broad Duplicate Semantic Intent Claims (PASS, 2026-05-28)
+- P18-T1: Swift Public API Analyzer (PASS, 2026-05-29)
 
 ## Rationale
 
-All tasks currently listed in `SPECS/Workplan.md` are marked complete after
-P16-T8. The next Flow SELECT step should add or choose a newly planned task
-before creating another feature branch.
+P18-T1 closes the Swift public API coverage gap. On the current `main`
+baseline, `P17-T1` is still the first unchecked Workplan task in the Elegant
+Objects refactoring strategy.
 
 ## Next Step
 
-Review project readiness, add any new follow-up tasks to `SPECS/Workplan.md`,
-then run SELECT for the next explicit task.
+Continue with the first unchecked Workplan task after this PR lands, accounting
+for any already-open PR that may complete `P17-T1`.

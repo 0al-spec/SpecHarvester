@@ -62,8 +62,9 @@ Report confidence is not an acceptance decision. It is review metadata.
 
 Extract compact `PublicInterfaceIndex` artifacts from local source bytes
 without executing package code. Python uses the standard-library `ast` module,
-and JavaScript/TypeScript uses package manifest entrypoints plus static export
-scanning.
+JavaScript/TypeScript uses package manifest entrypoints plus static export
+scanning, Go uses deterministic source parsing, and Swift uses lightweight
+text parsing for explicit `public` and `open` declarations.
 
 Analyzers can use an optional per-file cache keyed by analyzer id, analyzer
 version, and file SHA-256 digest. The cache is derived untrusted metadata and
@@ -81,11 +82,12 @@ components. They must satisfy <doc:AnalyzerSandboxRequirements> before use.
 driven by `ProjectProfile.analyzerPlan`. The orchestrator runs only built-in
 static analyzers with `recommended` plan status, currently Python `ast` and
 JavaScript/TypeScript static export analysis, and deterministic Go source
-public API analysis, then writes
+public API analysis plus deterministic Swift source public API analysis, then writes
 `public-interface-index.json` beside `harvest.json`. Plans that are
 `manifest_only` or unsupported are recorded as skipped. Supported plan ids are
-`spec_harvester.python_public_api`, `spec_harvester.js_ts_public_api`, and
-`spec_harvester.go_public_api`; their output remains advisory review evidence.
+`spec_harvester.python_public_api`, `spec_harvester.js_ts_public_api`,
+`spec_harvester.go_public_api`, and `spec_harvester.swift_public_api`; their
+output remains advisory review evidence.
 
 ### Deterministic Candidate Drafter
 

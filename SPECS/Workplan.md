@@ -539,3 +539,20 @@ Acceptance:
 - `architecture-lint`, duplicate-code reports, full Python tests, coverage,
   ruff, Swift manifest, and DocC build remain green for refactor PRs that touch
   the relevant surfaces.
+
+## Phase 18. Swift Public API Coverage
+
+- [x] `P18-T1` Add a deterministic Swift public API analyzer that scans `.swift`
+  sources for `public` and `open` declarations, emits `PublicInterfaceIndex`
+  evidence, and plugs into project-profile analyzer orchestration without
+  executing SwiftPM, build tools, package scripts, or repository code.
+
+Acceptance:
+
+- Swift public API extraction is deterministic, local-only, and records analyzer
+  provenance, source digests, symbols, entrypoints, and diagnostics through the
+  existing `PublicInterfaceIndex` contract.
+- Swift/SPM project profiles can request the Swift analyzer through the existing
+  analyzer-plan and orchestration registry.
+- Drafting can consume the resulting `public-interface-index.json` through the
+  existing BoundarySpec evidence path without Swift-specific drafter code.
