@@ -366,13 +366,20 @@ class CandidateValidationSummary:
                 "message": "SpecPM validation JSON was not found beside the rendered candidate.",
             }
         try:
-            loaded = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
-            return {
-                "status": "invalid",
-                "source": relative_display_path(self.root, path),
-                "message": f"Validation JSON could not be read: {exc}",
-            }
+            loaded = json.loads(
+                path.read_text(encoding="utf-8"),
+                parse_constant=self.reject_non_finite_number,
+            )
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            return self.invalid(path, f"Validation JSON could not be read: {exc}")
+        if not isinstance(loaded, dict):
+            return self.invalid(path, "Validation JSON must be an object.")
+        json_issue = JsonCompatibleValue(loaded).issue_path()
+        if json_issue is not None:
+            return self.invalid(
+                path,
+                f"Validation JSON value is not JSON-compatible at {json_issue}.",
+            )
         error_count = integer_value(loaded.get("error_count"))
         warning_count = integer_value(loaded.get("warning_count"))
         return {
@@ -396,6 +403,16 @@ class CandidateValidationSummary:
             )
         ]
 
+    def invalid(self, path: Path, message: str) -> dict[str, Any]:
+        return {
+            "status": "invalid",
+            "source": relative_display_path(self.root, path),
+            "message": message,
+        }
+
+    def reject_non_finite_number(self, value: str) -> None:
+        raise ValueError(f"non-finite JSON number is not supported: {value}")
+
     def path(self) -> Path | None:
         for name in ("specpm-validation.json", "validation.json"):
             candidate = self.root / name
@@ -414,7 +431,13 @@ class StaticSpecSite:
         if assets.exists():
             shutil.rmtree(assets)
         assets.mkdir(parents=True)
-        serialized_payload = json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False)
+        serialized_payload = json.dumps(
+            payload,
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+            allow_nan=False,
+        )
         files = {
             self.output / "index.html": INDEX_HTML.replace(
                 "__SPEC_PACKAGE_JSON__",

@@ -180,6 +180,41 @@ def test_static_spec_renderer_rejects_non_finite_yaml_float(tmp_path: Path) -> N
     assert result["diagnostics"][0]["code"] == "yaml_non_json_value"
 
 
+def test_static_spec_renderer_warns_for_non_object_validation_json(tmp_path: Path) -> None:
+    candidate = tmp_path / "candidate"
+    write_candidate(candidate)
+    (candidate / "specpm-validation.json").write_text("[]", encoding="utf-8")
+    output = tmp_path / "site"
+
+    result = write_static_spec_site(candidate, output)
+
+    payload = json.loads((output / "spec-package.json").read_text(encoding="utf-8"))
+    assert result["status"] == "ok"
+    assert payload["validation"]["status"] == "invalid"
+    assert payload["diagnostics"][0]["code"] == "validation_json_unreadable"
+    assert "must be an object" in payload["diagnostics"][0]["message"]
+
+
+def test_static_spec_renderer_warns_for_non_finite_validation_json(tmp_path: Path) -> None:
+    candidate = tmp_path / "candidate"
+    write_candidate(candidate)
+    (candidate / "specpm-validation.json").write_text(
+        '{"error_count": 0, "quality": NaN}',
+        encoding="utf-8",
+    )
+    output = tmp_path / "site"
+
+    result = write_static_spec_site(candidate, output)
+
+    payload = json.loads((output / "spec-package.json").read_text(encoding="utf-8"))
+    html = (output / "index.html").read_text(encoding="utf-8")
+    assert result["status"] == "ok"
+    assert payload["validation"]["status"] == "invalid"
+    assert payload["diagnostics"][0]["code"] == "validation_json_unreadable"
+    assert "non-finite JSON number" in payload["diagnostics"][0]["message"]
+    assert '"quality": NaN' not in html
+
+
 def write_candidate(candidate: Path, *, summary: str = "Static renderer demo") -> None:
     specs = candidate / "specs"
     specs.mkdir(parents=True)
