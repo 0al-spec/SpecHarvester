@@ -1194,6 +1194,32 @@ def test_docc_and_github_docs_cover_architecture_lint_guardrails() -> None:
     assert "<doc:ArchitectureLintGuardrails>" in root_page.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_eo_refactoring_strategy() -> None:
+    github_doc = ROOT / "docs" / "EO_REFACTORING_STRATEGY.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "EORefactoringStrategy.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "behavior-rich objects",
+            "ELEGANT_OBJECTS_STYLE.md",
+            "AGENTS.md",
+            "top-level function",
+            "DTO-only dataclasses",
+            "characterization tests",
+            "SpecNode",
+            "Stop Conditions",
+        ):
+            assert required in text, f"Required term {required!r} not found in {path}"
+
+    assert "EO_REFACTORING_STRATEGY.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:EORefactoringStrategy>" in root_page.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_accepted_package_update_proposals() -> None:
     github_doc = ROOT / "docs" / "ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md"
     docc_doc = (

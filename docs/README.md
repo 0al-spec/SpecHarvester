@@ -50,39 +50,41 @@ Published DocC site:
 20. [`ARCHITECTURE_LINT_GUARDRAILS.md`](ARCHITECTURE_LINT_GUARDRAILS.md):
     advisory project-specific architecture lint guardrails before structural
     refactors
-21. [`LOCAL_SMOKE_FIXTURES.md`](LOCAL_SMOKE_FIXTURES.md): reproducible local
+21. [`EO_REFACTORING_STRATEGY.md`](EO_REFACTORING_STRATEGY.md):
+    phased Elegant Objects refactoring strategy and acceptance metrics
+22. [`LOCAL_SMOKE_FIXTURES.md`](LOCAL_SMOKE_FIXTURES.md): reproducible local
     smoke fixtures for adjacent real repository checkouts
-22. [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md):
+23. [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md):
     typed artifact bundle and job contract for future SpecNode-assisted
     candidate refinement
-23. [`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md):
+24. [`SPECNODE_REFINE_PREVIEW_CONTRACT.md`](SPECNODE_REFINE_PREVIEW_CONTRACT.md):
     bounded `refine-preview` planning contract for compact model input
-24. [`SPECNODE_REFINEMENT_PROMPT_CONTRACT.md`](SPECNODE_REFINEMENT_PROMPT_CONTRACT.md):
+25. [`SPECNODE_REFINEMENT_PROMPT_CONTRACT.md`](SPECNODE_REFINEMENT_PROMPT_CONTRACT.md):
     versioned prompt contract for schema-bound SpecNode refinement
-25. [`SPECNODE_SEMANTIC_REVIEW_CONTRACT.md`](SPECNODE_SEMANTIC_REVIEW_CONTRACT.md):
+26. [`SPECNODE_SEMANTIC_REVIEW_CONTRACT.md`](SPECNODE_SEMANTIC_REVIEW_CONTRACT.md):
     clean-context semantic review contract for generated SpecNode proposals
-26. [`SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md`](SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md):
+27. [`SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md`](SPECNODE_REFINEMENT_RETRY_ORCHESTRATION.md):
     feedback-driven retry orchestration for bounded SpecNode refinement loops
-27. [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md):
+28. [`SPECNODE_PROVIDER_ADAPTER_CONTRACT.md`](SPECNODE_PROVIDER_ADAPTER_CONTRACT.md):
     OpenAI-compatible provider adapter boundary for local SpecNode execution
-28. [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md):
+29. [`SPECNODE_PATCH_PROPOSAL_CONTRACT.md`](SPECNODE_PATCH_PROPOSAL_CONTRACT.md):
     schema-validated candidate patch proposal output contract
-29. [`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md):
+30. [`SPECNODE_PROVIDER_SMOKE_COVERAGE.md`](SPECNODE_PROVIDER_SMOKE_COVERAGE.md):
     local SpecNode-compatible provider smoke coverage and deterministic
     provider-unavailable fallback
-30. [`REAL_REPOSITORY_REFINEMENT_VALIDATION.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION.md):
+31. [`REAL_REPOSITORY_REFINEMENT_VALIDATION.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION.md):
     local-only real repository validation plan for SpecHarvester-side evidence,
     draft, reporting, and external SpecNode contract boundary checks
-31. [`REAL_REPOSITORY_QUALITY_REPORT.md`](REAL_REPOSITORY_QUALITY_REPORT.md):
+32. [`REAL_REPOSITORY_QUALITY_REPORT.md`](REAL_REPOSITORY_QUALITY_REPORT.md):
     structured quality report format for real-repository refinement runs,
     covering intent accuracy, capability evidence, SpecPM status, retry
     effectiveness, token usage, analyzer coverage, and human-review notes
-32. [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
+33. [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
     local-only runner for deterministic orchestration of real-repository checks
-33. [`REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`](REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md):
+34. [`REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`](REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md):
     compact P15-T4 local validation matrix across Swift/SPM, JS/TS, Python,
     Go, and documentation-first repository shapes
-34. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+35. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
