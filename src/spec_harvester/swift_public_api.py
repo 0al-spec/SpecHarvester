@@ -53,7 +53,7 @@ TYPE_DECL_RE = re.compile(
 )
 EXTENSION_DECL_RE = re.compile(rf"\bextension\s+(?P<name>{QUALIFIED_IDENTIFIER_RE})")
 FUNC_DECL_RE = re.compile(rf"\bfunc\s+(?P<name>{IDENTIFIER_RE}|[~!=<>+\-*/%&|^.?]+)")
-INIT_DECL_RE = re.compile(r"\binit\s*(?:<[^>{}]+>)?\s*\(")
+INIT_DECL_RE = re.compile(r"\binit\s*[?!]?\s*(?:<[^>{}]+>)?\s*\(")
 SUBSCRIPT_DECL_RE = re.compile(r"\bsubscript\s*\(")
 PROPERTY_DECL_RE = re.compile(r"\b(?P<kind>var|let)\s+(?P<names>[^:=\{\n]+)")
 TYPEALIAS_DECL_RE = re.compile(rf"\btypealias\s+(?P<name>{IDENTIFIER_RE})")

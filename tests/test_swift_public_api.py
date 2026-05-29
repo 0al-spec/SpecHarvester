@@ -379,6 +379,42 @@ internal enum InternalState {
     assert "InternalState.hidden" not in symbols
 
 
+def test_swift_public_api_extracts_public_failable_initializers(tmp_path: Path) -> None:
+    repo = tmp_path / "swift-demo"
+    source = repo / "Sources" / "SwiftDemo"
+    source.mkdir(parents=True)
+    (repo / "Package.swift").write_text(
+        'import PackageDescription\nlet package = Package(name: "SwiftDemo")\n',
+        encoding="utf-8",
+    )
+    (source / "RawValues.swift").write_text(
+        """
+public struct FailableRawValue {
+    public init?(raw: String) {}
+}
+
+public struct IUORawValue {
+    public init!(raw: String) {}
+}
+""",
+        encoding="utf-8",
+    )
+
+    index = analyze_swift_public_api(repo)
+
+    symbols = {
+        symbol["name"]: symbol for symbol in index["packages"][0]["entrypoints"][0]["symbols"]
+    }
+    assert sorted(symbols) == [
+        "FailableRawValue",
+        "FailableRawValue.init",
+        "IUORawValue",
+        "IUORawValue.init",
+    ]
+    assert symbols["FailableRawValue.init"]["signature"] == "public init?(raw: String)"
+    assert symbols["IUORawValue.init"]["signature"] == "public init!(raw: String)"
+
+
 def test_swift_public_api_falls_back_when_manifest_has_no_name_or_is_unreadable(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
