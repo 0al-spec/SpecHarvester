@@ -1,21 +1,24 @@
-# Next Task: None — Workplan Complete
+# Next Task: P18-T1 — Swift Public API Analyzer
 
-**Status:** Idle
-**Suggested:** 2026-05-28
+**Status:** Selected
+**Suggested:** 2026-05-29
 
-## Recently Archived
+## Task
 
-- P16-T8: Evaluate Multi-Language Duplicate-Code Detector (PASS, 2026-05-28)
-- P16-T5: Rerun Representative Local Validation Matrix (PASS, 2026-05-28)
-- P16-T4: Reduce Broad Duplicate Semantic Intent Claims (PASS, 2026-05-28)
+Add a deterministic Swift public API analyzer that scans `.swift` sources for
+`public` and `open` declarations, emits `PublicInterfaceIndex` evidence, and
+plugs into project-profile analyzer orchestration without executing SwiftPM,
+build tools, package scripts, or repository code.
 
 ## Rationale
 
-All tasks currently listed in `SPECS/Workplan.md` are marked complete after
-P16-T8. The next Flow SELECT step should add or choose a newly planned task
-before creating another feature branch.
+SpecHarvester already has the shared public-interface schema, analyzer options,
+orchestration registry, and drafter ingestion path, but Swift repositories only
+contribute manifest and semantic evidence. Swift/SPM candidates need the same
+deterministic public API signal currently available for Python, JavaScript,
+TypeScript, and Go.
 
 ## Next Step
 
-Review project readiness, add any new follow-up tasks to `SPECS/Workplan.md`,
-then run SELECT for the next explicit task.
+Create the P18-T1 task PRD, then implement the Swift analyzer and regression
+coverage.
