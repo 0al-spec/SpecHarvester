@@ -13,7 +13,9 @@ import io
 import json
 import os
 import re
+import shlex
 import subprocess
+import tempfile
 import tokenize
 from dataclasses import dataclass
 from pathlib import Path
@@ -25,6 +27,7 @@ DEFAULT_MIN_LINES = 8
 DEFAULT_EXTENSIONS = (".py",)
 BACKEND_BUILTIN = "builtin"
 BACKEND_PYLINT = "pylint"
+BACKEND_JSCPD = "jscpd"
 EXCLUDED_DIR_NAMES = {
     ".git",
     ".mypy_cache",
@@ -44,6 +47,15 @@ TRUST_BOUNDARY_NOTES = [
     ),
     "The report is advisory by default and does not mutate source files.",
 ]
+JSCPD_TRUST_BOUNDARY_NOTES = [
+    "SpecHarvester converts jscpd JSON output and does not execute or import scanned modules.",
+    "The operator-provided jscpd command is an external tool trust boundary.",
+    (
+        "Network access or package installation by wrapper commands such as npx "
+        "is outside SpecHarvester."
+    ),
+    "The report is advisory by default and does not mutate source files.",
+]
 
 
 @dataclass(frozen=True)
@@ -60,6 +72,7 @@ def build_code_duplication_report(
     extensions: tuple[str, ...] = DEFAULT_EXTENSIONS,
     backend: str = BACKEND_BUILTIN,
     pylint_command: str = "pylint",
+    jscpd_command: str = "jscpd",
 ) -> dict[str, Any]:
     if min_lines < 2:
         raise ValueError("--min-lines must be at least 2.")
@@ -71,6 +84,12 @@ def build_code_duplication_report(
             min_lines=min_lines,
             extensions=extensions,
             pylint_command=pylint_command,
+        )
+    if backend == BACKEND_JSCPD:
+        return build_jscpd_code_duplication_report(
+            paths,
+            min_lines=min_lines,
+            jscpd_command=jscpd_command,
         )
     if backend != BACKEND_BUILTIN:
         raise ValueError(f"Unsupported duplicate-code backend: {backend}")
@@ -205,6 +224,79 @@ def build_pylint_code_duplication_report(
     )
 
 
+def build_jscpd_code_duplication_report(
+    paths: list[Path],
+    *,
+    min_lines: int = DEFAULT_MIN_LINES,
+    jscpd_command: str = "jscpd",
+) -> dict[str, Any]:
+    command_prefix = shlex.split(jscpd_command)
+    if not command_prefix:
+        raise ValueError("Cannot run jscpd duplicate-code backend: command is empty.")
+    with tempfile.TemporaryDirectory(prefix="specharvester-jscpd-") as output_dir:
+        output_path = Path(output_dir)
+        command = [
+            *command_prefix,
+            "--reporters",
+            "json",
+            "--output",
+            output_path.as_posix(),
+            "--min-lines",
+            str(min_lines),
+            "--mode",
+            "weak",
+            "--silent",
+            "--exitCode",
+            "0",
+            "--ignore",
+            _jscpd_ignore_patterns(),
+            *[path.as_posix() for path in paths],
+        ]
+        try:
+            completed = subprocess.run(
+                command,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+        except FileNotFoundError as exc:
+            raise ValueError(f"Cannot run jscpd duplicate-code backend: {exc}") from exc
+
+        _validate_jscpd_result(completed)
+        report_path = output_path / "jscpd-report.json"
+        try:
+            payload = json.loads(report_path.read_text(encoding="utf-8"))
+        except FileNotFoundError as exc:
+            raise ValueError("Invalid jscpd output: jscpd-report.json was not created.") from exc
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"Invalid jscpd JSON output: {exc.msg}") from exc
+
+    reported_source_count = _jscpd_reported_source_count(payload)
+    duplicates = _jscpd_duplicate_blocks(payload)
+    duplicates.sort(
+        key=lambda block: (
+            block["occurrences"][0]["path"],
+            block["occurrences"][0]["startLine"],
+            block["fingerprint"],
+        )
+    )
+
+    return _new_report(
+        paths=paths,
+        files=[],
+        min_lines=min_lines,
+        backend=BACKEND_JSCPD,
+        duplicates=duplicates,
+        file_count=reported_source_count,
+        trust_boundary=JSCPD_TRUST_BOUNDARY_NOTES,
+        tool={
+            "name": "jscpd",
+            "returnCode": completed.returncode,
+            "reportedSourceCount": reported_source_count,
+        },
+    )
+
+
 def write_code_duplication_report(path: Path, report: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -283,6 +375,15 @@ def _validate_pylint_result(completed: subprocess.CompletedProcess[str]) -> None
         )
 
 
+def _validate_jscpd_result(completed: subprocess.CompletedProcess[str]) -> None:
+    if completed.returncode != 0:
+        stderr = completed.stderr.strip()
+        detail = f" stderr: {stderr}" if stderr else ""
+        raise ValueError(
+            f"jscpd duplicate-code backend failed with return code {completed.returncode}.{detail}"
+        )
+
+
 def _new_report(
     *,
     paths: list[Path],
@@ -290,13 +391,15 @@ def _new_report(
     min_lines: int,
     backend: str,
     duplicates: list[dict[str, Any]],
+    file_count: int | None = None,
+    trust_boundary: list[str] | None = None,
     tool: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     occurrence_count = sum(len(block["occurrences"]) for block in duplicates)
     summary: dict[str, Any] = {
         "backend": backend,
         "pathCount": len(paths),
-        "fileCount": len(files),
+        "fileCount": len(files) if file_count is None else file_count,
         "minLines": min_lines,
         "duplicateBlockCount": len(duplicates),
         "duplicateOccurrenceCount": occurrence_count,
@@ -309,8 +412,93 @@ def _new_report(
         "status": "attention" if duplicates else "ok",
         "summary": summary,
         "duplicates": duplicates,
-        "trustBoundary": TRUST_BOUNDARY_NOTES,
+        "trustBoundary": TRUST_BOUNDARY_NOTES if trust_boundary is None else trust_boundary,
     }
+
+
+def _jscpd_ignore_patterns() -> str:
+    return ",".join(f"**/{name}/**" for name in sorted(EXCLUDED_DIR_NAMES))
+
+
+def _jscpd_duplicate_blocks(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    duplicates = payload.get("duplicates")
+    if not isinstance(duplicates, list):
+        raise ValueError("Invalid jscpd JSON output: duplicates must be a list.")
+    return [_jscpd_duplicate_block(item) for item in duplicates]
+
+
+def _jscpd_duplicate_block(item: Any) -> dict[str, Any]:
+    if not isinstance(item, dict):
+        raise ValueError("Invalid jscpd JSON output: duplicate item must be an object.")
+    occurrences = _unique_occurrences(
+        [
+            _jscpd_file_occurrence(item.get("firstFile")),
+            _jscpd_file_occurrence(item.get("secondFile")),
+        ]
+    )
+    if len(occurrences) < 2:
+        raise ValueError("Invalid jscpd JSON output: duplicate requires two file occurrences.")
+    fragment = str(item.get("fragment") or "")
+    preview = [line.strip() for line in fragment.splitlines() if line.strip()]
+    fingerprint_payload = {
+        "format": item.get("format"),
+        "fragment": fragment,
+        "occurrences": occurrences,
+    }
+    return {
+        "fingerprint": _fingerprint_text(json.dumps(fingerprint_payload, sort_keys=True)),
+        "lineCount": _jscpd_line_count(item, occurrences),
+        "normalizedPreview": preview[:3],
+        "occurrences": occurrences,
+    }
+
+
+def _jscpd_file_occurrence(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        raise ValueError("Invalid jscpd JSON output: file occurrence must be an object.")
+    path = value.get("name")
+    if not isinstance(path, str) or not path:
+        raise ValueError("Invalid jscpd JSON output: file occurrence requires a name.")
+    start_line = _jscpd_line_value(value, "start", "startLoc")
+    end_line = _jscpd_line_value(value, "end", "endLoc")
+    if end_line < start_line:
+        raise ValueError("Invalid jscpd JSON output: occurrence end line precedes start line.")
+    return {
+        "path": path,
+        "startLine": start_line,
+        "endLine": end_line,
+    }
+
+
+def _jscpd_line_value(value: dict[str, Any], direct_key: str, loc_key: str) -> int:
+    direct = value.get(direct_key)
+    if isinstance(direct, int):
+        return direct
+    location = value.get(loc_key)
+    if isinstance(location, dict) and isinstance(location.get("line"), int):
+        return location["line"]
+    raise ValueError(f"Invalid jscpd JSON output: missing {direct_key} line.")
+
+
+def _jscpd_line_count(item: dict[str, Any], occurrences: list[dict[str, Any]]) -> int:
+    lines = item.get("lines")
+    if isinstance(lines, int) and lines >= 0:
+        return lines
+    first = occurrences[0]
+    return first["endLine"] - first["startLine"] + 1
+
+
+def _jscpd_reported_source_count(payload: dict[str, Any]) -> int:
+    statistics = payload.get("statistics")
+    if not isinstance(statistics, dict):
+        statistics = payload.get("statistic")
+    if not isinstance(statistics, dict):
+        return 0
+    total = statistics.get("total")
+    if not isinstance(total, dict):
+        return 0
+    sources = total.get("sources")
+    return sources if isinstance(sources, int) else 0
 
 
 def _source_file_module_map(files: list[Path]) -> dict[str, Path]:
