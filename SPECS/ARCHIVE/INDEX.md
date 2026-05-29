@@ -89,6 +89,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t5_rerun_local_validation_matrix.md` |
@@ -250,6 +251,7 @@
 | 2026-05-29 | P18-T1 | Archived Swift Public API Analyzer (PASS) |
 | 2026-05-29 | P18-T1 | Archived REVIEW_p18_t1_swift_public_api_analyzer report |
 | 2026-05-29 | P19-T1 | Archived Static Spec Renderer (PASS) |
+| 2026-05-29 | P19-T1 | Archived REVIEW_p19_t1_static_spec_renderer report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
