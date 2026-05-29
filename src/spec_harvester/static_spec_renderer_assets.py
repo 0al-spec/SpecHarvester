@@ -36,21 +36,6 @@ INDEX_HTML = """<!doctype html>
         <h2>Intents</h2>
         <div id="intent-list" class="token-list"></div>
       </div>
-      <div class="panel reading-panel">
-        <h2>Reading</h2>
-        <label class="search-label" for="spec-search">Filter visible content</label>
-        <input
-          id="spec-search"
-          class="search-input"
-          type="search"
-          placeholder="interface, evidence, intent..."
-        />
-        <div class="button-row">
-          <button id="expand-all" class="button" type="button">Expand all</button>
-          <button id="collapse-all" class="button" type="button">Collapse all</button>
-        </div>
-        <nav id="spec-outline" class="outline"></nav>
-      </div>
     </aside>
 
     <section class="content">
@@ -58,6 +43,22 @@ INDEX_HTML = """<!doctype html>
         <div class="panel-head">
           <h2>Boundary Specs</h2>
           <span id="spec-count" class="pill">0</span>
+        </div>
+        <div class="reading-tools">
+          <div>
+            <label class="search-label" for="spec-search">Filter visible content</label>
+            <input
+              id="spec-search"
+              class="search-input"
+              type="search"
+              placeholder="interface, evidence, intent..."
+            />
+          </div>
+          <div class="button-row">
+            <button id="expand-all" class="button" type="button">Expand all</button>
+            <button id="collapse-all" class="button" type="button">Collapse all</button>
+          </div>
+          <nav id="spec-outline" class="outline"></nav>
         </div>
         <div id="spec-list" class="spec-list"></div>
       </section>
@@ -421,11 +422,6 @@ button.button {
   padding-left: 1.1rem;
 }
 
-.reading-panel {
-  position: sticky;
-  top: 0;
-}
-
 .search-label {
   display: block;
   margin-bottom: 0.45rem;
@@ -450,12 +446,14 @@ button.button {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin: 0.75rem 0 1rem;
+  margin: 0;
 }
 
 .outline {
-  display: grid;
-  gap: 0.45rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.75rem;
+  align-items: center;
 }
 
 .outline a {
@@ -468,6 +466,20 @@ button.button {
 
 .outline a:hover {
   color: var(--signal-ink);
+}
+
+.reading-tools {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1fr) auto;
+  gap: 0.8rem 1rem;
+  align-items: end;
+  margin: 0.35rem 0 1.15rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.reading-tools .outline {
+  grid-column: 1 / -1;
 }
 
 .is-hidden {
@@ -520,6 +532,10 @@ pre {
   }
 
   .section-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reading-tools {
     grid-template-columns: 1fr;
   }
 }
