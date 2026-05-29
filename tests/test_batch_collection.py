@@ -197,10 +197,52 @@ repositories:
     assert interface_index["status"] == "skipped"
     assert "output" not in interface_index
     assert interface_index["executedAnalyzerIds"] == []
-    assert interface_index["skippedAnalyzerPlans"][0]["id"] == (
-        "spec_harvester.swift_manifest_public_interface"
-    )
+    assert interface_index["skippedAnalyzerPlans"][0]["id"] == "spec_harvester.swift_public_api"
     assert not (out / "demo" / "public-interface-index.json").exists()
+
+
+def test_collect_batch_snapshots_emits_swift_interface_index_when_requested(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    source = checkout / "Sources" / "Demo"
+    source.mkdir(parents=True)
+    (checkout / "Package.swift").write_text(
+        """
+        // swift-tools-version: 6.0
+        import PackageDescription
+        let package = Package(name: "Demo")
+        """,
+        encoding="utf-8",
+    )
+    (source / "API.swift").write_text("public struct API {}\n", encoding="utf-8")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_interface_indexes=True)
+    )
+
+    index_path = out / "demo" / "public-interface-index.json"
+    interface_index = result["collected"][0]["interfaceIndex"]
+    index = json.loads(index_path.read_text(encoding="utf-8"))
+    assert interface_index["status"] == "complete"
+    assert interface_index["output"] == str(index_path)
+    assert interface_index["executedAnalyzerIds"] == ["spec_harvester.swift_public_api"]
+    assert interface_index["summary"]["symbolCount"] == 1
+    assert index["packages"][0]["language"] == "swift"
+    assert index["packages"][0]["entrypoints"][0]["symbols"][0]["name"] == "API"
 
 
 def test_collect_batch_snapshots_rejects_unknown_selected_ids(tmp_path: Path) -> None:

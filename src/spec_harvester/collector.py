@@ -12,6 +12,8 @@ from spec_harvester.classifier_registry import default_classifier_policy
 from spec_harvester.go_public_api import go_source_files
 from spec_harvester.license_files import is_license_filename
 from spec_harvester.semantic_keyword_taxonomy import SEMANTIC_KEYWORD_TAXONOMY
+from spec_harvester.swift_public_api import swift_source_files
+from spec_harvester.swift_text import strip_swift_comments
 
 SNAPSHOT_KIND = "SpecHarvesterEvidenceSnapshot"
 SNAPSHOT_SCHEMA_VERSION = 1
@@ -650,13 +652,24 @@ def analyzer_plan_entry(
             "evidencePaths": [manifest["path"]],
         }
     if manifest["language"] == "swift":
+        if source is not None and not has_swift_source_for_manifest(source, manifest["path"]):
+            return {
+                "id": "spec_harvester.swift_public_api",
+                "language": "swift",
+                "ecosystem": "swiftpm",
+                "status": "manifest_only",
+                "reason": (
+                    "Package.swift evidence is available, but no Swift source files were found."
+                ),
+                "evidencePaths": [manifest["path"]],
+            }
         return {
-            "id": "spec_harvester.swift_manifest_public_interface",
+            "id": "spec_harvester.swift_public_api",
             "language": "swift",
             "ecosystem": "swiftpm",
-            "status": "manifest_only",
+            "status": "recommended",
             "reason": (
-                "SwiftPM manifest evidence is available; no Swift AST analyzer is configured yet."
+                "Package.swift evidence can feed deterministic Swift source public API analysis."
             ),
             "evidencePaths": [manifest["path"]],
         }
@@ -708,6 +721,13 @@ def has_go_source_for_manifest(source: Path, manifest_path: str) -> bool:
     if not manifest_root.exists() or not manifest_root.is_dir():
         return False
     return bool(go_source_files(manifest_root))
+
+
+def has_swift_source_for_manifest(source: Path, manifest_path: str) -> bool:
+    manifest_root = (source / manifest_path).parent
+    if not manifest_root.exists() or not manifest_root.is_dir():
+        return False
+    return bool(swift_source_files(manifest_root))
 
 
 def merge_analyzer_plan(
@@ -925,58 +945,6 @@ def parse_package_json(text: str) -> dict[str, Any] | None:
         package["exports"] = ["."]
 
     return package
-
-
-def strip_swift_comments(text: str) -> str:
-    result: list[str] = []
-    index = 0
-    in_string = False
-    in_multiline_string = False
-    while index < len(text):
-        if not in_string and not in_multiline_string and text.startswith("//", index):
-            while index < len(text) and text[index] != "\n":
-                result.append(" ")
-                index += 1
-            continue
-        if not in_string and not in_multiline_string and text.startswith("/*", index):
-            depth = 1
-            result.extend("  ")
-            index += 2
-            while index < len(text) and depth > 0:
-                if text.startswith("/*", index):
-                    depth += 1
-                    result.extend("  ")
-                    index += 2
-                    continue
-                if text.startswith("*/", index):
-                    depth -= 1
-                    result.extend("  ")
-                    index += 2
-                    continue
-                result.append("\n" if text[index] == "\n" else " ")
-                index += 1
-            continue
-
-        if text.startswith('"""', index):
-            in_multiline_string = not in_multiline_string
-            result.extend('"""')
-            index += 3
-            continue
-        if not in_multiline_string and text[index] == '"' and not is_escaped(text, index):
-            in_string = not in_string
-
-        result.append(text[index])
-        index += 1
-    return "".join(result)
-
-
-def is_escaped(text: str, index: int) -> bool:
-    slash_count = 0
-    cursor = index - 1
-    while cursor >= 0 and text[cursor] == "\\":
-        slash_count += 1
-        cursor -= 1
-    return slash_count % 2 == 1
 
 
 def parse_swift_package_manifest(text: str) -> dict[str, Any] | None:

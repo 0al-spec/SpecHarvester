@@ -315,12 +315,45 @@ def test_collect_local_repository_extracts_swift_package_products(tmp_path: Path
     ]
     assert snapshot["projectProfile"]["analyzerPlan"] == [
         {
-            "id": "spec_harvester.swift_manifest_public_interface",
+            "id": "spec_harvester.swift_public_api",
             "language": "swift",
             "ecosystem": "swiftpm",
             "status": "manifest_only",
             "reason": (
-                "SwiftPM manifest evidence is available; no Swift AST analyzer is configured yet."
+                "Package.swift evidence is available, but no Swift source files were found."
+            ),
+            "evidencePaths": ["Package.swift"],
+        }
+    ]
+    assert snapshot["projectProfile"]["diagnostics"] == []
+
+
+def test_collect_local_repository_recommends_swift_public_api_when_sources_exist(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    source = repo / "Sources" / "Demo"
+    source.mkdir(parents=True)
+    (repo / "Package.swift").write_text(
+        """
+        // swift-tools-version: 6.0
+        import PackageDescription
+        let package = Package(name: "Demo")
+        """,
+        encoding="utf-8",
+    )
+    (source / "API.swift").write_text("public struct API {}\n", encoding="utf-8")
+
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+
+    assert snapshot["projectProfile"]["analyzerPlan"] == [
+        {
+            "id": "spec_harvester.swift_public_api",
+            "language": "swift",
+            "ecosystem": "swiftpm",
+            "status": "recommended",
+            "reason": (
+                "Package.swift evidence can feed deterministic Swift source public API analysis."
             ),
             "evidencePaths": ["Package.swift"],
         }

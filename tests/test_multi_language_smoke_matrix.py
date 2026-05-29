@@ -152,10 +152,8 @@ def smoke_matrix_cases() -> list[SmokeMatrixCase]:
             },
             expected_languages={"swift"},
             expected_ecosystems={"swiftpm"},
-            expected_analyzer_plan_ids={"spec_harvester.swift_manifest_public_interface"},
-            expected_analyzer_plan_statuses={
-                "spec_harvester.swift_manifest_public_interface": "manifest_only"
-            },
+            expected_analyzer_plan_ids={"spec_harvester.swift_public_api"},
+            expected_analyzer_plan_statuses={"spec_harvester.swift_public_api": "manifest_only"},
             expected_manifest_paths={"Package.swift"},
         ),
         SmokeMatrixCase(

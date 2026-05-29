@@ -79,6 +79,7 @@ Currently supported analyzer plan ids are:
 - `spec_harvester.python_public_api`
 - `spec_harvester.js_ts_public_api`
 - `spec_harvester.go_public_api`
+- `spec_harvester.swift_public_api`
 
 Plans with `manifest_only` status, unknown analyzer ids, and repositories with
 no supported package evidence are recorded as skipped in the batch JSON output.

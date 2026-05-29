@@ -101,8 +101,8 @@ python3 -m spec_harvester collect-batch inputs \
 This consumes `ProjectProfile.analyzerPlan` from each `harvest.json` and writes
 `candidates/<repository-id>/public-interface-index.json` when a supported
 built-in analyzer is recommended. Supported analyzer plan ids are
-`spec_harvester.python_public_api`, `spec_harvester.js_ts_public_api`, and
-`spec_harvester.go_public_api`.
+`spec_harvester.python_public_api`, `spec_harvester.js_ts_public_api`,
+`spec_harvester.go_public_api`, and `spec_harvester.swift_public_api`.
 Analyzer orchestration still does not install dependencies, run package
 managers, run package scripts, execute checkout files, or contact networks.
 
