@@ -58,7 +58,7 @@ The `jscpd` backend was added as an optional adapter rather than a dependency:
   `fs-extra`;
 - the JSON reporter writes `jscpd-report.json` with `duplicates` entries that
   include `fragment`, `firstFile`, `secondFile`, line ranges, and aggregate
-  `statistic` data;
+  `statistics` data;
 - SpecHarvester treats invalid JSON, missing report files, malformed duplicate
   entries, missing commands, and non-zero tool exits as errors;
 - ordinary CI does not run `npx` or install npm packages for this backend.

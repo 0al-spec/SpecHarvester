@@ -489,10 +489,12 @@ def _jscpd_line_count(item: dict[str, Any], occurrences: list[dict[str, Any]]) -
 
 
 def _jscpd_reported_source_count(payload: dict[str, Any]) -> int:
-    statistic = payload.get("statistic")
-    if not isinstance(statistic, dict):
+    statistics = payload.get("statistics")
+    if not isinstance(statistics, dict):
+        statistics = payload.get("statistic")
+    if not isinstance(statistics, dict):
         return 0
-    total = statistic.get("total")
+    total = statistics.get("total")
     if not isinstance(total, dict):
         return 0
     sources = total.get("sources")

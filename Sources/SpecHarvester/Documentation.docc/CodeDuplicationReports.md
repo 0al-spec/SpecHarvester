@@ -54,7 +54,7 @@ python3 -m spec_harvester code-duplication-report \
   `@jscpd/tokenizer`, reporter packages, `commander`, `colors`, and
   `fs-extra`.
 - The JSON reporter writes `jscpd-report.json` with `duplicates`, `fragment`,
-  `firstFile`, `secondFile`, line ranges, and aggregate `statistic` data.
+  `firstFile`, `secondFile`, line ranges, and aggregate `statistics` data.
 - SpecHarvester fails closed on invalid JSON, missing report files, malformed
   duplicate entries, missing commands, and non-zero tool exits.
 - Ordinary CI does not run `npx` or install npm packages for this backend.

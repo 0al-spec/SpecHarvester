@@ -317,7 +317,7 @@ def test_jscpd_backend_converts_json_output(
                     "secondFile": {"name": beta.as_posix(), "start": 1, "end": 2},
                 }
             ],
-            "statistic": {"total": {"sources": 2}},
+            "statistics": {"total": {"sources": 2}},
         }
         (output / "jscpd-report.json").write_text(json.dumps(payload), encoding="utf-8")
         return subprocess.CompletedProcess(command, 0, "", "")
@@ -370,6 +370,34 @@ def test_jscpd_backend_rejects_empty_command(tmp_path: Path) -> None:
             min_lines=3,
             jscpd_command="",
         )
+
+
+def test_jscpd_backend_accepts_legacy_singular_statistic_key(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source.ts"
+    source.write_text("const a = 1;\n", encoding="utf-8")
+
+    def fake_run(
+        command: list[str],
+        *,
+        check: bool,
+        capture_output: bool,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        output = Path(command[command.index("--output") + 1])
+        (output / "jscpd-report.json").write_text(
+            json.dumps({"duplicates": [], "statistic": {"total": {"sources": 1}}}),
+            encoding="utf-8",
+        )
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    monkeypatch.setattr(code_duplication_report.subprocess, "run", fake_run)
+
+    report = build_jscpd_code_duplication_report([source], min_lines=3)
+
+    assert report["summary"]["fileCount"] == 1
+    assert report["summary"]["tool"]["reportedSourceCount"] == 1
 
 
 def test_jscpd_backend_fails_closed_on_invalid_json(
@@ -468,7 +496,7 @@ def test_cli_code_duplication_report_accepts_jscpd_backend(
         assert command[:2] == ["custom-jscpd", "--reporters"]
         output = Path(command[command.index("--output") + 1])
         (output / "jscpd-report.json").write_text(
-            json.dumps({"duplicates": [], "statistic": {"total": {"sources": 1}}}),
+            json.dumps({"duplicates": [], "statistics": {"total": {"sources": 1}}}),
             encoding="utf-8",
         )
         return subprocess.CompletedProcess(command, 0, "", "")

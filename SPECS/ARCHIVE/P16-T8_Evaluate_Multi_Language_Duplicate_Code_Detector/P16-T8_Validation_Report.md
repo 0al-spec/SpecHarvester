@@ -44,7 +44,7 @@ Verdict: PASS
 - Mocked `jscpd` conversion tests cover:
   - `jscpd-report.json` conversion into the stable report schema;
   - deterministic source occurrence and preview mapping;
-  - `summary.fileCount` from `statistic.total.sources`;
+  - `summary.fileCount` from documented `statistics.total.sources`;
   - `jscpd`-specific external-tool trust-boundary reporting;
   - missing command failures;
   - empty command failures;
