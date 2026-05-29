@@ -42,8 +42,10 @@ def test_static_spec_renderer_writes_browser_safe_site(tmp_path: Path) -> None:
     assert "textContent" in javascript
     assert "bindReadingControls" in javascript
     assert "filterSpecs" in javascript
+    assert "specs.length <= 1" in javascript
     assert "min-width: 0;" in css
     assert "overflow-wrap: anywhere;" in css
+    assert ".outline:empty" in css
     assert "spec-outline" in html
     assert "spec-search" in html
 

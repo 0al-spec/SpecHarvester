@@ -475,6 +475,10 @@ button.button {
   color: var(--signal-ink);
 }
 
+.outline:empty {
+  display: none;
+}
+
 .reading-tools {
   display: grid;
   grid-template-columns: minmax(16rem, 1fr) auto;
@@ -482,7 +486,6 @@ button.button {
   align-items: end;
   margin: 0.35rem 0 1.15rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--rule-soft);
 }
 
 .reading-tools .outline {
@@ -712,6 +715,10 @@ function sectionBox(title, values) {
 
 function renderOutline(specs) {
   const outline = document.querySelector("#spec-outline");
+  if (specs.length <= 1) {
+    outline.innerHTML = "";
+    return;
+  }
   outline.innerHTML = specs.length
     ? specs.map((spec, index) => {
       const metadata = spec.metadata || {};
