@@ -71,6 +71,7 @@ from spec_harvester.smoke_triage import (
     write_smoke_triage_summary,
 )
 from spec_harvester.source_manifest import read_repository_source_manifests
+from spec_harvester.static_spec_renderer import StaticSpecRendererOptions, render_static_spec_site
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -188,6 +189,24 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     draft.set_defaults(func=run_draft)
+
+    render_spec_site = subcommands.add_parser(
+        "render-spec-site",
+        help="Render a generated SpecPM candidate package as a static HTML/JS site.",
+    )
+    render_spec_site.add_argument(
+        "--candidate",
+        type=Path,
+        required=True,
+        help="Candidate package directory containing specpm.yaml.",
+    )
+    render_spec_site.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+        help="Output directory where the static site will be written.",
+    )
+    render_spec_site.set_defaults(func=run_render_spec_site)
 
     promote = subcommands.add_parser(
         "promote",
@@ -681,6 +700,14 @@ def run_draft(args: argparse.Namespace) -> int:
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
+
+
+def run_render_spec_site(args: argparse.Namespace) -> int:
+    result = render_static_spec_site(
+        StaticSpecRendererOptions(candidate=args.candidate, output=args.output)
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "ok" else 1
 
 
 def run_promote(args: argparse.Namespace) -> int:

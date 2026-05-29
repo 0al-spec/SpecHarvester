@@ -13,7 +13,9 @@ authors = [
   { name = "0AL Spec" },
   { name = "Egor Merkushev" }
 ]
-dependencies = []
+dependencies = [
+  "PyYAML>=6.0"
+]
 
 [project.optional-dependencies]
 dev = [

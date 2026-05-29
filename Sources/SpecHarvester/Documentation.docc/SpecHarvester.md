@@ -61,6 +61,7 @@ The canonical source files remain in the repository:
 - `docs/REAL_REPOSITORY_REFINEMENT_VALIDATION.md`
 - `docs/REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`
 - `docs/REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`
+- `docs/STATIC_SPEC_RENDERER.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -105,6 +106,7 @@ the host.
 - <doc:RealRepositoryQualityReport>
 - <doc:RealRepositoryRefinementValidationRunner>
 - <doc:RealRepositoryLocalValidationMatrix>
+- <doc:StaticSpecRenderer>
 - <doc:ProposalAutomation>
 
 ### Architecture
