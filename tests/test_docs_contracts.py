@@ -1206,6 +1206,8 @@ def test_docc_and_github_docs_cover_eo_refactoring_strategy() -> None:
         text = path.read_text(encoding="utf-8")
         for required in (
             "behavior-rich objects",
+            "ELEGANT_OBJECTS_STYLE.md",
+            "AGENTS.md",
             "top-level function",
             "DTO-only dataclasses",
             "characterization tests",

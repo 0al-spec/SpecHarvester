@@ -31,18 +31,18 @@ coverage above the configured threshold.
 
 ## Target Style
 
-New and refactored Python code should follow these local EO rules:
+The canonical local EO rules live in `docs/ELEGANT_OBJECTS_STYLE.md`, which is
+referenced from `AGENTS.md`. This strategy does not redefine those rules. If
+this document and the style guide diverge, the style guide wins.
 
-- Behavior belongs to named objects, not broad top-level helper functions.
-- Constructors only store validated inputs; filesystem, subprocess, network,
-  provider, or repository reads happen in explicit behavior methods.
-- Objects expose business actions such as `report()`, `records()`, `proposal()`,
-  `verdict()`, or `payload()`, not generic `process()` or `handle()` methods.
-- Data records stay small and immutable when useful, but domain decisions should
-  move out of passive dataclasses.
-- Refactors preserve JSON schemas, issue codes, markdown output, CLI flags, exit
-  codes, and trust-boundary text unless a task explicitly changes them.
-- Characterization tests are added before moving mature procedural behavior.
+This strategy only adds refactoring-specific interpretation:
+
+- measure behavior movement instead of counting passive records as progress;
+- move mature domain decisions only behind characterization tests;
+- preserve JSON schemas, issue codes, markdown output, CLI flags, exit codes,
+  and trust-boundary text unless a task explicitly changes them;
+- keep I/O and external-tool behavior behind explicit methods with the same
+  public trust boundary as before the refactor.
 
 ## Refactoring Sequence
 
