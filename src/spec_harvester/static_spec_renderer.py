@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
@@ -112,7 +113,12 @@ class SpecYamlDocument:
 
     def required_mapping(self) -> dict[str, Any]:
         self.ensure_readable_inside_root()
-        text = self.path.read_text(encoding="utf-8")
+        try:
+            text = self.path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as exc:
+            raise StaticSpecRenderError(
+                [self.diagnostic("file_unreadable", f"Cannot read YAML file: {exc}")]
+            ) from exc
         try:
             for token in yaml.scan(text):
                 if isinstance(token, AnchorToken):
@@ -215,8 +221,10 @@ class JsonCompatibleValue:
         return self._issue_path(self.value, "$")
 
     def _issue_path(self, value: Any, path: str) -> str | None:
-        if value is None or isinstance(value, (str, int, float, bool)):
+        if value is None or isinstance(value, (str, bool, int)):
             return None
+        if isinstance(value, float):
+            return None if math.isfinite(value) else path
         if isinstance(value, list):
             for index, item in enumerate(value):
                 issue = self._issue_path(item, f"{path}.{index}")
@@ -268,8 +276,8 @@ class ManifestSpecReferences:
                     )
                 )
                 continue
-            spec_path = (self.root / raw_path).resolve(strict=False)
-            if not path_is_inside(spec_path, self.root):
+            spec_path = self.root / raw_path
+            if not path_is_inside(spec_path.resolve(strict=False), self.root):
                 diagnostics.append(
                     RendererDiagnostic(
                         severity="error",
@@ -439,6 +447,10 @@ def path_is_inside(path: Path, root: Path) -> bool:
 
 def relative_display_path(root: Path, path: Path) -> str:
     try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        pass
+    try:
         return path.resolve(strict=False).relative_to(root.resolve()).as_posix()
     except ValueError:
         return path.as_posix()
@@ -463,7 +475,7 @@ def string_list(value: Any) -> list[str]:
 
 
 def integer_value(value: Any) -> int:
-    return value if isinstance(value, int) else 0
+    return value if isinstance(value, int) and not isinstance(value, bool) else 0
 
 
 def script_safe_json(serialized_payload: str) -> str:

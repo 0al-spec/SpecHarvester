@@ -137,6 +137,40 @@ def test_static_spec_renderer_rejects_yaml_aliases(tmp_path: Path) -> None:
     assert result["diagnostics"][0]["code"] == "yaml_anchor_unsupported"
 
 
+def test_static_spec_renderer_rejects_referenced_spec_symlink(tmp_path: Path) -> None:
+    candidate = tmp_path / "candidate"
+    write_candidate(candidate)
+    link = candidate / "specs/linked.spec.yaml"
+    link.symlink_to(candidate / "specs/demo.spec.yaml")
+    (candidate / "specpm.yaml").write_text(
+        (candidate / "specpm.yaml")
+        .read_text(encoding="utf-8")
+        .replace("specs/demo.spec.yaml", "specs/linked.spec.yaml"),
+        encoding="utf-8",
+    )
+
+    result = write_static_spec_site(candidate, tmp_path / "site")
+
+    assert result["status"] == "error"
+    assert result["diagnostics"][0]["code"] == "symlink_unsupported"
+    assert result["diagnostics"][0]["path"] == "specs/linked.spec.yaml"
+
+
+def test_static_spec_renderer_rejects_non_finite_yaml_float(tmp_path: Path) -> None:
+    candidate = tmp_path / "candidate"
+    write_candidate(candidate)
+    spec_path = candidate / "specs/demo.spec.yaml"
+    spec_path.write_text(
+        spec_path.read_text(encoding="utf-8") + "\ncustomScore: .nan\n",
+        encoding="utf-8",
+    )
+
+    result = write_static_spec_site(candidate, tmp_path / "site")
+
+    assert result["status"] == "error"
+    assert result["diagnostics"][0]["code"] == "yaml_non_json_value"
+
+
 def write_candidate(candidate: Path, *, summary: str = "Static renderer demo") -> None:
     specs = candidate / "specs"
     specs.mkdir(parents=True)

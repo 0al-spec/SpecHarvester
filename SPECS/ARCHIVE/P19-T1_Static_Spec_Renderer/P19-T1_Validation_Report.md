@@ -17,13 +17,13 @@ CI smoke integration were validated locally.
 PYTHONPATH=src python -m pytest tests/test_static_spec_renderer.py -q
 ```
 
-Result: PASS, `5 passed`.
+Result: PASS, `7 passed`.
 
 ```bash
 PYTHONPATH=src python -m pytest tests/test_static_spec_renderer.py tests/test_docs_contracts.py -q
 ```
 
-Result: PASS, `31 passed`.
+Result: PASS, `33 passed`.
 
 ```bash
 ruff check src tests
@@ -74,7 +74,7 @@ Result: PASS.
 PYTHONPATH=src python -m pytest
 ```
 
-Result: PASS, `444 passed, 1 skipped`.
+Result: PASS, `446 passed, 1 skipped`.
 
 ```bash
 PYTHONPATH=src python -m pytest \
@@ -83,7 +83,7 @@ PYTHONPATH=src python -m pytest \
   --cov-fail-under=90
 ```
 
-Result: PASS, `444 passed, 1 skipped`, total coverage `91.80%`.
+Result: PASS, `446 passed, 1 skipped`, total coverage `91.76%`.
 
 ```bash
 tmp=$(mktemp -d)
