@@ -90,6 +90,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t1_procedural_style_metrics.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -250,6 +251,7 @@
 | 2026-05-26 | P16-T18 | Archived Duplicate-Code Practical-Minimum Audit (PASS) |
 | 2026-05-26 | P16-T18 | Archived REVIEW_p16_t18_duplicate_code_practical_minimum_audit report |
 | 2026-05-29 | P17-T1 | Archived Procedural Style Metrics Report (PASS) |
+| 2026-05-29 | P17-T1 | Archived REVIEW_p17_t1_procedural_style_metrics report |
 | 2026-05-29 | P18-T1 | Archived Swift Public API Analyzer (PASS) |
 | 2026-05-29 | P18-T1 | Archived REVIEW_p18_t1_swift_public_api_analyzer report |
 | 2026-05-29 | P19-T1 | Archived Static Spec Renderer (PASS) |
