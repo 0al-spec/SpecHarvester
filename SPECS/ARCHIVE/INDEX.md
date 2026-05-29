@@ -77,6 +77,7 @@
 | P16-T17 | [P16-T17_Real_Repository_Quality_Rating_Policy_Objects/](P16-T17_Real_Repository_Quality_Rating_Policy_Objects/) | 2026-05-26 | PASS |
 | P16-T18 | [P16-T18_Duplicate_Code_Practical_Minimum_Audit/](P16-T18_Duplicate_Code_Practical_Minimum_Audit/) | 2026-05-26 | PASS |
 | P18-T1 | [P18-T1_Swift_Public_API_Analyzer/](P18-T1_Swift_Public_API_Analyzer/) | 2026-05-29 | PASS |
+| P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
 | P12-T3 | [P12-T3_Domain_Intent_Inference/](P12-T3_Domain_Intent_Inference/) | 2026-05-21 | PASS |
@@ -248,6 +249,7 @@
 | 2026-05-26 | P16-T18 | Archived REVIEW_p16_t18_duplicate_code_practical_minimum_audit report |
 | 2026-05-29 | P18-T1 | Archived Swift Public API Analyzer (PASS) |
 | 2026-05-29 | P18-T1 | Archived REVIEW_p18_t1_swift_public_api_analyzer report |
+| 2026-05-29 | P19-T1 | Archived Static Spec Renderer (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

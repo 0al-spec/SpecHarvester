@@ -559,7 +559,7 @@ Acceptance:
 
 ## Phase 19. Static Spec Rendering
 
-- [ ] `P19-T1` Add a static HTML/JS renderer for generated SpecPM candidate
+- [x] `P19-T1` Add a static HTML/JS renderer for generated SpecPM candidate
   packages, reading `specpm.yaml` and referenced `specs/*.spec.yaml` into a
   deterministic browser-safe JSON payload and emitting a self-contained static
   viewer without executing harvested repository code.

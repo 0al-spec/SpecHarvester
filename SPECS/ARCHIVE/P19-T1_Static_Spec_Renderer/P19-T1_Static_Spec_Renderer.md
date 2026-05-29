@@ -1,7 +1,8 @@
 # P19-T1 — Static Spec Renderer
 
-Status: Planned
-Suggested: 2026-05-29
+Status: Archived
+Archived: 2026-05-29
+Verdict: PASS
 
 Branch: `feature/P19-T1-static-spec-renderer`
 Review subject: `p19_t1_static_spec_renderer`
