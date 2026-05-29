@@ -498,3 +498,44 @@ Acceptance:
 - The local validation matrix can show whether advisory noise decreased while
   preserving strict public-source safety guarantees.
 - Generated `.smoke/` inputs and outputs remain local-only and uncommitted.
+
+## Phase 17. Elegant Objects Refactoring Strategy
+
+- [ ] `P17-T1` Add a deterministic procedural-style metrics report that counts
+  top-level function span, method span, behavior-rich classes, DTO-only classes,
+  largest functions, and module hotspots so EO progress is measured by behavior
+  movement rather than subjective review impressions.
+- [ ] `P17-T2` Split the CLI execution shell from domain command behavior by
+  introducing small command objects for selected `code-duplication-report`,
+  `architecture-lint`, and report-generation flows while preserving parser
+  flags, JSON error output, and exit-code behavior.
+- [ ] `P17-T3` Refactor report builders behind behavior-rich report objects one
+  output contract at a time, starting with low-risk governance or accepted
+  candidate reports and preserving report schemas, issue codes, and markdown
+  output.
+- [ ] `P17-T4` Refactor public API analyzer pipelines into language-specific
+  analyzer objects that use shared payload and option objects without hiding
+  language-specific parse, diagnostic, symbol, or evidence decisions.
+- [ ] `P17-T5` Refactor collector and drafter behavior in thin vertical slices,
+  adding characterization tests before moving repository profile, license
+  inference, semantic evidence, intent profile, package draft assembly, or
+  artifact-writing logic.
+- [ ] `P17-T6` Refactor SpecNode refinement orchestration after the report,
+  analyzer, collector, and drafter seams are stable, keeping SpecHarvester-side
+  provider, validation, retry, and unavailable-result objects inside the
+  existing SpecNode contract boundary.
+
+Acceptance:
+
+- `docs/EO_REFACTORING_STRATEGY.md` remains the source strategy for sequencing,
+  PR sizing, acceptance metrics, and stop conditions.
+- Refactor tasks preserve public report schemas, CLI flags, exit codes, markdown
+  output, issue codes, trust-boundary text, and SpecPM/SpecNode contracts unless
+  a task explicitly changes them.
+- Each implementation PR includes characterization coverage before moving mature
+  procedural behavior.
+- Procedural-style metrics show targeted top-level function span moving into
+  named behavior-rich objects without counting DTO-only dataclasses as progress.
+- `architecture-lint`, duplicate-code reports, full Python tests, coverage,
+  ruff, Swift manifest, and DocC build remain green for refactor PRs that touch
+  the relevant surfaces.
