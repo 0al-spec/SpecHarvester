@@ -36,6 +36,21 @@ INDEX_HTML = """<!doctype html>
         <h2>Intents</h2>
         <div id="intent-list" class="token-list"></div>
       </div>
+      <div class="panel reading-panel">
+        <h2>Reading</h2>
+        <label class="search-label" for="spec-search">Filter visible content</label>
+        <input
+          id="spec-search"
+          class="search-input"
+          type="search"
+          placeholder="interface, evidence, intent..."
+        />
+        <div class="button-row">
+          <button id="expand-all" class="button" type="button">Expand all</button>
+          <button id="collapse-all" class="button" type="button">Collapse all</button>
+        </div>
+        <nav id="spec-outline" class="outline"></nav>
+      </div>
     </aside>
 
     <section class="content">
@@ -205,6 +220,13 @@ h3 {
   min-width: 0;
 }
 
+.sidebar {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow: auto;
+}
+
 .panel,
 .status-card {
   border: 1px solid var(--rule);
@@ -292,6 +314,10 @@ h3 {
   letter-spacing: 0.02em;
 }
 
+button.button {
+  cursor: pointer;
+}
+
 .pill {
   padding: 0.25rem 0.65rem;
   font-size: 0.78rem;
@@ -305,6 +331,7 @@ h3 {
 
 .token,
 .button {
+  align-items: center;
   padding: 0.45rem 0.7rem;
   text-decoration: none;
 }
@@ -328,6 +355,35 @@ h3 {
   padding: 1.15rem 0 0;
 }
 
+.spec-card {
+  scroll-margin-top: 1rem;
+}
+
+.spec-summary {
+  display: grid;
+  gap: 0.35rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.spec-summary::-webkit-details-marker,
+.section-summary::-webkit-details-marker {
+  display: none;
+}
+
+.spec-summary::before,
+.section-summary::before {
+  color: var(--signal-ink);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  content: "+";
+}
+
+.spec-card[open] > .spec-summary::before,
+.section-box[open] > .section-summary::before {
+  content: "-";
+}
+
 .section-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -342,9 +398,80 @@ h3 {
   min-width: 0;
 }
 
+.section-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+}
+
+.count {
+  color: var(--muted-2);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .section-box ul {
   margin: 0.4rem 0 0;
   padding-left: 1.1rem;
+}
+
+.reading-panel {
+  position: sticky;
+  top: 0;
+}
+
+.search-label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.search-input {
+  width: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0.7rem 0.75rem;
+  font: inherit;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.outline {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.outline a {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.outline a:hover {
+  color: var(--signal-ink);
+}
+
+.is-hidden {
+  display: none;
 }
 
 .muted,
@@ -381,6 +508,11 @@ pre {
 
   .content {
     border-left: 0;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
   }
 
   .content .panel {
@@ -454,6 +586,8 @@ function renderPackage(payload) {
   document.querySelector("#spec-list").innerHTML = specs.length
     ? specs.map(renderSpecCard).join("")
     : `<div class="empty">No BoundarySpec files were loaded.</div>`;
+  renderOutline(specs);
+  bindReadingControls();
 
   const diagnostics = payload.diagnostics || [];
   document.querySelector("#diagnostic-count").textContent = String(diagnostics.length);
@@ -464,14 +598,29 @@ function renderPackage(payload) {
   document.querySelector("#raw-json").textContent = JSON.stringify(payload, null, 2);
 }
 
-function renderSpecCard(spec) {
+function renderSpecCard(spec, index) {
   const metadata = spec.metadata || {};
   const intent = spec.intent || {};
+  const title = metadata.title || metadata.id || "BoundarySpec";
+  const summary = intent.summary || "";
+  const searchText = [
+    spec.path,
+    title,
+    summary,
+    ...(spec.scope?.includes || []),
+    ...(spec.scope?.excludes || []),
+    ...interfaceNames(spec.interfaces?.inbound || []),
+    ...evidenceNames(spec.evidence || []),
+    ...effectNames(spec.effects?.sideEffects || []),
+    ...constraintNames(spec.constraints || [])
+  ].join(" ");
   return `
-    <article class="spec-card">
-      <p class="eyebrow">${escapeHtml(spec.path || "spec")}</p>
-      <h3>${escapeHtml(metadata.title || metadata.id || "BoundarySpec")}</h3>
-      <p class="muted">${escapeHtml(intent.summary || "")}</p>
+    <details class="spec-card" id="spec-${index + 1}" open data-search="${escapeHtml(searchText)}">
+      <summary class="spec-summary">
+        <p class="eyebrow">${escapeHtml(spec.path || "spec")}</p>
+        <h3>${escapeHtml(title)}</h3>
+        <p class="muted">${escapeHtml(summary)}</p>
+      </summary>
       <div class="section-grid">
         ${sectionBox("Scope Includes", spec.scope?.includes || [])}
         ${sectionBox("Scope Excludes", spec.scope?.excludes || [])}
@@ -480,7 +629,7 @@ function renderSpecCard(spec) {
         ${sectionBox("Effects", effectNames(spec.effects?.sideEffects || []))}
         ${sectionBox("Constraints", constraintNames(spec.constraints || []))}
       </div>
-    </article>
+    </details>
   `;
 }
 
@@ -527,7 +676,54 @@ function sectionBox(title, values) {
   const list = values.length
     ? `<ul>${values.map((value) => `<li>${escapeHtml(value)}</li>`).join("")}</ul>`
     : `<p class="empty">None declared.</p>`;
-  return `<div class="section-box"><strong>${escapeHtml(title)}</strong>${list}</div>`;
+  return `
+    <details class="section-box">
+      <summary class="section-summary">
+        <strong>${escapeHtml(title)}</strong>
+        <span class="count">${values.length}</span>
+      </summary>
+      ${list}
+    </details>
+  `;
+}
+
+function renderOutline(specs) {
+  const outline = document.querySelector("#spec-outline");
+  outline.innerHTML = specs.length
+    ? specs.map((spec, index) => {
+      const metadata = spec.metadata || {};
+      const title = metadata.title || metadata.id || spec.path || `Spec ${index + 1}`;
+      return `<a href="#spec-${index + 1}">${escapeHtml(title)}</a>`;
+    }).join("")
+    : `<span class="empty">No specs loaded.</span>`;
+}
+
+function bindReadingControls() {
+  const search = document.querySelector("#spec-search");
+  const expand = document.querySelector("#expand-all");
+  const collapse = document.querySelector("#collapse-all");
+
+  search?.addEventListener("input", () => filterSpecs(search.value));
+  expand?.addEventListener("click", () => toggleDetails(true));
+  collapse?.addEventListener("click", () => toggleDetails(false));
+}
+
+function filterSpecs(query) {
+  const normalized = query.trim().toLowerCase();
+  document.querySelectorAll(".spec-card").forEach((card) => {
+    const searchText = card.getAttribute("data-search")?.toLowerCase() || "";
+    const visible = !normalized || searchText.includes(normalized);
+    card.classList.toggle("is-hidden", !visible);
+    if (visible && normalized) {
+      card.open = true;
+    }
+  });
+}
+
+function toggleDetails(open) {
+  document.querySelectorAll(".spec-card, .section-box").forEach((details) => {
+    details.open = open;
+  });
 }
 
 function interfaceNames(values) {

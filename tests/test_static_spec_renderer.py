@@ -40,8 +40,12 @@ def test_static_spec_renderer_writes_browser_safe_site(tmp_path: Path) -> None:
     assert "spec-package-data" in html
     assert "escapeHtml" in javascript
     assert "textContent" in javascript
+    assert "bindReadingControls" in javascript
+    assert "filterSpecs" in javascript
     assert "min-width: 0;" in css
     assert "overflow-wrap: anywhere;" in css
+    assert "spec-outline" in html
+    assert "spec-search" in html
 
 
 def test_render_spec_site_cli_writes_site_and_prints_result(tmp_path: Path, capsys) -> None:
