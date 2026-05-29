@@ -171,6 +171,35 @@ def test_docc_and_github_docs_cover_language_neutral_semantic_extraction() -> No
         assert "raw documentation" in text
 
 
+def test_docc_and_github_docs_cover_static_spec_renderer() -> None:
+    github_doc = ROOT / "docs" / "STATIC_SPEC_RENDERER.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "StaticSpecRenderer.md"
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "render-spec-site",
+            "specpm.yaml",
+            "specs/*.spec.yaml",
+            "spec-package.json",
+            "SpecPM remains",
+            "validation and registry authority",
+            "no package code execution",
+            "no package scripts",
+            "no dependency installation",
+            "no network probes",
+            "no browser-side YAML parsing",
+            "SpecHarvesterStaticSpecPackage",
+            "standalone viewer",
+        ):
+            assert required in text
+
+    assert "STATIC_SPEC_RENDERER.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:StaticSpecRenderer>" in root_page.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
     github_doc = ROOT / "docs" / "GOVERNANCE_REPORTS.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "GovernanceReports.md"

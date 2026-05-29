@@ -27,6 +27,10 @@ python3 -m spec_harvester draft candidates/github.com/example/project \
   --package-id project.core \
   --out candidates/github.com/example/project
 
+python3 -m spec_harvester render-spec-site \
+  --candidate candidates/github.com/example/project \
+  --output previews/github.com/example/project
+
 python3 -m spec_harvester promote candidates/github.com/example/project \
   --accepted-root accepted \
   --manifest accepted/accepted-packages.yml
@@ -38,6 +42,8 @@ This produces:
 candidates/github.com/example/project/harvest.json
 candidates/github.com/example/project/specpm.yaml
 candidates/github.com/example/project/specs/project.spec.yaml
+previews/github.com/example/project/index.html
+previews/github.com/example/project/spec-package.json
 accepted/<package_id>/<version>/
 ```
 
@@ -56,6 +62,8 @@ and maintainer review before they are treated as accepted registry source.
   accepted-vs-candidate update review reports
 - [`docs/ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md`](docs/ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md):
   build PR-ready accepted package update proposal artifacts
+- [`docs/STATIC_SPEC_RENDERER.md`](docs/STATIC_SPEC_RENDERER.md): static
+  HTML/JS preview for generated SpecPM candidate packages
 - [`docs/LOCAL_SMOKE_FIXTURES.md`](docs/LOCAL_SMOKE_FIXTURES.md): reproducible
   local smoke fixtures for adjacent repository checkouts
 - [`docs/ROADMAP.md`](docs/ROADMAP.md): planned delivery phases

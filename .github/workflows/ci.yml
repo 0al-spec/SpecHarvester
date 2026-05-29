@@ -206,6 +206,13 @@ jobs:
             --package-id flow_fixture.core \
             --name "Flow Fixture" \
             --out /tmp/spec-harvester-candidate
+          python -m spec_harvester render-spec-site \
+            --candidate /tmp/spec-harvester-candidate \
+            --output /tmp/spec-harvester-preview
+          test -f /tmp/spec-harvester-preview/index.html
+          test -f /tmp/spec-harvester-preview/assets/spec-renderer.js
+          test -f /tmp/spec-harvester-preview/assets/spec-renderer.css
+          test -f /tmp/spec-harvester-preview/spec-package.json
 
       - name: Validate candidate with SpecPM
         run: |

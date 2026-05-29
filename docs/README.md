@@ -84,7 +84,10 @@ Published DocC site:
 34. [`REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`](REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md):
     compact P15-T4 local validation matrix across Swift/SPM, JS/TS, Python,
     Go, and documentation-first repository shapes
-35. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+35. [`STATIC_SPEC_RENDERER.md`](STATIC_SPEC_RENDERER.md): static HTML/JS preview
+    for generated SpecPM candidate packages from `specpm.yaml` and referenced
+    `specs/*.spec.yaml`
+36. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -129,6 +132,8 @@ Published DocC site:
   treating SpecNode as an external contract boundary
 - [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
   local runner for executing real-repository validation steps from manifests
+- [`STATIC_SPEC_RENDERER.md`](STATIC_SPEC_RENDERER.md): static HTML/JS renderer
+  for local candidate package review before SpecPM acceptance
 
 ## GitHub Process Surface
 
