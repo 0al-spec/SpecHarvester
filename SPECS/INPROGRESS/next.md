@@ -1,4 +1,4 @@
-# Next Task: P17-T1 — Procedural Style Metrics Report
+# Next Task: P19-T1 — Static Spec Renderer
 
 **Status:** Pending
 **Suggested:** 2026-05-29
@@ -9,11 +9,13 @@
 
 ## Rationale
 
-P18-T1 closes the Swift public API coverage gap. On the current `main`
-baseline, `P17-T1` is still the first unchecked Workplan task in the Elegant
-Objects refactoring strategy.
+SpecHarvester now produces richer generated SpecPM candidate packages, but
+reviewers still inspect `specpm.yaml` and `specs/*.spec.yaml` mostly as raw
+YAML. A deterministic static HTML/JS renderer gives reviewers a browser-safe
+candidate preview while keeping SpecPM as the validation and registry authority.
 
 ## Next Step
 
-Continue with the first unchecked Workplan task after this PR lands, accounting
-for any already-open PR that may complete `P17-T1`.
+Implement `P19-T1` as a small extractable static site generator for local
+candidate directories, with tests and documentation covering the trust boundary
+and future standalone-repository extraction path.

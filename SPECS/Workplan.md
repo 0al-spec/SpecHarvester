@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-05-25
+Updated: 2026-05-29
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -556,3 +556,24 @@ Acceptance:
   analyzer-plan and orchestration registry.
 - Drafting can consume the resulting `public-interface-index.json` through the
   existing BoundarySpec evidence path without Swift-specific drafter code.
+
+## Phase 19. Static Spec Rendering
+
+- [ ] `P19-T1` Add a static HTML/JS renderer for generated SpecPM candidate
+  packages, reading `specpm.yaml` and referenced `specs/*.spec.yaml` into a
+  deterministic browser-safe JSON payload and emitting a self-contained static
+  viewer without executing harvested repository code.
+
+Acceptance:
+
+- The renderer works on a local candidate directory and writes static assets
+  suitable for GitHub Pages, file preview, or later extraction into a standalone
+  repository.
+- YAML parsing is performed by trusted local Python code using the same
+  restricted, JSON-compatible assumptions expected by SpecPM, not by executing
+  harvested package code or package scripts.
+- The generated viewer presents package identity, capabilities, intents,
+  BoundarySpec summaries, interfaces, evidence, effects, constraints, validation
+  status, and raw normalized JSON.
+- The implementation keeps the UI/data contract small enough to extract later
+  and documents that SpecPM remains the validation and registry authority.
