@@ -10,7 +10,7 @@ INDEX_HTML = """<!doctype html>
     name="description"
     content="Static browser preview for generated SpecPM candidate packages."
   />
-  <link rel="stylesheet" href="./assets/spec-renderer.css" />
+  <link rel="stylesheet" href="./assets/spec-renderer.css?v=readability-2" />
 </head>
 <body>
   <header class="shell-header">
@@ -82,7 +82,7 @@ INDEX_HTML = """<!doctype html>
   </main>
 
   <script id="spec-package-data" type="application/json">__SPEC_PACKAGE_JSON__</script>
-  <script src="./assets/spec-renderer.js" defer></script>
+  <script src="./assets/spec-renderer.js?v=readability-2" defer></script>
 </body>
 </html>
 """
@@ -381,7 +381,6 @@ button.button {
   display: none;
 }
 
-.spec-summary::before,
 .section-summary::before {
   color: var(--signal-ink);
   font-family: var(--mono);
@@ -389,7 +388,6 @@ button.button {
   content: "+";
 }
 
-.spec-card[open] > .spec-summary::before,
 .section-box[open] > .section-summary::before {
   content: "-";
 }
