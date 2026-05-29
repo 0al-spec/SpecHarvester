@@ -1,5 +1,9 @@
 # P18-T1 — Swift Public API Analyzer
 
+Status: Archived
+Archived: 2026-05-29
+Verdict: PASS
+
 Branch: `feature/P18-T1-swift-public-api-analyzer`
 Review subject: `p18_t1_swift_public_api_analyzer`
 

@@ -542,7 +542,7 @@ Acceptance:
 
 ## Phase 18. Swift Public API Coverage
 
-- [ ] `P18-T1` Add a deterministic Swift public API analyzer that scans `.swift`
+- [x] `P18-T1` Add a deterministic Swift public API analyzer that scans `.swift`
   sources for `public` and `open` declarations, emits `PublicInterfaceIndex`
   evidence, and plugs into project-profile analyzer orchestration without
   executing SwiftPM, build tools, package scripts, or repository code.

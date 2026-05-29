@@ -1,24 +1,19 @@
-# Next Task: P18-T1 — Swift Public API Analyzer
+# Next Task: P17-T1 — Procedural Style Metrics Report
 
-**Status:** Selected
+**Status:** Pending
 **Suggested:** 2026-05-29
 
-## Task
+## Recently Archived
 
-Add a deterministic Swift public API analyzer that scans `.swift` sources for
-`public` and `open` declarations, emits `PublicInterfaceIndex` evidence, and
-plugs into project-profile analyzer orchestration without executing SwiftPM,
-build tools, package scripts, or repository code.
+- P18-T1: Swift Public API Analyzer (PASS, 2026-05-29)
 
 ## Rationale
 
-SpecHarvester already has the shared public-interface schema, analyzer options,
-orchestration registry, and drafter ingestion path, but Swift repositories only
-contribute manifest and semantic evidence. Swift/SPM candidates need the same
-deterministic public API signal currently available for Python, JavaScript,
-TypeScript, and Go.
+P18-T1 closes the Swift public API coverage gap. On the current `main`
+baseline, `P17-T1` is still the first unchecked Workplan task in the Elegant
+Objects refactoring strategy.
 
 ## Next Step
 
-Create the P18-T1 task PRD, then implement the Swift analyzer and regression
-coverage.
+Continue with the first unchecked Workplan task after this PR lands, accounting
+for any already-open PR that may complete `P17-T1`.
