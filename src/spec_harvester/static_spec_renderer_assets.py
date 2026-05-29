@@ -367,6 +367,15 @@ button.button {
   list-style: none;
 }
 
+.spec-summary .eyebrow {
+  display: block;
+  margin-bottom: 0;
+}
+
+.spec-summary .eyebrow::before {
+  content: none;
+}
+
 .spec-summary::-webkit-details-marker,
 .section-summary::-webkit-details-marker {
   display: none;
