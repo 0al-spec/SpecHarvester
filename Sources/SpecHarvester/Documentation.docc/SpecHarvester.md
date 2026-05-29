@@ -48,6 +48,7 @@ The canonical source files remain in the repository:
 - `docs/LICENSE_PROVENANCE_RISK_REPORTS.md`
 - `docs/CODE_DUPLICATION_REPORTS.md`
 - `docs/ARCHITECTURE_LINT_GUARDRAILS.md`
+- `docs/PROCEDURAL_STYLE_REPORT.md`
 - `docs/EO_REFACTORING_STRATEGY.md`
 - `docs/LOCAL_SMOKE_FIXTURES.md`
 - `docs/SPECNODE_INTEGRATION_CONTRACT.md`
@@ -92,6 +93,7 @@ the host.
 - <doc:LicenseProvenanceRiskReports>
 - <doc:CodeDuplicationReports>
 - <doc:ArchitectureLintGuardrails>
+- <doc:ProceduralStyleReport>
 - <doc:EORefactoringStrategy>
 - <doc:LocalSmokeFixtures>
 - <doc:SpecNodeIntegrationContract>

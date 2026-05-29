@@ -1224,6 +1224,34 @@ def test_docc_and_github_docs_cover_architecture_lint_guardrails() -> None:
     assert "<doc:ArchitectureLintGuardrails>" in root_page.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_procedural_style_report() -> None:
+    github_doc = ROOT / "docs" / "PROCEDURAL_STYLE_REPORT.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ProceduralStyleReport.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecHarvesterProceduralStyleReport",
+            "procedural-style-report",
+            "--fail-on-hotspots",
+            "topLevelFunctionSpan",
+            "behaviorRichClassCount",
+            "dtoOnlyClassCount",
+            "largestTopLevelFunctions",
+            "advisory",
+            "No repository code execution",
+            "No imports from scanned modules",
+        ):
+            assert required in text, f"Required term {required!r} not found in {path}"
+
+    assert "PROCEDURAL_STYLE_REPORT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:ProceduralStyleReport>" in root_page.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_eo_refactoring_strategy() -> None:
     github_doc = ROOT / "docs" / "EO_REFACTORING_STRATEGY.md"
     docc_doc = (
