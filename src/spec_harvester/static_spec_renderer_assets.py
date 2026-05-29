@@ -164,6 +164,7 @@ h3 {
   display: grid;
   gap: 1.25rem;
   align-content: start;
+  min-width: 0;
 }
 
 .panel,
@@ -176,6 +177,7 @@ h3 {
 
 .panel {
   padding: 1.35rem;
+  min-width: 0;
 }
 
 .status-card {
@@ -248,6 +250,12 @@ h3 {
   text-decoration: none;
 }
 
+.token {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .spec-list,
 .diagnostic-list {
   display: grid;
@@ -273,6 +281,7 @@ h3 {
   border-radius: 16px;
   background: rgba(246, 240, 230, 0.72);
   padding: 0.85rem;
+  min-width: 0;
 }
 
 .section-box ul {

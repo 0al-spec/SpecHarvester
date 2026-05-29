@@ -33,12 +33,15 @@ def test_static_spec_renderer_writes_browser_safe_site(tmp_path: Path) -> None:
 
     html = (output / "index.html").read_text(encoding="utf-8")
     javascript = (output / "assets/spec-renderer.js").read_text(encoding="utf-8")
+    css = (output / "assets/spec-renderer.css").read_text(encoding="utf-8")
     assert "<script>alert(1)</script>" not in html
     assert "\\u003cscript" in html
     assert "__SPEC_PACKAGE_JSON__" not in html
     assert "spec-package-data" in html
     assert "escapeHtml" in javascript
     assert "textContent" in javascript
+    assert "min-width: 0;" in css
+    assert "overflow-wrap: anywhere;" in css
 
 
 def test_render_spec_site_cli_writes_site_and_prints_result(tmp_path: Path, capsys) -> None:
