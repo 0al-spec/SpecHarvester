@@ -72,19 +72,24 @@ INDEX_HTML = """<!doctype html>
 """
 
 
-VIEWER_CSS = """:root {
+VIEWER_CSS = """@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
   color-scheme: light;
-  --ink: #18221f;
-  --muted: #60716b;
-  --paper: #f6f0e6;
-  --panel: #fffaf0;
-  --line: #dfd1bd;
-  --accent: #c5532c;
-  --accent-dark: #7b2f1d;
-  --ok: #24724f;
+  --ink: #0b0b0c;
+  --paper: #f3f1ec;
+  --paper-2: #e8e5dd;
+  --rule: #1b1c1e;
+  --rule-soft: rgba(11, 11, 12, 0.14);
+  --muted: #55524b;
+  --muted-2: #7a766d;
+  --signal: oklch(74% 0.14 240);
+  --signal-ink: oklch(46% 0.13 240);
   --warn: #8a5a00;
-  --shadow: 0 24px 80px rgba(57, 41, 24, 0.14);
-  font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+  --serif: "Instrument Serif", "Times New Roman", serif;
+  --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-family: var(--sans);
 }
 
 * {
@@ -95,9 +100,21 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
+  overflow-x: hidden;
   background:
-    radial-gradient(circle at top left, rgba(197, 83, 44, 0.18), transparent 32rem),
-    linear-gradient(135deg, #f9f1df 0%, #ecdfc8 45%, #f8f5ee 100%);
+    linear-gradient(to right, rgba(11, 11, 12, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 11, 12, 0.045) 1px, transparent 1px),
+    radial-gradient(
+      circle at 78% 12%,
+      color-mix(in oklab, var(--signal) 22%, transparent),
+      transparent 28rem
+    ),
+    var(--paper);
+  background-size: 80px 80px, 80px 80px, auto, auto;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
 }
 
 .shell-header {
@@ -105,16 +122,31 @@ body {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 2rem;
   align-items: end;
-  padding: 4rem clamp(1rem, 4vw, 4rem) 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 4.8rem clamp(1.25rem, 4vw, 3.5rem) 2.4rem;
+  border-bottom: 1px solid var(--rule);
 }
 
 .eyebrow {
-  margin: 0 0 0.5rem;
-  color: var(--accent-dark);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  margin: 0 0 1.1rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.eyebrow::before {
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  opacity: 0.7;
 }
 
 h1,
@@ -126,17 +158,21 @@ p {
 
 h1 {
   max-width: 960px;
-  margin-bottom: 0.75rem;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.4rem, 8vw, 6.5rem);
-  line-height: 0.9;
-  letter-spacing: -0.06em;
+  margin-bottom: 1rem;
+  font-family: var(--serif);
+  font-size: clamp(3.4rem, 7.5vw, 7.4rem);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -0.025em;
 }
 
 h2 {
   margin-bottom: 1rem;
-  font-size: 1rem;
-  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -148,48 +184,66 @@ h3 {
 .lede {
   max-width: 780px;
   color: var(--muted);
-  font-size: 1.08rem;
+  font-size: 1.02rem;
   line-height: 1.6;
 }
 
 .layout {
   display: grid;
   grid-template-columns: minmax(260px, 0.35fr) minmax(0, 1fr);
-  gap: 1.25rem;
-  padding: 0 clamp(1rem, 4vw, 4rem) 4rem;
+  gap: 0;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 3.5rem) 4rem;
 }
 
 .sidebar,
 .content {
   display: grid;
-  gap: 1.25rem;
+  gap: 0;
   align-content: start;
   min-width: 0;
 }
 
 .panel,
 .status-card {
-  border: 1px solid var(--line);
-  border-radius: 28px;
-  background: rgba(255, 250, 240, 0.84);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--rule);
+  background: color-mix(in oklab, var(--paper) 86%, white);
 }
 
 .panel {
-  padding: 1.35rem;
+  padding: 1.6rem;
   min-width: 0;
+  border-top: 0;
 }
 
 .status-card {
   min-width: 180px;
-  padding: 1rem 1.25rem;
-  color: var(--ok);
-  font-weight: 800;
+  padding: 0.85rem 1rem;
+  color: var(--signal-ink);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .status-card.warn {
   color: var(--warn);
+}
+
+.content {
+  border-left: 1px solid var(--rule);
+}
+
+.content .panel {
+  border-left: 0;
+}
+
+.sidebar .panel + .panel,
+.content .panel + .panel {
+  border-top: 0;
 }
 
 .panel-head {
@@ -207,14 +261,16 @@ h3 {
 .fact {
   display: grid;
   gap: 0.2rem;
-  padding-bottom: 0.7rem;
-  border-bottom: 1px dashed var(--line);
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule-soft);
 }
 
 .fact span {
   color: var(--muted);
+  font-family: var(--mono);
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
@@ -226,11 +282,14 @@ h3 {
 .token,
 .button {
   display: inline-flex;
-  border: 1px solid rgba(197, 83, 44, 0.24);
-  border-radius: 999px;
-  background: rgba(197, 83, 44, 0.08);
-  color: var(--accent-dark);
-  font-weight: 700;
+  border: 1px solid var(--rule-soft);
+  border-radius: 0;
+  background: color-mix(in oklab, var(--paper-2) 72%, transparent);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .pill {
@@ -264,10 +323,9 @@ h3 {
 
 .spec-card,
 .diagnostic-card {
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.42);
-  padding: 1rem;
+  border-top: 1px solid var(--rule-soft);
+  background: transparent;
+  padding: 1.15rem 0 0;
 }
 
 .section-grid {
@@ -278,9 +336,9 @@ h3 {
 }
 
 .section-box {
-  border-radius: 16px;
-  background: rgba(246, 240, 230, 0.72);
-  padding: 0.85rem;
+  border-left: 1px solid var(--rule);
+  background: color-mix(in oklab, var(--paper-2) 52%, transparent);
+  padding: 0.9rem 1rem;
   min-width: 0;
 }
 
@@ -298,11 +356,11 @@ pre {
   overflow: auto;
   max-height: 36rem;
   margin: 0;
-  border-radius: 18px;
-  background: #18221f;
-  color: #f8f5ee;
+  border: 1px solid var(--rule);
+  background: var(--ink);
+  color: var(--paper);
   padding: 1rem;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: var(--mono);
   font-size: 0.86rem;
   line-height: 1.55;
 }
@@ -319,6 +377,14 @@ pre {
 
   .status-card {
     text-align: left;
+  }
+
+  .content {
+    border-left: 0;
+  }
+
+  .content .panel {
+    border-left: 1px solid var(--rule);
   }
 
   .section-grid {
