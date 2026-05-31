@@ -2,7 +2,7 @@
 
 **Priority:** P1
 **Phase:** Phase 20. Scoped Source Unit Harvesting
-**Status:** Planned
+**Status:** Completed
 **Date:** 2026-05-31
 
 ## Problem
