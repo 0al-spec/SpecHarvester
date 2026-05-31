@@ -36,6 +36,17 @@ python3 -m spec_harvester promote candidates/github.com/example/project \
   --manifest accepted/accepted-packages.yml
 ```
 
+For monorepos, the source can be scoped to a folder or file target while still
+preserving repository provenance:
+
+```bash
+python3 -m spec_harvester collect-local /path/to/monorepo \
+  --target Modules/Player \
+  --repository https://github.com/example/project \
+  --revision <commit-sha> \
+  --out candidates/player
+```
+
 This produces:
 
 ```text

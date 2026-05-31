@@ -86,9 +86,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     collect_local = subcommands.add_parser(
         "collect-local",
-        help="Collect a safe evidence snapshot from a local repository checkout.",
+        help="Collect a safe evidence snapshot from a local repository, folder, or file target.",
     )
-    collect_local.add_argument("source", type=Path, help="Local repository checkout path.")
+    collect_local.add_argument("source", type=Path, help="Local source root or direct file target.")
     collect_local.add_argument(
         "--out",
         type=Path,
@@ -97,6 +97,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     collect_local.add_argument("--repository", help="Public source repository URL.")
     collect_local.add_argument("--revision", help="Pinned source revision or commit SHA.")
+    collect_local.add_argument(
+        "--target",
+        type=Path,
+        help="Optional folder or file path relative to source root to harvest as the spec target.",
+    )
     collect_local.add_argument(
         "--max-file-bytes",
         type=int,
@@ -695,6 +700,7 @@ def run_collect_local(args: argparse.Namespace) -> int:
             source=args.source,
             repository=args.repository,
             revision=args.revision,
+            target=args.target,
             max_file_bytes=args.max_file_bytes,
         )
     )
@@ -706,6 +712,7 @@ def run_collect_local(args: argparse.Namespace) -> int:
             {
                 "status": "ok",
                 "output": str(output_path),
+                "target": snapshot["source"]["target"],
                 "fileCount": snapshot["summary"]["fileCount"],
                 "skippedFileCount": snapshot["summary"]["skippedFileCount"],
             },

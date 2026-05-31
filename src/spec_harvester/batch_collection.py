@@ -82,13 +82,14 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
                 source=plan["checkout"],
                 repository=repository["repository"],
                 revision=repository["revision"] or repository["ref"],
+                target=Path(repository["target"]) if repository["target"] is not None else None,
                 max_file_bytes=options.max_file_bytes,
             )
         )
         interface_index_result = None
         if options.emit_interface_indexes:
             interface_index_result = run_project_profile_analyzers(
-                source=plan["checkout"],
+                source=analysis_source_root(plan["checkout"], snapshot),
                 snapshot=snapshot,
                 package_id=repository["packageId"],
                 cache_dir=repository_analyzer_cache_dir(
@@ -137,6 +138,7 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
             "revision": repository["revision"],
             "ref": repository["ref"],
             "checkout": str(checkout),
+            "target": repository["target"],
             "packageId": repository["packageId"],
             "labels": repository["labels"],
             "sourceManifest": repository["sourceManifest"],
@@ -168,6 +170,23 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
         result["status"] = report["status"]
         result["validationReport"] = str(options.report)
     return result
+
+
+def analysis_source_root(checkout: Path, snapshot: dict[str, Any]) -> Path:
+    source = snapshot.get("source")
+    if not isinstance(source, dict):
+        return checkout
+    target = source.get("target")
+    if not isinstance(target, dict):
+        return checkout
+    target_path = target.get("path")
+    target_kind = target.get("kind")
+    if not isinstance(target_path, str) or target_path == "." or target_kind == "repository":
+        return checkout
+    candidate = (checkout / target_path).resolve()
+    if target_kind == "file":
+        return candidate.parent
+    return candidate
 
 
 def candidate_directory(out_root: Path, repository_id: str) -> Path:

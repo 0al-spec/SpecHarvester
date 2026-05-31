@@ -119,6 +119,82 @@ repositories:
     assert not (out / "demo" / "public-interface-index.json").exists()
 
 
+def test_collect_batch_snapshots_uses_scoped_target_from_source_manifest(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Root\n")
+    (checkout / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    feature = checkout / "Modules" / "Feature"
+    feature.mkdir(parents=True)
+    (feature / "API.swift").write_text("public struct FeatureAPI {}\n", encoding="utf-8")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: feature
+    repository: https://github.com/example/monorepo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+    target: Modules/Feature
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(BatchCollectOptions(inputs=inputs, out=out))
+
+    assert result["collected"][0]["target"] == "Modules/Feature"
+    snapshot = json.loads((out / "feature" / "harvest.json").read_text(encoding="utf-8"))
+    assert snapshot["source"]["target"] == {
+        "kind": "folder",
+        "path": "Modules/Feature",
+        "label": "Feature",
+    }
+    assert [item["path"] for item in snapshot["files"]] == [
+        "LICENSE",
+        "Modules/Feature/API.swift",
+    ]
+
+
+def test_collect_batch_snapshots_runs_interface_analyzer_on_scoped_target(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Root\n")
+    feature = checkout / "Modules" / "Feature"
+    other = checkout / "Modules" / "Other"
+    feature.mkdir(parents=True)
+    other.mkdir(parents=True)
+    (checkout / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (feature / "API.swift").write_text("public struct FeatureAPI {}\n", encoding="utf-8")
+    (other / "Other.swift").write_text("public struct OtherAPI {}\n", encoding="utf-8")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: feature
+    repository: https://github.com/example/monorepo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+    target: Modules/Feature
+    packageId: feature.swift
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_interface_indexes=True)
+    )
+
+    assert result["collected"][0]["interfaceIndex"]["status"] == "complete"
+    index = json.loads((out / "feature" / "public-interface-index.json").read_text())
+    assert index["packages"][0]["id"] == "feature.swift"
+    assert index["packages"][0]["entrypoints"][0]["path"] == "API.swift"
+    assert "Other.swift" not in json.dumps(index)
+
+
 def test_collect_batch_snapshots_emits_python_interface_index_when_requested(
     tmp_path: Path,
 ) -> None:

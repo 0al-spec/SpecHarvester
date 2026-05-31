@@ -225,6 +225,98 @@ def test_collect_local_repository_snapshot_is_deterministic(tmp_path: Path) -> N
     assert collect_local_repository(options) == collect_local_repository(options)
 
 
+def test_collect_local_repository_can_target_folder_with_inherited_license(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "monorepo"
+    feature = repo / "Modules" / "Player"
+    feature.mkdir(parents=True)
+    (repo / "LICENSE").write_text(
+        "MIT License\n\nPermission is hereby granted, free of charge.\nCopyright 2026\n",
+        encoding="utf-8",
+    )
+    (feature / "README.md").write_text("# Player\n\nPublic playback module.\n", encoding="utf-8")
+    (feature / "Project.swift").write_text(
+        'let project = Project(name: "Player")\n',
+        encoding="utf-8",
+    )
+    (feature / "API.swift").write_text("public struct PlayerAPI {}\n", encoding="utf-8")
+
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            target=Path("Modules/Player"),
+            repository="https://github.com/example/monorepo",
+            revision="abc123",
+        )
+    )
+
+    assert snapshot["source"]["label"] == "monorepo"
+    assert snapshot["source"]["target"] == {
+        "kind": "folder",
+        "path": "Modules/Player",
+        "label": "Player",
+    }
+    assert snapshot["summary"]["targetKind"] == "folder"
+    assert snapshot["summary"]["licenseFileCount"] == 1
+    by_path = {item["path"]: item for item in snapshot["files"]}
+    assert by_path["LICENSE"]["licenseHint"] == "MIT"
+    assert by_path["Modules/Player/API.swift"]["kind"] == "source_entrypoint"
+    assert by_path["Modules/Player/Project.swift"]["kind"] == "package_manifest"
+    assert snapshot["projectProfile"]["languages"][0]["id"] == "swift"
+    assert {item["id"] for item in snapshot["projectProfile"]["ecosystems"]} == {
+        "swift-source",
+        "tuist",
+    }
+    assert snapshot["projectProfile"]["analyzerPlan"] == [
+        {
+            "id": "spec_harvester.swift_public_api",
+            "language": "swift",
+            "ecosystem": "tuist",
+            "status": "recommended",
+            "reason": (
+                "Swift manifest evidence can feed deterministic Swift source public API analysis."
+            ),
+            "evidencePaths": [
+                "Modules/Player/API.swift",
+                "Modules/Player/Project.swift",
+            ],
+        }
+    ]
+
+
+def test_collect_local_repository_can_target_single_file(tmp_path: Path) -> None:
+    repo = tmp_path / "monorepo"
+    source = repo / "Modules" / "Player"
+    source.mkdir(parents=True)
+    (repo / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (source / "API.swift").write_text("public struct PlayerAPI {}\n", encoding="utf-8")
+
+    snapshot = collect_local_repository(
+        HarvestOptions(source=repo, target=Path("Modules/Player/API.swift"))
+    )
+
+    assert snapshot["source"]["target"] == {
+        "kind": "file",
+        "path": "Modules/Player/API.swift",
+        "label": "API",
+    }
+    assert snapshot["summary"]["targetKind"] == "file"
+    assert [item["path"] for item in snapshot["files"]] == [
+        "LICENSE",
+        "Modules/Player/API.swift",
+    ]
+    assert snapshot["projectProfile"]["analyzerPlan"] == []
+
+
+def test_collect_local_repository_rejects_escaping_target_path(tmp_path: Path) -> None:
+    repo = tmp_path / "monorepo"
+    repo.mkdir()
+
+    with pytest.raises(ValueError, match="must not contain '..' segments"):
+        collect_local_repository(HarvestOptions(source=repo, target=Path("../outside")))
+
+
 def test_collect_local_repository_discovers_nested_swift_package_manifest(
     tmp_path: Path,
 ) -> None:
@@ -1177,6 +1269,41 @@ def test_draft_spec_package_uses_documentation_semantics_without_package_manifes
     assert "id: workflow.automation_pipeline" in spec
     assert "id: developer.tooling_surface" in spec
     assert "README.md" in spec
+
+
+def test_draft_spec_package_uses_source_unit_metadata_for_scoped_folder(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "monorepo"
+    feature = repo / "Modules" / "Player"
+    feature.mkdir(parents=True)
+    (repo / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (feature / "API.swift").write_text("public struct PlayerAPI {}\n", encoding="utf-8")
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            target=Path("Modules/Player"),
+            repository="https://github.com/example/monorepo",
+            revision="abc123",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "id: player.core" in manifest
+    assert "summary: Unofficial generated SpecPackage for Player source unit metadata." in manifest
+    assert "title: Player Generated Source Unit Boundary" in spec
+    assert (
+        "Describe observed source unit metadata from an allowlisted scoped harvest snapshot."
+        in spec
+    )
+    assert "sourceTarget:" in spec
+    assert "path: Modules/Player" in spec
 
 
 def test_draft_spec_package_does_not_double_count_singular_plural_semantic_terms(

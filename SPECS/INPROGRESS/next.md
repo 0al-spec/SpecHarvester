@@ -1,35 +1,35 @@
-# Next Task: P17-T2 — CLI Command Objects
+# Next Task: P20-T2 — Tuist Manifest Parsing
 
 **Priority:** P1
-**Phase:** Phase 17. Elegant Objects Refactoring Strategy
+**Phase:** Phase 20. Scoped Source Unit Harvesting
 **Effort:** 4-8 hours
-**Dependencies:** P17-T1
+**Dependencies:** P20-T1
 **Status:** Queued
-**Suggested:** 2026-05-29
+**Suggested:** 2026-05-31
 
 ## Description
 
-Split the CLI execution shell from domain command behavior by introducing small
-command objects for selected `code-duplication-report`, `architecture-lint`,
-and report-generation flows while preserving parser flags, JSON error output,
-and exit-code behavior.
+Add deterministic Tuist manifest parsing for `Project.swift`, `Workspace.swift`,
+and `Tuist.swift`, extracting project names, targets, product/platform hints, and
+source globs without executing Tuist, Swift code, package scripts, or build
+tools.
 
 ## Recently Archived
 
+- P20-T1: Scoped Source Target Harvesting (PASS, 2026-05-31)
 - P17-T1: Procedural Style Metrics Report (PASS, 2026-05-29)
 - P19-T1: Static Spec Renderer (PASS, 2026-05-29)
 - P18-T1: Swift Public API Analyzer (PASS, 2026-05-29)
 - P16-T8: Evaluate Multi-Language Duplicate-Code Detector (PASS, 2026-05-28)
-- P16-T5: Rerun Representative Local Validation Matrix (PASS, 2026-05-28)
 
 ## Rationale
 
-P17-T1 now provides a deterministic baseline for procedural concentration,
-including the `cli.py` hotspot. The next EO refactor should attack that hotspot
-directly by pulling execution behavior out of the procedural CLI shell while
-preserving its public command contract.
+P20-T1 makes folder and file targets first-class, which unblocks monorepo
+modules that are not standalone SwiftPM packages. Tuist-managed modules still
+need better deterministic manifest evidence so generated specs can describe
+project/target boundaries without invoking Tuist.
 
 ## Next Step
 
-Run SELECT for `P17-T2`, define the first command-object seams, and keep parser
-definition behavior stable while moving execution logic into named objects.
+Run SELECT for `P20-T2`, characterize common Tuist manifest shapes, and add a
+small static parser with fixtures before expanding generated spec intent rules.
