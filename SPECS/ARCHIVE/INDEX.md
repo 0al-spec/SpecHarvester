@@ -94,6 +94,7 @@
 | Folder | Description |
 |--------|-------------|
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t1_procedural_style_metrics.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t2_tuist_manifest_parsing.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -261,6 +262,7 @@
 | 2026-05-29 | P19-T1 | Archived REVIEW_p19_t1_static_spec_renderer report |
 | 2026-05-31 | P20-T1 | Archived Scoped Source Target Harvesting (PASS) |
 | 2026-05-31 | P20-T2 | Archived Tuist Manifest Parsing (PASS) |
+| 2026-05-31 | P20-T2 | Archived REVIEW_p20_t2_tuist_manifest_parsing report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
