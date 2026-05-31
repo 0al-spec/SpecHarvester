@@ -25,6 +25,9 @@ CONFIDENCE_RANK = {"low": 0, "medium": 1, "high": 2}
 ROOT_FILES = [
     "README.md",
     "README",
+    "Project.swift",
+    "Workspace.swift",
+    "Tuist.swift",
     "package.json",
     "package-lock.json",
     "npm-shrinkwrap.json",
@@ -109,6 +112,78 @@ IGNORED_NESTED_SWIFT_MANIFEST_DIRS = {
     "node_modules",
 }
 
+SOURCE_FILE_EXTENSIONS = {
+    ".c",
+    ".cc",
+    ".cpp",
+    ".cxx",
+    ".go",
+    ".h",
+    ".hpp",
+    ".java",
+    ".js",
+    ".jsx",
+    ".kt",
+    ".kts",
+    ".m",
+    ".mm",
+    ".php",
+    ".py",
+    ".rb",
+    ".rs",
+    ".swift",
+    ".ts",
+    ".tsx",
+}
+IGNORED_SOURCE_DIRS = {
+    ".build",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".swiftpm",
+    ".tox",
+    ".venv",
+    "Carthage",
+    "Derived",
+    "DerivedData",
+    "Pods",
+    "SourcePackages",
+    "__pycache__",
+    "build",
+    "checkouts",
+    "coverage",
+    "dist",
+    "node_modules",
+    "target",
+    "testdata",
+    "tmp",
+    "vendor",
+}
+SOURCE_PROFILE_BY_EXTENSION = {
+    ".go": {
+        "language": "go",
+        "ecosystem": "go",
+        "packageManager": "go",
+        "analyzerId": "spec_harvester.go_public_api",
+        "reason": "Go source evidence can feed deterministic Go public API analysis.",
+    },
+    ".py": {
+        "language": "python",
+        "ecosystem": "pypi",
+        "packageManager": "python-packaging",
+        "analyzerId": "spec_harvester.python_public_api",
+        "reason": "Python source evidence can feed deterministic Python ast public API analysis.",
+    },
+    ".swift": {
+        "language": "swift",
+        "ecosystem": "swift-source",
+        "packageManager": "none",
+        "analyzerId": "spec_harvester.swift_public_api",
+        "reason": "Swift source evidence can feed deterministic Swift public API analysis.",
+    },
+}
 MARKDOWN_EXTENSIONS = {".md", ".markdown"}
 PROJECT_PROFILE_MANIFEST_KINDS = {"package_manifest", "workspace_manifest"}
 LICENSE_TEXT_HINTS = (
@@ -126,7 +201,24 @@ class HarvestOptions:
     source: Path
     repository: str | None = None
     revision: str | None = None
+    target: Path | None = None
     max_file_bytes: int = DEFAULT_MAX_FILE_BYTES
+
+
+@dataclass(frozen=True)
+class SourceTarget:
+    root: Path
+    path: str
+    absolute: Path
+    kind: str
+    label: str
+
+    def record(self) -> dict[str, str]:
+        return {
+            "kind": self.kind,
+            "path": self.path,
+            "label": self.label,
+        }
 
 
 @dataclass(frozen=True)
@@ -235,6 +327,32 @@ MANIFEST_DETECTORS_BY_NAME: dict[str, ManifestDetector] = {
         parser="spec_harvester.swift_package_manifest",
         reason="Package.swift manifest parsed as SwiftPM evidence.",
         requires_package=True,
+    ),
+    "Project.swift": ManifestDetector(
+        language="swift",
+        ecosystem="tuist",
+        package_manager="tuist",
+        parser="spec_harvester.manifest_path",
+        reason="Project.swift collected as Tuist project manifest evidence.",
+        confidence="medium",
+    ),
+    "Workspace.swift": ManifestDetector(
+        language="swift",
+        ecosystem="tuist",
+        package_manager="tuist",
+        parser="spec_harvester.manifest_path",
+        reason="Workspace.swift collected as Tuist workspace manifest evidence.",
+        kind="workspace_manifest",
+        confidence="medium",
+    ),
+    "Tuist.swift": ManifestDetector(
+        language="swift",
+        ecosystem="tuist",
+        package_manager="tuist",
+        parser="spec_harvester.manifest_path",
+        reason="Tuist.swift collected as Tuist configuration manifest evidence.",
+        kind="workspace_manifest",
+        confidence="medium",
     ),
     "pom.xml": ManifestDetector(
         language="java-kotlin",
@@ -427,16 +545,14 @@ XCWORKSPACE_DETECTOR = ManifestDetector(
 
 
 def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
-    source = options.source.resolve()
-    if not source.exists() or not source.is_dir():
-        raise ValueError(f"Source repository does not exist or is not a directory: {source}")
+    target = resolve_source_target(options)
 
     files: list[dict[str, Any]] = []
     skipped_files: list[dict[str, Any]] = []
-    for path in candidate_files(source):
-        rel = path.relative_to(source).as_posix()
+    for path in candidate_files_for_target(target):
+        rel = path.relative_to(target.root).as_posix()
         resolved_path = path.resolve()
-        if not is_inside(source, resolved_path):
+        if not is_inside(target.root, resolved_path):
             skipped_files.append(
                 {
                     "path": rel,
@@ -471,7 +587,7 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
                 }
             )
             continue
-        files.append(collect_file(source, path))
+        files.append(collect_file(target.root, path))
 
     files.sort(key=lambda item: item["path"])
     skipped_files.sort(key=lambda item: item["path"])
@@ -480,9 +596,10 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
         "kind": SNAPSHOT_KIND,
         "source": {
             "kind": "local_checkout",
-            "label": source.name,
+            "label": target.root.name,
             "repository": options.repository,
             "revision": options.revision,
+            "target": target.record(),
         },
         "policy": {
             "execution": "none",
@@ -492,10 +609,15 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
         },
         "analyzerPolicy": default_analyzer_trust_policy(),
         "classifierPolicy": default_classifier_policy(),
-        "projectProfile": build_project_profile(files, source=source),
+        "projectProfile": build_project_profile(
+            files,
+            source=target.root,
+            target_root=target.absolute,
+        ),
         "files": files,
         "skippedFiles": skipped_files,
         "summary": {
+            "targetKind": target.kind,
             "fileCount": len(files),
             "skippedFileCount": len(skipped_files),
             "packageManifestCount": sum(1 for item in files if item["kind"] == "package_manifest"),
@@ -504,8 +626,67 @@ def collect_local_repository(options: HarvestOptions) -> dict[str, Any]:
     }
 
 
+def resolve_source_target(options: HarvestOptions) -> SourceTarget:
+    source = options.source.resolve()
+    if options.target is None:
+        if source.is_dir():
+            return SourceTarget(
+                root=source,
+                path=".",
+                absolute=source,
+                kind="repository",
+                label=source.name,
+            )
+        if source.is_file():
+            return SourceTarget(
+                root=source.parent,
+                path=source.name,
+                absolute=source,
+                kind="file",
+                label=source.stem or source.name,
+            )
+        raise ValueError(f"Source target does not exist: {source}")
+
+    if not source.exists() or not source.is_dir():
+        raise ValueError(f"Source root does not exist or is not a directory: {source}")
+    target_path = options.target
+    if target_path.is_absolute():
+        raise ValueError("Source target path must be relative to the source root")
+    target_relative = normalize_target_path(target_path)
+    target_absolute = (source / target_relative).resolve()
+    if not is_inside(source, target_absolute):
+        raise ValueError("Source target path must stay inside the source root")
+    if not target_absolute.exists():
+        raise ValueError(f"Source target does not exist: {target_absolute}")
+    if target_absolute.is_dir():
+        kind = "repository" if target_relative == "." else "folder"
+        label = target_absolute.name
+    elif target_absolute.is_file():
+        kind = "file"
+        label = target_absolute.stem or target_absolute.name
+    else:
+        raise ValueError(f"Source target is not a regular file or directory: {target_absolute}")
+    return SourceTarget(
+        root=source,
+        path=target_relative,
+        absolute=target_absolute,
+        kind=kind,
+        label=label,
+    )
+
+
+def normalize_target_path(path: Path) -> str:
+    text = path.as_posix().strip()
+    if not text or text == ".":
+        return "."
+    target_path = Path(text)
+    if any(part == ".." for part in target_path.parts):
+        raise ValueError("Source target path must not contain '..' segments")
+    return target_path.as_posix()
+
+
 def build_project_profile(
-    files: list[dict[str, Any]], *, source: Path | None = None
+    files: list[dict[str, Any]], *, source: Path | None = None, target_root: Path | None = None
 ) -> dict[str, Any]:
     languages: dict[str, dict[str, Any]] = {}
     ecosystems: dict[str, dict[str, Any]] = {}
@@ -552,7 +733,30 @@ def build_project_profile(
         if plan is not None:
             merge_analyzer_plan(analyzer_plan, plan)
 
-    if not manifests:
+    for source_entry in source_profile_entries(files):
+        merge_profile_evidence(
+            languages,
+            source_entry["language"],
+            "low",
+            source_entry["reason"],
+            source_entry["path"],
+        )
+        merge_profile_evidence(
+            ecosystems,
+            source_entry["ecosystem"],
+            "low",
+            source_entry["reason"],
+            source_entry["path"],
+            extra={
+                "language": source_entry["language"],
+                "packageManager": source_entry["packageManager"],
+            },
+        )
+        plan = source_analyzer_plan_entry(source_entry, source=target_root)
+        if plan is not None:
+            merge_analyzer_plan(analyzer_plan, plan)
+
+    if not manifests and not analyzer_plan:
         diagnostics.append(
             {
                 "id": "no_supported_package_manifest",
@@ -592,6 +796,35 @@ def project_manifest_entry(item: dict[str, Any]) -> dict[str, Any] | None:
         "sha256": sha256,
         "parser": detector.parser,
     }
+
+
+def source_profile_entries(files: list[dict[str, Any]]) -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for item in files:
+        if item.get("kind") != "source_entrypoint":
+            continue
+        path = item.get("path")
+        if not isinstance(path, str):
+            continue
+        profile = SOURCE_PROFILE_BY_EXTENSION.get(Path(path).suffix.lower())
+        if profile is None:
+            continue
+        key = (profile["language"], path)
+        if key in seen:
+            continue
+        seen.add(key)
+        entries.append(
+            {
+                "path": path,
+                "language": profile["language"],
+                "ecosystem": profile["ecosystem"],
+                "packageManager": profile["packageManager"],
+                "analyzerId": profile["analyzerId"],
+                "reason": profile["reason"],
+            }
+        )
+    return sorted(entries, key=lambda item: (item["language"], item["path"]))
 
 
 def manifest_detector_for_path(path: str) -> ManifestDetector | None:
@@ -653,24 +886,30 @@ def analyzer_plan_entry(
         }
     if manifest["language"] == "swift":
         if source is not None and not has_swift_source_for_manifest(source, manifest["path"]):
+            reason = (
+                "Package.swift evidence is available, but no Swift source files were found."
+                if manifest["ecosystem"] == "swiftpm"
+                else "Swift manifest evidence is available, but no Swift source files were found."
+            )
             return {
                 "id": "spec_harvester.swift_public_api",
                 "language": "swift",
-                "ecosystem": "swiftpm",
+                "ecosystem": manifest["ecosystem"],
                 "status": "manifest_only",
-                "reason": (
-                    "Package.swift evidence is available, but no Swift source files were found."
-                ),
+                "reason": reason,
                 "evidencePaths": [manifest["path"]],
             }
+        reason = (
+            "Package.swift evidence can feed deterministic Swift source public API analysis."
+            if manifest["ecosystem"] == "swiftpm"
+            else "Swift manifest evidence can feed deterministic Swift source public API analysis."
+        )
         return {
             "id": "spec_harvester.swift_public_api",
             "language": "swift",
-            "ecosystem": "swiftpm",
+            "ecosystem": manifest["ecosystem"],
             "status": "recommended",
-            "reason": (
-                "Package.swift evidence can feed deterministic Swift source public API analysis."
-            ),
+            "reason": reason,
             "evidencePaths": [manifest["path"]],
         }
     if manifest["language"] == "python":
@@ -713,6 +952,27 @@ def analyzer_plan_entry(
             "analyzer is configured yet."
         ),
         "evidencePaths": [manifest["path"]],
+    }
+
+
+def source_analyzer_plan_entry(
+    source_entry: dict[str, str], *, source: Path | None = None
+) -> dict[str, Any] | None:
+    analyzer_id = source_entry["analyzerId"]
+    language = source_entry["language"]
+    if source is not None and not source.is_dir():
+        return None
+    if language == "swift" and source is not None and not swift_source_files(source):
+        return None
+    if language == "go" and source is not None and not go_source_files(source):
+        return None
+    return {
+        "id": analyzer_id,
+        "language": language,
+        "ecosystem": source_entry["ecosystem"],
+        "status": "recommended",
+        "reason": source_entry["reason"],
+        "evidencePaths": [source_entry["path"]],
     }
 
 
@@ -773,6 +1033,75 @@ def candidate_files(root: Path) -> list[Path]:
     for path in nested_swift_package_manifests(root):
         seen[path.resolve().as_posix()] = path
     return list(seen.values())
+
+
+def candidate_files_for_target(target: SourceTarget) -> list[Path]:
+    seen: dict[str, Path] = {}
+
+    def add(path: Path) -> None:
+        if path.exists():
+            seen[path.absolute().as_posix()] = path
+
+    if target.kind == "repository":
+        for path in candidate_files(target.root):
+            add(path)
+    elif target.kind == "file":
+        add(target.absolute)
+        for path in root_license_files(target.root):
+            add(path)
+    else:
+        for path in candidate_files(target.absolute):
+            add(path)
+        for path in target_source_files(target.absolute):
+            add(path)
+        for path in root_license_files(target.root):
+            add(path)
+
+    return sorted(seen.values(), key=lambda item: item.relative_to(target.root).as_posix())
+
+
+def root_license_files(root: Path) -> list[Path]:
+    if not root.exists() or not root.is_dir():
+        return []
+    return sorted(
+        (path for path in root.iterdir() if path.exists() and is_license_filename(path)),
+        key=lambda item: item.name,
+    )
+
+
+def target_source_files(root: Path) -> list[Path]:
+    files: list[Path] = []
+    if not root.exists() or not root.is_dir():
+        return files
+    for current_root, dirs, filenames in os.walk(root, followlinks=False):
+        current = Path(current_root)
+        dirs[:] = [
+            dirname
+            for dirname in sorted(dirs)
+            if not should_skip_source_directory(current / dirname)
+        ]
+        for filename in sorted(filenames):
+            path = current / filename
+            if should_skip_source_file(path, root):
+                continue
+            files.append(path)
+    return sorted(files, key=lambda item: item.relative_to(root).as_posix())
+
+
+def should_skip_source_directory(path: Path) -> bool:
+    return path.is_symlink() or path.name.startswith(".") or path.name in IGNORED_SOURCE_DIRS
+
+
+def should_skip_source_file(path: Path, root: Path) -> bool:
+    if path.suffix.lower() not in SOURCE_FILE_EXTENSIONS:
+        return True
+    if path.is_symlink() or not path.is_file():
+        return True
+    try:
+        relative = path.relative_to(root)
+    except ValueError:
+        return True
+    return any(part.startswith(".") or part in IGNORED_SOURCE_DIRS for part in relative.parts[:-1])
 
 
 def nested_swift_package_manifests(root: Path) -> list[Path]:
@@ -873,7 +1202,7 @@ def classify_file(path: Path) -> str:
         return "workflow"
     if path.name == "turbo.json":
         return "workspace_manifest"
-    if path.name.startswith("index."):
+    if path.name.startswith("index.") or path.suffix.lower() in SOURCE_FILE_EXTENSIONS:
         return "source_entrypoint"
     return "metadata"
 

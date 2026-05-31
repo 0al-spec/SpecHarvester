@@ -577,3 +577,38 @@ Acceptance:
   status, and raw normalized JSON.
 - The implementation keeps the UI/data contract small enough to extract later
   and documents that SpecPM remains the validation and registry authority.
+
+## Phase 20. Scoped Source Unit Harvesting
+
+- [x] `P20-T1` Add a first-class source target model so `collect-local` and
+  source manifests can harvest repository roots, scoped folders, or scoped files
+  while preserving owning repository provenance, inherited root license evidence,
+  and strict-public staged-change guarantees.
+- [ ] `P20-T2` Add deterministic Tuist manifest parsing for `Project.swift`,
+  `Workspace.swift`, and `Tuist.swift`, extracting project names, targets,
+  product/platform hints, and source globs without executing Tuist or Swift code.
+- [ ] `P20-T3` Evaluate `codegraph` as an optional local evidence adapter for
+  multi-language source graph extraction, recording analyzer version, source
+  digests, trust policy, schema stability, licensing, and performance before any
+  default pipeline integration.
+- [ ] `P20-T4` Extend scoped-source validation with real monorepo smoke fixtures,
+  including a Tuist-managed Swift folder, a single-file target, and at least one
+  non-Swift folder target.
+- [ ] `P20-T5` Teach drafting/refinement prompts to distinguish repository,
+  package, folder module, and single-file source-unit intent so generated specs
+  do not overclaim package-manager ownership when only scoped evidence exists.
+
+Acceptance:
+
+- Scoped folder/file collection never executes repository content, package
+  scripts, Tuist, build tools, or network calls.
+- Strict public mode still rejects staged changes and missing license evidence,
+  but license evidence may be inherited from the owning checkout root.
+- Source target metadata is preserved in `harvest.json`, batch output,
+  provenance, and generated BoundarySpec evidence.
+- Folder targets without package manifests can still produce useful source-unit
+  specs from documentation and deterministic public API evidence when supported
+  analyzers exist.
+- Optional third-party graph tools such as `codegraph` remain explicit adapters
+  with untrusted evidence provenance rather than required collector
+  dependencies.

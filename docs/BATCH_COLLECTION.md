@@ -22,10 +22,15 @@ repositories:
     repository: https://github.com/xyflow/xyflow
     revision: 0123456789abcdef
     checkout: ../checkouts/xyflow
+    target: packages/react
     packageId: xyflow.core
 ```
 
 Relative checkout paths are resolved from the input manifest directory.
+`target` is optional. When present, it is resolved inside `checkout` and can name
+a folder or a single file. Strict public validation still uses the owning
+checkout for staged-change checks, while license evidence can be inherited from
+the checkout root.
 
 ## Command
 
@@ -83,6 +88,8 @@ Currently supported analyzer plan ids are:
 
 Plans with `manifest_only` status, unknown analyzer ids, and repositories with
 no supported package evidence are recorded as skipped in the batch JSON output.
+Scoped folder targets can still recommend built-in Python, Go, or Swift public
+API analyzers from source files even when no package manifest exists.
 The generated `PublicInterfaceIndex` remains advisory untrusted metadata and can
 be consumed later by `draft` through auto-detection beside `harvest.json`.
 

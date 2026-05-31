@@ -49,6 +49,7 @@ repositories:
             "revision": None,
             "ref": "main",
             "checkout": None,
+            "target": None,
             "packageId": None,
             "labels": [],
             "sourceManifest": {"path": "a.yml", "entryIndex": 0},
@@ -59,6 +60,7 @@ repositories:
             "revision": "zzz",
             "ref": None,
             "checkout": "../checkouts/zeta",
+            "target": None,
             "packageId": "zeta.core",
             "labels": ["docs", "python"],
             "sourceManifest": {"path": "z.yml", "entryIndex": 0},
@@ -82,6 +84,26 @@ repositories:
 
     assert read_repository_source_manifests(inputs) == []
     assert read_repository_source_manifests(inputs, include_disabled=True)[0]["id"] == "disabled"
+
+
+def test_read_repository_source_manifests_accepts_scoped_target(tmp_path: Path) -> None:
+    inputs = tmp_path / "inputs"
+    inputs.mkdir()
+    (inputs / "repos.yml").write_text(
+        """
+repositories:
+  - id: feature
+    repository: https://github.com/example/monorepo
+    revision: abc
+    checkout: ../checkouts/monorepo
+    target: Modules/Feature/API.swift
+""",
+        encoding="utf-8",
+    )
+
+    record = read_repository_source_manifests(inputs)[0]
+
+    assert record["target"] == "Modules/Feature/API.swift"
 
 
 def test_read_repository_source_manifests_rejects_duplicate_ids(tmp_path: Path) -> None:

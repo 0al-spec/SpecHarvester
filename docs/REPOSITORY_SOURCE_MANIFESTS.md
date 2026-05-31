@@ -28,6 +28,7 @@ repositories:
     repository: https://github.com/xyflow/xyflow
     revision: 0123456789abcdef
     checkout: ../checkouts/xyflow
+    target: packages/react
     packageId: xyflow.core
     labels: [javascript, ui]
     enabled: true
@@ -42,6 +43,8 @@ Required fields:
 Optional fields:
 
 - `checkout`: operator-managed local checkout path for later collection.
+- `target`: folder or file path relative to `checkout` for scoped source-unit
+  harvesting. Omit it to harvest the repository root.
 - `packageId`: default package id hint for later drafting.
 - `labels`: inline list of review labels.
 - `enabled`: boolean; `false` entries are skipped by default.

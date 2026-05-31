@@ -68,10 +68,11 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     if not isinstance(source, dict):
         source = {}
 
-    repository_name = infer_repository_name(source)
-    package_id = options.package_id or f"{repository_name}.core"
+    source_unit_name = infer_source_unit_name(source)
+    source_unit_kind = source_target_kind(source)
+    package_id = options.package_id or f"{source_unit_name}.core"
     package_id = slug_id(package_id)
-    bounded_context = slug_id(repository_name)
+    bounded_context = slug_id(source_unit_name)
     spec_path = f"specs/{bounded_context}.spec.yaml"
 
     package_records = package_manifest_records(snapshot)
@@ -79,7 +80,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     documentation_records = documentation_file_records(snapshot)
     primary_package_records = capability_source_records(package_records)
     semantic_profile = infer_semantic_intent_profile(
-        repository_name,
+        source_unit_name,
         package_records,
         documentation_records,
         public_interface_index,
@@ -102,7 +103,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         fallback_summary = (
             semantic_profile.summary
             if semantic_profile is not None
-            else (f"Describe observed public package metadata for {display_name(repository_name)}.")
+            else source_unit_fallback_summary(display_name(source_unit_name), source_unit_kind)
         )
         fallback_intents = (
             semantic_profile.intent_ids
@@ -124,10 +125,8 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     )
     license_inference = infer_license_with_evidence(package_records, license_records)
     license_name = license_inference.name
-    package_name = options.name or display_name(repository_name)
-    package_summary = (
-        f"Unofficial generated SpecPackage for {package_name} public package metadata."
-    )
+    package_name = options.name or display_name(source_unit_name)
+    package_summary = generated_package_summary(package_name, source_unit_kind)
 
     manifest = {
         "apiVersion": SPEC_API_VERSION,
@@ -174,6 +173,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "generatedBy": "SpecHarvester deterministic draft generator",
         "sourceRepository": source.get("repository"),
         "sourceRevision": source.get("revision"),
+        "sourceTarget": source.get("target"),
         "harvestPolicy": snapshot.get("policy"),
     }
     if public_interface_index is not None:
@@ -184,7 +184,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "kind": "BoundarySpec",
         "metadata": {
             "id": package_id,
-            "title": f"{package_name} Generated Public Package Boundary",
+            "title": generated_boundary_title(package_name, source_unit_kind),
             "version": options.version,
             "status": "draft",
             "authors": [{"name": options.author}],
@@ -198,11 +198,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         },
         "scope": {
             "boundedContext": bounded_context,
-            "includes": [
-                "Describe observed public package metadata from an allowlisted harvest snapshot.",
-                "Declare package capabilities and intent IDs inferred from static manifests.",
-                "Preserve source repository provenance and harvest policy metadata.",
-            ],
+            "includes": source_unit_scope_includes(source_unit_kind),
             "excludes": [
                 "Upstream maintainer endorsement.",
                 "Runtime behavior not evidenced by static harvested metadata.",
@@ -317,6 +313,74 @@ def load_public_interface_index(
         raise ValueError("Invalid PublicInterfaceIndex: index must be an object")
     validate_public_interface_index(index)
     return index
+
+
+def infer_source_unit_name(source: dict[str, Any]) -> str:
+    target = source.get("target")
+    if isinstance(target, dict):
+        target_path = target.get("path")
+        target_label = target.get("label")
+        target_kind = target.get("kind")
+        if (
+            isinstance(target_label, str)
+            and target_label.strip()
+            and isinstance(target_kind, str)
+            and target_kind != "repository"
+        ):
+            return slug_id(target_label)
+        if isinstance(target_path, str) and target_path.strip() and target_path != ".":
+            return slug_id(Path(target_path).stem or Path(target_path).name)
+
+    return infer_repository_name(source)
+
+
+def source_target_kind(source: dict[str, Any]) -> str:
+    target = source.get("target")
+    if not isinstance(target, dict):
+        return "repository"
+    target_kind = target.get("kind")
+    if target_kind in {"repository", "folder", "file"}:
+        return str(target_kind)
+    return "repository"
+
+
+def generated_package_summary(package_name: str, source_unit_kind: str) -> str:
+    if source_unit_kind == "repository":
+        return f"Unofficial generated SpecPackage for {package_name} public package metadata."
+    return f"Unofficial generated SpecPackage for {package_name} source unit metadata."
+
+
+def generated_boundary_title(package_name: str, source_unit_kind: str) -> str:
+    if source_unit_kind == "repository":
+        return f"{package_name} Generated Public Package Boundary"
+    if source_unit_kind == "file":
+        return f"{package_name} Generated Source File Boundary"
+    return f"{package_name} Generated Source Unit Boundary"
+
+
+def source_unit_fallback_summary(package_name: str, source_unit_kind: str) -> str:
+    if source_unit_kind == "repository":
+        return f"Describe observed public package metadata for {package_name}."
+    if source_unit_kind == "file":
+        return f"Describe observed source file metadata for {package_name}."
+    return f"Describe observed source unit metadata for {package_name}."
+
+
+def source_unit_scope_includes(source_unit_kind: str) -> list[str]:
+    if source_unit_kind == "repository":
+        return [
+            "Describe observed public package metadata from an allowlisted harvest snapshot.",
+            "Declare package capabilities and intent IDs inferred from static manifests.",
+            "Preserve source repository provenance and harvest policy metadata.",
+        ]
+    return [
+        "Describe observed source unit metadata from an allowlisted scoped harvest snapshot.",
+        (
+            "Declare capabilities and intent IDs inferred from static manifests, "
+            "documentation, and public API evidence when present."
+        ),
+        "Preserve source repository, source target, and harvest policy provenance metadata.",
+    ]
 
 
 def infer_repository_name(source: dict[str, Any]) -> str:
@@ -1536,6 +1600,9 @@ def foreign_repository_artifact(source: dict[str, Any]) -> dict[str, Any]:
     revision = source.get("revision")
     if isinstance(revision, str):
         artifact["revision"] = revision
+    target = source.get("target")
+    if isinstance(target, dict):
+        artifact["target"] = target
     return artifact
 
 

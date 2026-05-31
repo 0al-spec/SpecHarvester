@@ -31,7 +31,13 @@ IGNORED_DIR_NAMES = {
     ".venv",
     "__pycache__",
     "build",
+    "checkouts",
     "dist",
+    "node_modules",
+    "target",
+    "testdata",
+    "tmp",
+    "vendor",
     "venv",
 }
 

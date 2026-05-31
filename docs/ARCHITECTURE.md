@@ -36,13 +36,20 @@ accepted registry source
 
 ### Safe Evidence Collector
 
-Reads allowlisted static files from a public repository checkout and writes an
-evidence snapshot. It does not execute package content.
+Reads allowlisted static files from a public repository checkout, scoped folder,
+or scoped file target and writes an evidence snapshot. It does not execute
+package content.
 
 Current command:
 
 ```bash
 spec-harvester collect-local <repo> --out <candidate-dir>
+```
+
+Scoped monorepo target:
+
+```bash
+spec-harvester collect-local <repo> --target Modules/Player --out <candidate-dir>
 ```
 
 For allowlisted Markdown, the collector can add bounded `semanticHints` for
@@ -67,7 +74,8 @@ spec-harvester source-manifests inputs
 
 Reads validated repository source records and collects `harvest.json` snapshots
 from operator-managed local checkouts into deterministic candidate directories.
-It uses the same allowlisted static file collector as `collect-local`.
+It uses the same allowlisted static file collector as `collect-local`, including
+optional folder/file `target` metadata from source manifests.
 
 Current command:
 
