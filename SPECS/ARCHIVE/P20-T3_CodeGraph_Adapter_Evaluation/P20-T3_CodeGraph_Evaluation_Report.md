@@ -50,7 +50,7 @@ Implications for SpecHarvester:
 - Do not allow implicit fallback downloads inside normal harvest/draft flows.
 - Require an already-installed executable path or explicit opt-in environment.
 - Prefer `CODEGRAPH_NO_DOWNLOAD=1` and a controlled `CODEGRAPH_INSTALL_DIR`
-  during smoke tests.
+  during any optional live smoke tests.
 - Record executable path, analyzer version, package integrity when available,
   and executable digest when running a live adapter.
 
@@ -129,6 +129,30 @@ The adapter should normalize from CLI JSON or SQLite into this SpecHarvester
 shape, then let drafting consume the normalized evidence. Drafting must not read
 `.codegraph/codegraph.db` directly.
 
+## Interface Compatibility Guard
+
+The important CI check is interface compatibility, not whether CodeGraph can
+successfully run over an arbitrary third-party project on every CI run.
+
+Recommended compatibility checks:
+
+- Pin the expected CodeGraph package version and package integrity in a local
+  SpecHarvester fixture.
+- Verify that the configured executable, when explicitly available, reports the
+  pinned version.
+- Verify that the CLI surface still exposes the JSON-producing commands needed
+  by the adapter: `status --json`, `query --json`, `files --json`,
+  `callers --json`, `callees --json`, `impact --json`, and `affected --json`.
+- Keep small captured JSON fixtures for the normalized records SpecHarvester
+  consumes, then validate those fixtures against a SpecHarvester-owned schema.
+- Keep live indexing of real repositories out of ordinary CI. If needed, run it
+  manually or in an explicit `workflow_dispatch` job with a pre-provisioned,
+  pinned `codegraph` executable.
+
+This makes CI answer the compatibility question: "does our adapter still match
+the pinned CodeGraph interface?" It does not try to prove that every supported
+language or every upstream project indexes correctly on CI.
+
 ## Trust Policy
 
 `codegraph` claims local-only indexing and uses tree-sitter plus SQLite, but it
@@ -191,6 +215,7 @@ Proceed with `codegraph` only as a follow-up optional adapter:
   installs or downloads tools, records analyzer/executable provenance, and
   normalizes JSON/SQLite graph evidence into SpecHarvester-owned
   `source_graph_index` evidence.
-- `P20-T7` — Add an environment-gated live CodeGraph smoke matrix for the
-  Phase 20 scoped-source fixtures, disabled in normal CI and runnable only when
-  an operator supplies a pinned local `codegraph` executable.
+- `P20-T7` — Add a pinned CodeGraph interface compatibility guard that verifies
+  the expected package version, binary availability contract, CLI JSON flags,
+  and normalized schema mapping without indexing third-party projects in
+  ordinary CI.
