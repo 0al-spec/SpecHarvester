@@ -89,7 +89,10 @@ Currently supported analyzer plan ids are:
 Plans with `manifest_only` status, unknown analyzer ids, and repositories with
 no supported package evidence are recorded as skipped in the batch JSON output.
 Scoped folder targets can still recommend built-in Python, Go, or Swift public
-API analyzers from source files even when no package manifest exists.
+API analyzers from source files even when no package manifest exists. Tuist
+`Project.swift`, `Workspace.swift`, and `Tuist.swift` files are parsed as static
+text only; collection can record project names, target names, product/platform
+hints, and source/resource globs without running Tuist or Swift code.
 The generated `PublicInterfaceIndex` remains advisory untrusted metadata and can
 be consumed later by `draft` through auto-detection beside `harvest.json`.
 

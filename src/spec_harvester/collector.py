@@ -14,6 +14,7 @@ from spec_harvester.license_files import is_license_filename
 from spec_harvester.semantic_keyword_taxonomy import SEMANTIC_KEYWORD_TAXONOMY
 from spec_harvester.swift_public_api import swift_source_files
 from spec_harvester.swift_text import strip_swift_comments
+from spec_harvester.tuist_manifest import parse_tuist_manifest
 
 SNAPSHOT_KIND = "SpecHarvesterEvidenceSnapshot"
 SNAPSHOT_SCHEMA_VERSION = 1
@@ -1164,6 +1165,10 @@ def collect_file(root: Path, path: Path) -> dict[str, Any]:
             record["package"] = package
     elif path.name == "Package.swift":
         package = parse_swift_package_manifest(text)
+        if package:
+            record["package"] = package
+    elif path.name in {"Project.swift", "Workspace.swift", "Tuist.swift"}:
+        package = parse_tuist_manifest(text, filename=path.name)
         if package:
             record["package"] = package
     elif is_license_filename(path):

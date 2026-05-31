@@ -977,7 +977,9 @@ def infer_intent_ids(
     # Bootstrap-only baseline over package manifest name/description.
     # Other harvested files, including workflow files, are provenance evidence and do not
     # participate in intent inference.
-    if package is not None and package.get("ecosystem") == "swift":
+    if package is not None and (
+        package.get("ecosystem") == "swift" or package.get("language") == "swift"
+    ):
         return infer_swift_intent_ids(package_name, package)
 
     text = f"{package_name} {summary}".lower()

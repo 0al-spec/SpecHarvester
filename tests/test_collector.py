@@ -263,6 +263,12 @@ def test_collect_local_repository_can_target_folder_with_inherited_license(
     assert by_path["LICENSE"]["licenseHint"] == "MIT"
     assert by_path["Modules/Player/API.swift"]["kind"] == "source_entrypoint"
     assert by_path["Modules/Player/Project.swift"]["kind"] == "package_manifest"
+    assert by_path["Modules/Player/Project.swift"]["package"] == {
+        "ecosystem": "tuist",
+        "language": "swift",
+        "manifest": "project",
+        "name": "Player",
+    }
     assert snapshot["projectProfile"]["languages"][0]["id"] == "swift"
     assert {item["id"] for item in snapshot["projectProfile"]["ecosystems"]} == {
         "swift-source",
@@ -1304,6 +1310,49 @@ def test_draft_spec_package_uses_source_unit_metadata_for_scoped_folder(
     )
     assert "sourceTarget:" in spec
     assert "path: Modules/Player" in spec
+
+
+def test_draft_spec_package_uses_tuist_target_products_as_swift_intents(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "monorepo"
+    feature = repo / "Modules" / "Player"
+    feature.mkdir(parents=True)
+    (repo / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (feature / "Project.swift").write_text(
+        """
+        import ProjectDescription
+        let project = Project(
+            name: "Player",
+            targets: [
+                .target(
+                    name: "PlayerKit",
+                    product: .framework,
+                    sources: ["Sources/**"]
+                )
+            ]
+        )
+        """,
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            target=Path("Modules/Player"),
+            repository="https://github.com/example/monorepo",
+            revision="abc123",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "intent.swift.product.playerkit" in manifest
+    assert "Observed import surface for Player." in spec
 
 
 def test_draft_spec_package_does_not_double_count_singular_plural_semantic_terms(
