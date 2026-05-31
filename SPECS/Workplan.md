@@ -587,7 +587,7 @@ Acceptance:
 - [x] `P20-T2` Add deterministic Tuist manifest parsing for `Project.swift`,
   `Workspace.swift`, and `Tuist.swift`, extracting project names, targets,
   product/platform hints, and source globs without executing Tuist or Swift code.
-- [ ] `P20-T3` Evaluate `codegraph` as an optional local evidence adapter for
+- [x] `P20-T3` Evaluate `codegraph` as an optional local evidence adapter for
   multi-language source graph extraction, recording analyzer version, source
   digests, trust policy, schema stability, licensing, and performance before any
   default pipeline integration.
