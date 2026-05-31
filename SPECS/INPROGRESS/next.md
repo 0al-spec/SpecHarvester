@@ -4,7 +4,7 @@
 **Phase:** Phase 20. Scoped Source Unit Harvesting
 **Effort:** 4-8 hours
 **Dependencies:** P20-T1
-**Status:** Queued
+**Status:** In Progress
 **Suggested:** 2026-05-31
 
 ## Description
