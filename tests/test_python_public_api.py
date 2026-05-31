@@ -235,6 +235,24 @@ def test_analyze_python_public_api_records_parse_diagnostics_and_skips_cache_dir
     assert len(diagnostics["null_byte.py"]["evidence"]["sha256"]) == 64
 
 
+def test_analyze_python_public_api_skips_vendor_like_directories(tmp_path: Path) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "api.py").write_text("def public_api():\n    return None\n", encoding="utf-8")
+    vendor = package / "vendor"
+    vendor.mkdir()
+    (vendor / "private_api.py").write_text(
+        "def leaked_vendor_api():\n    return None\n",
+        encoding="utf-8",
+    )
+
+    index = analyze_python_public_api(package, package_id="demo.python")
+
+    entrypoints = index["packages"][0]["entrypoints"]
+    assert [entrypoint["path"] for entrypoint in entrypoints] == ["api.py"]
+    assert "leaked_vendor_api" not in json.dumps(index)
+
+
 def test_analyze_python_public_api_marks_partial_when_all_files_fail(tmp_path: Path) -> None:
     package = tmp_path / "demo"
     package.mkdir()

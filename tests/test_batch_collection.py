@@ -195,6 +195,50 @@ repositories:
     assert "Other.swift" not in json.dumps(index)
 
 
+def test_collect_batch_snapshots_keeps_python_scoped_analyzer_out_of_vendor(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Root\n")
+    feature = checkout / "services" / "feature"
+    vendor = feature / "vendor"
+    feature.mkdir(parents=True)
+    vendor.mkdir()
+    (checkout / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (feature / "api.py").write_text("def public_api():\n    return None\n", encoding="utf-8")
+    (vendor / "private_api.py").write_text(
+        "def leaked_vendor_api():\n    return None\n",
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: feature
+    repository: https://github.com/example/monorepo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+    target: services/feature
+    packageId: feature.python
+""",
+        encoding="utf-8",
+    )
+
+    collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_interface_indexes=True)
+    )
+
+    snapshot = json.loads((out / "feature" / "harvest.json").read_text(encoding="utf-8"))
+    assert [item["path"] for item in snapshot["files"]] == [
+        "LICENSE",
+        "services/feature/api.py",
+    ]
+    index = json.loads((out / "feature" / "public-interface-index.json").read_text())
+    assert index["packages"][0]["entrypoints"][0]["path"] == "api.py"
+    assert "leaked_vendor_api" not in json.dumps(index)
+
+
 def test_collect_batch_snapshots_emits_python_interface_index_when_requested(
     tmp_path: Path,
 ) -> None:
