@@ -145,7 +145,16 @@ def string_argument_values(body: str, name: str) -> list[str]:
     value = argument_value(body, name)
     if value is None:
         return []
-    return sorted({unescape_swift_string(match.group(1)) for match in STRING_RE.finditer(value)})
+    included = {unescape_swift_string(match.group(1)) for match in STRING_RE.finditer(value)}
+    excluded = excluded_string_values(value)
+    return sorted(included - excluded)
+
+
+def excluded_string_values(value: str) -> set[str]:
+    excluding = argument_value(value, "excluding")
+    if excluding is None:
+        return set()
+    return {unescape_swift_string(match.group(1)) for match in STRING_RE.finditer(excluding)}
 
 
 def argument_value(body: str, name: str) -> str | None:
@@ -238,4 +247,53 @@ def matching_paren_index(text: str, open_index: int) -> int | None:
 
 
 def unescape_swift_string(value: str) -> str:
-    return bytes(value, "utf-8").decode("unicode_escape")
+    result: list[str] = []
+    index = 0
+    while index < len(value):
+        char = value[index]
+        if char != "\\":
+            result.append(char)
+            index += 1
+            continue
+        if index + 1 >= len(value):
+            result.append(char)
+            index += 1
+            continue
+        escaped = value[index + 1]
+        simple_escape = {
+            "0": "\0",
+            "\\": "\\",
+            "t": "\t",
+            "n": "\n",
+            "r": "\r",
+            '"': '"',
+            "'": "'",
+        }.get(escaped)
+        if simple_escape is not None:
+            result.append(simple_escape)
+            index += 2
+            continue
+        unicode_escape = swift_unicode_escape(value, index)
+        if unicode_escape is not None:
+            character, end = unicode_escape
+            result.append(character)
+            index = end
+            continue
+        result.append(f"\\{escaped}")
+        index += 2
+    return "".join(result)
+
+
+def swift_unicode_escape(value: str, start: int) -> tuple[str, int] | None:
+    if not value.startswith("\\u{", start):
+        return None
+    end = value.find("}", start + 3)
+    if end == -1:
+        return None
+    digits = value[start + 3 : end]
+    if not 1 <= len(digits) <= 8 or not re.fullmatch(r"[0-9A-Fa-f]+", digits):
+        return None
+    try:
+        return chr(int(digits, 16)), end + 1
+    except ValueError:
+        return None

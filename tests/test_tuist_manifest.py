@@ -118,5 +118,64 @@ def test_parse_tuist_manifest_ignores_comments_and_tolerates_partial_shapes() ->
     assert "Commented" not in json.dumps(payload)
 
 
+def test_parse_tuist_manifest_omits_excluded_source_and_resource_globs() -> None:
+    payload = parse_tuist_manifest(
+        """
+        import ProjectDescription
+
+        let project = Project(
+            name: "Excluded",
+            targets: [
+                .target(
+                    name: "ExcludedKit",
+                    product: .framework,
+                    sources: .sources(
+                        ["Sources/**"],
+                        excluding: ["Sources/Generated/**"]
+                    ),
+                    resources: .resources(
+                        ["Resources/**"],
+                        excluding: ["Resources/Generated/**"]
+                    )
+                )
+            ]
+        )
+        """,
+        filename="Project.swift",
+    )
+
+    assert payload is not None
+    assert payload["targets"][0]["sources"] == ["Sources/**"]
+    assert payload["targets"][0]["resources"] == ["Resources/**"]
+    assert payload["sourceGlobs"] == ["Sources/**"]
+    assert payload["resourceGlobs"] == ["Resources/**"]
+    assert "Generated" not in json.dumps(payload)
+
+
+def test_parse_tuist_manifest_preserves_non_ascii_swift_strings() -> None:
+    payload = parse_tuist_manifest(
+        """
+        import ProjectDescription
+
+        let project = Project(
+            name: "Café",
+            targets: [
+                .target(
+                    name: "CaféKit",
+                    product: .framework,
+                    sources: ["Sources/Café/**", "Sources/Unicode\\u{00E9}/**"]
+                )
+            ]
+        )
+        """,
+        filename="Project.swift",
+    )
+
+    assert payload is not None
+    assert payload["name"] == "Café"
+    assert payload["targets"][0]["name"] == "CaféKit"
+    assert payload["sourceGlobs"] == ["Sources/Café/**", "Sources/Unicodeé/**"]
+
+
 def test_parse_tuist_config_without_static_metadata_returns_none() -> None:
     assert parse_tuist_manifest("let config = Config()", filename="Tuist.swift") is None
