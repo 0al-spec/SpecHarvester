@@ -56,6 +56,12 @@ from spec_harvester.namespace_reports import (
     build_namespace_upstream_report,
     write_namespace_upstream_report,
 )
+from spec_harvester.procedural_style_report import (
+    DEFAULT_HOTSPOT_MIN_TOP_LEVEL_COUNT,
+    DEFAULT_HOTSPOT_MIN_TOP_LEVEL_SPAN,
+    build_procedural_style_report,
+    write_procedural_style_report,
+)
 from spec_harvester.promoter import (
     PrepareAcceptedManifestEntryOptions,
     PromoteOptions,
@@ -449,6 +455,47 @@ def build_parser() -> argparse.ArgumentParser:
     )
     architecture_lint.set_defaults(func=run_architecture_lint)
 
+    procedural_style = subcommands.add_parser(
+        "procedural-style-report",
+        help="Build an advisory procedural-style metrics report for local Python source files.",
+    )
+    procedural_style.add_argument(
+        "--path",
+        action="append",
+        type=Path,
+        default=[],
+        help=("Source file or directory to scan. May be repeated. Defaults to src/spec_harvester."),
+    )
+    procedural_style.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where procedural-style report JSON is written.",
+    )
+    procedural_style.add_argument(
+        "--hotspot-min-top-level-count",
+        type=int,
+        default=DEFAULT_HOTSPOT_MIN_TOP_LEVEL_COUNT,
+        help=(
+            "Minimum top-level function count for a file to be treated as a hotspot. "
+            f"Default: {DEFAULT_HOTSPOT_MIN_TOP_LEVEL_COUNT}."
+        ),
+    )
+    procedural_style.add_argument(
+        "--hotspot-min-top-level-span",
+        type=int,
+        default=DEFAULT_HOTSPOT_MIN_TOP_LEVEL_SPAN,
+        help=(
+            "Minimum top-level function span for a file to be treated as a hotspot. "
+            f"Default: {DEFAULT_HOTSPOT_MIN_TOP_LEVEL_SPAN}."
+        ),
+    )
+    procedural_style.add_argument(
+        "--fail-on-hotspots",
+        action="store_true",
+        help="Return exit code 1 when procedural-style hotspots are detected.",
+    )
+    procedural_style.set_defaults(func=run_procedural_style_report)
+
     accepted_diff = subcommands.add_parser(
         "accepted-candidate-diff-report",
         help="Build accepted-vs-candidate package metadata diff report.",
@@ -824,6 +871,34 @@ def run_architecture_lint(args: argparse.Namespace) -> int:
     if args.fail_on_issues and result["summary"]["issueCount"] > 0:
         return 1
     return 0
+
+
+def run_procedural_style_report(args: argparse.Namespace) -> int:
+    paths = args.path or [Path("src/spec_harvester")]
+    try:
+        result = build_procedural_style_report(
+            paths,
+            hotspot_min_top_level_count=args.hotspot_min_top_level_count,
+            hotspot_min_top_level_span=args.hotspot_min_top_level_span,
+        )
+    except ValueError as exc:
+        print(
+            json.dumps(
+                {"status": "error", "message": procedural_style_error(str(exc))},
+                indent=2,
+            )
+        )
+        return 2
+    if args.output is not None:
+        write_procedural_style_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    if args.fail_on_hotspots and result["summary"]["hotspotCount"] > 0:
+        return 1
+    return 0
+
+
+def procedural_style_error(message: str) -> str:
+    return message.replace("Architecture lint", "Procedural style report")
 
 
 def run_accepted_candidate_diff_report(args: argparse.Namespace) -> int:

@@ -501,7 +501,7 @@ Acceptance:
 
 ## Phase 17. Elegant Objects Refactoring Strategy
 
-- [ ] `P17-T1` Add a deterministic procedural-style metrics report that counts
+- [x] `P17-T1` Add a deterministic procedural-style metrics report that counts
   top-level function span, method span, behavior-rich classes, DTO-only classes,
   largest functions, and module hotspots so EO progress is measured by behavior
   movement rather than subjective review impressions.

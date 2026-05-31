@@ -76,6 +76,7 @@
 | P16-T16 | [P16-T16_Upstream_Issue_Evaluation_Object/](P16-T16_Upstream_Issue_Evaluation_Object/) | 2026-05-26 | PASS |
 | P16-T17 | [P16-T17_Real_Repository_Quality_Rating_Policy_Objects/](P16-T17_Real_Repository_Quality_Rating_Policy_Objects/) | 2026-05-26 | PASS |
 | P16-T18 | [P16-T18_Duplicate_Code_Practical_Minimum_Audit/](P16-T18_Duplicate_Code_Practical_Minimum_Audit/) | 2026-05-26 | PASS |
+| P17-T1 | [P17-T1_Procedural_Style_Metrics_Report/](P17-T1_Procedural_Style_Metrics_Report/) | 2026-05-29 | PASS |
 | P18-T1 | [P18-T1_Swift_Public_API_Analyzer/](P18-T1_Swift_Public_API_Analyzer/) | 2026-05-29 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
@@ -89,6 +90,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t1_procedural_style_metrics.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -248,6 +250,8 @@
 | 2026-05-26 | P16-T17 | Archived REVIEW_p16_t17_real_repo_quality_rating_policy_objects report |
 | 2026-05-26 | P16-T18 | Archived Duplicate-Code Practical-Minimum Audit (PASS) |
 | 2026-05-26 | P16-T18 | Archived REVIEW_p16_t18_duplicate_code_practical_minimum_audit report |
+| 2026-05-29 | P17-T1 | Archived Procedural Style Metrics Report (PASS) |
+| 2026-05-29 | P17-T1 | Archived REVIEW_p17_t1_procedural_style_metrics report |
 | 2026-05-29 | P18-T1 | Archived Swift Public API Analyzer (PASS) |
 | 2026-05-29 | P18-T1 | Archived REVIEW_p18_t1_swift_public_api_analyzer report |
 | 2026-05-29 | P19-T1 | Archived Static Spec Renderer (PASS) |
