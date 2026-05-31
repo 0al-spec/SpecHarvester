@@ -57,6 +57,11 @@ language-neutral README, API contract, OpenAPI, schema validation, workflow
 automation, developer tooling, and documentation knowledge base evidence. It
 stores compact terms and file digests, not raw documentation bodies.
 
+For Tuist-managed Swift source units, the collector parses manifest text from
+`Project.swift`, `Workspace.swift`, and `Tuist.swift` to extract bounded project,
+target, product, platform, and glob metadata. This parser is deterministic and
+does not execute Tuist, Swift, build tools, or package scripts.
+
 ### Repository Source Manifest Reader
 
 Reads operator-authored `inputs/*.yml` files and prints normalized repository

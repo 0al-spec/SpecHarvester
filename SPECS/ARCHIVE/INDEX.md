@@ -80,6 +80,7 @@
 | P18-T1 | [P18-T1_Swift_Public_API_Analyzer/](P18-T1_Swift_Public_API_Analyzer/) | 2026-05-29 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P20-T1 | [P20-T1_Scoped_Source_Target_Harvesting/](P20-T1_Scoped_Source_Target_Harvesting/) | 2026-05-31 | PASS |
+| P20-T2 | [P20-T2_Tuist_Manifest_Parsing/](P20-T2_Tuist_Manifest_Parsing/) | 2026-05-31 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -93,6 +94,7 @@
 | Folder | Description |
 |--------|-------------|
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t1_procedural_style_metrics.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t2_tuist_manifest_parsing.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -259,6 +261,8 @@
 | 2026-05-29 | P19-T1 | Archived Static Spec Renderer (PASS) |
 | 2026-05-29 | P19-T1 | Archived REVIEW_p19_t1_static_spec_renderer report |
 | 2026-05-31 | P20-T1 | Archived Scoped Source Target Harvesting (PASS) |
+| 2026-05-31 | P20-T2 | Archived Tuist Manifest Parsing (PASS) |
+| 2026-05-31 | P20-T2 | Archived REVIEW_p20_t2_tuist_manifest_parsing report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

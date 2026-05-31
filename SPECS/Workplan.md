@@ -584,7 +584,7 @@ Acceptance:
   source manifests can harvest repository roots, scoped folders, or scoped files
   while preserving owning repository provenance, inherited root license evidence,
   and strict-public staged-change guarantees.
-- [ ] `P20-T2` Add deterministic Tuist manifest parsing for `Project.swift`,
+- [x] `P20-T2` Add deterministic Tuist manifest parsing for `Project.swift`,
   `Workspace.swift`, and `Tuist.swift`, extracting project names, targets,
   product/platform hints, and source globs without executing Tuist or Swift code.
 - [ ] `P20-T3` Evaluate `codegraph` as an optional local evidence adapter for
