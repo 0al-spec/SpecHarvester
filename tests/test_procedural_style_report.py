@@ -120,6 +120,7 @@ def test_procedural_style_report_reports_unparsed_sources(tmp_path: Path) -> Non
     assert report["summary"]["fileCount"] == 1
     assert report["summary"]["analyzedFileCount"] == 0
     assert report["summary"]["skippedFileCount"] == 1
+    assert report["status"] == "attention"
     assert report["skippedFiles"][0]["reason"] == "syntax_error"
 
 
@@ -186,3 +187,5 @@ def test_cli_procedural_style_report_missing_path_errors(tmp_path: Path, capsys)
     assert result == 2
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
+    assert payload["message"].startswith("Procedural style report path does not exist:")
+    assert "Architecture lint" not in payload["message"]

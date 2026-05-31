@@ -882,7 +882,12 @@ def run_procedural_style_report(args: argparse.Namespace) -> int:
             hotspot_min_top_level_span=args.hotspot_min_top_level_span,
         )
     except ValueError as exc:
-        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        print(
+            json.dumps(
+                {"status": "error", "message": procedural_style_error(str(exc))},
+                indent=2,
+            )
+        )
         return 2
     if args.output is not None:
         write_procedural_style_report(args.output, result)
@@ -890,6 +895,10 @@ def run_procedural_style_report(args: argparse.Namespace) -> int:
     if args.fail_on_hotspots and result["summary"]["hotspotCount"] > 0:
         return 1
     return 0
+
+
+def procedural_style_error(message: str) -> str:
+    return message.replace("Architecture lint", "Procedural style report")
 
 
 def run_accepted_candidate_diff_report(args: argparse.Namespace) -> int:

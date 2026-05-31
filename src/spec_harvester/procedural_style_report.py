@@ -99,7 +99,7 @@ def build_procedural_style_report(
     return {
         "schemaVersion": PROCEDURAL_STYLE_SCHEMA_VERSION,
         "kind": PROCEDURAL_STYLE_REPORT_KIND,
-        "status": "attention" if hotspots else "ok",
+        "status": "attention" if hotspots or scan.skipped_files else "ok",
         "summary": summary,
         "skippedFiles": [skipped_source_file_to_dict(skipped) for skipped in scan.skipped_files],
         "fileMetrics": file_metrics,
