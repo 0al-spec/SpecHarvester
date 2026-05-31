@@ -597,6 +597,13 @@ Acceptance:
 - [ ] `P20-T5` Teach drafting/refinement prompts to distinguish repository,
   package, folder module, and single-file source-unit intent so generated specs
   do not overclaim package-manager ownership when only scoped evidence exists.
+- [ ] `P20-T6` Implement an explicit opt-in CodeGraph adapter boundary that
+  never installs or downloads tools, records analyzer and executable
+  provenance, and normalizes JSON or SQLite graph evidence into a
+  SpecHarvester-owned `source_graph_index` evidence shape.
+- [ ] `P20-T7` Add an environment-gated live CodeGraph smoke matrix for scoped
+  source fixtures, disabled in normal CI and runnable only when an operator
+  supplies a pinned local `codegraph` executable.
 
 Acceptance:
 
@@ -612,3 +619,5 @@ Acceptance:
 - Optional third-party graph tools such as `codegraph` remain explicit adapters
   with untrusted evidence provenance rather than required collector
   dependencies.
+- Third-party graph adapter tests that need external binaries are environment
+  gated and never require network downloads in ordinary CI.
