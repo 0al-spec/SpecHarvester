@@ -51,12 +51,13 @@ def analyze_python_public_api(
 
 
 def analyze_python_public_api_with_options(options: PublicApiAnalyzerOptions) -> dict[str, Any]:
-    root = options.root("Python")
+    root = python_source_root(options.source)
+    relative_root = root.parent if root.is_file() else root
     cache = options.cache()
     entrypoints: list[dict[str, Any]] = []
     diagnostics: list[dict[str, Any]] = []
     for path in python_source_files(root):
-        relative = path.relative_to(root).as_posix()
+        relative = path.relative_to(relative_root).as_posix()
         data = path.read_bytes()
         digest = hashlib.sha256(data).hexdigest()
         cached_payload = read_cached_python_payload(cache, relative, digest)
@@ -108,6 +109,15 @@ def analyze_python_public_api_with_options(options: PublicApiAnalyzerOptions) ->
     return index
 
 
+def python_source_root(source: Path) -> Path:
+    root = source.resolve()
+    if not root.exists() or not (root.is_dir() or root.is_file()):
+        raise ValueError(f"Python source root does not exist: {source}")
+    if root.is_file() and root.suffix != ".py":
+        raise ValueError(f"Python source target is not a Python file: {source}")
+    return root
+
+
 def read_cached_python_payload(
     cache: AnalyzerCache | None,
     path: str,
@@ -139,6 +149,8 @@ def write_cached_python_payload(
 
 
 def python_source_files(root: Path) -> list[Path]:
+    if root.is_file():
+        return [root] if root.suffix == ".py" and not root.is_symlink() else []
     files: list[Path] = []
     for path in root.rglob("*.py"):
         if should_skip(path, root):

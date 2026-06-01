@@ -293,13 +293,14 @@ def test_analyze_python_public_api_reuses_cached_file_results(
     assert second == first
 
 
-def test_analyze_python_public_api_rejects_non_directory_source(tmp_path: Path) -> None:
+def test_analyze_python_public_api_accepts_single_file_source(tmp_path: Path) -> None:
     source = tmp_path / "module.py"
     source.write_text("def ok():\n    return True\n", encoding="utf-8")
 
-    try:
-        analyze_python_public_api(source)
-    except ValueError as exc:
-        assert "does not exist or is not a directory" in str(exc)
-    else:
-        raise AssertionError("expected ValueError")
+    index = analyze_python_public_api(source, package_id="demo.module")
+
+    assert index["summary"]["symbolCount"] == 1
+    package = index["packages"][0]
+    assert package["id"] == "demo.module"
+    assert package["entrypoints"][0]["path"] == "module.py"
+    assert package["entrypoints"][0]["symbols"][0]["name"] == "ok"

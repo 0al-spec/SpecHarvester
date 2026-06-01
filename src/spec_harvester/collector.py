@@ -961,7 +961,7 @@ def source_analyzer_plan_entry(
 ) -> dict[str, Any] | None:
     analyzer_id = source_entry["analyzerId"]
     language = source_entry["language"]
-    if source is not None and not source.is_dir():
+    if source is not None and not source.is_dir() and not source.is_file():
         return None
     if language == "swift" and source is not None and not swift_source_files(source):
         return None
