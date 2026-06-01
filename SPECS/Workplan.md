@@ -648,7 +648,7 @@ Acceptance:
   input provenance, output hashes, validation status, diagnostics summary,
   privacy/security caveats, and human review boundary without implying automatic
   SpecPM acceptance.
-- [ ] `P21-T6` Add SpecPM handoff documentation and examples for generated
+- [x] `P21-T6` Add SpecPM handoff documentation and examples for generated
   candidate bundles, including the distinction between SpecHarvester producing
   an evidence-rich candidate, SpecPM validating package shape, maintainers
   approving acceptance, and the public index publishing only reviewed sources.
