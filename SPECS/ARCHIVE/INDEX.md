@@ -100,6 +100,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t2_tuist_manifest_parsing.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t3_codegraph_adapter_evaluation.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t4_scoped_source_validation_fixtures.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t1_producer_candidate_bundle_output_planning.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -273,6 +274,7 @@
 | 2026-06-01 | P20-T4 | Archived Scoped Source Validation Fixtures (PASS) |
 | 2026-06-01 | P20-T4 | Archived REVIEW_p20_t4_scoped_source_validation_fixtures report |
 | 2026-06-02 | P21-T1 | Archived Producer Candidate Bundle Output Planning (PASS) |
+| 2026-06-02 | P21-T1 | Archived REVIEW_p21_t1_producer_candidate_bundle_output_planning report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
