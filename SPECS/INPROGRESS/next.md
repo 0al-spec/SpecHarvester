@@ -4,8 +4,10 @@
 **Phase:** Phase 21. Producer Candidate Bundle Contract
 **Effort:** 4-8 hours
 **Dependencies:** P21-T1, P21-T2, P21-T3, P21-T4
-**Status:** Queued
+**Status:** Selected
 **Suggested:** 2026-06-02
+**Branch:** `feature/P21-T5-static-viewer-producer-receipt-panels`
+**Stack Base:** `feature/P21-T4-candidate-bundle-preflight-verifier`
 
 ## Description
 
@@ -29,6 +31,7 @@ boundary: generated receipt evidence does not equal SpecPM acceptance.
 
 ## Next Step
 
-Run SELECT for `P21-T5`, inspect the static renderer payload/assets, and add
+Run PLAN for `P21-T5`, then inspect the static renderer payload/assets and add
 read-only panels for receipt provenance, hashes, validation, diagnostics,
-privacy, and human review status.
+privacy, and human review status. Keep the PR stacked on P21-T4 until #105 is
+merged into `main`.
