@@ -267,6 +267,7 @@ def test_docc_and_github_docs_cover_specpm_handoff_guide() -> None:
             "producer-receipt.json",
             "validation-report.json",
             "diagnostics.json",
+            "spec-harvester collect-local",
             "spec-harvester draft",
             "preflight-candidate-bundle",
             "render-spec-site",

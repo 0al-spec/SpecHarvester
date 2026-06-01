@@ -38,7 +38,7 @@ trusting receipt prose.
 1. Collect deterministic evidence from a pinned checkout:
 
    ```bash
-   spec-harvester collect /path/to/repo \
+   spec-harvester collect-local /path/to/repo \
      --repository https://github.com/example/project \
      --revision <commit-sha> \
      --out .specharvester/snapshots/project
