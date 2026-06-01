@@ -961,7 +961,11 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
     spec = Path(result["spec"]).read_text(encoding="utf-8")
     receipt_path = candidate / "producer-receipt.json"
+    validation_report_path = candidate / "validation-report.json"
+    diagnostics_report_path = candidate / "diagnostics.json"
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    validation_report = json.loads(validation_report_path.read_text(encoding="utf-8"))
+    diagnostics_report = json.loads(diagnostics_report_path.read_text(encoding="utf-8"))
     assert "id: example.react_flow" in manifest
     assert "preview_only: true" in manifest
     assert "example.react_flow.react_flow" in spec
@@ -969,6 +973,8 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     assert "intent.ui.node_based_editor" in spec
     assert "path: harvest.json" in spec
     assert result["producerReceipt"] == str(receipt_path)
+    assert result["validationReport"] == str(validation_report_path)
+    assert result["diagnosticsReport"] == str(diagnostics_report_path)
     assert receipt["apiVersion"] == "specpm.receipts/v0"
     assert receipt["kind"] == "SpecPMProducerReceipt"
     assert receipt["schemaVersion"] == 1
@@ -983,8 +989,27 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     }
     assert receipt["producer"]["name"] == "SpecHarvester"
     assert receipt["producer"]["version"] == "0.1.0"
-    assert receipt["validation"] == {"status": "not_run", "warningCount": 0, "errorCount": 0}
-    assert receipt["diagnostics"] == {"status": "clean", "entries": []}
+    assert receipt["validation"] == {
+        "status": "valid",
+        "warningCount": 0,
+        "errorCount": 0,
+        "reportPath": "validation-report.json",
+        "reportDigest": {
+            "algorithm": "sha256",
+            "value": hashlib.sha256(validation_report_path.read_bytes()).hexdigest(),
+        },
+    }
+    assert receipt["diagnostics"]["status"] == "clean"
+    assert receipt["diagnostics"]["path"] == "diagnostics.json"
+    assert receipt["diagnostics"]["digest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(diagnostics_report_path.read_bytes()).hexdigest(),
+    }
+    assert {entry["code"] for entry in receipt["diagnostics"]["entries"]} == {
+        "human_review_required",
+        "privacy_public_handoff",
+        "producer_receipt_is_evidence",
+    }
     assert receipt["privacy"] == {"secretsIncluded": False, "redactions": []}
     assert receipt["humanReview"] == {
         "handoff": "pull_request",
@@ -993,7 +1018,14 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     }
 
     outputs = {item["path"]: item for item in receipt["outputs"]}
-    assert sorted(outputs) == ["specpm.yaml", "specs/react_flow.spec.yaml"]
+    assert sorted(outputs) == [
+        "diagnostics.json",
+        "specpm.yaml",
+        "specs/react_flow.spec.yaml",
+        "validation-report.json",
+    ]
+    assert outputs["diagnostics.json"]["role"] == "diagnostics"
+    assert outputs["diagnostics.json"]["digest"] == receipt["diagnostics"]["digest"]
     assert outputs["specpm.yaml"]["role"] == "manifest"
     assert outputs["specpm.yaml"]["digest"] == {
         "algorithm": "sha256",
@@ -1004,7 +1036,29 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
         outputs["specs/react_flow.spec.yaml"]["digest"]["value"]
         == hashlib.sha256((candidate / "specs" / "react_flow.spec.yaml").read_bytes()).hexdigest()
     )
+    assert outputs["validation-report.json"]["role"] == "validation_report"
+    assert outputs["validation-report.json"]["digest"] == receipt["validation"]["reportDigest"]
     assert "producer-receipt.json" not in outputs
+
+    assert validation_report["kind"] == "SpecHarvesterProducerValidationReport"
+    assert validation_report["status"] == "valid"
+    assert validation_report["authority"] == "producer_side_shape_check"
+    assert validation_report["subject"]["packageId"] == "example.react_flow"
+    assert {check["path"] for check in validation_report["checks"]} == {
+        "specpm.yaml",
+        "specs/react_flow.spec.yaml",
+    }
+    assert diagnostics_report["kind"] == "SpecHarvesterProducerDiagnosticsReport"
+    assert diagnostics_report["status"] == "clean"
+    assert diagnostics_report["privacy"] == {
+        "privatePromptsIncluded": False,
+        "rawSourceIncluded": False,
+        "secretsIncluded": False,
+    }
+    assert diagnostics_report["review"] == {
+        "acceptanceAuthority": "maintainer_review",
+        "requiredFor": ["public_index_acceptance"],
+    }
 
     inputs = {item["kind"]: item for item in receipt["inputs"]}
     assert inputs["harvested_evidence"]["path"] == "harvest.json"
@@ -1053,6 +1107,7 @@ def test_draft_spec_package_marks_external_snapshot_input(tmp_path: Path) -> Non
     )
 
     receipt = json.loads((candidate / "producer-receipt.json").read_text(encoding="utf-8"))
+    diagnostics = json.loads((candidate / "diagnostics.json").read_text(encoding="utf-8"))
     inputs = {item["kind"]: item for item in receipt["inputs"]}
     assert inputs["harvested_evidence"]["path"] == "external:snapshot.json"
     assert inputs["harvested_evidence"]["location"] == "external"
@@ -1060,6 +1115,10 @@ def test_draft_spec_package_marks_external_snapshot_input(tmp_path: Path) -> Non
         inputs["harvested_evidence"]["digest"]["value"]
         == hashlib.sha256(snapshot_path.read_bytes()).hexdigest()
     )
+    assert "external_input_reference" in {entry["code"] for entry in diagnostics["entries"]}
+    assert "external_input_reference" in {
+        entry["code"] for entry in receipt["diagnostics"]["entries"]
+    }
     assert not (candidate / "harvest.json").exists()
 
 

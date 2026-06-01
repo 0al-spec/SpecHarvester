@@ -17,6 +17,13 @@ from spec_harvester.producer_receipt import (
     ProducerReceipt,
     ProducerReceiptRequest,
 )
+from spec_harvester.producer_reports import (
+    DIAGNOSTICS_REPORT_FILENAME,
+    VALIDATION_REPORT_FILENAME,
+    ProducerDiagnosticsReport,
+    ProducerReportRequest,
+    ProducerValidationReport,
+)
 from spec_harvester.semantic_keyword_taxonomy import SEMANTIC_KEYWORD_TAXONOMY
 
 SPEC_API_VERSION = "specpm.dev/v0.1"
@@ -266,6 +273,33 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
                 role="evidence",
             )
         )
+    report_request = ProducerReportRequest(
+        candidate_root=options.out,
+        package_id=package_id,
+        package_version=options.version,
+        package_api_version=SPEC_API_VERSION,
+        spec_paths=(spec_path,),
+        output_files=tuple(output_files),
+        has_external_inputs=not snapshot_path.resolve().is_relative_to(options.out.resolve()),
+    )
+    validation_report_path = ProducerValidationReport(report_request).write()
+    diagnostics_report = ProducerDiagnosticsReport(report_request)
+    diagnostics_payload = diagnostics_report.payload()
+    diagnostics_report_path = diagnostics_report.write()
+    output_files.extend(
+        [
+            CandidateOutputFile(
+                root=options.out,
+                path=VALIDATION_REPORT_FILENAME,
+                role="validation_report",
+            ),
+            CandidateOutputFile(
+                root=options.out,
+                path=DIAGNOSTICS_REPORT_FILENAME,
+                role="diagnostics",
+            ),
+        ]
+    )
     receipt_path = ProducerReceipt(
         ProducerReceiptRequest(
             candidate_root=options.out,
@@ -283,6 +317,9 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
                 "version": options.version,
             },
             output_files=tuple(output_files),
+            validation_report_path=validation_report_path,
+            diagnostics_report_path=diagnostics_report_path,
+            diagnostics_entries=tuple(diagnostics_payload["entries"]),
         )
     ).write()
 
@@ -291,6 +328,8 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "output": str(options.out),
         "manifest": str(options.out / "specpm.yaml"),
         "spec": str(options.out / spec_path),
+        "validationReport": str(validation_report_path),
+        "diagnosticsReport": str(diagnostics_report_path),
         "producerReceipt": str(receipt_path),
         "packageId": package_id,
         "capabilityCount": len(manifest_capabilities),

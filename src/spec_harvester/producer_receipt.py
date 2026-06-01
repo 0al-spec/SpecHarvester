@@ -59,6 +59,9 @@ class ProducerReceiptRequest:
     configuration: dict[str, Any]
     output_files: tuple[CandidateOutputFile, ...]
     public_interface_index_path: Path | None = None
+    validation_report_path: Path | None = None
+    diagnostics_report_path: Path | None = None
+    diagnostics_entries: tuple[dict[str, Any], ...] = ()
 
 
 class ProducerReceipt:
@@ -90,15 +93,8 @@ class ProducerReceipt:
             "inputs": inputs,
             "configuration": configuration,
             "outputs": outputs,
-            "validation": {
-                "status": "not_run",
-                "warningCount": 0,
-                "errorCount": 0,
-            },
-            "diagnostics": {
-                "status": "clean",
-                "entries": [],
-            },
+            "validation": self.validation(),
+            "diagnostics": self.diagnostics(),
             "privacy": {
                 "secretsIncluded": False,
                 "redactions": [],
@@ -174,6 +170,28 @@ class ProducerReceipt:
         records = [item.record() for item in self.request.output_files]
         return sorted(records, key=lambda item: item["path"])
 
+    def validation(self) -> dict[str, Any]:
+        record: dict[str, Any] = {
+            "status": "valid" if self.request.validation_report_path is not None else "not_run",
+            "warningCount": 0,
+            "errorCount": 0,
+        }
+        if self.request.validation_report_path is not None:
+            record["reportPath"] = "validation-report.json"
+            record["reportDigest"] = digest_record(sha256_file(self.request.validation_report_path))
+        return record
+
+    def diagnostics(self) -> dict[str, Any]:
+        entries = [dict(entry) for entry in self.request.diagnostics_entries]
+        record: dict[str, Any] = {
+            "status": diagnostics_status(entries),
+            "entries": entries,
+        }
+        if self.request.diagnostics_report_path is not None:
+            record["path"] = "diagnostics.json"
+            record["digest"] = digest_record(sha256_file(self.request.diagnostics_report_path))
+        return record
+
     def receipt_id(
         self,
         subject: dict[str, Any],
@@ -229,3 +247,12 @@ def public_input_reference(path: Path, *, root: Path) -> dict[str, str]:
         }
     except ValueError:
         return {"public_path": f"external:{path.name}", "location": "external"}
+
+
+def diagnostics_status(entries: list[dict[str, Any]]) -> str:
+    severities = {entry.get("severity") for entry in entries}
+    if "error" in severities:
+        return "failed"
+    if "warning" in severities:
+        return "warnings"
+    return "clean"
