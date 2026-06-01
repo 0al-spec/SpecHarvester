@@ -110,6 +110,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t3_validation_diagnostics_report_emission.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t4_candidate_bundle_preflight_verifier.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t5_static_viewer_producer_receipt_panels.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t6_specpm_handoff_docs_examples.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -293,6 +294,7 @@
 | 2026-06-02 | P21-T5 | Archived Static Viewer Producer Receipt Panels (PASS) |
 | 2026-06-02 | P21-T5 | Archived REVIEW_p21_t5_static_viewer_producer_receipt_panels report |
 | 2026-06-02 | P21-T6 | Archived SpecPM Handoff Documentation and Examples (PASS) |
+| 2026-06-02 | P21-T6 | Archived REVIEW_p21_t6_specpm_handoff_docs_examples report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
