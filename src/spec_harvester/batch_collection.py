@@ -184,7 +184,21 @@ def analysis_source_root(checkout: Path, snapshot: dict[str, Any]) -> Path:
     if not isinstance(target_path, str) or target_path == "." or target_kind == "repository":
         return checkout
     candidate = (checkout / target_path).resolve()
+    if target_kind == "file" and not is_source_entrypoint_target(snapshot, target_path):
+        return candidate.parent
     return candidate
+
+
+def is_source_entrypoint_target(snapshot: dict[str, Any], target_path: str) -> bool:
+    files = snapshot.get("files")
+    if not isinstance(files, list):
+        return False
+    return any(
+        isinstance(item, dict)
+        and item.get("path") == target_path
+        and item.get("kind") == "source_entrypoint"
+        for item in files
+    )
 
 
 def candidate_directory(out_root: Path, repository_id: str) -> Path:

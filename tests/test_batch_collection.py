@@ -323,6 +323,41 @@ repositories:
     assert_interface_index_symbols(out, "single-tool", ["render_report"])
 
 
+def test_collect_batch_snapshots_keeps_parent_analysis_for_manifest_file_target(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (checkout / "pyproject.toml").write_text("[project]\nname = 'demo'\n", encoding="utf-8")
+    (checkout / "demo.py").write_text("def public_api():\n    return None\n", encoding="utf-8")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: manifest-file
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+    target: pyproject.toml
+    packageId: demo.python
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_interface_indexes=True)
+    )
+
+    interface_index = result["collected"][0]["interfaceIndex"]
+    index = json.loads((out / "manifest-file" / "public-interface-index.json").read_text())
+    assert interface_index["status"] == "complete"
+    assert interface_index["diagnostics"] == []
+    assert index["packages"][0]["entrypoints"][0]["path"] == "demo.py"
+    assert index["packages"][0]["entrypoints"][0]["symbols"][0]["name"] == "public_api"
+
+
 def test_collect_batch_snapshots_emits_python_interface_index_when_requested(
     tmp_path: Path,
 ) -> None:
