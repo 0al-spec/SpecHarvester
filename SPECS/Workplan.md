@@ -623,3 +623,46 @@ Acceptance:
 - Third-party graph adapter compatibility tests pin external versions and never
   require live network downloads or third-party project runtime execution in
   ordinary CI.
+
+## Phase 21. Producer Candidate Bundle Contract
+
+- [ ] `P21-T1` Align SpecHarvester output planning with the SpecPM Producer
+  Candidate Bundle Contract, documenting the required bundle layout,
+  `producer-receipt.json` profile, output digest expectations, review boundary,
+  and rejection diagnostics once the SpecPM contract PR is merged.
+- [ ] `P21-T2` Emit `producer-receipt.json` for generated candidate bundles with
+  `apiVersion: specpm.producer_receipt/v1`, profile
+  `generated_spec_package_v0`, producer identity/version, subject package
+  metadata, input evidence references, configuration summary or digest, output
+  file roles, output SHA-256 digests, validation status, diagnostics status, and
+  human review status.
+- [ ] `P21-T3` Emit `validation-report.json` and `diagnostics.json` alongside
+  generated `specpm.yaml` and `specs/*.spec.yaml`, making validation result,
+  warnings/errors, privacy/security notes, unstable-ID warnings, evidence-link
+  gaps, and namespace/version overlap diagnostics machine-readable.
+- [ ] `P21-T4` Add a local candidate bundle preflight verifier that checks
+  required files, receipt schema/profile, output hashes, validation report
+  digest, diagnostics digest, stable generated IDs, evidence links, and review
+  status before a generated bundle is proposed to SpecPM.
+- [ ] `P21-T5` Extend the static candidate viewer to show producer receipt,
+  input provenance, output hashes, validation status, diagnostics summary,
+  privacy/security caveats, and human review boundary without implying automatic
+  SpecPM acceptance.
+- [ ] `P21-T6` Add SpecPM handoff documentation and examples for generated
+  candidate bundles, including the distinction between SpecHarvester producing
+  an evidence-rich candidate, SpecPM validating package shape, maintainers
+  approving acceptance, and the public index publishing only reviewed sources.
+
+Acceptance:
+
+- SpecHarvester treats the SpecPM producer contract as a machine-verifiable
+  handoff, not as automatic registry acceptance.
+- Generated candidate bundles include `specpm.yaml`, `specs/*.spec.yaml`,
+  `producer-receipt.json`, `validation-report.json`, and `diagnostics.json`.
+- Receipt hashing avoids a self-hash problem: generated outputs are hashed in
+  the receipt, while any receipt hash is handled by an external verifier or PR
+  tooling rather than by the receipt itself.
+- Public index acceptance remains gated by `review.status == approved` or an
+  explicit maintainer override recorded outside the generated bundle.
+- Bundle preflight and viewer changes preserve existing SpecPM validation,
+  static rendering, and trust-boundary behavior.
