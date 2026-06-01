@@ -4,8 +4,10 @@
 **Phase:** Phase 21. Producer Candidate Bundle Contract
 **Effort:** 3-6 hours
 **Dependencies:** P21-T1, P21-T2, P21-T3, P21-T4, P21-T5
-**Status:** Queued
+**Status:** Selected
 **Suggested:** 2026-06-02
+**Branch:** `feature/P21-T6-specpm-handoff-docs-examples`
+**Stack Base:** `feature/P21-T5-static-viewer-producer-receipt-panels`
 
 ## Description
 
@@ -32,6 +34,7 @@ output as automatic SpecPM acceptance.
 
 ## Next Step
 
-Run SELECT for `P21-T6`, inspect existing producer bundle and static renderer
+Run PLAN for `P21-T6`, inspect existing producer bundle and static renderer
 docs, and add handoff documentation plus examples that preserve the
-SpecHarvester/SpecPM trust boundary.
+SpecHarvester/SpecPM trust boundary. Keep the PR stacked on P21-T5 until #106
+lands.
