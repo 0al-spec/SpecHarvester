@@ -239,6 +239,90 @@ repositories:
     assert "leaked_vendor_api" not in json.dumps(index)
 
 
+def test_collect_batch_snapshots_covers_scoped_source_validation_matrix(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_scoped_source_matrix_checkout(tmp_path / "checkout")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: tuist-player
+    repository: https://github.com/example/mobile-monorepo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+    target: Apps/Player
+    packageId: mobile.player
+  - id: python-service
+    repository: https://github.com/example/mobile-monorepo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+    target: services/catalog
+    packageId: services.catalog
+  - id: single-tool
+    repository: https://github.com/example/mobile-monorepo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+    target: tools/report.py
+    packageId: tools.report
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_interface_indexes=True)
+    )
+
+    assert [item["id"] for item in result["collected"]] == [
+        "tuist-player",
+        "python-service",
+        "single-tool",
+    ]
+    assert result["skipped"] == []
+    snapshots = {
+        item["id"]: json.loads((out / item["id"] / "harvest.json").read_text(encoding="utf-8"))
+        for item in result["collected"]
+    }
+    assert snapshots["tuist-player"]["source"]["target"] == {
+        "kind": "folder",
+        "path": "Apps/Player",
+        "label": "Player",
+    }
+    assert snapshots["python-service"]["source"]["target"] == {
+        "kind": "folder",
+        "path": "services/catalog",
+        "label": "catalog",
+    }
+    assert snapshots["single-tool"]["source"]["target"] == {
+        "kind": "file",
+        "path": "tools/report.py",
+        "label": "report",
+    }
+    assert snapshot_paths(snapshots["tuist-player"]) == [
+        "Apps/Player/Project.swift",
+        "Apps/Player/Sources/PlayerAPI.swift",
+        "LICENSE",
+    ]
+    assert snapshot_paths(snapshots["python-service"]) == [
+        "LICENSE",
+        "services/catalog/api.py",
+    ]
+    assert snapshot_paths(snapshots["single-tool"]) == [
+        "LICENSE",
+        "tools/report.py",
+    ]
+    assert snapshots["tuist-player"]["files"][0]["package"]["ecosystem"] == "tuist"
+    assert "Apps/Other/Other.swift" not in json.dumps(snapshots)
+    assert "services/other/api.py" not in json.dumps(snapshots)
+    assert "tools/ignored.py" not in json.dumps(snapshots)
+
+    assert_interface_index_symbols(out, "tuist-player", ["PlayerAPI"])
+    assert_interface_index_symbols(out, "python-service", ["catalog_items"])
+    assert_interface_index_symbols(out, "single-tool", ["render_report"])
+
+
 def test_collect_batch_snapshots_emits_python_interface_index_when_requested(
     tmp_path: Path,
 ) -> None:
@@ -901,6 +985,87 @@ def make_checkout(path: Path, readme: str) -> Path:
     path.mkdir(parents=True)
     (path / "README.md").write_text(readme, encoding="utf-8")
     return path
+
+
+def make_scoped_source_matrix_checkout(path: Path) -> Path:
+    path.mkdir(parents=True)
+    (path / "README.md").write_text("# Mobile Monorepo\n", encoding="utf-8")
+    (path / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    player = path / "Apps" / "Player"
+    player_source = player / "Sources"
+    player_source.mkdir(parents=True)
+    (player / "Project.swift").write_text(
+        """
+        import ProjectDescription
+
+        let project = Project(
+            name: "Player",
+            targets: [
+                .target(
+                    name: "PlayerKit",
+                    product: .framework,
+                    sources: .sources(
+                        ["Sources/**"],
+                        excluding: ["Sources/Generated/**"]
+                    )
+                )
+            ]
+        )
+        """,
+        encoding="utf-8",
+    )
+    (player_source / "PlayerAPI.swift").write_text(
+        "public struct PlayerAPI {}\n",
+        encoding="utf-8",
+    )
+    other_swift = path / "Apps" / "Other"
+    other_swift.mkdir(parents=True)
+    (other_swift / "Other.swift").write_text(
+        "public struct OtherAPI {}\n",
+        encoding="utf-8",
+    )
+    service = path / "services" / "catalog"
+    service.mkdir(parents=True)
+    (service / "api.py").write_text(
+        "def catalog_items():\n    return []\n",
+        encoding="utf-8",
+    )
+    other_service = path / "services" / "other"
+    other_service.mkdir(parents=True)
+    (other_service / "api.py").write_text(
+        "def other_items():\n    return []\n",
+        encoding="utf-8",
+    )
+    tools = path / "tools"
+    tools.mkdir()
+    (tools / "report.py").write_text(
+        "def render_report():\n    return 'ok'\n",
+        encoding="utf-8",
+    )
+    (tools / "ignored.py").write_text(
+        "def ignored_tool():\n    return None\n",
+        encoding="utf-8",
+    )
+    return path
+
+
+def snapshot_paths(snapshot: dict[str, object]) -> list[str]:
+    files = snapshot["files"]
+    assert isinstance(files, list)
+    return [item["path"] for item in files if isinstance(item, dict)]
+
+
+def assert_interface_index_symbols(out: Path, candidate_id: str, expected: list[str]) -> None:
+    index = json.loads(
+        (out / candidate_id / "public-interface-index.json").read_text(encoding="utf-8")
+    )
+    symbols = [
+        symbol["name"]
+        for package in index["packages"]
+        for entrypoint in package["entrypoints"]
+        for symbol in entrypoint["symbols"]
+    ]
+    assert symbols == expected
 
 
 def relative_to(path: Path, root: Path) -> str:

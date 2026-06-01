@@ -184,8 +184,6 @@ def analysis_source_root(checkout: Path, snapshot: dict[str, Any]) -> Path:
     if not isinstance(target_path, str) or target_path == "." or target_kind == "repository":
         return checkout
     candidate = (checkout / target_path).resolve()
-    if target_kind == "file":
-        return candidate.parent
     return candidate
 
 
