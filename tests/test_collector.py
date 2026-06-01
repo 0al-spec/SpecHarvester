@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import textwrap
 from pathlib import Path
@@ -959,12 +960,62 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     assert result["status"] == "ok"
     manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
     spec = Path(result["spec"]).read_text(encoding="utf-8")
+    receipt_path = candidate / "producer-receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     assert "id: example.react_flow" in manifest
     assert "preview_only: true" in manifest
     assert "example.react_flow.react_flow" in spec
     assert "intent.javascript.react_library" in spec
     assert "intent.ui.node_based_editor" in spec
     assert "path: harvest.json" in spec
+    assert result["producerReceipt"] == str(receipt_path)
+    assert receipt["apiVersion"] == "specpm.receipts/v0"
+    assert receipt["kind"] == "SpecPMProducerReceipt"
+    assert receipt["schemaVersion"] == 1
+    assert receipt["receiptProfile"] == "generated_spec_package_v0"
+    assert receipt["subject"] == {
+        "packageId": "example.react_flow",
+        "packageVersion": "0.1.0",
+        "packageApiVersion": "specpm.dev/v0.1",
+        "packageRoot": ".",
+        "boundarySpecs": ["specs/react_flow.spec.yaml"],
+        "candidateStatus": "review-ready",
+    }
+    assert receipt["producer"]["name"] == "SpecHarvester"
+    assert receipt["producer"]["version"] == "0.1.0"
+    assert receipt["validation"] == {"status": "not_run", "warningCount": 0, "errorCount": 0}
+    assert receipt["diagnostics"] == {"status": "clean", "entries": []}
+    assert receipt["privacy"] == {"secretsIncluded": False, "redactions": []}
+    assert receipt["humanReview"] == {
+        "handoff": "pull_request",
+        "status": "required",
+        "requiredFor": ["public_index_acceptance"],
+    }
+
+    outputs = {item["path"]: item for item in receipt["outputs"]}
+    assert sorted(outputs) == ["specpm.yaml", "specs/react_flow.spec.yaml"]
+    assert outputs["specpm.yaml"]["role"] == "manifest"
+    assert outputs["specpm.yaml"]["digest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256((candidate / "specpm.yaml").read_bytes()).hexdigest(),
+    }
+    assert outputs["specs/react_flow.spec.yaml"]["role"] == "boundary_spec"
+    assert (
+        outputs["specs/react_flow.spec.yaml"]["digest"]["value"]
+        == hashlib.sha256((candidate / "specs" / "react_flow.spec.yaml").read_bytes()).hexdigest()
+    )
+    assert "producer-receipt.json" not in outputs
+
+    inputs = {item["kind"]: item for item in receipt["inputs"]}
+    assert inputs["harvested_evidence"]["path"] == "harvest.json"
+    assert (
+        inputs["harvested_evidence"]["digest"]["value"]
+        == hashlib.sha256((candidate / "harvest.json").read_bytes()).hexdigest()
+    )
+    assert inputs["config"]["path"] == "spec_harvester.draft.configuration"
+    assert len(inputs["config"]["digest"]["value"]) == 64
+    assert receipt["configuration"]["digest"] == inputs["config"]["digest"]
+    assert receipt["receiptId"].startswith("example.react_flow@0.1.0:producer:sha256:")
 
 
 def test_draft_spec_package_keeps_interfaces_matched_to_valid_packages(tmp_path: Path) -> None:
@@ -1085,6 +1136,7 @@ def test_draft_spec_package_enriches_interfaces_from_public_interface_index(
 
     spec = Path(result["spec"]).read_text(encoding="utf-8")
     copied_index = candidate / "public-interface-index.json"
+    receipt = json.loads((candidate / "producer-receipt.json").read_text(encoding="utf-8"))
     assert copied_index.exists()
     assert result["interfaceIndex"] == str(copied_index)
     assert "id: public_interface_index" in spec
@@ -1105,6 +1157,18 @@ def test_draft_spec_package_enriches_interfaces_from_public_interface_index(
     assert "name: createGraph" in spec
     assert 'signature: "createGraph(options)"' in spec
     assert "sha256: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" in spec
+    outputs = {item["path"]: item for item in receipt["outputs"]}
+    assert outputs["public-interface-index.json"]["role"] == "evidence"
+    assert (
+        outputs["public-interface-index.json"]["digest"]["value"]
+        == hashlib.sha256(copied_index.read_bytes()).hexdigest()
+    )
+    inputs = {item["kind"]: item for item in receipt["inputs"]}
+    assert inputs["public_interface_index"]["path"] == "public-interface-index.json"
+    assert (
+        inputs["public_interface_index"]["digest"]
+        == outputs["public-interface-index.json"]["digest"]
+    )
 
 
 def test_draft_spec_package_auto_detects_colocated_public_interface_index(

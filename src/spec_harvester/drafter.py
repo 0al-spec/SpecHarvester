@@ -12,6 +12,11 @@ from spec_harvester.interface_index import (
     render_public_interface_index_json,
     validate_public_interface_index,
 )
+from spec_harvester.producer_receipt import (
+    CandidateOutputFile,
+    ProducerReceipt,
+    ProducerReceiptRequest,
+)
 from spec_harvester.semantic_keyword_taxonomy import SEMANTIC_KEYWORD_TAXONOMY
 
 SPEC_API_VERSION = "specpm.dev/v0.1"
@@ -249,12 +254,44 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         )
     (options.out / "specpm.yaml").write_text(render_yaml(manifest), encoding="utf-8")
     (options.out / spec_path).write_text(render_yaml(boundary_spec), encoding="utf-8")
+    output_files = [
+        CandidateOutputFile(root=options.out, path="specpm.yaml", role="manifest"),
+        CandidateOutputFile(root=options.out, path=spec_path, role="boundary_spec"),
+    ]
+    if interface_index_output is not None:
+        output_files.append(
+            CandidateOutputFile(
+                root=options.out,
+                path=PUBLIC_INTERFACE_INDEX_OUTPUT,
+                role="evidence",
+            )
+        )
+    receipt_path = ProducerReceipt(
+        ProducerReceiptRequest(
+            candidate_root=options.out,
+            package_id=package_id,
+            package_version=options.version,
+            package_api_version=SPEC_API_VERSION,
+            spec_paths=(spec_path,),
+            snapshot_path=snapshot_path,
+            public_interface_index_path=interface_index_output,
+            configuration={
+                "author": options.author,
+                "interfaceIndex": interface_index_output is not None,
+                "name": options.name,
+                "packageId": options.package_id,
+                "version": options.version,
+            },
+            output_files=tuple(output_files),
+        )
+    ).write()
 
     result = {
         "status": "ok",
         "output": str(options.out),
         "manifest": str(options.out / "specpm.yaml"),
         "spec": str(options.out / spec_path),
+        "producerReceipt": str(receipt_path),
         "packageId": package_id,
         "capabilityCount": len(manifest_capabilities),
         "intentCount": len(manifest_intents),
