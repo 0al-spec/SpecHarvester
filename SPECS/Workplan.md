@@ -587,7 +587,7 @@ Acceptance:
 - [x] `P20-T2` Add deterministic Tuist manifest parsing for `Project.swift`,
   `Workspace.swift`, and `Tuist.swift`, extracting project names, targets,
   product/platform hints, and source globs without executing Tuist or Swift code.
-- [ ] `P20-T3` Evaluate `codegraph` as an optional local evidence adapter for
+- [x] `P20-T3` Evaluate `codegraph` as an optional local evidence adapter for
   multi-language source graph extraction, recording analyzer version, source
   digests, trust policy, schema stability, licensing, and performance before any
   default pipeline integration.
@@ -597,6 +597,14 @@ Acceptance:
 - [ ] `P20-T5` Teach drafting/refinement prompts to distinguish repository,
   package, folder module, and single-file source-unit intent so generated specs
   do not overclaim package-manager ownership when only scoped evidence exists.
+- [ ] `P20-T6` Implement an explicit opt-in CodeGraph adapter boundary that
+  never installs or downloads tools, records analyzer and executable
+  provenance, and normalizes JSON or SQLite graph evidence into a
+  SpecHarvester-owned `source_graph_index` evidence shape.
+- [ ] `P20-T7` Add a pinned CodeGraph interface compatibility guard that
+  verifies the expected package version, binary availability contract, CLI JSON
+  flags, and normalized schema mapping without indexing third-party projects in
+  ordinary CI.
 
 Acceptance:
 
@@ -612,3 +620,6 @@ Acceptance:
 - Optional third-party graph tools such as `codegraph` remain explicit adapters
   with untrusted evidence provenance rather than required collector
   dependencies.
+- Third-party graph adapter compatibility tests pin external versions and never
+  require live network downloads or third-party project runtime execution in
+  ordinary CI.
