@@ -35,12 +35,14 @@ class ProducerReceiptInput:
     kind: str
     path: Path
     public_path: str
+    location: str = "bundle"
     redaction: str = "none"
 
     def record(self) -> dict[str, Any]:
         return {
             "kind": self.kind,
             "path": self.public_path,
+            "location": self.location,
             "digest": digest_record(sha256_file(self.path)),
             "redaction": self.redaction,
         }
@@ -132,10 +134,9 @@ class ProducerReceipt:
             ProducerReceiptInput(
                 kind="harvested_evidence",
                 path=self.request.snapshot_path,
-                public_path=public_input_path(
+                **public_input_reference(
                     self.request.snapshot_path,
                     root=self.request.candidate_root,
-                    fallback="harvest.json",
                 ),
             ).record()
         ]
@@ -144,10 +145,9 @@ class ProducerReceipt:
                 ProducerReceiptInput(
                     kind="public_interface_index",
                     path=self.request.public_interface_index_path,
-                    public_path=public_input_path(
+                    **public_input_reference(
                         self.request.public_interface_index_path,
                         root=self.request.candidate_root,
-                        fallback="public-interface-index.json",
                     ),
                 ).record()
             )
@@ -221,8 +221,11 @@ def configuration_digest_record(configuration: dict[str, Any]) -> dict[str, str]
     return digest_record(canonical_sha256(configuration))
 
 
-def public_input_path(path: Path, *, root: Path, fallback: str) -> str:
+def public_input_reference(path: Path, *, root: Path) -> dict[str, str]:
     try:
-        return path.resolve().relative_to(root.resolve()).as_posix()
+        return {
+            "public_path": path.resolve().relative_to(root.resolve()).as_posix(),
+            "location": "bundle",
+        }
     except ValueError:
-        return fallback
+        return {"public_path": f"external:{path.name}", "location": "external"}

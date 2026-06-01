@@ -1008,6 +1008,7 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
 
     inputs = {item["kind"]: item for item in receipt["inputs"]}
     assert inputs["harvested_evidence"]["path"] == "harvest.json"
+    assert inputs["harvested_evidence"]["location"] == "bundle"
     assert (
         inputs["harvested_evidence"]["digest"]["value"]
         == hashlib.sha256((candidate / "harvest.json").read_bytes()).hexdigest()
@@ -1016,6 +1017,50 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     assert len(inputs["config"]["digest"]["value"]) == 64
     assert receipt["configuration"]["digest"] == inputs["config"]["digest"]
     assert receipt["receiptId"].startswith("example.react_flow@0.1.0:producer:sha256:")
+
+
+def test_draft_spec_package_marks_external_snapshot_input(tmp_path: Path) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "external-input-demo",
+                "version": "1.0.0",
+                "description": "Demo package for external snapshot receipts.",
+                "license": "MIT",
+            }
+        ),
+        encoding="utf-8",
+    )
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            repository="https://github.com/example/external-input-demo",
+            revision="abc123",
+        )
+    )
+    snapshot_path = tmp_path / "snapshot.json"
+    snapshot_path.write_text(json.dumps(snapshot), encoding="utf-8")
+    candidate = tmp_path / "candidate"
+
+    draft_spec_package(
+        DraftOptions(
+            snapshot=snapshot_path,
+            out=candidate,
+            package_id="example.external_input_demo",
+        )
+    )
+
+    receipt = json.loads((candidate / "producer-receipt.json").read_text(encoding="utf-8"))
+    inputs = {item["kind"]: item for item in receipt["inputs"]}
+    assert inputs["harvested_evidence"]["path"] == "external:snapshot.json"
+    assert inputs["harvested_evidence"]["location"] == "external"
+    assert (
+        inputs["harvested_evidence"]["digest"]["value"]
+        == hashlib.sha256(snapshot_path.read_bytes()).hexdigest()
+    )
+    assert not (candidate / "harvest.json").exists()
 
 
 def test_draft_spec_package_keeps_interfaces_matched_to_valid_packages(tmp_path: Path) -> None:
