@@ -631,11 +631,11 @@ Acceptance:
   `producer-receipt.json` profile, output digest expectations, review boundary,
   and rejection diagnostics once the SpecPM contract PR is merged.
 - [ ] `P21-T2` Emit `producer-receipt.json` for generated candidate bundles with
-  `apiVersion: specpm.producer_receipt/v1`, profile
+  `apiVersion: specpm.receipts/v0`, `kind: SpecPMProducerReceipt`, profile
   `generated_spec_package_v0`, producer identity/version, subject package
   metadata, input evidence references, configuration summary or digest, output
   file roles, output SHA-256 digests, validation status, diagnostics status, and
-  human review status.
+  `humanReview` status.
 - [ ] `P21-T3` Emit `validation-report.json` and `diagnostics.json` alongside
   generated `specpm.yaml` and `specs/*.spec.yaml`, making validation result,
   warnings/errors, privacy/security notes, unstable-ID warnings, evidence-link
