@@ -72,6 +72,7 @@ def test_static_spec_renderer_shows_producer_receipt_panels(tmp_path: Path) -> N
     assert producer["validation"]["status"] == "passed"
     assert producer["validation"]["report"]["authority"] == "producer_side_shape_check"
     assert producer["diagnostics"]["report"]["privacy"]["privatePromptsIncluded"] is False
+    assert producer["diagnostics"]["entries"][0]["message"] == "Public handoff privacy reviewed."
     assert "not SpecPM acceptance" in producer["trustBoundary"]
 
     javascript = (output / "assets/spec-renderer.js").read_text(encoding="utf-8")
@@ -79,6 +80,7 @@ def test_static_spec_renderer_shows_producer_receipt_panels(tmp_path: Path) -> N
     assert "renderProducerEvidence" in javascript
     assert "producer-facts" in javascript
     assert "digestRows" in javascript
+    assert "item.message || item.role" in javascript
     assert ".evidence-grid" in css
     assert ".trust-boundary" in css
 
@@ -356,7 +358,13 @@ def write_producer_artifacts(candidate: Path) -> None:
         "schemaVersion": 1,
         "status": "clean",
         "summary": {"entryCount": 0, "warningCount": 0, "errorCount": 0},
-        "entries": [],
+        "entries": [
+            {
+                "severity": "info",
+                "code": "privacy_public_handoff",
+                "message": "Public handoff privacy reviewed.",
+            }
+        ],
         "privacy": {
             "privatePromptsIncluded": False,
             "rawSourceIncluded": False,
@@ -419,7 +427,13 @@ def write_producer_artifacts(candidate: Path) -> None:
             "status": "clean",
             "path": "diagnostics.json",
             "digest": {"algorithm": "sha256", "value": "e" * 64},
-            "entries": [],
+            "entries": [
+                {
+                    "severity": "info",
+                    "code": "privacy_public_handoff",
+                    "message": "Public handoff privacy reviewed.",
+                }
+            ],
         },
         "humanReview": {
             "status": "required",

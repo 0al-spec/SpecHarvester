@@ -801,7 +801,7 @@ function digestRows(items, emptyText) {
     <div class="digest-list">
       ${items.map((item) => {
         const title = item.path || item.code || item.kind || "entry";
-        const meta = item.role || item.location || item.severity || item.message || "";
+        const meta = item.message || item.role || item.location || item.severity || "";
         return `
         <div class="digest-row">
           <strong>${escapeHtml(title)}</strong>
