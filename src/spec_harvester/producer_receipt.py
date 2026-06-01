@@ -59,6 +59,9 @@ class ProducerReceiptRequest:
     configuration: dict[str, Any]
     output_files: tuple[CandidateOutputFile, ...]
     public_interface_index_path: Path | None = None
+    validation_report_path: Path | None = None
+    diagnostics_report_path: Path | None = None
+    diagnostics_entries: tuple[dict[str, Any], ...] = ()
 
 
 class ProducerReceipt:
@@ -90,15 +93,8 @@ class ProducerReceipt:
             "inputs": inputs,
             "configuration": configuration,
             "outputs": outputs,
-            "validation": {
-                "status": "not_run",
-                "warningCount": 0,
-                "errorCount": 0,
-            },
-            "diagnostics": {
-                "status": "clean",
-                "entries": [],
-            },
+            "validation": self.validation(),
+            "diagnostics": self.diagnostics(),
             "privacy": {
                 "secretsIncluded": False,
                 "redactions": [],
@@ -174,6 +170,38 @@ class ProducerReceipt:
         records = [item.record() for item in self.request.output_files]
         return sorted(records, key=lambda item: item["path"])
 
+    def validation(self) -> dict[str, Any]:
+        record: dict[str, Any] = {
+            "status": "not_run",
+            "warningCount": 0,
+            "errorCount": 0,
+        }
+        if self.request.validation_report_path is not None:
+            report = read_json_object(self.request.validation_report_path)
+            record["status"] = report.get("status", "unknown")
+            record["warningCount"] = report.get("warningCount", 0)
+            record["errorCount"] = report.get("errorCount", 0)
+            record["reportPath"] = self.request.validation_report_path.name
+            record["reportDigest"] = digest_record(sha256_file(self.request.validation_report_path))
+        return record
+
+    def diagnostics(self) -> dict[str, Any]:
+        entries = [dict(entry) for entry in self.request.diagnostics_entries]
+        record: dict[str, Any] = {
+            "status": diagnostics_status(entries),
+            "entries": entries,
+        }
+        if self.request.diagnostics_report_path is not None:
+            report = read_json_object(self.request.diagnostics_report_path)
+            report_entries = report.get("entries", [])
+            if isinstance(report_entries, list):
+                entries = [dict(entry) for entry in report_entries if isinstance(entry, dict)]
+            record["status"] = report.get("status", diagnostics_status(entries))
+            record["entries"] = entries
+            record["path"] = self.request.diagnostics_report_path.name
+            record["digest"] = digest_record(sha256_file(self.request.diagnostics_report_path))
+        return record
+
     def receipt_id(
         self,
         subject: dict[str, Any],
@@ -208,6 +236,13 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def read_json_object(path: Path) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError(f"Expected JSON object in {path}")
+    return value
+
+
 def canonical_sha256(value: Any) -> str:
     payload = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
@@ -229,3 +264,12 @@ def public_input_reference(path: Path, *, root: Path) -> dict[str, str]:
         }
     except ValueError:
         return {"public_path": f"external:{path.name}", "location": "external"}
+
+
+def diagnostics_status(entries: list[dict[str, Any]]) -> str:
+    severities = {entry.get("severity") for entry in entries}
+    if "error" in severities:
+        return "failed"
+    if "warning" in severities:
+        return "warnings"
+    return "clean"
