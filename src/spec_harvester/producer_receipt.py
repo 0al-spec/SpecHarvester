@@ -172,12 +172,16 @@ class ProducerReceipt:
 
     def validation(self) -> dict[str, Any]:
         record: dict[str, Any] = {
-            "status": "valid" if self.request.validation_report_path is not None else "not_run",
+            "status": "not_run",
             "warningCount": 0,
             "errorCount": 0,
         }
         if self.request.validation_report_path is not None:
-            record["reportPath"] = "validation-report.json"
+            report = read_json_object(self.request.validation_report_path)
+            record["status"] = report.get("status", "unknown")
+            record["warningCount"] = report.get("warningCount", 0)
+            record["errorCount"] = report.get("errorCount", 0)
+            record["reportPath"] = self.request.validation_report_path.name
             record["reportDigest"] = digest_record(sha256_file(self.request.validation_report_path))
         return record
 
@@ -188,7 +192,13 @@ class ProducerReceipt:
             "entries": entries,
         }
         if self.request.diagnostics_report_path is not None:
-            record["path"] = "diagnostics.json"
+            report = read_json_object(self.request.diagnostics_report_path)
+            report_entries = report.get("entries", [])
+            if isinstance(report_entries, list):
+                entries = [dict(entry) for entry in report_entries if isinstance(entry, dict)]
+            record["status"] = report.get("status", diagnostics_status(entries))
+            record["entries"] = entries
+            record["path"] = self.request.diagnostics_report_path.name
             record["digest"] = digest_record(sha256_file(self.request.diagnostics_report_path))
         return record
 
@@ -224,6 +234,13 @@ def render_receipt_json(payload: dict[str, Any]) -> str:
 
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def read_json_object(path: Path) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError(f"Expected JSON object in {path}")
+    return value
 
 
 def canonical_sha256(value: Any) -> str:

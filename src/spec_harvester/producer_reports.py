@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -61,7 +62,7 @@ class ProducerValidationReport:
         file_path = self.request.candidate_root / path
         exists = file_path.is_file()
         check: dict[str, Any] = {
-            "id": f"required_{role}",
+            "id": f"required_{role}_{check_path_suffix(path)}",
             "status": "passed" if exists else "failed",
             "path": path,
             "role": role,
@@ -155,6 +156,10 @@ def diagnostics_status(entries: list[dict[str, str]]) -> str:
     if "warning" in severities:
         return "warnings"
     return "clean"
+
+
+def check_path_suffix(path: str) -> str:
+    return re.sub(r"[^A-Za-z0-9]+", "_", path).strip("_").lower()
 
 
 def render_report_json(payload: dict[str, Any]) -> str:

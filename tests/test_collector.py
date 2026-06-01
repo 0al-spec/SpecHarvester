@@ -990,22 +990,23 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     assert receipt["producer"]["name"] == "SpecHarvester"
     assert receipt["producer"]["version"] == "0.1.0"
     assert receipt["validation"] == {
-        "status": "valid",
-        "warningCount": 0,
-        "errorCount": 0,
+        "status": validation_report["status"],
+        "warningCount": validation_report["warningCount"],
+        "errorCount": validation_report["errorCount"],
         "reportPath": "validation-report.json",
         "reportDigest": {
             "algorithm": "sha256",
             "value": hashlib.sha256(validation_report_path.read_bytes()).hexdigest(),
         },
     }
-    assert receipt["diagnostics"]["status"] == "clean"
+    assert receipt["diagnostics"]["status"] == diagnostics_report["status"]
     assert receipt["diagnostics"]["path"] == "diagnostics.json"
     assert receipt["diagnostics"]["digest"] == {
         "algorithm": "sha256",
         "value": hashlib.sha256(diagnostics_report_path.read_bytes()).hexdigest(),
     }
-    assert {entry["code"] for entry in receipt["diagnostics"]["entries"]} == {
+    assert receipt["diagnostics"]["entries"] == diagnostics_report["entries"]
+    assert {entry["code"] for entry in diagnostics_report["entries"]} == {
         "human_review_required",
         "privacy_public_handoff",
         "producer_receipt_is_evidence",
@@ -1048,6 +1049,13 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
         "specpm.yaml",
         "specs/react_flow.spec.yaml",
     }
+    assert {check["id"] for check in validation_report["checks"]} == {
+        "required_manifest_specpm_yaml",
+        "required_boundary_spec_specs_react_flow_spec_yaml",
+    }
+    assert len({check["id"] for check in validation_report["checks"]}) == len(
+        validation_report["checks"]
+    )
     assert diagnostics_report["kind"] == "SpecHarvesterProducerDiagnosticsReport"
     assert diagnostics_report["status"] == "clean"
     assert diagnostics_report["privacy"] == {
