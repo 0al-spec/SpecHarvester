@@ -28,6 +28,7 @@ def test_static_spec_renderer_writes_browser_safe_site(tmp_path: Path) -> None:
     assert payload["package"]["capabilities"] == ["demo.core.render"]
     assert payload["package"]["intents"] == ["intent.spec.render_static_preview"]
     assert payload["validation"]["status"] == "ok"
+    assert payload["producer"]["status"] == "not_provided"
     assert payload["specs"][0]["interfaces"]["inbound"][0]["name"] == "renderSpecSite"
     assert payload["specs"][0]["evidence"][0]["id"] == "manifest_evidence"
 
@@ -48,6 +49,38 @@ def test_static_spec_renderer_writes_browser_safe_site(tmp_path: Path) -> None:
     assert ".outline:empty" in css
     assert "spec-outline" in html
     assert "spec-search" in html
+    assert "producer-panels" in html
+    assert "Producer Evidence" in html
+
+
+def test_static_spec_renderer_shows_producer_receipt_panels(tmp_path: Path) -> None:
+    candidate = tmp_path / "candidate"
+    write_candidate(candidate)
+    write_producer_artifacts(candidate)
+    output = tmp_path / "site"
+
+    result = write_static_spec_site(candidate, output)
+
+    assert result["status"] == "ok"
+    payload = json.loads((output / "spec-package.json").read_text(encoding="utf-8"))
+    producer = payload["producer"]
+    assert producer["status"] == "available"
+    assert producer["producer"] == {"name": "SpecHarvester", "version": "0.1.0"}
+    assert producer["subject"]["packageId"] == "demo.core"
+    assert producer["humanReview"]["status"] == "required"
+    assert producer["outputs"][0]["path"] == "specpm.yaml"
+    assert producer["validation"]["status"] == "passed"
+    assert producer["validation"]["report"]["authority"] == "producer_side_shape_check"
+    assert producer["diagnostics"]["report"]["privacy"]["privatePromptsIncluded"] is False
+    assert "not SpecPM acceptance" in producer["trustBoundary"]
+
+    javascript = (output / "assets/spec-renderer.js").read_text(encoding="utf-8")
+    css = (output / "assets/spec-renderer.css").read_text(encoding="utf-8")
+    assert "renderProducerEvidence" in javascript
+    assert "producer-facts" in javascript
+    assert "digestRows" in javascript
+    assert ".evidence-grid" in css
+    assert ".trust-boundary" in css
 
 
 def test_render_spec_site_cli_writes_site_and_prints_result(tmp_path: Path, capsys) -> None:
@@ -306,5 +339,94 @@ def write_candidate(candidate: Path, *, summary: str = "Static renderer demo") -
     )
     (candidate / "specpm-validation.json").write_text(
         json.dumps({"error_count": 0, "warning_count": 1, "warnings": []}),
+        encoding="utf-8",
+    )
+
+
+def write_producer_artifacts(candidate: Path) -> None:
+    validation_report = {
+        "kind": "SpecHarvesterProducerValidationReport",
+        "schemaVersion": 1,
+        "status": "valid",
+        "summary": {"errorCount": 0, "warningCount": 0, "checkCount": 2},
+        "authority": "producer_side_shape_check",
+    }
+    diagnostics_report = {
+        "kind": "SpecHarvesterProducerDiagnosticsReport",
+        "schemaVersion": 1,
+        "status": "clean",
+        "summary": {"entryCount": 0, "warningCount": 0, "errorCount": 0},
+        "entries": [],
+        "privacy": {
+            "privatePromptsIncluded": False,
+            "rawSourceIncluded": False,
+            "secretsIncluded": False,
+        },
+        "security": {"caveat": "Renderer displays evidence only."},
+        "review": {
+            "acceptanceAuthority": "maintainer_review",
+            "requiredFor": ["public_index_acceptance"],
+        },
+    }
+    (candidate / "validation-report.json").write_text(
+        json.dumps(validation_report, sort_keys=True),
+        encoding="utf-8",
+    )
+    (candidate / "diagnostics.json").write_text(
+        json.dumps(diagnostics_report, sort_keys=True),
+        encoding="utf-8",
+    )
+    receipt = {
+        "apiVersion": "specpm.receipts/v0",
+        "kind": "SpecPMProducerReceipt",
+        "schemaVersion": 1,
+        "receiptProfile": "generated_spec_package_v0",
+        "receiptId": "demo.core@0.1.0:producer:sha256:abc",
+        "producer": {"name": "SpecHarvester", "version": "0.1.0"},
+        "subject": {
+            "packageId": "demo.core",
+            "packageVersion": "0.1.0",
+            "boundarySpecs": ["specs/demo.spec.yaml"],
+        },
+        "inputs": [
+            {
+                "kind": "harvested_evidence",
+                "path": "harvest.json",
+                "location": "bundle",
+                "digest": {"algorithm": "sha256", "value": "a" * 64},
+            }
+        ],
+        "outputs": [
+            {
+                "path": "specpm.yaml",
+                "role": "manifest",
+                "digest": {"algorithm": "sha256", "value": "b" * 64},
+            },
+            {
+                "path": "specs/demo.spec.yaml",
+                "role": "boundary_spec",
+                "digest": {"algorithm": "sha256", "value": "c" * 64},
+            },
+        ],
+        "validation": {
+            "status": "passed",
+            "warningCount": 0,
+            "errorCount": 0,
+            "reportPath": "validation-report.json",
+            "reportDigest": {"algorithm": "sha256", "value": "d" * 64},
+        },
+        "diagnostics": {
+            "status": "clean",
+            "path": "diagnostics.json",
+            "digest": {"algorithm": "sha256", "value": "e" * 64},
+            "entries": [],
+        },
+        "humanReview": {
+            "status": "required",
+            "requiredFor": ["public_index_acceptance"],
+        },
+    }
+    (candidate / "producer-receipt.json").write_text(
+        json.dumps(receipt, sort_keys=True),
         encoding="utf-8",
     )

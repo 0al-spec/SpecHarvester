@@ -89,7 +89,9 @@ class CandidateSpecPackage:
         spec_refs = ManifestSpecReferences(self.root, manifest).paths()
         specs = [BoundarySpecDocument(self.root, spec_path).payload() for spec_path in spec_refs]
         validation = CandidateValidationSummary(self.root).payload()
-        diagnostics = CandidateValidationSummary(self.root).diagnostics()
+        validation_diagnostics = CandidateValidationSummary(self.root).diagnostics()
+        producer = ProducerBundleEvidence(self.root).payload()
+        diagnostics = validation_diagnostics + ProducerBundleEvidence(self.root).diagnostics()
         return {
             "apiVersion": RENDERER_API_VERSION,
             "schemaVersion": RENDERER_SCHEMA_VERSION,
@@ -102,6 +104,7 @@ class CandidateSpecPackage:
             "package": ManifestDocument(self.root, manifest).payload(),
             "specs": specs,
             "validation": validation,
+            "producer": producer,
             "diagnostics": [diagnostic.as_dict() for diagnostic in diagnostics],
         }
 
@@ -421,6 +424,131 @@ class CandidateValidationSummary:
         return None
 
 
+class ProducerBundleEvidence:
+    def __init__(self, root: Path):
+        self.root = root
+
+    def payload(self) -> dict[str, Any]:
+        receipt_artifact = JsonArtifact(self.root, "producer-receipt.json").payload()
+        validation_artifact = JsonArtifact(self.root, "validation-report.json").payload()
+        diagnostics_artifact = JsonArtifact(self.root, "diagnostics.json").payload()
+        receipt = mapping_value(receipt_artifact.get("raw"))
+        validation_report = mapping_value(validation_artifact.get("raw"))
+        diagnostics_report = mapping_value(diagnostics_artifact.get("raw"))
+        receipt_validation = mapping_value(receipt.get("validation"))
+        receipt_diagnostics = mapping_value(receipt.get("diagnostics"))
+        artifacts = [receipt_artifact, validation_artifact, diagnostics_artifact]
+        if all(artifact["status"] == "not_provided" for artifact in artifacts):
+            return {
+                "status": "not_provided",
+                "message": "Producer receipt artifacts were not found beside the candidate.",
+                "trustBoundary": producer_trust_boundary(),
+                "artifacts": artifacts,
+            }
+        return {
+            "status": producer_status(artifacts),
+            "trustBoundary": producer_trust_boundary(),
+            "artifacts": artifacts,
+            "receipt": {
+                "apiVersion": string_value(receipt.get("apiVersion")),
+                "kind": string_value(receipt.get("kind")),
+                "schemaVersion": integer_value(receipt.get("schemaVersion")),
+                "receiptProfile": string_value(receipt.get("receiptProfile")),
+                "receiptId": string_value(receipt.get("receiptId")),
+            },
+            "producer": mapping_value(receipt.get("producer")),
+            "subject": mapping_value(receipt.get("subject")),
+            "inputs": object_list(receipt.get("inputs")),
+            "outputs": object_list(receipt.get("outputs")),
+            "validation": {
+                "status": string_value(receipt_validation.get("status")),
+                "warningCount": integer_value(receipt_validation.get("warningCount")),
+                "errorCount": integer_value(receipt_validation.get("errorCount")),
+                "reportPath": string_value(receipt_validation.get("reportPath")),
+                "reportDigest": mapping_value(receipt_validation.get("reportDigest")),
+                "report": {
+                    "kind": string_value(validation_report.get("kind")),
+                    "status": string_value(validation_report.get("status")),
+                    "summary": mapping_value(validation_report.get("summary")),
+                    "authority": string_value(validation_report.get("authority")),
+                },
+            },
+            "diagnostics": {
+                "status": string_value(receipt_diagnostics.get("status")),
+                "path": string_value(receipt_diagnostics.get("path")),
+                "digest": mapping_value(receipt_diagnostics.get("digest")),
+                "entries": object_list(receipt_diagnostics.get("entries")),
+                "report": {
+                    "kind": string_value(diagnostics_report.get("kind")),
+                    "status": string_value(diagnostics_report.get("status")),
+                    "summary": mapping_value(diagnostics_report.get("summary")),
+                    "privacy": mapping_value(diagnostics_report.get("privacy")),
+                    "security": mapping_value(diagnostics_report.get("security")),
+                    "review": mapping_value(diagnostics_report.get("review")),
+                },
+            },
+            "humanReview": mapping_value(receipt.get("humanReview")),
+        }
+
+    def diagnostics(self) -> list[RendererDiagnostic]:
+        diagnostics = []
+        for name in ("producer-receipt.json", "validation-report.json", "diagnostics.json"):
+            artifact = JsonArtifact(self.root, name).payload()
+            if artifact["status"] == "invalid":
+                diagnostics.append(
+                    RendererDiagnostic(
+                        severity="warning",
+                        code="producer_artifact_unreadable",
+                        message=artifact["message"],
+                        path=name,
+                    )
+                )
+        return diagnostics
+
+
+class JsonArtifact:
+    def __init__(self, root: Path, name: str):
+        self.root = root
+        self.name = name
+
+    def payload(self) -> dict[str, Any]:
+        path = self.root / self.name
+        if not path.exists():
+            return {"path": self.name, "status": "not_provided"}
+        if path.is_symlink():
+            return {
+                "path": self.name,
+                "status": "invalid",
+                "message": "Producer artifact symlinks are not supported.",
+            }
+        if not path.is_file():
+            return {
+                "path": self.name,
+                "status": "invalid",
+                "message": "Producer artifact is not a regular file.",
+            }
+        try:
+            loaded = json.loads(
+                path.read_text(encoding="utf-8"),
+                parse_constant=self.reject_non_finite_number,
+            )
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            return {"path": self.name, "status": "invalid", "message": f"Cannot read JSON: {exc}"}
+        if not isinstance(loaded, dict):
+            return {"path": self.name, "status": "invalid", "message": "JSON must be an object."}
+        json_issue = JsonCompatibleValue(loaded).issue_path()
+        if json_issue is not None:
+            return {
+                "path": self.name,
+                "status": "invalid",
+                "message": f"JSON value is not JSON-compatible at {json_issue}.",
+            }
+        return {"path": self.name, "status": "available", "raw": loaded}
+
+    def reject_non_finite_number(self, value: str) -> None:
+        raise ValueError(f"non-finite JSON number is not supported: {value}")
+
+
 class StaticSpecSite:
     def __init__(self, output: Path):
         self.output = output
@@ -487,6 +615,12 @@ def list_value(value: Any) -> list[Any]:
     return value if isinstance(value, list) else []
 
 
+def object_list(value: Any) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, dict)]
+
+
 def string_value(value: Any) -> str:
     return value if isinstance(value, str) else ""
 
@@ -504,4 +638,20 @@ def integer_value(value: Any) -> int:
 def script_safe_json(serialized_payload: str) -> str:
     return (
         serialized_payload.replace("&", "\\u0026").replace("<", "\\u003c").replace(">", "\\u003e")
+    )
+
+
+def producer_status(artifacts: list[dict[str, Any]]) -> str:
+    statuses = {artifact["status"] for artifact in artifacts}
+    if "invalid" in statuses:
+        return "invalid"
+    if "not_provided" in statuses:
+        return "partial"
+    return "available"
+
+
+def producer_trust_boundary() -> str:
+    return (
+        "Generated producer evidence is review material only; it is not SpecPM acceptance, "
+        "maintainer approval, or public index publication authority."
     )

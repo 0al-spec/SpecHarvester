@@ -29,6 +29,10 @@ INDEX_HTML = """<!doctype html>
         <div id="package-facts" class="facts"></div>
       </div>
       <div class="panel">
+        <h2>Producer Handoff</h2>
+        <div id="producer-facts" class="facts"></div>
+      </div>
+      <div class="panel">
         <h2>Capabilities</h2>
         <div id="capability-list" class="token-list"></div>
       </div>
@@ -39,6 +43,15 @@ INDEX_HTML = """<!doctype html>
     </aside>
 
     <section class="content">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Producer Evidence</h2>
+          <span id="producer-status" class="pill">not provided</span>
+        </div>
+        <p id="producer-boundary" class="trust-boundary"></p>
+        <div id="producer-panels" class="evidence-grid"></div>
+      </section>
+
       <section class="panel">
         <div class="panel-head">
           <h2>Boundary Specs</h2>
@@ -344,16 +357,53 @@ button.button {
 }
 
 .spec-list,
-.diagnostic-list {
+.diagnostic-list,
+.evidence-grid {
   display: grid;
   gap: 1rem;
 }
 
 .spec-card,
-.diagnostic-card {
+.diagnostic-card,
+.evidence-card {
   border-top: 1px solid var(--rule-soft);
   background: transparent;
   padding: 1.15rem 0 0;
+}
+
+.evidence-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.evidence-card h3 {
+  margin-bottom: 0.8rem;
+}
+
+.digest-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.digest-row {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.digest-row code {
+  color: var(--signal-ink);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  overflow-wrap: anywhere;
+}
+
+.trust-boundary {
+  max-width: 760px;
+  color: var(--warn);
+  font-family: var(--mono);
+  font-size: 0.78rem;
 }
 
 .spec-card {
@@ -545,6 +595,10 @@ pre {
     grid-template-columns: 1fr;
   }
 
+  .evidence-grid {
+    grid-template-columns: 1fr;
+  }
+
   .reading-tools {
     grid-template-columns: 1fr;
   }
@@ -606,6 +660,7 @@ function renderPackage(payload) {
   ]);
   document.querySelector("#capability-list").innerHTML = tokens(pkg.capabilities || []);
   document.querySelector("#intent-list").innerHTML = tokens(pkg.intents || []);
+  renderProducerEvidence(payload.producer || {});
 
   const specs = payload.specs || [];
   document.querySelector("#spec-count").textContent = String(specs.length);
@@ -659,6 +714,113 @@ function renderSpecCard(spec, index) {
   `;
 }
 
+function renderProducerEvidence(producer) {
+  const receipt = producer.receipt || {};
+  const producerIdentity = producer.producer || {};
+  const subject = producer.subject || {};
+  const humanReview = producer.humanReview || {};
+  const validation = producer.validation || {};
+  const diagnostics = producer.diagnostics || {};
+  const diagnosticReport = diagnostics.report || {};
+
+  document.querySelector("#producer-status").textContent = producer.status || "not provided";
+  document.querySelector("#producer-boundary").textContent = producer.trustBoundary || "";
+  document.querySelector("#producer-facts").innerHTML = facts([
+    ["Status", producer.status || "not provided"],
+    ["Producer", [producerIdentity.name, producerIdentity.version].filter(Boolean).join(" ")],
+    ["Receipt", receipt.receiptProfile],
+    ["Review", humanReview.status],
+    ["Subject", [subject.packageId, subject.packageVersion].filter(Boolean).join("@")]
+  ]);
+
+  if (producer.status === "not_provided") {
+    const message = producer.message || "No generated bundle handoff evidence was found.";
+    document.querySelector("#producer-panels").innerHTML = `
+      <article class="evidence-card">
+        <h3>No producer receipt artifacts</h3>
+        <p class="muted">${escapeHtml(message)}</p>
+      </article>
+    `;
+    return;
+  }
+
+  document.querySelector("#producer-panels").innerHTML = [
+    evidenceCard("Receipt", facts([
+      ["API", receipt.apiVersion],
+      ["Kind", receipt.kind],
+      ["Profile", receipt.receiptProfile],
+      ["Schema", receipt.schemaVersion],
+      ["Receipt ID", receipt.receiptId]
+    ])),
+    evidenceCard("Inputs", digestRows(producer.inputs || [], "No input provenance recorded.")),
+    evidenceCard("Outputs", digestRows(producer.outputs || [], "No output hashes recorded.")),
+    evidenceCard("Validation", facts([
+      ["Receipt Status", validation.status],
+      ["Report Status", validation.report?.status],
+      ["Errors", validation.errorCount],
+      ["Warnings", validation.warningCount],
+      ["Authority", validation.report?.authority],
+      ["Report", validation.reportPath],
+      ["Digest", digestValue(validation.reportDigest)]
+    ])),
+    evidenceCard("Diagnostics", facts([
+      ["Receipt Status", diagnostics.status],
+      ["Report Status", diagnosticReport.status],
+      ["Entries", (diagnostics.entries || []).length],
+      ["Report", diagnostics.path],
+      ["Digest", digestValue(diagnostics.digest)]
+    ]) + digestRows(diagnostics.entries || [], "No diagnostics entries.")),
+    evidenceCard("Privacy / Review", facts([
+      ["Private Prompts", diagnosticReport.privacy?.privatePromptsIncluded],
+      ["Raw Source", diagnosticReport.privacy?.rawSourceIncluded],
+      ["Secrets", diagnosticReport.privacy?.secretsIncluded],
+      ["Security Caveat", diagnosticReport.security?.caveat],
+      [
+        "Review Required For",
+        (humanReview.requiredFor || diagnosticReport.review?.requiredFor || []).join(", ")
+      ],
+      ["Acceptance Authority", diagnosticReport.review?.acceptanceAuthority]
+    ]))
+  ].join("");
+}
+
+function evidenceCard(title, body) {
+  return `
+    <article class="evidence-card">
+      <h3>${escapeHtml(title)}</h3>
+      ${body}
+    </article>
+  `;
+}
+
+function digestRows(items, emptyText) {
+  if (!items.length) {
+    return `<p class="empty">${escapeHtml(emptyText)}</p>`;
+  }
+  return `
+    <div class="digest-list">
+      ${items.map((item) => {
+        const title = item.path || item.code || item.kind || "entry";
+        const meta = item.role || item.location || item.severity || item.message || "";
+        return `
+        <div class="digest-row">
+          <strong>${escapeHtml(title)}</strong>
+          <span class="muted">${escapeHtml(meta)}</span>
+          <code>${escapeHtml(digestValue(item.digest))}</code>
+        </div>
+      `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function digestValue(digest) {
+  if (!digest || typeof digest !== "object") {
+    return "";
+  }
+  return [digest.algorithm, digest.value].filter(Boolean).join(":");
+}
+
 function renderDiagnosticCard(diagnostic) {
   return `
     <article class="diagnostic-card">
@@ -686,9 +848,19 @@ function facts(rows) {
   return rows.map(([label, value]) => `
     <div class="fact">
       <span>${escapeHtml(label)}</span>
-      <strong>${escapeHtml(value || "")}</strong>
+      <strong>${escapeHtml(formatValue(value))}</strong>
     </div>
   `).join("");
+}
+
+function formatValue(value) {
+  if (value === null || value === undefined) {
+    return "";
+  }
+  if (Array.isArray(value)) {
+    return value.join(", ");
+  }
+  return String(value);
 }
 
 function tokens(values) {
