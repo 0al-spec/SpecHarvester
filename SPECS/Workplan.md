@@ -630,7 +630,7 @@ Acceptance:
   Candidate Bundle Contract, documenting the required bundle layout,
   `producer-receipt.json` profile, output digest expectations, review boundary,
   and rejection diagnostics once the SpecPM contract PR is merged.
-- [ ] `P21-T2` Emit `producer-receipt.json` for generated candidate bundles with
+- [x] `P21-T2` Emit `producer-receipt.json` for generated candidate bundles with
   `apiVersion: specpm.receipts/v0`, `kind: SpecPMProducerReceipt`, profile
   `generated_spec_package_v0`, producer identity/version, subject package
   metadata, input evidence references, configuration summary or digest, output
