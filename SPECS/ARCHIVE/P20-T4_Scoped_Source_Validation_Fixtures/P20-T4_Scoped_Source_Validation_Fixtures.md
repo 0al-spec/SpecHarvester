@@ -1,6 +1,6 @@
 # P20-T4 — Scoped Source Validation Fixtures
 
-**Status:** Planned
+**Status:** Completed
 **Priority:** P1
 **Phase:** Phase 20. Scoped Source Unit Harvesting
 **Date:** 2026-06-01
