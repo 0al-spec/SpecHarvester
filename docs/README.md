@@ -89,7 +89,10 @@ Published DocC site:
 36. [`STATIC_SPEC_RENDERER.md`](STATIC_SPEC_RENDERER.md): static HTML/JS preview
     for generated SpecPM candidate packages from `specpm.yaml` and referenced
     `specs/*.spec.yaml`
-37. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+37. [`PRODUCER_CANDIDATE_BUNDLE.md`](PRODUCER_CANDIDATE_BUNDLE.md):
+    SpecPM Producer Candidate Bundle output plan for `producer-receipt.json`,
+    validation reports, diagnostics, hashes, and human review handoff
+38. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -136,6 +139,9 @@ Published DocC site:
   local runner for executing real-repository validation steps from manifests
 - [`STATIC_SPEC_RENDERER.md`](STATIC_SPEC_RENDERER.md): static HTML/JS renderer
   for local candidate package review before SpecPM acceptance
+- [`PRODUCER_CANDIDATE_BUNDLE.md`](PRODUCER_CANDIDATE_BUNDLE.md):
+  machine-verifiable SpecPM handoff layout, producer receipt profile, digest
+  expectations, diagnostics, privacy caveats, and review boundary
 
 ## GitHub Process Surface
 

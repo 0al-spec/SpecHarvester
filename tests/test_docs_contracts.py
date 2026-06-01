@@ -200,6 +200,54 @@ def test_docc_and_github_docs_cover_static_spec_renderer() -> None:
     assert "<doc:StaticSpecRenderer>" in root_page.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_producer_candidate_bundle_plan() -> None:
+    github_doc = ROOT / "docs" / "PRODUCER_CANDIDATE_BUNDLE.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ProducerCandidateBundle.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "SpecPM Producer Candidate Bundle Contract",
+            "candidate/",
+            "specpm.yaml",
+            "specs/*.spec.yaml",
+            "producer-receipt.json",
+            "validation-report.json",
+            "diagnostics.json",
+            "apiVersion: specpm.receipts/v0",
+            "kind: SpecPMProducerReceipt",
+            "receiptProfile: generated_spec_package_v0",
+            "configuration.digest",
+            "outputs[]",
+            "SHA-256",
+            "self-hash problem",
+            "humanReview.status: approved",
+            "maintainer override",
+            "privacy.secretsIncluded",
+            "unstable generated ID",
+            "evidence references",
+            "namespace",
+            "Producer receipts are evidence, not authority",
+        ):
+            assert required in normalized
+
+        assert "producer-receipt.json` must not appear in `outputs[]" in text
+
+    assert "PRODUCER_CANDIDATE_BUNDLE.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:ProducerCandidateBundle>" in root_page.read_text(encoding="utf-8")
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "apiVersion: specpm.receipts/v0" in workplan_text
+    assert "kind: SpecPMProducerReceipt" in workplan_text
+    assert "apiVersion: specpm.producer_receipt/v1" not in workplan_text
+
+
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
     github_doc = ROOT / "docs" / "GOVERNANCE_REPORTS.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "GovernanceReports.md"
