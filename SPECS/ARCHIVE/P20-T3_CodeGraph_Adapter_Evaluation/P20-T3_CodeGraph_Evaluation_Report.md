@@ -49,8 +49,11 @@ Implications for SpecHarvester:
 - Do not invoke the interactive installer.
 - Do not allow implicit fallback downloads inside normal harvest/draft flows.
 - Require an already-installed executable path or explicit opt-in environment.
-- Prefer `CODEGRAPH_NO_DOWNLOAD=1` and a controlled `CODEGRAPH_INSTALL_DIR`
-  during any optional live smoke tests.
+- Prefer `CODEGRAPH_NO_DOWNLOAD=1` during compatibility checks and ordinary
+  CI. If an optional live smoke intentionally exercises npm shim fallback
+  behavior, first verify that the pinned shim version supports
+  `CODEGRAPH_INSTALL_DIR`; otherwise treat the cache path as not redirectable
+  and use only `CODEGRAPH_NO_DOWNLOAD=1` or a pinned `CODEGRAPH_DOWNLOAD_BASE`.
 - Record executable path, analyzer version, package integrity when available,
   and executable digest when running a live adapter.
 

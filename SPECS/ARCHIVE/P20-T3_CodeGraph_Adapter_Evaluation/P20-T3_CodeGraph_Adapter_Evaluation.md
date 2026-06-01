@@ -1,6 +1,6 @@
 # P20-T3 — CodeGraph Adapter Evaluation
 
-**Status:** Planned
+**Status:** Completed
 **Priority:** P1
 **Phase:** Phase 20. Scoped Source Unit Harvesting
 **Date:** 2026-05-31
