@@ -636,7 +636,7 @@ Acceptance:
   metadata, input evidence references, configuration summary or digest, output
   file roles, output SHA-256 digests, validation status, diagnostics status, and
   `humanReview` status.
-- [ ] `P21-T3` Emit `validation-report.json` and `diagnostics.json` alongside
+- [x] `P21-T3` Emit `validation-report.json` and `diagnostics.json` alongside
   generated `specpm.yaml` and `specs/*.spec.yaml`, making validation result,
   warnings/errors, privacy/security notes, unstable-ID warnings, evidence-link
   gaps, and namespace/version overlap diagnostics machine-readable.
