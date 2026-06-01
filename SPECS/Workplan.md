@@ -626,7 +626,7 @@ Acceptance:
 
 ## Phase 21. Producer Candidate Bundle Contract
 
-- [ ] `P21-T1` Align SpecHarvester output planning with the SpecPM Producer
+- [x] `P21-T1` Align SpecHarvester output planning with the SpecPM Producer
   Candidate Bundle Contract, documenting the required bundle layout,
   `producer-receipt.json` profile, output digest expectations, review boundary,
   and rejection diagnostics once the SpecPM contract PR is merged.
@@ -662,7 +662,7 @@ Acceptance:
 - Receipt hashing avoids a self-hash problem: generated outputs are hashed in
   the receipt, while any receipt hash is handled by an external verifier or PR
   tooling rather than by the receipt itself.
-- Public index acceptance remains gated by `review.status == approved` or an
-  explicit maintainer override recorded outside the generated bundle.
+- Public index acceptance remains gated by `humanReview.status == approved` or
+  an explicit maintainer override recorded outside the generated bundle.
 - Bundle preflight and viewer changes preserve existing SpecPM validation,
   static rendering, and trust-boundary behavior.
