@@ -86,6 +86,7 @@
 | P21-T1 | [P21-T1_Producer_Candidate_Bundle_Output_Planning/](P21-T1_Producer_Candidate_Bundle_Output_Planning/) | 2026-06-02 | PASS |
 | P21-T2 | [P21-T2_Producer_Receipt_Emission/](P21-T2_Producer_Receipt_Emission/) | 2026-06-02 | PASS |
 | P21-T3 | [P21-T3_Validation_and_Diagnostics_Report_Emission/](P21-T3_Validation_and_Diagnostics_Report_Emission/) | 2026-06-02 | PASS |
+| P21-T4 | [P21-T4_Candidate_Bundle_Preflight_Verifier/](P21-T4_Candidate_Bundle_Preflight_Verifier/) | 2026-06-02 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -283,6 +284,7 @@
 | 2026-06-02 | P21-T2 | Archived REVIEW_p21_t2_producer_receipt_emission report |
 | 2026-06-02 | P21-T3 | Archived Validation and Diagnostics Report Emission (PASS) |
 | 2026-06-02 | P21-T3 | Archived REVIEW_p21_t3_validation_diagnostics_report_emission report |
+| 2026-06-02 | P21-T4 | Archived Candidate Bundle Preflight Verifier (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
