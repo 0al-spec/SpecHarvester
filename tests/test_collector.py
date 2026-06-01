@@ -4,9 +4,14 @@ import hashlib
 import json
 import textwrap
 from pathlib import Path
+from typing import Any
 
 import pytest
 
+from spec_harvester.candidate_bundle_preflight import (
+    CandidateBundlePreflightOptions,
+    run_candidate_bundle_preflight,
+)
 from spec_harvester.cli import main
 from spec_harvester.collector import (
     HarvestOptions,
@@ -1128,6 +1133,83 @@ def test_draft_spec_package_marks_external_snapshot_input(tmp_path: Path) -> Non
         entry["code"] for entry in receipt["diagnostics"]["entries"]
     }
     assert not (candidate / "harvest.json").exists()
+
+
+def test_candidate_bundle_preflight_passes_generated_candidate(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "passed"
+    assert report["summary"] == {"diagnosticCount": 0, "errorCount": 0, "warningCount": 0}
+    assert report["authority"] == "producer_side_preflight"
+
+
+def test_candidate_bundle_preflight_detects_output_digest_mismatch(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    (candidate / "specpm.yaml").write_text("tampered: true\n", encoding="utf-8")
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "failed"
+    assert "output_digest_mismatch" in diagnostic_codes(report)
+
+
+def test_candidate_bundle_preflight_rejects_receipt_self_hash(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    receipt_path = candidate / "producer-receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["outputs"].append(
+        {
+            "path": "producer-receipt.json",
+            "role": "receipt",
+            "digest": {
+                "algorithm": "sha256",
+                "value": hashlib.sha256(receipt_path.read_bytes()).hexdigest(),
+            },
+        }
+    )
+    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "failed"
+    assert diagnostic_codes(report) == {"receipt_self_hash"}
+
+
+def test_candidate_bundle_preflight_rejects_invalid_review_status(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    mutate_receipt(candidate, lambda receipt: receipt["humanReview"].update({"status": "waived"}))
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "failed"
+    assert "human_review_status_invalid" in diagnostic_codes(report)
+
+
+def test_candidate_bundle_preflight_rejects_missing_bundle_input(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    (candidate / "harvest.json").unlink()
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "failed"
+    assert diagnostic_codes(report) == {"input_digest_mismatch"}
+
+
+def test_cli_preflight_candidate_bundle_returns_nonzero_for_invalid_bundle(
+    tmp_path: Path,
+    capsys,  # type: ignore[no-untyped-def]
+) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    (candidate / "validation-report.json").unlink()
+
+    result = main(["preflight-candidate-bundle", str(candidate)])
+
+    assert result == 1
+    report = json.loads(capsys.readouterr().out)
+    assert report["status"] == "failed"
+    assert "required_file_missing" in diagnostic_codes(report)
 
 
 def test_draft_spec_package_keeps_interfaces_matched_to_valid_packages(tmp_path: Path) -> None:
@@ -2987,6 +3069,18 @@ def draft_demo_candidate(tmp_path: Path) -> Path:
         )
     )
     return candidate
+
+
+def mutate_receipt(candidate: Path, mutation: Any) -> None:
+    receipt_path = candidate / "producer-receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    mutation(receipt)
+    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def diagnostic_codes(report: dict[str, Any]) -> set[str]:
+    diagnostics = report.get("diagnostics", [])
+    return {item["code"] for item in diagnostics if isinstance(item, dict) and "code" in item}
 
 
 def public_interface_index_fixture() -> dict:

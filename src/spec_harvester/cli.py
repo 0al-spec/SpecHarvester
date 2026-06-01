@@ -25,6 +25,10 @@ from spec_harvester.architecture_lint import (
     write_architecture_lint_report,
 )
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
+from spec_harvester.candidate_bundle_preflight import (
+    CandidateBundlePreflightOptions,
+    run_candidate_bundle_preflight,
+)
 from spec_harvester.code_duplication_report import (
     BACKEND_BUILTIN,
     BACKEND_JSCPD,
@@ -218,6 +222,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output directory where the static site will be written.",
     )
     render_spec_site.set_defaults(func=run_render_spec_site)
+
+    preflight = subcommands.add_parser(
+        "preflight-candidate-bundle",
+        help="Verify a generated SpecPM candidate bundle before SpecPM handoff.",
+    )
+    preflight.add_argument(
+        "candidate",
+        type=Path,
+        help="Candidate package directory containing producer-receipt.json.",
+    )
+    preflight.set_defaults(func=run_preflight_candidate_bundle)
 
     promote = subcommands.add_parser(
         "promote",
@@ -762,6 +777,14 @@ def run_render_spec_site(args: argparse.Namespace) -> int:
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["status"] == "ok" else 1
+
+
+def run_preflight_candidate_bundle(args: argparse.Namespace) -> int:
+    result = run_candidate_bundle_preflight(
+        CandidateBundlePreflightOptions(candidate=args.candidate)
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
 
 
 def run_promote(args: argparse.Namespace) -> int:
