@@ -32,6 +32,7 @@ class CandidateBundlePreflightOptions:
 class CandidateBundlePreflight:
     def __init__(self, options: CandidateBundlePreflightOptions):
         self.root = options.candidate
+        self.resolved_root = options.candidate.resolve()
         self.diagnostics: list[dict[str, str]] = []
 
     def report(self) -> dict[str, Any]:
@@ -140,10 +141,7 @@ class CandidateBundlePreflight:
         manifest_specs = manifest_spec_paths(manifest)
         receipt_specs = receipt_spec_paths(receipt)
         for spec_path in sorted(manifest_specs | receipt_specs):
-            if not (self.root / spec_path).is_file():
-                self.error(
-                    "required_spec_missing", f"Referenced spec is missing: {spec_path}", spec_path
-                )
+            self.bundle_file(spec_path, "required_spec_missing")
         if manifest_specs != receipt_specs:
             self.error(
                 "subject_specs_mismatch", "Receipt boundarySpecs must match specpm.yaml specs."
@@ -232,15 +230,30 @@ class CandidateBundlePreflight:
             self.check_digest_record(item, item.get("path"), "input_digest_mismatch")
 
     def check_digest_record(self, record: dict[str, Any], path: Any, code: str) -> None:
-        if not isinstance(path, str) or not path:
-            self.error(code, "Digest record path must be non-empty.")
-            return
-        target = self.root / path
-        if not target.is_file():
-            self.error(code, f"Digest target is missing: {path}", path)
+        target = self.bundle_file(path, code)
+        if target is None:
             return
         if record.get("digest") != digest_record(sha256_file(target)):
             self.error(code, f"Digest mismatch for {path}.", path)
+
+    def bundle_file(self, path: Any, missing_code: str) -> Path | None:
+        if not isinstance(path, str) or not path:
+            self.error(missing_code, "Bundle path must be a non-empty relative path.")
+            return None
+        relative = Path(path)
+        if relative.is_absolute() or ".." in relative.parts:
+            self.error("bundle_path_escape", f"Bundle path escapes candidate root: {path}", path)
+            return None
+        target = (self.root / relative).resolve()
+        try:
+            target.relative_to(self.resolved_root)
+        except ValueError:
+            self.error("bundle_path_escape", f"Bundle path escapes candidate root: {path}", path)
+            return None
+        if not target.is_file():
+            self.error(missing_code, f"Bundle file is missing: {path}", path)
+            return None
+        return target
 
     def error(self, code: str, message: str, path: str | None = None) -> None:
         self.diagnostics.append(diagnostic("error", code, message, path))

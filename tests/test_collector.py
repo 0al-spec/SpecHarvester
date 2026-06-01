@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+import yaml
 
 from spec_harvester.candidate_bundle_preflight import (
     CandidateBundlePreflightOptions,
@@ -1195,6 +1196,72 @@ def test_candidate_bundle_preflight_rejects_missing_bundle_input(tmp_path: Path)
 
     assert report["status"] == "failed"
     assert diagnostic_codes(report) == {"input_digest_mismatch"}
+
+
+def test_candidate_bundle_preflight_rejects_output_path_escape(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    outside = tmp_path / "outside.yaml"
+    outside.write_text("outside: true\n", encoding="utf-8")
+    mutate_receipt(
+        candidate,
+        lambda receipt: receipt["outputs"].append(
+            {
+                "path": "../outside.yaml",
+                "role": "boundary_spec",
+                "digest": {
+                    "algorithm": "sha256",
+                    "value": hashlib.sha256(outside.read_bytes()).hexdigest(),
+                },
+            }
+        ),
+    )
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "failed"
+    assert "bundle_path_escape" in diagnostic_codes(report)
+
+
+def test_candidate_bundle_preflight_rejects_bundle_input_path_escape(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    outside = tmp_path / "outside-harvest.json"
+    outside.write_text("{}", encoding="utf-8")
+    mutate_receipt(
+        candidate,
+        lambda receipt: receipt["inputs"].append(
+            {
+                "kind": "harvested_evidence",
+                "path": "../outside-harvest.json",
+                "location": "bundle",
+                "digest": {
+                    "algorithm": "sha256",
+                    "value": hashlib.sha256(outside.read_bytes()).hexdigest(),
+                },
+            }
+        ),
+    )
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "failed"
+    assert "bundle_path_escape" in diagnostic_codes(report)
+
+
+def test_candidate_bundle_preflight_rejects_spec_path_escape(tmp_path: Path) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    manifest_path = candidate / "specpm.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["specs"].append({"path": "../outside.spec.yaml"})
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=True), encoding="utf-8")
+    mutate_receipt(
+        candidate,
+        lambda receipt: receipt["subject"]["boundarySpecs"].append("../outside.spec.yaml"),
+    )
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "failed"
+    assert "bundle_path_escape" in diagnostic_codes(report)
 
 
 def test_cli_preflight_candidate_bundle_returns_nonzero_for_invalid_bundle(
