@@ -644,7 +644,7 @@ Acceptance:
   required files, receipt schema/profile, output hashes, validation report
   digest, diagnostics digest, stable generated IDs, evidence links, and review
   status before a generated bundle is proposed to SpecPM.
-- [ ] `P21-T5` Extend the static candidate viewer to show producer receipt,
+- [x] `P21-T5` Extend the static candidate viewer to show producer receipt,
   input provenance, output hashes, validation status, diagnostics summary,
   privacy/security caveats, and human review boundary without implying automatic
   SpecPM acceptance.
