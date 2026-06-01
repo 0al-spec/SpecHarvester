@@ -4,7 +4,7 @@
 **Phase:** Phase 21. Producer Candidate Bundle Contract
 **Effort:** 4-8 hours
 **Dependencies:** P21-T1, P21-T2, P21-T3
-**Status:** Queued
+**Status:** In Progress
 **Suggested:** 2026-06-02
 
 ## Description
