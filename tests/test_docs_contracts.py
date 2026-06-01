@@ -248,6 +248,42 @@ def test_docc_and_github_docs_cover_producer_candidate_bundle_plan() -> None:
     assert "apiVersion: specpm.producer_receipt/v1" not in workplan_text
 
 
+def test_docc_and_github_docs_cover_specpm_handoff_guide() -> None:
+    github_doc = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "SpecHarvester produces an evidence-rich candidate",
+            "SpecPM validates package shape",
+            "public index publishes only reviewed sources",
+            "candidate/",
+            "specpm.yaml",
+            "specs/*.spec.yaml",
+            "producer-receipt.json",
+            "validation-report.json",
+            "diagnostics.json",
+            "spec-harvester draft",
+            "preflight-candidate-bundle",
+            "render-spec-site",
+            'kind": "SpecPMProducerReceipt',
+            'receiptProfile": "generated_spec_package_v0',
+            "producer-receipt.json` must not appear in `outputs[]",
+            "humanReview.status: approved",
+            "maintainer override",
+            "SpecHarvester evidence can support the decision",
+            "It cannot make the decision",
+        ):
+            assert required in normalized
+
+    assert "SPECPM_HANDOFF.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecPMHandoff>" in root_page.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
     github_doc = ROOT / "docs" / "GOVERNANCE_REPORTS.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "GovernanceReports.md"
