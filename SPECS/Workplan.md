@@ -640,7 +640,7 @@ Acceptance:
   generated `specpm.yaml` and `specs/*.spec.yaml`, making validation result,
   warnings/errors, privacy/security notes, unstable-ID warnings, evidence-link
   gaps, and namespace/version overlap diagnostics machine-readable.
-- [ ] `P21-T4` Add a local candidate bundle preflight verifier that checks
+- [x] `P21-T4` Add a local candidate bundle preflight verifier that checks
   required files, receipt schema/profile, output hashes, validation report
   digest, diagnostics digest, stable generated IDs, evidence links, and review
   status before a generated bundle is proposed to SpecPM.
