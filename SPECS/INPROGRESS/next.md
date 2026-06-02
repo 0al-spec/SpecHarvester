@@ -1,27 +1,38 @@
-# Next Task: None Queued
+# Next Task: P22-T1 Candidate Bundle End-to-End Smoke
 
-**Phase:** Phase 21. Producer Candidate Bundle Contract
-**Status:** Phase Complete
+**Phase:** Phase 22. Producer Bundle End-to-End Smoke
+**Status:** Planned
 **Updated:** 2026-06-02
 
-## Recently Archived
+## Motivation
 
-- P21-T6: SpecPM Handoff Documentation and Examples (PASS, 2026-06-02)
-- P21-T5: Static Viewer Producer Receipt Panels (PASS, 2026-06-02)
-- P21-T4: Candidate Bundle Preflight Verifier (PASS, 2026-06-02)
-- P21-T3: Validation and Diagnostics Report Emission (PASS, 2026-06-02)
-- P21-T2: Producer Receipt Emission (PASS, 2026-06-02)
-- P21-T1: Producer Candidate Bundle Output Planning (PASS, 2026-06-02)
+Phase 21 added the producer receipt, validation report, diagnostics report,
+preflight verifier, static viewer panels, and SpecPM handoff docs as separate
+steps. The next gap is confidence that those pieces stay wired together through
+one real local producer path.
 
-## Phase 21 Status
+## Goal
 
-All Phase 21 tasks in `SPECS/Workplan.md` are complete. The remaining work is
-PR review/merge sequencing for the stacked P21 pull requests.
+Add an end-to-end smoke that runs:
 
-## Next Step
+```text
+local fixture repository -> collect -> draft -> preflight -> render
+```
 
-Review and merge the P21 PR stack in order:
+The smoke should assert that the generated candidate bundle passes producer
+preflight and that the rendered static viewer payload exposes the same producer
+identity, package identity, output hashes, diagnostics status, and human-review
+boundary recorded in the bundle artifacts.
 
-1. P21-T4 Candidate Bundle Preflight Verifier
-2. P21-T5 Static Viewer Producer Receipt Panels
-3. P21-T6 SpecPM Handoff Documentation and Examples
+## Boundaries
+
+- Do not add SpecPM registry acceptance policy in this task.
+- Do not execute harvested repository code, install dependencies, or use
+  network access.
+- Do not commit generated candidate output; keep the smoke fixture and outputs
+  test-local.
+
+## Success Criteria
+
+- The new smoke fails if receipt/report/viewer wiring drifts.
+- Existing tests, lint, format, Swift manifest, and DocC build stay green.
