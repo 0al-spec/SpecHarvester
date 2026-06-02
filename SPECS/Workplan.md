@@ -669,7 +669,7 @@ Acceptance:
 
 ## Phase 22. Producer Bundle End-to-End Smoke
 
-- [ ] `P22-T1` Add an end-to-end candidate bundle smoke that builds one local
+- [x] `P22-T1` Add an end-to-end candidate bundle smoke that builds one local
   fixture repository snapshot, drafts a SpecPM candidate bundle, runs producer
   preflight, renders the static viewer, and asserts the receipt, reports,
   preflight result, and viewer payload all agree on the same package identity,
