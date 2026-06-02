@@ -1,27 +1,24 @@
 # Next Task: None Queued
 
-**Phase:** Phase 21. Producer Candidate Bundle Contract
+**Phase:** Phase 22. Producer Bundle End-to-End Smoke
 **Status:** Phase Complete
 **Updated:** 2026-06-02
 
 ## Recently Archived
 
-- P21-T6: SpecPM Handoff Documentation and Examples (PASS, 2026-06-02)
-- P21-T5: Static Viewer Producer Receipt Panels (PASS, 2026-06-02)
-- P21-T4: Candidate Bundle Preflight Verifier (PASS, 2026-06-02)
-- P21-T3: Validation and Diagnostics Report Emission (PASS, 2026-06-02)
-- P21-T2: Producer Receipt Emission (PASS, 2026-06-02)
-- P21-T1: Producer Candidate Bundle Output Planning (PASS, 2026-06-02)
+- P22-T1: Candidate Bundle End-to-End Smoke (PASS, 2026-06-02)
 
-## Phase 21 Status
+## Phase 22 Status
 
-All Phase 21 tasks in `SPECS/Workplan.md` are complete. The remaining work is
-PR review/merge sequencing for the stacked P21 pull requests.
+The Phase 22 producer-side smoke is complete. SpecHarvester now has local
+coverage for the full producer path:
+
+```text
+local fixture repository -> collect -> draft -> preflight -> render
+```
 
 ## Next Step
 
-Review and merge the P21 PR stack in order:
-
-1. P21-T4 Candidate Bundle Preflight Verifier
-2. P21-T5 Static Viewer Producer Receipt Panels
-3. P21-T6 SpecPM Handoff Documentation and Examples
+Move to the adjacent SpecPM-side policy work: document how SpecPM should treat
+producer candidate bundles as proposal evidence without making generated
+receipts automatic registry authority.

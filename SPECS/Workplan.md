@@ -666,3 +666,21 @@ Acceptance:
   an explicit maintainer override recorded outside the generated bundle.
 - Bundle preflight and viewer changes preserve existing SpecPM validation,
   static rendering, and trust-boundary behavior.
+
+## Phase 22. Producer Bundle End-to-End Smoke
+
+- [x] `P22-T1` Add an end-to-end candidate bundle smoke that builds one local
+  fixture repository snapshot, drafts a SpecPM candidate bundle, runs producer
+  preflight, renders the static viewer, and asserts the receipt, reports,
+  preflight result, and viewer payload all agree on the same package identity,
+  output hashes, diagnostics status, and review boundary.
+
+Acceptance:
+
+- The smoke uses only local fixture files and trusted SpecHarvester APIs.
+- The smoke exercises the real producer path:
+  collect -> draft -> preflight -> render.
+- The generated bundle passes producer preflight and the rendered static
+  payload exposes producer receipt panels for the same candidate.
+- The smoke remains producer-side evidence only and does not imply SpecPM
+  registry acceptance.
