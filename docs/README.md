@@ -92,7 +92,10 @@ Published DocC site:
 37. [`PRODUCER_CANDIDATE_BUNDLE.md`](PRODUCER_CANDIDATE_BUNDLE.md):
     SpecPM Producer Candidate Bundle output plan for `producer-receipt.json`,
     validation reports, diagnostics, hashes, and human review handoff
-38. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+38. [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md): operator handoff guide for
+    drafting, preflighting, rendering, and reviewing generated candidate
+    bundles before SpecPM acceptance
+39. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -142,6 +145,9 @@ Published DocC site:
 - [`PRODUCER_CANDIDATE_BUNDLE.md`](PRODUCER_CANDIDATE_BUNDLE.md):
   machine-verifiable SpecPM handoff layout, producer receipt profile, digest
   expectations, diagnostics, privacy caveats, and review boundary
+- [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md): practical operator workflow for
+  generating, preflighting, rendering, and reviewing candidate bundles before
+  public index acceptance
 
 ## GitHub Process Surface
 
