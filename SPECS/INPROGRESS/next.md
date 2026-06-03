@@ -1,24 +1,29 @@
-# Next Task: None Queued
+# Next Task: P23-T2 Shared Cross-Repository Fixture Policy
 
-**Phase:** Phase 22. Producer Bundle End-to-End Smoke
-**Status:** Phase Complete
-**Updated:** 2026-06-02
+**Phase:** Phase 23. SpecPM Intake Boundary Alignment
+**Status:** P23-T1 complete; P23-T2 recommended next
+**Updated:** 2026-06-04
 
 ## Recently Archived
 
 - P22-T1: Candidate Bundle End-to-End Smoke (PASS, 2026-06-02)
+- P23-T1: SpecPM proposal evidence links (implemented in current PR)
 
-## Phase 22 Status
+## Phase 23 Status
 
-The Phase 22 producer-side smoke is complete. SpecHarvester now has local
-coverage for the full producer path:
+SpecHarvester proposal artifacts and the trusted SpecPM proposal workflow now
+explicitly include or link producer bundle evidence:
 
 ```text
-local fixture repository -> collect -> draft -> preflight -> render
+producer-receipt.json
+validation-report.json
+diagnostics.json
+producer preflight evidence
+static viewer evidence
+accepted-source diff
 ```
 
 ## Next Step
 
-Move to the adjacent SpecPM-side policy work: document how SpecPM should treat
-producer candidate bundles as proposal evidence without making generated
-receipts automatic registry authority.
+Define a shared cross-repository fixture policy so SpecPM contract examples and
+SpecHarvester generated bundle examples cannot silently drift.

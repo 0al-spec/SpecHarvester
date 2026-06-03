@@ -1382,6 +1382,10 @@ def test_docc_and_github_docs_cover_accepted_package_update_proposals() -> None:
             "accepted-package-update-proposal",
             "sourceRevision",
             "evidenceDigests",
+            "producerEvidenceLinks",
+            "producer-receipt.json",
+            "validation-report.json",
+            "diagnostics.json",
             "oldPackageVersion",
             "newPackageVersion",
             "changedClaims",
@@ -1394,6 +1398,55 @@ def test_docc_and_github_docs_cover_accepted_package_update_proposals() -> None:
     assert "<doc:AcceptedPackageUpdateProposals>" in root_page.read_text(encoding="utf-8")
     assert "<doc:AcceptedPackageUpdateProposals>" in workflow_page.read_text(encoding="utf-8")
     assert "ACCEPTED_PACKAGE_UPDATE_PROPOSALS.md" in docs_index.read_text(encoding="utf-8")
+
+
+def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "propose-to-specpm.yml").read_text(
+        encoding="utf-8"
+    )
+    github_doc = (ROOT / "docs" / "SPECPM_PROPOSAL_AUTOMATION.md").read_text(encoding="utf-8")
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ProposalAutomation.md"
+    ).read_text(encoding="utf-8")
+    handoff_doc = (ROOT / "docs" / "SPECPM_HANDOFF.md").read_text(encoding="utf-8")
+    docc_handoff = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    ).read_text(encoding="utf-8")
+    workplan = (ROOT / "SPECS" / "Workplan.md").read_text(encoding="utf-8")
+    next_task = (ROOT / "SPECS" / "INPROGRESS" / "next.md").read_text(encoding="utf-8")
+
+    for required in (
+        "Build producer evidence artifacts",
+        "preflight-candidate-bundle",
+        "producer-preflight-report.json",
+        "render-spec-site",
+        "Upload producer evidence artifacts",
+        "actions/upload-artifact@v4",
+        "Producer Bundle Evidence",
+        "producer-receipt.json",
+        "validation-report.json",
+        "diagnostics.json",
+        "Static viewer evidence",
+        "Accepted-source diff",
+    ):
+        assert required in workflow
+
+    for text in (github_doc, docc_doc, handoff_doc, docc_handoff):
+        for required in (
+            "producer-receipt.json",
+            "validation-report.json",
+            "diagnostics.json",
+            "producer preflight",
+            "static viewer",
+            "accepted-source diff",
+            "review evidence",
+        ):
+            assert required in text
+
+    assert "P23-T1" in workplan
+    assert "P23-T2" in workplan
+    assert "proposal artifacts and SpecPM pull" in workplan
+    assert "P23-T2 Shared Cross-Repository Fixture Policy" in next_task
 
 
 def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:

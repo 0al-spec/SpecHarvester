@@ -11,6 +11,9 @@ accepted version and before cross-repository proposal operations.
 - Generates a deterministic JSON payload with comparison summary and validation state.
 - Detects changed claims from `intent` and `capability` deltas.
 - Includes evidence digests from `specpm.yaml` and optional `harvest.json`.
+- Includes `producerEvidenceLinks` for `producer-receipt.json`,
+  `validation-report.json`, `diagnostics.json`, optional preflight output, and
+  optional static viewer output.
 - Detects same-version changes in copied package evidence before allowing a
   correction proposal.
 - Optionally renders a deterministic markdown body for operator review.
@@ -52,6 +55,7 @@ The payload includes:
 - `oldPackageVersion`, `newPackageVersion`
 - `updateKind`, `sourceRevision`
 - `evidenceDigests` map
+- `producerEvidenceLinks`
 - `changedClaims` list
 - `validationStatus`
 - `reviewerNotes`

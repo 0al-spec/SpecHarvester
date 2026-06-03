@@ -82,6 +82,21 @@ trusting receipt prose.
    - decide whether the candidate should be accepted, rejected, corrected, or
      regenerated.
 
+6. When using SpecPM proposal automation, verify that the generated pull
+   request body links the same evidence:
+
+   - accepted source bundle path in the SpecPM diff;
+   - `specpm.yaml`;
+   - `producer-receipt.json`;
+   - `validation-report.json`;
+   - `diagnostics.json`;
+   - producer preflight report artifact or command output;
+   - static viewer artifact, when available;
+   - accepted-source diff in the pull request.
+
+   The links are review evidence. They do not replace SpecPM validation or the
+   maintainer acceptance decision.
+
 ## Receipt Example
 
 ```json

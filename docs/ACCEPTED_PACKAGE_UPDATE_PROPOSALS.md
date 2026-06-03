@@ -54,6 +54,13 @@ Required fields:
 - `updateKind`: `upstream_revision`, `metadata_errata`, or `correction`.
 - `sourceRevision`: upstream repository revision from `specpm.yaml` `foreignArtifacts`.
 - `evidenceDigests` for `harvestJson` (when present) and `specpmYaml`.
+- `producerEvidenceLinks` for bundle evidence expected by SpecPM review:
+  - `specpm.yaml`;
+  - `producer-receipt.json`;
+  - `validation-report.json`;
+  - `diagnostics.json`;
+  - optional `preflight-report.json`;
+  - optional `static-viewer/index.html`.
 - `changedClaims` list of added/removed `intent:` and `capability:` claims.
 - `validationStatus` from SpecPM validation.
 - `reviewerNotes`: optional list of human-supplied notes.
@@ -93,6 +100,8 @@ The command is advisory/read-only:
 - Reads local package files from `candidate` and `accepted-root` to detect
   immutable same-version evidence changes.
 - Reads optional `harvest.json` for digesting proposal evidence.
+- Records producer bundle evidence links and digests when receipt, validation,
+  diagnostics, preflight, or static viewer artifacts are present.
 - Optionally runs `specpm validate` when not skipped.
 - Does not write candidate or accepted package directories.
 

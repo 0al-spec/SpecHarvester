@@ -684,3 +684,28 @@ Acceptance:
   payload exposes producer receipt panels for the same candidate.
 - The smoke remains producer-side evidence only and does not imply SpecPM
   registry acceptance.
+
+## Phase 23. SpecPM Intake Boundary Alignment
+
+- [x] `P23-T1` Align SpecHarvester-to-SpecPM proposal automation with SpecPM
+  producer bundle intake requirements so proposal artifacts and SpecPM pull
+  request bodies explicitly include or link `producer-receipt.json`,
+  `validation-report.json`, `diagnostics.json`, producer preflight evidence,
+  static viewer evidence when available, and the accepted-source diff.
+- [ ] `P23-T2` Define a shared cross-repository fixture policy so SpecPM
+  contract examples and SpecHarvester generated bundle examples cannot silently
+  drift.
+- [ ] `P23-T3` Add SpecHarvester-side support for any future optional SpecPM CI
+  preflight gate without making producer evidence registry authority.
+- [ ] `P23-T4` Integrate a future external registry acceptance decision record
+  with SpecHarvester handoff outputs while keeping maintainer decisions outside
+  generated receipts.
+
+Acceptance:
+
+- SpecHarvester proposal outputs use the same evidence vocabulary as SpecPM
+  producer bundle intake.
+- Producer bundle evidence remains review evidence, not automatic SpecPM
+  acceptance.
+- Remaining SpecPM/SpecHarvester boundary work is visible as explicit follow-up
+  tasks.

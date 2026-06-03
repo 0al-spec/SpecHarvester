@@ -35,6 +35,7 @@ def test_build_accepted_package_update_proposal_builds_upstream_revision_payload
         upstream_revision="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
     )
     write_harvest_json(candidate)
+    write_producer_bundle_evidence(candidate)
 
     result = build_accepted_package_update_proposal(
         AcceptedPackageUpdateProposalOptions(
@@ -54,6 +55,16 @@ def test_build_accepted_package_update_proposal_builds_upstream_revision_payload
     assert result["validationStatus"] == {"specpm": "skipped"}
     assert result["evidenceDigests"]["harvestJson"].startswith("sha256:")
     assert result["evidenceDigests"]["specpmYaml"].startswith("sha256:")
+    producer_links = {entry["role"]: entry for entry in result["producerEvidenceLinks"]}
+    assert producer_links["producer_receipt"]["path"] == "producer-receipt.json"
+    assert producer_links["producer_receipt"]["status"] == "present"
+    assert producer_links["producer_receipt"]["digest"].startswith("sha256:")
+    assert producer_links["validation_report"]["path"] == "validation-report.json"
+    assert producer_links["diagnostics"]["path"] == "diagnostics.json"
+    assert producer_links["producer_preflight"]["path"] == "preflight-report.json"
+    assert producer_links["producer_preflight"]["status"] == "present"
+    assert producer_links["static_viewer"]["path"] == "static-viewer/index.html"
+    assert producer_links["static_viewer"]["status"] == "present"
     assert result["changedClaims"] == [
         "capability:demo.stream",
         "intent:intent.package.utility",
@@ -521,6 +532,7 @@ def test_cli_accepted_package_update_proposal_writes_json_and_markdown(
         capabilities=["demo.read"],
         intents=["intent.package.workflow"],
     )
+    write_producer_bundle_evidence(candidate)
 
     exit_code = main(
         [
@@ -538,8 +550,13 @@ def test_cli_accepted_package_update_proposal_writes_json_and_markdown(
 
     assert exit_code == 0
     report = json.loads(output.read_text(encoding="utf-8"))
+    body_text = body.read_text(encoding="utf-8")
     assert report["kind"] == "SpecHarvesterAcceptedPackageUpdateProposal"
-    assert "## Summary" in body.read_text(encoding="utf-8")
+    assert report["producerEvidenceLinks"][1]["path"] == "producer-receipt.json"
+    assert "## Summary" in body_text
+    assert "## Producer Bundle Evidence" in body_text
+    assert "producer_receipt: `producer-receipt.json` - present, required" in body_text
+    assert "producer_preflight: `preflight-report.json` - present, optional" in body_text
 
 
 def write_manifest(
@@ -588,3 +605,26 @@ def write_manifest(
 def write_harvest_json(directory: Path, *, content: str = "{}") -> None:
     directory.mkdir(parents=True, exist_ok=True)
     (directory / "harvest.json").write_text(content, encoding="utf-8")
+
+
+def write_producer_bundle_evidence(directory: Path) -> None:
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / "producer-receipt.json").write_text(
+        '{"kind":"SpecPMProducerReceipt"}\n',
+        encoding="utf-8",
+    )
+    (directory / "validation-report.json").write_text(
+        '{"status":"valid"}\n',
+        encoding="utf-8",
+    )
+    (directory / "diagnostics.json").write_text(
+        '{"status":"clean"}\n',
+        encoding="utf-8",
+    )
+    (directory / "preflight-report.json").write_text(
+        '{"status":"passed"}\n',
+        encoding="utf-8",
+    )
+    static_viewer = directory / "static-viewer"
+    static_viewer.mkdir(exist_ok=True)
+    (static_viewer / "index.html").write_text("<!doctype html>\n", encoding="utf-8")

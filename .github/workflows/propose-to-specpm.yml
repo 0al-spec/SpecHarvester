@@ -156,6 +156,38 @@ jobs:
               )
           )
 
+      - name: Build producer evidence artifacts
+        id: producer_evidence
+        working-directory: SpecHarvester
+        run: |
+          set -o pipefail
+          evidence_root="/tmp/specpm-proposal-evidence"
+          artifact_name="specpm-proposal-evidence-${{ steps.config.outputs.package_id }}-${{ steps.config.outputs.package_version }}"
+          rm -rf "$evidence_root"
+          mkdir -p "$evidence_root"
+
+          python -m spec_harvester preflight-candidate-bundle \
+            "${{ steps.config.outputs.candidate_dir }}" \
+            | tee "$evidence_root/producer-preflight-report.json"
+
+          python -m spec_harvester render-spec-site \
+            --candidate "${{ steps.config.outputs.candidate_dir }}" \
+            --output "$evidence_root/static-viewer"
+
+          {
+            echo "artifact_name=$artifact_name"
+            echo "artifact_root=$evidence_root"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Upload producer evidence artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.producer_evidence.outputs.artifact_name }}
+          path: |
+            /tmp/specpm-proposal-evidence/producer-preflight-report.json
+            /tmp/specpm-proposal-evidence/static-viewer/**
+          if-no-files-found: error
+
       - name: Promote into SpecPM checkout
         working-directory: SpecHarvester
         run: |
@@ -220,6 +252,8 @@ jobs:
           PACKAGE_ID: ${{ steps.config.outputs.package_id }}
           PACKAGE_VERSION: ${{ steps.config.outputs.package_version }}
           MANIFEST_ENTRY_PATH: ${{ steps.config.outputs.manifest_entry_path }}
+          PACKAGE_SUBDIR: ${{ steps.config.outputs.package_subdir }}
+          EVIDENCE_ARTIFACT: ${{ steps.producer_evidence.outputs.artifact_name }}
           HARVESTER_SHA: ${{ github.sha }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
@@ -252,7 +286,20 @@ jobs:
           ## Validation
 
           - SpecHarvester candidate validation passed.
+          - SpecHarvester producer bundle preflight passed.
+          - SpecHarvester static viewer rendered and was uploaded as workflow evidence.
           - \`specpm public-index generate\` passed in the proposal workflow.
+
+          ## Producer Bundle Evidence
+
+          - Accepted source bundle in this PR: \`public-index/generated/${PACKAGE_SUBDIR}\`
+          - Manifest: \`public-index/generated/${PACKAGE_SUBDIR}/specpm.yaml\`
+          - Producer receipt: \`public-index/generated/${PACKAGE_SUBDIR}/producer-receipt.json\`
+          - Validation report: \`public-index/generated/${PACKAGE_SUBDIR}/validation-report.json\`
+          - Diagnostics report: \`public-index/generated/${PACKAGE_SUBDIR}/diagnostics.json\`
+          - Producer preflight report: workflow artifact \`${EVIDENCE_ARTIFACT}\` from ${RUN_URL}
+          - Static viewer evidence: workflow artifact \`${EVIDENCE_ARTIFACT}\` from ${RUN_URL}
+          - Accepted-source diff: this pull request updates \`${MANIFEST_ENTRY_PATH}\` and \`public-index/accepted-packages.yml\`.
 
           ## Boundaries
 

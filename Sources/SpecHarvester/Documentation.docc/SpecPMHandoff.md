@@ -71,6 +71,13 @@ Review `producer-receipt.json`, `validation-report.json`, `diagnostics.json`,
 and the static viewer before any SpecPM proposal. The reviewer decides whether
 the candidate should be accepted, rejected, corrected, or regenerated.
 
+When proposal automation opens a SpecPM pull request, the PR body should link
+the same evidence: accepted source bundle path, `specpm.yaml`,
+`producer-receipt.json`, `validation-report.json`, `diagnostics.json`,
+producer preflight report artifact or command output, static viewer artifact
+when available, and the accepted-source diff. These links are review evidence;
+they do not replace SpecPM validation or maintainer acceptance.
+
 ## Receipt Example
 
 ```json
