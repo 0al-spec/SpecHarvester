@@ -551,8 +551,9 @@ def test_cli_accepted_package_update_proposal_writes_json_and_markdown(
     assert exit_code == 0
     report = json.loads(output.read_text(encoding="utf-8"))
     body_text = body.read_text(encoding="utf-8")
+    producer_links = {entry["role"]: entry for entry in report["producerEvidenceLinks"]}
     assert report["kind"] == "SpecHarvesterAcceptedPackageUpdateProposal"
-    assert report["producerEvidenceLinks"][1]["path"] == "producer-receipt.json"
+    assert producer_links["producer_receipt"]["path"] == "producer-receipt.json"
     assert "## Summary" in body_text
     assert "## Producer Bundle Evidence" in body_text
     assert "producer_receipt: `producer-receipt.json` - present, required" in body_text

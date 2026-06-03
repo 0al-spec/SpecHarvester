@@ -155,6 +155,7 @@ jobs:
                   }
               )
           )
+          PY
 
       - name: Build producer evidence artifacts
         id: producer_evidence
@@ -184,8 +185,8 @@ jobs:
         with:
           name: ${{ steps.producer_evidence.outputs.artifact_name }}
           path: |
-            /tmp/specpm-proposal-evidence/producer-preflight-report.json
-            /tmp/specpm-proposal-evidence/static-viewer/**
+            ${{ steps.producer_evidence.outputs.artifact_root }}/producer-preflight-report.json
+            ${{ steps.producer_evidence.outputs.artifact_root }}/static-viewer/**
           if-no-files-found: error
 
       - name: Promote into SpecPM checkout
