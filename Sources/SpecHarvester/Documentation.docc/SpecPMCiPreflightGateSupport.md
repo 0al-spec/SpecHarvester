@@ -42,8 +42,10 @@ These inputs are review evidence only.
 `validation_report`, `diagnostics`, `producer_preflight`, `static_viewer`, and
 `accepted_source_diff`.
 
-SpecPM CI should not infer evidence semantics from prose or artifact names
-alone.
+Each link should include `pathScope` so SpecPM CI can distinguish
+`repo_relative`, `candidate_bundle`, `workflow_artifact`, and `pull_request`
+paths without role-specific guessing. SpecPM CI should not infer evidence
+semantics from prose or artifact names alone.
 
 ## Expected Checks
 

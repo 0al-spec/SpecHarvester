@@ -302,6 +302,73 @@ jobs:
           - Static viewer evidence: workflow artifact \`${EVIDENCE_ARTIFACT}\` from ${RUN_URL}
           - Accepted-source diff: this pull request updates \`${MANIFEST_ENTRY_PATH}\` and \`public-index/accepted-packages.yml\`.
 
+          \`\`\`json
+          {
+            "producerEvidenceLinks": [
+              {
+                "role": "accepted_source_bundle",
+                "path": "public-index/generated/${PACKAGE_SUBDIR}",
+                "pathScope": "repo_relative",
+                "required": true,
+                "status": "expected"
+              },
+              {
+                "role": "manifest",
+                "path": "public-index/generated/${PACKAGE_SUBDIR}/specpm.yaml",
+                "pathScope": "repo_relative",
+                "required": true,
+                "status": "expected"
+              },
+              {
+                "role": "producer_receipt",
+                "path": "public-index/generated/${PACKAGE_SUBDIR}/producer-receipt.json",
+                "pathScope": "repo_relative",
+                "required": true,
+                "status": "expected"
+              },
+              {
+                "role": "validation_report",
+                "path": "public-index/generated/${PACKAGE_SUBDIR}/validation-report.json",
+                "pathScope": "repo_relative",
+                "required": true,
+                "status": "expected"
+              },
+              {
+                "role": "diagnostics",
+                "path": "public-index/generated/${PACKAGE_SUBDIR}/diagnostics.json",
+                "pathScope": "repo_relative",
+                "required": true,
+                "status": "expected"
+              },
+              {
+                "role": "producer_preflight",
+                "artifact": "${EVIDENCE_ARTIFACT}",
+                "path": "producer-preflight-report.json",
+                "pathScope": "workflow_artifact",
+                "required": true,
+                "status": "present",
+                "url": "${RUN_URL}"
+              },
+              {
+                "role": "static_viewer",
+                "artifact": "${EVIDENCE_ARTIFACT}",
+                "path": "static-viewer/index.html",
+                "pathScope": "workflow_artifact",
+                "required": false,
+                "status": "present",
+                "url": "${RUN_URL}"
+              },
+              {
+                "role": "accepted_source_diff",
+                "path": "pull-request-diff",
+                "pathScope": "pull_request",
+                "required": true,
+                "status": "expected"
+              }
+            ]
+          }
+          \`\`\`
+
           ## Boundaries
 
           - This PR is a registry source proposal, not autonomous publication.

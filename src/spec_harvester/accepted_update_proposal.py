@@ -351,6 +351,7 @@ def _build_producer_evidence_links(candidate: Path, package_subdir: str) -> list
         {
             "role": "accepted_source_bundle",
             "path": f"{DEFAULT_MANIFEST_ENTRY_PREFIX}/{package_subdir}",
+            "pathScope": "repo_relative",
             "required": True,
             "status": "expected",
         }
@@ -360,6 +361,7 @@ def _build_producer_evidence_links(candidate: Path, package_subdir: str) -> list
         link: dict[str, Any] = {
             "role": role,
             "path": relative_path,
+            "pathScope": "candidate_bundle",
             "required": required,
             "status": "present" if path.is_file() else "missing",
         }
@@ -370,6 +372,7 @@ def _build_producer_evidence_links(candidate: Path, package_subdir: str) -> list
         {
             "role": "accepted_source_diff",
             "path": "pull-request-diff",
+            "pathScope": "pull_request",
             "required": True,
             "status": "expected",
         }

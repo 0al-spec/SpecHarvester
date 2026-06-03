@@ -59,8 +59,10 @@ def test_build_accepted_package_update_proposal_builds_upstream_revision_payload
     assert producer_links["accepted_source_bundle"]["path"] == (
         "public-index/generated/demo.core/1.1.0"
     )
+    assert producer_links["accepted_source_bundle"]["pathScope"] == "repo_relative"
     assert producer_links["accepted_source_bundle"]["status"] == "expected"
     assert producer_links["producer_receipt"]["path"] == "producer-receipt.json"
+    assert producer_links["producer_receipt"]["pathScope"] == "candidate_bundle"
     assert producer_links["producer_receipt"]["status"] == "present"
     assert producer_links["producer_receipt"]["digest"].startswith("sha256:")
     assert producer_links["validation_report"]["path"] == "validation-report.json"
@@ -70,6 +72,7 @@ def test_build_accepted_package_update_proposal_builds_upstream_revision_payload
     assert producer_links["static_viewer"]["path"] == "static-viewer/index.html"
     assert producer_links["static_viewer"]["status"] == "present"
     assert producer_links["accepted_source_diff"]["path"] == "pull-request-diff"
+    assert producer_links["accepted_source_diff"]["pathScope"] == "pull_request"
     assert producer_links["accepted_source_diff"]["status"] == "expected"
     assert result["changedClaims"] == [
         "capability:demo.stream",

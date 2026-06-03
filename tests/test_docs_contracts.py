@@ -364,6 +364,7 @@ def test_docc_and_github_docs_cover_specpm_ci_preflight_gate_support() -> None:
             "SpecPM maintainer review",
             "registry acceptance decision",
             "producerEvidenceLinks",
+            "pathScope",
             "accepted_source_bundle",
             "producer_receipt",
             "validation_report",
@@ -373,6 +374,9 @@ def test_docc_and_github_docs_cover_specpm_ci_preflight_gate_support() -> None:
             "accepted_source_diff",
             "humanReview.requiredFor",
             "public_index_acceptance",
+            "repo_relative",
+            "workflow_artifact",
+            "pull_request",
             "A pass is not acceptance" if path == docc_doc else "does not require SpecPM",
         ):
             assert required in normalized
@@ -1537,6 +1541,10 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
         "diagnostics.json",
         "Static viewer evidence",
         "Accepted-source diff",
+        "producerEvidenceLinks",
+        '"pathScope": "repo_relative"',
+        '"pathScope": "workflow_artifact"',
+        '"pathScope": "pull_request"',
     ):
         assert required in workflow
 

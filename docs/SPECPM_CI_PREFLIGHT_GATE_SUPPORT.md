@@ -60,38 +60,56 @@ SpecPM CI does not need to infer meaning from prose:
 [
   {
     "role": "accepted_source_bundle",
-    "path": "public-index/generated/example.package/0.1.0"
+    "path": "public-index/generated/example.package/0.1.0",
+    "pathScope": "repo_relative"
   },
   {
     "role": "manifest",
-    "path": "public-index/generated/example.package/0.1.0/specpm.yaml"
+    "path": "public-index/generated/example.package/0.1.0/specpm.yaml",
+    "pathScope": "repo_relative"
   },
   {
     "role": "producer_receipt",
-    "path": "public-index/generated/example.package/0.1.0/producer-receipt.json"
+    "path": "public-index/generated/example.package/0.1.0/producer-receipt.json",
+    "pathScope": "repo_relative"
   },
   {
     "role": "validation_report",
-    "path": "public-index/generated/example.package/0.1.0/validation-report.json"
+    "path": "public-index/generated/example.package/0.1.0/validation-report.json",
+    "pathScope": "repo_relative"
   },
   {
     "role": "diagnostics",
-    "path": "public-index/generated/example.package/0.1.0/diagnostics.json"
+    "path": "public-index/generated/example.package/0.1.0/diagnostics.json",
+    "pathScope": "repo_relative"
   },
   {
     "role": "producer_preflight",
-    "artifact": "specpm-proposal-evidence-example.package-0.1.0"
+    "artifact": "specpm-proposal-evidence-example.package-0.1.0",
+    "path": "producer-preflight-report.json",
+    "pathScope": "workflow_artifact"
   },
   {
     "role": "static_viewer",
-    "artifact": "specpm-proposal-evidence-example.package-0.1.0"
+    "artifact": "specpm-proposal-evidence-example.package-0.1.0",
+    "path": "static-viewer/index.html",
+    "pathScope": "workflow_artifact"
   },
   {
     "role": "accepted_source_diff",
+    "path": "pull-request-diff",
+    "pathScope": "pull_request",
     "url": "https://github.com/0al-spec/SpecPM/pull/<number>/files"
   }
 ]
 ```
+
+`pathScope` disambiguates `path`:
+
+- `repo_relative`: path in the SpecPM pull request checkout;
+- `candidate_bundle`: path relative to a local generated candidate bundle;
+- `workflow_artifact`: path inside an uploaded producer evidence artifact;
+- `pull_request`: sentinel path for the pull request diff itself.
 
 If a role is renamed or removed, update the SpecPM intake policy and
 SpecHarvester proposal automation in the same reviewed change sequence.
