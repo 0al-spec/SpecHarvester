@@ -1,13 +1,14 @@
-# Next Task: P23-T2 Shared Cross-Repository Fixture Policy
+# Next Task: P23-T3 SpecPM CI Preflight Gate Support
 
 **Phase:** Phase 23. SpecPM Intake Boundary Alignment
-**Status:** P23-T1 complete; P23-T2 recommended next
+**Status:** P23-T2 complete; P23-T3 recommended next
 **Updated:** 2026-06-04
 
 ## Recently Archived
 
 - P22-T1: Candidate Bundle End-to-End Smoke (PASS, 2026-06-02)
 - P23-T1: SpecPM proposal evidence links (implemented in current PR)
+- P23-T2: Shared cross-repository fixture policy (implemented in current PR)
 
 ## Phase 23 Status
 
@@ -23,7 +24,11 @@ static viewer evidence
 accepted-source diff
 ```
 
+SpecHarvester now also documents the shared fixture policy for keeping SpecPM
+contract examples and SpecHarvester generated bundle examples aligned by exact
+commit SHA instead of mutable refs.
+
 ## Next Step
 
-Define a shared cross-repository fixture policy so SpecPM contract examples and
-SpecHarvester generated bundle examples cannot silently drift.
+Add SpecHarvester-side support for any future optional SpecPM CI preflight gate
+without making producer evidence registry authority.

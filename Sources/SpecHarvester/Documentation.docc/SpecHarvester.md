@@ -65,6 +65,7 @@ The canonical source files remain in the repository:
 - `docs/STATIC_SPEC_RENDERER.md`
 - `docs/PRODUCER_CANDIDATE_BUNDLE.md`
 - `docs/SPECPM_HANDOFF.md`
+- `docs/SPECPM_SHARED_FIXTURE_POLICY.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -113,6 +114,7 @@ the host.
 - <doc:StaticSpecRenderer>
 - <doc:ProducerCandidateBundle>
 - <doc:SpecPMHandoff>
+- <doc:SpecPMSharedFixturePolicy>
 - <doc:ProposalAutomation>
 
 ### Architecture

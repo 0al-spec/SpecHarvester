@@ -147,3 +147,8 @@ This planning page is intentionally non-runtime. Follow-up P21 tasks should
 emit `producer-receipt.json`, emit `validation-report.json` and
 `diagnostics.json`, add local candidate bundle preflight verification, extend
 the static candidate viewer, and add SpecPM handoff examples.
+
+Shared fixture alignment with SpecPM is governed by
+<doc:SpecPMSharedFixturePolicy>. Generated bundle examples should name the
+SpecPM contract commit they claim to follow and must not silently drift from
+SpecPM producer bundle intake examples.
