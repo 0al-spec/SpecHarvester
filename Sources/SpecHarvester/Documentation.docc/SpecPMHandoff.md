@@ -189,3 +189,10 @@ recorded outside the generated bundle, normally in the accepted-source pull
 request.
 
 SpecHarvester evidence can support the decision. It cannot make the decision.
+
+## Shared Fixture Policy
+
+When examples or tests demonstrate the SpecPM producer bundle contract, keep
+them aligned through <doc:SpecPMSharedFixturePolicy>. The fixture policy
+requires exact SpecPM commit SHAs, generated fixture provenance, and explicit
+drift handling instead of relying on mutable refs or silent example updates.

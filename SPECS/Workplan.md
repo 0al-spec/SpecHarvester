@@ -692,7 +692,7 @@ Acceptance:
   request bodies explicitly include or link `producer-receipt.json`,
   `validation-report.json`, `diagnostics.json`, producer preflight evidence,
   static viewer evidence when available, and the accepted-source diff.
-- [ ] `P23-T2` Define a shared cross-repository fixture policy so SpecPM
+- [x] `P23-T2` Define a shared cross-repository fixture policy so SpecPM
   contract examples and SpecHarvester generated bundle examples cannot silently
   drift.
 - [ ] `P23-T3` Add SpecHarvester-side support for any future optional SpecPM CI

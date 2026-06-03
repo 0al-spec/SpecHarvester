@@ -195,3 +195,8 @@ land in order:
 4. Extend the static candidate viewer with receipt, provenance, validation,
    diagnostics, privacy, and review-boundary panels.
 5. Add SpecPM handoff examples and operator documentation.
+
+Shared fixture alignment with SpecPM is governed by
+[`SPECPM_SHARED_FIXTURE_POLICY.md`](SPECPM_SHARED_FIXTURE_POLICY.md). Generated
+bundle examples should name the SpecPM contract commit they claim to follow and
+must not silently drift from SpecPM producer bundle intake examples.

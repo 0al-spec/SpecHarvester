@@ -95,7 +95,10 @@ Published DocC site:
 38. [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md): operator handoff guide for
     drafting, preflighting, rendering, and reviewing generated candidate
     bundles before SpecPM acceptance
-39. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+39. [`SPECPM_SHARED_FIXTURE_POLICY.md`](SPECPM_SHARED_FIXTURE_POLICY.md):
+    shared fixture policy for keeping SpecPM contract examples and
+    SpecHarvester generated bundle examples aligned
+40. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -148,6 +151,9 @@ Published DocC site:
 - [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md): practical operator workflow for
   generating, preflighting, rendering, and reviewing candidate bundles before
   public index acceptance
+- [`SPECPM_SHARED_FIXTURE_POLICY.md`](SPECPM_SHARED_FIXTURE_POLICY.md): shared
+  fixture policy for SpecPM contract examples and SpecHarvester generated
+  bundle examples
 
 ## GitHub Process Surface
 

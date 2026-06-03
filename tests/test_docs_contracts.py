@@ -234,6 +234,9 @@ def test_docc_and_github_docs_cover_producer_candidate_bundle_plan() -> None:
             "evidence references",
             "namespace",
             "Producer receipts are evidence, not authority",
+            "SPECPM_SHARED_FIXTURE_POLICY.md"
+            if path == github_doc
+            else "SpecPMSharedFixturePolicy",
         ):
             assert required in normalized
 
@@ -278,11 +281,56 @@ def test_docc_and_github_docs_cover_specpm_handoff_guide() -> None:
             "maintainer override",
             "SpecHarvester evidence can support the decision",
             "It cannot make the decision",
+            "Shared Fixture Policy",
         ):
             assert required in normalized
 
     assert "SPECPM_HANDOFF.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:SpecPMHandoff>" in root_page.read_text(encoding="utf-8")
+
+
+def test_docc_and_github_docs_cover_specpm_shared_fixture_policy() -> None:
+    github_doc = ROOT / "docs" / "SPECPM_SHARED_FIXTURE_POLICY.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMSharedFixturePolicy.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "SpecPM Shared Fixture Policy",
+            "SpecPM contract fixture",
+            "SpecHarvester generated fixture",
+            "reviewable drift check",
+            "generated_spec_package_v0",
+            "exact SpecPM commit SHA",
+            "root of trust",
+            "producer-receipt.json",
+            "validation-report.json",
+            "diagnostics.json",
+            "producer preflight",
+            "static viewer",
+            "proposal body evidence links",
+            "Silent drift is not acceptable" if path == github_doc else "silently drift",
+            "does not make generated",
+        ):
+            assert required in normalized
+
+    assert "SPECPM_SHARED_FIXTURE_POLICY.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecPMSharedFixturePolicy>" in root_page.read_text(encoding="utf-8")
+    assert "shared fixture policy" in roadmap.read_text(encoding="utf-8")
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P23-T2` Define a shared cross-repository fixture policy" in workplan_text
+    assert "- [x] `P23-T2`" in workplan_text
+    next_text = next_task.read_text(encoding="utf-8")
+    assert "P23-T3 SpecPM CI Preflight Gate Support" in next_text
+    assert "P23-T2: Shared cross-repository fixture policy" in next_text
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
@@ -1446,7 +1494,7 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
     assert "P23-T1" in workplan
     assert "P23-T2" in workplan
     assert "proposal artifacts and SpecPM pull" in workplan
-    assert "P23-T2 Shared Cross-Repository Fixture Policy" in next_task
+    assert "P23-T3 SpecPM CI Preflight Gate Support" in next_task
 
 
 def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:
