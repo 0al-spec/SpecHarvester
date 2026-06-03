@@ -87,6 +87,13 @@ SpecPM CI preflight gate are documented in
 That gate may consume proposal evidence, but it must not replace maintainer
 review or turn producer-side preflight into registry acceptance.
 
+Proposal bodies should also include a machine-readable
+`registryAcceptanceDecision` reference with `status: external_required`. The
+external decision record boundary is documented in
+[`SPECPM_REGISTRY_ACCEPTANCE_DECISION.md`](SPECPM_REGISTRY_ACCEPTANCE_DECISION.md).
+The reference tells SpecPM consumers where acceptance authority lives without
+claiming approval from generated producer output.
+
 After promotion, the workflow runs `specpm public-index generate` and validates the
 resulting SpecPM diff scope. Allowed changed paths are:
 

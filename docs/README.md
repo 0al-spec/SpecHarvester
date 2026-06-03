@@ -157,6 +157,9 @@ Published DocC site:
 - [`SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md`](SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md):
   SpecHarvester-side evidence layout and role contract for a future optional
   SpecPM CI preflight gate
+- [`SPECPM_REGISTRY_ACCEPTANCE_DECISION.md`](SPECPM_REGISTRY_ACCEPTANCE_DECISION.md):
+  external SpecPM registry acceptance decision record boundary for maintainer
+  approval or override outside generated receipts
 
 ## GitHub Process Surface
 

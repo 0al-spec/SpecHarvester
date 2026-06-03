@@ -15,6 +15,9 @@ accepted version and before cross-repository proposal operations.
   `producer-receipt.json`, `validation-report.json`, `diagnostics.json`,
   optional preflight output, optional static viewer output, and the
   accepted-source pull request diff.
+- Includes a pending `registryAcceptanceDecision` reference with
+  `status: external_required` and
+  `recordKind: SpecPMRegistryAcceptanceDecision`.
 - Detects same-version changes in copied package evidence before allowing a
   correction proposal.
 - Optionally renders a deterministic markdown body for operator review.
@@ -40,7 +43,8 @@ Required:
 Optional:
 
 - `--output` for JSON proposal file.
-- `--proposal-body` for markdown proposal body.
+- `--proposal-body` for markdown proposal body, including the registry
+  acceptance decision boundary.
 - `--skip-validation` for offline runs.
 - `--update-kind` override (`upstream_revision`, `metadata_errata`, `correction`).
 - `--allow-correction` to permit explicit review of updates targeting an already
@@ -72,3 +76,4 @@ operator-specific deterministic flows.
 - <doc:AcceptedCandidateImpactClassificationReports>
 - <doc:AcceptedPackageUpdateLifecycle>
 - <doc:ProposalAutomation>
+- <doc:SpecPMRegistryAcceptanceDecision>

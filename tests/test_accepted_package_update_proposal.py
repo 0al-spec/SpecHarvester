@@ -74,6 +74,11 @@ def test_build_accepted_package_update_proposal_builds_upstream_revision_payload
     assert producer_links["accepted_source_diff"]["path"] == "pull-request-diff"
     assert producer_links["accepted_source_diff"]["pathScope"] == "pull_request"
     assert producer_links["accepted_source_diff"]["status"] == "expected"
+    decision = result["registryAcceptanceDecision"]
+    assert decision["status"] == "external_required"
+    assert decision["requiredFor"] == ["public_index_acceptance"]
+    assert decision["recordKind"] == "SpecPMRegistryAcceptanceDecision"
+    assert decision["producerReceiptAuthority"] == "evidence_only"
     assert result["changedClaims"] == [
         "capability:demo.stream",
         "intent:intent.package.utility",
@@ -571,6 +576,10 @@ def test_cli_accepted_package_update_proposal_writes_json_and_markdown(
     assert "producer_receipt: `producer-receipt.json` - present, required" in body_text
     assert "producer_preflight: `preflight-report.json` - present, optional" in body_text
     assert "accepted_source_diff: `pull-request-diff` - expected, required" in body_text
+    assert "## Registry Acceptance Decision" in body_text
+    assert "status: `external_required`" in body_text
+    assert "producer receipt authority: `evidence_only`" in body_text
+    assert report["registryAcceptanceDecision"]["status"] == "external_required"
 
 
 def write_manifest(

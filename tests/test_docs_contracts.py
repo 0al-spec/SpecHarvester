@@ -229,6 +229,9 @@ def test_docc_and_github_docs_cover_producer_candidate_bundle_plan() -> None:
             "self-hash problem",
             "humanReview.status: approved",
             "maintainer override",
+            "SPECPM_REGISTRY_ACCEPTANCE_DECISION.md"
+            if path == github_doc
+            else "SpecPMRegistryAcceptanceDecision",
             "privacy.secretsIncluded",
             "unstable generated ID",
             "evidence references",
@@ -281,6 +284,8 @@ def test_docc_and_github_docs_cover_specpm_handoff_guide() -> None:
             "maintainer override",
             "SpecHarvester evidence can support the decision",
             "It cannot make the decision",
+            "registryAcceptanceDecision.status: external_required",
+            "SpecPMRegistryAcceptanceDecision",
             "Shared Fixture Policy",
         ):
             assert required in normalized
@@ -329,7 +334,7 @@ def test_docc_and_github_docs_cover_specpm_shared_fixture_policy() -> None:
     assert "`P23-T2` Define a shared cross-repository fixture policy" in workplan_text
     assert "- [x] `P23-T2`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert "P23-T4 External Registry Acceptance Decision Record" in next_text
+    assert "Phase 23 Complete" in next_text
     assert "P23-T2: Shared cross-repository fixture policy" in next_text
 
 
@@ -392,8 +397,66 @@ def test_docc_and_github_docs_cover_specpm_ci_preflight_gate_support() -> None:
     assert "`P23-T3` Add SpecHarvester-side support" in workplan_text
     assert "- [x] `P23-T3`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert "P23-T4 External Registry Acceptance Decision Record" in next_text
+    assert "Phase 23 Complete" in next_text
     assert "P23-T3: SpecPM CI preflight gate support" in next_text
+
+
+def test_docc_and_github_docs_cover_specpm_registry_acceptance_decision() -> None:
+    github_doc = ROOT / "docs" / "SPECPM_REGISTRY_ACCEPTANCE_DECISION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecPMRegistryAcceptanceDecision.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    proposal_doc = ROOT / "docs" / "SPECPM_PROPOSAL_AUTOMATION.md"
+    docc_proposal = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ProposalAutomation.md"
+    )
+    handoff_doc = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    producer_bundle_doc = ROOT / "docs" / "PRODUCER_CANDIDATE_BUNDLE.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "SpecPM Registry Acceptance Decision Record",
+            "external registry acceptance decision record",
+            "SpecPMRegistryAcceptanceDecision",
+            "public_index_acceptance",
+            "external_required",
+            "evidence_only",
+            "pending",
+            "approved",
+            "rejected",
+            "override",
+            "withdrawn",
+            "SpecHarvester receipt says approved",
+            "must not be the root of trust for approval",
+        ):
+            assert required in normalized
+
+    assert "SPECPM_REGISTRY_ACCEPTANCE_DECISION.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecPMRegistryAcceptanceDecision>" in root_page.read_text(encoding="utf-8")
+    assert "SPECPM_REGISTRY_ACCEPTANCE_DECISION.md" in proposal_doc.read_text(encoding="utf-8")
+    assert "<doc:SpecPMRegistryAcceptanceDecision>" in docc_proposal.read_text(encoding="utf-8")
+    assert "SPECPM_REGISTRY_ACCEPTANCE_DECISION.md" in handoff_doc.read_text(encoding="utf-8")
+    assert "SPECPM_REGISTRY_ACCEPTANCE_DECISION.md" in producer_bundle_doc.read_text(
+        encoding="utf-8"
+    )
+    assert "external SpecPM registry acceptance decision" in roadmap.read_text(encoding="utf-8")
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P23-T4` Integrate a future external registry acceptance decision" in workplan_text
+    assert "- [x] `P23-T4`" in workplan_text
+    next_text = next_task.read_text(encoding="utf-8")
+    assert "Phase 23 Complete" in next_text
+    assert "SpecPMRegistryAcceptanceDecision" in next_text
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
@@ -1505,6 +1568,9 @@ def test_docc_and_github_docs_cover_accepted_package_update_proposals() -> None:
             "updateKind",
             "accepted source bundle",
             "accepted-source pull request diff",
+            "registryAcceptanceDecision",
+            "external_required",
+            "SpecPMRegistryAcceptanceDecision",
         ):
             assert required in text
 
@@ -1545,6 +1611,9 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
         '"pathScope": "repo_relative"',
         '"pathScope": "workflow_artifact"',
         '"pathScope": "pull_request"',
+        "registryAcceptanceDecision",
+        '"status": "external_required"',
+        '"producerReceiptAuthority": "evidence_only"',
     ):
         assert required in workflow
 
@@ -1557,13 +1626,15 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
             "static viewer",
             "accepted-source diff",
             "review evidence",
+            "registryAcceptanceDecision",
+            "external_required",
         ):
             assert required in text
 
     assert "P23-T1" in workplan
     assert "P23-T2" in workplan
     assert "proposal artifacts and SpecPM pull" in workplan
-    assert "P23-T4 External Registry Acceptance Decision Record" in next_task
+    assert "Phase 23 Complete" in next_task
 
 
 def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:

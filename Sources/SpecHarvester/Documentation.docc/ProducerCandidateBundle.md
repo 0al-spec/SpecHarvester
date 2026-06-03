@@ -129,6 +129,11 @@ For public SpecPM index handoff:
 - `humanReview.status: not_applicable` is only appropriate for local/private
   workflows that do not request public index acceptance.
 
+For public SpecPM handoff, the external registry acceptance decision boundary
+is documented in <doc:SpecPMRegistryAcceptanceDecision>. SpecHarvester should
+reference that external decision record from proposal artifacts instead of
+editing generated receipts after review.
+
 ## Preflight Rejection Diagnostics
 
 Future SpecHarvester preflight should fail or block handoff when required files

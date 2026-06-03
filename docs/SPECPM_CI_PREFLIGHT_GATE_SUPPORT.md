@@ -133,6 +133,8 @@ A future SpecPM CI gate may check:
 - `humanReview.status` is not treated as acceptance unless SpecPM has an
   external maintainer approval or override record;
 - proposal body `producerEvidenceLinks` include the stable roles listed above.
+- proposal body `registryAcceptanceDecision` states
+  `status: external_required` until SpecPM review records a decision.
 
 The gate should report precise rejection diagnostics, but the producer-side
 contract does not require SpecPM to publish or accept anything after a pass.
