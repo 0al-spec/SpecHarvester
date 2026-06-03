@@ -578,6 +578,7 @@ def test_cli_accepted_package_update_proposal_writes_json_and_markdown(
     assert "accepted_source_diff: `pull-request-diff` - expected, required" in body_text
     assert "## Registry Acceptance Decision" in body_text
     assert "status: `external_required`" in body_text
+    assert "record location: `SpecPM pull request or accepted-source review record`" in body_text
     assert "producer receipt authority: `evidence_only`" in body_text
     assert report["registryAcceptanceDecision"]["status"] == "external_required"
 

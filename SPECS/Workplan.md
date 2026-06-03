@@ -709,4 +709,3 @@ Acceptance:
   acceptance.
 - Remaining SpecPM/SpecHarvester boundary work is visible as explicit follow-up
   policy or implementation tasks.
-  tasks.

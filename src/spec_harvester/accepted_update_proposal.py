@@ -418,6 +418,7 @@ def _registry_acceptance_decision_markdown(decision: dict[str, Any]) -> str:
             f"- required for: `{required_for}`",
             f"- authority: `{decision['authority']}`",
             f"- record kind: `{decision['recordKind']}`",
+            f"- record location: `{decision['recordLocation']}`",
             f"- producer receipt authority: `{decision['producerReceiptAuthority']}`",
         ]
     )
