@@ -55,12 +55,14 @@ Required fields:
 - `sourceRevision`: upstream repository revision from `specpm.yaml` `foreignArtifacts`.
 - `evidenceDigests` for `harvestJson` (when present) and `specpmYaml`.
 - `producerEvidenceLinks` for bundle evidence expected by SpecPM review:
+  - accepted source bundle path;
   - `specpm.yaml`;
   - `producer-receipt.json`;
   - `validation-report.json`;
   - `diagnostics.json`;
   - optional `preflight-report.json`;
-  - optional `static-viewer/index.html`.
+  - optional `static-viewer/index.html`;
+  - accepted-source pull request diff.
 - `changedClaims` list of added/removed `intent:` and `capability:` claims.
 - `validationStatus` from SpecPM validation.
 - `reviewerNotes`: optional list of human-supplied notes.

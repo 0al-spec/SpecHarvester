@@ -97,6 +97,12 @@ trusting receipt prose.
    The links are review evidence. They do not replace SpecPM validation or the
    maintainer acceptance decision.
 
+   If SpecPM adds an optional CI preflight gate for producer bundles, it should
+   consume the same evidence layout and stable roles described in
+   [`SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md`](SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md).
+   The CI result can support review, but acceptance still requires maintainer
+   approval or an explicit override outside generated receipts.
+
 ## Receipt Example
 
 ```json

@@ -78,6 +78,12 @@ producer preflight report artifact or command output, static viewer artifact
 when available, and the accepted-source diff. These links are review evidence;
 they do not replace SpecPM validation or maintainer acceptance.
 
+If SpecPM adds an optional CI preflight gate for producer bundles, it should
+consume the same evidence layout and stable roles described in
+<doc:SpecPMCiPreflightGateSupport>. The CI result can support review, but
+acceptance still requires maintainer approval or an explicit override outside
+generated receipts.
+
 ## Receipt Example
 
 ```json
@@ -196,3 +202,6 @@ When examples or tests demonstrate the SpecPM producer bundle contract, keep
 them aligned through <doc:SpecPMSharedFixturePolicy>. The fixture policy
 requires exact SpecPM commit SHAs, generated fixture provenance, and explicit
 drift handling instead of relying on mutable refs or silent example updates.
+
+Future optional SpecPM CI preflight support should consume the same evidence
+layout and stable roles described in <doc:SpecPMCiPreflightGateSupport>.

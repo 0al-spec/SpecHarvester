@@ -144,7 +144,7 @@ def build_accepted_package_update_proposal(
             "harvestJson": _file_digest_if_exists(candidate / "harvest.json"),
             "specpmYaml": _file_digest(candidate / "specpm.yaml"),
         },
-        "producerEvidenceLinks": _build_producer_evidence_links(candidate),
+        "producerEvidenceLinks": _build_producer_evidence_links(candidate, package_subdir),
         "changedClaims": _build_changed_claims(comparison["changes"]),
         "validationStatus": validation_status,
         "reviewerNotes": list(options.reviewer_notes),
@@ -346,8 +346,15 @@ def _build_changed_claims(changes: dict[str, Any]) -> list[str]:
     return sorted(claims)
 
 
-def _build_producer_evidence_links(candidate: Path) -> list[dict[str, Any]]:
-    links: list[dict[str, Any]] = []
+def _build_producer_evidence_links(candidate: Path, package_subdir: str) -> list[dict[str, Any]]:
+    links: list[dict[str, Any]] = [
+        {
+            "role": "accepted_source_bundle",
+            "path": f"{DEFAULT_MANIFEST_ENTRY_PREFIX}/{package_subdir}",
+            "required": True,
+            "status": "expected",
+        }
+    ]
     for role, relative_path, required in PRODUCER_EVIDENCE_FILES:
         path = candidate / relative_path
         link: dict[str, Any] = {
@@ -359,6 +366,14 @@ def _build_producer_evidence_links(candidate: Path) -> list[dict[str, Any]]:
         if path.is_file():
             link["digest"] = _file_digest(path)
         links.append(link)
+    links.append(
+        {
+            "role": "accepted_source_diff",
+            "path": "pull-request-diff",
+            "required": True,
+            "status": "expected",
+        }
+    )
     return links
 
 

@@ -66,6 +66,7 @@ The canonical source files remain in the repository:
 - `docs/PRODUCER_CANDIDATE_BUNDLE.md`
 - `docs/SPECPM_HANDOFF.md`
 - `docs/SPECPM_SHARED_FIXTURE_POLICY.md`
+- `docs/SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -115,6 +116,7 @@ the host.
 - <doc:ProducerCandidateBundle>
 - <doc:SpecPMHandoff>
 - <doc:SpecPMSharedFixturePolicy>
+- <doc:SpecPMCiPreflightGateSupport>
 - <doc:ProposalAutomation>
 
 ### Architecture

@@ -38,6 +38,8 @@
   request bodies without making producer output registry authority.
 - Keep SpecPM contract fixtures and SpecHarvester generated bundle examples
   aligned through an explicit shared fixture policy.
+- Preserve a stable producer evidence layout and `producerEvidenceLinks` role
+  vocabulary for a future optional SpecPM CI preflight gate.
 
 ## Phase 5: Governance
 

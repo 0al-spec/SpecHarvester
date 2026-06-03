@@ -81,6 +81,12 @@ evidence required by the SpecPM producer bundle intake checklist:
 These links are review evidence only. They do not make the candidate accepted,
 published, signed, installed, or trusted.
 
+The stable producer evidence roles and expected inputs for a future optional
+SpecPM CI preflight gate are documented in
+[`SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md`](SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md).
+That gate may consume proposal evidence, but it must not replace maintainer
+review or turn producer-side preflight into registry acceptance.
+
 After promotion, the workflow runs `specpm public-index generate` and validates the
 resulting SpecPM diff scope. Allowed changed paths are:
 

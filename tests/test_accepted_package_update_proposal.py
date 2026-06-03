@@ -56,6 +56,10 @@ def test_build_accepted_package_update_proposal_builds_upstream_revision_payload
     assert result["evidenceDigests"]["harvestJson"].startswith("sha256:")
     assert result["evidenceDigests"]["specpmYaml"].startswith("sha256:")
     producer_links = {entry["role"]: entry for entry in result["producerEvidenceLinks"]}
+    assert producer_links["accepted_source_bundle"]["path"] == (
+        "public-index/generated/demo.core/1.1.0"
+    )
+    assert producer_links["accepted_source_bundle"]["status"] == "expected"
     assert producer_links["producer_receipt"]["path"] == "producer-receipt.json"
     assert producer_links["producer_receipt"]["status"] == "present"
     assert producer_links["producer_receipt"]["digest"].startswith("sha256:")
@@ -65,6 +69,8 @@ def test_build_accepted_package_update_proposal_builds_upstream_revision_payload
     assert producer_links["producer_preflight"]["status"] == "present"
     assert producer_links["static_viewer"]["path"] == "static-viewer/index.html"
     assert producer_links["static_viewer"]["status"] == "present"
+    assert producer_links["accepted_source_diff"]["path"] == "pull-request-diff"
+    assert producer_links["accepted_source_diff"]["status"] == "expected"
     assert result["changedClaims"] == [
         "capability:demo.stream",
         "intent:intent.package.utility",
@@ -556,8 +562,12 @@ def test_cli_accepted_package_update_proposal_writes_json_and_markdown(
     assert producer_links["producer_receipt"]["path"] == "producer-receipt.json"
     assert "## Summary" in body_text
     assert "## Producer Bundle Evidence" in body_text
+    assert (
+        "accepted_source_bundle: `public-index/generated/demo.core/1.0.1` - expected, required"
+    ) in body_text
     assert "producer_receipt: `producer-receipt.json` - present, required" in body_text
     assert "producer_preflight: `preflight-report.json` - present, optional" in body_text
+    assert "accepted_source_diff: `pull-request-diff` - expected, required" in body_text
 
 
 def write_manifest(

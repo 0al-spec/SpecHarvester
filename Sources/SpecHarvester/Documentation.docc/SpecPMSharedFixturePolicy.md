@@ -49,6 +49,11 @@ contract examples, record the exact SpecPM commit SHA, refresh SpecHarvester
 fixture expectations, rerun producer preflight and proposal evidence checks,
 and record the refresh in the pull request.
 
+Future SpecPM CI preflight fixtures should follow
+<doc:SpecPMCiPreflightGateSupport>: cover stable producer evidence roles,
+proposal evidence links, and exact commit SHA locks without making generated
+output registry authority.
+
 ## Non-Goals
 
 This policy does not make SpecPM execute SpecHarvester, does not make generated

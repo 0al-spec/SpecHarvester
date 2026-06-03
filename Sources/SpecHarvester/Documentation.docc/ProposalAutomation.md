@@ -68,6 +68,10 @@ source bundle path, `specpm.yaml`, `producer-receipt.json`,
 static viewer artifact, and the accepted-source diff. These links are review evidence
 only; SpecPM maintainers still own acceptance.
 
+The stable evidence roles and expected inputs for a future optional SpecPM CI
+preflight gate are covered by <doc:SpecPMCiPreflightGateSupport>. Such a gate
+may consume proposal evidence, but it must not replace maintainer review.
+
 After promotion and `public-index generate`, proposal diff scope is validated.
 Allowed changed files are:
 
