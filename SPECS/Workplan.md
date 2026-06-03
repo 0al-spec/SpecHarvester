@@ -695,7 +695,7 @@ Acceptance:
 - [x] `P23-T2` Define a shared cross-repository fixture policy so SpecPM
   contract examples and SpecHarvester generated bundle examples cannot silently
   drift.
-- [ ] `P23-T3` Add SpecHarvester-side support for any future optional SpecPM CI
+- [x] `P23-T3` Add SpecHarvester-side support for any future optional SpecPM CI
   preflight gate without making producer evidence registry authority.
 - [ ] `P23-T4` Integrate a future external registry acceptance decision record
   with SpecHarvester handoff outputs while keeping maintainer decisions outside

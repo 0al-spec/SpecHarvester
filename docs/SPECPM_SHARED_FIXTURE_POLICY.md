@@ -152,6 +152,12 @@ verifier may:
 That verifier should stay advisory until SpecPM and SpecHarvester have stable
 fixture manifests on both sides.
 
+Future SpecPM CI preflight fixtures should follow the support contract in
+[`SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md`](SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md):
+the fixture should cover stable producer evidence roles, proposal evidence
+links, and exact commit SHA locks without making generated output registry
+authority.
+
 ## Non-Goals
 
 This policy does not:

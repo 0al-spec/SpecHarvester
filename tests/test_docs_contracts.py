@@ -329,8 +329,71 @@ def test_docc_and_github_docs_cover_specpm_shared_fixture_policy() -> None:
     assert "`P23-T2` Define a shared cross-repository fixture policy" in workplan_text
     assert "- [x] `P23-T2`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert "P23-T3 SpecPM CI Preflight Gate Support" in next_text
+    assert "P23-T4 External Registry Acceptance Decision Record" in next_text
     assert "P23-T2: Shared cross-repository fixture policy" in next_text
+
+
+def test_docc_and_github_docs_cover_specpm_ci_preflight_gate_support() -> None:
+    github_doc = ROOT / "docs" / "SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SpecPMCiPreflightGateSupport.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    proposal_doc = ROOT / "docs" / "SPECPM_PROPOSAL_AUTOMATION.md"
+    docc_proposal = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ProposalAutomation.md"
+    )
+    handoff_doc = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    shared_fixture_doc = ROOT / "docs" / "SPECPM_SHARED_FIXTURE_POLICY.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "SpecPM CI Preflight Gate Support",
+            "future optional SpecPM CI preflight",
+            "stable producer evidence layout",
+            "SpecPM maintainer review",
+            "registry acceptance decision",
+            "producerEvidenceLinks",
+            "pathScope",
+            "accepted_source_bundle",
+            "producer_receipt",
+            "validation_report",
+            "diagnostics",
+            "producer_preflight",
+            "static_viewer",
+            "accepted_source_diff",
+            "humanReview.requiredFor",
+            "public_index_acceptance",
+            "repo_relative",
+            "workflow_artifact",
+            "pull_request",
+            "A pass is not acceptance" if path == docc_doc else "does not require SpecPM",
+        ):
+            assert required in normalized
+
+    assert "SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecPMCiPreflightGateSupport>" in root_page.read_text(encoding="utf-8")
+    assert "SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md" in proposal_doc.read_text(encoding="utf-8")
+    assert "<doc:SpecPMCiPreflightGateSupport>" in docc_proposal.read_text(encoding="utf-8")
+    assert "SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md" in handoff_doc.read_text(encoding="utf-8")
+    assert "SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md" in shared_fixture_doc.read_text(encoding="utf-8")
+    assert "optional SpecPM CI preflight gate" in roadmap.read_text(encoding="utf-8")
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P23-T3` Add SpecHarvester-side support" in workplan_text
+    assert "- [x] `P23-T3`" in workplan_text
+    next_text = next_task.read_text(encoding="utf-8")
+    assert "P23-T4 External Registry Acceptance Decision Record" in next_text
+    assert "P23-T3: SpecPM CI preflight gate support" in next_text
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
@@ -1440,6 +1503,8 @@ def test_docc_and_github_docs_cover_accepted_package_update_proposals() -> None:
             "validationStatus",
             "reviewerNotes",
             "updateKind",
+            "accepted source bundle",
+            "accepted-source pull request diff",
         ):
             assert required in text
 
@@ -1476,6 +1541,10 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
         "diagnostics.json",
         "Static viewer evidence",
         "Accepted-source diff",
+        "producerEvidenceLinks",
+        '"pathScope": "repo_relative"',
+        '"pathScope": "workflow_artifact"',
+        '"pathScope": "pull_request"',
     ):
         assert required in workflow
 
@@ -1494,7 +1563,7 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
     assert "P23-T1" in workplan
     assert "P23-T2" in workplan
     assert "proposal artifacts and SpecPM pull" in workplan
-    assert "P23-T3 SpecPM CI Preflight Gate Support" in next_task
+    assert "P23-T4 External Registry Acceptance Decision Record" in next_task
 
 
 def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:

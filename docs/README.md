@@ -154,6 +154,9 @@ Published DocC site:
 - [`SPECPM_SHARED_FIXTURE_POLICY.md`](SPECPM_SHARED_FIXTURE_POLICY.md): shared
   fixture policy for SpecPM contract examples and SpecHarvester generated
   bundle examples
+- [`SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md`](SPECPM_CI_PREFLIGHT_GATE_SUPPORT.md):
+  SpecHarvester-side evidence layout and role contract for a future optional
+  SpecPM CI preflight gate
 
 ## GitHub Process Surface
 
