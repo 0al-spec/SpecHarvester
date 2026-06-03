@@ -31,6 +31,15 @@ TRUST_BOUNDARY_NOTES = [
     "SpecPM validation is optional and can be explicitly skipped.",
 ]
 
+PRODUCER_EVIDENCE_FILES = (
+    ("manifest", "specpm.yaml", True),
+    ("producer_receipt", "producer-receipt.json", True),
+    ("validation_report", "validation-report.json", True),
+    ("diagnostics", "diagnostics.json", True),
+    ("producer_preflight", "preflight-report.json", False),
+    ("static_viewer", "static-viewer/index.html", False),
+)
+
 
 @dataclass(frozen=True)
 class AcceptedPackageUpdateProposalOptions:
@@ -135,6 +144,7 @@ def build_accepted_package_update_proposal(
             "harvestJson": _file_digest_if_exists(candidate / "harvest.json"),
             "specpmYaml": _file_digest(candidate / "specpm.yaml"),
         },
+        "producerEvidenceLinks": _build_producer_evidence_links(candidate),
         "changedClaims": _build_changed_claims(comparison["changes"]),
         "validationStatus": validation_status,
         "reviewerNotes": list(options.reviewer_notes),
@@ -214,6 +224,8 @@ def build_accepted_package_update_proposal_markdown(report: dict[str, Any]) -> s
     if not evidence_block:
         evidence_block = "- _No evidence artifacts found._"
 
+    producer_evidence_block = _producer_evidence_markdown(report["producerEvidenceLinks"])
+
     notes_block = "\n".join(f"- {note}" for note in report["reviewerNotes"]) or (
         "- _No reviewer notes supplied._"
     )
@@ -269,6 +281,9 @@ def build_accepted_package_update_proposal_markdown(report: dict[str, Any]) -> s
                 "",
                 "## Evidence Digests",
                 evidence_block,
+                "",
+                "## Producer Bundle Evidence",
+                producer_evidence_block,
                 "",
                 "## Capability Changes",
                 f"- added: {', '.join(comparison['capabilities']['added']) or 'none'}",
@@ -329,6 +344,34 @@ def _build_changed_claims(changes: dict[str, Any]) -> list[str]:
     for capability in changes["capabilities"]["removed"]:
         claims.add(f"capability:{capability}")
     return sorted(claims)
+
+
+def _build_producer_evidence_links(candidate: Path) -> list[dict[str, Any]]:
+    links: list[dict[str, Any]] = []
+    for role, relative_path, required in PRODUCER_EVIDENCE_FILES:
+        path = candidate / relative_path
+        link: dict[str, Any] = {
+            "role": role,
+            "path": relative_path,
+            "required": required,
+            "status": "present" if path.is_file() else "missing",
+        }
+        if path.is_file():
+            link["digest"] = _file_digest(path)
+        links.append(link)
+    return links
+
+
+def _producer_evidence_markdown(links: list[dict[str, Any]]) -> str:
+    lines: list[str] = []
+    for link in links:
+        status = link["status"]
+        digest = f" ({link['digest']})" if "digest" in link else ""
+        requirement = "required" if link["required"] else "optional"
+        lines.append(f"- {link['role']}: `{link['path']}` - {status}, {requirement}{digest}")
+    if not lines:
+        return "- _No producer bundle evidence links recorded._"
+    return "\n".join(lines)
 
 
 def _requires_correction_mode(

@@ -34,6 +34,8 @@
 - Support public index candidate review.
 - Export observed intent catalog inputs for SpecPM / SpecGraph workflows.
 - Automate PR creation from promoted accepted package sources.
+- Include producer bundle evidence links in SpecPM proposal artifacts and pull
+  request bodies without making producer output registry authority.
 
 ## Phase 5: Governance
 

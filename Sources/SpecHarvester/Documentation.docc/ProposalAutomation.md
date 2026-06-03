@@ -54,10 +54,19 @@ proposal identity:
 
 - candidate directory presence
 - `specpm` candidate validation (`specpm.cli validate`)
+- producer bundle preflight (`preflight-candidate-bundle`)
+- static viewer rendering (`render-spec-site`)
 - candidate metadata identity:
   - `metadata.id` matches workflow `package_id`
   - `metadata.version` matches workflow `package_version`
 - symlink rejection for candidate manifest reads
+
+The workflow uploads the producer preflight report and static viewer as a
+workflow artifact. Pull request bodies opened against SpecPM link the accepted
+source bundle path, `specpm.yaml`, `producer-receipt.json`,
+`validation-report.json`, `diagnostics.json`, the preflight artifact, the
+static viewer artifact, and the accepted-source diff. These links are review evidence
+only; SpecPM maintainers still own acceptance.
 
 After promotion and `public-index generate`, proposal diff scope is validated.
 Allowed changed files are:

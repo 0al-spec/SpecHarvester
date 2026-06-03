@@ -56,10 +56,30 @@ proposal writes:
 
 - candidate directory existence;
 - candidate validation with `python -m specpm.cli validate <candidate_dir> --json`;
+- producer bundle preflight with
+  `python -m spec_harvester preflight-candidate-bundle <candidate_dir>`;
+- static viewer rendering with
+  `python -m spec_harvester render-spec-site --candidate <candidate_dir>`;
 - metadata identity check:
   - `specpm.yaml` `metadata.id` must match `package_id`;
   - `specpm.yaml` `metadata.version` must match `package_version`;
 - symlink rejection for candidate `specpm.yaml` input paths.
+
+The workflow uploads the producer preflight report and static viewer as a
+workflow artifact. When it opens a SpecPM pull request, the PR body links the
+evidence required by the SpecPM producer bundle intake checklist:
+
+- accepted source bundle path in the SpecPM diff;
+- `specpm.yaml`;
+- `producer-receipt.json`;
+- `validation-report.json`;
+- `diagnostics.json`;
+- producer preflight report artifact;
+- static viewer artifact;
+- accepted-source diff in the pull request.
+
+These links are review evidence only. They do not make the candidate accepted,
+published, signed, installed, or trusted.
 
 After promotion, the workflow runs `specpm public-index generate` and validates the
 resulting SpecPM diff scope. Allowed changed paths are:
@@ -124,6 +144,9 @@ The workflow will:
 - check out SpecPM;
 - install both packages;
 - validate the candidate with SpecPM;
+- run producer bundle preflight and upload the preflight report as workflow
+  evidence;
+- render the static viewer and upload it as workflow evidence;
 - promote the candidate into the SpecPM checkout;
 - run `specpm public-index generate`;
 - print the SpecPM diff.
@@ -154,7 +177,8 @@ The workflow will additionally:
 - create a branch in `0al-spec/SpecPM`;
 - commit the promoted accepted source diff;
 - push the branch using `SPECPM_PROPOSAL_TOKEN`;
-- open a PR against SpecPM `main`.
+- open a PR against SpecPM `main` with producer bundle evidence links in the
+  body.
 
 ## Security Boundary
 
