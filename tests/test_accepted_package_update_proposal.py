@@ -61,12 +61,24 @@ def test_build_accepted_package_update_proposal_builds_upstream_revision_payload
     )
     assert producer_links["accepted_source_bundle"]["pathScope"] == "repo_relative"
     assert producer_links["accepted_source_bundle"]["status"] == "expected"
-    assert producer_links["producer_receipt"]["path"] == "producer-receipt.json"
-    assert producer_links["producer_receipt"]["pathScope"] == "candidate_bundle"
+    assert producer_links["boundary_spec"]["path"] == (
+        "public-index/generated/demo.core/1.1.0/specs/demo.spec.yaml"
+    )
+    assert producer_links["boundary_spec"]["pathScope"] == "repo_relative"
+    assert producer_links["boundary_spec"]["status"] == "present"
+    assert producer_links["boundary_spec"]["digest"].startswith("sha256:")
+    assert producer_links["producer_receipt"]["path"] == (
+        "public-index/generated/demo.core/1.1.0/producer-receipt.json"
+    )
+    assert producer_links["producer_receipt"]["pathScope"] == "repo_relative"
     assert producer_links["producer_receipt"]["status"] == "present"
     assert producer_links["producer_receipt"]["digest"].startswith("sha256:")
-    assert producer_links["validation_report"]["path"] == "validation-report.json"
-    assert producer_links["diagnostics"]["path"] == "diagnostics.json"
+    assert producer_links["validation_report"]["path"] == (
+        "public-index/generated/demo.core/1.1.0/validation-report.json"
+    )
+    assert producer_links["diagnostics"]["path"] == (
+        "public-index/generated/demo.core/1.1.0/diagnostics.json"
+    )
     assert producer_links["producer_preflight"]["path"] == "preflight-report.json"
     assert producer_links["producer_preflight"]["status"] == "present"
     assert producer_links["static_viewer"]["path"] == "static-viewer/index.html"
@@ -123,6 +135,51 @@ def test_build_accepted_package_update_proposal_infers_metadata_errata(
     assert result["status"] == "ok"
     assert result["reviewerNotes"] == ["metadata-only review reason"]
     assert "intent:intent.package.workflow" in result["changedClaims"]
+
+
+def test_build_accepted_package_update_proposal_rejects_escaping_boundary_spec_path(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+    outside = tmp_path / "candidates" / "outside.spec.yaml"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+    )
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.1",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+    )
+    outside.write_text("apiVersion: specpm.dev/v0.1\n", encoding="utf-8")
+    manifest_text = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    (candidate / "specpm.yaml").write_text(
+        manifest_text.replace("  - path: specs/demo.spec.yaml", "  - path: ../outside.spec.yaml"),
+        encoding="utf-8",
+    )
+    write_producer_bundle_evidence(candidate)
+
+    result = build_accepted_package_update_proposal(
+        AcceptedPackageUpdateProposalOptions(
+            candidate=candidate,
+            accepted_root=accepted_root,
+            skip_validation=True,
+        )
+    )
+
+    producer_links = {entry["role"]: entry for entry in result["producerEvidenceLinks"]}
+    boundary_spec = producer_links["boundary_spec"]
+    assert boundary_spec["path"] == "public-index/generated/demo.core/1.0.1/specs"
+    assert boundary_spec["pathScope"] == "repo_relative"
+    assert boundary_spec["status"] == "missing"
+    assert "digest" not in boundary_spec
 
 
 def test_build_accepted_package_update_proposal_requires_correction_for_same_version(
@@ -567,19 +624,31 @@ def test_cli_accepted_package_update_proposal_writes_json_and_markdown(
     body_text = body.read_text(encoding="utf-8")
     producer_links = {entry["role"]: entry for entry in report["producerEvidenceLinks"]}
     assert report["kind"] == "SpecHarvesterAcceptedPackageUpdateProposal"
-    assert producer_links["producer_receipt"]["path"] == "producer-receipt.json"
+    assert producer_links["producer_receipt"]["path"] == (
+        "public-index/generated/demo.core/1.0.1/producer-receipt.json"
+    )
     assert "## Summary" in body_text
     assert "## Producer Bundle Evidence" in body_text
     assert (
         "accepted_source_bundle: `public-index/generated/demo.core/1.0.1` - expected, required"
     ) in body_text
-    assert "producer_receipt: `producer-receipt.json` - present, required" in body_text
+    assert (
+        "boundary_spec: `public-index/generated/demo.core/1.0.1/specs/demo.spec.yaml` "
+        "- present, required"
+    ) in body_text
+    assert (
+        "producer_receipt: `public-index/generated/demo.core/1.0.1/producer-receipt.json` "
+        "- present, required"
+    ) in body_text
     assert "producer_preflight: `preflight-report.json` - present, optional" in body_text
     assert "accepted_source_diff: `pull-request-diff` - expected, required" in body_text
+    assert '"producerEvidenceLinks"' in body_text
+    assert '"role": "boundary_spec"' in body_text
     assert "## Registry Acceptance Decision" in body_text
     assert "status: `external_required`" in body_text
     assert "record location: `SpecPM pull request or accepted-source review record`" in body_text
     assert "producer receipt authority: `evidence_only`" in body_text
+    assert '"registryAcceptanceDecision"' in body_text
     assert report["registryAcceptanceDecision"]["status"] == "external_required"
 
 
@@ -611,6 +680,8 @@ def write_manifest(
             f"  summary: {summary}\n"
             f"  license: {license_name}\n"
             f"{metadata_lines}"
+            "specs:\n"
+            "  - path: specs/demo.spec.yaml\n"
             "index:\n"
             "  provides:\n"
             "    capabilities:\n"
@@ -621,6 +692,21 @@ def write_manifest(
             "  - id: upstream_repository\n"
             "    uri: https://github.com/example/demo\n"
             f"    revision: {upstream_revision}\n"
+        ),
+        encoding="utf-8",
+    )
+    boundary_spec = path.parent / "specs" / "demo.spec.yaml"
+    boundary_spec.parent.mkdir(parents=True, exist_ok=True)
+    boundary_spec.write_text(
+        (
+            "apiVersion: specpm.dev/v0.1\n"
+            "kind: BoundarySpec\n"
+            "metadata:\n"
+            f"  id: {package_id}.boundary\n"
+            f"  title: {name} Boundary\n"
+            "scope:\n"
+            "  includes: []\n"
+            "  excludes: []\n"
         ),
         encoding="utf-8",
     )

@@ -252,6 +252,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SPECPM_PROPOSAL_TOKEN }}
           PACKAGE_ID: ${{ steps.config.outputs.package_id }}
           PACKAGE_VERSION: ${{ steps.config.outputs.package_version }}
+          CANDIDATE_DIR: ${{ steps.config.outputs.candidate_dir }}
           MANIFEST_ENTRY_PATH: ${{ steps.config.outputs.manifest_entry_path }}
           PACKAGE_SUBDIR: ${{ steps.config.outputs.package_subdir }}
           EVIDENCE_ARTIFACT: ${{ steps.producer_evidence.outputs.artifact_name }}
@@ -274,6 +275,147 @@ jobs:
           git remote set-url origin "https://x-access-token:${SPECPM_PROPOSAL_TOKEN}@github.com/0al-spec/SpecPM.git"
           git push origin "$branch"
 
+          producer_evidence_json="$(python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          import os
+          import yaml
+
+          package_subdir = os.environ["PACKAGE_SUBDIR"]
+          evidence_artifact = os.environ["EVIDENCE_ARTIFACT"]
+          run_url = os.environ["RUN_URL"]
+          candidate = Path("../SpecHarvester", os.environ["CANDIDATE_DIR"]).resolve()
+          package = Path("public-index/generated", package_subdir)
+          manifest_path = candidate / "specpm.yaml"
+
+          def safe_relative_path(value):
+              if not isinstance(value, str) or not value:
+                  return None
+              relative = Path(value)
+              if relative.is_absolute() or ".." in relative.parts:
+                  return None
+              target = (candidate / relative).resolve()
+              try:
+                  target.relative_to(candidate)
+              except ValueError:
+                  return None
+              return relative.as_posix()
+
+          try:
+              manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+          except yaml.YAMLError as exc:
+              raise SystemExit(f"candidate specpm.yaml is invalid YAML: {exc}") from exc
+          if not isinstance(manifest, dict):
+              raise SystemExit("candidate specpm.yaml must be a YAML object")
+
+          boundary_spec_path = None
+          specs = manifest.get("specs")
+          if isinstance(specs, list):
+              for entry in specs:
+                  if not isinstance(entry, dict):
+                      continue
+                  boundary_spec_path = safe_relative_path(entry.get("path"))
+                  if boundary_spec_path is not None:
+                      break
+          if boundary_spec_path is None:
+              raise SystemExit("candidate specpm.yaml has no safe specs[].path")
+
+          def digest(relative_path):
+              path = package / relative_path
+              if not path.is_file():
+                  raise SystemExit(f"promoted package evidence file missing: {path}")
+              return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+
+          links = [
+              {
+                  "role": "accepted_source_bundle",
+                  "path": f"public-index/generated/{package_subdir}",
+                  "pathScope": "repo_relative",
+                  "required": True,
+                  "status": "expected",
+              },
+              {
+                  "role": "manifest",
+                  "path": f"public-index/generated/{package_subdir}/specpm.yaml",
+                  "pathScope": "repo_relative",
+                  "required": True,
+                  "status": "expected",
+                  "digest": digest("specpm.yaml"),
+              },
+              {
+                  "role": "boundary_spec",
+                  "path": f"public-index/generated/{package_subdir}/{boundary_spec_path}",
+                  "pathScope": "repo_relative",
+                  "required": True,
+                  "status": "expected",
+                  "digest": digest(boundary_spec_path),
+              },
+              {
+                  "role": "producer_receipt",
+                  "path": f"public-index/generated/{package_subdir}/producer-receipt.json",
+                  "pathScope": "repo_relative",
+                  "required": True,
+                  "status": "expected",
+                  "digest": digest("producer-receipt.json"),
+              },
+              {
+                  "role": "validation_report",
+                  "path": f"public-index/generated/{package_subdir}/validation-report.json",
+                  "pathScope": "repo_relative",
+                  "required": True,
+                  "status": "expected",
+                  "digest": digest("validation-report.json"),
+              },
+              {
+                  "role": "diagnostics",
+                  "path": f"public-index/generated/{package_subdir}/diagnostics.json",
+                  "pathScope": "repo_relative",
+                  "required": True,
+                  "status": "expected",
+                  "digest": digest("diagnostics.json"),
+              },
+              {
+                  "role": "producer_preflight",
+                  "artifact": evidence_artifact,
+                  "path": "producer-preflight-report.json",
+                  "pathScope": "workflow_artifact",
+                  "required": True,
+                  "status": "present",
+                  "url": run_url,
+              },
+              {
+                  "role": "static_viewer",
+                  "artifact": evidence_artifact,
+                  "path": "static-viewer/index.html",
+                  "pathScope": "workflow_artifact",
+                  "required": False,
+                  "status": "present",
+                  "url": run_url,
+              },
+              {
+                  "role": "accepted_source_diff",
+                  "path": "pull-request-diff",
+                  "pathScope": "pull_request",
+                  "required": True,
+                  "status": "expected",
+              },
+          ]
+          print(json.dumps({"producerEvidenceLinks": links}, indent=2))
+          PY
+          )"
+          boundary_spec_path="$(PRODUCER_EVIDENCE_JSON="$producer_evidence_json" python - <<'PY'
+          import json
+          import os
+
+          payload = json.loads(os.environ["PRODUCER_EVIDENCE_JSON"])
+          for entry in payload["producerEvidenceLinks"]:
+              if entry["role"] == "boundary_spec":
+                  print(entry["path"].split(os.environ["PACKAGE_SUBDIR"] + "/", 1)[1])
+                  break
+          PY
+          )"
+
           cat > /tmp/specpm-proposal-body.md <<EOF
           ## Motivation
 
@@ -295,6 +437,7 @@ jobs:
 
           - Accepted source bundle in this PR: \`public-index/generated/${PACKAGE_SUBDIR}\`
           - Manifest: \`public-index/generated/${PACKAGE_SUBDIR}/specpm.yaml\`
+          - Boundary spec: \`public-index/generated/${PACKAGE_SUBDIR}/${boundary_spec_path}\`
           - Producer receipt: \`public-index/generated/${PACKAGE_SUBDIR}/producer-receipt.json\`
           - Validation report: \`public-index/generated/${PACKAGE_SUBDIR}/validation-report.json\`
           - Diagnostics report: \`public-index/generated/${PACKAGE_SUBDIR}/diagnostics.json\`
@@ -303,70 +446,7 @@ jobs:
           - Accepted-source diff: this pull request updates \`${MANIFEST_ENTRY_PATH}\` and \`public-index/accepted-packages.yml\`.
 
           \`\`\`json
-          {
-            "producerEvidenceLinks": [
-              {
-                "role": "accepted_source_bundle",
-                "path": "public-index/generated/${PACKAGE_SUBDIR}",
-                "pathScope": "repo_relative",
-                "required": true,
-                "status": "expected"
-              },
-              {
-                "role": "manifest",
-                "path": "public-index/generated/${PACKAGE_SUBDIR}/specpm.yaml",
-                "pathScope": "repo_relative",
-                "required": true,
-                "status": "expected"
-              },
-              {
-                "role": "producer_receipt",
-                "path": "public-index/generated/${PACKAGE_SUBDIR}/producer-receipt.json",
-                "pathScope": "repo_relative",
-                "required": true,
-                "status": "expected"
-              },
-              {
-                "role": "validation_report",
-                "path": "public-index/generated/${PACKAGE_SUBDIR}/validation-report.json",
-                "pathScope": "repo_relative",
-                "required": true,
-                "status": "expected"
-              },
-              {
-                "role": "diagnostics",
-                "path": "public-index/generated/${PACKAGE_SUBDIR}/diagnostics.json",
-                "pathScope": "repo_relative",
-                "required": true,
-                "status": "expected"
-              },
-              {
-                "role": "producer_preflight",
-                "artifact": "${EVIDENCE_ARTIFACT}",
-                "path": "producer-preflight-report.json",
-                "pathScope": "workflow_artifact",
-                "required": true,
-                "status": "present",
-                "url": "${RUN_URL}"
-              },
-              {
-                "role": "static_viewer",
-                "artifact": "${EVIDENCE_ARTIFACT}",
-                "path": "static-viewer/index.html",
-                "pathScope": "workflow_artifact",
-                "required": false,
-                "status": "present",
-                "url": "${RUN_URL}"
-              },
-              {
-                "role": "accepted_source_diff",
-                "path": "pull-request-diff",
-                "pathScope": "pull_request",
-                "required": true,
-                "status": "expected"
-              }
-            ]
-          }
+          ${producer_evidence_json}
           \`\`\`
 
           \`\`\`json

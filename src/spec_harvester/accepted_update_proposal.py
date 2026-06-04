@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from spec_harvester.accepted_diff import (
     PackageDiffInputRecord,
     build_candidate_comparison,
@@ -33,6 +35,7 @@ TRUST_BOUNDARY_NOTES = [
 
 PRODUCER_EVIDENCE_FILES = (
     ("manifest", "specpm.yaml", True),
+    ("boundary_spec", None, True),
     ("producer_receipt", "producer-receipt.json", True),
     ("validation_report", "validation-report.json", True),
     ("diagnostics", "diagnostics.json", True),
@@ -226,7 +229,11 @@ def build_accepted_package_update_proposal_markdown(report: dict[str, Any]) -> s
         evidence_block = "- _No evidence artifacts found._"
 
     producer_evidence_block = _producer_evidence_markdown(report["producerEvidenceLinks"])
+    producer_evidence_json = _producer_evidence_json_block(report["producerEvidenceLinks"])
     registry_decision_block = _registry_acceptance_decision_markdown(
+        report["registryAcceptanceDecision"]
+    )
+    registry_decision_json = _registry_acceptance_decision_json_block(
         report["registryAcceptanceDecision"]
     )
 
@@ -289,8 +296,16 @@ def build_accepted_package_update_proposal_markdown(report: dict[str, Any]) -> s
                 "## Producer Bundle Evidence",
                 producer_evidence_block,
                 "",
+                "```json",
+                producer_evidence_json,
+                "```",
+                "",
                 "## Registry Acceptance Decision",
                 registry_decision_block,
+                "",
+                "```json",
+                registry_decision_json,
+                "```",
                 "",
                 "## Capability Changes",
                 f"- added: {', '.join(comparison['capabilities']['added']) or 'none'}",
@@ -375,11 +390,18 @@ def _build_producer_evidence_links(candidate: Path, package_subdir: str) -> list
         }
     ]
     for role, relative_path, required in PRODUCER_EVIDENCE_FILES:
+        if relative_path is None:
+            relative_path = _primary_boundary_spec_path(candidate)
         path = candidate / relative_path
+        proposal_path = relative_path
+        path_scope = "candidate_bundle"
+        if required:
+            proposal_path = f"{DEFAULT_MANIFEST_ENTRY_PREFIX}/{package_subdir}/{relative_path}"
+            path_scope = "repo_relative"
         link: dict[str, Any] = {
             "role": role,
-            "path": relative_path,
-            "pathScope": "candidate_bundle",
+            "path": proposal_path,
+            "pathScope": path_scope,
             "required": required,
             "status": "present" if path.is_file() else "missing",
         }
@@ -422,6 +444,49 @@ def _registry_acceptance_decision_markdown(decision: dict[str, Any]) -> str:
             f"- producer receipt authority: `{decision['producerReceiptAuthority']}`",
         ]
     )
+
+
+def _producer_evidence_json_block(links: list[dict[str, Any]]) -> str:
+    return json.dumps({"producerEvidenceLinks": links}, indent=2, sort_keys=True)
+
+
+def _registry_acceptance_decision_json_block(decision: dict[str, Any]) -> str:
+    return json.dumps({"registryAcceptanceDecision": decision}, indent=2, sort_keys=True)
+
+
+def _primary_boundary_spec_path(candidate: Path) -> str:
+    manifest_path = candidate / "specpm.yaml"
+    try:
+        manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    except yaml.YAMLError:
+        return "specs"
+    if not isinstance(manifest, dict):
+        return "specs"
+    specs = manifest.get("specs")
+    if not isinstance(specs, list):
+        return "specs"
+    for entry in specs:
+        if not isinstance(entry, dict):
+            continue
+        path = entry.get("path")
+        safe_path = _safe_candidate_relative_path(candidate, path)
+        if safe_path is not None:
+            return safe_path
+    return "specs"
+
+
+def _safe_candidate_relative_path(candidate: Path, path: Any) -> str | None:
+    if not isinstance(path, str) or not path:
+        return None
+    relative = Path(path)
+    if relative.is_absolute() or ".." in relative.parts:
+        return None
+    target = (candidate / relative).resolve()
+    try:
+        target.relative_to(candidate.resolve())
+    except ValueError:
+        return None
+    return relative.as_posix()
 
 
 def _requires_correction_mode(
