@@ -100,11 +100,37 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e ./SpecHarvester -e ./SpecPM
 
+      - name: Materialize proposal candidate bundle
+        id: candidate
+        working-directory: SpecHarvester
+        run: |
+          source_dir="${{ steps.config.outputs.candidate_dir }}"
+          materialized_dir="/tmp/specpm-proposal-candidate"
+
+          test -d "$source_dir"
+          if [ -f "$source_dir/producer-receipt.json" ]; then
+            candidate_dir="$source_dir"
+          elif [ -f "$source_dir/harvest.json" ]; then
+            rm -rf "$materialized_dir"
+            python -m spec_harvester draft "$source_dir/harvest.json" \
+              --out "$materialized_dir" \
+              --package-id "${{ steps.config.outputs.package_id }}" \
+              --version "${{ steps.config.outputs.package_version }}"
+            candidate_dir="$materialized_dir"
+          else
+            echo "::error::Candidate input must contain producer-receipt.json or harvest.json."
+            exit 1
+          fi
+
+          {
+            echo "candidate_dir=$candidate_dir"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Validate candidate
         working-directory: SpecHarvester
         run: |
-          test -d "${{ steps.config.outputs.candidate_dir }}"
-          python -m specpm.cli validate "${{ steps.config.outputs.candidate_dir }}" --json
+          test -d "${{ steps.candidate.outputs.candidate_dir }}"
+          python -m specpm.cli validate "${{ steps.candidate.outputs.candidate_dir }}" --json
 
       - name: Preflight candidate identity and proposal inputs
         working-directory: SpecHarvester
@@ -115,7 +141,7 @@ jobs:
           from pathlib import Path
           from spec_harvester.promoter import read_manifest_identity, reject_symlinks
 
-          candidate_dir = Path("${{ steps.config.outputs.candidate_dir }}")
+          candidate_dir = Path("${{ steps.candidate.outputs.candidate_dir }}")
           expected_id = "${{ steps.config.outputs.package_id }}"
           expected_version = "${{ steps.config.outputs.package_version }}"
 
@@ -168,11 +194,11 @@ jobs:
           mkdir -p "$evidence_root"
 
           python -m spec_harvester preflight-candidate-bundle \
-            "${{ steps.config.outputs.candidate_dir }}" \
+            "${{ steps.candidate.outputs.candidate_dir }}" \
             | tee "$evidence_root/producer-preflight-report.json"
 
           python -m spec_harvester render-spec-site \
-            --candidate "${{ steps.config.outputs.candidate_dir }}" \
+            --candidate "${{ steps.candidate.outputs.candidate_dir }}" \
             --output "$evidence_root/static-viewer"
 
           {
@@ -192,7 +218,7 @@ jobs:
       - name: Promote into SpecPM checkout
         working-directory: SpecHarvester
         run: |
-          python -m spec_harvester promote "${{ steps.config.outputs.candidate_dir }}" \
+          python -m spec_harvester promote "${{ steps.candidate.outputs.candidate_dir }}" \
             --accepted-root ../SpecPM/public-index/generated \
             --manifest ../SpecPM/public-index/accepted-packages.yml \
             --manifest-entry-path "${{ steps.config.outputs.manifest_entry_path }}" \
@@ -252,7 +278,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SPECPM_PROPOSAL_TOKEN }}
           PACKAGE_ID: ${{ steps.config.outputs.package_id }}
           PACKAGE_VERSION: ${{ steps.config.outputs.package_version }}
-          CANDIDATE_DIR: ${{ steps.config.outputs.candidate_dir }}
+          CANDIDATE_DIR: ${{ steps.candidate.outputs.candidate_dir }}
           MANIFEST_ENTRY_PATH: ${{ steps.config.outputs.manifest_entry_path }}
           PACKAGE_SUBDIR: ${{ steps.config.outputs.package_subdir }}
           EVIDENCE_ARTIFACT: ${{ steps.producer_evidence.outputs.artifact_name }}
