@@ -252,6 +252,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SPECPM_PROPOSAL_TOKEN }}
           PACKAGE_ID: ${{ steps.config.outputs.package_id }}
           PACKAGE_VERSION: ${{ steps.config.outputs.package_version }}
+          CANDIDATE_DIR: ${{ steps.config.outputs.candidate_dir }}
           MANIFEST_ENTRY_PATH: ${{ steps.config.outputs.manifest_entry_path }}
           PACKAGE_SUBDIR: ${{ steps.config.outputs.package_subdir }}
           EVIDENCE_ARTIFACT: ${{ steps.producer_evidence.outputs.artifact_name }}
@@ -274,6 +275,25 @@ jobs:
           git remote set-url origin "https://x-access-token:${SPECPM_PROPOSAL_TOKEN}@github.com/0al-spec/SpecPM.git"
           git push origin "$branch"
 
+          boundary_spec_path="$(python - <<'PY'
+          from pathlib import Path
+          import os
+          import yaml
+
+          manifest = yaml.safe_load(
+              Path("../SpecHarvester", os.environ["CANDIDATE_DIR"], "specpm.yaml").read_text(
+                  encoding="utf-8"
+              )
+          )
+          for entry in manifest.get("specs", []):
+              if isinstance(entry, dict) and entry.get("path"):
+                  print(entry["path"])
+                  break
+          else:
+              raise SystemExit("candidate specpm.yaml has no specs[].path")
+          PY
+          )"
+
           cat > /tmp/specpm-proposal-body.md <<EOF
           ## Motivation
 
@@ -295,6 +315,7 @@ jobs:
 
           - Accepted source bundle in this PR: \`public-index/generated/${PACKAGE_SUBDIR}\`
           - Manifest: \`public-index/generated/${PACKAGE_SUBDIR}/specpm.yaml\`
+          - Boundary spec: \`public-index/generated/${PACKAGE_SUBDIR}/${boundary_spec_path}\`
           - Producer receipt: \`public-index/generated/${PACKAGE_SUBDIR}/producer-receipt.json\`
           - Validation report: \`public-index/generated/${PACKAGE_SUBDIR}/validation-report.json\`
           - Diagnostics report: \`public-index/generated/${PACKAGE_SUBDIR}/diagnostics.json\`
@@ -315,6 +336,13 @@ jobs:
               {
                 "role": "manifest",
                 "path": "public-index/generated/${PACKAGE_SUBDIR}/specpm.yaml",
+                "pathScope": "repo_relative",
+                "required": true,
+                "status": "expected"
+              },
+              {
+                "role": "boundary_spec",
+                "path": "public-index/generated/${PACKAGE_SUBDIR}/${boundary_spec_path}",
                 "pathScope": "repo_relative",
                 "required": true,
                 "status": "expected"
