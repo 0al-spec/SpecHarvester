@@ -697,7 +697,7 @@ Acceptance:
   drift.
 - [x] `P23-T3` Add SpecHarvester-side support for any future optional SpecPM CI
   preflight gate without making producer evidence registry authority.
-- [ ] `P23-T4` Integrate a future external registry acceptance decision record
+- [x] `P23-T4` Integrate a future external registry acceptance decision record
   with SpecHarvester handoff outputs while keeping maintainer decisions outside
   generated receipts.
 
@@ -708,4 +708,4 @@ Acceptance:
 - Producer bundle evidence remains review evidence, not automatic SpecPM
   acceptance.
 - Remaining SpecPM/SpecHarvester boundary work is visible as explicit follow-up
-  tasks.
+  policy or implementation tasks.

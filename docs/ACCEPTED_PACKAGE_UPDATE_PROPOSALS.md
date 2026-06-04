@@ -38,7 +38,8 @@ Required input:
 Output:
 
 - `--output` path: writes the JSON proposal payload.
-- `--proposal-body` path: writes a deterministic Markdown body.
+- `--proposal-body` path: writes a deterministic Markdown body, including the
+  registry acceptance decision boundary.
 
 If no output options are given, payload is printed to stdout as JSON.
 
@@ -63,6 +64,10 @@ Required fields:
   - optional `preflight-report.json`;
   - optional `static-viewer/index.html`;
   - accepted-source pull request diff.
+- `registryAcceptanceDecision` pending reference:
+  - `status: external_required`;
+  - `recordKind: SpecPMRegistryAcceptanceDecision`;
+  - `producerReceiptAuthority: evidence_only`.
 - `changedClaims` list of added/removed `intent:` and `capability:` claims.
 - `validationStatus` from SpecPM validation.
 - `reviewerNotes`: optional list of human-supplied notes.
@@ -109,3 +114,7 @@ The command is advisory/read-only:
 
 It is intended to produce a deterministic artifact for later trusted review and
 SpecPM proposal operations.
+
+Registry acceptance decisions remain outside generated producer receipts. See
+[`SPECPM_REGISTRY_ACCEPTANCE_DECISION.md`](SPECPM_REGISTRY_ACCEPTANCE_DECISION.md)
+for the external decision record boundary.

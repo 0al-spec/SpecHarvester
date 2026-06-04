@@ -40,6 +40,8 @@
   aligned through an explicit shared fixture policy.
 - Preserve a stable producer evidence layout and `producerEvidenceLinks` role
   vocabulary for a future optional SpecPM CI preflight gate.
+- Reference external SpecPM registry acceptance decision records from handoff
+  artifacts without writing maintainer approval into generated receipts.
 
 ## Phase 5: Governance
 

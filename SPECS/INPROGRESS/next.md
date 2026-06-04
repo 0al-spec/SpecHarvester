@@ -1,7 +1,7 @@
-# Next Task: P23-T4 External Registry Acceptance Decision Record
+# Next Task: Phase 23 Complete
 
 **Phase:** Phase 23. SpecPM Intake Boundary Alignment
-**Status:** P23-T3 complete; P23-T4 recommended next
+**Status:** P23-T4 complete; Phase 23 complete
 **Updated:** 2026-06-04
 
 ## Recently Archived
@@ -10,6 +10,7 @@
 - P23-T1: SpecPM proposal evidence links (implemented in current PR)
 - P23-T2: Shared cross-repository fixture policy (implemented in current PR)
 - P23-T3: SpecPM CI preflight gate support (implemented in current PR)
+- P23-T4: External registry acceptance decision record (implemented in current PR)
 
 ## Phase 23 Status
 
@@ -33,8 +34,13 @@ SpecHarvester now documents the stable producer evidence layout and
 `producerEvidenceLinks` role vocabulary that a future optional SpecPM CI
 preflight gate can consume without making producer evidence registry authority.
 
+SpecHarvester now references external
+`SpecPMRegistryAcceptanceDecision` records from handoff/proposal artifacts
+without writing maintainer approval into generated producer receipts.
+
 ## Next Step
 
-Integrate a future external registry acceptance decision record with
-SpecHarvester handoff outputs while keeping maintainer decisions outside
-generated receipts.
+Phase 23 is complete on the SpecHarvester side. The next useful cross-repository
+task should move to SpecPM: implement or document the consumer-side preflight
+that reads `producerEvidenceLinks` and `registryAcceptanceDecision` from
+SpecHarvester-backed proposal pull requests.

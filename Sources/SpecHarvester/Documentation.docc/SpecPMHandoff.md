@@ -84,6 +84,11 @@ consume the same evidence layout and stable roles described in
 acceptance still requires maintainer approval or an explicit override outside
 generated receipts.
 
+Registry acceptance decision records are described in
+<doc:SpecPMRegistryAcceptanceDecision>. SpecHarvester handoff artifacts may
+reference the external record, but must not write maintainer approval into
+`producer-receipt.json`.
+
 ## Receipt Example
 
 ```json
@@ -195,6 +200,11 @@ recorded outside the generated bundle, normally in the accepted-source pull
 request.
 
 SpecHarvester evidence can support the decision. It cannot make the decision.
+
+The external decision record is the handoff boundary for maintainer approval or
+override. SpecHarvester proposal artifacts should use
+`registryAcceptanceDecision.status: external_required` until SpecPM review
+creates or records a `SpecPMRegistryAcceptanceDecision`.
 
 ## Shared Fixture Policy
 

@@ -52,7 +52,8 @@ semantics from prose or artifact names alone.
 A future gate may check required evidence presence, receipt identity, subject
 package identity, output digests, validation and diagnostics report digests,
 diagnostics status, privacy flags, `humanReview.requiredFor:
-public_index_acceptance`, and complete proposal evidence links.
+public_index_acceptance`, complete proposal evidence links, and
+`registryAcceptanceDecision.status: external_required`.
 
 A pass is not acceptance. SpecPM still needs maintainer approval or an explicit
 override recorded outside generated receipts.

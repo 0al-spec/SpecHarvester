@@ -72,6 +72,11 @@ The stable evidence roles and expected inputs for a future optional SpecPM CI
 preflight gate are covered by <doc:SpecPMCiPreflightGateSupport>. Such a gate
 may consume proposal evidence, but it must not replace maintainer review.
 
+Proposal bodies should also include a machine-readable
+`registryAcceptanceDecision` reference with `status: external_required`. The
+external decision record boundary is covered by
+<doc:SpecPMRegistryAcceptanceDecision>.
+
 After promotion and `public-index generate`, proposal diff scope is validated.
 Allowed changed files are:
 

@@ -369,6 +369,19 @@ jobs:
           }
           \`\`\`
 
+          \`\`\`json
+          {
+            "registryAcceptanceDecision": {
+              "status": "external_required",
+              "requiredFor": ["public_index_acceptance"],
+              "authority": "SpecPM maintainer review",
+              "recordKind": "SpecPMRegistryAcceptanceDecision",
+              "recordLocation": "SpecPM pull request or accepted-source review record",
+              "producerReceiptAuthority": "evidence_only"
+            }
+          }
+          \`\`\`
+
           ## Boundaries
 
           - This PR is a registry source proposal, not autonomous publication.

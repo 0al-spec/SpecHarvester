@@ -145,6 +145,7 @@ def build_accepted_package_update_proposal(
             "specpmYaml": _file_digest(candidate / "specpm.yaml"),
         },
         "producerEvidenceLinks": _build_producer_evidence_links(candidate, package_subdir),
+        "registryAcceptanceDecision": _registry_acceptance_decision_reference(),
         "changedClaims": _build_changed_claims(comparison["changes"]),
         "validationStatus": validation_status,
         "reviewerNotes": list(options.reviewer_notes),
@@ -225,6 +226,9 @@ def build_accepted_package_update_proposal_markdown(report: dict[str, Any]) -> s
         evidence_block = "- _No evidence artifacts found._"
 
     producer_evidence_block = _producer_evidence_markdown(report["producerEvidenceLinks"])
+    registry_decision_block = _registry_acceptance_decision_markdown(
+        report["registryAcceptanceDecision"]
+    )
 
     notes_block = "\n".join(f"- {note}" for note in report["reviewerNotes"]) or (
         "- _No reviewer notes supplied._"
@@ -284,6 +288,9 @@ def build_accepted_package_update_proposal_markdown(report: dict[str, Any]) -> s
                 "",
                 "## Producer Bundle Evidence",
                 producer_evidence_block,
+                "",
+                "## Registry Acceptance Decision",
+                registry_decision_block,
                 "",
                 "## Capability Changes",
                 f"- added: {', '.join(comparison['capabilities']['added']) or 'none'}",
@@ -346,6 +353,17 @@ def _build_changed_claims(changes: dict[str, Any]) -> list[str]:
     return sorted(claims)
 
 
+def _registry_acceptance_decision_reference() -> dict[str, Any]:
+    return {
+        "status": "external_required",
+        "requiredFor": ["public_index_acceptance"],
+        "authority": "SpecPM maintainer review",
+        "recordKind": "SpecPMRegistryAcceptanceDecision",
+        "recordLocation": "SpecPM pull request or accepted-source review record",
+        "producerReceiptAuthority": "evidence_only",
+    }
+
+
 def _build_producer_evidence_links(candidate: Path, package_subdir: str) -> list[dict[str, Any]]:
     links: list[dict[str, Any]] = [
         {
@@ -390,6 +408,20 @@ def _producer_evidence_markdown(links: list[dict[str, Any]]) -> str:
     if not lines:
         return "- _No producer bundle evidence links recorded._"
     return "\n".join(lines)
+
+
+def _registry_acceptance_decision_markdown(decision: dict[str, Any]) -> str:
+    required_for = ", ".join(decision["requiredFor"])
+    return "\n".join(
+        [
+            f"- status: `{decision['status']}`",
+            f"- required for: `{required_for}`",
+            f"- authority: `{decision['authority']}`",
+            f"- record kind: `{decision['recordKind']}`",
+            f"- record location: `{decision['recordLocation']}`",
+            f"- producer receipt authority: `{decision['producerReceiptAuthority']}`",
+        ]
+    )
 
 
 def _requires_correction_mode(
