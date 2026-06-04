@@ -137,6 +137,51 @@ def test_build_accepted_package_update_proposal_infers_metadata_errata(
     assert "intent:intent.package.workflow" in result["changedClaims"]
 
 
+def test_build_accepted_package_update_proposal_rejects_escaping_boundary_spec_path(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidate = tmp_path / "candidates" / "demo"
+    outside = tmp_path / "candidates" / "outside.spec.yaml"
+
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+    )
+    write_manifest(
+        candidate / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.1",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+    )
+    outside.write_text("apiVersion: specpm.dev/v0.1\n", encoding="utf-8")
+    manifest_text = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    (candidate / "specpm.yaml").write_text(
+        manifest_text.replace("  - path: specs/demo.spec.yaml", "  - path: ../outside.spec.yaml"),
+        encoding="utf-8",
+    )
+    write_producer_bundle_evidence(candidate)
+
+    result = build_accepted_package_update_proposal(
+        AcceptedPackageUpdateProposalOptions(
+            candidate=candidate,
+            accepted_root=accepted_root,
+            skip_validation=True,
+        )
+    )
+
+    producer_links = {entry["role"]: entry for entry in result["producerEvidenceLinks"]}
+    boundary_spec = producer_links["boundary_spec"]
+    assert boundary_spec["path"] == "public-index/generated/demo.core/1.0.1/specs"
+    assert boundary_spec["pathScope"] == "repo_relative"
+    assert boundary_spec["status"] == "missing"
+    assert "digest" not in boundary_spec
+
+
 def test_build_accepted_package_update_proposal_requires_correction_for_same_version(
     tmp_path: Path,
 ) -> None:

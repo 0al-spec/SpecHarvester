@@ -469,9 +469,24 @@ def _primary_boundary_spec_path(candidate: Path) -> str:
         if not isinstance(entry, dict):
             continue
         path = entry.get("path")
-        if isinstance(path, str) and path:
-            return path
+        safe_path = _safe_candidate_relative_path(candidate, path)
+        if safe_path is not None:
+            return safe_path
     return "specs"
+
+
+def _safe_candidate_relative_path(candidate: Path, path: Any) -> str | None:
+    if not isinstance(path, str) or not path:
+        return None
+    relative = Path(path)
+    if relative.is_absolute() or ".." in relative.parts:
+        return None
+    target = (candidate / relative).resolve()
+    try:
+        target.relative_to(candidate.resolve())
+    except ValueError:
+        return None
+    return relative.as_posix()
 
 
 def _requires_correction_mode(
