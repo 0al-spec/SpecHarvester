@@ -5,6 +5,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def assert_phase_24_next_task(next_text: str) -> None:
+    assert "# Next Task: P24-T1 Harvested Spec Quality Depth" in next_text
+    assert "**Phase:** Phase 24. Harvested Spec Quality Depth" in next_text
+    assert "Upgrade generated package specs from safe metadata previews" in next_text
+
+
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
     github_doc = ROOT / "docs" / "ANALYZER_SANDBOX_REQUIREMENTS.md"
     docc_doc = (
@@ -334,8 +340,7 @@ def test_docc_and_github_docs_cover_specpm_shared_fixture_policy() -> None:
     assert "`P23-T2` Define a shared cross-repository fixture policy" in workplan_text
     assert "- [x] `P23-T2`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert "Phase 23 Complete" in next_text
-    assert "P23-T2: Shared cross-repository fixture policy" in next_text
+    assert_phase_24_next_task(next_text)
 
 
 def test_docc_and_github_docs_cover_specpm_ci_preflight_gate_support() -> None:
@@ -397,8 +402,7 @@ def test_docc_and_github_docs_cover_specpm_ci_preflight_gate_support() -> None:
     assert "`P23-T3` Add SpecHarvester-side support" in workplan_text
     assert "- [x] `P23-T3`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert "Phase 23 Complete" in next_text
-    assert "P23-T3: SpecPM CI preflight gate support" in next_text
+    assert_phase_24_next_task(next_text)
 
 
 def test_docc_and_github_docs_cover_specpm_registry_acceptance_decision() -> None:
@@ -455,8 +459,7 @@ def test_docc_and_github_docs_cover_specpm_registry_acceptance_decision() -> Non
     assert "`P23-T4` Integrate a future external registry acceptance decision" in workplan_text
     assert "- [x] `P23-T4`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert "Phase 23 Complete" in next_text
-    assert "SpecPMRegistryAcceptanceDecision" in next_text
+    assert_phase_24_next_task(next_text)
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
@@ -1634,7 +1637,7 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
     assert "P23-T1" in workplan
     assert "P23-T2" in workplan
     assert "proposal artifacts and SpecPM pull" in workplan
-    assert "Phase 23 Complete" in next_task
+    assert_phase_24_next_task(next_task)
 
 
 def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:

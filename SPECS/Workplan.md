@@ -720,7 +720,7 @@ Acceptance:
 
 Motivation:
 
-- The first real xyflow SpecPM proposal is safe and reviewable, but it is
+- The first real `xyflow.core` SpecPM proposal is safe and reviewable, but it is
   mostly an observed public package metadata contract.
 - Review found that the generated package correctly avoids overclaiming, yet
   its manifest summary, BoundarySpec scope, interface evidence, and
