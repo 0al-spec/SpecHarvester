@@ -259,6 +259,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     options.out.mkdir(parents=True, exist_ok=True)
     specs_dir = options.out / "specs"
     specs_dir.mkdir(parents=True, exist_ok=True)
+    bundle_snapshot_path = ensure_bundle_harvest_snapshot(snapshot_path, options.out)
     interface_index_output: Path | None = None
     if public_interface_index is not None:
         interface_index_output = options.out / PUBLIC_INTERFACE_INDEX_OUTPUT
@@ -280,6 +281,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
                 role="evidence",
             )
         )
+    output_files.append(CandidateOutputFile(root=options.out, path="harvest.json", role="evidence"))
     report_request = ProducerReportRequest(
         candidate_root=options.out,
         package_id=package_id,
@@ -287,7 +289,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         package_api_version=SPEC_API_VERSION,
         spec_paths=(spec_path,),
         output_files=tuple(output_files),
-        has_external_inputs=not snapshot_path.resolve().is_relative_to(options.out.resolve()),
+        has_external_inputs=False,
     )
     validation_report_path = ProducerValidationReport(report_request).write()
     diagnostics_report = ProducerDiagnosticsReport(report_request)
@@ -314,7 +316,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
             package_version=options.version,
             package_api_version=SPEC_API_VERSION,
             spec_paths=(spec_path,),
-            snapshot_path=snapshot_path,
+            snapshot_path=bundle_snapshot_path,
             public_interface_index_path=interface_index_output,
             configuration={
                 "author": options.author,
@@ -345,6 +347,20 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     if interface_index_output is not None:
         result["interfaceIndex"] = str(interface_index_output)
     return result
+
+
+def ensure_bundle_harvest_snapshot(snapshot_path: Path, candidate_root: Path) -> Path:
+    bundle_snapshot_path = candidate_root / "harvest.json"
+    needs_materialization = (
+        snapshot_path.resolve() != bundle_snapshot_path.resolve()
+        or bundle_snapshot_path.is_symlink()
+    )
+    if needs_materialization:
+        payload = snapshot_path.read_bytes()
+        if bundle_snapshot_path.exists() or bundle_snapshot_path.is_symlink():
+            bundle_snapshot_path.unlink()
+        bundle_snapshot_path.write_bytes(payload)
+    return bundle_snapshot_path
 
 
 def resolve_snapshot_path(path: Path) -> Path:
