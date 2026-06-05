@@ -44,6 +44,7 @@ class CandidateBundlePreflight:
         self.check_receipt_identity(receipt)
         self.check_manifest_subject(manifest, receipt)
         self.check_required_specs(manifest, receipt)
+        self.check_evidence_paths(manifest)
         self.check_outputs(receipt)
         self.check_report_digest(receipt, validation, "validation")
         self.check_report_digest(receipt, diagnostics, "diagnostics")
@@ -146,6 +147,35 @@ class CandidateBundlePreflight:
             self.error(
                 "subject_specs_mismatch", "Receipt boundarySpecs must match specpm.yaml specs."
             )
+
+    def check_evidence_paths(self, manifest: dict[str, Any] | None) -> None:
+        if manifest is None:
+            return
+        for spec_path in sorted(manifest_spec_paths(manifest)):
+            spec = self.read_yaml_object(spec_path)
+            if spec is None:
+                continue
+            evidence = spec.get("evidence")
+            if not isinstance(evidence, list):
+                continue
+            for index, item in enumerate(evidence):
+                if not isinstance(item, dict):
+                    continue
+                path = item.get("path")
+                if path is not None:
+                    self.bundle_file(path, "evidence_path_missing")
+                paths = item.get("paths")
+                if paths is None:
+                    continue
+                if not isinstance(paths, list):
+                    self.error(
+                        "evidence_paths_invalid",
+                        "Evidence paths must be a list when present.",
+                        f"{spec_path}:evidence.{index}.paths",
+                    )
+                    continue
+                for evidence_path in paths:
+                    self.bundle_file(evidence_path, "evidence_path_missing")
 
     def check_outputs(self, receipt: dict[str, Any] | None) -> None:
         if receipt is None:

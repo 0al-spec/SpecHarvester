@@ -1027,12 +1027,18 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     outputs = {item["path"]: item for item in receipt["outputs"]}
     assert sorted(outputs) == [
         "diagnostics.json",
+        "harvest.json",
         "specpm.yaml",
         "specs/react_flow.spec.yaml",
         "validation-report.json",
     ]
     assert outputs["diagnostics.json"]["role"] == "diagnostics"
     assert outputs["diagnostics.json"]["digest"] == receipt["diagnostics"]["digest"]
+    assert outputs["harvest.json"]["role"] == "evidence"
+    assert (
+        outputs["harvest.json"]["digest"]["value"]
+        == hashlib.sha256((candidate / "harvest.json").read_bytes()).hexdigest()
+    )
     assert outputs["specpm.yaml"]["role"] == "manifest"
     assert outputs["specpm.yaml"]["digest"] == {
         "algorithm": "sha256",
@@ -1087,7 +1093,7 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     assert receipt["receiptId"].startswith("example.react_flow@0.1.0:producer:sha256:")
 
 
-def test_draft_spec_package_marks_external_snapshot_input(tmp_path: Path) -> None:
+def test_draft_spec_package_copies_external_snapshot_into_bundle(tmp_path: Path) -> None:
     repo = tmp_path / "demo"
     repo.mkdir()
     (repo / "package.json").write_text(
@@ -1123,17 +1129,19 @@ def test_draft_spec_package_marks_external_snapshot_input(tmp_path: Path) -> Non
     receipt = json.loads((candidate / "producer-receipt.json").read_text(encoding="utf-8"))
     diagnostics = json.loads((candidate / "diagnostics.json").read_text(encoding="utf-8"))
     inputs = {item["kind"]: item for item in receipt["inputs"]}
-    assert inputs["harvested_evidence"]["path"] == "external:snapshot.json"
-    assert inputs["harvested_evidence"]["location"] == "external"
+    assert inputs["harvested_evidence"]["path"] == "harvest.json"
+    assert inputs["harvested_evidence"]["location"] == "bundle"
     assert (
         inputs["harvested_evidence"]["digest"]["value"]
-        == hashlib.sha256(snapshot_path.read_bytes()).hexdigest()
+        == hashlib.sha256((candidate / "harvest.json").read_bytes()).hexdigest()
     )
-    assert "external_input_reference" in {entry["code"] for entry in diagnostics["entries"]}
-    assert "external_input_reference" in {
+    assert (candidate / "harvest.json").read_text(encoding="utf-8") == snapshot_path.read_text(
+        encoding="utf-8"
+    )
+    assert "external_input_reference" not in {entry["code"] for entry in diagnostics["entries"]}
+    assert "external_input_reference" not in {
         entry["code"] for entry in receipt["diagnostics"]["entries"]
     }
-    assert not (candidate / "harvest.json").exists()
 
 
 def test_candidate_bundle_preflight_passes_generated_candidate(tmp_path: Path) -> None:
@@ -1195,7 +1203,28 @@ def test_candidate_bundle_preflight_rejects_missing_bundle_input(tmp_path: Path)
     report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
 
     assert report["status"] == "failed"
-    assert diagnostic_codes(report) == {"input_digest_mismatch"}
+    assert diagnostic_codes(report) == {
+        "evidence_path_missing",
+        "input_digest_mismatch",
+        "output_digest_mismatch",
+    }
+
+
+def test_candidate_bundle_preflight_rejects_missing_boundary_evidence_path(
+    tmp_path: Path,
+) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    (candidate / "harvest.json").unlink()
+    receipt_path = candidate / "producer-receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["inputs"] = [item for item in receipt["inputs"] if item.get("path") != "harvest.json"]
+    receipt["outputs"] = [item for item in receipt["outputs"] if item.get("path") != "harvest.json"]
+    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "failed"
+    assert "evidence_path_missing" in diagnostic_codes(report)
 
 
 def test_candidate_bundle_preflight_rejects_output_path_escape(tmp_path: Path) -> None:
