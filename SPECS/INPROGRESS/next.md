@@ -1,4 +1,4 @@
-# Next Task: P24-T1 — Harvested Spec Quality Depth
+# Next Task: P24-T1 Harvested Spec Quality Depth
 
 **Priority:** P1
 **Phase:** Phase 24. Harvested Spec Quality Depth
