@@ -1,46 +1,59 @@
-# Next Task: Phase 23 Complete
+# Next Task: P24-T1 Harvested Spec Quality Depth
 
-**Phase:** Phase 23. SpecPM Intake Boundary Alignment
-**Status:** P23-T4 complete; Phase 23 complete
-**Updated:** 2026-06-04
+**Phase:** Phase 24. Harvested Spec Quality Depth
+**Status:** Planned
+**Updated:** 2026-06-05
 
-## Recently Archived
+## Context
 
-- P22-T1: Candidate Bundle End-to-End Smoke (PASS, 2026-06-02)
-- P23-T1: SpecPM proposal evidence links (implemented in current PR)
-- P23-T2: Shared cross-repository fixture policy (implemented in current PR)
-- P23-T3: SpecPM CI preflight gate support (implemented in current PR)
-- P23-T4: External registry acceptance decision record (implemented in current PR)
+The first real SpecHarvester-backed SpecPM proposal for `xyflow.core` is safe,
+reviewable, and suitable as a `preview_only` package. Review also showed that
+the generated candidate is still mostly an observed public package metadata
+contract:
 
-## Phase 23 Status
+- manifest and BoundarySpec summaries are producer-centric;
+- `interfaces.inbound` entries are useful but shallow;
+- `compatibility.languages` and `compatibility.platforms` are not explicitly
+  tied to fine-grained evidence;
+- evidence `supports` mappings cover broad intent/scope/capability claims, but
+  not interfaces and compatibility at the same level;
+- bounded LM Studio review is useful as review evidence, but must not become
+  registry authority or direct file mutation.
 
-SpecHarvester proposal artifacts and the trusted SpecPM proposal workflow now
-explicitly include or link producer bundle evidence:
+## Motivation
 
-```text
-producer-receipt.json
-validation-report.json
-diagnostics.json
-producer preflight evidence
-static viewer evidence
-accepted-source diff
-```
+Downstream consumers need generated package candidates to become more useful as
+package contracts without weakening the trust boundary. The next quality step is
+to enrich deterministic evidence and drafting so generated specs describe the
+target package boundary more directly while staying `preview_only` and
+maintainer-reviewed.
 
-SpecHarvester now also documents the shared fixture policy for keeping SpecPM
-contract examples and SpecHarvester generated bundle examples aligned by exact
-commit SHA instead of mutable refs.
+## Goal
 
-SpecHarvester now documents the stable producer evidence layout and
-`producerEvidenceLinks` role vocabulary that a future optional SpecPM CI
-preflight gate can consume without making producer evidence registry authority.
+Upgrade generated package specs from safe metadata previews to subject-focused
+preview contracts.
 
-SpecHarvester now references external
-`SpecPMRegistryAcceptanceDecision` records from handoff/proposal artifacts
-without writing maintainer approval into generated producer receipts.
+P24-T1 should:
 
-## Next Step
+- use deterministic public evidence first: package manifests, package exports,
+  public interface indexes, analyzer outputs, and digests;
+- make `interfaces`, `compatibility`, and capability summaries traceable to
+  specific evidence;
+- reduce producer-centric wording in summaries and scope;
+- keep model output as bounded review evidence only, never as authoritative
+  registry content.
 
-Phase 23 is complete on the SpecHarvester side. The next useful cross-repository
-task should move to SpecPM: implement or document the consumer-side preflight
-that reads `producerEvidenceLinks` and `registryAcceptanceDecision` from
-SpecHarvester-backed proposal pull requests.
+## Acceptance Sketch
+
+- A generated package such as `xyflow.core` still validates as a SpecPM preview
+  package.
+- Summary and scope describe the target package boundary, not primarily the
+  producer process.
+- `interfaces.inbound` entries cite deterministic evidence such as package
+  exports or `public-interface-index.json`.
+- `compatibility.languages` and `compatibility.platforms` are evidence-backed
+  or downgraded to clearly named ecosystem hints.
+- BoundarySpec evidence `supports` entries cover capabilities, interfaces, and
+  compatibility claims at useful granularity.
+- No package scripts, dependency installation, repository runtime behavior, or
+  model-authored direct file mutation is introduced.
