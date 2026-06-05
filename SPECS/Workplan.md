@@ -709,3 +709,50 @@ Acceptance:
   acceptance.
 - Remaining SpecPM/SpecHarvester boundary work is visible as explicit follow-up
   policy or implementation tasks.
+
+## Phase 24. Harvested Spec Quality Depth
+
+- [ ] `P24-T1` Upgrade generated package specs from safe metadata previews to
+  subject-focused preview contracts by enriching deterministic evidence and
+  draft output with public interface/index signals, more precise evidence
+  `supports` mappings for interfaces and compatibility, and less
+  producer-centric summaries.
+
+Motivation:
+
+- The first real xyflow SpecPM proposal is safe and reviewable, but it is
+  mostly an observed public package metadata contract.
+- Review found that the generated package correctly avoids overclaiming, yet
+  its manifest summary, BoundarySpec scope, interface evidence, and
+  compatibility claims are still shallow.
+- Downstream consumers need generated specs to describe the target package
+  boundary more directly without treating harvested metadata, LM Studio review,
+  or producer receipts as registry authority.
+
+Goal:
+
+- Keep generated candidates `preview_only` and maintainer-reviewed, while
+  making the generated content more useful as a package contract.
+- Use deterministic public evidence first: package manifests, exports, public
+  interface indexes, analyzer outputs, and digests.
+- Make evidence traceability explicit for `interfaces`, `compatibility`, and
+  capability summaries instead of only supporting broad `intent/scope/provides`
+  claims.
+- Preserve the trust boundary: no package script execution, no dependency
+  installation, no runtime behavior claims without evidence, and no direct
+  model-authored file mutation.
+
+Acceptance:
+
+- A generated package such as `xyflow.core` can still validate as a SpecPM
+  preview package, but its summary and scope describe the target package
+  boundary rather than primarily describing the producer process.
+- `interfaces.inbound` entries are backed by deterministic evidence such as
+  package exports or `public-interface-index.json` records.
+- `compatibility.languages` and `compatibility.platforms` are either
+  evidence-backed or downgraded to clearly named ecosystem hints.
+- BoundarySpec evidence `supports` entries cover capabilities, interfaces, and
+  compatibility claims at a useful granularity.
+- LM Studio or other model passes may provide bounded review notes, but model
+  output remains review evidence only and is not treated as authoritative
+  registry content.
