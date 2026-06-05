@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import re
-import shutil
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -352,8 +351,15 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
 
 def ensure_bundle_harvest_snapshot(snapshot_path: Path, candidate_root: Path) -> Path:
     bundle_snapshot_path = candidate_root / "harvest.json"
-    if snapshot_path.resolve() != bundle_snapshot_path.resolve():
-        shutil.copyfile(snapshot_path, bundle_snapshot_path)
+    needs_materialization = (
+        snapshot_path.resolve() != bundle_snapshot_path.resolve()
+        or bundle_snapshot_path.is_symlink()
+    )
+    if needs_materialization:
+        payload = snapshot_path.read_bytes()
+        if bundle_snapshot_path.exists() or bundle_snapshot_path.is_symlink():
+            bundle_snapshot_path.unlink()
+        bundle_snapshot_path.write_bytes(payload)
     return bundle_snapshot_path
 
 

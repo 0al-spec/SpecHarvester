@@ -30,6 +30,7 @@ from spec_harvester.drafter import (
     draft_spec_package,
     public_interface_semantic_terms,
     render_scalar,
+    render_yaml,
 )
 from spec_harvester.interface_index import (
     analyzer_record,
@@ -1144,6 +1145,45 @@ def test_draft_spec_package_copies_external_snapshot_into_bundle(tmp_path: Path)
     }
 
 
+def test_draft_spec_package_materializes_symlinked_bundle_snapshot(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "symlink-demo",
+                "version": "1.0.0",
+                "description": "Demo package for symlinked snapshot materialization.",
+                "license": "MIT",
+            }
+        ),
+        encoding="utf-8",
+    )
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    external_snapshot = tmp_path / "external-harvest.json"
+    external_snapshot.write_text(json.dumps(snapshot), encoding="utf-8")
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    (candidate / "harvest.json").symlink_to(external_snapshot)
+
+    draft_spec_package(
+        DraftOptions(
+            snapshot=candidate,
+            out=candidate,
+            package_id="example.symlink_demo",
+        )
+    )
+
+    bundle_snapshot = candidate / "harvest.json"
+    assert bundle_snapshot.is_file()
+    assert not bundle_snapshot.is_symlink()
+    assert bundle_snapshot.read_text(encoding="utf-8") == external_snapshot.read_text(
+        encoding="utf-8"
+    )
+
+
 def test_candidate_bundle_preflight_passes_generated_candidate(tmp_path: Path) -> None:
     candidate = draft_demo_candidate(tmp_path)
 
@@ -1225,6 +1265,33 @@ def test_candidate_bundle_preflight_rejects_missing_boundary_evidence_path(
 
     assert report["status"] == "failed"
     assert "evidence_path_missing" in diagnostic_codes(report)
+
+
+def test_candidate_bundle_preflight_allows_source_relative_semantic_evidence_paths(
+    tmp_path: Path,
+) -> None:
+    candidate = draft_demo_candidate(tmp_path)
+    spec_path = candidate / "specs" / "demo.spec.yaml"
+    spec = yaml.safe_load(spec_path.read_text(encoding="utf-8"))
+    spec["evidence"].append(
+        {
+            "id": "semantic_intent_static_evidence",
+            "kind": "documentation",
+            "paths": ["README.md"],
+            "supports": ["intent.summary"],
+        }
+    )
+    spec_path.write_text(render_yaml(spec), encoding="utf-8")
+    receipt_path = candidate / "producer-receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    for output in receipt["outputs"]:
+        if output["path"] == "specs/demo.spec.yaml":
+            output["digest"]["value"] = hashlib.sha256(spec_path.read_bytes()).hexdigest()
+    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = run_candidate_bundle_preflight(CandidateBundlePreflightOptions(candidate=candidate))
+
+    assert report["status"] == "passed"
 
 
 def test_candidate_bundle_preflight_rejects_output_path_escape(tmp_path: Path) -> None:

@@ -152,6 +152,8 @@ class CandidateBundlePreflight:
         if manifest is None:
             return
         for spec_path in sorted(manifest_spec_paths(manifest)):
+            if self.bundle_file(spec_path, "required_spec_missing") is None:
+                continue
             spec = self.read_yaml_object(spec_path)
             if spec is None:
                 continue
@@ -173,9 +175,6 @@ class CandidateBundlePreflight:
                         "Evidence paths must be a list when present.",
                         f"{spec_path}:evidence.{index}.paths",
                     )
-                    continue
-                for evidence_path in paths:
-                    self.bundle_file(evidence_path, "evidence_path_missing")
 
     def check_outputs(self, receipt: dict[str, Any] | None) -> None:
         if receipt is None:
