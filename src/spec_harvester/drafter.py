@@ -1464,6 +1464,7 @@ def interface_support_targets(inbound_interfaces: list[dict[str, Any]]) -> list[
         f"interfaces.inbound.{interface['id']}"
         for interface in inbound_interfaces
         if isinstance(interface.get("id"), str)
+        and interface.get("source") != "public_interface_index"
     ]
     if targets:
         return ["interfaces.inbound", *targets]

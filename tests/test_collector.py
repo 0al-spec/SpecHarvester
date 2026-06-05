@@ -1396,6 +1396,7 @@ def test_draft_spec_package_enriches_interfaces_from_public_interface_index(
     )
 
     spec = Path(result["spec"]).read_text(encoding="utf-8")
+    parsed_spec = yaml.safe_load(spec)
     copied_index = candidate / "public-interface-index.json"
     receipt = json.loads((candidate / "producer-receipt.json").read_text(encoding="utf-8"))
     assert copied_index.exists()
@@ -1418,6 +1419,16 @@ def test_draft_spec_package_enriches_interfaces_from_public_interface_index(
     assert "name: createGraph" in spec
     assert 'signature: "createGraph(options)"' in spec
     assert "sha256: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" in spec
+    harvest_evidence = next(
+        item for item in parsed_spec["evidence"] if item["id"] == "harvest_snapshot"
+    )
+    index_evidence = next(
+        item for item in parsed_spec["evidence"] if item["id"] == "public_interface_index"
+    )
+    assert "interfaces.inbound" not in harvest_evidence["supports"]
+    assert "interfaces.inbound.package.core" not in harvest_evidence["supports"]
+    assert "interfaces.inbound" in index_evidence["supports"]
+    assert "interfaces.inbound.package.core" in index_evidence["supports"]
     outputs = {item["path"]: item for item in receipt["outputs"]}
     assert outputs["public-interface-index.json"]["role"] == "evidence"
     assert (
