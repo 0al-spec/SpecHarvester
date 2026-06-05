@@ -712,7 +712,7 @@ Acceptance:
 
 ## Phase 24. Harvested Spec Quality Depth
 
-- [ ] `P24-T1` Upgrade generated package specs from safe metadata previews to
+- [x] `P24-T1` Upgrade generated package specs from safe metadata previews to
   subject-focused preview contracts by enriching deterministic evidence and
   draft output with public interface/index signals, more precise evidence
   `supports` mappings for interfaces and compatibility, and less
