@@ -138,7 +138,13 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     license_inference = infer_license_with_evidence(package_records, license_records)
     license_name = license_inference.name
     package_name = options.name or display_name(source_unit_name)
-    package_summary = generated_package_summary(package_name, source_unit_kind)
+    package_summary = generated_package_summary(
+        package_name,
+        source_unit_kind,
+        primary_package_records,
+        semantic_profile_for_summary,
+    )
+    compatibility = infer_compatibility(package_records, snapshot, manifest_intents)
 
     manifest = {
         "apiVersion": SPEC_API_VERSION,
@@ -161,7 +167,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
             },
             "requires": {"capabilities": []},
         },
-        "compatibility": infer_compatibility(package_records, snapshot, manifest_intents),
+        "compatibility": compatibility,
         "foreignArtifacts": [foreign_repository_artifact(source)],
         "keywords": ["generated", "specharvester", bounded_context],
     }
@@ -174,6 +180,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         manifest_capabilities,
         inbound_interfaces,
         public_interface_index,
+        compatibility,
         semantic_profile,
     )
     provenance = {
@@ -420,10 +427,31 @@ def source_target_kind(source: dict[str, Any]) -> str:
     return "repository"
 
 
-def generated_package_summary(package_name: str, source_unit_kind: str) -> str:
+def generated_package_summary(
+    package_name: str,
+    source_unit_kind: str,
+    package_records: list[dict[str, Any]],
+    semantic_profile: SemanticIntentProfile | None,
+) -> str:
+    if semantic_profile is not None:
+        return semantic_profile.summary
+    package_description = primary_package_description(package_records)
+    if package_description is not None:
+        return f"{package_name} public package boundary: {package_description}"
     if source_unit_kind == "repository":
-        return f"Unofficial generated SpecPackage for {package_name} public package metadata."
-    return f"Unofficial generated SpecPackage for {package_name} source unit metadata."
+        return f"Observed public package boundary for {package_name}."
+    return f"Observed source unit boundary for {package_name}."
+
+
+def primary_package_description(package_records: list[dict[str, Any]]) -> str | None:
+    for record in package_records:
+        package = record.get("package")
+        if not isinstance(package, dict):
+            continue
+        description = package.get("description")
+        if isinstance(description, str) and description.strip():
+            return description.strip()
+    return None
 
 
 def generated_boundary_title(package_name: str, source_unit_kind: str) -> str:
@@ -1374,15 +1402,20 @@ def build_evidence(
     manifest_capabilities: list[str],
     inbound_interfaces: list[dict[str, Any]],
     public_interface_index: dict[str, Any] | None,
+    compatibility: dict[str, list[str]],
     semantic_profile: SemanticIntentProfile | None = None,
 ) -> list[dict[str, Any]]:
+    interface_supports = interface_support_targets(inbound_interfaces)
+    compatibility_supports = compatibility_support_targets(compatibility)
     evidence = [
         {
             "id": "harvest_snapshot",
             "kind": "package_manifest",
             "path": "harvest.json",
             "supports": ["intent.summary", "scope", "provides.capabilities"]
-            + [f"provides.capabilities.{capability_id}" for capability_id in manifest_capabilities],
+            + [f"provides.capabilities.{capability_id}" for capability_id in manifest_capabilities]
+            + interface_supports
+            + compatibility_supports,
         }
     ]
     if semantic_profile is not None:
@@ -1424,6 +1457,28 @@ def build_evidence(
         }
     )
     return evidence
+
+
+def interface_support_targets(inbound_interfaces: list[dict[str, Any]]) -> list[str]:
+    targets = [
+        f"interfaces.inbound.{interface['id']}"
+        for interface in inbound_interfaces
+        if isinstance(interface.get("id"), str)
+        and interface.get("source") != "public_interface_index"
+    ]
+    if targets:
+        return ["interfaces.inbound", *targets]
+    return []
+
+
+def compatibility_support_targets(compatibility: dict[str, list[str]]) -> list[str]:
+    languages = compatibility.get("languages")
+    platforms = compatibility.get("platforms")
+    has_languages = isinstance(languages, list) and len(languages) > 0
+    has_platforms = isinstance(platforms, list) and len(platforms) > 0
+    if has_languages or has_platforms:
+        return ["compatibility"]
+    return []
 
 
 def public_interface_provenance(index: dict[str, Any]) -> dict[str, Any]:

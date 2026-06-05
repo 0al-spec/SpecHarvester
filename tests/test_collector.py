@@ -1396,6 +1396,7 @@ def test_draft_spec_package_enriches_interfaces_from_public_interface_index(
     )
 
     spec = Path(result["spec"]).read_text(encoding="utf-8")
+    parsed_spec = yaml.safe_load(spec)
     copied_index = candidate / "public-interface-index.json"
     receipt = json.loads((candidate / "producer-receipt.json").read_text(encoding="utf-8"))
     assert copied_index.exists()
@@ -1418,6 +1419,16 @@ def test_draft_spec_package_enriches_interfaces_from_public_interface_index(
     assert "name: createGraph" in spec
     assert 'signature: "createGraph(options)"' in spec
     assert "sha256: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" in spec
+    harvest_evidence = next(
+        item for item in parsed_spec["evidence"] if item["id"] == "harvest_snapshot"
+    )
+    index_evidence = next(
+        item for item in parsed_spec["evidence"] if item["id"] == "public_interface_index"
+    )
+    assert "interfaces.inbound" not in harvest_evidence["supports"]
+    assert "interfaces.inbound.package.core" not in harvest_evidence["supports"]
+    assert "interfaces.inbound" in index_evidence["supports"]
+    assert "interfaces.inbound.package.core" in index_evidence["supports"]
     outputs = {item["path"]: item for item in receipt["outputs"]}
     assert outputs["public-interface-index.json"]["role"] == "evidence"
     assert (
@@ -1455,6 +1466,90 @@ def test_draft_spec_package_auto_detects_colocated_public_interface_index(
     assert result["interfaceIndex"] == str(candidate / "public-interface-index.json")
     assert "id: package.core" in spec
     assert "source: public_interface_index" in spec
+
+
+def test_draft_spec_package_uses_subject_focused_manifest_summary(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "subject-toolkit"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/subject-toolkit",
+                "version": "1.0.0",
+                "description": "Node editor toolkit for React flow diagrams.",
+                "license": "MIT",
+                "exports": {".": "./src/index.ts"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(
+            snapshot=candidate,
+            out=candidate,
+            package_id="subject_toolkit.core",
+            name="Subject Toolkit",
+        )
+    )
+
+    manifest = yaml.safe_load(Path(result["manifest"]).read_text(encoding="utf-8"))
+    assert (
+        manifest["metadata"]["summary"]
+        == "Subject Toolkit public package boundary: Node editor toolkit for React flow diagrams."
+    )
+    assert "generated" not in manifest["metadata"]["summary"].lower()
+    assert "specharvester" not in manifest["metadata"]["summary"].lower()
+
+
+def test_draft_spec_package_supports_interfaces_and_compatibility_with_evidence(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "compat-toolkit"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/compat-toolkit",
+                "version": "1.0.0",
+                "description": "Toolkit for browser and Node graph adapters.",
+                "license": "MIT",
+                "dependencies": {"typescript": "^5.0.0"},
+                "exports": {".": "./src/index.ts"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(HarvestOptions(source=repo))
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(
+        DraftOptions(
+            snapshot=candidate,
+            out=candidate,
+            package_id="compat_toolkit.core",
+        )
+    )
+
+    manifest = yaml.safe_load(Path(result["manifest"]).read_text(encoding="utf-8"))
+    spec = yaml.safe_load(Path(result["spec"]).read_text(encoding="utf-8"))
+    harvest_evidence = next(item for item in spec["evidence"] if item["id"] == "harvest_snapshot")
+    supports = set(harvest_evidence["supports"])
+
+    interface_id = spec["interfaces"]["inbound"][0]["id"]
+    assert f"interfaces.inbound.{interface_id}" in supports
+    assert "interfaces.inbound" in supports
+    assert "compatibility" in supports
+    assert manifest["compatibility"]["languages"] == ["typescript", "javascript"]
+    assert manifest["compatibility"]["platforms"] == ["web", "node"]
 
 
 def test_draft_spec_package_rejects_invalid_public_interface_index(tmp_path: Path) -> None:
@@ -1627,7 +1722,7 @@ def test_draft_spec_package_uses_source_unit_metadata_for_scoped_folder(
     spec = Path(result["spec"]).read_text(encoding="utf-8")
     manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
     assert "id: player.core" in manifest
-    assert "summary: Unofficial generated SpecPackage for Player source unit metadata." in manifest
+    assert "summary: Observed source unit boundary for Player." in manifest
     assert "title: Player Generated Source Unit Boundary" in spec
     assert (
         "Describe observed source unit metadata from an allowlisted scoped harvest snapshot."

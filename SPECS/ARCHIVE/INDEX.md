@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-06-02
+**Last Updated:** 2026-06-05
 
 ## Archived Tasks
 
@@ -90,6 +90,7 @@
 | P21-T5 | [P21-T5_Static_Viewer_Producer_Receipt_Panels/](P21-T5_Static_Viewer_Producer_Receipt_Panels/) | 2026-06-02 | PASS |
 | P21-T6 | [P21-T6_SpecPM_Handoff_Documentation_and_Examples/](P21-T6_SpecPM_Handoff_Documentation_and_Examples/) | 2026-06-02 | PASS |
 | P22-T1 | [P22-T1_Candidate_Bundle_End_to_End_Smoke/](P22-T1_Candidate_Bundle_End_to_End_Smoke/) | 2026-06-02 | PASS |
+| P24-T1 | [P24-T1_Harvested_Spec_Quality_Depth/](P24-T1_Harvested_Spec_Quality_Depth/) | 2026-06-05 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -112,6 +113,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t4_candidate_bundle_preflight_verifier.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t5_static_viewer_producer_receipt_panels.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t6_specpm_handoff_docs_examples.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p24_t1_harvested_spec_quality_depth.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -297,6 +299,8 @@
 | 2026-06-02 | P21-T6 | Archived SpecPM Handoff Documentation and Examples (PASS) |
 | 2026-06-02 | P21-T6 | Archived REVIEW_p21_t6_specpm_handoff_docs_examples report |
 | 2026-06-02 | P22-T1 | Archived Candidate Bundle End-to-End Smoke (PASS) |
+| 2026-06-05 | P24-T1 | Archived Harvested Spec Quality Depth (PASS) |
+| 2026-06-05 | P24-T1 | Archived REVIEW_p24_t1_harvested_spec_quality_depth report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
