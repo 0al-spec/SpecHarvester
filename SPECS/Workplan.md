@@ -776,7 +776,7 @@ Acceptance:
   bundles, starting with `contains` relations from aggregate workspace packages
   to scoped member packages and recording relation evidence as
   producer-observed review material.
-- [ ] `P25-T5` Extend candidate bundle preflight for bundle sets, checking
+- [x] `P25-T5` Extend candidate bundle preflight for bundle sets, checking
   unique package IDs, per-package required files, receipt/report digests,
   relation source/target existence, workspace inventory consistency, privacy
   status, and human review boundary without accepting packages automatically.
