@@ -112,3 +112,14 @@ capabilities, inherited constraints, or public registry visibility.
 P25-T3 should use the inventory as input when drafting aggregate package-set
 candidates and scoped member candidates. P25-T5 should use it to check
 multi-package bundle consistency before SpecPM handoff.
+
+Use `draft-package-set` for the P25-T3 drafting step:
+
+```bash
+python3 -m spec_harvester draft-package-set \
+  candidates/xyflow/workspace-inventory.json \
+  --out candidates/xyflow-package-set
+```
+
+This writes `package-set-draft.json` and separate preview candidate bundle
+directories for selected package roles.

@@ -60,6 +60,11 @@ from spec_harvester.namespace_reports import (
     build_namespace_upstream_report,
     write_namespace_upstream_report,
 )
+from spec_harvester.package_set_drafter import (
+    DEFAULT_DRAFT_ROLES,
+    PackageSetDraftOptions,
+    draft_package_set,
+)
 from spec_harvester.procedural_style_report import (
     DEFAULT_HOTSPOT_MIN_TOP_LEVEL_COUNT,
     DEFAULT_HOTSPOT_MIN_TOP_LEVEL_SPAN,
@@ -212,6 +217,42 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     draft.set_defaults(func=run_draft)
+
+    draft_package_set_parser = subcommands.add_parser(
+        "draft-package-set",
+        help="Draft preview candidate packages from workspace-inventory.json.",
+    )
+    draft_package_set_parser.add_argument(
+        "inventory",
+        type=Path,
+        help="Workspace inventory JSON produced by collect-batch --emit-workspace-inventory.",
+    )
+    draft_package_set_parser.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output directory where package-set candidate bundles are written.",
+    )
+    draft_package_set_parser.add_argument(
+        "--version",
+        default=DEFAULT_SPEC_VERSION,
+        help=f"Generated SpecPackage version. Default: {DEFAULT_SPEC_VERSION}.",
+    )
+    draft_package_set_parser.add_argument(
+        "--author",
+        default=DEFAULT_AUTHOR,
+        help=f"Generated SpecPackage author. Default: {DEFAULT_AUTHOR}.",
+    )
+    draft_package_set_parser.add_argument(
+        "--role",
+        action="append",
+        default=[],
+        help=(
+            "Inventory package role to draft. Can be repeated. Defaults to "
+            "workspace, core_runtime, react_binding, and svelte_binding."
+        ),
+    )
+    draft_package_set_parser.set_defaults(func=run_draft_package_set)
 
     render_spec_site = subcommands.add_parser(
         "render-spec-site",
@@ -774,6 +815,20 @@ def run_draft(args: argparse.Namespace) -> int:
             version=args.version,
             author=args.author,
             interface_index=args.interface_index,
+        )
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_draft_package_set(args: argparse.Namespace) -> int:
+    result = draft_package_set(
+        PackageSetDraftOptions(
+            inventory=args.inventory,
+            out=args.out,
+            version=args.version,
+            author=args.author,
+            roles=tuple(args.role) if args.role else DEFAULT_DRAFT_ROLES,
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))

@@ -768,7 +768,7 @@ Acceptance:
   repository URL, exact revision, workspace manifests, package manifest paths,
   package ecosystem/name/version metadata, source target paths, proposed stable
   SpecPM package IDs, package roles, and privacy-safe evidence references.
-- [ ] `P25-T3` Draft package-set candidates alongside scoped member package
+- [x] `P25-T3` Draft package-set candidates alongside scoped member package
   candidates so a repository such as `xyflow` can produce `xyflow.workspace`,
   `xyflow.system`, `xyflow.react`, and `xyflow.svelte` without overwriting one
   package subject with another.
