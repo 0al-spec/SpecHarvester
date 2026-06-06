@@ -764,7 +764,7 @@ Acceptance:
   package-set search semantics, registry metadata shape, monorepo discovery
   handoff, multi-package producer intake, and the `xyflow` reference scenario
   map onto SpecHarvester implementation work.
-- [ ] `P25-T2` Emit a deterministic workspace inventory for monorepos, including
+- [x] `P25-T2` Emit a deterministic workspace inventory for monorepos, including
   repository URL, exact revision, workspace manifests, package manifest paths,
   package ecosystem/name/version metadata, source target paths, proposed stable
   SpecPM package IDs, package roles, and privacy-safe evidence references.
