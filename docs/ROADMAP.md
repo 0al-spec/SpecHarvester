@@ -42,6 +42,9 @@
   vocabulary for a future optional SpecPM CI preflight gate.
 - Reference external SpecPM registry acceptance decision records from handoff
   artifacts without writing maintainer approval into generated receipts.
+- Produce package-set and scoped member package candidate bundle sets for
+  monorepos, aligned with SpecPM package-set, relation, search, registry
+  metadata, and multi-package intake contracts.
 
 ## Phase 5: Governance
 
