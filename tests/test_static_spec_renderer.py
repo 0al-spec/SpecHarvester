@@ -157,9 +157,7 @@ def test_static_package_set_renderer_writes_review_site(tmp_path: Path) -> None:
     ]
     assert payload["members"][0]["role"] == "workspace"
     assert all(relation["type"] == "contains" for relation in payload["relations"])
-    assert all(
-        relation["reviewStatus"] == "producer_observed" for relation in payload["relations"]
-    )
+    assert all(relation["reviewStatus"] == "producer_observed" for relation in payload["relations"])
 
     html = (output / "index.html").read_text(encoding="utf-8")
     javascript = (output / "assets/spec-renderer.js").read_text(encoding="utf-8")
@@ -174,9 +172,7 @@ def test_static_package_set_renderer_writes_review_site(tmp_path: Path) -> None:
     assert ".result-scope" in css
 
 
-def test_render_package_set_site_cli_writes_site_and_prints_result(
-    tmp_path: Path, capsys
-) -> None:
+def test_render_package_set_site_cli_writes_site_and_prints_result(tmp_path: Path, capsys) -> None:
     bundle_set = write_package_set_fixture(tmp_path)
     output = tmp_path / "site"
 
