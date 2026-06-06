@@ -315,6 +315,7 @@
 | 2026-06-06 | P25-T4 | Archived Package Relation Proposal Output (PASS) |
 | 2026-06-06 | P25-T4 | Archived REVIEW_p25_t4_package_relation_proposals report |
 | 2026-06-06 | P25-T5 | Archived Bundle-Set Preflight (PASS) |
+| 2026-06-06 | P25-T5 | Archived REVIEW_p25_t5_bundle_set_preflight report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
