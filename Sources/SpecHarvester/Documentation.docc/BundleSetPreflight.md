@@ -33,6 +33,7 @@ Bundle-set preflight checks:
 - package relation proposal identity;
 - unique candidate `packageId` values;
 - per-candidate `preflight-candidate-bundle` status;
+- per-candidate `diagnosticsStatus` remaining `clean` or `warnings`;
 - relation source and target package existence;
 - relation source and target package IDs pointing to generated candidates;
 - package-set draft digest referenced by relation proposals;

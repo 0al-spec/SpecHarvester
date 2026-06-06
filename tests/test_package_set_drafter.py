@@ -226,6 +226,28 @@ def test_bundle_set_preflight_fails_duplicate_candidate_package_id(tmp_path: Pat
     assert "candidate_package_id_duplicate" in diagnostic_codes(report)
 
 
+def test_bundle_set_preflight_fails_candidate_diagnostics_status(tmp_path: Path) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+    diagnostics_path = out / "xyflow.react" / "diagnostics.json"
+    diagnostics_payload = json.loads(diagnostics_path.read_text(encoding="utf-8"))
+    diagnostics_payload["status"] = "failed"
+    diagnostics_path.write_text(
+        json.dumps(diagnostics_payload, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+
+    report = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+
+    assert report["status"] == "failed"
+    assert "candidate_diagnostics_status_failed" in diagnostic_codes(report)
+    react_report = next(
+        item for item in report["candidateReports"] if item["packageId"] == "xyflow.react"
+    )
+    assert react_report["diagnosticsStatus"] == "failed"
+
+
 def test_cli_preflight_bundle_set_reports_status(tmp_path: Path, capsys) -> None:
     inventory = write_workspace_inventory_fixture(tmp_path)
     out = tmp_path / "draft-set"

@@ -159,11 +159,13 @@ class BundleSetPreflight:
             report = run_candidate_bundle_preflight(
                 CandidateBundlePreflightOptions(candidate=candidate_root)
             )
+            diagnostics_status = self.candidate_diagnostics_status(candidate_root, candidate)
             self.candidate_reports.append(
                 {
                     "packageId": package_id,
                     "candidatePath": candidate_path,
                     "status": report["status"],
+                    "diagnosticsStatus": diagnostics_status,
                     "errorCount": report["summary"]["errorCount"],
                     "warningCount": report["summary"]["warningCount"],
                 }
@@ -174,6 +176,37 @@ class BundleSetPreflight:
                     f"Candidate bundle preflight failed for {package_id}.",
                     str(candidate_path),
                 )
+            if diagnostics_status not in {"clean", "warnings"}:
+                self.error(
+                    "candidate_diagnostics_status_failed",
+                    f"Candidate diagnostics status is not handoff-safe: {diagnostics_status}.",
+                    str(candidate_path),
+                )
+
+    def candidate_diagnostics_status(
+        self,
+        candidate_root: Path,
+        candidate: dict[str, Any],
+    ) -> str:
+        path = candidate.get("diagnosticsReport")
+        if isinstance(path, str) and path:
+            relative = Path(path)
+            if not relative.is_absolute() and ".." not in relative.parts:
+                diagnostics_path = self.root / relative
+            else:
+                diagnostics_path = candidate_root / "diagnostics.json"
+        else:
+            diagnostics_path = candidate_root / "diagnostics.json"
+        try:
+            payload = json.loads(diagnostics_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return "unreadable"
+        if not isinstance(payload, dict):
+            return "invalid"
+        status = payload.get("status")
+        if not isinstance(status, str) or not status:
+            return "missing"
+        return status
 
     def check_relation_inputs(
         self,

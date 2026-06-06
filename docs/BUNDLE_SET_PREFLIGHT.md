@@ -52,6 +52,7 @@ Bundle-set preflight checks:
 - unique candidate `packageId` values;
 - each candidate directory exists;
 - each candidate passes ordinary `preflight-candidate-bundle`;
+- each candidate `diagnosticsStatus` remains `clean` or `warnings`;
 - relation source and target package existence;
 - relation `source.packageId` and `target.packageId` point to generated
   candidates;

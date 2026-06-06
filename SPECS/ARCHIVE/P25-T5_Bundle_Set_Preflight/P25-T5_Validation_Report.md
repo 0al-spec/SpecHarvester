@@ -16,18 +16,18 @@ The verifier reuses ordinary candidate bundle preflight for each member bundle.
 It fails on duplicate candidate package IDs, missing candidate directories,
 non-passing candidate preflight reports, dangling relation endpoints, mismatched
 package-set draft digests, workspace inventory input mismatches, and invalid
-producer review boundaries.
+candidate diagnostics status or producer review boundaries.
 
 ## Validation Commands
 
 | Command | Result |
 | --- | --- |
-| `PYTHONPATH=src python -m pytest tests/test_package_set_drafter.py` | PASS, 13 passed |
+| `PYTHONPATH=src python -m pytest tests/test_package_set_drafter.py` | PASS, 14 passed |
 | `PYTHONPATH=src python -m pytest tests/test_package_set_drafter.py tests/test_docs_contracts.py` | PASS, 51 passed |
 | `python -m ruff check src/spec_harvester/bundle_set_preflight.py src/spec_harvester/cli.py tests/test_package_set_drafter.py tests/test_docs_contracts.py` | PASS |
 | `python -m ruff format --check src/spec_harvester/bundle_set_preflight.py src/spec_harvester/cli.py tests/test_package_set_drafter.py tests/test_docs_contracts.py` | PASS |
-| `PYTHONPATH=src python -m pytest` | PASS, 523 passed, 1 skipped |
-| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 523 passed, 1 skipped, total coverage 90.84% |
+| `PYTHONPATH=src python -m pytest` | PASS, 524 passed, 1 skipped |
+| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS, 524 passed, 1 skipped, total coverage 90.82% |
 | `python -m ruff check src tests` | PASS |
 | `python -m ruff format --check src tests` | PASS, 87 files already formatted |
 | `git diff --check` | PASS |
@@ -57,4 +57,3 @@ DocC generation still reports unrelated pre-existing warnings around
 `AcceptedPackageUpdateProposals` and inline command text references in
 quality-report documentation. The new `BundleSetPreflight` DocC page builds and
 is covered by docs contract tests.
-
