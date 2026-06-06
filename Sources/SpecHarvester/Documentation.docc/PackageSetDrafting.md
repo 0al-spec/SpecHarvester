@@ -1,0 +1,66 @@
+# Package-Set Drafting
+
+`draft-package-set` consumes `workspace-inventory.json` and drafts multiple
+preview SpecPM candidate bundles from one monorepo inventory.
+
+It bridges deterministic workspace discovery and later package relation,
+bundle-set preflight, and viewer work. It does not publish packages or accept
+package-set relations.
+
+## Command
+
+```bash
+python3 -m spec_harvester draft-package-set \
+  candidates/xyflow/workspace-inventory.json \
+  --out candidates/xyflow-package-set
+```
+
+The output includes:
+
+```text
+package-set-draft.json
+xyflow.workspace/specpm.yaml
+xyflow.system/specpm.yaml
+xyflow.react/specpm.yaml
+xyflow.svelte/specpm.yaml
+```
+
+Each package directory is an ordinary preview candidate bundle with
+`specpm.yaml`, `specs/*.spec.yaml`, `harvest.json`, `producer-receipt.json`,
+`validation-report.json`, and `diagnostics.json`.
+
+## Summary Identity
+
+```json
+{
+  "apiVersion": "spec-harvester.package-set-draft/v0",
+  "kind": "SpecHarvesterPackageSetDraft",
+  "schemaVersion": 1
+}
+```
+
+The summary records source repository and exact revision, workspace inventory
+digest, selected roles, generated package IDs, relative candidate paths, skipped
+packages, and producer preview non-goals.
+
+## Default Selection
+
+P25-T3 drafts `workspace`, `core_runtime`, `react_binding`, and
+`svelte_binding` roles by default.
+
+For `xyflow`, this produces `xyflow.workspace`, `xyflow.system`,
+`xyflow.react`, and `xyflow.svelte`. Other packages such as examples, tooling,
+and tests are recorded under `skipped[]` with
+`role_not_selected_for_initial_package_set_draft`.
+
+## Boundary
+
+Generated candidates remain `preview_only`. Proposed package IDs are review
+inputs, not namespace authority.
+
+SpecHarvester does not execute package scripts during package-set drafting.
+
+P25-T4 owns relation proposals such as `contains`. P25-T5 owns bundle-set
+preflight. This command does not execute package scripts, install dependencies,
+run package managers, mutate SpecPM accepted sources, or publish registry
+metadata.

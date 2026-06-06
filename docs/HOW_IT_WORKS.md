@@ -272,6 +272,19 @@ package metadata, source target paths, proposed SpecPM package IDs, roles, and
 digest-backed evidence references. It is producer review evidence, not a
 SpecPM registry payload.
 
+Draft package-set and scoped member preview candidates from that inventory:
+
+```bash
+python3 -m spec_harvester draft-package-set \
+  candidates/xyflow/workspace-inventory.json \
+  --out candidates/xyflow-package-set
+```
+
+This writes `package-set-draft.json` plus ordinary preview candidate bundle
+directories such as `xyflow.workspace`, `xyflow.system`, `xyflow.react`, and
+`xyflow.svelte`. Relation proposals and bundle-set preflight remain later
+producer stages.
+
 ### Batch Source Manifests
 
 For later batch harvesting, define repository sources in operator-authored

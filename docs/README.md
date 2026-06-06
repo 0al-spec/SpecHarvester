@@ -105,7 +105,10 @@ Published DocC site:
 41. [`WORKSPACE_INVENTORY.md`](WORKSPACE_INVENTORY.md): deterministic
     `workspace-inventory.json` producer evidence for monorepo package-set
     discovery
-42. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+42. [`PACKAGE_SET_DRAFTING.md`](PACKAGE_SET_DRAFTING.md): preview
+    `draft-package-set` generation of aggregate and scoped member candidates
+    from workspace inventory
+43. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -172,6 +175,8 @@ Published DocC site:
   implementation work
 - [`WORKSPACE_INVENTORY.md`](WORKSPACE_INVENTORY.md): deterministic
   workspace/package discovery artifact for package-set producer review
+- [`PACKAGE_SET_DRAFTING.md`](PACKAGE_SET_DRAFTING.md): package-set and scoped
+  member candidate drafting from workspace inventory
 
 ## GitHub Process Surface
 

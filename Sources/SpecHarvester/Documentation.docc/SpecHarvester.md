@@ -70,6 +70,7 @@ The canonical source files remain in the repository:
 - `docs/SPECPM_REGISTRY_ACCEPTANCE_DECISION.md`
 - `docs/SPECPM_PACKAGE_SET_ALIGNMENT.md`
 - `docs/WORKSPACE_INVENTORY.md`
+- `docs/PACKAGE_SET_DRAFTING.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -123,6 +124,7 @@ the host.
 - <doc:SpecPMRegistryAcceptanceDecision>
 - <doc:SpecPMPackageSetAlignment>
 - <doc:WorkspaceInventory>
+- <doc:PackageSetDrafting>
 - <doc:ProposalAutomation>
 
 ### Architecture

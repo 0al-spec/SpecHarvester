@@ -1,0 +1,99 @@
+# Package-Set Drafting
+
+Status: Producer preview contract
+
+`draft-package-set` consumes `workspace-inventory.json` and drafts multiple
+preview SpecPM candidate bundles from one monorepo inventory.
+
+The command is the P25-T3 bridge between deterministic workspace discovery and
+future relation/preflight/viewer work. It does not publish packages or accept
+package-set relations.
+
+## Command
+
+```bash
+python3 -m spec_harvester draft-package-set \
+  candidates/xyflow/workspace-inventory.json \
+  --out candidates/xyflow-package-set
+```
+
+The output root contains:
+
+```text
+candidates/xyflow-package-set/package-set-draft.json
+candidates/xyflow-package-set/xyflow.workspace/specpm.yaml
+candidates/xyflow-package-set/xyflow.system/specpm.yaml
+candidates/xyflow-package-set/xyflow.react/specpm.yaml
+candidates/xyflow-package-set/xyflow.svelte/specpm.yaml
+```
+
+Each generated package directory is an ordinary preview candidate bundle with
+`specpm.yaml`, `specs/*.spec.yaml`, `harvest.json`, `producer-receipt.json`,
+`validation-report.json`, and `diagnostics.json`.
+
+## JSON Identity
+
+The draft-set summary uses:
+
+```json
+{
+  "apiVersion": "spec-harvester.package-set-draft/v0",
+  "kind": "SpecHarvesterPackageSetDraft",
+  "schemaVersion": 1
+}
+```
+
+The summary records:
+
+- source repository and exact revision;
+- referenced `workspace-inventory.json` digest;
+- selected inventory roles;
+- generated candidate package IDs and relative paths;
+- skipped package IDs and reasons;
+- producer preview authority and non-goals.
+
+## Default Selection
+
+The initial P25-T3 selection drafts these inventory roles:
+
+- `workspace`
+- `core_runtime`
+- `react_binding`
+- `svelte_binding`
+
+This keeps the `xyflow` reference path focused on:
+
+```text
+xyflow.workspace
+xyflow.system
+xyflow.react
+xyflow.svelte
+```
+
+Other inventory packages such as examples, tooling, and tests are recorded in
+`skipped[]` with `role_not_selected_for_initial_package_set_draft`. They are not
+silently lost.
+
+Operators can repeat `--role` to override the selected role set for local
+experiments.
+
+## Boundary
+
+Generated candidates remain `preview_only`. Proposed package IDs are review
+inputs, not namespace authority.
+
+SpecHarvester does not execute package scripts during package-set drafting.
+
+The command does not:
+
+- emit relation proposals;
+- run bundle-set preflight;
+- render package-set viewer panels;
+- mutate SpecPM accepted sources;
+- publish public registry metadata;
+- execute package scripts;
+- install dependencies;
+- run package managers.
+
+P25-T4 owns relation proposals such as `contains`. P25-T5 owns bundle-set
+preflight across generated package candidates and relation output.

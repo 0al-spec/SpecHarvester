@@ -574,6 +574,46 @@ def test_docc_and_github_docs_cover_workspace_inventory() -> None:
     assert "<doc:WorkspaceInventory>" in root_page.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_package_set_drafting() -> None:
+    github_doc = ROOT / "docs" / "PACKAGE_SET_DRAFTING.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "PackageSetDrafting.md"
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workspace_doc = ROOT / "docs" / "WORKSPACE_INVENTORY.md"
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "draft-package-set",
+            "workspace-inventory.json",
+            "package-set-draft.json",
+            "spec-harvester.package-set-draft/v0",
+            "SpecHarvesterPackageSetDraft",
+            "xyflow.workspace",
+            "xyflow.system",
+            "xyflow.react",
+            "xyflow.svelte",
+            "preview_only",
+            "skipped[]",
+            "role_not_selected_for_initial_package_set_draft",
+            "P25-T4",
+            "P25-T5",
+            "not namespace authority",
+            "does not execute package scripts",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (workflow_doc, workspace_doc):
+        text = path.read_text(encoding="utf-8")
+        assert "draft-package-set" in text
+        assert "package-set-draft.json" in text
+
+    assert "PACKAGE_SET_DRAFTING.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:PackageSetDrafting>" in root_page.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
     github_doc = ROOT / "docs" / "GOVERNANCE_REPORTS.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "GovernanceReports.md"

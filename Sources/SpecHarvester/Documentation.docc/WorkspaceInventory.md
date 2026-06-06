@@ -58,3 +58,11 @@ For the `xyflow` reference scenario, inventory records may propose
 
 P25-T3 should consume this inventory for package-set and scoped member drafting.
 P25-T5 should consume it for bundle-set consistency checks.
+
+Use `draft-package-set` for the P25-T3 drafting step:
+
+```bash
+python3 -m spec_harvester draft-package-set \
+  candidates/xyflow/workspace-inventory.json \
+  --out candidates/xyflow-package-set
+```
