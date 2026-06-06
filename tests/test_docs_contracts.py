@@ -5,22 +5,24 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def assert_phase_24_archived(next_text: str) -> None:
-    assert_p24_t1_archived(next_text)
-    assert_p25_t1_selected(next_text)
+def assert_current_next_task(next_text: str) -> None:
+    assert_p25_t1_archived(next_text)
+    assert_p25_t2_selected(next_text)
 
 
-def assert_p24_t1_archived(next_text: str) -> None:
-    assert "**Last Archived:** P24-T1 Harvested Spec Quality Depth" in next_text
-    assert "subject-focused preview contracts" in next_text
+def assert_p25_t1_archived(next_text: str) -> None:
+    assert "**Last Archived:** P25-T1 Package Set Contract Alignment" in next_text
+    assert "package-set alignment contract" in next_text
 
 
-def assert_p25_t1_selected(next_text: str) -> None:
-    assert "# Next Task: P25-T1 Package Set Contract Alignment" in next_text
+def assert_p25_t2_selected(next_text: str) -> None:
+    assert "# Next Task: P25-T2 Deterministic Workspace Inventory" in next_text
     assert "**Status:** Selected" in next_text
-    assert "package-set contracts" in next_text
+    assert "deterministic workspace inventory" in next_text
+    assert "repository URL" in next_text
+    assert "exact revision" in next_text
     assert "workspace inventory" in next_text
-    assert "monorepo discovery" in next_text
+    assert "package manifest paths" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -352,7 +354,7 @@ def test_docc_and_github_docs_cover_specpm_shared_fixture_policy() -> None:
     assert "`P23-T2` Define a shared cross-repository fixture policy" in workplan_text
     assert "- [x] `P23-T2`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert_phase_24_archived(next_text)
+    assert_current_next_task(next_text)
 
 
 def test_docc_and_github_docs_cover_specpm_ci_preflight_gate_support() -> None:
@@ -414,7 +416,7 @@ def test_docc_and_github_docs_cover_specpm_ci_preflight_gate_support() -> None:
     assert "`P23-T3` Add SpecHarvester-side support" in workplan_text
     assert "- [x] `P23-T3`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert_phase_24_archived(next_text)
+    assert_current_next_task(next_text)
 
 
 def test_docc_and_github_docs_cover_specpm_registry_acceptance_decision() -> None:
@@ -471,7 +473,59 @@ def test_docc_and_github_docs_cover_specpm_registry_acceptance_decision() -> Non
     assert "`P23-T4` Integrate a future external registry acceptance decision" in workplan_text
     assert "- [x] `P23-T4`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert_phase_24_archived(next_text)
+    assert_current_next_task(next_text)
+
+
+def test_docc_and_github_docs_cover_specpm_package_set_alignment() -> None:
+    github_doc = ROOT / "docs" / "SPECPM_PACKAGE_SET_ALIGNMENT.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMPackageSetAlignment.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "SpecPM Package Set Alignment",
+            "Package Sets",
+            "Package Relations",
+            "Package Set Search",
+            "Package Set Registry Metadata",
+            "SpecHarvester Monorepo Discovery",
+            "Multi-Package Producer Intake",
+            "Xyflow Package Set Reference",
+            "workspace inventory",
+            "package-set candidates",
+            "scoped member",
+            "relation proposals",
+            "bundle-set preflight",
+            "static viewer",
+            "xyflow.workspace",
+            "xyflow.system",
+            "xyflow.react",
+            "xyflow.svelte",
+            "producer_observed",
+            "package_id",
+            "P25-T2",
+            "P25-T7",
+            "package script execution",
+            "trust inheritance",
+        ):
+            assert required in normalized
+
+    assert "SPECPM_PACKAGE_SET_ALIGNMENT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SpecPMPackageSetAlignment>" in root_page.read_text(encoding="utf-8")
+    assert "Package-set contract alignment is documented" in roadmap.read_text(encoding="utf-8")
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P25-T1` Align SpecHarvester planning" in workplan_text
+    assert "- [x] `P25-T1`" in workplan_text
+    next_text = next_task.read_text(encoding="utf-8")
+    assert_current_next_task(next_text)
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
@@ -1649,7 +1703,7 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
     assert "P23-T1" in workplan
     assert "P23-T2" in workplan
     assert "proposal artifacts and SpecPM pull" in workplan
-    assert_phase_24_archived(next_task)
+    assert_current_next_task(next_task)
 
 
 def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:

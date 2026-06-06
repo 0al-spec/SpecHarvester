@@ -759,7 +759,7 @@ Acceptance:
 
 ## Phase 25. Package Set Monorepo Discovery
 
-- [ ] `P25-T1` Align SpecHarvester planning with the SpecPM package-set
+- [x] `P25-T1` Align SpecHarvester planning with the SpecPM package-set
   contracts, documenting how `Package Sets`, package relation vocabulary,
   package-set search semantics, registry metadata shape, monorepo discovery
   handoff, multi-package producer intake, and the `xyflow` reference scenario
