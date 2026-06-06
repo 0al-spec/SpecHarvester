@@ -780,7 +780,7 @@ Acceptance:
   unique package IDs, per-package required files, receipt/report digests,
   relation source/target existence, workspace inventory consistency, privacy
   status, and human review boundary without accepting packages automatically.
-- [ ] `P25-T6` Extend the static viewer to show package-set previews, member
+- [x] `P25-T6` Extend the static viewer to show package-set previews, member
   package cards, relation proposal badges, result scope examples, and
   producer-observed review status without hiding scoped packages under the
   aggregate package.

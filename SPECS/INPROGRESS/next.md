@@ -1,43 +1,39 @@
-# Next Task: P25-T6 Static Viewer Package-Set Panels
+# Next Task: P25-T7 Xyflow Package-Set Smoke Scenario
 
 **Status:** Selected
-**Last Archived:** P25-T5 Bundle-Set Preflight
+**Last Archived:** P25-T6 Static Viewer Package-Set Panels
 **Archived:** 2026-06-06
 
 ## Recently Archived
 
+- `P25-T6` added `render-package-set-site`, a static viewer path for generated
+  package-set outputs. It reads `package-set-draft.json`,
+  `package-relation-proposals.json`, optional `bundle-set-preflight.json`, and
+  generated candidate manifests, then writes `package-set.json`, static assets,
+  member package cards, relation proposal badges, producer-observed review
+  status, and result scope examples.
 - `P25-T5` added `preflight-bundle-set`, a producer-side verifier for generated
-  package-set output directories. It checks `package-set-draft.json`,
-  `package-relation-proposals.json`, candidate bundle directories,
-  per-candidate preflight status, relation source/target existence, digest
-  references, workspace inventory input consistency, and producer review
-  boundaries.
+  package-set output directories.
 - `P25-T4` added deterministic `package-relation-proposals.json` output for
-  package-set drafts, starting with producer-observed `contains` relations from
-  `xyflow.workspace` to `xyflow.system`, `xyflow.react`, and `xyflow.svelte`.
-- `P25-T3` added `draft-package-set`, producing deterministic
-  `package-set-draft.json` output plus preview-only candidate bundles for
-  `xyflow.workspace`, `xyflow.system`, `xyflow.react`, and `xyflow.svelte`
-  from `workspace-inventory.json`.
+  producer-observed `contains` relations.
 
 ## Motivation
 
-- Package-set generation now has workspace inventory, scoped candidate bundles,
-  relation proposals, and bundle-set preflight evidence.
-- Reviewers still need a static viewer surface that shows the aggregate package,
-  scoped members, relation proposal badges, and result-scope examples without
-  hiding member packages under the aggregate package.
+- The package-set pipeline now exists as separate pieces: workspace inventory,
+  package-set drafting, relation proposals, bundle-set preflight, and static
+  viewer output.
+- Reviewers need one practical `xyflow` scenario that proves these pieces work
+  together and preserves the intended product boundary: broad workspace
+  discovery plus scoped member packages.
 
 ## Goal
 
-- Extend static viewer output to make package-set review ergonomic: show
-  package-set summary, member package cards, relation proposal badges,
-  producer-observed review status, and clear boundaries between aggregate and
-  scoped package subjects.
+- Add an `xyflow` monorepo smoke fixture or local smoke scenario that exercises
+  workspace inventory, package-set candidate generation, scoped member package
+  generation, relation proposals, bundle-set preflight, and viewer output
+  against the SpecPM reference scenario.
 
 ## Next Step
 
-Start `P25-T6` by defining the static viewer package-set input shape and mapping
-`package-set-draft.json`, `package-relation-proposals.json`, and
-`preflight-bundle-set` report output into viewer payload sections.
-
+Start `P25-T7` by choosing the fixture shape and expected artifacts for a
+repeatable `xyflow` package-set smoke run.
