@@ -102,7 +102,10 @@ Published DocC site:
     package-set contract alignment for monorepo discovery, scoped member
     candidates, relation proposals, bundle-set preflight, viewer output, and
     the `xyflow` reference scenario
-41. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+41. [`WORKSPACE_INVENTORY.md`](WORKSPACE_INVENTORY.md): deterministic
+    `workspace-inventory.json` producer evidence for monorepo package-set
+    discovery
+42. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -167,6 +170,8 @@ Published DocC site:
 - [`SPECPM_PACKAGE_SET_ALIGNMENT.md`](SPECPM_PACKAGE_SET_ALIGNMENT.md):
   package-set contract mapping from SpecPM to SpecHarvester monorepo discovery
   implementation work
+- [`WORKSPACE_INVENTORY.md`](WORKSPACE_INVENTORY.md): deterministic
+  workspace/package discovery artifact for package-set producer review
 
 ## GitHub Process Surface
 

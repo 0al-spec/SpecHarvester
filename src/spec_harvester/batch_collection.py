@@ -23,6 +23,13 @@ from spec_harvester.collector import (
 )
 from spec_harvester.interface_index import render_public_interface_index_json
 from spec_harvester.source_manifest import read_repository_source_manifests
+from spec_harvester.workspace_inventory import (
+    WORKSPACE_INVENTORY_FILENAME,
+    WorkspaceInventoryRequest,
+    build_workspace_inventory,
+    workspace_inventory_batch_record,
+    write_workspace_inventory,
+)
 
 SAFE_REPOSITORY_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
@@ -37,6 +44,7 @@ class BatchCollectOptions:
     strict_public: bool = True
     emit_interface_indexes: bool = False
     analyzer_cache_dir: Path | None = None
+    emit_workspace_inventory: bool = False
 
 
 def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
@@ -97,11 +105,22 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
                     repository["id"],
                 ),
             )
+        workspace_inventory = None
+        if options.emit_workspace_inventory:
+            workspace_inventory = build_workspace_inventory(
+                WorkspaceInventoryRequest(
+                    checkout=plan["checkout"],
+                    repository=repository,
+                    snapshot=snapshot,
+                    max_file_bytes=options.max_file_bytes,
+                )
+            )
         prepared.append(
             {
                 **plan,
                 "snapshot": snapshot,
                 "interfaceIndexResult": interface_index_result,
+                "workspaceInventory": workspace_inventory,
             }
         )
 
@@ -148,6 +167,14 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
         }
         if interface_index_record is not None:
             collected_record["interfaceIndex"] = interface_index_record
+        workspace_inventory = plan["workspaceInventory"]
+        if workspace_inventory is not None:
+            workspace_inventory_output = plan["outputDir"] / WORKSPACE_INVENTORY_FILENAME
+            write_workspace_inventory(workspace_inventory_output, workspace_inventory)
+            collected_record["workspaceInventory"] = workspace_inventory_batch_record(
+                workspace_inventory,
+                workspace_inventory_output,
+            )
         collected.append(collected_record)
 
     result = {

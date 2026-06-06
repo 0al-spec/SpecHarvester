@@ -528,6 +528,51 @@ def test_docc_and_github_docs_cover_specpm_package_set_alignment() -> None:
     assert_current_next_task(next_text)
 
 
+def test_docc_and_github_docs_cover_workspace_inventory() -> None:
+    github_doc = ROOT / "docs" / "WORKSPACE_INVENTORY.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "WorkspaceInventory.md"
+    batch_doc = ROOT / "docs" / "BATCH_COLLECTION.md"
+    batch_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BatchCollection.md"
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "workspace-inventory.json",
+            "spec-harvester.workspace-inventory/v0",
+            "SpecHarvesterWorkspaceInventory",
+            "--emit-workspace-inventory",
+            "repository URL",
+            "exact revision",
+            "workspace manifests",
+            "include patterns",
+            "package manifest paths",
+            "proposed SpecPM package IDs",
+            "package roles",
+            "digest-backed evidence references",
+            "producer evidence",
+            "not a SpecPM registry payload",
+            "xyflow.workspace",
+            "xyflow.system",
+            "xyflow.react",
+            "xyflow.svelte",
+            "P25-T3",
+            "P25-T5",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (batch_doc, batch_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "--emit-workspace-inventory" in text
+        assert "workspace-inventory.json" in text
+        assert "SpecHarvesterWorkspaceInventory" in text
+
+    assert "WORKSPACE_INVENTORY.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:WorkspaceInventory>" in root_page.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
     github_doc = ROOT / "docs" / "GOVERNANCE_REPORTS.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "GovernanceReports.md"

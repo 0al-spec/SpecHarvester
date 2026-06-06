@@ -61,6 +61,20 @@ When drafted, this artifact is recorded as BoundarySpec evidence with
 `artifactKind: SpecHarvesterPublicInterfaceIndex`, `mediaType`,
 `schemaVersion`, and `summary` metadata.
 
+Opt in to deterministic monorepo workspace inventory emission:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --emit-workspace-inventory
+```
+
+This writes `workspace-inventory.json` beside `harvest.json` with
+`apiVersion: spec-harvester.workspace-inventory/v0`,
+`kind: SpecHarvesterWorkspaceInventory`, exact revision, workspace manifests,
+include/exclude patterns, package manifest paths, proposed SpecPM package IDs,
+roles, and digest-backed evidence references.
+
 ## Output Layout
 
 Each collected repository writes:
@@ -68,10 +82,13 @@ Each collected repository writes:
 ```text
 candidates/<repository-id>/harvest.json
 candidates/<repository-id>/public-interface-index.json
+candidates/<repository-id>/workspace-inventory.json
 ```
 
 `public-interface-index.json` is written only when `--emit-interface-indexes` is
 enabled and at least one supported analyzer plan runs.
+`workspace-inventory.json` is written only when `--emit-workspace-inventory` is
+enabled.
 
 Repository IDs used as candidate directory names must be safe single path
 components containing only letters, digits, `.`, `_`, and `-`, and must start
@@ -96,6 +113,7 @@ advisory evidence, not package acceptance evidence.
 ## References
 
 - `docs/BATCH_COLLECTION.md`
+- <doc:WorkspaceInventory>
 - <doc:BatchValidationReports>
 - <doc:RepositorySourceManifests>
 - <doc:Workflow>
