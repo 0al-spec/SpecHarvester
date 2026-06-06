@@ -45,6 +45,11 @@
 - Produce package-set and scoped member package candidate bundle sets for
   monorepos, aligned with SpecPM package-set, relation, search, registry
   metadata, and multi-package intake contracts.
+- Package-set contract alignment is documented before runtime monorepo
+  discovery implementation, mapping SpecPM contracts to workspace inventory,
+  package-set candidates, scoped member packages, relation proposals,
+  bundle-set preflight, static viewer previews, and the `xyflow` smoke
+  scenario.
 
 ## Phase 5: Governance
 

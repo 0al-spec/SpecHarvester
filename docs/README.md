@@ -98,7 +98,11 @@ Published DocC site:
 39. [`SPECPM_SHARED_FIXTURE_POLICY.md`](SPECPM_SHARED_FIXTURE_POLICY.md):
     shared fixture policy for keeping SpecPM contract examples and
     SpecHarvester generated bundle examples aligned
-40. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+40. [`SPECPM_PACKAGE_SET_ALIGNMENT.md`](SPECPM_PACKAGE_SET_ALIGNMENT.md):
+    package-set contract alignment for monorepo discovery, scoped member
+    candidates, relation proposals, bundle-set preflight, viewer output, and
+    the `xyflow` reference scenario
+41. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -160,6 +164,9 @@ Published DocC site:
 - [`SPECPM_REGISTRY_ACCEPTANCE_DECISION.md`](SPECPM_REGISTRY_ACCEPTANCE_DECISION.md):
   external SpecPM registry acceptance decision record boundary for maintainer
   approval or override outside generated receipts
+- [`SPECPM_PACKAGE_SET_ALIGNMENT.md`](SPECPM_PACKAGE_SET_ALIGNMENT.md):
+  package-set contract mapping from SpecPM to SpecHarvester monorepo discovery
+  implementation work
 
 ## GitHub Process Surface
 
