@@ -50,6 +50,8 @@ class PackageSetDrafter:
 
     def write(self) -> dict[str, Any]:
         self.options.out.mkdir(parents=True, exist_ok=True)
+        if any(self.options.out.iterdir()):
+            raise ValueError(f"Package-set draft output directory is not empty: {self.options.out}")
         candidates = self.write_candidates()
         skipped = self.skipped_packages(candidates)
         payload = {
@@ -238,8 +240,14 @@ def synthetic_snapshot(inventory: dict[str, Any], package: dict[str, Any]) -> di
 def source_target_record(package: dict[str, Any]) -> dict[str, str]:
     source_target_path = str(package.get("sourceTargetPath") or ".")
     role = str(package.get("role") or "")
-    if source_target_path == "." or role == "workspace":
+    if source_target_path == ".":
         return {"kind": "repository", "path": ".", "label": "workspace"}
+    if role == "workspace":
+        return {
+            "kind": "folder",
+            "path": source_target_path,
+            "label": Path(source_target_path).name,
+        }
     return {
         "kind": "folder",
         "path": source_target_path,

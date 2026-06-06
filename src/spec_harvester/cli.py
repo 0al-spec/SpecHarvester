@@ -218,32 +218,32 @@ def build_parser() -> argparse.ArgumentParser:
     )
     draft.set_defaults(func=run_draft)
 
-    draft_package_set = subcommands.add_parser(
+    draft_package_set_parser = subcommands.add_parser(
         "draft-package-set",
         help="Draft preview candidate packages from workspace-inventory.json.",
     )
-    draft_package_set.add_argument(
+    draft_package_set_parser.add_argument(
         "inventory",
         type=Path,
         help="Workspace inventory JSON produced by collect-batch --emit-workspace-inventory.",
     )
-    draft_package_set.add_argument(
+    draft_package_set_parser.add_argument(
         "--out",
         type=Path,
         required=True,
         help="Output directory where package-set candidate bundles are written.",
     )
-    draft_package_set.add_argument(
+    draft_package_set_parser.add_argument(
         "--version",
         default=DEFAULT_SPEC_VERSION,
         help=f"Generated SpecPackage version. Default: {DEFAULT_SPEC_VERSION}.",
     )
-    draft_package_set.add_argument(
+    draft_package_set_parser.add_argument(
         "--author",
         default=DEFAULT_AUTHOR,
         help=f"Generated SpecPackage author. Default: {DEFAULT_AUTHOR}.",
     )
-    draft_package_set.add_argument(
+    draft_package_set_parser.add_argument(
         "--role",
         action="append",
         default=[],
@@ -252,7 +252,7 @@ def build_parser() -> argparse.ArgumentParser:
             "workspace, core_runtime, react_binding, and svelte_binding."
         ),
     )
-    draft_package_set.set_defaults(func=run_draft_package_set)
+    draft_package_set_parser.set_defaults(func=run_draft_package_set)
 
     render_spec_site = subcommands.add_parser(
         "render-spec-site",

@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 
+import pytest
 import yaml
 
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
@@ -89,6 +90,40 @@ def test_package_set_drafter_is_deterministic(tmp_path: Path) -> None:
     assert (first / "xyflow.react" / "specpm.yaml").read_text(encoding="utf-8") == (
         second / "xyflow.react" / "specpm.yaml"
     ).read_text(encoding="utf-8")
+
+
+def test_package_set_drafter_refuses_non_empty_output(tmp_path: Path) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    out.mkdir()
+    (out / "stale-candidate").mkdir()
+
+    with pytest.raises(ValueError, match="output directory is not empty"):
+        draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+
+
+def test_package_set_drafter_preserves_nested_workspace_target(tmp_path: Path) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    payload = json.loads(inventory.read_text(encoding="utf-8"))
+    workspace_package = next(
+        package
+        for package in payload["packages"]
+        if package["proposedSpecpmPackageId"] == "xyflow.workspace"
+    )
+    workspace_package["manifestPath"] = "apps/web/package.json"
+    workspace_package["sourceTargetPath"] = "apps/web"
+    inventory.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    out = tmp_path / "draft-set"
+
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out, roles=("workspace",)))
+
+    snapshot = json.loads((out / "xyflow.workspace" / "harvest.json").read_text())
+    assert snapshot["source"]["target"] == {
+        "kind": "folder",
+        "label": "web",
+        "path": "apps/web",
+    }
+    assert snapshot["files"][0]["path"] == "apps/web/package.json"
 
 
 def test_cli_draft_package_set_writes_summary(tmp_path: Path, capsys) -> None:
