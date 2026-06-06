@@ -150,7 +150,14 @@ class WorkspaceInventory:
         }
         for workspace_manifest in workspace_manifests:
             for pattern in workspace_manifest["includePatterns"]:
-                paths.update(package_manifests_for_pattern(self.checkout, pattern, diagnostics))
+                paths.update(
+                    package_manifests_for_pattern(
+                        self.checkout,
+                        pattern,
+                        diagnostics,
+                        self.request.max_file_bytes,
+                    )
+                )
         return paths
 
 
@@ -298,7 +305,7 @@ def package_json_workspace_patterns(path: Path, diagnostics: list[dict[str, Any]
 
 
 def package_manifests_for_pattern(
-    checkout: Path, pattern: str, diagnostics: list[dict[str, Any]]
+    checkout: Path, pattern: str, diagnostics: list[dict[str, Any]], max_file_bytes: int
 ) -> set[str]:
     if unsafe_workspace_pattern(pattern):
         diagnostics.append(
@@ -315,6 +322,19 @@ def package_manifests_for_pattern(
     for name in PACKAGE_MANIFEST_NAMES:
         for path in checkout.glob(f"{normalized}/{name}"):
             if path.is_file() and is_inside(checkout, path.resolve()):
+                if path.stat().st_size > max_file_bytes:
+                    diagnostics.append(
+                        {
+                            "level": "warning",
+                            "code": "package_manifest_too_large",
+                            "message": (
+                                "Workspace package manifest was too large to record "
+                                "as inventory evidence."
+                            ),
+                            "path": path.relative_to(checkout).as_posix(),
+                        }
+                    )
+                    continue
                 matches.add(path.relative_to(checkout).as_posix())
     return matches
 

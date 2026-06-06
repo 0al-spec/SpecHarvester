@@ -533,6 +533,57 @@ repositories:
     assert inventory["source"]["revisionAuthority"] == "git_head"
 
 
+def test_collect_batch_workspace_inventory_skips_large_workspace_package_manifest(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "pnpm-workspace.yaml").write_text(
+        "packages:\n  - packages/*\n",
+        encoding="utf-8",
+    )
+    huge_package = checkout / "packages" / "huge"
+    huge_package.mkdir(parents=True)
+    (huge_package / "package.json").write_text(
+        json.dumps({"name": "@example/huge", "description": "x" * 512}),
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    collect_batch_snapshots(
+        BatchCollectOptions(
+            inputs=inputs,
+            out=out,
+            max_file_bytes=128,
+            emit_workspace_inventory=True,
+        )
+    )
+
+    inventory = json.loads((out / "demo" / "workspace-inventory.json").read_text())
+    assert [item["manifestPath"] for item in inventory["packages"]] == []
+    assert inventory["diagnostics"] == [
+        {
+            "code": "package_manifest_too_large",
+            "level": "warning",
+            "message": (
+                "Workspace package manifest was too large to record as inventory evidence."
+            ),
+            "path": "packages/huge/package.json",
+        }
+    ]
+
+
 def test_collect_batch_snapshots_records_interface_index_skips(
     tmp_path: Path,
 ) -> None:

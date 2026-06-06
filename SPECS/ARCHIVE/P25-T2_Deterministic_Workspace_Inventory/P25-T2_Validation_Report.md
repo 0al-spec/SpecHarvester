@@ -19,14 +19,14 @@ digest evidence, and producer authority boundaries.
 
 | Command | Result |
 | --- | --- |
-| `PYTHONPATH=src python -m pytest tests/test_batch_collection.py` | PASS, 30 passed |
+| `PYTHONPATH=src python -m pytest tests/test_batch_collection.py` | PASS, 31 passed |
 | `PYTHONPATH=src python -m pytest tests/test_docs_contracts.py` | PASS, 35 passed |
 | `python -m ruff check src/spec_harvester/workspace_inventory.py src/spec_harvester/batch_collection.py src/spec_harvester/cli.py tests/test_batch_collection.py tests/test_docs_contracts.py` | PASS |
 | `python -m ruff format --check src/spec_harvester/workspace_inventory.py src/spec_harvester/batch_collection.py src/spec_harvester/cli.py tests/test_batch_collection.py tests/test_docs_contracts.py` | PASS |
-| `PYTHONPATH=src python -m pytest` | PASS, 504 passed, 1 skipped |
+| `PYTHONPATH=src python -m pytest` | PASS, 505 passed, 1 skipped |
 | `python -m ruff check src tests` | PASS |
 | `python -m ruff format --check src tests` | PASS |
-| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing` | PASS, 504 passed, 1 skipped, total coverage 91% |
+| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing` | PASS, 505 passed, 1 skipped, total coverage 91% |
 | `swift package --allow-writing-to-directory ./.docc-build generate-documentation --target SpecHarvester --output-path ./.docc-build --transform-for-static-hosting --hosting-base-path SpecHarvester` | PASS with pre-existing DocC warnings |
 
 ## Acceptance Criteria
