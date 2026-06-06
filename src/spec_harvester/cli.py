@@ -167,6 +167,14 @@ def build_parser() -> argparse.ArgumentParser:
             "--emit-interface-indexes is set."
         ),
     )
+    collect_batch.add_argument(
+        "--emit-workspace-inventory",
+        action="store_true",
+        help=(
+            "Opt in to writing deterministic workspace-inventory.json artifacts for "
+            "monorepo/package-set review."
+        ),
+    )
     collect_batch.set_defaults(func=run_collect_batch)
 
     draft = subcommands.add_parser(
@@ -749,6 +757,7 @@ def run_collect_batch(args: argparse.Namespace) -> int:
             strict_public=not args.relaxed_private,
             emit_interface_indexes=args.emit_interface_indexes,
             analyzer_cache_dir=args.analyzer_cache_dir,
+            emit_workspace_inventory=args.emit_workspace_inventory,
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))

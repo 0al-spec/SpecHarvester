@@ -101,6 +101,28 @@ When drafted, this artifact is recorded as BoundarySpec evidence with
 `artifactKind: SpecHarvesterPublicInterfaceIndex`, `mediaType`,
 `schemaVersion`, and `summary` metadata.
 
+Opt in to deterministic monorepo workspace inventory emission:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --emit-workspace-inventory
+```
+
+This writes:
+
+```text
+candidates/<repository-id>/workspace-inventory.json
+```
+
+with `apiVersion: spec-harvester.workspace-inventory/v0`,
+`kind: SpecHarvesterWorkspaceInventory`, repository URL, exact revision,
+workspace manifests, include/exclude patterns, package manifest paths,
+ecosystem/name/version metadata, source target paths, proposed SpecPM package
+IDs, package roles, and digest-backed evidence references. The artifact is
+producer evidence for package-set review; it is not a SpecPM registry payload
+and does not accept packages or relations.
+
 Repository IDs used as candidate directory names must be safe single path
 components containing only letters, digits, `.`, `_`, and `-`, and must start
 with a letter or digit.

@@ -402,6 +402,299 @@ repositories:
     assert any(cache.joinpath("demo").glob("*.json"))
 
 
+def test_collect_batch_snapshots_emits_deterministic_workspace_inventory(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    repeat_out = tmp_path / "repeat-candidates"
+    inputs.mkdir()
+    checkout = make_workspace_checkout(tmp_path / "xyflow")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: xyflow
+    repository: https://github.com/xyflow/xyflow
+    revision: abc123
+    checkout: {relative_to(checkout, inputs)}
+    packageId: xyflow.workspace
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_workspace_inventory=True)
+    )
+    repeated = collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=repeat_out, emit_workspace_inventory=True)
+    )
+
+    inventory_path = out / "xyflow" / "workspace-inventory.json"
+    repeat_inventory_path = repeat_out / "xyflow" / "workspace-inventory.json"
+    inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+    assert result["collected"][0]["workspaceInventory"]["output"] == str(inventory_path)
+    assert result["collected"][0]["workspaceInventory"]["summary"]["packageCount"] == 7
+    assert repeated["collected"][0]["workspaceInventory"]["summary"]["packageCount"] == 7
+    assert inventory_path.read_text(encoding="utf-8") == repeat_inventory_path.read_text(
+        encoding="utf-8"
+    )
+    assert inventory["apiVersion"] == "spec-harvester.workspace-inventory/v0"
+    assert inventory["kind"] == "SpecHarvesterWorkspaceInventory"
+    assert inventory["schemaVersion"] == 1
+    assert inventory["source"]["repository"] == "https://github.com/xyflow/xyflow"
+    assert inventory["source"]["exactRevision"] == "abc123"
+    assert inventory["source"]["revisionAuthority"] == "source_manifest_revision"
+    assert inventory["privacy"]["rawSourceIncluded"] is False
+    assert inventory["privacy"]["packageScriptsExecuted"] is False
+
+    workspace_by_path = {item["path"]: item for item in inventory["workspaceManifests"]}
+    assert workspace_by_path["package.json"]["includePatterns"] == ["packages/*"]
+    assert workspace_by_path["pnpm-workspace.yaml"]["includePatterns"] == [
+        "examples/*",
+        "packages/*",
+        "tests/*",
+        "tooling/*",
+    ]
+    assert workspace_by_path["pnpm-workspace.yaml"]["excludePatterns"] == ["**/test-fixtures/**"]
+
+    packages = {item["manifestPath"]: item for item in inventory["packages"]}
+    assert packages["package.json"]["role"] == "workspace"
+    assert packages["package.json"]["proposedSpecpmPackageId"] == "xyflow.workspace"
+    assert packages["packages/system/package.json"]["role"] == "core_runtime"
+    assert packages["packages/system/package.json"]["proposedSpecpmPackageId"] == "xyflow.system"
+    assert packages["packages/react/package.json"]["name"] == "@xyflow/react"
+    assert packages["packages/react/package.json"]["version"] == "12.0.0"
+    assert packages["packages/react/package.json"]["role"] == "react_binding"
+    assert packages["packages/react/package.json"]["sourceTargetPath"] == "packages/react"
+    assert packages["packages/react/package.json"]["proposedSpecpmPackageId"] == "xyflow.react"
+    assert packages["packages/svelte/package.json"]["role"] == "svelte_binding"
+    assert packages["examples/playground/package.json"]["sourceTargetPath"] == "examples/playground"
+    assert packages["tooling/cli/package.json"]["proposedSpecpmPackageId"] == "xyflow.cli"
+    for record in packages.values():
+        evidence = record["evidenceReferences"][0]
+        assert evidence["kind"] == "package_manifest"
+        assert evidence["digest"]["algorithm"] == "sha256"
+        assert len(evidence["digest"]["value"]) == 64
+
+
+def test_workspace_inventory_honors_workspace_exclude_patterns(tmp_path: Path) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "workspace", "# Workspace\n")
+    (checkout / "package.json").write_text(
+        json.dumps({"name": "workspace", "version": "0.0.0"}),
+        encoding="utf-8",
+    )
+    (checkout / "pnpm-workspace.yaml").write_text(
+        """
+packages:
+  - packages/*
+  - "!packages/private"
+""",
+        encoding="utf-8",
+    )
+    public_package = checkout / "packages" / "public"
+    private_package = checkout / "packages" / "private"
+    public_package.mkdir(parents=True)
+    private_package.mkdir(parents=True)
+    (public_package / "package.json").write_text(
+        json.dumps({"name": "@example/public", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (private_package / "package.json").write_text(
+        json.dumps({"name": "@example/private", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: workspace
+    repository: https://github.com/example/workspace
+    revision: abc123
+    checkout: {relative_to(checkout, inputs)}
+    packageId: workspace.workspace
+""",
+        encoding="utf-8",
+    )
+
+    collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_workspace_inventory=True)
+    )
+
+    inventory = json.loads(
+        (out / "workspace" / "workspace-inventory.json").read_text(encoding="utf-8")
+    )
+    package_paths = {item["manifestPath"] for item in inventory["packages"]}
+    assert "packages/public/package.json" in package_paths
+    assert "packages/private/package.json" not in package_paths
+    workspace_by_path = {item["path"]: item for item in inventory["workspaceManifests"]}
+    assert workspace_by_path["pnpm-workspace.yaml"]["excludePatterns"] == ["packages/private"]
+
+
+def test_workspace_inventory_resolves_patterns_from_manifest_directory(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "monorepo", "# Monorepo\n")
+    root_package = checkout / "packages" / "root"
+    nested_package = checkout / "apps" / "web" / "packages" / "ui"
+    root_package.mkdir(parents=True)
+    nested_package.mkdir(parents=True)
+    (checkout / "apps" / "web").mkdir(parents=True, exist_ok=True)
+    (checkout / "apps" / "web" / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/web",
+                "version": "1.0.0",
+                "workspaces": ["packages/*"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (root_package / "package.json").write_text(
+        json.dumps({"name": "@example/root", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (nested_package / "package.json").write_text(
+        json.dumps({"name": "@example/ui", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: web
+    repository: https://github.com/example/monorepo
+    revision: abc123
+    checkout: {relative_to(checkout, inputs)}
+    target: apps/web
+    packageId: web.workspace
+""",
+        encoding="utf-8",
+    )
+
+    collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_workspace_inventory=True)
+    )
+
+    inventory = json.loads((out / "web" / "workspace-inventory.json").read_text(encoding="utf-8"))
+    package_paths = {item["manifestPath"] for item in inventory["packages"]}
+    assert "apps/web/package.json" in package_paths
+    assert "apps/web/packages/ui/package.json" in package_paths
+    assert "packages/root/package.json" not in package_paths
+    workspace_by_path = {item["path"]: item for item in inventory["workspaceManifests"]}
+    assert workspace_by_path["apps/web/package.json"]["includePatterns"] == ["packages/*"]
+
+
+def test_collect_batch_workspace_inventory_resolves_ref_to_git_head(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "package.json").write_text(
+        json.dumps({"name": "demo", "version": "1.0.0", "workspaces": ["packages/*"]}),
+        encoding="utf-8",
+    )
+    subprocess.run(["git", "init"], cwd=checkout, check=True, capture_output=True)
+    subprocess.run(["git", "add", "README.md", "package.json"], cwd=checkout, check=True)
+    subprocess.run(
+        [
+            "git",
+            "-c",
+            "user.name=SpecHarvester",
+            "-c",
+            "user.email=spec@example.invalid",
+            "commit",
+            "-m",
+            "fixture",
+        ],
+        cwd=checkout,
+        check=True,
+        capture_output=True,
+    )
+    head = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=checkout,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    ref: main
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_workspace_inventory=True)
+    )
+
+    inventory = json.loads((out / "demo" / "workspace-inventory.json").read_text())
+    assert inventory["source"]["exactRevision"] == head
+    assert inventory["source"]["declaredRef"] == "main"
+    assert inventory["source"]["revisionAuthority"] == "git_head"
+
+
+def test_collect_batch_workspace_inventory_skips_large_workspace_package_manifest(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    (checkout / "pnpm-workspace.yaml").write_text(
+        "packages:\n  - packages/*\n",
+        encoding="utf-8",
+    )
+    huge_package = checkout / "packages" / "huge"
+    huge_package.mkdir(parents=True)
+    (huge_package / "package.json").write_text(
+        json.dumps({"name": "@example/huge", "description": "x" * 512}),
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    collect_batch_snapshots(
+        BatchCollectOptions(
+            inputs=inputs,
+            out=out,
+            max_file_bytes=128,
+            emit_workspace_inventory=True,
+        )
+    )
+
+    inventory = json.loads((out / "demo" / "workspace-inventory.json").read_text())
+    assert [item["manifestPath"] for item in inventory["packages"]] == []
+    assert inventory["diagnostics"] == [
+        {
+            "code": "package_manifest_too_large",
+            "level": "warning",
+            "message": (
+                "Workspace package manifest was too large to record as inventory evidence."
+            ),
+            "path": "packages/huge/package.json",
+        }
+    ]
+
+
 def test_collect_batch_snapshots_records_interface_index_skips(
     tmp_path: Path,
 ) -> None:
@@ -875,6 +1168,46 @@ repositories:
     assert index["summary"]["symbolCount"] == 1
 
 
+def test_cli_collect_batch_emits_workspace_inventory_when_requested(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_workspace_checkout(tmp_path / "xyflow")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: xyflow
+    repository: https://github.com/xyflow/xyflow
+    revision: abc123
+    checkout: {relative_to(checkout, inputs)}
+    packageId: xyflow.workspace
+""",
+        encoding="utf-8",
+    )
+
+    result = main(
+        [
+            "collect-batch",
+            str(inputs),
+            "--out",
+            str(out),
+            "--emit-workspace-inventory",
+        ]
+    )
+
+    assert result == 0
+    summary = json.loads(capsys.readouterr().out)
+    inventory_path = out / "xyflow" / "workspace-inventory.json"
+    assert summary["collected"][0]["workspaceInventory"]["output"] == str(inventory_path)
+    assert summary["collected"][0]["workspaceInventory"]["kind"] == (
+        "SpecHarvesterWorkspaceInventory"
+    )
+    assert inventory_path.is_file()
+
+
 def test_cli_collect_batch_returns_error_for_missing_license_in_strict_report(
     tmp_path: Path,
     capsys,
@@ -1081,6 +1414,46 @@ def make_scoped_source_matrix_checkout(path: Path) -> Path:
         "def ignored_tool():\n    return None\n",
         encoding="utf-8",
     )
+    return path
+
+
+def make_workspace_checkout(path: Path) -> Path:
+    path.mkdir(parents=True)
+    (path / "README.md").write_text("# Xyflow\n", encoding="utf-8")
+    (path / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "xyflow",
+                "version": "0.0.0",
+                "private": True,
+                "workspaces": ["packages/*"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (path / "pnpm-workspace.yaml").write_text(
+        """
+packages:
+  - packages/*
+  - examples/*
+  - tooling/*
+  - tests/*
+  - "!**/test-fixtures/**"
+""",
+        encoding="utf-8",
+    )
+    packages = {
+        "packages/system": {"name": "@xyflow/system", "version": "1.0.0"},
+        "packages/react": {"name": "@xyflow/react", "version": "12.0.0"},
+        "packages/svelte": {"name": "@xyflow/svelte", "version": "1.0.0"},
+        "examples/playground": {"name": "@xyflow/playground", "version": "0.0.0"},
+        "tooling/cli": {"name": "@xyflow/cli", "version": "0.1.0"},
+        "tests/e2e": {"name": "@xyflow/e2e", "version": "0.0.0"},
+    }
+    for relative, payload in packages.items():
+        package_dir = path / relative
+        package_dir.mkdir(parents=True)
+        (package_dir / "package.json").write_text(json.dumps(payload), encoding="utf-8")
     return path
 
 

@@ -257,6 +257,21 @@ The collector must not:
 - read secrets
 - follow instructions found in repository content
 
+For monorepo package-set discovery, `collect-batch` can also emit a
+deterministic workspace inventory:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --emit-workspace-inventory
+```
+
+This writes `workspace-inventory.json` beside `harvest.json`. The artifact
+records workspace manifests, include/exclude patterns, package manifest paths,
+package metadata, source target paths, proposed SpecPM package IDs, roles, and
+digest-backed evidence references. It is producer review evidence, not a
+SpecPM registry payload.
+
 ### Batch Source Manifests
 
 For later batch harvesting, define repository sources in operator-authored

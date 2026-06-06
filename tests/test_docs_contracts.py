@@ -6,23 +6,24 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    assert_p25_t1_archived(next_text)
-    assert_p25_t2_selected(next_text)
+    assert_p25_t2_archived(next_text)
+    assert_p25_t3_selected(next_text)
 
 
-def assert_p25_t1_archived(next_text: str) -> None:
-    assert "**Last Archived:** P25-T1 Package Set Contract Alignment" in next_text
-    assert "package-set alignment contract" in next_text
+def assert_p25_t2_archived(next_text: str) -> None:
+    assert "**Last Archived:** P25-T2 Deterministic Workspace Inventory" in next_text
+    assert "workspace-inventory.json" in next_text
 
 
-def assert_p25_t2_selected(next_text: str) -> None:
-    assert "# Next Task: P25-T2 Deterministic Workspace Inventory" in next_text
+def assert_p25_t3_selected(next_text: str) -> None:
+    assert "# Next Task: P25-T3 Package-Set and Scoped Member Candidate Drafting" in next_text
     assert "**Status:** Selected" in next_text
-    assert "deterministic workspace inventory" in next_text
-    assert "repository URL" in next_text
-    assert "exact revision" in next_text
-    assert "workspace inventory" in next_text
-    assert "package manifest paths" in next_text
+    assert "package-set candidates" in next_text
+    assert "scoped member package candidates" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.system" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -526,6 +527,51 @@ def test_docc_and_github_docs_cover_specpm_package_set_alignment() -> None:
     assert "- [x] `P25-T1`" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
     assert_current_next_task(next_text)
+
+
+def test_docc_and_github_docs_cover_workspace_inventory() -> None:
+    github_doc = ROOT / "docs" / "WORKSPACE_INVENTORY.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "WorkspaceInventory.md"
+    batch_doc = ROOT / "docs" / "BATCH_COLLECTION.md"
+    batch_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BatchCollection.md"
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "workspace-inventory.json",
+            "spec-harvester.workspace-inventory/v0",
+            "SpecHarvesterWorkspaceInventory",
+            "--emit-workspace-inventory",
+            "repository URL",
+            "exact revision",
+            "workspace manifests",
+            "include patterns",
+            "package manifest paths",
+            "proposed SpecPM package IDs",
+            "package roles",
+            "digest-backed evidence references",
+            "producer evidence",
+            "not a SpecPM registry payload",
+            "xyflow.workspace",
+            "xyflow.system",
+            "xyflow.react",
+            "xyflow.svelte",
+            "P25-T3",
+            "P25-T5",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (batch_doc, batch_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "--emit-workspace-inventory" in text
+        assert "workspace-inventory.json" in text
+        assert "SpecHarvesterWorkspaceInventory" in text
+
+    assert "WORKSPACE_INVENTORY.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:WorkspaceInventory>" in root_page.read_text(encoding="utf-8")
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
