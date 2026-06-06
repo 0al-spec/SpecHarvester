@@ -6,26 +6,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    assert_p25_t3_archived(next_text)
-    assert_p25_t4_selected(next_text)
+    assert_p25_t4_archived(next_text)
+    assert_p25_t5_selected(next_text)
 
 
-def assert_p25_t3_archived(next_text: str) -> None:
-    assert "**Last Archived:** P25-T3 Package-Set and Scoped Member Candidate Drafting" in next_text
+def assert_p25_t4_archived(next_text: str) -> None:
+    assert "**Last Archived:** P25-T4 Package Relation Proposal Output" in next_text
     assert "workspace-inventory.json" in next_text
     assert "package-set-draft.json" in next_text
+    assert "package-relation-proposals.json" in next_text
 
 
-def assert_p25_t4_selected(next_text: str) -> None:
-    assert "# Next Task: P25-T4 Package Relation Proposal Output" in next_text
+def assert_p25_t5_selected(next_text: str) -> None:
+    assert "# Next Task: P25-T5 Bundle-Set Preflight" in next_text
     assert "**Status:** Selected" in next_text
-    assert "relation proposal" in next_text
-    assert "`contains`" in next_text
-    assert "xyflow.workspace" in next_text
-    assert "xyflow.system" in next_text
-    assert "xyflow.react" in next_text
-    assert "xyflow.svelte" in next_text
-    assert "producer-observed review material" in next_text
+    assert "unique package" in next_text
+    assert "receipt/report digests" in next_text
+    assert "relation source/target existence" in next_text
+    assert "workspace inventory consistency" in next_text
+    assert "human review boundary" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

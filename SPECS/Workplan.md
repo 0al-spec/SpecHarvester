@@ -772,7 +772,7 @@ Acceptance:
   candidates so a repository such as `xyflow` can produce `xyflow.workspace`,
   `xyflow.system`, `xyflow.react`, and `xyflow.svelte` without overwriting one
   package subject with another.
-- [ ] `P25-T4` Emit package relation proposal output for generated package-set
+- [x] `P25-T4` Emit package relation proposal output for generated package-set
   bundles, starting with `contains` relations from aggregate workspace packages
   to scoped member packages and recording relation evidence as
   producer-observed review material.
