@@ -126,6 +126,28 @@ def test_package_set_drafter_preserves_nested_workspace_target(tmp_path: Path) -
     assert snapshot["files"][0]["path"] == "apps/web/package.json"
 
 
+def test_package_set_drafter_falls_back_when_evidence_references_are_not_list(
+    tmp_path: Path,
+) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    payload = json.loads(inventory.read_text(encoding="utf-8"))
+    system_package = next(
+        package
+        for package in payload["packages"]
+        if package["proposedSpecpmPackageId"] == "xyflow.system"
+    )
+    system_package["evidenceReferences"] = None
+    inventory.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    out = tmp_path / "draft-set"
+
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out, roles=("core_runtime",)))
+
+    snapshot = json.loads((out / "xyflow.system" / "harvest.json").read_text())
+    digest = snapshot["files"][0]["sha256"]
+    assert isinstance(digest, str)
+    assert len(digest) == 64
+
+
 def test_cli_draft_package_set_writes_summary(tmp_path: Path, capsys) -> None:
     inventory = write_workspace_inventory_fixture(tmp_path)
     out = tmp_path / "draft-set"

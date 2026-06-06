@@ -275,7 +275,10 @@ def package_file_record(package: dict[str, Any]) -> dict[str, Any]:
 
 
 def package_digest(package: dict[str, Any]) -> str:
-    for evidence in package.get("evidenceReferences", []):
+    evidence_references = package.get("evidenceReferences")
+    if not isinstance(evidence_references, list):
+        evidence_references = []
+    for evidence in evidence_references:
         if not isinstance(evidence, dict):
             continue
         digest = evidence.get("digest")
