@@ -8,6 +8,10 @@ import pytest
 import yaml
 
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
+from spec_harvester.bundle_set_preflight import (
+    BundleSetPreflightOptions,
+    run_bundle_set_preflight,
+)
 from spec_harvester.candidate_bundle_preflight import (
     CandidateBundlePreflightOptions,
     run_candidate_bundle_preflight,
@@ -142,6 +146,109 @@ def test_package_set_drafter_writes_relation_proposals(tmp_path: Path) -> None:
             "supports": ["xyflow.workspace.contains.xyflow.react"],
         }
     ]
+
+
+def test_bundle_set_preflight_passes_generated_package_set(tmp_path: Path) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+
+    report = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+
+    assert report["apiVersion"] == "spec-harvester.bundle-set-preflight/v0"
+    assert report["kind"] == "SpecHarvesterBundleSetPreflightReport"
+    assert report["status"] == "passed"
+    assert report["summary"] == {
+        "candidateCount": 4,
+        "candidatePreflightPassedCount": 4,
+        "diagnosticCount": 0,
+        "errorCount": 0,
+        "relationCount": 3,
+        "warningCount": 0,
+    }
+    assert [item["packageId"] for item in report["candidateReports"]] == [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace",
+    ]
+
+
+def test_bundle_set_preflight_fails_dangling_relation_target(tmp_path: Path) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+    relation_path = out / "package-relation-proposals.json"
+    relation_payload = json.loads(relation_path.read_text(encoding="utf-8"))
+    relation_payload["relations"][0]["target"]["packageId"] = "xyflow.missing"
+    relation_path.write_text(
+        json.dumps(relation_payload, indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+    report = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+
+    assert report["status"] == "failed"
+    assert "relation_target_missing" in diagnostic_codes(report)
+
+
+def test_bundle_set_preflight_fails_package_set_draft_digest_mismatch(
+    tmp_path: Path,
+) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+    draft_path = out / "package-set-draft.json"
+    draft_payload = json.loads(draft_path.read_text(encoding="utf-8"))
+    draft_payload["selection"]["roles"].append("extra_role")
+    draft_path.write_text(json.dumps(draft_payload, indent=2, sort_keys=True), encoding="utf-8")
+
+    report = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+
+    assert report["status"] == "failed"
+    assert "relation_package_set_draft_digest_mismatch" in diagnostic_codes(report)
+
+
+def test_bundle_set_preflight_fails_duplicate_candidate_package_id(tmp_path: Path) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+    draft_path = out / "package-set-draft.json"
+    draft_payload = json.loads(draft_path.read_text(encoding="utf-8"))
+    duplicate = dict(draft_payload["candidates"][0])
+    duplicate["candidatePath"] = draft_payload["candidates"][1]["candidatePath"]
+    draft_payload["candidates"].append(duplicate)
+    draft_payload["summary"]["candidateCount"] += 1
+    draft_path.write_text(json.dumps(draft_payload, indent=2, sort_keys=True), encoding="utf-8")
+
+    report = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+
+    assert report["status"] == "failed"
+    assert "candidate_package_id_duplicate" in diagnostic_codes(report)
+
+
+def test_cli_preflight_bundle_set_reports_status(tmp_path: Path, capsys) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+
+    result = main(["preflight-bundle-set", str(out)])
+
+    assert result == 0
+    printed = json.loads(capsys.readouterr().out)
+    assert printed["status"] == "passed"
+    assert printed["summary"]["candidateCount"] == 4
+
+
+def test_cli_preflight_bundle_set_fails_invalid_set(tmp_path: Path, capsys) -> None:
+    out = tmp_path / "draft-set"
+    out.mkdir()
+
+    result = main(["preflight-bundle-set", str(out)])
+
+    assert result == 1
+    printed = json.loads(capsys.readouterr().out)
+    assert printed["status"] == "failed"
+    assert "required_file_missing" in diagnostic_codes(printed)
 
 
 def test_package_set_drafter_is_deterministic(tmp_path: Path) -> None:
@@ -309,3 +416,9 @@ packages:
 
 def relative_to(path: Path, root: Path) -> str:
     return Path(os.path.relpath(path, root)).as_posix()
+
+
+def diagnostic_codes(report: dict[str, object]) -> set[str]:
+    diagnostics = report.get("diagnostics")
+    assert isinstance(diagnostics, list)
+    return {str(item["code"]) for item in diagnostics if isinstance(item, dict)}

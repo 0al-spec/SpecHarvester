@@ -57,8 +57,9 @@ The relation proposal artifact references:
 - `workspace-inventory.json`, including digest, `apiVersion`, and `kind`;
 - `package-set-draft.json`, including digest, `apiVersion`, and `kind`.
 
-The relation artifact does not hash itself. P25-T5 bundle-set preflight should
-verify the relation file digest and check relation source/target existence.
+The relation artifact does not hash itself. `preflight-bundle-set` verifies
+relation source/target existence and checks the relation input digest for the
+current `package-set-draft.json`.
 
 ## Boundary
 
@@ -74,5 +75,6 @@ SpecHarvester does not:
 - install dependencies;
 - run package managers.
 
-P25-T5 owns bundle-set preflight across candidate bundles and relation output.
-P25-T6 owns static viewer relation badges and package-set review panels.
+`preflight-bundle-set` owns bundle-set preflight across candidate bundles and
+relation output. P25-T6 owns static viewer relation badges and package-set
+review panels.

@@ -43,5 +43,6 @@ with digests. It does not hash itself.
 Relation proposals are not SpecPM accepted registry metadata. Maintainers can
 accept, reject, or defer each relation independently.
 
-P25-T5 owns bundle-set preflight across candidate bundles and relation output.
-P25-T6 owns static viewer relation badges and package-set review panels.
+`preflight-bundle-set` owns bundle-set preflight across candidate bundles and
+relation output. P25-T6 owns static viewer relation badges and package-set
+review panels.

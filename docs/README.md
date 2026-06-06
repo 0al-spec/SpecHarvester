@@ -111,7 +111,11 @@ Published DocC site:
 43. [`PACKAGE_RELATION_PROPOSALS.md`](PACKAGE_RELATION_PROPOSALS.md):
     deterministic `contains` relation proposals for package-set candidate
     bundle review
-44. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+44. [`BUNDLE_SET_PREFLIGHT.md`](BUNDLE_SET_PREFLIGHT.md):
+    producer-side `preflight-bundle-set` verification for generated
+    package-set outputs, member candidate bundles, relation proposals, and
+    digest references
+45. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References

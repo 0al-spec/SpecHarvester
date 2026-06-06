@@ -71,6 +71,8 @@ The canonical source files remain in the repository:
 - `docs/SPECPM_PACKAGE_SET_ALIGNMENT.md`
 - `docs/WORKSPACE_INVENTORY.md`
 - `docs/PACKAGE_SET_DRAFTING.md`
+- `docs/PACKAGE_RELATION_PROPOSALS.md`
+- `docs/BUNDLE_SET_PREFLIGHT.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -126,6 +128,7 @@ the host.
 - <doc:WorkspaceInventory>
 - <doc:PackageSetDrafting>
 - <doc:PackageRelationProposals>
+- <doc:BundleSetPreflight>
 - <doc:ProposalAutomation>
 
 ### Architecture
