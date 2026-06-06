@@ -477,6 +477,117 @@ repositories:
         assert len(evidence["digest"]["value"]) == 64
 
 
+def test_workspace_inventory_honors_workspace_exclude_patterns(tmp_path: Path) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "workspace", "# Workspace\n")
+    (checkout / "package.json").write_text(
+        json.dumps({"name": "workspace", "version": "0.0.0"}),
+        encoding="utf-8",
+    )
+    (checkout / "pnpm-workspace.yaml").write_text(
+        """
+packages:
+  - packages/*
+  - "!packages/private"
+""",
+        encoding="utf-8",
+    )
+    public_package = checkout / "packages" / "public"
+    private_package = checkout / "packages" / "private"
+    public_package.mkdir(parents=True)
+    private_package.mkdir(parents=True)
+    (public_package / "package.json").write_text(
+        json.dumps({"name": "@example/public", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (private_package / "package.json").write_text(
+        json.dumps({"name": "@example/private", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: workspace
+    repository: https://github.com/example/workspace
+    revision: abc123
+    checkout: {relative_to(checkout, inputs)}
+    packageId: workspace.workspace
+""",
+        encoding="utf-8",
+    )
+
+    collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_workspace_inventory=True)
+    )
+
+    inventory = json.loads(
+        (out / "workspace" / "workspace-inventory.json").read_text(encoding="utf-8")
+    )
+    package_paths = {item["manifestPath"] for item in inventory["packages"]}
+    assert "packages/public/package.json" in package_paths
+    assert "packages/private/package.json" not in package_paths
+    workspace_by_path = {item["path"]: item for item in inventory["workspaceManifests"]}
+    assert workspace_by_path["pnpm-workspace.yaml"]["excludePatterns"] == ["packages/private"]
+
+
+def test_workspace_inventory_resolves_patterns_from_manifest_directory(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "monorepo", "# Monorepo\n")
+    root_package = checkout / "packages" / "root"
+    nested_package = checkout / "apps" / "web" / "packages" / "ui"
+    root_package.mkdir(parents=True)
+    nested_package.mkdir(parents=True)
+    (checkout / "apps" / "web").mkdir(parents=True, exist_ok=True)
+    (checkout / "apps" / "web" / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@example/web",
+                "version": "1.0.0",
+                "workspaces": ["packages/*"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (root_package / "package.json").write_text(
+        json.dumps({"name": "@example/root", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (nested_package / "package.json").write_text(
+        json.dumps({"name": "@example/ui", "version": "1.0.0"}),
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: web
+    repository: https://github.com/example/monorepo
+    revision: abc123
+    checkout: {relative_to(checkout, inputs)}
+    target: apps/web
+    packageId: web.workspace
+""",
+        encoding="utf-8",
+    )
+
+    collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, emit_workspace_inventory=True)
+    )
+
+    inventory = json.loads((out / "web" / "workspace-inventory.json").read_text(encoding="utf-8"))
+    package_paths = {item["manifestPath"] for item in inventory["packages"]}
+    assert "apps/web/package.json" in package_paths
+    assert "apps/web/packages/ui/package.json" in package_paths
+    assert "packages/root/package.json" not in package_paths
+    workspace_by_path = {item["path"]: item for item in inventory["workspaceManifests"]}
+    assert workspace_by_path["apps/web/package.json"]["includePatterns"] == ["packages/*"]
+
+
 def test_collect_batch_workspace_inventory_resolves_ref_to_git_head(
     tmp_path: Path,
 ) -> None:

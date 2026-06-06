@@ -149,15 +149,31 @@ class WorkspaceInventory:
             if manifest.get("kind") == "package_manifest" and isinstance(manifest.get("path"), str)
         }
         for workspace_manifest in workspace_manifests:
+            manifest_dir = Path(workspace_manifest["path"]).parent
+            include_paths: set[str] = set()
             for pattern in workspace_manifest["includePatterns"]:
-                paths.update(
+                include_paths.update(
                     package_manifests_for_pattern(
                         self.checkout,
+                        manifest_dir,
                         pattern,
                         diagnostics,
                         self.request.max_file_bytes,
                     )
                 )
+            exclude_paths: set[str] = set()
+            for pattern in workspace_manifest["excludePatterns"]:
+                exclude_paths.update(
+                    package_manifests_for_pattern(
+                        self.checkout,
+                        manifest_dir,
+                        pattern,
+                        diagnostics,
+                        self.request.max_file_bytes,
+                    )
+                )
+            paths.difference_update(exclude_paths)
+            paths.update(include_paths - exclude_paths)
         return paths
 
 
@@ -305,7 +321,11 @@ def package_json_workspace_patterns(path: Path, diagnostics: list[dict[str, Any]
 
 
 def package_manifests_for_pattern(
-    checkout: Path, pattern: str, diagnostics: list[dict[str, Any]], max_file_bytes: int
+    checkout: Path,
+    manifest_dir: Path,
+    pattern: str,
+    diagnostics: list[dict[str, Any]],
+    max_file_bytes: int,
 ) -> set[str]:
     if unsafe_workspace_pattern(pattern):
         diagnostics.append(
@@ -319,8 +339,9 @@ def package_manifests_for_pattern(
         return set()
     matches: set[str] = set()
     normalized = pattern.rstrip("/")
+    search_root = checkout / manifest_dir
     for name in PACKAGE_MANIFEST_NAMES:
-        for path in checkout.glob(f"{normalized}/{name}"):
+        for path in search_root.glob(f"{normalized}/{name}"):
             if path.is_file() and is_inside(checkout, path.resolve()):
                 if path.stat().st_size > max_file_bytes:
                     diagnostics.append(
