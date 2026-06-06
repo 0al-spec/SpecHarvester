@@ -286,6 +286,18 @@ ordinary preview candidate bundle directories such as `xyflow.workspace`,
 producer-observed review material; run `preflight-bundle-set` next to verify
 the generated set as one review unit.
 
+Render the package-set review surface after preflight:
+
+```bash
+python3 -m spec_harvester render-package-set-site \
+  --bundle-set candidates/xyflow-package-set \
+  --output previews/xyflow-package-set
+```
+
+The viewer writes `package-set.json` and static assets with member package
+cards, relation proposal badges, producer-observed review status, and result
+scope examples.
+
 ### Batch Source Manifests
 
 For later batch harvesting, define repository sources in operator-authored

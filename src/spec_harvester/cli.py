@@ -90,7 +90,12 @@ from spec_harvester.smoke_triage import (
     write_smoke_triage_summary,
 )
 from spec_harvester.source_manifest import read_repository_source_manifests
-from spec_harvester.static_spec_renderer import StaticSpecRendererOptions, render_static_spec_site
+from spec_harvester.static_spec_renderer import (
+    StaticPackageSetRendererOptions,
+    StaticSpecRendererOptions,
+    render_static_package_set_site,
+    render_static_spec_site,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -275,6 +280,24 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output directory where the static site will be written.",
     )
     render_spec_site.set_defaults(func=run_render_spec_site)
+
+    render_package_set_site = subcommands.add_parser(
+        "render-package-set-site",
+        help="Render a generated package-set output directory as a static HTML/JS site.",
+    )
+    render_package_set_site.add_argument(
+        "--bundle-set",
+        type=Path,
+        required=True,
+        help="Package-set output directory containing package-set-draft.json.",
+    )
+    render_package_set_site.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+        help="Output directory where the static site will be written.",
+    )
+    render_package_set_site.set_defaults(func=run_render_package_set_site)
 
     preflight = subcommands.add_parser(
         "preflight-candidate-bundle",
@@ -853,6 +876,14 @@ def run_draft_package_set(args: argparse.Namespace) -> int:
 def run_render_spec_site(args: argparse.Namespace) -> int:
     result = render_static_spec_site(
         StaticSpecRendererOptions(candidate=args.candidate, output=args.output)
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "ok" else 1
+
+
+def run_render_package_set_site(args: argparse.Namespace) -> int:
+    result = render_static_package_set_site(
+        StaticPackageSetRendererOptions(bundle_set=args.bundle_set, output=args.output)
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["status"] == "ok" else 1

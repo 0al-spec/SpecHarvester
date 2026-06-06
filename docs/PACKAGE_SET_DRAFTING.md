@@ -97,5 +97,7 @@ The command does not:
 - run package managers.
 
 P25-T4 emits relation proposals such as `contains`. Use `preflight-bundle-set`
-to verify generated package candidates and relation output together. P25-T6
-owns viewer panels for relation badges and package-set review.
+to verify generated package candidates and relation output together. Use
+`render-package-set-site` to preview the generated set with member package
+cards, relation proposal badges, producer-observed review status, and result
+scope examples.

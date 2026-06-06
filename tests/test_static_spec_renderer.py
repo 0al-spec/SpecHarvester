@@ -1,10 +1,17 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
+from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
+from spec_harvester.bundle_set_preflight import BundleSetPreflightOptions, run_bundle_set_preflight
 from spec_harvester.cli import main
-from spec_harvester.static_spec_renderer import write_static_spec_site
+from spec_harvester.package_set_drafter import PackageSetDraftOptions, draft_package_set
+from spec_harvester.static_spec_renderer import (
+    write_static_package_set_site,
+    write_static_spec_site,
+)
 
 
 def test_static_spec_renderer_writes_browser_safe_site(tmp_path: Path) -> None:
@@ -115,6 +122,91 @@ def test_render_spec_site_cli_returns_error_for_missing_manifest(tmp_path: Path,
     assert exit_code == 1
     assert printed["status"] == "error"
     assert printed["diagnostics"][0]["code"] == "file_missing"
+    assert not (tmp_path / "site" / "index.html").exists()
+
+
+def test_static_package_set_renderer_writes_review_site(tmp_path: Path) -> None:
+    bundle_set = write_package_set_fixture(tmp_path)
+    output = tmp_path / "package-set-site"
+
+    result = write_static_package_set_site(bundle_set, output)
+
+    assert result["status"] == "ok"
+    assert result["packageSetId"] == "xyflow.workspace"
+    assert result["candidateCount"] == 4
+    assert result["relationCount"] == 3
+    assert result["preflightStatus"] == "passed"
+    assert result["written"] == [
+        "assets/spec-renderer.css",
+        "assets/spec-renderer.js",
+        "index.html",
+        "package-set.json",
+    ]
+
+    payload = json.loads((output / "package-set.json").read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.static-package-set-renderer/v0"
+    assert payload["kind"] == "SpecHarvesterStaticPackageSet"
+    assert payload["packageSet"]["id"] == "xyflow.workspace"
+    assert payload["packageSet"]["reviewStatus"] == "producer_observed"
+    assert payload["preflight"]["status"] == "passed"
+    assert [member["packageId"] for member in payload["members"]] == [
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+    ]
+    assert payload["members"][0]["role"] == "workspace"
+    assert all(relation["type"] == "contains" for relation in payload["relations"])
+    assert all(
+        relation["reviewStatus"] == "producer_observed" for relation in payload["relations"]
+    )
+
+    html = (output / "index.html").read_text(encoding="utf-8")
+    javascript = (output / "assets/spec-renderer.js").read_text(encoding="utf-8")
+    css = (output / "assets/spec-renderer.css").read_text(encoding="utf-8")
+    assert "package-set.json" in html
+    assert "spec-package.json" not in html
+    assert "renderPackageSet" in javascript
+    assert "member-card" in javascript
+    assert "relation-badge" in javascript
+    assert "result-scope" in javascript
+    assert ".relation-badge" in css
+    assert ".result-scope" in css
+
+
+def test_render_package_set_site_cli_writes_site_and_prints_result(
+    tmp_path: Path, capsys
+) -> None:
+    bundle_set = write_package_set_fixture(tmp_path)
+    output = tmp_path / "site"
+
+    exit_code = main(
+        ["render-package-set-site", "--bundle-set", str(bundle_set), "--output", str(output)]
+    )
+
+    printed = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert printed["status"] == "ok"
+    assert printed["packageSetId"] == "xyflow.workspace"
+    assert printed["written"] == [
+        "assets/spec-renderer.css",
+        "assets/spec-renderer.js",
+        "index.html",
+        "package-set.json",
+    ]
+
+
+def test_static_package_set_renderer_rejects_missing_relation_artifact(
+    tmp_path: Path,
+) -> None:
+    bundle_set = write_package_set_fixture(tmp_path)
+    (bundle_set / "package-relation-proposals.json").unlink()
+
+    result = write_static_package_set_site(bundle_set, tmp_path / "site")
+
+    assert result["status"] == "error"
+    assert result["diagnostics"][0]["code"] == "package_set_artifact_unreadable"
+    assert result["diagnostics"][0]["path"] == "package-relation-proposals.json"
     assert not (tmp_path / "site" / "index.html").exists()
 
 
@@ -248,6 +340,88 @@ def test_static_spec_renderer_warns_for_non_finite_validation_json(tmp_path: Pat
     assert payload["diagnostics"][0]["code"] == "validation_json_unreadable"
     assert "non-finite JSON number" in payload["diagnostics"][0]["message"]
     assert '"quality": NaN' not in html
+
+
+def write_package_set_fixture(tmp_path: Path) -> Path:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "package-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+    preflight = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+    (out / "bundle-set-preflight.json").write_text(
+        json.dumps(preflight, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return out
+
+
+def write_workspace_inventory_fixture(tmp_path: Path) -> Path:
+    inputs = tmp_path / "inputs"
+    candidates = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_workspace_checkout(tmp_path / "xyflow")
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: xyflow
+    repository: https://github.com/xyflow/xyflow
+    revision: abc123
+    checkout: {relative_to(checkout, inputs)}
+    packageId: xyflow.workspace
+""",
+        encoding="utf-8",
+    )
+    collect_batch_snapshots(
+        BatchCollectOptions(
+            inputs=inputs,
+            out=candidates,
+            emit_workspace_inventory=True,
+        )
+    )
+    return candidates / "xyflow" / "workspace-inventory.json"
+
+
+def make_workspace_checkout(path: Path) -> Path:
+    path.mkdir(parents=True)
+    (path / "README.md").write_text("# Xyflow\n", encoding="utf-8")
+    (path / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "xyflow",
+                "version": "0.0.0",
+                "private": True,
+                "workspaces": ["packages/*"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (path / "pnpm-workspace.yaml").write_text(
+        """
+packages:
+  - packages/*
+  - examples/*
+  - tooling/*
+  - tests/*
+  - "!**/test-fixtures/**"
+""",
+        encoding="utf-8",
+    )
+    packages = {
+        "packages/system": {"name": "@xyflow/system", "version": "1.0.0"},
+        "packages/react": {"name": "@xyflow/react", "version": "12.0.0"},
+        "packages/svelte": {"name": "@xyflow/svelte", "version": "1.0.0"},
+        "examples/playground": {"name": "@xyflow/playground", "version": "0.0.0"},
+        "tooling/cli": {"name": "@xyflow/cli", "version": "0.1.0"},
+        "tests/e2e": {"name": "@xyflow/e2e", "version": "0.0.0"},
+    }
+    for relative, payload in packages.items():
+        package_dir = path / relative
+        package_dir.mkdir(parents=True)
+        (package_dir / "package.json").write_text(json.dumps(payload), encoding="utf-8")
+    return path
+
+
+def relative_to(path: Path, root: Path) -> str:
+    return Path(os.path.relpath(path, root)).as_posix()
 
 
 def write_candidate(candidate: Path, *, summary: str = "Static renderer demo") -> None:

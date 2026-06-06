@@ -106,6 +106,31 @@ built-in analyzer is recommended. Supported analyzer plan ids are
 Analyzer orchestration still does not install dependencies, run package
 managers, run package scripts, execute checkout files, or contact networks.
 
+For monorepo package-set discovery, emit a deterministic
+`workspace-inventory.json`, draft package-set output, preflight the generated
+set, and render a package-set viewer:
+
+```bash
+python3 -m spec_harvester collect-batch inputs \
+  --out candidates \
+  --emit-workspace-inventory
+
+python3 -m spec_harvester draft-package-set \
+  candidates/xyflow/workspace-inventory.json \
+  --out candidates/xyflow-package-set
+
+python3 -m spec_harvester preflight-bundle-set \
+  candidates/xyflow-package-set
+
+python3 -m spec_harvester render-package-set-site \
+  --bundle-set candidates/xyflow-package-set \
+  --output previews/xyflow-package-set
+```
+
+The package-set viewer writes `package-set.json` and static assets with member
+package cards, relation proposal badges, producer-observed review status, and
+result scope examples.
+
 Draft a reviewable candidate package:
 
 ```bash

@@ -63,7 +63,8 @@ inputs, not namespace authority.
 SpecHarvester does not execute package scripts during package-set drafting.
 
 P25-T4 emits relation proposals such as `contains`. Use
-`preflight-bundle-set` for bundle-set preflight. P25-T6 owns relation badges
-and package-set viewer panels. This
+`preflight-bundle-set` for bundle-set preflight. Use
+`render-package-set-site` to preview member package cards, relation proposal
+badges, producer-observed review status, and result scope examples. This
 command does not execute package scripts, install dependencies, run package
 managers, mutate SpecPM accepted sources, or publish registry metadata.

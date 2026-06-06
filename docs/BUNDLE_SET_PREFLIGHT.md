@@ -95,5 +95,6 @@ SpecHarvester does not:
 - install dependencies;
 - run package managers.
 
-P25-T6 owns static viewer panels for package-set review. P25-T7 owns the
-end-to-end `xyflow` smoke scenario.
+`render-package-set-site` can display this report beside member package cards,
+relation proposal badges, producer-observed review status, and result scope
+examples. P25-T7 owns the end-to-end `xyflow` smoke scenario.

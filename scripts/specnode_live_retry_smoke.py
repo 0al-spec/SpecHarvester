@@ -63,7 +63,7 @@ class LiveSmokeConfig:
         environ: dict[str, str] | None = None,
         *,
         require_run_flag: bool = False,
-    ) -> "LiveSmokeConfig":
+    ) -> LiveSmokeConfig:
         env = os.environ if environ is None else environ
         if require_run_flag and env.get(RUN_FLAG_ENV) != "1":
             raise LiveSmokeConfigError(f"set {RUN_FLAG_ENV}=1 to run live LM Studio smoke")
@@ -129,7 +129,11 @@ class OpenAICompatibleChatClient:
             raw_content=raw_content,
             model=str(response_payload.get("model") or self.config.model),
             finish_reason=choice.get("finish_reason"),
-            usage=response_payload.get("usage") if isinstance(response_payload.get("usage"), dict) else {},
+            usage=(
+                response_payload.get("usage")
+                if isinstance(response_payload.get("usage"), dict)
+                else {}
+            ),
             duration_ms=int((time.monotonic() - started) * 1000),
         )
 

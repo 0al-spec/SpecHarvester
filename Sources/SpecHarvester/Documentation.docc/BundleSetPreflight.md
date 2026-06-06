@@ -50,5 +50,6 @@ The verifier does not publish registry metadata, accept packages, accept
 relations, infer trust inheritance, execute package scripts, install
 dependencies, or run package managers.
 
-P25-T6 owns static viewer package-set panels. P25-T7 owns the end-to-end
-`xyflow` smoke scenario.
+`render-package-set-site` can display this report beside member package cards,
+relation proposal badges, producer-observed review status, and result scope
+examples. P25-T7 owns the end-to-end `xyflow` smoke scenario.
