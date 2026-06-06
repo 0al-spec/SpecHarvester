@@ -57,7 +57,9 @@ For the `xyflow` reference scenario, inventory records may propose
 `xyflow.workspace`, `xyflow.system`, `xyflow.react`, and `xyflow.svelte`.
 
 P25-T3 should consume this inventory for package-set and scoped member drafting.
-P25-T5 should consume it for bundle-set consistency checks.
+P25-T4 should consume it with package-set draft output for deterministic
+`package-relation-proposals.json` review evidence. P25-T5 should consume it for
+bundle-set consistency checks.
 
 Use `draft-package-set` for the P25-T3 drafting step:
 

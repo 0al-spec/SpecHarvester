@@ -19,6 +19,7 @@ The output includes:
 
 ```text
 package-set-draft.json
+package-relation-proposals.json
 xyflow.workspace/specpm.yaml
 xyflow.system/specpm.yaml
 xyflow.react/specpm.yaml
@@ -41,7 +42,8 @@ Each package directory is an ordinary preview candidate bundle with
 
 The summary records source repository and exact revision, workspace inventory
 digest, selected roles, generated package IDs, relative candidate paths, skipped
-packages, and producer preview non-goals.
+packages, relation proposal path, relation count, and producer preview
+non-goals.
 
 ## Default Selection
 
@@ -60,7 +62,7 @@ inputs, not namespace authority.
 
 SpecHarvester does not execute package scripts during package-set drafting.
 
-P25-T4 owns relation proposals such as `contains`. P25-T5 owns bundle-set
-preflight. This command does not execute package scripts, install dependencies,
-run package managers, mutate SpecPM accepted sources, or publish registry
-metadata.
+P25-T4 emits relation proposals such as `contains`. P25-T5 owns bundle-set
+preflight. P25-T6 owns relation badges and package-set viewer panels. This
+command does not execute package scripts, install dependencies, run package
+managers, mutate SpecPM accepted sources, or publish registry metadata.

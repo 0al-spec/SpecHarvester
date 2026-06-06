@@ -591,6 +591,7 @@ def test_docc_and_github_docs_cover_package_set_drafting() -> None:
             "draft-package-set",
             "workspace-inventory.json",
             "package-set-draft.json",
+            "package-relation-proposals.json",
             "spec-harvester.package-set-draft/v0",
             "SpecHarvesterPackageSetDraft",
             "xyflow.workspace",
@@ -614,6 +615,46 @@ def test_docc_and_github_docs_cover_package_set_drafting() -> None:
 
     assert "PACKAGE_SET_DRAFTING.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:PackageSetDrafting>" in root_page.read_text(encoding="utf-8")
+
+
+def test_docc_and_github_docs_cover_package_relation_proposals() -> None:
+    github_doc = ROOT / "docs" / "PACKAGE_RELATION_PROPOSALS.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "PackageRelationProposals.md"
+    )
+    package_set_doc = ROOT / "docs" / "PACKAGE_SET_DRAFTING.md"
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    workspace_doc = ROOT / "docs" / "WORKSPACE_INVENTORY.md"
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "package-relation-proposals.json",
+            "spec-harvester.package-relation-proposals/v0",
+            "SpecHarvesterPackageRelationProposals",
+            "contains",
+            "xyflow.workspace contains xyflow.system",
+            "xyflow.workspace contains xyflow.react",
+            "xyflow.workspace contains xyflow.svelte",
+            "reviewStatus: producer_observed",
+            "workspace-inventory.json",
+            "package-set-draft.json",
+            "does not hash itself",
+            "not SpecPM accepted registry metadata",
+            "trust inheritance",
+            "P25-T5",
+            "P25-T6",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (package_set_doc, workflow_doc, workspace_doc):
+        assert "package-relation-proposals.json" in path.read_text(encoding="utf-8")
+
+    assert "PACKAGE_RELATION_PROPOSALS.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:PackageRelationProposals>" in root_page.read_text(encoding="utf-8")
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
