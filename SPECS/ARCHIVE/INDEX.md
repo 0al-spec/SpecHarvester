@@ -92,6 +92,7 @@
 | P22-T1 | [P22-T1_Candidate_Bundle_End_to_End_Smoke/](P22-T1_Candidate_Bundle_End_to_End_Smoke/) | 2026-06-02 | PASS |
 | P24-T1 | [P24-T1_Harvested_Spec_Quality_Depth/](P24-T1_Harvested_Spec_Quality_Depth/) | 2026-06-05 | PASS |
 | P25-T2 | [P25-T2_Deterministic_Workspace_Inventory/](P25-T2_Deterministic_Workspace_Inventory/) | 2026-06-06 | PASS |
+| P25-T3 | [P25-T3_Package_Set_and_Scoped_Member_Candidate_Drafting/](P25-T3_Package_Set_and_Scoped_Member_Candidate_Drafting/) | 2026-06-06 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -305,6 +306,7 @@
 | 2026-06-05 | P24-T1 | Archived REVIEW_p24_t1_harvested_spec_quality_depth report |
 | 2026-06-06 | P25-T2 | Archived Deterministic Workspace Inventory (PASS) |
 | 2026-06-06 | P25-T2 | Archived REVIEW_p25_t2_deterministic_workspace_inventory report |
+| 2026-06-06 | P25-T3 | Archived Package-Set and Scoped Member Candidate Drafting (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

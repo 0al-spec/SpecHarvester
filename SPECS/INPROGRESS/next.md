@@ -1,11 +1,17 @@
-# Next Task: P25-T3 Package-Set and Scoped Member Candidate Drafting
+# Next Task: P25-T4 Package Relation Proposal Output
 
 **Status:** Selected
-**Last Archived:** P25-T2 Deterministic Workspace Inventory
+**Last Archived:** P25-T3 Package-Set and Scoped Member Candidate Drafting
 **Archived:** 2026-06-06
 
 ## Recently Archived
 
+- `P25-T3` added `draft-package-set`, producing deterministic
+  `package-set-draft.json` output plus preview-only candidate bundles for
+  `xyflow.workspace`, `xyflow.system`, `xyflow.react`, and `xyflow.svelte`
+  from `workspace-inventory.json`. Skipped packages are recorded with explicit
+  reasons, and candidate generation remains independent from namespace
+  authority, relation materialization, and SpecPM acceptance.
 - `P25-T2` added opt-in deterministic `workspace-inventory.json` emission for
   monorepos, including exact revision, workspace manifests, package manifest
   paths, package metadata, source target paths, proposed SpecPM package IDs,
@@ -17,21 +23,24 @@
 
 ## Motivation
 
-- Workspace inventory now provides deterministic producer evidence for
-  monorepo package boundaries.
-- The next runtime step is to draft aggregate package-set candidates and scoped
-  member package candidates without collapsing repository intent into one
-  package subject.
+- Package-set drafting now creates independently reviewable aggregate and
+  scoped member candidate bundles, but the output does not yet describe how
+  those package subjects relate.
+- SpecPM package-set discovery needs explicit relation evidence, starting with
+  `contains` proposals from aggregate workspace packages to scoped member
+  packages.
 
 ## Goal
 
-- Draft package-set candidates alongside scoped member package candidates so a
-  repository such as `xyflow` can produce `xyflow.workspace`, `xyflow.system`,
-  `xyflow.react`, and `xyflow.svelte` without overwriting one package subject
-  with another.
+- Emit package relation proposal output for generated package-set bundles,
+  starting with `contains` relations from aggregate workspace packages such as
+  `xyflow.workspace` to scoped member packages such as `xyflow.system`,
+  `xyflow.react`, and `xyflow.svelte`.
+- Keep relation output as producer-observed review material, not registry
+  authority or automatic acceptance.
 
 ## Next Step
 
-Start `P25-T3` by defining how `workspace-inventory.json` maps to aggregate
-package-set candidate output and scoped member candidate output while keeping
-candidate generation preview-only and maintainer-reviewed.
+Start `P25-T4` by defining the relation proposal artifact shape and the mapping
+from `package-set-draft.json` plus `workspace-inventory.json` into deterministic
+`contains` proposals.
