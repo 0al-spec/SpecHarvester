@@ -756,3 +756,67 @@ Acceptance:
 - LM Studio or other model passes may provide bounded review notes, but model
   output remains review evidence only and is not treated as authoritative
   registry content.
+
+## Phase 25. Package Set Monorepo Discovery
+
+- [ ] `P25-T1` Align SpecHarvester planning with the SpecPM package-set
+  contracts, documenting how `Package Sets`, package relation vocabulary,
+  package-set search semantics, registry metadata shape, monorepo discovery
+  handoff, multi-package producer intake, and the `xyflow` reference scenario
+  map onto SpecHarvester implementation work.
+- [ ] `P25-T2` Emit a deterministic workspace inventory for monorepos, including
+  repository URL, exact revision, workspace manifests, package manifest paths,
+  package ecosystem/name/version metadata, source target paths, proposed stable
+  SpecPM package IDs, package roles, and privacy-safe evidence references.
+- [ ] `P25-T3` Draft package-set candidates alongside scoped member package
+  candidates so a repository such as `xyflow` can produce `xyflow.workspace`,
+  `xyflow.system`, `xyflow.react`, and `xyflow.svelte` without overwriting one
+  package subject with another.
+- [ ] `P25-T4` Emit package relation proposal output for generated package-set
+  bundles, starting with `contains` relations from aggregate workspace packages
+  to scoped member packages and recording relation evidence as
+  producer-observed review material.
+- [ ] `P25-T5` Extend candidate bundle preflight for bundle sets, checking
+  unique package IDs, per-package required files, receipt/report digests,
+  relation source/target existence, workspace inventory consistency, privacy
+  status, and human review boundary without accepting packages automatically.
+- [ ] `P25-T6` Extend the static viewer to show package-set previews, member
+  package cards, relation proposal badges, result scope examples, and
+  producer-observed review status without hiding scoped packages under the
+  aggregate package.
+- [ ] `P25-T7` Add an `xyflow` monorepo smoke fixture or local smoke scenario
+  that exercises workspace inventory, package-set candidate generation, scoped
+  member package generation, relation proposals, bundle-set preflight, and
+  viewer output against the SpecPM reference scenario.
+
+Motivation:
+
+- SpecPM now defines package sets as aggregate discovery entrypoints, not
+  inheritance. SpecHarvester needs matching producer behavior so monorepos can
+  preserve broad repository intent while keeping scoped package evidence
+  precise.
+- The previous `xyflow.core` proposal showed that one generated package can
+  either overclaim a whole repository or lose useful product-level discovery
+  intent when scoped to a single package directory.
+
+Goal:
+
+- Teach SpecHarvester to produce reviewable multi-package candidate bundle sets
+  for monorepos while preserving the SpecPM boundary: producer output is
+  evidence, SpecPM validates and indexes, and maintainers decide acceptance.
+
+Acceptance:
+
+- Workspace inventory output is deterministic, privacy-safe, and pins the
+  repository revision used for discovery.
+- Package-set and member package candidates remain independently reviewable and
+  validate as SpecPM preview packages.
+- Relation proposals use the SpecPM relation vocabulary and remain
+  `producer_observed` until maintainer review accepts them.
+- Bundle-set preflight verifies integrity and consistency without executing
+  harvested repository code, package scripts, build tools, or producer-generated
+  prompts.
+- Static viewer output makes aggregate and scoped package boundaries clear.
+- The `xyflow` scenario can show `xyflow.workspace`, `xyflow.system`,
+  `xyflow.react`, and `xyflow.svelte` as separate candidate subjects with
+  explicit `contains` relations.

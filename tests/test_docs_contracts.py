@@ -6,9 +6,21 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_phase_24_archived(next_text: str) -> None:
-    assert "# Next Task: Pending Selection" in next_text
+    assert_p24_t1_archived(next_text)
+    assert_p25_t1_selected(next_text)
+
+
+def assert_p24_t1_archived(next_text: str) -> None:
     assert "**Last Archived:** P24-T1 Harvested Spec Quality Depth" in next_text
     assert "subject-focused preview contracts" in next_text
+
+
+def assert_p25_t1_selected(next_text: str) -> None:
+    assert "# Next Task: P25-T1 Package Set Contract Alignment" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "package-set contracts" in next_text
+    assert "workspace inventory" in next_text
+    assert "monorepo discovery" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
