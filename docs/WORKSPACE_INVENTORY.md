@@ -110,8 +110,10 @@ capabilities, inherited constraints, or public registry visibility.
 ## Downstream Use
 
 P25-T3 should use the inventory as input when drafting aggregate package-set
-candidates and scoped member candidates. P25-T5 should use it to check
-multi-package bundle consistency before SpecPM handoff.
+candidates and scoped member candidates. P25-T4 should use the inventory and
+package-set draft output to emit deterministic `package-relation-proposals.json`
+review evidence. P25-T5 should use it to check multi-package bundle consistency
+before SpecPM handoff.
 
 Use `draft-package-set` for the P25-T3 drafting step:
 

@@ -108,7 +108,10 @@ Published DocC site:
 42. [`PACKAGE_SET_DRAFTING.md`](PACKAGE_SET_DRAFTING.md): preview
     `draft-package-set` generation of aggregate and scoped member candidates
     from workspace inventory
-43. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+43. [`PACKAGE_RELATION_PROPOSALS.md`](PACKAGE_RELATION_PROPOSALS.md):
+    deterministic `contains` relation proposals for package-set candidate
+    bundle review
+44. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -177,6 +180,8 @@ Published DocC site:
   workspace/package discovery artifact for package-set producer review
 - [`PACKAGE_SET_DRAFTING.md`](PACKAGE_SET_DRAFTING.md): package-set and scoped
   member candidate drafting from workspace inventory
+- [`PACKAGE_RELATION_PROPOSALS.md`](PACKAGE_RELATION_PROPOSALS.md):
+  producer-observed package relation proposals for package-set review
 
 ## GitHub Process Surface
 

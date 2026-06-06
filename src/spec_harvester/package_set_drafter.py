@@ -30,6 +30,10 @@ PACKAGE_SET_DRAFT_FILENAME = "package-set-draft.json"
 PACKAGE_SET_DRAFT_API_VERSION = "spec-harvester.package-set-draft/v0"
 PACKAGE_SET_DRAFT_KIND = "SpecHarvesterPackageSetDraft"
 PACKAGE_SET_DRAFT_SCHEMA_VERSION = 1
+PACKAGE_RELATION_PROPOSALS_FILENAME = "package-relation-proposals.json"
+PACKAGE_RELATION_PROPOSALS_API_VERSION = "spec-harvester.package-relation-proposals/v0"
+PACKAGE_RELATION_PROPOSALS_KIND = "SpecHarvesterPackageRelationProposals"
+PACKAGE_RELATION_PROPOSALS_SCHEMA_VERSION = 1
 DEFAULT_DRAFT_ROLES = ("workspace", "core_runtime", "react_binding", "svelte_binding")
 
 
@@ -54,6 +58,7 @@ class PackageSetDrafter:
             raise ValueError(f"Package-set draft output directory is not empty: {self.options.out}")
         candidates = self.write_candidates()
         skipped = self.skipped_packages(candidates)
+        relations = relation_records(self.inventory, candidates)
         payload = {
             "apiVersion": PACKAGE_SET_DRAFT_API_VERSION,
             "kind": PACKAGE_SET_DRAFT_KIND,
@@ -71,28 +76,48 @@ class PackageSetDrafter:
             },
             "candidates": candidates,
             "skipped": skipped,
+            "relationProposals": {
+                "path": PACKAGE_RELATION_PROPOSALS_FILENAME,
+                "reviewStatus": "producer_observed",
+                "relationCount": len(relations),
+            },
             "summary": {
                 "candidateCount": len(candidates),
                 "skippedCount": len(skipped),
                 "packageInventoryCount": len(package_records(self.inventory)),
+                "relationProposalCount": len(relations),
             },
             "authority": "producer_observed_review_evidence",
             "nonGoals": [
-                "relation_proposal_emission",
                 "bundle_set_preflight",
                 "specpm_acceptance",
+                "relation_acceptance",
                 "package_execution",
                 "dependency_installation",
             ],
         }
         output_path = self.options.out / PACKAGE_SET_DRAFT_FILENAME
         output_path.write_text(render_package_set_draft_json(payload), encoding="utf-8")
+        relation_path = self.options.out / PACKAGE_RELATION_PROPOSALS_FILENAME
+        relation_path.write_text(
+            render_relation_proposals_json(
+                relation_proposals_payload(
+                    inventory=self.inventory,
+                    inventory_path=self.inventory_path,
+                    package_set_draft_path=output_path,
+                    relations=relations,
+                )
+            ),
+            encoding="utf-8",
+        )
         return {
             "status": "ok",
             "output": str(self.options.out),
             "summary": str(output_path),
+            "relationProposals": str(relation_path),
             "candidateCount": len(candidates),
             "skippedCount": len(skipped),
+            "relationCount": len(relations),
             "candidates": candidates,
             "skipped": skipped,
         }
@@ -190,6 +215,215 @@ def package_records(inventory: dict[str, Any]) -> list[dict[str, Any]]:
     if not isinstance(packages, list):
         return []
     return [record for record in packages if isinstance(record, dict)]
+
+
+def relation_records(
+    inventory: dict[str, Any],
+    candidates: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    packages_by_id = package_records_by_id(inventory)
+    workspace_candidates = [
+        candidate for candidate in candidates if candidate.get("role") == "workspace"
+    ]
+    target_candidates = [
+        candidate for candidate in candidates if candidate.get("role") != "workspace"
+    ]
+    records: list[dict[str, Any]] = []
+    for source in sorted(workspace_candidates, key=lambda item: str(item.get("packageId") or "")):
+        for target in sorted(target_candidates, key=lambda item: str(item.get("packageId") or "")):
+            relation_id = relation_proposal_id(
+                "contains",
+                str(source["packageId"]),
+                str(target["packageId"]),
+            )
+            records.append(
+                {
+                    "id": relation_id,
+                    "type": "contains",
+                    "source": relation_endpoint(source),
+                    "target": relation_endpoint(target),
+                    "reviewStatus": "producer_observed",
+                    "authority": "producer_observed_review_evidence",
+                    "evidence": relation_evidence(
+                        inventory=inventory,
+                        relation_id=relation_id,
+                        source_package=packages_by_id.get(str(source["packageId"]), {}),
+                        target_package=packages_by_id.get(str(target["packageId"]), {}),
+                    ),
+                }
+            )
+    return sorted(records, key=lambda item: item["id"])
+
+
+def package_records_by_id(inventory: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    records: dict[str, dict[str, Any]] = {}
+    for package in package_records(inventory):
+        package_id = package.get("proposedSpecpmPackageId")
+        if isinstance(package_id, str) and package_id:
+            records[package_id] = package
+    return records
+
+
+def relation_endpoint(candidate: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "packageId": candidate.get("packageId"),
+        "role": candidate.get("role"),
+        "candidatePath": candidate.get("candidatePath"),
+        "sourceTargetPath": candidate.get("sourceTargetPath"),
+        "manifestPath": candidate.get("manifestPath"),
+    }
+
+
+def relation_evidence(
+    *,
+    inventory: dict[str, Any],
+    relation_id: str,
+    source_package: dict[str, Any],
+    target_package: dict[str, Any],
+) -> list[dict[str, Any]]:
+    evidence: list[dict[str, Any]] = []
+    for workspace_manifest in workspace_manifest_evidence_records(inventory):
+        evidence.append({**workspace_manifest, "supports": [relation_id]})
+    for role, package in (("source", source_package), ("target", target_package)):
+        for package_evidence in package_manifest_evidence_records(package, role):
+            evidence.append({**package_evidence, "supports": [relation_id]})
+    return sorted(
+        evidence, key=lambda item: (item["kind"], item["path"], item.get("packageRole", ""))
+    )
+
+
+def workspace_manifest_evidence_records(inventory: dict[str, Any]) -> list[dict[str, Any]]:
+    manifests = inventory.get("workspaceManifests")
+    if not isinstance(manifests, list):
+        return []
+    records: list[dict[str, Any]] = []
+    for manifest in manifests:
+        if not isinstance(manifest, dict):
+            continue
+        evidence = manifest.get("evidence")
+        if not isinstance(evidence, dict):
+            evidence = {}
+        path = evidence.get("path") or manifest.get("path")
+        if not isinstance(path, str) or not path:
+            continue
+        record: dict[str, Any] = {
+            "kind": evidence.get("kind") or "workspace_manifest",
+            "path": path,
+            "packageManager": manifest.get("packageManager"),
+            "includePatterns": list_if_strings(manifest.get("includePatterns")),
+            "excludePatterns": list_if_strings(manifest.get("excludePatterns")),
+        }
+        digest = evidence.get("digest")
+        if isinstance(digest, dict):
+            record["digest"] = digest
+        records.append(record)
+    return sorted(records, key=lambda item: item["path"])
+
+
+def package_manifest_evidence_records(
+    package: dict[str, Any],
+    package_role: str,
+) -> list[dict[str, Any]]:
+    references = package.get("evidenceReferences")
+    if not isinstance(references, list):
+        references = []
+    records: list[dict[str, Any]] = []
+    for reference in references:
+        if not isinstance(reference, dict) or reference.get("kind") != "package_manifest":
+            continue
+        path = reference.get("path")
+        if not isinstance(path, str) or not path:
+            continue
+        record: dict[str, Any] = {
+            "kind": "package_manifest",
+            "path": path,
+            "packageRole": package_role,
+            "packageId": package.get("proposedSpecpmPackageId"),
+        }
+        digest = reference.get("digest")
+        if isinstance(digest, dict):
+            record["digest"] = digest
+        records.append(record)
+    if records:
+        return sorted(records, key=lambda item: item["path"])
+    manifest_path = package.get("manifestPath")
+    if not isinstance(manifest_path, str) or not manifest_path:
+        return []
+    return [
+        {
+            "kind": "package_manifest",
+            "path": manifest_path,
+            "packageRole": package_role,
+            "packageId": package.get("proposedSpecpmPackageId"),
+        }
+    ]
+
+
+def list_if_strings(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return sorted(item for item in value if isinstance(item, str))
+
+
+def relation_proposal_id(relation_type: str, source: str, target: str) -> str:
+    return f"{source}.{relation_type}.{target}"
+
+
+def relation_proposals_payload(
+    *,
+    inventory: dict[str, Any],
+    inventory_path: Path,
+    package_set_draft_path: Path,
+    relations: list[dict[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "apiVersion": PACKAGE_RELATION_PROPOSALS_API_VERSION,
+        "kind": PACKAGE_RELATION_PROPOSALS_KIND,
+        "schemaVersion": PACKAGE_RELATION_PROPOSALS_SCHEMA_VERSION,
+        "source": source_record_from_inventory(inventory),
+        "inputs": {
+            "workspaceInventory": {
+                "path": inventory_path.name,
+                "digest": digest_record(sha256_file(inventory_path)),
+                "apiVersion": inventory["apiVersion"],
+                "kind": inventory["kind"],
+            },
+            "packageSetDraft": {
+                "path": PACKAGE_SET_DRAFT_FILENAME,
+                "digest": digest_record(sha256_file(package_set_draft_path)),
+                "apiVersion": PACKAGE_SET_DRAFT_API_VERSION,
+                "kind": PACKAGE_SET_DRAFT_KIND,
+            },
+        },
+        "relations": relations,
+        "summary": {
+            "relationCount": len(relations),
+            "containsCount": sum(1 for relation in relations if relation["type"] == "contains"),
+            "sourcePackageCount": len({relation["source"]["packageId"] for relation in relations}),
+            "targetPackageCount": len({relation["target"]["packageId"] for relation in relations}),
+        },
+        "reviewStatus": "producer_observed",
+        "authority": "producer_observed_review_evidence",
+        "nonGoals": [
+            "relation_acceptance",
+            "bundle_set_preflight",
+            "specpm_acceptance",
+            "package_execution",
+            "dependency_installation",
+        ],
+    }
+
+
+def source_record_from_inventory(inventory: dict[str, Any]) -> dict[str, Any]:
+    source = inventory.get("source")
+    if not isinstance(source, dict):
+        return {}
+    return {
+        "repository": source.get("repository"),
+        "exactRevision": source.get("exactRevision"),
+        "revisionAuthority": source.get("revisionAuthority"),
+        "declaredRef": source.get("declaredRef"),
+    }
 
 
 def role_rank(role: str) -> int:
@@ -406,6 +640,10 @@ def package_label(package: dict[str, Any]) -> str:
 
 
 def render_package_set_draft_json(payload: dict[str, Any]) -> str:
+    return render_json(payload)
+
+
+def render_relation_proposals_json(payload: dict[str, Any]) -> str:
     return render_json(payload)
 
 

@@ -125,6 +125,7 @@ the host.
 - <doc:SpecPMPackageSetAlignment>
 - <doc:WorkspaceInventory>
 - <doc:PackageSetDrafting>
+- <doc:PackageRelationProposals>
 - <doc:ProposalAutomation>
 
 ### Architecture

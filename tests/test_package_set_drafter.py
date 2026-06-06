@@ -24,6 +24,7 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
 
     assert result["status"] == "ok"
     assert result["candidateCount"] == 4
+    assert result["relationCount"] == 3
     assert [candidate["packageId"] for candidate in result["candidates"]] == [
         "xyflow.react",
         "xyflow.svelte",
@@ -37,7 +38,13 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
     assert summary["summary"] == {
         "candidateCount": 4,
         "packageInventoryCount": 7,
+        "relationProposalCount": 3,
         "skippedCount": 3,
+    }
+    assert summary["relationProposals"] == {
+        "path": "package-relation-proposals.json",
+        "relationCount": 3,
+        "reviewStatus": "producer_observed",
     }
     assert [item["packageId"] for item in summary["skipped"]] == [
         "xyflow.cli",
@@ -76,6 +83,67 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
         assert preflight["status"] == "passed"
 
 
+def test_package_set_drafter_writes_relation_proposals(tmp_path: Path) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+
+    payload = json.loads((out / "package-relation-proposals.json").read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.package-relation-proposals/v0"
+    assert payload["kind"] == "SpecHarvesterPackageRelationProposals"
+    assert payload["reviewStatus"] == "producer_observed"
+    assert payload["authority"] == "producer_observed_review_evidence"
+    assert payload["inputs"]["workspaceInventory"]["path"] == "workspace-inventory.json"
+    assert payload["inputs"]["workspaceInventory"]["digest"]["algorithm"] == "sha256"
+    assert payload["inputs"]["packageSetDraft"]["path"] == "package-set-draft.json"
+    assert payload["inputs"]["packageSetDraft"]["digest"]["algorithm"] == "sha256"
+    assert payload["summary"] == {
+        "containsCount": 3,
+        "relationCount": 3,
+        "sourcePackageCount": 1,
+        "targetPackageCount": 3,
+    }
+
+    relations = payload["relations"]
+    assert [
+        (item["source"]["packageId"], item["type"], item["target"]["packageId"])
+        for item in relations
+    ] == [
+        ("xyflow.workspace", "contains", "xyflow.react"),
+        ("xyflow.workspace", "contains", "xyflow.svelte"),
+        ("xyflow.workspace", "contains", "xyflow.system"),
+    ]
+    assert all(item["reviewStatus"] == "producer_observed" for item in relations)
+    assert all(item["authority"] == "producer_observed_review_evidence" for item in relations)
+
+    react_relation = next(
+        item for item in relations if item["target"]["packageId"] == "xyflow.react"
+    )
+    evidence_paths = {item["path"] for item in react_relation["evidence"]}
+    assert {
+        "package.json",
+        "pnpm-workspace.yaml",
+        "packages/react/package.json",
+    }.issubset(evidence_paths)
+    target_evidence = [
+        item for item in react_relation["evidence"] if item.get("packageRole") == "target"
+    ]
+    assert target_evidence == [
+        {
+            "digest": {
+                "algorithm": "sha256",
+                "value": "ec6adf9e9527fbcc23c66624675bc55ef23301a941460c8c61ba62b85a6c66b5",
+            },
+            "kind": "package_manifest",
+            "packageId": "xyflow.react",
+            "packageRole": "target",
+            "path": "packages/react/package.json",
+            "supports": ["xyflow.workspace.contains.xyflow.react"],
+        }
+    ]
+
+
 def test_package_set_drafter_is_deterministic(tmp_path: Path) -> None:
     inventory = write_workspace_inventory_fixture(tmp_path)
     first = tmp_path / "first"
@@ -86,6 +154,9 @@ def test_package_set_drafter_is_deterministic(tmp_path: Path) -> None:
 
     assert (first / "package-set-draft.json").read_text(encoding="utf-8") == (
         second / "package-set-draft.json"
+    ).read_text(encoding="utf-8")
+    assert (first / "package-relation-proposals.json").read_text(encoding="utf-8") == (
+        second / "package-relation-proposals.json"
     ).read_text(encoding="utf-8")
     assert (first / "xyflow.react" / "specpm.yaml").read_text(encoding="utf-8") == (
         second / "xyflow.react" / "specpm.yaml"
@@ -158,7 +229,9 @@ def test_cli_draft_package_set_writes_summary(tmp_path: Path, capsys) -> None:
     printed = json.loads(capsys.readouterr().out)
     assert printed["status"] == "ok"
     assert printed["candidateCount"] == 4
+    assert printed["relationCount"] == 3
     assert printed["summary"] == str(out / "package-set-draft.json")
+    assert printed["relationProposals"] == str(out / "package-relation-proposals.json")
     assert (out / "xyflow.workspace" / "specpm.yaml").is_file()
 
 
