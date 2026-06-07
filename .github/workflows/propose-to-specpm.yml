@@ -3,10 +3,26 @@ name: Propose to SpecPM
 on:
   workflow_dispatch:
     inputs:
+      proposal_kind:
+        description: Proposal mode. Use package_set for dry-run handoff evidence only.
+        required: true
+        type: choice
+        default: single_package
+        options:
+          - single_package
+          - package_set
       candidate_dir:
         description: Candidate SpecPackage directory inside SpecHarvester.
         required: true
         default: candidates/github.com/xyflow/xyflow
+      package_set_bundle_dir:
+        description: Generated package-set output directory inside SpecHarvester.
+        required: true
+        default: .smoke/xyflow-package-set/package-set
+      package_set_viewer_dir:
+        description: Optional package-set static viewer directory inside SpecHarvester.
+        required: true
+        default: .smoke/xyflow-package-set/viewer
       package_id:
         description: Candidate package id.
         required: true
@@ -63,25 +79,53 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           INPUT_CANDIDATE_DIR: ${{ github.event.inputs.candidate_dir }}
+          INPUT_PROPOSAL_KIND: ${{ github.event.inputs.proposal_kind }}
+          INPUT_PACKAGE_SET_BUNDLE_DIR: ${{ github.event.inputs.package_set_bundle_dir }}
+          INPUT_PACKAGE_SET_VIEWER_DIR: ${{ github.event.inputs.package_set_viewer_dir }}
           INPUT_PACKAGE_ID: ${{ github.event.inputs.package_id }}
           INPUT_PACKAGE_VERSION: ${{ github.event.inputs.package_version }}
           INPUT_CREATE_PR: ${{ github.event.inputs.create_pr }}
+          VAR_PROPOSAL_KIND: ${{ vars.SPECHARVESTER_PROPOSAL_KIND }}
           VAR_CANDIDATE_DIR: ${{ vars.SPECHARVESTER_CANDIDATE_DIR }}
+          VAR_PACKAGE_SET_BUNDLE_DIR: ${{ vars.SPECHARVESTER_PACKAGE_SET_BUNDLE_DIR }}
+          VAR_PACKAGE_SET_VIEWER_DIR: ${{ vars.SPECHARVESTER_PACKAGE_SET_VIEWER_DIR }}
           VAR_PACKAGE_ID: ${{ vars.SPECHARVESTER_PACKAGE_ID }}
           VAR_PACKAGE_VERSION: ${{ vars.SPECHARVESTER_PACKAGE_VERSION }}
         run: |
+          proposal_kind="${INPUT_PROPOSAL_KIND:-${VAR_PROPOSAL_KIND:-single_package}}"
           candidate_dir="${INPUT_CANDIDATE_DIR:-${VAR_CANDIDATE_DIR:-candidates/github.com/xyflow/xyflow}}"
+          package_set_bundle_dir="${INPUT_PACKAGE_SET_BUNDLE_DIR:-${VAR_PACKAGE_SET_BUNDLE_DIR:-.smoke/xyflow-package-set/package-set}}"
+          package_set_viewer_dir="${INPUT_PACKAGE_SET_VIEWER_DIR:-${VAR_PACKAGE_SET_VIEWER_DIR:-.smoke/xyflow-package-set/viewer}}"
           package_id="${INPUT_PACKAGE_ID:-${VAR_PACKAGE_ID:-xyflow.core}}"
           package_version="${INPUT_PACKAGE_VERSION:-${VAR_PACKAGE_VERSION:-0.1.0}}"
           create_pr="${INPUT_CREATE_PR:-false}"
+          case "$proposal_kind" in
+            single_package|package_set)
+              ;;
+            *)
+              echo "::error::proposal_kind must be single_package or package_set."
+              exit 1
+              ;;
+          esac
           if [ "$EVENT_NAME" = "workflow_run" ]; then
-            create_pr="true"
+            if [ "$proposal_kind" = "single_package" ]; then
+              create_pr="true"
+            else
+              create_pr="false"
+            fi
+          fi
+          if [ "$proposal_kind" = "package_set" ] && [ "$create_pr" = "true" ]; then
+            echo "::error::package_set proposal mode is dry-run artifact generation only."
+            exit 1
           fi
           package_subdir="${package_id}/${package_version}"
           manifest_entry_path="public-index/generated/${package_subdir}"
 
           {
+            echo "proposal_kind=$proposal_kind"
             echo "candidate_dir=$candidate_dir"
+            echo "package_set_bundle_dir=$package_set_bundle_dir"
+            echo "package_set_viewer_dir=$package_set_viewer_dir"
             echo "package_id=$package_id"
             echo "package_version=$package_version"
             echo "package_subdir=$package_subdir"
@@ -101,6 +145,7 @@ jobs:
           python -m pip install -e ./SpecHarvester -e ./SpecPM
 
       - name: Materialize proposal candidate bundle
+        if: steps.config.outputs.proposal_kind == 'single_package'
         id: candidate
         working-directory: SpecHarvester
         run: |
@@ -134,12 +179,14 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Validate candidate
+        if: steps.config.outputs.proposal_kind == 'single_package'
         working-directory: SpecHarvester
         run: |
           test -d "${{ steps.candidate.outputs.candidate_dir }}"
           python -m specpm.cli validate "${{ steps.candidate.outputs.candidate_dir }}" --json
 
       - name: Preflight candidate identity and proposal inputs
+        if: steps.config.outputs.proposal_kind == 'single_package'
         working-directory: SpecHarvester
         run: |
           python - <<'PY'
@@ -191,6 +238,7 @@ jobs:
           PY
 
       - name: Build producer evidence artifacts
+        if: steps.config.outputs.proposal_kind == 'single_package'
         id: producer_evidence
         working-directory: SpecHarvester
         run: |
@@ -214,6 +262,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Upload producer evidence artifacts
+        if: steps.config.outputs.proposal_kind == 'single_package'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.producer_evidence.outputs.artifact_name }}
@@ -222,7 +271,65 @@ jobs:
             ${{ steps.producer_evidence.outputs.artifact_root }}/static-viewer/**
           if-no-files-found: error
 
+      - name: Build package-set handoff evidence artifacts
+        if: steps.config.outputs.proposal_kind == 'package_set'
+        id: package_set_evidence
+        working-directory: SpecHarvester
+        run: |
+          evidence_root="/tmp/specpm-package-set-proposal-evidence"
+          artifact_name="specpm-package-set-proposal-evidence-${GITHUB_RUN_ID}"
+          rm -rf "$evidence_root"
+          mkdir -p "$evidence_root"
+
+          bundle_set="${{ steps.config.outputs.package_set_bundle_dir }}"
+          viewer="${{ steps.config.outputs.package_set_viewer_dir }}"
+          test -d "$bundle_set"
+          if [ -d "$viewer" ]; then
+            viewer_args=(--viewer "$viewer")
+          else
+            viewer_args=()
+          fi
+
+          python -m spec_harvester package-set-handoff-proposal \
+            --bundle-set "$bundle_set" \
+            "${viewer_args[@]}" \
+            --output "$evidence_root/package-set-handoff-proposal.json" \
+            --proposal-body "$evidence_root/package-set-handoff-proposal.md"
+          python -m json.tool "$evidence_root/package-set-handoff-proposal.json" >/dev/null
+
+          {
+            echo "artifact_name=$artifact_name"
+            echo "artifact_root=$evidence_root"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Upload package-set handoff evidence artifacts
+        if: steps.config.outputs.proposal_kind == 'package_set'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package_set_evidence.outputs.artifact_name }}
+          path: |
+            ${{ steps.package_set_evidence.outputs.artifact_root }}/package-set-handoff-proposal.json
+            ${{ steps.package_set_evidence.outputs.artifact_root }}/package-set-handoff-proposal.md
+          if-no-files-found: error
+
+      - name: Summarize package-set handoff dry run
+        if: steps.config.outputs.proposal_kind == 'package_set'
+        run: |
+          {
+            echo "## Package-set handoff dry run"
+            echo
+            echo "Uploaded artifact: \`${{ steps.package_set_evidence.outputs.artifact_name }}\`"
+            echo
+            echo "Included files:"
+            echo "- \`package-set-handoff-proposal.json\`"
+            echo "- \`package-set-handoff-proposal.md\`"
+            echo
+            echo "This mode is review evidence only. It does not push to SpecPM,"
+            echo "does not use \`SPECPM_PROPOSAL_TOKEN\`, and does not create a SpecPM PR."
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Promote into SpecPM checkout
+        if: steps.config.outputs.proposal_kind == 'single_package'
         working-directory: SpecHarvester
         run: |
           python -m spec_harvester promote "${{ steps.candidate.outputs.candidate_dir }}" \
@@ -234,6 +341,7 @@ jobs:
             --force
 
       - name: Generate SpecPM public index
+        if: steps.config.outputs.proposal_kind == 'single_package'
         working-directory: SpecPM
         run: |
           python -m specpm.cli public-index generate \
@@ -246,6 +354,7 @@ jobs:
           test -f /tmp/specpm-public-index/v0/intents/index.json
 
       - name: Summarize and preflight SpecPM diff
+        if: steps.config.outputs.proposal_kind == 'single_package'
         id: diff
         working-directory: SpecPM
         run: |
@@ -278,7 +387,10 @@ jobs:
           fi
 
       - name: Create SpecPM pull request
-        if: steps.config.outputs.create_pr == 'true' && steps.diff.outputs.has_changes == 'true'
+        if: >-
+          steps.config.outputs.proposal_kind == 'single_package' &&
+          steps.config.outputs.create_pr == 'true' &&
+          steps.diff.outputs.has_changes == 'true'
         working-directory: SpecPM
         env:
           SPECPM_PROPOSAL_TOKEN: ${{ secrets.SPECPM_PROPOSAL_TOKEN }}

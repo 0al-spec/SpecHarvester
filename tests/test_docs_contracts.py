@@ -2038,6 +2038,52 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
     assert_current_next_task(next_task)
 
 
+def test_specpm_proposal_automation_supports_package_set_dry_run_boundary() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "propose-to-specpm.yml").read_text(
+        encoding="utf-8"
+    )
+    github_doc = (ROOT / "docs" / "SPECPM_PROPOSAL_AUTOMATION.md").read_text(encoding="utf-8")
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ProposalAutomation.md"
+    ).read_text(encoding="utf-8")
+
+    for required in (
+        "proposal_kind",
+        "single_package",
+        "package_set",
+        "package_set_bundle_dir",
+        "package_set_viewer_dir",
+        "Build package-set handoff evidence artifacts",
+        "package-set-handoff-proposal",
+        "package-set-handoff-proposal.json",
+        "package-set-handoff-proposal.md",
+        "Upload package-set handoff evidence artifacts",
+        "specpm-package-set-proposal-evidence",
+        "package_set proposal mode is dry-run artifact generation only",
+        "steps.config.outputs.proposal_kind == 'package_set'",
+        "steps.config.outputs.proposal_kind == 'single_package'",
+        "does not use \\`SPECPM_PROPOSAL_TOKEN\\`",
+        "does not create a SpecPM PR",
+    ):
+        assert required in workflow
+
+    for text in (github_doc, docc_doc):
+        for required in (
+            "proposal_kind: package_set",
+            "package_set_bundle_dir",
+            "package_set_viewer_dir",
+            "package-set-handoff-proposal.json",
+            "package-set-handoff-proposal.md",
+            "specpm-package-set-proposal-evidence",
+            "create_pr=false",
+            "SPECPM_PROPOSAL_TOKEN",
+            "untrusted",
+            "does not create a SpecPM PR",
+            "review evidence only",
+        ):
+            assert required in text
+
+
 def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:
     github_doc = ROOT / "docs" / "LOCAL_SMOKE_FIXTURES.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "LocalSmokeFixtures.md"
