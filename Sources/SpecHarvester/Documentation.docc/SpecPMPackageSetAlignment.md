@@ -41,8 +41,11 @@ P25 implementation should produce:
   human review boundaries;
 - P25-T6 static viewer previews with aggregate package-set summaries, member package
   cards, relation badges, review status, and result-scope examples;
-- P25-T7 an `xyflow` smoke scenario with `packages/*`, `examples/*`,
-  `tooling/*`, and `tests/*` workspace patterns.
+- P25-T7 `xyflow-package-set-smoke`, a deterministic local smoke scenario with
+  `packages/*`, `examples/*`, `tooling/*`, and `tests/*` workspace patterns,
+  `xyflow.workspace`, `xyflow.system`, `xyflow.react`, `xyflow.svelte`,
+  producer-observed `contains` relations, `bundle-set-preflight.json`,
+  `viewer/package-set.json`, and `xyflow-package-set-smoke.json`.
 
 ## Boundary
 

@@ -784,7 +784,7 @@ Acceptance:
   package cards, relation proposal badges, result scope examples, and
   producer-observed review status without hiding scoped packages under the
   aggregate package.
-- [ ] `P25-T7` Add an `xyflow` monorepo smoke fixture or local smoke scenario
+- [x] `P25-T7` Add an `xyflow` monorepo smoke fixture or local smoke scenario
   that exercises workspace inventory, package-set candidate generation, scoped
   member package generation, relation proposals, bundle-set preflight, and
   viewer output against the SpecPM reference scenario.

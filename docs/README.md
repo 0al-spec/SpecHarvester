@@ -118,7 +118,11 @@ Published DocC site:
 45. [`PACKAGE_SET_VIEWER.md`](PACKAGE_SET_VIEWER.md):
     static `render-package-set-site` review surface for package-set summaries,
     member package cards, relation proposal badges, and result scope examples
-46. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+46. [`XYFLOW_PACKAGE_SET_SMOKE.md`](XYFLOW_PACKAGE_SET_SMOKE.md):
+    local `xyflow-package-set-smoke` scenario for workspace inventory,
+    package-set drafting, relation proposals, bundle-set preflight, and viewer
+    output
+47. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -191,6 +195,8 @@ Published DocC site:
   producer-observed package relation proposals for package-set review
 - [`PACKAGE_SET_VIEWER.md`](PACKAGE_SET_VIEWER.md): static package-set review
   viewer for aggregate and scoped member package previews
+- [`XYFLOW_PACKAGE_SET_SMOKE.md`](XYFLOW_PACKAGE_SET_SMOKE.md): local
+  end-to-end package-set smoke scenario for the `xyflow` reference path
 
 ## GitHub Process Surface
 

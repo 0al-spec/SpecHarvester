@@ -125,8 +125,8 @@ under the aggregate package. The viewer should render:
 
 ### Xyflow Smoke Scenario
 
-P25-T7 should exercise the reference scenario against a deterministic fixture or
-local pinned checkout. The smoke should show:
+P25-T7 adds `xyflow-package-set-smoke`, a deterministic local fixture that
+exercises the reference scenario. The smoke shows:
 
 - workspace inventory with `packages/*`, `examples/*`, `tooling/*`, and
   `tests/*` patterns from the pinned `xyflow` snapshot;
@@ -134,6 +134,12 @@ local pinned checkout. The smoke should show:
 - `xyflow.system`;
 - `xyflow.react`;
 - `xyflow.svelte`;
+- `xyflow.workspace contains xyflow.system`;
+- `xyflow.workspace contains xyflow.react`;
+- `xyflow.workspace contains xyflow.svelte`;
+- `bundle-set-preflight.json`;
+- `viewer/package-set.json`;
+- `xyflow-package-set-smoke.json`.
 - `contains` relation proposals from the workspace package to each scoped
   member package;
 - bundle-set preflight evidence;

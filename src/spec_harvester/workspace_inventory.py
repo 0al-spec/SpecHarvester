@@ -146,7 +146,9 @@ class WorkspaceInventory:
         paths = {
             manifest["path"]
             for manifest in project_profile_manifests(self.request.snapshot)
-            if manifest.get("kind") == "package_manifest" and isinstance(manifest.get("path"), str)
+            if manifest.get("kind") == "package_manifest"
+            and isinstance(manifest.get("path"), str)
+            and Path(manifest["path"]).name in PACKAGE_MANIFEST_NAMES
         }
         for workspace_manifest in workspace_manifests:
             manifest_dir = Path(workspace_manifest["path"]).parent
@@ -419,8 +421,18 @@ def package_metadata(
 def package_role(manifest_path: str, package: dict[str, Any], workspace_paths: set[str]) -> str:
     name = str(package.get("name") or "").lower()
     subject = subject_slug(name, manifest_path)
+    source_target = source_target_path(manifest_path)
+    first_path_part = Path(manifest_path).parts[0] if Path(manifest_path).parts else ""
     if manifest_path in workspace_paths:
         return "workspace"
+    if manifest_path == "package.json" and workspace_paths:
+        return "workspace"
+    if source_target.startswith("examples/") or first_path_part == "examples":
+        return "example_package"
+    if source_target.startswith("tooling/") or first_path_part == "tooling":
+        return "tooling_package"
+    if source_target.startswith("tests/") or first_path_part == "tests":
+        return "test_package"
     if subject in {"react", "react-flow"} or "react" in subject.split("-"):
         return "react_binding"
     if subject in {"svelte", "svelte-flow"} or "svelte" in subject.split("-"):
@@ -459,7 +471,11 @@ def proposed_namespace(repository: dict[str, Any]) -> str:
 
 
 def specpm_segment(value: str) -> str:
-    normalized = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
+    normalized = re.sub(r"^@+", "", value.lower().strip())
+    normalized = normalized.replace("/", ".")
+    normalized = re.sub(r"[^a-z0-9.]+", "_", normalized)
+    normalized = re.sub(r"[._]+", lambda match: "." if "." in match.group(0) else "_", normalized)
+    normalized = normalized.strip("._-")
     return normalized or "package"
 
 

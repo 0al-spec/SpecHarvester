@@ -42,9 +42,9 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
     assert summary["workspaceInventory"]["kind"] == "SpecHarvesterWorkspaceInventory"
     assert summary["summary"] == {
         "candidateCount": 4,
-        "packageInventoryCount": 7,
+        "packageInventoryCount": 8,
         "relationProposalCount": 3,
-        "skippedCount": 3,
+        "skippedCount": 4,
     }
     assert summary["relationProposals"] == {
         "path": "package-relation-proposals.json",
@@ -54,7 +54,8 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
     assert [item["packageId"] for item in summary["skipped"]] == [
         "xyflow.cli",
         "xyflow.e2e",
-        "xyflow.playground",
+        "xyflow.react_examples",
+        "xyflow.svelte_examples",
     ]
     assert all(
         item["reason"] == "role_not_selected_for_initial_package_set_draft"
@@ -490,14 +491,15 @@ def make_workspace_checkout(path: Path) -> Path:
     (path / "package.json").write_text(
         json.dumps(
             {
-                "name": "xyflow",
+                "name": "@xyflow/monorepo",
                 "version": "0.0.0",
                 "private": True,
-                "workspaces": ["packages/*"],
+                "packageManager": "pnpm@9.2.0",
             }
         ),
         encoding="utf-8",
     )
+    (path / "pnpm-lock.yaml").write_text("lockfileVersion: '9.0'\n", encoding="utf-8")
     (path / "pnpm-workspace.yaml").write_text(
         """
 packages:
@@ -513,7 +515,8 @@ packages:
         "packages/system": {"name": "@xyflow/system", "version": "1.0.0"},
         "packages/react": {"name": "@xyflow/react", "version": "12.0.0"},
         "packages/svelte": {"name": "@xyflow/svelte", "version": "1.0.0"},
-        "examples/playground": {"name": "@xyflow/playground", "version": "0.0.0"},
+        "examples/react": {"name": "react-examples", "version": "0.0.0"},
+        "examples/svelte": {"name": "svelte-examples", "version": "0.0.0"},
         "tooling/cli": {"name": "@xyflow/cli", "version": "0.1.0"},
         "tests/e2e": {"name": "@xyflow/e2e", "version": "0.0.0"},
     }

@@ -6,26 +6,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    assert_p25_t6_archived(next_text)
-    assert_p25_t7_selected(next_text)
+    assert_p25_t7_archived(next_text)
+    assert_phase_25_complete(next_text)
 
 
-def assert_p25_t6_archived(next_text: str) -> None:
-    assert "**Last Archived:** P25-T6 Static Viewer Package-Set Panels" in next_text
+def assert_p25_t7_archived(next_text: str) -> None:
+    assert "**Last Archived:** P25-T7 Xyflow Package-Set Smoke Scenario" in next_text
     assert "package-set-draft.json" in next_text
     assert "package-relation-proposals.json" in next_text
     assert "bundle-set-preflight.json" in next_text
-    assert "render-package-set-site" in next_text
-    assert "package-set.json" in next_text
+    assert "xyflow-package-set-smoke" in next_text
+    assert "xyflow-package-set-smoke.json" in next_text
 
 
-def assert_p25_t7_selected(next_text: str) -> None:
-    assert "# Next Task: P25-T7 Xyflow Package-Set Smoke Scenario" in next_text
-    assert "**Status:** Selected" in next_text
-    assert "xyflow" in next_text
+def assert_phase_25_complete(next_text: str) -> None:
+    assert "# Next Task: Phase 25 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
     assert "workspace inventory" in next_text
-    assert "scoped member package" in next_text
-    assert "viewer output" in next_text
+    assert "static package-set viewer" in next_text
+    assert "package-set handoff/proposal automation" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -735,6 +734,65 @@ def test_docc_and_github_docs_cover_package_set_viewer() -> None:
 
     assert "PACKAGE_SET_VIEWER.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:PackageSetViewer>" in root_page.read_text(encoding="utf-8")
+
+
+def test_docc_and_github_docs_cover_xyflow_package_set_smoke() -> None:
+    github_doc = ROOT / "docs" / "XYFLOW_PACKAGE_SET_SMOKE.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "XyflowPackageSetSmoke.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    alignment_doc = ROOT / "docs" / "SPECPM_PACKAGE_SET_ALIGNMENT.md"
+    alignment_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMPackageSetAlignment.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "xyflow-package-set-smoke",
+            "collect-batch --emit-workspace-inventory",
+            "draft-package-set",
+            "preflight-bundle-set",
+            "render-package-set-site",
+            "workspace-inventory.json",
+            "package-set-draft.json",
+            "package-relation-proposals.json",
+            "bundle-set-preflight.json",
+            "viewer/package-set.json",
+            "xyflow-package-set-smoke.json",
+            "spec-harvester.xyflow-package-set-smoke/v0",
+            "SpecHarvesterXyflowPackageSetSmokeReport",
+            "xyflow.workspace",
+            "xyflow.system",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.workspace contains xyflow.system",
+            "xyflow.workspace contains xyflow.react",
+            "xyflow.workspace contains xyflow.svelte",
+            "xyflow.cli",
+            "xyflow.e2e",
+            "xyflow.react_examples",
+            "xyflow.svelte_examples",
+            "does not fetch the real",
+            "run package scripts",
+            "run package managers",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "XYFLOW_PACKAGE_SET_SMOKE.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:XyflowPackageSetSmoke>" in root_page.read_text(encoding="utf-8")
+    for path in (workflow_doc, alignment_doc, alignment_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "xyflow-package-set-smoke" in text
+        assert "xyflow-package-set-smoke.json" in text
+        assert "viewer/package-set.json" in text
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
