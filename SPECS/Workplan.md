@@ -827,7 +827,7 @@ Acceptance:
   generated package-set bundle into structured SpecPM review evidence with
   member package links, relation proposal links, bundle-set preflight status,
   viewer links, and an external registry acceptance decision boundary.
-- [ ] `P26-T2` Extend trusted SpecPM proposal automation or dry-run workflow
+- [x] `P26-T2` Extend trusted SpecPM proposal automation or dry-run workflow
   inputs so package-set proposal artifacts can be generated and attached
   without granting cross-repository write credentials to untrusted events.
 - [ ] `P26-T3` Define the SpecPM-side package-set proposal intake checklist and
