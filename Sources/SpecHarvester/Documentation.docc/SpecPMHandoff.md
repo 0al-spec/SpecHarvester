@@ -229,6 +229,31 @@ override. SpecHarvester proposal artifacts should use
 `registryAcceptanceDecision.status: external_required` until SpecPM review
 creates or records a `SpecPMRegistryAcceptanceDecision`.
 
+## Package-Set AI Enrichment
+
+After `draft-package-set` and `preflight-bundle-set`, operators may prepare
+proposal-only semantic enrichment for generated package-set candidates:
+
+```bash
+spec-harvester package-set-ai-enrichment-proposal \
+  --bundle-set .smoke/xyflow-package-set/package-set \
+  --source-checkout ../../xyflow \
+  --provider-base-url http://127.0.0.1:1234 \
+  --model openai/gpt-oss-20b \
+  --request-output .smoke/xyflow-package-set/ai/requests.json \
+  --output .smoke/xyflow-package-set/ai/ai-enrichment-proposals.json
+```
+
+The output is `SpecHarvesterPackageSetAIEnrichmentProposal` with
+`apiVersion: spec-harvester.package-set-ai-enrichment/v0`. It records
+`refinedSummary`, `capabilities`, `interfaces`, `evidencePaths`, confidence,
+provider usage metadata, and diagnostics such as
+`model_evidence_path_unsupported`.
+
+The artifact is still review evidence. It does not mutate generated specs,
+accept packages, accept relations, publish registry metadata, or replace
+SpecPM maintainer review. See <doc:PackageSetAIEnrichment>.
+
 ## Shared Fixture Policy
 
 When examples or tests demonstrate the SpecPM producer bundle contract, keep

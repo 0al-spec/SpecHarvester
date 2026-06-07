@@ -870,6 +870,52 @@ def test_docc_and_github_docs_cover_package_set_handoff_proposal() -> None:
     assert "# Next Task: P26-T3 SpecPM Package-Set Proposal Intake Checklist" in next_text
 
 
+def test_docc_and_github_docs_cover_package_set_ai_enrichment() -> None:
+    github_doc = ROOT / "docs" / "PACKAGE_SET_AI_ENRICHMENT.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "PackageSetAIEnrichment.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    handoff_doc = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    handoff_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "package-set-ai-enrichment-proposal",
+            "SpecHarvesterPackageSetAIEnrichmentProposal",
+            "spec-harvester.package-set-ai-enrichment/v0",
+            "openai/gpt-oss-20b",
+            "refinedSummary",
+            "capabilities",
+            "interfaces",
+            "evidencePaths",
+            "model_evidence_path_unsupported",
+            "proposal evidence only",
+            "does not mutate",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "CI must not require",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (handoff_doc, handoff_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "package-set-ai-enrichment-proposal" in text
+        assert "SpecHarvesterPackageSetAIEnrichmentProposal" in text
+        assert "model_evidence_path_unsupported" in text
+
+    assert "PACKAGE_SET_AI_ENRICHMENT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:PackageSetAIEnrichment>" in root_page.read_text(encoding="utf-8")
+    assert "`P26-T4` Add proposal-only package-set AI enrichment" in workplan.read_text(
+        encoding="utf-8"
+    )
+
+
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
     github_doc = ROOT / "docs" / "GOVERNANCE_REPORTS.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "GovernanceReports.md"

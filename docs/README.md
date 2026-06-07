@@ -125,7 +125,10 @@ Published DocC site:
 47. [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md):
     package-set handoff proposal JSON and Markdown for future SpecPM review
     automation
-48. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+48. [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
+    proposal-only local AI enrichment for generated package-set candidates,
+    compact evidence, provider receipts, and unsupported evidence diagnostics
+49. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -202,6 +205,8 @@ Published DocC site:
   end-to-end package-set smoke scenario for the `xyflow` reference path
 - [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md):
   package-set handoff proposal artifact for SpecPM review evidence
+- [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
+  proposal-only local AI enrichment for package-set candidates
 
 ## GitHub Process Surface
 

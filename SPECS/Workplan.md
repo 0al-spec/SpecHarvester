@@ -833,6 +833,11 @@ Acceptance:
 - [ ] `P26-T3` Define the SpecPM-side package-set proposal intake checklist and
   evidence roles required before maintainers accept package members or
   relations.
+- [x] `P26-T4` Add proposal-only package-set AI enrichment so operators can
+  use local OpenAI-compatible providers such as LM Studio to suggest
+  evidence-grounded summaries, capabilities, interfaces, confidence, and
+  evidence gaps without mutating generated specs or accepting registry
+  content.
 
 Motivation:
 
@@ -858,3 +863,6 @@ Acceptance:
   intake tooling.
 - Proposal automation stays trusted-context only and does not publish or accept
   packages automatically.
+- AI enrichment artifacts remain proposal-only, cite supplied compact evidence
+  paths, record provider usage metadata, and emit diagnostics for unsupported
+  model evidence paths.
