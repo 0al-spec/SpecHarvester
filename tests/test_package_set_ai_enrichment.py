@@ -1,15 +1,22 @@
 from __future__ import annotations
 
 import json
+import urllib.request
 from pathlib import Path
+
+import pytest
 
 from spec_harvester.cli import main
 from spec_harvester.package_set_ai_enrichment import (
     PACKAGE_SET_AI_ENRICHMENT_API_VERSION,
     PACKAGE_SET_AI_ENRICHMENT_KIND,
+    OpenAICompatibleProvider,
+    PackageSetAIEnrichmentError,
     PackageSetAIEnrichmentOptions,
     build_package_set_ai_enrichment_proposal,
     model_request_records,
+    normalize_local_provider_base_url,
+    parse_model_json_object,
 )
 from spec_harvester.xyflow_package_set_smoke import (
     XyflowPackageSetSmokeOptions,
@@ -100,6 +107,8 @@ def test_package_set_ai_enrichment_wraps_external_model_output(
         "packages/react/README.md",
         "packages/react/src/index.ts",
     ]
+    assert react["interfaces"][0]["kind"] == "component"
+    assert "intentIds" not in react["interfaces"][0]
 
 
 def test_package_set_ai_enrichment_reports_unsupported_model_evidence_path(
@@ -119,6 +128,67 @@ def test_package_set_ai_enrichment_reports_unsupported_model_evidence_path(
 
     assert report["status"] == "warning"
     assert "model_evidence_path_unsupported" in {item["code"] for item in report["diagnostics"]}
+    react = next(item for item in report["proposals"] if item["packageId"] == "xyflow.react")
+    assert react["capabilities"][0]["evidencePaths"] == [
+        "packages/react/README.md",
+        "packages/react/src/index.ts",
+    ]
+
+
+def test_openai_compatible_provider_receipt_uses_configured_provider_name(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class FakeResponse:
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {
+                    "model": "test-model",
+                    "choices": [{"message": {"content": '{"packageId":"xyflow.react"}'}}],
+                    "usage": {"total_tokens": 7},
+                }
+            ).encode("utf-8")
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda *_args, **_kwargs: FakeResponse())
+    provider = OpenAICompatibleProvider(
+        base_url="http://localhost:1234",
+        provider_name="local_test_provider",
+        model="test-model",
+        timeout_seconds=1,
+        max_output_tokens=128,
+        temperature=0,
+    )
+
+    _payload, receipt = provider.complete_json({"packageId": "xyflow.react"})
+    assert receipt["providerName"] == "local_test_provider"
+
+
+def test_parse_model_json_object_wraps_invalid_json() -> None:
+    try:
+        parse_model_json_object("not json")
+    except PackageSetAIEnrichmentError as exc:
+        assert "valid JSON" in str(exc)
+    else:
+        raise AssertionError("expected PackageSetAIEnrichmentError")
+
+
+def test_normalize_local_provider_base_url_rejects_extra_url_components() -> None:
+    for value in (
+        "http://user:pass@localhost:1234",
+        "http://localhost:1234?token=secret",
+        "http://localhost:1234#fragment",
+        "http://localhost:1234;params",
+    ):
+        try:
+            normalize_local_provider_base_url(value)
+        except ValueError:
+            continue
+        raise AssertionError(f"expected local provider URL rejection for {value}")
 
 
 def test_package_set_ai_enrichment_cli_writes_requests_and_proposal(

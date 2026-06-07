@@ -58,12 +58,14 @@ class OpenAICompatibleProvider:
         self,
         *,
         base_url: str,
+        provider_name: str,
         model: str,
         timeout_seconds: float,
         max_output_tokens: int,
         temperature: float,
     ) -> None:
         self.base_url = normalize_local_provider_base_url(base_url)
+        self.provider_name = provider_name
         self.model = model
         self.timeout_seconds = timeout_seconds
         self.max_output_tokens = max_output_tokens
@@ -112,7 +114,7 @@ class OpenAICompatibleProvider:
         parsed = parse_model_json_object(raw_content)
         receipt = {
             "providerKind": "openai_compatible",
-            "providerName": "lm_studio",
+            "providerName": self.provider_name,
             "baseUrl": self.base_url,
             "endpoint": "/v1/chat/completions",
             "modelId": str(response_payload.get("model") or self.model),
@@ -172,6 +174,7 @@ def build_package_set_ai_enrichment_proposal(
             raise ValueError("provider execution requires --provider-base-url and --model")
         provider = OpenAICompatibleProvider(
             base_url=options.provider_base_url,
+            provider_name=options.provider_name,
             model=options.model,
             timeout_seconds=options.timeout_seconds,
             max_output_tokens=options.max_output_tokens,
@@ -499,6 +502,7 @@ def package_proposal(
             allowed_paths=allowed_paths,
             diagnostics=diagnostics,
             field="capabilities",
+            preserve_kind=False,
         ),
         "interfaces": normalized_records(
             package_id=package_id,
@@ -506,6 +510,7 @@ def package_proposal(
             allowed_paths=allowed_paths,
             diagnostics=diagnostics,
             field="interfaces",
+            preserve_kind=True,
         ),
         "evidenceGaps": [
             item for item in list_value(model_output.get("evidenceGaps")) if isinstance(item, str)
@@ -541,6 +546,7 @@ def normalized_records(
     allowed_paths: set[str],
     diagnostics: list[dict[str, Any]],
     field: str,
+    preserve_kind: bool,
 ) -> list[dict[str, Any]]:
     normalized = []
     for index, item in enumerate(records):
@@ -557,6 +563,7 @@ def normalized_records(
         evidence_paths = [
             path for path in list_value(item.get("evidencePaths")) if isinstance(path, str) and path
         ]
+        supported_evidence_paths = [path for path in evidence_paths if path in allowed_paths]
         unsupported = sorted(set(evidence_paths) - allowed_paths)
         if unsupported:
             diagnostics.append(
@@ -568,15 +575,19 @@ def normalized_records(
                     {"paths": unsupported},
                 )
             )
-        normalized.append(
-            {
-                "id": string_value(item.get("id")),
-                "summary": string_value(item.get("summary")),
-                "intentIds": [x for x in list_value(item.get("intentIds")) if isinstance(x, str)],
-                "evidencePaths": evidence_paths,
-                "confidence": confidence_value(item.get("confidence")),
-            }
-        )
+        record = {
+            "id": string_value(item.get("id")),
+            "summary": string_value(item.get("summary")),
+            "evidencePaths": supported_evidence_paths,
+            "confidence": confidence_value(item.get("confidence")),
+        }
+        if preserve_kind:
+            record["kind"] = string_value(item.get("kind"))
+        else:
+            record["intentIds"] = [
+                x for x in list_value(item.get("intentIds")) if isinstance(x, str)
+            ]
+        normalized.append(record)
     return normalized
 
 
@@ -664,12 +675,15 @@ def parse_model_json_object(raw_content: str) -> dict[str, Any]:
         text = re.sub(r"\s*```$", "", text)
     try:
         payload = json.loads(text)
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as exc:
         start = text.find("{")
         end = text.rfind("}")
         if start < 0 or end <= start:
-            raise
-        payload = json.loads(text[start : end + 1])
+            raise PackageSetAIEnrichmentError("Model output must be valid JSON") from exc
+        try:
+            payload = json.loads(text[start : end + 1])
+        except json.JSONDecodeError as fallback_exc:
+            raise PackageSetAIEnrichmentError("Model output must be valid JSON") from fallback_exc
     if not isinstance(payload, dict):
         raise PackageSetAIEnrichmentError("Model output must be a JSON object")
     return payload
@@ -679,6 +693,16 @@ def normalize_local_provider_base_url(value: str) -> str:
     parsed = urllib.parse.urlparse(value.strip().rstrip("/"))
     if parsed.scheme != "http" or parsed.hostname not in LOCAL_PROVIDER_HOSTS:
         raise ValueError("Provider base URL must be an explicit local http URL")
+    if parsed.username or parsed.password:
+        raise ValueError("Provider base URL must not include credentials")
+    if (
+        parsed.params
+        or parsed.query
+        or parsed.fragment
+        or ";" in parsed.netloc
+        or ";" in parsed.path
+    ):
+        raise ValueError("Provider base URL must not include params, query, or fragment")
     path = parsed.path.rstrip("/")
     if path == "/v1":
         path = ""
