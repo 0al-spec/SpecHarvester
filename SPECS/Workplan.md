@@ -823,7 +823,7 @@ Acceptance:
 
 ## Phase 26. Package-Set SpecPM Handoff Automation
 
-- [ ] `P26-T1` Add a package-set handoff proposal artifact that turns a
+- [x] `P26-T1` Add a package-set handoff proposal artifact that turns a
   generated package-set bundle into structured SpecPM review evidence with
   member package links, relation proposal links, bundle-set preflight status,
   viewer links, and an external registry acceptance decision boundary.
