@@ -6,26 +6,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    assert_p25_t6_archived(next_text)
-    assert_p25_t7_selected(next_text)
+    assert_p25_t7_archived(next_text)
+    assert_phase_25_complete(next_text)
 
 
-def assert_p25_t6_archived(next_text: str) -> None:
-    assert "**Last Archived:** P25-T6 Static Viewer Package-Set Panels" in next_text
+def assert_p25_t7_archived(next_text: str) -> None:
+    assert "**Last Archived:** P25-T7 Xyflow Package-Set Smoke Scenario" in next_text
     assert "package-set-draft.json" in next_text
     assert "package-relation-proposals.json" in next_text
     assert "bundle-set-preflight.json" in next_text
-    assert "render-package-set-site" in next_text
-    assert "package-set.json" in next_text
+    assert "xyflow-package-set-smoke" in next_text
+    assert "xyflow-package-set-smoke.json" in next_text
 
 
-def assert_p25_t7_selected(next_text: str) -> None:
-    assert "# Next Task: P25-T7 Xyflow Package-Set Smoke Scenario" in next_text
-    assert "**Status:** Selected" in next_text
-    assert "xyflow" in next_text
+def assert_phase_25_complete(next_text: str) -> None:
+    assert "# Next Task: Phase 25 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
     assert "workspace inventory" in next_text
-    assert "scoped member package" in next_text
-    assert "viewer output" in next_text
+    assert "static package-set viewer" in next_text
+    assert "package-set handoff/proposal automation" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

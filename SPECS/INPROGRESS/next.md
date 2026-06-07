@@ -1,39 +1,39 @@
-# Next Task: P25-T7 Xyflow Package-Set Smoke Scenario
+# Next Task: Phase 25 Complete
 
-**Status:** Selected
-**Last Archived:** P25-T6 Static Viewer Package-Set Panels
-**Archived:** 2026-06-06
+**Status:** Phase Complete
+**Last Archived:** P25-T7 Xyflow Package-Set Smoke Scenario
+**Archived:** 2026-06-07
 
 ## Recently Archived
 
+- `P25-T7` added `xyflow-package-set-smoke`, a deterministic local synthetic
+  scenario that writes a fixture checkout, source manifest, workspace inventory,
+  `package-set-draft.json`, `package-relation-proposals.json`,
+  `bundle-set-preflight.json`, static viewer output, and
+  `xyflow-package-set-smoke.json` summary.
 - `P25-T6` added `render-package-set-site`, a static viewer path for generated
-  package-set outputs. It reads `package-set-draft.json`,
-  `package-relation-proposals.json`, optional `bundle-set-preflight.json`, and
-  generated candidate manifests, then writes `package-set.json`, static assets,
-  member package cards, relation proposal badges, producer-observed review
-  status, and result scope examples.
+  package-set outputs.
 - `P25-T5` added `preflight-bundle-set`, a producer-side verifier for generated
   package-set output directories.
-- `P25-T4` added deterministic `package-relation-proposals.json` output for
-  producer-observed `contains` relations.
 
-## Motivation
+## Completed Phase
 
-- The package-set pipeline now exists as separate pieces: workspace inventory,
-  package-set drafting, relation proposals, bundle-set preflight, and static
-  viewer output.
-- Reviewers need one practical `xyflow` scenario that proves these pieces work
-  together and preserves the intended product boundary: broad workspace
-  discovery plus scoped member packages.
+Phase 25 now covers the package-set monorepo discovery path:
 
-## Goal
+- workspace inventory;
+- package-set and scoped member candidate drafting;
+- producer-observed relation proposals;
+- bundle-set preflight;
+- static package-set viewer;
+- local `xyflow` end-to-end smoke scenario.
 
-- Add an `xyflow` monorepo smoke fixture or local smoke scenario that exercises
-  workspace inventory, package-set candidate generation, scoped member package
-  generation, relation proposals, bundle-set preflight, and viewer output
-  against the SpecPM reference scenario.
+## Suggested Next Planning Step
 
-## Next Step
+Define a new phase for package-set handoff/proposal automation between
+SpecHarvester and SpecPM. Candidate themes:
 
-Start `P25-T7` by choosing the fixture shape and expected artifacts for a
-repeatable `xyflow` package-set smoke run.
+- package-set proposal body generation;
+- package-set relation evidence links;
+- SpecPM-side package-set preflight handoff;
+- package-set viewer artifact upload or PR attachment strategy;
+- maintainer acceptance workflow for package-set relations.
