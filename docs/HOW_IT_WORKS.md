@@ -283,8 +283,8 @@ python3 -m spec_harvester draft-package-set \
 This writes `package-set-draft.json`, `package-relation-proposals.json`, and
 ordinary preview candidate bundle directories such as `xyflow.workspace`,
 `xyflow.system`, `xyflow.react`, and `xyflow.svelte`. Relation proposals are
-producer-observed review material; bundle-set preflight remains a later
-producer stage.
+producer-observed review material; run `preflight-bundle-set` next to verify
+the generated set as one review unit.
 
 ### Batch Source Manifests
 

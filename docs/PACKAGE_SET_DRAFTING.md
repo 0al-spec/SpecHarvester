@@ -88,7 +88,7 @@ SpecHarvester does not execute package scripts during package-set drafting.
 
 The command does not:
 
-- run bundle-set preflight;
+- run bundle-set preflight; use `preflight-bundle-set` for that step;
 - render package-set viewer panels;
 - mutate SpecPM accepted sources;
 - publish public registry metadata;
@@ -96,6 +96,6 @@ The command does not:
 - install dependencies;
 - run package managers.
 
-P25-T4 emits relation proposals such as `contains`. P25-T5 owns bundle-set
-preflight across generated package candidates and relation output. P25-T6 owns
-viewer panels for relation badges and package-set review.
+P25-T4 emits relation proposals such as `contains`. Use `preflight-bundle-set`
+to verify generated package candidates and relation output together. P25-T6
+owns viewer panels for relation badges and package-set review.

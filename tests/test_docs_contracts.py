@@ -6,25 +6,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    assert_p25_t4_archived(next_text)
-    assert_p25_t5_selected(next_text)
+    assert_p25_t5_archived(next_text)
+    assert_p25_t6_selected(next_text)
 
 
-def assert_p25_t4_archived(next_text: str) -> None:
-    assert "**Last Archived:** P25-T4 Package Relation Proposal Output" in next_text
+def assert_p25_t5_archived(next_text: str) -> None:
+    assert "**Last Archived:** P25-T5 Bundle-Set Preflight" in next_text
     assert "workspace-inventory.json" in next_text
     assert "package-set-draft.json" in next_text
     assert "package-relation-proposals.json" in next_text
+    assert "preflight-bundle-set" in next_text
 
 
-def assert_p25_t5_selected(next_text: str) -> None:
-    assert "# Next Task: P25-T5 Bundle-Set Preflight" in next_text
+def assert_p25_t6_selected(next_text: str) -> None:
+    assert "# Next Task: P25-T6 Static Viewer Package-Set Panels" in next_text
     assert "**Status:** Selected" in next_text
-    assert "unique package" in next_text
-    assert "receipt/report digests" in next_text
-    assert "relation source/target existence" in next_text
-    assert "workspace inventory consistency" in next_text
-    assert "human review boundary" in next_text
+    assert "static viewer" in next_text
+    assert "member package cards" in next_text
+    assert "relation proposal badges" in next_text
+    assert "producer-observed review status" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -561,7 +561,7 @@ def test_docc_and_github_docs_cover_workspace_inventory() -> None:
             "xyflow.react",
             "xyflow.svelte",
             "P25-T3",
-            "P25-T5",
+            "preflight-bundle-set",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"
 
@@ -601,7 +601,7 @@ def test_docc_and_github_docs_cover_package_set_drafting() -> None:
             "skipped[]",
             "role_not_selected_for_initial_package_set_draft",
             "P25-T4",
-            "P25-T5",
+            "preflight-bundle-set",
             "not namespace authority",
             "does not execute package scripts",
         ):
@@ -644,7 +644,7 @@ def test_docc_and_github_docs_cover_package_relation_proposals() -> None:
             "does not hash itself",
             "not SpecPM accepted registry metadata",
             "trust inheritance",
-            "P25-T5",
+            "preflight-bundle-set",
             "P25-T6",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"
@@ -654,6 +654,43 @@ def test_docc_and_github_docs_cover_package_relation_proposals() -> None:
 
     assert "PACKAGE_RELATION_PROPOSALS.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:PackageRelationProposals>" in root_page.read_text(encoding="utf-8")
+
+
+def test_docc_and_github_docs_cover_bundle_set_preflight() -> None:
+    github_doc = ROOT / "docs" / "BUNDLE_SET_PREFLIGHT.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BundleSetPreflight.md"
+    package_set_doc = ROOT / "docs" / "PACKAGE_SET_DRAFTING.md"
+    relation_doc = ROOT / "docs" / "PACKAGE_RELATION_PROPOSALS.md"
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "preflight-bundle-set",
+            "package-set-draft.json",
+            "package-relation-proposals.json",
+            "spec-harvester.bundle-set-preflight/v0",
+            "SpecHarvesterBundleSetPreflightReport",
+            "candidate `packageId`",
+            "preflight-candidate-bundle",
+            "relation source and target",
+            "workspace inventory",
+            "does not accept packages",
+            "does not accept relations",
+            "package managers",
+            "P25-T6",
+            "P25-T7",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (package_set_doc, relation_doc, workflow_doc):
+        assert "preflight-bundle-set" in path.read_text(encoding="utf-8")
+
+    assert "BUNDLE_SET_PREFLIGHT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:BundleSetPreflight>" in root_page.read_text(encoding="utf-8")
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:

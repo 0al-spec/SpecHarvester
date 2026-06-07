@@ -25,6 +25,10 @@ from spec_harvester.architecture_lint import (
     write_architecture_lint_report,
 )
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
+from spec_harvester.bundle_set_preflight import (
+    BundleSetPreflightOptions,
+    run_bundle_set_preflight,
+)
 from spec_harvester.candidate_bundle_preflight import (
     CandidateBundlePreflightOptions,
     run_candidate_bundle_preflight,
@@ -282,6 +286,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="Candidate package directory containing producer-receipt.json.",
     )
     preflight.set_defaults(func=run_preflight_candidate_bundle)
+
+    bundle_set_preflight = subcommands.add_parser(
+        "preflight-bundle-set",
+        help="Verify a generated package-set output directory before SpecPM handoff.",
+    )
+    bundle_set_preflight.add_argument(
+        "bundle_set",
+        type=Path,
+        help="Package-set output directory containing package-set-draft.json.",
+    )
+    bundle_set_preflight.set_defaults(func=run_preflight_bundle_set)
 
     promote = subcommands.add_parser(
         "promote",
@@ -847,6 +862,12 @@ def run_preflight_candidate_bundle(args: argparse.Namespace) -> int:
     result = run_candidate_bundle_preflight(
         CandidateBundlePreflightOptions(candidate=args.candidate)
     )
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_preflight_bundle_set(args: argparse.Namespace) -> int:
+    result = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=args.bundle_set))
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["status"] == "passed" else 1
 

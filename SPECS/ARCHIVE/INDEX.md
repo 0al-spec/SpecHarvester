@@ -94,6 +94,7 @@
 | P25-T2 | [P25-T2_Deterministic_Workspace_Inventory/](P25-T2_Deterministic_Workspace_Inventory/) | 2026-06-06 | PASS |
 | P25-T3 | [P25-T3_Package_Set_and_Scoped_Member_Candidate_Drafting/](P25-T3_Package_Set_and_Scoped_Member_Candidate_Drafting/) | 2026-06-06 | PASS |
 | P25-T4 | [P25-T4_Package_Relation_Proposal_Output/](P25-T4_Package_Relation_Proposal_Output/) | 2026-06-06 | PASS |
+| P25-T5 | [P25-T5_Bundle_Set_Preflight/](P25-T5_Bundle_Set_Preflight/) | 2026-06-06 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -313,6 +314,8 @@
 | 2026-06-06 | P25-T3 | Archived REVIEW_p25_t3_package_set_candidate_drafting report |
 | 2026-06-06 | P25-T4 | Archived Package Relation Proposal Output (PASS) |
 | 2026-06-06 | P25-T4 | Archived REVIEW_p25_t4_package_relation_proposals report |
+| 2026-06-06 | P25-T5 | Archived Bundle-Set Preflight (PASS) |
+| 2026-06-06 | P25-T5 | Archived REVIEW_p25_t5_bundle_set_preflight report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
