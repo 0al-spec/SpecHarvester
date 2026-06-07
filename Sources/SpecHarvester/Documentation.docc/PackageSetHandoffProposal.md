@@ -7,8 +7,9 @@ It summarizes the aggregate package, scoped member packages, relation
 proposals, bundle-set preflight status, package-set viewer artifacts, and the
 external registry acceptance decision boundary.
 
-The required source artifacts are `package-set-draft.json`,
-`package-relation-proposals.json`, and `bundle-set-preflight.json`.
+The required source artifacts are `package-set-draft.json` and
+`package-relation-proposals.json`. `bundle-set-preflight.json` is optional
+review evidence and is included when present.
 
 ## Command
 

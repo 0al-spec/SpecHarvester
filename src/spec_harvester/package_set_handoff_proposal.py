@@ -190,7 +190,6 @@ def member_records(bundle_set: Path, draft: dict[str, Any]) -> list[dict[str, An
         if not isinstance(candidate, dict):
             continue
         candidate_path = string_value(candidate.get("candidatePath"))
-        candidate_root = bundle_set / candidate_path
         members.append(
             {
                 "packageId": string_value(candidate.get("packageId")),
@@ -199,10 +198,10 @@ def member_records(bundle_set: Path, draft: dict[str, Any]) -> list[dict[str, An
                 "manifestPath": string_value(candidate.get("manifest")),
                 "producerReceiptPath": string_value(candidate.get("producerReceipt")),
                 "validationReportPath": string_value(candidate.get("validationReport")),
-                "diagnosticsPath": string_value(candidate.get("diagnosticsReport")),
+                "diagnosticsReportPath": string_value(candidate.get("diagnosticsReport")),
                 "sourceTargetPath": string_value(candidate.get("sourceTargetPath")),
                 "status": string_value(candidate.get("status")),
-                "evidenceLinks": member_evidence_links(candidate, candidate_root),
+                "evidenceLinks": member_evidence_links(candidate, bundle_set),
             }
         )
     return sorted(members, key=lambda item: (item["role"] != "workspace", item["packageId"]))
@@ -210,10 +209,9 @@ def member_records(bundle_set: Path, draft: dict[str, Any]) -> list[dict[str, An
 
 def member_evidence_links(
     candidate: dict[str, Any],
-    candidate_root: Path,
+    bundle_set: Path,
 ) -> list[dict[str, Any]]:
     links = []
-    bundle_set = candidate_root.parent
     for role, field in (
         ("member_manifest", "manifest"),
         ("member_boundary_spec", "spec"),

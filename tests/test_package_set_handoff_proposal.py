@@ -52,6 +52,14 @@ def test_package_set_handoff_proposal_builds_xyflow_review_artifact(
         "xyflow.svelte",
         "xyflow.system",
     ]
+    workspace = proposal["members"][0]
+    assert "diagnosticsReportPath" in workspace
+    assert "diagnosticsPath" not in workspace
+    workspace_manifest = next(
+        link for link in workspace["evidenceLinks"] if link["role"] == "member_manifest"
+    )
+    assert workspace_manifest["status"] == "present"
+    assert workspace_manifest["digest"].startswith("sha256:")
     assert relation_tuples(proposal) == {
         ("xyflow.workspace", "contains", "xyflow.react"),
         ("xyflow.workspace", "contains", "xyflow.svelte"),
