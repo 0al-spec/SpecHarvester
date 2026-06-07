@@ -820,3 +820,41 @@ Acceptance:
 - The `xyflow` scenario can show `xyflow.workspace`, `xyflow.system`,
   `xyflow.react`, and `xyflow.svelte` as separate candidate subjects with
   explicit `contains` relations.
+
+## Phase 26. Package-Set SpecPM Handoff Automation
+
+- [ ] `P26-T1` Add a package-set handoff proposal artifact that turns a
+  generated package-set bundle into structured SpecPM review evidence with
+  member package links, relation proposal links, bundle-set preflight status,
+  viewer links, and an external registry acceptance decision boundary.
+- [ ] `P26-T2` Extend trusted SpecPM proposal automation or dry-run workflow
+  inputs so package-set proposal artifacts can be generated and attached
+  without granting cross-repository write credentials to untrusted events.
+- [ ] `P26-T3` Define the SpecPM-side package-set proposal intake checklist and
+  evidence roles required before maintainers accept package members or
+  relations.
+
+Motivation:
+
+- Phase 25 proves SpecHarvester can generate reviewable package-set bundles,
+  but operators still need a handoff artifact that explains what should be
+  reviewed in SpecPM.
+- Package-set proposals include multiple candidate packages and relation
+  proposals, so the existing single-package update proposal shape is too narrow.
+- SpecPM must remain the validation, acceptance, and registry authority.
+
+Goal:
+
+- Convert generated package-set bundles into deterministic proposal evidence
+  that a future SpecPM PR, issue, or CI preflight can consume without treating
+  producer output as automatic acceptance.
+
+Acceptance:
+
+- Package-set handoff artifacts identify aggregate and scoped member packages,
+  relation proposals, preflight status, viewer output, and registry acceptance
+  decision boundary.
+- The artifact is reviewable by humans and machine-readable by future SpecPM
+  intake tooling.
+- Proposal automation stays trusted-context only and does not publish or accept
+  packages automatically.

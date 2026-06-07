@@ -1,39 +1,35 @@
-# Next Task: Phase 25 Complete
+# Next Task: P26-T1 Package-Set Handoff Proposal Artifact
 
-**Status:** Phase Complete
+**Status:** Selected
 **Last Archived:** P25-T7 Xyflow Package-Set Smoke Scenario
 **Archived:** 2026-06-07
 
 ## Recently Archived
 
 - `P25-T7` added `xyflow-package-set-smoke`, a deterministic local synthetic
-  scenario that writes a fixture checkout, source manifest, workspace inventory,
-  `package-set-draft.json`, `package-relation-proposals.json`,
-  `bundle-set-preflight.json`, static viewer output, and
-  `xyflow-package-set-smoke.json` summary.
+  scenario that writes workspace inventory, package-set draft, relation
+  proposals, bundle-set preflight, viewer output, and smoke summary.
 - `P25-T6` added `render-package-set-site`, a static viewer path for generated
   package-set outputs.
 - `P25-T5` added `preflight-bundle-set`, a producer-side verifier for generated
   package-set output directories.
 
-## Completed Phase
+## Motivation
 
-Phase 25 now covers the package-set monorepo discovery path:
+- Phase 25 proves the package-set producer pipeline works as plumbing.
+- Operators still need a SpecPM handoff artifact that explains what should be
+  reviewed: aggregate package, scoped members, relation proposals, preflight
+  status, viewer output, and acceptance boundary.
+- The existing accepted package update proposal flow is single-package oriented
+  and does not model package-set relations.
 
-- workspace inventory;
-- package-set and scoped member candidate drafting;
-- producer-observed relation proposals;
-- bundle-set preflight;
-- static package-set viewer;
-- local `xyflow` end-to-end smoke scenario.
+## Goal
 
-## Suggested Next Planning Step
+- Add a deterministic package-set handoff proposal artifact that converts a
+  generated bundle-set output into reviewable SpecPM proposal evidence without
+  accepting packages or relations automatically.
 
-Define a new phase for package-set handoff/proposal automation between
-SpecHarvester and SpecPM. Candidate themes:
+## Next Step
 
-- package-set proposal body generation;
-- package-set relation evidence links;
-- SpecPM-side package-set preflight handoff;
-- package-set viewer artifact upload or PR attachment strategy;
-- maintainer acceptance workflow for package-set relations.
+Start `P26-T1` by adding the JSON/Markdown builder and CLI command for
+`package-set-handoff-proposal`.
