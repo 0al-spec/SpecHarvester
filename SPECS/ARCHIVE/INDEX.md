@@ -321,6 +321,7 @@
 | 2026-06-07 | P25-T7 | Archived Xyflow Package-Set Smoke Scenario (PASS) |
 | 2026-06-07 | P25-T7 | Archived REVIEW_p25_t7_xyflow_package_set_smoke_scenario report |
 | 2026-06-07 | P26-T1 | Archived Package-Set Handoff Proposal Artifact (PASS) |
+| 2026-06-07 | P26-T1 | Archived REVIEW_p26_t1_package_set_handoff_proposal_artifact report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
