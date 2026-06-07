@@ -447,7 +447,12 @@ def package_source_entry(package_manifest: Path) -> str:
     if not isinstance(payload, dict):
         return ""
     source = payload.get("source")
-    return source if isinstance(source, str) else ""
+    if not isinstance(source, str):
+        return ""
+    source_path = Path(source)
+    if source_path.is_absolute() or ".." in source_path.parts or "\\" in source:
+        return ""
+    return source_path.as_posix()
 
 
 def evidence_record(

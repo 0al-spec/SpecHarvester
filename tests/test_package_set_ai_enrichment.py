@@ -40,6 +40,36 @@ def test_package_set_ai_enrichment_requests_include_compact_source_evidence(
     assert "Do not merely repeat current generated capability ids" in " ".join(react["constraints"])
 
 
+def test_package_set_ai_enrichment_rejects_escaping_manifest_source(
+    tmp_path: Path,
+) -> None:
+    smoke = write_xyflow_smoke(tmp_path)
+    add_source_export_fixture(smoke)
+    checkout = smoke / "fixture" / "xyflow"
+    private_notes = checkout / "packages" / "private-notes.md"
+    private_notes.write_text("must not reach model input\n", encoding="utf-8")
+    react_manifest = checkout / "packages" / "react" / "package.json"
+    manifest_payload = json.loads(react_manifest.read_text(encoding="utf-8"))
+    manifest_payload["source"] = "../private-notes.md"
+    react_manifest.write_text(
+        json.dumps(manifest_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    requests = model_request_records(
+        PackageSetAIEnrichmentOptions(
+            bundle_set=smoke / "package-set",
+            source_checkout=checkout,
+        )
+    )
+
+    react = next(request for request in requests if request["packageId"] == "xyflow.react")
+    evidence_paths = {item["path"] for item in react["evidence"]}
+    evidence_text = "\n".join(item["text"] for item in react["evidence"])
+    assert "packages/private-notes.md" not in evidence_paths
+    assert "must not reach model input" not in evidence_text
+
+
 def test_package_set_ai_enrichment_wraps_external_model_output(
     tmp_path: Path,
 ) -> None:
