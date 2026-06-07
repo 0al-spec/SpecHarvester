@@ -38,7 +38,7 @@ No actionable findings.
   — PASS, `status: passed`.
 - `PYTHONPATH=src ruff check .` — PASS.
 - `ruff format --check src tests` — PASS, 89 files already formatted.
-- `PYTHONPATH=src pytest -q` — PASS, 536 passed, 1 skipped.
+- `PYTHONPATH=src pytest -q` — PASS, 537 passed, 1 skipped.
 - `git diff --check` — PASS.
 - `swift build --target SpecHarvesterDocs` — PASS.
 - DocC static generation — PASS with unrelated pre-existing warnings.

@@ -31,7 +31,7 @@ prompts, accept packages, accept relations, or publish registry metadata.
 | `PYTHONPATH=src python -m spec_harvester.cli xyflow-package-set-smoke --output /tmp/spec-harvester-xyflow-package-set-smoke` | PASS, `status: passed` |
 | `PYTHONPATH=src ruff check .` | PASS |
 | `ruff format --check src tests` | PASS, 89 files already formatted |
-| `PYTHONPATH=src pytest -q` | PASS, 536 passed, 1 skipped |
+| `PYTHONPATH=src pytest -q` | PASS, 537 passed, 1 skipped |
 | `git diff --check` | PASS |
 | `swift build --target SpecHarvesterDocs` | PASS |
 | `swift package --allow-writing-to-directory ./.docc-build generate-documentation --target SpecHarvester --output-path ./.docc-build --transform-for-static-hosting --hosting-base-path SpecHarvester` | PASS with pre-existing DocC warnings |

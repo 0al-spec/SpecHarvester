@@ -218,6 +218,8 @@ def relation_endpoint_package_id(endpoint: Any) -> str | None:
 
 
 def ensure_empty_output(output: Path) -> None:
+    if output.exists() and not output.is_dir():
+        raise ValueError(f"Smoke output path is not a directory: {output}")
     if output.exists() and any(output.iterdir()):
         raise ValueError(f"Smoke output directory is not empty: {output}")
     output.mkdir(parents=True, exist_ok=True)

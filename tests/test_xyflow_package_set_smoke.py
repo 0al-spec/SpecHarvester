@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from spec_harvester.cli import main
 from spec_harvester.xyflow_package_set_smoke import (
     EXPECTED_PACKAGE_IDS,
@@ -82,6 +84,14 @@ def test_xyflow_package_set_smoke_cli_writes_summary(tmp_path: Path, capsys) -> 
     assert printed["packageSet"]["packageIds"] == sorted(EXPECTED_PACKAGE_IDS)
     assert relation_tuples(printed) == set(EXPECTED_RELATIONS)
     assert printed["viewer"]["status"] == "ok"
+
+
+def test_xyflow_package_set_smoke_rejects_existing_file_output(tmp_path: Path) -> None:
+    output = tmp_path / "not-a-directory"
+    output.write_text("file", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="not a directory"):
+        run_xyflow_package_set_smoke(XyflowPackageSetSmokeOptions(output=output))
 
 
 def relation_tuples(report: dict[str, object]) -> set[tuple[str, str, str]]:
