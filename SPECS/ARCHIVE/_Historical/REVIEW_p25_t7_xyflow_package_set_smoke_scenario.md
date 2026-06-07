@@ -23,6 +23,10 @@ No actionable findings.
 - The generated relation proposals include producer-observed `contains`
   relations from `xyflow.workspace` to system, React, and Svelte member
   packages.
+- The package-set role hardening was verified against the existing real local
+  `xyflow` checkout at `a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd`: root
+  aggregate package `xyflow.workspace`, primary members, three relations,
+  skipped examples/tooling/tests, passing preflight, and viewer output.
 - The summary explicitly records that networks, package scripts, package
   managers, builds, tests, and prompts are not run.
 - GitHub docs, DocC, workflow docs, and package-set alignment docs expose the
@@ -32,10 +36,13 @@ No actionable findings.
 
 ## Validation Reviewed
 
-- `PYTHONPATH=src pytest tests/test_xyflow_package_set_smoke.py tests/test_docs_contracts.py -q`
-  — PASS, 42 passed.
+- `PYTHONPATH=src pytest tests/test_batch_collection.py::test_collect_batch_snapshots_emits_deterministic_workspace_inventory tests/test_package_set_drafter.py tests/test_xyflow_package_set_smoke.py tests/test_docs_contracts.py -q`
+  — PASS, 62 passed.
 - `PYTHONPATH=src python -m spec_harvester.cli xyflow-package-set-smoke --output /tmp/spec-harvester-xyflow-package-set-smoke`
   — PASS, `status: passed`.
+- Real local `xyflow` package-set pipeline at
+  `a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd` — PASS, 4 candidates, 3
+  relations, preflight passed, viewer ok.
 - `PYTHONPATH=src ruff check .` — PASS.
 - `ruff format --check src tests` — PASS, 89 files already formatted.
 - `PYTHONPATH=src pytest -q` — PASS, 537 passed, 1 skipped.

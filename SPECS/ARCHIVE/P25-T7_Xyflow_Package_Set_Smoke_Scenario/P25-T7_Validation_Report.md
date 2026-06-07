@@ -23,12 +23,21 @@ The scenario remains local-only and does not fetch the real repository, run
 package scripts, run package managers, execute builds, run tests, execute
 prompts, accept packages, accept relations, or publish registry metadata.
 
+The package-set drafting hardening was also checked against the existing local
+real `xyflow` checkout at
+`/Users/egor/Development/GitHub/xyflow@a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd`.
+That run now produces `xyflow.workspace`, `xyflow.system`, `xyflow.react`, and
+`xyflow.svelte`, records three `contains` relations from `xyflow.workspace`,
+skips examples/tooling/tests as non-primary package records, passes
+bundle-set preflight, and renders package-set viewer output.
+
 ## Validation Commands
 
 | Command | Result |
 | --- | --- |
-| `PYTHONPATH=src pytest tests/test_xyflow_package_set_smoke.py tests/test_docs_contracts.py -q` | PASS, 42 passed |
+| `PYTHONPATH=src pytest tests/test_batch_collection.py::test_collect_batch_snapshots_emits_deterministic_workspace_inventory tests/test_package_set_drafter.py tests/test_xyflow_package_set_smoke.py tests/test_docs_contracts.py -q` | PASS, 62 passed |
 | `PYTHONPATH=src python -m spec_harvester.cli xyflow-package-set-smoke --output /tmp/spec-harvester-xyflow-package-set-smoke` | PASS, `status: passed` |
+| Real local `xyflow` package-set pipeline at `a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd` | PASS, 4 candidates, 3 relations, preflight passed, viewer ok |
 | `PYTHONPATH=src ruff check .` | PASS |
 | `ruff format --check src tests` | PASS, 89 files already formatted |
 | `PYTHONPATH=src pytest -q` | PASS, 537 passed, 1 skipped |

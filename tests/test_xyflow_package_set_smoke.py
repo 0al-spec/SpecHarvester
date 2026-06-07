@@ -33,7 +33,12 @@ def test_xyflow_package_set_smoke_runs_end_to_end(tmp_path: Path) -> None:
         "candidateCount": 4,
         "id": "xyflow.workspace",
         "packageIds": sorted(EXPECTED_PACKAGE_IDS),
-        "skippedPackageIds": ["xyflow.cli", "xyflow.e2e", "xyflow.playground"],
+        "skippedPackageIds": [
+            "xyflow.cli",
+            "xyflow.e2e",
+            "xyflow.react_examples",
+            "xyflow.svelte_examples",
+        ],
     }
     assert relation_tuples(report) == set(EXPECTED_RELATIONS)
     assert all(item["reviewStatus"] == "producer_observed" for item in report["relations"])

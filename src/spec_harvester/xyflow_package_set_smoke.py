@@ -248,15 +248,16 @@ def write_xyflow_fixture_checkout(path: Path) -> None:
     (path / "package.json").write_text(
         json.dumps(
             {
-                "name": "xyflow",
+                "name": "@xyflow/monorepo",
                 "version": "0.0.0",
                 "private": True,
-                "workspaces": ["packages/*", "examples/*", "tooling/*", "tests/*"],
+                "packageManager": "pnpm@9.2.0",
             },
             sort_keys=True,
         ),
         encoding="utf-8",
     )
+    (path / "pnpm-lock.yaml").write_text("lockfileVersion: '9.0'\n", encoding="utf-8")
     (path / "pnpm-workspace.yaml").write_text(
         """
 packages:
@@ -284,7 +285,8 @@ packages:
             "version": "1.0.0",
             "description": "Svelte package for node-based editors and flow diagrams.",
         },
-        "examples/playground": {"name": "@xyflow/playground", "version": "0.0.0"},
+        "examples/react": {"name": "react-examples", "version": "0.0.0"},
+        "examples/svelte": {"name": "svelte-examples", "version": "0.0.0"},
         "tooling/cli": {"name": "@xyflow/cli", "version": "0.1.0"},
         "tests/e2e": {"name": "@xyflow/e2e", "version": "0.0.0"},
     }

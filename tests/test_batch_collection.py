@@ -433,8 +433,8 @@ repositories:
     repeat_inventory_path = repeat_out / "xyflow" / "workspace-inventory.json"
     inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
     assert result["collected"][0]["workspaceInventory"]["output"] == str(inventory_path)
-    assert result["collected"][0]["workspaceInventory"]["summary"]["packageCount"] == 7
-    assert repeated["collected"][0]["workspaceInventory"]["summary"]["packageCount"] == 7
+    assert result["collected"][0]["workspaceInventory"]["summary"]["packageCount"] == 8
+    assert repeated["collected"][0]["workspaceInventory"]["summary"]["packageCount"] == 8
     assert inventory_path.read_text(encoding="utf-8") == repeat_inventory_path.read_text(
         encoding="utf-8"
     )
@@ -448,7 +448,6 @@ repositories:
     assert inventory["privacy"]["packageScriptsExecuted"] is False
 
     workspace_by_path = {item["path"]: item for item in inventory["workspaceManifests"]}
-    assert workspace_by_path["package.json"]["includePatterns"] == ["packages/*"]
     assert workspace_by_path["pnpm-workspace.yaml"]["includePatterns"] == [
         "examples/*",
         "packages/*",
@@ -468,8 +467,16 @@ repositories:
     assert packages["packages/react/package.json"]["sourceTargetPath"] == "packages/react"
     assert packages["packages/react/package.json"]["proposedSpecpmPackageId"] == "xyflow.react"
     assert packages["packages/svelte/package.json"]["role"] == "svelte_binding"
-    assert packages["examples/playground/package.json"]["sourceTargetPath"] == "examples/playground"
+    assert packages["examples/react/package.json"]["role"] == "example_package"
+    assert packages["examples/react/package.json"]["sourceTargetPath"] == "examples/react"
+    assert packages["examples/react/package.json"]["proposedSpecpmPackageId"] == (
+        "xyflow.react_examples"
+    )
+    assert packages["examples/svelte/package.json"]["role"] == "example_package"
+    assert packages["tooling/cli/package.json"]["role"] == "tooling_package"
     assert packages["tooling/cli/package.json"]["proposedSpecpmPackageId"] == "xyflow.cli"
+    assert packages["tests/e2e/package.json"]["role"] == "test_package"
+    assert "pnpm-lock.yaml" not in packages
     for record in packages.values():
         evidence = record["evidenceReferences"][0]
         assert evidence["kind"] == "package_manifest"
@@ -1423,14 +1430,15 @@ def make_workspace_checkout(path: Path) -> Path:
     (path / "package.json").write_text(
         json.dumps(
             {
-                "name": "xyflow",
+                "name": "@xyflow/monorepo",
                 "version": "0.0.0",
                 "private": True,
-                "workspaces": ["packages/*"],
+                "packageManager": "pnpm@9.2.0",
             }
         ),
         encoding="utf-8",
     )
+    (path / "pnpm-lock.yaml").write_text("lockfileVersion: '9.0'\n", encoding="utf-8")
     (path / "pnpm-workspace.yaml").write_text(
         """
 packages:
@@ -1446,7 +1454,8 @@ packages:
         "packages/system": {"name": "@xyflow/system", "version": "1.0.0"},
         "packages/react": {"name": "@xyflow/react", "version": "12.0.0"},
         "packages/svelte": {"name": "@xyflow/svelte", "version": "1.0.0"},
-        "examples/playground": {"name": "@xyflow/playground", "version": "0.0.0"},
+        "examples/react": {"name": "react-examples", "version": "0.0.0"},
+        "examples/svelte": {"name": "svelte-examples", "version": "0.0.0"},
         "tooling/cli": {"name": "@xyflow/cli", "version": "0.1.0"},
         "tests/e2e": {"name": "@xyflow/e2e", "version": "0.0.0"},
     }

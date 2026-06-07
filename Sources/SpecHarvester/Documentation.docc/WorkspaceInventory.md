@@ -41,7 +41,8 @@ package ecosystem/name/version metadata, source target paths, proposed SpecPM
 package IDs, package roles, and digest-backed evidence references.
 
 Package roles are producer hints such as `workspace`, `core_runtime`,
-`react_binding`, `svelte_binding`, and `member_package`.
+`react_binding`, `svelte_binding`, `example_package`, `tooling_package`,
+`test_package`, and `member_package`.
 
 ## Boundary
 

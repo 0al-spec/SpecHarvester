@@ -59,7 +59,8 @@ The inventory records:
 - proposed stable SpecPM package IDs;
 - proposed SpecPM package IDs as review-facing metadata;
 - package roles such as `workspace`, `core_runtime`, `react_binding`,
-  `svelte_binding`, and `member_package`;
+  `svelte_binding`, `example_package`, `tooling_package`, `test_package`, and
+  `member_package`;
 - digest-backed evidence references.
 
 ## Determinism

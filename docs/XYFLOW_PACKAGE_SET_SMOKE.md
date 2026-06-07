@@ -6,6 +6,15 @@ Status: Local synthetic smoke scenario
 deterministic local `xyflow` fixture. It proves the package-set pieces work
 together without fetching the real repository or executing package code.
 
+The fixture mirrors the real `xyflow` layout where the root `package.json` is
+`@xyflow/monorepo` and workspace membership comes from `pnpm-workspace.yaml`.
+This guards the product shape that matters for real checkouts:
+
+- root aggregate candidate: `xyflow.workspace`;
+- primary members: `xyflow.system`, `xyflow.react`, `xyflow.svelte`;
+- skipped non-primary packages: examples, tooling, and tests;
+- relation proposals from the aggregate root to the selected members.
+
 ## Command
 
 ```bash
@@ -69,9 +78,10 @@ xyflow.workspace contains xyflow.react
 xyflow.workspace contains xyflow.svelte
 ```
 
-Skipped package IDs such as `xyflow.cli`, `xyflow.e2e`, and
-`xyflow.playground` remain visible in the package-set draft so reviewers can
-see what was intentionally excluded from the first package-set candidate set.
+Skipped package IDs such as `xyflow.cli`, `xyflow.e2e`,
+`xyflow.react_examples`, and `xyflow.svelte_examples` remain visible in the
+package-set draft so reviewers can see what was intentionally excluded from
+the first package-set candidate set.
 
 ## Boundary
 

@@ -4,6 +4,13 @@
 deterministic local `xyflow` fixture. It proves the package-set pieces work
 together without fetching the real repository or executing package code.
 
+The fixture mirrors the real `xyflow` layout where the root `package.json` is
+`@xyflow/monorepo` and workspace membership comes from `pnpm-workspace.yaml`.
+This guards the product shape that matters for real checkouts: aggregate
+`xyflow.workspace`, primary members `xyflow.system`, `xyflow.react`, and
+`xyflow.svelte`, skipped examples/tooling/tests, and relation proposals from
+the aggregate root to the selected members.
+
 ## Command
 
 ```bash
@@ -50,8 +57,9 @@ xyflow.workspace contains xyflow.react
 xyflow.workspace contains xyflow.svelte
 ```
 
-Skipped package IDs such as `xyflow.cli`, `xyflow.e2e`, and
-`xyflow.playground` remain visible for review.
+Skipped package IDs such as `xyflow.cli`, `xyflow.e2e`,
+`xyflow.react_examples`, and `xyflow.svelte_examples` remain visible for
+review.
 
 ## Boundary
 
