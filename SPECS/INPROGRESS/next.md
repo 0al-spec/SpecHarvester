@@ -9,6 +9,10 @@
 - `P25-T7` added `xyflow-package-set-smoke`, a deterministic local synthetic
   scenario that writes workspace inventory, package-set draft, relation
   proposals, bundle-set preflight, viewer output, and smoke summary.
+  Key handoff inputs now available for P26 are `package-set-draft.json`,
+  `package-relation-proposals.json`, `bundle-set-preflight.json`, and the
+  package-set static viewer output. The smoke summary is
+  `xyflow-package-set-smoke.json`.
 - `P25-T6` added `render-package-set-site`, a static viewer path for generated
   package-set outputs.
 - `P25-T5` added `preflight-bundle-set`, a producer-side verifier for generated

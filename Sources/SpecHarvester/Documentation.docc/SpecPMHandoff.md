@@ -89,6 +89,29 @@ Registry acceptance decision records are described in
 reference the external record, but must not write maintainer approval into
 `producer-receipt.json`.
 
+## Package-Set Handoff
+
+For generated package-set bundles, create a package-set handoff proposal before
+any future SpecPM PR:
+
+```bash
+spec-harvester package-set-handoff-proposal \
+  --bundle-set .smoke/xyflow-package-set/package-set \
+  --viewer .smoke/xyflow-package-set/viewer \
+  --output .smoke/xyflow-package-set/handoff/proposal.json \
+  --proposal-body .smoke/xyflow-package-set/handoff/proposal.md
+```
+
+The proposal links `package-set-draft.json`,
+`package-relation-proposals.json`, `bundle-set-preflight.json`, package-set
+viewer output, member candidate bundles, and relation summary evidence. It
+uses `registryAcceptanceDecision.status: external_required` for both
+`public_index_acceptance` and `package_relation_acceptance`.
+
+This package-set proposal is review evidence. It does not accept packages,
+accept relations, publish registry metadata, or replace SpecPM maintainer
+review. See <doc:PackageSetHandoffProposal>.
+
 ## Receipt Example
 
 ```json

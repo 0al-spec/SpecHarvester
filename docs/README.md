@@ -122,7 +122,10 @@ Published DocC site:
     local `xyflow-package-set-smoke` scenario for workspace inventory,
     package-set drafting, relation proposals, bundle-set preflight, and viewer
     output
-47. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+47. [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md):
+    package-set handoff proposal JSON and Markdown for future SpecPM review
+    automation
+48. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -197,6 +200,8 @@ Published DocC site:
   viewer for aggregate and scoped member package previews
 - [`XYFLOW_PACKAGE_SET_SMOKE.md`](XYFLOW_PACKAGE_SET_SMOKE.md): local
   end-to-end package-set smoke scenario for the `xyflow` reference path
+- [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md):
+  package-set handoff proposal artifact for SpecPM review evidence
 
 ## GitHub Process Surface
 

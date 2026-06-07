@@ -69,6 +69,12 @@ from spec_harvester.package_set_drafter import (
     PackageSetDraftOptions,
     draft_package_set,
 )
+from spec_harvester.package_set_handoff_proposal import (
+    PackageSetHandoffProposalOptions,
+    build_package_set_handoff_proposal,
+    write_package_set_handoff_proposal,
+    write_package_set_handoff_proposal_markdown,
+)
 from spec_harvester.procedural_style_report import (
     DEFAULT_HOTSPOT_MIN_TOP_LEVEL_COUNT,
     DEFAULT_HOTSPOT_MIN_TOP_LEVEL_SPAN,
@@ -324,6 +330,33 @@ def build_parser() -> argparse.ArgumentParser:
         help="Package-set output directory containing package-set-draft.json.",
     )
     bundle_set_preflight.set_defaults(func=run_preflight_bundle_set)
+
+    package_set_handoff_proposal = subcommands.add_parser(
+        "package-set-handoff-proposal",
+        help="Build a reviewable SpecPM handoff proposal for a generated package set.",
+    )
+    package_set_handoff_proposal.add_argument(
+        "--bundle-set",
+        type=Path,
+        required=True,
+        help="Package-set output directory containing package-set-draft.json.",
+    )
+    package_set_handoff_proposal.add_argument(
+        "--viewer",
+        type=Path,
+        help="Optional package-set viewer output directory containing index.html.",
+    )
+    package_set_handoff_proposal.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where proposal JSON is written.",
+    )
+    package_set_handoff_proposal.add_argument(
+        "--proposal-body",
+        type=Path,
+        help="Optional path where Markdown proposal body is written.",
+    )
+    package_set_handoff_proposal.set_defaults(func=run_package_set_handoff_proposal)
 
     promote = subcommands.add_parser(
         "promote",
@@ -917,6 +950,18 @@ def run_preflight_bundle_set(args: argparse.Namespace) -> int:
     result = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=args.bundle_set))
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["status"] == "passed" else 1
+
+
+def run_package_set_handoff_proposal(args: argparse.Namespace) -> int:
+    result = build_package_set_handoff_proposal(
+        PackageSetHandoffProposalOptions(bundle_set=args.bundle_set, viewer=args.viewer)
+    )
+    if args.output is not None:
+        write_package_set_handoff_proposal(args.output, result)
+    if args.proposal_body is not None:
+        write_package_set_handoff_proposal_markdown(args.proposal_body, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
 
 
 def run_promote(args: argparse.Namespace) -> int:

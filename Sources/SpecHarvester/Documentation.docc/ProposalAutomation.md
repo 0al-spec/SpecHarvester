@@ -77,6 +77,24 @@ Proposal bodies should also include a machine-readable
 external decision record boundary is covered by
 <doc:SpecPMRegistryAcceptanceDecision>.
 
+For package-set outputs, generate a review handoff artifact before any future
+cross-repository PR:
+
+```bash
+python3 -m spec_harvester package-set-handoff-proposal \
+  --bundle-set .smoke/xyflow-package-set/package-set \
+  --viewer .smoke/xyflow-package-set/viewer \
+  --output .smoke/xyflow-package-set/handoff/proposal.json \
+  --proposal-body .smoke/xyflow-package-set/handoff/proposal.md
+```
+
+That artifact records `SpecHarvesterPackageSetHandoffProposal`,
+`spec-harvester.package-set-handoff-proposal/v0`, member package evidence
+links, package relation proposals, bundle-set preflight status, static viewer
+links, and `registryAcceptanceDecision.status: external_required`. It is
+review evidence only and does not accept packages or relations. See
+<doc:PackageSetHandoffProposal>.
+
 After promotion and `public-index generate`, proposal diff scope is validated.
 Allowed changed files are:
 
