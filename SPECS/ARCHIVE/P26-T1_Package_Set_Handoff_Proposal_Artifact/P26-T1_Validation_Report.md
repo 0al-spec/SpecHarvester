@@ -29,7 +29,7 @@ rm -rf .docc-build && swift package --allow-writing-to-directory ./.docc-build g
 ## Results
 
 - Targeted tests: `45 passed`.
-- Full tests: `542 passed, 1 skipped`.
+- Full tests: `543 passed, 1 skipped`.
 - Ruff lint: passed.
 - Ruff format check: passed.
 - Whitespace diff check: passed.

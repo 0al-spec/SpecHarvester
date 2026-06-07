@@ -131,6 +131,32 @@ def test_package_set_handoff_proposal_rejects_missing_relation_artifact(
         )
 
 
+def test_package_set_handoff_proposal_rejects_escaped_member_evidence_path(
+    tmp_path: Path,
+) -> None:
+    smoke = write_xyflow_smoke(tmp_path)
+    bundle_set = smoke / "package-set"
+    outside = tmp_path / "outside-specpm.yaml"
+    outside.write_text("secret-ish metadata", encoding="utf-8")
+    draft_path = bundle_set / "package-set-draft.json"
+    draft = json.loads(draft_path.read_text(encoding="utf-8"))
+    draft["candidates"][0]["manifest"] = "../outside-specpm.yaml"
+    draft_path.write_text(json.dumps(draft, indent=2, sort_keys=True), encoding="utf-8")
+
+    proposal = build_package_set_handoff_proposal(
+        PackageSetHandoffProposalOptions(bundle_set=bundle_set)
+    )
+
+    escaped_link = next(
+        link
+        for member in proposal["members"]
+        for link in member["evidenceLinks"]
+        if link["role"] == "member_manifest" and link["path"] == "../outside-specpm.yaml"
+    )
+    assert escaped_link["status"] == "rejected"
+    assert "digest" not in escaped_link
+
+
 def write_xyflow_smoke(tmp_path: Path) -> Path:
     smoke = tmp_path / "xyflow-smoke"
     report = run_xyflow_package_set_smoke(XyflowPackageSetSmokeOptions(output=smoke))

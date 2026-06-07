@@ -213,6 +213,7 @@ def member_evidence_links(
     candidate_root: Path,
 ) -> list[dict[str, Any]]:
     links = []
+    bundle_set = candidate_root.parent
     for role, field in (
         ("member_manifest", "manifest"),
         ("member_boundary_spec", "spec"),
@@ -226,7 +227,7 @@ def member_evidence_links(
                 role=role,
                 path=path,
                 path_scope="bundle_relative",
-                source_path=candidate_root.parent / path,
+                source_path=safe_bundle_path(bundle_set, path),
             )
         )
     return links
@@ -263,13 +264,13 @@ def evidence_links(
             role="package_set_draft",
             path=PACKAGE_SET_DRAFT_FILENAME,
             path_scope="bundle_relative",
-            source_path=bundle_set / PACKAGE_SET_DRAFT_FILENAME,
+            source_path=safe_bundle_path(bundle_set, PACKAGE_SET_DRAFT_FILENAME),
         ),
         artifact_link(
             role="package_relation_proposals",
             path=PACKAGE_RELATION_PROPOSALS_FILENAME,
             path_scope="bundle_relative",
-            source_path=bundle_set / PACKAGE_RELATION_PROPOSALS_FILENAME,
+            source_path=safe_bundle_path(bundle_set, PACKAGE_RELATION_PROPOSALS_FILENAME),
         ),
     ]
     if preflight is not None:
@@ -278,7 +279,7 @@ def evidence_links(
                 role="bundle_set_preflight",
                 path=BUNDLE_SET_PREFLIGHT_FILENAME,
                 path_scope="bundle_relative",
-                source_path=bundle_set / BUNDLE_SET_PREFLIGHT_FILENAME,
+                source_path=safe_bundle_path(bundle_set, BUNDLE_SET_PREFLIGHT_FILENAME),
             )
         )
     if viewer["status"] == "present":
@@ -296,7 +297,7 @@ def evidence_links(
                 role="member_candidate_bundle",
                 path=member["candidatePath"],
                 path_scope="bundle_relative",
-                source_path=bundle_set / member["candidatePath"],
+                source_path=safe_bundle_path(bundle_set, member["candidatePath"]),
                 package_id=member["packageId"],
             )
         )
@@ -319,10 +320,12 @@ def artifact_link(
     role: str,
     path: str,
     path_scope: str,
-    source_path: Path,
+    source_path: Path | None,
     package_id: str | None = None,
 ) -> dict[str, Any]:
-    status = "present" if source_path.exists() else "expected"
+    status = (
+        "rejected" if source_path is None else "present" if source_path.exists() else "expected"
+    )
     link: dict[str, Any] = {
         "role": role,
         "path": path,
@@ -331,9 +334,21 @@ def artifact_link(
     }
     if package_id is not None:
         link["packageId"] = package_id
-    if source_path.is_file():
+    if source_path is not None and source_path.is_file():
         link["digest"] = f"sha256:{sha256_file(source_path)}"
     return link
+
+
+def safe_bundle_path(bundle_set: Path, path: str) -> Path | None:
+    relative = Path(path)
+    if relative.is_absolute() or ".." in relative.parts:
+        return None
+    candidate = (bundle_set / relative).resolve(strict=False)
+    try:
+        candidate.relative_to(bundle_set.resolve())
+    except ValueError:
+        return None
+    return candidate
 
 
 def preflight_record(preflight: dict[str, Any] | None) -> dict[str, Any]:
