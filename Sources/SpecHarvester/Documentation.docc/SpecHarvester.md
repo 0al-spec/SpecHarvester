@@ -75,6 +75,7 @@ The canonical source files remain in the repository:
 - `docs/BUNDLE_SET_PREFLIGHT.md`
 - `docs/PACKAGE_SET_VIEWER.md`
 - `docs/XYFLOW_PACKAGE_SET_SMOKE.md`
+- `docs/PACKAGE_SET_HANDOFF_PROPOSAL.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -133,6 +134,7 @@ the host.
 - <doc:BundleSetPreflight>
 - <doc:PackageSetViewer>
 - <doc:XyflowPackageSetSmoke>
+- <doc:PackageSetHandoffProposal>
 - <doc:ProposalAutomation>
 
 ### Architecture

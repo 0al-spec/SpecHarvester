@@ -6,12 +6,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    assert_p26_t1_archived(next_text)
     assert_p25_t7_archived(next_text)
-    assert_phase_25_complete(next_text)
+    assert_phase_26_selected(next_text)
+
+
+def assert_p26_t1_archived(next_text: str) -> None:
+    assert "**Last Archived:** P26-T1 Package-Set Handoff Proposal Artifact" in next_text
+    assert "package-set-handoff-proposal" in next_text
+    assert "registryAcceptanceDecision.status:" in next_text
+    assert "external_required" in next_text
 
 
 def assert_p25_t7_archived(next_text: str) -> None:
-    assert "**Last Archived:** P25-T7 Xyflow Package-Set Smoke Scenario" in next_text
+    assert "`P25-T7` added `xyflow-package-set-smoke`" in next_text
     assert "package-set-draft.json" in next_text
     assert "package-relation-proposals.json" in next_text
     assert "bundle-set-preflight.json" in next_text
@@ -19,12 +27,12 @@ def assert_p25_t7_archived(next_text: str) -> None:
     assert "xyflow-package-set-smoke.json" in next_text
 
 
-def assert_phase_25_complete(next_text: str) -> None:
-    assert "# Next Task: Phase 25 Complete" in next_text
-    assert "**Status:** Phase Complete" in next_text
+def assert_phase_26_selected(next_text: str) -> None:
+    assert "# Next Task: P26-T2 Trusted Package-Set Proposal Workflow Inputs" in next_text
+    assert "**Status:** Selected" in next_text
     assert "workspace inventory" in next_text
-    assert "static package-set viewer" in next_text
-    assert "package-set handoff/proposal automation" in next_text
+    assert "static package-set viewer" in next_text or "package-set static viewer" in next_text
+    assert "proposal/dry-run workflow path" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -793,6 +801,63 @@ def test_docc_and_github_docs_cover_xyflow_package_set_smoke() -> None:
         assert "xyflow-package-set-smoke" in text
         assert "xyflow-package-set-smoke.json" in text
         assert "viewer/package-set.json" in text
+
+
+def test_docc_and_github_docs_cover_package_set_handoff_proposal() -> None:
+    github_doc = ROOT / "docs" / "PACKAGE_SET_HANDOFF_PROPOSAL.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "PackageSetHandoffProposal.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    proposal_doc = ROOT / "docs" / "SPECPM_PROPOSAL_AUTOMATION.md"
+    proposal_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ProposalAutomation.md"
+    )
+    handoff_doc = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    handoff_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "package-set-handoff-proposal",
+            "package-set-draft.json",
+            "package-relation-proposals.json",
+            "bundle-set-preflight.json",
+            "SpecHarvesterPackageSetHandoffProposal",
+            "spec-harvester.package-set-handoff-proposal/v0",
+            "package_set_draft",
+            "package_relation_proposals",
+            "bundle_set_preflight",
+            "package_set_viewer",
+            "member_candidate_bundle",
+            "member_manifest",
+            "member_producer_receipt",
+            "package_relation_summary",
+            "registryAcceptanceDecision.status: external_required",
+            "public_index_acceptance",
+            "package_relation_acceptance",
+            "does not accept packages",
+            "accept relations",
+            "replace SpecPM maintainer review",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (proposal_doc, proposal_docc, handoff_doc, handoff_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "package-set-handoff-proposal" in text
+        assert "external_required" in text
+
+    assert "PACKAGE_SET_HANDOFF_PROPOSAL.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:PackageSetHandoffProposal>" in root_page.read_text(encoding="utf-8")
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P26-T1` Add a package-set handoff proposal artifact" in workplan_text
+    next_text = next_task.read_text(encoding="utf-8")
+    assert "**Last Archived:** P26-T1 Package-Set Handoff Proposal Artifact" in next_text
+    assert "# Next Task: P26-T2 Trusted Package-Set Proposal Workflow Inputs" in next_text
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
