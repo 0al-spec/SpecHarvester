@@ -298,6 +298,19 @@ The viewer writes `package-set.json` and static assets with member package
 cards, relation proposal badges, producer-observed review status, and result
 scope examples.
 
+Run the local synthetic `xyflow` package-set smoke to exercise the whole path:
+
+```bash
+python3 -m spec_harvester xyflow-package-set-smoke \
+  --output .smoke/xyflow-package-set
+```
+
+The smoke writes `xyflow-package-set-smoke.json` plus workspace inventory,
+package-set draft, relation proposal, `bundle-set-preflight.json`, and
+`viewer/package-set.json` artifacts. It does not fetch the real repository,
+run package scripts, run package managers, execute builds, or publish registry
+metadata.
+
 ### Batch Source Manifests
 
 For later batch harvesting, define repository sources in operator-authored

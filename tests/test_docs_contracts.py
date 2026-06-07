@@ -737,6 +737,64 @@ def test_docc_and_github_docs_cover_package_set_viewer() -> None:
     assert "<doc:PackageSetViewer>" in root_page.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_xyflow_package_set_smoke() -> None:
+    github_doc = ROOT / "docs" / "XYFLOW_PACKAGE_SET_SMOKE.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "XyflowPackageSetSmoke.md"
+    )
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    alignment_doc = ROOT / "docs" / "SPECPM_PACKAGE_SET_ALIGNMENT.md"
+    alignment_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMPackageSetAlignment.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "xyflow-package-set-smoke",
+            "collect-batch --emit-workspace-inventory",
+            "draft-package-set",
+            "preflight-bundle-set",
+            "render-package-set-site",
+            "workspace-inventory.json",
+            "package-set-draft.json",
+            "package-relation-proposals.json",
+            "bundle-set-preflight.json",
+            "viewer/package-set.json",
+            "xyflow-package-set-smoke.json",
+            "spec-harvester.xyflow-package-set-smoke/v0",
+            "SpecHarvesterXyflowPackageSetSmokeReport",
+            "xyflow.workspace",
+            "xyflow.system",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.workspace contains xyflow.system",
+            "xyflow.workspace contains xyflow.react",
+            "xyflow.workspace contains xyflow.svelte",
+            "xyflow.cli",
+            "xyflow.e2e",
+            "xyflow.playground",
+            "does not fetch the real",
+            "run package scripts",
+            "run package managers",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "XYFLOW_PACKAGE_SET_SMOKE.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:XyflowPackageSetSmoke>" in root_page.read_text(encoding="utf-8")
+    for path in (workflow_doc, alignment_doc, alignment_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "xyflow-package-set-smoke" in text
+        assert "xyflow-package-set-smoke.json" in text
+        assert "viewer/package-set.json" in text
+
+
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
     github_doc = ROOT / "docs" / "GOVERNANCE_REPORTS.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "GovernanceReports.md"

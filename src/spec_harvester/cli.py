@@ -96,6 +96,10 @@ from spec_harvester.static_spec_renderer import (
     render_static_package_set_site,
     render_static_spec_site,
 )
+from spec_harvester.xyflow_package_set_smoke import (
+    XyflowPackageSetSmokeOptions,
+    run_xyflow_package_set_smoke,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -753,6 +757,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     smoke_triage.set_defaults(func=run_smoke_triage_summary)
 
+    xyflow_package_set_smoke = subcommands.add_parser(
+        "xyflow-package-set-smoke",
+        help="Run the local synthetic xyflow package-set smoke scenario.",
+    )
+    xyflow_package_set_smoke.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+        help="Empty output directory where the smoke fixture and artifacts are written.",
+    )
+    xyflow_package_set_smoke.set_defaults(func=run_xyflow_package_set_smoke_command)
+
     quality_report = subcommands.add_parser(
         "quality-report",
         help=(
@@ -1103,6 +1119,12 @@ def run_smoke_triage_summary(args: argparse.Namespace) -> int:
         write_smoke_triage_summary(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
+
+
+def run_xyflow_package_set_smoke_command(args: argparse.Namespace) -> int:
+    result = run_xyflow_package_set_smoke(XyflowPackageSetSmokeOptions(output=args.output))
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
 
 
 def run_quality_report(args: argparse.Namespace) -> int:
