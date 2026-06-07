@@ -6,13 +6,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    assert_p26_t1_archived(next_text)
+    assert_p26_t2_archived(next_text)
+    assert_p26_t1_recent(next_text)
     assert_p25_t7_archived(next_text)
     assert_phase_26_selected(next_text)
 
 
-def assert_p26_t1_archived(next_text: str) -> None:
-    assert "**Last Archived:** P26-T1 Package-Set Handoff Proposal Artifact" in next_text
+def assert_p26_t2_archived(next_text: str) -> None:
+    assert "**Last Archived:** P26-T2 Trusted Package-Set Proposal Workflow Inputs" in next_text
+    assert "proposal_kind: package_set" in next_text
+    assert "package-set-handoff-proposal.json" in next_text
+    assert "package-set-handoff-proposal.md" in next_text
+    assert "SPECPM_PROPOSAL_TOKEN" in next_text
+    assert "SpecPM PR" in next_text
+
+
+def assert_p26_t1_recent(next_text: str) -> None:
+    assert "`P26-T1` added the package-set handoff proposal artifact" in next_text
     assert "package-set-handoff-proposal" in next_text
     assert "registryAcceptanceDecision.status:" in next_text
     assert "external_required" in next_text
@@ -28,11 +38,11 @@ def assert_p25_t7_archived(next_text: str) -> None:
 
 
 def assert_phase_26_selected(next_text: str) -> None:
-    assert "# Next Task: P26-T2 Trusted Package-Set Proposal Workflow Inputs" in next_text
+    assert "# Next Task: P26-T3 SpecPM Package-Set Proposal Intake Checklist" in next_text
     assert "**Status:** Selected" in next_text
-    assert "workspace inventory" in next_text
-    assert "static package-set viewer" in next_text or "package-set static viewer" in next_text
-    assert "proposal/dry-run workflow path" in next_text
+    assert "SpecPM maintainers" in next_text
+    assert "intake checklist" in next_text
+    assert "registry acceptance decisions" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -856,8 +866,8 @@ def test_docc_and_github_docs_cover_package_set_handoff_proposal() -> None:
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P26-T1` Add a package-set handoff proposal artifact" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
-    assert "**Last Archived:** P26-T1 Package-Set Handoff Proposal Artifact" in next_text
-    assert "# Next Task: P26-T2 Trusted Package-Set Proposal Workflow Inputs" in next_text
+    assert_current_next_task(next_text)
+    assert "# Next Task: P26-T3 SpecPM Package-Set Proposal Intake Checklist" in next_text
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
@@ -2036,6 +2046,56 @@ def test_specpm_proposal_automation_links_producer_bundle_evidence() -> None:
     assert "P23-T2" in workplan
     assert "proposal artifacts and SpecPM pull" in workplan
     assert_current_next_task(next_task)
+
+
+def test_specpm_proposal_automation_supports_package_set_dry_run_boundary() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "propose-to-specpm.yml").read_text(
+        encoding="utf-8"
+    )
+    github_doc = (ROOT / "docs" / "SPECPM_PROPOSAL_AUTOMATION.md").read_text(encoding="utf-8")
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ProposalAutomation.md"
+    ).read_text(encoding="utf-8")
+
+    for required in (
+        "proposal_kind",
+        "single_package",
+        "package_set",
+        "package_set_bundle_dir",
+        "package_set_viewer_dir",
+        'default: ""',
+        "xyflow-package-set-smoke",
+        "Build package-set handoff evidence artifacts",
+        "package-set-handoff-proposal",
+        "package-set-handoff-proposal.json",
+        "package-set-handoff-proposal.md",
+        "Upload package-set handoff evidence artifacts",
+        "specpm-package-set-proposal-evidence",
+        "package_set proposal mode is dry-run artifact generation only",
+        "steps.config.outputs.proposal_kind == 'package_set'",
+        "steps.config.outputs.proposal_kind == 'single_package'",
+        "does not use \\`SPECPM_PROPOSAL_TOKEN\\`",
+        "does not create a SpecPM PR",
+    ):
+        assert required in workflow
+
+    for text in (" ".join(github_doc.split()), " ".join(docc_doc.split())):
+        for required in (
+            "proposal_kind: package_set",
+            "package_set_bundle_dir",
+            "package_set_viewer_dir",
+            "xyflow-package-set-smoke",
+            "committed or downloaded artifacts",
+            "package-set-handoff-proposal.json",
+            "package-set-handoff-proposal.md",
+            "specpm-package-set-proposal-evidence",
+            "create_pr=false",
+            "SPECPM_PROPOSAL_TOKEN",
+            "untrusted",
+            "does not create a SpecPM PR",
+            "review evidence only",
+        ):
+            assert required in text
 
 
 def test_local_smoke_fixture_docs_cover_reproducible_controls() -> None:

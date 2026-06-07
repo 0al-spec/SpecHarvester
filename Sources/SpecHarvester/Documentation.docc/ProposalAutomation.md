@@ -77,8 +77,27 @@ Proposal bodies should also include a machine-readable
 external decision record boundary is covered by
 <doc:SpecPMRegistryAcceptanceDecision>.
 
-For package-set outputs, generate a review handoff artifact before any future
-cross-repository PR:
+## Package-Set Handoff Dry Run
+
+Package-set proposal automation is intentionally narrower than single-package
+proposal automation in P26-T2. Use `proposal_kind: package_set` to generate and
+upload package-set handoff evidence from a trusted workflow run:
+
+```text
+proposal_kind: package_set
+package_set_bundle_dir: .smoke/xyflow-package-set/package-set
+package_set_viewer_dir: "" # optional; default smoke run uses .smoke/xyflow-package-set/viewer
+create_pr=false
+```
+
+When `package_set_bundle_dir` keeps the default
+`.smoke/xyflow-package-set/package-set` and the directory is absent on the
+fresh GitHub runner, the trusted workflow generates it with
+`xyflow-package-set-smoke` before building the handoff artifact. Custom
+`package_set_bundle_dir` values must point at committed or downloaded
+artifacts.
+
+The workflow runs the package-set handoff command:
 
 ```bash
 python3 -m spec_harvester package-set-handoff-proposal \
@@ -94,6 +113,18 @@ links, package relation proposals, bundle-set preflight status, static viewer
 links, and `registryAcceptanceDecision.status: external_required`. It is
 review evidence only and does not accept packages or relations. See
 <doc:PackageSetHandoffProposal>.
+
+Package-set mode uploads a `specpm-package-set-proposal-evidence-*` workflow
+artifact containing:
+
+- `package-set-handoff-proposal.json`
+- `package-set-handoff-proposal.md`
+
+It does not promote files into the SpecPM checkout, does not use
+`SPECPM_PROPOSAL_TOKEN`, and does not create a SpecPM PR. This keeps generated
+package-set handoff evidence available to maintainers without granting
+cross-repository write credentials to untrusted pull request events or treating
+producer output as registry acceptance.
 
 After promotion and `public-index generate`, proposal diff scope is validated.
 Allowed changed files are:
