@@ -24,7 +24,7 @@ relations, publish registry metadata, or execute package code.
 | `PYTHONPATH=src pytest tests/test_static_spec_renderer.py tests/test_docs_contracts.py -q` | PASS, 52 passed |
 | `PYTHONPATH=src ruff check .` | PASS |
 | `ruff format --check src tests` | PASS, 87 files already formatted |
-| `PYTHONPATH=src pytest -q` | PASS, 528 passed, 1 skipped |
+| `PYTHONPATH=src pytest -q` | PASS, 533 passed, 1 skipped |
 
 ## Acceptance Criteria
 

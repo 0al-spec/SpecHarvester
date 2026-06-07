@@ -206,6 +206,26 @@ def test_static_package_set_renderer_rejects_missing_relation_artifact(
     assert not (tmp_path / "site" / "index.html").exists()
 
 
+def test_static_package_set_renderer_clears_stale_output_on_error(
+    tmp_path: Path,
+) -> None:
+    bundle_set = write_package_set_fixture(tmp_path)
+    output = tmp_path / "site"
+    first = write_static_package_set_site(bundle_set, output)
+    assert first["status"] == "ok"
+    assert (output / "index.html").is_file()
+    assert (output / "package-set.json").is_file()
+    assert (output / "assets/spec-renderer.js").is_file()
+
+    (bundle_set / "package-relation-proposals.json").unlink()
+    second = write_static_package_set_site(bundle_set, output)
+
+    assert second["status"] == "error"
+    assert not (output / "index.html").exists()
+    assert not (output / "package-set.json").exists()
+    assert not (output / "assets").exists()
+
+
 def test_static_spec_renderer_rejects_missing_referenced_spec(tmp_path: Path) -> None:
     candidate = tmp_path / "candidate"
     candidate.mkdir()

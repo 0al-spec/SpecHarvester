@@ -107,6 +107,7 @@ class StaticPackageSetRenderer:
         try:
             payload = PackageSetReviewBundle(self.options.bundle_set).payload()
         except StaticSpecRenderError as exc:
+            StaticSpecSite(self.options.output).clear(data_filename="package-set.json")
             return {
                 "status": "error",
                 "bundleSet": str(self.options.bundle_set),
@@ -831,6 +832,14 @@ class StaticSpecSite:
         for path, text in files.items():
             path.write_text(text, encoding="utf-8")
         return sorted(relative_display_path(self.output, path) for path in files)
+
+    def clear(self, *, data_filename: str) -> None:
+        for path in (self.output / "index.html", self.output / data_filename):
+            if path.is_file() or path.is_symlink():
+                path.unlink()
+        assets = self.output / "assets"
+        if assets.exists():
+            shutil.rmtree(assets)
 
 
 def render_static_spec_site(options: StaticSpecRendererOptions) -> dict[str, Any]:
