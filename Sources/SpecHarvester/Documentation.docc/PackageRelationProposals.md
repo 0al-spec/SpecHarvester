@@ -44,5 +44,6 @@ Relation proposals are not SpecPM accepted registry metadata. Maintainers can
 accept, reject, or defer each relation independently.
 
 `preflight-bundle-set` owns bundle-set preflight across candidate bundles and
-relation output. P25-T6 owns static viewer relation badges and package-set
+relation output. `render-package-set-site` owns static viewer relation proposal
+badges, member package cards, producer-observed review status, and package-set
 review panels.

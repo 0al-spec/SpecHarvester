@@ -10,16 +10,36 @@ from typing import Any
 import yaml
 from yaml.tokens import AliasToken, AnchorToken, TagToken
 
+from spec_harvester.bundle_set_preflight import (
+    BUNDLE_SET_PREFLIGHT_API_VERSION,
+    BUNDLE_SET_PREFLIGHT_KIND,
+)
+from spec_harvester.package_set_drafter import (
+    PACKAGE_RELATION_PROPOSALS_API_VERSION,
+    PACKAGE_RELATION_PROPOSALS_FILENAME,
+    PACKAGE_RELATION_PROPOSALS_KIND,
+    PACKAGE_SET_DRAFT_API_VERSION,
+    PACKAGE_SET_DRAFT_FILENAME,
+    PACKAGE_SET_DRAFT_KIND,
+)
 from spec_harvester.static_spec_renderer_assets import INDEX_HTML, VIEWER_CSS, VIEWER_JS
 
 RENDERER_API_VERSION = "spec-harvester.static-spec-renderer/v0"
+PACKAGE_SET_RENDERER_API_VERSION = "spec-harvester.static-package-set-renderer/v0"
 RENDERER_SCHEMA_VERSION = 1
 RENDERER_NAME = "spec-harvester-static-spec-renderer"
+PACKAGE_SET_PREFLIGHT_FILENAME = "bundle-set-preflight.json"
 
 
 @dataclass(frozen=True)
 class StaticSpecRendererOptions:
     candidate: Path
+    output: Path
+
+
+@dataclass(frozen=True)
+class StaticPackageSetRendererOptions:
+    bundle_set: Path
     output: Path
 
 
@@ -65,7 +85,7 @@ class StaticSpecRenderer:
             }
 
         site = StaticSpecSite(self.options.output)
-        written = site.write(payload)
+        written = site.write(payload, data_filename="spec-package.json")
         package = payload["package"]
         return {
             "status": "ok",
@@ -77,6 +97,179 @@ class StaticSpecRenderer:
             "diagnosticCount": len(payload["diagnostics"]),
             "written": written,
         }
+
+
+class StaticPackageSetRenderer:
+    def __init__(self, options: StaticPackageSetRendererOptions):
+        self.options = options
+
+    def render(self) -> dict[str, Any]:
+        try:
+            payload = PackageSetReviewBundle(self.options.bundle_set).payload()
+        except StaticSpecRenderError as exc:
+            StaticSpecSite(self.options.output).clear(data_filename="package-set.json")
+            return {
+                "status": "error",
+                "bundleSet": str(self.options.bundle_set),
+                "output": str(self.options.output),
+                "diagnostics": [diagnostic.as_dict() for diagnostic in exc.diagnostics],
+            }
+
+        site = StaticSpecSite(self.options.output)
+        written = site.write(payload, data_filename="package-set.json")
+        package_set = payload["packageSet"]
+        return {
+            "status": "ok",
+            "bundleSet": str(self.options.bundle_set),
+            "output": str(self.options.output),
+            "packageSetId": package_set.get("id"),
+            "candidateCount": len(payload["members"]),
+            "relationCount": len(payload["relations"]),
+            "preflightStatus": payload["preflight"].get("status"),
+            "written": written,
+        }
+
+
+class PackageSetReviewBundle:
+    def __init__(self, root: Path):
+        self.root = root.resolve()
+
+    def payload(self) -> dict[str, Any]:
+        draft = JsonRequiredDocument(self.root, PACKAGE_SET_DRAFT_FILENAME).required_mapping()
+        relations = JsonRequiredDocument(
+            self.root, PACKAGE_RELATION_PROPOSALS_FILENAME
+        ).required_mapping()
+        self.check_draft_identity(draft)
+        self.check_relation_identity(relations)
+        candidates = self.candidate_members(draft)
+        return {
+            "apiVersion": PACKAGE_SET_RENDERER_API_VERSION,
+            "schemaVersion": RENDERER_SCHEMA_VERSION,
+            "kind": "SpecHarvesterStaticPackageSet",
+            "renderer": {
+                "name": RENDERER_NAME,
+                "schemaVersion": RENDERER_SCHEMA_VERSION,
+                "trustBoundary": (
+                    "Package-set artifacts parsed locally as untrusted data; "
+                    "no package code executed."
+                ),
+            },
+            "packageSet": self.package_set_payload(draft, candidates),
+            "members": candidates,
+            "relations": relation_payloads(relations),
+            "preflight": OptionalBundleSetPreflight(self.root).payload(),
+            "diagnostics": [],
+        }
+
+    def check_draft_identity(self, draft: dict[str, Any]) -> None:
+        expected = {
+            "apiVersion": PACKAGE_SET_DRAFT_API_VERSION,
+            "kind": PACKAGE_SET_DRAFT_KIND,
+            "schemaVersion": 1,
+        }
+        diagnostics = [
+            RendererDiagnostic(
+                severity="error",
+                code="package_set_draft_identity_invalid",
+                message=f"{key} must be {value!r}.",
+                path=PACKAGE_SET_DRAFT_FILENAME,
+                field=key,
+            )
+            for key, value in expected.items()
+            if draft.get(key) != value
+        ]
+        if diagnostics:
+            raise StaticSpecRenderError(diagnostics)
+
+    def check_relation_identity(self, relations: dict[str, Any]) -> None:
+        expected = {
+            "apiVersion": PACKAGE_RELATION_PROPOSALS_API_VERSION,
+            "kind": PACKAGE_RELATION_PROPOSALS_KIND,
+            "schemaVersion": 1,
+        }
+        diagnostics = [
+            RendererDiagnostic(
+                severity="error",
+                code="package_relation_proposals_identity_invalid",
+                message=f"{key} must be {value!r}.",
+                path=PACKAGE_RELATION_PROPOSALS_FILENAME,
+                field=key,
+            )
+            for key, value in expected.items()
+            if relations.get(key) != value
+        ]
+        if diagnostics:
+            raise StaticSpecRenderError(diagnostics)
+
+    def package_set_payload(
+        self,
+        draft: dict[str, Any],
+        candidates: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        source = mapping_value(draft.get("source"))
+        selection = mapping_value(draft.get("selection"))
+        summary = mapping_value(draft.get("summary"))
+        workspace = next(
+            (candidate for candidate in candidates if candidate.get("role") == "workspace"),
+            candidates[0] if candidates else {},
+        )
+        return {
+            "id": string_value(workspace.get("packageId")) or "package-set",
+            "status": "producer_preview",
+            "reviewStatus": string_value(
+                mapping_value(draft.get("relationProposals")).get("reviewStatus")
+            ),
+            "authority": string_value(draft.get("authority")),
+            "repository": string_value(source.get("repository")),
+            "exactRevision": string_value(source.get("exactRevision")),
+            "selectedRoles": string_list(selection.get("roles")),
+            "summary": {
+                "candidateCount": integer_value(summary.get("candidateCount")),
+                "skippedCount": integer_value(summary.get("skippedCount")),
+                "relationProposalCount": integer_value(summary.get("relationProposalCount")),
+            },
+            "nonGoals": string_list(draft.get("nonGoals")),
+        }
+
+    def candidate_members(self, draft: dict[str, Any]) -> list[dict[str, Any]]:
+        candidates = list_value(draft.get("candidates"))
+        return sorted(
+            [
+                self.candidate_member(candidate)
+                for candidate in candidates
+                if isinstance(candidate, dict)
+            ],
+            key=lambda item: (item["role"] != "workspace", item["packageId"]),
+        )
+
+    def candidate_member(self, candidate: dict[str, Any]) -> dict[str, Any]:
+        candidate_path = string_value(candidate.get("candidatePath"))
+        manifest = self.candidate_manifest(candidate_path)
+        metadata = mapping_value(manifest.get("metadata"))
+        return {
+            "packageId": string_value(candidate.get("packageId")),
+            "role": string_value(candidate.get("role")),
+            "candidatePath": candidate_path,
+            "manifestPath": string_value(candidate.get("manifest")),
+            "sourceTargetPath": string_value(candidate.get("sourceTargetPath")),
+            "packageManifestPath": string_value(candidate.get("manifestPath")),
+            "status": string_value(candidate.get("status")),
+            "name": string_value(metadata.get("name")),
+            "summary": string_value(metadata.get("summary")),
+            "version": string_value(metadata.get("version")),
+            "previewOnly": bool(manifest.get("preview_only", False)),
+            "capabilities": manifest_capabilities(manifest),
+            "intents": manifest_intents(manifest),
+        }
+
+    def candidate_manifest(self, candidate_path: str) -> dict[str, Any]:
+        if not candidate_path:
+            return {}
+        manifest_path = self.root / candidate_path / "specpm.yaml"
+        try:
+            return SpecYamlDocument(self.root, manifest_path).required_mapping()
+        except StaticSpecRenderError:
+            return {}
 
 
 class CandidateSpecPackage:
@@ -549,11 +742,69 @@ class JsonArtifact:
         raise ValueError(f"non-finite JSON number is not supported: {value}")
 
 
+class JsonRequiredDocument:
+    def __init__(self, root: Path, name: str):
+        self.root = root
+        self.name = name
+
+    def required_mapping(self) -> dict[str, Any]:
+        artifact = JsonArtifact(self.root, self.name).payload()
+        if artifact["status"] == "available":
+            raw = artifact.get("raw")
+            if isinstance(raw, dict):
+                return raw
+        message = artifact.get("message") or "Required package-set JSON artifact is missing."
+        raise StaticSpecRenderError(
+            [
+                RendererDiagnostic(
+                    severity="error",
+                    code="package_set_artifact_unreadable",
+                    message=str(message),
+                    path=self.name,
+                )
+            ]
+        )
+
+
+class OptionalBundleSetPreflight:
+    def __init__(self, root: Path):
+        self.root = root
+
+    def payload(self) -> dict[str, Any]:
+        artifact = JsonArtifact(self.root, PACKAGE_SET_PREFLIGHT_FILENAME).payload()
+        if artifact["status"] != "available":
+            return {
+                "status": "not_provided",
+                "path": PACKAGE_SET_PREFLIGHT_FILENAME,
+                "message": "Bundle-set preflight report was not found beside the package set.",
+            }
+        raw = mapping_value(artifact.get("raw"))
+        if (
+            raw.get("apiVersion") != BUNDLE_SET_PREFLIGHT_API_VERSION
+            or raw.get("kind") != BUNDLE_SET_PREFLIGHT_KIND
+        ):
+            return {
+                "status": "invalid",
+                "path": PACKAGE_SET_PREFLIGHT_FILENAME,
+                "message": "Bundle-set preflight report identity is invalid.",
+            }
+        summary = mapping_value(raw.get("summary"))
+        return {
+            "status": string_value(raw.get("status")),
+            "path": PACKAGE_SET_PREFLIGHT_FILENAME,
+            "candidateCount": integer_value(summary.get("candidateCount")),
+            "relationCount": integer_value(summary.get("relationCount")),
+            "errorCount": integer_value(summary.get("errorCount")),
+            "warningCount": integer_value(summary.get("warningCount")),
+            "candidateReports": object_list(raw.get("candidateReports")),
+        }
+
+
 class StaticSpecSite:
     def __init__(self, output: Path):
         self.output = output
 
-    def write(self, payload: dict[str, Any]) -> list[str]:
+    def write(self, payload: dict[str, Any], *, data_filename: str) -> list[str]:
         self.output.mkdir(parents=True, exist_ok=True)
         assets = self.output / "assets"
         if assets.exists():
@@ -570,22 +821,43 @@ class StaticSpecSite:
             self.output / "index.html": INDEX_HTML.replace(
                 "__SPEC_PACKAGE_JSON__",
                 script_safe_json(serialized_payload),
+            ).replace(
+                "__SPEC_PACKAGE_JSON_HREF__",
+                data_filename,
             ),
             assets / "spec-renderer.css": VIEWER_CSS,
             assets / "spec-renderer.js": VIEWER_JS,
-            self.output / "spec-package.json": serialized_payload + "\n",
+            self.output / data_filename: serialized_payload + "\n",
         }
         for path, text in files.items():
             path.write_text(text, encoding="utf-8")
         return sorted(relative_display_path(self.output, path) for path in files)
+
+    def clear(self, *, data_filename: str) -> None:
+        for path in (self.output / "index.html", self.output / data_filename):
+            if path.is_file() or path.is_symlink():
+                path.unlink()
+        assets = self.output / "assets"
+        if assets.exists():
+            shutil.rmtree(assets)
 
 
 def render_static_spec_site(options: StaticSpecRendererOptions) -> dict[str, Any]:
     return StaticSpecRenderer(options).render()
 
 
+def render_static_package_set_site(options: StaticPackageSetRendererOptions) -> dict[str, Any]:
+    return StaticPackageSetRenderer(options).render()
+
+
 def write_static_spec_site(candidate: Path, output: Path) -> dict[str, Any]:
     return render_static_spec_site(StaticSpecRendererOptions(candidate=candidate, output=output))
+
+
+def write_static_package_set_site(bundle_set: Path, output: Path) -> dict[str, Any]:
+    return render_static_package_set_site(
+        StaticPackageSetRendererOptions(bundle_set=bundle_set, output=output)
+    )
 
 
 def path_is_inside(path: Path, root: Path) -> bool:
@@ -619,6 +891,36 @@ def object_list(value: Any) -> list[dict[str, Any]]:
     if not isinstance(value, list):
         return []
     return [item for item in value if isinstance(item, dict)]
+
+
+def relation_payloads(relations: dict[str, Any]) -> list[dict[str, Any]]:
+    records = list_value(relations.get("relations"))
+    return sorted(
+        [
+            {
+                "id": string_value(relation.get("id")),
+                "type": string_value(relation.get("type")),
+                "reviewStatus": string_value(relation.get("reviewStatus")),
+                "authority": string_value(relation.get("authority")),
+                "source": mapping_value(relation.get("source")),
+                "target": mapping_value(relation.get("target")),
+                "evidenceCount": len(list_value(relation.get("evidence"))),
+            }
+            for relation in records
+            if isinstance(relation, dict)
+        ],
+        key=lambda item: item["id"],
+    )
+
+
+def manifest_capabilities(manifest: dict[str, Any]) -> list[str]:
+    provides = mapping_value(mapping_value(manifest.get("index")).get("provides"))
+    return string_list(provides.get("capabilities"))
+
+
+def manifest_intents(manifest: dict[str, Any]) -> list[str]:
+    provides = mapping_value(mapping_value(manifest.get("index")).get("provides"))
+    return string_list(provides.get("intents"))
 
 
 def string_value(value: Any) -> str:

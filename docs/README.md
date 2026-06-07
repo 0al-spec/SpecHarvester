@@ -115,7 +115,10 @@ Published DocC site:
     producer-side `preflight-bundle-set` verification for generated
     package-set outputs, member candidate bundles, relation proposals, and
     digest references
-45. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+45. [`PACKAGE_SET_VIEWER.md`](PACKAGE_SET_VIEWER.md):
+    static `render-package-set-site` review surface for package-set summaries,
+    member package cards, relation proposal badges, and result scope examples
+46. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -186,6 +189,8 @@ Published DocC site:
   member candidate drafting from workspace inventory
 - [`PACKAGE_RELATION_PROPOSALS.md`](PACKAGE_RELATION_PROPOSALS.md):
   producer-observed package relation proposals for package-set review
+- [`PACKAGE_SET_VIEWER.md`](PACKAGE_SET_VIEWER.md): static package-set review
+  viewer for aggregate and scoped member package previews
 
 ## GitHub Process Surface
 

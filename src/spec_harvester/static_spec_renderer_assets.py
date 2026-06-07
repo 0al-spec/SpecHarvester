@@ -87,7 +87,7 @@ INDEX_HTML = """<!doctype html>
       <section class="panel raw-panel">
         <div class="panel-head">
           <h2>Normalized JSON</h2>
-          <a href="./spec-package.json" class="button">Open JSON</a>
+          <a id="raw-json-link" href="./__SPEC_PACKAGE_JSON_HREF__" class="button">Open JSON</a>
         </div>
         <pre id="raw-json">{}</pre>
       </section>
@@ -410,6 +410,25 @@ button.button {
   scroll-margin-top: 1rem;
 }
 
+.member-card .section-grid {
+  margin-top: 0.8rem;
+}
+
+.relation-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+}
+
+.relation-badge {
+  color: var(--signal-ink);
+}
+
+.result-scope {
+  border-left-color: var(--signal-ink);
+}
+
 .spec-summary {
   display: grid;
   gap: 0.35rem;
@@ -637,6 +656,10 @@ function embeddedPayload() {
 }
 
 function renderPackage(payload) {
+  if (payload.packageSet) {
+    renderPackageSet(payload);
+    return;
+  }
   const pkg = payload.package || {};
   const metadata = pkg.metadata || {};
   document.querySelector("#package-title").textContent = metadata.name || pkg.id || "SpecPackage";
@@ -677,6 +700,166 @@ function renderPackage(payload) {
     : `<div class="empty">No renderer diagnostics.</div>`;
 
   document.querySelector("#raw-json").textContent = JSON.stringify(payload, null, 2);
+}
+
+function renderPackageSet(payload) {
+  const packageSet = payload.packageSet || {};
+  const members = payload.members || [];
+  const relations = payload.relations || [];
+  const preflight = payload.preflight || {};
+  document.querySelector("#package-title").textContent = packageSet.id || "Package Set";
+  document.querySelector("#package-summary").textContent = [
+    packageSet.repository,
+    packageSet.exactRevision ? `revision ${packageSet.exactRevision}` : "",
+    "aggregate and scoped package review"
+  ].filter(Boolean).join(" · ");
+
+  const statusCard = document.querySelector("#status-card");
+  statusCard.textContent = `Bundle-set preflight: ${preflight.status || "not provided"}`;
+  statusCard.classList.toggle("warn", preflight.status && preflight.status !== "passed");
+
+  document.querySelector("#package-facts").innerHTML = facts([
+    ["Package Set", packageSet.id],
+    ["Status", packageSet.status],
+    ["Review", packageSet.reviewStatus],
+    ["Candidates", packageSet.summary?.candidateCount],
+    ["Relations", packageSet.summary?.relationProposalCount],
+    ["Revision", packageSet.exactRevision]
+  ]);
+  document.querySelector("#producer-facts").innerHTML = facts([
+    ["Preflight", preflight.status || "not provided"],
+    ["Errors", preflight.errorCount],
+    ["Warnings", preflight.warningCount],
+    ["Authority", packageSet.authority],
+    ["Selected Roles", packageSet.selectedRoles || []]
+  ]);
+  document.querySelector("#capability-list").innerHTML = tokens(
+    uniqueFlat(members, "capabilities")
+  );
+  document.querySelector("#intent-list").innerHTML = tokens(uniqueFlat(members, "intents"));
+
+  document.querySelector("#producer-status").textContent =
+    packageSet.reviewStatus || "producer review";
+  document.querySelector("#producer-boundary").textContent =
+    "Package-set viewer is review evidence only. It does not accept packages or relations.";
+  document.querySelector("#producer-panels").innerHTML = [
+    evidenceCard("Package-Set Summary", facts([
+      ["Candidate Count", packageSet.summary?.candidateCount],
+      ["Skipped Count", packageSet.summary?.skippedCount],
+      ["Relation Count", packageSet.summary?.relationProposalCount],
+      ["Repository", packageSet.repository],
+      ["Selected Roles", packageSet.selectedRoles || []]
+    ])),
+    evidenceCard("Bundle-Set Preflight", facts([
+      ["Status", preflight.status || "not provided"],
+      ["Path", preflight.path],
+      ["Candidates", preflight.candidateCount],
+      ["Relations", preflight.relationCount],
+      ["Errors", preflight.errorCount],
+      ["Warnings", preflight.warningCount]
+    ])),
+    evidenceCard("Result Scope Examples", resultScopeExamples(members, relations))
+  ].join("");
+
+  document.querySelector("#spec-count").textContent = String(members.length);
+  document.querySelector("#spec-list").innerHTML = members.length
+    ? members.map((member) => renderMemberCard(member, relations)).join("")
+    : `<div class="empty">No package-set members were loaded.</div>`;
+  renderMemberOutline(members);
+  bindReadingControls();
+
+  const diagnostics = payload.diagnostics || [];
+  document.querySelector("#diagnostic-count").textContent = String(diagnostics.length);
+  document.querySelector("#diagnostic-list").innerHTML = diagnostics.length
+    ? diagnostics.map(renderDiagnosticCard).join("")
+    : `<div class="empty">No renderer diagnostics.</div>`;
+
+  document.querySelector("#raw-json").textContent = JSON.stringify(payload, null, 2);
+}
+
+function renderMemberCard(member, relations) {
+  const inbound = relations.filter((relation) => relation.target?.packageId === member.packageId);
+  const outbound = relations.filter((relation) => relation.source?.packageId === member.packageId);
+  const searchText = [
+    member.packageId,
+    member.role,
+    member.name,
+    member.summary,
+    member.sourceTargetPath,
+    ...inbound.map((relation) => relation.id),
+    ...outbound.map((relation) => relation.id)
+  ].join(" ");
+  return `
+    <details
+      class="spec-card member-card"
+      id="member-${escapeAttribute(member.packageId)}"
+      open
+      data-search="${escapeHtml(searchText)}"
+    >
+      <summary class="spec-summary">
+        <p class="eyebrow">${escapeHtml(member.role || "member package")}</p>
+        <h3>${escapeHtml(member.packageId || member.name || "Package member")}</h3>
+        <p class="muted">${escapeHtml(member.summary || member.sourceTargetPath || "")}</p>
+      </summary>
+      <div class="relation-badges">${relationBadges(inbound, outbound)}</div>
+      <div class="section-grid">
+        ${sectionBox("Package Facts", [
+          `candidate: ${member.candidatePath}`,
+          `source target: ${member.sourceTargetPath || "."}`,
+          `manifest: ${member.packageManifestPath || member.manifestPath}`,
+          `preview only: ${member.previewOnly}`
+        ])}
+        ${sectionBox("Capabilities", member.capabilities || [])}
+        ${sectionBox("Intents", member.intents || [])}
+        ${sectionBox("Result Scope", resultScopeLines(member, inbound, outbound))}
+      </div>
+    </details>
+  `;
+}
+
+function relationBadges(inbound, outbound) {
+  const badges = [
+    ...inbound.map((relation) => `${relation.source?.packageId} ${relation.type} this`),
+    ...outbound.map((relation) => `this ${relation.type} ${relation.target?.packageId}`)
+  ];
+  if (!badges.length) {
+    return `<span class="pill">no relation proposals</span>`;
+  }
+  return badges
+    .map((label) => `<span class="pill relation-badge">${escapeHtml(label)}</span>`)
+    .join("");
+}
+
+function resultScopeLines(member, inbound, outbound) {
+  const lines = [];
+  if (member.role === "workspace") {
+    lines.push("aggregate package-set discovery entrypoint");
+  } else {
+    lines.push("scoped member package review subject");
+  }
+  inbound.forEach((relation) => lines.push(`included by ${relation.source?.packageId}`));
+  outbound.forEach((relation) => lines.push(`contains ${relation.target?.packageId}`));
+  return lines;
+}
+
+function resultScopeExamples(members, relations) {
+  const lines = relations.length
+    ? relations.map(
+      (relation) =>
+        `${relation.source?.packageId} ${relation.type} ${relation.target?.packageId}`
+    )
+    : members.map((member) => `${member.packageId}: ${member.sourceTargetPath || "."}`);
+  return sectionBox("Examples", lines);
+}
+
+function renderMemberOutline(members) {
+  const outline = document.querySelector("#spec-outline");
+  outline.innerHTML = members.length
+    ? members.map((member) => {
+      const label = member.packageId || member.name || "member";
+      return `<a href="#member-${escapeAttribute(label)}">${escapeHtml(label)}</a>`;
+    }).join("")
+    : "";
 }
 
 function renderSpecCard(spec, index) {
@@ -870,12 +1053,19 @@ function tokens(values) {
   return values.map((value) => `<span class="token">${escapeHtml(value)}</span>`).join("");
 }
 
+function uniqueFlat(items, key) {
+  const values = new Set();
+  items.forEach((item) => (item[key] || []).forEach((value) => values.add(value)));
+  return Array.from(values).sort();
+}
+
 function sectionBox(title, values) {
   const list = values.length
     ? `<ul>${values.map((value) => `<li>${escapeHtml(value)}</li>`).join("")}</ul>`
     : `<p class="empty">None declared.</p>`;
+  const extraClass = title === "Result Scope" ? " result-scope" : "";
   return `
-    <details class="section-box">
+    <details class="section-box${extraClass}">
       <summary class="section-summary">
         <strong>${escapeHtml(title)}</strong>
         <span class="count">${values.length}</span>
@@ -951,5 +1141,9 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function escapeAttribute(value) {
+  return String(value ?? "").replaceAll(/[^A-Za-z0-9_-]/g, "-");
 }
 """
