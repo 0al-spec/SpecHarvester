@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from spec_harvester.candidate_bundle_preflight import (
     CandidateBundlePreflightOptions,
     run_candidate_bundle_preflight,
@@ -160,9 +162,11 @@ class BundleSetPreflight:
                 CandidateBundlePreflightOptions(candidate=candidate_root)
             )
             diagnostics_status = self.candidate_diagnostics_status(candidate_root, candidate)
+            actual_package_id = self.candidate_manifest_package_id(candidate_root)
             self.candidate_reports.append(
                 {
                     "packageId": package_id,
+                    "actualPackageId": actual_package_id,
                     "candidatePath": candidate_path,
                     "status": report["status"],
                     "diagnosticsStatus": diagnostics_status,
@@ -170,6 +174,12 @@ class BundleSetPreflight:
                     "warningCount": report["summary"]["warningCount"],
                 }
             )
+            if actual_package_id and actual_package_id != package_id:
+                self.error(
+                    "candidate_package_id_mismatch",
+                    f"Candidate path points at {actual_package_id}, not {package_id}.",
+                    str(candidate_path),
+                )
             if report["status"] != "passed":
                 self.error(
                     "candidate_preflight_failed",
@@ -190,10 +200,8 @@ class BundleSetPreflight:
     ) -> str:
         path = candidate.get("diagnosticsReport")
         if isinstance(path, str) and path:
-            relative = Path(path)
-            if not relative.is_absolute() and ".." not in relative.parts:
-                diagnostics_path = self.root / relative
-            else:
+            diagnostics_path = self.optional_bundle_file(path)
+            if diagnostics_path is None:
                 diagnostics_path = candidate_root / "diagnostics.json"
         else:
             diagnostics_path = candidate_root / "diagnostics.json"
@@ -207,6 +215,20 @@ class BundleSetPreflight:
         if not isinstance(status, str) or not status:
             return "missing"
         return status
+
+    def candidate_manifest_package_id(self, candidate_root: Path) -> str:
+        manifest_path = candidate_root / "specpm.yaml"
+        try:
+            payload = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, yaml.YAMLError):
+            return ""
+        if not isinstance(payload, dict):
+            return ""
+        metadata = payload.get("metadata")
+        if not isinstance(metadata, dict):
+            return ""
+        package_id = metadata.get("id")
+        return package_id if isinstance(package_id, str) else ""
 
     def check_relation_inputs(
         self,
@@ -278,8 +300,9 @@ class BundleSetPreflight:
                     f"workspaceInventory.{key}",
                 )
         path = draft_record.get("path")
-        if isinstance(path, str) and (self.root / path).is_file():
-            expected = digest_record(sha256_file(self.root / path))
+        inventory_path = self.optional_bundle_file(path)
+        if inventory_path is not None:
+            expected = digest_record(sha256_file(inventory_path))
             if draft_record.get("digest") != expected:
                 self.error(
                     "workspace_inventory_digest_mismatch",
@@ -388,6 +411,12 @@ class BundleSetPreflight:
                 "Relation proposal reviewStatus is invalid.",
             )
         for relation in relation_records_value:
+            if relation.get("authority") != "producer_observed_review_evidence":
+                self.error(
+                    "relation_record_authority_invalid",
+                    "Relation record authority must stay producer observed.",
+                    str(relation.get("id") or ""),
+                )
             if relation.get("reviewStatus") not in RELATION_REVIEW_STATUSES:
                 self.error(
                     "relation_record_review_status_invalid",
@@ -410,6 +439,12 @@ class BundleSetPreflight:
             return None
         if not target.is_dir():
             self.error(missing_code, f"Bundle-set directory is missing: {path}", str(path))
+            return None
+        return target
+
+    def optional_bundle_file(self, path: Any) -> Path | None:
+        target = self.bundle_path(path, "bundle_set_path_invalid")
+        if target is None or not target.is_file():
             return None
         return target
 

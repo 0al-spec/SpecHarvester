@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -226,6 +227,26 @@ def test_bundle_set_preflight_fails_duplicate_candidate_package_id(tmp_path: Pat
     assert "candidate_package_id_duplicate" in diagnostic_codes(report)
 
 
+def test_bundle_set_preflight_fails_swapped_candidate_path(tmp_path: Path) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+    draft_path = out / "package-set-draft.json"
+    draft_payload = json.loads(draft_path.read_text(encoding="utf-8"))
+    first = draft_payload["candidates"][0]
+    second = draft_payload["candidates"][1]
+    first["candidatePath"], second["candidatePath"] = (
+        second["candidatePath"],
+        first["candidatePath"],
+    )
+    draft_path.write_text(json.dumps(draft_payload, indent=2, sort_keys=True), encoding="utf-8")
+
+    report = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+
+    assert report["status"] == "failed"
+    assert "candidate_package_id_mismatch" in diagnostic_codes(report)
+
+
 def test_bundle_set_preflight_fails_candidate_diagnostics_status(tmp_path: Path) -> None:
     inventory = write_workspace_inventory_fixture(tmp_path)
     out = tmp_path / "draft-set"
@@ -246,6 +267,73 @@ def test_bundle_set_preflight_fails_candidate_diagnostics_status(tmp_path: Path)
         item for item in report["candidateReports"] if item["packageId"] == "xyflow.react"
     )
     assert react_report["diagnosticsStatus"] == "failed"
+
+
+def test_bundle_set_preflight_rejects_escaped_candidate_diagnostics_report(
+    tmp_path: Path,
+) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+    (tmp_path / "outside-diagnostics.json").write_text(
+        json.dumps({"status": "clean"}), encoding="utf-8"
+    )
+    draft_path = out / "package-set-draft.json"
+    draft_payload = json.loads(draft_path.read_text(encoding="utf-8"))
+    draft_payload["candidates"][0]["diagnosticsReport"] = "../outside-diagnostics.json"
+    draft_path.write_text(json.dumps(draft_payload, indent=2, sort_keys=True), encoding="utf-8")
+
+    report = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+
+    assert report["status"] == "failed"
+    assert "bundle_set_path_escape" in diagnostic_codes(report)
+
+
+def test_bundle_set_preflight_rejects_escaped_workspace_inventory_path(
+    tmp_path: Path,
+) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+    outside_inventory = tmp_path / "outside-workspace-inventory.json"
+    outside_inventory.write_text(inventory.read_text(encoding="utf-8"), encoding="utf-8")
+    outside_digest = {"algorithm": "sha256", "value": sha256_text(outside_inventory)}
+    draft_path = out / "package-set-draft.json"
+    relation_path = out / "package-relation-proposals.json"
+    draft_payload = json.loads(draft_path.read_text(encoding="utf-8"))
+    relation_payload = json.loads(relation_path.read_text(encoding="utf-8"))
+    for record in (
+        draft_payload["workspaceInventory"],
+        relation_payload["inputs"]["workspaceInventory"],
+    ):
+        record["path"] = "../outside-workspace-inventory.json"
+        record["digest"] = outside_digest
+    draft_path.write_text(json.dumps(draft_payload, indent=2, sort_keys=True), encoding="utf-8")
+    relation_path.write_text(
+        json.dumps(relation_payload, indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+    report = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+
+    assert report["status"] == "failed"
+    assert "bundle_set_path_escape" in diagnostic_codes(report)
+
+
+def test_bundle_set_preflight_fails_relation_record_authority(tmp_path: Path) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+    draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+    relation_path = out / "package-relation-proposals.json"
+    relation_payload = json.loads(relation_path.read_text(encoding="utf-8"))
+    relation_payload["relations"][0]["authority"] = "accepted_registry_relation"
+    relation_path.write_text(
+        json.dumps(relation_payload, indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+    report = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+
+    assert report["status"] == "failed"
+    assert "relation_record_authority_invalid" in diagnostic_codes(report)
 
 
 def test_cli_preflight_bundle_set_reports_status(tmp_path: Path, capsys) -> None:
@@ -438,6 +526,10 @@ packages:
 
 def relative_to(path: Path, root: Path) -> str:
     return Path(os.path.relpath(path, root)).as_posix()
+
+
+def sha256_text(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def diagnostic_codes(report: dict[str, object]) -> set[str]:
