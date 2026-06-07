@@ -21,8 +21,8 @@ on:
         default: .smoke/xyflow-package-set/package-set
       package_set_viewer_dir:
         description: Optional package-set static viewer directory inside SpecHarvester.
-        required: true
-        default: .smoke/xyflow-package-set/viewer
+        required: false
+        default: ""
       package_id:
         description: Candidate package id.
         required: true
@@ -95,7 +95,7 @@ jobs:
           proposal_kind="${INPUT_PROPOSAL_KIND:-${VAR_PROPOSAL_KIND:-single_package}}"
           candidate_dir="${INPUT_CANDIDATE_DIR:-${VAR_CANDIDATE_DIR:-candidates/github.com/xyflow/xyflow}}"
           package_set_bundle_dir="${INPUT_PACKAGE_SET_BUNDLE_DIR:-${VAR_PACKAGE_SET_BUNDLE_DIR:-.smoke/xyflow-package-set/package-set}}"
-          package_set_viewer_dir="${INPUT_PACKAGE_SET_VIEWER_DIR:-${VAR_PACKAGE_SET_VIEWER_DIR:-.smoke/xyflow-package-set/viewer}}"
+          package_set_viewer_dir="${INPUT_PACKAGE_SET_VIEWER_DIR:-${VAR_PACKAGE_SET_VIEWER_DIR:-}}"
           package_id="${INPUT_PACKAGE_ID:-${VAR_PACKAGE_ID:-xyflow.core}}"
           package_version="${INPUT_PACKAGE_VERSION:-${VAR_PACKAGE_VERSION:-0.1.0}}"
           create_pr="${INPUT_CREATE_PR:-false}"
@@ -283,9 +283,21 @@ jobs:
 
           bundle_set="${{ steps.config.outputs.package_set_bundle_dir }}"
           viewer="${{ steps.config.outputs.package_set_viewer_dir }}"
+          default_bundle_set=".smoke/xyflow-package-set/package-set"
+          default_viewer=".smoke/xyflow-package-set/viewer"
+          if [ ! -d "$bundle_set" ] && [ "$bundle_set" = "$default_bundle_set" ]; then
+            python -m spec_harvester xyflow-package-set-smoke \
+              --output .smoke/xyflow-package-set
+          fi
           test -d "$bundle_set"
-          if [ -d "$viewer" ]; then
+          if [ -n "$viewer" ] && [ ! -d "$viewer" ]; then
+            echo "::error::Configured package_set_viewer_dir does not exist: $viewer"
+            exit 1
+          fi
+          if [ -n "$viewer" ]; then
             viewer_args=(--viewer "$viewer")
+          elif [ "$bundle_set" = "$default_bundle_set" ] && [ -d "$default_viewer" ]; then
+            viewer_args=(--viewer "$default_viewer")
           else
             viewer_args=()
           fi

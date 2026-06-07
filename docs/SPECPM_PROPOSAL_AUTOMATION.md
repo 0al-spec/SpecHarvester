@@ -103,9 +103,16 @@ upload package-set handoff evidence from a trusted workflow run:
 ```text
 proposal_kind: package_set
 package_set_bundle_dir: .smoke/xyflow-package-set/package-set
-package_set_viewer_dir: .smoke/xyflow-package-set/viewer
+package_set_viewer_dir: "" # optional; default smoke run uses .smoke/xyflow-package-set/viewer
 create_pr=false
 ```
+
+When `package_set_bundle_dir` keeps the default
+`.smoke/xyflow-package-set/package-set` and the directory is absent on the
+fresh GitHub runner, the trusted workflow generates it with
+`xyflow-package-set-smoke` before building the handoff artifact. Custom
+`package_set_bundle_dir` values must point at committed or downloaded
+artifacts.
 
 The workflow runs the package-set handoff command:
 

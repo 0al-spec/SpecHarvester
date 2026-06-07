@@ -2063,6 +2063,8 @@ def test_specpm_proposal_automation_supports_package_set_dry_run_boundary() -> N
         "package_set",
         "package_set_bundle_dir",
         "package_set_viewer_dir",
+        'default: ""',
+        "xyflow-package-set-smoke",
         "Build package-set handoff evidence artifacts",
         "package-set-handoff-proposal",
         "package-set-handoff-proposal.json",
@@ -2077,11 +2079,13 @@ def test_specpm_proposal_automation_supports_package_set_dry_run_boundary() -> N
     ):
         assert required in workflow
 
-    for text in (github_doc, docc_doc):
+    for text in (" ".join(github_doc.split()), " ".join(docc_doc.split())):
         for required in (
             "proposal_kind: package_set",
             "package_set_bundle_dir",
             "package_set_viewer_dir",
+            "xyflow-package-set-smoke",
+            "committed or downloaded artifacts",
             "package-set-handoff-proposal.json",
             "package-set-handoff-proposal.md",
             "specpm-package-set-proposal-evidence",
