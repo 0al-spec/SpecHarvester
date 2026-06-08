@@ -452,6 +452,43 @@ def test_package_set_drafter_preserves_nested_workspace_target(tmp_path: Path) -
     assert snapshot["files"][0]["path"] == "apps/web/package.json"
 
 
+def test_package_set_drafter_keeps_generic_react_binding_capability_neutral(
+    tmp_path: Path,
+) -> None:
+    inventory = write_workspace_inventory_fixture(tmp_path)
+    payload = json.loads(inventory.read_text(encoding="utf-8"))
+    react_package = next(
+        package for package in payload["packages"] if package["role"] == "react_binding"
+    )
+    react_package["name"] = "@demo/react-binding"
+    react_package["description"] = "Generic React integration package."
+    react_package["proposedSpecpmPackageId"] = "demo.react"
+    react_package["manifestPath"] = "packages/react-binding/package.json"
+    react_package["sourceTargetPath"] = "packages/react-binding"
+    react_package["evidenceReferences"] = [
+        {
+            "kind": "package_manifest",
+            "path": "packages/react-binding/package.json",
+            "digest": {
+                "algorithm": "sha256",
+                "value": "0" * 64,
+            },
+        }
+    ]
+    inventory.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    out = tmp_path / "draft-set"
+
+    draft_package_set(
+        PackageSetDraftOptions(inventory=inventory, out=out, roles=("react_binding",))
+    )
+
+    manifest = load_manifest(out, "demo.react")
+    assert manifest["index"]["provides"]["capabilities"] == ["demo.react.package_boundary"]
+    assert "intent.ui.flow_diagramming" not in manifest["index"]["provides"]["intents"]
+    snapshot = json.loads((out / "demo.react" / "harvest.json").read_text(encoding="utf-8"))
+    assert snapshot["files"][0]["package"]["capabilityLabel"] == "package_boundary"
+
+
 def test_package_set_drafter_falls_back_when_evidence_references_are_not_list(
     tmp_path: Path,
 ) -> None:

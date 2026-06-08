@@ -160,6 +160,31 @@ def test_package_set_ai_enrichment_normalizes_package_local_evidence_paths(
     assert react["interfaces"][0]["evidencePaths"] == ["xyflow.react/harvest.json"]
 
 
+def test_package_set_ai_enrichment_trims_package_local_evidence_paths(
+    tmp_path: Path,
+) -> None:
+    smoke = write_xyflow_smoke(tmp_path)
+    add_source_export_fixture(smoke)
+    model_output = write_model_output(smoke, unsupported_path=False)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    react = next(item for item in payload["proposals"] if item["packageId"] == "xyflow.react")
+    react["interfaces"][0]["evidencePaths"] = [" harvest.json\n", "   "]
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_enrichment_proposal(
+        PackageSetAIEnrichmentOptions(
+            bundle_set=smoke / "package-set",
+            source_checkout=smoke / "fixture" / "xyflow",
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "completed"
+    assert "model_evidence_path_unsupported" not in {item["code"] for item in report["diagnostics"]}
+    react = next(item for item in report["proposals"] if item["packageId"] == "xyflow.react")
+    assert react["interfaces"][0]["evidencePaths"] == ["xyflow.react/harvest.json"]
+
+
 def test_openai_compatible_provider_receipt_uses_configured_provider_name(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

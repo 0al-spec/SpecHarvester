@@ -561,9 +561,9 @@ def normalized_records(
             )
             continue
         evidence_paths = [
-            normalized_evidence_path(package_id, path, allowed_paths)
+            normalized_evidence_path(package_id, path.strip(), allowed_paths)
             for path in list_value(item.get("evidencePaths"))
-            if isinstance(path, str) and path
+            if isinstance(path, str) and path.strip()
         ]
         supported_evidence_paths = [path for path in evidence_paths if path in allowed_paths]
         unsupported = sorted(set(evidence_paths) - allowed_paths)
