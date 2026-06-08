@@ -111,6 +111,7 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
         "path": "packages/react",
     }
     assert react_snapshot["files"][0]["path"] == "packages/react/package.json"
+    assert react_snapshot["files"][0]["size"] > 0
     assert react_snapshot["files"][0]["package"]["name"] == "@xyflow/react"
     assert react_snapshot["files"][0]["package"]["description"] == (
         "React Flow - A highly customizable React library for building node-based "

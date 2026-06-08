@@ -485,6 +485,8 @@ repositories:
     for record in packages.values():
         evidence = record["evidenceReferences"][0]
         assert evidence["kind"] == "package_manifest"
+        assert evidence["size"] > 0
+        assert evidence["size"] == (checkout / record["manifestPath"]).stat().st_size
         assert evidence["digest"]["algorithm"] == "sha256"
         assert len(evidence["digest"]["value"]) == 64
 

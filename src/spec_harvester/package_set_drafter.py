@@ -495,7 +495,7 @@ def package_file_record(package: dict[str, Any]) -> dict[str, Any]:
     record = {
         "path": manifest_path,
         "kind": "package_manifest",
-        "size": 0,
+        "size": package_size(package, manifest_path),
         "sha256": digest,
         "package": {
             "name": package.get("name") or package.get("proposedSpecpmPackageId"),
@@ -510,6 +510,25 @@ def package_file_record(package: dict[str, Any]) -> dict[str, Any]:
     if isinstance(license_name, str) and license_name.strip():
         record["package"]["license"] = license_name.strip()
     return record
+
+
+def package_size(package: dict[str, Any], manifest_path: str) -> int:
+    evidence_references = package.get("evidenceReferences")
+    if not isinstance(evidence_references, list):
+        return 0
+
+    fallback_size = 0
+    for evidence in evidence_references:
+        if not isinstance(evidence, dict):
+            continue
+        size = evidence.get("size")
+        if not isinstance(size, int) or size < 0:
+            continue
+        if fallback_size == 0:
+            fallback_size = size
+        if evidence.get("path") == manifest_path:
+            return size
+    return fallback_size
 
 
 def package_digest(package: dict[str, Any]) -> str:
