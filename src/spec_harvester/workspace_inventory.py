@@ -382,7 +382,7 @@ def package_record(
     package = package_metadata(absolute, diagnostics, max_file_bytes)
     role = package_role(manifest_path, package, workspace_paths)
     subject = package_subject(manifest_path, package, role, namespace)
-    return {
+    record = {
         "manifestPath": manifest_path,
         "sourceTargetPath": source_target_path(manifest_path),
         "ecosystem": profile.get("ecosystem", package_ecosystem(manifest_path)),
@@ -395,6 +395,11 @@ def package_record(
             evidence_reference(absolute, manifest_path, kind="package_manifest")
         ],
     }
+    for key in ("description", "license"):
+        value = package.get(key)
+        if isinstance(value, str) and value.strip():
+            record[key] = value.strip()
+    return record
 
 
 def package_metadata(

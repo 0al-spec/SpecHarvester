@@ -32,6 +32,12 @@ Each generated package directory is an ordinary preview candidate bundle with
 `specpm.yaml`, `specs/*.spec.yaml`, `harvest.json`, `producer-receipt.json`,
 `validation-report.json`, and `diagnostics.json`.
 
+Package-set drafting preserves package manifest `description` and `license`
+metadata from `workspace-inventory.json` when present. This keeps scoped
+package candidates closer to reviewable accepted-source input without changing
+the producer boundary: generated bundles still remain `preview_only` until
+maintainer review.
+
 ## JSON Identity
 
 The draft-set summary uses:

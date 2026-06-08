@@ -106,6 +106,11 @@ Each model proposal must use this shape:
 proposal report emits `model_evidence_path_unsupported` diagnostics when the
 model cites unknown paths.
 
+For package-local generated artifacts, the normalizer accepts paths relative to
+the proposal package. For example, `harvest.json` in the `xyflow.react`
+proposal is normalized to `xyflow.react/harvest.json` when that package-local
+artifact was supplied in the compact request.
+
 ## Trust Boundary
 
 AI enrichment is proposal evidence only:

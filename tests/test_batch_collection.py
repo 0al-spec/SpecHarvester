@@ -463,6 +463,11 @@ repositories:
     assert packages["packages/system/package.json"]["proposedSpecpmPackageId"] == "xyflow.system"
     assert packages["packages/react/package.json"]["name"] == "@xyflow/react"
     assert packages["packages/react/package.json"]["version"] == "12.0.0"
+    assert packages["packages/react/package.json"]["description"] == (
+        "React Flow - A highly customizable React library for building node-based "
+        "editors and interactive flow charts."
+    )
+    assert packages["packages/react/package.json"]["license"] == "MIT"
     assert packages["packages/react/package.json"]["role"] == "react_binding"
     assert packages["packages/react/package.json"]["sourceTargetPath"] == "packages/react"
     assert packages["packages/react/package.json"]["proposedSpecpmPackageId"] == "xyflow.react"
@@ -1432,6 +1437,11 @@ def make_workspace_checkout(path: Path) -> Path:
             {
                 "name": "@xyflow/monorepo",
                 "version": "0.0.0",
+                "description": (
+                    "A highly customizable React library for building node-based "
+                    "editors and interactive flow charts"
+                ),
+                "license": "MIT",
                 "private": True,
                 "packageManager": "pnpm@9.2.0",
             }
@@ -1451,9 +1461,30 @@ packages:
         encoding="utf-8",
     )
     packages = {
-        "packages/system": {"name": "@xyflow/system", "version": "1.0.0"},
-        "packages/react": {"name": "@xyflow/react", "version": "12.0.0"},
-        "packages/svelte": {"name": "@xyflow/svelte", "version": "1.0.0"},
+        "packages/system": {
+            "name": "@xyflow/system",
+            "version": "1.0.0",
+            "description": "xyflow core system that powers React Flow and Svelte Flow.",
+            "license": "MIT",
+        },
+        "packages/react": {
+            "name": "@xyflow/react",
+            "version": "12.0.0",
+            "description": (
+                "React Flow - A highly customizable React library for building "
+                "node-based editors and interactive flow charts."
+            ),
+            "license": "MIT",
+        },
+        "packages/svelte": {
+            "name": "@xyflow/svelte",
+            "version": "1.0.0",
+            "description": (
+                "Svelte Flow - A highly customizable Svelte library for building "
+                "node-based editors, workflow systems, diagrams and more."
+            ),
+            "license": "MIT",
+        },
         "examples/react": {"name": "react-examples", "version": "0.0.0"},
         "examples/svelte": {"name": "svelte-examples", "version": "0.0.0"},
         "tooling/cli": {"name": "@xyflow/cli", "version": "0.1.0"},

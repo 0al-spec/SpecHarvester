@@ -70,6 +70,37 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
     assert system_manifest["metadata"]["id"] == "xyflow.system"
     assert react_manifest["metadata"]["id"] == "xyflow.react"
     assert svelte_manifest["metadata"]["id"] == "xyflow.svelte"
+    assert workspace_manifest["metadata"]["summary"] == (
+        "Xyflow Workspace public package boundary: A highly customizable React library "
+        "for building node-based editors and interactive flow charts"
+    )
+    assert system_manifest["metadata"]["summary"] == (
+        "Xyflow System public package boundary: xyflow core system that powers React "
+        "Flow and Svelte Flow."
+    )
+    assert react_manifest["metadata"]["summary"] == (
+        "Xyflow React public package boundary: React Flow - A highly customizable React "
+        "library for building node-based editors and interactive flow charts."
+    )
+    assert svelte_manifest["metadata"]["summary"] == (
+        "Xyflow Svelte public package boundary: Svelte Flow - A highly customizable "
+        "Svelte library for building node-based editors, workflow systems, diagrams "
+        "and more."
+    )
+    assert workspace_manifest["metadata"]["license"] == "MIT"
+    assert system_manifest["metadata"]["license"] == "MIT"
+    assert react_manifest["metadata"]["license"] == "MIT"
+    assert svelte_manifest["metadata"]["license"] == "MIT"
+    assert workspace_manifest["index"]["provides"]["capabilities"] == ["xyflow.workspace.workspace"]
+    assert system_manifest["index"]["provides"]["capabilities"] == [
+        "xyflow.system.flow_system_utilities"
+    ]
+    assert react_manifest["index"]["provides"]["capabilities"] == ["xyflow.react.flow_canvas"]
+    assert svelte_manifest["index"]["provides"]["capabilities"] == ["xyflow.svelte.flow_canvas"]
+    assert "intent.ui.node_based_editor" in react_manifest["index"]["provides"]["intents"]
+    assert "intent.ui.flow_diagramming" in react_manifest["index"]["provides"]["intents"]
+    assert "intent.ui.diagramming" in svelte_manifest["index"]["provides"]["intents"]
+    assert "intent.ui.flow_system_utilities" in system_manifest["index"]["provides"]["intents"]
     assert workspace_manifest["preview_only"] is True
     assert react_manifest["preview_only"] is True
 
@@ -81,6 +112,12 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
     }
     assert react_snapshot["files"][0]["path"] == "packages/react/package.json"
     assert react_snapshot["files"][0]["package"]["name"] == "@xyflow/react"
+    assert react_snapshot["files"][0]["package"]["description"] == (
+        "React Flow - A highly customizable React library for building node-based "
+        "editors and interactive flow charts."
+    )
+    assert react_snapshot["files"][0]["package"]["license"] == "MIT"
+    assert react_snapshot["files"][0]["package"]["capabilityLabel"] == "flow_canvas"
 
     for package_id in ("xyflow.workspace", "xyflow.system", "xyflow.react", "xyflow.svelte"):
         preflight = run_candidate_bundle_preflight(
@@ -139,7 +176,7 @@ def test_package_set_drafter_writes_relation_proposals(tmp_path: Path) -> None:
         {
             "digest": {
                 "algorithm": "sha256",
-                "value": "ec6adf9e9527fbcc23c66624675bc55ef23301a941460c8c61ba62b85a6c66b5",
+                "value": "7760572ec571e038759b8413beb099814cde566d944ad01533652b582ae2711e",
             },
             "kind": "package_manifest",
             "packageId": "xyflow.react",
@@ -493,6 +530,11 @@ def make_workspace_checkout(path: Path) -> Path:
             {
                 "name": "@xyflow/monorepo",
                 "version": "0.0.0",
+                "description": (
+                    "A highly customizable React library for building node-based "
+                    "editors and interactive flow charts"
+                ),
+                "license": "MIT",
                 "private": True,
                 "packageManager": "pnpm@9.2.0",
             }
@@ -512,9 +554,30 @@ packages:
         encoding="utf-8",
     )
     packages = {
-        "packages/system": {"name": "@xyflow/system", "version": "1.0.0"},
-        "packages/react": {"name": "@xyflow/react", "version": "12.0.0"},
-        "packages/svelte": {"name": "@xyflow/svelte", "version": "1.0.0"},
+        "packages/system": {
+            "name": "@xyflow/system",
+            "version": "1.0.0",
+            "description": "xyflow core system that powers React Flow and Svelte Flow.",
+            "license": "MIT",
+        },
+        "packages/react": {
+            "name": "@xyflow/react",
+            "version": "12.0.0",
+            "description": (
+                "React Flow - A highly customizable React library for building "
+                "node-based editors and interactive flow charts."
+            ),
+            "license": "MIT",
+        },
+        "packages/svelte": {
+            "name": "@xyflow/svelte",
+            "version": "1.0.0",
+            "description": (
+                "Svelte Flow - A highly customizable Svelte library for building "
+                "node-based editors, workflow systems, diagrams and more."
+            ),
+            "license": "MIT",
+        },
         "examples/react": {"name": "react-examples", "version": "0.0.0"},
         "examples/svelte": {"name": "svelte-examples", "version": "0.0.0"},
         "tooling/cli": {"name": "@xyflow/cli", "version": "0.1.0"},

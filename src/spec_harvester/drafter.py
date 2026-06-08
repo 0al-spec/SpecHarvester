@@ -577,7 +577,7 @@ def build_capability_entries(
         package_name = package.get("name")
         if not isinstance(package_name, str) or not package_name.strip():
             continue
-        label = package_label(package_name)
+        label = capability_label(package, package_name)
         capability_id = unique_id(f"{package_id}.{label}", seen_ids)
         description = package.get("description")
         summary = capability_summary(
@@ -623,6 +623,13 @@ def capability_summary(
     if isinstance(description, str) and description.strip():
         return description.strip()
     return f"Provide observed package metadata for {package_name}."
+
+
+def capability_label(package: dict[str, Any], package_name: str) -> str:
+    label = package.get("capabilityLabel")
+    if isinstance(label, str) and label.strip():
+        return slug_id(label)
+    return package_label(package_name)
 
 
 def capability_source_records(package_records: list[dict[str, Any]]) -> list[dict[str, Any]]:

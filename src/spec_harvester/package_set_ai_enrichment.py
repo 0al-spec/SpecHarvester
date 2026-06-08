@@ -561,7 +561,9 @@ def normalized_records(
             )
             continue
         evidence_paths = [
-            path for path in list_value(item.get("evidencePaths")) if isinstance(path, str) and path
+            normalized_evidence_path(package_id, path, allowed_paths)
+            for path in list_value(item.get("evidencePaths"))
+            if isinstance(path, str) and path
         ]
         supported_evidence_paths = [path for path in evidence_paths if path in allowed_paths]
         unsupported = sorted(set(evidence_paths) - allowed_paths)
@@ -589,6 +591,16 @@ def normalized_records(
             ]
         normalized.append(record)
     return normalized
+
+
+def normalized_evidence_path(package_id: str, path: str, allowed_paths: set[str]) -> str:
+    if path in allowed_paths:
+        return path
+    if not path.startswith("/") and not path.startswith(f"{package_id}/"):
+        candidate_relative = f"{package_id}/{path}"
+        if candidate_relative in allowed_paths:
+            return candidate_relative
+    return path
 
 
 def input_records(
