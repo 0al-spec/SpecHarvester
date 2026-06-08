@@ -510,12 +510,14 @@ def source_target_path(manifest_path: str) -> str:
 def evidence_reference(
     path: Path, public_path: str, kind: str = "workspace_manifest"
 ) -> dict[str, Any]:
+    payload = path.read_bytes()
     return {
         "kind": kind,
         "path": public_path,
+        "size": len(payload),
         "digest": {
             "algorithm": "sha256",
-            "value": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "value": hashlib.sha256(payload).hexdigest(),
         },
     }
 
