@@ -32,6 +32,11 @@ The model output is constrained to `refinedSummary`, `capabilities`,
 `interfaces`, `evidencePaths`, `confidence`, and `evidenceGaps`. Unsupported
 evidence paths produce `model_evidence_path_unsupported` diagnostics.
 
+For package-local generated artifacts, the normalizer accepts paths relative to
+the proposal package. For example, `harvest.json` in the `xyflow.react`
+proposal is normalized to `xyflow.react/harvest.json` when that package-local
+artifact was supplied in the compact request.
+
 This command does not mutate `specpm.yaml` or `specs/*.spec.yaml`. It does not
 accept packages, accept relations, publish registry metadata, install
 dependencies, run package scripts, execute package managers, run builds, run

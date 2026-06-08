@@ -503,8 +503,12 @@ def package_file_record(package: dict[str, Any]) -> dict[str, Any]:
             "ecosystem": package.get("ecosystem"),
             "packageManager": package.get("packageManager"),
             "description": package_description(package),
+            "capabilityLabel": package_capability_label(package),
         },
     }
+    license_name = package.get("license")
+    if isinstance(license_name, str) and license_name.strip():
+        record["package"]["license"] = license_name.strip()
     return record
 
 
@@ -525,15 +529,66 @@ def package_digest(package: dict[str, Any]) -> str:
 
 
 def package_description(package: dict[str, Any]) -> str:
+    description = package.get("description")
+    if isinstance(description, str) and description.strip():
+        return description.strip()
     role = str(package.get("role") or "member_package")
     package_id = str(package.get("proposedSpecpmPackageId") or "package")
     role_summary = {
-        "workspace": "aggregate workspace package-set entrypoint",
-        "core_runtime": "core runtime package boundary",
-        "react_binding": "React package boundary",
-        "svelte_binding": "Svelte package boundary",
+        "workspace": "aggregate workspace package-set entrypoint for repository discovery",
+        "core_runtime": "framework-agnostic system utility package boundary",
+        "react_binding": "React Flow package boundary",
+        "svelte_binding": "Svelte Flow package boundary",
     }.get(role, "member package boundary")
-    return f"Generated preview for {role_summary} {package_id}."
+    return f"Generated preview for {role_summary}: {package_id}."
+
+
+def package_capability_label(package: dict[str, Any]) -> str:
+    role = str(package.get("role") or "")
+    if role == "workspace":
+        return "workspace"
+    if role == "core_runtime" and has_flow_system_evidence(package):
+        return "flow_system_utilities"
+    if role in {"react_binding", "svelte_binding"} and has_flow_canvas_evidence(package):
+        return "flow_canvas"
+    return "package_boundary"
+
+
+def package_evidence_text(package: dict[str, Any]) -> str:
+    fields = (
+        "name",
+        "description",
+        "proposedSpecpmPackageId",
+        "manifestPath",
+        "sourceTargetPath",
+    )
+    return " ".join(
+        value.strip()
+        for field in fields
+        if isinstance((value := package.get(field)), str) and value.strip()
+    ).lower()
+
+
+def has_flow_canvas_evidence(package: dict[str, Any]) -> bool:
+    text = package_evidence_text(package)
+    return (
+        "xyflow" in text
+        or "react flow" in text
+        or "svelte flow" in text
+        or "flow chart" in text
+        or "flow charts" in text
+        or (("node-based" in text or "node based" in text) and "diagram" in text)
+    )
+
+
+def has_flow_system_evidence(package: dict[str, Any]) -> bool:
+    text = package_evidence_text(package)
+    return (
+        "xyflow" in text
+        or "flow system" in text
+        or "flow utilities" in text
+        or ("core system" in text and "flow" in text)
+    )
 
 
 def project_profile_record(
