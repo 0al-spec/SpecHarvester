@@ -29,6 +29,8 @@ SpecHarvester is usable today for:
 - candidate bundle and bundle-set preflight;
 - static candidate and package-set viewer output;
 - monorepo workspace inventory;
+- proposal-only LLM package-set draft selection from deterministic workspace
+  inventory;
 - package-set and scoped member candidate drafting;
 - producer-observed package relation proposals;
 - local `xyflow-package-set-smoke` package-set smoke coverage;

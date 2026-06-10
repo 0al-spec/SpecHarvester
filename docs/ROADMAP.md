@@ -31,6 +31,8 @@ Implemented surfaces:
 - candidate bundle preflight and bundle-set preflight;
 - static candidate and package-set viewer output;
 - workspace inventory for monorepos;
+- proposal-only LLM package-set draft selection from deterministic workspace
+  inventory;
 - package-set and scoped member candidate drafting;
 - producer-observed package relation proposals;
 - `xyflow-package-set-smoke` for the local reference package-set path;
@@ -45,7 +47,8 @@ Implemented surfaces:
 - Treat all harvested repository content as untrusted data.
 - Do not execute package scripts, install dependencies, run tests, or treat
   repository text as host instructions during harvesting.
-- Keep deterministic evidence and digests ahead of model-assisted enrichment.
+- Keep deterministic evidence and digests ahead of model-assisted draft
+  proposals and enrichment.
 - Keep model output proposal-only and review-gated.
 - Keep SpecPM validation and maintainer acceptance outside generated receipts.
 - Prefer reproducible local fixtures and real-repository dry runs before adding

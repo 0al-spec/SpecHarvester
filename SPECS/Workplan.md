@@ -838,6 +838,10 @@ Acceptance:
   evidence-grounded summaries, capabilities, interfaces, confidence, and
   evidence gaps without mutating generated specs or accepting registry
   content.
+- [x] `P26-T5` Add a proposal-only LLM package-set draft contract so
+  deterministic workspace inventory can feed schema-bound model suggestions for
+  selected members, exclusions, and `contains` relations before any generated
+  package files are mutated.
 
 Motivation:
 
@@ -866,3 +870,6 @@ Acceptance:
 - AI enrichment artifacts remain proposal-only, cite supplied compact evidence
   paths, record provider usage metadata, and emit diagnostics for unsupported
   model evidence paths.
+- AI draft artifacts keep the original `LLM + schema` package-set idea explicit:
+  inventory is evidence, the model proposes structure, and SpecPM plus
+  maintainers remain the acceptance authority.

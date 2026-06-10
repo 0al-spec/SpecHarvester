@@ -64,6 +64,17 @@ from spec_harvester.namespace_reports import (
     build_namespace_upstream_report,
     write_namespace_upstream_report,
 )
+from spec_harvester.package_set_ai_draft_proposal import (
+    PackageSetAIDraftProposalOptions,
+    build_package_set_ai_draft_proposal,
+    write_package_set_ai_draft_proposal,
+)
+from spec_harvester.package_set_ai_draft_proposal import (
+    model_request_record as package_set_ai_draft_request,
+)
+from spec_harvester.package_set_ai_draft_proposal import (
+    write_model_request_record as write_package_set_ai_draft_request,
+)
 from spec_harvester.package_set_ai_enrichment import (
     PackageSetAIEnrichmentOptions,
     build_package_set_ai_enrichment_proposal,
@@ -364,6 +375,68 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where Markdown proposal body is written.",
     )
     package_set_handoff_proposal.set_defaults(func=run_package_set_handoff_proposal)
+
+    package_set_ai_draft = subcommands.add_parser(
+        "package-set-ai-draft-proposal",
+        help="Build proposal-only LLM package-set draft selection from workspace inventory.",
+    )
+    package_set_ai_draft.add_argument(
+        "inventory",
+        type=Path,
+        help="Workspace inventory JSON produced by collect-batch --emit-workspace-inventory.",
+    )
+    package_set_ai_draft.add_argument(
+        "--source-checkout",
+        type=Path,
+        help="Optional local public repository checkout used for allowlisted root evidence.",
+    )
+    package_set_ai_draft.add_argument(
+        "--provider-base-url",
+        help="Optional local OpenAI-compatible provider base URL, e.g. http://127.0.0.1:1234.",
+    )
+    package_set_ai_draft.add_argument(
+        "--provider-name",
+        default="lm_studio",
+        help="Provider label recorded in the proposal. Default: lm_studio.",
+    )
+    package_set_ai_draft.add_argument(
+        "--model",
+        help="OpenAI-compatible model id, e.g. openai/gpt-oss-20b.",
+    )
+    package_set_ai_draft.add_argument(
+        "--model-output",
+        type=Path,
+        help="Optional external model output JSON to wrap instead of calling a provider.",
+    )
+    package_set_ai_draft.add_argument(
+        "--request-output",
+        type=Path,
+        help="Optional path where compact package-set model request is written.",
+    )
+    package_set_ai_draft.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where AI draft proposal JSON is written.",
+    )
+    package_set_ai_draft.add_argument(
+        "--timeout-seconds",
+        type=float,
+        default=120.0,
+        help="Provider request timeout in seconds. Default: 120.",
+    )
+    package_set_ai_draft.add_argument(
+        "--max-output-tokens",
+        type=int,
+        default=3000,
+        help="Maximum provider output tokens. Default: 3000.",
+    )
+    package_set_ai_draft.add_argument(
+        "--temperature",
+        type=float,
+        default=0.0,
+        help="Provider temperature. Default: 0.",
+    )
+    package_set_ai_draft.set_defaults(func=run_package_set_ai_draft_proposal)
 
     package_set_ai_enrichment = subcommands.add_parser(
         "package-set-ai-enrichment-proposal",
@@ -1032,6 +1105,38 @@ def run_package_set_handoff_proposal(args: argparse.Namespace) -> int:
         write_package_set_handoff_proposal_markdown(args.proposal_body, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
+
+
+def run_package_set_ai_draft_proposal(args: argparse.Namespace) -> int:
+    options = PackageSetAIDraftProposalOptions(
+        inventory=args.inventory,
+        source_checkout=args.source_checkout,
+        provider_base_url=args.provider_base_url,
+        provider_name=args.provider_name,
+        model=args.model,
+        model_output=args.model_output,
+        timeout_seconds=args.timeout_seconds,
+        max_output_tokens=args.max_output_tokens,
+        temperature=args.temperature,
+    )
+    if args.request_output is not None:
+        write_package_set_ai_draft_request(
+            args.request_output,
+            package_set_ai_draft_request(options),
+        )
+    if args.output is None and args.provider_base_url is None and args.model_output is None:
+        result = {
+            "status": "request_prepared",
+            "requestOutput": str(args.request_output) if args.request_output else None,
+        }
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    result = build_package_set_ai_draft_proposal(options)
+    if args.output is not None:
+        write_package_set_ai_draft_proposal(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] in {"completed", "warning"} else 1
 
 
 def run_package_set_ai_enrichment(args: argparse.Namespace) -> int:
