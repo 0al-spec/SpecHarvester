@@ -106,6 +106,68 @@ def test_package_set_ai_draft_reports_unsupported_evidence_paths(
     ]
 
 
+def test_package_set_ai_draft_ignores_blank_evidence_paths(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["selectedMembers"][0]["evidencePaths"].extend(["", "  "])
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "completed"
+    assert "model_evidence_path_unsupported" not in {item["code"] for item in report["diagnostics"]}
+
+
+def test_package_set_ai_draft_fails_package_set_id_mismatch(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["packageSet"]["packageId"] = "demo.renamed_workspace"
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "failed"
+    assert report["packageSet"]["packageId"] == "demo.workspace"
+    assert "package_set_id_mismatch" in {item["code"] for item in report["diagnostics"]}
+
+
+def test_package_set_ai_draft_normalizes_selected_member_path_to_inventory(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["selectedMembers"][0]["sourceTargetPath"] = "private/override"
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    core = next(item for item in report["selectedMembers"] if item["packageId"] == "demo.core")
+    assert report["status"] == "completed"
+    assert core["sourceTargetPath"] == "packages/core"
+
+
 def test_package_set_ai_draft_fails_invalid_relation_endpoint(
     tmp_path: Path,
 ) -> None:
@@ -124,6 +186,27 @@ def test_package_set_ai_draft_fails_invalid_relation_endpoint(
 
     assert report["status"] == "failed"
     assert "relation_target_not_selected" in {item["code"] for item in report["diagnostics"]}
+
+
+def test_package_set_ai_draft_fails_unsupported_relation_type(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["relations"][0]["type"] = "depends_on"
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "failed"
+    assert "relation_type_unsupported" in {item["code"] for item in report["diagnostics"]}
+    assert {item["targetPackageId"] for item in report["relations"]} == {"demo.cli"}
 
 
 def test_package_set_ai_draft_cli_writes_request_and_proposal(

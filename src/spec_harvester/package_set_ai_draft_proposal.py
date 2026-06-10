@@ -363,7 +363,9 @@ def package_set_proposal(
 ) -> dict[str, Any]:
     output = mapping_value(model_output.get("packageSet"))
     fallback = mapping_value(request.get("packageSet"))
-    package_id = string_value(output.get("packageId")) or string_value(fallback.get("id"))
+    request_package_id = string_value(fallback.get("id"))
+    output_package_id = string_value(output.get("packageId"))
+    package_id = request_package_id or output_package_id
     evidence_paths = supported_paths(
         string_list(output.get("evidencePaths")),
         allowed_paths,
@@ -373,13 +375,23 @@ def package_set_proposal(
     )
     if not evidence_paths and "workspace-inventory.json" in allowed_paths:
         evidence_paths = ["workspace-inventory.json"]
-    if not string_value(output.get("packageId")):
+    if not output_package_id:
         diagnostics.append(
             diagnostic(
                 "warning",
                 "package_set_id_missing",
                 "Model output did not include packageSet.packageId; using request package-set id.",
                 package_id,
+            )
+        )
+    elif request_package_id and output_package_id != request_package_id:
+        diagnostics.append(
+            diagnostic(
+                "error",
+                "package_set_id_mismatch",
+                "Model output packageSet.packageId disagrees with the request package-set id.",
+                request_package_id,
+                {"modelPackageId": output_package_id},
             )
         )
     return {
@@ -450,8 +462,7 @@ def selected_member_proposals(
                 "packageId": package_id,
                 "role": role,
                 "inventoryRole": string_value(inventory_record.get("inventoryRole")),
-                "sourceTargetPath": string_value(item.get("sourceTargetPath"))
-                or string_value(inventory_record.get("sourceTargetPath")),
+                "sourceTargetPath": string_value(inventory_record.get("sourceTargetPath")),
                 "manifestPath": string_value(inventory_record.get("manifestPath")),
                 "reason": string_value(item.get("reason")),
                 "evidencePaths": supported_paths(
@@ -559,6 +570,17 @@ def relation_proposals(
         source = string_value(item.get("sourcePackageId")) or package_set_id
         target = string_value(item.get("targetPackageId"))
         relation_type = string_value(item.get("type")) or "contains"
+        if relation_type != "contains":
+            diagnostics.append(
+                diagnostic(
+                    "error",
+                    "relation_type_unsupported",
+                    "Package-set AI draft relations must use type 'contains'.",
+                    relation_type,
+                    {"index": index},
+                )
+            )
+            continue
         if source != package_set_id:
             diagnostics.append(
                 diagnostic(
@@ -615,6 +637,8 @@ def supported_paths(
     unsupported = []
     for path in paths:
         clean = path.strip()
+        if not clean:
+            continue
         if clean in allowed_paths:
             supported.append(clean)
         else:
