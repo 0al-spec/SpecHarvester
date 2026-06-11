@@ -128,6 +128,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p25_t3_package_set_candidate_drafting.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p25_t4_package_relation_proposals.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p27_t4_author_review_viewer_handoff_checklist.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p27_t5_real_repository_author_ready_calibration_matrix.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -151,6 +152,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-12 | P27-T5 | Archived REVIEW_p27_t5_real_repository_author_ready_calibration_matrix report |
 | 2026-06-12 | P27-T5 | Archived Real Repository Author-Ready Draft Calibration Matrix (PASS) |
 | 2026-06-12 | P27-T4 | Archived REVIEW_p27_t4_author_review_viewer_handoff_checklist report |
 | 2026-06-12 | P27-T4 | Archived Author Review Viewer and Handoff Checklist (PASS) |
