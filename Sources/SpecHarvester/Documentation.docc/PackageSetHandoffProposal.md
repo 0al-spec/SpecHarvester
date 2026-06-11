@@ -36,7 +36,7 @@ python3 -m spec_harvester package-set-handoff-proposal \
 The proposal records `package_set_draft`, `package_relation_proposals`,
 `bundle_set_preflight`, `package_set_viewer`, `member_candidate_bundle`,
 `member_manifest`, `member_boundary_spec`, `member_producer_receipt`,
-`member_validation_report`, `member_diagnostics`, and
+`member_validation_report`, `member_diagnostics`, `member_quality_report`, and
 `package_relation_summary` evidence links.
 
 ## Boundary

@@ -199,6 +199,7 @@ def member_records(bundle_set: Path, draft: dict[str, Any]) -> list[dict[str, An
                 "producerReceiptPath": string_value(candidate.get("producerReceipt")),
                 "validationReportPath": string_value(candidate.get("validationReport")),
                 "diagnosticsReportPath": string_value(candidate.get("diagnosticsReport")),
+                "qualityReportPath": string_value(candidate.get("qualityReport")),
                 "sourceTargetPath": string_value(candidate.get("sourceTargetPath")),
                 "status": string_value(candidate.get("status")),
                 "evidenceLinks": member_evidence_links(candidate, bundle_set),
@@ -218,6 +219,7 @@ def member_evidence_links(
         ("member_producer_receipt", "producerReceipt"),
         ("member_validation_report", "validationReport"),
         ("member_diagnostics", "diagnosticsReport"),
+        ("member_quality_report", "qualityReport"),
     ):
         path = string_value(candidate.get(field))
         links.append(

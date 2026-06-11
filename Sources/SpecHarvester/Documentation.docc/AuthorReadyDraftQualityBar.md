@@ -54,7 +54,7 @@ not a numeric guarantee of correctness.
 
 ## Review Dimensions
 
-Future machine-readable quality reports should expose:
+Machine-readable `author-ready-draft-quality-report.json` reports expose:
 
 - `validation`;
 - `evidenceCoverage`;
@@ -64,17 +64,19 @@ Future machine-readable quality reports should expose:
 - `authorActionability`;
 - `authorityBoundary`.
 
-The first implementation can derive these from existing validation reports,
-bundle preflight reports, AI draft diagnostics, AI enrichment diagnostics, and
-viewer metadata before adding a dedicated schema.
+The report contract is documented in <doc:AuthorReadyDraftQualityReport>. It
+derives these from bundle-local validation, diagnostics, receipt planning,
+evidence outputs, package-set handoff links, and static viewer metadata where
+available.
 
 ## Author Handoff
 
 An author-ready handoff should include the generated candidate bundle,
-validation and diagnostics reports, producer receipt, source revision, evidence
-links, package-set relation evidence when relevant, optional AI draft or
-enrichment proposal evidence, and an author checklist describing what to keep,
-edit, reject, or investigate.
+validation and diagnostics reports, producer receipt,
+`author-ready-draft-quality-report.json`, source revision, evidence links,
+package-set relation evidence when relevant, optional AI draft or enrichment
+proposal evidence, and an author checklist describing what to keep, edit,
+reject, or investigate.
 
 The handoff is successful when it gives the author a strong starting point that
 is cheaper to edit than to write from scratch.

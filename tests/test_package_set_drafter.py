@@ -51,6 +51,7 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
         "relationCount": 3,
         "reviewStatus": "producer_observed",
     }
+    assert all("qualityReport" in item for item in summary["candidates"])
     assert [item["packageId"] for item in summary["skipped"]] == [
         "xyflow.cli",
         "xyflow.e2e",
@@ -105,6 +106,9 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
     assert react_manifest["preview_only"] is True
 
     react_snapshot = json.loads((out / "xyflow.react" / "harvest.json").read_text())
+    react_quality = json.loads(
+        (out / "xyflow.react" / "author-ready-draft-quality-report.json").read_text()
+    )
     assert react_snapshot["source"]["target"] == {
         "kind": "folder",
         "label": "react",
@@ -119,6 +123,7 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
     )
     assert react_snapshot["files"][0]["package"]["license"] == "MIT"
     assert react_snapshot["files"][0]["package"]["capabilityLabel"] == "flow_canvas"
+    assert react_quality["authorReadyDraft"]["status"] == "author_ready_draft"
 
     for package_id in ("xyflow.workspace", "xyflow.system", "xyflow.react", "xyflow.svelte"):
         preflight = run_candidate_bundle_preflight(

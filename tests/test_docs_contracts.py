@@ -991,6 +991,54 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
     assert_current_next_task(next_text)
 
 
+def test_docc_and_github_docs_cover_author_ready_draft_quality_report() -> None:
+    github_doc = ROOT / "docs" / "AUTHOR_READY_DRAFT_QUALITY_REPORT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AuthorReadyDraftQualityReport.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    producer_doc = ROOT / "docs" / "PRODUCER_CANDIDATE_BUNDLE.md"
+    handoff_doc = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    package_set_handoff = ROOT / "docs" / "PACKAGE_SET_HANDOFF_PROPOSAL.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "author-ready-draft-quality-report.json",
+            "spec-harvester.author-ready-draft-quality/v0",
+            "SpecHarvesterAuthorReadyDraftQualityReport",
+            "authorReadyDraft.status",
+            "author_ready_draft",
+            "needs_regeneration",
+            "blocked",
+            "hardGates",
+            "producer_validation",
+            "critical_diagnostics",
+            "required_bundle_files",
+            "producer_receipt_planned",
+            "evidence_links_present",
+            "authority_boundary",
+            "dimensions",
+            "authorActionItems",
+            "quality_report",
+            "not SpecPM registry acceptance",
+            "not maintainer approval",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AUTHOR_READY_DRAFT_QUALITY_REPORT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:AuthorReadyDraftQualityReport>" in docc_root.read_text(encoding="utf-8")
+    assert "quality_report" in producer_doc.read_text(encoding="utf-8")
+    assert "author-ready-draft-quality-report.json" in handoff_doc.read_text(encoding="utf-8")
+    assert "member_quality_report" in package_set_handoff.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:
     github_doc = ROOT / "docs" / "GOVERNANCE_REPORTS.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "GovernanceReports.md"

@@ -18,8 +18,11 @@ from spec_harvester.producer_receipt import (
     ProducerReceiptRequest,
 )
 from spec_harvester.producer_reports import (
+    AUTHOR_READY_QUALITY_REPORT_FILENAME,
     DIAGNOSTICS_REPORT_FILENAME,
     VALIDATION_REPORT_FILENAME,
+    AuthorReadyDraftQualityReport,
+    AuthorReadyDraftQualityReportRequest,
     ProducerDiagnosticsReport,
     ProducerReportRequest,
     ProducerValidationReport,
@@ -309,6 +312,28 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
             ),
         ]
     )
+    quality_report_request = AuthorReadyDraftQualityReportRequest(
+        report=ProducerReportRequest(
+            candidate_root=options.out,
+            package_id=package_id,
+            package_version=options.version,
+            package_api_version=SPEC_API_VERSION,
+            spec_paths=(spec_path,),
+            output_files=tuple(output_files),
+            has_external_inputs=False,
+        ),
+        validation_report_path=validation_report_path,
+        diagnostics_report_path=diagnostics_report_path,
+        diagnostics_entries=tuple(diagnostics_payload["entries"]),
+    )
+    quality_report_path = AuthorReadyDraftQualityReport(quality_report_request).write()
+    output_files.append(
+        CandidateOutputFile(
+            root=options.out,
+            path=AUTHOR_READY_QUALITY_REPORT_FILENAME,
+            role="quality_report",
+        )
+    )
     receipt_path = ProducerReceipt(
         ProducerReceiptRequest(
             candidate_root=options.out,
@@ -339,6 +364,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "spec": str(options.out / spec_path),
         "validationReport": str(validation_report_path),
         "diagnosticsReport": str(diagnostics_report_path),
+        "qualityReport": str(quality_report_path),
         "producerReceipt": str(receipt_path),
         "packageId": package_id,
         "capabilityCount": len(manifest_capabilities),

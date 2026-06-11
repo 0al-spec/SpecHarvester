@@ -625,12 +625,16 @@ class ProducerBundleEvidence:
         receipt_artifact = JsonArtifact(self.root, "producer-receipt.json").payload()
         validation_artifact = JsonArtifact(self.root, "validation-report.json").payload()
         diagnostics_artifact = JsonArtifact(self.root, "diagnostics.json").payload()
+        quality_artifact = JsonArtifact(
+            self.root, "author-ready-draft-quality-report.json"
+        ).payload()
         receipt = mapping_value(receipt_artifact.get("raw"))
         validation_report = mapping_value(validation_artifact.get("raw"))
         diagnostics_report = mapping_value(diagnostics_artifact.get("raw"))
+        quality_report = mapping_value(quality_artifact.get("raw"))
         receipt_validation = mapping_value(receipt.get("validation"))
         receipt_diagnostics = mapping_value(receipt.get("diagnostics"))
-        artifacts = [receipt_artifact, validation_artifact, diagnostics_artifact]
+        artifacts = [receipt_artifact, validation_artifact, diagnostics_artifact, quality_artifact]
         if all(artifact["status"] == "not_provided" for artifact in artifacts):
             return {
                 "status": "not_provided",
@@ -680,12 +684,26 @@ class ProducerBundleEvidence:
                     "review": mapping_value(diagnostics_report.get("review")),
                 },
             },
+            "quality": {
+                "status": string_value(quality_report.get("status")),
+                "apiVersion": string_value(quality_report.get("apiVersion")),
+                "kind": string_value(quality_report.get("kind")),
+                "authorReadyDraft": mapping_value(quality_report.get("authorReadyDraft")),
+                "hardGates": object_list(quality_report.get("hardGates")),
+                "dimensions": object_list(quality_report.get("dimensions")),
+                "authorActionItems": object_list(quality_report.get("authorActionItems")),
+            },
             "humanReview": mapping_value(receipt.get("humanReview")),
         }
 
     def diagnostics(self) -> list[RendererDiagnostic]:
         diagnostics = []
-        for name in ("producer-receipt.json", "validation-report.json", "diagnostics.json"):
+        for name in (
+            "producer-receipt.json",
+            "validation-report.json",
+            "diagnostics.json",
+            "author-ready-draft-quality-report.json",
+        ):
             artifact = JsonArtifact(self.root, name).payload()
             if artifact["status"] == "invalid":
                 diagnostics.append(

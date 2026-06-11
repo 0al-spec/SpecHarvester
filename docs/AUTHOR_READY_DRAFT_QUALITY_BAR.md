@@ -87,8 +87,8 @@ not a numeric guarantee of correctness.
 
 ## Review Dimensions
 
-Future machine-readable quality reports should score the draft along these
-dimensions:
+Machine-readable `author-ready-draft-quality-report.json` reports score the
+draft along these dimensions:
 
 | Dimension | Question |
 |---|---|
@@ -100,9 +100,11 @@ dimensions:
 | `authorActionability` | Can the author see what to keep, edit, reject, or investigate? |
 | `authorityBoundary` | Does every artifact remain proposal-only and review-gated? |
 
-The first implementation can map these dimensions onto existing quality reports,
-bundle preflight reports, AI draft diagnostics, AI enrichment diagnostics, and
-viewer metadata before adding a new schema.
+The report contract is documented in
+[`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md).
+It maps these dimensions onto bundle-local validation, diagnostics, receipt
+planning, evidence outputs, package-set handoff links, and static viewer
+metadata where available.
 
 ## Author Handoff
 
@@ -111,6 +113,7 @@ An author-ready handoff should include:
 - the generated candidate bundle;
 - validation and diagnostics reports;
 - producer receipt and source revision;
+- `author-ready-draft-quality-report.json`;
 - evidence links for the main claims;
 - package-set draft and relation proposal evidence when relevant;
 - AI draft or enrichment proposal evidence when available;
@@ -138,9 +141,8 @@ SpecHarvester does not:
 
 ## Next Implementation Tasks
 
-1. Extend quality reporting with an `authorReadyDraft` verdict and action items.
-2. Add a stop-policy summary to draft, package-set draft, AI draft, and AI
+1. Add a stop-policy summary to draft, package-set draft, AI draft, and AI
    enrichment runs.
-3. Show author action items and unresolved gaps in the static viewer.
-4. Run a real-repository calibration matrix and record how many author edits are
+2. Show author action items and unresolved gaps in the static viewer.
+3. Run a real-repository calibration matrix and record how many author edits are
    needed to move drafts from valid starter packages to curated specs.

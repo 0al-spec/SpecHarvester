@@ -42,6 +42,7 @@ candidate/
   producer-receipt.json
   validation-report.json
   diagnostics.json
+  author-ready-draft-quality-report.json
 ```
 
 The files have distinct roles:
@@ -53,6 +54,9 @@ The files have distinct roles:
   handoff validation.
 - `diagnostics.json`: compact warnings, errors, policy notes, privacy notes,
   unstable-ID warnings, evidence gaps, and overlap diagnostics.
+- `author-ready-draft-quality-report.json`: machine-readable
+  `authorReadyDraft` verdict, hard gates, advisory quality dimensions, and
+  author action items.
 
 ## Receipt Profile
 
@@ -97,7 +101,8 @@ digest:
 ```
 
 Expected output roles include `manifest`, `boundary_spec`,
-`validation_report`, `diagnostics`, `evidence`, and `foreign_artifact`.
+`validation_report`, `diagnostics`, `quality_report`, `evidence`, and
+`foreign_artifact`.
 
 `producer-receipt.json` must not appear in `outputs[]`. Including the receipt
 inside its own digest list creates a self-hash problem. Receipt byte
@@ -110,6 +115,12 @@ review-system digest outside the receipt body.
 `diagnostics.json` should summarize producer-side limitations and rejection
 risks without embedding raw private source text, private prompts, tokens, or
 credentials.
+
+`author-ready-draft-quality-report.json` should summarize whether the generated
+candidate is an `author_ready_draft`, `needs_regeneration`, or `blocked`. It is
+producer-side review evidence only and must not be treated as SpecPM registry
+acceptance. The report contract is documented in
+<doc:AuthorReadyDraftQualityReport>.
 
 Future implementation should record validation status, validator identity,
 warning and error counts, diagnostics status, privacy and security caveats,
@@ -141,17 +152,19 @@ are missing, `producer-receipt.json` is missing or malformed, receipt identity
 fields are unsupported, subject metadata differs from candidate metadata, output
 digests mismatch, `producer-receipt.json` appears in `outputs[]`,
 `configuration.digest` is missing, validation or diagnostics files are missing
-or mismatched, `diagnostics.status` is `failed`, generated IDs are unstable,
-claims lack evidence references, `privacy.secretsIncluded` is `true`, private
-data leaks into public artifacts, or `packageId@version` overlaps an accepted
+or mismatched, author-ready quality report output is missing or has a mismatched
+digest, `diagnostics.status` is `failed`, generated IDs are unstable, claims
+lack evidence references, `privacy.secretsIncluded` is `true`, private data
+leaks into public artifacts, or `packageId@version` overlaps an accepted
 namespace without maintainer review evidence.
 
 ## Implementation Sequence
 
 This planning page is intentionally non-runtime. Follow-up P21 tasks should
-emit `producer-receipt.json`, emit `validation-report.json` and
-`diagnostics.json`, add local candidate bundle preflight verification, extend
-the static candidate viewer, and add SpecPM handoff examples.
+emit `producer-receipt.json`, emit `validation-report.json`, `diagnostics.json`,
+and `author-ready-draft-quality-report.json`, add local candidate bundle
+preflight verification, extend the static candidate viewer, and add SpecPM
+handoff examples.
 
 Shared fixture alignment with SpecPM is governed by
 <doc:SpecPMSharedFixturePolicy>. Generated bundle examples should name the

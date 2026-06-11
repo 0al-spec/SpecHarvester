@@ -41,6 +41,7 @@ candidate/
   producer-receipt.json
   validation-report.json
   diagnostics.json
+  author-ready-draft-quality-report.json
 ```
 
 The files have distinct roles:
@@ -52,6 +53,9 @@ The files have distinct roles:
   handoff validation.
 - `diagnostics.json`: compact warnings, errors, policy notes, privacy notes,
   unstable-ID warnings, evidence gaps, and overlap diagnostics.
+- `author-ready-draft-quality-report.json`: machine-readable
+  `authorReadyDraft` verdict, hard gates, advisory quality dimensions, and
+  author action items.
 
 ## Receipt Profile
 
@@ -115,6 +119,7 @@ Expected output roles include:
 - `boundary_spec`
 - `validation_report`
 - `diagnostics`
+- `quality_report`
 - `evidence`
 - `foreign_artifact`
 
@@ -145,6 +150,12 @@ credentials. Future implementation should record at least:
 - missing or weak evidence links;
 - namespace and version overlap warnings;
 - skipped files, unsupported languages, or model uncertainty.
+
+`author-ready-draft-quality-report.json` should summarize whether the generated
+candidate is an `author_ready_draft`, `needs_regeneration`, or `blocked`. It is
+producer-side review evidence only and must not be treated as SpecPM registry
+acceptance. The report contract is documented in
+[`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md).
 
 ## Review Boundary
 
@@ -181,6 +192,7 @@ Future SpecHarvester preflight should fail or block handoff when:
 - validation status references a missing or mismatched
   `validation-report.json`;
 - diagnostics status references a missing or mismatched `diagnostics.json`;
+- author-ready quality report output is missing or has a mismatched digest;
 - `diagnostics.status` is `failed`;
 - generated IDs are unstable or invalid;
 - generated claims lack evidence references;
@@ -196,7 +208,8 @@ This planning document is intentionally non-runtime. Follow-up P21 tasks should
 land in order:
 
 1. Emit `producer-receipt.json` using the `generated_spec_package_v0` profile.
-2. Emit `validation-report.json` and `diagnostics.json`.
+2. Emit `validation-report.json`, `diagnostics.json`, and
+   `author-ready-draft-quality-report.json`.
 3. Add local candidate bundle preflight verification.
 4. Extend the static candidate viewer with receipt, provenance, validation,
    diagnostics, privacy, and review-boundary panels.

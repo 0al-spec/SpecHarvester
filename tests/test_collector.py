@@ -970,9 +970,11 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     receipt_path = candidate / "producer-receipt.json"
     validation_report_path = candidate / "validation-report.json"
     diagnostics_report_path = candidate / "diagnostics.json"
+    quality_report_path = candidate / "author-ready-draft-quality-report.json"
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     validation_report = json.loads(validation_report_path.read_text(encoding="utf-8"))
     diagnostics_report = json.loads(diagnostics_report_path.read_text(encoding="utf-8"))
+    quality_report = json.loads(quality_report_path.read_text(encoding="utf-8"))
     assert "id: example.react_flow" in manifest
     assert "preview_only: true" in manifest
     assert "example.react_flow.react_flow" in spec
@@ -982,6 +984,7 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     assert result["producerReceipt"] == str(receipt_path)
     assert result["validationReport"] == str(validation_report_path)
     assert result["diagnosticsReport"] == str(diagnostics_report_path)
+    assert result["qualityReport"] == str(quality_report_path)
     assert receipt["apiVersion"] == "specpm.receipts/v0"
     assert receipt["kind"] == "SpecPMProducerReceipt"
     assert receipt["schemaVersion"] == 1
@@ -1027,12 +1030,18 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
 
     outputs = {item["path"]: item for item in receipt["outputs"]}
     assert sorted(outputs) == [
+        "author-ready-draft-quality-report.json",
         "diagnostics.json",
         "harvest.json",
         "specpm.yaml",
         "specs/react_flow.spec.yaml",
         "validation-report.json",
     ]
+    assert outputs["author-ready-draft-quality-report.json"]["role"] == "quality_report"
+    assert (
+        outputs["author-ready-draft-quality-report.json"]["digest"]["value"]
+        == hashlib.sha256(quality_report_path.read_bytes()).hexdigest()
+    )
     assert outputs["diagnostics.json"]["role"] == "diagnostics"
     assert outputs["diagnostics.json"]["digest"] == receipt["diagnostics"]["digest"]
     assert outputs["harvest.json"]["role"] == "evidence"
@@ -1080,6 +1089,40 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
         "acceptanceAuthority": "maintainer_review",
         "requiredFor": ["public_index_acceptance"],
     }
+    assert quality_report["apiVersion"] == "spec-harvester.author-ready-draft-quality/v0"
+    assert quality_report["kind"] == "SpecHarvesterAuthorReadyDraftQualityReport"
+    assert quality_report["schemaVersion"] == 1
+    assert quality_report["status"] == "author_ready_draft"
+    assert quality_report["authorReadyDraft"] == {
+        "actionItemCount": len(quality_report["authorActionItems"]),
+        "hardGateStatus": "passed",
+        "status": "author_ready_draft",
+        "stopReason": "remaining_work_is_author_reviewable",
+        "summary": "Valid starter package is ready for author review and curation.",
+    }
+    assert {gate["id"]: gate["status"] for gate in quality_report["hardGates"]} == {
+        "authority_boundary": "passed",
+        "critical_diagnostics": "passed",
+        "evidence_links_present": "passed",
+        "producer_receipt_planned": "passed",
+        "producer_validation": "passed",
+        "required_bundle_files": "passed",
+    }
+    assert {dimension["id"] for dimension in quality_report["dimensions"]} == {
+        "authorActionability",
+        "authorityBoundary",
+        "claimConservatism",
+        "evidenceCoverage",
+        "packageTopology",
+        "repositorySpecificity",
+        "validation",
+    }
+    assert {item["id"] for item in quality_report["authorActionItems"]} == {
+        "review_capabilities_and_intents",
+        "review_package_identity_and_summary",
+        "run_specpm_validation_before_submission",
+    }
+    assert "not SpecPM registry acceptance" in " ".join(quality_report["nonAuthority"])
 
     inputs = {item["kind"]: item for item in receipt["inputs"]}
     assert inputs["harvested_evidence"]["path"] == "harvest.json"

@@ -158,7 +158,7 @@ Success criteria:
 
 ## Milestone 5: Author-Ready Valid Drafts
 
-Status: next product-quality focus.
+Status: active product-quality focus.
 
 Goal: define when SpecHarvester should stop drafting and hand a valid starter
 package to the repository author.
@@ -166,7 +166,9 @@ package to the repository author.
 Tasks:
 
 - document the author-ready draft quality bar;
-- treat `specpm validate` success as a hard gate, not a semantic quality score;
+- emit `author-ready-draft-quality-report.json` with an `authorReadyDraft`
+  verdict, hard gates, dimensions, and author action items;
+- treat validation success as a hard gate, not a semantic quality score;
 - define stop policy for AI draft and enrichment loops;
 - record author action items, weak claims, and evidence gaps explicitly;
 - keep final semantic curation with the author and their agent.
@@ -175,6 +177,8 @@ Success criteria:
 
 - generated output is described as a valid starter package, not a final
   accepted spec;
+- receipts include a digest for the author-ready quality report as
+  `outputs[].role: quality_report`;
 - operators can tell when additional model iteration is no longer useful;
 - authors receive a reviewable handoff with clear edit points and evidence
   context.
