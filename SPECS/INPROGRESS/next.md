@@ -1,6 +1,7 @@
 # Next Task: P27-T5 Real Repository Author-Ready Draft Calibration Matrix
 
-**Status:** Selected
+**Status:** In Progress
+**Started:** 2026-06-12
 **Last Archived:** P27-T4 Author Review Viewer and Handoff Checklist
 **Archived:** 2026-06-12
 
