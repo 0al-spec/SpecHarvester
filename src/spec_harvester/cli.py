@@ -4,6 +4,7 @@ import argparse
 import json
 from collections.abc import Sequence
 from pathlib import Path
+from typing import Any
 
 from spec_harvester.accepted_candidate_impact import (
     build_accepted_candidate_impact_report,
@@ -23,6 +24,10 @@ from spec_harvester.accepted_update_proposal import (
 from spec_harvester.architecture_lint import (
     build_architecture_lint_report,
     write_architecture_lint_report,
+)
+from spec_harvester.author_ready_calibration_matrix import (
+    build_author_ready_calibration_matrix,
+    write_author_ready_calibration_matrix,
 )
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.bundle_set_preflight import (
@@ -985,6 +990,34 @@ def build_parser() -> argparse.ArgumentParser:
     )
     quality_report.set_defaults(func=run_quality_report)
 
+    calibration_matrix = subcommands.add_parser(
+        "author-ready-calibration-matrix",
+        help=(
+            "Build an author-ready calibration matrix from an existing "
+            "real-repository quality report."
+        ),
+    )
+    calibration_matrix.add_argument(
+        "--quality-report",
+        type=Path,
+        required=True,
+        help="Path to SpecHarvesterRealRepositoryQualityReport JSON.",
+    )
+    calibration_matrix.add_argument(
+        "--author-notes",
+        type=Path,
+        help=(
+            "Optional JSON file mapping package ids to estimated author edits, "
+            "edit categories, notes, and generator follow-up reasons."
+        ),
+    )
+    calibration_matrix.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where calibration matrix JSON is written.",
+    )
+    calibration_matrix.set_defaults(func=run_author_ready_calibration_matrix)
+
     return parser
 
 
@@ -1420,6 +1453,46 @@ def run_quality_report(args: argparse.Namespace) -> int:
         write_quality_report(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
+
+
+def run_author_ready_calibration_matrix(args: argparse.Namespace) -> int:
+    try:
+        quality_report = _read_json_object(args.quality_report, "quality report")
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+
+    try:
+        author_notes = (
+            _read_json_object(args.author_notes, "author notes")
+            if args.author_notes is not None
+            else {}
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+
+    result = build_author_ready_calibration_matrix(
+        quality_report,
+        author_notes=author_notes,
+        quality_report_path=args.quality_report,
+    )
+    if args.output is not None:
+        write_author_ready_calibration_matrix(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def _read_json_object(path: Path, label: str) -> dict[str, Any]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        raise ValueError(f"Cannot read {label}: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid {label} JSON: {exc.msg}") from exc
+    if not isinstance(data, dict):
+        raise ValueError(f"{label.capitalize()} must be a JSON object")
+    return data
 
 
 def _parse_quality_report_notes(raw_notes: list[str]) -> dict[str, str]:
