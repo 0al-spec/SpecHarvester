@@ -883,7 +883,7 @@ Acceptance:
   quality dimensions, and author action items derived from validation reports,
   bundle preflight, AI draft diagnostics, AI enrichment diagnostics, and viewer
   metadata.
-- [ ] `P27-T3` Add a stop-policy summary to draft, package-set draft, AI draft,
+- [x] `P27-T3` Add a stop-policy summary to draft, package-set draft, AI draft,
   and AI enrichment flows so model iteration stops when remaining work is
   author-reviewable rather than generator-fixable.
 - [ ] `P27-T4` Extend the static viewer and handoff Markdown with author review

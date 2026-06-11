@@ -26,8 +26,14 @@ In scope:
   - `blocked_until_inputs_change`.
 - Aggregate package-set member quality reports into package-set level counts,
   blocking reasons, reviewable dimensions, and top author action items.
+- Expose a single-candidate `authorReadyDraftSummary` in `draft_spec_package`
+  results.
+- Include `authorReadyDraftSummary` in `package-set-draft.json`.
 - Include the summary in package-set handoff evidence and static package-set
   viewer JSON.
+- Add `stopPolicySummary` to AI draft and AI enrichment proposal outputs so
+  model-loop decisions use the same stop/continue/blocked vocabulary without
+  claiming package acceptance.
 - Keep per-candidate `author-ready-draft-quality-report.json` unchanged and
   backward-compatible.
 - Update GitHub docs, DocC docs, Workplan, next task, and Flow artifacts.
@@ -60,14 +66,18 @@ Out of scope:
    `hardGateStatus`, dimensions, and author action items from member reports.
 3. Wire the helper into package-set handoff and static package-set renderer
    outputs without changing package generation semantics.
-4. Add tests for ready, needs-regeneration, blocked, handoff, and viewer
+4. Add result-level summaries for single drafts, package-set drafts, and AI
+   proposal flows.
+5. Add tests for ready, needs-regeneration, blocked, handoff, and viewer
    surfaces.
-5. Update docs, DocC, Workplan, `next.md`, and archive validation artifacts.
-6. Run configured quality gates and open a PR.
+6. Update docs, DocC, Workplan, `next.md`, and archive validation artifacts.
+7. Run configured quality gates and open a PR.
 
 ## Acceptance Criteria
 
 - Package-set output exposes `authorReadyDraftSummary`.
+- Single draft results expose `authorReadyDraftSummary`.
+- AI draft and AI enrichment proposals expose `stopPolicySummary`.
 - The summary includes:
   - `decision`;
   - `memberCounts`;
