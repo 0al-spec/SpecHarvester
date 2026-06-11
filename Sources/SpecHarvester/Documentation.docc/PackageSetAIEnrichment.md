@@ -37,6 +37,11 @@ the proposal package. For example, `harvest.json` in the `xyflow.react`
 proposal is normalized to `xyflow.react/harvest.json` when that package-local
 artifact was supplied in the compact request.
 
+Proposal outputs include `stopPolicySummary` with `stop_for_author_review`,
+`continue_generation`, or `blocked_until_inputs_change`. This summary tells
+operators whether another model iteration is useful; it does not mutate
+generated specs and does not make AI enrichment registry truth.
+
 This command does not mutate `specpm.yaml` or `specs/*.spec.yaml`. It does not
 accept packages, accept relations, publish registry metadata, install
 dependencies, run package scripts, execute package managers, run builds, run

@@ -21,6 +21,10 @@ from spec_harvester.drafter import (
     draft_spec_package,
 )
 from spec_harvester.producer_receipt import digest_record, sha256_file
+from spec_harvester.producer_reports import (
+    author_ready_stop_policy_summary,
+    read_optional_report_object,
+)
 from spec_harvester.workspace_inventory import (
     WORKSPACE_INVENTORY_API_VERSION,
     WORKSPACE_INVENTORY_KIND,
@@ -59,6 +63,9 @@ class PackageSetDrafter:
         candidates = self.write_candidates()
         skipped = self.skipped_packages(candidates)
         relations = relation_records(self.inventory, candidates)
+        author_ready_summary = author_ready_stop_policy_summary(
+            member_quality_reports(self.options.out, candidates)
+        )
         payload = {
             "apiVersion": PACKAGE_SET_DRAFT_API_VERSION,
             "kind": PACKAGE_SET_DRAFT_KIND,
@@ -75,6 +82,7 @@ class PackageSetDrafter:
                 "authority": "producer_preview_selection",
             },
             "candidates": candidates,
+            "authorReadyDraftSummary": author_ready_summary,
             "skipped": skipped,
             "relationProposals": {
                 "path": PACKAGE_RELATION_PROPOSALS_FILENAME,
@@ -687,6 +695,26 @@ def candidate_record(
         "qualityReport": relative_output_path(output_root, draft_result["qualityReport"]),
         "status": draft_result["status"],
     }
+
+
+def member_quality_reports(
+    output_root: Path,
+    candidates: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    reports = []
+    for candidate in candidates:
+        report_path = relative_output_path(output_root, candidate.get("qualityReport"))
+        reports.append(
+            {
+                "packageId": str(candidate.get("packageId") or ""),
+                "qualityReportPath": report_path,
+                "qualityReport": read_optional_report_object(
+                    output_root / report_path,
+                    missing_status="missing",
+                ),
+            }
+        )
+    return reports
 
 
 def relative_output_path(output_root: Path, path: Any) -> str:

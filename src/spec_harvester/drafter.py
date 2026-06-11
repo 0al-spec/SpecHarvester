@@ -26,6 +26,8 @@ from spec_harvester.producer_reports import (
     ProducerDiagnosticsReport,
     ProducerReportRequest,
     ProducerValidationReport,
+    author_ready_stop_policy_summary,
+    read_optional_report_object,
 )
 from spec_harvester.semantic_keyword_taxonomy import SEMANTIC_KEYWORD_TAXONOMY
 
@@ -326,6 +328,10 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         diagnostics_report_path=diagnostics_report_path,
     )
     quality_report_path = AuthorReadyDraftQualityReport(quality_report_request).write()
+    quality_report_payload = read_optional_report_object(
+        quality_report_path,
+        missing_status="missing",
+    )
     output_files.append(
         CandidateOutputFile(
             root=options.out,
@@ -364,6 +370,15 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "validationReport": str(validation_report_path),
         "diagnosticsReport": str(diagnostics_report_path),
         "qualityReport": str(quality_report_path),
+        "authorReadyDraftSummary": author_ready_stop_policy_summary(
+            [
+                {
+                    "packageId": package_id,
+                    "qualityReportPath": AUTHOR_READY_QUALITY_REPORT_FILENAME,
+                    "qualityReport": quality_report_payload,
+                }
+            ]
+        ),
         "producerReceipt": str(receipt_path),
         "packageId": package_id,
         "capabilityCount": len(manifest_capabilities),

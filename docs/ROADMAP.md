@@ -168,6 +168,8 @@ Tasks:
 - document the author-ready draft quality bar;
 - emit `author-ready-draft-quality-report.json` with an `authorReadyDraft`
   verdict, hard gates, dimensions, and author action items;
+- aggregate member quality reports into `authorReadyDraftSummary` for
+  package-set handoff and viewer outputs;
 - treat validation success as a hard gate, not a semantic quality score;
 - define stop policy for AI draft and enrichment loops;
 - record author action items, weak claims, and evidence gaps explicitly;

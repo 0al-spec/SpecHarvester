@@ -22,6 +22,10 @@ from spec_harvester.package_set_drafter import (
     PACKAGE_SET_DRAFT_FILENAME,
     PACKAGE_SET_DRAFT_KIND,
 )
+from spec_harvester.producer_reports import (
+    author_ready_stop_policy_summary,
+    read_optional_report_object,
+)
 from spec_harvester.static_spec_renderer_assets import INDEX_HTML, VIEWER_CSS, VIEWER_JS
 
 RENDERER_API_VERSION = "spec-harvester.static-spec-renderer/v0"
@@ -141,7 +145,8 @@ class PackageSetReviewBundle:
         ).required_mapping()
         self.check_draft_identity(draft)
         self.check_relation_identity(relations)
-        candidates = self.candidate_members(draft)
+        quality_reports = self.member_quality_reports(draft)
+        candidates = self.candidate_members(draft, quality_reports)
         return {
             "apiVersion": PACKAGE_SET_RENDERER_API_VERSION,
             "schemaVersion": RENDERER_SCHEMA_VERSION,
@@ -155,6 +160,7 @@ class PackageSetReviewBundle:
                 ),
             },
             "packageSet": self.package_set_payload(draft, candidates),
+            "authorReadyDraftSummary": author_ready_stop_policy_summary(quality_reports),
             "members": candidates,
             "relations": relation_payloads(relations),
             "preflight": OptionalBundleSetPreflight(self.root).payload(),
@@ -231,18 +237,60 @@ class PackageSetReviewBundle:
             "nonGoals": string_list(draft.get("nonGoals")),
         }
 
-    def candidate_members(self, draft: dict[str, Any]) -> list[dict[str, Any]]:
+    def member_quality_reports(self, draft: dict[str, Any]) -> list[dict[str, Any]]:
+        reports = []
+        for candidate in list_value(draft.get("candidates")):
+            if not isinstance(candidate, dict):
+                continue
+            path = string_value(candidate.get("qualityReport"))
+            source_path = bundle_relative_path(self.root, path)
+            if source_path is None:
+                quality_report = {
+                    "status": "blocked",
+                    "authorReadyDraft": {
+                        "status": "blocked",
+                        "stopReason": "quality_report_path_rejected",
+                    },
+                    "readError": "path_rejected",
+                }
+            else:
+                quality_report = read_optional_report_object(source_path, missing_status="missing")
+            reports.append(
+                {
+                    "packageId": string_value(candidate.get("packageId")),
+                    "qualityReportPath": path,
+                    "qualityReport": quality_report,
+                }
+            )
+        return reports
+
+    def candidate_members(
+        self,
+        draft: dict[str, Any],
+        quality_reports: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        quality_by_package = {
+            string_value(report.get("packageId")): mapping_value(report.get("qualityReport"))
+            for report in quality_reports
+        }
         candidates = list_value(draft.get("candidates"))
         return sorted(
             [
-                self.candidate_member(candidate)
+                self.candidate_member(
+                    candidate,
+                    quality_by_package.get(string_value(candidate.get("packageId")), {}),
+                )
                 for candidate in candidates
                 if isinstance(candidate, dict)
             ],
             key=lambda item: (item["role"] != "workspace", item["packageId"]),
         )
 
-    def candidate_member(self, candidate: dict[str, Any]) -> dict[str, Any]:
+    def candidate_member(
+        self,
+        candidate: dict[str, Any],
+        quality_report: dict[str, Any],
+    ) -> dict[str, Any]:
         candidate_path = string_value(candidate.get("candidatePath"))
         manifest = self.candidate_manifest(candidate_path)
         metadata = mapping_value(manifest.get("metadata"))
@@ -253,6 +301,7 @@ class PackageSetReviewBundle:
             "manifestPath": string_value(candidate.get("manifest")),
             "sourceTargetPath": string_value(candidate.get("sourceTargetPath")),
             "packageManifestPath": string_value(candidate.get("manifestPath")),
+            "qualityReportPath": string_value(candidate.get("qualityReport")),
             "status": string_value(candidate.get("status")),
             "name": string_value(metadata.get("name")),
             "summary": string_value(metadata.get("summary")),
@@ -260,6 +309,7 @@ class PackageSetReviewBundle:
             "previewOnly": bool(manifest.get("preview_only", False)),
             "capabilities": manifest_capabilities(manifest),
             "intents": manifest_intents(manifest),
+            "quality": member_quality_payload(quality_report),
         }
 
     def candidate_manifest(self, candidate_path: str) -> dict[str, Any]:
@@ -886,6 +936,16 @@ def path_is_inside(path: Path, root: Path) -> bool:
     return True
 
 
+def bundle_relative_path(root: Path, path: str) -> Path | None:
+    relative = Path(path)
+    if not path or relative.is_absolute() or ".." in relative.parts:
+        return None
+    candidate = (root / relative).resolve(strict=False)
+    if not path_is_inside(candidate, root):
+        return None
+    return candidate
+
+
 def relative_display_path(root: Path, path: Path) -> str:
     try:
         return path.relative_to(root).as_posix()
@@ -929,6 +989,20 @@ def relation_payloads(relations: dict[str, Any]) -> list[dict[str, Any]]:
         ],
         key=lambda item: item["id"],
     )
+
+
+def member_quality_payload(quality_report: dict[str, Any]) -> dict[str, Any]:
+    author_ready = mapping_value(quality_report.get("authorReadyDraft"))
+    return {
+        "status": string_value(author_ready.get("status"))
+        or string_value(quality_report.get("status")),
+        "stopReason": string_value(author_ready.get("stopReason")),
+        "hardGateStatus": string_value(author_ready.get("hardGateStatus")),
+        "actionItemCount": integer_value(author_ready.get("actionItemCount")),
+        "dimensions": object_list(quality_report.get("dimensions")),
+        "authorActionItems": object_list(quality_report.get("authorActionItems")),
+        "readError": string_value(quality_report.get("readError")),
+    }
 
 
 def manifest_capabilities(manifest: dict[str, Any]) -> list[str]:

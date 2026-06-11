@@ -83,8 +83,9 @@ is an author-ready draft: valid under SpecPM, repository-specific,
 evidence-backed, conservative, explicit about gaps, and cheaper for an author
 to edit than to write from scratch. `author-ready-draft-quality-report.json`
 now exposes an `authorReadyDraft` verdict, hard gates, dimensions, and author
-action items. SpecHarvester should stop when remaining work is
-author-reviewable rather than generator-fixable.
+action items. Package-set outputs also expose `authorReadyDraftSummary` so
+operators can stop when remaining work is author-reviewable rather than
+generator-fixable.
 
 See <doc:AuthorReadyDraftQualityBar> and
 <doc:AuthorReadyDraftQualityReport>.

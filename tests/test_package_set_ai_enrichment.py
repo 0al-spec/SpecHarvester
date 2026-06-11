@@ -96,6 +96,8 @@ def test_package_set_ai_enrichment_wraps_external_model_output(
     assert report["kind"] == PACKAGE_SET_AI_ENRICHMENT_KIND
     assert report["status"] == "completed"
     assert report["authority"] == "proposal_only_not_registry_acceptance"
+    assert report["stopPolicySummary"]["decision"] == "stop_for_author_review"
+    assert report["stopPolicySummary"]["subjectCount"] == 4
     assert report["provider"]["execution"] == "not_run_by_spec_harvester"
     assert report["packageSet"]["id"] == "xyflow.workspace"
     assert report["privacy"]["rawPromptsPersisted"] is False
@@ -127,6 +129,7 @@ def test_package_set_ai_enrichment_reports_unsupported_model_evidence_path(
     )
 
     assert report["status"] == "warning"
+    assert report["stopPolicySummary"]["decision"] == "continue_generation"
     assert "model_evidence_path_unsupported" in {item["code"] for item in report["diagnostics"]}
     react = next(item for item in report["proposals"] if item["packageId"] == "xyflow.react")
     assert react["capabilities"][0]["evidencePaths"] == [

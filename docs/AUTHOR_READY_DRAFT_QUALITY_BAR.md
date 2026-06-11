@@ -85,6 +85,11 @@ Continue or fail when:
 The informal "80%" threshold means "valid and useful enough for author review",
 not a numeric guarantee of correctness.
 
+Package-set runs publish the same decision as `authorReadyDraftSummary`, using
+`stop_for_author_review`, `continue_generation`, or
+`blocked_until_inputs_change` so operators do not infer stop policy from
+individual member reports by hand.
+
 ## Review Dimensions
 
 Machine-readable `author-ready-draft-quality-report.json` reports assess the

@@ -111,6 +111,18 @@ the proposal package. For example, `harvest.json` in the `xyflow.react`
 proposal is normalized to `xyflow.react/harvest.json` when that package-local
 artifact was supplied in the compact request.
 
+## Stop Policy Summary
+
+Proposal outputs include `stopPolicySummary` with the same model-loop decisions
+used by AI draft proposals:
+
+- `stop_for_author_review` when diagnostics are clean;
+- `continue_generation` when warning-level evidence or model-output gaps remain;
+- `blocked_until_inputs_change` when errors prevent safe handoff.
+
+This summary tells operators whether another model iteration is useful. It does
+not mutate generated specs and does not make AI enrichment registry truth.
+
 ## Trust Boundary
 
 AI enrichment is proposal evidence only:

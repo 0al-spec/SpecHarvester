@@ -56,6 +56,7 @@ The summary records:
 - referenced `workspace-inventory.json` digest;
 - selected inventory roles;
 - generated candidate package IDs and relative paths;
+- aggregate `authorReadyDraftSummary` from member quality reports;
 - skipped package IDs and reasons;
 - relation proposal path, review status, and relation count;
 - producer preview authority and non-goals.

@@ -49,6 +49,20 @@ For package-set drafts, each member candidate receives its own quality report.
 The package-set handoff proposal links those reports as `member_quality_report`
 evidence.
 
+## Stop Policy Summary
+
+Package-set outputs also expose an aggregate `authorReadyDraftSummary` derived
+from member quality reports. It turns per-member verdicts into one deterministic
+operator decision:
+
+- `author_ready_draft` -> `stop_for_author_review`
+- `needs_regeneration` -> `continue_generation`
+- `blocked` -> `blocked_until_inputs_change`
+
+The summary includes `memberCounts`, per-member decisions, `blockingReasons`,
+`reviewableDimensions`, and `topAuthorActionItems`. It is a stop-policy signal
+for producer loops, not a score and not acceptance authority.
+
 ## Hard Gates
 
 `hardGates[]` records deterministic producer-side gates:
