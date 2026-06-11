@@ -81,54 +81,57 @@ Published DocC site:
     structured quality report format for real-repository refinement runs,
     covering intent accuracy, capability evidence, SpecPM status, retry
     effectiveness, token usage, analyzer coverage, and human-review notes
-34. [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
+34. [`AUTHOR_READY_DRAFT_QUALITY_BAR.md`](AUTHOR_READY_DRAFT_QUALITY_BAR.md):
+    author-ready valid starter package quality bar, stop policy, review
+    dimensions, and handoff expectations for repository authors
+35. [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
     local-only runner for deterministic orchestration of real-repository checks
-35. [`REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`](REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md):
+36. [`REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`](REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md):
     compact P15-T4 local validation matrix across Swift/SPM, JS/TS, Python,
     Go, and documentation-first repository shapes
-36. [`STATIC_SPEC_RENDERER.md`](STATIC_SPEC_RENDERER.md): static HTML/JS preview
+37. [`STATIC_SPEC_RENDERER.md`](STATIC_SPEC_RENDERER.md): static HTML/JS preview
     for generated SpecPM candidate packages from `specpm.yaml` and referenced
     `specs/*.spec.yaml`
-37. [`PRODUCER_CANDIDATE_BUNDLE.md`](PRODUCER_CANDIDATE_BUNDLE.md):
+38. [`PRODUCER_CANDIDATE_BUNDLE.md`](PRODUCER_CANDIDATE_BUNDLE.md):
     SpecPM Producer Candidate Bundle output plan for `producer-receipt.json`,
     validation reports, diagnostics, hashes, and human review handoff
-38. [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md): operator handoff guide for
+39. [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md): operator handoff guide for
     drafting, preflighting, rendering, and reviewing generated candidate
     bundles before SpecPM acceptance
-39. [`SPECPM_SHARED_FIXTURE_POLICY.md`](SPECPM_SHARED_FIXTURE_POLICY.md):
+40. [`SPECPM_SHARED_FIXTURE_POLICY.md`](SPECPM_SHARED_FIXTURE_POLICY.md):
     shared fixture policy for keeping SpecPM contract examples and
     SpecHarvester generated bundle examples aligned
-40. [`SPECPM_PACKAGE_SET_ALIGNMENT.md`](SPECPM_PACKAGE_SET_ALIGNMENT.md):
+41. [`SPECPM_PACKAGE_SET_ALIGNMENT.md`](SPECPM_PACKAGE_SET_ALIGNMENT.md):
     package-set contract alignment for monorepo discovery, scoped member
     candidates, relation proposals, bundle-set preflight, viewer output, and
     the `xyflow` reference scenario
-41. [`WORKSPACE_INVENTORY.md`](WORKSPACE_INVENTORY.md): deterministic
+42. [`WORKSPACE_INVENTORY.md`](WORKSPACE_INVENTORY.md): deterministic
     `workspace-inventory.json` producer evidence for monorepo package-set
     discovery
-42. [`PACKAGE_SET_DRAFTING.md`](PACKAGE_SET_DRAFTING.md): preview
+43. [`PACKAGE_SET_DRAFTING.md`](PACKAGE_SET_DRAFTING.md): preview
     `draft-package-set` generation of aggregate and scoped member candidates
     from workspace inventory
-43. [`PACKAGE_RELATION_PROPOSALS.md`](PACKAGE_RELATION_PROPOSALS.md):
+44. [`PACKAGE_RELATION_PROPOSALS.md`](PACKAGE_RELATION_PROPOSALS.md):
     deterministic `contains` relation proposals for package-set candidate
     bundle review
-44. [`BUNDLE_SET_PREFLIGHT.md`](BUNDLE_SET_PREFLIGHT.md):
+45. [`BUNDLE_SET_PREFLIGHT.md`](BUNDLE_SET_PREFLIGHT.md):
     producer-side `preflight-bundle-set` verification for generated
     package-set outputs, member candidate bundles, relation proposals, and
     digest references
-45. [`PACKAGE_SET_VIEWER.md`](PACKAGE_SET_VIEWER.md):
+46. [`PACKAGE_SET_VIEWER.md`](PACKAGE_SET_VIEWER.md):
     static `render-package-set-site` review surface for package-set summaries,
     member package cards, relation proposal badges, and result scope examples
-46. [`XYFLOW_PACKAGE_SET_SMOKE.md`](XYFLOW_PACKAGE_SET_SMOKE.md):
+47. [`XYFLOW_PACKAGE_SET_SMOKE.md`](XYFLOW_PACKAGE_SET_SMOKE.md):
     local `xyflow-package-set-smoke` scenario for workspace inventory,
     package-set drafting, relation proposals, bundle-set preflight, and viewer
     output
-47. [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md):
+48. [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md):
     package-set handoff proposal JSON and Markdown for future SpecPM review
     automation
-48. [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
+49. [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
     proposal-only local AI enrichment for generated package-set candidates,
     compact evidence, provider receipts, and unsupported evidence diagnostics
-49. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+50. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References

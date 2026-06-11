@@ -873,3 +873,50 @@ Acceptance:
 - AI draft artifacts keep the original `LLM + schema` package-set idea explicit:
   inventory is evidence, the model proposes structure, and SpecPM plus
   maintainers remain the acceptance authority.
+
+## Phase 27. Author-Ready Valid Drafts
+
+- [x] `P27-T1` Document the author-ready draft quality bar so generated output
+  is treated as a valid starter package for repository authors, not as a final
+  accepted specification.
+- [ ] `P27-T2` Extend quality reporting with an `authorReadyDraft` verdict,
+  quality dimensions, and author action items derived from validation reports,
+  bundle preflight, AI draft diagnostics, AI enrichment diagnostics, and viewer
+  metadata.
+- [ ] `P27-T3` Add a stop-policy summary to draft, package-set draft, AI draft,
+  and AI enrichment flows so model iteration stops when remaining work is
+  author-reviewable rather than generator-fixable.
+- [ ] `P27-T4` Extend the static viewer and handoff Markdown with author review
+  checklists, weak claims, evidence gaps, and recommended edits.
+- [ ] `P27-T5` Run a real-repository author-ready draft calibration matrix and
+  record how many author edits are needed to move valid starter packages toward
+  curated specs.
+
+Motivation:
+
+- SpecHarvester should return to the original `LLM + schema` idea without
+  pretending that model output can author the final package truth.
+- Repository authors need a strong, personalized, valid starting package that
+  is cheaper to edit than writing a spec from scratch.
+- Without an explicit stop policy, generator and model loops will chase a
+  misleading 100% target and risk generic wording, overclaims, or framework
+  encyclopedia behavior.
+
+Goal:
+
+- Define and implement the product quality boundary for author-ready valid
+  drafts: SpecHarvester produces valid, evidence-backed starter packages;
+  authors and their agents complete semantic curation; SpecPM validates and
+  decides registry acceptance.
+
+Acceptance:
+
+- The author-ready draft quality bar defines valid starter package hard gates,
+  author-ready quality dimensions, non-goals, stop policy, and handoff
+  expectations.
+- Future quality reports can expose whether a draft is `author_ready_draft`,
+  `needs_regeneration`, or `blocked` without treating that verdict as SpecPM
+  acceptance.
+- Static viewer and handoff outputs make author action items visible.
+- Calibration on real repositories measures where generated drafts are useful,
+  shallow, or misleading before expanding public self-service workflows.

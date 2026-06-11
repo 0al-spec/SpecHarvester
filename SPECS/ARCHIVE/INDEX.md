@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-06-07
+**Last Updated:** 2026-06-11
 
 ## Archived Tasks
 
@@ -324,6 +324,7 @@
 | 2026-06-07 | P26-T1 | Archived REVIEW_p26_t1_package_set_handoff_proposal_artifact report |
 | 2026-06-07 | P26-T2 | Archived Trusted Package-Set Proposal Workflow Inputs (PASS) |
 | 2026-06-07 | P26-T2 | Archived REVIEW_p26_t2_trusted_package_set_proposal_workflow_inputs report |
+| 2026-06-11 | P27-T1 | Archived Author-Ready Draft Quality Bar (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

@@ -6,43 +6,46 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    assert_p26_t2_archived(next_text)
-    assert_p26_t1_recent(next_text)
-    assert_p25_t7_archived(next_text)
-    assert_phase_26_selected(next_text)
+    assert_p26_t5_archived(next_text)
+    assert_p26_t4_recent(next_text)
+    assert_p27_t1_recent(next_text)
+    assert_phase_27_selected(next_text)
 
 
-def assert_p26_t2_archived(next_text: str) -> None:
-    assert "**Last Archived:** P26-T2 Trusted Package-Set Proposal Workflow Inputs" in next_text
-    assert "proposal_kind: package_set" in next_text
-    assert "package-set-handoff-proposal.json" in next_text
-    assert "package-set-handoff-proposal.md" in next_text
-    assert "SPECPM_PROPOSAL_TOKEN" in next_text
-    assert "SpecPM PR" in next_text
+def assert_p26_t5_archived(next_text: str) -> None:
+    assert "**Last Archived:** P26-T5 Package-Set AI Draft Proposal Contract" in next_text
+    assert "SpecHarvesterPackageSetAIDraftProposal" in next_text
+    assert "LLM + schema" in next_text
+    assert "selected members" in next_text
+    assert "exclusions" in next_text
+    assert "contains" in next_text
 
 
-def assert_p26_t1_recent(next_text: str) -> None:
-    assert "`P26-T1` added the package-set handoff proposal artifact" in next_text
-    assert "package-set-handoff-proposal" in next_text
-    assert "registryAcceptanceDecision.status:" in next_text
-    assert "external_required" in next_text
+def assert_p26_t4_recent(next_text: str) -> None:
+    assert "`P26-T4` added proposal-only package-set AI enrichment" in next_text
+    assert "OpenAI-compatible providers" in next_text
+    assert "LM Studio" in next_text
+    assert "provider receipts" in next_text
+    assert "privacy boundaries" in next_text
 
 
-def assert_p25_t7_archived(next_text: str) -> None:
-    assert "`P25-T7` added `xyflow-package-set-smoke`" in next_text
-    assert "package-set-draft.json" in next_text
-    assert "package-relation-proposals.json" in next_text
-    assert "bundle-set-preflight.json" in next_text
-    assert "xyflow-package-set-smoke" in next_text
-    assert "xyflow-package-set-smoke.json" in next_text
+def assert_p27_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P27-T1` documented the author-ready draft quality bar" in next_text
+    assert "valid starter package" in next_text
+    assert "repository authors" in next_text
+    assert "final accepted specification" in normalized
 
 
-def assert_phase_26_selected(next_text: str) -> None:
-    assert "# Next Task: P26-T3 SpecPM Package-Set Proposal Intake Checklist" in next_text
+def assert_phase_27_selected(next_text: str) -> None:
+    assert "# Next Task: P27-T2 Author-Ready Draft Quality Report" in next_text
     assert "**Status:** Selected" in next_text
-    assert "SpecPM maintainers" in next_text
-    assert "intake checklist" in next_text
-    assert "registry acceptance decisions" in next_text
+    assert "authorReadyDraft" in next_text
+    assert "author action items" in next_text
+    assert "stop-policy reason" in next_text
+    assert "author_ready_draft" in next_text
+    assert "needs_regeneration" in next_text
+    assert "blocked" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -867,7 +870,7 @@ def test_docc_and_github_docs_cover_package_set_handoff_proposal() -> None:
     assert "`P26-T1` Add a package-set handoff proposal artifact" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
     assert_current_next_task(next_text)
-    assert "# Next Task: P26-T3 SpecPM Package-Set Proposal Intake Checklist" in next_text
+    assert "# Next Task: P27-T2 Author-Ready Draft Quality Report" in next_text
 
 
 def test_docc_and_github_docs_cover_package_set_ai_enrichment() -> None:
@@ -914,6 +917,78 @@ def test_docc_and_github_docs_cover_package_set_ai_enrichment() -> None:
     assert "`P26-T4` Add proposal-only package-set AI enrichment" in workplan.read_text(
         encoding="utf-8"
     )
+
+
+def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
+    github_doc = ROOT / "docs" / "AUTHOR_READY_DRAFT_QUALITY_BAR.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "AuthorReadyDraftQualityBar.md"
+    )
+    package_set_ai_draft = ROOT / "docs" / "PACKAGE_SET_AI_DRAFT_PROPOSAL.md"
+    package_set_ai_draft_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "PackageSetAIDraftProposal.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "valid starter package",
+            "author-ready draft",
+            "SpecHarvester -> valid author-ready draft",
+            "author + agent -> semantic completion and curation",
+            "SpecPM -> validation, registry acceptance, and public index authority",
+            "specpm validate",
+            "producer-receipt.json",
+            "validation-report.json",
+            "diagnostics.json",
+            "preview",
+            "author action items",
+            "evidence gaps",
+            "not a numeric guarantee of correctness",
+            "validation",
+            "evidenceCoverage",
+            "repositorySpecificity",
+            "packageTopology",
+            "claimConservatism",
+            "authorActionability",
+            "authorityBoundary",
+            "framework encyclopedia",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AUTHOR_READY_DRAFT_QUALITY_BAR.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:AuthorReadyDraftQualityBar>" in docc_root.read_text(encoding="utf-8")
+    assert "AUTHOR_READY_DRAFT_QUALITY_BAR.md" in package_set_ai_draft.read_text(encoding="utf-8")
+    assert "<doc:AuthorReadyDraftQualityBar>" in package_set_ai_draft_docc.read_text(
+        encoding="utf-8"
+    )
+
+    roadmap_text = roadmap.read_text(encoding="utf-8")
+    roadmap_docc_text = roadmap_docc.read_text(encoding="utf-8")
+    assert "Milestone 5: Author-Ready Valid Drafts" in roadmap_text
+    assert "valid starter package" in roadmap_text
+    assert "Author-Ready Valid Drafts" in roadmap_docc_text
+    assert "<doc:AuthorReadyDraftQualityBar>" in roadmap_docc_text
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "Phase 27. Author-Ready Valid Drafts" in workplan_text
+    for task_id in ("P27-T1", "P27-T2", "P27-T3", "P27-T4", "P27-T5"):
+        assert f"`{task_id}`" in workplan_text
+    assert "- [x] `P27-T1`" in workplan_text
+    assert "- [ ] `P27-T2`" in workplan_text
+    assert "author_ready_draft" in workplan_text
+    assert "needs_regeneration" in workplan_text
+    assert "blocked" in workplan_text
+
+    next_text = next_task.read_text(encoding="utf-8")
+    assert_current_next_task(next_text)
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:

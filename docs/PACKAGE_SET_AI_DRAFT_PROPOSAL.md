@@ -104,6 +104,20 @@ supplied inventory. `evidencePaths` must refer to supplied compact evidence.
 Unsupported evidence paths produce `model_evidence_path_unsupported`
 diagnostics. Relations fail closed when the target is not selected.
 
+## Relationship to Author-Ready Drafts
+
+The AI draft proposal is an input to the author-ready draft workflow, not a
+final package specification. It can help select members, exclusions, and
+`contains` relations, but the generated package-set bundle must still pass the
+valid starter package hard gates documented in
+[`AUTHOR_READY_DRAFT_QUALITY_BAR.md`](AUTHOR_READY_DRAFT_QUALITY_BAR.md).
+
+Passing AI draft diagnostics should stop additional model iteration only when
+the remaining issues are author-reviewable: wording, domain nuance, missing
+author intent, or capability choices that need upstream judgment. It should not
+stop when validation fails, inventory-derived paths drift, evidence paths are
+unsupported, or relation endpoints are inconsistent.
+
 ## Role Taxonomy
 
 The model may propose generic roles:
