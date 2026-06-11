@@ -9,6 +9,7 @@ from spec_harvester.producer_reports import (
     AuthorReadyDraftQualityReportRequest,
     ProducerReportRequest,
     author_ready_stop_policy_summary,
+    stop_policy_summary_from_diagnostics,
 )
 
 
@@ -212,6 +213,19 @@ def test_author_ready_stop_policy_summary_blocks_on_any_blocked_member(
             "reason": "hard_gate_failed",
         }
     ]
+
+
+def test_stop_policy_summary_continues_when_clean_proposal_has_no_subjects() -> None:
+    summary = stop_policy_summary_from_diagnostics(
+        source_status="completed",
+        error_count=0,
+        warning_count=0,
+        subject_count=0,
+    )
+
+    assert summary["status"] == "needs_regeneration"
+    assert summary["decision"] == "continue_generation"
+    assert summary["reason"] == "no_proposal_subjects"
 
 
 def write_quality_fixture(

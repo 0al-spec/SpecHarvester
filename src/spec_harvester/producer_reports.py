@@ -553,6 +553,8 @@ def stop_policy_summary_from_diagnostics(
     subject_count: int,
 ) -> dict[str, Any]:
     status = stop_policy_status_from_diagnostics(source_status, error_count, warning_count)
+    if status == AUTHOR_READY_STATUS_READY and subject_count <= 0:
+        status = AUTHOR_READY_STATUS_NEEDS_REGENERATION
     return {
         "schemaVersion": AUTHOR_READY_STOP_POLICY_SUMMARY_VERSION,
         "status": status,
@@ -563,6 +565,7 @@ def stop_policy_summary_from_diagnostics(
             "errorCount": error_count,
             "warningCount": warning_count,
         },
+        "reason": stop_policy_reason(status, subject_count),
         "summary": proposal_stop_policy_summary(status),
         "nonAuthority": [
             "The stop-policy summary is producer-side review evidence only.",
@@ -594,6 +597,12 @@ def proposal_stop_policy_summary(status: str) -> str:
             "before handoff."
         )
     return "Proposal has blocking diagnostics; do not hand off until inputs or model output change."
+
+
+def stop_policy_reason(status: str, subject_count: int) -> str:
+    if status == AUTHOR_READY_STATUS_NEEDS_REGENERATION and subject_count <= 0:
+        return "no_proposal_subjects"
+    return author_ready_stop_reason(status)
 
 
 def normalize_author_ready_member_report(
