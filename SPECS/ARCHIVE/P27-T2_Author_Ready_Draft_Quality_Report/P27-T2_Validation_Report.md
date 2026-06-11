@@ -53,13 +53,19 @@ Result: passed.
 PYTHONPATH=src pytest -q
 ```
 
-Result: `569 passed, 1 skipped`.
+Result before review follow-up: `569 passed, 1 skipped`.
+
+Final result after review follow-up: `570 passed, 1 skipped`.
 
 ```bash
 PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90
 ```
 
-Result: `569 passed, 1 skipped`; total coverage `90.12%`.
+Result before review follow-up: `569 passed, 1 skipped`; total coverage
+`90.12%`.
+
+Final result after review follow-up: `570 passed, 1 skipped`; total coverage
+`90.12%`.
 
 ```bash
 swift build --target SpecHarvesterDocs
