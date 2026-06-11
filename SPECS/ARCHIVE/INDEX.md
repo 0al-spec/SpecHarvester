@@ -328,6 +328,7 @@
 | 2026-06-07 | P26-T2 | Archived REVIEW_p26_t2_trusted_package_set_proposal_workflow_inputs report |
 | 2026-06-11 | P27-T1 | Archived Author-Ready Draft Quality Bar (PASS) |
 | 2026-06-11 | P27-T2 | Archived Author-Ready Draft Quality Report (PASS) |
+| 2026-06-11 | P27-T2 | Archived REVIEW_p27_t2_author_ready_draft_quality_report report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
