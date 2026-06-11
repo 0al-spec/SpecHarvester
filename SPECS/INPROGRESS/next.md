@@ -1,6 +1,7 @@
 # Next Task: P27-T3 Author-Ready Stop Policy Summary
 
-**Status:** Selected
+**Status:** In Progress
+**Started:** 2026-06-11
 **Last Archived:** P27-T2 Author-Ready Draft Quality Report
 **Archived:** 2026-06-11
 
