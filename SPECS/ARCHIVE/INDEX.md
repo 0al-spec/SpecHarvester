@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-06-11
+**Last Updated:** 2026-06-12
 
 ## Archived Tasks
 
@@ -98,6 +98,7 @@
 | P27-T1 | [P27-T1_Author_Ready_Draft_Quality_Bar/](P27-T1_Author_Ready_Draft_Quality_Bar/) | 2026-06-11 | PASS |
 | P27-T2 | [P27-T2_Author_Ready_Draft_Quality_Report/](P27-T2_Author_Ready_Draft_Quality_Report/) | 2026-06-11 | PASS |
 | P27-T3 | [P27-T3_Author_Ready_Stop_Policy_Summary/](P27-T3_Author_Ready_Stop_Policy_Summary/) | 2026-06-11 | PASS |
+| P27-T4 | [P27-T4_Author_Review_Viewer_and_Handoff_Checklist/](P27-T4_Author_Review_Viewer_and_Handoff_Checklist/) | 2026-06-12 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -148,6 +149,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-12 | P27-T4 | Archived Author Review Viewer and Handoff Checklist (PASS) |
 | 2026-05-17 | P0-T1 | Archived Configure Flow Operating Scaffold (PASS) |
 | 2026-05-17 | P1-T1 | Archived Define PublicInterfaceIndex Snapshot Schema (PASS) |
 | 2026-05-17 | P1-T1 | Archived REVIEW_p1_t1_public_interface_index_schema report |

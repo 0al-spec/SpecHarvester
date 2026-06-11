@@ -84,11 +84,12 @@ def assert_phase_27_t4_active(next_text: str) -> None:
 
 
 def assert_phase_27_t5_selected(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
     assert "# Next Task: P27-T5 Real Repository Author-Ready Draft Calibration Matrix" in next_text
     assert "**Status:** Selected" in next_text
     assert "real-repository author-ready draft calibration matrix" in next_text
     assert "author edits" in next_text
-    assert "curated specs" in next_text
+    assert "curated specs" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -1051,7 +1052,8 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
     assert "- [x] `P27-T1`" in workplan_text
     assert "- [x] `P27-T2`" in workplan_text
     assert "- [x] `P27-T3`" in workplan_text
-    assert "- [ ] `P27-T4`" in workplan_text
+    assert "- [x] `P27-T4`" in workplan_text
+    assert "- [ ] `P27-T5`" in workplan_text
     assert "author_ready_draft" in workplan_text
     assert "needs_regeneration" in workplan_text
     assert "blocked" in workplan_text
