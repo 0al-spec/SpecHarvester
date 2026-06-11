@@ -24,6 +24,7 @@ from spec_harvester.package_set_drafter import (
 )
 from spec_harvester.producer_reports import (
     author_ready_stop_policy_summary,
+    author_review_payload,
     read_optional_report_object,
 )
 from spec_harvester.static_spec_renderer_assets import INDEX_HTML, VIEWER_CSS, VIEWER_JS
@@ -146,6 +147,8 @@ class PackageSetReviewBundle:
         self.check_draft_identity(draft)
         self.check_relation_identity(relations)
         quality_reports = self.member_quality_reports(draft)
+        author_ready_summary = author_ready_stop_policy_summary(quality_reports)
+        author_review = author_review_payload(author_ready_summary, quality_reports)
         candidates = self.candidate_members(draft, quality_reports)
         return {
             "apiVersion": PACKAGE_SET_RENDERER_API_VERSION,
@@ -160,7 +163,8 @@ class PackageSetReviewBundle:
                 ),
             },
             "packageSet": self.package_set_payload(draft, candidates),
-            "authorReadyDraftSummary": author_ready_stop_policy_summary(quality_reports),
+            "authorReadyDraftSummary": author_ready_summary,
+            "authorReview": author_review,
             "members": candidates,
             "relations": relation_payloads(relations),
             "preflight": OptionalBundleSetPreflight(self.root).payload(),
@@ -310,6 +314,7 @@ class PackageSetReviewBundle:
             "capabilities": manifest_capabilities(manifest),
             "intents": manifest_intents(manifest),
             "quality": member_quality_payload(quality_report),
+            "authorReview": member_author_review_payload(quality_report),
         }
 
     def candidate_manifest(self, candidate_path: str) -> dict[str, Any]:
@@ -1002,6 +1007,45 @@ def member_quality_payload(quality_report: dict[str, Any]) -> dict[str, Any]:
         "dimensions": object_list(quality_report.get("dimensions")),
         "authorActionItems": object_list(quality_report.get("authorActionItems")),
         "readError": string_value(quality_report.get("readError")),
+    }
+
+
+def member_author_review_payload(quality_report: dict[str, Any]) -> dict[str, Any]:
+    action_items = object_list(quality_report.get("authorActionItems"))
+    dimensions = object_list(quality_report.get("dimensions"))
+    return {
+        "actionItems": [
+            {
+                "id": string_value(item.get("id")),
+                "severity": string_value(item.get("severity")),
+                "category": string_value(item.get("category")),
+                "target": string_value(item.get("target")),
+                "summary": string_value(item.get("summary")),
+            }
+            for item in action_items
+        ],
+        "reviewableDimensions": [
+            {
+                "id": string_value(dimension.get("id")),
+                "rating": string_value(dimension.get("rating")),
+                "summary": string_value(dimension.get("summary")),
+            }
+            for dimension in dimensions
+            if string_value(dimension.get("rating")) in {"needs_review", "reviewable"}
+        ],
+        "evidenceGaps": [
+            {
+                "id": string_value(item.get("id")),
+                "severity": string_value(item.get("severity")),
+                "target": string_value(item.get("target")),
+                "summary": string_value(item.get("summary")),
+            }
+            for item in action_items
+            if "evidence"
+            in " ".join(
+                string_value(item.get(key)) for key in ("id", "category", "target", "summary")
+            ).lower()
+        ],
     }
 
 

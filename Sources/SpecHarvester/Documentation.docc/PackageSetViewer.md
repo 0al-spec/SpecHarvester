@@ -7,7 +7,8 @@ The command consumes `package-set-draft.json`,
 `package-relation-proposals.json`, optional `bundle-set-preflight.json`, and
 member candidate manifests. It writes a standalone viewer with package-set
 summary, member package cards, relation proposal badges, producer-observed
-review status, and result scope examples.
+review status, author review checklists, weak claim and evidence-gap prompts,
+recommended edits, and result scope examples.
 
 ## Command
 
@@ -33,10 +34,23 @@ The output includes `index.html`, `assets/spec-renderer.js`,
 ## Review Surface
 
 The viewer shows package-set summary, aggregate `authorReadyDraftSummary`,
-per-member quality report status and author action items, aggregate and scoped
-member package cards, `contains` relation proposal badges, `producer_observed`
-review status, bundle-set preflight status when available, and result scope
-examples for the generated package set.
+aggregate `authorReview`, per-member quality report status, author action
+items, reviewable dimensions, aggregate and scoped member package cards,
+`contains` relation proposal badges, `producer_observed` review status,
+bundle-set preflight status when available, and result scope examples for the
+generated package set.
+
+## Author Review Payload
+
+`authorReview` is derived from member
+`author-ready-draft-quality-report.json` evidence and the aggregate
+`authorReadyDraftSummary`. It is a human review surface, not a new authority.
+
+The aggregate payload records the stop decision, author review checklist,
+weak claims, evidence gaps, recommended edits, member action summaries, and
+non-authority reminders. Member cards expose compact action item summaries,
+reviewable dimensions, and evidence gaps for each package so authors can review
+aggregate and scoped package candidates without reading raw JSON first.
 
 ## Boundary
 

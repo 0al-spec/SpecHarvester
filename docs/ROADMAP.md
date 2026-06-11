@@ -170,6 +170,8 @@ Tasks:
   verdict, hard gates, dimensions, and author action items;
 - aggregate member quality reports into `authorReadyDraftSummary` for
   package-set handoff and viewer outputs;
+- derive `authorReview` checklists, weak claims, evidence gaps, recommended
+  edits, and member action summaries for viewer and handoff review;
 - treat validation success as a hard gate, not a semantic quality score;
 - define stop policy for AI draft and enrichment loops;
 - record author action items, weak claims, and evidence gaps explicitly;

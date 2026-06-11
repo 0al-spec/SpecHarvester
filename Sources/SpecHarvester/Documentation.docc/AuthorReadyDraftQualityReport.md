@@ -63,6 +63,11 @@ The summary includes `memberCounts`, per-member decisions, `blockingReasons`,
 `reviewableDimensions`, and `topAuthorActionItems`. It is a stop-policy signal
 for producer loops, not a score and not acceptance authority.
 
+Package-set viewer and handoff outputs derive an `authorReview` surface from
+this summary plus member quality reports. `authorReview` turns machine-readable
+stop policy into author review checklists, weak claims, evidence gaps,
+recommended edits, and per-member action summaries.
+
 ## Hard Gates
 
 `hardGates[]` records deterministic producer-side gates:

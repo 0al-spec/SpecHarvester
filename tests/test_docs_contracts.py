@@ -6,16 +6,26 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    assert_p27_t3_last_archived(next_text)
     assert_p26_t5_archived(next_text)
     assert_p27_t1_recent(next_text)
     assert_p27_t2_recent(next_text)
     assert_p27_t3_recent(next_text)
-    assert_phase_27_selected(next_text)
+    if "# Next Task: P27-T4 Author Review Viewer and Handoff Checklist" in next_text:
+        assert_p27_t3_last_archived(next_text)
+        assert_phase_27_t4_active(next_text)
+        return
+
+    assert_p27_t4_last_archived(next_text)
+    assert_p27_t4_recent(next_text)
+    assert_phase_27_t5_selected(next_text)
 
 
 def assert_p27_t3_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P27-T3 Author-Ready Stop Policy Summary" in next_text
+
+
+def assert_p27_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P27-T4 Author Review Viewer and Handoff Checklist" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -54,13 +64,31 @@ def assert_p27_t3_recent(next_text: str) -> None:
     assert "AI enrichment" in normalized
 
 
-def assert_phase_27_selected(next_text: str) -> None:
+def assert_p27_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P27-T4` added author review checklists" in next_text
+    assert "authorReview" in next_text
+    assert "weak claims" in next_text
+    assert "evidence gaps" in next_text
+    assert "recommended edits" in next_text
+    assert "member action summaries" in normalized
+
+
+def assert_phase_27_t4_active(next_text: str) -> None:
     assert "# Next Task: P27-T4 Author Review Viewer and Handoff Checklist" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "author review checklists" in next_text
     assert "weak claim" in next_text
     assert "evidence-gap" in next_text
     assert "recommended edits" in next_text
+
+
+def assert_phase_27_t5_selected(next_text: str) -> None:
+    assert "# Next Task: P27-T5 Real Repository Author-Ready Draft Calibration Matrix" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "real-repository author-ready draft calibration matrix" in next_text
+    assert "author edits" in next_text
+    assert "curated specs" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -752,6 +780,12 @@ def test_docc_and_github_docs_cover_package_set_viewer() -> None:
             "SpecHarvesterStaticPackageSet",
             "spec-harvester.static-package-set-renderer/v0",
             "authorReadyDraftSummary",
+            "authorReview",
+            "author review checklist",
+            "weak claim",
+            "evidence-gap",
+            "recommended edits",
+            "member action",
             "member package cards",
             "relation proposal badges",
             "result scope examples",
@@ -868,6 +902,13 @@ def test_docc_and_github_docs_cover_package_set_handoff_proposal() -> None:
             "member_quality_report",
             "package_relation_summary",
             "authorReadyDraftSummary",
+            "authorReview",
+            "Author Review Checklist",
+            "Weak Claims and Evidence Gaps",
+            "Recommended Edits",
+            "Weak claims",
+            "Evidence gaps",
+            "Recommended edits",
             "stop_for_author_review",
             "registryAcceptanceDecision.status: external_required",
             "public_index_acceptance",
@@ -889,7 +930,6 @@ def test_docc_and_github_docs_cover_package_set_handoff_proposal() -> None:
     assert "`P26-T1` Add a package-set handoff proposal artifact" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
     assert_current_next_task(next_text)
-    assert "# Next Task: P27-T4 Author Review Viewer and Handoff Checklist" in next_text
 
 
 def test_docc_and_github_docs_cover_package_set_ai_enrichment() -> None:
