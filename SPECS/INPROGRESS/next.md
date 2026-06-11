@@ -1,6 +1,7 @@
 # Next Task: P27-T4 Author Review Viewer and Handoff Checklist
 
-**Status:** Selected
+**Status:** In Progress
+**Started:** 2026-06-12
 **Last Archived:** P27-T3 Author-Ready Stop Policy Summary
 **Archived:** 2026-06-11
 
