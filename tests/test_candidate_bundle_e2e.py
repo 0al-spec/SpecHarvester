@@ -70,12 +70,16 @@ def test_candidate_bundle_e2e_smoke_collects_drafts_preflights_and_renders(
     receipt = json.loads((candidate / "producer-receipt.json").read_text(encoding="utf-8"))
     validation = json.loads((candidate / "validation-report.json").read_text(encoding="utf-8"))
     diagnostics = json.loads((candidate / "diagnostics.json").read_text(encoding="utf-8"))
+    quality = json.loads(
+        (candidate / "author-ready-draft-quality-report.json").read_text(encoding="utf-8")
+    )
     rendered = json.loads((tmp_path / "site" / "spec-package.json").read_text(encoding="utf-8"))
 
     assert draft["status"] == "ok"
     assert draft["producerReceipt"] == str(candidate / "producer-receipt.json")
     assert draft["validationReport"] == str(candidate / "validation-report.json")
     assert draft["diagnosticsReport"] == str(candidate / "diagnostics.json")
+    assert draft["qualityReport"] == str(candidate / "author-ready-draft-quality-report.json")
     assert preflight["status"] == "passed"
     assert preflight["summary"] == {"diagnosticCount": 0, "errorCount": 0, "warningCount": 0}
     assert site["status"] == "ok"
@@ -89,6 +93,7 @@ def test_candidate_bundle_e2e_smoke_collects_drafts_preflights_and_renders(
     assert receipt["subject"]["packageId"] == "example.candidate_bundle"
     assert receipt["validation"]["status"] == validation["status"]
     assert receipt["diagnostics"]["status"] == diagnostics["status"]
+    assert quality["authorReadyDraft"]["status"] == "author_ready_draft"
     assert receipt["humanReview"] == {
         "handoff": "pull_request",
         "requiredFor": ["public_index_acceptance"],
@@ -103,6 +108,7 @@ def test_candidate_bundle_e2e_smoke_collects_drafts_preflights_and_renders(
     assert rendered_producer["subject"]["packageId"] == receipt["subject"]["packageId"]
     assert rendered_producer["validation"]["status"] == receipt["validation"]["status"]
     assert rendered_producer["diagnostics"]["status"] == receipt["diagnostics"]["status"]
+    assert rendered_producer["quality"]["authorReadyDraft"]["status"] == "author_ready_draft"
     assert rendered_producer["humanReview"] == receipt["humanReview"]
     assert rendered_producer["outputs"] == receipt["outputs"]
     assert "not SpecPM acceptance" in rendered_producer["trustBoundary"]

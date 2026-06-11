@@ -77,6 +77,8 @@ trusting receipt prose.
    - inspect `diagnostics.json` for warnings, evidence gaps, unstable generated
      IDs, namespace/version overlap signals, privacy caveats, and security
      caveats;
+   - inspect `author-ready-draft-quality-report.json` for
+     `authorReadyDraft.status`, hard gates, dimensions, and author action items;
    - inspect the static viewer for a human-readable summary of the same
      evidence;
    - decide whether the candidate should be accepted, rejected, corrected, or
@@ -90,6 +92,7 @@ trusting receipt prose.
    - `producer-receipt.json`;
    - `validation-report.json`;
    - `diagnostics.json`;
+   - `author-ready-draft-quality-report.json`;
    - producer preflight report artifact or command output;
    - static viewer artifact, when available;
    - accepted-source diff in the pull request.
@@ -230,12 +233,14 @@ This report is producer-side evidence. It does not replace SpecPM validation.
 Reject or regenerate the candidate when preflight or review finds:
 
 - missing `specpm.yaml`, `specs/*.spec.yaml`, `producer-receipt.json`,
-  `validation-report.json`, or `diagnostics.json`;
+  `validation-report.json`, `diagnostics.json`, or
+  `author-ready-draft-quality-report.json`;
 - unsupported receipt `apiVersion`, `kind`, `schemaVersion`, or
   `receiptProfile`;
 - output hash mismatch;
 - `producer-receipt.json` listed in `outputs[]`;
 - validation or diagnostics report digest mismatch;
+- author-ready quality report digest mismatch;
 - missing source input evidence or bundle-local input path escapes;
 - unstable generated IDs;
 - generated claims without backing evidence;

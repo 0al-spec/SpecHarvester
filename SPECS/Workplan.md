@@ -879,7 +879,7 @@ Acceptance:
 - [x] `P27-T1` Document the author-ready draft quality bar so generated output
   is treated as a valid starter package for repository authors, not as a final
   accepted specification.
-- [ ] `P27-T2` Extend quality reporting with an `authorReadyDraft` verdict,
+- [x] `P27-T2` Extend quality reporting with an `authorReadyDraft` verdict,
   quality dimensions, and author action items derived from validation reports,
   bundle preflight, AI draft diagnostics, AI enrichment diagnostics, and viewer
   metadata.
@@ -914,7 +914,7 @@ Acceptance:
 - The author-ready draft quality bar defines valid starter package hard gates,
   author-ready quality dimensions, non-goals, stop policy, and handoff
   expectations.
-- Future quality reports can expose whether a draft is `author_ready_draft`,
+- Author-ready draft quality reports expose whether a draft is `author_ready_draft`,
   `needs_regeneration`, or `blocked` without treating that verdict as SpecPM
   acceptance.
 - Static viewer and handoff outputs make author action items visible.

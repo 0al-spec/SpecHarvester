@@ -6,27 +6,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    assert_p27_t2_last_archived(next_text)
     assert_p26_t5_archived(next_text)
-    assert_p26_t4_recent(next_text)
     assert_p27_t1_recent(next_text)
+    assert_p27_t2_recent(next_text)
     assert_phase_27_selected(next_text)
 
 
+def assert_p27_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P27-T2 Author-Ready Draft Quality Report" in next_text
+
+
 def assert_p26_t5_archived(next_text: str) -> None:
-    assert "**Last Archived:** P26-T5 Package-Set AI Draft Proposal Contract" in next_text
     assert "SpecHarvesterPackageSetAIDraftProposal" in next_text
     assert "LLM + schema" in next_text
     assert "selected members" in next_text
     assert "exclusions" in next_text
     assert "contains" in next_text
-
-
-def assert_p26_t4_recent(next_text: str) -> None:
-    assert "`P26-T4` added proposal-only package-set AI enrichment" in next_text
-    assert "OpenAI-compatible providers" in next_text
-    assert "LM Studio" in next_text
-    assert "provider receipts" in next_text
-    assert "privacy boundaries" in next_text
 
 
 def assert_p27_t1_recent(next_text: str) -> None:
@@ -37,15 +33,21 @@ def assert_p27_t1_recent(next_text: str) -> None:
     assert "final accepted specification" in normalized
 
 
-def assert_phase_27_selected(next_text: str) -> None:
-    assert "# Next Task: P27-T2 Author-Ready Draft Quality Report" in next_text
-    assert "**Status:** Selected" in next_text
+def assert_p27_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P27-T2` added `author-ready-draft-quality-report.json`" in next_text
     assert "authorReadyDraft" in next_text
-    assert "author action items" in next_text
-    assert "stop-policy reason" in next_text
-    assert "author_ready_draft" in next_text
-    assert "needs_regeneration" in next_text
-    assert "blocked" in next_text
+    assert "quality_report" in next_text
+    assert "author action items" in normalized
+
+
+def assert_phase_27_selected(next_text: str) -> None:
+    assert "# Next Task: P27-T3 Author-Ready Stop Policy Summary" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "stop-policy summary" in next_text
+    assert "stop_for_author_review" in next_text
+    assert "continue_generation" in next_text
+    assert "blocked_until_inputs_change" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -870,7 +872,7 @@ def test_docc_and_github_docs_cover_package_set_handoff_proposal() -> None:
     assert "`P26-T1` Add a package-set handoff proposal artifact" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
     assert_current_next_task(next_text)
-    assert "# Next Task: P27-T2 Author-Ready Draft Quality Report" in next_text
+    assert "# Next Task: P27-T3 Author-Ready Stop Policy Summary" in next_text
 
 
 def test_docc_and_github_docs_cover_package_set_ai_enrichment() -> None:
@@ -982,13 +984,62 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
     for task_id in ("P27-T1", "P27-T2", "P27-T3", "P27-T4", "P27-T5"):
         assert f"`{task_id}`" in workplan_text
     assert "- [x] `P27-T1`" in workplan_text
-    assert "- [ ] `P27-T2`" in workplan_text
+    assert "- [x] `P27-T2`" in workplan_text
+    assert "- [ ] `P27-T3`" in workplan_text
     assert "author_ready_draft" in workplan_text
     assert "needs_regeneration" in workplan_text
     assert "blocked" in workplan_text
 
     next_text = next_task.read_text(encoding="utf-8")
     assert_current_next_task(next_text)
+
+
+def test_docc_and_github_docs_cover_author_ready_draft_quality_report() -> None:
+    github_doc = ROOT / "docs" / "AUTHOR_READY_DRAFT_QUALITY_REPORT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AuthorReadyDraftQualityReport.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    producer_doc = ROOT / "docs" / "PRODUCER_CANDIDATE_BUNDLE.md"
+    handoff_doc = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    package_set_handoff = ROOT / "docs" / "PACKAGE_SET_HANDOFF_PROPOSAL.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "author-ready-draft-quality-report.json",
+            "spec-harvester.author-ready-draft-quality/v0",
+            "SpecHarvesterAuthorReadyDraftQualityReport",
+            "authorReadyDraft.status",
+            "author_ready_draft",
+            "needs_regeneration",
+            "blocked",
+            "hardGates",
+            "producer_validation",
+            "critical_diagnostics",
+            "required_bundle_files",
+            "producer_receipt_planned",
+            "evidence_links_present",
+            "authority_boundary",
+            "dimensions",
+            "authorActionItems",
+            "quality_report",
+            "not SpecPM registry acceptance",
+            "not maintainer approval",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AUTHOR_READY_DRAFT_QUALITY_REPORT.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:AuthorReadyDraftQualityReport>" in docc_root.read_text(encoding="utf-8")
+    assert "quality_report" in producer_doc.read_text(encoding="utf-8")
+    assert "author-ready-draft-quality-report.json" in handoff_doc.read_text(encoding="utf-8")
+    assert "member_quality_report" in package_set_handoff.read_text(encoding="utf-8")
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:

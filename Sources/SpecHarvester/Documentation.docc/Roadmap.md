@@ -77,12 +77,17 @@ not mutate generated specs or accept registry content.
 
 ### Author-Ready Valid Drafts
 
-The next product-quality focus is to define when SpecHarvester should stop
+The active product-quality focus is to define when SpecHarvester should stop
 drafting and hand a valid starter package to the repository author. The target
 is an author-ready draft: valid under SpecPM, repository-specific,
 evidence-backed, conservative, explicit about gaps, and cheaper for an author
-to edit than to write from scratch. SpecHarvester should stop when remaining
-work is author-reviewable rather than generator-fixable.
+to edit than to write from scratch. `author-ready-draft-quality-report.json`
+now exposes an `authorReadyDraft` verdict, hard gates, dimensions, and author
+action items. SpecHarvester should stop when remaining work is
+author-reviewable rather than generator-fixable.
+
+See <doc:AuthorReadyDraftQualityBar> and
+<doc:AuthorReadyDraftQualityReport>.
 
 ### Multi-Repository Quality Calibration
 

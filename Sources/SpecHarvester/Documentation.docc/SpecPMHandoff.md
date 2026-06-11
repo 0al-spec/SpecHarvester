@@ -68,15 +68,17 @@ spec-harvester render-spec-site \
 ```
 
 Review `producer-receipt.json`, `validation-report.json`, `diagnostics.json`,
-and the static viewer before any SpecPM proposal. The reviewer decides whether
-the candidate should be accepted, rejected, corrected, or regenerated.
+`author-ready-draft-quality-report.json`, and the static viewer before any
+SpecPM proposal. The reviewer decides whether the candidate should be accepted,
+rejected, corrected, or regenerated.
 
 When proposal automation opens a SpecPM pull request, the PR body should link
 the same evidence: accepted source bundle path, `specpm.yaml`,
 `producer-receipt.json`, `validation-report.json`, `diagnostics.json`,
-producer preflight report artifact or command output, static viewer artifact
-when available, and the accepted-source diff. These links are review evidence;
-they do not replace SpecPM validation or maintainer acceptance.
+`author-ready-draft-quality-report.json`, producer preflight report artifact or
+command output, static viewer artifact when available, and the accepted-source diff.
+These links are review evidence; they do not replace SpecPM validation or
+maintainer acceptance.
 
 If SpecPM adds an optional CI preflight gate for producer bundles, it should
 consume the same evidence layout and stable roles described in

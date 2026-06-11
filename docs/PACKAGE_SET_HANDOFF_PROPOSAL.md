@@ -58,6 +58,7 @@ The proposal records stable evidence links for:
 - `member_producer_receipt`
 - `member_validation_report`
 - `member_diagnostics`
+- `member_quality_report`
 - `package_relation_summary`
 
 These links are evidence only. Missing optional links can be marked `expected`;

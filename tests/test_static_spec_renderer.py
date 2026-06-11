@@ -80,6 +80,7 @@ def test_static_spec_renderer_shows_producer_receipt_panels(tmp_path: Path) -> N
     assert producer["validation"]["report"]["authority"] == "producer_side_shape_check"
     assert producer["diagnostics"]["report"]["privacy"]["privatePromptsIncluded"] is False
     assert producer["diagnostics"]["entries"][0]["message"] == "Public handoff privacy reviewed."
+    assert producer["quality"]["authorReadyDraft"]["status"] == "author_ready_draft"
     assert "not SpecPM acceptance" in producer["trustBoundary"]
 
     javascript = (output / "assets/spec-renderer.js").read_text(encoding="utf-8")
@@ -566,12 +567,40 @@ def write_producer_artifacts(candidate: Path) -> None:
             "requiredFor": ["public_index_acceptance"],
         },
     }
+    quality_report = {
+        "apiVersion": "spec-harvester.author-ready-draft-quality/v0",
+        "kind": "SpecHarvesterAuthorReadyDraftQualityReport",
+        "schemaVersion": 1,
+        "status": "author_ready_draft",
+        "authorReadyDraft": {
+            "status": "author_ready_draft",
+            "summary": "Valid starter package is ready for author review and curation.",
+            "stopReason": "remaining_work_is_author_reviewable",
+            "hardGateStatus": "passed",
+            "actionItemCount": 1,
+        },
+        "hardGates": [],
+        "dimensions": [],
+        "authorActionItems": [
+            {
+                "id": "review_package_identity_and_summary",
+                "severity": "info",
+                "category": "author_review",
+                "target": "specpm.yaml",
+                "summary": "Confirm package identity.",
+            }
+        ],
+    }
     (candidate / "validation-report.json").write_text(
         json.dumps(validation_report, sort_keys=True),
         encoding="utf-8",
     )
     (candidate / "diagnostics.json").write_text(
         json.dumps(diagnostics_report, sort_keys=True),
+        encoding="utf-8",
+    )
+    (candidate / "author-ready-draft-quality-report.json").write_text(
+        json.dumps(quality_report, sort_keys=True),
         encoding="utf-8",
     )
     receipt = {
@@ -604,6 +633,11 @@ def write_producer_artifacts(candidate: Path) -> None:
                 "path": "specs/demo.spec.yaml",
                 "role": "boundary_spec",
                 "digest": {"algorithm": "sha256", "value": "c" * 64},
+            },
+            {
+                "path": "author-ready-draft-quality-report.json",
+                "role": "quality_report",
+                "digest": {"algorithm": "sha256", "value": "f" * 64},
             },
         ],
         "validation": {

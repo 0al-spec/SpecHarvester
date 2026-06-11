@@ -684,6 +684,7 @@ def candidate_record(
         "producerReceipt": relative_output_path(output_root, draft_result["producerReceipt"]),
         "validationReport": relative_output_path(output_root, draft_result["validationReport"]),
         "diagnosticsReport": relative_output_path(output_root, draft_result["diagnosticsReport"]),
+        "qualityReport": relative_output_path(output_root, draft_result["qualityReport"]),
         "status": draft_result["status"],
     }
 

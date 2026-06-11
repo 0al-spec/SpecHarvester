@@ -1,46 +1,45 @@
-# Next Task: P27-T2 Author-Ready Draft Quality Report
+# Next Task: P27-T3 Author-Ready Stop Policy Summary
 
 **Status:** Selected
-**Last Archived:** P26-T5 Package-Set AI Draft Proposal Contract
-**Archived:** 2026-06-10
+**Last Archived:** P27-T2 Author-Ready Draft Quality Report
+**Archived:** 2026-06-11
 
 ## Recently Archived
 
+- `P27-T2` added `author-ready-draft-quality-report.json` with an
+  `authorReadyDraft` verdict, hard gates, advisory dimensions, author action
+  items, receipt `quality_report` output digests, package-set member evidence
+  links, and static renderer JSON exposure.
+- `P27-T1` documented the author-ready draft quality bar: SpecHarvester should
+  produce a valid starter package for repository authors, not a final accepted
+  specification.
 - `P26-T5` added `SpecHarvesterPackageSetAIDraftProposal`, preserving the
   original `LLM + schema` package-set idea: deterministic workspace inventory is
   evidence, the model proposes selected members, exclusions, and `contains`
   relations, and SpecPM plus maintainers remain the acceptance authority.
-- `P26-T4` added proposal-only package-set AI enrichment for local
-  OpenAI-compatible providers such as LM Studio, with provider receipts,
-  privacy boundaries, unsupported evidence diagnostics, and no generated spec
-  mutation.
-- `P27-T1` documented the author-ready draft quality bar: SpecHarvester should
-  produce a valid starter package for repository authors, not a final accepted
-  specification.
 
 ## Motivation
 
-- The quality bar is now documented, but operators still need a
-  machine-readable report that says whether a generated draft is good enough to
-  hand to an author.
-- Existing quality reports cover real-repository validation dimensions, but they
-  do not yet expose an explicit author-ready verdict, author action items, or a
-  stop-policy reason.
-- Without this report, reviewers may confuse a valid starter package with a
-  fully curated spec, or keep rerunning the model after the remaining work is
-  author-reviewable.
+- P27-T2 tells operators whether a draft is `author_ready_draft`,
+  `needs_regeneration`, or `blocked`, but it does not yet explain why the
+  generator should stop or continue.
+- Draft, package-set draft, AI draft, and AI enrichment flows should expose a
+  common stop-policy summary so operators do not keep rerunning the model after
+  remaining work is author-reviewable.
+- A shared stop-policy surface will make the static viewer and handoff Markdown
+  easier to build in P27-T4.
 
 ## Goal
 
-- Extend quality reporting with an `authorReadyDraft` verdict and author action
-  items derived from validation reports, bundle preflight, AI draft diagnostics,
-  AI enrichment diagnostics, and viewer metadata.
+- Add a deterministic stop-policy summary to draft, package-set draft, AI draft,
+  and AI enrichment outputs that distinguishes generator-fixable work from
+  author-reviewable work.
 
 ## Next Step
 
-Start `P27-T2` by defining the machine-readable author-ready draft quality
-report shape and the first deterministic derivation rules for:
+Start `P27-T3` by defining the stop-policy summary contract and mapping current
+statuses to:
 
-- `author_ready_draft`;
-- `needs_regeneration`;
-- `blocked`.
+- `continue_generation`;
+- `stop_for_author_review`;
+- `blocked_until_inputs_change`.
