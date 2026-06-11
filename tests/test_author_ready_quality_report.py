@@ -60,6 +60,56 @@ def test_author_ready_quality_report_blocks_failed_diagnostics_status_without_en
     assert "fix_critical_diagnostics" in action_item_ids(report)
 
 
+def test_author_ready_quality_report_adds_action_item_for_diagnostics_warnings(
+    tmp_path: Path,
+) -> None:
+    request = write_quality_fixture(
+        tmp_path,
+        validation={"status": "valid", "warningCount": 0, "errorCount": 0},
+        diagnostics={"status": "warnings", "entries": []},
+    )
+
+    report = AuthorReadyDraftQualityReport(request).payload()
+
+    assert report["status"] == "needs_regeneration"
+    assert "review_diagnostics_warnings" in action_item_ids(report)
+
+
+def test_author_ready_quality_report_blocks_missing_diagnostics_report(
+    tmp_path: Path,
+) -> None:
+    request = write_quality_fixture(
+        tmp_path,
+        validation={"status": "valid", "warningCount": 0, "errorCount": 0},
+        diagnostics={"status": "clean", "entries": []},
+    )
+    request.diagnostics_report_path.unlink()
+
+    report = AuthorReadyDraftQualityReport(request).payload()
+
+    assert report["status"] == "blocked"
+    assert gate_statuses(report)["required_bundle_files"] == "failed"
+    assert gate_statuses(report)["critical_diagnostics"] == "failed"
+    assert "fix_required_bundle_files" in action_item_ids(report)
+
+
+def test_author_ready_quality_report_requires_existing_evidence_file(
+    tmp_path: Path,
+) -> None:
+    request = write_quality_fixture(
+        tmp_path,
+        validation={"status": "valid", "warningCount": 0, "errorCount": 0},
+        diagnostics={"status": "clean", "entries": []},
+    )
+    (tmp_path / "harvest.json").unlink()
+
+    report = AuthorReadyDraftQualityReport(request).payload()
+
+    assert report["status"] == "needs_regeneration"
+    assert gate_statuses(report)["evidence_links_present"] == "review_required"
+    assert "review_evidence_links_present" in action_item_ids(report)
+
+
 def write_quality_fixture(
     root: Path,
     *,

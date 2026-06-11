@@ -87,7 +87,7 @@ not a numeric guarantee of correctness.
 
 ## Review Dimensions
 
-Machine-readable `author-ready-draft-quality-report.json` reports score the
+Machine-readable `author-ready-draft-quality-report.json` reports assess the
 draft along these dimensions:
 
 | Dimension | Question |

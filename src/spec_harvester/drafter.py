@@ -324,7 +324,6 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         ),
         validation_report_path=validation_report_path,
         diagnostics_report_path=diagnostics_report_path,
-        diagnostics_entries=tuple(diagnostics_payload["entries"]),
     )
     quality_report_path = AuthorReadyDraftQualityReport(quality_report_request).write()
     output_files.append(

@@ -10,7 +10,6 @@ from spec_harvester import __version__
 from spec_harvester.producer_receipt import (
     CandidateOutputFile,
     digest_record,
-    read_json_object,
     sha256_file,
 )
 
@@ -165,7 +164,6 @@ class AuthorReadyDraftQualityReportRequest:
     report: ProducerReportRequest
     validation_report_path: Path
     diagnostics_report_path: Path
-    diagnostics_entries: tuple[dict[str, Any], ...] = ()
 
 
 class AuthorReadyDraftQualityReport:
@@ -173,8 +171,14 @@ class AuthorReadyDraftQualityReport:
         self.request = request
 
     def payload(self) -> dict[str, Any]:
-        validation = read_json_object(self.request.validation_report_path)
-        diagnostics = read_json_object(self.request.diagnostics_report_path)
+        validation = read_optional_report_object(
+            self.request.validation_report_path,
+            missing_status="missing",
+        )
+        diagnostics = read_optional_report_object(
+            self.request.diagnostics_report_path,
+            missing_status="missing",
+        )
         gates = self.hard_gates(validation, diagnostics)
         dimensions = self.dimensions(gates, diagnostics)
         action_items = self.action_items(gates, dimensions)
@@ -235,7 +239,11 @@ class AuthorReadyDraftQualityReport:
         warning_entries = [
             entry for entry in diagnostics_entries if entry.get("severity") == "warning"
         ]
-        has_evidence = bool({"evidence", "foreign_artifact"} & output_roles)
+        evidence_output_count = sum(
+            1
+            for item in self.request.report.output_files
+            if item.role in {"evidence", "foreign_artifact"} and output_file_exists(item)
+        )
         return [
             {
                 "id": "producer_validation",
@@ -256,7 +264,8 @@ class AuthorReadyDraftQualityReport:
                 "id": "critical_diagnostics",
                 "status": (
                     "passed"
-                    if not critical_entries and diagnostics.get("status") != "failed"
+                    if not critical_entries
+                    and diagnostics.get("status") not in {"failed", "invalid", "missing"}
                     else "failed"
                 ),
                 "source": DIAGNOSTICS_REPORT_FILENAME,
@@ -284,11 +293,9 @@ class AuthorReadyDraftQualityReport:
             },
             {
                 "id": "evidence_links_present",
-                "status": "passed" if has_evidence else "review_required",
+                "status": "passed" if evidence_output_count else "review_required",
                 "details": {
-                    "evidenceOutputCount": sum(
-                        1 for item in self.request.report.output_files if item.role == "evidence"
-                    ),
+                    "evidenceOutputCount": evidence_output_count,
                     "outputRoles": sorted(output_roles),
                 },
             },
@@ -403,6 +410,24 @@ class AuthorReadyDraftQualityReport:
                 ),
             ]
         )
+        critical_diagnostics_gate = next(
+            (gate for gate in gates if gate["id"] == "critical_diagnostics"),
+            {},
+        )
+        critical_diagnostics_details = mapping_value(critical_diagnostics_gate.get("details"))
+        if (
+            critical_diagnostics_details.get("diagnosticsStatus") == "warnings"
+            or integer_value(critical_diagnostics_details.get("warningCount")) > 0
+        ):
+            items.append(
+                action_item(
+                    "review_diagnostics_warnings",
+                    "warning",
+                    "author_review",
+                    DIAGNOSTICS_REPORT_FILENAME,
+                    "Review diagnostics warnings before rerunning or handing off the draft.",
+                )
+            )
         if any(dimension["rating"] == "needs_review" for dimension in dimensions):
             items.append(
                 action_item(
@@ -479,6 +504,25 @@ def diagnostics_report_entries(diagnostics: dict[str, Any]) -> list[dict[str, An
     return [entry for entry in entries if isinstance(entry, dict)]
 
 
+def read_optional_report_object(path: Path, *, missing_status: str) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return {"status": missing_status, "entries": [], "readError": "missing"}
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError) as exc:
+        return {"status": "invalid", "entries": [], "readError": str(exc)}
+    if not isinstance(value, dict):
+        return {"status": "invalid", "entries": [], "readError": "report_not_object"}
+    return value
+
+
+def output_file_exists(item: CandidateOutputFile) -> bool:
+    relative = Path(item.path)
+    if relative.is_absolute() or ".." in relative.parts:
+        return False
+    return (item.root / relative).is_file()
+
+
 def dimension_record(identifier: str, rating: str, summary: str) -> dict[str, Any]:
     return {
         "id": identifier,
@@ -510,6 +554,10 @@ def string_value(value: Any) -> str:
 
 def integer_value(value: Any) -> int:
     return value if isinstance(value, int) else 0
+
+
+def mapping_value(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
 
 
 def render_report_json(payload: dict[str, Any]) -> str:
