@@ -1,12 +1,16 @@
-# Next Task: P27-T5 Real Repository Author-Ready Draft Calibration Matrix
+# Next Task: Phase 27 Complete
 
-**Status:** In Progress
-**Started:** 2026-06-12
-**Last Archived:** P27-T4 Author Review Viewer and Handoff Checklist
+**Status:** Phase Complete
+**Last Archived:** P27-T5 Real Repository Author-Ready Draft Calibration Matrix
 **Archived:** 2026-06-12
 
 ## Recently Archived
 
+- `P27-T5` added `SpecHarvesterAuthorReadyCalibrationMatrix` and
+  `author-ready-calibration-matrix`, then calibrated six pinned real repository
+  checkouts. The observed result was 6/6 `author_ready_draft`,
+  `totalEstimatedAuthorEdits` = 2, `generatorFollowUpCount` = 0, and
+  `calibrationVerdict` = `author_curation_ready`.
 - `P27-T4` added author review checklists through `authorReview`, making
   package-set viewer and handoff Markdown show weak claims, evidence gaps,
   recommended edits, and member action summaries without implying SpecPM
@@ -29,24 +33,16 @@
   evidence, the model proposes selected members, exclusions, and `contains`
   relations, and SpecPM plus maintainers remain the acceptance authority.
 
-## Motivation
+## Outcome
 
-- P27-T1 through P27-T4 define and expose author-ready valid starter packages,
-  but the quality bar needs calibration across real repositories.
-- A single `xyflow` reference run is useful plumbing evidence, not enough
-  product evidence for how many author edits are usually needed.
-- The next decision should be evidence-driven: which draft gaps repeat across
-  repositories and should become deterministic fixes, and which gaps should
-  remain author curation.
-
-## Goal
-
-- Run a real-repository author-ready draft calibration matrix and record how
-  many author edits are needed to move valid starter packages toward curated
-  specs.
+Phase 27 Author-Ready Valid Drafts is complete. SpecHarvester now has a
+documented author-ready quality bar, a machine-readable quality report,
+deterministic stop-policy summaries, author review surfaces, and a
+real-repository calibration matrix that measures remaining author work
+separately from SpecPM validation.
 
 ## Next Step
 
-Start `P27-T5` by defining the calibration matrix shape: repository selection,
-quality dimensions, author edit categories, expected artifacts, and the
-criteria for turning repeated gaps into follow-up generator work.
+Pick the next product phase from the roadmap. A likely follow-up is expanding
+calibration into a repeatable multi-repository quality suite while keeping
+generated candidates as local evidence, not committed registry truth.

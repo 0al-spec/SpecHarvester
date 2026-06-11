@@ -888,7 +888,7 @@ Acceptance:
   author-reviewable rather than generator-fixable.
 - [x] `P27-T4` Extend the static viewer and handoff Markdown with author review
   checklists, weak claims, evidence gaps, and recommended edits.
-- [ ] `P27-T5` Run a real-repository author-ready draft calibration matrix and
+- [x] `P27-T5` Run a real-repository author-ready draft calibration matrix and
   record how many author edits are needed to move valid starter packages toward
   curated specs.
 

@@ -15,13 +15,14 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_27_t4_active(next_text)
         return
 
-    assert_p27_t4_last_archived(next_text)
-    assert_p27_t4_recent(next_text)
     if "# Next Task: P27-T5 Real Repository Author-Ready Draft Calibration Matrix" in next_text:
+        assert_p27_t4_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
         assert_phase_27_t5_active(next_text)
         return
 
     assert_p27_t5_last_archived(next_text)
+    assert_p27_t4_recent(next_text)
     assert_p27_t5_recent(next_text)
     assert_phase_27_complete(next_text)
 
@@ -98,11 +99,12 @@ def assert_phase_27_t4_active(next_text: str) -> None:
 
 def assert_p27_t5_recent(next_text: str) -> None:
     normalized = " ".join(next_text.split())
-    assert "`P27-T5` added the author-ready calibration matrix" in next_text
+    assert "`P27-T5` added `SpecHarvesterAuthorReadyCalibrationMatrix`" in next_text
     assert "SpecHarvesterAuthorReadyCalibrationMatrix" in next_text
-    assert "estimated author edits" in next_text
-    assert "edit categories" in next_text
-    assert "repeated generator gaps" in normalized
+    assert "author-ready-calibration-matrix" in next_text
+    assert "totalEstimatedAuthorEdits" in next_text
+    assert "calibrationVerdict" in next_text
+    assert "author_curation_ready" in normalized
 
 
 def assert_phase_27_t5_active(next_text: str) -> None:
@@ -1081,7 +1083,7 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
     assert "- [x] `P27-T2`" in workplan_text
     assert "- [x] `P27-T3`" in workplan_text
     assert "- [x] `P27-T4`" in workplan_text
-    assert "- [ ] `P27-T5`" in workplan_text
+    assert "- [x] `P27-T5`" in workplan_text
     assert "author_ready_draft" in workplan_text
     assert "needs_regeneration" in workplan_text
     assert "blocked" in workplan_text
