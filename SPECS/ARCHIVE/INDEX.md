@@ -126,6 +126,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p25_t2_deterministic_workspace_inventory.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p25_t3_package_set_candidate_drafting.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p25_t4_package_relation_proposals.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p27_t4_author_review_viewer_handoff_checklist.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -149,6 +150,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-12 | P27-T4 | Archived REVIEW_p27_t4_author_review_viewer_handoff_checklist report |
 | 2026-06-12 | P27-T4 | Archived Author Review Viewer and Handoff Checklist (PASS) |
 | 2026-05-17 | P0-T1 | Archived Configure Flow Operating Scaffold (PASS) |
 | 2026-05-17 | P1-T1 | Archived Define PublicInterfaceIndex Snapshot Schema (PASS) |
