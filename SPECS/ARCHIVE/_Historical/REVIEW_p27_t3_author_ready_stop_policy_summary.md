@@ -40,8 +40,8 @@ None remaining.
 - Lint/format/diff checks passed after the follow-up:
   `PYTHONPATH=src ruff check .`,
   `PYTHONPATH=src ruff format --check src tests`, and `git diff --check`.
-- Full suite and coverage were run before the follow-up and must be repeated
-  once this review artifact is archived.
+- Final full suite and coverage passed after the follow-up:
+  `577 passed, 1 skipped`, total coverage `90.16%`.
 
 ### Next Steps
 

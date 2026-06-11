@@ -43,13 +43,14 @@ PYTHONPATH=src pytest -q
 Initial result before archive pointer update: failed because `next.md` was
 temporarily `In Progress` during the Flow run.
 
-Final result after selecting P27-T4: `576 passed, 1 skipped`.
+Final result after selecting P27-T4 and applying review follow-up:
+`577 passed, 1 skipped`.
 
 ```bash
 PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90
 ```
 
-Result: `576 passed, 1 skipped`; total coverage `90.16%`.
+Result: `577 passed, 1 skipped`; total coverage `90.16%`.
 
 ```bash
 PYTHONPATH=src ruff check .
