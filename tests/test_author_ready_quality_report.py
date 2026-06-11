@@ -44,6 +44,22 @@ def test_author_ready_quality_report_needs_regeneration_without_evidence(
     assert "complete_evidence_review" in action_item_ids(report)
 
 
+def test_author_ready_quality_report_blocks_failed_diagnostics_status_without_entries(
+    tmp_path: Path,
+) -> None:
+    request = write_quality_fixture(
+        tmp_path,
+        validation={"status": "valid", "warningCount": 0, "errorCount": 0},
+        diagnostics={"status": "failed", "entries": []},
+    )
+
+    report = AuthorReadyDraftQualityReport(request).payload()
+
+    assert report["status"] == "blocked"
+    assert gate_statuses(report)["critical_diagnostics"] == "failed"
+    assert "fix_critical_diagnostics" in action_item_ids(report)
+
+
 def write_quality_fixture(
     root: Path,
     *,

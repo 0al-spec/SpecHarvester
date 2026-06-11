@@ -254,7 +254,11 @@ class AuthorReadyDraftQualityReport:
             },
             {
                 "id": "critical_diagnostics",
-                "status": "passed" if not critical_entries else "failed",
+                "status": (
+                    "passed"
+                    if not critical_entries and diagnostics.get("status") != "failed"
+                    else "failed"
+                ),
                 "source": DIAGNOSTICS_REPORT_FILENAME,
                 "details": {
                     "diagnosticsStatus": string_value(diagnostics.get("status")),
