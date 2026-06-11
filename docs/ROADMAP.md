@@ -156,7 +156,30 @@ Success criteria:
 - private or unsupported evidence paths are rejected or downgraded to
   diagnostics.
 
-## Milestone 5: Multi-Repository Quality Calibration
+## Milestone 5: Author-Ready Valid Drafts
+
+Status: next product-quality focus.
+
+Goal: define when SpecHarvester should stop drafting and hand a valid starter
+package to the repository author.
+
+Tasks:
+
+- document the author-ready draft quality bar;
+- treat `specpm validate` success as a hard gate, not a semantic quality score;
+- define stop policy for AI draft and enrichment loops;
+- record author action items, weak claims, and evidence gaps explicitly;
+- keep final semantic curation with the author and their agent.
+
+Success criteria:
+
+- generated output is described as a valid starter package, not a final
+  accepted spec;
+- operators can tell when additional model iteration is no longer useful;
+- authors receive a reviewable handoff with clear edit points and evidence
+  context.
+
+## Milestone 6: Multi-Repository Quality Calibration
 
 Status: next practical focus.
 
@@ -185,7 +208,7 @@ Success criteria:
 - candidate quality is measured before public self-service submission is
   broadened.
 
-## Milestone 6: Ecosystem Analyzer Depth
+## Milestone 7: Ecosystem Analyzer Depth
 
 Goal: improve deterministic evidence quality before relying on model output.
 
@@ -207,7 +230,7 @@ Success criteria:
 - diagnostics explain missing or weak evidence;
 - model enrichment has better deterministic evidence to cite.
 
-## Milestone 7: Operator UX and Governance Reports
+## Milestone 8: Operator UX and Governance Reports
 
 Goal: make operator review cheaper without turning SpecHarvester into registry
 authority.

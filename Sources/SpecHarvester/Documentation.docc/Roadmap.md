@@ -75,6 +75,15 @@ capabilities, interfaces, confidence, and evidence gaps for generated
 package-set candidates. AI enrichment remains proposal evidence only and does
 not mutate generated specs or accept registry content.
 
+### Author-Ready Valid Drafts
+
+The next product-quality focus is to define when SpecHarvester should stop
+drafting and hand a valid starter package to the repository author. The target
+is an author-ready draft: valid under SpecPM, repository-specific,
+evidence-backed, conservative, explicit about gaps, and cheaper for an author
+to edit than to write from scratch. SpecHarvester should stop when remaining
+work is author-reviewable rather than generator-fixable.
+
 ### Multi-Repository Quality Calibration
 
 The next practical focus is to run the current pipeline across 5-10 real
@@ -114,5 +123,6 @@ repositories.
 - <doc:SpecPMPackageSetAlignment>
 - <doc:PackageSetDrafting>
 - <doc:BundleSetPreflight>
+- <doc:AuthorReadyDraftQualityBar>
 - <doc:PackageSetAIEnrichment>
 - <doc:XyflowPackageSetSmoke>

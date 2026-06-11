@@ -1,44 +1,46 @@
-# Next Task: P26-T3 SpecPM Package-Set Proposal Intake Checklist
+# Next Task: P27-T2 Author-Ready Draft Quality Report
 
 **Status:** Selected
-**Last Archived:** P26-T2 Trusted Package-Set Proposal Workflow Inputs
-**Archived:** 2026-06-07
+**Last Archived:** P26-T5 Package-Set AI Draft Proposal Contract
+**Archived:** 2026-06-10
 
 ## Recently Archived
 
-- `P26-T2` wired `package-set-handoff-proposal` into the trusted
-  `propose-to-specpm.yml` workflow as a dry-run evidence mode. Operators can
-  select `proposal_kind: package_set`, provide package-set bundle/viewer paths,
-  and upload `package-set-handoff-proposal.json` plus
-  `package-set-handoff-proposal.md` without using `SPECPM_PROPOSAL_TOKEN` or
-  creating a SpecPM PR.
-- `P26-T1` added the package-set handoff proposal artifact itself, including
-  aggregate/member candidates, `contains` relation proposals, bundle-set
-  preflight status, viewer links, evidence roles, and
-  `registryAcceptanceDecision.status: external_required`.
-- `P25-T7` added `xyflow-package-set-smoke`, a deterministic local synthetic
-  package-set scenario with package-set draft, relation proposals, bundle-set
-  preflight, viewer output, and smoke summary. The key artifacts remain
-  `package-set-draft.json`, `package-relation-proposals.json`,
-  `bundle-set-preflight.json`, and `xyflow-package-set-smoke.json`.
+- `P26-T5` added `SpecHarvesterPackageSetAIDraftProposal`, preserving the
+  original `LLM + schema` package-set idea: deterministic workspace inventory is
+  evidence, the model proposes selected members, exclusions, and `contains`
+  relations, and SpecPM plus maintainers remain the acceptance authority.
+- `P26-T4` added proposal-only package-set AI enrichment for local
+  OpenAI-compatible providers such as LM Studio, with provider receipts,
+  privacy boundaries, unsupported evidence diagnostics, and no generated spec
+  mutation.
+- `P27-T1` documented the author-ready draft quality bar: SpecHarvester should
+  produce a valid starter package for repository authors, not a final accepted
+  specification.
 
 ## Motivation
 
-- SpecHarvester can now produce and upload package-set handoff evidence, but
-  SpecPM maintainers still need an explicit intake checklist before accepting
-  member packages or relation proposals.
-- Package-set evidence includes multiple candidate bundles and relation
-  records. The existing single-package proposal checklist is not specific
-  enough for aggregate/member review.
-- The acceptance boundary must remain explicit: SpecHarvester proposes
-  evidence, SpecPM validates and records registry acceptance decisions.
+- The quality bar is now documented, but operators still need a
+  machine-readable report that says whether a generated draft is good enough to
+  hand to an author.
+- Existing quality reports cover real-repository validation dimensions, but they
+  do not yet expose an explicit author-ready verdict, author action items, or a
+  stop-policy reason.
+- Without this report, reviewers may confuse a valid starter package with a
+  fully curated spec, or keep rerunning the model after the remaining work is
+  author-reviewable.
 
 ## Goal
 
-- Define the SpecPM-side package-set proposal intake checklist and evidence
-  roles required before maintainers accept package members or relations.
+- Extend quality reporting with an `authorReadyDraft` verdict and author action
+  items derived from validation reports, bundle preflight, AI draft diagnostics,
+  AI enrichment diagnostics, and viewer metadata.
 
 ## Next Step
 
-Start `P26-T3` by documenting the SpecPM intake checklist expected for
-`package-set-handoff-proposal.json` and its linked candidate/member evidence.
+Start `P27-T2` by defining the machine-readable author-ready draft quality
+report shape and the first deterministic derivation rules for:
+
+- `author_ready_draft`;
+- `needs_regeneration`;
+- `blocked`.

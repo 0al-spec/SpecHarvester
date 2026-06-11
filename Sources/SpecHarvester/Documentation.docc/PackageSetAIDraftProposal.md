@@ -46,3 +46,16 @@ structure, and SpecPM plus maintainers remain the validation and registry
 authority. The command does not mutate generated specs, execute package code,
 install dependencies, run package managers, browse the network, or treat model
 output as registry truth.
+
+## Author-Ready Draft Boundary
+
+The AI draft proposal can help produce an author-ready valid starter package,
+but it is not the final specification. The generated package-set bundle must
+still pass the valid starter package hard gates in
+<doc:AuthorReadyDraftQualityBar>.
+
+Passing AI draft diagnostics should stop additional model iteration only when
+the remaining issues are author-reviewable, such as wording, domain nuance,
+missing author intent, or capability choices that require upstream judgment. It
+should not stop when validation fails, inventory-derived paths drift, evidence
+paths are unsupported, or relation endpoints are inconsistent.
