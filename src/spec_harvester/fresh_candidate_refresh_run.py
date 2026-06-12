@@ -12,6 +12,7 @@ from spec_harvester.package_set_drafter import (
     PACKAGE_SET_DRAFT_API_VERSION,
     PACKAGE_SET_DRAFT_FILENAME,
     PACKAGE_SET_DRAFT_KIND,
+    PACKAGE_SET_DRAFT_SCHEMA_VERSION,
 )
 from spec_harvester.producer_receipt import digest_record, sha256_file
 
@@ -133,6 +134,8 @@ def prepared_packages(
             )
         validate_single_path_segment(package_id, "package id")
         validate_single_path_segment(version, "version")
+        reject_fresh_root_overlap(fresh_root, candidate_dir)
+        reject_candidate_symlinks(candidate_dir)
 
         artifact_dir = fresh_root / package_id / version
         if artifact_dir.exists():
@@ -277,7 +280,10 @@ def candidate_sort_key(candidate: dict[str, str]) -> tuple[int, str]:
 def safe_bundle_dir(bundle_set: Path, relative: str) -> Path:
     if not relative or Path(relative).is_absolute():
         raise ValueError(f"Unsafe package-set candidate path: {relative!r}")
-    candidate = (bundle_set / relative).resolve(strict=False)
+    raw_candidate = bundle_set / relative
+    if raw_candidate.is_symlink():
+        raise ValueError(f"Package-set candidate directory must not be a symlink: {relative!r}")
+    candidate = raw_candidate.resolve(strict=False)
     try:
         candidate.relative_to(bundle_set.resolve(strict=False))
     except ValueError as exc:
@@ -285,6 +291,45 @@ def safe_bundle_dir(bundle_set: Path, relative: str) -> Path:
     if not candidate.is_dir():
         raise ValueError(f"Package-set candidate directory does not exist: {relative}")
     return candidate
+
+
+def reject_fresh_root_overlap(fresh_root: Path, candidate_dir: Path) -> None:
+    if paths_overlap(fresh_root, candidate_dir):
+        raise ValueError(
+            "Fresh generated root must not overlap package-set candidate source: "
+            f"{fresh_root} vs {candidate_dir}"
+        )
+
+
+def reject_candidate_symlinks(candidate_dir: Path) -> None:
+    for path in candidate_dir.rglob("*"):
+        if path.is_symlink():
+            try:
+                relative = path.relative_to(candidate_dir)
+            except ValueError:
+                relative = path
+            raise ValueError(
+                "Package-set candidate directory contains symlink outside evidence boundary: "
+                f"{relative}"
+            )
+
+
+def paths_overlap(left: Path, right: Path) -> bool:
+    left_resolved = left.resolve(strict=False)
+    right_resolved = right.resolve(strict=False)
+    return (
+        left_resolved == right_resolved
+        or is_relative_to(left_resolved, right_resolved)
+        or is_relative_to(right_resolved, left_resolved)
+    )
+
+
+def is_relative_to(path: Path, parent: Path) -> bool:
+    try:
+        path.relative_to(parent)
+    except ValueError:
+        return False
+    return True
 
 
 def validate_single_path_segment(value: str, label: str) -> None:
@@ -296,7 +341,7 @@ def check_package_set_draft_identity(draft: dict[str, Any]) -> None:
     expected = {
         "apiVersion": PACKAGE_SET_DRAFT_API_VERSION,
         "kind": PACKAGE_SET_DRAFT_KIND,
-        "schemaVersion": 1,
+        "schemaVersion": PACKAGE_SET_DRAFT_SCHEMA_VERSION,
     }
     for key, value in expected.items():
         if draft.get(key) != value:

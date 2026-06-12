@@ -142,6 +142,37 @@ def test_fresh_candidate_refresh_run_rejects_unsafe_candidate_path(
         )
 
 
+def test_fresh_candidate_refresh_run_rejects_fresh_root_inside_candidate_source(
+    tmp_path: Path,
+) -> None:
+    smoke = write_xyflow_smoke(tmp_path)
+
+    with pytest.raises(ValueError, match="must not overlap package-set candidate source"):
+        build_fresh_candidate_refresh_run(
+            FreshCandidateRefreshRunOptions(
+                bundle_set=smoke / "package-set",
+                fresh_generated_root=smoke / "package-set" / "xyflow.react",
+            )
+        )
+
+
+def test_fresh_candidate_refresh_run_rejects_candidate_symlink(
+    tmp_path: Path,
+) -> None:
+    smoke = write_xyflow_smoke(tmp_path)
+    outside = tmp_path / "outside-secret.txt"
+    outside.write_text("outside", encoding="utf-8")
+    (smoke / "package-set" / "xyflow.react" / "leak.txt").symlink_to(outside)
+
+    with pytest.raises(ValueError, match="contains symlink"):
+        build_fresh_candidate_refresh_run(
+            FreshCandidateRefreshRunOptions(
+                bundle_set=smoke / "package-set",
+                fresh_generated_root=tmp_path / "fresh-generated",
+            )
+        )
+
+
 def write_xyflow_smoke(tmp_path: Path) -> Path:
     smoke = tmp_path / "xyflow-smoke"
     report = run_xyflow_package_set_smoke(XyflowPackageSetSmokeOptions(output=smoke))

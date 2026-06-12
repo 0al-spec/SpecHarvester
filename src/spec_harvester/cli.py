@@ -416,7 +416,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--source-revision",
         help=(
             "Optional source revision override. Defaults to "
-            "package-set-draft.json source.exactRevision."
+            "package-set-draft.json source.exactRevision or source.revision."
         ),
     )
     fresh_candidate_refresh_run.add_argument(
