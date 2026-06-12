@@ -21,6 +21,15 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_27_t5_active(next_text)
         return
 
+    if "# Next Task: P28-T3 Second Real Repository Refresh Compare Run" in next_text:
+        assert_p28_t2_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
+        assert_p27_t5_recent(next_text)
+        assert_p28_t1_recent(next_text)
+        assert_p28_t2_recent(next_text)
+        assert_phase_28_t3_active(next_text)
+        return
+
     assert_p27_t5_last_archived(next_text)
     assert_p27_t4_recent(next_text)
     assert_p27_t5_recent(next_text)
@@ -40,6 +49,10 @@ def assert_p27_t5_last_archived(next_text: str) -> None:
         "**Last Archived:** P27-T5 Real Repository Author-Ready Draft Calibration Matrix"
         in next_text
     )
+
+
+def assert_p28_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P28-T2 Real Xyflow Refresh Compare Run" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -120,6 +133,32 @@ def assert_phase_27_complete(next_text: str) -> None:
     assert "# Next Task: Phase 27 Complete" in next_text
     assert "**Status:** Phase Complete" in next_text
     assert "Author-Ready Valid Drafts" in next_text
+
+
+def assert_p28_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P28-T1` added `SpecHarvesterFreshCandidateRefreshRun`" in next_text
+    assert "fresh-candidate-refresh-run" in next_text
+    assert "prepare-refresh-decision" in next_text
+    assert "publishing packages" in normalized
+    assert "maintainer review" in normalized
+
+
+def assert_p28_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P28-T2` ran real `xyflow`" in next_text
+    assert "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd" in next_text
+    assert "no_update_required" in next_text
+    assert "no_contract_delta" in next_text
+    assert "8 generated contract-file digests" in normalized
+
+
+def assert_phase_28_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P28-T3 Second Real Repository Refresh Compare Run" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "second package-set-capable repository" in normalized
+    assert "not calibrated only against `xyflow`" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -1070,7 +1109,7 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     next_text = next_task.read_text(encoding="utf-8")
     normalized_next = " ".join(next_text.split())
     assert "P28-T3 Second Real Repository Refresh Compare Run" in normalized_next
-    assert "P28-T2 ran real `xyflow`" in next_text
+    assert "`P28-T2` ran real `xyflow`" in next_text
     assert "no_contract_delta" in next_text
 
 

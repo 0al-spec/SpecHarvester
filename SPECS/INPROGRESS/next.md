@@ -1,11 +1,20 @@
-# Next Task: Phase 27 Complete
+# Next Task: P28-T3 Second Real Repository Refresh Compare Run
 
-**Status:** Phase Complete
-**Last Archived:** P27-T5 Real Repository Author-Ready Draft Calibration Matrix
+**Status:** In Progress
+**Last Archived:** P28-T2 Real Xyflow Refresh Compare Run
 **Archived:** 2026-06-12
 
 ## Recently Archived
 
+- `P28-T2` ran real `xyflow` at
+  `a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd` through SpecHarvester and local
+  SpecPM. SpecPM produced `status: no_update_required`,
+  `updateNeeded: false`, `reason: no_contract_delta`, and verified 8 generated
+  contract-file digests.
+- `P28-T1` added `SpecHarvesterFreshCandidateRefreshRun` and
+  `fresh-candidate-refresh-run`, exporting generated package-set bundles into
+  the SpecPM `prepare-refresh-decision` fresh generated-root layout without
+  publishing packages or replacing SpecPM maintainer review.
 - `P27-T5` added `SpecHarvesterAuthorReadyCalibrationMatrix` and
   `author-ready-calibration-matrix`, then calibrated six pinned real repository
   checkouts. The observed result was 6/6 `author_ready_draft`,
@@ -47,13 +56,7 @@ Pick the next product phase from the roadmap. A likely follow-up is expanding
 calibration into a repeatable multi-repository quality suite while keeping
 generated candidates as local evidence, not committed registry truth.
 
-The current cross-repository follow-up is P28-T3 Second Real Repository
-Refresh Compare Run: repeat the `fresh-candidate-refresh-run` and SpecPM
-`prepare-refresh-decision` loop on a second package-set-capable repository so
-the contract is not calibrated only against `xyflow`.
-
-Recently completed P28-T2 ran real `xyflow` at
-`a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd` through SpecHarvester and local
-SpecPM. SpecPM produced `status: no_update_required`,
-`updateNeeded: false`, `reason: no_contract_delta`, and verified 8 generated
-contract-file digests.
+Run P28-T3 Second Real Repository Refresh Compare Run: repeat the
+`fresh-candidate-refresh-run` and SpecPM `prepare-refresh-decision` loop on a
+second package-set-capable repository so the contract is not calibrated only
+against `xyflow`.
