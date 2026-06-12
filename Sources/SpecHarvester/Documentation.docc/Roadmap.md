@@ -88,9 +88,13 @@ operators can stop when remaining work is author-reviewable rather than
 generator-fixable. Viewer and handoff outputs derive `authorReview` checklists,
 weak claims, evidence gaps, recommended edits, and member action summaries from
 the same evidence so authors can start review without reading raw JSON first.
+The author-ready calibration matrix records estimated author edits, edit
+categories, review priorities, and repeated generator gaps across real
+repositories before broader intake is expanded.
 
 See <doc:AuthorReadyDraftQualityBar> and
-<doc:AuthorReadyDraftQualityReport>.
+<doc:AuthorReadyDraftQualityReport>. See also
+<doc:AuthorReadyCalibrationMatrix>.
 
 ### Multi-Repository Quality Calibration
 

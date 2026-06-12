@@ -191,6 +191,19 @@ raw documentation bodies remain excluded from generated evidence artifacts.
 
 See <doc:LanguageNeutralSemanticExtraction>.
 
+Convert a real-repository quality report into an author-ready calibration
+matrix:
+
+```bash
+python3 -m spec_harvester author-ready-calibration-matrix \
+  --quality-report .smoke/output/p27-t5-author-ready/quality-report.json \
+  --output .smoke/output/p27-t5-author-ready/author-ready-calibration-matrix.json
+```
+
+The matrix records estimated author edits, edit categories, review priorities,
+and repeated generator gaps. It is local product calibration evidence and does
+not imply SpecPM acceptance. See <doc:AuthorReadyCalibrationMatrix>.
+
 Prepare a deterministic manifest entry for a reviewed candidate:
 
 ```bash

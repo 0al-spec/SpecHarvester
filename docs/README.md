@@ -87,9 +87,12 @@ Published DocC site:
 35. [`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md):
     machine-readable `authorReadyDraft` verdict, hard gates, dimensions, and
     author action items for generated starter packages
-36. [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
+36. [`AUTHOR_READY_CALIBRATION_MATRIX.md`](AUTHOR_READY_CALIBRATION_MATRIX.md):
+    real-repository author-ready calibration matrix for estimated author edits,
+    edit categories, review priorities, and repeated generator gaps
+37. [`REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md`](REAL_REPOSITORY_REFINEMENT_VALIDATION_RUNNER.md):
     local-only runner for deterministic orchestration of real-repository checks
-37. [`REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`](REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md):
+38. [`REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`](REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md):
     compact P15-T4 local validation matrix across Swift/SPM, JS/TS, Python,
     Go, and documentation-first repository shapes
 38. [`STATIC_SPEC_RENDERER.md`](STATIC_SPEC_RENDERER.md): static HTML/JS preview
@@ -216,6 +219,9 @@ Published DocC site:
   inventory
 - [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
   proposal-only local AI enrichment for package-set candidates
+- [`AUTHOR_READY_CALIBRATION_MATRIX.md`](AUTHOR_READY_CALIBRATION_MATRIX.md):
+  author-ready calibration matrix for real-repository edit counts and repeated
+  generator gaps
 
 ## GitHub Process Surface
 

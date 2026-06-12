@@ -71,6 +71,10 @@ The execution report captures **what ran** and whether each step succeeded.
 The quality report captures **how good** the output is.  Both are local-only
 advisory artifacts and must not be committed to the repository.
 
+P27 adds a second layer on top: <doc:AuthorReadyCalibrationMatrix> translates
+this quality report into estimated author edits, edit categories, review
+priority, and repeated generator gaps.
+
 When `--candidates-root` is not supplied, package artifact lookup uses each
 package record's `candidateDir` from `run-report.json`; otherwise it falls back
 to `<candidatesRoot>/<package-id>`.

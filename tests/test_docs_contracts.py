@@ -15,9 +15,16 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_27_t4_active(next_text)
         return
 
-    assert_p27_t4_last_archived(next_text)
+    if "# Next Task: P27-T5 Real Repository Author-Ready Draft Calibration Matrix" in next_text:
+        assert_p27_t4_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
+        assert_phase_27_t5_active(next_text)
+        return
+
+    assert_p27_t5_last_archived(next_text)
     assert_p27_t4_recent(next_text)
-    assert_phase_27_t5_selected(next_text)
+    assert_p27_t5_recent(next_text)
+    assert_phase_27_complete(next_text)
 
 
 def assert_p27_t3_last_archived(next_text: str) -> None:
@@ -26,6 +33,13 @@ def assert_p27_t3_last_archived(next_text: str) -> None:
 
 def assert_p27_t4_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P27-T4 Author Review Viewer and Handoff Checklist" in next_text
+
+
+def assert_p27_t5_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P27-T5 Real Repository Author-Ready Draft Calibration Matrix"
+        in next_text
+    )
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -83,13 +97,29 @@ def assert_phase_27_t4_active(next_text: str) -> None:
     assert "recommended edits" in next_text
 
 
-def assert_phase_27_t5_selected(next_text: str) -> None:
+def assert_p27_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P27-T5` added `SpecHarvesterAuthorReadyCalibrationMatrix`" in next_text
+    assert "SpecHarvesterAuthorReadyCalibrationMatrix" in next_text
+    assert "author-ready-calibration-matrix" in next_text
+    assert "totalEstimatedAuthorEdits" in next_text
+    assert "calibrationVerdict" in next_text
+    assert "author_curation_ready" in normalized
+
+
+def assert_phase_27_t5_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P27-T5 Real Repository Author-Ready Draft Calibration Matrix" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "real-repository author-ready draft calibration matrix" in next_text
     assert "author edits" in next_text
     assert "curated specs" in normalized
+
+
+def assert_phase_27_complete(next_text: str) -> None:
+    assert "# Next Task: Phase 27 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "Author-Ready Valid Drafts" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -1053,7 +1083,7 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
     assert "- [x] `P27-T2`" in workplan_text
     assert "- [x] `P27-T3`" in workplan_text
     assert "- [x] `P27-T4`" in workplan_text
-    assert "- [ ] `P27-T5`" in workplan_text
+    assert "- [x] `P27-T5`" in workplan_text
     assert "author_ready_draft" in workplan_text
     assert "needs_regeneration" in workplan_text
     assert "blocked" in workplan_text
@@ -1112,6 +1142,64 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_report() -> None:
     assert "quality_report" in producer_doc.read_text(encoding="utf-8")
     assert "author-ready-draft-quality-report.json" in handoff_doc.read_text(encoding="utf-8")
     assert "member_quality_report" in package_set_handoff.read_text(encoding="utf-8")
+
+
+def test_docc_and_github_docs_cover_author_ready_calibration_matrix() -> None:
+    github_doc = ROOT / "docs" / "AUTHOR_READY_CALIBRATION_MATRIX.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AuthorReadyCalibrationMatrix.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    workflow_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Workflow.md"
+    quality_doc = ROOT / "docs" / "REAL_REPOSITORY_QUALITY_REPORT.md"
+    quality_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "RealRepositoryQualityReport.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "author-ready-calibration-matrix",
+            "quality-report.json",
+            "spec-harvester.author-ready-calibration-matrix/v0",
+            "SpecHarvesterAuthorReadyCalibrationMatrix",
+            "estimatedAuthorEdits",
+            "editCategories",
+            "authorReadyStatus",
+            "reviewPriority",
+            "generatorFollowUpReasons",
+            "calibrationVerdict",
+            "author_curation_ready",
+            "mixed_author_ready",
+            "generator_follow_up_recommended",
+            "blocked_inputs_present",
+            "cupertino",
+            "navigation-split-view",
+            "xyflow",
+            "flask",
+            "gin",
+            "docc2context",
+            ".smoke/",
+            "must not be committed",
+            "SpecPM acceptance",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AUTHOR_READY_CALIBRATION_MATRIX.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:AuthorReadyCalibrationMatrix>" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:AuthorReadyCalibrationMatrix>" in workflow_docc.read_text(encoding="utf-8")
+    assert "AUTHOR_READY_CALIBRATION_MATRIX.md" in quality_doc.read_text(encoding="utf-8")
+    assert "<doc:AuthorReadyCalibrationMatrix>" in quality_docc.read_text(encoding="utf-8")
+    assert "author-ready calibration matrix" in roadmap.read_text(encoding="utf-8")
+    assert "AuthorReadyCalibrationMatrix" in roadmap_docc.read_text(encoding="utf-8")
 
 
 def test_docc_and_github_docs_cover_governance_report_broad_intent_filtering() -> None:

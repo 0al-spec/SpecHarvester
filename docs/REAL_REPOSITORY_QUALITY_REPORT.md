@@ -7,6 +7,11 @@ quality of SpecHarvester output for a real-repository refinement validation run.
 It complements the execution report produced by the P15-T2 runner with
 evidence-based quality dimensions for each package.
 
+P27 adds a second layer on top:
+[`AUTHOR_READY_CALIBRATION_MATRIX.md`](AUTHOR_READY_CALIBRATION_MATRIX.md)
+translates this quality report into estimated author edits, edit categories,
+review priority, and repeated generator gaps.
+
 ## Purpose
 
 `python -m spec_harvester quality-report` reads an execution report (produced by

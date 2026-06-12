@@ -64,6 +64,7 @@ The canonical source files remain in the repository:
 - `docs/REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md`
 - `docs/AUTHOR_READY_DRAFT_QUALITY_BAR.md`
 - `docs/AUTHOR_READY_DRAFT_QUALITY_REPORT.md`
+- `docs/AUTHOR_READY_CALIBRATION_MATRIX.md`
 - `docs/STATIC_SPEC_RENDERER.md`
 - `docs/PRODUCER_CANDIDATE_BUNDLE.md`
 - `docs/SPECPM_HANDOFF.md`
@@ -127,6 +128,7 @@ the host.
 - <doc:RealRepositoryLocalValidationMatrix>
 - <doc:AuthorReadyDraftQualityBar>
 - <doc:AuthorReadyDraftQualityReport>
+- <doc:AuthorReadyCalibrationMatrix>
 - <doc:StaticSpecRenderer>
 - <doc:ProducerCandidateBundle>
 - <doc:SpecPMHandoff>

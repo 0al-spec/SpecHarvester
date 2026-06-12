@@ -172,6 +172,8 @@ Tasks:
   package-set handoff and viewer outputs;
 - derive `authorReview` checklists, weak claims, evidence gaps, recommended
   edits, and member action summaries for viewer and handoff review;
+- run a real-repository author-ready calibration matrix that records estimated
+  author edits, edit categories, and repeated generator gaps;
 - treat validation success as a hard gate, not a semantic quality score;
 - define stop policy for AI draft and enrichment loops;
 - record author action items, weak claims, and evidence gaps explicitly;
@@ -186,6 +188,8 @@ Success criteria:
 - operators can tell when additional model iteration is no longer useful;
 - authors receive a reviewable handoff with clear edit points and evidence
   context.
+- maintainers can distinguish normal author curation from repeated generator
+  weaknesses before broadening intake.
 
 ## Milestone 6: Multi-Repository Quality Calibration
 
