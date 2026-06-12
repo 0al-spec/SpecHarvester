@@ -932,7 +932,7 @@ Acceptance:
   `manual_review_required`.
 - [x] `P28-T3` Repeat the refresh compare loop on a second real repository
   with package-set output to check that the contract is not `xyflow`-specific.
-- [ ] `P28-T4` Add package-set role selection profiles for generic monorepos
+- [x] `P28-T4` Add package-set role selection profiles for generic monorepos
   so operators can request a useful workspace/member package-set without
   ad hoc `--role member_package` knowledge.
 - [ ] `P28-T5` Define a first-submission or seeded-baseline workflow for

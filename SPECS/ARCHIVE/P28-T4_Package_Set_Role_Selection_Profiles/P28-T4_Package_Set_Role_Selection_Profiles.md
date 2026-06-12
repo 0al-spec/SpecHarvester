@@ -63,3 +63,7 @@ Out of scope:
 - Ruff lint and format checks.
 - Diff whitespace check.
 - Swift docs build and DocC static generation.
+
+---
+**Archived:** 2026-06-13
+**Verdict:** PASS
