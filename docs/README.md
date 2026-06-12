@@ -134,10 +134,13 @@ Published DocC site:
 49. [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md):
     package-set handoff proposal JSON and Markdown for future SpecPM review
     automation
-50. [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
+50. [`FRESH_CANDIDATE_REFRESH_RUN.md`](FRESH_CANDIDATE_REFRESH_RUN.md):
+    producer-side package-set export into the SpecPM
+    `prepare-refresh-decision` fresh generated-root layout
+51. [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
     proposal-only local AI enrichment for generated package-set candidates,
     compact evidence, provider receipts, and unsupported evidence diagnostics
-51. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+52. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References

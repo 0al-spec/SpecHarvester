@@ -46,3 +46,9 @@ separately from SpecPM validation.
 Pick the next product phase from the roadmap. A likely follow-up is expanding
 calibration into a repeatable multi-repository quality suite while keeping
 generated candidates as local evidence, not committed registry truth.
+
+The current cross-repository follow-up is P28-T1 Fresh Candidate Refresh Run Contract:
+export generated package-set bundles into the SpecPM
+`prepare-refresh-decision` fresh generated-root layout so refresh/no-op
+decisions can be compared mechanically without treating SpecHarvester as
+registry authority.

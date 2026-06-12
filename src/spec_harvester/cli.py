@@ -57,6 +57,11 @@ from spec_harvester.drafter import (
     DraftOptions,
     draft_spec_package,
 )
+from spec_harvester.fresh_candidate_refresh_run import (
+    FreshCandidateRefreshRunOptions,
+    build_fresh_candidate_refresh_run,
+    write_fresh_candidate_refresh_run,
+)
 from spec_harvester.governance_reports import (
     build_duplicate_claim_report,
     write_governance_report,
@@ -380,6 +385,51 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where Markdown proposal body is written.",
     )
     package_set_handoff_proposal.set_defaults(func=run_package_set_handoff_proposal)
+
+    fresh_candidate_refresh_run = subcommands.add_parser(
+        "fresh-candidate-refresh-run",
+        help=(
+            "Export a generated package-set bundle into a SpecPM "
+            "prepare-refresh-decision fresh generated root."
+        ),
+    )
+    fresh_candidate_refresh_run.add_argument(
+        "--bundle-set",
+        type=Path,
+        required=True,
+        help="Package-set output directory containing package-set-draft.json.",
+    )
+    fresh_candidate_refresh_run.add_argument(
+        "--fresh-generated-root",
+        type=Path,
+        required=True,
+        help=(
+            "Output root where candidates are copied as "
+            "<package_id>/<version>/specpm.yaml and specs/*.spec.yaml."
+        ),
+    )
+    fresh_candidate_refresh_run.add_argument(
+        "--source-repository",
+        help="Optional source repository URL override recorded for SpecPM compare.",
+    )
+    fresh_candidate_refresh_run.add_argument(
+        "--source-revision",
+        help=(
+            "Optional source revision override. Defaults to "
+            "package-set-draft.json source.exactRevision."
+        ),
+    )
+    fresh_candidate_refresh_run.add_argument(
+        "--run-label",
+        default="local-refresh-evaluation",
+        help="Human-readable run label recorded for SpecPM compare.",
+    )
+    fresh_candidate_refresh_run.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where SpecHarvesterFreshCandidateRefreshRun JSON is written.",
+    )
+    fresh_candidate_refresh_run.set_defaults(func=run_fresh_candidate_refresh_run)
 
     package_set_ai_draft = subcommands.add_parser(
         "package-set-ai-draft-proposal",
@@ -1136,6 +1186,22 @@ def run_package_set_handoff_proposal(args: argparse.Namespace) -> int:
         write_package_set_handoff_proposal(args.output, result)
     if args.proposal_body is not None:
         write_package_set_handoff_proposal_markdown(args.proposal_body, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_fresh_candidate_refresh_run(args: argparse.Namespace) -> int:
+    result = build_fresh_candidate_refresh_run(
+        FreshCandidateRefreshRunOptions(
+            bundle_set=args.bundle_set,
+            fresh_generated_root=args.fresh_generated_root,
+            source_repository=args.source_repository,
+            source_revision=args.source_revision,
+            run_label=args.run_label,
+        )
+    )
+    if args.output is not None:
+        write_fresh_candidate_refresh_run(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 

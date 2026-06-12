@@ -37,6 +37,8 @@ Implemented surfaces:
 - producer-observed package relation proposals;
 - `xyflow-package-set-smoke` for the local reference package-set path;
 - package-set handoff proposal JSON and Markdown for SpecPM review evidence;
+- fresh candidate refresh run export for SpecPM
+  `prepare-refresh-decision` compare inputs;
 - trusted `propose-to-specpm.yml` workflow boundaries for single-package and
   dry-run package-set evidence;
 - proposal-only package-set AI enrichment through local OpenAI-compatible
@@ -91,6 +93,9 @@ Completed scope:
 - stable producer evidence layout and `producerEvidenceLinks` role vocabulary
   for a future optional SpecPM CI preflight gate;
 - package-set handoff proposal JSON and Markdown;
+- `SpecHarvesterFreshCandidateRefreshRun` JSON for exporting generated
+  package-set bundles into the SpecPM
+  `specpm-public-index-generated-root/v0` layout;
 - trusted workflow mode that uploads package-set evidence without using
   SpecPM write credentials on untrusted PR events.
 
@@ -98,6 +103,9 @@ Success criteria:
 
 - SpecHarvester can produce review evidence that SpecPM can preflight without
   executing producer tools;
+- fresh generated roots use `<package_id>/<version>/specpm.yaml` and
+  `specs/*.spec.yaml` so SpecPM can compare contract-bearing files
+  mechanically;
 - `SPECPM_PROPOSAL_TOKEN` remains limited to trusted workflows;
 - generated receipts never claim maintainer acceptance.
 

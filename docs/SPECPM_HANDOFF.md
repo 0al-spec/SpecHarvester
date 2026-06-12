@@ -135,6 +135,38 @@ packages, accept relations, publish registry metadata, or replace SpecPM
 maintainer review. See
 [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md).
 
+## Fresh Candidate Refresh Run
+
+When a package-set bundle is generated to evaluate whether current SpecPM
+generated artifacts need an update, export it into the SpecPM refresh helper
+layout:
+
+```bash
+spec-harvester fresh-candidate-refresh-run \
+  --bundle-set .smoke/xyflow-package-set/package-set \
+  --fresh-generated-root .smoke/xyflow-package-set/fresh-generated \
+  --output .smoke/xyflow-package-set/fresh-candidate-refresh-run.json
+```
+
+This writes `SpecHarvesterFreshCandidateRefreshRun` and copies member
+candidates into:
+
+```text
+<package_id>/<version>/specpm.yaml
+<package_id>/<version>/specs/*.spec.yaml
+```
+
+The report records package IDs, version, source revision, contract-file
+digests, and the downstream
+`specpm producer-bundle prepare-refresh-decision` command arguments. SpecPM
+then produces `refresh-decision.json`, `prepare-report.json`, and
+`preflight-report.json`.
+
+This is still review evidence only. It records `producerEvidenceAuthority:
+evidence_only` and `noRegistryMutation: true`; it does not update curated
+accepted artifacts or publish registry metadata. See
+[`FRESH_CANDIDATE_REFRESH_RUN.md`](FRESH_CANDIDATE_REFRESH_RUN.md).
+
 ## Receipt Example
 
 ```json

@@ -920,3 +920,46 @@ Acceptance:
 - Static viewer and handoff outputs make author action items visible.
 - Calibration on real repositories measures where generated drafts are useful,
   shallow, or misleading before expanding public self-service workflows.
+
+## Phase 28. SpecPM Refresh Compare Handoff
+
+- [x] `P28-T1` Add a fresh candidate refresh run contract that exports
+  generated package-set bundles into the SpecPM
+  `prepare-refresh-decision` fresh generated-root layout.
+- [ ] `P28-T2` Run real `xyflow` through
+  `fresh-candidate-refresh-run` and SpecPM `prepare-refresh-decision`, then
+  record whether the result is `no_update_required` or
+  `manual_review_required`.
+- [ ] `P28-T3` Repeat the refresh compare loop on a second real repository
+  with package-set output to check that the contract is not `xyflow`-specific.
+
+Motivation:
+
+- SpecHarvester can produce package-set bundles and SpecPM can compare fresh
+  generated artifacts against current registry evidence, but operators need a
+  stable producer artifact between those two sides.
+- Without a normalized fresh generated root, every registry refresh evaluation
+  becomes manual file shuffling and risks confusing producer evidence with
+  SpecPM authority.
+- No-op refresh decisions should be evidence-backed and reproducible, not
+  informal maintainer judgement.
+
+Goal:
+
+- Make generated package-set refresh evaluation a repeatable cross-repository
+  loop: SpecHarvester prepares review evidence and filesystem layout; SpecPM
+  compares contract-bearing files and drafts the refresh decision; maintainers
+  decide whether anything should enter the registry.
+
+Acceptance:
+
+- `SpecHarvesterFreshCandidateRefreshRun` records source revision, package-set
+  members, `<package_id>/<version>` artifact paths, `specpm.yaml` and
+  `specs/*.spec.yaml` digests, and SpecPM consumer command metadata.
+- The command records `producerEvidenceAuthority: evidence_only` and
+  `noRegistryMutation: true`.
+- The output can feed SpecPM's
+  `specpm producer-bundle prepare-refresh-decision` helper without manual
+  package directory reshaping.
+- Real-repository follow-up runs decide whether generated candidates contain a
+  contract delta before any registry update PR is opened.

@@ -100,6 +100,7 @@
 | P27-T3 | [P27-T3_Author_Ready_Stop_Policy_Summary/](P27-T3_Author_Ready_Stop_Policy_Summary/) | 2026-06-11 | PASS |
 | P27-T4 | [P27-T4_Author_Review_Viewer_and_Handoff_Checklist/](P27-T4_Author_Review_Viewer_and_Handoff_Checklist/) | 2026-06-12 | PASS |
 | P27-T5 | [P27-T5_Real_Repository_Author_Ready_Draft_Calibration_Matrix/](P27-T5_Real_Repository_Author_Ready_Draft_Calibration_Matrix/) | 2026-06-12 | PASS |
+| P28-T1 | [P28-T1_Fresh_Candidate_Refresh_Run_Contract/](P28-T1_Fresh_Candidate_Refresh_Run_Contract/) | 2026-06-12 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -129,6 +130,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p25_t4_package_relation_proposals.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p27_t4_author_review_viewer_handoff_checklist.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p27_t5_real_repository_author_ready_calibration_matrix.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t1_fresh_candidate_refresh_run_contract.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -152,6 +154,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-12 | P28-T1 | Archived REVIEW_p28_t1_fresh_candidate_refresh_run_contract report |
+| 2026-06-12 | P28-T1 | Archived Fresh Candidate Refresh Run Contract (PASS) |
 | 2026-06-12 | P27-T5 | Archived REVIEW_p27_t5_real_repository_author_ready_calibration_matrix report |
 | 2026-06-12 | P27-T5 | Archived Real Repository Author-Ready Draft Calibration Matrix (PASS) |
 | 2026-06-12 | P27-T4 | Archived REVIEW_p27_t4_author_review_viewer_handoff_checklist report |

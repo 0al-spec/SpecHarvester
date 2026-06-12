@@ -1013,6 +1013,60 @@ def test_docc_and_github_docs_cover_package_set_ai_enrichment() -> None:
     )
 
 
+def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
+    github_doc = ROOT / "docs" / "FRESH_CANDIDATE_REFRESH_RUN.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "FreshCandidateRefreshRun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    handoff_doc = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    handoff_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    package_set_handoff = ROOT / "docs" / "PACKAGE_SET_HANDOFF_PROPOSAL.md"
+    package_set_handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "PackageSetHandoffProposal.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "fresh-candidate-refresh-run",
+            "SpecHarvesterFreshCandidateRefreshRun",
+            "spec-harvester.fresh-candidate-refresh-run/v0",
+            "specpm-public-index-generated-root/v0",
+            "<package_id>/<version>/specpm.yaml",
+            "specs/*.spec.yaml",
+            "specpm producer-bundle prepare-refresh-decision",
+            "refresh-decision.json",
+            "prepare-report.json",
+            "preflight-report.json",
+            "producerEvidenceAuthority: evidence_only",
+            "noRegistryMutation: true",
+            "does not publish packages",
+            "replace SpecPM maintainer review",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (handoff_doc, handoff_docc, package_set_handoff, package_set_handoff_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "fresh-candidate-refresh-run" in text
+        assert "prepare-refresh-decision" in text
+
+    assert "FRESH_CANDIDATE_REFRESH_RUN.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:FreshCandidateRefreshRun>" in root_page.read_text(encoding="utf-8")
+    assert "SpecHarvesterFreshCandidateRefreshRun" in roadmap.read_text(encoding="utf-8")
+    assert "FreshCandidateRefreshRun" in roadmap_docc.read_text(encoding="utf-8")
+    assert "`P28-T1` Add a fresh candidate refresh run contract" in workplan.read_text(
+        encoding="utf-8"
+    )
+    assert "P28-T1 Fresh Candidate Refresh Run Contract" in next_task.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
     github_doc = ROOT / "docs" / "AUTHOR_READY_DRAFT_QUALITY_BAR.md"
     docc_doc = (

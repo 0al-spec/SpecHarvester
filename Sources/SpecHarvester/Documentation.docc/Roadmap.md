@@ -35,6 +35,8 @@ SpecHarvester is usable today for:
 - producer-observed package relation proposals;
 - local `xyflow-package-set-smoke` package-set smoke coverage;
 - package-set handoff proposal JSON and Markdown;
+- fresh candidate refresh run export for SpecPM
+  `prepare-refresh-decision` compare inputs;
 - trusted SpecPM proposal workflow boundaries;
 - proposal-only package-set AI enrichment.
 
@@ -55,7 +57,10 @@ SpecPM review while keeping write credentials out of untrusted pull request
 events. Handoff artifacts preserve a stable producer evidence layout for a
 future optional SpecPM CI preflight gate and reference external SpecPM registry
 acceptance decision records without writing maintainer approval into generated
-receipts.
+receipts. Fresh candidate refresh runs export generated package-set bundles
+into the `specpm-public-index-generated-root/v0` layout so SpecPM can compare
+`<package_id>/<version>/specpm.yaml` and `specs/*.spec.yaml` contract files
+mechanically.
 
 ### Package Sets and Monorepo Discovery
 
@@ -132,6 +137,7 @@ repositories.
 - <doc:HarvesterArchitecture>
 - <doc:ProducerCandidateBundle>
 - <doc:SpecPMHandoff>
+- <doc:FreshCandidateRefreshRun>
 - <doc:SpecPMPackageSetAlignment>
 - <doc:PackageSetDrafting>
 - <doc:BundleSetPreflight>
