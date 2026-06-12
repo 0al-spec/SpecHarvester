@@ -1,12 +1,19 @@
-# Next Task: P28-T5 First-Submission or Seeded-Baseline Workflow
+# Next Task: Phase 28 Complete
 
-**Status:** In Progress
-**Last Archived:** P28-T4 Package-Set Role Selection Profiles
+**Status:** Phase Complete
+**Last Archived:** P28-T5 First-Submission or Seeded-Baseline Workflow
 **Archived:** 2026-06-13
-**Selected:** 2026-06-13
 
 ## Recently Archived
 
+- `P28-T5` added `SpecHarvesterBaselineSubmissionHandoff` and the
+  `baseline-submission-handoff` CLI. The artifact records
+  `first_submission_required` when SpecPM reports
+  `refresh_decision_prepare_current_contract_files_missing`, exposes
+  maintainer actions `first_submission_review`, `seed_baseline`, and
+  `reject_or_request_regeneration`, and preserves `notRefreshDecision: true`.
+  A practical TanStack/query run produced `39` candidates, `78` contract files,
+  and `39` missing-baseline diagnostics.
 - `P28-T4` added package-set role selection profiles. The new
   `--role-profile generic_monorepo` selects `workspace` and `member_package`
   roles without requiring raw `--role workspace --role member_package`
@@ -57,37 +64,24 @@
 
 ## Outcome
 
-Phase 27 Author-Ready Valid Drafts is complete. SpecHarvester now has a
-documented author-ready quality bar, a machine-readable quality report,
-deterministic stop-policy summaries, author review surfaces, and a
-real-repository calibration matrix that measures remaining author work
-separately from SpecPM validation.
+Phase 28 SpecPM Refresh Compare Handoff is complete on the SpecHarvester side.
+SpecHarvester can now export package-set bundles into SpecPM fresh
+generated-root layout, prove no-op refresh decisions on existing generated
+baselines, expose missing-baseline cases as first-submission or seeded-baseline
+handoff evidence, and keep all producer artifacts outside registry authority.
 
 ## Next Step
 
-Pick the next product phase from the roadmap. A likely follow-up is expanding
-calibration into a repeatable multi-repository quality suite while keeping
-generated candidates as local evidence, not committed registry truth.
+Phase 28 delivered:
 
-Run P28-T5 First-Submission or Seeded-Baseline Workflow: define a producer-side
-handoff for repositories that do not yet have current SpecPM generated
-artifacts, so missing-baseline cases do not pretend to be refresh decisions.
+- package-set bundles can be exported into SpecPM fresh generated-root layout;
+- no-op refresh comparison was proven on real `xyflow`;
+- missing-baseline comparison was proven on real `TanStack/query`;
+- generic monorepos have a named workspace/member role selection profile;
+- first-submission or seeded-baseline cases now have a machine-readable
+  producer handoff artifact.
 
-The immediate product target is the TanStack/query observation from P28-T3:
-SpecPM correctly returned
-`refresh_decision_prepare_current_contract_files_missing` because no current
-generated baseline existed. P28-T5 should make that state explicit as
-first-submission or seeded-baseline evidence, not a failed registry refresh.
+Next cross-repository step:
 
-Expected P28-T5 output:
-
-- docs or helper output that classifies missing-baseline repositories as
-  first-submission or seeded-baseline cases;
-- clear boundary text: producer evidence is not SpecPM acceptance and does not
-  write registry truth;
-- regression coverage that preserves the
-  `refresh_decision_prepare_current_contract_files_missing` boundary.
-
-Execution note: prefer a small machine-readable producer artifact over a
-documentation-only policy, so downstream operators can attach the missing
-baseline handoff to SpecPM review without inventing registry authority.
+- SpecPM-side intake policy/preflight for `SpecHarvesterBaselineSubmissionHandoff`
+  artifacts.

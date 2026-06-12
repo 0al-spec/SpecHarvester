@@ -935,7 +935,7 @@ Acceptance:
 - [x] `P28-T4` Add package-set role selection profiles for generic monorepos
   so operators can request a useful workspace/member package-set without
   ad hoc `--role member_package` knowledge.
-- [ ] `P28-T5` Define a first-submission or seeded-baseline workflow for
+- [x] `P28-T5` Define a first-submission or seeded-baseline workflow for
   repositories that do not yet have current SpecPM generated artifacts.
 
 Motivation:

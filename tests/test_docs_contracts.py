@@ -61,6 +61,18 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_28_t5_active(next_text)
         return
 
+    if "# Next Task: Phase 28 Complete" in next_text:
+        assert_p28_t5_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
+        assert_p27_t5_recent(next_text)
+        assert_p28_t1_recent(next_text)
+        assert_p28_t2_recent(next_text)
+        assert_p28_t3_recent(next_text)
+        assert_p28_t4_recent(next_text)
+        assert_p28_t5_recent(next_text)
+        assert_phase_28_complete(next_text)
+        return
+
     assert_p27_t5_last_archived(next_text)
     assert_p27_t4_recent(next_text)
     assert_p27_t5_recent(next_text)
@@ -92,6 +104,13 @@ def assert_p28_t3_last_archived(next_text: str) -> None:
 
 def assert_p28_t4_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P28-T4 Package-Set Role Selection Profiles" in next_text
+
+
+def assert_p28_t5_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P28-T5 First-Submission or Seeded-Baseline Workflow"
+        in next_text
+    )
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -215,6 +234,22 @@ def assert_p28_t4_recent(next_text: str) -> None:
     assert "38 contains relation proposals" in plain
 
 
+def assert_p28_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    plain = normalized.replace("`", "")
+    assert "`P28-T5` added `SpecHarvesterBaselineSubmissionHandoff`" in next_text
+    assert "baseline-submission-handoff" in next_text
+    assert "first_submission_required" in next_text
+    assert "refresh_decision_prepare_current_contract_files_missing" in next_text
+    assert "first_submission_review" in next_text
+    assert "seed_baseline" in next_text
+    assert "reject_or_request_regeneration" in next_text
+    assert "notRefreshDecision: true" in normalized
+    assert "39 candidates" in plain
+    assert "78 contract files" in plain
+    assert "39 missing-baseline diagnostics" in plain
+
+
 def assert_phase_28_t3_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P28-T3 Second Real Repository Refresh Compare Run" in next_text
@@ -250,6 +285,19 @@ def assert_phase_28_t5_active(next_text: str) -> None:
     assert "first-submission or seeded-baseline evidence" in normalized
     assert "failed registry refresh" in normalized
     assert "producer evidence is not SpecPM acceptance" in normalized
+
+
+def assert_phase_28_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 28 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "SpecPM Refresh Compare Handoff is complete" in next_text
+    assert "fresh generated-root layout" in normalized
+    assert "real `xyflow`" in next_text
+    assert "real `TanStack/query`" in next_text
+    assert "generic monorepos" in normalized
+    assert "SpecHarvesterBaselineSubmissionHandoff" in next_text
+    assert "SpecPM-side intake policy/preflight" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -1217,7 +1265,8 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     next_text = next_task.read_text(encoding="utf-8")
     normalized_next = " ".join(next_text.split())
     assert "P28-T5 First-Submission or Seeded-Baseline Workflow" in normalized_next
-    assert "P28-T4 Package-Set Role Selection Profiles" in normalized_next
+    assert "P28-T4" in normalized_next
+    assert "package-set role selection profiles" in normalized_next
     assert "TanStack/query" in next_text
     assert "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0" in next_text
     assert "`P28-T2` ran real `xyflow`" in next_text
