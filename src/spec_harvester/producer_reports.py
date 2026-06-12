@@ -620,15 +620,18 @@ def normalize_author_ready_member_report(
         AUTHOR_READY_STATUS_BLOCKED,
     }:
         status = AUTHOR_READY_STATUS_BLOCKED
+    read_error = string_value(report.get("readError"))
+    stop_reason = string_value(author_ready.get("stopReason"))
+    if not stop_reason and read_error:
+        stop_reason = f"quality_report_unreadable:{read_error}"
     return {
         "packageId": package_id,
         "qualityReportPath": quality_report_path,
         "qualityReport": report,
         "status": status,
-        "stopReason": string_value(author_ready.get("stopReason"))
-        or author_ready_stop_reason(status),
+        "stopReason": stop_reason or author_ready_stop_reason(status),
         "actionItemCount": integer_value(author_ready.get("actionItemCount")),
-        "readError": string_value(report.get("readError")),
+        "readError": read_error,
     }
 
 

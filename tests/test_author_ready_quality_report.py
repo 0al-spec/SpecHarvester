@@ -215,6 +215,31 @@ def test_author_ready_stop_policy_summary_blocks_on_any_blocked_member(
     ]
 
 
+def test_author_ready_stop_policy_summary_reports_unreadable_member_stop_reason() -> None:
+    summary = author_ready_stop_policy_summary(
+        [
+            {
+                "packageId": "example.missing",
+                "qualityReportPath": "example.missing/author-ready-draft-quality-report.json",
+                "qualityReport": {
+                    "status": "missing",
+                    "readError": "missing",
+                },
+            }
+        ]
+    )
+
+    assert summary["status"] == "blocked"
+    assert summary["members"][0]["stopReason"] == "quality_report_unreadable:missing"
+    assert summary["blockingReasons"] == [
+        {
+            "packageId": "example.missing",
+            "qualityReportPath": "example.missing/author-ready-draft-quality-report.json",
+            "reason": "quality_report_unreadable:missing",
+        }
+    ]
+
+
 def test_stop_policy_summary_continues_when_clean_proposal_has_no_subjects() -> None:
     summary = stop_policy_summary_from_diagnostics(
         source_status="completed",
