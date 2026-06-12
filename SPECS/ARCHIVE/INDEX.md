@@ -138,6 +138,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t2_real_xyflow_refresh_compare_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t3_second_real_repository_refresh_compare.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t4_package_set_role_selection_profiles.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t5_first_submission_baseline_workflow.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -161,6 +162,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P28-T5 | Archived REVIEW_p28_t5_first_submission_baseline_workflow report |
 | 2026-06-13 | P28-T5 | Archived First-Submission or Seeded-Baseline Workflow (PASS) |
 | 2026-06-13 | P28-T4 | Archived REVIEW_p28_t4_package_set_role_selection_profiles report |
 | 2026-06-13 | P28-T4 | Archived Package-Set Role Selection Profiles (PASS) |
