@@ -94,3 +94,30 @@ This confirms the current generator can reproduce the accepted `xyflow`
 generated contract surface. Producer receipt and report changes remain useful
 evidence, but they are not enough to justify a registry update when
 `specpm.yaml` and `specs/*.spec.yaml` are unchanged.
+
+## Observed `TanStack/query` Refresh Compare
+
+P28-T3 repeated the path on `https://github.com/TanStack/query` at revision
+`feb1efd804c1262106f72c8adc1d82a8ce9cfbb0`.
+
+The workspace inventory found 100 package manifests and no workspace
+diagnostics. Default draft roles selected only `tanstack_query.workspace`,
+skipped 99 package manifests, and produced no relations. An explicit
+`--role workspace --role member_package` run selected 39 candidates, excluded
+61 example packages, produced 38 `contains` relation proposals, passed
+bundle-set preflight, rendered the package-set viewer, and prepared 78
+contract files in the fresh generated root.
+
+SpecPM compare against the current registry root returned a structured
+missing-baseline result: prepare report `failed`, refresh decision summary
+`status: manual_review_required`, `updateNeeded: true`,
+`reason: refresh_prepare_requires_review`, package count 39, and digest
+verified count 0. The first blocker was
+`refresh_decision_prepare_current_contract_files_missing`, and no
+`refresh-decision.json` was written.
+
+This confirms the producer-side package-set handoff is not `xyflow`-specific,
+while also clarifying that `prepare-refresh-decision` is a refresh compare
+helper, not a first-submission bootstrap helper. New repositories need a
+separate first-submission or seeded-baseline workflow before refresh comparison
+can emit a preflightable decision file.

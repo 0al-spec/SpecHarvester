@@ -1089,6 +1089,15 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
             "no_update_required",
             "no_contract_delta",
             "8 generated contract-file digests",
+            "TanStack/query",
+            "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0",
+            "39",
+            "38",
+            "refresh_decision_prepare_current_contract_files_missing",
+            "manual_review_required",
+            "78",
+            "first-submission",
+            "seeded-baseline workflow",
             "does not publish packages",
             "replace SpecPM maintainer review",
         ):
@@ -1109,6 +1118,8 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     next_text = next_task.read_text(encoding="utf-8")
     normalized_next = " ".join(next_text.split())
     assert "P28-T3 Second Real Repository Refresh Compare Run" in normalized_next
+    assert "TanStack/query" in next_text
+    assert "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0" in next_text
     assert "`P28-T2` ran real `xyflow`" in next_text
     assert "no_contract_delta" in next_text
 
