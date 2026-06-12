@@ -93,7 +93,8 @@ from spec_harvester.package_set_ai_enrichment import (
     write_package_set_ai_enrichment_proposal,
 )
 from spec_harvester.package_set_drafter import (
-    DEFAULT_DRAFT_ROLES,
+    DEFAULT_ROLE_SELECTION_PROFILE,
+    PACKAGE_SET_ROLE_PROFILES,
     PackageSetDraftOptions,
     draft_package_set,
 )
@@ -291,12 +292,22 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"Generated SpecPackage author. Default: {DEFAULT_AUTHOR}.",
     )
     draft_package_set_parser.add_argument(
+        "--role-profile",
+        choices=tuple(PACKAGE_SET_ROLE_PROFILES),
+        default=DEFAULT_ROLE_SELECTION_PROFILE,
+        help=(
+            "Named package role selection profile. Use generic_monorepo to draft "
+            "workspace plus member_package entries. Explicit --role values override "
+            "the profile. Default: default."
+        ),
+    )
+    draft_package_set_parser.add_argument(
         "--role",
         action="append",
         default=[],
         help=(
             "Inventory package role to draft. Can be repeated. Defaults to "
-            "workspace, core_runtime, react_binding, and svelte_binding."
+            "the selected --role-profile."
         ),
     )
     draft_package_set_parser.set_defaults(func=run_draft_package_set)
@@ -1141,7 +1152,8 @@ def run_draft_package_set(args: argparse.Namespace) -> int:
             out=args.out,
             version=args.version,
             author=args.author,
-            roles=tuple(args.role) if args.role else DEFAULT_DRAFT_ROLES,
+            roles=tuple(args.role),
+            role_profile=args.role_profile,
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))

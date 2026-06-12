@@ -140,6 +140,77 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
         assert preflight["status"] == "passed"
 
 
+def test_package_set_drafter_generic_monorepo_profile_selects_members(
+    tmp_path: Path,
+) -> None:
+    inventory = write_generic_monorepo_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+
+    result = draft_package_set(
+        PackageSetDraftOptions(
+            inventory=inventory,
+            out=out,
+            role_profile="generic_monorepo",
+        )
+    )
+
+    assert result["status"] == "ok"
+    assert result["candidateCount"] == 3
+    assert result["relationCount"] == 2
+    assert [candidate["packageId"] for candidate in result["candidates"]] == [
+        "tanstack_query.core",
+        "tanstack_query.devtools",
+        "tanstack_query.workspace",
+    ]
+    assert [item["packageId"] for item in result["skipped"]] == [
+        "tanstack_query.example",
+        "tanstack_query.scripts",
+    ]
+    summary = json.loads((out / "package-set-draft.json").read_text(encoding="utf-8"))
+    assert summary["selection"] == {
+        "authority": "producer_preview_selection",
+        "roleProfile": "generic_monorepo",
+        "roles": ["workspace", "member_package"],
+    }
+    assert summary["summary"] == {
+        "candidateCount": 3,
+        "packageInventoryCount": 5,
+        "relationProposalCount": 2,
+        "skippedCount": 2,
+    }
+    relations = json.loads((out / "package-relation-proposals.json").read_text(encoding="utf-8"))
+    assert {
+        (relation["source"]["packageId"], relation["type"], relation["target"]["packageId"])
+        for relation in relations["relations"]
+    } == {
+        ("tanstack_query.workspace", "contains", "tanstack_query.core"),
+        ("tanstack_query.workspace", "contains", "tanstack_query.devtools"),
+    }
+
+
+def test_package_set_drafter_explicit_roles_override_profile(tmp_path: Path) -> None:
+    inventory = write_generic_monorepo_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+
+    result = draft_package_set(
+        PackageSetDraftOptions(
+            inventory=inventory,
+            out=out,
+            roles=("workspace",),
+            role_profile="generic_monorepo",
+        )
+    )
+
+    assert result["candidateCount"] == 1
+    assert result["relationCount"] == 0
+    summary = json.loads((out / "package-set-draft.json").read_text(encoding="utf-8"))
+    assert summary["selection"] == {
+        "authority": "producer_preview_selection",
+        "roleProfile": "custom",
+        "roles": ["workspace"],
+    }
+
+
 def test_package_set_drafter_writes_relation_proposals(tmp_path: Path) -> None:
     inventory = write_workspace_inventory_fixture(tmp_path)
     out = tmp_path / "draft-set"
@@ -541,6 +612,33 @@ def test_cli_draft_package_set_writes_summary(tmp_path: Path, capsys) -> None:
     assert (out / "xyflow.workspace" / "specpm.yaml").is_file()
 
 
+def test_cli_draft_package_set_accepts_generic_monorepo_profile(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inventory = write_generic_monorepo_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+
+    result = main(
+        [
+            "draft-package-set",
+            str(inventory),
+            "--out",
+            str(out),
+            "--role-profile",
+            "generic_monorepo",
+        ]
+    )
+
+    assert result == 0
+    printed = json.loads(capsys.readouterr().out)
+    assert printed["candidateCount"] == 3
+    assert printed["relationCount"] == 2
+    summary = json.loads((out / "package-set-draft.json").read_text(encoding="utf-8"))
+    assert summary["selection"]["roleProfile"] == "generic_monorepo"
+    assert summary["selection"]["roles"] == ["workspace", "member_package"]
+
+
 def write_workspace_inventory_fixture(tmp_path: Path) -> Path:
     inputs = tmp_path / "inputs"
     candidates = tmp_path / "candidates"
@@ -565,6 +663,103 @@ repositories:
         )
     )
     return candidates / "xyflow" / "workspace-inventory.json"
+
+
+def write_generic_monorepo_inventory_fixture(tmp_path: Path) -> Path:
+    inventory = tmp_path / "generic-workspace-inventory.json"
+    payload = {
+        "apiVersion": "spec-harvester.workspace-inventory/v0",
+        "kind": "SpecHarvesterWorkspaceInventory",
+        "schemaVersion": 1,
+        "source": {
+            "repository": "https://github.com/TanStack/query",
+            "exactRevision": "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0",
+            "revisionAuthority": "operator_pinned",
+            "declaredRef": "main",
+        },
+        "workspaceManifests": [
+            {
+                "path": "pnpm-workspace.yaml",
+                "packageManager": "pnpm",
+                "includePatterns": ["packages/*", "examples/*", "scripts/*"],
+                "excludePatterns": [],
+                "evidence": {
+                    "kind": "workspace_manifest",
+                    "path": "pnpm-workspace.yaml",
+                    "digest": digest_for("pnpm-workspace.yaml"),
+                },
+            }
+        ],
+        "packages": [
+            generic_package_record(
+                "package.json",
+                "tanstack_query.workspace",
+                "workspace",
+                "@tanstack/query-workspace",
+            ),
+            generic_package_record(
+                "packages/query-core/package.json",
+                "tanstack_query.core",
+                "member_package",
+                "@tanstack/query-core",
+            ),
+            generic_package_record(
+                "packages/query-devtools/package.json",
+                "tanstack_query.devtools",
+                "member_package",
+                "@tanstack/query-devtools",
+            ),
+            generic_package_record(
+                "examples/react/package.json",
+                "tanstack_query.example",
+                "example_package",
+                "react-query-example",
+            ),
+            generic_package_record(
+                "scripts/package.json",
+                "tanstack_query.scripts",
+                "tooling_package",
+                "@tanstack/query-scripts",
+            ),
+        ],
+    }
+    inventory.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return inventory
+
+
+def generic_package_record(
+    manifest_path: str,
+    package_id: str,
+    role: str,
+    name: str,
+) -> dict[str, object]:
+    return {
+        "manifestPath": manifest_path,
+        "sourceTargetPath": "." if role == "workspace" else str(Path(manifest_path).parent),
+        "proposedSpecpmPackageId": package_id,
+        "role": role,
+        "name": name,
+        "version": "0.0.0",
+        "ecosystem": "npm",
+        "packageManager": "pnpm",
+        "description": f"Generated fixture package for {package_id}.",
+        "license": "MIT",
+        "evidenceReferences": [
+            {
+                "kind": "package_manifest",
+                "path": manifest_path,
+                "size": 128,
+                "digest": digest_for(manifest_path),
+            }
+        ],
+    }
+
+
+def digest_for(value: str) -> dict[str, str]:
+    return {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(value.encode("utf-8")).hexdigest(),
+    }
 
 
 def load_manifest(out: Path, package_id: str) -> dict[str, object]:

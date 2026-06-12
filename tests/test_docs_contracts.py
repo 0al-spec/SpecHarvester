@@ -794,6 +794,11 @@ def test_docc_and_github_docs_cover_package_set_drafting() -> None:
             "preflight-bundle-set",
             "not namespace authority",
             "does not execute package scripts",
+            "role selection profiles",
+            "--role-profile generic_monorepo",
+            "workspace/member package-set",
+            "selection.roleProfile",
+            "custom",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"
 
