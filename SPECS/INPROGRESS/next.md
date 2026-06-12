@@ -87,3 +87,7 @@ Expected P28-T5 output:
   write registry truth;
 - regression coverage that preserves the
   `refresh_decision_prepare_current_contract_files_missing` boundary.
+
+Execution note: prefer a small machine-readable producer artifact over a
+documentation-only policy, so downstream operators can attach the missing
+baseline handoff to SpecPM review without inventing registry authority.
