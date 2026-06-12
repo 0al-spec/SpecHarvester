@@ -39,6 +39,12 @@ PACKAGE_RELATION_PROPOSALS_API_VERSION = "spec-harvester.package-relation-propos
 PACKAGE_RELATION_PROPOSALS_KIND = "SpecHarvesterPackageRelationProposals"
 PACKAGE_RELATION_PROPOSALS_SCHEMA_VERSION = 1
 DEFAULT_DRAFT_ROLES = ("workspace", "core_runtime", "react_binding", "svelte_binding")
+DEFAULT_ROLE_SELECTION_PROFILE = "default"
+EXPLICIT_ROLE_SELECTION_PROFILE = "custom"
+PACKAGE_SET_ROLE_PROFILES = {
+    DEFAULT_ROLE_SELECTION_PROFILE: DEFAULT_DRAFT_ROLES,
+    "generic_monorepo": ("workspace", "member_package"),
+}
 
 
 @dataclass(frozen=True)
@@ -47,7 +53,8 @@ class PackageSetDraftOptions:
     out: Path
     version: str = DEFAULT_SPEC_VERSION
     author: str = DEFAULT_AUTHOR
-    roles: tuple[str, ...] = DEFAULT_DRAFT_ROLES
+    roles: tuple[str, ...] = ()
+    role_profile: str = DEFAULT_ROLE_SELECTION_PROFILE
 
 
 class PackageSetDrafter:
@@ -55,6 +62,10 @@ class PackageSetDrafter:
         self.options = options
         self.inventory_path = options.inventory
         self.inventory = read_inventory(options.inventory)
+        self.roles, self.role_profile = resolve_role_selection(
+            role_profile=options.role_profile,
+            roles=options.roles,
+        )
 
     def write(self) -> dict[str, Any]:
         self.options.out.mkdir(parents=True, exist_ok=True)
@@ -78,7 +89,8 @@ class PackageSetDrafter:
                 "kind": self.inventory["kind"],
             },
             "selection": {
-                "roles": list(self.options.roles),
+                "roles": list(self.roles),
+                "roleProfile": self.role_profile,
                 "authority": "producer_preview_selection",
             },
             "candidates": candidates,
@@ -131,7 +143,7 @@ class PackageSetDrafter:
         }
 
     def write_candidates(self) -> list[dict[str, Any]]:
-        records = selected_package_records(self.inventory, self.options.roles)
+        records = selected_package_records(self.inventory, self.roles)
         candidates: list[dict[str, Any]] = []
         for record in records:
             package_id = record["proposedSpecpmPackageId"]
@@ -186,6 +198,19 @@ class PackageSetDrafter:
 
 def draft_package_set(options: PackageSetDraftOptions) -> dict[str, Any]:
     return PackageSetDrafter(options).write()
+
+
+def resolve_role_selection(
+    *,
+    role_profile: str,
+    roles: tuple[str, ...],
+) -> tuple[tuple[str, ...], str]:
+    if roles:
+        return roles, EXPLICIT_ROLE_SELECTION_PROFILE
+    try:
+        return PACKAGE_SET_ROLE_PROFILES[role_profile], role_profile
+    except KeyError as exc:
+        raise ValueError(f"Unsupported package-set role profile: {role_profile}") from exc
 
 
 def read_inventory(path: Path) -> dict[str, Any]:

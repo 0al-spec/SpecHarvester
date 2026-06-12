@@ -1,11 +1,17 @@
-# Next Task: P28-T4 Package-Set Role Selection Profiles
+# Next Task: P28-T5 First-Submission or Seeded-Baseline Workflow
 
 **Status:** In Progress
-**Last Archived:** P28-T3 Second Real Repository Refresh Compare Run
-**Archived:** 2026-06-12
+**Last Archived:** P28-T4 Package-Set Role Selection Profiles
+**Archived:** 2026-06-13
+**Selected:** 2026-06-13
 
 ## Recently Archived
 
+- `P28-T4` added package-set role selection profiles. The new
+  `--role-profile generic_monorepo` selects `workspace` and `member_package`
+  roles without requiring raw `--role workspace --role member_package`
+  operator knowledge. A practical TanStack/query run produced `39 candidates`
+  and `38 contains relation proposals` through the named profile.
 - `P28-T3` ran real `TanStack/query` at
   `feb1efd804c1262106f72c8adc1d82a8ce9cfbb0` through SpecHarvester and local
   SpecPM. Default draft roles produced only `tanstack_query.workspace`; explicit
@@ -63,16 +69,21 @@ Pick the next product phase from the roadmap. A likely follow-up is expanding
 calibration into a repeatable multi-repository quality suite while keeping
 generated candidates as local evidence, not committed registry truth.
 
-Run P28-T4 Package-Set Role Selection Profiles: add a named role selection
-profile or preset for generic monorepos so a useful workspace/member package-set
-does not depend on operator knowledge of `--role member_package`.
+Run P28-T5 First-Submission or Seeded-Baseline Workflow: define a producer-side
+handoff for repositories that do not yet have current SpecPM generated
+artifacts, so missing-baseline cases do not pretend to be refresh decisions.
 
 The immediate product target is the TanStack/query observation from P28-T3:
-default drafting found the workspace root, but the useful package-set required
-explicit member-package role selection. P28-T4 should make that intent
-declarative, documented, and covered by tests.
+SpecPM correctly returned
+`refresh_decision_prepare_current_contract_files_missing` because no current
+generated baseline existed. P28-T5 should make that state explicit as
+first-submission or seeded-baseline evidence, not a failed registry refresh.
 
-Queued after P28-T4:
+Expected P28-T5 output:
 
-- `P28-T5` first-submission or seeded-baseline workflow for repositories without
-  current SpecPM generated artifacts.
+- docs or helper output that classifies missing-baseline repositories as
+  first-submission or seeded-baseline cases;
+- clear boundary text: producer evidence is not SpecPM acceptance and does not
+  write registry truth;
+- regression coverage that preserves the
+  `refresh_decision_prepare_current_contract_files_missing` boundary.

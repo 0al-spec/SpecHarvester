@@ -61,6 +61,26 @@ For `xyflow`, this produces `xyflow.workspace`, `xyflow.system`,
 and tests are recorded under `skipped[]` with
 `role_not_selected_for_initial_package_set_draft`.
 
+## Role Selection Profiles
+
+P28-T4 adds named role selection profiles. The `default` profile preserves the
+P25-T3 `xyflow` reference selection. The `generic_monorepo` profile selects
+`workspace` and `member_package` roles so common monorepos can produce useful
+workspace/member package-set output without operator knowledge of
+`--role workspace --role member_package`.
+
+```bash
+python3 -m spec_harvester draft-package-set \
+  candidates/tanstack-query/workspace-inventory.json \
+  --out candidates/tanstack-query-package-set \
+  --role-profile generic_monorepo
+```
+
+If `--role` is supplied one or more times, explicit roles override
+`--role-profile` and the draft summary records `selection.roleProfile:
+custom`. Profiles are producer preview selection policy only; they do not imply
+SpecPM acceptance, namespace authority, or registry publication.
+
 ## Boundary
 
 Generated candidates remain `preview_only`. Proposed package IDs are review

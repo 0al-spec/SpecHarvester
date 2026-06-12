@@ -115,14 +115,14 @@ Success criteria:
   missing-baseline result, proving the producer handoff is not `xyflow`-specific
   while clarifying that first-submission workflows are separate from refresh
   comparison;
+- `--role-profile generic_monorepo` selects workspace/member package-set output
+  for generic monorepos and reproduced the useful TanStack/query 39-candidate /
+  38-relation shape without raw `--role member_package` operator knowledge;
 - `SPECPM_PROPOSAL_TOKEN` remains limited to trusted workflows;
 - generated receipts never claim maintainer acceptance.
 
 Next focus:
 
-- package-set role selection profiles for generic monorepos, so useful
-  workspace/member output does not require ad hoc `--role member_package`
-  operator knowledge;
 - first-submission or seeded-baseline workflow for repositories without current
   SpecPM generated artifacts.
 
