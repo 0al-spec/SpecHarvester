@@ -203,3 +203,42 @@ Product interpretation: the current generator can reproduce the accepted
 `xyflow` generated contract surface. The newer producer receipts and review
 artifacts are useful evidence, but they do not by themselves justify a registry
 update when `specpm.yaml` and `specs/*.spec.yaml` are unchanged.
+
+## Observed `TanStack/query` Refresh Compare
+
+P28-T3 repeated the same loop on a second real repository:
+
+- repository: `https://github.com/TanStack/query`
+- revision: `feb1efd804c1262106f72c8adc1d82a8ce9cfbb0`
+- package inventory: `100` package manifests, `0` workspace diagnostics
+
+Two draft modes were informative:
+
+- Default draft roles selected only `tanstack_query.workspace`, skipped `99`
+  package manifests, and produced `0` relations. This exposed that generic
+  `member_package` monorepos need an explicit role-selection policy.
+- Explicit `--role workspace --role member_package` selected `39` candidates,
+  excluded `61` examples, produced `38` `contains` relation proposals, passed
+  bundle-set preflight, rendered the viewer, and prepared a fresh generated
+  root with `78` contract files.
+
+SpecPM compare against the current registry root produced structured
+missing-baseline evidence:
+
+- prepare report: `failed`
+- refresh decision summary: `status: manual_review_required`
+- `updateNeeded: true`
+- `reason: refresh_prepare_requires_review`
+- package count: `39`
+- digest verified count: `0`
+- first blocker:
+  `refresh_decision_prepare_current_contract_files_missing`
+- no `refresh-decision.json` was written because failed prepare reports must
+  not leave invalid decision artifacts behind.
+
+Product interpretation: the producer-side package-set handoff is not
+`xyflow`-specific, but `prepare-refresh-decision` is a refresh compare helper,
+not a first-submission bootstrap helper. A new repository without current
+`public-index/generated/<package>/<version>` artifacts needs a separate
+first-submission or seeded-baseline workflow before refresh comparison can
+produce a preflightable decision file.

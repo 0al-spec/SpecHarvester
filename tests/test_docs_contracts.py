@@ -30,6 +30,26 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_28_t3_active(next_text)
         return
 
+    if "# Next Task: P28 Follow-Up Selection" in next_text:
+        assert_p28_t3_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
+        assert_p27_t5_recent(next_text)
+        assert_p28_t1_recent(next_text)
+        assert_p28_t2_recent(next_text)
+        assert_p28_t3_recent(next_text)
+        assert_phase_28_follow_up_active(next_text)
+        return
+
+    if "# Next Task: P28-T4 Package-Set Role Selection Profiles" in next_text:
+        assert_p28_t3_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
+        assert_p27_t5_recent(next_text)
+        assert_p28_t1_recent(next_text)
+        assert_p28_t2_recent(next_text)
+        assert_p28_t3_recent(next_text)
+        assert_phase_28_t4_active(next_text)
+        return
+
     assert_p27_t5_last_archived(next_text)
     assert_p27_t4_recent(next_text)
     assert_p27_t5_recent(next_text)
@@ -53,6 +73,10 @@ def assert_p27_t5_last_archived(next_text: str) -> None:
 
 def assert_p28_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P28-T2 Real Xyflow Refresh Compare Run" in next_text
+
+
+def assert_p28_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P28-T3 Second Real Repository Refresh Compare Run" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -153,12 +177,44 @@ def assert_p28_t2_recent(next_text: str) -> None:
     assert "8 generated contract-file digests" in normalized
 
 
+def assert_p28_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    plain = normalized.replace("`", "")
+    assert "`P28-T3` ran real `TanStack/query`" in next_text
+    assert "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0" in next_text
+    assert "tanstack_query.workspace" in next_text
+    assert "39 candidates" in plain
+    assert "38 contains relation proposals" in plain
+    assert "78 fresh contract files" in plain
+    assert "refresh_decision_prepare_current_contract_files_missing" in next_text
+    assert "missing-baseline" in normalized
+
+
 def assert_phase_28_t3_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P28-T3 Second Real Repository Refresh Compare Run" in next_text
     assert "**Status:** In Progress" in next_text
     assert "second package-set-capable repository" in normalized
     assert "not calibrated only against `xyflow`" in normalized
+
+
+def assert_phase_28_follow_up_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P28 Follow-Up Selection" in next_text
+    assert "**Status:** Review Pending" in next_text
+    assert "role selection" in normalized
+    assert "first-submission or seeded-baseline workflow" in normalized
+
+
+def assert_phase_28_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P28-T4 Package-Set Role Selection Profiles" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "generic monorepos" in normalized
+    assert "--role member_package" in normalized
+    assert "declarative" in normalized
+    assert "P28-T5" in next_text
+    assert "first-submission or seeded-baseline workflow" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -1073,6 +1129,7 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     for path in (github_doc, docc_doc):
         text = path.read_text(encoding="utf-8")
         normalized = " ".join(text.split())
+        plain = normalized.replace("`", "")
         for required in (
             "fresh-candidate-refresh-run",
             "SpecHarvesterFreshCandidateRefreshRun",
@@ -1089,10 +1146,21 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
             "no_update_required",
             "no_contract_delta",
             "8 generated contract-file digests",
+            "TanStack/query",
+            "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0",
+            "refresh_decision_prepare_current_contract_files_missing",
+            "manual_review_required",
+            "first-submission",
+            "seeded-baseline workflow",
             "does not publish packages",
             "replace SpecPM maintainer review",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"
+        assert "39 candidates" in plain, f"TanStack/query candidate count missing in {path}"
+        assert "38 contains relation proposals" in plain, (
+            f"TanStack/query relation count missing in {path}"
+        )
+        assert "78 contract files" in plain, f"TanStack/query contract file count missing in {path}"
 
     for path in (handoff_doc, handoff_docc, package_set_handoff, package_set_handoff_docc):
         text = path.read_text(encoding="utf-8")
@@ -1109,6 +1177,8 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     next_text = next_task.read_text(encoding="utf-8")
     normalized_next = " ".join(next_text.split())
     assert "P28-T3 Second Real Repository Refresh Compare Run" in normalized_next
+    assert "TanStack/query" in next_text
+    assert "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0" in next_text
     assert "`P28-T2` ran real `xyflow`" in next_text
     assert "no_contract_delta" in next_text
 
