@@ -21,6 +21,10 @@ AUTHOR_READY_QUALITY_REPORT_KIND = "SpecHarvesterAuthorReadyDraftQualityReport"
 AUTHOR_READY_STATUS_READY = "author_ready_draft"
 AUTHOR_READY_STATUS_NEEDS_REGENERATION = "needs_regeneration"
 AUTHOR_READY_STATUS_BLOCKED = "blocked"
+AUTHOR_READY_STOP_DECISION_STOP = "stop_for_author_review"
+AUTHOR_READY_STOP_DECISION_CONTINUE = "continue_generation"
+AUTHOR_READY_STOP_DECISION_BLOCKED = "blocked_until_inputs_change"
+AUTHOR_READY_STOP_POLICY_SUMMARY_VERSION = 1
 
 
 @dataclass(frozen=True)
@@ -488,6 +492,258 @@ def author_ready_stop_reason(status: str) -> str:
     return "hard_gate_failed"
 
 
+def author_ready_stop_decision(status: str) -> str:
+    if status == AUTHOR_READY_STATUS_READY:
+        return AUTHOR_READY_STOP_DECISION_STOP
+    if status == AUTHOR_READY_STATUS_NEEDS_REGENERATION:
+        return AUTHOR_READY_STOP_DECISION_CONTINUE
+    return AUTHOR_READY_STOP_DECISION_BLOCKED
+
+
+def author_ready_stop_policy_summary(
+    member_reports: list[dict[str, Any]],
+) -> dict[str, Any]:
+    normalized = [
+        normalize_author_ready_member_report(member, index)
+        for index, member in enumerate(member_reports)
+    ]
+    counts = {
+        "total": len(normalized),
+        AUTHOR_READY_STATUS_READY: 0,
+        AUTHOR_READY_STATUS_NEEDS_REGENERATION: 0,
+        AUTHOR_READY_STATUS_BLOCKED: 0,
+    }
+    for member in normalized:
+        counts[member["status"]] += 1
+    status = aggregate_author_ready_status(counts)
+    return {
+        "schemaVersion": AUTHOR_READY_STOP_POLICY_SUMMARY_VERSION,
+        "status": status,
+        "decision": author_ready_stop_decision(status),
+        "summary": aggregate_author_ready_summary(status, counts),
+        "memberCounts": counts,
+        "members": [
+            {
+                "packageId": member["packageId"],
+                "status": member["status"],
+                "decision": author_ready_stop_decision(member["status"]),
+                "qualityReportPath": member["qualityReportPath"],
+                "stopReason": member["stopReason"],
+                "actionItemCount": member["actionItemCount"],
+            }
+            for member in normalized
+        ],
+        "blockingReasons": blocking_reasons(normalized),
+        "reviewableDimensions": reviewable_dimensions(normalized),
+        "topAuthorActionItems": top_author_action_items(normalized),
+        "nonAuthority": [
+            "The stop-policy summary is producer-side review evidence only.",
+            "It is not SpecPM registry acceptance.",
+            "It is not maintainer approval.",
+            "It is not upstream project endorsement.",
+        ],
+    }
+
+
+def stop_policy_summary_from_diagnostics(
+    *,
+    source_status: str,
+    error_count: int,
+    warning_count: int,
+    subject_count: int,
+) -> dict[str, Any]:
+    status = stop_policy_status_from_diagnostics(source_status, error_count, warning_count)
+    if status == AUTHOR_READY_STATUS_READY and subject_count <= 0:
+        status = AUTHOR_READY_STATUS_NEEDS_REGENERATION
+    return {
+        "schemaVersion": AUTHOR_READY_STOP_POLICY_SUMMARY_VERSION,
+        "status": status,
+        "decision": author_ready_stop_decision(status),
+        "sourceStatus": source_status,
+        "subjectCount": subject_count,
+        "diagnosticCounts": {
+            "errorCount": error_count,
+            "warningCount": warning_count,
+        },
+        "reason": stop_policy_reason(status, subject_count),
+        "summary": proposal_stop_policy_summary(status),
+        "nonAuthority": [
+            "The stop-policy summary is producer-side review evidence only.",
+            "It is not SpecPM registry acceptance.",
+            "It is not maintainer approval.",
+            "It is not upstream project endorsement.",
+        ],
+    }
+
+
+def stop_policy_status_from_diagnostics(
+    source_status: str,
+    error_count: int,
+    warning_count: int,
+) -> str:
+    if error_count > 0 or source_status in {"failed", "invalid", "missing"}:
+        return AUTHOR_READY_STATUS_BLOCKED
+    if warning_count > 0 or source_status in {"warning", "warnings"}:
+        return AUTHOR_READY_STATUS_NEEDS_REGENERATION
+    return AUTHOR_READY_STATUS_READY
+
+
+def proposal_stop_policy_summary(status: str) -> str:
+    if status == AUTHOR_READY_STATUS_READY:
+        return "Proposal diagnostics are clean; stop model iteration and hand off for review."
+    if status == AUTHOR_READY_STATUS_NEEDS_REGENERATION:
+        return (
+            "Proposal has warning-level gaps; continue generation or review evidence "
+            "before handoff."
+        )
+    return "Proposal has blocking diagnostics; do not hand off until inputs or model output change."
+
+
+def stop_policy_reason(status: str, subject_count: int) -> str:
+    if status == AUTHOR_READY_STATUS_NEEDS_REGENERATION and subject_count <= 0:
+        return "no_proposal_subjects"
+    return author_ready_stop_reason(status)
+
+
+def normalize_author_ready_member_report(
+    member: dict[str, Any],
+    index: int,
+) -> dict[str, Any]:
+    package_id = string_value(member.get("packageId")) or f"member-{index + 1}"
+    quality_report_path = string_value(member.get("qualityReportPath"))
+    report = mapping_value(member.get("qualityReport"))
+    author_ready = mapping_value(report.get("authorReadyDraft"))
+    status = string_value(author_ready.get("status")) or string_value(report.get("status"))
+    if status not in {
+        AUTHOR_READY_STATUS_READY,
+        AUTHOR_READY_STATUS_NEEDS_REGENERATION,
+        AUTHOR_READY_STATUS_BLOCKED,
+    }:
+        status = AUTHOR_READY_STATUS_BLOCKED
+    read_error = string_value(report.get("readError"))
+    stop_reason = string_value(author_ready.get("stopReason"))
+    if not stop_reason and read_error:
+        stop_reason = f"quality_report_unreadable:{read_error}"
+    return {
+        "packageId": package_id,
+        "qualityReportPath": quality_report_path,
+        "qualityReport": report,
+        "status": status,
+        "stopReason": stop_reason or author_ready_stop_reason(status),
+        "actionItemCount": integer_value(author_ready.get("actionItemCount")),
+        "readError": read_error,
+    }
+
+
+def aggregate_author_ready_status(counts: dict[str, int]) -> str:
+    if counts["total"] == 0:
+        return AUTHOR_READY_STATUS_BLOCKED
+    if counts[AUTHOR_READY_STATUS_BLOCKED] > 0:
+        return AUTHOR_READY_STATUS_BLOCKED
+    if counts[AUTHOR_READY_STATUS_NEEDS_REGENERATION] > 0:
+        return AUTHOR_READY_STATUS_NEEDS_REGENERATION
+    return AUTHOR_READY_STATUS_READY
+
+
+def aggregate_author_ready_summary(status: str, counts: dict[str, int]) -> str:
+    if status == AUTHOR_READY_STATUS_READY:
+        return "All member candidates are valid starter packages ready for author review."
+    if status == AUTHOR_READY_STATUS_NEEDS_REGENERATION:
+        return (
+            "At least one member candidate needs regeneration or evidence review before "
+            "author handoff."
+        )
+    if counts["total"] == 0:
+        return "No member quality reports were available; package-set handoff is blocked."
+    return "At least one member candidate is blocked by failed hard gates."
+
+
+def blocking_reasons(members: list[dict[str, Any]]) -> list[dict[str, str]]:
+    reasons = []
+    for member in members:
+        if member["status"] != AUTHOR_READY_STATUS_BLOCKED:
+            continue
+        reason = member["stopReason"] or author_ready_stop_reason(member["status"])
+        if member["readError"]:
+            reason = f"quality_report_unreadable:{member['readError']}"
+        reasons.append(
+            {
+                "packageId": member["packageId"],
+                "qualityReportPath": member["qualityReportPath"],
+                "reason": reason,
+            }
+        )
+    return sorted(reasons, key=lambda item: item["packageId"])
+
+
+def reviewable_dimensions(members: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    dimensions: dict[str, dict[str, Any]] = {}
+    for member in members:
+        for dimension in object_list(mapping_value(member["qualityReport"]).get("dimensions")):
+            rating = string_value(dimension.get("rating"))
+            if rating not in {"needs_review", "reviewable"}:
+                continue
+            identifier = string_value(dimension.get("id"))
+            if not identifier:
+                continue
+            record = dimensions.setdefault(
+                identifier,
+                {
+                    "id": identifier,
+                    "ratings": set(),
+                    "packageIds": [],
+                    "count": 0,
+                },
+            )
+            record["ratings"].add(rating)
+            record["packageIds"].append(member["packageId"])
+            record["count"] += 1
+    return [
+        {
+            "id": identifier,
+            "ratings": sorted(record["ratings"]),
+            "packageIds": sorted(set(record["packageIds"])),
+            "count": record["count"],
+        }
+        for identifier, record in sorted(dimensions.items())
+    ]
+
+
+def top_author_action_items(
+    members: list[dict[str, Any]],
+    *,
+    limit: int = 8,
+) -> list[dict[str, str]]:
+    severity_rank = {"error": 0, "warning": 1, "info": 2}
+    records = []
+    seen: set[tuple[str, str]] = set()
+    for member in members:
+        for item in object_list(mapping_value(member["qualityReport"]).get("authorActionItems")):
+            identifier = string_value(item.get("id"))
+            key = (member["packageId"], identifier)
+            if not identifier or key in seen:
+                continue
+            seen.add(key)
+            records.append(
+                {
+                    "packageId": member["packageId"],
+                    "id": identifier,
+                    "severity": string_value(item.get("severity")),
+                    "category": string_value(item.get("category")),
+                    "target": string_value(item.get("target")),
+                    "summary": string_value(item.get("summary")),
+                }
+            )
+    return sorted(
+        records,
+        key=lambda item: (
+            severity_rank.get(item["severity"], 9),
+            item["packageId"],
+            item["id"],
+        ),
+    )[:limit]
+
+
 def hard_gate_rollup(gates: list[dict[str, Any]]) -> str:
     statuses = {gate["status"] for gate in gates}
     if "failed" in statuses:
@@ -558,6 +814,12 @@ def integer_value(value: Any) -> int:
 
 def mapping_value(value: Any) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
+
+
+def object_list(value: Any) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, dict)]
 
 
 def render_report_json(payload: dict[str, Any]) -> str:

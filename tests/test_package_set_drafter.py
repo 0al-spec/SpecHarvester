@@ -46,6 +46,14 @@ def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> 
         "relationProposalCount": 3,
         "skippedCount": 4,
     }
+    assert summary["authorReadyDraftSummary"]["status"] == "author_ready_draft"
+    assert summary["authorReadyDraftSummary"]["decision"] == "stop_for_author_review"
+    assert summary["authorReadyDraftSummary"]["memberCounts"] == {
+        "author_ready_draft": 4,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 4,
+    }
     assert summary["relationProposals"] == {
         "path": "package-relation-proposals.json",
         "relationCount": 3,

@@ -13,6 +13,7 @@ from typing import Any
 
 from spec_harvester.package_set_drafter import read_inventory
 from spec_harvester.producer_receipt import digest_record, sha256_file
+from spec_harvester.producer_reports import stop_policy_summary_from_diagnostics
 
 PACKAGE_SET_AI_DRAFT_API_VERSION = "spec-harvester.package-set-ai-draft/v0"
 PACKAGE_SET_AI_DRAFT_KIND = "SpecHarvesterPackageSetAIDraftProposal"
@@ -312,11 +313,12 @@ def proposal_from_model_output(
     )
     error_count = sum(1 for item in diagnostics if item["severity"] == "error")
     warning_count = sum(1 for item in diagnostics if item["severity"] == "warning")
+    status = "failed" if error_count else ("warning" if warning_count else "completed")
     return {
         "apiVersion": PACKAGE_SET_AI_DRAFT_API_VERSION,
         "kind": PACKAGE_SET_AI_DRAFT_KIND,
         "schemaVersion": PACKAGE_SET_AI_DRAFT_SCHEMA_VERSION,
-        "status": "failed" if error_count else ("warning" if warning_count else "completed"),
+        "status": status,
         "authority": "proposal_only_not_registry_acceptance",
         "packageSet": package_set,
         "selectedMembers": selected_members,
@@ -333,6 +335,12 @@ def proposal_from_model_output(
             "errorCount": error_count,
             "warningCount": warning_count,
         },
+        "stopPolicySummary": stop_policy_summary_from_diagnostics(
+            source_status=status,
+            error_count=error_count,
+            warning_count=warning_count,
+            subject_count=len(selected_members),
+        ),
         "evidenceGaps": string_list(model_output.get("evidenceGaps")),
         "overallConfidence": confidence_value(model_output.get("overallConfidence")),
         "privacy": {

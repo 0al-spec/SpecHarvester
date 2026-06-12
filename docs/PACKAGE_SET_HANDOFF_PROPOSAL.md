@@ -44,6 +44,21 @@ Optional review artifacts:
 - `bundle-set-preflight.json`
 - package-set viewer output containing `index.html` and `package-set.json`
 
+## Author-Ready Stop Summary
+
+The proposal includes `authorReadyDraftSummary`, aggregated from member
+`member_quality_report` evidence. It records:
+
+- `status`: aggregate `author_ready_draft`, `needs_regeneration`, or `blocked`;
+- `decision`: `stop_for_author_review`, `continue_generation`, or
+  `blocked_until_inputs_change`;
+- `memberCounts`: total and per-status member counts;
+- `blockingReasons`: blocked member reports and stop reasons;
+- `topAuthorActionItems`: the first deterministic author review actions.
+
+This is a producer-loop stop signal. It does not accept packages, accept
+relations, or replace SpecPM maintainer review.
+
 ## Evidence Roles
 
 The proposal records stable evidence links for:

@@ -59,6 +59,8 @@ def test_package_set_ai_draft_wraps_external_model_output(
     assert report["kind"] == PACKAGE_SET_AI_DRAFT_KIND
     assert report["status"] == "completed"
     assert report["authority"] == "proposal_only_not_registry_acceptance"
+    assert report["stopPolicySummary"]["decision"] == "stop_for_author_review"
+    assert report["stopPolicySummary"]["subjectCount"] == 2
     assert report["packageSet"]["packageId"] == "demo.workspace"
     assert report["provider"]["execution"] == "not_run_by_spec_harvester"
     assert report["summary"] == {
@@ -98,6 +100,7 @@ def test_package_set_ai_draft_reports_unsupported_evidence_paths(
     )
 
     assert report["status"] == "warning"
+    assert report["stopPolicySummary"]["decision"] == "continue_generation"
     assert "model_evidence_path_unsupported" in {item["code"] for item in report["diagnostics"]}
     core = next(item for item in report["selectedMembers"] if item["packageId"] == "demo.core")
     assert core["evidencePaths"] == [
@@ -143,6 +146,7 @@ def test_package_set_ai_draft_fails_package_set_id_mismatch(
     )
 
     assert report["status"] == "failed"
+    assert report["stopPolicySummary"]["decision"] == "blocked_until_inputs_change"
     assert report["packageSet"]["packageId"] == "demo.workspace"
     assert "package_set_id_mismatch" in {item["code"] for item in report["diagnostics"]}
 

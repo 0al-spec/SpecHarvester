@@ -17,6 +17,7 @@ from spec_harvester.package_set_drafter import (
     PACKAGE_SET_DRAFT_FILENAME,
 )
 from spec_harvester.producer_receipt import digest_record, sha256_file
+from spec_harvester.producer_reports import stop_policy_summary_from_diagnostics
 
 PACKAGE_SET_AI_ENRICHMENT_API_VERSION = "spec-harvester.package-set-ai-enrichment/v0"
 PACKAGE_SET_AI_ENRICHMENT_KIND = "SpecHarvesterPackageSetAIEnrichmentProposal"
@@ -223,11 +224,12 @@ def build_package_set_ai_enrichment_proposal(
 
     error_count = sum(1 for item in diagnostics if item["severity"] == "error")
     warning_count = sum(1 for item in diagnostics if item["severity"] == "warning")
+    status = "failed" if error_count else ("warning" if warning_count else "completed")
     return {
         "apiVersion": PACKAGE_SET_AI_ENRICHMENT_API_VERSION,
         "kind": PACKAGE_SET_AI_ENRICHMENT_KIND,
         "schemaVersion": PACKAGE_SET_AI_ENRICHMENT_SCHEMA_VERSION,
-        "status": "failed" if error_count else ("warning" if warning_count else "completed"),
+        "status": status,
         "authority": "proposal_only_not_registry_acceptance",
         "packageSet": {
             "id": package_set_id,
@@ -246,6 +248,12 @@ def build_package_set_ai_enrichment_proposal(
             "providerPromptTokens": sum_provider_usage(proposals, "prompt_tokens"),
             "providerCompletionTokens": sum_provider_usage(proposals, "completion_tokens"),
         },
+        "stopPolicySummary": stop_policy_summary_from_diagnostics(
+            source_status=status,
+            error_count=error_count,
+            warning_count=warning_count,
+            subject_count=len(proposals),
+        ),
         "privacy": {
             "rawPromptsPersisted": False,
             "rawModelResponsesPersisted": False,

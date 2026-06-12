@@ -18,6 +18,10 @@ from spec_harvester.package_set_drafter import (
     PACKAGE_SET_DRAFT_FILENAME,
     PACKAGE_SET_DRAFT_KIND,
 )
+from spec_harvester.producer_reports import (
+    author_ready_stop_policy_summary,
+    read_optional_report_object,
+)
 
 PACKAGE_SET_HANDOFF_PROPOSAL_API_VERSION = "spec-harvester.package-set-handoff-proposal/v0"
 PACKAGE_SET_HANDOFF_PROPOSAL_KIND = "SpecHarvesterPackageSetHandoffProposal"
@@ -80,6 +84,9 @@ def build_package_set_handoff_proposal(
 
     viewer = viewer_record(options.viewer)
     members = member_records(bundle_set, draft)
+    author_ready_summary = author_ready_stop_policy_summary(
+        member_quality_reports(bundle_set, members)
+    )
     relation_records_value = relation_records(relations)
     relation_proposals = mapping_value(draft.get("relationProposals"))
     package_set_id = next(
@@ -101,6 +108,7 @@ def build_package_set_handoff_proposal(
             "source": mapping_value(draft.get("source")),
             "selectedRoles": list_value(mapping_value(draft.get("selection")).get("roles")),
         },
+        "authorReadyDraftSummary": author_ready_summary,
         "members": members,
         "relations": relation_records_value,
         "evidenceLinks": evidence_links(bundle_set, members, relations, preflight, viewer),
@@ -149,6 +157,7 @@ def build_package_set_handoff_proposal_markdown(report: dict[str, Any]) -> str:
             f"- Candidate packages: {package_set['candidateCount']}",
             f"- Relation proposals: {package_set['relationCount']}",
             f"- Preflight: `{report['preflight']['status']}`",
+            (f"- Author-ready stop decision: `{report['authorReadyDraftSummary']['decision']}`"),
             "- Registry acceptance decision: `external_required`",
             "",
             "## Member Packages",
@@ -172,6 +181,32 @@ def build_package_set_handoff_proposal_markdown(report: dict[str, Any]) -> str:
             "",
         ]
     )
+
+
+def member_quality_reports(bundle_set: Path, members: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    reports = []
+    for member in members:
+        path = string_value(member.get("qualityReportPath"))
+        source_path = safe_bundle_path(bundle_set, path)
+        if source_path is None:
+            quality_report = {
+                "status": "blocked",
+                "authorReadyDraft": {
+                    "status": "blocked",
+                    "stopReason": "quality_report_path_rejected",
+                },
+                "readError": "path_rejected",
+            }
+        else:
+            quality_report = read_optional_report_object(source_path, missing_status="missing")
+        reports.append(
+            {
+                "packageId": string_value(member.get("packageId")),
+                "qualityReportPath": path,
+                "qualityReport": quality_report,
+            }
+        )
+    return reports
 
 
 def write_package_set_handoff_proposal(path: Path, report: dict[str, Any]) -> None:

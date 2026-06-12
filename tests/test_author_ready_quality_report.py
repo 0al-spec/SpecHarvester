@@ -8,6 +8,8 @@ from spec_harvester.producer_reports import (
     AuthorReadyDraftQualityReport,
     AuthorReadyDraftQualityReportRequest,
     ProducerReportRequest,
+    author_ready_stop_policy_summary,
+    stop_policy_summary_from_diagnostics,
 )
 
 
@@ -110,6 +112,147 @@ def test_author_ready_quality_report_requires_existing_evidence_file(
     assert "review_evidence_links_present" in action_item_ids(report)
 
 
+def test_author_ready_stop_policy_summary_stops_when_all_members_are_author_ready(
+    tmp_path: Path,
+) -> None:
+    request = write_quality_fixture(
+        tmp_path,
+        validation={"status": "valid", "warningCount": 0, "errorCount": 0},
+        diagnostics={"status": "clean", "entries": []},
+    )
+    report = AuthorReadyDraftQualityReport(request).payload()
+
+    summary = author_ready_stop_policy_summary(
+        [
+            {
+                "packageId": "example.demo",
+                "qualityReportPath": "example.demo/author-ready-draft-quality-report.json",
+                "qualityReport": report,
+            }
+        ]
+    )
+
+    assert summary["status"] == "author_ready_draft"
+    assert summary["decision"] == "stop_for_author_review"
+    assert summary["memberCounts"] == {
+        "total": 1,
+        "author_ready_draft": 1,
+        "needs_regeneration": 0,
+        "blocked": 0,
+    }
+    assert summary["members"][0]["decision"] == "stop_for_author_review"
+    assert summary["blockingReasons"] == []
+    assert summary["topAuthorActionItems"][0]["packageId"] == "example.demo"
+    assert "not SpecPM registry acceptance" in " ".join(summary["nonAuthority"])
+
+
+def test_author_ready_stop_policy_summary_continues_for_regeneration_candidates(
+    tmp_path: Path,
+) -> None:
+    request = write_quality_fixture(
+        tmp_path,
+        validation={"status": "valid", "warningCount": 0, "errorCount": 0},
+        diagnostics={"status": "clean", "entries": []},
+        include_evidence=False,
+    )
+    report = AuthorReadyDraftQualityReport(request).payload()
+
+    summary = author_ready_stop_policy_summary(
+        [
+            {
+                "packageId": "example.demo",
+                "qualityReportPath": "example.demo/author-ready-draft-quality-report.json",
+                "qualityReport": report,
+            }
+        ]
+    )
+
+    assert summary["status"] == "needs_regeneration"
+    assert summary["decision"] == "continue_generation"
+    assert summary["memberCounts"]["needs_regeneration"] == 1
+    assert summary["reviewableDimensions"][0]["packageIds"] == ["example.demo"]
+
+
+def test_author_ready_stop_policy_summary_blocks_on_any_blocked_member(
+    tmp_path: Path,
+) -> None:
+    ready_request = write_quality_fixture(
+        tmp_path / "ready",
+        validation={"status": "valid", "warningCount": 0, "errorCount": 0},
+        diagnostics={"status": "clean", "entries": []},
+    )
+    blocked_request = write_quality_fixture(
+        tmp_path / "blocked",
+        validation={"status": "invalid", "warningCount": 0, "errorCount": 1},
+        diagnostics={"status": "clean", "entries": []},
+    )
+
+    summary = author_ready_stop_policy_summary(
+        [
+            {
+                "packageId": "example.ready",
+                "qualityReportPath": "example.ready/author-ready-draft-quality-report.json",
+                "qualityReport": AuthorReadyDraftQualityReport(ready_request).payload(),
+            },
+            {
+                "packageId": "example.blocked",
+                "qualityReportPath": "example.blocked/author-ready-draft-quality-report.json",
+                "qualityReport": AuthorReadyDraftQualityReport(blocked_request).payload(),
+            },
+        ]
+    )
+
+    assert summary["status"] == "blocked"
+    assert summary["decision"] == "blocked_until_inputs_change"
+    assert summary["memberCounts"]["blocked"] == 1
+    assert summary["memberCounts"]["author_ready_draft"] == 1
+    assert summary["blockingReasons"] == [
+        {
+            "packageId": "example.blocked",
+            "qualityReportPath": "example.blocked/author-ready-draft-quality-report.json",
+            "reason": "hard_gate_failed",
+        }
+    ]
+
+
+def test_author_ready_stop_policy_summary_reports_unreadable_member_stop_reason() -> None:
+    summary = author_ready_stop_policy_summary(
+        [
+            {
+                "packageId": "example.missing",
+                "qualityReportPath": "example.missing/author-ready-draft-quality-report.json",
+                "qualityReport": {
+                    "status": "missing",
+                    "readError": "missing",
+                },
+            }
+        ]
+    )
+
+    assert summary["status"] == "blocked"
+    assert summary["members"][0]["stopReason"] == "quality_report_unreadable:missing"
+    assert summary["blockingReasons"] == [
+        {
+            "packageId": "example.missing",
+            "qualityReportPath": "example.missing/author-ready-draft-quality-report.json",
+            "reason": "quality_report_unreadable:missing",
+        }
+    ]
+
+
+def test_stop_policy_summary_continues_when_clean_proposal_has_no_subjects() -> None:
+    summary = stop_policy_summary_from_diagnostics(
+        source_status="completed",
+        error_count=0,
+        warning_count=0,
+        subject_count=0,
+    )
+
+    assert summary["status"] == "needs_regeneration"
+    assert summary["decision"] == "continue_generation"
+    assert summary["reason"] == "no_proposal_subjects"
+
+
 def write_quality_fixture(
     root: Path,
     *,
@@ -117,7 +260,7 @@ def write_quality_fixture(
     diagnostics: dict[str, object],
     include_evidence: bool = True,
 ) -> AuthorReadyDraftQualityReportRequest:
-    (root / "specs").mkdir()
+    (root / "specs").mkdir(parents=True)
     (root / "specpm.yaml").write_text("apiVersion: specpm.dev/v0.1\n", encoding="utf-8")
     (root / "specs" / "demo.spec.yaml").write_text(
         "apiVersion: specpm.dev/v0.1\n",

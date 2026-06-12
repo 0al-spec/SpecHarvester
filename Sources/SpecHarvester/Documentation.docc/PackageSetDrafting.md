@@ -47,9 +47,9 @@ maintainer review.
 ```
 
 The summary records source repository and exact revision, workspace inventory
-digest, selected roles, generated package IDs, relative candidate paths, skipped
-packages, relation proposal path, relation count, and producer preview
-non-goals.
+digest, selected roles, generated package IDs, relative candidate paths,
+aggregate `authorReadyDraftSummary`, skipped packages, relation proposal path,
+relation count, and producer preview non-goals.
 
 ## Default Selection
 

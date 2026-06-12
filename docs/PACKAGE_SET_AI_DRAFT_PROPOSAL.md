@@ -118,6 +118,11 @@ author intent, or capability choices that need upstream judgment. It should not
 stop when validation fails, inventory-derived paths drift, evidence paths are
 unsupported, or relation endpoints are inconsistent.
 
+Proposal outputs include `stopPolicySummary` with `stop_for_author_review`,
+`continue_generation`, or `blocked_until_inputs_change`. This is a model-loop
+signal only; generated package bundles still need author-ready quality reports
+and downstream validation.
+
 ## Role Taxonomy
 
 The model may propose generic roles:

@@ -80,6 +80,7 @@ def test_candidate_bundle_e2e_smoke_collects_drafts_preflights_and_renders(
     assert draft["validationReport"] == str(candidate / "validation-report.json")
     assert draft["diagnosticsReport"] == str(candidate / "diagnostics.json")
     assert draft["qualityReport"] == str(candidate / "author-ready-draft-quality-report.json")
+    assert draft["authorReadyDraftSummary"]["decision"] == "stop_for_author_review"
     assert preflight["status"] == "passed"
     assert preflight["summary"] == {"diagnosticCount": 0, "errorCount": 0, "warningCount": 0}
     assert site["status"] == "ok"

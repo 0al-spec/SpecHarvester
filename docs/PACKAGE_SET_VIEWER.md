@@ -45,7 +45,9 @@ The normalized JSON payload uses a stable renderer identity:
 The viewer presents:
 
 - package-set summary from `package-set-draft.json`;
+- aggregate `authorReadyDraftSummary` with the stop-policy decision;
 - member package cards for aggregate and scoped candidates;
+- per-member quality report status and author action items in `package-set.json`;
 - relation proposal badges for `contains` links;
 - producer-observed review status such as `producer_observed`;
 - bundle-set preflight status when `bundle-set-preflight.json` is present;

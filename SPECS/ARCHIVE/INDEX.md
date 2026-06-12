@@ -97,6 +97,7 @@
 | P25-T5 | [P25-T5_Bundle_Set_Preflight/](P25-T5_Bundle_Set_Preflight/) | 2026-06-06 | PASS |
 | P27-T1 | [P27-T1_Author_Ready_Draft_Quality_Bar/](P27-T1_Author_Ready_Draft_Quality_Bar/) | 2026-06-11 | PASS |
 | P27-T2 | [P27-T2_Author_Ready_Draft_Quality_Report/](P27-T2_Author_Ready_Draft_Quality_Report/) | 2026-06-11 | PASS |
+| P27-T3 | [P27-T3_Author_Ready_Stop_Policy_Summary/](P27-T3_Author_Ready_Stop_Policy_Summary/) | 2026-06-11 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -113,6 +114,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t2_tuist_manifest_parsing.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t3_codegraph_adapter_evaluation.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t4_scoped_source_validation_fixtures.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p27_t3_author_ready_stop_policy_summary.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t1_producer_candidate_bundle_output_planning.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t2_producer_receipt_emission.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p21_t3_validation_diagnostics_report_emission.md` |
@@ -329,6 +331,8 @@
 | 2026-06-11 | P27-T1 | Archived Author-Ready Draft Quality Bar (PASS) |
 | 2026-06-11 | P27-T2 | Archived Author-Ready Draft Quality Report (PASS) |
 | 2026-06-11 | P27-T2 | Archived REVIEW_p27_t2_author_ready_draft_quality_report report |
+| 2026-06-11 | P27-T3 | Archived Author-Ready Stop Policy Summary (PASS) |
+| 2026-06-11 | P27-T3 | Archived REVIEW_p27_t3_author_ready_stop_policy_summary report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

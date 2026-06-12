@@ -11,6 +11,18 @@ The required source artifacts are `package-set-draft.json` and
 `package-relation-proposals.json`. `bundle-set-preflight.json` is optional
 review evidence and is included when present.
 
+## Author-Ready Stop Summary
+
+The proposal includes `authorReadyDraftSummary`, aggregated from member
+`member_quality_report` evidence. It records aggregate `status`, deterministic
+`decision`, `memberCounts`, blocked member `blockingReasons`, and
+`topAuthorActionItems`. The clean-path decision is `stop_for_author_review`;
+warning and blocked paths use `continue_generation` and
+`blocked_until_inputs_change`.
+
+This is a producer-loop stop signal. It does not accept packages, accept
+relations, or replace SpecPM maintainer review.
+
 ## Command
 
 ```bash

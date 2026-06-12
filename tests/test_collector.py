@@ -985,6 +985,7 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
     assert result["validationReport"] == str(validation_report_path)
     assert result["diagnosticsReport"] == str(diagnostics_report_path)
     assert result["qualityReport"] == str(quality_report_path)
+    assert result["authorReadyDraftSummary"]["decision"] == "stop_for_author_review"
     assert receipt["apiVersion"] == "specpm.receipts/v0"
     assert receipt["kind"] == "SpecPMProducerReceipt"
     assert receipt["schemaVersion"] == 1

@@ -32,10 +32,11 @@ The output includes `index.html`, `assets/spec-renderer.js`,
 
 ## Review Surface
 
-The viewer shows package-set summary, aggregate and scoped member package
-cards, `contains` relation proposal badges, `producer_observed` review status,
-bundle-set preflight status when available, and result scope examples for the
-generated package set.
+The viewer shows package-set summary, aggregate `authorReadyDraftSummary`,
+per-member quality report status and author action items, aggregate and scoped
+member package cards, `contains` relation proposal badges, `producer_observed`
+review status, bundle-set preflight status when available, and result scope
+examples for the generated package set.
 
 ## Boundary
 
