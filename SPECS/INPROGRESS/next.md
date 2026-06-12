@@ -1,6 +1,6 @@
-# Next Task: P28 Follow-Up Selection
+# Next Task: P28-T4 Package-Set Role Selection Profiles
 
-**Status:** Review Pending
+**Status:** In Progress
 **Last Archived:** P28-T3 Second Real Repository Refresh Compare Run
 **Archived:** 2026-06-12
 
@@ -63,11 +63,16 @@ Pick the next product phase from the roadmap. A likely follow-up is expanding
 calibration into a repeatable multi-repository quality suite while keeping
 generated candidates as local evidence, not committed registry truth.
 
-Review P28-T3 and convert the two observed product gaps into follow-up
-workplan tasks:
+Run P28-T4 Package-Set Role Selection Profiles: add a named role selection
+profile or preset for generic monorepos so a useful workspace/member package-set
+does not depend on operator knowledge of `--role member_package`.
 
-- generic monorepo package-set role selection should not require ad hoc
-  `--role member_package` operator knowledge;
-- new repositories without current SpecPM generated artifacts need a
-  first-submission or seeded-baseline workflow before refresh comparison can
-  emit a preflightable decision file.
+The immediate product target is the TanStack/query observation from P28-T3:
+default drafting found the workspace root, but the useful package-set required
+explicit member-package role selection. P28-T4 should make that intent
+declarative, documented, and covered by tests.
+
+Queued after P28-T4:
+
+- `P28-T5` first-submission or seeded-baseline workflow for repositories without
+  current SpecPM generated artifacts.

@@ -40,6 +40,16 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_28_follow_up_active(next_text)
         return
 
+    if "# Next Task: P28-T4 Package-Set Role Selection Profiles" in next_text:
+        assert_p28_t3_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
+        assert_p27_t5_recent(next_text)
+        assert_p28_t1_recent(next_text)
+        assert_p28_t2_recent(next_text)
+        assert_p28_t3_recent(next_text)
+        assert_phase_28_t4_active(next_text)
+        return
+
     assert_p27_t5_last_archived(next_text)
     assert_p27_t4_recent(next_text)
     assert_p27_t5_recent(next_text)
@@ -192,6 +202,17 @@ def assert_phase_28_follow_up_active(next_text: str) -> None:
     assert "# Next Task: P28 Follow-Up Selection" in next_text
     assert "**Status:** Review Pending" in next_text
     assert "role selection" in normalized
+    assert "first-submission or seeded-baseline workflow" in normalized
+
+
+def assert_phase_28_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P28-T4 Package-Set Role Selection Profiles" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "generic monorepos" in normalized
+    assert "--role member_package" in normalized
+    assert "declarative" in normalized
+    assert "P28-T5" in next_text
     assert "first-submission or seeded-baseline workflow" in normalized
 
 

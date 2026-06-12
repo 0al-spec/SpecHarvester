@@ -67,7 +67,9 @@ The real `TanStack/query` refresh compare run produced a 39-candidate
 package-set with 38 relation proposals and a structured SpecPM
 missing-baseline result, confirming the producer handoff is not
 `xyflow`-specific while keeping first-submission workflows separate from
-refresh comparison.
+refresh comparison. The next focus is package-set role selection profiles for
+generic monorepos, followed by a first-submission or seeded-baseline workflow
+for repositories without current SpecPM generated artifacts.
 
 ### Package Sets and Monorepo Discovery
 

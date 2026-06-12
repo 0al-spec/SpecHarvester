@@ -932,6 +932,11 @@ Acceptance:
   `manual_review_required`.
 - [x] `P28-T3` Repeat the refresh compare loop on a second real repository
   with package-set output to check that the contract is not `xyflow`-specific.
+- [ ] `P28-T4` Add package-set role selection profiles for generic monorepos
+  so operators can request a useful workspace/member package-set without
+  ad hoc `--role member_package` knowledge.
+- [ ] `P28-T5` Define a first-submission or seeded-baseline workflow for
+  repositories that do not yet have current SpecPM generated artifacts.
 
 Motivation:
 
@@ -963,3 +968,7 @@ Acceptance:
   package directory reshaping.
 - Real-repository follow-up runs decide whether generated candidates contain a
   contract delta before any registry update PR is opened.
+- Generic monorepo refresh runs can select workspace/member package-set output
+  through a named profile or preset.
+- Missing-baseline repositories produce a clear first-submission or
+  seeded-baseline handoff instead of a refresh-decision file.

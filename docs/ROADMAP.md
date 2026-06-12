@@ -118,6 +118,14 @@ Success criteria:
 - `SPECPM_PROPOSAL_TOKEN` remains limited to trusted workflows;
 - generated receipts never claim maintainer acceptance.
 
+Next focus:
+
+- package-set role selection profiles for generic monorepos, so useful
+  workspace/member output does not require ad hoc `--role member_package`
+  operator knowledge;
+- first-submission or seeded-baseline workflow for repositories without current
+  SpecPM generated artifacts.
+
 ## Milestone 3: Package Sets and Monorepo Discovery
 
 Status: complete for the `xyflow` reference shape and ready for broader
