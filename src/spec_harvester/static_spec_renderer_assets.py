@@ -707,6 +707,7 @@ function renderPackageSet(payload) {
   const members = payload.members || [];
   const relations = payload.relations || [];
   const preflight = payload.preflight || {};
+  const authorReview = payload.authorReview || {};
   document.querySelector("#package-title").textContent = packageSet.id || "Package Set";
   document.querySelector("#package-summary").textContent = [
     packageSet.repository,
@@ -758,6 +759,7 @@ function renderPackageSet(payload) {
       ["Errors", preflight.errorCount],
       ["Warnings", preflight.warningCount]
     ])),
+    evidenceCard("Author Review", renderAuthorReview(authorReview)),
     evidenceCard("Result Scope Examples", resultScopeExamples(members, relations))
   ].join("");
 
@@ -780,12 +782,15 @@ function renderPackageSet(payload) {
 function renderMemberCard(member, relations) {
   const inbound = relations.filter((relation) => relation.target?.packageId === member.packageId);
   const outbound = relations.filter((relation) => relation.source?.packageId === member.packageId);
+  const authorReview = member.authorReview || {};
   const searchText = [
     member.packageId,
     member.role,
     member.name,
     member.summary,
     member.sourceTargetPath,
+    ...(authorReview.actionItems || []).map((item) => item.summary),
+    ...(authorReview.reviewableDimensions || []).map((item) => item.id),
     ...inbound.map((relation) => relation.id),
     ...outbound.map((relation) => relation.id)
   ].join(" ");
@@ -811,10 +816,60 @@ function renderMemberCard(member, relations) {
         ])}
         ${sectionBox("Capabilities", member.capabilities || [])}
         ${sectionBox("Intents", member.intents || [])}
+        ${sectionBox("Author Review", memberReviewLines(member))}
         ${sectionBox("Result Scope", resultScopeLines(member, inbound, outbound))}
       </div>
     </details>
   `;
+}
+
+function renderAuthorReview(review) {
+  if (!review || !review.decision) {
+    return `<p class="empty">No author review summary recorded.</p>`;
+  }
+  return [
+    facts([
+      ["Decision", review.decision],
+      ["Status", review.status],
+      ["Summary", review.summary]
+    ]),
+    sectionBox("Checklist", reviewItemLines(review.checklist || [])),
+    sectionBox("Weak Claims", weakClaimLines(review.weakClaims || [])),
+    sectionBox("Evidence Gaps", reviewItemLines(review.evidenceGaps || [])),
+    sectionBox("Recommended Edits", reviewItemLines(review.recommendedEdits || []))
+  ].join("");
+}
+
+function memberReviewLines(member) {
+  const review = member.authorReview || {};
+  const quality = member.quality || {};
+  const lines = [
+    `status: ${quality.status || "unknown"}`,
+    `stop reason: ${quality.stopReason || "not recorded"}`
+  ];
+  (review.actionItems || []).forEach((item) => {
+    lines.push(`${item.severity || "info"}: ${item.summary || item.id}`);
+  });
+  (review.reviewableDimensions || []).forEach((dimension) => {
+    lines.push(`${dimension.id}: ${dimension.rating}`);
+  });
+  return lines;
+}
+
+function reviewItemLines(items) {
+  return items.map((item) => [
+    item.severity || "info",
+    item.target || item.category || "",
+    item.summary || item.id || ""
+  ].filter(Boolean).join(" · "));
+}
+
+function weakClaimLines(items) {
+  return items.map((item) => [
+    item.id || "reviewable",
+    (item.packageIds || []).join(", "),
+    item.summary || ""
+  ].filter(Boolean).join(" · "));
 }
 
 function relationBadges(inbound, outbound) {

@@ -45,6 +45,10 @@ def test_package_set_handoff_proposal_builds_xyflow_review_artifact(
         "needs_regeneration": 0,
         "blocked": 0,
     }
+    assert proposal["authorReview"]["decision"] == "stop_for_author_review"
+    assert proposal["authorReview"]["checklist"][0]["id"] == "stop_generation"
+    assert proposal["authorReview"]["recommendedEdits"]
+    assert proposal["authorReview"]["weakClaims"]
     assert proposal["preflight"]["status"] == "passed"
     assert proposal["viewer"]["status"] == "present"
     assert proposal["registryAcceptanceDecision"] == {
@@ -106,6 +110,11 @@ def test_package_set_handoff_proposal_markdown_mentions_review_boundary(
     assert "# SpecPM Package-Set Handoff Proposal: xyflow.workspace" in body
     assert "`xyflow.workspace` contains `xyflow.react`" in body
     assert "Author-ready stop decision: `stop_for_author_review`" in body
+    assert "## Author Review Checklist" in body
+    assert "## Weak Claims and Evidence Gaps" in body
+    assert "## Recommended Edits" in body
+    assert "Confirm package IDs" in body
+    assert "repositorySpecificity" in body
     assert "`package_set_viewer`" in body
     assert "Registry acceptance decision: `external_required`" in body
     assert "does not accept packages" in body

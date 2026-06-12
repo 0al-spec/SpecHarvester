@@ -20,6 +20,7 @@ from spec_harvester.package_set_drafter import (
 )
 from spec_harvester.producer_reports import (
     author_ready_stop_policy_summary,
+    author_review_payload,
     read_optional_report_object,
 )
 
@@ -84,9 +85,9 @@ def build_package_set_handoff_proposal(
 
     viewer = viewer_record(options.viewer)
     members = member_records(bundle_set, draft)
-    author_ready_summary = author_ready_stop_policy_summary(
-        member_quality_reports(bundle_set, members)
-    )
+    quality_reports = member_quality_reports(bundle_set, members)
+    author_ready_summary = author_ready_stop_policy_summary(quality_reports)
+    author_review = author_review_payload(author_ready_summary, quality_reports)
     relation_records_value = relation_records(relations)
     relation_proposals = mapping_value(draft.get("relationProposals"))
     package_set_id = next(
@@ -109,6 +110,7 @@ def build_package_set_handoff_proposal(
             "selectedRoles": list_value(mapping_value(draft.get("selection")).get("roles")),
         },
         "authorReadyDraftSummary": author_ready_summary,
+        "authorReview": author_review,
         "members": members,
         "relations": relation_records_value,
         "evidenceLinks": evidence_links(bundle_set, members, relations, preflight, viewer),
@@ -129,6 +131,7 @@ def build_package_set_handoff_proposal(
 
 def build_package_set_handoff_proposal_markdown(report: dict[str, Any]) -> str:
     package_set = report["packageSet"]
+    author_review = mapping_value(report.get("authorReview"))
     member_lines = "\n".join(
         f"- `{member['packageId']}` ({member['role']}): `{member['candidatePath']}`"
         for member in report["members"]
@@ -160,6 +163,28 @@ def build_package_set_handoff_proposal_markdown(report: dict[str, Any]) -> str:
             (f"- Author-ready stop decision: `{report['authorReadyDraftSummary']['decision']}`"),
             "- Registry acceptance decision: `external_required`",
             "",
+            "## Author Review Checklist",
+            "",
+            review_item_lines(object_list(author_review.get("checklist")))
+            or "- _No author review checklist recorded._",
+            "",
+            "## Weak Claims and Evidence Gaps",
+            "",
+            "### Weak Claims",
+            "",
+            weak_claim_lines(object_list(author_review.get("weakClaims")))
+            or "- _No weak claims recorded._",
+            "",
+            "### Evidence Gaps",
+            "",
+            review_item_lines(object_list(author_review.get("evidenceGaps")))
+            or "- _No evidence gaps recorded._",
+            "",
+            "## Recommended Edits",
+            "",
+            review_item_lines(object_list(author_review.get("recommendedEdits")))
+            or "- _No recommended edits recorded._",
+            "",
             "## Member Packages",
             "",
             member_lines or "- _No member packages declared._",
@@ -180,6 +205,28 @@ def build_package_set_handoff_proposal_markdown(report: dict[str, Any]) -> str:
             "or replace SpecPM maintainer review.",
             "",
         ]
+    )
+
+
+def review_item_lines(items: list[dict[str, Any]]) -> str:
+    return "\n".join(
+        (
+            f"- `{string_value(item.get('severity')) or 'info'}` "
+            f"`{string_value(item.get('target')) or 'package-set'}`: "
+            f"{string_value(item.get('summary'))}"
+        )
+        for item in items
+    )
+
+
+def weak_claim_lines(items: list[dict[str, Any]]) -> str:
+    return "\n".join(
+        (
+            f"- `{string_value(item.get('id'))}` "
+            f"({', '.join(string_list(item.get('packageIds'))) or 'package-set'}): "
+            f"{string_value(item.get('summary'))}"
+        )
+        for item in items
     )
 
 
@@ -458,6 +505,18 @@ def mapping_value(value: Any) -> dict[str, Any]:
 
 def list_value(value: Any) -> list[Any]:
     return value if isinstance(value, list) else []
+
+
+def object_list(value: Any) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, dict)]
+
+
+def string_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return sorted(item for item in value if isinstance(item, str) and item)
 
 
 def string_value(value: Any) -> str:

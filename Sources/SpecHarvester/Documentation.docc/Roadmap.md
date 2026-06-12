@@ -85,7 +85,9 @@ to edit than to write from scratch. `author-ready-draft-quality-report.json`
 now exposes an `authorReadyDraft` verdict, hard gates, dimensions, and author
 action items. Package-set outputs also expose `authorReadyDraftSummary` so
 operators can stop when remaining work is author-reviewable rather than
-generator-fixable.
+generator-fixable. Viewer and handoff outputs derive `authorReview` checklists,
+weak claims, evidence gaps, recommended edits, and member action summaries from
+the same evidence so authors can start review without reading raw JSON first.
 
 See <doc:AuthorReadyDraftQualityBar> and
 <doc:AuthorReadyDraftQualityReport>.

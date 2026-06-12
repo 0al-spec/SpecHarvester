@@ -152,6 +152,10 @@ def test_static_package_set_renderer_writes_review_site(tmp_path: Path) -> None:
     assert payload["authorReadyDraftSummary"]["status"] == "author_ready_draft"
     assert payload["authorReadyDraftSummary"]["decision"] == "stop_for_author_review"
     assert payload["authorReadyDraftSummary"]["memberCounts"]["total"] == 4
+    assert payload["authorReview"]["decision"] == "stop_for_author_review"
+    assert payload["authorReview"]["checklist"][0]["id"] == "stop_generation"
+    assert payload["authorReview"]["recommendedEdits"]
+    assert payload["authorReview"]["weakClaims"]
     assert payload["preflight"]["status"] == "passed"
     assert [member["packageId"] for member in payload["members"]] == [
         "xyflow.workspace",
@@ -164,6 +168,8 @@ def test_static_package_set_renderer_writes_review_site(tmp_path: Path) -> None:
     assert payload["members"][0]["qualityReportPath"].endswith(
         "author-ready-draft-quality-report.json"
     )
+    assert payload["members"][0]["authorReview"]["actionItems"]
+    assert payload["members"][0]["authorReview"]["reviewableDimensions"]
     assert all(relation["type"] == "contains" for relation in payload["relations"])
     assert all(relation["reviewStatus"] == "producer_observed" for relation in payload["relations"])
 
@@ -173,6 +179,8 @@ def test_static_package_set_renderer_writes_review_site(tmp_path: Path) -> None:
     assert "package-set.json" in html
     assert "spec-package.json" not in html
     assert "renderPackageSet" in javascript
+    assert "renderAuthorReview" in javascript
+    assert "memberReviewLines" in javascript
     assert "member-card" in javascript
     assert "relation-badge" in javascript
     assert "result-scope" in javascript

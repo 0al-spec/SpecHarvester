@@ -9,6 +9,7 @@ from spec_harvester.producer_reports import (
     AuthorReadyDraftQualityReportRequest,
     ProducerReportRequest,
     author_ready_stop_policy_summary,
+    author_review_payload,
     stop_policy_summary_from_diagnostics,
 )
 
@@ -144,6 +145,38 @@ def test_author_ready_stop_policy_summary_stops_when_all_members_are_author_read
     assert summary["blockingReasons"] == []
     assert summary["topAuthorActionItems"][0]["packageId"] == "example.demo"
     assert "not SpecPM registry acceptance" in " ".join(summary["nonAuthority"])
+
+
+def test_author_review_payload_derives_checklist_and_review_surfaces(
+    tmp_path: Path,
+) -> None:
+    request = write_quality_fixture(
+        tmp_path,
+        validation={"status": "valid", "warningCount": 0, "errorCount": 0},
+        diagnostics={"status": "clean", "entries": []},
+    )
+    quality_report = AuthorReadyDraftQualityReport(request).payload()
+    member_reports = [
+        {
+            "packageId": "example.demo",
+            "qualityReportPath": "example.demo/author-ready-draft-quality-report.json",
+            "qualityReport": quality_report,
+        }
+    ]
+    summary = author_ready_stop_policy_summary(member_reports)
+
+    review = author_review_payload(summary, member_reports)
+
+    assert review["decision"] == "stop_for_author_review"
+    assert review["checklist"][0]["id"] == "stop_generation"
+    assert {item["id"] for item in review["recommendedEdits"]} >= {
+        "review_package_identity_and_summary",
+        "review_capabilities_and_intents",
+    }
+    assert "repositorySpecificity" in {item["id"] for item in review["weakClaims"]}
+    assert review["memberActions"][0]["packageId"] == "example.demo"
+    assert review["memberActions"][0]["reviewableDimensions"]
+    assert "not SpecPM registry acceptance" in " ".join(review["nonAuthority"])
 
 
 def test_author_ready_stop_policy_summary_continues_for_regeneration_candidates(

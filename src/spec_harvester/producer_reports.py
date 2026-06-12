@@ -25,6 +25,7 @@ AUTHOR_READY_STOP_DECISION_STOP = "stop_for_author_review"
 AUTHOR_READY_STOP_DECISION_CONTINUE = "continue_generation"
 AUTHOR_READY_STOP_DECISION_BLOCKED = "blocked_until_inputs_change"
 AUTHOR_READY_STOP_POLICY_SUMMARY_VERSION = 1
+AUTHOR_REVIEW_SCHEMA_VERSION = 1
 
 
 @dataclass(frozen=True)
@@ -545,6 +546,185 @@ def author_ready_stop_policy_summary(
     }
 
 
+def author_review_payload(
+    author_ready_summary: dict[str, Any],
+    member_reports: list[dict[str, Any]],
+) -> dict[str, Any]:
+    normalized = [
+        normalize_author_ready_member_report(member, index)
+        for index, member in enumerate(member_reports)
+    ]
+    return {
+        "schemaVersion": AUTHOR_REVIEW_SCHEMA_VERSION,
+        "status": string_value(author_ready_summary.get("status")),
+        "decision": string_value(author_ready_summary.get("decision")),
+        "summary": string_value(author_ready_summary.get("summary")),
+        "checklist": author_review_checklist(author_ready_summary),
+        "weakClaims": author_review_weak_claims(author_ready_summary),
+        "evidenceGaps": author_review_evidence_gaps(author_ready_summary, normalized),
+        "recommendedEdits": author_review_recommended_edits(author_ready_summary),
+        "memberActions": [author_review_member_action(member) for member in normalized],
+        "nonAuthority": [
+            "The author review surface is producer-side review evidence only.",
+            "It is not SpecPM registry acceptance.",
+            "It is not maintainer approval.",
+            "It is not upstream project endorsement.",
+        ],
+    }
+
+
+def author_review_checklist(author_ready_summary: dict[str, Any]) -> list[dict[str, str]]:
+    decision = string_value(author_ready_summary.get("decision"))
+    first_item = {
+        AUTHOR_READY_STOP_DECISION_STOP: review_item(
+            "stop_generation",
+            "info",
+            "handoff",
+            "package-set",
+            "Stop generation and hand the valid starter package set to the author for review.",
+        ),
+        AUTHOR_READY_STOP_DECISION_CONTINUE: review_item(
+            "review_or_regenerate",
+            "warning",
+            "generator_review",
+            "package-set",
+            "Review warning-level gaps before treating this package set as author-ready.",
+        ),
+        AUTHOR_READY_STOP_DECISION_BLOCKED: review_item(
+            "repair_blockers",
+            "error",
+            "repair",
+            "package-set",
+            "Do not hand off until blocked member reports or inputs are repaired.",
+        ),
+    }.get(
+        decision,
+        review_item(
+            "review_unknown_decision",
+            "warning",
+            "author_review",
+            "package-set",
+            "Review the package-set stop decision before handoff.",
+        ),
+    )
+    return [
+        first_item,
+        review_item(
+            "confirm_identity",
+            "info",
+            "author_review",
+            "specpm.yaml",
+            "Confirm package IDs, names, summaries, license, keywords, and versions.",
+        ),
+        review_item(
+            "review_capabilities",
+            "info",
+            "author_review",
+            "specs/*.spec.yaml",
+            "Review capabilities, intents, constraints, and public interface claims.",
+        ),
+        review_item(
+            "verify_evidence",
+            "info",
+            "author_review",
+            "evidence",
+            "Verify that every important claim has enough repository-specific evidence.",
+        ),
+        review_item(
+            "decide_outcome",
+            "info",
+            "author_review",
+            "handoff",
+            "Decide whether to keep, edit, reject, or regenerate each member package.",
+        ),
+    ]
+
+
+def author_review_weak_claims(author_ready_summary: dict[str, Any]) -> list[dict[str, Any]]:
+    records = []
+    for dimension in object_list(author_ready_summary.get("reviewableDimensions")):
+        identifier = string_value(dimension.get("id"))
+        if not identifier:
+            continue
+        package_ids = string_list(dimension.get("packageIds"))
+        records.append(
+            {
+                "id": identifier,
+                "severity": "warning",
+                "packageIds": package_ids,
+                "ratings": string_list(dimension.get("ratings")),
+                "summary": (
+                    f"Review {identifier} for "
+                    f"{', '.join(package_ids) if package_ids else 'package-set members'}."
+                ),
+            }
+        )
+    return records
+
+
+def author_review_evidence_gaps(
+    author_ready_summary: dict[str, Any],
+    members: list[dict[str, Any]],
+) -> list[dict[str, str]]:
+    gaps = []
+    for item in object_list(author_ready_summary.get("topAuthorActionItems")):
+        if action_item_mentions_evidence(item):
+            gaps.append(author_review_action_item(item, fallback_severity="warning"))
+    for member in members:
+        for dimension in object_list(mapping_value(member["qualityReport"]).get("dimensions")):
+            if string_value(dimension.get("id")) == "evidenceCoverage" and string_value(
+                dimension.get("rating")
+            ) in {"needs_review", "reviewable"}:
+                gaps.append(
+                    review_item(
+                        f"review_evidence_coverage_{member['packageId']}",
+                        "warning",
+                        "author_review",
+                        member["packageId"],
+                        (
+                            "Review evidence coverage for "
+                            f"{member['packageId']} before accepting its claims."
+                        ),
+                    )
+                )
+    return dedupe_review_items(gaps)
+
+
+def author_review_recommended_edits(
+    author_ready_summary: dict[str, Any],
+) -> list[dict[str, str]]:
+    return [
+        author_review_action_item(item)
+        for item in object_list(author_ready_summary.get("topAuthorActionItems"))
+    ]
+
+
+def author_review_member_action(member: dict[str, Any]) -> dict[str, Any]:
+    quality_report = mapping_value(member["qualityReport"])
+    action_items = [
+        author_review_action_item(item)
+        for item in object_list(quality_report.get("authorActionItems"))
+    ]
+    reviewable_dimensions = [
+        {
+            "id": string_value(dimension.get("id")),
+            "rating": string_value(dimension.get("rating")),
+            "summary": string_value(dimension.get("summary")),
+        }
+        for dimension in object_list(quality_report.get("dimensions"))
+        if string_value(dimension.get("rating")) in {"needs_review", "reviewable"}
+    ]
+    return {
+        "packageId": member["packageId"],
+        "status": member["status"],
+        "decision": author_ready_stop_decision(member["status"]),
+        "qualityReportPath": member["qualityReportPath"],
+        "actionItems": action_items,
+        "reviewableDimensions": reviewable_dimensions,
+        "evidenceGaps": [item for item in action_items if action_item_mentions_evidence(item)],
+    }
+
+
 def stop_policy_summary_from_diagnostics(
     *,
     source_status: str,
@@ -603,6 +783,61 @@ def stop_policy_reason(status: str, subject_count: int) -> str:
     if status == AUTHOR_READY_STATUS_NEEDS_REGENERATION and subject_count <= 0:
         return "no_proposal_subjects"
     return author_ready_stop_reason(status)
+
+
+def review_item(
+    identifier: str,
+    severity: str,
+    category: str,
+    target: str,
+    summary: str,
+) -> dict[str, str]:
+    return {
+        "id": identifier,
+        "severity": severity,
+        "category": category,
+        "target": target,
+        "summary": summary,
+    }
+
+
+def author_review_action_item(
+    item: dict[str, Any],
+    *,
+    fallback_severity: str = "info",
+) -> dict[str, str]:
+    package_id = string_value(item.get("packageId"))
+    target = string_value(item.get("target"))
+    if package_id and target and target != package_id:
+        target = f"{package_id}:{target}"
+    elif package_id:
+        target = package_id
+    return review_item(
+        string_value(item.get("id")) or "review_item",
+        string_value(item.get("severity")) or fallback_severity,
+        string_value(item.get("category")) or "author_review",
+        target,
+        string_value(item.get("summary")),
+    )
+
+
+def action_item_mentions_evidence(item: dict[str, Any]) -> bool:
+    haystack = " ".join(
+        string_value(item.get(key)) for key in ("id", "category", "target", "summary")
+    ).lower()
+    return "evidence" in haystack
+
+
+def dedupe_review_items(items: list[dict[str, str]]) -> list[dict[str, str]]:
+    deduped = []
+    seen: set[tuple[str, str]] = set()
+    for item in items:
+        key = (item["id"], item["target"])
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+    return deduped
 
 
 def normalize_author_ready_member_report(
@@ -806,6 +1041,12 @@ def action_item(
 
 def string_value(value: Any) -> str:
     return value if isinstance(value, str) else ""
+
+
+def string_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return sorted(item for item in value if isinstance(item, str) and item)
 
 
 def integer_value(value: Any) -> int:

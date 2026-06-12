@@ -59,6 +59,29 @@ The proposal includes `authorReadyDraftSummary`, aggregated from member
 This is a producer-loop stop signal. It does not accept packages, accept
 relations, or replace SpecPM maintainer review.
 
+## Author Review Checklist
+
+The proposal also includes `authorReview`, derived from the same
+`authorReadyDraftSummary` and member quality reports. JSON consumers get the
+same review surface as the package-set viewer, while the generated Markdown
+body includes human-facing sections:
+
+- `Author Review Checklist`
+- `Weak Claims and Evidence Gaps`
+- `Recommended Edits`
+
+The checklist explains whether generation should stop for author review,
+continue because warning-level gaps need regeneration, or block until failed
+inputs are repaired. Weak claims summarize reviewable dimensions such as
+`repositorySpecificity`, `packageTopology`, and `claimConservatism`. Evidence
+gaps call out missing or weak support from member action items and quality
+dimensions. Recommended edits tell the author what to inspect first: package
+identity, summaries, capabilities, intents, constraints, evidence references,
+and downstream validation.
+
+These sections are author handoff guidance only. They are not SpecPM registry
+acceptance, not maintainer approval, and not upstream project endorsement.
+
 ## Evidence Roles
 
 The proposal records stable evidence links for:

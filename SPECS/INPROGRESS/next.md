@@ -1,16 +1,21 @@
-# Next Task: P27-T4 Author Review Viewer and Handoff Checklist
+# Next Task: P27-T5 Real Repository Author-Ready Draft Calibration Matrix
 
 **Status:** Selected
-**Last Archived:** P27-T3 Author-Ready Stop Policy Summary
-**Archived:** 2026-06-11
+**Last Archived:** P27-T4 Author Review Viewer and Handoff Checklist
+**Archived:** 2026-06-12
 
 ## Recently Archived
 
+- `P27-T4` added author review checklists through `authorReview`, making
+  package-set viewer and handoff Markdown show weak claims, evidence gaps,
+  recommended edits, and member action summaries without implying SpecPM
+  acceptance.
 - `P27-T3` added a deterministic stop-policy summary across single draft,
   package-set draft, AI draft, AI enrichment, package-set handoff, and static
-  package-set viewer outputs. Clean output maps to `stop_for_author_review`,
-  warning-level gaps map to `continue_generation`, and blocked inputs map to
-  `blocked_until_inputs_change`.
+  package-set viewer outputs. The summary is exposed as
+  `authorReadyDraftSummary` and `stopPolicySummary`. Clean output maps to
+  `stop_for_author_review`, warning-level gaps map to `continue_generation`,
+  and blocked inputs map to `blocked_until_inputs_change`.
 - `P27-T2` added `author-ready-draft-quality-report.json` with an
   `authorReadyDraft` verdict, hard gates, advisory dimensions, author action
   items, receipt `quality_report` output digests, package-set member evidence
@@ -25,23 +30,22 @@
 
 ## Motivation
 
-- P27-T3 exposes machine-readable `authorReadyDraftSummary` and
-  `stopPolicySummary`, but the human-facing package-set viewer and handoff
-  Markdown still need author review checklists.
-- Authors should see what to keep, edit, reject, or investigate without reading
-  raw JSON first.
-- The UI and Markdown must preserve the boundary: these are recommended edits
-  and weak-claim/evidence-gap prompts, not SpecPM acceptance.
+- P27-T1 through P27-T4 define and expose author-ready valid starter packages,
+  but the quality bar needs calibration across real repositories.
+- A single `xyflow` reference run is useful plumbing evidence, not enough
+  product evidence for how many author edits are usually needed.
+- The next decision should be evidence-driven: which draft gaps repeat across
+  repositories and should become deterministic fixes, and which gaps should
+  remain author curation.
 
 ## Goal
 
-- Extend the static viewer and handoff Markdown with author review checklists,
-  weak claim/evidence-gap summaries, and recommended edits derived from existing
-  quality reports and stop-policy summaries.
+- Run a real-repository author-ready draft calibration matrix and record how
+  many author edits are needed to move valid starter packages toward curated
+  specs.
 
 ## Next Step
 
-Start `P27-T4` by defining the author-review checklist payload and deciding how
-the package-set viewer should render aggregate stop decision, member action
-items, weak claims, evidence gaps, and recommended edits without becoming a
-registry acceptance UI.
+Start `P27-T5` by defining the calibration matrix shape: repository selection,
+quality dimensions, author edit categories, expected artifacts, and the
+criteria for turning repeated gaps into follow-up generator work.
