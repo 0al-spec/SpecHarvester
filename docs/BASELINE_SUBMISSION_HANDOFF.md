@@ -68,6 +68,4 @@ Generated candidates remain producer evidence. This command does not:
 - execute source repository code;
 - run package managers.
 
-It does not seed SpecPM automatically.
-
 SpecPM maintainers still own registry acceptance and baseline seeding.

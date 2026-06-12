@@ -1304,7 +1304,7 @@ def test_docc_and_github_docs_cover_baseline_submission_handoff() -> None:
             "producerEvidenceAuthority: evidence_only",
             "noRegistryMutation: true",
             "notRefreshDecision: true",
-            "does not seed SpecPM automatically",
+            "baseline seeding",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"
 

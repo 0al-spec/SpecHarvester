@@ -105,6 +105,20 @@ def test_baseline_submission_handoff_rejects_non_missing_baseline_prepare_report
         )
 
 
+def test_baseline_submission_handoff_rejects_unsupported_fresh_run_schema_version(
+    tmp_path: Path,
+) -> None:
+    fresh_run = write_fresh_run(tmp_path)
+    payload = json.loads(fresh_run.read_text(encoding="utf-8"))
+    payload["schemaVersion"] = 2
+    fresh_run.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="schemaVersion"):
+        build_baseline_submission_handoff(
+            BaselineSubmissionHandoffOptions(fresh_candidate_refresh_run=fresh_run)
+        )
+
+
 def test_baseline_submission_handoff_cli_writes_report(
     tmp_path: Path,
     capsys: pytest.CaptureFixture[str],

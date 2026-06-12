@@ -8,6 +8,7 @@ from typing import Any
 from spec_harvester.fresh_candidate_refresh_run import (
     FRESH_CANDIDATE_REFRESH_RUN_API_VERSION,
     FRESH_CANDIDATE_REFRESH_RUN_KIND,
+    FRESH_CANDIDATE_REFRESH_RUN_SCHEMA_VERSION,
 )
 from spec_harvester.producer_receipt import digest_record, sha256_file
 
@@ -205,6 +206,11 @@ def check_fresh_run_identity(payload: dict[str, Any]) -> None:
         )
     if payload.get("kind") != FRESH_CANDIDATE_REFRESH_RUN_KIND:
         raise ValueError(f"Unsupported fresh candidate refresh run kind: {payload.get('kind')!r}")
+    if payload.get("schemaVersion") != FRESH_CANDIDATE_REFRESH_RUN_SCHEMA_VERSION:
+        raise ValueError(
+            "Unsupported fresh candidate refresh run schemaVersion: "
+            f"{payload.get('schemaVersion')!r}"
+        )
 
 
 def read_json_object(path: Path, label: str) -> dict[str, Any]:

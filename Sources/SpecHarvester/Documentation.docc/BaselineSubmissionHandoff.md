@@ -35,5 +35,5 @@ options: `first_submission_review`, `seed_baseline`, and
 
 It is not a refresh decision. The authority boundary remains
 `producerEvidenceAuthority: evidence_only`, `noRegistryMutation: true`, and
-`notRefreshDecision: true`. It does not seed SpecPM automatically. SpecPM
+`notRefreshDecision: true`. It does not mutate baselines automatically. SpecPM
 maintainers still own registry acceptance and baseline seeding.
