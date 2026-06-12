@@ -60,3 +60,10 @@ Run P28-T3 Second Real Repository Refresh Compare Run: repeat the
 `fresh-candidate-refresh-run` and SpecPM `prepare-refresh-decision` loop on a
 second package-set-capable repository so the contract is not calibrated only
 against `xyflow`.
+
+Selected repository for P28-T3:
+
+- Repository: `https://github.com/TanStack/query`
+- Pinned revision: `feb1efd804c1262106f72c8adc1d82a8ce9cfbb0`
+- Reason: popular pnpm workspace with many scoped package manifests across
+  core, framework bindings, devtools, persisters, tests, and integrations.
