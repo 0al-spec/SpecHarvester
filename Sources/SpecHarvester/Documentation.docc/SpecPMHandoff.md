@@ -114,6 +114,19 @@ This package-set proposal is review evidence. It does not accept packages,
 accept relations, publish registry metadata, or replace SpecPM maintainer
 review. See <doc:PackageSetHandoffProposal>.
 
+## Fresh Candidate Refresh Run
+
+Use <doc:FreshCandidateRefreshRun> when a generated package-set output should
+be compared against current SpecPM generated artifacts. The
+`fresh-candidate-refresh-run` command writes
+`SpecHarvesterFreshCandidateRefreshRun`, copies candidates into the
+`<package_id>/<version>/specpm.yaml` and `specs/*.spec.yaml` layout, records
+contract-file digests, and points operators at
+`specpm producer-bundle prepare-refresh-decision`.
+
+The refresh run is producer evidence only. It records
+`producerEvidenceAuthority: evidence_only` and `noRegistryMutation: true`.
+
 ## Receipt Example
 
 ```json

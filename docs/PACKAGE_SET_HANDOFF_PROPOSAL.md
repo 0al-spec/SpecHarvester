@@ -137,3 +137,19 @@ workspace inventory -> draft-package-set -> preflight-bundle-set -> render-packa
 
 P26-T1 adds the handoff layer that turns those artifacts into proposal evidence
 for SpecPM review.
+
+## Relation To Fresh Refresh Decisions
+
+Use `fresh-candidate-refresh-run` when the same package-set output needs to be
+compared against current SpecPM generated artifacts:
+
+```bash
+python3 -m spec_harvester fresh-candidate-refresh-run \
+  --bundle-set .smoke/xyflow-package-set/package-set \
+  --fresh-generated-root .smoke/xyflow-package-set/fresh-generated \
+  --output .smoke/xyflow-package-set/fresh-candidate-refresh-run.json
+```
+
+The handoff proposal explains review context. The fresh refresh run prepares
+the `<package_id>/<version>/specpm.yaml` and `specs/*.spec.yaml` layout plus
+digests that SpecPM's `prepare-refresh-decision` helper can compare.
