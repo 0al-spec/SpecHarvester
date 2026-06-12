@@ -66,3 +66,7 @@ Out of scope:
 - SpecHarvester P28-T2 real xyflow refresh compare precedent.
 - SpecPM `producer-bundle prepare-refresh-decision` and
   `preflight-refresh-decision`.
+
+---
+**Archived:** 2026-06-12
+**Verdict:** PASS

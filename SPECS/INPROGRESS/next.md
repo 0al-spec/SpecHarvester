@@ -1,11 +1,18 @@
-# Next Task: P28-T3 Second Real Repository Refresh Compare Run
+# Next Task: P28 Follow-Up Selection
 
-**Status:** In Progress
-**Last Archived:** P28-T2 Real Xyflow Refresh Compare Run
+**Status:** Review Pending
+**Last Archived:** P28-T3 Second Real Repository Refresh Compare Run
 **Archived:** 2026-06-12
 
 ## Recently Archived
 
+- `P28-T3` ran real `TanStack/query` at
+  `feb1efd804c1262106f72c8adc1d82a8ce9cfbb0` through SpecHarvester and local
+  SpecPM. Default draft roles produced only `tanstack_query.workspace`; explicit
+  `--role workspace --role member_package` produced `39` candidates, `38`
+  `contains` relation proposals, `78` fresh contract files, and a structured
+  SpecPM missing-baseline result:
+  `refresh_decision_prepare_current_contract_files_missing`.
 - `P28-T2` ran real `xyflow` at
   `a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd` through SpecHarvester and local
   SpecPM. SpecPM produced `status: no_update_required`,
@@ -56,14 +63,11 @@ Pick the next product phase from the roadmap. A likely follow-up is expanding
 calibration into a repeatable multi-repository quality suite while keeping
 generated candidates as local evidence, not committed registry truth.
 
-Run P28-T3 Second Real Repository Refresh Compare Run: repeat the
-`fresh-candidate-refresh-run` and SpecPM `prepare-refresh-decision` loop on a
-second package-set-capable repository so the contract is not calibrated only
-against `xyflow`.
+Review P28-T3 and convert the two observed product gaps into follow-up
+workplan tasks:
 
-Selected repository for P28-T3:
-
-- Repository: `https://github.com/TanStack/query`
-- Pinned revision: `feb1efd804c1262106f72c8adc1d82a8ce9cfbb0`
-- Reason: popular pnpm workspace with many scoped package manifests across
-  core, framework bindings, devtools, persisters, tests, and integrations.
+- generic monorepo package-set role selection should not require ad hoc
+  `--role member_package` operator knowledge;
+- new repositories without current SpecPM generated artifacts need a
+  first-submission or seeded-baseline workflow before refresh comparison can
+  emit a preflightable decision file.

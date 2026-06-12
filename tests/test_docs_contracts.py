@@ -30,6 +30,16 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_28_t3_active(next_text)
         return
 
+    if "# Next Task: P28 Follow-Up Selection" in next_text:
+        assert_p28_t3_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
+        assert_p27_t5_recent(next_text)
+        assert_p28_t1_recent(next_text)
+        assert_p28_t2_recent(next_text)
+        assert_p28_t3_recent(next_text)
+        assert_phase_28_follow_up_active(next_text)
+        return
+
     assert_p27_t5_last_archived(next_text)
     assert_p27_t4_recent(next_text)
     assert_p27_t5_recent(next_text)
@@ -53,6 +63,10 @@ def assert_p27_t5_last_archived(next_text: str) -> None:
 
 def assert_p28_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P28-T2 Real Xyflow Refresh Compare Run" in next_text
+
+
+def assert_p28_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P28-T3 Second Real Repository Refresh Compare Run" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -153,12 +167,32 @@ def assert_p28_t2_recent(next_text: str) -> None:
     assert "8 generated contract-file digests" in normalized
 
 
+def assert_p28_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P28-T3` ran real `TanStack/query`" in next_text
+    assert "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0" in next_text
+    assert "tanstack_query.workspace" in next_text
+    assert "39" in next_text
+    assert "38" in next_text
+    assert "78" in next_text
+    assert "refresh_decision_prepare_current_contract_files_missing" in next_text
+    assert "missing-baseline" in normalized
+
+
 def assert_phase_28_t3_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P28-T3 Second Real Repository Refresh Compare Run" in next_text
     assert "**Status:** In Progress" in next_text
     assert "second package-set-capable repository" in normalized
     assert "not calibrated only against `xyflow`" in normalized
+
+
+def assert_phase_28_follow_up_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P28 Follow-Up Selection" in next_text
+    assert "**Status:** Review Pending" in next_text
+    assert "role selection" in normalized
+    assert "first-submission or seeded-baseline workflow" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

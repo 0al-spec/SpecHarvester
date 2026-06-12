@@ -110,6 +110,11 @@ Success criteria:
   `status: no_update_required`, `updateNeeded: false`, and
   `reason: no_contract_delta` after verifying 8 generated contract-file
   digests;
+- the real `TanStack/query` refresh compare run produced a 39-candidate
+  package-set with 38 relation proposals and a structured SpecPM
+  missing-baseline result, proving the producer handoff is not `xyflow`-specific
+  while clarifying that first-submission workflows are separate from refresh
+  comparison;
 - `SPECPM_PROPOSAL_TOKEN` remains limited to trusted workflows;
 - generated receipts never claim maintainer acceptance.
 

@@ -930,7 +930,7 @@ Acceptance:
   `fresh-candidate-refresh-run` and SpecPM `prepare-refresh-decision`, then
   record whether the result is `no_update_required` or
   `manual_review_required`.
-- [ ] `P28-T3` Repeat the refresh compare loop on a second real repository
+- [x] `P28-T3` Repeat the refresh compare loop on a second real repository
   with package-set output to check that the contract is not `xyflow`-specific.
 
 Motivation:

@@ -63,6 +63,11 @@ into the `specpm-public-index-generated-root/v0` layout so SpecPM can compare
 mechanically. The real `xyflow` refresh compare run produced
 `status: no_update_required`, `updateNeeded: false`, and
 `reason: no_contract_delta` after verifying 8 generated contract-file digests.
+The real `TanStack/query` refresh compare run produced a 39-candidate
+package-set with 38 relation proposals and a structured SpecPM
+missing-baseline result, confirming the producer handoff is not
+`xyflow`-specific while keeping first-submission workflows separate from
+refresh comparison.
 
 ### Package Sets and Monorepo Discovery
 
