@@ -137,10 +137,13 @@ Published DocC site:
 50. [`FRESH_CANDIDATE_REFRESH_RUN.md`](FRESH_CANDIDATE_REFRESH_RUN.md):
     producer-side package-set export into the SpecPM
     `prepare-refresh-decision` fresh generated-root layout
-51. [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
+51. [`BASELINE_SUBMISSION_HANDOFF.md`](BASELINE_SUBMISSION_HANDOFF.md):
+    first-submission or seeded-baseline handoff evidence for repositories
+    without current SpecPM generated artifacts
+52. [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
     proposal-only local AI enrichment for generated package-set candidates,
     compact evidence, provider receipts, and unsupported evidence diagnostics
-52. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+53. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References

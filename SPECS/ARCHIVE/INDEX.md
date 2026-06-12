@@ -104,6 +104,7 @@
 | P28-T2 | [P28-T2_Real_Xyflow_Refresh_Compare_Run/](P28-T2_Real_Xyflow_Refresh_Compare_Run/) | 2026-06-12 | PASS |
 | P28-T3 | [P28-T3_Second_Real_Repository_Refresh_Compare_Run/](P28-T3_Second_Real_Repository_Refresh_Compare_Run/) | 2026-06-12 | PASS |
 | P28-T4 | [P28-T4_Package_Set_Role_Selection_Profiles/](P28-T4_Package_Set_Role_Selection_Profiles/) | 2026-06-13 | PASS |
+| P28-T5 | [P28-T5_First_Submission_or_Seeded_Baseline_Workflow/](P28-T5_First_Submission_or_Seeded_Baseline_Workflow/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -137,6 +138,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t2_real_xyflow_refresh_compare_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t3_second_real_repository_refresh_compare.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t4_package_set_role_selection_profiles.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t5_first_submission_baseline_workflow.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -160,6 +162,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P28-T5 | Archived REVIEW_p28_t5_first_submission_baseline_workflow report |
+| 2026-06-13 | P28-T5 | Archived First-Submission or Seeded-Baseline Workflow (PASS) |
 | 2026-06-13 | P28-T4 | Archived REVIEW_p28_t4_package_set_role_selection_profiles report |
 | 2026-06-13 | P28-T4 | Archived Package-Set Role Selection Profiles (PASS) |
 | 2026-06-12 | P28-T3 | Archived REVIEW_p28_t3_second_real_repository_refresh_compare report |

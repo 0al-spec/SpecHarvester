@@ -61,6 +61,18 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_28_t5_active(next_text)
         return
 
+    if "# Next Task: Phase 28 Complete" in next_text:
+        assert_p28_t5_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
+        assert_p27_t5_recent(next_text)
+        assert_p28_t1_recent(next_text)
+        assert_p28_t2_recent(next_text)
+        assert_p28_t3_recent(next_text)
+        assert_p28_t4_recent(next_text)
+        assert_p28_t5_recent(next_text)
+        assert_phase_28_complete(next_text)
+        return
+
     assert_p27_t5_last_archived(next_text)
     assert_p27_t4_recent(next_text)
     assert_p27_t5_recent(next_text)
@@ -92,6 +104,10 @@ def assert_p28_t3_last_archived(next_text: str) -> None:
 
 def assert_p28_t4_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P28-T4 Package-Set Role Selection Profiles" in next_text
+
+
+def assert_p28_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P28-T5 First-Submission or Seeded-Baseline Workflow" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -215,6 +231,22 @@ def assert_p28_t4_recent(next_text: str) -> None:
     assert "38 contains relation proposals" in plain
 
 
+def assert_p28_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    plain = normalized.replace("`", "")
+    assert "`P28-T5` added `SpecHarvesterBaselineSubmissionHandoff`" in next_text
+    assert "baseline-submission-handoff" in next_text
+    assert "first_submission_required" in next_text
+    assert "refresh_decision_prepare_current_contract_files_missing" in next_text
+    assert "first_submission_review" in next_text
+    assert "seed_baseline" in next_text
+    assert "reject_or_request_regeneration" in next_text
+    assert "notRefreshDecision: true" in normalized
+    assert "39 candidates" in plain
+    assert "78 contract files" in plain
+    assert "39 missing-baseline diagnostics" in plain
+
+
 def assert_phase_28_t3_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P28-T3 Second Real Repository Refresh Compare Run" in next_text
@@ -250,6 +282,19 @@ def assert_phase_28_t5_active(next_text: str) -> None:
     assert "first-submission or seeded-baseline evidence" in normalized
     assert "failed registry refresh" in normalized
     assert "producer evidence is not SpecPM acceptance" in normalized
+
+
+def assert_phase_28_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 28 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "SpecPM Refresh Compare Handoff is complete" in next_text
+    assert "fresh generated-root layout" in normalized
+    assert "real `xyflow`" in next_text
+    assert "real `TanStack/query`" in next_text
+    assert "generic monorepos" in normalized
+    assert "SpecHarvesterBaselineSubmissionHandoff" in next_text
+    assert "SpecPM-side intake policy/preflight" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -1217,11 +1262,65 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     next_text = next_task.read_text(encoding="utf-8")
     normalized_next = " ".join(next_text.split())
     assert "P28-T5 First-Submission or Seeded-Baseline Workflow" in normalized_next
-    assert "P28-T4 Package-Set Role Selection Profiles" in normalized_next
+    assert "P28-T4" in normalized_next
+    assert "package-set role selection profiles" in normalized_next
     assert "TanStack/query" in next_text
     assert "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0" in next_text
     assert "`P28-T2` ran real `xyflow`" in next_text
     assert "no_contract_delta" in next_text
+
+
+def test_docc_and_github_docs_cover_baseline_submission_handoff() -> None:
+    github_doc = ROOT / "docs" / "BASELINE_SUBMISSION_HANDOFF.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BaselineSubmissionHandoff.md"
+    )
+    specpm_handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    specpm_handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    )
+    fresh_doc = ROOT / "docs" / "FRESH_CANDIDATE_REFRESH_RUN.md"
+    fresh_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "FreshCandidateRefreshRun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "baseline-submission-handoff",
+            "SpecHarvesterBaselineSubmissionHandoff",
+            "spec-harvester.baseline-submission-handoff/v0",
+            "refresh_decision_prepare_current_contract_files_missing",
+            "first_submission_required",
+            "baseline_review_required",
+            "first_submission_review",
+            "seed_baseline",
+            "reject_or_request_regeneration",
+            "producerEvidenceAuthority: evidence_only",
+            "noRegistryMutation: true",
+            "notRefreshDecision: true",
+            "baseline seeding",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (specpm_handoff, specpm_handoff_docc, fresh_doc, fresh_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "baseline-submission-handoff" in text
+        assert "SpecHarvesterBaselineSubmissionHandoff" in text or (
+            "<doc:BaselineSubmissionHandoff>" in text
+        )
+
+    assert "BASELINE_SUBMISSION_HANDOFF.md" in docs_index.read_text(encoding="utf-8")
+    root_text = root_page.read_text(encoding="utf-8")
+    assert "docs/BASELINE_SUBMISSION_HANDOFF.md" in root_text
+    assert "<doc:BaselineSubmissionHandoff>" in root_text
+    assert "SpecHarvesterBaselineSubmissionHandoff" in roadmap.read_text(encoding="utf-8")
+    assert "SpecHarvesterBaselineSubmissionHandoff" in roadmap_docc.read_text(encoding="utf-8")
 
 
 def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:

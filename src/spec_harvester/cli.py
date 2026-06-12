@@ -29,6 +29,11 @@ from spec_harvester.author_ready_calibration_matrix import (
     build_author_ready_calibration_matrix,
     write_author_ready_calibration_matrix,
 )
+from spec_harvester.baseline_submission_handoff import (
+    BaselineSubmissionHandoffOptions,
+    build_baseline_submission_handoff,
+    write_baseline_submission_handoff,
+)
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.bundle_set_preflight import (
     BundleSetPreflightOptions,
@@ -441,6 +446,35 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where SpecHarvesterFreshCandidateRefreshRun JSON is written.",
     )
     fresh_candidate_refresh_run.set_defaults(func=run_fresh_candidate_refresh_run)
+
+    baseline_submission_handoff = subcommands.add_parser(
+        "baseline-submission-handoff",
+        help=(
+            "Build first-submission or seeded-baseline handoff evidence when "
+            "SpecPM cannot prepare a refresh decision because no generated "
+            "baseline exists."
+        ),
+    )
+    baseline_submission_handoff.add_argument(
+        "--fresh-candidate-refresh-run",
+        type=Path,
+        required=True,
+        help="Path to SpecHarvesterFreshCandidateRefreshRun JSON.",
+    )
+    baseline_submission_handoff.add_argument(
+        "--specpm-prepare-report",
+        type=Path,
+        help=(
+            "Optional SpecPM prepare-report.json. When provided, it must contain "
+            "refresh_decision_prepare_current_contract_files_missing diagnostics."
+        ),
+    )
+    baseline_submission_handoff.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where SpecHarvesterBaselineSubmissionHandoff JSON is written.",
+    )
+    baseline_submission_handoff.set_defaults(func=run_baseline_submission_handoff)
 
     package_set_ai_draft = subcommands.add_parser(
         "package-set-ai-draft-proposal",
@@ -1214,6 +1248,23 @@ def run_fresh_candidate_refresh_run(args: argparse.Namespace) -> int:
     )
     if args.output is not None:
         write_fresh_candidate_refresh_run(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_baseline_submission_handoff(args: argparse.Namespace) -> int:
+    try:
+        result = build_baseline_submission_handoff(
+            BaselineSubmissionHandoffOptions(
+                fresh_candidate_refresh_run=args.fresh_candidate_refresh_run,
+                specpm_prepare_report=args.specpm_prepare_report,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    if args.output is not None:
+        write_baseline_submission_handoff(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 

@@ -167,6 +167,29 @@ evidence_only` and `noRegistryMutation: true`; it does not update curated
 accepted artifacts or publish registry metadata. See
 [`FRESH_CANDIDATE_REFRESH_RUN.md`](FRESH_CANDIDATE_REFRESH_RUN.md).
 
+## Baseline Submission Handoff
+
+If SpecPM `prepare-report.json` contains
+`refresh_decision_prepare_current_contract_files_missing`, the repository does
+not yet have current generated artifacts to compare against. In that state,
+emit a first-submission or seeded-baseline handoff instead of treating the run
+as a normal refresh decision:
+
+```bash
+spec-harvester baseline-submission-handoff \
+  --fresh-candidate-refresh-run .smoke/tanstack-query/fresh-candidate-refresh-run.json \
+  --specpm-prepare-report .smoke/tanstack-query/prepare-report.json \
+  --output .smoke/tanstack-query/baseline-submission-handoff.json
+```
+
+The output is `SpecHarvesterBaselineSubmissionHandoff`. It records
+`first_submission_required`, maintainer actions such as
+`first_submission_review`, `seed_baseline`, and
+`reject_or_request_regeneration`, and the boundary
+`notRefreshDecision: true`. It does not seed SpecPM automatically, accept
+packages, publish registry metadata, or replace maintainer review. See
+[`BASELINE_SUBMISSION_HANDOFF.md`](BASELINE_SUBMISSION_HANDOFF.md).
+
 ## Receipt Example
 
 ```json

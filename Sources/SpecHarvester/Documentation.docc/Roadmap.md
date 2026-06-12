@@ -70,9 +70,11 @@ missing-baseline result, confirming the producer handoff is not
 refresh comparison. `--role-profile generic_monorepo` now selects
 workspace/member package-set output for generic monorepos and reproduced the
 useful TanStack/query 39-candidate / 38-relation shape without raw
-`--role member_package` operator knowledge. The next focus is a
-first-submission or seeded-baseline workflow for repositories without current
-SpecPM generated artifacts.
+`--role member_package` operator knowledge.
+`SpecHarvesterBaselineSubmissionHandoff` records first-submission or
+seeded-baseline review evidence when SpecPM reports
+`refresh_decision_prepare_current_contract_files_missing`. The next boundary is
+SpecPM-side intake policy for those handoff artifacts.
 
 ### Package Sets and Monorepo Discovery
 

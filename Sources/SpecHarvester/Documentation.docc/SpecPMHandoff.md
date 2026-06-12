@@ -127,6 +127,22 @@ contract-file digests, and points operators at
 The refresh run is producer evidence only. It records
 `producerEvidenceAuthority: evidence_only` and `noRegistryMutation: true`.
 
+## Baseline Submission Handoff
+
+Use <doc:BaselineSubmissionHandoff> when SpecPM `prepare-report.json` contains
+`refresh_decision_prepare_current_contract_files_missing`. That state means the
+repository has no current generated baseline to compare against, so the next
+review step is first submission, seeded baseline, or rejection rather than a
+normal refresh decision.
+
+The `baseline-submission-handoff` command writes
+`SpecHarvesterBaselineSubmissionHandoff`, records
+`first_submission_required`, maintainer actions such as
+`first_submission_review`, `seed_baseline`, and
+`reject_or_request_regeneration`, and preserves `notRefreshDecision: true`.
+It does not seed SpecPM automatically, accept packages, publish registry
+metadata, or replace maintainer review.
+
 ## Receipt Example
 
 ```json
