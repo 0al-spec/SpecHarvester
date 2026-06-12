@@ -49,9 +49,8 @@ def build_author_ready_calibration_matrix(
         "apiVersion": AUTHOR_READY_CALIBRATION_API_VERSION,
         "kind": AUTHOR_READY_CALIBRATION_KIND,
         "schemaVersion": AUTHOR_READY_CALIBRATION_SCHEMA_VERSION,
-        "qualityReport": str(quality_report_path)
-        if quality_report_path is not None
-        else quality_report.get("runReport"),
+        "qualityReport": str(quality_report_path) if quality_report_path is not None else "",
+        "runReport": string_value(quality_report.get("runReport")),
         "sourceQualityReportKind": string_value(quality_report.get("kind")),
         "packageCount": len(packages),
         "summary": calibration_summary(packages),
@@ -146,6 +145,8 @@ def author_ready_status(package: dict[str, Any], note: dict[str, Any]) -> str:
         return STATUS_BLOCKED
     if string_value(package.get("specpmStatus")) == "failed":
         return STATUS_BLOCKED
+    if string_value(package.get("overallVerdict")) == "unscored":
+        return STATUS_NEEDS_REGENERATION
     if string_value(package.get("overallVerdict")) == "review":
         return STATUS_NEEDS_REGENERATION
     return STATUS_AUTHOR_READY

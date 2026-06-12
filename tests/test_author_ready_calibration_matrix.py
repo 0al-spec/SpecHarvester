@@ -18,6 +18,8 @@ def test_author_ready_calibration_matrix_builds_summary() -> None:
     matrix = build_author_ready_calibration_matrix(quality_report_fixture())
 
     assert matrix["kind"] == AUTHOR_READY_CALIBRATION_KIND
+    assert matrix["qualityReport"] == ""
+    assert matrix["runReport"] == "/tmp/run-report.json"
     assert matrix["summary"]["packageCount"] == 3
     assert matrix["summary"]["authorReadyDraftCount"] == 1
     assert matrix["summary"]["needsRegenerationCount"] == 1
@@ -66,6 +68,31 @@ def test_author_ready_calibration_matrix_status_derivation() -> None:
     assert by_id["pkg-fail"]["reviewPriority"] == "blocking"
 
 
+def test_author_ready_calibration_matrix_does_not_treat_unscored_as_ready() -> None:
+    report = quality_report_fixture()
+    report["packages"] = [
+        {
+            "id": "pkg-unscored",
+            "packageId": "pkg.unscored",
+            "intentAccuracy": "unscored",
+            "capabilityEvidenceQuality": "unscored",
+            "analyzerCoverage": "unscored",
+            "specpmStatus": "not_run",
+            "retryOutcome": "not_attempted",
+            "overallVerdict": "unscored",
+            "humanReviewNotes": "No candidate artifacts were available.",
+        }
+    ]
+
+    matrix = build_author_ready_calibration_matrix(report)
+
+    assert matrix["summary"]["authorReadyDraftCount"] == 0
+    assert matrix["summary"]["needsRegenerationCount"] == 1
+    assert matrix["summary"]["calibrationVerdict"] == "mixed_author_ready"
+    assert matrix["packages"][0]["authorReadyStatus"] == STATUS_NEEDS_REGENERATION
+    assert matrix["packages"][0]["reviewPriority"] == "high"
+
+
 def test_write_author_ready_calibration_matrix_roundtrip(tmp_path: Path) -> None:
     matrix = build_author_ready_calibration_matrix(quality_report_fixture())
     out = tmp_path / "nested" / "author-ready-calibration-matrix.json"
@@ -95,6 +122,8 @@ def test_cli_author_ready_calibration_matrix_writes_output(tmp_path: Path, capsy
     captured = capsys.readouterr()
     data = json.loads(captured.out)
     assert data["kind"] == AUTHOR_READY_CALIBRATION_KIND
+    assert data["qualityReport"] == str(quality_report)
+    assert data["runReport"] == "/tmp/run-report.json"
 
 
 def test_cli_author_ready_calibration_matrix_reads_author_notes(
