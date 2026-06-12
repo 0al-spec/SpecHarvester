@@ -926,7 +926,7 @@ Acceptance:
 - [x] `P28-T1` Add a fresh candidate refresh run contract that exports
   generated package-set bundles into the SpecPM
   `prepare-refresh-decision` fresh generated-root layout.
-- [ ] `P28-T2` Run real `xyflow` through
+- [x] `P28-T2` Run real `xyflow` through
   `fresh-candidate-refresh-run` and SpecPM `prepare-refresh-decision`, then
   record whether the result is `no_update_required` or
   `manual_review_required`.

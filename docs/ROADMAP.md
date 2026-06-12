@@ -106,6 +106,10 @@ Success criteria:
 - fresh generated roots use `<package_id>/<version>/specpm.yaml` and
   `specs/*.spec.yaml` so SpecPM can compare contract-bearing files
   mechanically;
+- the real `xyflow` refresh compare run produced
+  `status: no_update_required`, `updateNeeded: false`, and
+  `reason: no_contract_delta` after verifying 8 generated contract-file
+  digests;
 - `SPECPM_PROPOSAL_TOKEN` remains limited to trusted workflows;
 - generated receipts never claim maintainer acceptance.
 
