@@ -47,8 +47,13 @@ Pick the next product phase from the roadmap. A likely follow-up is expanding
 calibration into a repeatable multi-repository quality suite while keeping
 generated candidates as local evidence, not committed registry truth.
 
-The current cross-repository follow-up is P28-T1 Fresh Candidate Refresh Run Contract:
-export generated package-set bundles into the SpecPM
-`prepare-refresh-decision` fresh generated-root layout so refresh/no-op
-decisions can be compared mechanically without treating SpecHarvester as
-registry authority.
+The current cross-repository follow-up is P28-T3 Second Real Repository
+Refresh Compare Run: repeat the `fresh-candidate-refresh-run` and SpecPM
+`prepare-refresh-decision` loop on a second package-set-capable repository so
+the contract is not calibrated only against `xyflow`.
+
+Recently completed P28-T2 ran real `xyflow` at
+`a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd` through SpecHarvester and local
+SpecPM. SpecPM produced `status: no_update_required`,
+`updateNeeded: false`, `reason: no_contract_delta`, and verified 8 generated
+contract-file digests.

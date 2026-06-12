@@ -60,7 +60,9 @@ acceptance decision records without writing maintainer approval into generated
 receipts. Fresh candidate refresh runs export generated package-set bundles
 into the `specpm-public-index-generated-root/v0` layout so SpecPM can compare
 `<package_id>/<version>/specpm.yaml` and `specs/*.spec.yaml` contract files
-mechanically.
+mechanically. The real `xyflow` refresh compare run produced
+`status: no_update_required`, `updateNeeded: false`, and
+`reason: no_contract_delta` after verifying 8 generated contract-file digests.
 
 ### Package Sets and Monorepo Discovery
 

@@ -70,3 +70,27 @@ The report records `producerEvidenceAuthority: evidence_only`,
 The command does not accept packages, publish registry metadata, edit curated
 artifacts, execute source repository code, run package managers, or replace
 SpecPM maintainer review.
+
+## Observed `xyflow` Refresh Compare
+
+P28-T2 ran real `xyflow` revision
+`a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd` through:
+
+```text
+collect-batch --emit-workspace-inventory
+  -> draft-package-set
+  -> preflight-bundle-set
+  -> render-package-set-site
+  -> fresh-candidate-refresh-run
+  -> SpecPM prepare-refresh-decision
+  -> SpecPM preflight-refresh-decision
+```
+
+SpecPM prepared `status: no_update_required`, `updateNeeded: false`, and
+`reason: no_contract_delta`, then verified 8 generated contract-file digests
+with `preflight-refresh-decision`.
+
+This confirms the current generator can reproduce the accepted `xyflow`
+generated contract surface. Producer receipt and report changes remain useful
+evidence, but they are not enough to justify a registry update when
+`specpm.yaml` and `specs/*.spec.yaml` are unchanged.

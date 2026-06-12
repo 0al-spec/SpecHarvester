@@ -1047,6 +1047,9 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
             "preflight-report.json",
             "producerEvidenceAuthority: evidence_only",
             "noRegistryMutation: true",
+            "no_update_required",
+            "no_contract_delta",
+            "8 generated contract-file digests",
             "does not publish packages",
             "replace SpecPM maintainer review",
         ):
@@ -1064,7 +1067,11 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     assert "`P28-T1` Add a fresh candidate refresh run contract" in workplan.read_text(
         encoding="utf-8"
     )
-    assert "P28-T1 Fresh Candidate Refresh Run Contract" in next_task.read_text(encoding="utf-8")
+    next_text = next_task.read_text(encoding="utf-8")
+    normalized_next = " ".join(next_text.split())
+    assert "P28-T3 Second Real Repository Refresh Compare Run" in normalized_next
+    assert "P28-T2 ran real `xyflow`" in next_text
+    assert "no_contract_delta" in next_text
 
 
 def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:

@@ -167,3 +167,39 @@ package-set-handoff-proposal: review context
 fresh-candidate-refresh-run: compare input
 SpecPM prepare-refresh-decision: consumer-side decision draft
 ```
+
+## Observed `xyflow` Refresh Compare
+
+P28-T2 ran the real local `xyflow` checkout through this path:
+
+```text
+collect-batch --emit-workspace-inventory
+  -> draft-package-set
+  -> preflight-bundle-set
+  -> render-package-set-site
+  -> fresh-candidate-refresh-run
+  -> SpecPM prepare-refresh-decision
+  -> SpecPM preflight-refresh-decision
+```
+
+Observed source:
+
+- repository: `https://github.com/xyflow/xyflow`
+- revision: `a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd`
+- packages: `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`,
+  `xyflow.system`
+
+Observed SpecPM result:
+
+- prepare report: `passed`
+- refresh decision: `status: no_update_required`
+- `updateNeeded: false`
+- `reason: no_contract_delta`
+- generated contract files verified: `8`
+- SpecPM verified 8 generated contract-file digests
+- preflight report: `passed`
+
+Product interpretation: the current generator can reproduce the accepted
+`xyflow` generated contract surface. The newer producer receipts and review
+artifacts are useful evidence, but they do not by themselves justify a registry
+update when `specpm.yaml` and `specs/*.spec.yaml` are unchanged.
