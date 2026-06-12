@@ -3,6 +3,7 @@
 **Status:** In Progress
 **Last Archived:** P28-T3 Second Real Repository Refresh Compare Run
 **Archived:** 2026-06-12
+**Selected:** 2026-06-13
 
 ## Recently Archived
 
@@ -71,6 +72,13 @@ The immediate product target is the TanStack/query observation from P28-T3:
 default drafting found the workspace root, but the useful package-set required
 explicit member-package role selection. P28-T4 should make that intent
 declarative, documented, and covered by tests.
+
+Expected P28-T4 output:
+
+- a named role selection profile or preset for generic monorepos;
+- CLI/docs that explain the profile without requiring raw role flags;
+- regression coverage showing the TanStack/query-style workspace/member set can
+  be selected through the profile.
 
 Queued after P28-T4:
 
