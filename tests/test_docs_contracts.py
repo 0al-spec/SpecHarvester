@@ -107,10 +107,7 @@ def assert_p28_t4_last_archived(next_text: str) -> None:
 
 
 def assert_p28_t5_last_archived(next_text: str) -> None:
-    assert (
-        "**Last Archived:** P28-T5 First-Submission or Seeded-Baseline Workflow"
-        in next_text
-    )
+    assert "**Last Archived:** P28-T5 First-Submission or Seeded-Baseline Workflow" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
