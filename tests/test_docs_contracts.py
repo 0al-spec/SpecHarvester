@@ -179,12 +179,13 @@ def assert_p28_t2_recent(next_text: str) -> None:
 
 def assert_p28_t3_recent(next_text: str) -> None:
     normalized = " ".join(next_text.split())
+    plain = normalized.replace("`", "")
     assert "`P28-T3` ran real `TanStack/query`" in next_text
     assert "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0" in next_text
     assert "tanstack_query.workspace" in next_text
-    assert "39" in next_text
-    assert "38" in next_text
-    assert "78" in next_text
+    assert "39 candidates" in plain
+    assert "38 contains relation proposals" in plain
+    assert "78 fresh contract files" in plain
     assert "refresh_decision_prepare_current_contract_files_missing" in next_text
     assert "missing-baseline" in normalized
 
@@ -1128,6 +1129,7 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     for path in (github_doc, docc_doc):
         text = path.read_text(encoding="utf-8")
         normalized = " ".join(text.split())
+        plain = normalized.replace("`", "")
         for required in (
             "fresh-candidate-refresh-run",
             "SpecHarvesterFreshCandidateRefreshRun",
@@ -1146,17 +1148,19 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
             "8 generated contract-file digests",
             "TanStack/query",
             "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0",
-            "39",
-            "38",
             "refresh_decision_prepare_current_contract_files_missing",
             "manual_review_required",
-            "78",
             "first-submission",
             "seeded-baseline workflow",
             "does not publish packages",
             "replace SpecPM maintainer review",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"
+        assert "39 candidates" in plain, f"TanStack/query candidate count missing in {path}"
+        assert "38 contains relation proposals" in plain, (
+            f"TanStack/query relation count missing in {path}"
+        )
+        assert "78 contract files" in plain, f"TanStack/query contract file count missing in {path}"
 
     for path in (handoff_doc, handoff_docc, package_set_handoff, package_set_handoff_docc):
         text = path.read_text(encoding="utf-8")
