@@ -80,6 +80,7 @@ The canonical source files remain in the repository:
 - `docs/XYFLOW_PACKAGE_SET_SMOKE.md`
 - `docs/PACKAGE_SET_HANDOFF_PROPOSAL.md`
 - `docs/FRESH_CANDIDATE_REFRESH_RUN.md`
+- `docs/BASELINE_SUBMISSION_HANDOFF.md`
 - `docs/PACKAGE_SET_AI_DRAFT_PROPOSAL.md`
 - `docs/PACKAGE_SET_AI_ENRICHMENT.md`
 - `docs/ROADMAP.md`
@@ -145,6 +146,7 @@ the host.
 - <doc:XyflowPackageSetSmoke>
 - <doc:PackageSetHandoffProposal>
 - <doc:FreshCandidateRefreshRun>
+- <doc:BaselineSubmissionHandoff>
 - <doc:PackageSetAIDraftProposal>
 - <doc:PackageSetAIEnrichment>
 - <doc:ProposalAutomation>

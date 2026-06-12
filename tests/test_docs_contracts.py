@@ -1224,6 +1224,59 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     assert "no_contract_delta" in next_text
 
 
+def test_docc_and_github_docs_cover_baseline_submission_handoff() -> None:
+    github_doc = ROOT / "docs" / "BASELINE_SUBMISSION_HANDOFF.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BaselineSubmissionHandoff.md"
+    )
+    specpm_handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    specpm_handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    )
+    fresh_doc = ROOT / "docs" / "FRESH_CANDIDATE_REFRESH_RUN.md"
+    fresh_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "FreshCandidateRefreshRun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "baseline-submission-handoff",
+            "SpecHarvesterBaselineSubmissionHandoff",
+            "spec-harvester.baseline-submission-handoff/v0",
+            "refresh_decision_prepare_current_contract_files_missing",
+            "first_submission_required",
+            "baseline_review_required",
+            "first_submission_review",
+            "seed_baseline",
+            "reject_or_request_regeneration",
+            "producerEvidenceAuthority: evidence_only",
+            "noRegistryMutation: true",
+            "notRefreshDecision: true",
+            "does not seed SpecPM automatically",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path in (specpm_handoff, specpm_handoff_docc, fresh_doc, fresh_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "baseline-submission-handoff" in text
+        assert "SpecHarvesterBaselineSubmissionHandoff" in text or (
+            "<doc:BaselineSubmissionHandoff>" in text
+        )
+
+    assert "BASELINE_SUBMISSION_HANDOFF.md" in docs_index.read_text(encoding="utf-8")
+    root_text = root_page.read_text(encoding="utf-8")
+    assert "docs/BASELINE_SUBMISSION_HANDOFF.md" in root_text
+    assert "<doc:BaselineSubmissionHandoff>" in root_text
+    assert "SpecHarvesterBaselineSubmissionHandoff" in roadmap.read_text(encoding="utf-8")
+    assert "SpecHarvesterBaselineSubmissionHandoff" in roadmap_docc.read_text(encoding="utf-8")
+
+
 def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
     github_doc = ROOT / "docs" / "AUTHOR_READY_DRAFT_QUALITY_BAR.md"
     docc_doc = (

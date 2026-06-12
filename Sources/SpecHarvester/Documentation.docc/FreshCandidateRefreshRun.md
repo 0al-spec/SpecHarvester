@@ -120,4 +120,6 @@ This confirms the producer-side package-set handoff is not `xyflow`-specific,
 while also clarifying that `prepare-refresh-decision` is a refresh compare
 helper, not a first-submission bootstrap helper. New repositories need a
 separate first-submission or seeded-baseline workflow before refresh comparison
-can emit a preflightable decision file.
+can emit a preflightable decision file. Use
+`baseline-submission-handoff` and <doc:BaselineSubmissionHandoff> to record
+that boundary as review evidence.

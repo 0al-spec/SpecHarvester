@@ -241,4 +241,6 @@ Product interpretation: the producer-side package-set handoff is not
 not a first-submission bootstrap helper. A new repository without current
 `public-index/generated/<package>/<version>` artifacts needs a separate
 first-submission or seeded-baseline workflow before refresh comparison can
-produce a preflightable decision file.
+produce a preflightable decision file. Use
+`baseline-submission-handoff` to record that boundary as
+`SpecHarvesterBaselineSubmissionHandoff` review evidence.
