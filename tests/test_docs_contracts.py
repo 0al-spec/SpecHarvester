@@ -9,6 +9,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P31-T2 Selected Candidate Handoff Proposal Helper" in next_text:
+        assert_p31_t1_last_archived(next_text)
+        assert_p30_t5_recent(next_text)
+        assert_p31_t1_recent(next_text)
+        assert_phase_31_t2_active(next_text)
+        return
+
+    if "# Next Task: P31-T1 Selected Candidate Handoff Proposal Contract" in next_text:
+        assert_p30_t5_last_archived(next_text)
+        assert_p30_t5_recent(next_text)
+        assert_phase_31_t1_active(next_text)
+        return
+
     if "# Next Task: Phase 30 Complete" in next_text:
         assert_p30_t5_last_archived(next_text)
         assert_p29_t6_recent(next_text)
@@ -269,6 +282,10 @@ def assert_p30_t4_last_archived(next_text: str) -> None:
 
 def assert_p30_t5_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P30-T5 Selected Candidate Handoff Dry Run" in next_text
+
+
+def assert_p31_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P31-T1 Selected Candidate Handoff Proposal Contract" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -834,6 +851,45 @@ def assert_phase_30_complete(next_text: str) -> None:
     assert "candidate-layer triage" in normalized
     assert "selected handoff dry run" in normalized
     assert "not accepted registry truth" in normalized
+
+
+def assert_phase_31_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P31-T1 Selected Candidate Handoff Proposal Contract" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Phase 31. Selected Candidate SpecPM Intake Handoff" in next_text
+    assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
+    assert "portable proposal contract" in normalized
+    assert "preview_only" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "external SpecPM acceptance authority" in normalized
+
+
+def assert_p31_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P31-T1` defined `SpecHarvesterSelectedCandidateHandoffProposal`" in next_text
+    assert "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md" in next_text
+    assert "selected-candidate-handoff-proposal/v0" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "3 selected" in normalized
+    assert "6 deferred" in normalized
+    assert "required evidence roles" in normalized
+    assert "external_required" in next_text
+    assert "not SpecPM acceptance" in normalized
+
+
+def assert_phase_31_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P31-T2 Selected Candidate Handoff Proposal Helper" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "producer helper" in normalized
+    assert "JSON and Markdown handoff artifacts" in normalized
+    assert "selected candidate bundles" in normalized
+    assert "producer preflight reports" in normalized
+    assert "static viewer outputs" in normalized
+    assert "SpecPM acceptance out of scope" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -1799,14 +1855,7 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
         encoding="utf-8"
     )
     next_text = next_task.read_text(encoding="utf-8")
-    normalized_next = " ".join(next_text.split())
-    assert "P28-T5 First-Submission or Seeded-Baseline Workflow" in normalized_next
-    assert "P28-T4" in normalized_next
-    assert "package-set role selection profiles" in normalized_next.lower()
-    assert "TanStack/query" in next_text
-    assert "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0" in next_text
-    assert "`P28-T2` ran real `xyflow`" in next_text
-    assert "no_contract_delta" in next_text
+    assert_current_next_task(next_text)
 
 
 def test_docc_and_github_docs_cover_baseline_submission_handoff() -> None:
@@ -5150,6 +5199,217 @@ def test_limited_popular_library_selected_handoff_dry_run_docs_cover_p30_t5_verd
     assert "LimitedPopularLibrarySelectedHandoffDryRun" in triage_docc.read_text(encoding="utf-8")
     assert "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md" in live.read_text(encoding="utf-8")
     assert "LimitedPopularLibrarySelectedHandoffDryRun" in live_docc.read_text(encoding="utf-8")
+
+
+def test_selected_candidate_handoff_proposal_fixture_records_p31_t1_contract() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "selected_candidate_handoff_proposal"
+        / "p31-t1-selected-candidate-handoff.example.json"
+    )
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.selected-candidate-handoff-proposal/v0"
+    assert payload["kind"] == "SpecHarvesterSelectedCandidateHandoffProposal"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["summary"] == {
+        "deferredCandidateCount": 6,
+        "registryMutationCount": 0,
+        "requiredEvidenceRoleCount": 11,
+        "selectedCandidateCount": 3,
+        "specpmPullRequestCreated": False,
+    }
+    assert payload["source"]["triageFixture"] == {
+        "apiVersion": "spec-harvester.limited-popular-library-candidate-layer-triage/v0",
+        "kind": "SpecHarvesterLimitedPopularLibraryCandidateLayerTriage",
+        "path": (
+            "tests/fixtures/limited_popular_library_candidate_layer_triage/"
+            "p30-t4-limited-popular-libraries.example.json"
+        ),
+        "status": "ready_for_selected_handoff_dry_run",
+    }
+    assert payload["source"]["selectedDryRunFixture"] == {
+        "apiVersion": "spec-harvester.limited-popular-library-selected-handoff-dry-run/v0",
+        "kind": "SpecHarvesterLimitedPopularLibrarySelectedHandoffDryRun",
+        "path": (
+            "tests/fixtures/limited_popular_library_selected_handoff_dry_run/"
+            "p30-t5-limited-popular-libraries.example.json"
+        ),
+        "status": "selected_handoff_dry_run_ready",
+    }
+
+    required_roles = {item["role"]: item for item in payload["requiredEvidenceRoles"]}
+    assert list(required_roles) == [
+        "candidate_bundle",
+        "manifest",
+        "boundary_spec",
+        "producer_receipt",
+        "validation_report",
+        "diagnostics",
+        "quality_report",
+        "producer_preflight",
+        "static_viewer",
+        "static_viewer_payload",
+        "selected_handoff_dry_run",
+    ]
+    assert all(item["required"] is True for item in required_roles.values())
+    assert required_roles["manifest"]["path"] == "specpm.yaml"
+    assert required_roles["boundary_spec"]["path"] == "specs/*.spec.yaml"
+    assert required_roles["producer_preflight"]["path"] == "preflight/<package_id>.json"
+    assert required_roles["static_viewer_payload"]["path"] == (
+        "viewer/<package_id>/spec-package.json"
+    )
+
+    selected = {item["id"]: item for item in payload["selectedCandidates"]}
+    assert list(selected) == ["flask.core", "gin.core", "docc2context.core"]
+    deferred = {item["id"]: item for item in payload["deferredCandidates"]}
+    assert set(deferred) == {
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "cupertino.core",
+        "navigation_split_view.core",
+    }
+    assert all(item["reason"] == "needs_regeneration" for item in deferred.values())
+    assert all(
+        item["handoffStatus"] == "excluded_from_selected_handoff" for item in deferred.values()
+    )
+
+    for candidate in selected.values():
+        assert candidate["previewOnly"] is True
+        assert candidate["triageClassification"] == "candidate_layer_review_required"
+        assert candidate["maintainerAction"] == "review_for_possible_specpm_intake"
+        assert candidate["producerPreflight"]["status"] == "passed"
+        assert candidate["producerPreflight"]["warningCount"] == 0
+        assert candidate["producerPreflight"]["errorCount"] == 0
+        assert candidate["staticViewer"]["status"] == "ok"
+        assert candidate["registryAcceptanceDecision"] == {
+            "producerAuthority": "evidence_only",
+            "requiredFor": "public_index_acceptance",
+            "status": "external_required",
+        }
+        evidence_roles = {item["role"] for item in candidate["evidenceLinks"]}
+        assert evidence_roles == set(required_roles)
+        digest_roles = {
+            item["role"]
+            for item in candidate["evidenceLinks"]
+            if item["role"] != "candidate_bundle" and item["role"] != "selected_handoff_dry_run"
+        }
+        assert all(
+            item["digest"].startswith("sha256:")
+            for item in candidate["evidenceLinks"]
+            if item["role"] in digest_roles
+        )
+
+    assert payload["futureConsumerBoundary"] == {
+        "producerCanAccept": False,
+        "specpmMayAcceptAfterMaintainerReview": True,
+        "specpmMayPreflight": True,
+    }
+    assert (
+        "Verify every required evidence role and digest before trusting the handoff."
+        in (payload["maintainerChecklist"])
+    )
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not accept packages" in non_authority
+    assert "does not accept relations" in non_authority
+    assert "does not seed baselines" in non_authority
+    assert "does not remove preview_only" in non_authority
+    assert "does not publish registry metadata" in non_authority
+    assert "does not create a SpecPM pull request" in non_authority
+    assert payload["notExecuted"] == [
+        "prepare-accepted-entry",
+        "accepted-package-update-proposal",
+        "SpecPM pull request creation",
+        "registry mutation",
+        "relation acceptance",
+        "baseline seeding",
+        "preview_only removal",
+    ]
+
+
+def test_selected_candidate_handoff_proposal_docs_cover_p31_t1_contract() -> None:
+    github_doc = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffProposal.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    handoff_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    selected_dry_run = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md"
+    selected_dry_run_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibrarySelectedHandoffDryRun.md"
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Selected Candidate Handoff Proposal",
+            "SpecHarvesterSelectedCandidateHandoffProposal",
+            "spec-harvester.selected-candidate-handoff-proposal/v0",
+            "producer_preview_evidence_only",
+            "flask.core",
+            "gin.core",
+            "docc2context.core",
+            "xyflow.workspace",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "cupertino.core",
+            "navigation_split_view.core",
+            "candidate_bundle",
+            "manifest",
+            "boundary_spec",
+            "producer_receipt",
+            "validation_report",
+            "diagnostics",
+            "quality_report",
+            "producer_preflight",
+            "static_viewer",
+            "static_viewer_payload",
+            "selected_handoff_dry_run",
+            "SHA-256",
+            "external_required",
+            "previewOnly: true",
+            "preview_only",
+            "needs_regeneration",
+            "SpecPM-side preflight",
+            "prepare-accepted-entry",
+            "accepted-package-update-proposal",
+            "SpecPM pull request",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "publish registry metadata",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SelectedCandidateHandoffProposal>" in docc_root.read_text(encoding="utf-8")
+    assert "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md" in roadmap.read_text(encoding="utf-8")
+    assert "SelectedCandidateHandoffProposal" in roadmap_docc.read_text(encoding="utf-8")
+    assert "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md" in handoff.read_text(encoding="utf-8")
+    assert "SelectedCandidateHandoffProposal" in handoff_docc.read_text(encoding="utf-8")
+    assert "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md" in selected_dry_run.read_text(encoding="utf-8")
+    assert "SelectedCandidateHandoffProposal" in selected_dry_run_docc.read_text(encoding="utf-8")
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

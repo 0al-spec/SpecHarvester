@@ -93,6 +93,7 @@ The canonical source files remain in the repository:
 - `docs/LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`
 - `docs/LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`
 - `docs/LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`
+- `docs/SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -169,6 +170,7 @@ the host.
 - <doc:LimitedPopularLibraryLiveLMStudioBatch>
 - <doc:LimitedPopularLibraryCandidateLayerTriage>
 - <doc:LimitedPopularLibrarySelectedHandoffDryRun>
+- <doc:SelectedCandidateHandoffProposal>
 - <doc:SinglePackageCandidateFallback>
 - <doc:ProposalAutomation>
 

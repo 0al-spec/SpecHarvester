@@ -53,10 +53,17 @@ review. They remain producer preview evidence only. The dry run does not remove
 `accepted-package-update-proposal`, publish registry metadata, create a SpecPM
 pull request, or replace maintainer review.
 
+P31-T1 turns this recorded dry run into the portable
+`SpecHarvesterSelectedCandidateHandoffProposal` contract in
+<doc:SelectedCandidateHandoffProposal>. That proposal shape preserves the same
+selected/deferred candidate split, required evidence roles, and external
+registry acceptance boundary.
+
 The dry run cannot accept packages, accept relations, seed baselines, publish
 registry metadata, or treat producer output as accepted SpecPM truth.
 
 See also <doc:LimitedPopularLibraryCandidateLayerTriage>,
 <doc:LimitedPopularLibraryLiveLMStudioBatch>,
 <doc:LimitedPopularLibraryDeterministicBatch>,
-<doc:LimitedPopularLibraryCorpusPlan>, and <doc:SpecPMHandoff>.
+<doc:LimitedPopularLibraryCorpusPlan>,
+<doc:SelectedCandidateHandoffProposal>, and <doc:SpecPMHandoff>.
