@@ -1145,7 +1145,7 @@ Acceptance:
   `xyflow.system` can enter selected handoff.
 - [x] `P32-T4` Run single-package deferred candidate regeneration or repair for
   `cupertino.core` and `navigation_split_view.core`.
-- [ ] `P32-T5` Produce refreshed candidate-layer triage and selected handoff
+- [x] `P32-T5` Produce refreshed candidate-layer triage and selected handoff
   evidence for regenerated candidates that satisfy hard gates.
 - [ ] `P32-T6` Add or coordinate the SpecPM-side selected candidate handoff
   preflight for `SpecHarvesterSelectedCandidateHandoffProposal`.
