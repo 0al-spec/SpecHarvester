@@ -116,6 +116,7 @@
 | P30-T5 | [P30-T5_Selected_Candidate_Handoff_Dry_Run/](P30-T5_Selected_Candidate_Handoff_Dry_Run/) | 2026-06-13 | PASS |
 | P31-T1 | [P31-T1_Selected_Candidate_Handoff_Proposal_Contract/](P31-T1_Selected_Candidate_Handoff_Proposal_Contract/) | 2026-06-13 | PASS |
 | P31-T2 | [P31-T2_Selected_Candidate_Handoff_Proposal_Helper/](P31-T2_Selected_Candidate_Handoff_Proposal_Helper/) | 2026-06-13 | PASS |
+| P31-T3 | [P31-T3_Real_Selected_Candidate_Handoff_Proposal_Dry_Run/](P31-T3_Real_Selected_Candidate_Handoff_Proposal_Dry_Run/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -184,6 +185,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P31-T3 | Archived Real Selected Candidate Handoff Proposal Dry Run (PASS) |
 | 2026-06-13 | P31-T2 | Archived REVIEW_p31_t2_selected_candidate_handoff_proposal_helper report |
 | 2026-06-13 | P31-T2 | Archived Selected Candidate Handoff Proposal Helper (PASS) |
 | 2026-06-13 | P31-T1 | Archived REVIEW_p31_t1_selected_candidate_handoff_proposal_contract report |

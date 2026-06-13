@@ -9,6 +9,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations" in next_text:
+        assert_p31_t3_last_archived(next_text)
+        assert_p30_t5_recent(next_text)
+        assert_p31_t1_recent(next_text)
+        assert_p31_t2_recent(next_text)
+        assert_p31_t3_recent(next_text)
+        assert_phase_31_t4_active(next_text)
+        return
+
     if "# Next Task: P31-T3 Real Selected Candidate Handoff Proposal Dry Run" in next_text:
         assert_p31_t2_last_archived(next_text)
         assert_p30_t5_recent(next_text)
@@ -298,6 +307,10 @@ def assert_p31_t1_last_archived(next_text: str) -> None:
 
 def assert_p31_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P31-T2 Selected Candidate Handoff Proposal Helper" in next_text
+
+
+def assert_p31_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P31-T3 Real Selected Candidate Handoff Proposal Dry Run" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -926,6 +939,35 @@ def assert_phase_31_t3_active(next_text: str) -> None:
     assert "JSON and Markdown handoff proposal fixture" in normalized
     assert "producer preview evidence only" in normalized
     assert "SpecPM acceptance remains out of scope" in normalized
+
+
+def assert_p31_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P31-T3` ran `selected-candidate-handoff-proposal`" in next_text
+    assert "p31-t3-real-selected-candidate-handoff.example.json" in next_text
+    assert "SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "six P30 deferred candidates excluded" in normalized
+    assert "producer_preview_evidence_only" in next_text
+    assert "previewOnly: true" in next_text
+    assert "external_required" in next_text
+    assert "not SpecPM acceptance" in normalized
+
+
+def assert_phase_31_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
+    assert "consumer-side preflight expectations" in normalized
+    assert "identity" in normalized
+    assert "selected/deferred candidates" in normalized
+    assert "evidence roles" in normalized
+    assert "digests" in normalized
+    assert "registry acceptance decision boundaries" in normalized
+    assert "must not accept packages" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

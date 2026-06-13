@@ -100,3 +100,8 @@ candidate as accepted registry truth.
 - No accepted-source mutation.
 - No live LM Studio call.
 - No rerun of the full P30 corpus.
+
+## Archive Status
+
+Archived: 2026-06-13
+Verdict: PASS
