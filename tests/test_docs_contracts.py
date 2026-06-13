@@ -9,6 +9,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P30-T3 Live LM Studio Limited Corpus Batch" in next_text:
+        assert_p30_t2_last_archived(next_text)
+        assert_p29_t6_recent(next_text)
+        assert_p30_t1_recent(next_text)
+        assert_p30_t2_recent(next_text)
+        assert_phase_30_t3_active(next_text)
+        return
+
     if "# Next Task: P30-T2 Deterministic Limited Corpus Batch" in next_text:
         assert_p30_t1_last_archived(next_text)
         assert_p29_t6_recent(next_text)
@@ -215,6 +223,10 @@ def assert_p29_t6_last_archived(next_text: str) -> None:
 
 def assert_p30_t1_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P30-T1 Limited Popular-Library Corpus Plan" in next_text
+
+
+def assert_p30_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P30-T2 Deterministic Limited Corpus Batch" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -635,11 +647,40 @@ def assert_p30_t1_recent(next_text: str) -> None:
 def assert_phase_30_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P30-T2 Deterministic Limited Corpus Batch" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:**" in next_text
+    assert "In Progress" in next_text or "Selected" in next_text
     assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
     assert "deterministic `--skip-ai` path" in next_text
     assert "collection, candidate, relation" in normalized
     assert "preflight, and stop-policy outcomes" in normalized
+
+
+def assert_p30_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P30-T2` recorded the deterministic limited popular-library corpus run" in next_text
+    assert "LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md" in next_text
+    assert "SpecHarvesterLimitedPopularLibraryDeterministicBatch" in next_text
+    assert "ready_for_live_lm_studio_limited_corpus" in next_text
+    assert "6 repositories" in normalized
+    assert "9 preview candidates" in normalized
+    assert "3 relation proposals" in normalized
+    assert "navigation_split_view.core" in next_text
+    assert "package_id_hint_mismatch" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "not SpecPM acceptance" in normalized
+
+
+def assert_phase_30_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P30-T3 Live LM Studio Limited Corpus Batch" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
+    assert "live LM Studio" in normalized
+    assert "openai/gpt-oss-20b" in next_text
+    assert "deterministic P30-T2 baseline" in normalized
+    assert "cost" in normalized
+    assert "repair" in normalized
+    assert "non-authority boundaries" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -3863,6 +3904,198 @@ def test_limited_popular_library_corpus_plan_docs_and_manifest_are_aligned() -> 
         assert f"`{task_id}`" in workplan_text
     assert "- [x] `P30-T1`" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_limited_popular_library_deterministic_batch_fixture_records_p30_t2_outcome() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "limited_popular_library_deterministic_batch"
+        / "p30-t2-limited-popular-libraries.example.json"
+    )
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == (
+        "spec-harvester.limited-popular-library-deterministic-batch/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterLimitedPopularLibraryDeterministicBatch"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["corpus"]["id"] == "p30-limited-popular-libraries"
+    assert payload["corpus"]["manifestPath"] == "inputs/limited-popular-libraries/repositories.yml"
+    assert payload["corpus"]["repositories"] == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert payload["source"]["mode"] == "skip_ai"
+    assert payload["source"]["batchReportDigest"].startswith("sha256:")
+    assert payload["source"]["batchValidationReportDigest"].startswith("sha256:")
+    assert payload["summary"] == {
+        "aiDraftSkippedCount": 6,
+        "aiEnrichmentSkippedCount": 6,
+        "candidateCount": 9,
+        "collectedCount": 6,
+        "failedRepositoryCount": 0,
+        "passedPreflightCount": 6,
+        "processedCount": 6,
+        "relationCount": 3,
+        "repositoryCount": 6,
+        "reviewFindingCount": 1,
+        "skippedPackageCount": 7,
+    }
+
+    by_id = {item["id"]: item for item in payload["repositoryResults"]}
+    assert set(by_id) == {
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    }
+
+    expected = {
+        "flask": ("flask.core", ["flask.core"], 1, 0, 0, "complete"),
+        "gin": ("gin.core", ["gin.core"], 1, 0, 0, "complete"),
+        "xyflow": (
+            "xyflow.workspace",
+            ["xyflow.react", "xyflow.svelte", "xyflow.system", "xyflow.workspace"],
+            4,
+            3,
+            7,
+            "partial",
+        ),
+        "cupertino": ("cupertino.core", ["cupertino.core"], 1, 0, 0, "complete"),
+        "navigation-split-view": (
+            "navigation-split-view.core",
+            ["navigation_split_view.core"],
+            1,
+            0,
+            0,
+            "complete",
+        ),
+        "docc2context": ("docc2context.core", ["docc2context.core"], 1, 0, 0, "complete"),
+    }
+    for repo_id, (
+        manifest_package_id,
+        candidate_ids,
+        candidate_count,
+        relation_count,
+        skipped_count,
+        interface_status,
+    ) in expected.items():
+        result = by_id[repo_id]
+        assert result["status"] == "passed"
+        assert result["collectionStatus"] == "collected"
+        assert result["manifestPackageId"] == manifest_package_id
+        assert result["candidateIds"] == candidate_ids
+        assert result["packageSetDraftStatus"] == "ok"
+        assert result["preflight"]["status"] == "passed"
+        assert result["preflight"]["candidateCount"] == candidate_count
+        assert result["preflight"]["relationCount"] == relation_count
+        assert result["preflight"]["errorCount"] == 0
+        assert result["preflight"]["warningCount"] == 0
+        assert result["skippedPackageCount"] == skipped_count
+        assert result["authorReadyStatus"] == "author_ready_draft"
+        assert result["authorReadyDecision"] == "stop_for_author_review"
+        assert result["aiDraft"] == "skipped"
+        assert result["aiEnrichment"] == "skipped"
+        assert result["interfaceIndex"]["status"] == interface_status
+
+    navigation = by_id["navigation-split-view"]
+    assert navigation["candidateLayerFindings"] == [
+        {
+            "id": "package_id_hint_mismatch",
+            "severity": "review",
+            "summary": (
+                "The manifest packageId hint uses navigation-split-view.core, while "
+                "deterministic drafting normalized the generated candidate id to "
+                "navigation_split_view.core."
+            ),
+        }
+    ]
+
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "did not execute AI draft or enrichment providers" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not accept packages" in non_authority
+    assert "does not accept relations" in non_authority
+    assert "does not seed baselines" in non_authority
+    assert "does not remove preview_only" in non_authority
+    assert "does not publish registry metadata" in non_authority
+    assert payload["productVerdict"]["status"] == "ready_for_live_lm_studio_limited_corpus"
+    assert payload["productVerdict"]["pipelineHealth"] == "deterministic_pipeline_passed"
+    assert (
+        payload["productVerdict"]["candidateQuality"]
+        == "valid_starter_packages_require_author_review"
+    )
+
+
+def test_limited_popular_library_deterministic_batch_docs_cover_p30_t2_verdict() -> None:
+    github_doc = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryDeterministicBatch.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    corpus_plan = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md"
+    corpus_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryCorpusPlan.md"
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Limited Popular-Library Deterministic Batch",
+            "SpecHarvesterLimitedPopularLibraryDeterministicBatch",
+            "spec-harvester.limited-popular-library-deterministic-batch/v0",
+            "producer_preview_evidence_only",
+            "inputs/limited-popular-libraries/repositories.yml",
+            "flask.core",
+            "gin.core",
+            "xyflow.workspace",
+            "cupertino.core",
+            "navigation-split-view.core",
+            "navigation_split_view.core",
+            "docc2context.core",
+            "9",
+            "3",
+            "stop_for_author_review",
+            "package_id_hint_mismatch",
+            "ready_for_live_lm_studio_limited_corpus",
+            "skip-ai",
+            "not a SpecPM intake decision",
+            "remove `preview_only`" if path == github_doc else "preview_only",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:LimitedPopularLibraryDeterministicBatch>" in docc_root.read_text(encoding="utf-8")
+    assert "LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md" in roadmap.read_text(encoding="utf-8")
+    assert "LimitedPopularLibraryDeterministicBatch" in roadmap_docc.read_text(encoding="utf-8")
+    assert "LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md" in corpus_plan.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibraryDeterministicBatch" in corpus_plan_docc.read_text(encoding="utf-8")
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

@@ -373,6 +373,9 @@ Success criteria:
 
 See
 [`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md).
+The deterministic `--skip-ai` corpus result is recorded in
+[`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md)
+with verdict `ready_for_live_lm_studio_limited_corpus`.
 
 ## Non-Goals
 

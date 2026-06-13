@@ -167,6 +167,10 @@ Later P30 tasks should produce:
 The expected product outcome is a bounded queue of reviewable valid starter
 packages, not a larger automatic registry import.
 
+P30-T2 records the deterministic corpus report in
+[`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md)
+with verdict `ready_for_live_lm_studio_limited_corpus`.
+
 ## Related Contracts
 
 - [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md)

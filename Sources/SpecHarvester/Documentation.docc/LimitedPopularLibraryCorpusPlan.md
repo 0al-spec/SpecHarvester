@@ -85,6 +85,10 @@ dirty input when clean input is required, deterministic preflight failure,
 provider unavailability, exhausted JSON repair, package id drift, unsupported
 evidence, or ungrounded claims.
 
+P30-T2 records the deterministic corpus report in
+<doc:LimitedPopularLibraryDeterministicBatch> with verdict
+`ready_for_live_lm_studio_limited_corpus`.
+
 See also <doc:RepositorySourceManifests>, <doc:AutonomousCandidateBatch>,
 <doc:AutonomousCandidateIntakePolicy>, and
 <doc:AutonomousCandidateCorpusQualityGate>.
