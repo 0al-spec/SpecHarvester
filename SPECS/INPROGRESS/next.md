@@ -1,6 +1,6 @@
 # Next Task: P31-T3 Real Selected Candidate Handoff Proposal Dry Run
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P31-T3 Real Selected Candidate Handoff Proposal Dry Run
 **Phase:** Phase 31. Selected Candidate SpecPM Intake Handoff
