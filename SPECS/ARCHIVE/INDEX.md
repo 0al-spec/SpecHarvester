@@ -152,6 +152,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t6_specnode_refinement_orchestration_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t5_collector_drafter_vertical_slice_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t4_public_api_analyzer_pipeline_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t3_report_builder_behavior_objects.md` |
@@ -230,6 +231,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P17-T6 | Archived REVIEW_p17_t6_specnode_refinement_orchestration_objects report |
 | 2026-06-14 | P17-T6 | Archived SpecNode Refinement Orchestration Objects (PASS) |
 | 2026-06-14 | P17-T5 | Archived REVIEW_p17_t5_collector_drafter_vertical_slice_objects report |
 | 2026-06-14 | P17-T5 | Archived Collector and Drafter Vertical Slice Objects (PASS) |
