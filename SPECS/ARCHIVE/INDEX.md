@@ -125,6 +125,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t4_candidate_layer_triage_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t3_live_lm_studio_limited_corpus_batch.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t2_deterministic_limited_corpus_batch.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t1_limited_popular_library_corpus_plan.md` |
@@ -177,6 +178,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P30-T4 | Archived REVIEW_p30_t4_candidate_layer_triage_report report |
 | 2026-06-13 | P30-T4 | Archived Candidate-Layer Triage Report (PASS) |
 | 2026-06-13 | P30-T3 | Archived REVIEW_p30_t3_live_lm_studio_limited_corpus_batch report |
 | 2026-06-13 | P30-T3 | Archived Live LM Studio Limited Corpus Batch (PASS) |
