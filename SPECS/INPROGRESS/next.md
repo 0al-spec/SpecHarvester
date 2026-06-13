@@ -1,6 +1,6 @@
 # Next Task: P30-T5 Selected Candidate Handoff Dry Run
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P30-T5 Selected Candidate Handoff Dry Run
 **Phase:** Phase 30. Limited Popular-Library Scraping Batch
