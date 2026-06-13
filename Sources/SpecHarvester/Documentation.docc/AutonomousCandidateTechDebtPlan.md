@@ -106,11 +106,16 @@ or replace author or SpecPM maintainer review.
 `P32-T6 SpecPM Selected Candidate Handoff Preflight`
 
 - Owner: SpecPM.
-- Motivation: P31-T4 records expected checks, but SpecPM still needs the
-  consumer-side gate.
-- Goal: add SpecPM preflight for
-  `SpecHarvesterSelectedCandidateHandoffProposal` while keeping passing
-  preflight as review evidence only.
+- Motivation: P31-T4 records expected checks, and the P32-T5 refreshed
+  handoff needs a consumer-side SpecPM gate before readiness can be decided.
+- Goal: record merged SpecPM PR
+  [#140](https://github.com/0al-spec/SpecPM/pull/140), which adds
+  `specpm producer-bundle preflight-selected-candidate-handoff` for
+  `SpecHarvesterSelectedCandidateHandoffProposal` and
+  `SpecHarvesterRefreshedCandidateLayerSelectedHandoff`.
+- Result: the P32-T5 fixture passes with eight selected candidates, one
+  deferred `cupertino.core`, and three source digests verified. Passing
+  preflight remains review evidence only.
 
 `P32-T7 Limited Corpus Intake Readiness Decision`
 

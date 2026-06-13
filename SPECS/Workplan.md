@@ -1147,7 +1147,7 @@ Acceptance:
   `cupertino.core` and `navigation_split_view.core`.
 - [x] `P32-T5` Produce refreshed candidate-layer triage and selected handoff
   evidence for regenerated candidates that satisfy hard gates.
-- [ ] `P32-T6` Add or coordinate the SpecPM-side selected candidate handoff
+- [x] `P32-T6` Add or coordinate the SpecPM-side selected candidate handoff
   preflight for `SpecHarvesterSelectedCandidateHandoffProposal`.
 - [ ] `P32-T7` Record the limited corpus intake readiness decision after
   refreshed selected handoff evidence passes SpecPM-side preflight or remains

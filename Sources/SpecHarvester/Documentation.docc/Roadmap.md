@@ -218,6 +218,10 @@ P32-T5 records the refreshed selected handoff in
 <doc:RefreshedCandidateLayerSelectedHandoff>: eight candidates are ready for
 SpecPM-side selected handoff preflight, while `cupertino.core` remains
 deferred on `refined_summary_missing`.
+P32-T6 records that the SpecPM preflight was merged in
+[0al-spec/SpecPM#140](https://github.com/0al-spec/SpecPM/pull/140) and that the
+P32-T5 fixture passes with eight selected candidates, one deferred candidate,
+and three source digests verified.
 
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
