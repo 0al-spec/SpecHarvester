@@ -29,6 +29,13 @@ from spec_harvester.author_ready_calibration_matrix import (
     build_author_ready_calibration_matrix,
     write_author_ready_calibration_matrix,
 )
+from spec_harvester.autonomous_candidate_batch import (
+    DEFAULT_AUTONOMOUS_ROLE_PROFILE,
+    DEFAULT_LM_STUDIO_BASE_URL,
+    DEFAULT_PROVIDER_NAME,
+    AutonomousCandidateBatchOptions,
+    run_autonomous_candidate_batch,
+)
 from spec_harvester.baseline_submission_handoff import (
     BaselineSubmissionHandoffOptions,
     build_baseline_submission_handoff,
@@ -234,6 +241,79 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     collect_batch.set_defaults(func=run_collect_batch)
+
+    autonomous_candidate_batch = subcommands.add_parser(
+        "autonomous-candidate-batch",
+        help=(
+            "Run the local-source autonomous candidate MVP over repository "
+            "source manifests and write a batch report."
+        ),
+    )
+    autonomous_candidate_batch.add_argument(
+        "inputs",
+        type=Path,
+        help="Directory containing repository source manifests matching *.yml.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output root for collected evidence, package-set bundles, AI proposals, and report.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--select",
+        action="append",
+        default=[],
+        help="Repository id to process. Can be passed multiple times.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--max-file-bytes",
+        type=int,
+        default=DEFAULT_MAX_FILE_BYTES,
+        help=f"Maximum allowlisted file size to read. Default: {DEFAULT_MAX_FILE_BYTES}.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--relaxed-private",
+        action="store_true",
+        help="Disable strict public registry preflight checks for private-code experiments.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--analyzer-cache-dir",
+        type=Path,
+        help="Optional root for per-repository static analyzer caches.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--role-profile",
+        choices=tuple(PACKAGE_SET_ROLE_PROFILES),
+        default=DEFAULT_AUTONOMOUS_ROLE_PROFILE,
+        help=(f"Package-set role selection profile. Default: {DEFAULT_AUTONOMOUS_ROLE_PROFILE}."),
+    )
+    autonomous_candidate_batch.add_argument(
+        "--role",
+        action="append",
+        default=[],
+        help="Inventory package role to draft. Can be repeated.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--skip-ai",
+        action="store_true",
+        help="Disable local model calls for deterministic offline runs.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--lm-studio-base-url",
+        default=DEFAULT_LM_STUDIO_BASE_URL,
+        help=f"Local OpenAI-compatible provider base URL. Default: {DEFAULT_LM_STUDIO_BASE_URL}.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--lm-studio-model",
+        help="Local model id for LM Studio/OpenAI-compatible execution, e.g. openai/gpt-oss-20b.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--provider-name",
+        default=DEFAULT_PROVIDER_NAME,
+        help=f"Provider label recorded in proposal artifacts. Default: {DEFAULT_PROVIDER_NAME}.",
+    )
+    autonomous_candidate_batch.set_defaults(func=run_autonomous_candidate_batch_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -1161,6 +1241,31 @@ def run_collect_batch(args: argparse.Namespace) -> int:
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 1 if result.get("status") == "error" else 0
+
+
+def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
+    try:
+        result = run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=args.inputs,
+                out=args.out,
+                selected_ids=tuple(args.select),
+                max_file_bytes=args.max_file_bytes,
+                strict_public=not args.relaxed_private,
+                analyzer_cache_dir=args.analyzer_cache_dir,
+                role_profile=args.role_profile,
+                roles=tuple(args.role),
+                skip_ai=args.skip_ai,
+                lm_studio_base_url=args.lm_studio_base_url,
+                lm_studio_model=args.lm_studio_model,
+                provider_name=args.provider_name,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
 
 
 def run_draft(args: argparse.Namespace) -> int:

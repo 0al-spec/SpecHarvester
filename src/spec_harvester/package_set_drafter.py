@@ -41,9 +41,17 @@ PACKAGE_RELATION_PROPOSALS_SCHEMA_VERSION = 1
 DEFAULT_DRAFT_ROLES = ("workspace", "core_runtime", "react_binding", "svelte_binding")
 DEFAULT_ROLE_SELECTION_PROFILE = "default"
 EXPLICIT_ROLE_SELECTION_PROFILE = "custom"
+AUTONOMOUS_POPULAR_MVP_ROLE_SELECTION_PROFILE = "autonomous_popular_mvp"
 PACKAGE_SET_ROLE_PROFILES = {
     DEFAULT_ROLE_SELECTION_PROFILE: DEFAULT_DRAFT_ROLES,
     "generic_monorepo": ("workspace", "member_package"),
+    AUTONOMOUS_POPULAR_MVP_ROLE_SELECTION_PROFILE: (
+        "workspace",
+        "core_runtime",
+        "react_binding",
+        "svelte_binding",
+        "member_package",
+    ),
 }
 
 

@@ -972,3 +972,47 @@ Acceptance:
   through a named profile or preset.
 - Missing-baseline repositories produce a clear first-submission or
   seeded-baseline handoff instead of a refresh-decision file.
+
+## Phase 29. Autonomous Candidate Harvest MVP
+
+- [x] `P29-T1` Add an autonomous candidate batch runner that takes a repository
+  source manifest, collects deterministic evidence from local public checkouts,
+  drafts package-set preview bundles, runs producer preflight, and optionally
+  invokes a local LM Studio/OpenAI-compatible model for schema-bound AI draft
+  and enrichment proposals.
+- [ ] `P29-T2` Add a SpecPM-facing candidate-layer intake policy for autonomous
+  batch output so generated preview packages can be reviewed without implying
+  accepted registry authority.
+- [ ] `P29-T3` Run the autonomous batch runner on a small popular-library set,
+  record quality and stop-policy outcomes, and decide which candidates deserve
+  curated SpecPM submission work.
+
+Motivation:
+
+- The current pipeline can process one real repository well, but autonomous
+  popular-library exploration still requires manual command chaining.
+- The original product idea is `LLM + schema`: SpecHarvester should create a
+  strong, repository-personalized valid starter package while leaving final
+  semantic truth to authors, their agents, and SpecPM maintainers.
+- Operators need a cost-controlled local model path for repeated scraping runs;
+  LM Studio/OpenAI-compatible execution should be the default live enrichment
+  surface, while CI remains provider-free.
+
+Goal:
+
+- Provide an MVP operator command for autonomous candidate scraping into
+  reviewable SpecPM preview artifacts, not automatic registry acceptance.
+
+Acceptance:
+
+- The runner consumes existing repository source manifests and local public
+  checkouts; it does not clone repositories, browse the network, execute package
+  scripts, install dependencies, or publish SpecPM registry content.
+- Each processed repository records collect, workspace inventory, package-set
+  draft, bundle-set preflight, optional AI draft, optional AI enrichment, and
+  author-ready summary outputs in one machine-readable batch report.
+- Live model execution is local and operator-controlled through LM Studio or
+  another local OpenAI-compatible provider; raw prompts, raw responses, secrets,
+  and chain-of-thought are not persisted.
+- Generated package files remain `preview_only` producer evidence until
+  explicit SpecPM-side review and acceptance.

@@ -139,6 +139,18 @@ license, provenance, duplicate-intent, diagnostics, and evidence-quality risks
 beside candidate bundles. These reports remain review aids and do not imply
 SpecPM acceptance.
 
+### Autonomous Candidate Harvest MVP
+
+Operators need one cost-controlled runner for popular-library exploration. The
+MVP path runs repository source manifests through deterministic collection,
+workspace inventory, package-set drafting, bundle-set preflight, optional local
+LM Studio AI draft/enrichment proposals, and one batch report.
+
+Generated artifacts remain `preview_only` producer evidence. SpecHarvester does
+not clone repositories, execute harvested code, install dependencies, publish
+registry metadata, or accept packages. SpecPM remains the acceptance and
+registry authority.
+
 ## Non-Goals
 
 SpecHarvester does not become the registry, the canonical package authority,
@@ -157,4 +169,5 @@ repositories.
 - <doc:BundleSetPreflight>
 - <doc:AuthorReadyDraftQualityBar>
 - <doc:PackageSetAIEnrichment>
+- <doc:AutonomousCandidateBatch>
 - <doc:XyflowPackageSetSmoke>

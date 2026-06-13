@@ -83,6 +83,7 @@ The canonical source files remain in the repository:
 - `docs/BASELINE_SUBMISSION_HANDOFF.md`
 - `docs/PACKAGE_SET_AI_DRAFT_PROPOSAL.md`
 - `docs/PACKAGE_SET_AI_ENRICHMENT.md`
+- `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -149,6 +150,7 @@ the host.
 - <doc:BaselineSubmissionHandoff>
 - <doc:PackageSetAIDraftProposal>
 - <doc:PackageSetAIEnrichment>
+- <doc:AutonomousCandidateBatch>
 - <doc:ProposalAutomation>
 
 ### Architecture

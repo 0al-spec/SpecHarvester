@@ -290,6 +290,35 @@ Success criteria:
 - handoff evidence is complete enough for SpecPM maintainers;
 - review reports do not imply automatic acceptance.
 
+## Milestone 9: Autonomous Candidate Harvest MVP
+
+Status: MVP runner in progress.
+
+Goal: let operators run cost-controlled autonomous popular-library scraping
+against local public checkouts while keeping generated output as preview
+evidence.
+
+Tasks:
+
+- run repository source manifests through collection, workspace inventory,
+  package-set drafting, and bundle-set preflight with one command;
+- use local LM Studio/OpenAI-compatible execution for schema-bound AI draft and
+  enrichment proposals when the operator supplies a model id;
+- write one batch report that summarizes candidate counts, relation counts,
+  preflight status, AI proposal status, author-ready stop-policy status, and
+  non-authority boundaries;
+- keep CI provider-free through `--skip-ai`;
+- feed only reviewed candidate-layer evidence into later SpecPM-side intake
+  policy.
+
+Success criteria:
+
+- operators can process a small popular-library set without manual command
+  chaining;
+- no harvested repository code is executed and no dependencies are installed;
+- generated artifacts stay `preview_only` until author/maintainer review;
+- SpecPM remains the acceptance and registry authority.
+
 ## Non-Goals
 
 SpecHarvester does not:
@@ -312,4 +341,5 @@ SpecHarvester does not:
 - `docs/PACKAGE_SET_DRAFTING.md`
 - `docs/BUNDLE_SET_PREFLIGHT.md`
 - `docs/PACKAGE_SET_AI_ENRICHMENT.md`
+- `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/XYFLOW_PACKAGE_SET_SMOKE.md`
