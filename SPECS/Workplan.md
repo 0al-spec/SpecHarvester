@@ -1186,10 +1186,11 @@ Acceptance:
 
 ## Phase 33. Bounded Corpus Expansion Planning
 
-- [ ] `P33-T1` Record the bounded corpus expansion plan that defines the next
-  source manifest requirements, repository count limit, validation gate, stop
-  conditions, author/maintainer handoff, and non-authority boundary before any
-  broader autonomous scraping continues.
+- [ ] `P33-T1` Record the bounded corpus expansion plan in
+  [`BOUNDED_CORPUS_EXPANSION_PLAN.md`](../docs/BOUNDED_CORPUS_EXPANSION_PLAN.md),
+  defining the next source manifest requirements, five-repository limit,
+  validation gate, stop conditions, author/maintainer handoff, and
+  non-authority boundary before any broader autonomous scraping continues.
 - [ ] `P33-T2` Add the next-corpus source manifest fixture with pinned local
   checkout requirements, repository selection rationale, and no network
   discovery behavior.

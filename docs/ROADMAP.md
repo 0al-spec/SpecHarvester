@@ -509,6 +509,36 @@ the selected preview candidates are ready for author/maintainer review,
 `cupertino.core` remains deferred, and broader autonomous scraping requires a
 separate follow-up task.
 
+## Milestone 13: Bounded Corpus Expansion Planning
+
+Status: Planned.
+
+Goal: define the next autonomous candidate corpus as a bounded, local-only,
+operator-selected batch before any new scrape runs.
+
+Tasks:
+
+- record `P33-T1`, the bounded corpus expansion plan
+  ([`BOUNDED_CORPUS_EXPANSION_PLAN.md`](BOUNDED_CORPUS_EXPANSION_PLAN.md));
+- add the next-corpus source manifest fixture with pinned local checkout
+  requirements;
+- run deterministic collection and draft generation without AI;
+- run live local-model draft/enrichment with bounded JSON repair;
+- produce candidate-layer triage and selected handoff evidence;
+- run or coordinate SpecPM-side selected handoff preflight and record the next
+  intake readiness decision.
+
+Success criteria:
+
+- the next corpus is capped at five repositories;
+- the source manifest exists before collection and forbids clone/fetch,
+  dependency installation, harvested code execution, and network discovery;
+- deterministic, live-model, candidate-layer, and SpecPM-side gates are
+  recorded before any registry-facing handoff;
+- the result remains review evidence only and does not accept packages, accept
+  relations, seed baselines, remove `preview_only`, publish registry metadata,
+  or treat AI output as registry truth.
+
 ## Non-Goals
 
 SpecHarvester does not:

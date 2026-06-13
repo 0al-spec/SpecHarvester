@@ -15,19 +15,28 @@
   The selected set is `flask.core`, `gin.core`, `docc2context.core`,
   `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`, and
   `navigation_split_view.core`; `cupertino.core` remains deferred on
-  `refined_summary_missing`.
+  `refined_summary_missing`. The artifact remains producer preview evidence
+  only and is the source input for the SpecPM-side selected candidate handoff
+  preflight consumer gate.
 - `P32-T6` recorded the merged SpecPM selected candidate handoff preflight in
   [`0al-spec/SpecPM#140`](https://github.com/0al-spec/SpecPM/pull/140). The
-  P32-T5 fixture passed with eight selected candidates, one deferred candidate,
-  and three source digests verified. The preflight remains review evidence
-  only.
+  command `specpm producer-bundle preflight-selected-candidate-handoff` emits
+  `SpecPMSelectedCandidateHandoffPreflightReport` and passed against the P32-T5
+  fixture with eight selected candidates, one deferred candidate
+  (`cupertino.core`), and three source digests verified. The preflight remains
+  review evidence only.
 - `P32-T7` recorded the limited corpus intake readiness decision in
   `docs/LIMITED_CORPUS_INTAKE_READINESS_DECISION.md`,
   `<doc:LimitedCorpusIntakeReadinessDecision>`, and
   `tests/fixtures/limited_corpus_intake_readiness_decision/p32-t7-limited-corpus-intake-readiness-decision.example.json`.
   The fixture identity is
   `SpecHarvesterLimitedCorpusIntakeReadinessDecision`, and the decision is
-  `ready_for_author_maintainer_review_with_explicit_deferral`.
+  `ready_for_author_maintainer_review_with_explicit_deferral`: selected
+  preview candidates `flask.core`, `gin.core`, `docc2context.core`,
+  `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`, and
+  `navigation_split_view.core` are ready for author/maintainer review,
+  `cupertino.core` remains deferred on `refined_summary_missing`, and broader
+  autonomous scraping requires a separate follow-up task.
 
 ## Current Selection
 

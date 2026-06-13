@@ -135,3 +135,14 @@ or replace author or SpecPM maintainer review.
 
 Run P32-T1 through P32-T7 in order. This keeps the current corpus bounded and
 reviewable before any broader autonomous popular-library scrape is attempted.
+
+## Phase 33 Follow-Up
+
+Phase 32 ended with a review-ready limited corpus, not with permission for
+unbounded scraping.
+
+The next follow-up is <doc:BoundedCorpusExpansionPlan>, which records `P33-T1`
+and requires the next corpus to define its own source manifest,
+five-repository limit, deterministic and live-model validation gates,
+candidate-layer triage gate, SpecPM-side preflight gate, stop conditions, and
+non-authority boundary before any new scrape runs.

@@ -10,6 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P33-T1 Bounded Corpus Expansion Plan" in next_text:
+        assert_p32_t7_last_archived(next_text)
+        assert_p32_t5_recent(next_text)
+        assert_p32_t6_recent(next_text)
+        assert_p32_t7_recent(next_text)
+        assert_phase_33_t1_active(next_text)
+        return
+
     if "# Next Task: Phase 32 Complete" in next_text:
         assert_p32_t7_last_archived(next_text)
         assert_p32_t5_recent(next_text)
@@ -1330,6 +1338,29 @@ def assert_phase_32_complete(next_text: str) -> None:
     assert "No Phase 32 task remains selected" in next_text
     assert "separate follow-up task" in normalized
     assert "broader autonomous scraping" in normalized
+
+
+def assert_phase_33_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P33-T1 Bounded Corpus Expansion Plan" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 33. Bounded Corpus Expansion Planning" in next_text
+    assert "source manifest requirements" in normalized
+    assert "repository count limits" in normalized
+    assert "deterministic and live-model validation gates" in normalized
+    assert "stop conditions" in normalized
+    assert "author/maintainer review handoff" in normalized
+    assert "non-authority boundaries" in normalized
+    assert "must not run a new scrape" in normalized
+    assert "clone repositories" in normalized
+    assert "fetch remote state" in normalized
+    assert "install dependencies" in normalized
+    assert "execute harvested code" in normalized
+    assert "publish registry metadata" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "AI output as registry truth" in normalized
 
 
 def assert_phase_26_t3_active(next_text: str) -> None:
@@ -5422,6 +5453,145 @@ def test_limited_corpus_intake_readiness_decision_records_p32_t7_contract() -> N
         assert "LIMITED_CORPUS_INTAKE_READINESS_DECISION.md" in path.read_text(encoding="utf-8")
     for path in (tech_debt_docc, refreshed_docc, specpm_handoff_docc, roadmap_docc):
         assert "LimitedCorpusIntakeReadinessDecision" in path.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_bounded_corpus_expansion_plan_records_p33_t1_contract() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_corpus_expansion_plan"
+        / "p33-t1-bounded-corpus-expansion-plan.example.json"
+    )
+    github_doc = ROOT / "docs" / "BOUNDED_CORPUS_EXPANSION_PLAN.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BoundedCorpusExpansionPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    tech_debt = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    tech_debt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Bounded Corpus Expansion Plan",
+            "P33-T1",
+            "SpecHarvesterBoundedCorpusExpansionPlan",
+            "spec-harvester.bounded-corpus-expansion-plan/v0",
+            "five repositories",
+            "source manifest",
+            "pinned revisions",
+            "no network discovery",
+            "Deterministic collection and draft gate",
+            "Live local-model draft/enrichment gate",
+            "Candidate-layer triage gate",
+            "SpecPM-side selected handoff preflight gate",
+            "Stop Conditions",
+            "author/maintainer review evidence",
+            "accept a package" if path == docc_doc else "accept packages",
+            "accept a relation" if path == docc_doc else "accept relations",
+            "seed a baseline" if path == docc_doc else "seed baselines",
+            "remove `preview_only`",
+            "publish registry metadata",
+            "AI output as registry truth",
+            "p33-t1-bounded-corpus-expansion-plan.example.json"
+            if path == github_doc
+            else "docs/BOUNDED_CORPUS_EXPANSION_PLAN.md",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.bounded-corpus-expansion-plan/v0"
+    assert payload["kind"] == "SpecHarvesterBoundedCorpusExpansionPlan"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["task"] == {
+        "id": "P33-T1",
+        "phase": "Phase 33. Bounded Corpus Expansion Planning",
+        "status": "planned",
+    }
+    assert payload["decision"]["status"] == (
+        "next_corpus_requires_explicit_source_manifest_before_scrape"
+    )
+    assert payload["corpus"]["maximumRepositoryCount"] == 5
+    assert payload["corpus"]["recommendedRepositoryCount"] == 5
+    assert payload["sourceManifest"]["required"] is True
+    assert payload["sourceManifest"]["plannedTask"] == "P33-T2"
+    assert payload["sourceManifest"]["artifactRole"] == "next_corpus_source_manifest"
+    assert payload["sourceManifest"]["requirements"] == [
+        "repository_id",
+        "local_checkout_path",
+        "pinned_revision",
+        "selection_rationale",
+        "expected_package_shape",
+        "no_network_discovery",
+    ]
+    assert payload["sourceManifest"]["forbiddenBehavior"] == [
+        "clone",
+        "fetch_remote_state",
+        "install_dependencies",
+        "execute_harvested_code",
+        "run_package_scripts",
+    ]
+    assert [gate["id"] for gate in payload["gateSequence"]] == [
+        "deterministic_collection_and_draft",
+        "live_local_model_draft_and_enrichment",
+        "candidate_layer_triage",
+        "specpm_selected_handoff_preflight",
+    ]
+    assert payload["gateSequence"][2]["states"] == [
+        "candidate_layer_review_required",
+        "needs_regeneration",
+        "blocked",
+        "not_for_intake",
+    ]
+    assert "repository_count_exceeds_five" in payload["stopConditions"]
+    assert "source_digest_drift" in payload["stopConditions"]
+    assert "package_identity_or_topology_drift" in payload["stopConditions"]
+    assert "specpm_preflight_error_or_authority_ambiguity" in payload["stopConditions"]
+    assert payload["authorMaintainerHandoff"] == {
+        "authorReviewRequired": True,
+        "maintainerReviewRequiredForRegistryAcceptance": True,
+        "automaticRegistryAcceptance": False,
+        "resultDisposition": "review_evidence_only",
+    }
+    assert payload["nonAuthority"] == {
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "createsSpecPMPullRequest": False,
+        "producerEvidenceOnly": True,
+        "publishesRegistryMetadata": False,
+        "removesPreviewOnly": False,
+        "seedsBaselines": False,
+        "treatsAIOutputAsRegistryTruth": False,
+    }
+    assert payload["nextTasks"] == ["P33-T2", "P33-T3", "P33-T4", "P33-T5", "P33-T6"]
+
+    assert "BOUNDED_CORPUS_EXPANSION_PLAN.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:BoundedCorpusExpansionPlan>" in docc_root.read_text(encoding="utf-8")
+    for path in (tech_debt, roadmap, workplan):
+        text = path.read_text(encoding="utf-8")
+        assert "BOUNDED_CORPUS_EXPANSION_PLAN.md" in text
+        assert "P33-T1" in text
+        assert "five" in text
+    for path in (tech_debt_docc, roadmap_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "BoundedCorpusExpansionPlan" in text
+        assert "P33-T1" in text
+        assert "five-repository" in text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

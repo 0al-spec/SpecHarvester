@@ -171,6 +171,10 @@ Published DocC site:
 60. [`LIMITED_CORPUS_INTAKE_READINESS_DECISION.md`](LIMITED_CORPUS_INTAKE_READINESS_DECISION.md):
     P32-T7 limited corpus intake readiness decision, selected/deferred
     dispositions, SpecPM preflight result, and expansion boundary
+61. [`BOUNDED_CORPUS_EXPANSION_PLAN.md`](BOUNDED_CORPUS_EXPANSION_PLAN.md):
+    P33-T1 bounded next-corpus expansion plan with source manifest
+    requirements, five-repository limit, validation gates, stop conditions, and
+    non-authority boundary
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications
