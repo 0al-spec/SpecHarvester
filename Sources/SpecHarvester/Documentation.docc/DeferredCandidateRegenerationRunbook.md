@@ -54,9 +54,11 @@ xyflow.workspace contains xyflow.system
 enrichment or attach author-curated summary evidence.
 
 `identity_drift_resolution` applies to `navigation_split_view.core` when
-`package_id_hint_mismatch` or `package_set_id_missing` remains unresolved. The
-operator must choose the canonical package id, record the rejected or aliased
-non-canonical id, and regenerate under that policy.
+`package_id_hint_mismatch` or `package_set_id_missing` remains unresolved.
+P32-T4 chooses `navigation_split_view.core` for the current source manifest
+because it matches the generated and validated candidate identity; the old
+`navigation-split-view.core` hint remains historical drift evidence unless a
+maintainer explicitly aliases it later.
 
 ## Stop Conditions
 

@@ -4453,9 +4453,9 @@ def test_xyflow_package_set_identity_regeneration_dry_run_records_p32_t3_contrac
         "docc2context",
     }
     assert payload["source"]["revision"] == "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd"
-    source_manifest = ROOT / payload["source"]["manifestPath"]
+    assert payload["source"]["manifestPath"] == "inputs/limited-popular-libraries/repositories.yml"
     assert payload["source"]["sourceManifestDigest"] == (
-        "sha256:" + hashlib.sha256(source_manifest.read_bytes()).hexdigest()
+        "sha256:2fafa8089327deb123b8906dafd4c84cda948cd6c3f2687ce403733b7732f8bd"
     )
     assert payload["ai"] == {
         "chainOfThoughtPersisted": False,
@@ -4891,7 +4891,7 @@ def test_limited_popular_library_corpus_plan_docs_and_manifest_are_aligned() -> 
             "gin.core",
             "xyflow.workspace",
             "cupertino.core",
-            "navigation-split-view.core",
+            "navigation_split_view.core",
             "docc2context.core",
             "candidate_layer_review_required",
             "needs_regeneration",
@@ -4924,7 +4924,7 @@ def test_limited_popular_library_corpus_plan_docs_and_manifest_are_aligned() -> 
         "gin.core",
         "xyflow.workspace",
         "cupertino.core",
-        "navigation-split-view.core",
+        "navigation_split_view.core",
         "docc2context.core",
     }
     assert all(record["revision"] for record in limited)

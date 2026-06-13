@@ -172,7 +172,11 @@ Affected candidate:
 Use this class when the blocker is `identity_drift_resolution`,
 `package_set_id_missing`, or `package_id_hint_mismatch`.
 
-Before regeneration, choose the canonical package id:
+Before regeneration, choose the canonical package id. P32-T4 chooses
+`navigation_split_view.core` for the current source manifest because it matches
+the generated and validated candidate identity; `navigation-split-view.core`
+is retained only as historical drift evidence unless a maintainer explicitly
+aliases it later.
 
 ```text
 navigation-split-view.core

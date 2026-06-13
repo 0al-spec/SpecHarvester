@@ -24,15 +24,18 @@ whether each candidate can re-enter candidate-layer review, and document the
 NavigationSplitView canonical id decision.
 
 For NavigationSplitView, the canonical package id for this run is
-`navigation-split-view.core`, matching
-`inputs/limited-popular-libraries/repositories.yml`. The legacy normalized id
-`navigation_split_view.core` is retained only as the rejected drift id from the
-P30/P31 deferred evidence.
+`navigation_split_view.core`, matching the generated and validated candidate
+identity from P30/P31 evidence. The legacy source-manifest hint
+`navigation-split-view.core` is retained only as the rejected or aliased drift
+id, and the current source manifest must be updated before the rerun.
 
 ## Deliverables
 
 - Verify `inputs/limited-popular-libraries/repositories.yml` and both local
   checkouts before running regeneration.
+- Update the current NavigationSplitView manifest hint to
+  `navigation_split_view.core` so the rerun starts from the chosen canonical
+  id rather than reproducing the old drift.
 - Run `autonomous-candidate-batch --select cupertino --select
   navigation-split-view` into a fresh
   `.smoke/p32-deferred-regeneration/<attempt-id>/single-package` output root.
@@ -61,8 +64,8 @@ P30/P31 deferred evidence.
 - `cupertino.core` either has clean regenerated enrichment without
   `refined_summary_missing`, or the fixture explicitly keeps it deferred and
   explains the remaining warning.
-- NavigationSplitView records `navigation-split-view.core` as canonical and
-  `navigation_split_view.core` as the rejected drift id.
+- NavigationSplitView records `navigation_split_view.core` as canonical and
+  `navigation-split-view.core` as the rejected or aliased drift id.
 - Each regenerated candidate has producer preflight `passed` with warning
   count `0` and error count `0`, or remains explicitly deferred with the
   blocking reason.
