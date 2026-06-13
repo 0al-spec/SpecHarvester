@@ -143,6 +143,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t4_live_local_model_next_corpus_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t3_deterministic_next_corpus_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t2_next_corpus_source_manifest_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t1_bounded_corpus_expansion_plan.md` |
@@ -212,6 +213,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P33-T4 | Archived REVIEW_p33_t4_live_local_model_next_corpus_dry_run report |
 | 2026-06-14 | P33-T4 | Archived Live Local-Model Next-Corpus Dry Run (PASS) |
 | 2026-06-13 | P32-T3 | Archived REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run report |
 | 2026-06-13 | P32-T3 | Archived Xyflow Package-Set Identity Regeneration Dry Run (PASS) |
