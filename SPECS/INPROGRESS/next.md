@@ -1,15 +1,22 @@
-# Next Task: P17-T6 SpecNode Refinement Orchestration Objects
+# Next Task: P20-T5 Scoped Source-Unit Draft Intent Boundaries
 
 **Priority:** P1
-**Phase:** Phase 17. Elegant Objects Refactoring Strategy
-**Effort:** Large
-**Dependencies:** P17-T5
-**Status:** Selected
-**Active Branch:** `codex/p17-t6-specnode-refinement-orchestration-objects`
-**Last Archived:** P17-T5 Collector and Drafter Vertical Slice Objects
+**Phase:** Phase 20. Scoped Source Unit Harvesting
+**Effort:** Medium
+**Dependencies:** P20-T4, P17-T6
+**Status:** Ready
+**Last Archived:** P17-T6 SpecNode Refinement Orchestration Objects
 
 ## Recently Archived
 
+- `P17-T6` moved bounded SpecNode retry orchestration behind
+  `SpecNodeRefinementRetrySequence` while preserving
+  `run_specnode_refinement_retry_orchestration`, provider interfaces,
+  provider-unavailable fallback payloads, semantic review validation, retry
+  directive construction, retry attempt records, final digest binding, and
+  retry-run validation. The procedural-style smoke recorded
+  behaviorRichClassCount: 1 and reduced `specnode_refinement.py`
+  topLevelFunctionSpan from 1690 to 1551.
 - `P17-T5` moved single-package draft bundle materialization behind
   `SinglePackageDraftBundle` while preserving `DraftOptions`,
   `draft_spec_package`, generated `specpm.yaml`, boundary specs,
@@ -18,34 +25,20 @@
   wrapper result fields, output roles, digests, and the receipt self-hash
   boundary. The procedural-style smoke recorded behaviorRichClassCount: 1 and
   reduced `drafter.py` topLevelFunctionSpan from 1665 to 1550.
-- `P17-T4` moved the Python, Go, and JavaScript/TypeScript public API analyzer
-  entry pipelines behind `PythonPublicApiAnalyzer`, `GoPublicApiAnalyzer`, and
-  `JavaScriptTypeScriptPublicApiAnalyzer` objects while preserving analyzer
-  ids, versions, confidence values, cache payloads, diagnostics, evidence
-  records, wrapper signatures, and `PublicInterfaceIndex` validation behavior.
-  The procedural-style smoke recorded behaviorRichClassCount: 3 and reduced
-  analyzer topLevelFunctionSpan from 1085 to 927.
-- `P17-T3` moved accepted candidate diff report behavior behind
-  `AcceptedCandidateDiffReport`, `PackageDiffSource`,
-  `AcceptedPackageVersions`, `CandidateComparison`, `PackageRecordDiff`, and
-  `AcceptedCandidateDiffReportWriter` while preserving the
-  `SpecHarvesterAcceptedCandidateDiffReport` schema, issue codes, comparison
-  statuses, trust-boundary text, CLI output behavior, and downstream imports.
-  The procedural-style smoke recorded behaviorRichClassCount: 4 and reduced
-  accepted diff topLevelFunctionSpan from 204 to 87.
+- `P20-T4` extended scoped-source validation with real monorepo smoke fixtures,
+  including a Tuist-managed Swift folder, a single-file target, and a non-Swift
+  folder target, giving P20-T5 concrete scoped evidence cases to preserve.
 
 ## Description
 
-Refactor SpecNode refinement orchestration after the report, analyzer,
-collector, and drafter seams are stable, keeping SpecHarvester-side provider,
-validation, retry, and unavailable-result objects inside the existing SpecNode
-contract boundary.
+Teach drafting/refinement prompts to distinguish repository, package, folder
+module, and single-file source-unit intent so generated specs do not overclaim
+package-manager ownership when only scoped evidence exists.
 
-This is the final Phase 17 EO refactoring slice. Keep the scope narrow and do
-not change the SpecNode artifact contracts, provider API, JSON schema
-validation, retry semantics, or unavailable-result behavior while introducing
-behavior-rich orchestration objects.
+This resumes Phase 20 after the Phase 17 EO refactoring stack. Keep the change
+focused on source-unit intent boundaries for draft and refinement behavior, not
+on CodeGraph integration or new source graph evidence.
 
 ## Next Step
 
-Run the BRANCH and PLAN commands for P17-T6.
+Run the BRANCH and PLAN commands for P20-T5.

@@ -520,7 +520,7 @@ Acceptance:
   adding characterization tests before moving repository profile, license
   inference, semantic evidence, intent profile, package draft assembly, or
   artifact-writing logic.
-- [ ] `P17-T6` Refactor SpecNode refinement orchestration after the report,
+- [x] `P17-T6` Refactor SpecNode refinement orchestration after the report,
   analyzer, collector, and drafter seams are stable, keeping SpecHarvester-side
   provider, validation, retry, and unavailable-result objects inside the
   existing SpecNode contract boundary.
