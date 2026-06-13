@@ -1,6 +1,6 @@
 # Next Task: P31-T2 Selected Candidate Handoff Proposal Helper
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P31-T2 Selected Candidate Handoff Proposal Helper
 **Phase:** Phase 31. Selected Candidate SpecPM Intake Handoff
