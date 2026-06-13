@@ -266,6 +266,9 @@ Published DocC site:
   end-to-end package-set smoke scenario for the `xyflow` reference path
 - [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md):
   package-set handoff proposal artifact for SpecPM review evidence
+- [`PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md`](PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md):
+  SpecPM-facing checklist for package member and relation review from
+  package-set handoff proposals
 - [`PACKAGE_SET_AI_DRAFT_PROPOSAL.md`](PACKAGE_SET_AI_DRAFT_PROPOSAL.md):
   proposal-only LLM package-set draft selection from deterministic workspace
   inventory

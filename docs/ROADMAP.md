@@ -449,6 +449,12 @@ The requirements cover package-set identity regeneration, warning-bearing
 enrichment regeneration, and identity-drift resolution before deferred
 candidates can enter selected handoff.
 
+P26-T3 records the package-set proposal intake checklist in
+[`PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md`](PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md).
+It names `SpecHarvesterPackageSetHandoffProposal`,
+`spec-harvester.package-set-handoff-proposal/v0`, the required evidence roles,
+and the boundary between package member acceptance and relation acceptance.
+
 ## Non-Goals
 
 SpecHarvester does not:

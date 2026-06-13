@@ -127,6 +127,11 @@ The command does not accept packages, accept relations, publish public registry
 metadata, mutate SpecPM sources, execute package code, run package managers, or
 replace SpecPM maintainer review.
 
+P26-T3 records the SpecPM-facing intake checklist in
+[`PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md`](PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md).
+That checklist separates package member acceptance from relation acceptance and
+keeps both decisions outside producer evidence.
+
 ## Relation To P25
 
 Phase 25 proves the package-set producer pipeline:
@@ -153,3 +158,5 @@ python3 -m spec_harvester fresh-candidate-refresh-run \
 The handoff proposal explains review context. The fresh refresh run prepares
 the `<package_id>/<version>/specpm.yaml` and `specs/*.spec.yaml` layout plus
 digests that SpecPM's `prepare-refresh-decision` helper can compare.
+
+See also [`PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md`](PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md).

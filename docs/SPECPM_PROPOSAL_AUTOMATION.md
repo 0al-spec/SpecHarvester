@@ -131,6 +131,11 @@ links, and `registryAcceptanceDecision.status: external_required`. It is still
 review evidence only; it does not accept packages or relations. See
 [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md).
 
+Package-set proposal intake expectations are recorded in
+[`PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md`](PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md).
+They define the required evidence roles before maintainers accept package
+members or relations.
+
 Package-set mode uploads a `specpm-package-set-proposal-evidence-*` workflow
 artifact containing:
 
