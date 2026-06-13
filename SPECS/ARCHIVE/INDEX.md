@@ -123,6 +123,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t2_deterministic_limited_corpus_batch.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t1_limited_popular_library_corpus_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t6_corpus_quality_gate_after_fallbacks.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t1_procedural_style_metrics.md` |
@@ -173,6 +174,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P30-T2 | Archived REVIEW_p30_t2_deterministic_limited_corpus_batch report |
 | 2026-06-13 | P30-T2 | Archived Deterministic Limited Corpus Batch (PASS) |
 | 2026-06-13 | P30-T1 | Archived REVIEW_p30_t1_limited_popular_library_corpus_plan report |
 | 2026-06-13 | P30-T1 | Archived Limited Popular-Library Corpus Plan (PASS) |
