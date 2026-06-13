@@ -9,6 +9,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P30-T2 Deterministic Limited Corpus Batch" in next_text:
+        assert_p30_t1_last_archived(next_text)
+        assert_p29_t6_recent(next_text)
+        assert_p30_t1_recent(next_text)
+        assert_phase_30_t2_active(next_text)
+        return
+
     if "# Next Task: P30-T1 Limited Popular-Library Corpus Plan" in next_text:
         assert_p29_t6_last_archived(next_text)
         assert_p29_t6_recent(next_text)
@@ -204,6 +211,10 @@ def assert_p29_t5_last_archived(next_text: str) -> None:
 
 def assert_p29_t6_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P29-T6 Corpus Quality Gate After Fallbacks" in next_text
+
+
+def assert_p30_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P30-T1 Limited Popular-Library Corpus Plan" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -599,6 +610,36 @@ def assert_phase_30_t1_active(next_text: str) -> None:
     assert "selection criteria" in normalized
     assert "operator runbook" in normalized
     assert "non-authority boundaries" in normalized
+
+
+def assert_p30_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P30-T1` defined the limited popular-library corpus plan" in next_text
+    assert "LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md" in next_text
+    assert "LimitedPopularLibraryCorpusPlan" in next_text
+    assert "inputs/limited-popular-libraries.example.yml" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "cupertino.core" in next_text
+    assert "navigation-split-view.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "source-manifest shape" in normalized
+    assert "selection criteria" in normalized
+    assert "operator runbook" in normalized
+    assert "stop conditions" in normalized
+    assert "candidate-layer triage states" in normalized
+    assert "non-authority boundaries" in normalized
+
+
+def assert_phase_30_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P30-T2 Deterministic Limited Corpus Batch" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
+    assert "deterministic `--skip-ai` path" in next_text
+    assert "collection, candidate, relation" in normalized
+    assert "preflight, and stop-policy outcomes" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -3816,7 +3857,7 @@ def test_limited_popular_library_corpus_plan_docs_and_manifest_are_aligned() -> 
     assert "Phase 30. Limited Popular-Library Scraping Batch" in workplan_text
     for task_id in ("P30-T1", "P30-T2", "P30-T3", "P30-T4", "P30-T5"):
         assert f"`{task_id}`" in workplan_text
-    assert "- [ ] `P30-T1`" in workplan_text
+    assert "- [x] `P30-T1`" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

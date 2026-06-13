@@ -1036,7 +1036,7 @@ Acceptance:
 
 ## Phase 30. Limited Popular-Library Scraping Batch
 
-- [ ] `P30-T1` Define the limited popular-library corpus expansion plan,
+- [x] `P30-T1` Define the limited popular-library corpus expansion plan,
   source-manifest shape, selection criteria, operator runbook, and non-authority
   boundaries before running a larger scrape.
 - [ ] `P30-T2` Run deterministic `--skip-ai` scraping over the selected limited

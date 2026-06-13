@@ -109,6 +109,7 @@
 | P29-T4 | [P29-T4_Single-Package_Candidate_Fallback/](P29-T4_Single-Package_Candidate_Fallback/) | 2026-06-13 | PASS |
 | P29-T5 | [P29-T5_LM_Studio_JSON_Repair_and_Retry/](P29-T5_LM_Studio_JSON_Repair_and_Retry/) | 2026-06-13 | PASS |
 | P29-T6 | [P29-T6_Corpus_Quality_Gate_After_Fallbacks/](P29-T6_Corpus_Quality_Gate_After_Fallbacks/) | 2026-06-13 | PASS |
+| P30-T1 | [P30-T1_Limited_Popular-Library_Corpus_Plan/](P30-T1_Limited_Popular-Library_Corpus_Plan/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -170,6 +171,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P30-T1 | Archived Limited Popular-Library Corpus Plan (PASS) |
 | 2026-06-13 | P29-T6 | Archived REVIEW_p29_t6_corpus_quality_gate_after_fallbacks report |
 | 2026-06-13 | P29-T6 | Archived Corpus Quality Gate After Fallbacks (PASS) |
 | 2026-06-13 | P29-T5 | Archived REVIEW_p29_t5_lm_studio_json_repair_retry report |
