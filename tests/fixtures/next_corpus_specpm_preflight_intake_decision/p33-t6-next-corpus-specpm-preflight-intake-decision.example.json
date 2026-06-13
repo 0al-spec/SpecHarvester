@@ -1,0 +1,137 @@
+{
+  "apiVersion": "spec-harvester.next-corpus-specpm-preflight-intake-decision/v0",
+  "authority": "producer_preview_evidence_only",
+  "corpus": {
+    "id": "p33-next-bounded-corpus",
+    "manifestPath": "inputs/p33-next-corpus/repositories.yml",
+    "repositories": [
+      "serena",
+      "transmission",
+      "mcpm-sh",
+      "specgraph",
+      "specpm"
+    ]
+  },
+  "deferredCandidates": [
+    {
+      "candidateLayerStatus": "needs_regeneration",
+      "handoffStatus": "deferred_from_p33_t6",
+      "id": "mcpm.system",
+      "reason": "Package identity drift and warning-bearing AI draft evidence must be regenerated or explicitly approved before selected handoff.",
+      "repositoryId": "mcpm-sh"
+    },
+    {
+      "candidateLayerStatus": "needs_regeneration",
+      "handoffStatus": "deferred_from_p33_t6",
+      "id": "specgraph.system",
+      "reason": "Package identity drift must be resolved before selected handoff.",
+      "repositoryId": "specgraph"
+    }
+  ],
+  "inputs": {
+    "candidateLayerTriageFixture": {
+      "apiVersion": "spec-harvester.next-corpus-candidate-layer-triage/v0",
+      "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+      "kind": "SpecHarvesterNextCorpusCandidateLayerTriage",
+      "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
+      "status": "ready_for_p33_t6_selected_handoff_preflight"
+    },
+    "deterministicFixture": {
+      "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
+      "kind": "SpecHarvesterNextCorpusDeterministicDryRun",
+      "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json"
+    },
+    "liveLocalModelFixture": {
+      "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
+      "kind": "SpecHarvesterNextCorpusLiveLocalModelBatch",
+      "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json"
+    },
+    "sourceManifest": {
+      "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+      "path": "inputs/p33-next-corpus/repositories.yml"
+    }
+  },
+  "intakeReadinessDecision": {
+    "reason": "P33-T5 is a candidate-layer triage fixture, not a supported SpecHarvester selected handoff payload. SpecPM correctly rejects it before maintainer intake review.",
+    "requiredFollowUp": "P33-T7 Durable Next-Corpus Selected Handoff Artifact",
+    "selectedScopeStatus": "selected_candidates_need_durable_handoff_payload",
+    "status": "not_ready_requires_durable_selected_handoff_artifact"
+  },
+  "kind": "SpecHarvesterNextCorpusSpecPMPreflightIntakeDecision",
+  "nonAuthority": [
+    "This decision is review evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata.",
+    "It does not create a SpecPM pull request.",
+    "It does not treat AI output as canonical SpecPackage, BoundarySpec, relation, or registry truth."
+  ],
+  "schemaVersion": 1,
+  "selectedCandidates": [
+    {
+      "candidateLayerStatus": "candidate_layer_review_required",
+      "handoffStatus": "selected_scope_preflight_not_ready",
+      "id": "serena.core",
+      "reason": "Selected by P33-T5, but needs a durable selected handoff payload before SpecPM maintainer intake review.",
+      "repositoryId": "serena"
+    },
+    {
+      "candidateLayerStatus": "candidate_layer_review_required",
+      "handoffStatus": "selected_scope_preflight_not_ready",
+      "id": "transmission.core",
+      "reason": "Selected by P33-T5, but needs a durable selected handoff payload before SpecPM maintainer intake review.",
+      "repositoryId": "transmission"
+    },
+    {
+      "candidateLayerStatus": "candidate_layer_review_required",
+      "handoffStatus": "selected_scope_preflight_not_ready",
+      "id": "specpm.core",
+      "reason": "Selected by P33-T5, but needs a durable selected handoff payload before SpecPM maintainer intake review.",
+      "repositoryId": "specpm"
+    }
+  ],
+  "specpmPreflight": {
+    "command": [
+      "PYTHONPATH=src",
+      "python3",
+      "-m",
+      "specpm.cli",
+      "producer-bundle",
+      "preflight-selected-candidate-handoff",
+      "--body",
+      "/Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
+      "--root",
+      "/Users/egor/Development/GitHub/0AL/SpecHarvester",
+      "--json"
+    ],
+    "diagnosticCodes": [
+      "selected_handoff_payload_missing"
+    ],
+    "inputKind": "SpecHarvesterNextCorpusCandidateLayerTriage",
+    "inputPath": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
+    "preflightApiVersion": "specpm.selected-candidate-handoff-preflight/v0",
+    "preflightKind": "SpecPMSelectedCandidateHandoffPreflightReport",
+    "report": {
+      "deferredCandidateCount": 0,
+      "digestVerifiedCount": 0,
+      "errorCount": 1,
+      "requiredEvidenceRoleCount": 0,
+      "selectedCandidateCount": 0,
+      "warningCount": 0
+    },
+    "repository": "0al-spec/SpecPM",
+    "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+    "status": "failed"
+  },
+  "summary": {
+    "deferredCandidateCount": 2,
+    "preflightErrorCount": 1,
+    "preflightWarningCount": 0,
+    "registryMutationCount": 0,
+    "selectedCandidateCount": 3,
+    "specpmPullRequestCreated": false
+  }
+}

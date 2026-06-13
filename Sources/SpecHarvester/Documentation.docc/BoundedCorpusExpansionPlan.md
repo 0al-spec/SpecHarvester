@@ -48,6 +48,12 @@ P33-T5 records candidate-layer triage in
 keeps `mcpm.system` and `specgraph.system` deferred, and records zero blocked
 or not-for-intake candidates.
 
+P33-T6 records the consumer boundary in
+<doc:NextCorpusSpecPMPreflightIntakeDecision>. The current SpecPM selected
+handoff preflight rejects the P33-T5 triage fixture with
+`selected_handoff_payload_missing`, so the next bounded step is a durable
+selected handoff artifact before maintainer intake review.
+
 ## Source Manifest
 
 `P33-T2` must add the next-corpus source manifest fixture before any scrape

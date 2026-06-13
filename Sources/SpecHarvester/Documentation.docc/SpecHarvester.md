@@ -92,6 +92,7 @@ The canonical source files remain in the repository:
 - `docs/NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`
 - `docs/NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`
 - `docs/NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`
+- `docs/NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`
 - `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`
 - `docs/SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
@@ -180,6 +181,7 @@ the host.
 - <doc:NextCorpusDeterministicDryRun>
 - <doc:NextCorpusLiveLocalModelBatch>
 - <doc:NextCorpusCandidateLayerTriage>
+- <doc:NextCorpusSpecPMPreflightIntakeDecision>
 - <doc:DeferredCandidateRegenerationRunbook>
 - <doc:XyflowPackageSetIdentityRegenerationDryRun>
 - <doc:SinglePackageDeferredCandidateRegenerationDryRun>

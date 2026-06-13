@@ -267,6 +267,11 @@ recorded `76291` provider tokens, and reached
 selected handoff preflight, while `mcpm.system` and `specgraph.system` remain
 deferred on package identity and AI draft evidence findings.
 
+<doc:NextCorpusSpecPMPreflightIntakeDecision> records `P33-T6`: the current
+SpecPM selected handoff preflight rejects the P33-T5 candidate-layer triage
+fixture with `selected_handoff_payload_missing`, so the next corpus needs a
+durable selected handoff artifact before maintainer intake review.
+
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
 no `preview_only` removal, and no AI output as registry truth.

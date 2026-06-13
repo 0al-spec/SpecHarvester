@@ -246,6 +246,8 @@ Acceptance:
 - The SpecPM-side preflight result is linked.
 - The readiness decision remains review evidence only.
 - Any registry acceptance requires a separate SpecPM maintainer flow.
+- P33-T6 is recorded in
+  [`NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`](NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md).
 
 ## Non-Authority Boundary
 
