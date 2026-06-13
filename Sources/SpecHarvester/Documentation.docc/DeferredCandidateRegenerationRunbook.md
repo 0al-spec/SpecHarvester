@@ -95,6 +95,10 @@ P32-T4 records the single-package regeneration result in
 `cupertino.core` at `needs_regeneration` because `refined_summary_missing`
 remains unresolved, and classifies `navigation_split_view.core` as
 `candidate_layer_review_required` with `selectedHandoffEligible: true`.
+P32-T5 records the refreshed selected handoff result in
+<doc:RefreshedCandidateLayerSelectedHandoff>. It includes the P30 selected
+candidates plus the eligible regenerated xyflow and NavigationSplitView
+candidates, while keeping `cupertino.core` deferred.
 
 ## Non-Authority Boundary
 
@@ -108,6 +112,7 @@ See also <doc:AutonomousCandidateTechDebtPlan>,
 <doc:DeferredSelectedCandidateRegenerationRequirements>,
 <doc:XyflowPackageSetIdentityRegenerationDryRun>,
 <doc:SinglePackageDeferredCandidateRegenerationDryRun>,
+<doc:RefreshedCandidateLayerSelectedHandoff>,
 <doc:LimitedPopularLibraryCandidateLayerTriage>,
 <doc:LimitedPopularLibrarySelectedHandoffDryRun>,
 <doc:SelectedCandidateHandoffProposal>, and <doc:SpecPMHandoff>.

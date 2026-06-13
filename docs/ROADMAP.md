@@ -495,6 +495,10 @@ P32-T3 records the xyflow package-set identity regeneration dry run in
 [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md).
 P32-T4 records the single-package deferred regeneration dry run in
 [`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md).
+P32-T5 records the refreshed selected handoff result in
+[`REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`](REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md):
+eight candidates are ready for SpecPM-side selected handoff preflight, while
+`cupertino.core` remains deferred on `refined_summary_missing`.
 
 ## Non-Goals
 

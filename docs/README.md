@@ -165,28 +165,31 @@ Published DocC site:
     P32-T4 Cupertino and NavigationSplitView single-package regeneration
     dry-run evidence, canonical id decision, preflight/viewer proof, and
     refreshed candidate-layer decisions
-59. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
+59. [`REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`](REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md):
+    P32-T5 refreshed candidate-layer selected handoff, selected/deferred
+    decisions, source fixture digests, and SpecPM-side preflight boundary
+60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications
-60. [`AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md`](AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md):
+61. [`AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md`](AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md):
     post-fallback Flask/Gin/xyflow quality gate and limited scraping readiness
     verdict
-61. [`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md):
+62. [`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md):
     P30 bounded popular-library corpus selection, source manifest, runbook,
     stop conditions, and non-authority boundaries
-62. [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md):
+63. [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md):
     P30 deterministic `--skip-ai` limited corpus result, candidate counts,
     preflight outcomes, author-ready decisions, and product verdict
-63. [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md):
+64. [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md):
     P30 live LM Studio limited corpus result, AI draft/enrichment statuses,
     JSON repair summary, provider token usage, and candidate-layer triage verdict
-64. [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md):
+65. [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md):
     P30 candidate-layer triage report, selected P30-T5 candidates,
     regeneration decisions, and non-authority boundaries
-65. [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md):
+66. [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md):
     P30 selected candidate handoff dry-run evidence, preflight/viewer digests,
     deferred candidates, and external registry acceptance boundary
-66. [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md):
+67. [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md):
     portable selected candidate handoff proposal contract and helper for SpecPM
     review evidence, selected/deferred candidates, required evidence roles,
     `selected-candidate-handoff-proposal` JSON/Markdown output, and
@@ -297,6 +300,8 @@ Published DocC site:
 - [`DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md`](DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md):
   P31-T5 requirements for regenerating deferred package-set, warning-bearing,
   and identity-drift candidates before selected handoff
+- [`REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`](REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md):
+  P32-T5 refreshed selected/deferred handoff evidence for the limited corpus
 
 ## GitHub Process Surface
 

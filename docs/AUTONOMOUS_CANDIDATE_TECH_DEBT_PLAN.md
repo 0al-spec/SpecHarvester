@@ -207,6 +207,15 @@ Acceptance:
   preflight, static viewer output, and external registry acceptance decisions.
 - Deferred candidates remain visible and are not silently dropped.
 
+Artifact:
+
+- [`REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`](REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md)
+  records the P32-T5 refreshed selected handoff. The selected set is
+  `flask.core`, `gin.core`, `docc2context.core`, `xyflow.workspace`,
+  `xyflow.react`, `xyflow.svelte`, `xyflow.system`, and
+  `navigation_split_view.core`; `cupertino.core` remains deferred on
+  `refined_summary_missing`.
+
 ### P32-T6 SpecPM Selected Candidate Handoff Preflight
 
 Owner: SpecPM.

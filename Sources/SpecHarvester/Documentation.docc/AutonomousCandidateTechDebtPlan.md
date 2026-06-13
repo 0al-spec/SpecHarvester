@@ -97,6 +97,11 @@ or replace author or SpecPM maintainer review.
   P30-T4/P30-T5.
 - Goal: produce refreshed triage and selected handoff evidence for any
   regenerated candidates that satisfy hard gates.
+- Artifact: <doc:RefreshedCandidateLayerSelectedHandoff> records the P32-T5
+  refreshed selected handoff for `flask.core`, `gin.core`,
+  `docc2context.core`, `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`,
+  `xyflow.system`, and `navigation_split_view.core`, while keeping
+  `cupertino.core` deferred on `refined_summary_missing`.
 
 `P32-T6 SpecPM Selected Candidate Handoff Preflight`
 
