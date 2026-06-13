@@ -667,8 +667,7 @@ def assert_phase_17_t4_active(next_text: str) -> None:
 def assert_p17_t4_recent(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert (
-        "`P17-T4` moved the Python, Go, and JavaScript/TypeScript public API analyzer"
-        in next_text
+        "`P17-T4` moved the Python, Go, and JavaScript/TypeScript public API analyzer" in next_text
     )
     assert "PythonPublicApiAnalyzer" in next_text
     assert "GoPublicApiAnalyzer" in next_text
