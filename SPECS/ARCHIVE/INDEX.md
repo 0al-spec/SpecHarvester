@@ -137,6 +137,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t5_refreshed_candidate_layer_selected_handoff.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t2_deferred_candidate_regeneration_runbook.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t1_autonomous_deferred_candidate_work_plan.md` |
@@ -205,6 +206,7 @@
 | 2026-06-13 | P32-T4 | Archived Single-Package Deferred Candidate Regeneration Dry Run (PASS) |
 | 2026-06-13 | P32-T4 | Archived REVIEW_p32_t4_single_package_deferred_regeneration_dry_run report |
 | 2026-06-13 | P32-T5 | Archived Refreshed Candidate-Layer Triage and Selected Handoff (PASS) |
+| 2026-06-13 | P32-T5 | Archived REVIEW_p32_t5_refreshed_candidate_layer_selected_handoff report |
 | 2026-06-13 | P32-T2 | Archived REVIEW_p32_t2_deferred_candidate_regeneration_runbook report |
 | 2026-06-13 | P32-T2 | Archived Deferred Candidate Regeneration Runbook (PASS) |
 | 2026-06-13 | P31-T5 | Archived REVIEW_p31_t5_deferred_selected_candidate_regeneration_requirements report |
