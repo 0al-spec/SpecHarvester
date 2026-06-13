@@ -9,6 +9,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P31-T5 Deferred Selected Candidate Regeneration Requirements" in next_text:
+        assert_p31_t4_last_archived(next_text)
+        assert_p30_t5_recent(next_text)
+        assert_p31_t1_recent(next_text)
+        assert_p31_t2_recent(next_text)
+        assert_p31_t3_recent(next_text)
+        assert_p31_t4_recent(next_text)
+        assert_phase_31_t5_active(next_text)
+        return
+
     if "# Next Task: P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations" in next_text:
         assert_p31_t3_last_archived(next_text)
         assert_p30_t5_recent(next_text)
@@ -311,6 +321,13 @@ def assert_p31_t2_last_archived(next_text: str) -> None:
 
 def assert_p31_t3_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P31-T3 Real Selected Candidate Handoff Proposal Dry Run" in next_text
+
+
+def assert_p31_t4_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations"
+        in next_text
+    )
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -956,6 +973,19 @@ def assert_p31_t3_recent(next_text: str) -> None:
     assert "not SpecPM acceptance" in normalized
 
 
+def assert_p31_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P31-T4` documented the SpecPM-side selected candidate handoff" in next_text
+    assert "SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md" in next_text
+    assert "SelectedCandidateHandoffPreflightExpectations" in next_text
+    assert "SpecPMSelectedCandidateHandoffPreflightReport" in next_text
+    assert "specpm.selected-candidate-handoff-preflight/v0" in next_text
+    assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "evidence roles" in normalized
+    assert "not package acceptance" in normalized
+
+
 def assert_phase_31_t4_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert (
@@ -970,6 +1000,19 @@ def assert_phase_31_t4_active(next_text: str) -> None:
     assert "digests" in normalized
     assert "registry acceptance decision boundaries" in normalized
     assert "must not accept packages" in normalized
+
+
+def assert_phase_31_t5_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P31-T5 Deferred Selected Candidate Regeneration Requirements" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "deferred P30 candidates" in normalized
+    assert "regeneration requirements" in normalized
+    assert "package-set" in normalized
+    assert "warning-bearing" in normalized
+    assert "identity-drift" in normalized
+    assert "selected handoff" in normalized
+    assert "SpecPM acceptance remains out of scope" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

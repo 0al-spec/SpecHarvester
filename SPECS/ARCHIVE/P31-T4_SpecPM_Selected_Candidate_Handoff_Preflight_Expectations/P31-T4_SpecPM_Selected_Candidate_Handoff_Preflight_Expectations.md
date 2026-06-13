@@ -102,3 +102,8 @@ SpecHarvester handoff passed -> SpecPM accepts package automatically
 - No accepted-source mutation.
 - No package or relation acceptance.
 - No registry publication.
+
+## Archive Status
+
+Archived: 2026-06-13
+Verdict: PASS

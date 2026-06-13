@@ -1,10 +1,10 @@
-# Next Task: P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations
+# Next Task: P31-T5 Deferred Selected Candidate Regeneration Requirements
 
-**Status:** In Progress
+**Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations
+**Task:** P31-T5 Deferred Selected Candidate Regeneration Requirements
 **Phase:** Phase 31. Selected Candidate SpecPM Intake Handoff
-**Last Archived:** P31-T3 Real Selected Candidate Handoff Proposal Dry Run
+**Last Archived:** P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations
 
 ## Recently Archived
 
@@ -48,22 +48,38 @@
   zero-warning producer preflight, static viewer status `ok`, and
   `registryAcceptanceDecision.status: external_required`. It remains review
   evidence only and not SpecPM acceptance.
+- `P31-T4` documented the SpecPM-side selected candidate handoff preflight
+  expectations in `docs/SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`
+  and `<doc:SelectedCandidateHandoffPreflightExpectations>`. It defined the
+  future `SpecPMSelectedCandidateHandoffPreflightReport` identity
+  `specpm.selected-candidate-handoff-preflight/v0`, checked
+  `SpecHarvesterSelectedCandidateHandoffProposal` identity,
+  `producer_preview_evidence_only` authority, evidence roles, digests,
+  selected/deferred candidate consistency, and non-authority boundaries. A pass
+  remains review evidence and not package acceptance.
 
 ## Outcome
 
-The selected candidate handoff contract, producer helper, and real selected
-candidate dry-run fixture exist. The next gap is downstream: SpecPM still needs
-clear consumer-side preflight expectations for this evidence envelope.
+The selected candidate handoff contract, producer helper, real selected
+candidate fixture, and downstream SpecPM preflight expectations now exist. The
+remaining gap is explicit policy for the deferred P30 candidates before they
+can enter selected handoff.
 
 ## Next Step
 
-Implement `P31-T4`: define downstream SpecPM-side preflight expectations for
-`SpecHarvesterSelectedCandidateHandoffProposal` evidence. The policy should
-state what SpecPM must verify before maintainer review, including identity,
-selected/deferred candidates, evidence roles, digests, preflight status, viewer
-status, registry acceptance decision boundaries, and non-authority statements.
+Implement `P31-T5`: record targeted regeneration requirements for deferred P30
+candidates before any package-set, warning-bearing, or identity-drift candidate
+can enter selected handoff.
 
-SpecPM acceptance remains out of scope for this SpecHarvester task. The next
-artifact should describe consumer-side expectations; it must not accept
-packages, accept relations, seed baselines, remove `preview_only`, publish
-registry metadata, or create a SpecPM pull request.
+The policy should cover the six deferred P30 candidates:
+`xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`,
+`cupertino.core`, and `navigation_split_view.core`. It should state what must
+be regenerated, revalidated, and reclassified before selected handoff, including
+package-set topology, warning-bearing candidate evidence, identity-drift
+handling, producer preflight status, static viewer status, and whether a
+candidate remains excluded.
+
+SpecPM acceptance remains out of scope. P31-T5 should define regeneration
+requirements only; it should not regenerate candidates, accept packages, accept
+relations, seed baselines, remove `preview_only`, publish registry metadata, or
+create a SpecPM pull request.
