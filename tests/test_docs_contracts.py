@@ -17,6 +17,17 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_29_t6_active(next_text)
         return
 
+    if "# Next Task: Phase 29 Complete" in next_text:
+        assert_p29_t6_last_archived(next_text)
+        assert_p29_t1_recent(next_text)
+        assert_p29_t2_recent(next_text)
+        assert_p29_t3_recent(next_text)
+        assert_p29_t4_recent(next_text)
+        assert_p29_t5_recent(next_text)
+        assert_p29_t6_recent(next_text)
+        assert_phase_29_complete(next_text)
+        return
+
     if "# Next Task: P29-T5 LM Studio JSON Repair and Retry" in next_text:
         assert_p29_t4_last_archived(next_text)
         assert_p29_t1_recent(next_text)
@@ -181,6 +192,10 @@ def assert_p29_t4_last_archived(next_text: str) -> None:
 
 def assert_p29_t5_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P29-T5 LM Studio JSON Repair and Retry" in next_text
+
+
+def assert_p29_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P29-T6 Corpus Quality Gate After Fallbacks" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -525,6 +540,38 @@ def assert_phase_29_t6_active(next_text: str) -> None:
     assert "deterministic preflight" in normalized
     assert "live LM Studio status" in normalized
     assert "larger popular-library scraping" in normalized
+
+
+def assert_p29_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P29-T6` recorded the post-mitigation corpus quality gate" in next_text
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md" in next_text
+    assert "AutonomousCandidateCorpusQualityGate" in next_text
+    assert "SpecHarvesterAutonomousCandidateCorpusQualityGate" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "ready_for_limited_popular_library_scraping" in next_text
+    assert "deterministic preflight passed" in normalized
+    assert "openai/gpt-oss-20b" in next_text
+    assert "excluded_package_unknown" in next_text
+    assert "package_set_id_missing" in next_text
+    assert "JSON repair `not_needed`" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "preview_only" in next_text
+    assert "not automatic SpecPM acceptance" in normalized
+
+
+def assert_phase_29_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 29 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "Autonomous Candidate Harvest MVP is complete" in next_text
+    assert "valid starter packages" in normalized
+    assert "limited popular-library scraping" in normalized
+    assert "candidate-layer review" in normalized
+    assert "not accepted registry truth" in normalized
+    assert "select the next phase" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
