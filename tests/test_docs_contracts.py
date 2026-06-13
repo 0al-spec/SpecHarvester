@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P33-T5 Next-Corpus Candidate-Layer Triage" in next_text:
+        assert_p33_t4_last_archived(next_text)
+        assert_p33_t3_recent(next_text)
+        assert_p33_t4_recent(next_text)
+        assert_phase_33_t5_active(next_text)
+        return
+
     if "# Next Task: P33-T4 Live Local-Model Next-Corpus Dry Run" in next_text:
         assert_p33_t3_last_archived(next_text)
         assert_p33_t2_recent(next_text)
@@ -497,6 +504,10 @@ def assert_p33_t2_last_archived(next_text: str) -> None:
 
 def assert_p33_t3_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P33-T3 Deterministic Next-Corpus Dry Run" in next_text
+
+
+def assert_p33_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P33-T4 Live Local-Model Next-Corpus Dry Run" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1408,6 +1419,33 @@ def assert_p33_t3_recent(next_text: str) -> None:
     assert "does not remove `preview_only`" in normalized
 
 
+def assert_p33_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P33-T4` recorded the live local-model next-corpus dry run" in next_text
+    assert "NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md" in next_text
+    assert "NextCorpusLiveLocalModelBatch" in next_text
+    assert "SpecHarvesterNextCorpusLiveLocalModelBatch" in next_text
+    assert "spec-harvester.next-corpus-live-local-model-batch/v0" in next_text
+    assert "openai/gpt-oss-20b" in next_text
+    assert "five repositories" in normalized
+    assert "five preview candidates" in normalized
+    assert "zero relation proposals" in normalized
+    assert "five bundle-set preflights" in normalized
+    assert "five AI draft proposals" in normalized
+    assert "five AI enrichment proposals" in normalized
+    assert "zero JSON repair needs" in normalized
+    assert "zero JSON repair exhaustion" in normalized
+    assert "76291 provider tokens" in normalized
+    assert "ready_for_candidate_layer_triage" in next_text
+    assert "ai_draft_no_proposal_subjects" in next_text
+    assert "ai_draft_warning_diagnostics" in next_text
+    assert "package-id review signals" in normalized
+    assert "review evidence only" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not accept relations" in normalized
+    assert "does not remove `preview_only`" in normalized
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1507,6 +1545,24 @@ def assert_phase_33_t4_active(next_text: str) -> None:
     assert "must not accept packages" in normalized
     assert "must not publish registry metadata" in normalized
     assert "AI output as registry truth" in normalized
+
+
+def assert_phase_33_t5_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P33-T5 Next-Corpus Candidate-Layer Triage" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 33. Bounded Corpus Expansion Planning" in next_text
+    assert "candidate-layer triage" in normalized
+    assert "selected, deferred, blocked, and not-for-intake" in normalized
+    assert "P33-T4 live local-model findings" in normalized
+    assert "package-id review signals" in normalized
+    assert "ai_draft_no_proposal_subjects" in next_text
+    assert "ai_draft_warning_diagnostics" in next_text
+    assert "must not run a new scrape" in normalized
+    assert "must not rerun LM Studio" in normalized
+    assert "must not accept packages" in normalized
+    assert "must not publish registry metadata" in normalized
+    assert "must not create a SpecPM pull request" in normalized
 
 
 def assert_phase_26_t3_active(next_text: str) -> None:
@@ -6066,6 +6122,278 @@ def test_next_corpus_deterministic_dry_run_records_p33_t3_contract() -> None:
         text = path.read_text(encoding="utf-8")
         assert "NextCorpusDeterministicDryRun" in text
         assert "P33-T3" in text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_next_corpus_live_local_model_batch_records_p33_t4_contract() -> None:
+    manifest_path = ROOT / "inputs" / "p33-next-corpus" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_live_local_model_batch"
+        / "p33-t4-next-corpus-live-local-model.example.json"
+    )
+    baseline_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_deterministic_dry_run"
+        / "p33-t3-next-corpus-deterministic-dry-run.example.json"
+    )
+    github_doc = ROOT / "docs" / "NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "NextCorpusLiveLocalModelBatch.md"
+    )
+    deterministic_doc = ROOT / "docs" / "NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md"
+    deterministic_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "NextCorpusDeterministicDryRun.md"
+    )
+    bounded_plan = ROOT / "docs" / "BOUNDED_CORPUS_EXPANSION_PLAN.md"
+    bounded_plan_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BoundedCorpusExpansionPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Next-Corpus Live Local-Model Batch",
+            "P33-T4",
+            "SpecHarvesterNextCorpusLiveLocalModelBatch",
+            "spec-harvester.next-corpus-live-local-model-batch/v0",
+            "inputs/p33-next-corpus/repositories.yml",
+            "p33-t4-next-corpus-live-local-model.example.json",
+            "lm_studio",
+            "openai/gpt-oss-20b",
+            "jsonRepairMaxAttempts: 1",
+            "rawPromptPersisted: false",
+            "rawResponsePersisted: false",
+            "chainOfThoughtPersisted: false",
+            "serena",
+            "transmission",
+            "mcpm-sh",
+            "specgraph",
+            "specpm",
+            "five preview candidates",
+            "zero relation proposals",
+            "five passing bundle-set preflights",
+            "five AI draft proposals",
+            "five AI enrichment proposals",
+            "zero JSON repair needs",
+            "zero JSON repair exhaustion",
+            "76291",
+            "no_proposal_subjects",
+            "selected_member_role_unknown",
+            "model_evidence_path_unsupported",
+            "excluded_package_also_selected",
+            "excluded_package_unknown",
+            "package_id_hint_changed_by_package_set_selection",
+            "ready_for_candidate_layer_triage",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.next-corpus-live-local-model-batch/v0"
+    assert payload["kind"] == "SpecHarvesterNextCorpusLiveLocalModelBatch"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["corpus"] == {
+        "id": "p33-next-bounded-corpus",
+        "manifestPath": "inputs/p33-next-corpus/repositories.yml",
+        "repositories": ["serena", "transmission", "mcpm-sh", "specgraph", "specpm"],
+    }
+    assert payload["deterministicBaseline"] == {
+        "apiVersion": "spec-harvester.next-corpus-deterministic-dry-run/v0",
+        "fixturePath": (
+            "tests/fixtures/next_corpus_deterministic_dry_run/"
+            "p33-t3-next-corpus-deterministic-dry-run.example.json"
+        ),
+        "status": "ready_for_live_local_model_next_corpus",
+        "summary": {
+            "candidateCount": 5,
+            "passedPreflightCount": 5,
+            "relationCount": 0,
+            "repositoryCount": 5,
+        },
+    }
+    assert baseline_fixture_path.exists()
+    assert payload["source"]["sourceManifestDigest"] == (
+        "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    )
+    assert payload["source"]["batchReportDigest"] == (
+        "sha256:cdf22a5ddec014e49c432925f1b71710140d8667954daba36684f8d9c12a1ff2"
+    )
+    assert payload["source"]["batchValidationReportDigest"] == (
+        "sha256:993c8eb865a8f3aa35d35b84eb49ea06862062f0acca8eeb999fce11c27dec42"
+    )
+    assert payload["source"]["mode"] == "local_lm_studio"
+    assert payload["source"]["runRoot"] == "/tmp/specharvester-p33-t4.yQPfwg/live-lm-studio"
+    assert payload["provider"] == {
+        "baseUrl": "http://127.0.0.1:1234",
+        "chainOfThoughtPersisted": False,
+        "jsonRepairMaxAttempts": 1,
+        "model": "openai/gpt-oss-20b",
+        "name": "lm_studio",
+        "rawPromptPersisted": False,
+        "rawResponsePersisted": False,
+    }
+    assert payload["summary"] == {
+        "aiDraftCompletedCount": 3,
+        "aiDraftProposalCount": 5,
+        "aiDraftWarningCount": 2,
+        "aiEnrichmentCompletedCount": 5,
+        "aiEnrichmentProposalCount": 5,
+        "aiEnrichmentWarningCount": 0,
+        "candidateCount": 5,
+        "collectedCount": 5,
+        "failedRepositoryCount": 0,
+        "jsonRepairExhaustedCount": 0,
+        "jsonRepairNeededCount": 0,
+        "passedPreflightCount": 5,
+        "processedCount": 5,
+        "providerDraftTotalTokens": 21251,
+        "providerEnrichmentTotalTokens": 55040,
+        "providerTotalTokens": 76291,
+        "relationCount": 0,
+        "repositoryCount": 5,
+        "reviewFindingCount": 6,
+    }
+    assert payload["productVerdict"]["status"] == "ready_for_candidate_layer_triage"
+    assert payload["productVerdict"]["pipelineHealth"] == (
+        "deterministic_and_live_local_model_passed"
+    )
+    assert payload["productVerdict"]["candidateQuality"] == (
+        "valid_starter_packages_with_ai_review_findings"
+    )
+    for forbidden in (
+        "This live local-model batch is review evidence only.",
+        "Model output is proposal-only and not registry truth.",
+        "It is not SpecPM registry acceptance.",
+        "It does not accept packages.",
+        "It does not accept relations.",
+        "It does not seed baselines.",
+        "It does not remove preview_only.",
+        "It does not publish registry metadata.",
+        "It does not create a SpecPM pull request.",
+    ):
+        assert forbidden in payload["nonAuthority"]
+
+    expected = {
+        "serena": {
+            "candidateIds": ["serena.core"],
+            "manifestPackageId": "serena.core",
+            "aiDraftStatus": "completed",
+            "aiDraftCodes": [],
+            "aiDraftTokens": 5168,
+            "aiEnrichmentTokens": 14656,
+            "findings": ["ai_draft_no_proposal_subjects"],
+        },
+        "transmission": {
+            "candidateIds": ["transmission.core"],
+            "manifestPackageId": "transmission.core",
+            "aiDraftStatus": "completed",
+            "aiDraftCodes": [],
+            "aiDraftTokens": 3248,
+            "aiEnrichmentTokens": 9615,
+            "findings": ["ai_draft_no_proposal_subjects"],
+        },
+        "mcpm-sh": {
+            "candidateIds": ["mcpm.system"],
+            "manifestPackageId": "mcpm.core",
+            "aiDraftStatus": "warning",
+            "aiDraftCodes": [
+                "excluded_package_also_selected",
+                "model_evidence_path_unsupported",
+                "selected_member_role_unknown",
+            ],
+            "aiDraftTokens": 5882,
+            "aiEnrichmentTokens": 11377,
+            "findings": [
+                "package_id_hint_changed_by_package_set_selection",
+                "ai_draft_warning_diagnostics",
+            ],
+        },
+        "specgraph": {
+            "candidateIds": ["specgraph.system"],
+            "manifestPackageId": "specgraph.core",
+            "aiDraftStatus": "completed",
+            "aiDraftCodes": [],
+            "aiDraftTokens": 1770,
+            "aiEnrichmentTokens": 4527,
+            "findings": ["package_id_hint_changed_by_package_set_selection"],
+        },
+        "specpm": {
+            "candidateIds": ["specpm.core"],
+            "manifestPackageId": "specpm.core",
+            "aiDraftStatus": "warning",
+            "aiDraftCodes": ["excluded_package_unknown"],
+            "aiDraftTokens": 5183,
+            "aiEnrichmentTokens": 14865,
+            "findings": ["ai_draft_warning_diagnostics"],
+        },
+    }
+    results_by_id = {result["id"]: result for result in payload["repositoryResults"]}
+    assert set(results_by_id) == set(expected)
+    for repo_id, expected_result in expected.items():
+        result = results_by_id[repo_id]
+        assert result["status"] == "passed"
+        assert result["candidateIds"] == expected_result["candidateIds"]
+        assert result["manifestPackageId"] == expected_result["manifestPackageId"]
+        assert result["authorReadyStatus"] == "author_ready_draft"
+        assert result["authorReadyDecision"] == "stop_for_author_review"
+        assert result["proceedToCandidateLayerTriage"] is True
+        assert result["preflight"] == {
+            "candidateCount": 1,
+            "errorCount": 0,
+            "relationCount": 0,
+            "status": "passed",
+            "warningCount": 0,
+        }
+        assert result["aiDraft"]["status"] == expected_result["aiDraftStatus"]
+        assert result["aiDraft"]["diagnosticCodes"] == expected_result["aiDraftCodes"]
+        assert result["aiDraft"]["jsonRepairStatus"] == "not_needed"
+        assert result["aiDraft"]["providerTotalTokens"] == expected_result["aiDraftTokens"]
+        assert result["aiEnrichment"]["status"] == "completed"
+        assert result["aiEnrichment"]["diagnosticCodes"] == []
+        assert result["aiEnrichment"]["jsonRepairStatus"] == "not_needed"
+        assert result["aiEnrichment"]["proposalCount"] == 1
+        assert (
+            result["aiEnrichment"]["providerTotalTokens"] == expected_result["aiEnrichmentTokens"]
+        )
+        assert [finding["id"] for finding in result["candidateLayerFindings"]] == expected_result[
+            "findings"
+        ]
+
+    assert "NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:NextCorpusLiveLocalModelBatch>" in docc_root.read_text(encoding="utf-8")
+    for path in (deterministic_doc, bounded_plan, roadmap, workplan):
+        text = path.read_text(encoding="utf-8")
+        assert "NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md" in text
+        assert "P33-T4" in text
+    for path in (deterministic_docc, bounded_plan_docc, roadmap_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "NextCorpusLiveLocalModelBatch" in text
+        assert "P33-T4" in text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

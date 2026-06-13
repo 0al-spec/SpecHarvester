@@ -71,6 +71,9 @@ Aggregate summary:
 Every repository can proceed to P33-T4 live local-model review. In short, the
 deterministic result is ready for P33-T4 live local-model review.
 
+P33-T4 records the corresponding live local-model result in
+[`NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`](NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md).
+
 ## Candidate-Layer Notes
 
 The batch is healthy enough for P33-T4 live local-model draft/enrichment, but it
@@ -144,6 +147,7 @@ The deterministic dry run cannot:
 
 See also:
 
+- [`NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`](NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md)
 - [`NEXT_CORPUS_SOURCE_MANIFEST.md`](NEXT_CORPUS_SOURCE_MANIFEST.md)
 - [`BOUNDED_CORPUS_EXPANSION_PLAN.md`](BOUNDED_CORPUS_EXPANSION_PLAN.md)
 - [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md)

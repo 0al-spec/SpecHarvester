@@ -183,6 +183,10 @@ Published DocC site:
     P33-T3 deterministic `--skip-ai` dry-run evidence for the next bounded
     corpus, including candidate counts, preflight outcomes, package-id review
     signals, and live local-model readiness
+64. [`NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`](NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md):
+    P33-T4 live LM Studio next-corpus dry-run evidence, including provider
+    receipts, JSON repair outcome, AI draft/enrichment diagnostics,
+    candidate-layer findings, and triage readiness
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

@@ -90,6 +90,7 @@ The canonical source files remain in the repository:
 - `docs/BOUNDED_CORPUS_EXPANSION_PLAN.md`
 - `docs/NEXT_CORPUS_SOURCE_MANIFEST.md`
 - `docs/NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`
+- `docs/NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`
 - `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`
 - `docs/SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
@@ -176,6 +177,7 @@ the host.
 - <doc:BoundedCorpusExpansionPlan>
 - <doc:NextCorpusSourceManifest>
 - <doc:NextCorpusDeterministicDryRun>
+- <doc:NextCorpusLiveLocalModelBatch>
 - <doc:DeferredCandidateRegenerationRunbook>
 - <doc:XyflowPackageSetIdentityRegenerationDryRun>
 - <doc:SinglePackageDeferredCandidateRegenerationDryRun>

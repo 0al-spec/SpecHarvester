@@ -1201,7 +1201,8 @@ Acceptance:
   and the evidence page
   [`NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`](../docs/NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md).
 - [ ] `P33-T4` Run the next-corpus live local-model draft/enrichment dry run
-  with bounded JSON repair and provider receipts.
+  with bounded JSON repair, provider receipts, and the evidence page
+  [`NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`](../docs/NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md).
 - [ ] `P33-T5` Produce next-corpus candidate-layer triage and selected handoff
   evidence with explicit selected, deferred, blocked, and not-for-intake
   states.

@@ -1,0 +1,320 @@
+{
+  "apiVersion": "spec-harvester.next-corpus-live-local-model-batch/v0",
+  "authority": "producer_preview_evidence_only",
+  "corpus": {
+    "id": "p33-next-bounded-corpus",
+    "manifestPath": "inputs/p33-next-corpus/repositories.yml",
+    "repositories": [
+      "serena",
+      "transmission",
+      "mcpm-sh",
+      "specgraph",
+      "specpm"
+    ]
+  },
+  "deterministicBaseline": {
+    "apiVersion": "spec-harvester.next-corpus-deterministic-dry-run/v0",
+    "fixturePath": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
+    "status": "ready_for_live_local_model_next_corpus",
+    "summary": {
+      "candidateCount": 5,
+      "passedPreflightCount": 5,
+      "relationCount": 0,
+      "repositoryCount": 5
+    }
+  },
+  "kind": "SpecHarvesterNextCorpusLiveLocalModelBatch",
+  "nonAuthority": [
+    "This live local-model batch is review evidence only.",
+    "Model output is proposal-only and not registry truth.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata.",
+    "It does not create a SpecPM pull request."
+  ],
+  "productVerdict": {
+    "candidateQuality": "valid_starter_packages_with_ai_review_findings",
+    "pipelineHealth": "deterministic_and_live_local_model_passed",
+    "status": "ready_for_candidate_layer_triage",
+    "summary": "The live local-model run processed all five repositories with matching deterministic candidate and relation counts. AI enrichment completed cleanly for every repository, while AI draft no-subject and warning-level signals must be triaged before any selected handoff."
+  },
+  "provider": {
+    "baseUrl": "http://127.0.0.1:1234",
+    "chainOfThoughtPersisted": false,
+    "jsonRepairMaxAttempts": 1,
+    "model": "openai/gpt-oss-20b",
+    "name": "lm_studio",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false
+  },
+  "repositoryResults": [
+    {
+      "aiDraft": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 5168,
+        "selectedMemberCount": 0,
+        "status": "completed",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyReason": "no_proposal_subjects",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 14656,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyReason": "remaining_work_is_author_reviewable",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "serena.core"
+      ],
+      "candidateLayerFindings": [
+        {
+          "id": "ai_draft_no_proposal_subjects",
+          "severity": "review",
+          "summary": "The AI draft proposal completed without selected members, relations, or excluded packages, so candidate-layer triage must decide whether this is acceptable for a single-package repository or requires regeneration."
+        }
+      ],
+      "id": "serena",
+      "manifestPackageId": "serena.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToCandidateLayerTriage": true,
+      "status": "passed"
+    },
+    {
+      "aiDraft": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 3248,
+        "selectedMemberCount": 0,
+        "status": "completed",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyReason": "no_proposal_subjects",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 9615,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyReason": "remaining_work_is_author_reviewable",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "transmission.core"
+      ],
+      "candidateLayerFindings": [
+        {
+          "id": "ai_draft_no_proposal_subjects",
+          "severity": "review",
+          "summary": "The AI draft proposal completed without selected members, relations, or excluded packages, so candidate-layer triage must decide whether this is acceptable for a single-package repository or requires regeneration."
+        }
+      ],
+      "id": "transmission",
+      "manifestPackageId": "transmission.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToCandidateLayerTriage": true,
+      "status": "passed"
+    },
+    {
+      "aiDraft": {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "model_evidence_path_unsupported",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 5882,
+        "selectedMemberCount": 1,
+        "status": "warning",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyReason": "review_or_regeneration_needed_before_author_handoff",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 11377,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyReason": "remaining_work_is_author_reviewable",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "mcpm.system"
+      ],
+      "candidateLayerFindings": [
+        {
+          "id": "package_id_hint_changed_by_package_set_selection",
+          "severity": "review",
+          "summary": "The source manifest packageId hint is mcpm.core, while deterministic package-set drafting produced mcpm.system as the reviewable candidate id."
+        },
+        {
+          "id": "ai_draft_warning_diagnostics",
+          "severity": "review",
+          "summary": "The AI draft proposal selected mcpm.system with warning-level diagnostics: selected_member_role_unknown, model_evidence_path_unsupported, and excluded_package_also_selected."
+        }
+      ],
+      "id": "mcpm-sh",
+      "manifestPackageId": "mcpm.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToCandidateLayerTriage": true,
+      "status": "passed"
+    },
+    {
+      "aiDraft": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 1770,
+        "selectedMemberCount": 1,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyReason": "remaining_work_is_author_reviewable",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 4527,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyReason": "remaining_work_is_author_reviewable",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "specgraph.system"
+      ],
+      "candidateLayerFindings": [
+        {
+          "id": "package_id_hint_changed_by_package_set_selection",
+          "severity": "review",
+          "summary": "The source manifest packageId hint is specgraph.core, while deterministic package-set drafting produced specgraph.system as the reviewable candidate id."
+        }
+      ],
+      "id": "specgraph",
+      "manifestPackageId": "specgraph.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToCandidateLayerTriage": true,
+      "status": "passed"
+    },
+    {
+      "aiDraft": {
+        "diagnosticCodes": [
+          "excluded_package_unknown"
+        ],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 5183,
+        "selectedMemberCount": 0,
+        "status": "warning",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyReason": "no_proposal_subjects",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 14865,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyReason": "remaining_work_is_author_reviewable",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "specpm.core"
+      ],
+      "candidateLayerFindings": [
+        {
+          "id": "ai_draft_warning_diagnostics",
+          "severity": "review",
+          "summary": "The AI draft proposal returned excluded_package_unknown and no proposal subjects; P33-T5 must decide whether to regenerate or ignore the package-set draft proposal for this single-package repository."
+        }
+      ],
+      "id": "specpm",
+      "manifestPackageId": "specpm.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToCandidateLayerTriage": true,
+      "status": "passed"
+    }
+  ],
+  "schemaVersion": 1,
+  "source": {
+    "batchReportDigest": "sha256:cdf22a5ddec014e49c432925f1b71710140d8667954daba36684f8d9c12a1ff2",
+    "batchValidationReportDigest": "sha256:993c8eb865a8f3aa35d35b84eb49ea06862062f0acca8eeb999fce11c27dec42",
+    "mode": "local_lm_studio",
+    "runRoot": "/tmp/specharvester-p33-t4.yQPfwg/live-lm-studio",
+    "sourceManifestDigest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75"
+  },
+  "summary": {
+    "aiDraftCompletedCount": 3,
+    "aiDraftProposalCount": 5,
+    "aiDraftWarningCount": 2,
+    "aiEnrichmentCompletedCount": 5,
+    "aiEnrichmentProposalCount": 5,
+    "aiEnrichmentWarningCount": 0,
+    "candidateCount": 5,
+    "collectedCount": 5,
+    "failedRepositoryCount": 0,
+    "jsonRepairExhaustedCount": 0,
+    "jsonRepairNeededCount": 0,
+    "passedPreflightCount": 5,
+    "processedCount": 5,
+    "providerDraftTotalTokens": 21251,
+    "providerEnrichmentTotalTokens": 55040,
+    "providerTotalTokens": 76291,
+    "relationCount": 0,
+    "repositoryCount": 5,
+    "reviewFindingCount": 6
+  }
+}
