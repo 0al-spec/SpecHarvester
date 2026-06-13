@@ -143,6 +143,18 @@ viewer status, and the same external acceptance boundary. It still cannot
 accept packages, accept relations, seed baselines, remove `preview_only`,
 publish registry metadata, or create a SpecPM pull request.
 
+The producer helper writes both machine-readable and Markdown handoff artifacts:
+
+```bash
+spec-harvester selected-candidate-handoff-proposal \
+  --selected-handoff-dry-run .smoke/selected-handoff/p30-t5-selected-handoff.json \
+  --candidate-root .smoke/selected-handoff/selected \
+  --preflight-root .smoke/selected-handoff/preflight \
+  --viewer-root .smoke/selected-handoff/viewer \
+  --output .smoke/selected-handoff/selected-candidate-handoff-proposal.json \
+  --proposal-body .smoke/selected-handoff/selected-candidate-handoff-proposal.md
+```
+
 ## Fresh Candidate Refresh Run
 
 Use <doc:FreshCandidateRefreshRun> when a generated package-set output should

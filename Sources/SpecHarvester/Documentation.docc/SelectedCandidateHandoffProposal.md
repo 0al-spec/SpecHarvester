@@ -22,6 +22,31 @@ selected handoff dry-run fixture. It does not run another scrape, call LM
 Studio, clone repositories, install dependencies, generate accepted-source
 content, or create a SpecPM pull request.
 
+## Helper Command
+
+P31-T2 adds a producer helper for writing JSON and Markdown handoff artifacts:
+
+```bash
+python -m spec_harvester selected-candidate-handoff-proposal \
+  --selected-handoff-dry-run .smoke/selected-handoff/p30-t5-selected-handoff.json \
+  --candidate-root .smoke/selected-handoff/selected \
+  --preflight-root .smoke/selected-handoff/preflight \
+  --viewer-root .smoke/selected-handoff/viewer \
+  --output .smoke/selected-handoff/selected-candidate-handoff-proposal.json \
+  --proposal-body .smoke/selected-handoff/selected-candidate-handoff-proposal.md
+```
+
+`--selected-handoff-dry-run` is required. The optional candidate, preflight,
+and viewer roots let the helper read local files and compute SHA-256 digests
+for present artifacts. Missing files remain expected evidence with the digest
+recorded by the selected handoff dry-run source.
+
+The helper rejects selected candidates unless they remain `previewOnly: true`,
+have producer preflight `passed` with `0` warnings and `0` errors, have static
+viewer status `ok`, and keep
+`registryAcceptanceDecision.status: external_required` with
+`producerAuthority: evidence_only`.
+
 ## Selected Candidates
 
 The example proposal includes exactly `flask.core`, `gin.core`, and

@@ -133,6 +133,12 @@ from spec_harvester.real_repo_quality_report import (
     build_quality_report,
     write_quality_report,
 )
+from spec_harvester.selected_candidate_handoff_proposal import (
+    SelectedCandidateHandoffProposalOptions,
+    build_selected_candidate_handoff_proposal,
+    write_selected_candidate_handoff_proposal,
+    write_selected_candidate_handoff_proposal_markdown,
+)
 from spec_harvester.smoke_triage import (
     build_smoke_triage_summary,
     write_smoke_triage_summary,
@@ -491,6 +497,43 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where Markdown proposal body is written.",
     )
     package_set_handoff_proposal.set_defaults(func=run_package_set_handoff_proposal)
+
+    selected_candidate_handoff_proposal = subcommands.add_parser(
+        "selected-candidate-handoff-proposal",
+        help="Build a reviewable SpecPM handoff proposal for selected candidate bundles.",
+    )
+    selected_candidate_handoff_proposal.add_argument(
+        "--selected-handoff-dry-run",
+        type=Path,
+        required=True,
+        help="P30 selected handoff dry-run JSON fixture or artifact.",
+    )
+    selected_candidate_handoff_proposal.add_argument(
+        "--candidate-root",
+        type=Path,
+        help="Optional root containing <package_id>/candidate or <package_id> bundles.",
+    )
+    selected_candidate_handoff_proposal.add_argument(
+        "--preflight-root",
+        type=Path,
+        help="Optional root containing <package_id>.json producer preflight reports.",
+    )
+    selected_candidate_handoff_proposal.add_argument(
+        "--viewer-root",
+        type=Path,
+        help="Optional root containing <package_id>/index.html viewer outputs.",
+    )
+    selected_candidate_handoff_proposal.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where proposal JSON is written.",
+    )
+    selected_candidate_handoff_proposal.add_argument(
+        "--proposal-body",
+        type=Path,
+        help="Optional path where Markdown proposal body is written.",
+    )
+    selected_candidate_handoff_proposal.set_defaults(func=run_selected_candidate_handoff_proposal)
 
     fresh_candidate_refresh_run = subcommands.add_parser(
         "fresh-candidate-refresh-run",
@@ -1366,6 +1409,23 @@ def run_package_set_handoff_proposal(args: argparse.Namespace) -> int:
         write_package_set_handoff_proposal(args.output, result)
     if args.proposal_body is not None:
         write_package_set_handoff_proposal_markdown(args.proposal_body, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_selected_candidate_handoff_proposal(args: argparse.Namespace) -> int:
+    result = build_selected_candidate_handoff_proposal(
+        SelectedCandidateHandoffProposalOptions(
+            selected_handoff_dry_run=args.selected_handoff_dry_run,
+            candidate_root=args.candidate_root,
+            preflight_root=args.preflight_root,
+            viewer_root=args.viewer_root,
+        )
+    )
+    if args.output is not None:
+        write_selected_candidate_handoff_proposal(args.output, result)
+    if args.proposal_body is not None:
+        write_selected_candidate_handoff_proposal_markdown(args.proposal_body, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 

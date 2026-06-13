@@ -883,7 +883,7 @@ def assert_p31_t1_recent(next_text: str) -> None:
 def assert_phase_31_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P31-T2 Selected Candidate Handoff Proposal Helper" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
     assert "producer helper" in normalized
     assert "JSON and Markdown handoff artifacts" in normalized
     assert "selected candidate bundles" in normalized
@@ -5392,6 +5392,13 @@ def test_selected_candidate_handoff_proposal_docs_cover_p31_t1_contract() -> Non
             "preview_only",
             "needs_regeneration",
             "SpecPM-side preflight",
+            "selected-candidate-handoff-proposal",
+            "--selected-handoff-dry-run",
+            "--candidate-root",
+            "--preflight-root",
+            "--viewer-root",
+            "selected-candidate-handoff-proposal.json",
+            "selected-candidate-handoff-proposal.md",
             "prepare-accepted-entry",
             "accepted-package-update-proposal",
             "SpecPM pull request",
@@ -5410,6 +5417,8 @@ def test_selected_candidate_handoff_proposal_docs_cover_p31_t1_contract() -> Non
     assert "SelectedCandidateHandoffProposal" in handoff_docc.read_text(encoding="utf-8")
     assert "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md" in selected_dry_run.read_text(encoding="utf-8")
     assert "SelectedCandidateHandoffProposal" in selected_dry_run_docc.read_text(encoding="utf-8")
+    for path in (docs_index, roadmap, roadmap_docc, handoff, handoff_docc):
+        assert "selected-candidate-handoff-proposal" in path.read_text(encoding="utf-8")
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

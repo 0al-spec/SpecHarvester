@@ -163,6 +163,10 @@ relations, seeds baselines, removes `preview_only`, publishes registry
 metadata, or creates a SpecPM pull request.
 
 See <doc:SelectedCandidateHandoffProposal>.
+The helper command is `selected-candidate-handoff-proposal` and writes
+`selected-candidate-handoff-proposal.json` plus
+`selected-candidate-handoff-proposal.md` from the selected handoff dry-run
+source evidence.
 
 ### Ecosystem Analyzer Depth
 

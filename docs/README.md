@@ -176,8 +176,9 @@ Published DocC site:
     P30 selected candidate handoff dry-run evidence, preflight/viewer digests,
     deferred candidates, and external registry acceptance boundary
 63. [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md):
-    portable selected candidate handoff proposal contract for SpecPM review
-    evidence, selected/deferred candidates, required evidence roles, and
+    portable selected candidate handoff proposal contract and helper for SpecPM
+    review evidence, selected/deferred candidates, required evidence roles,
+    `selected-candidate-handoff-proposal` JSON/Markdown output, and
     non-authority boundaries
 64. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
     deterministic fallback for Flask/Gin-style repositories with no workspace
