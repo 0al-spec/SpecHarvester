@@ -5,6 +5,7 @@
 **Effort:** Medium
 **Dependencies:** P17-T2
 **Status:** Selected
+**Active Branch:** `codex/p17-t3-report-builder-behavior-objects`
 **Last Archived:** P17-T2 CLI Domain Command Objects
 
 ## Recently Archived
