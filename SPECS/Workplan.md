@@ -1094,7 +1094,7 @@ Acceptance:
   viewer outputs, then emits JSON and Markdown handoff artifacts.
 - [x] `P31-T3` Run the selected candidate handoff proposal helper on the real
   P30 selected candidates and record a dry-run handoff proposal fixture.
-- [ ] `P31-T4` Define the downstream SpecPM-side preflight expectations for
+- [x] `P31-T4` Define the downstream SpecPM-side preflight expectations for
   `SpecHarvesterSelectedCandidateHandoffProposal` evidence.
 - [ ] `P31-T5` Record targeted regeneration requirements for deferred P30
   candidates before any package-set, warning-bearing, or identity-drift

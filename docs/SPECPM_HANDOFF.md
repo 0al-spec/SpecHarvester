@@ -185,6 +185,14 @@ candidates in
 and [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md).
 This is still producer preview evidence only, not SpecPM acceptance.
 
+P31-T4 records downstream SpecPM-side preflight expectations for this artifact
+in
+[`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md).
+The expected future gate checks identity, candidate sets, evidence roles,
+digests, producer preflight status, static viewer status, registry acceptance
+decision boundaries, and non-authority statements. Passing that future
+preflight still does not accept packages.
+
 ## Fresh Candidate Refresh Run
 
 When a package-set bundle is generated to evaluate whether current SpecPM
