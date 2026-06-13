@@ -135,6 +135,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t2_deferred_candidate_regeneration_runbook.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t1_autonomous_deferred_candidate_work_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p26_t3_package_set_proposal_intake_checklist.md` |
@@ -197,6 +198,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P32-T3 | Archived REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run report |
 | 2026-06-13 | P32-T3 | Archived Xyflow Package-Set Identity Regeneration Dry Run (PASS) |
 | 2026-06-13 | P32-T2 | Archived REVIEW_p32_t2_deferred_candidate_regeneration_runbook report |
 | 2026-06-13 | P32-T2 | Archived Deferred Candidate Regeneration Runbook (PASS) |
