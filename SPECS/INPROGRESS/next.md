@@ -1,7 +1,7 @@
 # Next Task: P33-T4 Live Local-Model Next-Corpus Dry Run
 
 **Status:** Selected
-**Selected:** 2026-06-13
+**Selected:** 2026-06-14
 **Task:** P33-T4 Live Local-Model Next-Corpus Dry Run
 **Phase:** Phase 33. Bounded Corpus Expansion Planning
 **Last Archived:** P33-T3 Deterministic Next-Corpus Dry Run
