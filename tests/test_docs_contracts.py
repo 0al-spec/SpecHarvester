@@ -9,6 +9,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P31-T3 Real Selected Candidate Handoff Proposal Dry Run" in next_text:
+        assert_p31_t2_last_archived(next_text)
+        assert_p30_t5_recent(next_text)
+        assert_p31_t1_recent(next_text)
+        assert_p31_t2_recent(next_text)
+        assert_phase_31_t3_active(next_text)
+        return
+
     if "# Next Task: P31-T2 Selected Candidate Handoff Proposal Helper" in next_text:
         assert_p31_t1_last_archived(next_text)
         assert_p30_t5_recent(next_text)
@@ -288,6 +296,10 @@ def assert_p31_t1_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P31-T1 Selected Candidate Handoff Proposal Contract" in next_text
 
 
+def assert_p31_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P31-T2 Selected Candidate Handoff Proposal Helper" in next_text
+
+
 def assert_p26_t5_archived(next_text: str) -> None:
     assert "SpecHarvesterPackageSetAIDraftProposal" in next_text
     assert "LLM + schema" in next_text
@@ -530,7 +542,7 @@ def assert_p29_t2_recent(next_text: str) -> None:
     assert "SpecHarvesterPackageSetAIDraftProposal" in next_text
     assert "SpecHarvesterPackageSetAIEnrichmentProposal" in next_text
     assert "accept packages" in normalized
-    assert "remove `preview_only`" in next_text
+    assert "remove `preview_only`" in normalized
     assert "publish registry metadata" in normalized
 
 
@@ -883,13 +895,37 @@ def assert_p31_t1_recent(next_text: str) -> None:
 def assert_phase_31_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P31-T2 Selected Candidate Handoff Proposal Helper" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
     assert "producer helper" in normalized
     assert "JSON and Markdown handoff artifacts" in normalized
     assert "selected candidate bundles" in normalized
     assert "producer preflight reports" in normalized
     assert "static viewer outputs" in normalized
     assert "SpecPM acceptance out of scope" in normalized
+
+
+def assert_p31_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P31-T2` implemented the `selected-candidate-handoff-proposal` helper" in next_text
+    assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
+    assert "JSON and Markdown handoff artifacts" in normalized
+    assert "candidate/preflight/viewer roots" in normalized
+    assert "external_required" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "does not create a SpecPM pull request" in normalized
+    assert "remove `preview_only`" in normalized
+
+
+def assert_phase_31_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P31-T3 Real Selected Candidate Handoff Proposal Dry Run" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "JSON and Markdown handoff proposal fixture" in normalized
+    assert "producer preview evidence only" in normalized
+    assert "SpecPM acceptance remains out of scope" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -5392,6 +5428,13 @@ def test_selected_candidate_handoff_proposal_docs_cover_p31_t1_contract() -> Non
             "preview_only",
             "needs_regeneration",
             "SpecPM-side preflight",
+            "selected-candidate-handoff-proposal",
+            "--selected-handoff-dry-run",
+            "--candidate-root",
+            "--preflight-root",
+            "--viewer-root",
+            "selected-candidate-handoff-proposal.json",
+            "selected-candidate-handoff-proposal.md",
             "prepare-accepted-entry",
             "accepted-package-update-proposal",
             "SpecPM pull request",
@@ -5410,6 +5453,8 @@ def test_selected_candidate_handoff_proposal_docs_cover_p31_t1_contract() -> Non
     assert "SelectedCandidateHandoffProposal" in handoff_docc.read_text(encoding="utf-8")
     assert "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md" in selected_dry_run.read_text(encoding="utf-8")
     assert "SelectedCandidateHandoffProposal" in selected_dry_run_docc.read_text(encoding="utf-8")
+    for path in (docs_index, roadmap, roadmap_docc, handoff, handoff_docc):
+        assert "selected-candidate-handoff-proposal" in path.read_text(encoding="utf-8")
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:
