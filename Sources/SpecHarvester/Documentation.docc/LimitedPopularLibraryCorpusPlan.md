@@ -43,7 +43,7 @@ repositories:
   - id: flask
     repository: https://github.com/pallets/flask
     revision: 954f5684e4841aad84a8eec7ace7b81a0d3f6831
-    checkout: ../../../flask
+    checkout: ../../../../flask
     packageId: flask.core
     labels: [python, web_framework, single_package, seed_corpus]
 ```
