@@ -161,6 +161,15 @@ capability, intent, evidence, and provenance assembly decisions.
 boundary concerns. It should be split only after report, analyzer, collector,
 and drafter seams are stable.
 
+P17-T6 starts this sequence with the bounded retry orchestration path.
+`SpecNodeRefinementRetrySequence` owns the retry loop for artifact bundle reuse,
+preview plan reuse, provider calls, semantic review calls, retry directive
+construction, attempt records, final digest binding, and retry-run validation.
+`run_specnode_refinement_retry_orchestration` remains the public wrapper, and
+provider interfaces, unavailable fallback payloads, semantic review contracts,
+retry directive contracts, prompt policy, and validation vocabularies remain
+unchanged.
+
 Candidate objects:
 
 - provider request/response adapter;
