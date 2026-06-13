@@ -1,10 +1,10 @@
-# Next Task: P30-T3 Live LM Studio Limited Corpus Batch
+# Next Task: P30-T4 Candidate-Layer Triage Report
 
-**Status:** In Progress
+**Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P30-T3 Live LM Studio Limited Corpus Batch
+**Task:** P30-T4 Candidate-Layer Triage Report
 **Phase:** Phase 30. Limited Popular-Library Scraping Batch
-**Last Archived:** P30-T2 Deterministic Limited Corpus Batch
+**Last Archived:** P30-T3 Live LM Studio Limited Corpus Batch
 
 ## Recently Archived
 
@@ -47,17 +47,32 @@
   `ready_for_live_lm_studio_limited_corpus`, with one candidate-layer review
   finding: `package_id_hint_mismatch` where `navigation-split-view.core`
   normalized to `navigation_split_view.core`. This is not SpecPM acceptance.
+- `P30-T3` recorded the live LM Studio limited corpus run in
+  `docs/LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`,
+  `<doc:LimitedPopularLibraryLiveLMStudioBatch>`, and
+  `SpecHarvesterLimitedPopularLibraryLiveLMStudioBatch`. The run used
+  `openai/gpt-oss-20b`, processed all 6 repositories, preserved 9 preview
+  candidates and 3 relation proposals, passed all 6 preflights, produced AI
+  draft output with 2 completed and 4 warning statuses, produced AI enrichment
+  output with 5 completed and 1 warning status, needed no JSON repair
+  (`not_needed`), and recorded provider total tokens `138700`. The product
+  verdict is `ready_for_candidate_layer_triage`. Findings for P30-T4 are
+  `excluded_package_unknown`, `package_set_id_missing`,
+  `refined_summary_missing`, and the carried-forward
+  `package_id_hint_mismatch`. The output remains
+  `producer_preview_evidence_only` and not SpecPM acceptance.
 
 ## Outcome
 
-The deterministic limited corpus baseline is recorded and ready to compare
-against a live LM Studio run. The next step should run the same corpus through
-the local OpenAI-compatible provider with explicit cost, time, JSON repair, and
-non-authority boundaries.
+The limited P30 corpus now has both deterministic and live LM Studio producer
+evidence. The live provider path completed, but model-layer warnings and the
+NavigationSplitView package-id normalization finding need classification before
+any selected SpecPM handoff dry run.
 
 ## Next Step
 
-Implement `P30-T3`: run the P30 limited corpus through live LM Studio using
-`openai/gpt-oss-20b`, compare outcomes with the deterministic P30-T2 baseline,
-record AI draft/enrichment status and repair summaries, and keep all output as
-producer preview evidence.
+Implement `P30-T4`: produce a candidate-layer triage report that classifies
+each generated preview package and model finding as
+`candidate_layer_review_required`, `needs_regeneration`, `blocked`, or
+`not_for_intake`. The triage should decide which issues are generator bugs,
+schema gaps, model noise, expected author-review items, or blockers.

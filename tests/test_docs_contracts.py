@@ -707,13 +707,13 @@ def assert_p30_t3_recent(next_text: str) -> None:
     assert "6 repositories" in normalized
     assert "9 preview candidates" in normalized
     assert "3 relation proposals" in normalized
-    assert "AI draft" in next_text
+    assert "AI draft" in normalized
     assert "2 completed" in normalized
     assert "4 warning" in normalized
-    assert "AI enrichment" in next_text
+    assert "AI enrichment" in normalized
     assert "5 completed" in normalized
     assert "1 warning" in normalized
-    assert "JSON repair" in next_text
+    assert "JSON repair" in normalized
     assert "not_needed" in next_text
     assert "138700" in next_text
     assert "excluded_package_unknown" in next_text
