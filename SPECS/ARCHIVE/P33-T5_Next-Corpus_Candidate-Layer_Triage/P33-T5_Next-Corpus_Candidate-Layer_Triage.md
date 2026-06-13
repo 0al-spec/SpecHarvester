@@ -90,3 +90,7 @@ Expected initial disposition:
 ## Review Subject
 
 `p33_t5_next_corpus_candidate_layer_triage`
+
+---
+**Archived:** 2026-06-14
+**Verdict:** PASS
