@@ -72,6 +72,9 @@ or replace author or SpecPM maintainer review.
 - Goal: regenerate package-set identity evidence and decide whether
   `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, and `xyflow.system` can
   enter selected handoff.
+- Artifact: <doc:XyflowPackageSetIdentityRegenerationDryRun> records the
+  P32-T3 xyflow-only dry run with `candidate_layer_review_required` and
+  `selectedHandoffEligible: true`.
 
 `P32-T4 Single-Package Deferred Candidate Regeneration Dry Run`
 

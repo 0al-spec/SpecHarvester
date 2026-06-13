@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P32-T4 Single-Package Deferred Candidate Regeneration Dry Run" in next_text:
+        assert_p32_t3_last_archived(next_text)
+        assert_p32_t2_recent(next_text)
+        assert_p32_t3_recent(next_text)
+        assert_phase_32_t4_active(next_text)
+        return
+
     if "# Next Task: P32-T3 Xyflow Package-Set Identity Regeneration Dry Run" in next_text:
         assert_p32_t2_last_archived(next_text)
         assert_p32_t1_recent(next_text)
@@ -394,6 +401,10 @@ def assert_p32_t1_last_archived(next_text: str) -> None:
 
 def assert_p32_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P32-T2 Deferred Candidate Regeneration Runbook" in next_text
+
+
+def assert_p32_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P32-T3 Xyflow Package-Set Identity Regeneration Dry Run" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1155,6 +1166,29 @@ def assert_p32_t2_recent(next_text: str) -> None:
     assert "navigation_split_view.core" in next_text
 
 
+def assert_p32_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P32-T3` recorded the xyflow-only package-set identity regeneration dry run" in next_text
+    )
+    assert "XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md" in next_text
+    assert "XyflowPackageSetIdentityRegenerationDryRun" in next_text
+    assert "p32-t3-xyflow-package-set-identity-regeneration.example.json" in next_text
+    assert "processed only `xyflow`" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
+    assert "xyflow.system" in next_text
+    assert "three `contains` relations" in next_text
+    assert "bundle-set preflight" in normalized
+    assert "warning count `0`" in next_text
+    assert "error count `0`" in next_text
+    assert "static viewer" in normalized
+    assert "preview_only" in next_text
+    assert "candidate_layer_review_required" in next_text
+    assert "selectedHandoffEligible: true" in next_text
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1230,6 +1264,25 @@ def assert_phase_32_t3_active(next_text: str) -> None:
     assert "external_required" in next_text
     assert "selected handoff" in normalized
     assert "remain deferred" in normalized
+
+
+def assert_phase_32_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P32-T4 Single-Package Deferred Candidate Regeneration Dry Run" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
+    assert "P32-T3 is complete" in next_text
+    assert "cupertino.core" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "navigation-split-view.core" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "identity drift" in normalized
+    assert "preview_only" in next_text
+    assert "registry acceptance external" in normalized
+    assert "avoid package execution" in normalized
+    assert "dependency installation" in normalized
+    assert "refreshed candidate-layer review" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -4290,6 +4343,235 @@ def test_deferred_candidate_regeneration_runbook_docs_cover_p32_t2_contract() ->
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P32-T2` Add a deferred candidate regeneration runbook" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_xyflow_package_set_identity_regeneration_dry_run_records_p32_t3_contract() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "xyflow_package_set_identity_regeneration"
+        / "p32-t3-xyflow-package-set-identity-regeneration.example.json"
+    )
+    github_doc = ROOT / "docs" / "XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "XyflowPackageSetIdentityRegenerationDryRun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    tech_debt = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    tech_debt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+    runbook = ROOT / "docs" / "DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md"
+    runbook_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "DeferredCandidateRegenerationRunbook.md"
+    )
+    selected_handoff = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md"
+    selected_handoff_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffProposal.md"
+    )
+    specpm_handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    specpm_handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Xyflow Package-Set Identity Regeneration Dry Run",
+            "P32-T3",
+            "inputs/limited-popular-libraries/repositories.yml",
+            "autonomous-candidate-batch",
+            "--select xyflow",
+            "render-package-set-site",
+            "p32-t3-xyflow-package-set-identity-regeneration.example.json",
+            "SpecHarvesterXyflowPackageSetIdentityRegenerationDryRun",
+            "spec-harvester.xyflow-package-set-identity-regeneration-dry-run/v0",
+            "xyflow.workspace",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "xyflow.workspace contains xyflow.react",
+            "xyflow.workspace contains xyflow.svelte",
+            "xyflow.workspace contains xyflow.system",
+            "status: passed",
+            "warningCount: 0",
+            "errorCount: 0",
+            "static viewer",
+            "preview_only: true",
+            "authorReadyDraft.status: author_ready_draft",
+            "package_set_id_missing",
+            "candidate_layer_review_required",
+            "selectedHandoffEligible: true",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "remove `preview_only`",
+            "publish registry metadata",
+            "SpecPM pull request",
+            "AI output as registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.xyflow-package-set-identity-regeneration-dry-run/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterXyflowPackageSetIdentityRegenerationDryRun"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["run"]["taskId"] == "P32-T3"
+    assert payload["run"]["selectedRepositoryIds"] == ["xyflow"]
+    assert set(payload["run"]["skippedRepositoryIds"]) == {
+        "flask",
+        "gin",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    }
+    assert payload["source"]["revision"] == "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd"
+    source_manifest = ROOT / payload["source"]["manifestPath"]
+    assert payload["source"]["sourceManifestDigest"] == (
+        "sha256:" + hashlib.sha256(source_manifest.read_bytes()).hexdigest()
+    )
+    assert payload["ai"] == {
+        "chainOfThoughtPersisted": False,
+        "mode": "local_lm_studio",
+        "model": "openai/gpt-oss-20b",
+        "provider": "lm_studio",
+        "rawPromptPersisted": False,
+        "rawResponsePersisted": False,
+    }
+    assert payload["packageSet"]["packageSetId"] == "xyflow.workspace"
+    assert payload["packageSet"]["candidateCount"] == 4
+    assert payload["packageSet"]["memberPackageIds"] == [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+    ]
+    assert payload["packageSet"]["allPackageIds"] == [
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+    ]
+    relation_edges = {
+        (relation["sourcePackageId"], relation["type"], relation["targetPackageId"])
+        for relation in payload["relations"]
+    }
+    assert relation_edges == {
+        ("xyflow.workspace", "contains", "xyflow.react"),
+        ("xyflow.workspace", "contains", "xyflow.svelte"),
+        ("xyflow.workspace", "contains", "xyflow.system"),
+    }
+    assert payload["preflight"] == {
+        "candidateCount": 4,
+        "candidatePreflightPassedCount": 4,
+        "errorCount": 0,
+        "relationCount": 3,
+        "status": "passed",
+        "warningCount": 0,
+    }
+    assert payload["viewer"]["status"] == "ok"
+    assert payload["viewer"]["packageSetId"] == "xyflow.workspace"
+    assert payload["viewer"]["candidateCount"] == 4
+    assert payload["viewer"]["relationCount"] == 3
+    assert payload["aiDraft"]["status"] == "warning"
+    assert payload["aiDraft"]["diagnosticCodes"] == ["package_set_id_missing"]
+    assert payload["aiDraft"]["warningCount"] == 1
+    assert payload["aiDraft"]["errorCount"] == 0
+    assert payload["aiEnrichment"]["status"] == "completed"
+    assert payload["aiEnrichment"]["proposalCount"] == 4
+    assert payload["aiEnrichment"]["warningCount"] == 0
+    assert payload["aiEnrichment"]["errorCount"] == 0
+    assert payload["authorReadyDraft"]["status"] == "author_ready_draft"
+    assert payload["authorReadyDraft"]["memberCounts"] == {
+        "author_ready_draft": 4,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 4,
+    }
+    assert payload["candidateLayerDecision"]["status"] == "candidate_layer_review_required"
+    assert payload["candidateLayerDecision"]["selectedHandoffEligible"] is True
+    assert (
+        "deterministic package-set identity evidence"
+        in (payload["candidateLayerDecision"]["reason"])
+    )
+    for member in payload["members"]:
+        assert member["actualPackageId"] == member["packageId"]
+        assert member["previewOnly"] is True
+        assert member["diagnosticsStatus"] == "clean"
+        assert member["validationStatus"] == "valid"
+        assert member["authorReadyDraftStatus"] == "author_ready_draft"
+        assert {artifact["role"] for artifact in member["artifacts"]} == {
+            "member_manifest",
+            "member_producer_receipt",
+            "member_validation_report",
+            "member_diagnostics",
+            "member_quality_report",
+        }
+    for artifact in payload["packageSet"]["artifacts"]:
+        assert artifact["digest"].startswith("sha256:")
+        assert len(artifact["digest"]) == len("sha256:") + 64
+    for member in payload["members"]:
+        for artifact in member["artifacts"]:
+            assert artifact["digest"].startswith("sha256:")
+            assert len(artifact["digest"]) == len("sha256:") + 64
+    assert payload["nonAuthority"] == {
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "createsSpecPMPullRequest": False,
+        "producerEvidenceOnly": True,
+        "publishesRegistryMetadata": False,
+        "removesPreviewOnly": False,
+        "seedsBaselines": False,
+        "treatsAIOutputAsRegistryTruth": False,
+    }
+
+    assert "XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:XyflowPackageSetIdentityRegenerationDryRun>" in docc_root.read_text(
+        encoding="utf-8"
+    )
+    for path in (tech_debt, runbook, selected_handoff, specpm_handoff, roadmap):
+        assert "XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md" in path.read_text(
+            encoding="utf-8"
+        )
+    for path in (
+        tech_debt_docc,
+        runbook_docc,
+        selected_handoff_docc,
+        specpm_handoff_docc,
+        roadmap_docc,
+    ):
+        assert "XyflowPackageSetIdentityRegenerationDryRun" in path.read_text(encoding="utf-8")
+    assert "`P32-T3` Run xyflow package-set identity regeneration" in workplan.read_text(
+        encoding="utf-8"
+    )
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

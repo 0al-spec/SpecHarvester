@@ -206,6 +206,10 @@ enrichment regeneration, and identity-drift resolution before any deferred
 candidate can enter selected handoff.
 Use [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md)
 before attempting those regeneration runs.
+P32-T3 records the xyflow package-set identity regeneration result in
+[`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md).
+That artifact can feed a future refreshed selected handoff, but it remains
+producer preview evidence and not SpecPM acceptance.
 
 ## Fresh Candidate Refresh Run
 
