@@ -1,10 +1,10 @@
-# Next Task: P30-T2 Deterministic Limited Corpus Batch
+# Next Task: P30-T3 Live LM Studio Limited Corpus Batch
 
-**Status:** In Progress
+**Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P30-T2 Deterministic Limited Corpus Batch
+**Task:** P30-T3 Live LM Studio Limited Corpus Batch
 **Phase:** Phase 30. Limited Popular-Library Scraping Batch
-**Last Archived:** P30-T1 Limited Popular-Library Corpus Plan
+**Last Archived:** P30-T2 Deterministic Limited Corpus Batch
 
 ## Recently Archived
 
@@ -36,15 +36,28 @@
   source-manifest shape, selection criteria, operator runbook, stop conditions,
   candidate-layer triage states, and non-authority boundaries before any
   larger scrape.
+- `P30-T2` recorded the deterministic limited popular-library corpus run in
+  `docs/LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`,
+  `<doc:LimitedPopularLibraryDeterministicBatch>`, and
+  `SpecHarvesterLimitedPopularLibraryDeterministicBatch`. The `--skip-ai` run
+  processed all 6 repositories, collected all 6, generated 9 preview candidates
+  and 3 relation proposals, passed all 6 bundle-set preflights, skipped AI
+  draft/enrichment for every repository, and preserved
+  `producer_preview_evidence_only`. The product verdict is
+  `ready_for_live_lm_studio_limited_corpus`, with one candidate-layer review
+  finding: `package_id_hint_mismatch` where `navigation-split-view.core`
+  normalized to `navigation_split_view.core`. This is not SpecPM acceptance.
 
 ## Outcome
 
-The limited corpus expansion now has a committed manifest and runbook. The next
-step is to execute the deterministic `--skip-ai` path and record actual corpus
-outcomes before any live LM Studio calls.
+The deterministic limited corpus baseline is recorded and ready to compare
+against a live LM Studio run. The next step should run the same corpus through
+the local OpenAI-compatible provider with explicit cost, time, JSON repair, and
+non-authority boundaries.
 
 ## Next Step
 
-Implement `P30-T2`: run deterministic `--skip-ai` scraping over the selected
-limited popular-library corpus and record collection, candidate, relation,
-preflight, and stop-policy outcomes.
+Implement `P30-T3`: run the P30 limited corpus through live LM Studio using
+`openai/gpt-oss-20b`, compare outcomes with the deterministic P30-T2 baseline,
+record AI draft/enrichment status and repair summaries, and keep all output as
+producer preview evidence.
