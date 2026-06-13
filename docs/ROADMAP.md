@@ -311,6 +311,16 @@ Tasks:
 - feed only reviewed candidate-layer evidence into later SpecPM-side intake
   policy.
 
+Technical-debt follow-up from the first mixed corpus check:
+
+- record a durable Flask/Gin/xyflow corpus baseline and gap report;
+- add a single-package candidate fallback for popular repositories that are not
+  workspaces;
+- add bounded LM Studio/OpenAI-compatible JSON repair/retry for malformed
+  local model output;
+- re-run the mixed corpus as a quality gate before expanding autonomous
+  scraping.
+
 Success criteria:
 
 - operators can process a small popular-library set without manual command
@@ -318,6 +328,8 @@ Success criteria:
 - no harvested repository code is executed and no dependencies are installed;
 - generated artifacts stay `preview_only` until author/maintainer review;
 - SpecPM remains the acceptance and registry authority.
+
+See [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md).
 
 ## Non-Goals
 

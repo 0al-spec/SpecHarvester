@@ -344,6 +344,9 @@ def assert_p29_t1_recent(next_text: str) -> None:
     assert "4 candidates" in normalized
     assert "3 relations" in normalized
     assert "stop_for_author_review" in next_text
+    assert "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md" in next_text
+    assert "single-package fallback" in normalized
+    assert "JSON repair/retry" in normalized
 
 
 def assert_phase_29_t2_active(next_text: str) -> None:
@@ -354,6 +357,9 @@ def assert_phase_29_t2_active(next_text: str) -> None:
     assert "autonomous batch output" in normalized
     assert "AI draft/enrichment proposals" in normalized
     assert "without turning producer output into registry authority" in normalized
+    assert "P29-T4" in next_text
+    assert "P29-T5" in next_text
+    assert "P29-T6" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -3086,3 +3092,57 @@ def test_autonomous_candidate_batch_docs_cover_local_lm_studio_boundary() -> Non
     assert "<doc:AutonomousCandidateBatch>" in docc_root.read_text(encoding="utf-8")
     assert "Autonomous Candidate Harvest MVP" in roadmap.read_text(encoding="utf-8")
     assert "Autonomous Candidate Harvest MVP" in roadmap_docc.read_text(encoding="utf-8")
+
+
+def test_autonomous_candidate_tech_debt_plan_docs_cover_corpus_followups() -> None:
+    github_doc = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Autonomous Candidate Technical Debt Plan",
+            "flask",
+            "gin",
+            "xyflow",
+            "single-package repositories",
+            "single-package candidate fallback",
+            "LM Studio JSON Repair and Retry",
+            "malformed JSON",
+            "P29-T3",
+            "P29-T4",
+            "P29-T5",
+            "P29-T6",
+            "preview_only",
+            "producer-side preview evidence",
+            "single_package_fallback_needed",
+            "ai_json_repair_needed",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:AutonomousCandidateTechDebtPlan>" in docc_root.read_text(encoding="utf-8")
+    assert "single-package candidate fallback" in roadmap.read_text(encoding="utf-8")
+    assert "JSON repair/retry" in roadmap.read_text(encoding="utf-8")
+    assert "AutonomousCandidateTechDebtPlan" in roadmap_docc.read_text(encoding="utf-8")
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    for task_id in ("P29-T3", "P29-T4", "P29-T5", "P29-T6"):
+        assert f"`{task_id}`" in workplan_text
+    assert "single-package repositories" in workplan_text
+    assert "Local LM Studio JSON failures" in workplan_text
+
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
