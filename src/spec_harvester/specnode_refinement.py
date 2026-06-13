@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
 
+from spec_harvester.source_unit_intent import SourceUnitIntentBoundary
+
 PRODUCER_NAME = "SpecHarvester"
 DEFAULT_PRODUCER_VERSION = "0.1.0"
 SPECNODE_SCHEMA_VERSION = 1
@@ -651,6 +653,7 @@ def build_refine_preview_plan(
 ) -> dict[str, Any]:
     workspace = candidate_workspace.resolve()
     snapshot = _read_json(workspace / "harvest.json")
+    source_unit_boundary = SourceUnitIntentBoundary.from_snapshot(snapshot).metadata()
     manifest_text = (workspace / "specpm.yaml").read_text(encoding="utf-8")
     manifest_metadata = _parse_manifest_metadata(manifest_text)
     spec_paths = _bundle_artifact_paths(bundle, prefix="boundary_spec")
@@ -689,6 +692,7 @@ def build_refine_preview_plan(
         "artifactDigests": artifact_digests,
         "compactModelInput": {
             "harvestSummary": _harvest_summary(snapshot),
+            "sourceUnitIntentBoundary": source_unit_boundary,
             "projectProfile": _compact_project_profile(snapshot),
             "publicInterfaceSummary": _public_interface_summary(public_interface),
             "semanticEvidenceIndex": _semantic_evidence_index(spec_texts),

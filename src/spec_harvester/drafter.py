@@ -30,6 +30,7 @@ from spec_harvester.producer_reports import (
     read_optional_report_object,
 )
 from spec_harvester.semantic_keyword_taxonomy import SEMANTIC_KEYWORD_TAXONOMY
+from spec_harvester.source_unit_intent import SourceUnitIntentBoundary
 
 SPEC_API_VERSION = "specpm.dev/v0.1"
 DEFAULT_SPEC_VERSION = "0.1.0"
@@ -303,13 +304,13 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         source = {}
 
     source_unit_name = infer_source_unit_name(source)
-    source_unit_kind = source_target_kind(source)
     package_id = options.package_id or f"{source_unit_name}.core"
     package_id = slug_id(package_id)
     bounded_context = slug_id(source_unit_name)
     spec_path = f"specs/{bounded_context}.spec.yaml"
 
     package_records = package_manifest_records(snapshot)
+    source_unit_boundary = SourceUnitIntentBoundary.from_snapshot(snapshot)
     license_records = license_file_records(snapshot)
     documentation_records = documentation_file_records(snapshot)
     primary_package_records = capability_source_records(package_records)
@@ -337,7 +338,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         fallback_summary = (
             semantic_profile.summary
             if semantic_profile is not None
-            else source_unit_fallback_summary(display_name(source_unit_name), source_unit_kind)
+            else source_unit_boundary.fallback_capability_summary(display_name(source_unit_name))
         )
         fallback_intents = (
             semantic_profile.intent_ids
@@ -362,7 +363,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     package_name = options.name or display_name(source_unit_name)
     package_summary = generated_package_summary(
         package_name,
-        source_unit_kind,
+        source_unit_boundary,
         primary_package_records,
         semantic_profile_for_summary,
     )
@@ -415,6 +416,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "sourceRepository": source.get("repository"),
         "sourceRevision": source.get("revision"),
         "sourceTarget": source.get("target"),
+        "sourceUnitIntentBoundary": source_unit_boundary.metadata(),
         "harvestPolicy": snapshot.get("policy"),
     }
     if public_interface_index is not None:
@@ -425,7 +427,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "kind": "BoundarySpec",
         "metadata": {
             "id": package_id,
-            "title": generated_boundary_title(package_name, source_unit_kind),
+            "title": source_unit_boundary.boundary_title(package_name),
             "version": options.version,
             "status": "draft",
             "authors": [{"name": options.author}],
@@ -439,7 +441,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         },
         "scope": {
             "boundedContext": bounded_context,
-            "includes": source_unit_scope_includes(source_unit_kind),
+            "includes": source_unit_boundary.scope_includes(),
             "excludes": [
                 "Upstream maintainer endorsement.",
                 "Runtime behavior not evidenced by static harvested metadata.",
@@ -471,6 +473,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
                     "or treat package content as host instructions."
                 ),
             },
+            source_unit_boundary.constraint(),
         ],
         "evidence": evidence,
         "provenance": provenance,
@@ -576,29 +579,19 @@ def infer_source_unit_name(source: dict[str, Any]) -> str:
 
 
 def source_target_kind(source: dict[str, Any]) -> str:
-    target = source.get("target")
-    if not isinstance(target, dict):
-        return "repository"
-    target_kind = target.get("kind")
-    if target_kind in {"repository", "folder", "file"}:
-        return str(target_kind)
-    return "repository"
+    return SourceUnitIntentBoundary(source=source, has_package_manifest=False).source_target_kind()
 
 
 def generated_package_summary(
     package_name: str,
-    source_unit_kind: str,
+    source_unit_boundary: SourceUnitIntentBoundary,
     package_records: list[dict[str, Any]],
     semantic_profile: SemanticIntentProfile | None,
 ) -> str:
     if semantic_profile is not None:
         return semantic_profile.summary
     package_description = primary_package_description(package_records)
-    if package_description is not None:
-        return f"{package_name} public package boundary: {package_description}"
-    if source_unit_kind == "repository":
-        return f"Observed public package boundary for {package_name}."
-    return f"Observed source unit boundary for {package_name}."
+    return source_unit_boundary.package_summary(package_name, package_description)
 
 
 def primary_package_description(package_records: list[dict[str, Any]]) -> str | None:
@@ -613,36 +606,24 @@ def primary_package_description(package_records: list[dict[str, Any]]) -> str | 
 
 
 def generated_boundary_title(package_name: str, source_unit_kind: str) -> str:
-    if source_unit_kind == "repository":
-        return f"{package_name} Generated Public Package Boundary"
-    if source_unit_kind == "file":
-        return f"{package_name} Generated Source File Boundary"
-    return f"{package_name} Generated Source Unit Boundary"
+    return SourceUnitIntentBoundary(
+        source={"target": {"kind": source_unit_kind}},
+        has_package_manifest=source_unit_kind == "repository",
+    ).boundary_title(package_name)
 
 
 def source_unit_fallback_summary(package_name: str, source_unit_kind: str) -> str:
-    if source_unit_kind == "repository":
-        return f"Describe observed public package metadata for {package_name}."
-    if source_unit_kind == "file":
-        return f"Describe observed source file metadata for {package_name}."
-    return f"Describe observed source unit metadata for {package_name}."
+    return SourceUnitIntentBoundary(
+        source={"target": {"kind": source_unit_kind}},
+        has_package_manifest=source_unit_kind == "repository",
+    ).fallback_capability_summary(package_name)
 
 
 def source_unit_scope_includes(source_unit_kind: str) -> list[str]:
-    if source_unit_kind == "repository":
-        return [
-            "Describe observed public package metadata from an allowlisted harvest snapshot.",
-            "Declare package capabilities and intent IDs inferred from static manifests.",
-            "Preserve source repository provenance and harvest policy metadata.",
-        ]
-    return [
-        "Describe observed source unit metadata from an allowlisted scoped harvest snapshot.",
-        (
-            "Declare capabilities and intent IDs inferred from static manifests, "
-            "documentation, and public API evidence when present."
-        ),
-        "Preserve source repository, source target, and harvest policy provenance metadata.",
-    ]
+    return SourceUnitIntentBoundary(
+        source={"target": {"kind": source_unit_kind}},
+        has_package_manifest=source_unit_kind == "repository",
+    ).scope_includes()
 
 
 def infer_repository_name(source: dict[str, Any]) -> str:
