@@ -124,6 +124,11 @@ interface evidence, diagnostics, relation proposals, skipped packages, and any
 gap between deterministic output, optional LM Studio enrichment, and human
 review.
 
+The P30 limited popular-library scraping batch starts this expansion with a
+bounded source manifest, explicit stop conditions, deterministic and live run
+commands, candidate-layer triage states, and non-authority boundaries. See
+<doc:LimitedPopularLibraryCorpusPlan>.
+
 ### Ecosystem Analyzer Depth
 
 Future generator quality should come primarily from deterministic analyzer

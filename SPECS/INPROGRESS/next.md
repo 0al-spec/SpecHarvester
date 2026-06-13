@@ -8,6 +8,13 @@
 
 ## Recently Archived
 
+- Prior completed boundary: `P28-T5 First-Submission or Seeded-Baseline
+  Workflow`.
+- Prior role-profile boundary: `P28-T4 Package-Set Role Selection Profiles`.
+- Prior refresh context: `P28-T2` ran real `xyflow`, and the later
+  TanStack/query refresh at `feb1efd804c1262106f72c8adc1d82a8ce9cfbb0`
+  established `no_contract_delta` and first-submission handling before the P30
+  limited corpus expansion.
 - `P29-T1` added `autonomous-candidate-batch`, an MVP runner over repository
   source manifests and local public checkouts. It orchestrates deterministic
   collection, workspace inventory, public interface indexes, package-set draft,

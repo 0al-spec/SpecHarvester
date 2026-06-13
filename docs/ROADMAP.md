@@ -344,6 +344,36 @@ The post-fallback quality gate is recorded in
 [`AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md`](AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md)
 with verdict `ready_for_limited_popular_library_scraping`.
 
+## Milestone 10: Limited Popular-Library Scraping Batch
+
+Status: Planning.
+
+Goal: expand the autonomous candidate MVP from the three-repository quality
+gate into a bounded 5-10 repository corpus while keeping every output as
+candidate-layer preview evidence.
+
+Tasks:
+
+- define a small shape-diverse seed corpus and source manifest before running a
+  larger scrape;
+- run deterministic `--skip-ai` scraping with pinned local checkouts;
+- run live LM Studio/OpenAI-compatible AI draft and enrichment with explicit
+  cost, time, and repair bounds;
+- produce a candidate-layer triage report before any SpecPM handoff;
+- prepare SpecPM handoff dry-run evidence only for selected candidates.
+
+Success criteria:
+
+- operators can repeat the limited batch from a committed manifest and runbook;
+- every repository outcome is classified as `candidate_layer_review_required`,
+  `needs_regeneration`, `blocked`, or `not_for_intake`;
+- generated packages remain `preview_only` and
+  `producer_preview_evidence_only`;
+- SpecPM remains the validation, acceptance, relation, and registry authority.
+
+See
+[`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md).
+
 ## Non-Goals
 
 SpecHarvester does not:
