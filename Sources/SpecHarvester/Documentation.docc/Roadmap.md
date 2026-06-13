@@ -151,7 +151,7 @@ deferred candidates stay out of the handoff.
 
 ### Selected Candidate SpecPM Intake Handoff
 
-The active intake-handoff focus is to turn selected candidate dry-run evidence
+The completed intake-handoff focus turns selected candidate dry-run evidence
 into portable SpecPM review evidence while preserving the boundary that
 SpecHarvester is only the producer of preview artifacts.
 
@@ -193,6 +193,26 @@ P26-T3 records the package-set proposal intake checklist in
 `SpecHarvesterPackageSetHandoffProposal`,
 `spec-harvester.package-set-handoff-proposal/v0`, the required evidence roles,
 and the boundary between package member acceptance and relation acceptance.
+
+### Autonomous Deferred Candidate Regeneration
+
+The next planned focus is to convert the P30/P31 deferred candidate findings
+into a bounded regeneration and intake-readiness sequence before any broader
+popular-library scraping is attempted.
+
+The sequence records the work plan, adds a deferred candidate regeneration
+runbook, reruns xyflow package-set identity regeneration, repairs or
+regenerates `cupertino.core` and `navigation_split_view.core`, refreshes
+candidate-layer triage and selected handoff evidence, coordinates
+SpecPM-side selected candidate handoff preflight, and records a limited corpus
+intake readiness decision.
+
+The boundary remains unchanged: no clone/fetch/install/execute behavior, no
+registry publication, no package or relation acceptance, no baseline seeding,
+no `preview_only` removal, and no broad autonomous scraping before the limited
+corpus is reviewable.
+
+See <doc:AutonomousCandidateTechDebtPlan>.
 
 ### Ecosystem Analyzer Depth
 

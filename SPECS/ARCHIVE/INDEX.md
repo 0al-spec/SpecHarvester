@@ -120,6 +120,7 @@
 | P31-T3 | [P31-T3_Real_Selected_Candidate_Handoff_Proposal_Dry_Run/](P31-T3_Real_Selected_Candidate_Handoff_Proposal_Dry_Run/) | 2026-06-13 | PASS |
 | P31-T4 | [P31-T4_SpecPM_Selected_Candidate_Handoff_Preflight_Expectations/](P31-T4_SpecPM_Selected_Candidate_Handoff_Preflight_Expectations/) | 2026-06-13 | PASS |
 | P31-T5 | [P31-T5_Deferred_Selected_Candidate_Regeneration_Requirements/](P31-T5_Deferred_Selected_Candidate_Regeneration_Requirements/) | 2026-06-13 | PASS |
+| P32-T1 | [P32-T1_Autonomous_Deferred_Candidate_Work_Plan/](P32-T1_Autonomous_Deferred_Candidate_Work_Plan/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -132,6 +133,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t1_autonomous_deferred_candidate_work_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p26_t3_package_set_proposal_intake_checklist.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t5_deferred_selected_candidate_regeneration_requirements.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t4_selected_candidate_handoff_preflight_expectations.md` |
@@ -412,6 +414,8 @@
 | 2026-06-07 | P26-T2 | Archived REVIEW_p26_t2_trusted_package_set_proposal_workflow_inputs report |
 | 2026-06-13 | P26-T3 | Archived Package-Set Proposal Intake Checklist (PASS) |
 | 2026-06-13 | P26-T3 | Archived REVIEW_p26_t3_package_set_proposal_intake_checklist report |
+| 2026-06-13 | P32-T1 | Archived Autonomous Deferred Candidate Work Plan (PASS) |
+| 2026-06-13 | P32-T1 | Archived REVIEW_p32_t1_autonomous_deferred_candidate_work_plan report |
 | 2026-06-11 | P27-T1 | Archived Author-Ready Draft Quality Bar (PASS) |
 | 2026-06-11 | P27-T2 | Archived Author-Ready Draft Quality Report (PASS) |
 | 2026-06-11 | P27-T2 | Archived REVIEW_p27_t2_author_ready_draft_quality_report report |
