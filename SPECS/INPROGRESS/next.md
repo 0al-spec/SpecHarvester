@@ -5,6 +5,7 @@
 **Effort:** Large
 **Dependencies:** P17-T3
 **Status:** Selected
+**Active Branch:** `codex/p17-t4-public-api-analyzer-pipeline-objects`
 **Last Archived:** P17-T3 Report Builder Behavior Objects
 
 ## Recently Archived
