@@ -36,6 +36,15 @@
 Implement `P33-T3`: run the deterministic collection and draft dry run over
 `inputs/p33-next-corpus/repositories.yml` without AI.
 
+Planned command:
+
+```bash
+PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
+  inputs/p33-next-corpus \
+  --out <run-root>/deterministic \
+  --skip-ai
+```
+
 The dry run must record:
 
 - candidate counts;
