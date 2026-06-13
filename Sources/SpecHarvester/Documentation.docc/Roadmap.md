@@ -188,6 +188,12 @@ The requirements cover package-set identity regeneration, warning-bearing
 enrichment regeneration, and identity-drift resolution before deferred
 candidates can enter selected handoff.
 
+P26-T3 records the package-set proposal intake checklist in
+<doc:PackageSetProposalIntakeChecklist>. It names
+`SpecHarvesterPackageSetHandoffProposal`,
+`spec-harvester.package-set-handoff-proposal/v0`, the required evidence roles,
+and the boundary between package member acceptance and relation acceptance.
+
 ### Ecosystem Analyzer Depth
 
 Future generator quality should come primarily from deterministic analyzer

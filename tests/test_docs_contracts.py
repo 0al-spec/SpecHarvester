@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P26-T3 Package-Set Proposal Intake Checklist" in next_text:
+        assert_p31_t5_last_archived(next_text)
+        assert_p31_t4_recent(next_text)
+        assert_p31_t5_recent(next_text)
+        assert_phase_26_t3_active(next_text)
+        return
+
     if "# Next Task: Phase 31 Complete" in next_text:
         assert_p31_t5_last_archived(next_text)
         assert_p30_t5_recent(next_text)
@@ -1061,6 +1068,19 @@ def assert_phase_31_complete(next_text: str) -> None:
     assert "No Phase 31 task remains selected" in next_text
 
 
+def assert_phase_26_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P26-T3 Package-Set Proposal Intake Checklist" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "SpecHarvesterPackageSetHandoffProposal" in next_text
+    assert "package-set handoff proposal artifacts" in normalized
+    assert "SpecPM-facing intake checklist" in normalized
+    assert "member package evidence" in normalized
+    assert "relation proposal evidence" in normalized
+    assert "external_required" in next_text
+    assert "does not accept packages or relations" in normalized
+
+
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
     github_doc = ROOT / "docs" / "ANALYZER_SANDBOX_REQUIREMENTS.md"
     docc_doc = (
@@ -1905,6 +1925,86 @@ def test_docc_and_github_docs_cover_package_set_handoff_proposal() -> None:
     assert "`P26-T1` Add a package-set handoff proposal artifact" in workplan_text
     next_text = next_task.read_text(encoding="utf-8")
     assert_current_next_task(next_text)
+
+
+def test_package_set_proposal_intake_checklist_docs_cover_p26_t3_contract() -> None:
+    github_doc = ROOT / "docs" / "PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "PackageSetProposalIntakeChecklist.md"
+    )
+    handoff_doc = ROOT / "docs" / "PACKAGE_SET_HANDOFF_PROPOSAL.md"
+    handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "PackageSetHandoffProposal.md"
+    )
+    specpm_handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    specpm_handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    )
+    proposal_automation = ROOT / "docs" / "SPECPM_PROPOSAL_AUTOMATION.md"
+    proposal_automation_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "ProposalAutomation.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Package-Set Proposal Intake Checklist",
+            "SpecHarvesterPackageSetHandoffProposal",
+            "spec-harvester.package-set-handoff-proposal/v0",
+            "package_set_draft",
+            "package_relation_proposals",
+            "bundle_set_preflight",
+            "package_set_viewer",
+            "member_candidate_bundle",
+            "member_manifest",
+            "member_boundary_spec",
+            "member_producer_receipt",
+            "member_validation_report",
+            "member_diagnostics",
+            "member_quality_report",
+            "package_relation_summary",
+            "authorReadyDraftSummary",
+            "authorReview",
+            "Package member acceptance is separate from relation acceptance",
+            "registryAcceptanceDecision.status",
+            "external_required",
+            "public_index_acceptance",
+            "package_relation_acceptance",
+            "producerAuthority: evidence_only",
+            "SpecPMPackageSetHandoffIntakeReport",
+            "specpm.package-set-handoff-intake/v0",
+            "specpm_consumer_preflight",
+            "does not accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "mutate SpecPM sources",
+            "remove `preview_only`",
+            "create or merge a SpecPM pull request",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:PackageSetProposalIntakeChecklist>" in docc_root.read_text(encoding="utf-8")
+    for path in (handoff_doc, specpm_handoff, proposal_automation, roadmap):
+        assert "PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md" in path.read_text(encoding="utf-8")
+    for path in (handoff_docc, specpm_handoff_docc, proposal_automation_docc, roadmap_docc):
+        assert "PackageSetProposalIntakeChecklist" in path.read_text(encoding="utf-8")
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P26-T3` Define the SpecPM-side package-set proposal intake checklist" in (
+        workplan_text
+    )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
 def test_docc_and_github_docs_cover_package_set_ai_enrichment() -> None:

@@ -114,6 +114,11 @@ This package-set proposal is review evidence. It does not accept packages,
 accept relations, publish registry metadata, or replace SpecPM maintainer
 review. See <doc:PackageSetHandoffProposal>.
 
+The SpecPM-facing package-set intake checklist is recorded in
+<doc:PackageSetProposalIntakeChecklist>. It defines required evidence roles
+and separates member package acceptance from relation acceptance before
+maintainers act.
+
 ## Autonomous Candidate Batch Intake
 
 For autonomous popular-library runs, review the candidate layer before any

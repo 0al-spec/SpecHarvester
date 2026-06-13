@@ -135,6 +135,11 @@ packages, accept relations, publish registry metadata, or replace SpecPM
 maintainer review. See
 [`PACKAGE_SET_HANDOFF_PROPOSAL.md`](PACKAGE_SET_HANDOFF_PROPOSAL.md).
 
+The SpecPM-facing package-set intake checklist is recorded in
+[`PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md`](PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md).
+It defines required evidence roles and separates member package acceptance
+from relation acceptance before maintainers act.
+
 ## Autonomous Candidate Batch Intake
 
 For autonomous popular-library runs, review the candidate layer before any

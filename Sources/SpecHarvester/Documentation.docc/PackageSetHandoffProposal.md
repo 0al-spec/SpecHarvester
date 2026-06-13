@@ -80,6 +80,11 @@ The command does not accept packages, accept relations, publish public registry
 metadata, mutate SpecPM sources, execute package code, run package managers, or
 replace SpecPM maintainer review.
 
+P26-T3 records the SpecPM-facing intake checklist in
+<doc:PackageSetProposalIntakeChecklist>. That checklist separates package
+member acceptance from relation acceptance and keeps both decisions outside
+producer evidence.
+
 ## Fresh Refresh Decisions
 
 Use <doc:FreshCandidateRefreshRun> when a generated package-set output should
@@ -87,3 +92,5 @@ be compared against current SpecPM generated artifacts. The handoff proposal
 explains review context, while `fresh-candidate-refresh-run` prepares the
 `<package_id>/<version>/specpm.yaml` and `specs/*.spec.yaml` layout plus
 digests consumed by `specpm producer-bundle prepare-refresh-decision`.
+
+See also <doc:PackageSetProposalIntakeChecklist>.
