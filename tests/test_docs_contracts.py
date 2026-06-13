@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P32-T7 Limited Corpus Intake Readiness Decision" in next_text:
+        assert_p32_t6_last_archived(next_text)
+        assert_p32_t5_recent(next_text)
+        assert_p32_t6_recent(next_text)
+        assert_phase_32_t7_active(next_text)
+        return
+
     if "# Next Task: P32-T6 SpecPM Selected Candidate Handoff Preflight" in next_text:
         assert_p32_t5_last_archived(next_text)
         assert_p32_t4_recent(next_text)
@@ -433,6 +440,10 @@ def assert_p32_t5_last_archived(next_text: str) -> None:
         "**Last Archived:** P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff"
         in next_text
     )
+
+
+def assert_p32_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P32-T6 SpecPM Selected Candidate Handoff Preflight" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1254,6 +1265,19 @@ def assert_p32_t5_recent(next_text: str) -> None:
     assert "producer preview evidence" in normalized
 
 
+def assert_p32_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P32-T6` recorded the merged SpecPM selected candidate handoff preflight" in next_text
+    assert "0al-spec/SpecPM#140" in next_text
+    assert "preflight-selected-candidate-handoff" in next_text
+    assert "SpecPMSelectedCandidateHandoffPreflightReport" in next_text
+    assert "eight selected" in normalized
+    assert "one deferred" in normalized
+    assert "cupertino.core" in next_text
+    assert "three source digests verified" in normalized
+    assert "review evidence only" in normalized
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1381,7 +1405,11 @@ def assert_phase_32_t5_active(next_text: str) -> None:
 def assert_phase_32_t6_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P32-T6 SpecPM Selected Candidate Handoff Preflight" in next_text
-    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert (
+        "**Status:** Planned" in next_text
+        or "**Status:** In Progress" in next_text
+        or "**Status:** Selected" in next_text
+    )
     assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
     assert "P32-T5 is complete" in next_text
     assert "SpecHarvesterRefreshedCandidateLayerSelectedHandoff" in next_text
@@ -1394,6 +1422,29 @@ def assert_phase_32_t6_active(next_text: str) -> None:
     assert "navigation_split_view.core" in next_text
     assert "cupertino.core" in next_text
     assert "producer preview evidence" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not accept relations" in normalized
+
+
+def assert_phase_32_t7_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P32-T7 Limited Corpus Intake Readiness Decision" in next_text
+    assert "**Status:** Selected" in next_text or "**Status:** Planned" in next_text
+    assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
+    assert "P32-T6 is complete" in next_text
+    assert "limited corpus intake readiness decision" in normalized
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
+    assert "xyflow.system" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "cupertino.core" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "SpecPMSelectedCandidateHandoffPreflightReport" in next_text
+    assert "review evidence only" in normalized
     assert "does not accept packages" in normalized
     assert "does not accept relations" in normalized
 

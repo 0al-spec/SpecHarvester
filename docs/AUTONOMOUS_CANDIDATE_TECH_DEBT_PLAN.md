@@ -227,17 +227,31 @@ Motivation:
 
 Goal:
 
-- Add a SpecPM-side consumer preflight for
-  `SpecHarvesterSelectedCandidateHandoffProposal`.
+- Record the merged SpecPM-side consumer preflight for
+  `SpecHarvesterSelectedCandidateHandoffProposal` and
+  `SpecHarvesterRefreshedCandidateLayerSelectedHandoff`.
 
 Acceptance:
 
+- SpecPM PR
+  [`0al-spec/SpecPM#140`](https://github.com/0al-spec/SpecPM/pull/140) is
+  merged.
+- The P32-T5 refreshed selected handoff fixture passes
+  `specpm producer-bundle preflight-selected-candidate-handoff`.
 - SpecPM validates proposal identity, authority, selected/deferred candidate
-  consistency, required evidence roles, digests, preflight status, viewer
-  status, privacy boundary, and `external_required` registry decisions.
+  consistency, required evidence roles, digests, source fixture digests,
+  preflight status, viewer status, privacy boundary, and `external_required`
+  registry decisions.
 - Passing preflight remains review evidence only and does not accept packages,
   seed baselines, remove `preview_only`, publish registry metadata, or create a
   PR.
+
+Artifact:
+
+- `P32-T6` records the merged SpecPM preflight in
+  [`0al-spec/SpecPM#140`](https://github.com/0al-spec/SpecPM/pull/140). The
+  P32-T5 fixture passed with eight selected candidates, one deferred candidate
+  (`cupertino.core`), and three source digests verified.
 
 ### P32-T7 Limited Corpus Intake Readiness Decision
 
@@ -269,7 +283,7 @@ Acceptance:
 3. `P32-T3` regenerate xyflow package-set evidence.
 4. `P32-T4` regenerate or repair Cupertino and NavigationSplitView evidence.
 5. `P32-T5` refresh triage and selected handoff.
-6. `P32-T6` add SpecPM-side selected handoff preflight.
+6. `P32-T6` record SpecPM-side selected handoff preflight.
 7. `P32-T7` record the limited corpus intake readiness decision.
 
 This order keeps the current corpus bounded and reviewable before any broader

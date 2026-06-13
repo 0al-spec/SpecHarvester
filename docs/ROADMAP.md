@@ -473,7 +473,7 @@ Tasks:
 - run single-package deferred candidate regeneration or repair for
   `cupertino.core` and `navigation_split_view.core`;
 - refresh candidate-layer triage and selected handoff evidence;
-- add or coordinate SpecPM-side selected candidate handoff preflight;
+- record the merged SpecPM-side selected candidate handoff preflight;
 - record a limited corpus intake readiness decision.
 
 Success criteria:
@@ -499,6 +499,10 @@ P32-T5 records the refreshed selected handoff result in
 [`REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`](REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md):
 eight candidates are ready for SpecPM-side selected handoff preflight, while
 `cupertino.core` remains deferred on `refined_summary_missing`.
+P32-T6 records that the SpecPM preflight was merged in
+[`0al-spec/SpecPM#140`](https://github.com/0al-spec/SpecPM/pull/140) and that
+the P32-T5 fixture passes with eight selected candidates, one deferred
+candidate, and three source digests verified.
 
 ## Non-Goals
 

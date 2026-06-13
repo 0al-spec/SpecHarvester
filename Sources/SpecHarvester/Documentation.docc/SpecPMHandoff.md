@@ -191,9 +191,11 @@ refreshed candidate-layer review, while still remaining producer preview
 evidence only.
 P32-T5 records the refreshed selected handoff result in
 <doc:RefreshedCandidateLayerSelectedHandoff>. That artifact is the
-producer-side input for the future SpecPM selected candidate handoff preflight.
-It keeps `cupertino.core` deferred and still does not create a SpecPM pull
-request, accept packages, accept relations, seed baselines, remove
+producer-side input for the SpecPM selected candidate handoff preflight merged
+in [0al-spec/SpecPM#140](https://github.com/0al-spec/SpecPM/pull/140). The
+P32-T5 fixture passes that gate with eight selected candidates, one deferred
+`cupertino.core`, and three source digests verified. It still does not create a
+SpecPM pull request, accept packages, accept relations, seed baselines, remove
 `preview_only`, or publish registry metadata.
 
 ## Fresh Candidate Refresh Run
