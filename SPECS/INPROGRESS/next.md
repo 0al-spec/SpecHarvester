@@ -1,6 +1,6 @@
 # Next Task: P29-T3 Corpus Baseline and Gap Report
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P29-T3 Corpus Baseline and Gap Report
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
