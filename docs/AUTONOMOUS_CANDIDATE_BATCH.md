@@ -12,6 +12,11 @@ publish packages to SpecPM, does not remove `preview_only`, and does not make
 AI output registry truth.
 SpecPM remains the validation, acceptance, relation, and registry authority.
 
+For single-package repositories with no workspace package records, the runner
+uses the deterministic
+[`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md)
+path to produce one preview candidate with `0` relation proposals.
+
 ## Command
 
 Run with local LM Studio:

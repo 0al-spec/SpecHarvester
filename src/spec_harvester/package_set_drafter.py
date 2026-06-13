@@ -17,6 +17,7 @@ from spec_harvester.collector import (
 from spec_harvester.drafter import (
     DEFAULT_AUTHOR,
     DEFAULT_SPEC_VERSION,
+    PUBLIC_INTERFACE_INDEX_DISCOVERY_NAMES,
     DraftOptions,
     draft_spec_package,
 )
@@ -42,6 +43,9 @@ DEFAULT_DRAFT_ROLES = ("workspace", "core_runtime", "react_binding", "svelte_bin
 DEFAULT_ROLE_SELECTION_PROFILE = "default"
 EXPLICIT_ROLE_SELECTION_PROFILE = "custom"
 AUTONOMOUS_POPULAR_MVP_ROLE_SELECTION_PROFILE = "autonomous_popular_mvp"
+SINGLE_PACKAGE_FALLBACK_REASON = "single_package_source_manifest_fallback"
+FALLBACK_SNAPSHOT_PATH_KEY = "_fallbackSnapshotPath"
+FALLBACK_INTERFACE_INDEX_PATH_KEY = "_fallbackInterfaceIndexPath"
 PACKAGE_SET_ROLE_PROFILES = {
     DEFAULT_ROLE_SELECTION_PROFILE: DEFAULT_DRAFT_ROLES,
     "generic_monorepo": ("workspace", "member_package"),
@@ -152,14 +156,21 @@ class PackageSetDrafter:
 
     def write_candidates(self) -> list[dict[str, Any]]:
         records = selected_package_records(self.inventory, self.roles)
+        if not records and not package_records(self.inventory):
+            fallback = self.single_package_fallback_record()
+            if fallback is not None:
+                records = [fallback]
         candidates: list[dict[str, Any]] = []
         for record in records:
             package_id = record["proposedSpecpmPackageId"]
             candidate_root = self.options.out / safe_candidate_dir(package_id)
             candidate_root.mkdir(parents=True, exist_ok=True)
-            snapshot = synthetic_snapshot(self.inventory, record)
-            snapshot_path = candidate_root / "harvest.json"
-            snapshot_path.write_text(render_json(snapshot), encoding="utf-8")
+            snapshot_path = materialize_candidate_snapshot(
+                inventory=self.inventory,
+                record=record,
+                candidate_root=candidate_root,
+            )
+            interface_index_path = fallback_interface_index_path(record)
             draft_result = draft_spec_package(
                 DraftOptions(
                     snapshot=snapshot_path,
@@ -168,6 +179,7 @@ class PackageSetDrafter:
                     name=package_display_name(record),
                     version=self.options.version,
                     author=self.options.author,
+                    interface_index=interface_index_path,
                 )
             )
             candidates.append(
@@ -201,7 +213,42 @@ class PackageSetDrafter:
             "exactRevision": source.get("exactRevision"),
             "revisionAuthority": source.get("revisionAuthority"),
             "declaredRef": source.get("declaredRef"),
+            "packageId": source.get("packageId"),
         }
+
+    def single_package_fallback_record(self) -> dict[str, Any] | None:
+        source = self.inventory.get("source")
+        if not isinstance(source, dict):
+            return None
+        snapshot_path = self.inventory_path.parent / "harvest.json"
+        if not snapshot_path.is_file():
+            return None
+        package_id = source_package_id(source)
+        interface_index_path = colocated_interface_index_path(self.inventory_path.parent)
+        record: dict[str, Any] = {
+            "manifestPath": "harvest.json",
+            "sourceTargetPath": source_target_path_from_source(source),
+            "proposedSpecpmPackageId": package_id,
+            "role": "single_package",
+            "name": package_id,
+            "version": self.options.version,
+            "ecosystem": "unknown",
+            "packageManager": "unknown",
+            "description": f"Repository-level single-package fallback for {package_id}.",
+            "selectionReason": SINGLE_PACKAGE_FALLBACK_REASON,
+            "evidenceReferences": [
+                {
+                    "kind": "harvest_snapshot",
+                    "path": "harvest.json",
+                    "size": snapshot_path.stat().st_size,
+                    "digest": digest_record(sha256_file(snapshot_path)),
+                }
+            ],
+            FALLBACK_SNAPSHOT_PATH_KEY: str(snapshot_path),
+        }
+        if interface_index_path is not None:
+            record[FALLBACK_INTERFACE_INDEX_PATH_KEY] = str(interface_index_path)
+        return record
 
 
 def draft_package_set(options: PackageSetDraftOptions) -> dict[str, Any]:
@@ -256,6 +303,57 @@ def package_records(inventory: dict[str, Any]) -> list[dict[str, Any]]:
     if not isinstance(packages, list):
         return []
     return [record for record in packages if isinstance(record, dict)]
+
+
+def source_package_id(source: dict[str, Any]) -> str:
+    package_id = source.get("packageId")
+    if isinstance(package_id, str) and package_id.strip():
+        return package_id.strip()
+    repository = source.get("repository")
+    namespace = "repository"
+    if isinstance(repository, str) and repository.strip():
+        namespace = Path(repository.rstrip("/").removesuffix(".git")).name
+    return f"{safe_candidate_dir(namespace).replace('-', '_').lower()}.core"
+
+
+def source_target_path_from_source(source: dict[str, Any]) -> str:
+    target = source.get("target")
+    if not isinstance(target, dict):
+        return "."
+    path = target.get("path")
+    if isinstance(path, str) and path.strip():
+        return path.strip()
+    return "."
+
+
+def colocated_interface_index_path(root: Path) -> Path | None:
+    for name in PUBLIC_INTERFACE_INDEX_DISCOVERY_NAMES:
+        candidate = root / name
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def materialize_candidate_snapshot(
+    *,
+    inventory: dict[str, Any],
+    record: dict[str, Any],
+    candidate_root: Path,
+) -> Path:
+    fallback_snapshot = record.get(FALLBACK_SNAPSHOT_PATH_KEY)
+    if isinstance(fallback_snapshot, str) and fallback_snapshot:
+        return Path(fallback_snapshot)
+    snapshot = synthetic_snapshot(inventory, record)
+    snapshot_path = candidate_root / "harvest.json"
+    snapshot_path.write_text(render_json(snapshot), encoding="utf-8")
+    return snapshot_path
+
+
+def fallback_interface_index_path(record: dict[str, Any]) -> Path | None:
+    value = record.get(FALLBACK_INTERFACE_INDEX_PATH_KEY)
+    if isinstance(value, str) and value:
+        return Path(value)
+    return None
 
 
 def relation_records(
@@ -714,7 +812,7 @@ def candidate_record(
     draft_result: dict[str, Any],
 ) -> dict[str, Any]:
     candidate_path = candidate_root.relative_to(output_root).as_posix()
-    return {
+    record = {
         "packageId": draft_result["packageId"],
         "role": package.get("role"),
         "sourceTargetPath": package.get("sourceTargetPath"),
@@ -728,6 +826,10 @@ def candidate_record(
         "qualityReport": relative_output_path(output_root, draft_result["qualityReport"]),
         "status": draft_result["status"],
     }
+    selection_reason = package.get("selectionReason")
+    if isinstance(selection_reason, str) and selection_reason:
+        record["selectionReason"] = selection_reason
+    return record
 
 
 def member_quality_reports(

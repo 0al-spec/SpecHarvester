@@ -434,7 +434,7 @@ def assert_phase_29_t3_active(next_text: str) -> None:
 def assert_phase_29_t4_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P29-T4 Single-Package Candidate Fallback" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "single-package candidate fallback" in normalized
     assert "Flask and Gin" in next_text
     assert "deterministic evidence and public interface indexes" in normalized
@@ -3435,3 +3435,66 @@ def test_autonomous_candidate_corpus_baseline_docs_cover_mixed_corpus_verdict() 
     assert "AutonomousCandidateCorpusBaseline" in intake_docc.read_text(encoding="utf-8")
     assert "AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md" in tech_debt.read_text(encoding="utf-8")
     assert "AutonomousCandidateCorpusBaseline" in tech_debt_docc.read_text(encoding="utf-8")
+
+
+def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:
+    github_doc = ROOT / "docs" / "SINGLE_PACKAGE_CANDIDATE_FALLBACK.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SinglePackageCandidateFallback.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    autonomous_batch = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_BATCH.md"
+    autonomous_batch_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "AutonomousCandidateBatch.md"
+    )
+    tech_debt = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    tech_debt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Single-Package Candidate Fallback",
+            "autonomous-candidate-batch",
+            "workspace-inventory.json",
+            "flask.core",
+            "gin.core",
+            "0 relation proposals",
+            "harvest.json",
+            "public-interface-index.json",
+            "producer-receipt.json",
+            "validation-report.json",
+            "diagnostics.json",
+            "author-ready-draft-quality-report.json",
+            "single_package_source_manifest_fallback",
+            "single_package",
+            "does not invent `contains` relations",
+            "producer_preview_evidence_only",
+            "preview_only",
+            "no SpecPM acceptance",
+            "P29-T5",
+            "P29-T6",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "SINGLE_PACKAGE_CANDIDATE_FALLBACK.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SinglePackageCandidateFallback>" in docc_root.read_text(encoding="utf-8")
+    assert "SINGLE_PACKAGE_CANDIDATE_FALLBACK.md" in autonomous_batch.read_text(encoding="utf-8")
+    assert "SinglePackageCandidateFallback" in autonomous_batch_docc.read_text(encoding="utf-8")
+    assert "SINGLE_PACKAGE_CANDIDATE_FALLBACK.md" in tech_debt.read_text(encoding="utf-8")
+    assert "SinglePackageCandidateFallback" in tech_debt_docc.read_text(encoding="utf-8")
+    assert "SINGLE_PACKAGE_CANDIDATE_FALLBACK.md" in roadmap.read_text(encoding="utf-8")
+    assert "SinglePackageCandidateFallback" in roadmap_docc.read_text(encoding="utf-8")

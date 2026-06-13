@@ -163,6 +163,8 @@ The current mixed-corpus baseline is recorded in
 <doc:AutonomousCandidateCorpusBaseline>, including Flask/Gin
 `single_package_fallback_needed` outcomes and the xyflow
 `ai_json_repair_needed` LM Studio diagnostic.
+The Flask/Gin deterministic fallback is documented in
+<doc:SinglePackageCandidateFallback>.
 
 ## Non-Goals
 
@@ -184,4 +186,5 @@ repositories.
 - <doc:PackageSetAIEnrichment>
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateCorpusBaseline>
+- <doc:SinglePackageCandidateFallback>
 - <doc:XyflowPackageSetSmoke>
