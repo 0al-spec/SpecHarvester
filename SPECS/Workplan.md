@@ -980,7 +980,7 @@ Acceptance:
   drafts package-set preview bundles, runs producer preflight, and optionally
   invokes a local LM Studio/OpenAI-compatible model for schema-bound AI draft
   and enrichment proposals.
-- [ ] `P29-T2` Add a SpecPM-facing candidate-layer intake policy for autonomous
+- [x] `P29-T2` Add a SpecPM-facing candidate-layer intake policy for autonomous
   batch output so generated preview packages can be reviewed without implying
   accepted registry authority.
 - [ ] `P29-T3` Run the autonomous batch runner on a small popular-library set,

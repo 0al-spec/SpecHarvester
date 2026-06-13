@@ -84,6 +84,7 @@ The canonical source files remain in the repository:
 - `docs/PACKAGE_SET_AI_DRAFT_PROPOSAL.md`
 - `docs/PACKAGE_SET_AI_ENRICHMENT.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
+- `docs/AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`
 - `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`
 - `docs/ROADMAP.md`
 
@@ -152,6 +153,7 @@ the host.
 - <doc:PackageSetAIDraftProposal>
 - <doc:PackageSetAIEnrichment>
 - <doc:AutonomousCandidateBatch>
+- <doc:AutonomousCandidateIntakePolicy>
 - <doc:AutonomousCandidateTechDebtPlan>
 - <doc:ProposalAutomation>
 

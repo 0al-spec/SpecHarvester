@@ -59,3 +59,6 @@ Report identity:
 
 Generated package files remain `preview_only` producer evidence. SpecPM remains
 the validation, acceptance, relation, and registry authority.
+
+For the SpecPM-facing review boundary for these batch artifacts, see
+<doc:AutonomousCandidateIntakePolicy>.
