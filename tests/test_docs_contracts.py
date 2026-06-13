@@ -617,7 +617,7 @@ def assert_p30_t1_recent(next_text: str) -> None:
     assert "`P30-T1` defined the limited popular-library corpus plan" in next_text
     assert "LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md" in next_text
     assert "LimitedPopularLibraryCorpusPlan" in next_text
-    assert "inputs/limited-popular-libraries.example.yml" in next_text
+    assert "inputs/limited-popular-libraries/repositories.yml" in next_text
     assert "flask.core" in next_text
     assert "gin.core" in next_text
     assert "xyflow.workspace" in next_text
@@ -3782,7 +3782,7 @@ def test_limited_popular_library_corpus_plan_docs_and_manifest_are_aligned() -> 
         / "Documentation.docc"
         / "LimitedPopularLibraryCorpusPlan.md"
     )
-    manifest = ROOT / "inputs" / "limited-popular-libraries.example.yml"
+    manifest = ROOT / "inputs" / "limited-popular-libraries" / "repositories.yml"
     generic_manifest = ROOT / "inputs" / "repositories.example.yml"
     docs_index = ROOT / "docs" / "README.md"
     docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
@@ -3797,7 +3797,7 @@ def test_limited_popular_library_corpus_plan_docs_and_manifest_are_aligned() -> 
         for required in (
             "Limited Popular-Library Corpus Plan",
             "ready_for_limited_popular_library_scraping",
-            "inputs/limited-popular-libraries.example.yml",
+            "inputs/limited-popular-libraries/repositories.yml",
             "operator-provided local public checkouts",
             "producer_preview_evidence_only",
             "preview_only",
@@ -3821,7 +3821,11 @@ def test_limited_popular_library_corpus_plan_docs_and_manifest_are_aligned() -> 
     for record in records:
         by_path.setdefault(record["sourceManifest"]["path"], []).append(record)
 
-    limited = by_path["limited-popular-libraries.example.yml"]
+    limited_records = read_repository_source_manifests(
+        ROOT / "inputs" / "limited-popular-libraries",
+        include_disabled=True,
+    )
+    limited = limited_records
     assert [record["id"] for record in limited] == [
         "flask",
         "gin",

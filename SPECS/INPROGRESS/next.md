@@ -30,7 +30,7 @@
 - `P30-T1` defined the limited popular-library corpus plan in
   `docs/LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`,
   `<doc:LimitedPopularLibraryCorpusPlan>`, and
-  `inputs/limited-popular-libraries.example.yml`. The seed corpus includes
+  `inputs/limited-popular-libraries/repositories.yml`. The seed corpus includes
   `flask.core`, `gin.core`, `xyflow.workspace`, `cupertino.core`,
   `navigation-split-view.core`, and `docc2context.core`. The plan records
   source-manifest shape, selection criteria, operator runbook, stop conditions,

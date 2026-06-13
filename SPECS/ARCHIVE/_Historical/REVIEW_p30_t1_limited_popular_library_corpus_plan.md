@@ -30,7 +30,7 @@ None.
 
 ### Tests
 
-- `PYTHONPATH=src python -m spec_harvester source-manifests inputs` -> passed
+- `PYTHONPATH=src python -m spec_harvester source-manifests inputs/limited-popular-libraries` -> passed
 - `PYTHONPATH=src pytest tests/test_docs_contracts.py -q` -> `57 passed`
 - `PYTHONPATH=src pytest -q` -> `625 passed, 1 skipped`
 - `PYTHONPATH=src pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` -> `625 passed, 1 skipped`; coverage `90.58%`

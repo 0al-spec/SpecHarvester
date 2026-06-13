@@ -3,10 +3,10 @@
 This page defines the P30 operator plan for the first bounded corpus expansion
 after the P29 `ready_for_limited_popular_library_scraping` quality gate.
 
-The companion source manifest is:
+The companion source manifest directory is:
 
 ```text
-inputs/limited-popular-libraries.example.yml
+inputs/limited-popular-libraries/repositories.yml
 ```
 
 ## Boundary
@@ -51,7 +51,8 @@ repositories:
 Preview the manifest:
 
 ```bash
-PYTHONPATH=src python -m spec_harvester source-manifests inputs
+PYTHONPATH=src python -m spec_harvester source-manifests \
+  inputs/limited-popular-libraries
 ```
 
 ## P30 Runbook
@@ -60,7 +61,7 @@ Deterministic gate:
 
 ```bash
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
-  inputs \
+  inputs/limited-popular-libraries \
   --out .smoke/limited-popular-libraries-deterministic \
   --skip-ai
 ```
@@ -69,7 +70,7 @@ Live LM Studio gate:
 
 ```bash
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
-  inputs \
+  inputs/limited-popular-libraries \
   --out .smoke/limited-popular-libraries-live \
   --lm-studio-base-url http://127.0.0.1:1234 \
   --lm-studio-model openai/gpt-oss-20b \

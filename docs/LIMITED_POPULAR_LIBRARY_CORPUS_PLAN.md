@@ -7,10 +7,10 @@ P29 quality gate. It turns the
 `ready_for_limited_popular_library_scraping` verdict into an operator-reviewed
 source manifest and runbook before any larger scrape is executed.
 
-The companion example manifest is:
+The companion example manifest directory is:
 
 ```text
-inputs/limited-popular-libraries.example.yml
+inputs/limited-popular-libraries/repositories.yml
 ```
 
 ## Scope
@@ -97,7 +97,8 @@ the pinned revisions before executing the batch.
 Preview the manifest without collecting snapshots:
 
 ```bash
-PYTHONPATH=src python -m spec_harvester source-manifests inputs
+PYTHONPATH=src python -m spec_harvester source-manifests \
+  inputs/limited-popular-libraries
 ```
 
 ## P30 Runbook
@@ -106,7 +107,7 @@ P30-T2 deterministic gate:
 
 ```bash
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
-  inputs \
+  inputs/limited-popular-libraries \
   --out .smoke/limited-popular-libraries-deterministic \
   --skip-ai
 ```
@@ -115,7 +116,7 @@ P30-T3 live LM Studio gate:
 
 ```bash
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
-  inputs \
+  inputs/limited-popular-libraries \
   --out .smoke/limited-popular-libraries-live \
   --lm-studio-base-url http://127.0.0.1:1234 \
   --lm-studio-model openai/gpt-oss-20b \

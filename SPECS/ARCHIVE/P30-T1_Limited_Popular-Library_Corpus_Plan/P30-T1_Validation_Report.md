@@ -8,7 +8,7 @@ Verdict: `PASS`
 
 - Added `docs/LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`.
 - Added DocC mirror `LimitedPopularLibraryCorpusPlan`.
-- Added `inputs/limited-popular-libraries.example.yml` with six pinned seed
+- Added `inputs/limited-popular-libraries/repositories.yml` with six pinned seed
   corpus entries:
   - `flask -> flask.core`
   - `gin -> gin.core`
@@ -26,7 +26,7 @@ Verdict: `PASS`
 
 | Gate | Result |
 | --- | --- |
-| `PYTHONPATH=src python -m spec_harvester source-manifests inputs` | passed; `repositoryCount: 7` |
+| `PYTHONPATH=src python -m spec_harvester source-manifests inputs/limited-popular-libraries` | passed; `repositoryCount: 6` |
 | `PYTHONPATH=src pytest tests/test_docs_contracts.py -q` | `57 passed` |
 | `PYTHONPATH=src pytest -q` | `625 passed, 1 skipped` |
 | `PYTHONPATH=src pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | `625 passed, 1 skipped`; coverage `90.58%` |
