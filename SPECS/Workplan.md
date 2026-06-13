@@ -975,7 +975,7 @@ Acceptance:
 
 ## Phase 29. Autonomous Candidate Harvest MVP
 
-- [ ] `P29-T1` Add an autonomous candidate batch runner that takes a repository
+- [x] `P29-T1` Add an autonomous candidate batch runner that takes a repository
   source manifest, collects deterministic evidence from local public checkouts,
   drafts package-set preview bundles, runs producer preflight, and optionally
   invokes a local LM Studio/OpenAI-compatible model for schema-bound AI draft

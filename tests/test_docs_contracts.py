@@ -6,6 +6,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P29-T2 SpecPM Candidate-Layer Intake Policy" in next_text:
+        assert_p29_t1_last_archived(next_text)
+        assert_p29_t1_recent(next_text)
+        assert_phase_29_t2_active(next_text)
+        return
+
     assert_p26_t5_archived(next_text)
     assert_p27_t1_recent(next_text)
     assert_p27_t2_recent(next_text)
@@ -120,6 +126,10 @@ def assert_p28_t4_last_archived(next_text: str) -> None:
 
 def assert_p28_t5_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P28-T5 First-Submission or Seeded-Baseline Workflow" in next_text
+
+
+def assert_p29_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P29-T1 Autonomous Candidate Batch Runner" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -302,7 +312,7 @@ def assert_phase_28_complete(next_text: str) -> None:
     assert "**Status:** Phase Complete" in next_text
     assert "SpecPM Refresh Compare Handoff is complete" in next_text
     assert "fresh generated-root layout" in normalized
-    assert "real `xyflow`" in next_text
+    assert "`xyflow` smoke" in next_text
     assert "real `TanStack/query`" in next_text
     assert "generic monorepos" in normalized
     assert "SpecHarvesterBaselineSubmissionHandoff" in next_text
@@ -320,6 +330,30 @@ def assert_phase_29_t1_active(next_text: str) -> None:
     assert "autonomous popular-library scraping" in normalized
     assert "must not clone repositories" in normalized
     assert "accepted SpecPM truth" in normalized
+
+
+def assert_p29_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P29-T1` added `autonomous-candidate-batch`" in next_text
+    assert "SpecHarvesterAutonomousCandidateBatchReport" in next_text
+    assert "autonomous_popular_mvp" in next_text
+    assert "openai/gpt-oss-20b" in next_text
+    assert "AI draft `completed`" in normalized
+    assert "AI enrichment `completed`" in normalized
+    assert "`xyflow` smoke" in next_text
+    assert "4 candidates" in normalized
+    assert "3 relations" in normalized
+    assert "stop_for_author_review" in next_text
+
+
+def assert_phase_29_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P29-T2 SpecPM Candidate-Layer Intake Policy" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "SpecPM-facing candidate-layer intake policy" in normalized
+    assert "autonomous batch output" in normalized
+    assert "AI draft/enrichment proposals" in normalized
+    assert "without turning producer output into registry authority" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -1288,7 +1322,7 @@ def test_docc_and_github_docs_cover_fresh_candidate_refresh_run() -> None:
     normalized_next = " ".join(next_text.split())
     assert "P28-T5 First-Submission or Seeded-Baseline Workflow" in normalized_next
     assert "P28-T4" in normalized_next
-    assert "package-set role selection profiles" in normalized_next
+    assert "package-set role selection profiles" in normalized_next.lower()
     assert "TanStack/query" in next_text
     assert "feb1efd804c1262106f72c8adc1d82a8ce9cfbb0" in next_text
     assert "`P28-T2` ran real `xyflow`" in next_text
