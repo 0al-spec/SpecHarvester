@@ -505,7 +505,7 @@ Acceptance:
   top-level function span, method span, behavior-rich classes, DTO-only classes,
   largest functions, and module hotspots so EO progress is measured by behavior
   movement rather than subjective review impressions.
-- [ ] `P17-T2` Split the CLI execution shell from domain command behavior by
+- [ ] `P17-T2` **INPROGRESS** Split the CLI execution shell from domain command behavior by
   introducing small command objects for selected `code-duplication-report`,
   `architecture-lint`, and report-generation flows while preserving parser
   flags, JSON error output, and exit-code behavior.
