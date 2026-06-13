@@ -195,6 +195,10 @@ Published DocC site:
     P33-T6 SpecPM selected handoff preflight result, intake readiness decision,
     durable handoff follow-up, selected/deferred scope, and non-authority
     boundary
+67. [`NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`](NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md):
+    P33-T7 durable selected handoff artifact, committed evidence roles,
+    passing SpecPM selected handoff preflight, selected/deferred scope, and
+    non-authority boundary
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

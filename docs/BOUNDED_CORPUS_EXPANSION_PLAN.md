@@ -248,6 +248,8 @@ Acceptance:
 - Any registry acceptance requires a separate SpecPM maintainer flow.
 - P33-T6 is recorded in
   [`NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`](NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md).
+- P33-T7 is recorded in
+  [`NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`](NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md).
 
 ## Non-Authority Boundary
 

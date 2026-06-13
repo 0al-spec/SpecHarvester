@@ -54,6 +54,10 @@ handoff preflight rejects the P33-T5 triage fixture with
 `selected_handoff_payload_missing`, so the next bounded step is a durable
 selected handoff artifact before maintainer intake review.
 
+P33-T7 records that artifact in <doc:NextCorpusDurableSelectedHandoff>. The
+durable selected handoff passes SpecPM selected handoff preflight without
+warnings or errors.
+
 ## Source Manifest
 
 `P33-T2` must add the next-corpus source manifest fixture before any scrape

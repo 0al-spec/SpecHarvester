@@ -1,0 +1,272 @@
+{
+  "apiVersion": "spec-harvester.selected-candidate-handoff-proposal/v0",
+  "authority": "producer_preview_evidence_only",
+  "deferredCandidates": [
+    {
+      "handoffStatus": "excluded_from_selected_handoff",
+      "id": "mcpm.system",
+      "reason": "needs_regeneration",
+      "requiredAction": "Resolve mcpm.core versus mcpm.system package identity and regenerate or manually review warning-bearing AI draft evidence."
+    },
+    {
+      "handoffStatus": "excluded_from_selected_handoff",
+      "id": "specgraph.system",
+      "reason": "needs_regeneration",
+      "requiredAction": "Resolve specgraph.core versus specgraph.system package identity before selected handoff."
+    }
+  ],
+  "futureConsumerBoundary": {
+    "producerCanAccept": false,
+    "specpmMayAcceptAfterMaintainerReview": true,
+    "specpmMayPreflight": true
+  },
+  "kind": "SpecHarvesterSelectedCandidateHandoffProposal",
+  "maintainerChecklist": [
+    "Verify selected candidate identity, namespace, and package version before intake.",
+    "Review committed P33 deterministic, live-model, and triage evidence before trusting generated claims.",
+    "Run SpecPM-side selected handoff preflight before any accepted-source change.",
+    "Reject or request regeneration for weak evidence, package identity drift, or warning-bearing generated claims.",
+    "Record the external registry acceptance decision outside producer evidence."
+  ],
+  "nonAuthority": [
+    "This proposal is review evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata.",
+    "It does not create a SpecPM pull request.",
+    "It does not run prepare-accepted-entry.",
+    "It does not run accepted-package-update-proposal.",
+    "It does not fabricate per-file evidence digests from summary-only fixtures."
+  ],
+  "notExecuted": [
+    "new scrape",
+    "LM Studio rerun",
+    "repository clone",
+    "remote fetch",
+    "dependency installation",
+    "harvested repository code execution",
+    "prepare-accepted-entry",
+    "accepted-package-update-proposal",
+    "SpecPM pull request creation",
+    "registry mutation",
+    "relation acceptance",
+    "baseline seeding",
+    "preview_only removal"
+  ],
+  "requiredEvidenceRoles": [
+    {
+      "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
+      "required": true,
+      "role": "selected_handoff_dry_run",
+      "scope": "proposal"
+    },
+    {
+      "path": "inputs/p33-next-corpus/repositories.yml",
+      "required": true,
+      "role": "source_manifest",
+      "scope": "proposal"
+    },
+    {
+      "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
+      "required": true,
+      "role": "deterministic_dry_run",
+      "scope": "proposal"
+    },
+    {
+      "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json",
+      "required": true,
+      "role": "live_local_model_batch",
+      "scope": "proposal"
+    }
+  ],
+  "schemaVersion": 1,
+  "selectedCandidates": [
+    {
+      "evidenceLinks": [
+        {
+          "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+          "digestSource": "committed_file",
+          "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
+          "pathScope": "repo_relative",
+          "role": "selected_handoff_dry_run",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+          "digestSource": "committed_file",
+          "path": "inputs/p33-next-corpus/repositories.yml",
+          "pathScope": "repo_relative",
+          "role": "source_manifest",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
+          "digestSource": "committed_file",
+          "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
+          "pathScope": "repo_relative",
+          "role": "deterministic_dry_run",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
+          "digestSource": "committed_file",
+          "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json",
+          "pathScope": "repo_relative",
+          "role": "live_local_model_batch",
+          "status": "present"
+        }
+      ],
+      "id": "serena.core",
+      "maintainerAction": "review_for_possible_specpm_intake",
+      "previewOnly": true,
+      "producerPreflight": {
+        "diagnosticCount": 0,
+        "errorCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "repositoryId": "serena",
+      "staticViewer": {
+        "source": "P33-T4 committed summary fixture",
+        "status": "ok"
+      },
+      "triageClassification": "candidate_layer_review_required"
+    },
+    {
+      "evidenceLinks": [
+        {
+          "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+          "digestSource": "committed_file",
+          "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
+          "pathScope": "repo_relative",
+          "role": "selected_handoff_dry_run",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+          "digestSource": "committed_file",
+          "path": "inputs/p33-next-corpus/repositories.yml",
+          "pathScope": "repo_relative",
+          "role": "source_manifest",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
+          "digestSource": "committed_file",
+          "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
+          "pathScope": "repo_relative",
+          "role": "deterministic_dry_run",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
+          "digestSource": "committed_file",
+          "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json",
+          "pathScope": "repo_relative",
+          "role": "live_local_model_batch",
+          "status": "present"
+        }
+      ],
+      "id": "transmission.core",
+      "maintainerAction": "review_for_possible_specpm_intake",
+      "previewOnly": true,
+      "producerPreflight": {
+        "diagnosticCount": 0,
+        "errorCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "repositoryId": "transmission",
+      "staticViewer": {
+        "source": "P33-T4 committed summary fixture",
+        "status": "ok"
+      },
+      "triageClassification": "candidate_layer_review_required"
+    },
+    {
+      "evidenceLinks": [
+        {
+          "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+          "digestSource": "committed_file",
+          "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
+          "pathScope": "repo_relative",
+          "role": "selected_handoff_dry_run",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+          "digestSource": "committed_file",
+          "path": "inputs/p33-next-corpus/repositories.yml",
+          "pathScope": "repo_relative",
+          "role": "source_manifest",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
+          "digestSource": "committed_file",
+          "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
+          "pathScope": "repo_relative",
+          "role": "deterministic_dry_run",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
+          "digestSource": "committed_file",
+          "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json",
+          "pathScope": "repo_relative",
+          "role": "live_local_model_batch",
+          "status": "present"
+        }
+      ],
+      "id": "specpm.core",
+      "maintainerAction": "review_for_possible_specpm_intake",
+      "previewOnly": true,
+      "producerPreflight": {
+        "diagnosticCount": 0,
+        "errorCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "repositoryId": "specpm",
+      "staticViewer": {
+        "source": "P33-T4 committed summary fixture",
+        "status": "ok"
+      },
+      "triageClassification": "candidate_layer_review_required"
+    }
+  ],
+  "source": {
+    "selectedDryRunFixture": {
+      "apiVersion": "spec-harvester.next-corpus-candidate-layer-triage/v0",
+      "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+      "kind": "SpecHarvesterNextCorpusCandidateLayerTriage",
+      "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
+      "status": "selected_handoff_dry_run_ready"
+    }
+  },
+  "summary": {
+    "deferredCandidateCount": 2,
+    "registryMutationCount": 0,
+    "requiredEvidenceRoleCount": 4,
+    "selectedCandidateCount": 3,
+    "specpmPullRequestCreated": false
+  }
+}
