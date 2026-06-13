@@ -4,7 +4,8 @@
 **Phase:** Phase 20. Scoped Source Unit Harvesting
 **Effort:** Medium
 **Dependencies:** P20-T3, P20-T5
-**Status:** Ready
+**Status:** Selected
+**Active Branch:** `codex/p20-t6-codegraph-adapter-boundary`
 **Last Archived:** P20-T5 Scoped Source-Unit Draft Intent Boundaries
 
 ## Recently Archived
