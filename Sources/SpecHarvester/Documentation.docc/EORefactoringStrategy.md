@@ -75,6 +75,14 @@ command objects. Each object should own one command contract:
 This keeps the CLI procedural shell thin without forcing all parser definition
 code into objects prematurely.
 
+P17-T2 starts this sequence with a narrow report-command slice:
+`code-duplication-report`, `architecture-lint`, and
+`procedural-style-report` delegate execution to `cli_report_commands.py`
+command objects such as `CodeDuplicationReportCommand`,
+`ArchitectureLintCommand`, and `ProceduralStyleReportCommand`. The parser shell
+stays in `cli.py`; report schemas, parser flags, JSON error output, and
+exit-code behavior remain unchanged.
+
 ### 3. Refactor Report Builders by Output Contract
 
 Report modules are good EO candidates because they have stable observable JSON

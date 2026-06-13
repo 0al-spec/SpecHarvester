@@ -21,10 +21,6 @@ from spec_harvester.accepted_update_proposal import (
     write_accepted_package_update_proposal,
     write_accepted_package_update_proposal_markdown,
 )
-from spec_harvester.architecture_lint import (
-    build_architecture_lint_report,
-    write_architecture_lint_report,
-)
 from spec_harvester.author_ready_calibration_matrix import (
     build_author_ready_calibration_matrix,
     write_author_ready_calibration_matrix,
@@ -50,13 +46,16 @@ from spec_harvester.candidate_bundle_preflight import (
     CandidateBundlePreflightOptions,
     run_candidate_bundle_preflight,
 )
+from spec_harvester.cli_report_commands import (
+    run_architecture_lint,
+    run_code_duplication_report,
+    run_procedural_style_report,
+)
 from spec_harvester.code_duplication_report import (
     BACKEND_BUILTIN,
     BACKEND_JSCPD,
     BACKEND_PYLINT,
     DEFAULT_MIN_LINES,
-    build_code_duplication_report,
-    write_code_duplication_report,
 )
 from spec_harvester.collector import (
     DEFAULT_MAX_FILE_BYTES,
@@ -120,8 +119,6 @@ from spec_harvester.package_set_handoff_proposal import (
 from spec_harvester.procedural_style_report import (
     DEFAULT_HOTSPOT_MIN_TOP_LEVEL_COUNT,
     DEFAULT_HOTSPOT_MIN_TOP_LEVEL_SPAN,
-    build_procedural_style_report,
-    write_procedural_style_report,
 )
 from spec_harvester.promoter import (
     PrepareAcceptedManifestEntryOptions,
@@ -1604,70 +1601,6 @@ def run_license_provenance_report(args: argparse.Namespace) -> int:
         write_license_provenance_report(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
-
-
-def run_code_duplication_report(args: argparse.Namespace) -> int:
-    paths = args.path or [Path("src/spec_harvester")]
-    try:
-        result = build_code_duplication_report(
-            paths,
-            min_lines=args.min_lines,
-            backend=args.backend,
-            pylint_command=args.pylint_command,
-            jscpd_command=args.jscpd_command,
-        )
-    except ValueError as exc:
-        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
-        return 2
-    if args.output is not None:
-        write_code_duplication_report(args.output, result)
-    print(json.dumps(result, indent=2, sort_keys=True))
-    if args.fail_on_duplicates and result["summary"]["duplicateBlockCount"] > 0:
-        return 1
-    return 0
-
-
-def run_architecture_lint(args: argparse.Namespace) -> int:
-    paths = args.path or [Path("src/spec_harvester")]
-    try:
-        result = build_architecture_lint_report(paths)
-    except ValueError as exc:
-        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
-        return 2
-    if args.output is not None:
-        write_architecture_lint_report(args.output, result)
-    print(json.dumps(result, indent=2, sort_keys=True))
-    if args.fail_on_issues and result["summary"]["issueCount"] > 0:
-        return 1
-    return 0
-
-
-def run_procedural_style_report(args: argparse.Namespace) -> int:
-    paths = args.path or [Path("src/spec_harvester")]
-    try:
-        result = build_procedural_style_report(
-            paths,
-            hotspot_min_top_level_count=args.hotspot_min_top_level_count,
-            hotspot_min_top_level_span=args.hotspot_min_top_level_span,
-        )
-    except ValueError as exc:
-        print(
-            json.dumps(
-                {"status": "error", "message": procedural_style_error(str(exc))},
-                indent=2,
-            )
-        )
-        return 2
-    if args.output is not None:
-        write_procedural_style_report(args.output, result)
-    print(json.dumps(result, indent=2, sort_keys=True))
-    if args.fail_on_hotspots and result["summary"]["hotspotCount"] > 0:
-        return 1
-    return 0
-
-
-def procedural_style_error(message: str) -> str:
-    return message.replace("Architecture lint", "Procedural style report")
 
 
 def run_accepted_candidate_diff_report(args: argparse.Namespace) -> int:

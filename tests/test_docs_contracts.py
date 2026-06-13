@@ -10,6 +10,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P17-T3 Report Builder Behavior Objects" in next_text:
+        assert_p17_t2_last_archived(next_text)
+        assert_p17_t2_recent(next_text)
+        assert_phase_17_t3_active(next_text)
+        return
+
+    if "# Next Task: P17-T2 CLI Domain Command Objects" in next_text:
+        assert_phase_17_t2_active(next_text)
+        return
+
     if "# Next Task: Phase 33 Complete" in next_text:
         assert_p33_t8_last_archived(next_text)
         assert_p33_t7_recent(next_text)
@@ -552,6 +562,56 @@ def assert_p33_t7_last_archived(next_text: str) -> None:
 
 def assert_p33_t8_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P33-T8 Next-Corpus Intake Readiness Decision" in next_text
+
+
+def assert_p17_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P17-T2 CLI Domain Command Objects" in next_text
+
+
+def assert_phase_17_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P17-T2 CLI Domain Command Objects" in next_text
+    assert "**Status:** Selected" in next_text or "**Status:** In Progress" in next_text
+    assert "Phase 17. Elegant Objects Refactoring Strategy" in next_text
+    assert "P17-T1" in next_text
+    assert "code-duplication-report" in next_text
+    assert "architecture-lint" in next_text
+    assert "procedural-style-report" in next_text
+    assert "parser flags" in normalized
+    assert "JSON error output" in normalized
+    assert "report schemas" in normalized
+    assert "exit-code behavior" in normalized
+    assert "must not change report payloads" in normalized
+    assert "public CLI names" in normalized
+    assert "trust-boundary text" in normalized
+
+
+def assert_p17_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P17-T2` split selected CLI report execution bodies" in next_text
+    assert "cli_report_commands.py" in next_text
+    assert "CodeDuplicationReportCommand" in next_text
+    assert "ArchitectureLintCommand" in next_text
+    assert "ProceduralStyleReportCommand" in next_text
+    assert "code-duplication-report" in next_text
+    assert "architecture-lint" in next_text
+    assert "procedural-style-report" in next_text
+    assert "parser flags" in normalized
+    assert "JSON error output" in normalized
+    assert "exit-code behavior" in normalized
+    assert "report schemas" in normalized
+    assert "behaviorRichClassCount: 3" in next_text
+
+
+def assert_phase_17_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P17-T3 Report Builder Behavior Objects" in next_text
+    assert "**Status:** Selected" in next_text or "**Status:** In Progress" in next_text
+    assert "Phase 17. Elegant Objects Refactoring Strategy" in next_text
+    assert "Refactor report builders behind behavior-rich report objects" in next_text
+    assert "preserving report schemas" in normalized
+    assert "issue codes" in normalized
+    assert "markdown output" in normalized
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -4294,6 +4354,9 @@ def test_docc_and_github_docs_cover_eo_refactoring_strategy() -> None:
             "behavior-rich objects",
             "ELEGANT_OBJECTS_STYLE.md",
             "AGENTS.md",
+            "P17-T2",
+            "cli_report_commands.py",
+            "CodeDuplicationReportCommand",
             "top-level function",
             "DTO-only dataclasses",
             "characterization tests",
