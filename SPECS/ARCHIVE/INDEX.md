@@ -202,6 +202,7 @@
 | 2026-06-13 | P32-T3 | Archived REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run report |
 | 2026-06-13 | P32-T3 | Archived Xyflow Package-Set Identity Regeneration Dry Run (PASS) |
 | 2026-06-13 | P32-T4 | Archived Single-Package Deferred Candidate Regeneration Dry Run (PASS) |
+| 2026-06-13 | P32-T4 | Archived REVIEW_p32_t4_single_package_deferred_regeneration_dry_run report |
 | 2026-06-13 | P32-T2 | Archived REVIEW_p32_t2_deferred_candidate_regeneration_runbook report |
 | 2026-06-13 | P32-T2 | Archived Deferred Candidate Regeneration Runbook (PASS) |
 | 2026-06-13 | P31-T5 | Archived REVIEW_p31_t5_deferred_selected_candidate_regeneration_requirements report |
