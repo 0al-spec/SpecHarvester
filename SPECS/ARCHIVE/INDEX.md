@@ -121,6 +121,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t6_corpus_quality_gate_after_fallbacks.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t1_procedural_style_metrics.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t2_tuist_manifest_parsing.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t3_codegraph_adapter_evaluation.md` |
@@ -169,6 +170,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P29-T6 | Archived REVIEW_p29_t6_corpus_quality_gate_after_fallbacks report |
 | 2026-06-13 | P29-T6 | Archived Corpus Quality Gate After Fallbacks (PASS) |
 | 2026-06-13 | P29-T5 | Archived REVIEW_p29_t5_lm_studio_json_repair_retry report |
 | 2026-06-13 | P29-T5 | Archived LM Studio JSON Repair and Retry (PASS) |
