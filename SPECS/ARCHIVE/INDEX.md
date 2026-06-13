@@ -134,6 +134,7 @@
 | P33-T5 | [P33-T5_Next-Corpus_Candidate-Layer_Triage/](P33-T5_Next-Corpus_Candidate-Layer_Triage/) | 2026-06-14 | PASS |
 | P33-T6 | [P33-T6_Next-Corpus_SpecPM_Preflight_and_Intake_Decision/](P33-T6_Next-Corpus_SpecPM_Preflight_and_Intake_Decision/) | 2026-06-14 | PASS |
 | P33-T7 | [P33-T7_Durable_Next-Corpus_Selected_Handoff_Artifact/](P33-T7_Durable_Next-Corpus_Selected_Handoff_Artifact/) | 2026-06-14 | PASS |
+| P33-T8 | [P33-T8_Next-Corpus_Intake_Readiness_Decision/](P33-T8_Next-Corpus_Intake_Readiness_Decision/) | 2026-06-14 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -219,6 +220,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P33-T8 | Archived Next-Corpus Intake Readiness Decision (PASS) |
 | 2026-06-14 | P33-T7 | Archived REVIEW_p33_t7_durable_next_corpus_selected_handoff_artifact report |
 | 2026-06-14 | P33-T7 | Archived Durable Next-Corpus Selected Handoff Artifact (PASS) |
 | 2026-06-14 | P33-T6 | Archived REVIEW_p33_t6_next_corpus_specpm_preflight_intake_decision report |

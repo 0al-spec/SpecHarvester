@@ -1,30 +1,12 @@
-# Next Task: P33-T8 Next-Corpus Intake Readiness Decision
+# Next Task: Phase 33 Complete
 
-**Status:** Selected
-**Selected:** 2026-06-14
-**Task:** P33-T8 Next-Corpus Intake Readiness Decision
+**Status:** Phase Complete
+**Completed:** 2026-06-14
 **Phase:** Phase 33. Bounded Corpus Expansion Planning
-**Last Archived:** P33-T7 Durable Next-Corpus Selected Handoff Artifact
+**Last Archived:** P33-T8 Next-Corpus Intake Readiness Decision
 
 ## Recently Archived
 
-- `P33-T6` recorded the next-corpus SpecPM preflight intake decision in
-  `docs/NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`,
-  `<doc:NextCorpusSpecPMPreflightIntakeDecision>`, and
-  `tests/fixtures/next_corpus_specpm_preflight_intake_decision/p33-t6-next-corpus-specpm-preflight-intake-decision.example.json`.
-  The fixture identity is
-  `SpecHarvesterNextCorpusSpecPMPreflightIntakeDecision` with
-  `apiVersion: spec-harvester.next-corpus-specpm-preflight-intake-decision/v0`.
-  The current SpecPM selected handoff preflight returned
-  `selected_handoff_payload_missing` against the P33-T5 triage fixture,
-  proving the selected scope needed a durable selected handoff payload before
-  maintainer intake review. The decision status was
-  `not_ready_requires_durable_selected_handoff_artifact`. It preserved
-  selected candidates `serena.core`, `transmission.core`, and `specpm.core`,
-  kept `mcpm.system` and `specgraph.system` deferred, and remained review
-  evidence only with no package acceptance, relation acceptance, baseline
-  seeding, `preview_only` removal, registry publication, or SpecPM pull request
-  creation.
 - `P33-T7` recorded the durable selected handoff in
   `docs/NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`,
   `<doc:NextCorpusDurableSelectedHandoff>`, and
@@ -39,32 +21,51 @@
   digestVerifiedCount: 1, zero warnings, and zero errors. It does not accept
   packages, does not accept relations, does not remove `preview_only`, does
   not publish registry metadata, and does not create a SpecPM pull request.
+- `P33-T8` recorded the next-corpus intake readiness decision in
+  `docs/NEXT_CORPUS_INTAKE_READINESS_DECISION.md`,
+  `<doc:NextCorpusIntakeReadinessDecision>`, and
+  `tests/fixtures/next_corpus_intake_readiness_decision/p33-t8-next-corpus-intake-readiness-decision.example.json`.
+  The fixture identity is `SpecHarvesterNextCorpusIntakeReadinessDecision`
+  with
+  `apiVersion: spec-harvester.next-corpus-intake-readiness-decision/v0` and
+  `authority: producer_preview_evidence_only`. The decision status is
+  `ready_for_author_maintainer_review_with_explicit_deferral`: selected
+  candidates `serena.core`, `transmission.core`, and `specpm.core` are ready
+  for author/maintainer review, while `mcpm.system` and `specgraph.system`
+  remain explicitly deferred. SpecPM preflight status: passed, with
+  selectedCandidateCount: 3, deferredCandidateCount: 2, zero warnings, and zero
+  errors. It is review evidence only and does not accept packages, does not
+  accept relations, does not seed baselines, does not remove `preview_only`,
+  does not publish registry metadata, and does not create a SpecPM pull
+  request.
 
-## Current Selection
+## Phase Summary
 
-Implement `P33-T8`: record the next-corpus intake readiness decision using the
-passing P33-T7 durable selected handoff preflight result.
+Phase 33 is complete.
 
-The selected handoff scope remains:
+The bounded next-corpus expansion stayed within the five-repository local
+source manifest and stopped at reviewable producer evidence. The selected
+scope is ready for author/maintainer review, the unresolved candidates remain
+explicitly deferred, and no selected candidate is registry-accepted.
+The Phase 33 result is review-ready, not registry-accepted.
 
-- `serena.core`;
-- `transmission.core`;
-- `specpm.core`.
+No Phase 33 task remains selected. Any future registry acceptance must happen
+through a separate SpecPM maintainer flow.
 
-Deferred candidates remain outside intake readiness:
+## Boundary
 
-- `mcpm.system`;
-- `specgraph.system`.
+Phase 33 completion does not:
 
-The decision should state whether the selected scope is ready for
-author/maintainer review, while keeping registry acceptance in a separate
-SpecPM maintainer flow.
-
-## Boundaries
-
-This task must not run a new scrape, must not rerun LM Studio, must not clone
-repositories, must not fetch remote state, must not install dependencies, must
-not execute harvested code, must not run package scripts, must not publish
-registry metadata, must not accept packages, must not accept relations, must
-not seed baselines, must not remove `preview_only`, or treat AI output as
-registry truth.
+- run a new scrape;
+- rerun LM Studio;
+- clone repositories;
+- fetch remote state;
+- install dependencies;
+- execute harvested repository code;
+- accept packages;
+- accept relations;
+- seed baselines;
+- remove `preview_only`;
+- publish registry metadata;
+- create a SpecPM pull request;
+- treat AI output as registry truth.

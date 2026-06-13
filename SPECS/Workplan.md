@@ -1214,7 +1214,7 @@ Acceptance:
   the SpecPM selected handoff consumer gate, so the selected scope can be
   machine-preflighted before maintainer intake review without fabricating
   per-file evidence digests.
-- [ ] `P33-T8` Record the next-corpus intake readiness decision using the
+- [x] `P33-T8` Record the next-corpus intake readiness decision using the
   passing durable selected handoff preflight result, preserving review evidence
   boundaries and stopping before registry acceptance, baseline seeding,
   relation acceptance, or `preview_only` removal in
