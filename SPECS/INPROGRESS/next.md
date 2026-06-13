@@ -1,6 +1,6 @@
 # Next Task: P30-T2 Deterministic Limited Corpus Batch
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P30-T2 Deterministic Limited Corpus Batch
 **Phase:** Phase 30. Limited Popular-Library Scraping Batch
