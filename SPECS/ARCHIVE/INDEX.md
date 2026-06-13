@@ -140,6 +140,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t1_bounded_corpus_expansion_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t7_limited_corpus_intake_readiness_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t6_specpm_selected_candidate_handoff_preflight.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t5_refreshed_candidate_layer_selected_handoff.md` |
