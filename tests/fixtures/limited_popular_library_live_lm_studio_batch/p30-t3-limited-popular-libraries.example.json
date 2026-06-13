@@ -1,0 +1,307 @@
+{
+  "apiVersion": "spec-harvester.limited-popular-library-live-lm-studio-batch/v0",
+  "authority": "producer_preview_evidence_only",
+  "corpus": {
+    "id": "p30-limited-popular-libraries",
+    "manifestPath": "inputs/limited-popular-libraries/repositories.yml",
+    "repositories": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ]
+  },
+  "deterministicBaseline": {
+    "apiVersion": "spec-harvester.limited-popular-library-deterministic-batch/v0",
+    "fixturePath": "tests/fixtures/limited_popular_library_deterministic_batch/p30-t2-limited-popular-libraries.example.json",
+    "status": "ready_for_live_lm_studio_limited_corpus",
+    "summary": {
+      "candidateCount": 9,
+      "passedPreflightCount": 6,
+      "relationCount": 3,
+      "repositoryCount": 6
+    }
+  },
+  "kind": "SpecHarvesterLimitedPopularLibraryLiveLMStudioBatch",
+  "nonAuthority": [
+    "This live LM Studio batch is review evidence only.",
+    "Model output is proposal-only and not registry truth.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata."
+  ],
+  "productVerdict": {
+    "candidateQuality": "valid_starter_packages_with_ai_review_findings",
+    "pipelineHealth": "deterministic_and_live_lm_studio_passed",
+    "status": "ready_for_candidate_layer_triage",
+    "summary": "The live LM Studio run processed all six repositories with matching deterministic candidate and relation counts. AI enrichment produced reviewable proposal evidence for every repository, but AI draft stop-policy findings and one Cupertino enrichment warning must be triaged before any SpecPM handoff."
+  },
+    "provider": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "chainOfThoughtPersisted": false,
+        "jsonRepairMaxAttempts": 1,
+        "model": "openai/gpt-oss-20b",
+        "name": "lm_studio",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false
+  },
+  "repositoryResults": [
+    {
+      "aiDraft": {
+        "diagnosticCodes": [
+          "excluded_package_unknown"
+        ],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 2024,
+        "status": "warning",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 8308,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "flask.core"
+      ],
+      "id": "flask",
+      "manifestPackageId": "flask.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "status": "passed"
+    },
+    {
+      "aiDraft": {
+        "diagnosticCodes": [
+          "excluded_package_unknown"
+        ],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 5831,
+        "status": "warning",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 15656,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "gin.core"
+      ],
+      "id": "gin",
+      "manifestPackageId": "gin.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "status": "passed"
+    },
+    {
+      "aiDraft": {
+        "diagnosticCodes": [
+          "package_set_id_missing"
+        ],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 6199,
+        "status": "warning",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 4,
+        "providerTotalTokens": 48341,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace"
+      ],
+      "id": "xyflow",
+      "manifestPackageId": "xyflow.workspace",
+      "preflight": {
+        "candidateCount": 4,
+        "errorCount": 0,
+        "relationCount": 3,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "skippedPackageCount": 7,
+      "status": "passed"
+    },
+    {
+      "aiDraft": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 5479,
+        "status": "completed",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [
+          "refined_summary_missing"
+        ],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 14836,
+        "status": "warning",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "cupertino.core"
+      ],
+      "id": "cupertino",
+      "manifestPackageId": "cupertino.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "status": "passed"
+    },
+    {
+      "aiDraft": {
+        "diagnosticCodes": [
+          "package_set_id_missing"
+        ],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 4400,
+        "status": "warning",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 11634,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "navigation_split_view.core"
+      ],
+      "candidateLayerFindings": [
+        {
+          "id": "package_id_hint_mismatch",
+          "severity": "review",
+          "summary": "The manifest packageId hint uses navigation-split-view.core, while deterministic drafting normalized the generated candidate id to navigation_split_view.core."
+        }
+      ],
+      "id": "navigation-split-view",
+      "manifestPackageId": "navigation-split-view.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "status": "passed"
+    },
+    {
+      "aiDraft": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "providerTotalTokens": 4383,
+        "status": "completed",
+        "stopPolicyDecision": "continue_generation",
+        "stopPolicyStatus": "needs_regeneration"
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed",
+        "proposalCount": 1,
+        "providerTotalTokens": 11609,
+        "status": "completed",
+        "stopPolicyDecision": "stop_for_author_review",
+        "stopPolicyStatus": "author_ready_draft"
+      },
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "docc2context.core"
+      ],
+      "id": "docc2context",
+      "manifestPackageId": "docc2context.core",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "status": "passed"
+    }
+  ],
+  "schemaVersion": 1,
+  "source": {
+    "batchReportDigest": "sha256:901e1fd2e81b03975fa7cd46d8a5a75b35b16a34512a41f264952a72909cd2c1",
+    "batchValidationReportDigest": "sha256:f21e068bd63f8fb413578541989ee4fbd6d78a21ecb9483c31ee3dc15fa5da69",
+    "mode": "local_lm_studio",
+    "runRoot": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio"
+  },
+  "summary": {
+    "aiDraftCompletedCount": 2,
+    "aiDraftProposalCount": 6,
+    "aiDraftWarningCount": 4,
+    "aiEnrichmentCompletedCount": 5,
+    "aiEnrichmentProposalCount": 6,
+    "aiEnrichmentWarningCount": 1,
+    "candidateCount": 9,
+    "collectedCount": 6,
+    "failedRepositoryCount": 0,
+    "jsonRepairExhaustedCount": 0,
+    "jsonRepairNeededCount": 0,
+    "passedPreflightCount": 6,
+    "processedCount": 6,
+    "providerDraftTotalTokens": 28316,
+    "providerEnrichmentTotalTokens": 110384,
+    "providerTotalTokens": 138700,
+    "relationCount": 3,
+    "repositoryCount": 6
+  }
+}

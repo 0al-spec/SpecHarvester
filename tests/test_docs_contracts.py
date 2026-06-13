@@ -9,6 +9,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P30-T4 Candidate-Layer Triage Report" in next_text:
+        assert_p30_t3_last_archived(next_text)
+        assert_p29_t6_recent(next_text)
+        assert_p30_t1_recent(next_text)
+        assert_p30_t2_recent(next_text)
+        assert_p30_t3_recent(next_text)
+        assert_phase_30_t4_active(next_text)
+        return
+
     if "# Next Task: P30-T3 Live LM Studio Limited Corpus Batch" in next_text:
         assert_p30_t2_last_archived(next_text)
         assert_p29_t6_recent(next_text)
@@ -227,6 +236,10 @@ def assert_p30_t1_last_archived(next_text: str) -> None:
 
 def assert_p30_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P30-T2 Deterministic Limited Corpus Batch" in next_text
+
+
+def assert_p30_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P30-T3 Live LM Studio Limited Corpus Batch" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -673,7 +686,8 @@ def assert_p30_t2_recent(next_text: str) -> None:
 def assert_phase_30_t3_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P30-T3 Live LM Studio Limited Corpus Batch" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:**" in next_text
+    assert "In Progress" in next_text or "Selected" in next_text
     assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
     assert "live LM Studio" in normalized
     assert "openai/gpt-oss-20b" in next_text
@@ -681,6 +695,49 @@ def assert_phase_30_t3_active(next_text: str) -> None:
     assert "cost" in normalized
     assert "repair" in normalized
     assert "non-authority boundaries" in normalized
+
+
+def assert_p30_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P30-T3` recorded the live LM Studio limited corpus run" in next_text
+    assert "LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md" in next_text
+    assert "SpecHarvesterLimitedPopularLibraryLiveLMStudioBatch" in next_text
+    assert "ready_for_candidate_layer_triage" in next_text
+    assert "openai/gpt-oss-20b" in next_text
+    assert "6 repositories" in normalized
+    assert "9 preview candidates" in normalized
+    assert "3 relation proposals" in normalized
+    assert "AI draft" in normalized
+    assert "2 completed" in normalized
+    assert "4 warning" in normalized
+    assert "AI enrichment" in normalized
+    assert "5 completed" in normalized
+    assert "1 warning" in normalized
+    assert "JSON repair" in normalized
+    assert "not_needed" in next_text
+    assert "138700" in next_text
+    assert "excluded_package_unknown" in next_text
+    assert "package_set_id_missing" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "package_id_hint_mismatch" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "not SpecPM acceptance" in normalized
+
+
+def assert_phase_30_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P30-T4 Candidate-Layer Triage Report" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
+    assert "candidate-layer triage report" in normalized
+    assert "candidate_layer_review_required" in next_text
+    assert "needs_regeneration" in next_text
+    assert "blocked" in next_text
+    assert "not_for_intake" in next_text
+    assert "excluded_package_unknown" in next_text
+    assert "package_set_id_missing" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "package_id_hint_mismatch" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -4096,6 +4153,312 @@ def test_limited_popular_library_deterministic_batch_docs_cover_p30_t2_verdict()
         encoding="utf-8"
     )
     assert "LimitedPopularLibraryDeterministicBatch" in corpus_plan_docc.read_text(encoding="utf-8")
+
+
+def test_limited_popular_library_live_lm_studio_batch_fixture_records_p30_t3_outcome() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "limited_popular_library_live_lm_studio_batch"
+        / "p30-t3-limited-popular-libraries.example.json"
+    )
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.limited-popular-library-live-lm-studio-batch/v0"
+    assert payload["kind"] == "SpecHarvesterLimitedPopularLibraryLiveLMStudioBatch"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["corpus"]["id"] == "p30-limited-popular-libraries"
+    assert payload["corpus"]["manifestPath"] == "inputs/limited-popular-libraries/repositories.yml"
+    assert payload["corpus"]["repositories"] == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert payload["deterministicBaseline"] == {
+        "apiVersion": "spec-harvester.limited-popular-library-deterministic-batch/v0",
+        "fixturePath": (
+            "tests/fixtures/limited_popular_library_deterministic_batch/"
+            "p30-t2-limited-popular-libraries.example.json"
+        ),
+        "status": "ready_for_live_lm_studio_limited_corpus",
+        "summary": {
+            "candidateCount": 9,
+            "passedPreflightCount": 6,
+            "relationCount": 3,
+            "repositoryCount": 6,
+        },
+    }
+    assert payload["provider"] == {
+        "baseUrl": "http://127.0.0.1:1234",
+        "chainOfThoughtPersisted": False,
+        "jsonRepairMaxAttempts": 1,
+        "model": "openai/gpt-oss-20b",
+        "name": "lm_studio",
+        "rawPromptPersisted": False,
+        "rawResponsePersisted": False,
+    }
+    assert payload["source"]["mode"] == "local_lm_studio"
+    assert payload["source"]["runRoot"] == "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio"
+    assert payload["source"]["batchReportDigest"].startswith("sha256:")
+    assert payload["source"]["batchValidationReportDigest"].startswith("sha256:")
+    assert payload["summary"] == {
+        "aiDraftCompletedCount": 2,
+        "aiDraftProposalCount": 6,
+        "aiDraftWarningCount": 4,
+        "aiEnrichmentCompletedCount": 5,
+        "aiEnrichmentProposalCount": 6,
+        "aiEnrichmentWarningCount": 1,
+        "candidateCount": 9,
+        "collectedCount": 6,
+        "failedRepositoryCount": 0,
+        "jsonRepairExhaustedCount": 0,
+        "jsonRepairNeededCount": 0,
+        "passedPreflightCount": 6,
+        "processedCount": 6,
+        "providerDraftTotalTokens": 28316,
+        "providerEnrichmentTotalTokens": 110384,
+        "providerTotalTokens": 138700,
+        "relationCount": 3,
+        "repositoryCount": 6,
+    }
+
+    by_id = {item["id"]: item for item in payload["repositoryResults"]}
+    assert set(by_id) == {
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    }
+
+    expected = {
+        "flask": (
+            "flask.core",
+            ["flask.core"],
+            1,
+            0,
+            "warning",
+            ["excluded_package_unknown"],
+            2024,
+            "completed",
+            [],
+            1,
+            8308,
+        ),
+        "gin": (
+            "gin.core",
+            ["gin.core"],
+            1,
+            0,
+            "warning",
+            ["excluded_package_unknown"],
+            5831,
+            "completed",
+            [],
+            1,
+            15656,
+        ),
+        "xyflow": (
+            "xyflow.workspace",
+            ["xyflow.react", "xyflow.svelte", "xyflow.system", "xyflow.workspace"],
+            4,
+            3,
+            "warning",
+            ["package_set_id_missing"],
+            6199,
+            "completed",
+            [],
+            4,
+            48341,
+        ),
+        "cupertino": (
+            "cupertino.core",
+            ["cupertino.core"],
+            1,
+            0,
+            "completed",
+            [],
+            5479,
+            "warning",
+            ["refined_summary_missing"],
+            1,
+            14836,
+        ),
+        "navigation-split-view": (
+            "navigation-split-view.core",
+            ["navigation_split_view.core"],
+            1,
+            0,
+            "warning",
+            ["package_set_id_missing"],
+            4400,
+            "completed",
+            [],
+            1,
+            11634,
+        ),
+        "docc2context": (
+            "docc2context.core",
+            ["docc2context.core"],
+            1,
+            0,
+            "completed",
+            [],
+            4383,
+            "completed",
+            [],
+            1,
+            11609,
+        ),
+    }
+    for repo_id, (
+        manifest_package_id,
+        candidate_ids,
+        candidate_count,
+        relation_count,
+        draft_status,
+        draft_codes,
+        draft_tokens,
+        enrichment_status,
+        enrichment_codes,
+        enrichment_proposals,
+        enrichment_tokens,
+    ) in expected.items():
+        result = by_id[repo_id]
+        assert result["status"] == "passed"
+        assert result["manifestPackageId"] == manifest_package_id
+        assert result["candidateIds"] == candidate_ids
+        assert result["preflight"] == {
+            "candidateCount": candidate_count,
+            "errorCount": 0,
+            "relationCount": relation_count,
+            "status": "passed",
+            "warningCount": 0,
+        }
+        assert result["authorReadyStatus"] == "author_ready_draft"
+        assert result["authorReadyDecision"] == "stop_for_author_review"
+        assert result["aiDraft"]["status"] == draft_status
+        assert result["aiDraft"]["diagnosticCodes"] == draft_codes
+        assert result["aiDraft"]["jsonRepairStatus"] == "not_needed"
+        assert result["aiDraft"]["providerTotalTokens"] == draft_tokens
+        assert result["aiEnrichment"]["status"] == enrichment_status
+        assert result["aiEnrichment"]["diagnosticCodes"] == enrichment_codes
+        assert result["aiEnrichment"]["jsonRepairStatus"] == "not_needed"
+        assert result["aiEnrichment"]["proposalCount"] == enrichment_proposals
+        assert result["aiEnrichment"]["providerTotalTokens"] == enrichment_tokens
+
+    assert by_id["xyflow"]["skippedPackageCount"] == 7
+    assert by_id["navigation-split-view"]["candidateLayerFindings"] == [
+        {
+            "id": "package_id_hint_mismatch",
+            "severity": "review",
+            "summary": (
+                "The manifest packageId hint uses navigation-split-view.core, while "
+                "deterministic drafting normalized the generated candidate id to "
+                "navigation_split_view.core."
+            ),
+        }
+    ]
+
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "proposal-only and not registry truth" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not accept packages" in non_authority
+    assert "does not accept relations" in non_authority
+    assert "does not seed baselines" in non_authority
+    assert "does not remove preview_only" in non_authority
+    assert "does not publish registry metadata" in non_authority
+    assert payload["productVerdict"]["status"] == "ready_for_candidate_layer_triage"
+    assert payload["productVerdict"]["pipelineHealth"] == "deterministic_and_live_lm_studio_passed"
+    assert (
+        payload["productVerdict"]["candidateQuality"]
+        == "valid_starter_packages_with_ai_review_findings"
+    )
+
+
+def test_limited_popular_library_live_lm_studio_batch_docs_cover_p30_t3_verdict() -> None:
+    github_doc = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryLiveLMStudioBatch.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    corpus_plan = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md"
+    corpus_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryCorpusPlan.md"
+    )
+    deterministic = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md"
+    deterministic_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryDeterministicBatch.md"
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Limited Popular-Library Live LM Studio Batch",
+            "SpecHarvesterLimitedPopularLibraryLiveLMStudioBatch",
+            "spec-harvester.limited-popular-library-live-lm-studio-batch/v0",
+            "producer_preview_evidence_only",
+            "openai/gpt-oss-20b",
+            "jsonRepairMaxAttempts",
+            "rawPromptPersisted: false",
+            "rawResponsePersisted: false",
+            "chainOfThoughtPersisted: false",
+            "Flask",
+            "Gin",
+            "xyflow",
+            "Cupertino",
+            "NavigationSplitView",
+            "docc2context",
+            "excluded_package_unknown",
+            "package_set_id_missing",
+            "refined_summary_missing",
+            "package_id_hint_mismatch",
+            "ready_for_candidate_layer_triage",
+            "138700",
+            "not SpecPM handoff" if path == github_doc else "candidate-layer triage",
+            "remove `preview_only`" if path == github_doc else "preview_only",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:LimitedPopularLibraryLiveLMStudioBatch>" in docc_root.read_text(encoding="utf-8")
+    assert "LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md" in roadmap.read_text(encoding="utf-8")
+    assert "LimitedPopularLibraryLiveLMStudioBatch" in roadmap_docc.read_text(encoding="utf-8")
+    assert "LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md" in corpus_plan.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibraryLiveLMStudioBatch" in corpus_plan_docc.read_text(encoding="utf-8")
+    assert "LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md" in deterministic.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibraryLiveLMStudioBatch" in deterministic_docc.read_text(
+        encoding="utf-8"
+    )
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

@@ -1042,7 +1042,7 @@ Acceptance:
 - [x] `P30-T2` Run deterministic `--skip-ai` scraping over the selected limited
   popular-library corpus and record collection, candidate, relation, preflight,
   and stop-policy outcomes.
-- [ ] `P30-T3` Run the same limited corpus through live LM Studio/OpenAI-
+- [x] `P30-T3` Run the same limited corpus through live LM Studio/OpenAI-
   compatible AI draft and enrichment with cost/time caps, repair summaries, and
   bounded diagnostics.
 - [ ] `P30-T4` Produce a candidate-layer triage report that classifies each
