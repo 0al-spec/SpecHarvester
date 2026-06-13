@@ -1,24 +1,13 @@
-# Next Task: P33-T3 Deterministic Next-Corpus Dry Run
+# Next Task: P33-T4 Live Local-Model Next-Corpus Dry Run
 
 **Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P33-T3 Deterministic Next-Corpus Dry Run
+**Task:** P33-T4 Live Local-Model Next-Corpus Dry Run
 **Phase:** Phase 33. Bounded Corpus Expansion Planning
-**Last Archived:** P33-T2 Next-Corpus Source Manifest Fixture
+**Last Archived:** P33-T3 Deterministic Next-Corpus Dry Run
 
 ## Recently Archived
 
-- `P33-T1` recorded the bounded corpus expansion plan in
-  `docs/BOUNDED_CORPUS_EXPANSION_PLAN.md`,
-  `<doc:BoundedCorpusExpansionPlan>`, and
-  `tests/fixtures/bounded_corpus_expansion_plan/p33-t1-bounded-corpus-expansion-plan.example.json`.
-  The fixture identity is `SpecHarvesterBoundedCorpusExpansionPlan` with
-  `apiVersion: spec-harvester.bounded-corpus-expansion-plan/v0`. It caps the
-  next batch at a five-repository limit, requires a source manifest, defines
-  deterministic and live-model validation gates, candidate-layer triage,
-  SpecPM-side selected handoff preflight, stop conditions, and keeps the result
-  as review evidence only. It does not accept packages, does not accept
-  relations, and does not remove `preview_only`.
 - `P33-T2` recorded the next-corpus source manifest fixture in
   `docs/NEXT_CORPUS_SOURCE_MANIFEST.md`,
   `<doc:NextCorpusSourceManifest>`,
@@ -30,35 +19,39 @@
   pinned revisions, allows no network discovery, and remains review evidence
   only. It does not clone, does not fetch, does not install dependencies, and
   does not execute harvested code.
+- `P33-T3` recorded the deterministic next-corpus dry run in
+  `docs/NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`,
+  `<doc:NextCorpusDeterministicDryRun>`, and
+  `tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json`.
+  The fixture identity is `SpecHarvesterNextCorpusDeterministicDryRun` with
+  `apiVersion: spec-harvester.next-corpus-deterministic-dry-run/v0`. It processed
+  five repositories, produced five preview candidates, zero relation proposals,
+  and five bundle-set preflights. It recorded `mcpm.system` and
+  `specgraph.system` package-id review signals and is ready for P33-T4 live
+  local-model review. It remains review evidence only, does not accept
+  packages, does not accept relations, and does not remove `preview_only`.
 
 ## Current Selection
 
-Implement `P33-T3`: run the deterministic collection and draft dry run over
-`inputs/p33-next-corpus/repositories.yml` without AI.
+Implement `P33-T4`: run the next-corpus live local-model draft/enrichment dry
+run over the same five repositories in `inputs/p33-next-corpus/repositories.yml`.
 
-Planned command:
+The live local-model run must record:
 
-```bash
-PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
-  inputs/p33-next-corpus \
-  --out <run-root>/deterministic \
-  --skip-ai
-```
-
-The dry run must record:
-
+- provider receipts;
+- bounded JSON repair outcomes;
 - candidate counts;
 - relation counts, if any;
-- preflight outcomes;
-- blocker classes;
-- source manifest digest;
-- whether every repository can proceed to live local-model review.
+- AI draft/enrichment status;
+- package-id review signals carried forward from P33-T3;
+- whether every repository can proceed to candidate-layer triage.
 
 ## Boundaries
 
-This task must not run live local-model calls, clone repositories, fetch remote
-state, install dependencies, execute harvested code, run package scripts,
-publish registry metadata, accept packages, accept relations, seed baselines,
-remove `preview_only`, or treat AI output as registry truth.
+This task must not clone repositories, fetch remote state, install
+dependencies, execute harvested code, run package scripts, publish registry
+metadata, accept packages, accept relations, seed baselines, remove
+`preview_only`, create a SpecPM pull request, or treat AI output as registry
+truth.
 
 It must not accept packages and must not publish registry metadata.

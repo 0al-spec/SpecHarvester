@@ -1196,7 +1196,7 @@ Acceptance:
   and `inputs/p33-next-corpus/repositories.yml` with pinned local checkout
   requirements, repository selection rationale, and no network discovery
   behavior.
-- [ ] `P33-T3` Run the next-corpus deterministic collection and draft dry run
+- [x] `P33-T3` Run the next-corpus deterministic collection and draft dry run
   without AI, recording candidate counts, preflight outcomes, blocker classes,
   and the evidence page
   [`NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`](../docs/NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md).
