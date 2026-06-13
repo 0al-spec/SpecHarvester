@@ -919,7 +919,7 @@ def assert_p31_t2_recent(next_text: str) -> None:
 def assert_phase_31_t3_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P31-T3 Real Selected Candidate Handoff Proposal Dry Run" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
     assert "flask.core" in next_text
     assert "gin.core" in next_text
     assert "docc2context.core" in next_text
@@ -5455,6 +5455,95 @@ def test_selected_candidate_handoff_proposal_docs_cover_p31_t1_contract() -> Non
     assert "SelectedCandidateHandoffProposal" in selected_dry_run_docc.read_text(encoding="utf-8")
     for path in (docs_index, roadmap, roadmap_docc, handoff, handoff_docc):
         assert "selected-candidate-handoff-proposal" in path.read_text(encoding="utf-8")
+
+
+def test_selected_candidate_handoff_proposal_docs_cover_p31_t3_real_dry_run() -> None:
+    github_doc = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md"
+    p31_t3_doc = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffProposal.md"
+    )
+    p31_t3_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffProposalP31T3.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    handoff_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "selected_candidate_handoff_proposal"
+        / "p31-t3-real-selected-candidate-handoff.example.json"
+    )
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    assert payload["kind"] == "SpecHarvesterSelectedCandidateHandoffProposal"
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["source"]["selectedDryRunFixture"]["path"] == (
+        "tests/fixtures/limited_popular_library_selected_handoff_dry_run/"
+        "p30-t5-limited-popular-libraries.example.json"
+    )
+    assert [item["id"] for item in payload["selectedCandidates"]] == [
+        "flask.core",
+        "gin.core",
+        "docc2context.core",
+    ]
+
+    for path in (github_doc, docc_doc, p31_t3_docc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "P31-T3",
+            "p31-t3-real-selected-candidate-handoff.example.json",
+            "SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md",
+            "flask.core",
+            "gin.core",
+            "docc2context.core",
+            "producer_preview_evidence_only",
+            "external_required",
+            "not SpecPM acceptance",
+            "does not accept packages",
+            "SpecPM pull request",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    generated_markdown = p31_t3_doc.read_text(encoding="utf-8")
+    for required in (
+        "SpecPM Selected Candidate Handoff Proposal",
+        "flask.core",
+        "gin.core",
+        "docc2context.core",
+        "xyflow.workspace",
+        "selected_handoff_dry_run",
+        "producer_preview_evidence_only",
+        "external_required",
+        "does not accept packages",
+        "SpecPM pull request",
+    ):
+        assert required in generated_markdown
+
+    assert "SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:SelectedCandidateHandoffProposalP31T3>" in docc_root.read_text(encoding="utf-8")
+    assert "p31-t3-real-selected-candidate-handoff.example.json" in roadmap.read_text(
+        encoding="utf-8"
+    )
+    assert "SelectedCandidateHandoffProposalP31T3" in roadmap_docc.read_text(encoding="utf-8")
+    assert "p31-t3-real-selected-candidate-handoff.example.json" in handoff.read_text(
+        encoding="utf-8"
+    )
+    assert "SelectedCandidateHandoffProposalP31T3" in handoff_docc.read_text(encoding="utf-8")
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

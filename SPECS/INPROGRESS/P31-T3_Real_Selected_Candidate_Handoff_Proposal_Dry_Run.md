@@ -22,11 +22,16 @@ P31-T1 documented the `SpecHarvesterSelectedCandidateHandoffProposal`
 contract. P31-T2 implemented a helper that can emit JSON and Markdown proposal
 artifacts from the selected dry-run source.
 
-The original P30-T5 local `/tmp` candidate, preflight, and viewer roots are
-not durable repository inputs. The durable input for this task is the recorded
-P30-T5 dry-run fixture, including its selected candidate list, deferred
-candidate list, paths, SHA-256 digests, producer preflight summaries, static
-viewer summaries, and non-authority boundary.
+The durable input for this task is the recorded P30-T5 dry-run fixture,
+including its selected candidate list, deferred candidate list, paths,
+SHA-256 digests, producer preflight summaries, static viewer summaries, and
+non-authority boundary.
+
+When the original P30-T5 local `/tmp` candidate, preflight, and viewer roots
+are still present, the helper should compute `local_file` SHA-256 digests from
+those files. If those local roots are unavailable in a future rerun, the helper
+must still preserve the recorded P30-T5 digest evidence instead of treating the
+candidate as accepted registry truth.
 
 ## Deliverables
 
@@ -74,8 +79,10 @@ viewer summaries, and non-authority boundary.
   - `registryAcceptanceDecision.status: external_required`;
   - `registryAcceptanceDecision.producerAuthority: evidence_only`.
 - Evidence links include every required P31-T1/P31-T2 role.
-- The fixture keeps P30-T5 recorded digests when local candidate/preflight/viewer
-  files are not present.
+- The fixture records `local_file` digests when the P30 candidate, preflight,
+  and viewer artifacts are present.
+- The helper still has a fallback path that keeps P30-T5 recorded digests when
+  local candidate/preflight/viewer files are not present.
 - The Markdown companion includes selected candidate, deferred candidate,
   evidence role, maintainer checklist, and non-authority sections.
 - No SpecPM PR is created.
