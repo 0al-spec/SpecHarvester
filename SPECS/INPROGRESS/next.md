@@ -1,15 +1,22 @@
-# Next Task: P17-T3 Report Builder Behavior Objects
+# Next Task: P17-T4 Public API Analyzer Pipeline Objects
 
 **Priority:** P1
 **Phase:** Phase 17. Elegant Objects Refactoring Strategy
-**Effort:** Medium
-**Dependencies:** P17-T2
+**Effort:** Large
+**Dependencies:** P17-T3
 **Status:** Selected
-**Active Branch:** `codex/p17-t3-report-builder-behavior-objects`
-**Last Archived:** P17-T2 CLI Domain Command Objects
+**Last Archived:** P17-T3 Report Builder Behavior Objects
 
 ## Recently Archived
 
+- `P17-T3` moved accepted candidate diff report behavior behind
+  `AcceptedCandidateDiffReport`, `PackageDiffSource`,
+  `AcceptedPackageVersions`, `CandidateComparison`, `PackageRecordDiff`, and
+  `AcceptedCandidateDiffReportWriter` while preserving the
+  `SpecHarvesterAcceptedCandidateDiffReport` schema, issue codes, comparison
+  statuses, trust-boundary text, CLI output behavior, and downstream imports.
+  The procedural-style smoke recorded behaviorRichClassCount: 4 and reduced
+  accepted diff topLevelFunctionSpan from 204 to 87.
 - `P17-T2` split selected CLI report execution bodies into
   `src/spec_harvester/cli_report_commands.py`. The completed slice introduced
   `CodeDuplicationReportCommand`, `ArchitectureLintCommand`, and
@@ -21,14 +28,14 @@
 
 ## Description
 
-Refactor report builders behind behavior-rich report objects one output
-contract at a time, starting with low-risk governance or accepted candidate
-reports and preserving report schemas, issue codes, and markdown output.
+Refactor public API analyzer pipelines into language-specific analyzer objects
+that use shared payload and option objects without hiding language-specific
+parse, diagnostic, symbol, or evidence decisions.
 
-This is the next Phase 17 EO refactoring slice after the CLI shell/domain
-command split. Keep the scope narrow and add characterization tests before
-moving mature report-building behavior.
+This is the next Phase 17 EO refactoring slice after the accepted diff report
+object seam. Keep the scope narrow and start with one language analyzer before
+attempting broader analyzer orchestration changes.
 
 ## Next Step
 
-Run the PLAN command to generate the implementation-ready PRD.
+Run the BRANCH and PLAN commands for P17-T4.
