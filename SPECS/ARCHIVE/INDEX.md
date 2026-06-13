@@ -144,6 +144,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t5_first_submission_baseline_workflow.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t3_corpus_baseline_gap_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t4_single_package_candidate_fallback.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t5_lm_studio_json_repair_retry.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -167,6 +168,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P29-T5 | Archived REVIEW_p29_t5_lm_studio_json_repair_retry report |
 | 2026-06-13 | P29-T5 | Archived LM Studio JSON Repair and Retry (PASS) |
 | 2026-06-13 | P28-T5 | Archived REVIEW_p28_t5_first_submission_baseline_workflow report |
 | 2026-06-13 | P28-T5 | Archived First-Submission or Seeded-Baseline Workflow (PASS) |
