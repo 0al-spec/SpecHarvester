@@ -503,7 +503,7 @@ def assert_phase_28_complete(next_text: str) -> None:
 def assert_phase_29_t1_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P29-T1 Autonomous Candidate Batch Runner" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
     assert "autonomous candidate batch runner" in normalized
     assert "workspace inventory" in normalized
     assert "public interface indexes" in normalized
@@ -692,7 +692,7 @@ def assert_phase_29_complete(next_text: str) -> None:
 def assert_phase_30_t1_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P30-T1 Limited Popular-Library Corpus Plan" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
     assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
     assert "P29-T6 Corpus Quality Gate After Fallbacks" in next_text
     assert "ready_for_limited_popular_library_scraping" in next_text
@@ -961,7 +961,7 @@ def assert_phase_31_t4_active(next_text: str) -> None:
     assert (
         "# Next Task: P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations" in next_text
     )
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
     assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
     assert "consumer-side preflight expectations" in normalized
     assert "identity" in normalized
@@ -5588,6 +5588,93 @@ def test_selected_candidate_handoff_proposal_docs_cover_p31_t3_real_dry_run() ->
         encoding="utf-8"
     )
     assert "SelectedCandidateHandoffProposalP31T3" in handoff_docc.read_text(encoding="utf-8")
+
+
+def test_selected_candidate_handoff_preflight_expectations_docs_cover_p31_t4_contract() -> None:
+    github_doc = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffPreflightExpectations.md"
+    )
+    selected_doc = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md"
+    selected_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffProposal.md"
+    )
+    handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    handoff_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Selected Candidate Handoff Preflight Expectations",
+            "SpecHarvesterSelectedCandidateHandoffProposal",
+            "spec-harvester.selected-candidate-handoff-proposal/v0",
+            "schemaVersion",
+            "producer_preview_evidence_only",
+            "p31-t3-real-selected-candidate-handoff.example.json",
+            "selected_candidate_count_mismatch",
+            "deferred_candidate_selected",
+            "selected_candidate_not_preview_only",
+            "producer_preflight_not_passed",
+            "static_viewer_not_ok",
+            "registry_acceptance_not_external_required",
+            "missing_required_evidence_role",
+            "invalid_evidence_digest",
+            "selected_handoff_source_digest_mismatch",
+            "missing_non_authority_statement",
+            "SpecPMSelectedCandidateHandoffPreflightReport",
+            "specpm.selected-candidate-handoff-preflight/v0",
+            "specpm_consumer_preflight",
+            "does not accept packages",
+            "does not accept relations",
+            "does not seed baselines",
+            "does not remove `preview_only`",
+            "does not publish registry metadata",
+            "does not create or merge a SpecPM pull request",
+            "P31-T5",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:SelectedCandidateHandoffPreflightExpectations>" in docc_root.read_text(
+        encoding="utf-8"
+    )
+    assert "SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md" in selected_doc.read_text(
+        encoding="utf-8"
+    )
+    assert "SelectedCandidateHandoffPreflightExpectations" in selected_docc.read_text(
+        encoding="utf-8"
+    )
+    assert "SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md" in handoff.read_text(
+        encoding="utf-8"
+    )
+    assert "SelectedCandidateHandoffPreflightExpectations" in handoff_docc.read_text(
+        encoding="utf-8"
+    )
+    assert "SpecPMSelectedCandidateHandoffPreflightReport" in roadmap.read_text(encoding="utf-8")
+    assert "SpecPMSelectedCandidateHandoffPreflightReport" in roadmap_docc.read_text(
+        encoding="utf-8"
+    )
+    assert "`P31-T4` Define the downstream SpecPM-side preflight expectations" in (
+        workplan.read_text(encoding="utf-8")
+    )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

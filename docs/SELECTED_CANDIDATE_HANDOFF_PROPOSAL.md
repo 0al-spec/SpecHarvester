@@ -152,6 +152,8 @@ SpecPM may later add consumer-side preflight for
 proposal identity, selected candidate list, deferred candidate list, evidence
 roles, preflight status, viewer status, and non-authority statements.
 This is the future SpecPM-side preflight contract target.
+P31-T4 records the expected consumer-side checks in
+[`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md).
 
 It still cannot make producer evidence authoritative. Acceptance remains an
 external maintainer decision in SpecPM.
@@ -175,4 +177,5 @@ See also:
 
 - [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md)
 - [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md)
+- [`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md)
 - [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md)

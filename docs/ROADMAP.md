@@ -434,6 +434,12 @@ and [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md`](SELECTED_CANDIDATE_HANDOFF
 That artifact covers `flask.core`, `gin.core`, and `docc2context.core` only;
 the deferred P30 candidates remain excluded until regeneration.
 
+P31-T4 records downstream SpecPM-side preflight expectations in
+[`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md).
+The expected future report is `SpecPMSelectedCandidateHandoffPreflightReport`
+with `apiVersion: specpm.selected-candidate-handoff-preflight/v0`, and a pass
+means internally consistent review evidence, not package acceptance.
+
 ## Non-Goals
 
 SpecHarvester does not:
