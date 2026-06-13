@@ -144,6 +144,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t5_next_corpus_candidate_layer_triage.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t4_live_local_model_next_corpus_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t3_deterministic_next_corpus_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t2_next_corpus_source_manifest_fixture.md` |
@@ -214,6 +215,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P33-T5 | Archived REVIEW_p33_t5_next_corpus_candidate_layer_triage report |
 | 2026-06-14 | P33-T5 | Archived Next-Corpus Candidate-Layer Triage (PASS) |
 | 2026-06-14 | P33-T4 | Archived REVIEW_p33_t4_live_local_model_next_corpus_dry_run report |
 | 2026-06-14 | P33-T4 | Archived Live Local-Model Next-Corpus Dry Run (PASS) |
