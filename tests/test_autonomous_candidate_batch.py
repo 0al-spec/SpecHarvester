@@ -7,6 +7,7 @@ from spec_harvester.autonomous_candidate_batch import (
     AUTONOMOUS_CANDIDATE_BATCH_API_VERSION,
     AUTONOMOUS_CANDIDATE_BATCH_KIND,
     AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME,
+    AutonomousCandidateBatch,
     AutonomousCandidateBatchOptions,
     run_autonomous_candidate_batch,
 )
@@ -67,6 +68,44 @@ def test_autonomous_candidate_batch_requires_model_without_skip_ai(
         assert "--lm-studio-model" in str(exc)
     else:
         raise AssertionError("expected missing LM Studio model to fail")
+
+
+def test_autonomous_candidate_batch_rejects_lm_studio_credentials_before_report(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                lm_studio_base_url="http://token@127.0.0.1:1234",
+                lm_studio_model="openai/gpt-oss-20b",
+            )
+        )
+    except ValueError as exc:
+        assert "must not include credentials" in str(exc)
+    else:
+        raise AssertionError("expected LM Studio URL with credentials to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
+
+
+def test_autonomous_candidate_batch_records_normalized_lm_studio_base_url(
+    tmp_path: Path,
+) -> None:
+    batch = AutonomousCandidateBatch(
+        AutonomousCandidateBatchOptions(
+            inputs=tmp_path / "inputs.yml",
+            out=tmp_path / "output",
+            lm_studio_base_url="http://localhost:1234/v1",
+            lm_studio_model="openai/gpt-oss-20b",
+        )
+    )
+
+    assert batch.ai_mode_record()["baseUrl"] == "http://localhost:1234"
 
 
 def test_autonomous_candidate_batch_cli_writes_report(

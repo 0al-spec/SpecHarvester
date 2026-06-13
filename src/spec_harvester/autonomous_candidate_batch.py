@@ -23,6 +23,7 @@ from spec_harvester.package_set_ai_draft_proposal import (
 from spec_harvester.package_set_ai_draft_proposal import (
     PackageSetAIDraftProposalOptions,
     build_package_set_ai_draft_proposal,
+    normalize_local_provider_base_url,
     write_package_set_ai_draft_proposal,
 )
 from spec_harvester.package_set_ai_draft_proposal import (
@@ -166,6 +167,8 @@ class AutonomousCandidateBatch:
                 "autonomous candidate batch live AI mode requires --lm-studio-model; "
                 "pass --skip-ai for deterministic offline runs"
             )
+        if not self.options.skip_ai:
+            normalize_local_provider_base_url(self.options.lm_studio_base_url)
 
     def collect(self) -> dict[str, Any]:
         return collect_batch_snapshots(
@@ -300,7 +303,7 @@ class AutonomousCandidateBatch:
         return {
             "mode": "local_lm_studio",
             "provider": self.options.provider_name,
-            "baseUrl": self.options.lm_studio_base_url,
+            "baseUrl": normalize_local_provider_base_url(self.options.lm_studio_base_url),
             "model": self.options.lm_studio_model,
             "execution": "operator_opt_in_local",
             "rawPromptPersisted": False,
