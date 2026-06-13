@@ -46,6 +46,14 @@ The fixture must define:
 - expected package shape;
 - no network discovery behavior.
 
+The selected local checkout set for this fixture is:
+
+- `serena`;
+- `transmission`;
+- `mcpm.sh`;
+- `SpecGraph`;
+- `SpecPM`.
+
 ## Boundaries
 
 This task must not clone repositories, fetch remote state, install
