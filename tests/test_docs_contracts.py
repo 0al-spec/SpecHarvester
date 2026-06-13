@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P33-T2 Next-Corpus Source Manifest Fixture" in next_text:
+        assert_p33_t1_last_archived(next_text)
+        assert_p32_t7_recent(next_text)
+        assert_p33_t1_recent(next_text)
+        assert_phase_33_t2_active(next_text)
+        return
+
     if "# Next Task: P33-T1 Bounded Corpus Expansion Plan" in next_text:
         assert_p32_t7_last_archived(next_text)
         assert_p32_t5_recent(next_text)
@@ -464,6 +471,10 @@ def assert_p32_t6_last_archived(next_text: str) -> None:
 
 def assert_p32_t7_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P32-T7 Limited Corpus Intake Readiness Decision" in next_text
+
+
+def assert_p33_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P33-T1 Bounded Corpus Expansion Plan" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1314,6 +1325,24 @@ def assert_p32_t7_recent(next_text: str) -> None:
     assert "broader autonomous scraping requires a separate follow-up task" in normalized
 
 
+def assert_p33_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P33-T1` recorded the bounded corpus expansion plan" in next_text
+    assert "BOUNDED_CORPUS_EXPANSION_PLAN.md" in next_text
+    assert "BoundedCorpusExpansionPlan" in next_text
+    assert "SpecHarvesterBoundedCorpusExpansionPlan" in next_text
+    assert "spec-harvester.bounded-corpus-expansion-plan/v0" in next_text
+    assert "five-repository limit" in normalized
+    assert "source manifest" in normalized
+    assert "deterministic and live-model validation gates" in normalized
+    assert "candidate-layer triage" in normalized
+    assert "SpecPM-side selected handoff preflight" in normalized
+    assert "review evidence only" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not accept relations" in normalized
+    assert "does not remove `preview_only`" in normalized
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1361,6 +1390,25 @@ def assert_phase_33_t1_active(next_text: str) -> None:
     assert "accept relations" in normalized
     assert "remove `preview_only`" in normalized
     assert "AI output as registry truth" in normalized
+
+
+def assert_phase_33_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P33-T2 Next-Corpus Source Manifest Fixture" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 33. Bounded Corpus Expansion Planning" in next_text
+    assert "next-corpus source manifest fixture" in normalized
+    assert "no more than five repositories" in normalized
+    assert "repository IDs" in normalized
+    assert "local checkout paths" in normalized
+    assert "pinned revisions" in normalized
+    assert "selection rationale" in normalized
+    assert "expected package shape" in normalized
+    assert "no network discovery" in normalized
+    assert "must not clone" in normalized
+    assert "fetch" in normalized
+    assert "install dependencies" in normalized
+    assert "execute harvested code" in normalized
 
 
 def assert_phase_26_t3_active(next_text: str) -> None:

@@ -1186,7 +1186,7 @@ Acceptance:
 
 ## Phase 33. Bounded Corpus Expansion Planning
 
-- [ ] `P33-T1` Record the bounded corpus expansion plan in
+- [x] `P33-T1` Record the bounded corpus expansion plan in
   [`BOUNDED_CORPUS_EXPANSION_PLAN.md`](../docs/BOUNDED_CORPUS_EXPANSION_PLAN.md),
   defining the next source manifest requirements, five-repository limit,
   validation gate, stop conditions, author/maintainer handoff, and

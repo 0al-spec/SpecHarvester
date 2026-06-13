@@ -1,30 +1,13 @@
-# Next Task: P33-T1 Bounded Corpus Expansion Plan
+# Next Task: P33-T2 Next-Corpus Source Manifest Fixture
 
 **Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P33-T1 Bounded Corpus Expansion Plan
+**Task:** P33-T2 Next-Corpus Source Manifest Fixture
 **Phase:** Phase 33. Bounded Corpus Expansion Planning
-**Last Archived:** P32-T7 Limited Corpus Intake Readiness Decision
+**Last Archived:** P33-T1 Bounded Corpus Expansion Plan
 
 ## Recently Archived
 
-- `P32-T5` recorded the refreshed selected handoff in
-  `docs/REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`,
-  `<doc:RefreshedCandidateLayerSelectedHandoff>`, and
-  `tests/fixtures/refreshed_candidate_layer_selected_handoff/p32-t5-refreshed-candidate-layer-selected-handoff.example.json`.
-  The selected set is `flask.core`, `gin.core`, `docc2context.core`,
-  `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`, and
-  `navigation_split_view.core`; `cupertino.core` remains deferred on
-  `refined_summary_missing`. The artifact remains producer preview evidence
-  only and is the source input for the SpecPM-side selected candidate handoff
-  preflight consumer gate.
-- `P32-T6` recorded the merged SpecPM selected candidate handoff preflight in
-  [`0al-spec/SpecPM#140`](https://github.com/0al-spec/SpecPM/pull/140). The
-  command `specpm producer-bundle preflight-selected-candidate-handoff` emits
-  `SpecPMSelectedCandidateHandoffPreflightReport` and passed against the P32-T5
-  fixture with eight selected candidates, one deferred candidate
-  (`cupertino.core`), and three source digests verified. The preflight remains
-  review evidence only.
 - `P32-T7` recorded the limited corpus intake readiness decision in
   `docs/LIMITED_CORPUS_INTAKE_READINESS_DECISION.md`,
   `<doc:LimitedCorpusIntakeReadinessDecision>`, and
@@ -37,24 +20,35 @@
   `navigation_split_view.core` are ready for author/maintainer review,
   `cupertino.core` remains deferred on `refined_summary_missing`, and broader
   autonomous scraping requires a separate follow-up task.
+- `P33-T1` recorded the bounded corpus expansion plan in
+  `docs/BOUNDED_CORPUS_EXPANSION_PLAN.md`,
+  `<doc:BoundedCorpusExpansionPlan>`, and
+  `tests/fixtures/bounded_corpus_expansion_plan/p33-t1-bounded-corpus-expansion-plan.example.json`.
+  The fixture identity is `SpecHarvesterBoundedCorpusExpansionPlan` with
+  `apiVersion: spec-harvester.bounded-corpus-expansion-plan/v0`. It caps the
+  next batch at a five-repository limit, requires a source manifest, defines
+  deterministic and live-model validation gates, candidate-layer triage,
+  SpecPM-side selected handoff preflight, stop conditions, and keeps the result
+  as review evidence only. It does not accept packages, does not accept
+  relations, and does not remove `preview_only`.
 
 ## Current Selection
 
-Implement `P33-T1`: record the bounded corpus expansion plan.
+Implement `P33-T2`: add the next-corpus source manifest fixture.
 
-The plan must define:
+The fixture must define:
 
-- source manifest requirements for the next corpus;
-- repository count limits;
-- repository selection rationale;
-- deterministic and live-model validation gates;
-- stop conditions;
-- author/maintainer review handoff;
-- non-authority boundaries.
+- no more than five repositories;
+- repository IDs;
+- local checkout paths;
+- pinned revisions;
+- selection rationale;
+- expected package shape;
+- no network discovery behavior.
 
 ## Boundaries
 
-This task must not run a new scrape, clone repositories, fetch remote state,
-install dependencies, execute harvested code, publish registry metadata, accept
-packages, accept relations, seed baselines, remove `preview_only`, or treat AI
-output as registry truth.
+This task must not clone repositories, fetch remote state, install
+dependencies, execute harvested code, run package scripts, publish registry
+metadata, accept packages, accept relations, seed baselines, remove
+`preview_only`, or treat AI output as registry truth.
