@@ -1206,8 +1206,7 @@ def assert_p32_t3_recent(next_text: str) -> None:
 def assert_p32_t4_recent(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert (
-        "`P32-T4` recorded the single-package deferred candidate regeneration dry run"
-        in next_text
+        "`P32-T4` recorded the single-package deferred candidate regeneration dry run" in next_text
     )
     assert "SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md" in next_text
     assert "SinglePackageDeferredCandidateRegenerationDryRun" in next_text
