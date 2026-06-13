@@ -135,6 +135,8 @@ this policy:
 
 Those gaps are tracked in
 [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md).
+The first durable Flask/Gin/xyflow baseline is recorded in
+[`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md).
 Until they are fixed, maintainers should classify affected repositories as
 `needs_regeneration` or `blocked`, not as accepted.
 
