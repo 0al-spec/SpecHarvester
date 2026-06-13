@@ -1,6 +1,6 @@
 # Next Task: P30-T4 Candidate-Layer Triage Report
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P30-T4 Candidate-Layer Triage Report
 **Phase:** Phase 30. Limited Popular-Library Scraping Batch
