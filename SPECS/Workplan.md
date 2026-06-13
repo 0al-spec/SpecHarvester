@@ -513,7 +513,7 @@ Acceptance:
   output contract at a time, starting with low-risk governance or accepted
   candidate reports and preserving report schemas, issue codes, and markdown
   output.
-- [ ] `P17-T4` Refactor public API analyzer pipelines into language-specific
+- [x] `P17-T4` Refactor public API analyzer pipelines into language-specific
   analyzer objects that use shared payload and option objects without hiding
   language-specific parse, diagnostic, symbol, or evidence decisions.
 - [ ] `P17-T5` Refactor collector and drafter behavior in thin vertical slices,
