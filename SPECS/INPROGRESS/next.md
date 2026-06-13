@@ -1,6 +1,6 @@
 # Next Task: P31-T5 Deferred Selected Candidate Regeneration Requirements
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P31-T5 Deferred Selected Candidate Regeneration Requirements
 **Phase:** Phase 31. Selected Candidate SpecPM Intake Handoff
