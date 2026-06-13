@@ -245,6 +245,11 @@ live-model validation gates, candidate-layer triage, SpecPM-side selected
 handoff preflight, stop conditions, and a non-authority boundary before any new
 scrape runs.
 
+<doc:NextCorpusSourceManifest> records `P33-T2`: the next source manifest is
+`inputs/p33-next-corpus/repositories.yml`, contains `serena`, `transmission`,
+`mcpm-sh`, `specgraph`, and `specpm`, and keeps all entries pinned by exact
+revision.
+
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
 no `preview_only` removal, and no AI output as registry truth.

@@ -133,6 +133,14 @@ Acceptance:
 - The manifest has no network discovery, clone, fetch, install, or execute
   behavior.
 
+Artifact:
+
+- [`NEXT_CORPUS_SOURCE_MANIFEST.md`](NEXT_CORPUS_SOURCE_MANIFEST.md) records
+  the P33-T2 fixture. The source manifest is
+  `inputs/p33-next-corpus/repositories.yml`, and the companion fixture is
+  `SpecHarvesterNextCorpusSourceManifestFixture` with
+  `apiVersion: spec-harvester.next-corpus-source-manifest/v0`.
+
 ### P33-T3 Deterministic Next-Corpus Dry Run
 
 Owner: SpecHarvester.

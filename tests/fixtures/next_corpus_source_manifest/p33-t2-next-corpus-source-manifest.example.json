@@ -1,0 +1,91 @@
+{
+  "apiVersion": "spec-harvester.next-corpus-source-manifest/v0",
+  "kind": "SpecHarvesterNextCorpusSourceManifestFixture",
+  "schemaVersion": 1,
+  "authority": "producer_preview_evidence_only",
+  "task": {
+    "id": "P33-T2",
+    "phase": "Phase 33. Bounded Corpus Expansion Planning",
+    "status": "planned"
+  },
+  "sourceManifest": {
+    "path": "inputs/p33-next-corpus/repositories.yml",
+    "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+    "entryCount": 5,
+    "maximumRepositoryCount": 5,
+    "allEntriesPinnedByRevision": true,
+    "usesNetworkDiscovery": false
+  },
+  "repositories": [
+    {
+      "id": "serena",
+      "repository": "https://github.com/oraios/serena",
+      "revision": "892ef9cf19e2c154a75cb58f4b34c8589eada346",
+      "checkout": "../../../../serena",
+      "packageId": "serena.core",
+      "expectedPackageShape": "single_python_agent_toolkit",
+      "selectionRationale": "adds a Python agent-tooling repository shape outside the Phase 30/32 web-framework corpus",
+      "labels": ["agent_toolkit", "p33_next_corpus", "python", "single_package"]
+    },
+    {
+      "id": "transmission",
+      "repository": "https://github.com/transmission/transmission",
+      "revision": "98fdf2dc0bfc77e537992ce50fa310b1c3ac636a",
+      "checkout": "../../../../transmission",
+      "packageId": "transmission.core",
+      "expectedPackageShape": "multi_component_c_cxx_application",
+      "selectionRationale": "adds a mature C/C++ CMake multi-component repository shape for deterministic manifest coverage",
+      "labels": ["c", "cmake", "cpp", "multi_component", "p33_next_corpus"]
+    },
+    {
+      "id": "mcpm-sh",
+      "repository": "https://github.com/pathintegral-institute/mcpm.sh",
+      "revision": "3a21496dbddffa8b352797aaa498fd4f4d094161",
+      "checkout": "../../../../mcpm.sh",
+      "packageId": "mcpm.core",
+      "expectedPackageShape": "mixed_javascript_python_registry_tool",
+      "selectionRationale": "adds a mixed JavaScript/Python registry-tooling repository shape relevant to package metadata workflows",
+      "labels": ["javascript", "mixed_language", "p33_next_corpus", "python", "registry_tooling"]
+    },
+    {
+      "id": "specgraph",
+      "repository": "https://github.com/SoundBlaster/SpecGraph",
+      "revision": "2a3e247337acb8102bd4b1d00781c095acc59b16",
+      "checkout": "../../../../SpecGraph",
+      "packageId": "specgraph.core",
+      "expectedPackageShape": "javascript_spec_graph_tool",
+      "selectionRationale": "adds a JavaScript/TypeScript specification-graph tooling repository with existing local operator context",
+      "labels": ["javascript", "p33_next_corpus", "single_package", "spec_tooling", "typescript"]
+    },
+    {
+      "id": "specpm",
+      "repository": "https://github.com/0al-spec/SpecPM",
+      "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+      "checkout": "../../../SpecPM",
+      "packageId": "specpm.core",
+      "expectedPackageShape": "swift_python_registry_tooling",
+      "selectionRationale": "adds the downstream registry-tooling repository as a controlled self-adjacent shape for handoff-policy validation",
+      "labels": ["documentation", "p33_next_corpus", "python", "registry_tooling", "swift"]
+    }
+  ],
+  "localOnlyPolicy": {
+    "requiresExistingCheckouts": true,
+    "cloneAllowed": false,
+    "fetchAllowed": false,
+    "dependencyInstallAllowed": false,
+    "harvestedCodeExecutionAllowed": false,
+    "packageScriptsAllowed": false,
+    "networkDiscoveryAllowed": false
+  },
+  "nonAuthority": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "createsSpecPMPullRequest": false,
+    "producerEvidenceOnly": true,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false,
+    "seedsBaselines": false,
+    "treatsAIOutputAsRegistryTruth": false
+  },
+  "nextTask": "P33-T3"
+}
