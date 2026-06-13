@@ -94,6 +94,10 @@ AI draft, or enrichment issue is resolved.
 This is still not registry intake. P30-T5 may prepare dry-run handoff evidence
 for selected candidates, but SpecPM remains the validation, acceptance,
 relation, baseline, and registry authority.
+The selected handoff dry-run result is recorded in
+[`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md)
+with producer preflight reports, static viewer digests, and
+`registryAcceptanceDecision.status: external_required`.
 
 ## Non-Authority Boundary
 
@@ -110,6 +114,7 @@ The triage report cannot:
 See also:
 
 - [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md)
+- [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md)
 - [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md)
 - [`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md)
 - [`AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`](AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md)

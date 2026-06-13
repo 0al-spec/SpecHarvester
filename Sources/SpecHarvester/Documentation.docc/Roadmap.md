@@ -124,7 +124,7 @@ interface evidence, diagnostics, relation proposals, skipped packages, and any
 gap between deterministic output, optional LM Studio enrichment, and human
 review.
 
-The P30 limited popular-library scraping batch starts this expansion with a
+The P30 limited popular-library scraping batch completed this expansion with a
 bounded source manifest, explicit stop conditions, deterministic and live run
 commands, candidate-layer triage states, and non-authority boundaries. See
 <doc:LimitedPopularLibraryCorpusPlan>.
@@ -142,6 +142,12 @@ The candidate-layer triage result is recorded in
 `docc2context.core` are selected for P30-T5 dry-run handoff, while xyflow,
 Cupertino, and NavigationSplitView candidates remain deferred until targeted
 regeneration or package-identity fixes.
+The selected handoff dry run is recorded in
+<doc:LimitedPopularLibrarySelectedHandoffDryRun> with verdict
+`selected_handoff_dry_run_ready`: `flask.core`, `gin.core`, and
+`docc2context.core` have passing producer preflight reports, static viewer
+digests, and `external_required` registry acceptance decisions while all
+deferred candidates stay out of the handoff.
 
 ### Ecosystem Analyzer Depth
 

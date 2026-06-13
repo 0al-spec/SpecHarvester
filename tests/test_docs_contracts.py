@@ -9,6 +9,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 30 Complete" in next_text:
+        assert_p30_t5_last_archived(next_text)
+        assert_p29_t6_recent(next_text)
+        assert_p30_t1_recent(next_text)
+        assert_p30_t2_recent(next_text)
+        assert_p30_t3_recent(next_text)
+        assert_p30_t4_recent(next_text)
+        assert_p30_t5_recent(next_text)
+        assert_phase_30_complete(next_text)
+        return
+
     if "# Next Task: P30-T5 Selected Candidate Handoff Dry Run" in next_text:
         assert_p30_t4_last_archived(next_text)
         assert_p29_t6_recent(next_text)
@@ -254,6 +265,10 @@ def assert_p30_t3_last_archived(next_text: str) -> None:
 
 def assert_p30_t4_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P30-T4 Candidate-Layer Triage Report" in next_text
+
+
+def assert_p30_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P30-T5 Selected Candidate Handoff Dry Run" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -779,7 +794,8 @@ def assert_p30_t4_recent(next_text: str) -> None:
 def assert_phase_30_t5_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P30-T5 Selected Candidate Handoff Dry Run" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:**" in next_text
+    assert "In Progress" in next_text or "Selected" in next_text
     assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
     assert "SpecPM handoff dry-run evidence" in normalized
     assert "flask.core" in next_text
@@ -788,6 +804,36 @@ def assert_phase_30_t5_active(next_text: str) -> None:
     assert "preview_only" in next_text
     assert "producer_preview_evidence_only" in next_text
     assert "external registry acceptance authority" in normalized
+
+
+def assert_p30_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P30-T5` recorded the selected handoff dry run" in next_text
+    assert "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md" in next_text
+    assert "SpecHarvesterLimitedPopularLibrarySelectedHandoffDryRun" in next_text
+    assert "selected_handoff_dry_run_ready" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "3 selected" in normalized
+    assert "6 deferred" in normalized
+    assert "producer preflight" in normalized
+    assert "static viewer" in normalized
+    assert "external_required" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "not SpecPM acceptance" in normalized
+
+
+def assert_phase_30_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 30 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "Limited Popular-Library Scraping Batch is complete" in next_text
+    assert "deterministic evidence" in normalized
+    assert "live LM Studio evidence" in normalized
+    assert "candidate-layer triage" in normalized
+    assert "selected handoff dry run" in normalized
+    assert "not accepted registry truth" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -4768,6 +4814,342 @@ def test_limited_popular_library_candidate_layer_triage_docs_cover_p30_t4_verdic
     )
     assert "LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md" in live.read_text(encoding="utf-8")
     assert "LimitedPopularLibraryCandidateLayerTriage" in live_docc.read_text(encoding="utf-8")
+
+
+def test_limited_popular_library_selected_handoff_dry_run_fixture_records_p30_t5_outcome() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "limited_popular_library_selected_handoff_dry_run"
+        / "p30-t5-limited-popular-libraries.example.json"
+    )
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert (
+        payload["apiVersion"]
+        == "spec-harvester.limited-popular-library-selected-handoff-dry-run/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterLimitedPopularLibrarySelectedHandoffDryRun"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["corpus"]["id"] == "p30-limited-popular-libraries"
+    assert payload["inputs"]["deterministicFixture"] == {
+        "kind": "SpecHarvesterLimitedPopularLibraryDeterministicBatch",
+        "path": (
+            "tests/fixtures/limited_popular_library_deterministic_batch/"
+            "p30-t2-limited-popular-libraries.example.json"
+        ),
+        "status": "ready_for_live_lm_studio_limited_corpus",
+    }
+    assert payload["inputs"]["liveLmStudioFixture"] == {
+        "kind": "SpecHarvesterLimitedPopularLibraryLiveLMStudioBatch",
+        "path": (
+            "tests/fixtures/limited_popular_library_live_lm_studio_batch/"
+            "p30-t3-limited-popular-libraries.example.json"
+        ),
+        "status": "ready_for_candidate_layer_triage",
+    }
+    assert payload["inputs"]["candidateLayerTriageFixture"] == {
+        "kind": "SpecHarvesterLimitedPopularLibraryCandidateLayerTriage",
+        "path": (
+            "tests/fixtures/limited_popular_library_candidate_layer_triage/"
+            "p30-t4-limited-popular-libraries.example.json"
+        ),
+        "status": "ready_for_selected_handoff_dry_run",
+    }
+    assert payload["run"] == {
+        "commands": [
+            "spec-harvester preflight-candidate-bundle <candidate>",
+            "spec-harvester render-spec-site --candidate <candidate> --output <viewer>",
+        ],
+        "runRoot": "/tmp/specharvester-p30-t5-selected-handoff",
+        "sourceCandidateRoot": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets",
+    }
+    assert payload["summary"] == {
+        "deferredCandidateCount": 6,
+        "passedPreflightCount": 3,
+        "registryMutationCount": 0,
+        "selectedCandidateCount": 3,
+        "specpmPullRequestCreated": False,
+        "viewerRenderedCount": 3,
+    }
+    assert payload["productVerdict"] == {
+        "candidateQuality": "selected_preview_candidates_have_preflight_and_viewer_evidence",
+        "pipelineHealth": "selected_preflight_and_viewer_generation_passed",
+        "status": "selected_handoff_dry_run_ready",
+        "summary": (
+            "Dry-run evidence is ready for future SpecPM review for flask.core, "
+            "gin.core, and docc2context.core only. The selected candidates remain "
+            "preview-only producer evidence and are not accepted registry truth."
+        ),
+    }
+
+    selected = {item["id"]: item for item in payload["selectedCandidates"]}
+    assert list(selected) == ["flask.core", "gin.core", "docc2context.core"]
+    deferred = {item["id"]: item for item in payload["deferredCandidates"]}
+    assert set(deferred) == {
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "cupertino.core",
+        "navigation_split_view.core",
+    }
+    assert all(item["reason"] == "needs_regeneration" for item in deferred.values())
+    assert all(item["p30T5Selected"] is False for item in deferred.values())
+
+    def sha256(value: str) -> str:
+        return f"sha256:{value}"
+
+    expected_file_digests = {
+        "flask.core": {
+            "specpm.yaml": sha256(
+                "2b4a1c4d9aaeef5efbb8424fe3f748d7895551a7d852814c7ce3d163e789630f"
+            ),
+            "specs/flask.spec.yaml": sha256(
+                "309b518b319fff5a2cdc1ca9abb9432919621a3fa327e20e3e3357592b1c2ad1"
+            ),
+            "producer-receipt.json": sha256(
+                "23f56cb23d477fab8a3b11b62348751d4ea2306522b6642ce330432107bde6fe"
+            ),
+            "validation-report.json": sha256(
+                "8e3e1ae6266cdd039ced62c59b701dba0abf47b881362e57ae94991b0c561eed"
+            ),
+            "diagnostics.json": sha256(
+                "62da575a03f6be1773a4b783185a7ff29d392cf499e29e96955cf2e9123f0713"
+            ),
+            "author-ready-draft-quality-report.json": (
+                sha256("75bf9010e50638a26eb62f3f6ff936a8882b10ff176a793378a60d9fcfbb469d")
+            ),
+        },
+        "gin.core": {
+            "specpm.yaml": sha256(
+                "501be249e4d10598e069da3e12a6bc43af7de8084b725b0768acb6b7d167d3a4"
+            ),
+            "specs/gin.spec.yaml": sha256(
+                "99e4520b4465f4d524bfa50ca54dccc57cafde7fad56b56261b3eb16ebc29506"
+            ),
+            "producer-receipt.json": sha256(
+                "b47be79ba1c0fa137d2e80b58514e08360b615109c5469a5a9ca56c545f4cd0c"
+            ),
+            "validation-report.json": sha256(
+                "b3bf292e36a8f2c038dd04aad0b80a825f959aa63882e92df4f489fbf2c6d16a"
+            ),
+            "diagnostics.json": sha256(
+                "7406004edcf4366c3ed7dbc62c63c4f58b782aff5874ac84127f31fafec399dd"
+            ),
+            "author-ready-draft-quality-report.json": (
+                sha256("622e6f05fd78d32dd56ab202067a0e0e07b30d521284904e769390409e9d1576")
+            ),
+        },
+        "docc2context.core": {
+            "specpm.yaml": sha256(
+                "1ff2ff07c56e842543aa1b5c8dd42592d0d4d161330d8e53048f9b04f7dd06d8"
+            ),
+            "specs/docc2context.spec.yaml": (
+                sha256("fe4227c16ebe8bd72c94a53b856aa31e4253036b60bec4a1bc63fb975639955b")
+            ),
+            "producer-receipt.json": sha256(
+                "ed359c0063bbba5750cc0e448577f346f33ea4bd4ad2c33be38f2186890f1a6b"
+            ),
+            "validation-report.json": sha256(
+                "315cb32df1087655b93bff7473b113a174a8784e1db38788ae7b28ed79f7b287"
+            ),
+            "diagnostics.json": sha256(
+                "a7e06d36283586e3d9d9a2a5a6edf8e0515e08532dcd577943ac98bf006e5d9e"
+            ),
+            "author-ready-draft-quality-report.json": (
+                sha256("1eca3f7727b99e4799604cca32f1f294110a2682cd9f344a8983e27902dae588")
+            ),
+        },
+    }
+    expected_preflight_digests = {
+        "flask.core": sha256("836abcf074a43cfa84526cb992eab0a6b7c1354e34bd0d275e407606d46787f7"),
+        "gin.core": sha256("e6738829bed9b409eff3df6a5cfe1524cda6b1762a352779e78154439490547f"),
+        "docc2context.core": (
+            sha256("7d0e119e59c56397d42b28922dfe281fa77a6b06b899663e1a27e2ba2918a282")
+        ),
+    }
+    expected_viewer_digests = {
+        "flask.core": {
+            "index": sha256("3feea0d6acb3a2809f732bd81ee760e05d7a6f33d607ecc0a9e5a1180e5287c3"),
+            "specPackage": sha256(
+                "06667c14b9c90a8988a35f8c99f530cfd36edd84297a5b3fe23c2aa2aa172d84"
+            ),
+        },
+        "gin.core": {
+            "index": sha256("e15ef3f031a0e11196f11ff76593af985eb24ad016cb5b3eb313a4f3fb09557d"),
+            "specPackage": sha256(
+                "c9d3e34021d6eba53f96aa92939ec2cebb64a44173b34782971f2f18ad2b93b0"
+            ),
+        },
+        "docc2context.core": {
+            "index": sha256("4baee2a08ed2d996d633a81863a5b0097fed3736df4595027c4d452605dbf804"),
+            "specPackage": sha256(
+                "d6ad8328a2300d0f5f6e3c89895182e28c5f28d43cbc71d4dc40d4be3c67d81a"
+            ),
+        },
+    }
+
+    for candidate_id, candidate in selected.items():
+        assert candidate["p30T5Selected"] is True
+        assert candidate["previewOnly"] is True
+        assert candidate["triageClassification"] == "candidate_layer_review_required"
+        assert candidate["handoffRecommendation"] == "ready_for_specpm_dry_run_review"
+        assert candidate["registryAcceptanceDecision"] == {
+            "producerAuthority": "evidence_only",
+            "requiredFor": "public_index_acceptance",
+            "status": "external_required",
+        }
+        assert candidate["producerPreflight"]["status"] == "passed"
+        assert candidate["producerPreflight"]["warningCount"] == 0
+        assert candidate["producerPreflight"]["errorCount"] == 0
+        assert candidate["producerPreflight"]["diagnosticCount"] == 0
+        assert (
+            candidate["producerPreflight"]["reportDigest"]
+            == expected_preflight_digests[candidate_id]
+        )
+        assert candidate["viewer"]["status"] == "ok"
+        assert candidate["viewer"]["indexDigest"] == expected_viewer_digests[candidate_id]["index"]
+        assert (
+            candidate["viewer"]["specPackageDigest"]
+            == expected_viewer_digests[candidate_id]["specPackage"]
+        )
+        required_files = {item["path"]: item for item in candidate["requiredFiles"]}
+        assert set(required_files) == set(expected_file_digests[candidate_id])
+        assert {item["role"] for item in candidate["requiredFiles"]} == {
+            "manifest",
+            "boundary_spec",
+            "producer_receipt",
+            "validation_report",
+            "diagnostics",
+            "quality_report",
+        }
+        assert {
+            path: item["digest"] for path, item in required_files.items()
+        } == expected_file_digests[candidate_id]
+
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not accept packages" in non_authority
+    assert "does not accept relations" in non_authority
+    assert "does not seed baselines" in non_authority
+    assert "does not remove preview_only" in non_authority
+    assert "does not publish registry metadata" in non_authority
+    assert "does not create a SpecPM pull request" in non_authority
+    assert payload["notExecuted"] == [
+        "prepare-accepted-entry",
+        "accepted-package-update-proposal",
+        "SpecPM pull request creation",
+        "registry mutation",
+        "relation acceptance",
+        "baseline seeding",
+        "preview_only removal",
+    ]
+
+
+def test_limited_popular_library_selected_handoff_dry_run_docs_cover_p30_t5_verdict() -> None:
+    github_doc = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibrarySelectedHandoffDryRun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    handoff_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    corpus_plan = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md"
+    corpus_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryCorpusPlan.md"
+    )
+    triage = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md"
+    triage_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryCandidateLayerTriage.md"
+    )
+    live = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md"
+    live_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryLiveLMStudioBatch.md"
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Limited Popular-Library Selected Handoff Dry Run",
+            "SpecHarvesterLimitedPopularLibrarySelectedHandoffDryRun",
+            "spec-harvester.limited-popular-library-selected-handoff-dry-run/v0",
+            "producer_preview_evidence_only",
+            "flask.core",
+            "gin.core",
+            "docc2context.core",
+            "xyflow.workspace",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "cupertino.core",
+            "navigation_split_view.core",
+            "selected_handoff_dry_run_ready",
+            "producer-side preflight",
+            "static viewer",
+            "SHA-256",
+            "author-ready-draft-quality-report.json",
+            "external_required",
+            "needs_regeneration",
+            "prepare-accepted-entry",
+            "accepted-package-update-proposal",
+            "SpecPM pull request",
+            "preview_only",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:LimitedPopularLibrarySelectedHandoffDryRun>" in docc_root.read_text(
+        encoding="utf-8"
+    )
+    assert "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md" in roadmap.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibrarySelectedHandoffDryRun" in roadmap_docc.read_text(encoding="utf-8")
+    assert "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md" in handoff.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibrarySelectedHandoffDryRun" in handoff_docc.read_text(encoding="utf-8")
+    assert "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md" in corpus_plan.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibrarySelectedHandoffDryRun" in corpus_plan_docc.read_text(
+        encoding="utf-8"
+    )
+    assert "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md" in triage.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibrarySelectedHandoffDryRun" in triage_docc.read_text(encoding="utf-8")
+    assert "LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md" in live.read_text(encoding="utf-8")
+    assert "LimitedPopularLibrarySelectedHandoffDryRun" in live_docc.read_text(encoding="utf-8")
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

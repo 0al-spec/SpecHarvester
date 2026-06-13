@@ -151,6 +151,13 @@ registry metadata.
 See
 [`AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`](AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md).
 
+The P30 limited popular-library selected handoff dry run records this boundary
+for `flask.core`, `gin.core`, and `docc2context.core` in
+[`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md).
+It includes producer preflight reports, static viewer digests, required bundle
+file digests, and `registryAcceptanceDecision.status: external_required`
+without creating a SpecPM pull request or accepting packages.
+
 ## Fresh Candidate Refresh Run
 
 When a package-set bundle is generated to evaluate whether current SpecPM

@@ -1,10 +1,10 @@
-# Next Task: P30-T5 Selected Candidate Handoff Dry Run
+# Next Task: Phase 30 Complete
 
-**Status:** Selected
+**Status:** Phase Complete
 **Selected:** 2026-06-13
-**Task:** P30-T5 Selected Candidate Handoff Dry Run
+**Task:** Phase 30 Complete
 **Phase:** Phase 30. Limited Popular-Library Scraping Batch
-**Last Archived:** P30-T4 Candidate-Layer Triage Report
+**Last Archived:** P30-T5 Selected Candidate Handoff Dry Run
 
 ## Recently Archived
 
@@ -73,19 +73,29 @@
   `package_set_id_missing`, `refined_summary_missing`, and
   `package_id_hint_mismatch` as regeneration or package-identity work. The
   output remains `producer_preview_evidence_only` and not SpecPM acceptance.
+- `P30-T5` recorded the selected handoff dry run in
+  `docs/LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`,
+  `<doc:LimitedPopularLibrarySelectedHandoffDryRun>`, and
+  `SpecHarvesterLimitedPopularLibrarySelectedHandoffDryRun`. The product
+  verdict is `selected_handoff_dry_run_ready`: `flask.core`, `gin.core`, and
+  `docc2context.core` are the 3 selected candidates with passing producer
+  preflight, static viewer evidence, required bundle file digests, and
+  `external_required` registry acceptance decisions. The 6 deferred candidates
+  remain excluded from handoff. The output remains
+  `producer_preview_evidence_only` and not SpecPM acceptance.
 
 ## Outcome
 
-P30 now has deterministic evidence, live LM Studio evidence, and explicit
-candidate-layer triage. Only `flask.core`, `gin.core`, and `docc2context.core`
-should move into selected SpecPM handoff dry-run evidence. xyflow, Cupertino,
-and NavigationSplitView candidates remain useful calibration data but should
-not enter P30-T5 until targeted regeneration or identity fixes are complete.
+Limited Popular-Library Scraping Batch is complete. Phase 30 now has
+deterministic evidence, live LM Studio evidence, candidate-layer triage, and a
+selected handoff dry run for the chosen preview candidates.
+
+The phase proves the bounded corpus workflow without turning generated output
+into accepted registry truth. Every result remains preview evidence for author
+and SpecPM maintainer review, not accepted registry truth.
 
 ## Next Step
 
-Implement `P30-T5`: prepare SpecPM handoff dry-run evidence for selected
-candidates only: `flask.core`, `gin.core`, and `docc2context.core`. Preserve
-`preview_only`, `producer_preview_evidence_only`, and external registry
-acceptance authority. Do not publish registry metadata, accept packages, accept
-relations, or treat producer output as accepted SpecPM truth.
+Select the next phase or follow-up task after PR review. Likely follow-ups are
+targeted regeneration for deferred package-set or warning-bearing candidates,
+or a SpecPM-side dry-run intake task for selected candidate evidence.
