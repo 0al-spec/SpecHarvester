@@ -126,6 +126,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t5_selected_candidate_handoff_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t4_candidate_layer_triage_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t3_live_lm_studio_limited_corpus_batch.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t2_deterministic_limited_corpus_batch.md` |
@@ -179,6 +180,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P30-T5 | Archived REVIEW_p30_t5_selected_candidate_handoff_dry_run report |
 | 2026-06-13 | P30-T5 | Archived Selected Candidate Handoff Dry Run (PASS) |
 | 2026-06-13 | P30-T4 | Archived REVIEW_p30_t4_candidate_layer_triage_report report |
 | 2026-06-13 | P30-T4 | Archived Candidate-Layer Triage Report (PASS) |
