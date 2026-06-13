@@ -33,7 +33,7 @@ SpecPM remains the registry authority.
 - The command runs collect-batch behavior with workspace inventory and
   interface indexes enabled by default.
 - The command drafts package-set candidates with a configurable role profile,
-  defaulting to `generic_monorepo`.
+  defaulting to `autonomous_popular_mvp`.
 - The command runs bundle-set preflight for each drafted package set and records
   pass/fail status.
 - The command can call a local OpenAI-compatible provider such as LM Studio via

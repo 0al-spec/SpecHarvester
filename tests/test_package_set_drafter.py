@@ -18,7 +18,11 @@ from spec_harvester.candidate_bundle_preflight import (
     run_candidate_bundle_preflight,
 )
 from spec_harvester.cli import main
-from spec_harvester.package_set_drafter import PackageSetDraftOptions, draft_package_set
+from spec_harvester.package_set_drafter import (
+    AUTONOMOUS_POPULAR_MVP_ROLE_SELECTION_PROFILE,
+    PackageSetDraftOptions,
+    draft_package_set,
+)
 
 
 def test_package_set_drafter_writes_scoped_candidate_bundles(tmp_path: Path) -> None:
@@ -186,6 +190,43 @@ def test_package_set_drafter_generic_monorepo_profile_selects_members(
         ("tanstack_query.workspace", "contains", "tanstack_query.core"),
         ("tanstack_query.workspace", "contains", "tanstack_query.devtools"),
     }
+
+
+def test_package_set_drafter_autonomous_popular_profile_keeps_primary_roles(
+    tmp_path: Path,
+) -> None:
+    inventory = write_autonomous_popular_inventory_fixture(tmp_path)
+    out = tmp_path / "draft-set"
+
+    result = draft_package_set(
+        PackageSetDraftOptions(
+            inventory=inventory,
+            out=out,
+            role_profile=AUTONOMOUS_POPULAR_MVP_ROLE_SELECTION_PROFILE,
+        )
+    )
+
+    assert result["status"] == "ok"
+    assert [candidate["packageId"] for candidate in result["candidates"]] == [
+        "popular.core",
+        "popular.react",
+        "popular.utils",
+        "popular.workspace",
+    ]
+    assert [item["packageId"] for item in result["skipped"]] == [
+        "popular.example",
+        "popular.private_tools",
+    ]
+    assert result["relationCount"] == 3
+    summary = json.loads((out / "package-set-draft.json").read_text(encoding="utf-8"))
+    assert summary["selection"]["roleProfile"] == AUTONOMOUS_POPULAR_MVP_ROLE_SELECTION_PROFILE
+    assert summary["selection"]["roles"] == [
+        "workspace",
+        "core_runtime",
+        "react_binding",
+        "svelte_binding",
+        "member_package",
+    ]
 
 
 def test_package_set_drafter_explicit_roles_override_profile(tmp_path: Path) -> None:
@@ -720,6 +761,74 @@ def write_generic_monorepo_inventory_fixture(tmp_path: Path) -> Path:
                 "tanstack_query.scripts",
                 "tooling_package",
                 "@tanstack/query-scripts",
+            ),
+        ],
+    }
+    inventory.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return inventory
+
+
+def write_autonomous_popular_inventory_fixture(tmp_path: Path) -> Path:
+    inventory = tmp_path / "autonomous-popular-workspace-inventory.json"
+    payload = {
+        "apiVersion": "spec-harvester.workspace-inventory/v0",
+        "kind": "SpecHarvesterWorkspaceInventory",
+        "schemaVersion": 1,
+        "source": {
+            "repository": "https://github.com/example/popular",
+            "exactRevision": "0123456789abcdef0123456789abcdef01234567",
+            "revisionAuthority": "operator_pinned",
+            "declaredRef": "main",
+        },
+        "workspaceManifests": [
+            {
+                "path": "pnpm-workspace.yaml",
+                "packageManager": "pnpm",
+                "includePatterns": ["packages/*", "examples/*", "tools/*"],
+                "excludePatterns": [],
+                "evidence": {
+                    "kind": "workspace_manifest",
+                    "path": "pnpm-workspace.yaml",
+                    "digest": digest_for("pnpm-workspace.yaml"),
+                },
+            }
+        ],
+        "packages": [
+            generic_package_record(
+                "package.json",
+                "popular.workspace",
+                "workspace",
+                "@popular/workspace",
+            ),
+            generic_package_record(
+                "packages/core/package.json",
+                "popular.core",
+                "core_runtime",
+                "@popular/core",
+            ),
+            generic_package_record(
+                "packages/react/package.json",
+                "popular.react",
+                "react_binding",
+                "@popular/react",
+            ),
+            generic_package_record(
+                "packages/utils/package.json",
+                "popular.utils",
+                "member_package",
+                "@popular/utils",
+            ),
+            generic_package_record(
+                "examples/react/package.json",
+                "popular.example",
+                "example_package",
+                "popular-react-example",
+            ),
+            generic_package_record(
+                "tools/package.json",
+                "popular.private_tools",
+                "private_tooling_package",
+                "@popular/tools",
             ),
         ],
     }

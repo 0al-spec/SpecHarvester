@@ -4,6 +4,7 @@
 **Selected:** 2026-06-13
 **Task:** P29-T1 Autonomous Candidate Batch Runner
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
+**Last Archived:** P28-T5 First-Submission or Seeded-Baseline Workflow
 
 ## Recently Archived
 
@@ -76,9 +77,10 @@ handoff evidence, and keep all producer artifacts outside registry authority.
 Implement `P29-T1`: add an autonomous candidate batch runner that orchestrates
 the existing safe producer pipeline over a source manifest:
 
-- collect deterministic snapshots with workspace inventory and interface
-  indexes;
-- draft package-set preview bundles with the generic monorepo role profile;
+- collect deterministic snapshots with workspace inventory and public
+  interface indexes;
+- draft package-set preview bundles with the autonomous popular-library role
+  profile;
 - run bundle-set preflight;
 - optionally call a local LM Studio/OpenAI-compatible provider for
   schema-bound AI draft and enrichment proposals;

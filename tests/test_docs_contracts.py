@@ -73,6 +73,18 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_28_complete(next_text)
         return
 
+    if "# Next Task: P29-T1 Autonomous Candidate Batch Runner" in next_text:
+        assert_p28_t5_last_archived(next_text)
+        assert_p27_t4_recent(next_text)
+        assert_p27_t5_recent(next_text)
+        assert_p28_t1_recent(next_text)
+        assert_p28_t2_recent(next_text)
+        assert_p28_t3_recent(next_text)
+        assert_p28_t4_recent(next_text)
+        assert_p28_t5_recent(next_text)
+        assert_phase_29_t1_active(next_text)
+        return
+
     assert_p27_t5_last_archived(next_text)
     assert_p27_t4_recent(next_text)
     assert_p27_t5_recent(next_text)
@@ -295,6 +307,19 @@ def assert_phase_28_complete(next_text: str) -> None:
     assert "generic monorepos" in normalized
     assert "SpecHarvesterBaselineSubmissionHandoff" in next_text
     assert "SpecPM-side intake policy/preflight" in normalized
+
+
+def assert_phase_29_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P29-T1 Autonomous Candidate Batch Runner" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "autonomous candidate batch runner" in normalized
+    assert "workspace inventory" in normalized
+    assert "public interface indexes" in normalized
+    assert "LM Studio/OpenAI-compatible provider" in normalized
+    assert "autonomous popular-library scraping" in normalized
+    assert "must not clone repositories" in normalized
+    assert "accepted SpecPM truth" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -2993,3 +3018,37 @@ def test_real_repository_local_validation_matrix_docs_cover_observed_results() -
     assert "REAL_REPOSITORY_LOCAL_VALIDATION_MATRIX.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:RealRepositoryLocalValidationMatrix>" in docc_root.read_text(encoding="utf-8")
     assert "<doc:RealRepositoryLocalValidationMatrix>" in workflow_docc.read_text(encoding="utf-8")
+
+
+def test_autonomous_candidate_batch_docs_cover_local_lm_studio_boundary() -> None:
+    github_doc = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_BATCH.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "AutonomousCandidateBatch.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "autonomous-candidate-batch",
+            "SpecHarvesterAutonomousCandidateBatchReport",
+            "LM Studio",
+            "openai/gpt-oss-20b",
+            "--skip-ai",
+            "autonomous_popular_mvp",
+            "preview_only",
+            "does not clone repositories",
+            "execute harvested code",
+            "install dependencies",
+            "SpecPM remains",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AUTONOMOUS_CANDIDATE_BATCH.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:AutonomousCandidateBatch>" in docc_root.read_text(encoding="utf-8")
+    assert "Autonomous Candidate Harvest MVP" in roadmap.read_text(encoding="utf-8")
+    assert "Autonomous Candidate Harvest MVP" in roadmap_docc.read_text(encoding="utf-8")

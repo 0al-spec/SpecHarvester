@@ -143,7 +143,10 @@ Published DocC site:
 52. [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md):
     proposal-only local AI enrichment for generated package-set candidates,
     compact evidence, provider receipts, and unsupported evidence diagnostics
-53. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+53. [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md):
+    MVP autonomous popular-library scraping runner over local source manifests,
+    package-set preview bundles, local LM Studio proposals, and batch reports
+54. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
