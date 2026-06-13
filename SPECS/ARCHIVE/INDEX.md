@@ -132,6 +132,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p26_t3_package_set_proposal_intake_checklist.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t5_deferred_selected_candidate_regeneration_requirements.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t4_selected_candidate_handoff_preflight_expectations.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t3_real_selected_candidate_handoff_proposal_dry_run.md` |
@@ -410,6 +411,7 @@
 | 2026-06-07 | P26-T2 | Archived Trusted Package-Set Proposal Workflow Inputs (PASS) |
 | 2026-06-07 | P26-T2 | Archived REVIEW_p26_t2_trusted_package_set_proposal_workflow_inputs report |
 | 2026-06-13 | P26-T3 | Archived Package-Set Proposal Intake Checklist (PASS) |
+| 2026-06-13 | P26-T3 | Archived REVIEW_p26_t3_package_set_proposal_intake_checklist report |
 | 2026-06-11 | P27-T1 | Archived Author-Ready Draft Quality Bar (PASS) |
 | 2026-06-11 | P27-T2 | Archived Author-Ready Draft Quality Report (PASS) |
 | 2026-06-11 | P27-T2 | Archived REVIEW_p27_t2_author_ready_draft_quality_report report |
