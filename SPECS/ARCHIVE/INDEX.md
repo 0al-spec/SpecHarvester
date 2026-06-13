@@ -131,6 +131,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t5_deferred_selected_candidate_regeneration_requirements.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t4_selected_candidate_handoff_preflight_expectations.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t3_real_selected_candidate_handoff_proposal_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t2_selected_candidate_handoff_proposal_helper.md` |
@@ -189,6 +190,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P31-T5 | Archived REVIEW_p31_t5_deferred_selected_candidate_regeneration_requirements report |
 | 2026-06-13 | P31-T5 | Archived Deferred Selected Candidate Regeneration Requirements (PASS) |
 | 2026-06-13 | P31-T4 | Archived REVIEW_p31_t4_selected_candidate_handoff_preflight_expectations report |
 | 2026-06-13 | P31-T4 | Archived SpecPM Selected Candidate Handoff Preflight Expectations (PASS) |
