@@ -36,6 +36,40 @@ Changes include:
 - The fallback preserves `preview_only`, `producer_preview_evidence_only`, and
   no registry mutation boundaries.
 
+## Real Corpus Smoke
+
+Ran the deterministic local Flask/Gin/xyflow corpus:
+
+```text
+PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
+  /tmp/specharvester-p29-t4-real-inputs \
+  --out /tmp/specharvester-p29-t4-real-output \
+  --skip-ai
+```
+
+Result:
+
+- overall status: `passed`;
+- processed repositories: `3`;
+- passed preflight count: `3`;
+- failed repository count: `0`;
+- Flask at `954f5684e4841aad84a8eec7ace7b81a0d3f6831`:
+  - candidate count: `1`;
+  - relation count: `0`;
+  - preflight: `passed`;
+  - package id: `flask.core`;
+  - author-ready decision: `stop_for_author_review`.
+- Gin at `5f4f9643258dc2a65e684b63f12c8d543c936c67`:
+  - candidate count: `1`;
+  - relation count: `0`;
+  - preflight: `passed`;
+  - package id: `gin.core`;
+  - author-ready decision: `stop_for_author_review`.
+- xyflow at `a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd`:
+  - candidate count: `4`;
+  - relation count: `3`;
+  - preflight: `passed`.
+
 ## Gates
 
 - `PYTHONPATH=src python -m pytest tests/test_package_set_drafter.py -q`
