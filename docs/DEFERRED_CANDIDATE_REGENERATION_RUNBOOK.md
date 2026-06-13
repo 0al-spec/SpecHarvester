@@ -172,7 +172,11 @@ Affected candidate:
 Use this class when the blocker is `identity_drift_resolution`,
 `package_set_id_missing`, or `package_id_hint_mismatch`.
 
-Before regeneration, choose the canonical package id:
+Before regeneration, choose the canonical package id. P32-T4 chooses
+`navigation_split_view.core` for the current source manifest because it matches
+the generated and validated candidate identity; `navigation-split-view.core`
+is retained only as historical drift evidence unless a maintainer explicitly
+aliases it later.
 
 ```text
 navigation-split-view.core
@@ -264,6 +268,12 @@ P32-T3 records the xyflow package-set identity regeneration result in
 [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md).
 That dry run classifies `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`,
 and `xyflow.system` as `candidate_layer_review_required` with
+`selectedHandoffEligible: true`.
+P32-T4 records the single-package regeneration result in
+[`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md).
+That dry run keeps `cupertino.core` at `needs_regeneration` because
+`refined_summary_missing` remains unresolved, and classifies
+`navigation_split_view.core` as `candidate_layer_review_required` with
 `selectedHandoffEligible: true`.
 
 ## Non-Authority Boundary

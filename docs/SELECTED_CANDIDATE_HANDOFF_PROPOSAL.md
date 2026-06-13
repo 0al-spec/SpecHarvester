@@ -142,6 +142,11 @@ P32-T3 records a xyflow-only package-set identity regeneration dry run in
 [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md).
 That evidence makes the xyflow package-set candidates eligible for refreshed
 candidate-layer review, but still does not accept packages or relations.
+P32-T4 records single-package deferred regeneration in
+[`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md):
+`navigation_split_view.core` can re-enter refreshed candidate-layer review,
+while `cupertino.core` remains deferred until `refined_summary_missing` is
+resolved.
 
 ## Maintainer Checklist
 
@@ -190,4 +195,5 @@ See also:
 - [`DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md`](DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md)
 - [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md)
 - [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md)
+- [`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md)
 - [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md)

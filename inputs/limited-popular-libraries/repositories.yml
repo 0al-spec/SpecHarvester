@@ -29,7 +29,7 @@ repositories:
     repository: https://github.com/SoundBlaster/NavigationSplitView
     revision: 2c88df50b8f587560b91f6027e9ea275aee17060
     checkout: ../../../../NavigationSplitView
-    packageId: navigation-split-view.core
+    packageId: navigation_split_view.core
     labels: [swift, xcode, single_package, seed_corpus]
   - id: docc2context
     repository: https://github.com/SoundBlaster/docc2context

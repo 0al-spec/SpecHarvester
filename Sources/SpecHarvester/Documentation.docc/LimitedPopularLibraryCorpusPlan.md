@@ -28,11 +28,14 @@ explicit SpecPM maintainer acceptance.
 | Gin | Go single-package framework | `gin.core` | `5f4f9643258dc2a65e684b63f12c8d543c936c67` |
 | xyflow | JavaScript/TypeScript package-set workspace | `xyflow.workspace` | `a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd` |
 | Cupertino | Swift/SPM package-shaped checkout | `cupertino.core` | `65dcae238d30cfbd0d9d15ae10f7b8c67575c19b` |
-| NavigationSplitView | Swift/SPM + Xcode project-shaped checkout | `navigation-split-view.core` | `2c88df50b8f587560b91f6027e9ea275aee17060` |
+| NavigationSplitView | Swift/SPM + Xcode project-shaped checkout | `navigation_split_view.core` | `2c88df50b8f587560b91f6027e9ea275aee17060` |
 | docc2context | Swift/SPM documentation-first CLI | `docc2context.core` | `a2babcc4910c87bbd1b65f9a4221097f5ae4b753` |
 
 The seed corpus provides shape diversity. It is not a registry allowlist and
-does not imply SpecPM acceptance.
+does not imply SpecPM acceptance. P32-T4 updates the current
+NavigationSplitView package id hint to `navigation_split_view.core`; older
+P30/P31 reports preserve `navigation-split-view.core` as historical
+identity-drift evidence.
 
 ## Manifest
 

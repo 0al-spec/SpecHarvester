@@ -161,42 +161,46 @@ Published DocC site:
 57. [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md):
     P32-T3 xyflow-only package-set identity regeneration dry-run evidence,
     relation topology, preflight/viewer proof, and candidate-layer decision
-58. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
+58. [`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md):
+    P32-T4 Cupertino and NavigationSplitView single-package regeneration
+    dry-run evidence, canonical id decision, preflight/viewer proof, and
+    refreshed candidate-layer decisions
+59. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications
-59. [`AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md`](AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md):
+60. [`AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md`](AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md):
     post-fallback Flask/Gin/xyflow quality gate and limited scraping readiness
     verdict
-60. [`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md):
+61. [`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md):
     P30 bounded popular-library corpus selection, source manifest, runbook,
     stop conditions, and non-authority boundaries
-61. [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md):
+62. [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md):
     P30 deterministic `--skip-ai` limited corpus result, candidate counts,
     preflight outcomes, author-ready decisions, and product verdict
-62. [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md):
+63. [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md):
     P30 live LM Studio limited corpus result, AI draft/enrichment statuses,
     JSON repair summary, provider token usage, and candidate-layer triage verdict
-63. [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md):
+64. [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md):
     P30 candidate-layer triage report, selected P30-T5 candidates,
     regeneration decisions, and non-authority boundaries
-64. [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md):
+65. [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md):
     P30 selected candidate handoff dry-run evidence, preflight/viewer digests,
     deferred candidates, and external registry acceptance boundary
-65. [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md):
+66. [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md):
     portable selected candidate handoff proposal contract and helper for SpecPM
     review evidence, selected/deferred candidates, required evidence roles,
     `selected-candidate-handoff-proposal` JSON/Markdown output, and
     non-authority boundaries
-66. [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md):
+67. [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md):
     P31-T3 generated selected candidate handoff proposal Markdown companion for
     the real P30 selected candidates
-67. [`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md):
+68. [`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md):
     downstream SpecPM-side preflight expectations for selected candidate
     handoff proposal evidence
-68. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
+69. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
     deterministic fallback for Flask/Gin-style repositories with no workspace
     package records
-69. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+70. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
