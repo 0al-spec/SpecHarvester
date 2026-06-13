@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P32-T3 Xyflow Package-Set Identity Regeneration Dry Run" in next_text:
+        assert_p32_t2_last_archived(next_text)
+        assert_p32_t1_recent(next_text)
+        assert_p32_t2_recent(next_text)
+        assert_phase_32_t3_active(next_text)
+        return
+
     if "# Next Task: P32-T2 Deferred Candidate Regeneration Runbook" in next_text:
         assert_p32_t1_last_archived(next_text)
         assert_p26_t3_recent(next_text)
@@ -383,6 +390,10 @@ def assert_p26_t3_last_archived(next_text: str) -> None:
 
 def assert_p32_t1_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P32-T1 Autonomous Deferred Candidate Work Plan" in next_text
+
+
+def assert_p32_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P32-T2 Deferred Candidate Regeneration Runbook" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1124,6 +1135,26 @@ def assert_p32_t1_recent(next_text: str) -> None:
     assert "harvested-code execution" in normalized
 
 
+def assert_p32_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P32-T2` added `docs/DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`" in next_text
+    assert "DeferredCandidateRegenerationRunbook" in next_text
+    assert "package_set_identity_regeneration" in next_text
+    assert "warning_bearing_enrichment_regeneration" in next_text
+    assert "identity_drift_resolution" in next_text
+    assert "safe local commands" in normalized
+    assert "expected artifacts" in normalized
+    assert "stop conditions" in normalized
+    assert "re-entry criteria" in normalized
+    assert "non-authority boundaries" in normalized
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
+    assert "xyflow.system" in next_text
+    assert "cupertino.core" in next_text
+    assert "navigation_split_view.core" in next_text
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1179,6 +1210,26 @@ def assert_phase_32_t2_active(next_text: str) -> None:
     assert "identity_drift_resolution" in next_text
     assert "safe local commands" in normalized
     assert "non-authority boundaries" in normalized
+
+
+def assert_phase_32_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P32-T3 Xyflow Package-Set Identity Regeneration Dry Run" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
+    assert "P32-T2 is complete" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
+    assert "xyflow.system" in next_text
+    assert "package-set identity" in normalized
+    assert "contains topology" in normalized
+    assert "producer preflight" in normalized
+    assert "static viewer" in normalized
+    assert "preview_only" in next_text
+    assert "external_required" in next_text
+    assert "selected handoff" in normalized
+    assert "remain deferred" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -4126,6 +4177,119 @@ def test_autonomous_candidate_tech_debt_plan_docs_cover_corpus_followups() -> No
     assert "package-set identity regeneration" in workplan_text
     assert "SpecPM-side preflight remains consumer review evidence only" in workplan_text
 
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_deferred_candidate_regeneration_runbook_docs_cover_p32_t2_contract() -> None:
+    github_doc = ROOT / "docs" / "DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "DeferredCandidateRegenerationRunbook.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    tech_debt = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    tech_debt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+    requirements = ROOT / "docs" / "DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md"
+    requirements_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "DeferredSelectedCandidateRegenerationRequirements.md"
+    )
+    selected_handoff = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md"
+    selected_handoff_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffProposal.md"
+    )
+    specpm_handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    specpm_handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Deferred Candidate Regeneration Runbook",
+            "P32-T2",
+            "inputs/limited-popular-libraries/repositories.yml",
+            "source-manifests",
+            ".smoke/p32-deferred-regeneration/<attempt-id>/",
+            "package_set_identity_regeneration",
+            "warning_bearing_enrichment_regeneration",
+            "identity_drift_resolution",
+            "xyflow.workspace",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "cupertino.core",
+            "navigation_split_view.core",
+            "package_set_id_missing",
+            "refined_summary_missing",
+            "package_id_hint_mismatch",
+            "package-set-ai-draft-proposal",
+            "package-set-ai-enrichment-proposal",
+            "autonomous-candidate-batch",
+            "bundle-set-preflight.json",
+            "author-ready-draft-quality-report.json",
+            "candidate_layer_review_required",
+            "needs_regeneration",
+            "blocked",
+            "not_for_intake",
+            "authorReadyDraft.status",
+            "author_ready_draft",
+            "producer preflight",
+            "warning count is `0`",
+            "error count is `0`",
+            "static viewer",
+            "preview_only",
+            "external_required",
+            "JSON repair is exhausted",
+            "unsupported evidence paths",
+            "clone repositories",
+            "install dependencies",
+            "execute harvested code",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "SpecPM pull request",
+            "AI output as registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:DeferredCandidateRegenerationRunbook>" in docc_root.read_text(encoding="utf-8")
+    for path in (tech_debt, requirements, selected_handoff, specpm_handoff, roadmap):
+        assert "DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md" in path.read_text(encoding="utf-8")
+    for path in (
+        tech_debt_docc,
+        requirements_docc,
+        selected_handoff_docc,
+        specpm_handoff_docc,
+        roadmap_docc,
+    ):
+        assert "DeferredCandidateRegenerationRunbook" in path.read_text(encoding="utf-8")
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P32-T2` Add a deferred candidate regeneration runbook" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

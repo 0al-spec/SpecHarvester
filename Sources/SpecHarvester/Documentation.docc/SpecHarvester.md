@@ -168,6 +168,7 @@ the host.
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateIntakePolicy>
 - <doc:AutonomousCandidateTechDebtPlan>
+- <doc:DeferredCandidateRegenerationRunbook>
 - <doc:AutonomousCandidateCorpusBaseline>
 - <doc:AutonomousCandidateCorpusQualityGate>
 - <doc:LimitedPopularLibraryCorpusPlan>

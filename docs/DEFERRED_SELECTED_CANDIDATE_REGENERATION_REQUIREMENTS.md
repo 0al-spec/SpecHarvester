@@ -37,6 +37,9 @@ It does not run another scrape, call LM Studio, call SpecNode, clone
 repositories, install dependencies, regenerate candidates, generate accepted
 source, publish registry metadata, or create a SpecPM pull request.
 
+P32-T2 turns these requirements into the safe operator procedure in
+[`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md).
+
 ## Deferred Candidates
 
 The six deferred P30 candidates remain excluded from selected handoff:
@@ -143,6 +146,7 @@ See also:
 
 - [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md)
 - [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md)
+- [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md)
 - [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md)
 - [`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md)
 - [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md)

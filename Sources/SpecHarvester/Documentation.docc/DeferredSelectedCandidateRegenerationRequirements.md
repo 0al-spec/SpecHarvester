@@ -28,6 +28,9 @@ The blocker classes are `package_set_identity_regeneration`,
 The finding codes include `package_set_id_missing`, `refined_summary_missing`,
 and `package_id_hint_mismatch`.
 
+P32-T2 turns these requirements into the safe operator procedure in
+<doc:DeferredCandidateRegenerationRunbook>.
+
 ## Requirements
 
 `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, and `xyflow.system` require
@@ -58,5 +61,6 @@ request, or replace author or SpecPM maintainer review.
 
 See also <doc:LimitedPopularLibraryCandidateLayerTriage>,
 <doc:LimitedPopularLibrarySelectedHandoffDryRun>,
+<doc:DeferredCandidateRegenerationRunbook>,
 <doc:SelectedCandidateHandoffProposal>,
 <doc:SelectedCandidateHandoffPreflightExpectations>, and <doc:SpecPMHandoff>.

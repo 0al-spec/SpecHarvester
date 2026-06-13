@@ -204,6 +204,8 @@ candidates in
 Those requirements cover package-set identity regeneration, warning-bearing
 enrichment regeneration, and identity-drift resolution before any deferred
 candidate can enter selected handoff.
+Use [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md)
+before attempting those regeneration runs.
 
 ## Fresh Candidate Refresh Run
 

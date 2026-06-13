@@ -97,6 +97,8 @@ The proposal explicitly keeps `xyflow.workspace`, `xyflow.react`,
 author-supplied summary evidence, warning resolution, or package-set-specific
 review makes them suitable for selected handoff. P31-T5 records those
 requirements in <doc:DeferredSelectedCandidateRegenerationRequirements>.
+P32-T2 records the safe operator procedure in
+<doc:DeferredCandidateRegenerationRunbook>.
 
 ## Maintainer Checklist
 
