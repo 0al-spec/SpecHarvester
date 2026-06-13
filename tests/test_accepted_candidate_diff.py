@@ -4,6 +4,12 @@ import json
 from pathlib import Path
 
 from spec_harvester.accepted_diff import (
+    AcceptedCandidateDiffReport,
+    AcceptedCandidateDiffReportWriter,
+    AcceptedPackageVersions,
+    CandidateComparison,
+    PackageDiffSource,
+    PackageRecordDiff,
     build_accepted_candidate_diff_report,
     collect_package_diff_records,
     parse_specpm_diff_record,
@@ -71,6 +77,36 @@ def test_build_accepted_candidate_diff_report_detects_changed_candidate(
         "license",
     }
     assert comparison["changes"]["upstreamArtifacts"]["changed"] is True
+
+
+def test_accepted_candidate_diff_report_object_matches_public_wrapper(
+    tmp_path: Path,
+) -> None:
+    accepted_root = tmp_path / "accepted"
+    candidates_root = tmp_path / "candidates"
+    write_manifest(
+        accepted_root / "demo" / "1.0.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read"],
+        intents=["intent.package.utility"],
+    )
+    write_manifest(
+        candidates_root / "demo" / "1.1.0" / "specpm.yaml",
+        package_id="demo.core",
+        version="1.1.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.utility"],
+    )
+
+    object_report = AcceptedCandidateDiffReport(accepted_root, candidates_root).report()
+    wrapper_report = build_accepted_candidate_diff_report(
+        accepted_root=accepted_root,
+        candidates_root=candidates_root,
+    )
+
+    assert object_report == wrapper_report
+    assert object_report["summary"]["changedCount"] == 1
 
 
 def test_build_accepted_candidate_diff_report_reports_new_and_unchanged_candidates(
@@ -186,6 +222,29 @@ def test_collect_package_diff_records_reports_symlink_and_invalid_manifest(
     }
 
 
+def test_package_diff_source_object_reports_symlink_and_invalid_manifest(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "root"
+    root.mkdir()
+    invalid = root / "invalid" / "specpm.yaml"
+    invalid.parent.mkdir()
+    invalid.write_text("kind: SpecPackage\n", encoding="utf-8")
+    target = tmp_path / "target-specpm.yaml"
+    target.write_text("metadata:\n  id: linked.core\n  version: 1.0.0\n", encoding="utf-8")
+    symlink = root / "linked" / "specpm.yaml"
+    symlink.parent.mkdir()
+    symlink.symlink_to(target)
+
+    records, issues = PackageDiffSource(root, "candidate").records_and_issues()
+
+    assert records == []
+    assert [issue["code"] for issue in sorted(issues, key=lambda item: item["code"])] == [
+        "invalid_specpm_manifest",
+        "specpm_symlink",
+    ]
+
+
 def test_collect_package_diff_records_rejects_missing_root(tmp_path: Path) -> None:
     try:
         collect_package_diff_records(tmp_path / "missing", "candidate")
@@ -265,6 +324,82 @@ def test_accepted_candidate_diff_normalizes_nested_license_evidence_metadata(
     comparison = report["comparisons"][0]
     assert comparison["status"] == "unchanged"
     assert comparison["changes"]["metadata"] == []
+
+
+def test_candidate_comparison_and_record_diff_objects_preserve_delta_shape(
+    tmp_path: Path,
+) -> None:
+    accepted_manifest = tmp_path / "accepted" / "specpm.yaml"
+    candidate_manifest = tmp_path / "candidate" / "specpm.yaml"
+    write_manifest(
+        accepted_manifest,
+        package_id="demo.core",
+        version="1.0.0",
+        capabilities=["demo.read", "demo.write"],
+        intents=["intent.package.utility"],
+    )
+    write_manifest(
+        candidate_manifest,
+        package_id="demo.core",
+        version="1.1.0",
+        capabilities=["demo.read", "demo.stream"],
+        intents=["intent.package.workflow"],
+    )
+    accepted = parse_specpm_diff_record(accepted_manifest, "accepted")
+    candidate = parse_specpm_diff_record(candidate_manifest, "candidate")
+
+    changes = PackageRecordDiff(accepted, candidate).changes()
+    comparison = CandidateComparison(candidate, accepted).as_dict()
+
+    assert changes == comparison["changes"]
+    assert comparison["status"] == "changed"
+    assert comparison["changes"]["capabilities"] == {
+        "added": ["demo.stream"],
+        "removed": ["demo.write"],
+    }
+    assert comparison["changes"]["intents"] == {
+        "added": ["intent.package.workflow"],
+        "removed": ["intent.package.utility"],
+    }
+
+
+def test_accepted_package_versions_object_selects_latest_semver(tmp_path: Path) -> None:
+    old_manifest = tmp_path / "old" / "specpm.yaml"
+    new_manifest = tmp_path / "new" / "specpm.yaml"
+    prerelease_manifest = tmp_path / "pre" / "specpm.yaml"
+    write_manifest(
+        old_manifest, package_id="demo.core", version="1.0.0", capabilities=[], intents=[]
+    )
+    write_manifest(
+        new_manifest, package_id="demo.core", version="1.2.0", capabilities=[], intents=[]
+    )
+    write_manifest(
+        prerelease_manifest,
+        package_id="demo.core",
+        version="1.2.0-rc.1",
+        capabilities=[],
+        intents=[],
+    )
+    records = [
+        parse_specpm_diff_record(old_manifest, "accepted"),
+        parse_specpm_diff_record(new_manifest, "accepted"),
+        parse_specpm_diff_record(prerelease_manifest, "accepted"),
+    ]
+
+    latest = AcceptedPackageVersions(tuple(records)).latest_by_package_id()
+
+    assert latest["demo.core"].package_version == "1.2.0"
+
+
+def test_accepted_candidate_diff_report_writer_creates_parent_directory(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "nested" / "diff.json"
+    report = {"kind": "SpecHarvesterAcceptedCandidateDiffReport", "summary": {"issueCount": 0}}
+
+    AcceptedCandidateDiffReportWriter(path, report).write()
+
+    assert json.loads(path.read_text(encoding="utf-8")) == report
 
 
 def test_semver_sort_key_orders_prerelease_and_handles_invalid_versions() -> None:
