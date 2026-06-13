@@ -145,6 +145,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t6_next_corpus_specpm_preflight_intake_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t5_next_corpus_candidate_layer_triage.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t4_live_local_model_next_corpus_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t3_deterministic_next_corpus_dry_run.md` |
@@ -216,6 +217,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P33-T6 | Archived REVIEW_p33_t6_next_corpus_specpm_preflight_intake_decision report |
 | 2026-06-14 | P33-T6 | Archived Next-Corpus SpecPM Preflight and Intake Decision (PASS) |
 | 2026-06-14 | P33-T5 | Archived REVIEW_p33_t5_next_corpus_candidate_layer_triage report |
 | 2026-06-14 | P33-T5 | Archived Next-Corpus Candidate-Layer Triage (PASS) |
