@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P32-T1 Autonomous Deferred Candidate Work Plan" in next_text:
+        assert_p26_t3_last_archived(next_text)
+        assert_p31_t5_recent(next_text)
+        assert_p26_t3_recent(next_text)
+        assert_phase_32_t1_active(next_text)
+        return
+
     if "# Next Task: Phase 26 Complete" in next_text:
         assert_p26_t3_last_archived(next_text)
         assert_p31_t5_recent(next_text)
@@ -1117,6 +1124,21 @@ def assert_phase_26_t3_active(next_text: str) -> None:
     assert "relation proposal evidence" in normalized
     assert "external_required" in next_text
     assert "does not accept packages or relations" in normalized
+
+
+def assert_phase_32_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P32-T1 Autonomous Deferred Candidate Work Plan" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
+    assert "P30/P31" in normalized
+    assert "deferred" in normalized
+    assert "debt" in normalized
+    assert "xyflow.*" in normalized
+    assert "package-set identity regeneration" in normalized
+    assert "cupertino.core" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "SpecPM-side consumer preflight boundary" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -4007,35 +4029,62 @@ def test_autonomous_candidate_tech_debt_plan_docs_cover_corpus_followups() -> No
         normalized = " ".join(text.split())
         for required in (
             "Autonomous Candidate Technical Debt Plan",
-            "flask",
-            "gin",
-            "xyflow",
-            "single-package repositories",
-            "single-package candidate fallback",
-            "LM Studio JSON Repair and Retry",
-            "malformed JSON",
+            "Current plan for Phase 32" if path == github_doc else "current plan for Phase 32",
+            "valid starter package evidence",
+            "Completed P29 Debt",
+            "Current P30/P31 Debt",
             "P29-T3",
             "P29-T4",
             "P29-T5",
             "P29-T6",
+            "flask",
+            "gin",
+            "xyflow",
+            "single-package fallback",
+            "LM Studio/OpenAI-compatible JSON repair/retry",
+            "ready_for_limited_popular_library_scraping",
+            "P32-T1",
+            "P32-T2",
+            "P32-T3",
+            "P32-T4",
+            "P32-T5",
+            "P32-T6",
+            "P32-T7",
+            "xyflow.workspace",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "cupertino.core",
+            "navigation_split_view.core",
+            "package_set_identity_regeneration",
+            "warning_bearing_enrichment_regeneration",
+            "identity_drift_resolution",
+            "SpecHarvesterSelectedCandidateHandoffProposal",
+            "SpecPM",
             "preview_only",
-            "producer-side preview evidence",
-            "single_package_fallback_needed",
-            "ai_json_repair_needed",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "broader autonomous popular-library scrape",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"
 
     assert "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:AutonomousCandidateTechDebtPlan>" in docc_root.read_text(encoding="utf-8")
-    assert "single-package candidate fallback" in roadmap.read_text(encoding="utf-8")
-    assert "JSON repair/retry" in roadmap.read_text(encoding="utf-8")
+    assert "Autonomous Deferred Candidate Regeneration" in roadmap.read_text(encoding="utf-8")
+    assert "xyflow package-set identity regeneration" in roadmap.read_text(encoding="utf-8")
     assert "AutonomousCandidateTechDebtPlan" in roadmap_docc.read_text(encoding="utf-8")
+    assert "Autonomous Deferred Candidate Regeneration" in roadmap_docc.read_text(encoding="utf-8")
 
     workplan_text = workplan.read_text(encoding="utf-8")
     for task_id in ("P29-T3", "P29-T4", "P29-T5", "P29-T6"):
         assert f"`{task_id}`" in workplan_text
-    assert "single-package repositories" in workplan_text
-    assert "Local LM Studio JSON failures" in workplan_text
+    for task_id in ("P32-T1", "P32-T2", "P32-T3", "P32-T4", "P32-T5", "P32-T6", "P32-T7"):
+        assert f"`{task_id}`" in workplan_text
+    assert "Autonomous Deferred Candidate Regeneration" in workplan_text
+    assert "xyflow.*" in workplan_text
+    assert "package-set identity regeneration" in workplan_text
+    assert "SpecPM-side preflight remains consumer review evidence only" in workplan_text
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 

@@ -1,84 +1,111 @@
 # Autonomous Candidate Technical Debt Plan
 
-Status: Planned follow-up for Phase 29.
+This page mirrors `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`.
 
-This page records the technical debt found while running
-`autonomous-candidate-batch` against the local popular-library corpus:
+Status: current plan for Phase 32 after the P30/P31 limited corpus work.
 
-- `/Users/egor/Development/GitHub/flask`
-- `/Users/egor/Development/GitHub/gin`
-- `/Users/egor/Development/GitHub/xyflow`
+The plan keeps the autonomous candidate MVP bounded. SpecHarvester should turn
+operator-selected local checkouts into valid starter package evidence, then
+stop for author or maintainer review. It should not scrape every framework into
+SpecPM.
 
-The deterministic run passed for all three repositories, but Flask and Gin
-produced `0` package-set candidates because they are single-package repositories
-rather than workspaces. The live LM Studio run also showed that local model
-output can occasionally fail JSON parsing on real corpus input.
+## Completed P29 Debt
+
+P29 closed the original autonomous candidate technical debt:
+
+- `P29-T3` recorded the Flask/Gin/xyflow corpus baseline in
+  <doc:AutonomousCandidateCorpusBaseline>.
+- `P29-T4` added the deterministic single-package fallback documented in
+  <doc:SinglePackageCandidateFallback>.
+- `P29-T5` added bounded LM Studio/OpenAI-compatible JSON repair/retry.
+- `P29-T6` recorded the post-mitigation quality gate in
+  <doc:AutonomousCandidateCorpusQualityGate> with verdict
+  `ready_for_limited_popular_library_scraping`.
+
+## Current P30/P31 Debt
+
+Selected candidates `flask.core`, `gin.core`, and `docc2context.core` have
+handoff-ready producer evidence. Deferred candidates remain useful calibration
+evidence, but should not enter SpecPM handoff without targeted regeneration or
+correction.
+
+Current deferred candidates:
+
+- `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, and `xyflow.system`
+  require `package_set_identity_regeneration`;
+- `cupertino.core` requires `warning_bearing_enrichment_regeneration` or
+  author-curated summary evidence;
+- `navigation_split_view.core` requires `identity_drift_resolution`.
 
 ## Boundary
 
-The objective is still a valid starter package, not a final accepted
-specification.
+SpecHarvester must not clone repositories, execute harvested code, install
+dependencies, publish SpecPM registry content, remove `preview_only`, accept
+packages, accept relations, seed baselines, treat AI output as registry truth,
+or replace author or SpecPM maintainer review.
 
-SpecHarvester should improve producer-side preview evidence. It must not clone
-repositories, execute harvested code, install dependencies, publish SpecPM
-registry content, remove `preview_only`, treat AI output as registry truth, or
-replace author or maintainer review.
+## Phase 32 Work Plan
 
-## Work Plan
+`P32-T1 Autonomous Deferred Candidate Work Plan`
 
-`P29-T3 Corpus Baseline and Gap Report`
+- Owner: SpecHarvester.
+- Motivation: P29 debt is complete, but P30/P31 deferred-candidate debt needs a
+  current bounded plan.
+- Goal: record the deferred candidate sequence with repository ownership,
+  motivation, goal, acceptance criteria, and non-authority boundaries.
 
-- Motivation: the first practical corpus run needs a durable baseline before
-  changing fallback or model retry behavior.
-- Goal: record Flask, Gin, and xyflow outcomes with candidate counts, relation
-  counts, preflight status, author-ready stop-policy status, and AI status.
-- Acceptance: mark Flask and Gin as `single_package_fallback_needed`, mark
-  malformed model JSON as `ai_json_repair_needed`, and keep all output
-  producer-side only.
-- Artifact: <doc:AutonomousCandidateCorpusBaseline> records the Flask/Gin/xyflow
-  baseline as `SpecHarvesterAutonomousCandidateCorpusBaseline`.
+`P32-T2 Deferred Candidate Regeneration Runbook`
 
-`P29-T4 Single-Package Candidate Fallback`
+- Owner: SpecHarvester.
+- Motivation: P31-T5 defines what must be regenerated, but not how an operator
+  should run it safely.
+- Goal: map each blocker class to producer commands, expected artifacts, and
+  stop conditions.
 
-- Motivation: many popular libraries are single-package repositories; Flask and
-  Gin collected useful evidence but produced no package-set candidates.
-- Goal: create one preview single-package candidate from harvest metadata,
-  source manifest hints, README/license evidence, and
-  `public-interface-index.json` when package-set drafting selects no members.
-- Acceptance: Flask produces `flask.core`, Gin produces `gin.core`, no
-  `contains` relations are invented, and all artifacts remain `preview_only`.
-- Artifact: <doc:SinglePackageCandidateFallback> documents the implemented
-  fallback and its `single_package_source_manifest_fallback` selection reason.
+`P32-T3 Xyflow Package-Set Identity Regeneration Dry Run`
 
-`P29-T5 LM Studio JSON Repair and Retry`
+- Owner: SpecHarvester.
+- Motivation: `xyflow.*` is the representative package-set case with
+  package-set identity drift.
+- Goal: regenerate package-set identity evidence and decide whether
+  `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, and `xyflow.system` can
+  enter selected handoff.
 
-- Motivation: local models can return prose, fenced content, partial JSON, or
-  malformed JSON under real corpus load.
-- Goal: add a bounded JSON repair/retry path for local LM
-  Studio/OpenAI-compatible proposal generation.
-- Acceptance: invalid JSON becomes a structured diagnostic, repair attempts are
-  bounded, successful repair records attempt count, and raw prompts, raw
-  responses, secrets, and chain-of-thought are not persisted.
-- Artifact surface: package-set AI draft and enrichment receipts record
-  `jsonRepairNeeded`, `jsonRepairAttemptCount`, and `jsonRepairStatus`; batch
-  AI records expose `diagnosticCodes` and `jsonRepair` summaries.
+`P32-T4 Single-Package Deferred Candidate Regeneration Dry Run`
 
-`P29-T6 Corpus Quality Gate After Fallbacks`
+- Owner: SpecHarvester.
+- Motivation: `cupertino.core` and `navigation_split_view.core` represent
+  summary/enrichment and identity-normalization failures.
+- Goal: regenerate or repair those single-package candidates and record whether
+  they can re-enter selected handoff.
 
-- Motivation: the autonomous runner should be judged on a mixed corpus, not
-  only on package-set-friendly monorepos.
-- Goal: re-run the local corpus after P29-T4 and P29-T5 and decide whether the
-  MVP is ready for larger popular-library scraping.
-- Acceptance: Flask, Gin, and xyflow all produce at least one preview
-  candidate, deterministic preflight passes, and live LM Studio mode either
-  completes or emits structured bounded AI diagnostics.
-- Artifact: <doc:AutonomousCandidateCorpusQualityGate> records the
-  post-mitigation Flask/Gin/xyflow quality gate and verdict
-  `ready_for_limited_popular_library_scraping`.
+`P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff`
+
+- Owner: SpecHarvester.
+- Motivation: regenerated evidence needs the same triage vocabulary used by
+  P30-T4/P30-T5.
+- Goal: produce refreshed triage and selected handoff evidence for any
+  regenerated candidates that satisfy hard gates.
+
+`P32-T6 SpecPM Selected Candidate Handoff Preflight`
+
+- Owner: SpecPM.
+- Motivation: P31-T4 records expected checks, but SpecPM still needs the
+  consumer-side gate.
+- Goal: add SpecPM preflight for
+  `SpecHarvesterSelectedCandidateHandoffProposal` while keeping passing
+  preflight as review evidence only.
+
+`P32-T7 Limited Corpus Intake Readiness Decision`
+
+- Owner: SpecHarvester + SpecPM.
+- Motivation: the project needs a stop point before expanding beyond the
+  limited corpus.
+- Goal: run refreshed selected handoff through SpecPM preflight and record
+  whether the corpus is ready for author review, needs more regeneration, or
+  should stop before broader scraping.
 
 ## Suggested Order
 
-1. `P29-T3` baseline and gap report.
-2. `P29-T4` single-package candidate fallback.
-3. `P29-T5` LM Studio JSON repair/retry.
-4. `P29-T6` corpus quality gate.
+Run P32-T1 through P32-T7 in order. This keeps the current corpus bounded and
+reviewable before any broader autonomous popular-library scrape is attempted.

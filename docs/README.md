@@ -152,8 +152,9 @@ Published DocC site:
     SpecPM-facing candidate-layer intake policy for autonomous batch output,
     review states, maintainer checks, and authority boundaries
 55. [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md):
-    Phase 29 follow-up plan for single-package fallback, LM Studio JSON
-    repair/retry, and mixed-corpus quality gates
+    current autonomous candidate technical-debt plan: completed P29 fallback
+    and JSON-repair debt plus Phase 32 deferred candidate regeneration and
+    SpecPM intake-readiness work
 56. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications
