@@ -466,7 +466,8 @@ scraping is attempted.
 Tasks:
 
 - record the autonomous deferred candidate work plan;
-- write a deferred candidate regeneration runbook;
+- write a deferred candidate regeneration runbook
+  ([`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md));
 - run xyflow package-set identity regeneration as a dry run;
 - run single-package deferred candidate regeneration or repair for
   `cupertino.core` and `navigation_split_view.core`;
@@ -487,6 +488,8 @@ Success criteria:
   deferrals.
 
 See [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md).
+P32-T2 records the regeneration runbook in
+[`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md).
 
 ## Non-Goals
 
