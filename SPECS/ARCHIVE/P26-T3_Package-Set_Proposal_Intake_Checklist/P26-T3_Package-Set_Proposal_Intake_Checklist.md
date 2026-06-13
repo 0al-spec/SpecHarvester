@@ -64,3 +64,8 @@ roles required before maintainers accept package members or relations from a
 - No SpecPM repository changes.
 - No registry mutation.
 - No package or relation acceptance.
+
+## Archive Status
+
+Archived: 2026-06-13
+Verdict: PASS

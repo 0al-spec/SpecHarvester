@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 26 Complete" in next_text:
+        assert_p26_t3_last_archived(next_text)
+        assert_p31_t5_recent(next_text)
+        assert_p26_t3_recent(next_text)
+        assert_phase_26_complete(next_text)
+        return
+
     if "# Next Task: P26-T3 Package-Set Proposal Intake Checklist" in next_text:
         assert_p31_t5_last_archived(next_text)
         assert_p31_t4_recent(next_text)
@@ -354,6 +361,10 @@ def assert_p31_t5_last_archived(next_text: str) -> None:
         "**Last Archived:** P31-T5 Deferred Selected Candidate Regeneration Requirements"
         in next_text
     )
+
+
+def assert_p26_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P26-T3 Package-Set Proposal Intake Checklist" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1066,6 +1077,33 @@ def assert_phase_31_complete(next_text: str) -> None:
     assert "downstream SpecPM preflight expectation document" in normalized
     assert "deferred candidate regeneration requirements" in normalized
     assert "No Phase 31 task remains selected" in next_text
+
+
+def assert_p26_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P26-T3` documented the package-set proposal intake checklist" in next_text
+    assert "PACKAGE_SET_PROPOSAL_INTAKE_CHECKLIST.md" in next_text
+    assert "PackageSetProposalIntakeChecklist" in next_text
+    assert "SpecHarvesterPackageSetHandoffProposal" in next_text
+    assert "spec-harvester.package-set-handoff-proposal/v0" in next_text
+    assert "package member acceptance" in normalized
+    assert "relation acceptance" in normalized
+    assert "external_required" in next_text
+    assert "producerAuthority: evidence_only" in next_text
+
+
+def assert_phase_26_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 26 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "Phase 26 is complete" in next_text
+    assert "package-set handoff proposal artifacts" in normalized
+    assert "trusted dry-run workflow boundaries" in normalized
+    assert "proposal-only AI enrichment" in normalized
+    assert "proposal-only LLM package-set draft evidence" in normalized
+    assert "SpecPM-facing package-set proposal intake checklist" in normalized
+    assert "No Phase 26 task remains selected" in next_text
+    assert "autonomous/deferred candidate work plan" in normalized
 
 
 def assert_phase_26_t3_active(next_text: str) -> None:
