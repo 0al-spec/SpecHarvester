@@ -222,6 +222,10 @@ P32-T6 records that the SpecPM preflight was merged in
 [0al-spec/SpecPM#140](https://github.com/0al-spec/SpecPM/pull/140) and that the
 P32-T5 fixture passes with eight selected candidates, one deferred candidate,
 and three source digests verified.
+P32-T7 records the intake readiness decision in
+<doc:LimitedCorpusIntakeReadinessDecision>: the selected preview candidates are
+ready for author/maintainer review, `cupertino.core` remains deferred, and
+broader autonomous scraping requires a separate follow-up task.
 
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,

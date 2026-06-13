@@ -174,6 +174,7 @@ the host.
 - <doc:XyflowPackageSetIdentityRegenerationDryRun>
 - <doc:SinglePackageDeferredCandidateRegenerationDryRun>
 - <doc:RefreshedCandidateLayerSelectedHandoff>
+- <doc:LimitedCorpusIntakeReadinessDecision>
 - <doc:AutonomousCandidateCorpusBaseline>
 - <doc:AutonomousCandidateCorpusQualityGate>
 - <doc:LimitedPopularLibraryCorpusPlan>

@@ -276,6 +276,15 @@ Acceptance:
 - The next corpus expansion is allowed only if the limited corpus has clean
   selected handoff evidence or documented deferrals.
 
+Artifact:
+
+- [`LIMITED_CORPUS_INTAKE_READINESS_DECISION.md`](LIMITED_CORPUS_INTAKE_READINESS_DECISION.md)
+  records the P32-T7 decision. The limited corpus is
+  `ready_for_author_maintainer_review_with_explicit_deferral`: eight selected
+  preview candidates are ready for author/maintainer review, `cupertino.core`
+  remains deferred on `refined_summary_missing`, and any broader autonomous
+  scraping requires a separate follow-up task.
+
 ## Suggested Order
 
 1. `P32-T1` record this plan.
