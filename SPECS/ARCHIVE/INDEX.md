@@ -147,6 +147,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t8_next_corpus_intake_readiness_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t7_durable_next_corpus_selected_handoff_artifact.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t6_next_corpus_specpm_preflight_intake_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t5_next_corpus_candidate_layer_triage.md` |
@@ -220,6 +221,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P33-T8 | Archived REVIEW_p33_t8_next_corpus_intake_readiness_decision report |
 | 2026-06-14 | P33-T8 | Archived Next-Corpus Intake Readiness Decision (PASS) |
 | 2026-06-14 | P33-T7 | Archived REVIEW_p33_t7_durable_next_corpus_selected_handoff_artifact report |
 | 2026-06-14 | P33-T7 | Archived Durable Next-Corpus Selected Handoff Artifact (PASS) |
