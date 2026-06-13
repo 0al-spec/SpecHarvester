@@ -4,7 +4,8 @@
 **Phase:** Phase 17. Elegant Objects Refactoring Strategy
 **Effort:** Large
 **Dependencies:** P17-T5
-**Status:** Ready
+**Status:** Selected
+**Active Branch:** `codex/p17-t6-specnode-refinement-orchestration-objects`
 **Last Archived:** P17-T5 Collector and Drafter Vertical Slice Objects
 
 ## Recently Archived
