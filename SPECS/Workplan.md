@@ -1048,7 +1048,7 @@ Acceptance:
 - [x] `P30-T4` Produce a candidate-layer triage report that classifies each
   generated preview package as `candidate_layer_review_required`,
   `needs_regeneration`, `blocked`, or `not_for_intake`.
-- [ ] `P30-T5` Prepare SpecPM handoff dry-run evidence for selected candidates
+- [x] `P30-T5` Prepare SpecPM handoff dry-run evidence for selected candidates
   only, preserving `preview_only`, `producer_preview_evidence_only`, and
   external registry acceptance authority.
 

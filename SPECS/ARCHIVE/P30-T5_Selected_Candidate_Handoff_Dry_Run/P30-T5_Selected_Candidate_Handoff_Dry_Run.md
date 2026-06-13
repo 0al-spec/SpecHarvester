@@ -103,3 +103,7 @@ P30-T5 cannot:
 - No SpecPM repository mutation or PR creation.
 - No registry publication, accepted-source update, relation acceptance, or
   baseline seeding.
+
+---
+**Archived:** 2026-06-13
+**Verdict:** PASS

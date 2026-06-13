@@ -346,7 +346,7 @@ with verdict `ready_for_limited_popular_library_scraping`.
 
 ## Milestone 10: Limited Popular-Library Scraping Batch
 
-Status: Planning.
+Status: Complete.
 
 Goal: expand the autonomous candidate MVP from the three-repository quality
 gate into a bounded 5-10 repository corpus while keeping every output as
