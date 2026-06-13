@@ -26,7 +26,8 @@ python3 -m spec_harvester autonomous-candidate-batch \
   inputs/popular-libraries \
   --out .smoke/autonomous-popular-batch \
   --lm-studio-base-url http://127.0.0.1:1234 \
-  --lm-studio-model openai/gpt-oss-20b
+  --lm-studio-model openai/gpt-oss-20b \
+  --json-repair-max-attempts 1
 ```
 
 Run deterministically without model calls for CI or offline smoke:
@@ -109,11 +110,20 @@ Live AI mode is local and operator-controlled:
 
 - `--lm-studio-base-url` defaults to `http://127.0.0.1:1234`;
 - `--lm-studio-model` is required unless `--skip-ai` is set;
+- `--json-repair-max-attempts` bounds malformed JSON repair prompts per local
+  model call;
 - provider execution is recorded as `operator_opt_in_local`;
 - compact structured requests can be inspected, but raw prompts, raw provider
   responses, secrets, and chain-of-thought are not persisted;
 - CI should use `--skip-ai` or existing external `--model-output` fixtures for
   lower-level AI proposal commands.
+
+When local model output is malformed, AI proposal records surface
+`diagnosticCodes` such as `ai_json_repair_needed` and
+`ai_json_repair_exhausted`, plus a `jsonRepair` summary. Exhausted repair marks
+the AI proposal and repository as failed, but deterministic harvest,
+package-set draft, bundle-set preflight, and author-ready summary artifacts
+remain available for review.
 
 ## Trust Boundary
 

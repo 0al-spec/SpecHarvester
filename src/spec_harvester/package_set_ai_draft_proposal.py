@@ -11,6 +11,15 @@ from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.model_json_repair import (
+    DEFAULT_JSON_REPAIR_MAX_ATTEMPTS,
+    ModelJsonFailure,
+    ModelJsonParseError,
+    complete_json_with_repair,
+)
+from spec_harvester.model_json_repair import (
+    parse_model_json_object as parse_model_json_object_shared,
+)
 from spec_harvester.package_set_drafter import read_inventory
 from spec_harvester.producer_receipt import digest_record, sha256_file
 from spec_harvester.producer_reports import stop_policy_summary_from_diagnostics
@@ -63,6 +72,7 @@ class PackageSetAIDraftProposalOptions:
     timeout_seconds: float = DEFAULT_TIMEOUT_SECONDS
     max_output_tokens: int = DEFAULT_MAX_OUTPUT_TOKENS
     temperature: float = DEFAULT_TEMPERATURE
+    json_repair_max_attempts: int = DEFAULT_JSON_REPAIR_MAX_ATTEMPTS
 
 
 class PackageSetAIDraftProposalError(RuntimeError):
@@ -79,6 +89,7 @@ class OpenAICompatibleDraftProvider:
         timeout_seconds: float,
         max_output_tokens: int,
         temperature: float,
+        json_repair_max_attempts: int,
     ) -> None:
         self.base_url = normalize_local_provider_base_url(base_url)
         self.provider_name = provider_name
@@ -86,23 +97,52 @@ class OpenAICompatibleDraftProvider:
         self.timeout_seconds = timeout_seconds
         self.max_output_tokens = max_output_tokens
         self.temperature = temperature
+        self.json_repair_max_attempts = json_repair_max_attempts
 
     def complete_json(self, request: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
         started = time.monotonic()
+        system_prompt = (
+            "Return exactly one valid JSON object and no prose. "
+            "Use only supplied evidence paths. Do not claim registry acceptance."
+        )
+        result = complete_json_with_repair(
+            request=request,
+            system_prompt=system_prompt,
+            send_messages=self.send_messages,
+            max_repair_attempts=self.json_repair_max_attempts,
+        )
+        raw_content = result.raw_content
+        response_payload = result.response_payload
+        receipt = {
+            "providerKind": "openai_compatible",
+            "providerName": self.provider_name,
+            "baseUrl": self.base_url,
+            "endpoint": "/v1/chat/completions",
+            "modelId": str(response_payload.get("model") or self.model),
+            "requestId": f"package-set-ai-draft-{request['packageSet']['id']}",
+            "startedAt": utc_now(),
+            "durationMs": int((time.monotonic() - started) * 1000),
+            "temperature": self.temperature,
+            "maxOutputTokens": self.max_output_tokens,
+            "usage": result.usage,
+            "jsonRepairNeeded": result.repair_needed,
+            "jsonRepairAttemptCount": result.repair_attempt_count,
+            "jsonRepairStatus": result.repair_status,
+            "rawPromptPersisted": False,
+            "rawResponsePersisted": False,
+            "chainOfThoughtPersisted": False,
+        }
+        if isinstance(result, ModelJsonFailure):
+            return {}, receipt
+        receipt["responseDigest"] = sha256_text(raw_content)
+        return result.payload, receipt
+
+    def send_messages(self, messages: list[dict[str, str]]) -> tuple[str, dict[str, Any]]:
         payload = {
             "model": self.model,
             "temperature": self.temperature,
             "max_tokens": self.max_output_tokens,
-            "messages": [
-                {
-                    "role": "system",
-                    "content": (
-                        "Return exactly one valid JSON object and no prose. "
-                        "Use only supplied evidence paths. Do not claim registry acceptance."
-                    ),
-                },
-                {"role": "user", "content": json.dumps(request, sort_keys=True)},
-            ],
+            "messages": messages,
         }
         http_request = urllib.request.Request(
             f"{self.base_url}/v1/chat/completions",
@@ -123,35 +163,14 @@ class OpenAICompatibleDraftProvider:
             raise PackageSetAIDraftProposalError("Provider response has unexpected shape") from exc
         if not isinstance(raw_content, str):
             raise PackageSetAIDraftProposalError("Provider response content must be a string")
-
-        parsed = parse_model_json_object(raw_content)
-        receipt = {
-            "providerKind": "openai_compatible",
-            "providerName": self.provider_name,
-            "baseUrl": self.base_url,
-            "endpoint": "/v1/chat/completions",
-            "modelId": str(response_payload.get("model") or self.model),
-            "requestId": f"package-set-ai-draft-{request['packageSet']['id']}",
-            "startedAt": utc_now(),
-            "durationMs": int((time.monotonic() - started) * 1000),
-            "temperature": self.temperature,
-            "maxOutputTokens": self.max_output_tokens,
-            "usage": (
-                response_payload.get("usage")
-                if isinstance(response_payload.get("usage"), dict)
-                else {}
-            ),
-            "responseDigest": sha256_text(raw_content),
-            "rawPromptPersisted": False,
-            "rawResponsePersisted": False,
-            "chainOfThoughtPersisted": False,
-        }
-        return parsed, receipt
+        return raw_content, response_payload
 
 
 def build_package_set_ai_draft_proposal(
     options: PackageSetAIDraftProposalOptions,
 ) -> dict[str, Any]:
+    if options.json_repair_max_attempts < 0:
+        raise ValueError("json_repair_max_attempts must be zero or greater")
     if options.model_output is not None and (options.provider_base_url or options.model):
         raise ValueError("--model-output cannot be combined with provider execution options")
     request = model_request_record(options)
@@ -178,6 +197,7 @@ def build_package_set_ai_draft_proposal(
             timeout_seconds=options.timeout_seconds,
             max_output_tokens=options.max_output_tokens,
             temperature=options.temperature,
+            json_repair_max_attempts=options.json_repair_max_attempts,
         )
         model_output, provider_receipt = provider.complete_json(request)
         provider_record = {
@@ -290,6 +310,7 @@ def proposal_from_model_output(
     provider_receipt: dict[str, Any],
 ) -> dict[str, Any]:
     diagnostics: list[dict[str, Any]] = []
+    diagnostics.extend(json_repair_diagnostics(provider_receipt, "packageSet"))
     allowed_paths = set(string_list(request.get("allowedEvidencePaths")))
     inventory_by_id = {
         item["packageId"]: item
@@ -848,28 +869,45 @@ def write_package_set_ai_draft_proposal(path: Path, report: dict[str, Any]) -> N
 
 
 def parse_model_json_object(raw_content: str) -> dict[str, Any]:
-    text = raw_content.strip()
-    if text.startswith("```"):
-        import re
-
-        text = re.sub(r"^```(?:json)?\s*", "", text)
-        text = re.sub(r"\s*```$", "", text)
     try:
-        payload = json.loads(text)
-    except json.JSONDecodeError as exc:
-        start = text.find("{")
-        end = text.rfind("}")
-        if start < 0 or end <= start:
-            raise PackageSetAIDraftProposalError("Model output must be valid JSON") from exc
-        try:
-            payload = json.loads(text[start : end + 1])
-        except json.JSONDecodeError as fallback_exc:
-            raise PackageSetAIDraftProposalError(
-                "Model output must be valid JSON"
-            ) from fallback_exc
-    if not isinstance(payload, dict):
-        raise PackageSetAIDraftProposalError("Model output must be a JSON object")
-    return payload
+        return parse_model_json_object_shared(raw_content)
+    except ModelJsonParseError as exc:
+        raise PackageSetAIDraftProposalError(str(exc)) from exc
+
+
+def json_repair_diagnostics(
+    provider_receipt: dict[str, Any],
+    subject: str,
+) -> list[dict[str, Any]]:
+    if not provider_receipt.get("jsonRepairNeeded"):
+        return []
+    attempt_count = provider_receipt.get("jsonRepairAttemptCount")
+    repair_status = string_value(provider_receipt.get("jsonRepairStatus"))
+    diagnostics = [
+        diagnostic(
+            "warning",
+            "ai_json_repair_needed",
+            "Initial local model output was not a valid JSON object; bounded repair was attempted.",
+            subject,
+            {
+                "repairAttemptCount": attempt_count if isinstance(attempt_count, int) else 0,
+                "jsonRepairStatus": repair_status,
+            },
+        )
+    ]
+    if repair_status == "exhausted":
+        diagnostics.append(
+            diagnostic(
+                "error",
+                "ai_json_repair_exhausted",
+                "Local model output remained invalid JSON after bounded repair attempts.",
+                subject,
+                {
+                    "repairAttemptCount": attempt_count if isinstance(attempt_count, int) else 0,
+                },
+            )
+        )
+    return diagnostics
 
 
 def normalize_local_provider_base_url(value: str) -> str:

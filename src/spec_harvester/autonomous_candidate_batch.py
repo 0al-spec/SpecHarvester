@@ -11,6 +11,7 @@ from spec_harvester.bundle_set_preflight import (
     run_bundle_set_preflight,
 )
 from spec_harvester.collector import DEFAULT_MAX_FILE_BYTES
+from spec_harvester.model_json_repair import DEFAULT_JSON_REPAIR_MAX_ATTEMPTS
 from spec_harvester.package_set_ai_draft_proposal import (
     DEFAULT_MAX_OUTPUT_TOKENS as DEFAULT_AI_DRAFT_MAX_OUTPUT_TOKENS,
 )
@@ -108,6 +109,7 @@ class AutonomousCandidateBatchOptions:
     ai_enrichment_timeout_seconds: float = DEFAULT_AI_ENRICHMENT_TIMEOUT_SECONDS
     ai_enrichment_max_output_tokens: int = DEFAULT_AI_ENRICHMENT_MAX_OUTPUT_TOKENS
     ai_enrichment_temperature: float = DEFAULT_AI_ENRICHMENT_TEMPERATURE
+    json_repair_max_attempts: int = DEFAULT_JSON_REPAIR_MAX_ATTEMPTS
 
 
 class AutonomousCandidateBatch:
@@ -169,6 +171,8 @@ class AutonomousCandidateBatch:
             )
         if not self.options.skip_ai:
             normalize_local_provider_base_url(self.options.lm_studio_base_url)
+        if self.options.json_repair_max_attempts < 0:
+            raise ValueError("--json-repair-max-attempts must be zero or greater")
 
     def collect(self) -> dict[str, Any]:
         return collect_batch_snapshots(
@@ -257,6 +261,7 @@ class AutonomousCandidateBatch:
             timeout_seconds=self.options.ai_draft_timeout_seconds,
             max_output_tokens=self.options.ai_draft_max_output_tokens,
             temperature=self.options.ai_draft_temperature,
+            json_repair_max_attempts=self.options.json_repair_max_attempts,
         )
         request_path = ai_root / AI_DRAFT_REQUEST_FILENAME
         output_path = ai_root / AI_DRAFT_PROPOSAL_FILENAME
@@ -281,6 +286,7 @@ class AutonomousCandidateBatch:
             timeout_seconds=self.options.ai_enrichment_timeout_seconds,
             max_output_tokens=self.options.ai_enrichment_max_output_tokens,
             temperature=self.options.ai_enrichment_temperature,
+            json_repair_max_attempts=self.options.json_repair_max_attempts,
         )
         request_path = ai_root / AI_ENRICHMENT_REQUEST_FILENAME
         output_path = ai_root / AI_ENRICHMENT_PROPOSAL_FILENAME
@@ -306,6 +312,7 @@ class AutonomousCandidateBatch:
             "baseUrl": normalize_local_provider_base_url(self.options.lm_studio_base_url),
             "model": self.options.lm_studio_model,
             "execution": "operator_opt_in_local",
+            "jsonRepairMaxAttempts": self.options.json_repair_max_attempts,
             "rawPromptPersisted": False,
             "rawResponsePersisted": False,
             "chainOfThoughtPersisted": False,
@@ -371,6 +378,8 @@ def ai_proposal_record(
         "output": str(output_path),
         "authority": proposal.get("authority"),
         "summary": proposal.get("summary", {}),
+        "diagnosticCodes": diagnostic_codes(proposal),
+        "jsonRepair": json_repair_record(proposal),
         "stopPolicySummary": proposal.get("stopPolicySummary"),
         "privacy": proposal.get("privacy", {}),
     }
@@ -378,6 +387,50 @@ def ai_proposal_record(
 
 def skipped_ai_record(reason: str) -> dict[str, Any]:
     return {"status": "skipped", "reason": reason}
+
+
+def diagnostic_codes(proposal: dict[str, Any]) -> list[str]:
+    return sorted(
+        {
+            item["code"]
+            for item in proposal.get("diagnostics", [])
+            if isinstance(item, dict) and isinstance(item.get("code"), str)
+        }
+    )
+
+
+def json_repair_record(proposal: dict[str, Any]) -> dict[str, Any]:
+    provider_receipt = proposal.get("providerReceipt")
+    if isinstance(provider_receipt, dict):
+        return {
+            "needed": bool(provider_receipt.get("jsonRepairNeeded")),
+            "attemptCount": int_value(provider_receipt.get("jsonRepairAttemptCount")),
+            "status": provider_receipt.get("jsonRepairStatus") or "not_needed",
+        }
+    member_receipts = [
+        item.get("providerReceipt")
+        for item in proposal.get("proposals", [])
+        if isinstance(item, dict) and isinstance(item.get("providerReceipt"), dict)
+    ]
+    needed = [receipt for receipt in member_receipts if receipt.get("jsonRepairNeeded")]
+    exhausted = [
+        receipt for receipt in member_receipts if receipt.get("jsonRepairStatus") == "exhausted"
+    ]
+    return {
+        "needed": bool(needed),
+        "attemptCount": sum(
+            int_value(receipt.get("jsonRepairAttemptCount")) for receipt in member_receipts
+        ),
+        "repairedCount": sum(
+            1 for receipt in member_receipts if receipt.get("jsonRepairStatus") == "repaired"
+        ),
+        "exhaustedCount": len(exhausted),
+        "status": "exhausted" if exhausted else ("repaired" if needed else "not_needed"),
+    }
+
+
+def int_value(value: Any) -> int:
+    return value if isinstance(value, int) else 0
 
 
 def author_ready_summary(bundle_set: Path) -> dict[str, Any] | None:

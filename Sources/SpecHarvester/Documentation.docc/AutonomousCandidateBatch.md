@@ -12,7 +12,8 @@ python3 -m spec_harvester autonomous-candidate-batch \
   inputs/popular-libraries \
   --out .smoke/autonomous-popular-batch \
   --lm-studio-base-url http://127.0.0.1:1234 \
-  --lm-studio-model openai/gpt-oss-20b
+  --lm-studio-model openai/gpt-oss-20b \
+  --json-repair-max-attempts 1
 ```
 
 Run without model calls for CI or offline smoke:
@@ -59,6 +60,13 @@ Report identity:
 
 Generated package files remain `preview_only` producer evidence. SpecPM remains
 the validation, acceptance, relation, and registry authority.
+
+Live AI mode uses bounded JSON repair for malformed local provider output.
+`--json-repair-max-attempts` limits repair prompts per model call. Batch AI
+records expose `diagnosticCodes` such as `ai_json_repair_needed` and
+`ai_json_repair_exhausted`, plus a `jsonRepair` summary. Exhausted repair marks
+the AI layer failed while preserving deterministic harvest, package-set draft,
+preflight, and author-ready summary artifacts.
 
 For single-package repositories with no workspace package records, the runner
 uses the deterministic <doc:SinglePackageCandidateFallback> path to produce one

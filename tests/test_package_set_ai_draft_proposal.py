@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import urllib.request
 from pathlib import Path
 
 from spec_harvester.cli import main
@@ -243,6 +244,118 @@ def test_package_set_ai_draft_cli_writes_request_and_proposal(
     assert written["status"] == "completed"
     assert requests["kind"] == "SpecHarvesterPackageSetAIDraftRequests"
     assert requests["requests"][0]["packageSet"]["id"] == "demo.workspace"
+
+
+def test_package_set_ai_draft_repairs_malformed_live_json(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = json.loads(write_model_output(tmp_path).read_text(encoding="utf-8"))
+    contents = ["not json", json.dumps(model_output)]
+    calls = []
+
+    class FakeResponse:
+        def __init__(self, content: str, index: int) -> None:
+            self.content = content
+            self.index = index
+
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {
+                    "model": "test-model",
+                    "choices": [{"message": {"content": self.content}}],
+                    "usage": {"total_tokens": self.index + 1},
+                }
+            ).encode("utf-8")
+
+    def fake_urlopen(request, **_kwargs):
+        payload = json.loads(request.data.decode("utf-8"))
+        calls.append(payload)
+        return FakeResponse(contents[len(calls) - 1], len(calls))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            provider_base_url="http://127.0.0.1:1234",
+            model="test-model",
+            json_repair_max_attempts=1,
+        )
+    )
+
+    serialized = json.dumps(report)
+    assert len(calls) == 2
+    assert report["status"] == "warning"
+    assert report["providerReceipt"]["jsonRepairNeeded"] is True
+    assert report["providerReceipt"]["jsonRepairAttemptCount"] == 1
+    assert report["providerReceipt"]["jsonRepairStatus"] == "repaired"
+    assert report["providerReceipt"]["usage"]["total_tokens"] == 5
+    assert "ai_json_repair_needed" in {item["code"] for item in report["diagnostics"]}
+    assert "not json" not in serialized
+    assert report["privacy"]["rawModelResponsesPersisted"] is False
+
+
+def test_package_set_ai_draft_fails_when_json_repair_is_exhausted(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    contents = ["not json", "still not json"]
+    calls = []
+
+    class FakeResponse:
+        def __init__(self, content: str) -> None:
+            self.content = content
+
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {
+                    "model": "test-model",
+                    "choices": [{"message": {"content": self.content}}],
+                    "usage": {"total_tokens": 1},
+                }
+            ).encode("utf-8")
+
+    def fake_urlopen(request, **_kwargs):
+        payload = json.loads(request.data.decode("utf-8"))
+        calls.append(payload)
+        return FakeResponse(contents[len(calls) - 1])
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            provider_base_url="http://127.0.0.1:1234",
+            model="test-model",
+            json_repair_max_attempts=1,
+        )
+    )
+
+    serialized = json.dumps(report)
+    codes = {item["code"] for item in report["diagnostics"]}
+    assert len(calls) == 2
+    assert report["status"] == "failed"
+    assert report["providerReceipt"]["jsonRepairStatus"] == "exhausted"
+    assert "responseDigest" not in report["providerReceipt"]
+    assert "ai_json_repair_needed" in codes
+    assert "ai_json_repair_exhausted" in codes
+    assert "still not json" not in serialized
+    assert report["privacy"]["rawModelResponsesPersisted"] is False
 
 
 def write_inventory(tmp_path: Path) -> Path:

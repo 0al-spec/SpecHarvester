@@ -215,10 +215,94 @@ def test_openai_compatible_provider_receipt_uses_configured_provider_name(
         timeout_seconds=1,
         max_output_tokens=128,
         temperature=0,
+        json_repair_max_attempts=1,
     )
 
     _payload, receipt = provider.complete_json({"packageId": "xyflow.react"})
     assert receipt["providerName"] == "local_test_provider"
+
+
+def test_package_set_ai_enrichment_repairs_malformed_live_json(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    smoke = write_xyflow_smoke(tmp_path)
+    calls = []
+
+    class FakeResponse:
+        def __init__(self, content: str, index: int) -> None:
+            self.content = content
+            self.index = index
+
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {
+                    "model": "test-model",
+                    "choices": [{"message": {"content": self.content}}],
+                    "usage": {"total_tokens": self.index + 1},
+                }
+            ).encode("utf-8")
+
+    def package_id_from_provider_payload(payload: dict[str, object]) -> str:
+        messages = payload["messages"]
+        assert isinstance(messages, list)
+        user = json.loads(messages[1]["content"])
+        package_id = user.get("packageId")
+        if isinstance(package_id, str):
+            return package_id
+        shape = user.get("requiredJsonShape")
+        assert isinstance(shape, dict)
+        package_id = shape.get("packageId")
+        assert isinstance(package_id, str)
+        return package_id
+
+    def valid_content(package_id: str) -> str:
+        return json.dumps(
+            {
+                "packageId": package_id,
+                "refinedSummary": f"{package_id} package.",
+                "capabilities": [],
+                "interfaces": [],
+                "evidenceGaps": [],
+                "overallConfidence": "medium",
+            }
+        )
+
+    def fake_urlopen(request, **_kwargs):
+        payload = json.loads(request.data.decode("utf-8"))
+        calls.append(payload)
+        if len(calls) == 1:
+            return FakeResponse("not json", len(calls))
+        return FakeResponse(valid_content(package_id_from_provider_payload(payload)), len(calls))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+
+    report = build_package_set_ai_enrichment_proposal(
+        PackageSetAIEnrichmentOptions(
+            bundle_set=smoke / "package-set",
+            provider_base_url="http://127.0.0.1:1234",
+            model="test-model",
+            json_repair_max_attempts=1,
+        )
+    )
+
+    serialized = json.dumps(report)
+    codes = {item["code"] for item in report["diagnostics"]}
+    repaired = next(
+        item for item in report["proposals"] if item["providerReceipt"]["jsonRepairNeeded"]
+    )
+    assert report["status"] == "warning"
+    assert "ai_json_repair_needed" in codes
+    assert repaired["providerReceipt"]["jsonRepairStatus"] == "repaired"
+    assert repaired["providerReceipt"]["jsonRepairAttemptCount"] == 1
+    assert "not json" not in serialized
+    assert report["privacy"]["rawModelResponsesPersisted"] is False
 
 
 def test_parse_model_json_object_wraps_invalid_json() -> None:

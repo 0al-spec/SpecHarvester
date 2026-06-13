@@ -478,7 +478,7 @@ def assert_p29_t4_recent(next_text: str) -> None:
 def assert_phase_29_t5_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P29-T5 LM Studio JSON Repair and Retry" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "LM Studio/OpenAI-compatible JSON repair/retry" in normalized
     assert "malformed local model output" in normalized
     assert "no-raw-response persistence boundary" in normalized
