@@ -153,6 +153,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t5_scoped_source_unit_draft_intent_boundaries.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t6_specnode_refinement_orchestration_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t5_collector_drafter_vertical_slice_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t4_public_api_analyzer_pipeline_objects.md` |
@@ -232,6 +233,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P20-T5 | Archived REVIEW_p20_t5_scoped_source_unit_draft_intent_boundaries report |
 | 2026-06-14 | P20-T5 | Archived Scoped Source-Unit Draft Intent Boundaries (PASS) |
 | 2026-06-14 | P17-T6 | Archived REVIEW_p17_t6_specnode_refinement_orchestration_objects report |
 | 2026-06-14 | P17-T6 | Archived SpecNode Refinement Orchestration Objects (PASS) |
