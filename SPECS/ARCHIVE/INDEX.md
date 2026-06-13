@@ -129,6 +129,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t3_real_selected_candidate_handoff_proposal_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t2_selected_candidate_handoff_proposal_helper.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t1_selected_candidate_handoff_proposal_contract.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t5_selected_candidate_handoff_dry_run.md` |
@@ -185,6 +186,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P31-T3 | Archived REVIEW_p31_t3_real_selected_candidate_handoff_proposal_dry_run report |
 | 2026-06-13 | P31-T3 | Archived Real Selected Candidate Handoff Proposal Dry Run (PASS) |
 | 2026-06-13 | P31-T2 | Archived REVIEW_p31_t2_selected_candidate_handoff_proposal_helper report |
 | 2026-06-13 | P31-T2 | Archived Selected Candidate Handoff Proposal Helper (PASS) |
