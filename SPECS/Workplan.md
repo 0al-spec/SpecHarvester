@@ -989,7 +989,7 @@ Acceptance:
 - [x] `P29-T4` Add a single-package candidate fallback for repositories such
   as Flask and Gin where deterministic evidence and public interface indexes
   are available but package-set drafting selects no workspace members.
-- [ ] `P29-T5` Add bounded LM Studio/OpenAI-compatible JSON repair/retry
+- [x] `P29-T5` Add bounded LM Studio/OpenAI-compatible JSON repair/retry
   for malformed local model output while preserving the no-raw-response
   persistence boundary.
 - [ ] `P29-T6` Re-run the mixed local corpus after fallback and retry support,
