@@ -1,6 +1,6 @@
 # Next Task: P29-T4 Single-Package Candidate Fallback
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P29-T4 Single-Package Candidate Fallback
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
