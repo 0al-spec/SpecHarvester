@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -1005,7 +1006,7 @@ def assert_phase_31_t4_active(next_text: str) -> None:
 def assert_phase_31_t5_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P31-T5 Deferred Selected Candidate Regeneration Requirements" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
     assert "deferred P30 candidates" in normalized
     assert "regeneration requirements" in normalized
     assert "package-set" in normalized
@@ -5716,6 +5717,179 @@ def test_selected_candidate_handoff_preflight_expectations_docs_cover_p31_t4_con
     )
     assert "`P31-T4` Define the downstream SpecPM-side preflight expectations" in (
         workplan.read_text(encoding="utf-8")
+    )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_deferred_selected_candidate_regeneration_requirements_cover_p31_t5_contract() -> None:
+    github_doc = ROOT / "docs" / "DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "DeferredSelectedCandidateRegenerationRequirements.md"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "deferred_selected_candidate_regeneration_requirements"
+        / "p31-t5-deferred-selected-candidate-regeneration-requirements.example.json"
+    )
+    selected_doc = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md"
+    selected_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffProposal.md"
+    )
+    preflight_doc = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md"
+    preflight_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffPreflightExpectations.md"
+    )
+    handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    handoff_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Deferred Selected Candidate Regeneration Requirements",
+            "SpecHarvesterDeferredSelectedCandidateRegenerationRequirements",
+            "spec-harvester.deferred-selected-candidate-regeneration-requirements/v0",
+            "producer_preview_evidence_only",
+            "p31-t5-deferred-selected-candidate-regeneration-requirements.example.json",
+            "xyflow.workspace",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "cupertino.core",
+            "navigation_split_view.core",
+            "package_set_identity_regeneration",
+            "warning_bearing_enrichment_regeneration",
+            "identity_drift_resolution",
+            "package_set_id_missing",
+            "refined_summary_missing",
+            "package_id_hint_mismatch",
+            "navigation-split-view.core",
+            "producer preflight",
+            "warning and error counts `0`",
+            "static viewer status",
+            "preview_only",
+            "external_required",
+            "does not regenerate candidates",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "remove `preview_only`",
+            "publish registry metadata",
+            "SpecPM pull request",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.deferred-selected-candidate-regeneration-requirements/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterDeferredSelectedCandidateRegenerationRequirements"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["summary"] == {
+        "deferredCandidateCount": 6,
+        "packageSetIdentityRegenerationCount": 4,
+        "warningBearingRegenerationCount": 1,
+        "identityDriftResolutionCount": 1,
+        "selectedHandoffEligibleNowCount": 0,
+        "registryMutationCount": 0,
+        "specpmPullRequestCreated": False,
+    }
+
+    for source in payload["source"].values():
+        source_path = ROOT / source["path"]
+        digest = "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert source["digest"] == digest
+
+    requirements = {item["candidateId"]: item for item in payload["requirements"]}
+    assert set(requirements) == {
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "cupertino.core",
+        "navigation_split_view.core",
+    }
+    assert {item["blockerClass"] for item in requirements.values()} == {
+        "package_set_identity_regeneration",
+        "warning_bearing_enrichment_regeneration",
+        "identity_drift_resolution",
+    }
+    for package_id in ("xyflow.workspace", "xyflow.react", "xyflow.svelte", "xyflow.system"):
+        assert requirements[package_id]["blockerClass"] == "package_set_identity_regeneration"
+        assert requirements[package_id]["findingCodes"] == ["package_set_id_missing"]
+        assert requirements[package_id]["minimumProofBeforeSelection"] == {
+            "previewOnly": True,
+            "producerPreflightStatus": "passed",
+            "producerPreflightWarningCount": 0,
+            "producerPreflightErrorCount": 0,
+            "staticViewerStatus": "ok",
+            "registryAcceptanceDecision": "external_required",
+        }
+    assert requirements["cupertino.core"]["blockerClass"] == (
+        "warning_bearing_enrichment_regeneration"
+    )
+    assert requirements["cupertino.core"]["findingCodes"] == ["refined_summary_missing"]
+    assert requirements["navigation_split_view.core"]["blockerClass"] == "identity_drift_resolution"
+    assert requirements["navigation_split_view.core"]["findingCodes"] == [
+        "package_set_id_missing",
+        "package_id_hint_mismatch",
+    ]
+    assert payload["nonAuthority"] == {
+        "regenerationRequirementsOnly": True,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "seedsBaselines": False,
+        "removesPreviewOnly": False,
+        "publishesRegistryMetadata": False,
+        "createsSpecPMPullRequest": False,
+        "replacesMaintainerReview": False,
+    }
+    assert any(
+        "selected_candidate_ready" in item
+        for item in payload["selectionPolicy"]["mayEnterSelectedHandoffWhen"]
+    )
+    assert (
+        "package id normalization or identity drift is unresolved"
+        in (payload["selectionPolicy"]["mustRemainDeferredWhen"])
+    )
+
+    assert "DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:DeferredSelectedCandidateRegenerationRequirements>" in docc_root.read_text(
+        encoding="utf-8"
+    )
+    for path in (selected_doc, preflight_doc, handoff, roadmap):
+        assert "DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md" in path.read_text(
+            encoding="utf-8"
+        )
+    for path in (selected_docc, preflight_docc, handoff_docc, roadmap_docc):
+        assert "DeferredSelectedCandidateRegenerationRequirements" in path.read_text(
+            encoding="utf-8"
+        )
+    assert "`P31-T5` Record targeted regeneration requirements" in workplan.read_text(
+        encoding="utf-8"
     )
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 

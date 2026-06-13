@@ -60,6 +60,9 @@ does not create or merge a SpecPM pull request, does not replace maintainer revi
 or prove generated claims are semantically perfect.
 
 P31-T5 remains the follow-up for deferred candidate regeneration requirements.
+That follow-up is recorded in
+<doc:DeferredSelectedCandidateRegenerationRequirements>.
 
 See also <doc:SelectedCandidateHandoffProposal>,
-<doc:SelectedCandidateHandoffProposalP31T3>, and <doc:SpecPMHandoff>.
+<doc:SelectedCandidateHandoffProposalP31T3>,
+<doc:DeferredSelectedCandidateRegenerationRequirements>, and <doc:SpecPMHandoff>.
