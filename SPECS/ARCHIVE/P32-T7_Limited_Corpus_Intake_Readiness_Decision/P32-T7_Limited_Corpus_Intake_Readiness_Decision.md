@@ -1,6 +1,6 @@
 # P32-T7 Limited Corpus Intake Readiness Decision
 
-Status: Planned
+Status: Archived
 Phase: Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
 Owner: SpecHarvester + SpecPM coordination
 
@@ -61,3 +61,20 @@ Record a machine-readable limited corpus intake readiness decision that:
 - Do not accept packages, accept relations, seed baselines, remove
   `preview_only`, publish registry metadata, or create a SpecPM pull request.
 - Do not resolve `cupertino.core`.
+
+## Archive
+
+Archived: 2026-06-13
+Verdict: PASS
+
+P32-T7 recorded
+`SpecHarvesterLimitedCorpusIntakeReadinessDecision` in
+`tests/fixtures/limited_corpus_intake_readiness_decision/p32-t7-limited-corpus-intake-readiness-decision.example.json`.
+
+The decision is `ready_for_author_maintainer_review_with_explicit_deferral`:
+eight selected preview candidates are ready for author/maintainer review,
+`cupertino.core` remains deferred on `refined_summary_missing`, and broader
+autonomous scraping requires a separate follow-up task.
+
+Phase 32 is complete. The limited corpus is review-ready, not
+registry-accepted.

@@ -1,10 +1,10 @@
-# Next Task: P32-T7 Limited Corpus Intake Readiness Decision
+# Next Task: Phase 32 Complete
 
-**Status:** Selected
+**Status:** Phase Complete
 **Selected:** 2026-06-13
-**Task:** P32-T7 Limited Corpus Intake Readiness Decision
+**Task:** Phase 32 Complete
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
-**Last Archived:** P32-T6 SpecPM Selected Candidate Handoff Preflight
+**Last Archived:** P32-T7 Limited Corpus Intake Readiness Decision
 
 ## Recently Archived
 
@@ -27,29 +27,28 @@
   evidence only: it does not accept packages, does not accept relations, does
   not seed baselines, does not remove `preview_only`, does not publish registry
   metadata, and does not create a SpecPM pull request.
+- `P32-T7` recorded the limited corpus intake readiness decision in
+  `docs/LIMITED_CORPUS_INTAKE_READINESS_DECISION.md`,
+  `<doc:LimitedCorpusIntakeReadinessDecision>`, and
+  `tests/fixtures/limited_corpus_intake_readiness_decision/p32-t7-limited-corpus-intake-readiness-decision.example.json`.
+  The fixture identity is
+  `SpecHarvesterLimitedCorpusIntakeReadinessDecision`.
+  The decision is `ready_for_author_maintainer_review_with_explicit_deferral`:
+  selected preview candidates are ready for author/maintainer review,
+  `cupertino.core` remains deferred on `refined_summary_missing`, and broader
+  autonomous scraping requires a separate follow-up task.
 
 ## Outcome
 
-P32-T6 is complete. The refreshed selected handoff evidence is now
-machine-checkable by SpecPM before maintainers decide whether the limited
-corpus is ready for author review, needs more regeneration, or should stop
-before broader autonomous scraping.
+Phase 32 is complete. The limited corpus is review-ready, not
+registry-accepted.
+
+No Phase 32 task remains selected.
 
 ## Next Step
 
-Implement `P32-T7`: record the limited corpus intake readiness decision.
-
-The decision should use:
-
-- P32-T5 producer evidence;
-- the P32-T6 `SpecPMSelectedCandidateHandoffPreflightReport` result;
-- the selected candidates `flask.core`, `gin.core`, `docc2context.core`,
-  `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`, and
-  `navigation_split_view.core`;
-- the explicit deferred candidate `cupertino.core` with
-  `refined_summary_missing`.
-
-The decision must remain non-authoritative. It may say the selected candidates
-are ready for author/maintainer review, but it must not accept packages, accept
-relations, seed baselines, remove `preview_only`, publish registry metadata, or
-create a SpecPM pull request.
+Choose the next separate follow-up task after review of the current stacked PR
+series. A future task may plan the next bounded corpus expansion, but it must
+define its own source manifest, repository count, validation gate, stop
+conditions, and non-authority boundary before any broader autonomous scraping
+continues.
