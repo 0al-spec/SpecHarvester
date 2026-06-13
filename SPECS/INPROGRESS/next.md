@@ -1,6 +1,6 @@
 # Next Task: P32-T6 SpecPM Selected Candidate Handoff Preflight
 
-**Status:** Planned
+**Status:** Selected
 **Selected:** 2026-06-13
 **Task:** P32-T6 SpecPM Selected Candidate Handoff Preflight
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
@@ -37,9 +37,11 @@ preflight status, static viewer evidence, `preview_only`, and
 
 ## Next Step
 
-Implement or coordinate `P32-T6`: add SpecPM-side selected candidate handoff
-preflight for `SpecHarvesterRefreshedCandidateLayerSelectedHandoff` or the
-compatible `SpecHarvesterSelectedCandidateHandoffProposal` consumer surface.
+Coordinate `P32-T6`: record the SpecPM-side selected candidate handoff
+preflight now merged in
+[`0al-spec/SpecPM#140`](https://github.com/0al-spec/SpecPM/pull/140) for
+`SpecHarvesterRefreshedCandidateLayerSelectedHandoff` and the compatible
+`SpecHarvesterSelectedCandidateHandoffProposal` consumer surface.
 
 The expected report is:
 
