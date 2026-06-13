@@ -1,6 +1,6 @@
 # P32-T3 Xyflow Package-Set Identity Regeneration Dry Run
 
-**Status:** Planned
+**Status:** Archived
 **Selected:** 2026-06-13
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
 
@@ -72,3 +72,15 @@ re-enter selected handoff or must remain deferred.
 - No baseline seeding.
 - No removal of `preview_only`.
 - No registry publication.
+
+## Archive
+
+**Archived:** 2026-06-13
+**Verdict:** PASS
+
+The xyflow-only dry run was recorded in
+`tests/fixtures/xyflow_package_set_identity_regeneration/p32-t3-xyflow-package-set-identity-regeneration.example.json`
+and documented in `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`
+plus `<doc:XyflowPackageSetIdentityRegenerationDryRun>`. The next selected
+task is P32-T4: regenerate or repair the single-package deferred candidates
+`cupertino.core` and `navigation_split_view.core`.

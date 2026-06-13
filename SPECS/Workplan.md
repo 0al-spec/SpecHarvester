@@ -1140,7 +1140,7 @@ Acceptance:
 - [x] `P32-T2` Add a deferred candidate regeneration runbook that maps blocker
   classes to safe producer commands, expected artifacts, stop conditions, and
   non-authority boundaries.
-- [ ] `P32-T3` Run xyflow package-set identity regeneration as a dry run and
+- [x] `P32-T3` Run xyflow package-set identity regeneration as a dry run and
   record whether `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, and
   `xyflow.system` can enter selected handoff.
 - [ ] `P32-T4` Run single-package deferred candidate regeneration or repair for

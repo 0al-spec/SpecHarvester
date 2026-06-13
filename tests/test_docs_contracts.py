@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P32-T4 Single-Package Deferred Candidate Regeneration Dry Run" in next_text:
+        assert_p32_t3_last_archived(next_text)
+        assert_p32_t2_recent(next_text)
+        assert_p32_t3_recent(next_text)
+        assert_phase_32_t4_active(next_text)
+        return
+
     if "# Next Task: P32-T3 Xyflow Package-Set Identity Regeneration Dry Run" in next_text:
         assert_p32_t2_last_archived(next_text)
         assert_p32_t1_recent(next_text)
@@ -394,6 +401,10 @@ def assert_p32_t1_last_archived(next_text: str) -> None:
 
 def assert_p32_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P32-T2 Deferred Candidate Regeneration Runbook" in next_text
+
+
+def assert_p32_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P32-T3 Xyflow Package-Set Identity Regeneration Dry Run" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1155,6 +1166,29 @@ def assert_p32_t2_recent(next_text: str) -> None:
     assert "navigation_split_view.core" in next_text
 
 
+def assert_p32_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P32-T3` recorded the xyflow-only package-set identity regeneration dry run" in next_text
+    )
+    assert "XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md" in next_text
+    assert "XyflowPackageSetIdentityRegenerationDryRun" in next_text
+    assert "p32-t3-xyflow-package-set-identity-regeneration.example.json" in next_text
+    assert "processed only `xyflow`" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
+    assert "xyflow.system" in next_text
+    assert "three `contains` relations" in next_text
+    assert "bundle-set preflight" in normalized
+    assert "warning count `0`" in next_text
+    assert "error count `0`" in next_text
+    assert "static viewer" in normalized
+    assert "preview_only" in next_text
+    assert "candidate_layer_review_required" in next_text
+    assert "selectedHandoffEligible: true" in next_text
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1230,6 +1264,25 @@ def assert_phase_32_t3_active(next_text: str) -> None:
     assert "external_required" in next_text
     assert "selected handoff" in normalized
     assert "remain deferred" in normalized
+
+
+def assert_phase_32_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P32-T4 Single-Package Deferred Candidate Regeneration Dry Run" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
+    assert "P32-T3 is complete" in next_text
+    assert "cupertino.core" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "navigation-split-view.core" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "identity drift" in normalized
+    assert "preview_only" in next_text
+    assert "registry acceptance external" in normalized
+    assert "avoid package execution" in normalized
+    assert "dependency installation" in normalized
+    assert "refreshed candidate-layer review" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

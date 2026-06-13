@@ -1,20 +1,13 @@
-# Next Task: P32-T3 Xyflow Package-Set Identity Regeneration Dry Run
+# Next Task: P32-T4 Single-Package Deferred Candidate Regeneration Dry Run
 
 **Status:** In Progress
 **Selected:** 2026-06-13
-**Task:** P32-T3 Xyflow Package-Set Identity Regeneration Dry Run
+**Task:** P32-T4 Single-Package Deferred Candidate Regeneration Dry Run
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
-**Last Archived:** P32-T2 Deferred Candidate Regeneration Runbook
+**Last Archived:** P32-T3 Xyflow Package-Set Identity Regeneration Dry Run
 
 ## Recently Archived
 
-- `P32-T1` updated `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md` and
-  `<doc:AutonomousCandidateTechDebtPlan>` as the current Phase 32 plan. It
-  distinguishes completed P29 debt from current P30/P31 deferred-candidate
-  debt, names all six deferred candidates, defines P32-T1 through P32-T7 with
-  repository owners, and keeps broad autonomous scraping, package acceptance,
-  relation acceptance, registry publication, baseline seeding, dependency
-  installation, and harvested-code execution out of scope.
 - `P32-T2` added `docs/DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md` and
   `<doc:DeferredCandidateRegenerationRunbook>`. It maps
   `package_set_identity_regeneration`,
@@ -23,22 +16,33 @@
   conditions, re-entry criteria, and non-authority boundaries for
   `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`,
   `cupertino.core`, and `navigation_split_view.core`.
+- `P32-T3` recorded the xyflow-only package-set identity regeneration dry run
+  in `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`,
+  `<doc:XyflowPackageSetIdentityRegenerationDryRun>`, and
+  `tests/fixtures/xyflow_package_set_identity_regeneration/p32-t3-xyflow-package-set-identity-regeneration.example.json`.
+  The run processed only `xyflow`, kept package-set identity
+  `xyflow.workspace`, produced `xyflow.react`, `xyflow.svelte`, and
+  `xyflow.system` members, preserved three `contains` relations, passed
+  bundle-set preflight with warning count `0` and error count `0`, rendered the
+  static viewer, kept `preview_only`, and recorded
+  `candidate_layer_review_required` with `selectedHandoffEligible: true`.
 
 ## Outcome
 
-P32-T2 is complete. The deferred candidate regeneration runbook now defines
-the safe operator path for local pinned checkouts, bounded model calls,
-reviewable output roots, candidate-layer triage, expected artifacts, and hard
-stop conditions before any deferred candidate can re-enter selected handoff.
+P32-T3 is complete. The xyflow package-set identity blocker is resolved enough
+for the regenerated xyflow candidates to re-enter candidate-layer review and a
+future refreshed selected handoff, while remaining producer preview evidence
+only.
 
 ## Next Step
 
-Implement `P32-T3`: run the xyflow package-set identity regeneration dry run
-using the P32-T2 runbook.
+Implement `P32-T4`: run single-package deferred candidate regeneration or
+repair for `cupertino.core` and `navigation_split_view.core` using the P32-T2
+runbook.
 
-The dry run should cover `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`,
-and `xyflow.system`; preserve the `xyflow.workspace` package-set identity;
-verify the contains topology; run producer preflight; render the static
-viewer; and keep `preview_only` plus `external_required` intact. The outcome
-should record whether the regenerated xyflow candidates can enter selected
-handoff or must remain deferred.
+The run should resolve or explicitly keep deferred the Cupertino
+`refined_summary_missing` warning and the NavigationSplitView identity drift
+around `navigation-split-view.core` versus `navigation_split_view.core`. It
+must preserve `preview_only`, keep registry acceptance external, avoid package
+execution or dependency installation, and record whether each candidate can
+enter refreshed candidate-layer review.
