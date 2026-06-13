@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P32-T2 Deferred Candidate Regeneration Runbook" in next_text:
+        assert_p32_t1_last_archived(next_text)
+        assert_p26_t3_recent(next_text)
+        assert_p32_t1_recent(next_text)
+        assert_phase_32_t2_active(next_text)
+        return
+
     if "# Next Task: P32-T1 Autonomous Deferred Candidate Work Plan" in next_text:
         assert_p26_t3_last_archived(next_text)
         assert_p31_t5_recent(next_text)
@@ -372,6 +379,10 @@ def assert_p31_t5_last_archived(next_text: str) -> None:
 
 def assert_p26_t3_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P26-T3 Package-Set Proposal Intake Checklist" in next_text
+
+
+def assert_p32_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P32-T1 Autonomous Deferred Candidate Work Plan" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1099,6 +1110,20 @@ def assert_p26_t3_recent(next_text: str) -> None:
     assert "producerAuthority: evidence_only" in next_text
 
 
+def assert_p32_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P32-T1` updated `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`" in next_text
+    assert "AutonomousCandidateTechDebtPlan" in next_text
+    assert "completed P29 debt" in normalized
+    assert "P30/P31 deferred-candidate debt" in normalized
+    assert "all six deferred candidates" in normalized
+    assert "P32-T1 through P32-T7" in normalized
+    assert "broad autonomous scraping" in normalized
+    assert "package acceptance" in normalized
+    assert "relation acceptance" in normalized
+    assert "harvested-code execution" in normalized
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1139,6 +1164,21 @@ def assert_phase_32_t1_active(next_text: str) -> None:
     assert "cupertino.core" in next_text
     assert "navigation_split_view.core" in next_text
     assert "SpecPM-side consumer preflight boundary" in normalized
+
+
+def assert_phase_32_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P32-T2 Deferred Candidate Regeneration Runbook" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
+    assert "P32-T1 is complete" in next_text
+    assert "P30/P31 deferred candidates" in normalized
+    assert "broader autonomous scraping" in normalized
+    assert "package_set_identity_regeneration" in next_text
+    assert "warning_bearing_enrichment_regeneration" in next_text
+    assert "identity_drift_resolution" in next_text
+    assert "safe local commands" in normalized
+    assert "non-authority boundaries" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

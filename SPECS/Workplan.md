@@ -1134,7 +1134,7 @@ Acceptance:
 
 ## Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
 
-- [ ] `P32-T1` Record the autonomous deferred candidate work plan that
+- [x] `P32-T1` Record the autonomous deferred candidate work plan that
   distinguishes completed P29 debt from current P30/P31 deferred-candidate
   debt, names task owners, and keeps broad autonomous scraping out of scope.
 - [ ] `P32-T2` Add a deferred candidate regeneration runbook that maps blocker

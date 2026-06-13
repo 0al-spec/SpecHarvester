@@ -1,10 +1,10 @@
-# Next Task: P32-T1 Autonomous Deferred Candidate Work Plan
+# Next Task: P32-T2 Deferred Candidate Regeneration Runbook
 
 **Status:** In Progress
 **Selected:** 2026-06-13
-**Task:** P32-T1 Autonomous Deferred Candidate Work Plan
+**Task:** P32-T2 Deferred Candidate Regeneration Runbook
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
-**Last Archived:** P26-T3 Package-Set Proposal Intake Checklist
+**Last Archived:** P32-T1 Autonomous Deferred Candidate Work Plan
 
 ## Recently Archived
 
@@ -26,23 +26,25 @@
   member evidence roles, `registryAcceptanceDecision.status:
   external_required`, `producerAuthority: evidence_only`, and the rule that
   package member acceptance is separate from relation acceptance.
+- `P32-T1` updated `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md` and
+  `<doc:AutonomousCandidateTechDebtPlan>` as the current Phase 32 plan. It
+  distinguishes completed P29 debt from current P30/P31 deferred-candidate
+  debt, names all six deferred candidates, defines P32-T1 through P32-T7 with
+  repository owners, and keeps broad autonomous scraping, package acceptance,
+  relation acceptance, registry publication, baseline seeding, dependency
+  installation, and harvested-code execution out of scope.
 
 ## Outcome
 
-Phase 26 is complete. The next selected task turns the current autonomous
-candidate technical debt into a concrete work plan. P29 fixed the original
-Flask/Gin/xyflow runner debt, while P30/P31 exposed the next debt boundary:
-selected candidates are handoff-ready, but deferred candidates still require
-targeted regeneration, identity cleanup, or author-curated evidence before
-SpecPM intake.
+P32-T1 is complete. The deferred candidate work plan now defines the bounded
+sequence for turning P30/P31 deferred candidates into regenerated, repaired, or
+explicitly still-deferred evidence before any broader autonomous scraping.
 
 ## Next Step
 
-Implement `P32-T1`: update the autonomous candidate technical-debt plan,
-roadmap, workplan, and docs-contract tests with a bounded sequence for
-deferred candidate regeneration and SpecPM intake readiness.
+Implement `P32-T2`: add the deferred candidate regeneration runbook.
 
-The plan should cover `xyflow.*` package-set identity regeneration,
-`cupertino.core` warning-bearing enrichment or author summary evidence,
-`navigation_split_view.core` identity-drift resolution, refreshed triage,
-selected handoff rerun, and the SpecPM-side consumer preflight boundary.
+The runbook should map `package_set_identity_regeneration`,
+`warning_bearing_enrichment_regeneration`, and `identity_drift_resolution` to
+safe local commands, expected artifacts, stop conditions, and non-authority
+boundaries before any regeneration run is attempted.
