@@ -1,10 +1,10 @@
-# Next Task: P29-T4 Single-Package Candidate Fallback
+# Next Task: P29-T5 LM Studio JSON Repair and Retry
 
 **Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P29-T4 Single-Package Candidate Fallback
+**Task:** P29-T5 LM Studio JSON Repair and Retry
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
-**Last Archived:** P29-T3 Corpus Baseline and Gap Report
+**Last Archived:** P29-T4 Single-Package Candidate Fallback
 
 ## Recently Archived
 
@@ -60,22 +60,31 @@
   xyflow produced `4` candidates and `3` relations with
   `stop_for_author_review` plus the live LM Studio `ai_json_repair_needed`
   diagnostic.
+- `P29-T4` implemented the deterministic single-package candidate fallback and
+  documented it in `docs/SINGLE_PACKAGE_CANDIDATE_FALLBACK.md` and
+  `<doc:SinglePackageCandidateFallback>`. Flask-style Python fixtures now
+  produce `flask.core`; Gin-style Go fixtures produce `gin.core` through
+  `autonomous-candidate-batch`; both keep `0` relation proposals and record
+  `selectionReason: single_package_source_manifest_fallback`.
+- The P29-T4 fallback preserves `preview_only`,
+  `producer_preview_evidence_only`, producer receipt, validation report,
+  diagnostics, author-ready quality report, and SpecPM registry acceptance
+  boundaries.
 
 ## Outcome
 
-SpecHarvester has a durable mixed-corpus baseline before fallback or model
-repair behavior changes. The baseline proves the deterministic runner is healthy
-as plumbing, while candidate quality still needs follow-up work before broad
-popular-library scraping.
+SpecHarvester can now produce reviewable single-package preview candidates for
+Flask/Gin-style repositories without requiring workspace topology. This removes
+the deterministic `single_package_fallback_needed` blocker from the P29-T3
+baseline.
 
 ## Next Step
 
-Implement `P29-T4`: add a single-package candidate fallback for repositories
-such as Flask and Gin where deterministic evidence and public interface indexes
-are available but package-set drafting selects no workspace members.
+Implement `P29-T5`: add bounded LM Studio/OpenAI-compatible JSON repair/retry
+for malformed local model output while preserving the no-raw-response
+persistence boundary.
 
-The fallback should produce one preview candidate, preserve `preview_only` and
-`producer_preview_evidence_only`, avoid inventing `contains` relations, emit
-the same producer receipt, validation report, diagnostics, and author-ready
-quality report artifacts as other preview candidates, and keep SpecPM registry
-acceptance out of scope.
+The repair path should record structured diagnostics and repair attempt counts,
+keep raw prompts, raw provider responses, secrets, and chain-of-thought out of
+committed artifacts, and leave exhausted repairs as `failed` or
+`needs_regeneration` review evidence rather than silent success.

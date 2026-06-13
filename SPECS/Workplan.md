@@ -986,7 +986,7 @@ Acceptance:
 - [x] `P29-T3` Run the autonomous batch runner on a small popular-library set,
   record quality and stop-policy outcomes, and decide which candidates deserve
   curated SpecPM submission work.
-- [ ] `P29-T4` Add a single-package candidate fallback for repositories such
+- [x] `P29-T4` Add a single-package candidate fallback for repositories such
   as Flask and Gin where deterministic evidence and public interface indexes
   are available but package-set drafting selects no workspace members.
 - [ ] `P29-T5` Add bounded LM Studio/OpenAI-compatible JSON repair/retry

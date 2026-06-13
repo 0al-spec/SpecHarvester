@@ -338,6 +338,8 @@ The current mixed-corpus baseline is recorded in
 [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md),
 including Flask/Gin `single_package_fallback_needed` outcomes and the xyflow
 `ai_json_repair_needed` LM Studio diagnostic.
+The Flask/Gin deterministic fallback is documented in
+[`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md).
 
 ## Non-Goals
 
@@ -363,4 +365,5 @@ SpecHarvester does not:
 - `docs/PACKAGE_SET_AI_ENRICHMENT.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
+- `docs/SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`
 - `docs/XYFLOW_PACKAGE_SET_SMOKE.md`

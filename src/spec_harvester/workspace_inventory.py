@@ -71,6 +71,7 @@ class WorkspaceInventory:
             "exactRevision": revision["exactRevision"],
             "revisionAuthority": revision["revisionAuthority"],
             "declaredRef": repository.get("ref"),
+            "packageId": repository.get("packageId"),
             "sourceManifest": repository["sourceManifest"],
         }
         if isinstance(source, dict) and isinstance(source.get("target"), dict):

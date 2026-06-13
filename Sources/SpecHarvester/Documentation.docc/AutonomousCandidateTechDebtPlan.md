@@ -47,6 +47,8 @@ replace author or maintainer review.
   `public-interface-index.json` when package-set drafting selects no members.
 - Acceptance: Flask produces `flask.core`, Gin produces `gin.core`, no
   `contains` relations are invented, and all artifacts remain `preview_only`.
+- Artifact: <doc:SinglePackageCandidateFallback> documents the implemented
+  fallback and its `single_package_source_manifest_fallback` selection reason.
 
 `P29-T5 LM Studio JSON Repair and Retry`
 
