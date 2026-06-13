@@ -219,6 +219,15 @@ Acceptance:
 - Deferred and blocked candidates remain visible with blocker codes.
 - Not-for-intake candidates are recorded with rationale.
 
+Artifact:
+
+- [`NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`](NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md)
+  records the P33-T5 triage. It selects `serena.core`, `transmission.core`,
+  and `specpm.core` for P33-T6 selected handoff preflight, keeps
+  `mcpm.system` and `specgraph.system` deferred, records zero blocked
+  candidates and zero not-for-intake candidates, and preserves the
+  non-authority boundary.
+
 ### P33-T6 Next-Corpus SpecPM Preflight and Intake Decision
 
 Owner: SpecHarvester + SpecPM.

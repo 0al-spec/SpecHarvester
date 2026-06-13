@@ -100,6 +100,9 @@ These are proposal-layer signals. They do not invalidate deterministic
 preflight, but they should drive P33-T5 classification before any selected
 handoff evidence is prepared.
 
+P33-T5 records that classification in
+[`NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`](NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md).
+
 ## Product Verdict
 
 Verdict: `ready_for_candidate_layer_triage`.
@@ -156,6 +159,7 @@ The live local-model batch cannot:
 
 See also:
 
+- [`NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`](NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md)
 - [`NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`](NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md)
 - [`NEXT_CORPUS_SOURCE_MANIFEST.md`](NEXT_CORPUS_SOURCE_MANIFEST.md)
 - [`BOUNDED_CORPUS_EXPANSION_PLAN.md`](BOUNDED_CORPUS_EXPANSION_PLAN.md)

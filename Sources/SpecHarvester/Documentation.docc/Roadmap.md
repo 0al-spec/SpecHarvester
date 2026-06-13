@@ -262,6 +262,11 @@ proposals and five AI enrichment proposals, required zero JSON repair attempts,
 recorded `76291` provider tokens, and reached
 `ready_for_candidate_layer_triage`.
 
+<doc:NextCorpusCandidateLayerTriage> records `P33-T5`: selected candidates
+`serena.core`, `transmission.core`, and `specpm.core` are ready for P33-T6
+selected handoff preflight, while `mcpm.system` and `specgraph.system` remain
+deferred on package identity and AI draft evidence findings.
+
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
 no `preview_only` removal, and no AI output as registry truth.
