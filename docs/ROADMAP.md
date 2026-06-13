@@ -376,6 +376,12 @@ See
 The deterministic `--skip-ai` corpus result is recorded in
 [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md)
 with verdict `ready_for_live_lm_studio_limited_corpus`.
+The live LM Studio corpus result is recorded in
+[`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md)
+with verdict `ready_for_candidate_layer_triage`: all six repositories
+processed, nine preview candidates preserved, three relation proposals
+preserved, JSON repair not needed, and model findings bounded to candidate
+review diagnostics.
 
 ## Non-Goals
 

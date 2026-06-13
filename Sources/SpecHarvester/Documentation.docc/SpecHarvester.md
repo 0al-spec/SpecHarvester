@@ -88,6 +88,9 @@ The canonical source files remain in the repository:
 - `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`
 - `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
 - `docs/SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`
+- `docs/LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`
+- `docs/LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`
+- `docs/LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -161,6 +164,7 @@ the host.
 - <doc:AutonomousCandidateCorpusQualityGate>
 - <doc:LimitedPopularLibraryCorpusPlan>
 - <doc:LimitedPopularLibraryDeterministicBatch>
+- <doc:LimitedPopularLibraryLiveLMStudioBatch>
 - <doc:SinglePackageCandidateFallback>
 - <doc:ProposalAutomation>
 

@@ -131,6 +131,11 @@ commands, candidate-layer triage states, and non-authority boundaries. See
 The deterministic `--skip-ai` result is recorded in
 <doc:LimitedPopularLibraryDeterministicBatch> with verdict
 `ready_for_live_lm_studio_limited_corpus`.
+The live LM Studio result is recorded in
+<doc:LimitedPopularLibraryLiveLMStudioBatch> with verdict
+`ready_for_candidate_layer_triage`: all six repositories processed, nine
+preview candidates preserved, three relation proposals preserved, JSON repair
+not needed, and model findings bounded to candidate review diagnostics.
 
 ### Ecosystem Analyzer Depth
 
@@ -202,4 +207,5 @@ repositories.
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateCorpusBaseline>
 - <doc:SinglePackageCandidateFallback>
+- <doc:LimitedPopularLibraryLiveLMStudioBatch>
 - <doc:XyflowPackageSetSmoke>
