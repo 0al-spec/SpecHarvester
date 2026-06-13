@@ -20,7 +20,7 @@
   produced candidate-layer findings for triage.
 - `P30-T4` recorded the candidate-layer triage report with verdict
   `ready_for_selected_handoff_dry_run`: `flask.core`, `gin.core`, and
-  `docc2context.core` were selected, while 6 candidates remained
+  `docc2context.core` were selected, while 6 deferred candidates remained
   `needs_regeneration`.
 - `P30-T5` recorded the selected handoff dry run in
   `docs/LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`,

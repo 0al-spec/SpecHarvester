@@ -395,6 +395,35 @@ with verdict `selected_handoff_dry_run_ready`: `flask.core`, `gin.core`, and
 digests, and `external_required` registry acceptance decisions while all
 deferred candidates stay out of the handoff.
 
+## Milestone 11: Selected Candidate SpecPM Intake Handoff
+
+Status: in progress.
+
+Goal: turn selected candidate dry-run evidence into portable SpecPM review
+evidence while preserving the boundary that SpecHarvester is only the producer
+of preview artifacts.
+
+Tasks:
+
+- define `SpecHarvesterSelectedCandidateHandoffProposal`;
+- implement a producer helper that emits JSON and Markdown handoff artifacts;
+- run the helper on the real P30 selected candidates;
+- define downstream SpecPM-side preflight expectations;
+- record targeted regeneration requirements for deferred P30 candidates.
+
+Success criteria:
+
+- selected candidates, deferred candidates, required evidence roles, producer
+  preflight status, static viewer status, and external registry acceptance
+  decisions are machine-readable;
+- passing producer preflight remains review evidence only;
+- no proposal accepts packages, accepts relations, seeds baselines, removes
+  `preview_only`, publishes registry metadata, or creates a SpecPM pull
+  request.
+
+See
+[`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md).
+
 ## Non-Goals
 
 SpecHarvester does not:

@@ -136,6 +136,13 @@ preflight reports, static viewer digests, required bundle file digests, and
 `registryAcceptanceDecision.status: external_required` without creating a
 SpecPM pull request or accepting packages.
 
+For portable selected-candidate review evidence, use
+<doc:SelectedCandidateHandoffProposal>. It records selected candidates,
+deferred candidates, required evidence roles, producer preflight status, static
+viewer status, and the same external acceptance boundary. It still cannot
+accept packages, accept relations, seed baselines, remove `preview_only`,
+publish registry metadata, or create a SpecPM pull request.
+
 ## Fresh Candidate Refresh Run
 
 Use <doc:FreshCandidateRefreshRun> when a generated package-set output should
