@@ -1,8 +1,9 @@
-# Next Task: Phase 28 Complete
+# Next Task: P29-T1 Autonomous Candidate Batch Runner
 
-**Status:** Phase Complete
-**Last Archived:** P28-T5 First-Submission or Seeded-Baseline Workflow
-**Archived:** 2026-06-13
+**Status:** Selected
+**Selected:** 2026-06-13
+**Task:** P29-T1 Autonomous Candidate Batch Runner
+**Phase:** Phase 29. Autonomous Candidate Harvest MVP
 
 ## Recently Archived
 
@@ -72,16 +73,18 @@ handoff evidence, and keep all producer artifacts outside registry authority.
 
 ## Next Step
 
-Phase 28 delivered:
+Implement `P29-T1`: add an autonomous candidate batch runner that orchestrates
+the existing safe producer pipeline over a source manifest:
 
-- package-set bundles can be exported into SpecPM fresh generated-root layout;
-- no-op refresh comparison was proven on real `xyflow`;
-- missing-baseline comparison was proven on real `TanStack/query`;
-- generic monorepos have a named workspace/member role selection profile;
-- first-submission or seeded-baseline cases now have a machine-readable
-  producer handoff artifact.
+- collect deterministic snapshots with workspace inventory and interface
+  indexes;
+- draft package-set preview bundles with the generic monorepo role profile;
+- run bundle-set preflight;
+- optionally call a local LM Studio/OpenAI-compatible provider for
+  schema-bound AI draft and enrichment proposals;
+- write one machine-readable batch report summarizing outputs, stop-policy
+  status, and non-authority boundaries.
 
-Next cross-repository step:
-
-- SpecPM-side intake policy/preflight for `SpecHarvesterBaselineSubmissionHandoff`
-  artifacts.
+This task is the first MVP step for autonomous popular-library scraping. It
+must not clone repositories, execute harvested code, install dependencies,
+publish registry metadata, or treat generated output as accepted SpecPM truth.
