@@ -125,6 +125,7 @@
 | P32-T3 | [P32-T3_Xyflow_Package-Set_Identity_Regeneration_Dry_Run/](P32-T3_Xyflow_Package-Set_Identity_Regeneration_Dry_Run/) | 2026-06-13 | PASS |
 | P32-T4 | [P32-T4_Single-Package_Deferred_Candidate_Regeneration_Dry_Run/](P32-T4_Single-Package_Deferred_Candidate_Regeneration_Dry_Run/) | 2026-06-13 | PASS |
 | P32-T5 | [P32-T5_Refreshed_Candidate-Layer_Triage_and_Selected_Handoff/](P32-T5_Refreshed_Candidate-Layer_Triage_and_Selected_Handoff/) | 2026-06-13 | PASS |
+| P32-T6 | [P32-T6_SpecPM_Selected_Candidate_Handoff_Preflight/](P32-T6_SpecPM_Selected_Candidate_Handoff_Preflight/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |

@@ -1,6 +1,6 @@
 # P32-T6 SpecPM Selected Candidate Handoff Preflight
 
-Status: Planned
+Status: Archived
 Phase: Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
 Owner: SpecHarvester coordination, SpecPM consumer gate
 
@@ -44,3 +44,20 @@ evidence and verify it against the committed P32-T5 fixture.
 - Do not edit candidate bundles or fixtures.
 - Do not submit accepted packages to SpecPM.
 - Do not resolve the deferred `cupertino.core` blocker.
+
+## Archive
+
+Archived: 2026-06-13
+Verdict: PASS
+
+SpecPM PR [`0al-spec/SpecPM#140`](https://github.com/0al-spec/SpecPM/pull/140)
+was merged at revision `8a5ce3dece3d18bf8f601a5a599520bd520c7839`.
+
+The committed P32-T5 refreshed selected handoff fixture passed
+`specpm producer-bundle preflight-selected-candidate-handoff` with eight
+selected candidates, one deferred candidate (`cupertino.core`), zero warnings,
+zero errors, and three source digests verified.
+
+The next selected task is P32-T7: record the limited corpus intake readiness
+decision using the P32-T5 producer evidence and P32-T6 SpecPM consumer preflight
+result.
