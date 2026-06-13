@@ -363,6 +363,7 @@
 | 2026-06-11 | P27-T3 | Archived REVIEW_p27_t3_author_ready_stop_policy_summary report |
 | 2026-06-13 | P29-T1 | Archived Autonomous Candidate Batch Runner (PASS) |
 | 2026-06-13 | P29-T1 | Archived REVIEW_p29_t1_autonomous_candidate_batch_runner report |
+| 2026-06-13 | P29-T2 | Archived SpecPM Candidate-Layer Intake Policy (PASS) |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

@@ -6,6 +6,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P29-T3 Corpus Baseline and Gap Report" in next_text:
+        assert_p29_t2_last_archived(next_text)
+        assert_p29_t1_recent(next_text)
+        assert_p29_t2_recent(next_text)
+        assert_phase_29_t3_active(next_text)
+        return
+
     if "# Next Task: P29-T2 SpecPM Candidate-Layer Intake Policy" in next_text:
         assert_p29_t1_last_archived(next_text)
         assert_p29_t1_recent(next_text)
@@ -130,6 +137,10 @@ def assert_p28_t5_last_archived(next_text: str) -> None:
 
 def assert_p29_t1_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P29-T1 Autonomous Candidate Batch Runner" in next_text
+
+
+def assert_p29_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P29-T2 SpecPM Candidate-Layer Intake Policy" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -360,6 +371,36 @@ def assert_phase_29_t2_active(next_text: str) -> None:
     assert "P29-T4" in next_text
     assert "P29-T5" in next_text
     assert "P29-T6" in next_text
+
+
+def assert_p29_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P29-T2` documented" in next_text
+    assert "AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md" in next_text
+    assert "AutonomousCandidateIntakePolicy" in next_text
+    assert "candidate_layer_review_required" in next_text
+    assert "needs_regeneration" in next_text
+    assert "not_for_intake" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "SpecHarvesterPackageSetAIDraftProposal" in next_text
+    assert "SpecHarvesterPackageSetAIEnrichmentProposal" in next_text
+    assert "accept packages" in normalized
+    assert "remove `preview_only`" in next_text
+    assert "publish registry metadata" in normalized
+
+
+def assert_phase_29_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P29-T3 Corpus Baseline and Gap Report" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Flask, Gin, and xyflow" in next_text
+    assert "deterministic `--skip-ai` outcomes" in next_text
+    assert "live LM Studio outcome" in normalized
+    assert "candidate counts" in normalized
+    assert "relation counts" in normalized
+    assert "single_package_fallback_needed" in next_text
+    assert "ai_json_repair_needed" in next_text
+    assert "no generated preview candidate is promoted to SpecPM acceptance" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
