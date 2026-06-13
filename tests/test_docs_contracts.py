@@ -958,7 +958,9 @@ def assert_p31_t3_recent(next_text: str) -> None:
 
 def assert_phase_31_t4_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
-    assert "# Next Task: P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations" in next_text
+    assert (
+        "# Next Task: P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations" in next_text
+    )
     assert "**Status:** Selected" in next_text
     assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
     assert "consumer-side preflight expectations" in normalized
