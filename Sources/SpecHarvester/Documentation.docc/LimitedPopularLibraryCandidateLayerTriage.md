@@ -57,8 +57,13 @@ P30-T5 should prepare dry-run handoff evidence only for `flask.core`,
 evidence. The triage report does not accept packages, accept relations, seed
 baselines, remove `preview_only`, publish registry metadata, or replace author
 or SpecPM maintainer review.
+The selected handoff dry-run result is recorded in
+<doc:LimitedPopularLibrarySelectedHandoffDryRun> with producer preflight
+reports, static viewer digests, and
+`registryAcceptanceDecision.status: external_required`.
 
 See also <doc:LimitedPopularLibraryLiveLMStudioBatch>,
+<doc:LimitedPopularLibrarySelectedHandoffDryRun>,
 <doc:LimitedPopularLibraryDeterministicBatch>,
 <doc:LimitedPopularLibraryCorpusPlan>, and
 <doc:AutonomousCandidateIntakePolicy>.

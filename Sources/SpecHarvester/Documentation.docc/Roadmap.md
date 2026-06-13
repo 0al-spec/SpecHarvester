@@ -142,6 +142,12 @@ The candidate-layer triage result is recorded in
 `docc2context.core` are selected for P30-T5 dry-run handoff, while xyflow,
 Cupertino, and NavigationSplitView candidates remain deferred until targeted
 regeneration or package-identity fixes.
+The selected handoff dry run is recorded in
+<doc:LimitedPopularLibrarySelectedHandoffDryRun> with verdict
+`selected_handoff_dry_run_ready`: `flask.core`, `gin.core`, and
+`docc2context.core` have passing producer preflight reports, static viewer
+digests, and `external_required` registry acceptance decisions while all
+deferred candidates stay out of the handoff.
 
 ### Ecosystem Analyzer Depth
 

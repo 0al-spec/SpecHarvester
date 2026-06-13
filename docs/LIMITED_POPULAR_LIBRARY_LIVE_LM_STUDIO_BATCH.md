@@ -92,6 +92,11 @@ These are proposal-layer signals. They do not invalidate deterministic
 preflight, but they should drive P30-T4 classification before any P30-T5
 handoff evidence is prepared.
 
+P30-T5 selected handoff dry-run evidence is recorded separately in
+[`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md)
+after the P30-T4 triage narrows the handoff set to `flask.core`, `gin.core`,
+and `docc2context.core`.
+
 ## Product Verdict
 
 Verdict: `ready_for_candidate_layer_triage`.
@@ -146,6 +151,7 @@ The live batch cannot:
 See also:
 
 - [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md)
+- [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md)
 - [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md)
 - [`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md)
 - [`AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`](AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md)

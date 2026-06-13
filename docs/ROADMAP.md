@@ -388,6 +388,12 @@ with verdict `ready_for_selected_handoff_dry_run`: `flask.core`, `gin.core`,
 and `docc2context.core` are selected for P30-T5 dry-run handoff, while xyflow,
 Cupertino, and NavigationSplitView candidates remain deferred until targeted
 regeneration or package-identity fixes.
+The selected handoff dry run is recorded in
+[`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md)
+with verdict `selected_handoff_dry_run_ready`: `flask.core`, `gin.core`, and
+`docc2context.core` have passing producer preflight reports, static viewer
+digests, and `external_required` registry acceptance decisions while all
+deferred candidates stay out of the handoff.
 
 ## Non-Goals
 
