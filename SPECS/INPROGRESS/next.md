@@ -1,6 +1,6 @@
 # Next Task: P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff
 
-**Status:** Planned
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
