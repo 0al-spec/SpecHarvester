@@ -992,7 +992,7 @@ Acceptance:
 - [x] `P29-T5` Add bounded LM Studio/OpenAI-compatible JSON repair/retry
   for malformed local model output while preserving the no-raw-response
   persistence boundary.
-- [ ] `P29-T6` Re-run the mixed local corpus after fallback and retry support,
+- [x] `P29-T6` Re-run the mixed local corpus after fallback and retry support,
   record whether each repository produces a reviewable preview candidate, and
   decide whether the MVP is ready for larger popular-library scraping.
 

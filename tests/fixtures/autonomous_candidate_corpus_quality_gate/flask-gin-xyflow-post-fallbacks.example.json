@@ -1,0 +1,212 @@
+{
+  "apiVersion": "spec-harvester.autonomous-candidate-corpus-quality-gate/v0",
+  "authority": "producer_preview_evidence_only",
+  "corpus": {
+    "id": "local-flask-gin-xyflow-post-fallbacks",
+    "repositories": [
+      "flask",
+      "gin",
+      "xyflow"
+    ]
+  },
+  "kind": "SpecHarvesterAutonomousCandidateCorpusQualityGate",
+  "nonAuthority": [
+    "This quality gate is review evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages or relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata."
+  ],
+  "productVerdict": {
+    "candidateQuality": "valid_starter_packages_require_author_review",
+    "pipelineHealth": "deterministic_and_live_lm_studio_passed",
+    "status": "ready_for_limited_popular_library_scraping",
+    "summary": "After P29-T4 and P29-T5, the mixed corpus produces reviewable preview candidates for Flask, Gin, and xyflow with passing deterministic preflight. The MVP is ready for a limited larger popular-library scraping batch under candidate-layer review, not automatic SpecPM acceptance."
+  },
+  "repositoryResults": [
+    {
+      "deterministic": {
+        "authorReadyDecision": "stop_for_author_review",
+        "candidateCount": 1,
+        "candidateIds": [
+          "flask.core"
+        ],
+        "preflight": "passed",
+        "relationCount": 0,
+        "reviewablePreviewCandidate": true,
+        "status": "passed"
+      },
+      "id": "flask",
+      "liveLmStudio": {
+        "aiDraft": "warning",
+        "aiDraftDiagnosticCodes": [
+          "excluded_package_unknown"
+        ],
+        "aiDraftJsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "aiDraftProviderTotalTokens": 2024,
+        "aiDraftStopPolicyDecision": "continue_generation",
+        "aiDraftStopPolicyStatus": "needs_regeneration",
+        "aiEnrichment": "completed",
+        "aiEnrichmentDiagnosticCodes": [],
+        "aiEnrichmentJsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "aiEnrichmentProviderTotalTokens": 8308,
+        "aiEnrichmentStopPolicyDecision": "stop_for_author_review",
+        "aiEnrichmentStopPolicyStatus": "author_ready_draft",
+        "providerTotalTokens": 10332,
+        "status": "passed"
+      },
+      "packageId": "flask.core",
+      "qualityGate": {
+        "blockingGapCodes": [],
+        "reviewNotes": [
+          "AI draft warnings are candidate-layer evidence, not acceptance blockers.",
+          "Author and maintainer review remain required before SpecPM intake."
+        ],
+        "status": "passed"
+      },
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831"
+    },
+    {
+      "deterministic": {
+        "authorReadyDecision": "stop_for_author_review",
+        "candidateCount": 1,
+        "candidateIds": [
+          "gin.core"
+        ],
+        "preflight": "passed",
+        "relationCount": 0,
+        "reviewablePreviewCandidate": true,
+        "status": "passed"
+      },
+      "id": "gin",
+      "liveLmStudio": {
+        "aiDraft": "warning",
+        "aiDraftDiagnosticCodes": [
+          "excluded_package_unknown"
+        ],
+        "aiDraftJsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "aiDraftProviderTotalTokens": 5831,
+        "aiDraftStopPolicyDecision": "continue_generation",
+        "aiDraftStopPolicyStatus": "needs_regeneration",
+        "aiEnrichment": "completed",
+        "aiEnrichmentDiagnosticCodes": [],
+        "aiEnrichmentJsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "aiEnrichmentProviderTotalTokens": 15656,
+        "aiEnrichmentStopPolicyDecision": "stop_for_author_review",
+        "aiEnrichmentStopPolicyStatus": "author_ready_draft",
+        "providerTotalTokens": 21487,
+        "status": "passed"
+      },
+      "packageId": "gin.core",
+      "qualityGate": {
+        "blockingGapCodes": [],
+        "reviewNotes": [
+          "AI draft warnings are candidate-layer evidence, not acceptance blockers.",
+          "Author and maintainer review remain required before SpecPM intake."
+        ],
+        "status": "passed"
+      },
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67"
+    },
+    {
+      "deterministic": {
+        "authorReadyDecision": "stop_for_author_review",
+        "candidateCount": 4,
+        "candidateIds": [
+          "xyflow.react",
+          "xyflow.svelte",
+          "xyflow.system",
+          "xyflow.workspace"
+        ],
+        "preflight": "passed",
+        "relationCount": 3,
+        "reviewablePreviewCandidate": true,
+        "status": "passed"
+      },
+      "id": "xyflow",
+      "liveLmStudio": {
+        "aiDraft": "warning",
+        "aiDraftDiagnosticCodes": [
+          "package_set_id_missing"
+        ],
+        "aiDraftJsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "aiDraftProviderTotalTokens": 6199,
+        "aiDraftStopPolicyDecision": "continue_generation",
+        "aiDraftStopPolicyStatus": "needs_regeneration",
+        "aiEnrichment": "completed",
+        "aiEnrichmentDiagnosticCodes": [],
+        "aiEnrichmentJsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "aiEnrichmentProviderTotalTokens": 48341,
+        "aiEnrichmentStopPolicyDecision": "stop_for_author_review",
+        "aiEnrichmentStopPolicyStatus": "author_ready_draft",
+        "providerTotalTokens": 54540,
+        "status": "passed"
+      },
+      "packageId": "xyflow.workspace",
+      "qualityGate": {
+        "blockingGapCodes": [],
+        "reviewNotes": [
+          "AI draft warnings are candidate-layer evidence, not acceptance blockers.",
+          "Author and maintainer review remain required before SpecPM intake."
+        ],
+        "status": "passed"
+      },
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd"
+    }
+  ],
+  "schemaVersion": 1,
+  "source": {
+    "deterministicReportDigest": "sha256:ea20d3fe25eb4c1c9094c6db194636a2d71edd64dc75b4883c7c401851846640",
+    "deterministicRunRoot": "/tmp/spec-harvester-p29-t6.edfHiE/deterministic",
+    "jsonRepairMaxAttempts": 1,
+    "liveLmStudioReportDigest": "sha256:ea2f5c3553b5827be9d440060b6f857aa59999ce7d7b835a800644b021420a9e",
+    "liveLmStudioRunRoot": "/tmp/spec-harvester-p29-t6.edfHiE/live-lm-studio",
+    "model": "openai/gpt-oss-20b",
+    "provider": "lm_studio",
+    "providerBaseUrl": "http://127.0.0.1:1234",
+    "runRoot": "/tmp/spec-harvester-p29-t6.edfHiE"
+  },
+  "summary": {
+    "deterministicPassedCount": 3,
+    "deterministicReviewableCandidateRepositoryCount": 3,
+    "jsonRepairExhaustedCount": 0,
+    "jsonRepairNeededCount": 0,
+    "liveLmStudioFailedCount": 0,
+    "liveLmStudioPassedCount": 3,
+    "repositoryCount": 3
+  }
+}

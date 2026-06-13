@@ -1,10 +1,10 @@
-# Next Task: P29-T6 Corpus Quality Gate After Fallbacks
+# Next Task: Phase 29 Complete
 
-**Status:** Selected
+**Status:** Phase Complete
 **Selected:** 2026-06-13
-**Task:** P29-T6 Corpus Quality Gate After Fallbacks
+**Task:** Phase 29 Complete
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
-**Last Archived:** P29-T5 LM Studio JSON Repair and Retry
+**Last Archived:** P29-T6 Corpus Quality Gate After Fallbacks
 
 ## Recently Archived
 
@@ -77,18 +77,28 @@
   `ai_json_repair_exhausted`; autonomous batch AI records expose
   `diagnosticCodes` and `jsonRepair` summaries without persisting raw prompts,
   raw provider responses, secrets, or chain-of-thought.
+- `P29-T6` recorded the post-mitigation corpus quality gate in
+  `docs/AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md`,
+  `<doc:AutonomousCandidateCorpusQualityGate>`, and
+  `SpecHarvesterAutonomousCandidateCorpusQualityGate`. Flask produced
+  `flask.core`, Gin produced `gin.core`, and xyflow retained
+  `xyflow.workspace` plus member package candidates. The product verdict is
+  `ready_for_limited_popular_library_scraping`: deterministic preflight passed
+  for all three repositories, live LM Studio used `openai/gpt-oss-20b`, draft
+  warnings were bounded to `excluded_package_unknown` and
+  `package_set_id_missing`, JSON repair `not_needed`, and the result remains
+  `producer_preview_evidence_only`, `preview_only`, and not automatic SpecPM
+  acceptance.
 
 ## Outcome
 
-SpecHarvester now has both concrete P29 technical-debt mitigations from the
-first mixed corpus run: deterministic single-package fallback for Flask/Gin-style
-repositories and bounded local model JSON repair diagnostics for LM
-Studio/OpenAI-compatible proposal generation.
+Autonomous Candidate Harvest MVP is complete for the current scope. The runner
+can turn a bounded source manifest into valid starter packages for Flask/Gin-
+style single-package repositories and xyflow-style package sets, then stop for
+candidate-layer review. The result is not accepted registry truth.
 
 ## Next Step
 
-Implement `P29-T6`: re-run the mixed local Flask/Gin/xyflow corpus after
-fallback and repair support, record whether each repository produces at least
-one reviewable preview candidate, verify deterministic preflight, capture live
-LM Studio status when available, and decide whether the autonomous candidate MVP
-is ready for larger popular-library scraping.
+Maintainer should select the next phase. The most direct continuation is a
+limited popular-library scraping batch using the P29 gates, followed by
+candidate-layer triage and explicit SpecPM intake only for selected candidates.

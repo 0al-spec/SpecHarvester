@@ -72,6 +72,9 @@ replace author or maintainer review.
 - Acceptance: Flask, Gin, and xyflow all produce at least one preview
   candidate, deterministic preflight passes, and live LM Studio mode either
   completes or emits structured bounded AI diagnostics.
+- Artifact: <doc:AutonomousCandidateCorpusQualityGate> records the
+  post-mitigation Flask/Gin/xyflow quality gate and verdict
+  `ready_for_limited_popular_library_scraping`.
 
 ## Suggested Order
 

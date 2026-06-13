@@ -139,6 +139,9 @@ Acceptance:
   bounded AI diagnostics without corrupting deterministic artifacts.
 - The report separates product quality findings from registry acceptance.
 - Follow-up work is created only for remaining concrete blockers.
+- Artifact: [`AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md`](AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md)
+  records the post-mitigation Flask/Gin/xyflow quality gate and verdict
+  `ready_for_limited_popular_library_scraping`.
 
 ## Suggested Order
 
