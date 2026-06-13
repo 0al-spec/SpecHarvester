@@ -519,7 +519,7 @@ def assert_p29_t5_recent(next_text: str) -> None:
 def assert_phase_29_t6_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P29-T6 Corpus Quality Gate After Fallbacks" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "mixed local Flask/Gin/xyflow corpus" in normalized
     assert "at least one reviewable preview candidate" in normalized
     assert "deterministic preflight" in normalized
@@ -3516,6 +3516,146 @@ def test_autonomous_candidate_corpus_baseline_docs_cover_mixed_corpus_verdict() 
     assert "AutonomousCandidateCorpusBaseline" in intake_docc.read_text(encoding="utf-8")
     assert "AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md" in tech_debt.read_text(encoding="utf-8")
     assert "AutonomousCandidateCorpusBaseline" in tech_debt_docc.read_text(encoding="utf-8")
+
+
+def test_autonomous_candidate_corpus_quality_gate_fixture_records_post_mitigation_outcome() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "autonomous_candidate_corpus_quality_gate"
+        / "flask-gin-xyflow-post-fallbacks.example.json"
+    )
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.autonomous-candidate-corpus-quality-gate/v0"
+    assert payload["kind"] == "SpecHarvesterAutonomousCandidateCorpusQualityGate"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["corpus"]["id"] == "local-flask-gin-xyflow-post-fallbacks"
+    assert payload["corpus"]["repositories"] == ["flask", "gin", "xyflow"]
+    assert payload["source"]["provider"] == "lm_studio"
+    assert payload["source"]["model"] == "openai/gpt-oss-20b"
+    assert payload["source"]["jsonRepairMaxAttempts"] == 1
+    assert payload["source"]["deterministicReportDigest"].startswith("sha256:")
+    assert payload["source"]["liveLmStudioReportDigest"].startswith("sha256:")
+    assert payload["summary"] == {
+        "deterministicPassedCount": 3,
+        "deterministicReviewableCandidateRepositoryCount": 3,
+        "jsonRepairExhaustedCount": 0,
+        "jsonRepairNeededCount": 0,
+        "liveLmStudioFailedCount": 0,
+        "liveLmStudioPassedCount": 3,
+        "repositoryCount": 3,
+    }
+
+    by_id = {item["id"]: item for item in payload["repositoryResults"]}
+    assert set(by_id) == {"flask", "gin", "xyflow"}
+
+    expected = {
+        "flask": ("flask.core", ["flask.core"], 1, 0, ["excluded_package_unknown"]),
+        "gin": ("gin.core", ["gin.core"], 1, 0, ["excluded_package_unknown"]),
+        "xyflow": (
+            "xyflow.workspace",
+            ["xyflow.react", "xyflow.svelte", "xyflow.system", "xyflow.workspace"],
+            4,
+            3,
+            ["package_set_id_missing"],
+        ),
+    }
+    for repo_id, (
+        package_id,
+        candidate_ids,
+        candidate_count,
+        relation_count,
+        draft_codes,
+    ) in expected.items():
+        result = by_id[repo_id]
+        assert result["packageId"] == package_id
+        assert result["deterministic"]["candidateIds"] == candidate_ids
+        assert result["deterministic"]["candidateCount"] == candidate_count
+        assert result["deterministic"]["relationCount"] == relation_count
+        assert result["deterministic"]["preflight"] == "passed"
+        assert result["deterministic"]["reviewablePreviewCandidate"] is True
+        assert result["deterministic"]["authorReadyDecision"] == "stop_for_author_review"
+        assert result["liveLmStudio"]["status"] == "passed"
+        assert result["liveLmStudio"]["aiDraft"] == "warning"
+        assert result["liveLmStudio"]["aiDraftDiagnosticCodes"] == draft_codes
+        assert result["liveLmStudio"]["aiDraftJsonRepair"]["status"] == "not_needed"
+        assert result["liveLmStudio"]["aiEnrichment"] == "completed"
+        assert result["liveLmStudio"]["aiEnrichmentDiagnosticCodes"] == []
+        assert result["liveLmStudio"]["aiEnrichmentJsonRepair"]["status"] == "not_needed"
+        assert result["qualityGate"]["status"] == "passed"
+        assert result["qualityGate"]["blockingGapCodes"] == []
+
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not accept packages or relations" in non_authority
+    assert "does not remove preview_only" in non_authority
+    assert payload["productVerdict"]["status"] == "ready_for_limited_popular_library_scraping"
+    assert payload["productVerdict"]["pipelineHealth"] == "deterministic_and_live_lm_studio_passed"
+    assert (
+        payload["productVerdict"]["candidateQuality"]
+        == "valid_starter_packages_require_author_review"
+    )
+
+
+def test_autonomous_candidate_corpus_quality_gate_docs_cover_readiness_verdict() -> None:
+    github_doc = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateCorpusQualityGate.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    tech_debt = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    tech_debt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Autonomous Candidate Corpus Quality Gate",
+            "SpecHarvesterAutonomousCandidateCorpusQualityGate",
+            "local-flask-gin-xyflow-post-fallbacks",
+            "flask.core",
+            "gin.core",
+            "xyflow.workspace",
+            "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+            "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+            "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+            "stop_for_author_review",
+            "openai/gpt-oss-20b",
+            "jsonRepairMaxAttempts",
+            "excluded_package_unknown",
+            "package_set_id_missing",
+            "ready_for_limited_popular_library_scraping",
+            "producer_preview_evidence_only",
+            "preview_only",
+            "not automatic SpecPM acceptance"
+            if path == github_doc
+            else "producer preview evidence",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:AutonomousCandidateCorpusQualityGate>" in docc_root.read_text(encoding="utf-8")
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md" in roadmap.read_text(encoding="utf-8")
+    assert "AutonomousCandidateCorpusQualityGate" in roadmap_docc.read_text(encoding="utf-8")
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md" in tech_debt.read_text(encoding="utf-8")
+    assert "AutonomousCandidateCorpusQualityGate" in tech_debt_docc.read_text(encoding="utf-8")
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

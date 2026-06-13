@@ -158,6 +158,7 @@ the host.
 - <doc:AutonomousCandidateIntakePolicy>
 - <doc:AutonomousCandidateTechDebtPlan>
 - <doc:AutonomousCandidateCorpusBaseline>
+- <doc:AutonomousCandidateCorpusQualityGate>
 - <doc:SinglePackageCandidateFallback>
 - <doc:ProposalAutomation>
 

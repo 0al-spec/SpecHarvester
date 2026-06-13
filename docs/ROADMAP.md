@@ -340,6 +340,9 @@ including Flask/Gin `single_package_fallback_needed` outcomes and the xyflow
 `ai_json_repair_needed` LM Studio diagnostic.
 The Flask/Gin deterministic fallback is documented in
 [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md).
+The post-fallback quality gate is recorded in
+[`AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md`](AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md)
+with verdict `ready_for_limited_popular_library_scraping`.
 
 ## Non-Goals
 
