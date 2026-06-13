@@ -1,10 +1,10 @@
-# Next Task: P31-T5 Deferred Selected Candidate Regeneration Requirements
+# Next Task: Phase 31 Complete
 
-**Status:** In Progress
+**Status:** Phase Complete
 **Selected:** 2026-06-13
-**Task:** P31-T5 Deferred Selected Candidate Regeneration Requirements
+**Task:** Phase 31 Complete
 **Phase:** Phase 31. Selected Candidate SpecPM Intake Handoff
-**Last Archived:** P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations
+**Last Archived:** P31-T5 Deferred Selected Candidate Regeneration Requirements
 
 ## Recently Archived
 
@@ -57,29 +57,27 @@
   `producer_preview_evidence_only` authority, evidence roles, digests,
   selected/deferred candidate consistency, and non-authority boundaries. A pass
   remains review evidence and not package acceptance.
+- `P31-T5` recorded deferred selected-candidate regeneration requirements in
+  `docs/DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md`,
+  `<doc:DeferredSelectedCandidateRegenerationRequirements>`, and the
+  `SpecHarvesterDeferredSelectedCandidateRegenerationRequirements` fixture
+  `p31-t5-deferred-selected-candidate-regeneration-requirements.example.json`.
+  The fixture covers all six deferred P30 candidates, package-set identity
+  regeneration, warning-bearing enrichment regeneration, identity-drift
+  resolution, source digests, minimum proof before selected handoff, and the
+  non-authority boundary. It remains regeneration requirements only and not
+  package acceptance.
 
 ## Outcome
 
-The selected candidate handoff contract, producer helper, real selected
-candidate fixture, and downstream SpecPM preflight expectations now exist. The
-remaining gap is explicit policy for the deferred P30 candidates before they
-can enter selected handoff.
+Phase 31 is complete. SpecHarvester now has a selected candidate handoff
+contract, producer helper, real selected candidate handoff fixture, downstream
+SpecPM preflight expectation document, and deferred candidate regeneration
+requirements.
 
 ## Next Step
 
-Implement `P31-T5`: record targeted regeneration requirements for deferred P30
-candidates before any package-set, warning-bearing, or identity-drift candidate
-can enter selected handoff.
-
-The policy should cover the six deferred P30 candidates:
-`xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`,
-`cupertino.core`, and `navigation_split_view.core`. It should state what must
-be regenerated, revalidated, and reclassified before selected handoff, including
-package-set topology, warning-bearing candidate evidence, identity-drift
-handling, producer preflight status, static viewer status, and whether a
-candidate remains excluded.
-
-SpecPM acceptance remains out of scope. P31-T5 should define regeneration
-requirements only; it should not regenerate candidates, accept packages, accept
-relations, seed baselines, remove `preview_only`, publish registry metadata, or
-create a SpecPM pull request.
+No Phase 31 task remains selected. The next operator should choose a new task
+from the remaining workplan backlog, such as older refactoring work, CodeGraph
+boundary work, or package-set proposal intake alignment, rather than extending
+Phase 31 implicitly.
