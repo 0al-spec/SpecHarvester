@@ -1,6 +1,6 @@
 # P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff
 
-**Status:** Planned
+**Status:** Archived
 **Selected:** 2026-06-13
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
 
@@ -92,3 +92,20 @@ registry metadata, mutate SpecPM, or create a SpecPM pull request.
 - No baseline seeding.
 - No registry publication.
 
+## Archive
+
+**Archived:** 2026-06-13
+**Verdict:** PASS
+
+The refreshed selected handoff was recorded in
+`tests/fixtures/refreshed_candidate_layer_selected_handoff/p32-t5-refreshed-candidate-layer-selected-handoff.example.json`
+and documented in `docs/REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md` plus
+`<doc:RefreshedCandidateLayerSelectedHandoff>`.
+
+The recorded selected set is `flask.core`, `gin.core`, `docc2context.core`,
+`xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`, and
+`navigation_split_view.core`. `cupertino.core` remains deferred on
+`refined_summary_missing`.
+
+The next selected task is P32-T6: add or coordinate SpecPM-side selected
+candidate handoff preflight for the refreshed handoff artifact.
