@@ -1,10 +1,10 @@
-# Next Task: P30-T4 Candidate-Layer Triage Report
+# Next Task: P30-T5 Selected Candidate Handoff Dry Run
 
-**Status:** In Progress
+**Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P30-T4 Candidate-Layer Triage Report
+**Task:** P30-T5 Selected Candidate Handoff Dry Run
 **Phase:** Phase 30. Limited Popular-Library Scraping Batch
-**Last Archived:** P30-T3 Live LM Studio Limited Corpus Batch
+**Last Archived:** P30-T4 Candidate-Layer Triage Report
 
 ## Recently Archived
 
@@ -61,18 +61,31 @@
   `refined_summary_missing`, and the carried-forward
   `package_id_hint_mismatch`. The output remains
   `producer_preview_evidence_only` and not SpecPM acceptance.
+- `P30-T4` recorded the candidate-layer triage report in
+  `docs/LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`,
+  `<doc:LimitedPopularLibraryCandidateLayerTriage>`, and
+  `SpecHarvesterLimitedPopularLibraryCandidateLayerTriage`. The product verdict
+  is `ready_for_selected_handoff_dry_run`: `flask.core`, `gin.core`, and
+  `docc2context.core` are the 3 selected
+  `candidate_layer_review_required` candidates for P30-T5, while 6 deferred
+  candidates remain `needs_regeneration`. The triage keeps
+  `excluded_package_unknown` as non-blocking model-output noise and classifies
+  `package_set_id_missing`, `refined_summary_missing`, and
+  `package_id_hint_mismatch` as regeneration or package-identity work. The
+  output remains `producer_preview_evidence_only` and not SpecPM acceptance.
 
 ## Outcome
 
-The limited P30 corpus now has both deterministic and live LM Studio producer
-evidence. The live provider path completed, but model-layer warnings and the
-NavigationSplitView package-id normalization finding need classification before
-any selected SpecPM handoff dry run.
+P30 now has deterministic evidence, live LM Studio evidence, and explicit
+candidate-layer triage. Only `flask.core`, `gin.core`, and `docc2context.core`
+should move into selected SpecPM handoff dry-run evidence. xyflow, Cupertino,
+and NavigationSplitView candidates remain useful calibration data but should
+not enter P30-T5 until targeted regeneration or identity fixes are complete.
 
 ## Next Step
 
-Implement `P30-T4`: produce a candidate-layer triage report that classifies
-each generated preview package and model finding as
-`candidate_layer_review_required`, `needs_regeneration`, `blocked`, or
-`not_for_intake`. The triage should decide which issues are generator bugs,
-schema gaps, model noise, expected author-review items, or blockers.
+Implement `P30-T5`: prepare SpecPM handoff dry-run evidence for selected
+candidates only: `flask.core`, `gin.core`, and `docc2context.core`. Preserve
+`preview_only`, `producer_preview_evidence_only`, and external registry
+acceptance authority. Do not publish registry metadata, accept packages, accept
+relations, or treat producer output as accepted SpecPM truth.

@@ -103,3 +103,7 @@ The live run produced:
   baseline seeding.
 - No automatic use of AI output as accepted `SpecPackage`, `BoundarySpec`, or
   relation truth.
+
+---
+**Archived:** 2026-06-13
+**Verdict:** PASS
