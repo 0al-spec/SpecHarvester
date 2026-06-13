@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P33-T8 Next-Corpus Intake Readiness Decision" in next_text:
+        assert_p33_t7_last_archived(next_text)
+        assert_p33_t6_recent(next_text)
+        assert_p33_t7_recent(next_text)
+        assert_phase_33_t8_active(next_text)
+        return
+
     if "# Next Task: P33-T7 Durable Next-Corpus Selected Handoff Artifact" in next_text:
         assert_p33_t6_last_archived(next_text)
         assert_p33_t5_recent(next_text)
@@ -530,6 +537,10 @@ def assert_p33_t5_last_archived(next_text: str) -> None:
 
 def assert_p33_t6_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P33-T6 Next-Corpus SpecPM Preflight and Intake Decision" in next_text
+
+
+def assert_p33_t7_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P33-T7 Durable Next-Corpus Selected Handoff Artifact" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1643,6 +1654,53 @@ def assert_phase_33_t7_active(next_text: str) -> None:
     assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
     assert "durable selected handoff evidence" in normalized
     assert "machine-preflighted before maintainer intake review" in normalized
+    assert "serena.core" in next_text
+    assert "transmission.core" in next_text
+    assert "specpm.core" in next_text
+    assert "mcpm.system" in next_text
+    assert "specgraph.system" in next_text
+    assert "must not run a new scrape" in normalized
+    assert "must not rerun LM Studio" in normalized
+    assert "must not accept packages" in normalized
+    assert "must not publish registry metadata" in normalized
+    assert "must not remove `preview_only`" in normalized
+
+
+def assert_p33_t7_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P33-T7` recorded the durable selected handoff" in next_text
+    assert "NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md" in next_text
+    assert "NextCorpusDurableSelectedHandoff" in next_text
+    assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
+    assert "spec-harvester.selected-candidate-handoff-proposal/v0" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "serena.core" in next_text
+    assert "transmission.core" in next_text
+    assert "specpm.core" in next_text
+    assert "mcpm.system" in next_text
+    assert "specgraph.system" in next_text
+    assert "four committed evidence roles" in normalized
+    assert "selectedCandidateCount: 3" in next_text
+    assert "deferredCandidateCount: 2" in next_text
+    assert "requiredEvidenceRoleCount: 4" in next_text
+    assert "digestVerifiedCount: 1" in next_text
+    assert "zero warnings" in normalized
+    assert "zero errors" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not accept relations" in normalized
+    assert "does not remove `preview_only`" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not create a SpecPM pull request" in normalized
+
+
+def assert_phase_33_t8_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P33-T8 Next-Corpus Intake Readiness Decision" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 33. Bounded Corpus Expansion Planning" in next_text
+    assert "passing P33-T7 durable selected handoff preflight result" in normalized
+    assert "ready for author/maintainer review" in normalized
+    assert "separate SpecPM maintainer flow" in normalized
     assert "serena.core" in next_text
     assert "transmission.core" in next_text
     assert "specpm.core" in next_text

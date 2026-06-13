@@ -72,3 +72,20 @@ consumer gate can preflight it.
 - Do not seed baselines, remove `preview_only`, publish registry metadata, or
   create a SpecPM pull request.
 
+## Archive
+
+Archived: 2026-06-14
+Verdict: PASS
+
+P33-T7 created a durable `SpecHarvesterSelectedCandidateHandoffProposal` for
+`serena.core`, `transmission.core`, and `specpm.core`. It references only
+committed P33 source fixtures and avoids fabricated per-file generated
+candidate digests.
+
+The durable handoff passed
+`specpm producer-bundle preflight-selected-candidate-handoff` with three
+selected candidates, two deferred candidates, four required evidence roles,
+one verified source digest, zero warnings, and zero errors.
+
+The next selected task is P33-T8: record the next-corpus intake readiness
+decision using the passing P33-T7 handoff preflight result.
