@@ -84,6 +84,7 @@ The canonical source files remain in the repository:
 - `docs/PACKAGE_SET_AI_DRAFT_PROPOSAL.md`
 - `docs/PACKAGE_SET_AI_ENRICHMENT.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
+- `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -151,6 +152,7 @@ the host.
 - <doc:PackageSetAIDraftProposal>
 - <doc:PackageSetAIEnrichment>
 - <doc:AutonomousCandidateBatch>
+- <doc:AutonomousCandidateTechDebtPlan>
 - <doc:ProposalAutomation>
 
 ### Architecture

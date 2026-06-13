@@ -986,6 +986,15 @@ Acceptance:
 - [ ] `P29-T3` Run the autonomous batch runner on a small popular-library set,
   record quality and stop-policy outcomes, and decide which candidates deserve
   curated SpecPM submission work.
+- [ ] `P29-T4` Add a single-package candidate fallback for repositories such
+  as Flask and Gin where deterministic evidence and public interface indexes
+  are available but package-set drafting selects no workspace members.
+- [ ] `P29-T5` Add bounded LM Studio/OpenAI-compatible JSON repair/retry
+  for malformed local model output while preserving the no-raw-response
+  persistence boundary.
+- [ ] `P29-T6` Re-run the mixed local corpus after fallback and retry support,
+  record whether each repository produces a reviewable preview candidate, and
+  decide whether the MVP is ready for larger popular-library scraping.
 
 Motivation:
 
@@ -997,6 +1006,10 @@ Motivation:
 - Operators need a cost-controlled local model path for repeated scraping runs;
   LM Studio/OpenAI-compatible execution should be the default live enrichment
   surface, while CI remains provider-free.
+- The first mixed corpus run exposed two concrete technical-debt items:
+  single-package repositories can collect useful evidence while producing zero
+  package candidates, and local model output can fail strict JSON parsing under
+  real corpus load.
 
 Goal:
 
@@ -1016,3 +1029,7 @@ Acceptance:
   and chain-of-thought are not persisted.
 - Generated package files remain `preview_only` producer evidence until
   explicit SpecPM-side review and acceptance.
+- Single-package repositories such as Flask and Gin can produce one reviewable
+  preview package candidate instead of only evidence with zero candidates.
+- Local LM Studio JSON failures become bounded repair/retry diagnostics rather
+  than silent success or lost deterministic artifacts.
