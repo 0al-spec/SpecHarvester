@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P32-T3 Xyflow Package-Set Identity Regeneration Dry Run" in next_text:
+        assert_p32_t2_last_archived(next_text)
+        assert_p32_t1_recent(next_text)
+        assert_p32_t2_recent(next_text)
+        assert_phase_32_t3_active(next_text)
+        return
+
     if "# Next Task: P32-T2 Deferred Candidate Regeneration Runbook" in next_text:
         assert_p32_t1_last_archived(next_text)
         assert_p26_t3_recent(next_text)
@@ -383,6 +390,10 @@ def assert_p26_t3_last_archived(next_text: str) -> None:
 
 def assert_p32_t1_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P32-T1 Autonomous Deferred Candidate Work Plan" in next_text
+
+
+def assert_p32_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P32-T2 Deferred Candidate Regeneration Runbook" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1124,6 +1135,26 @@ def assert_p32_t1_recent(next_text: str) -> None:
     assert "harvested-code execution" in normalized
 
 
+def assert_p32_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P32-T2` added `docs/DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`" in next_text
+    assert "DeferredCandidateRegenerationRunbook" in next_text
+    assert "package_set_identity_regeneration" in next_text
+    assert "warning_bearing_enrichment_regeneration" in next_text
+    assert "identity_drift_resolution" in next_text
+    assert "safe local commands" in normalized
+    assert "expected artifacts" in normalized
+    assert "stop conditions" in normalized
+    assert "re-entry criteria" in normalized
+    assert "non-authority boundaries" in normalized
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
+    assert "xyflow.system" in next_text
+    assert "cupertino.core" in next_text
+    assert "navigation_split_view.core" in next_text
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1179,6 +1210,26 @@ def assert_phase_32_t2_active(next_text: str) -> None:
     assert "identity_drift_resolution" in next_text
     assert "safe local commands" in normalized
     assert "non-authority boundaries" in normalized
+
+
+def assert_phase_32_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P32-T3 Xyflow Package-Set Identity Regeneration Dry Run" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
+    assert "P32-T2 is complete" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
+    assert "xyflow.system" in next_text
+    assert "package-set identity" in normalized
+    assert "contains topology" in normalized
+    assert "producer preflight" in normalized
+    assert "static viewer" in normalized
+    assert "preview_only" in next_text
+    assert "external_required" in next_text
+    assert "selected handoff" in normalized
+    assert "remain deferred" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

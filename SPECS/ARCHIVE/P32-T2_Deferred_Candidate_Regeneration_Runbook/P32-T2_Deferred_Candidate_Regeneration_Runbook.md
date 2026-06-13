@@ -1,6 +1,6 @@
 # P32-T2 Deferred Candidate Regeneration Runbook
 
-**Status:** Planned
+**Status:** Archived
 **Selected:** 2026-06-13
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
 
@@ -64,3 +64,12 @@ candidate-layer triage outcomes, and non-authority boundaries.
 - No SpecPM repository change.
 - No selected handoff proposal rerun.
 - No registry publication or acceptance decision.
+
+## Archive
+
+**Archived:** 2026-06-13
+**Verdict:** PASS
+
+The runbook, DocC mirror, cross-links, docs-contract regression coverage, and
+validation report are complete. The next selected task is P32-T3: run the
+xyflow package-set identity regeneration dry run using this runbook.
