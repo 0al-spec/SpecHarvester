@@ -250,6 +250,11 @@ scrape runs.
 `mcpm-sh`, `specgraph`, and `specpm`, and keeps all entries pinned by exact
 revision.
 
+<doc:NextCorpusDeterministicDryRun> records `P33-T3`: the deterministic
+`--skip-ai` run processed all five repositories, produced five preview
+candidates, zero relation proposals, five passing bundle-set preflights, and
+package-id review signals for `mcpm-sh` and `specgraph`.
+
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
 no `preview_only` removal, and no AI output as registry truth.

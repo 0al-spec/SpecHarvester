@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P33-T4 Live Local-Model Next-Corpus Dry Run" in next_text:
+        assert_p33_t3_last_archived(next_text)
+        assert_p33_t2_recent(next_text)
+        assert_p33_t3_recent(next_text)
+        assert_phase_33_t4_active(next_text)
+        return
+
     if "# Next Task: P33-T3 Deterministic Next-Corpus Dry Run" in next_text:
         assert_p33_t2_last_archived(next_text)
         assert_p33_t1_recent(next_text)
@@ -486,6 +493,10 @@ def assert_p33_t1_last_archived(next_text: str) -> None:
 
 def assert_p33_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P33-T2 Next-Corpus Source Manifest Fixture" in next_text
+
+
+def assert_p33_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P33-T3 Deterministic Next-Corpus Dry Run" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1376,6 +1387,27 @@ def assert_p33_t2_recent(next_text: str) -> None:
     assert "does not execute harvested code" in normalized
 
 
+def assert_p33_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P33-T3` recorded the deterministic next-corpus dry run" in next_text
+    assert "NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md" in next_text
+    assert "NextCorpusDeterministicDryRun" in next_text
+    assert "SpecHarvesterNextCorpusDeterministicDryRun" in next_text
+    assert "spec-harvester.next-corpus-deterministic-dry-run/v0" in next_text
+    assert "five repositories" in normalized
+    assert "five preview candidates" in normalized
+    assert "zero relation proposals" in normalized
+    assert "five bundle-set preflights" in normalized
+    assert "mcpm.system" in next_text
+    assert "specgraph.system" in next_text
+    assert "package-id review signals" in normalized
+    assert "ready for P33-T4 live local-model review" in normalized
+    assert "review evidence only" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not accept relations" in normalized
+    assert "does not remove `preview_only`" in normalized
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1458,6 +1490,23 @@ def assert_phase_33_t3_active(next_text: str) -> None:
     assert "must not run live local-model" in normalized
     assert "must not accept packages" in normalized
     assert "must not publish registry metadata" in normalized
+
+
+def assert_phase_33_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P33-T4 Live Local-Model Next-Corpus Dry Run" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 33. Bounded Corpus Expansion Planning" in next_text
+    assert "live local-model draft/enrichment dry run" in normalized
+    assert "inputs/p33-next-corpus/repositories.yml" in next_text
+    assert "same five repositories" in normalized
+    assert "provider receipts" in normalized
+    assert "bounded JSON repair" in normalized
+    assert "candidate counts" in normalized
+    assert "package-id review signals" in normalized
+    assert "must not accept packages" in normalized
+    assert "must not publish registry metadata" in normalized
+    assert "AI output as registry truth" in normalized
 
 
 def assert_phase_26_t3_active(next_text: str) -> None:
@@ -5826,6 +5875,197 @@ def test_next_corpus_source_manifest_records_p33_t2_contract() -> None:
         assert "NextCorpusSourceManifest" in text
         assert "P33-T2" in text
         assert "inputs/p33-next-corpus/repositories.yml" in text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_next_corpus_deterministic_dry_run_records_p33_t3_contract() -> None:
+    manifest_path = ROOT / "inputs" / "p33-next-corpus" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_deterministic_dry_run"
+        / "p33-t3-next-corpus-deterministic-dry-run.example.json"
+    )
+    github_doc = ROOT / "docs" / "NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "NextCorpusDeterministicDryRun.md"
+    )
+    source_manifest_doc = ROOT / "docs" / "NEXT_CORPUS_SOURCE_MANIFEST.md"
+    source_manifest_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "NextCorpusSourceManifest.md"
+    )
+    bounded_plan = ROOT / "docs" / "BOUNDED_CORPUS_EXPANSION_PLAN.md"
+    bounded_plan_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BoundedCorpusExpansionPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Next-Corpus Deterministic Dry Run",
+            "P33-T3",
+            "SpecHarvesterNextCorpusDeterministicDryRun",
+            "spec-harvester.next-corpus-deterministic-dry-run/v0",
+            "inputs/p33-next-corpus/repositories.yml",
+            "p33-t3-next-corpus-deterministic-dry-run.example.json",
+            "serena",
+            "transmission",
+            "mcpm-sh",
+            "specgraph",
+            "specpm",
+            "serena.core",
+            "transmission.core",
+            "mcpm.system",
+            "specgraph.system",
+            "specpm.core",
+            "five repositories",
+            "five preview candidates" if path == docc_doc else "generated preview candidates: `5`",
+            "zero relation proposals" if path == docc_doc else "relation proposals: `0`",
+            "five bundle-set preflights"
+            if path == docc_doc
+            else "passed bundle-set preflights: `5`",
+            "package-id review signals",
+            "package_id_hint_changed_by_package_set_selection",
+            "ready for P33-T4 live local-model review",
+            "clone repositories",
+            "fetch remote state",
+            "install dependencies",
+            "execute harvested" if path == docc_doc else "execute harvested code",
+            "run package scripts",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "AI output as registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.next-corpus-deterministic-dry-run/v0"
+    assert payload["kind"] == "SpecHarvesterNextCorpusDeterministicDryRun"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["corpus"] == {
+        "id": "p33-next-bounded-corpus",
+        "manifestPath": "inputs/p33-next-corpus/repositories.yml",
+        "repositories": ["serena", "transmission", "mcpm-sh", "specgraph", "specpm"],
+    }
+    assert payload["source"]["sourceManifestDigest"] == (
+        "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    )
+    assert payload["source"]["batchReportDigest"] == (
+        "sha256:ffcf06735fac8945f8633250b5761af3a233aca7450ce1a18e858aaccfced282"
+    )
+    assert payload["source"]["batchValidationReportDigest"] == (
+        "sha256:ef177176f518d3a5ae9db9ef28b6ed8ac59376cd1f02653a6d0f69b230ab550d"
+    )
+    assert payload["summary"] == {
+        "aiDraftSkippedCount": 5,
+        "aiEnrichmentSkippedCount": 5,
+        "candidateCount": 5,
+        "collectedCount": 5,
+        "failedRepositoryCount": 0,
+        "passedPreflightCount": 5,
+        "processedCount": 5,
+        "relationCount": 0,
+        "repositoryCount": 5,
+        "reviewFindingCount": 2,
+        "skippedPackageCount": 0,
+    }
+    assert payload["productVerdict"]["status"] == "ready_for_live_local_model_next_corpus"
+    assert payload["productVerdict"]["pipelineHealth"] == "deterministic_pipeline_passed"
+    assert payload["productVerdict"]["candidateQuality"] == (
+        "valid_starter_packages_require_author_review"
+    )
+    for forbidden in (
+        "It did not execute live local-model draft or enrichment providers.",
+        "It is not SpecPM registry acceptance.",
+        "It does not accept packages.",
+        "It does not accept relations.",
+        "It does not seed baselines.",
+        "It does not remove preview_only.",
+        "It does not publish registry metadata.",
+        "It does not create a SpecPM pull request.",
+    ):
+        assert forbidden in payload["nonAuthority"]
+
+    records = read_repository_source_manifests(ROOT / "inputs" / "p33-next-corpus")
+    record_by_id = {record["id"]: record for record in records}
+    results_by_id = {result["id"]: result for result in payload["repositoryResults"]}
+    assert set(results_by_id) == set(record_by_id)
+    expected_candidates = {
+        "serena": ["serena.core"],
+        "transmission": ["transmission.core"],
+        "mcpm-sh": ["mcpm.system"],
+        "specgraph": ["specgraph.system"],
+        "specpm": ["specpm.core"],
+    }
+    expected_interface_status = {
+        "serena": "complete",
+        "transmission": "skipped",
+        "mcpm-sh": "complete",
+        "specgraph": "complete",
+        "specpm": "complete",
+    }
+    for repo_id, record in record_by_id.items():
+        result = results_by_id[repo_id]
+        assert result["repository"] == record["repository"]
+        assert result["revision"] == record["revision"]
+        assert result["manifestPackageId"] == record["packageId"]
+        assert result["candidateIds"] == expected_candidates[repo_id]
+        assert result["status"] == "passed"
+        assert result["collectionStatus"] == "collected"
+        assert result["collectionConfidence"] == "high"
+        assert result["packageSetDraftStatus"] == "ok"
+        assert result["preflight"]["status"] == "passed"
+        assert result["preflight"]["candidateCount"] == 1
+        assert result["preflight"]["relationCount"] == 0
+        assert result["preflight"]["errorCount"] == 0
+        assert result["preflight"]["warningCount"] == 0
+        assert result["blockerClasses"] == []
+        assert result["proceedToLiveModelReview"] is True
+        assert result["aiDraft"] == "skipped"
+        assert result["aiEnrichment"] == "skipped"
+        assert result["authorReadyStatus"] == "author_ready_draft"
+        assert result["authorReadyDecision"] == "stop_for_author_review"
+        assert result["interfaceIndex"]["status"] == expected_interface_status[repo_id]
+
+    for repo_id in ("mcpm-sh", "specgraph"):
+        findings = results_by_id[repo_id]["candidateLayerFindings"]
+        assert findings == [
+            {
+                "id": "package_id_hint_changed_by_package_set_selection",
+                "severity": "review",
+                "summary": findings[0]["summary"],
+            }
+        ]
+        assert (
+            results_by_id[repo_id]["manifestPackageId"]
+            not in results_by_id[repo_id]["candidateIds"]
+        )
+
+    assert "NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:NextCorpusDeterministicDryRun>" in docc_root.read_text(encoding="utf-8")
+    for path in (source_manifest_doc, bounded_plan, roadmap, workplan):
+        text = path.read_text(encoding="utf-8")
+        assert "NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md" in text
+        assert "P33-T3" in text
+    for path in (source_manifest_docc, bounded_plan_docc, roadmap_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "NextCorpusDeterministicDryRun" in text
+        assert "P33-T3" in text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

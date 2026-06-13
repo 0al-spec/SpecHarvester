@@ -28,6 +28,12 @@ P33-T2 records the next-corpus source manifest in
 `SpecHarvesterNextCorpusSourceManifestFixture` with
 `apiVersion: spec-harvester.next-corpus-source-manifest/v0`.
 
+P33-T3 records the deterministic `--skip-ai` dry run in
+<doc:NextCorpusDeterministicDryRun>. It processed all five repositories,
+produced five preview candidates, produced zero relation proposals, passed five
+bundle-set preflights, recorded package-id review signals for `mcpm-sh` and
+`specgraph`, and is ready for P33-T4 live local-model review.
+
 ## Source Manifest
 
 `P33-T2` must add the next-corpus source manifest fixture before any scrape

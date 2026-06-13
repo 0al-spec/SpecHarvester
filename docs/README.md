@@ -179,6 +179,10 @@ Published DocC site:
     P33-T2 next-corpus source manifest fixture for `serena`, `transmission`,
     `mcpm-sh`, `specgraph`, and `specpm` with pinned local checkout revisions
     and no network discovery behavior
+63. [`NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`](NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md):
+    P33-T3 deterministic `--skip-ai` dry-run evidence for the next bounded
+    corpus, including candidate counts, preflight outcomes, package-id review
+    signals, and live local-model readiness
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

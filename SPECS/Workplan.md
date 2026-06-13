@@ -1197,8 +1197,9 @@ Acceptance:
   requirements, repository selection rationale, and no network discovery
   behavior.
 - [ ] `P33-T3` Run the next-corpus deterministic collection and draft dry run
-  without AI, recording candidate counts, preflight outcomes, and blocker
-  classes.
+  without AI, recording candidate counts, preflight outcomes, blocker classes,
+  and the evidence page
+  [`NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`](../docs/NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md).
 - [ ] `P33-T4` Run the next-corpus live local-model draft/enrichment dry run
   with bounded JSON repair and provider receipts.
 - [ ] `P33-T5` Produce next-corpus candidate-layer triage and selected handoff
