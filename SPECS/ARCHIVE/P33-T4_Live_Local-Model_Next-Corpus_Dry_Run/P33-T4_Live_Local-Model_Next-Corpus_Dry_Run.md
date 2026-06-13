@@ -74,3 +74,7 @@ candidate-layer triage.
 ## Review Subject
 
 `p33_t4_live_local_model_next_corpus_dry_run`
+
+---
+**Archived:** 2026-06-14
+**Verdict:** PASS
