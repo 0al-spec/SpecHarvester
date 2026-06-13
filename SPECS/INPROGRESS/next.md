@@ -4,7 +4,8 @@
 **Phase:** Phase 20. Scoped Source Unit Harvesting
 **Effort:** Medium
 **Dependencies:** P20-T4, P17-T6
-**Status:** Ready
+**Status:** Selected
+**Active Branch:** `codex/p20-t5-scoped-source-unit-draft-intent-boundaries`
 **Last Archived:** P17-T6 SpecNode Refinement Orchestration Objects
 
 ## Recently Archived
