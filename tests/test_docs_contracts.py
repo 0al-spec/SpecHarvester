@@ -7,6 +7,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P29-T5 LM Studio JSON Repair and Retry" in next_text:
+        assert_p29_t4_last_archived(next_text)
+        assert_p29_t1_recent(next_text)
+        assert_p29_t2_recent(next_text)
+        assert_p29_t3_recent(next_text)
+        assert_p29_t4_recent(next_text)
+        assert_phase_29_t5_active(next_text)
+        return
+
     if "# Next Task: P29-T4 Single-Package Candidate Fallback" in next_text:
         assert_p29_t3_last_archived(next_text)
         assert_p29_t1_recent(next_text)
@@ -154,6 +163,10 @@ def assert_p29_t2_last_archived(next_text: str) -> None:
 
 def assert_p29_t3_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P29-T3 Corpus Baseline and Gap Report" in next_text
+
+
+def assert_p29_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P29-T4 Single-Package Candidate Fallback" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -444,6 +457,35 @@ def assert_phase_29_t4_active(next_text: str) -> None:
     assert "producer_preview_evidence_only" in next_text
     assert "avoid inventing `contains` relations" in next_text
     assert "SpecPM registry acceptance out of scope" in normalized
+
+
+def assert_p29_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P29-T4` implemented the deterministic single-package candidate fallback" in next_text
+    assert "SINGLE_PACKAGE_CANDIDATE_FALLBACK.md" in next_text
+    assert "SinglePackageCandidateFallback" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "0` relation proposals" in next_text
+    assert "single_package_source_manifest_fallback" in next_text
+    assert "preview_only" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "producer receipt" in normalized
+    assert "author-ready quality report" in normalized
+    assert "SpecPM registry acceptance" in normalized
+
+
+def assert_phase_29_t5_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P29-T5 LM Studio JSON Repair and Retry" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "LM Studio/OpenAI-compatible JSON repair/retry" in normalized
+    assert "malformed local model output" in normalized
+    assert "no-raw-response persistence boundary" in normalized
+    assert "structured diagnostics" in normalized
+    assert "repair attempt counts" in normalized
+    assert "raw prompts, raw provider responses, secrets, and chain-of-thought" in normalized
+    assert "needs_regeneration" in next_text
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
