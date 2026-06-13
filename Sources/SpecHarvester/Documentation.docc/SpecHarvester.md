@@ -159,6 +159,7 @@ the host.
 - <doc:AutonomousCandidateTechDebtPlan>
 - <doc:AutonomousCandidateCorpusBaseline>
 - <doc:AutonomousCandidateCorpusQualityGate>
+- <doc:LimitedPopularLibraryCorpusPlan>
 - <doc:SinglePackageCandidateFallback>
 - <doc:ProposalAutomation>
 

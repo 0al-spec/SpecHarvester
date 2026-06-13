@@ -160,10 +160,13 @@ Published DocC site:
 57. [`AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md`](AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md):
     post-fallback Flask/Gin/xyflow quality gate and limited scraping readiness
     verdict
-58. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
+58. [`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md):
+    P30 bounded popular-library corpus selection, source manifest, runbook,
+    stop conditions, and non-authority boundaries
+59. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
     deterministic fallback for Flask/Gin-style repositories with no workspace
     package records
-59. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+60. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
