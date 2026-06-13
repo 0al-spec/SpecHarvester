@@ -1,6 +1,6 @@
 # Next Task: P29-T5 LM Studio JSON Repair and Retry
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P29-T5 LM Studio JSON Repair and Retry
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
