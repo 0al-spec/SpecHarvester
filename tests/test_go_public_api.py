@@ -6,9 +6,21 @@ import pytest
 
 from spec_harvester.go_public_api import (
     GO_PUBLIC_API_ANALYZER_ID,
+    GoPublicApiAnalyzer,
     analyze_go_public_api,
     go_source_files,
 )
+from spec_harvester.public_api_analyzer_options import PublicApiAnalyzerOptions
+
+
+def test_go_public_api_analyzer_object_matches_public_wrapper(tmp_path: Path) -> None:
+    repo = tmp_path / "go-demo"
+    repo.mkdir()
+    (repo / "go.mod").write_text("module example.com/demo\n", encoding="utf-8")
+    (repo / "api.go").write_text("package demo\n\nfunc Visible() {}\n", encoding="utf-8")
+    options = PublicApiAnalyzerOptions(source=repo, source_revision="abc123")
+
+    assert GoPublicApiAnalyzer(options).index() == analyze_go_public_api(options)
 
 
 def test_analyze_go_public_api_extracts_exported_declarations(tmp_path: Path) -> None:

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -51,62 +52,92 @@ def analyze_python_public_api(
 
 
 def analyze_python_public_api_with_options(options: PublicApiAnalyzerOptions) -> dict[str, Any]:
-    root = python_source_root(options.source)
-    relative_root = root.parent if root.is_file() else root
-    cache = options.cache()
-    entrypoints: list[dict[str, Any]] = []
-    diagnostics: list[dict[str, Any]] = []
-    for path in python_source_files(root):
+    return PythonPublicApiAnalyzer(options).index()
+
+
+@dataclass(frozen=True)
+class PythonPublicApiAnalyzer:
+    options: PublicApiAnalyzerOptions
+
+    def index(self) -> dict[str, Any]:
+        root = self.source_root()
+        entrypoints, diagnostics = self.entrypoints(root, self.relative_root(root), self.cache())
+        index = new_public_interface_index(
+            source_revision=self.options.source_revision,
+            analyzers=[self.analyzer_record()],
+            packages=[self.package_record(root, entrypoints)],
+            diagnostics=diagnostics,
+        )
+        validate_public_interface_index(index)
+        return index
+
+    def source_root(self) -> Path:
+        return python_source_root(self.options.source)
+
+    def relative_root(self, root: Path) -> Path:
+        return root.parent if root.is_file() else root
+
+    def cache(self) -> AnalyzerCache | None:
+        return self.options.cache()
+
+    def analyzer_record(self) -> dict[str, Any]:
+        return analyzer_record(
+            PYTHON_PUBLIC_API_ANALYZER_ID,
+            PYTHON_PUBLIC_API_ANALYZER_VERSION,
+            execution="none",
+            confidence="high",
+        )
+
+    def package_record(self, root: Path, entrypoints: list[dict[str, Any]]) -> dict[str, Any]:
+        return {
+            "id": self.options.package_id_or(root.name),
+            "path": ".",
+            "language": "python",
+            "entrypoints": entrypoints,
+        }
+
+    def entrypoints(
+        self,
+        root: Path,
+        relative_root: Path,
+        cache: AnalyzerCache | None,
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        entrypoints: list[dict[str, Any]] = []
+        diagnostics: list[dict[str, Any]] = []
+        for path in python_source_files(root):
+            entrypoint, file_diagnostics = self.entrypoint(path, relative_root, cache)
+            if entrypoint is not None:
+                entrypoints.append(entrypoint)
+            diagnostics.extend(file_diagnostics)
+        return entrypoints, diagnostics
+
+    def entrypoint(
+        self,
+        path: Path,
+        relative_root: Path,
+        cache: AnalyzerCache | None,
+    ) -> tuple[dict[str, Any] | None, list[dict[str, Any]]]:
         relative = path.relative_to(relative_root).as_posix()
         data = path.read_bytes()
         digest = hashlib.sha256(data).hexdigest()
         cached_payload = read_cached_python_payload(cache, relative, digest)
         if cached_payload is not None:
-            entrypoint, file_diagnostics = cached_payload
-            if entrypoint is not None:
-                entrypoints.append(entrypoint)
-            diagnostics.extend(file_diagnostics)
-            continue
+            return cached_payload
 
         text = data.decode("utf-8", errors="replace")
         try:
             module = ast.parse(text, filename=relative)
         except (SyntaxError, ValueError) as exc:
             diagnostic = parse_diagnostic(relative, digest, exc)
-            diagnostics.append(diagnostic)
             write_cached_python_payload(cache, digest, None, [diagnostic])
-            continue
+            return None, [diagnostic]
 
-        symbols = module_symbols(module, relative, digest)
         entrypoint = {
             "path": relative,
-            "symbols": symbols,
+            "symbols": module_symbols(module, relative, digest),
         }
-        entrypoints.append(entrypoint)
         write_cached_python_payload(cache, digest, entrypoint, [])
-
-    index = new_public_interface_index(
-        source_revision=options.source_revision,
-        analyzers=[
-            analyzer_record(
-                PYTHON_PUBLIC_API_ANALYZER_ID,
-                PYTHON_PUBLIC_API_ANALYZER_VERSION,
-                execution="none",
-                confidence="high",
-            )
-        ],
-        packages=[
-            {
-                "id": options.package_id_or(root.name),
-                "path": ".",
-                "language": "python",
-                "entrypoints": entrypoints,
-            }
-        ],
-        diagnostics=diagnostics,
-    )
-    validate_public_interface_index(index)
-    return index
+        return entrypoint, []
 
 
 def python_source_root(source: Path) -> Path:

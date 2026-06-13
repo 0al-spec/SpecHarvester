@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import os
 import re
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -64,81 +65,121 @@ def analyze_go_public_api(
 
 
 def analyze_go_public_api_with_options(options: PublicApiAnalyzerOptions) -> dict[str, Any]:
-    root = options.root("Go")
-    cache = options.cache()
-    module_path = go_module_path(root) or options.package_id_or(root.name)
-    package_entrypoints: dict[str, list[dict[str, Any]]] = {}
-    diagnostics: list[dict[str, Any]] = []
+    return GoPublicApiAnalyzer(options).index()
 
-    for path in go_source_files(root):
-        relative = path.relative_to(root).as_posix()
-        data = path.read_bytes()
-        if is_generated_go_file(data):
-            continue
-        digest = hashlib.sha256(data).hexdigest()
-        cached_payload = read_cached_go_payload(cache, relative, digest)
-        if cached_payload is not None:
-            package_path, _package_name, entrypoint, file_diagnostics = cached_payload
+
+@dataclass(frozen=True)
+class GoPublicApiAnalyzer:
+    options: PublicApiAnalyzerOptions
+
+    def index(self) -> dict[str, Any]:
+        root = self.root()
+        package_entrypoints, diagnostics = self.package_entrypoints(root, self.cache())
+        packages = self.package_records(root, package_entrypoints)
+        if not packages and not diagnostics:
+            diagnostics.append(self.no_source_diagnostic())
+
+        index = new_public_interface_index(
+            source_revision=self.options.source_revision,
+            analyzers=[self.analyzer_record()],
+            packages=packages,
+            diagnostics=sorted(diagnostics, key=lambda item: (item["level"], item.get("path", ""))),
+        )
+        validate_public_interface_index(index)
+        return index
+
+    def root(self) -> Path:
+        return self.options.root("Go")
+
+    def cache(self) -> AnalyzerCache | None:
+        return self.options.cache()
+
+    def module_path(self, root: Path) -> str:
+        return go_module_path(root) or self.options.package_id_or(root.name)
+
+    def analyzer_record(self) -> dict[str, Any]:
+        return analyzer_record(
+            GO_PUBLIC_API_ANALYZER_ID,
+            GO_PUBLIC_API_ANALYZER_VERSION,
+            execution="none",
+            confidence="medium",
+        )
+
+    def package_entrypoints(
+        self,
+        root: Path,
+        cache: AnalyzerCache | None,
+    ) -> tuple[dict[str, list[dict[str, Any]]], list[dict[str, Any]]]:
+        package_entrypoints: dict[str, list[dict[str, Any]]] = {}
+        diagnostics: list[dict[str, Any]] = []
+        for path in go_source_files(root):
+            package_path, entrypoint, file_diagnostics = self.entrypoint(path, root, cache)
             if package_path is not None and entrypoint is not None:
                 package_entrypoints.setdefault(package_path, []).append(entrypoint)
             diagnostics.extend(file_diagnostics)
-            continue
+        return package_entrypoints, diagnostics
+
+    def entrypoint(
+        self,
+        path: Path,
+        root: Path,
+        cache: AnalyzerCache | None,
+    ) -> tuple[str | None, dict[str, Any] | None, list[dict[str, Any]]]:
+        relative = path.relative_to(root).as_posix()
+        data = path.read_bytes()
+        if is_generated_go_file(data):
+            return None, None, []
+
+        digest = hashlib.sha256(data).hexdigest()
+        cached_payload = read_cached_go_payload(cache, relative, digest)
+        if cached_payload is not None:
+            package_path, _package_name, entrypoint, diagnostics = cached_payload
+            return package_path, entrypoint, diagnostics
 
         text = data.decode("utf-8", errors="replace")
         package_name = package_name_from_source(text)
         if package_name is None:
-            diagnostic = {
-                "level": "error",
-                "path": relative,
-                "message": "Unable to find Go package declaration.",
-                "evidence": evidence_record(relative, digest),
-            }
-            diagnostics.append(diagnostic)
+            diagnostic = self.missing_package_diagnostic(relative, digest)
             write_cached_go_payload(cache, digest, None, None, None, [diagnostic])
-            continue
+            return None, None, [diagnostic]
 
         package_path = package_path_for_file(path, root)
-        symbols = go_symbols(text, relative, digest)
         entrypoint = {
             "path": relative,
-            "symbols": symbols,
+            "symbols": go_symbols(text, relative, digest),
         }
-        package_entrypoints.setdefault(package_path, []).append(entrypoint)
         write_cached_go_payload(cache, digest, package_path, package_name, entrypoint, [])
+        return package_path, entrypoint, []
 
-    packages = [
-        {
-            "id": package_import_path(module_path, package_path),
-            "path": package_path,
-            "language": "go",
-            "entrypoints": sorted(entrypoints, key=lambda item: item["path"]),
-        }
-        for package_path, entrypoints in sorted(package_entrypoints.items())
-    ]
-
-    if not packages and not diagnostics:
-        diagnostics.append(
+    def package_records(
+        self,
+        root: Path,
+        package_entrypoints: dict[str, list[dict[str, Any]]],
+    ) -> list[dict[str, Any]]:
+        module_path = self.module_path(root)
+        return [
             {
-                "level": "warning",
-                "message": "No non-generated Go source files were found.",
+                "id": package_import_path(module_path, package_path),
+                "path": package_path,
+                "language": "go",
+                "entrypoints": sorted(entrypoints, key=lambda item: item["path"]),
             }
-        )
+            for package_path, entrypoints in sorted(package_entrypoints.items())
+        ]
 
-    index = new_public_interface_index(
-        source_revision=options.source_revision,
-        analyzers=[
-            analyzer_record(
-                GO_PUBLIC_API_ANALYZER_ID,
-                GO_PUBLIC_API_ANALYZER_VERSION,
-                execution="none",
-                confidence="medium",
-            )
-        ],
-        packages=packages,
-        diagnostics=sorted(diagnostics, key=lambda item: (item["level"], item.get("path", ""))),
-    )
-    validate_public_interface_index(index)
-    return index
+    def missing_package_diagnostic(self, relative: str, digest: str) -> dict[str, Any]:
+        return {
+            "level": "error",
+            "path": relative,
+            "message": "Unable to find Go package declaration.",
+            "evidence": evidence_record(relative, digest),
+        }
+
+    def no_source_diagnostic(self) -> dict[str, str]:
+        return {
+            "level": "warning",
+            "message": "No non-generated Go source files were found.",
+        }
 
 
 def go_module_path(root: Path) -> str | None:
