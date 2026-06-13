@@ -160,6 +160,7 @@ the host.
 - <doc:AutonomousCandidateCorpusBaseline>
 - <doc:AutonomousCandidateCorpusQualityGate>
 - <doc:LimitedPopularLibraryCorpusPlan>
+- <doc:LimitedPopularLibraryDeterministicBatch>
 - <doc:SinglePackageCandidateFallback>
 - <doc:ProposalAutomation>
 

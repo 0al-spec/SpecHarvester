@@ -1,0 +1,251 @@
+{
+  "apiVersion": "spec-harvester.limited-popular-library-deterministic-batch/v0",
+  "authority": "producer_preview_evidence_only",
+  "corpus": {
+    "id": "p30-limited-popular-libraries",
+    "manifestPath": "inputs/limited-popular-libraries/repositories.yml",
+    "repositories": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ]
+  },
+  "kind": "SpecHarvesterLimitedPopularLibraryDeterministicBatch",
+  "nonAuthority": [
+    "This deterministic batch is review evidence only.",
+    "It did not execute AI draft or enrichment providers.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata."
+  ],
+  "productVerdict": {
+    "candidateQuality": "valid_starter_packages_require_author_review",
+    "pipelineHealth": "deterministic_pipeline_passed",
+    "status": "ready_for_live_lm_studio_limited_corpus",
+    "summary": "The deterministic P30 limited corpus run processed all six repositories with passing bundle-set preflight and author-ready draft stop-policy decisions. The corpus is ready for the P30-T3 live LM Studio comparison, while package-id alignment and semantic quality remain candidate-layer review work."
+  },
+  "repositoryResults": [
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "flask.core"
+      ],
+      "collectionStatus": "collected",
+      "id": "flask",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "entrypointCount": 83,
+        "packageCount": 1,
+        "status": "complete",
+        "symbolCount": 941
+      },
+      "manifestPackageId": "flask.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    },
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "gin.core"
+      ],
+      "collectionStatus": "collected",
+      "id": "gin",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "entrypointCount": 56,
+        "packageCount": 5,
+        "status": "complete",
+        "symbolCount": 456
+      },
+      "manifestPackageId": "gin.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    },
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace"
+      ],
+      "collectionStatus": "collected",
+      "id": "xyflow",
+      "interfaceIndex": {
+        "diagnosticCount": 29,
+        "entrypointCount": 2,
+        "packageCount": 11,
+        "status": "partial",
+        "symbolCount": 1
+      },
+      "manifestPackageId": "xyflow.workspace",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 4,
+        "errorCount": 0,
+        "relationCount": 3,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "skippedPackageCount": 7,
+      "status": "passed"
+    },
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "cupertino.core"
+      ],
+      "collectionStatus": "collected",
+      "id": "cupertino",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "entrypointCount": 154,
+        "packageCount": 1,
+        "status": "complete",
+        "symbolCount": 2555
+      },
+      "manifestPackageId": "cupertino.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "repository": "https://github.com/mihaelamj/cupertino",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    },
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "navigation_split_view.core"
+      ],
+      "candidateLayerFindings": [
+        {
+          "id": "package_id_hint_mismatch",
+          "severity": "review",
+          "summary": "The manifest packageId hint uses navigation-split-view.core, while deterministic drafting normalized the generated candidate id to navigation_split_view.core."
+        }
+      ],
+      "collectionStatus": "collected",
+      "id": "navigation-split-view",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "entrypointCount": 46,
+        "packageCount": 1,
+        "status": "complete",
+        "symbolCount": 54
+      },
+      "manifestPackageId": "navigation-split-view.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "repository": "https://github.com/SoundBlaster/NavigationSplitView",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    },
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "candidateIds": [
+        "docc2context.core"
+      ],
+      "collectionStatus": "collected",
+      "id": "docc2context",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "entrypointCount": 19,
+        "packageCount": 1,
+        "status": "complete",
+        "symbolCount": 372
+      },
+      "manifestPackageId": "docc2context.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "repository": "https://github.com/SoundBlaster/docc2context",
+      "revision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    }
+  ],
+  "schemaVersion": 1,
+  "source": {
+    "batchReportDigest": "sha256:f2e6ad92cb9a6686e8d7bf333b173aeb91dd7d3005c955da7dece5cda620500c",
+    "batchValidationReportDigest": "sha256:ef81c8a2f8a4b7a720f19112bd46b72c96e5c9ff07695c9591221950e58c29f5",
+    "mode": "skip_ai",
+    "runRoot": "/tmp/specharvester-p30-t2.7rNeq2/deterministic"
+  },
+  "summary": {
+    "aiDraftSkippedCount": 6,
+    "aiEnrichmentSkippedCount": 6,
+    "candidateCount": 9,
+    "collectedCount": 6,
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 6,
+    "processedCount": 6,
+    "relationCount": 3,
+    "repositoryCount": 6,
+    "reviewFindingCount": 1,
+    "skippedPackageCount": 7
+  }
+}

@@ -110,6 +110,7 @@
 | P29-T5 | [P29-T5_LM_Studio_JSON_Repair_and_Retry/](P29-T5_LM_Studio_JSON_Repair_and_Retry/) | 2026-06-13 | PASS |
 | P29-T6 | [P29-T6_Corpus_Quality_Gate_After_Fallbacks/](P29-T6_Corpus_Quality_Gate_After_Fallbacks/) | 2026-06-13 | PASS |
 | P30-T1 | [P30-T1_Limited_Popular-Library_Corpus_Plan/](P30-T1_Limited_Popular-Library_Corpus_Plan/) | 2026-06-13 | PASS |
+| P30-T2 | [P30-T2_Deterministic_Limited_Corpus_Batch/](P30-T2_Deterministic_Limited_Corpus_Batch/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -122,6 +123,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t2_deterministic_limited_corpus_batch.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p30_t1_limited_popular_library_corpus_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t6_corpus_quality_gate_after_fallbacks.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t1_procedural_style_metrics.md` |
@@ -172,6 +174,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P30-T2 | Archived REVIEW_p30_t2_deterministic_limited_corpus_batch report |
+| 2026-06-13 | P30-T2 | Archived Deterministic Limited Corpus Batch (PASS) |
 | 2026-06-13 | P30-T1 | Archived REVIEW_p30_t1_limited_popular_library_corpus_plan report |
 | 2026-06-13 | P30-T1 | Archived Limited Popular-Library Corpus Plan (PASS) |
 | 2026-06-13 | P29-T6 | Archived REVIEW_p29_t6_corpus_quality_gate_after_fallbacks report |

@@ -128,6 +128,9 @@ The P30 limited popular-library scraping batch starts this expansion with a
 bounded source manifest, explicit stop conditions, deterministic and live run
 commands, candidate-layer triage states, and non-authority boundaries. See
 <doc:LimitedPopularLibraryCorpusPlan>.
+The deterministic `--skip-ai` result is recorded in
+<doc:LimitedPopularLibraryDeterministicBatch> with verdict
+`ready_for_live_lm_studio_limited_corpus`.
 
 ### Ecosystem Analyzer Depth
 
