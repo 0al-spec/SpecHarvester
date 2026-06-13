@@ -1,6 +1,6 @@
 # Next Task: P29-T2 SpecPM Candidate-Layer Intake Policy
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P29-T2 SpecPM Candidate-Layer Intake Policy
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
