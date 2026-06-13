@@ -1033,3 +1033,53 @@ Acceptance:
   preview package candidate instead of only evidence with zero candidates.
 - Local LM Studio JSON failures become bounded repair/retry diagnostics rather
   than silent success or lost deterministic artifacts.
+
+## Phase 30. Limited Popular-Library Scraping Batch
+
+- [ ] `P30-T1` Define the limited popular-library corpus expansion plan,
+  source-manifest shape, selection criteria, operator runbook, and non-authority
+  boundaries before running a larger scrape.
+- [ ] `P30-T2` Run deterministic `--skip-ai` scraping over the selected limited
+  popular-library corpus and record collection, candidate, relation, preflight,
+  and stop-policy outcomes.
+- [ ] `P30-T3` Run the same limited corpus through live LM Studio/OpenAI-
+  compatible AI draft and enrichment with cost/time caps, repair summaries, and
+  bounded diagnostics.
+- [ ] `P30-T4` Produce a candidate-layer triage report that classifies each
+  generated preview package as `candidate_layer_review_required`,
+  `needs_regeneration`, `blocked`, or `not_for_intake`.
+- [ ] `P30-T5` Prepare SpecPM handoff dry-run evidence for selected candidates
+  only, preserving `preview_only`, `producer_preview_evidence_only`, and
+  external registry acceptance authority.
+
+Motivation:
+
+- P29 established that the autonomous candidate MVP can produce valid starter
+  packages for Flask/Gin-style single-package repositories and xyflow-style
+  package sets.
+- The next risk is operational, not acceptance-related: a larger scrape can
+  easily become an unbounded framework encyclopedia or an accidental registry
+  intake path unless corpus selection, run limits, and review boundaries are
+  explicit.
+- Operators need a repeatable limited batch before any broad autonomous
+  harvesting is attempted.
+
+Goal:
+
+- Expand from the three-repository quality gate to a small, bounded
+  popular-library batch while keeping all output as preview evidence for human
+  review.
+
+Acceptance:
+
+- The limited corpus is defined by local public checkouts and pinned revisions;
+  the runner does not clone repositories, install dependencies, execute package
+  scripts, browse arbitrary network resources, or publish registry metadata.
+- The corpus includes a mix of single-package repositories and package-set or
+  workspace-style repositories.
+- Deterministic and live runs produce machine-readable corpus reports,
+  operator-facing summaries, and bounded diagnostics.
+- Candidate triage is explicit and does not treat generated output as accepted
+  SpecPM registry truth.
+- SpecPM handoff dry-run evidence is produced only for selected candidates and
+  remains external to registry acceptance.
