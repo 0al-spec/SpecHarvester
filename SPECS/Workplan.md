@@ -1086,7 +1086,7 @@ Acceptance:
 
 ## Phase 31. Selected Candidate SpecPM Intake Handoff
 
-- [ ] `P31-T1` Define a selected candidate handoff proposal contract that turns
+- [x] `P31-T1` Define a selected candidate handoff proposal contract that turns
   P30-style selected candidate dry-run evidence into portable SpecPM review
   evidence without accepting packages or creating registry authority.
 - [ ] `P31-T2` Implement a `selected-candidate-handoff-proposal` producer helper

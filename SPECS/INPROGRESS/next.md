@@ -1,27 +1,13 @@
-# Next Task: P31-T1 Selected Candidate Handoff Proposal Contract
+# Next Task: P31-T2 Selected Candidate Handoff Proposal Helper
 
 **Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P31-T1 Selected Candidate Handoff Proposal Contract
+**Task:** P31-T2 Selected Candidate Handoff Proposal Helper
 **Phase:** Phase 31. Selected Candidate SpecPM Intake Handoff
-**Last Archived:** P30-T5 Selected Candidate Handoff Dry Run
+**Last Archived:** P31-T1 Selected Candidate Handoff Proposal Contract
 
 ## Recently Archived
 
-- `P30-T1` defined the limited popular-library corpus plan in
-  `docs/LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`,
-  `<doc:LimitedPopularLibraryCorpusPlan>`, and
-  `inputs/limited-popular-libraries/repositories.yml`.
-- `P30-T2` recorded deterministic `--skip-ai` evidence for all 6 limited
-  corpus repositories with 9 preview candidates, 3 relation proposals, and
-  passing bundle-set preflight.
-- `P30-T3` recorded the live LM Studio run with `openai/gpt-oss-20b`,
-  preserved deterministic candidate/relation counts, needed no JSON repair, and
-  produced candidate-layer findings for triage.
-- `P30-T4` recorded the candidate-layer triage report with verdict
-  `ready_for_selected_handoff_dry_run`: `flask.core`, `gin.core`, and
-  `docc2context.core` were selected, while 6 deferred candidates remained
-  `needs_regeneration`.
 - `P30-T5` recorded the selected handoff dry run in
   `docs/LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`,
   `<doc:LimitedPopularLibrarySelectedHandoffDryRun>`, and
@@ -29,23 +15,34 @@
   verdict was `selected_handoff_dry_run_ready`, with passing producer
   preflight, static viewer evidence, required bundle file digests, and
   `external_required` registry acceptance decisions for the 3 selected
-  candidates. The output remained `producer_preview_evidence_only` and not
-  SpecPM acceptance.
+  candidates: `flask.core`, `gin.core`, and `docc2context.core`. The output
+  remained `producer_preview_evidence_only` and not SpecPM acceptance. The P30
+  split kept 6 deferred candidates out of selected handoff until regeneration:
+  `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`,
+  `cupertino.core`, and `navigation_split_view.core`.
+- `P31-T1` defined `SpecHarvesterSelectedCandidateHandoffProposal` in
+  `docs/SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`,
+  `<doc:SelectedCandidateHandoffProposal>`, and the
+  `spec-harvester.selected-candidate-handoff-proposal/v0` fixture. The
+  contract records 3 selected candidates, 6 deferred candidates, required
+  evidence roles, producer preflight status, static viewer status, and
+  `external_required` registry acceptance decisions while staying
+  `producer_preview_evidence_only` and not SpecPM acceptance.
 
 ## Outcome
 
-Phase 30 is complete. The next gap is not another scrape: it is the handoff
-envelope between selected producer evidence and future SpecPM-side intake.
-
-P30-T5 recorded a dry-run evidence fixture, but it did not define a portable
-proposal contract that can be attached to SpecPM review or consumed by future
-consumer-side preflight.
+The selected candidate handoff contract exists, but it is still only a
+documented shape and example fixture. Operators cannot yet generate the
+portable JSON and Markdown handoff artifacts from real selected candidate
+bundles.
 
 ## Next Step
 
-Implement `P31-T1`: define
-`SpecHarvesterSelectedCandidateHandoffProposal` as a stable producer evidence
-contract for selected candidates. Preserve `preview_only`,
-`producer_preview_evidence_only`, and external SpecPM acceptance authority.
-Do not create a SpecPM pull request, accept packages, accept relations, seed
-baselines, or publish registry metadata.
+Implement `P31-T2`: add a producer helper that reads selected candidate
+bundles, producer preflight reports, static viewer outputs, and the selected
+handoff dry-run source evidence, then emits JSON and Markdown handoff
+artifacts matching `SpecHarvesterSelectedCandidateHandoffProposal`.
+
+SpecPM acceptance out of scope. The helper must not mutate candidate bundles,
+create a SpecPM pull request, accept packages, accept relations, seed
+baselines, remove `preview_only`, or publish registry metadata.

@@ -114,3 +114,7 @@ P31-T1 cannot:
 - No selected candidate curation.
 - No regeneration of deferred candidates.
 - No registry publication.
+
+---
+**Archived:** 2026-06-13
+**Verdict:** PASS
