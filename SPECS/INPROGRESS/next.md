@@ -1,22 +1,32 @@
-# Next Task: P17-T2 CLI Domain Command Objects
+# Next Task: P17-T3 Report Builder Behavior Objects
 
 **Priority:** P1
 **Phase:** Phase 17. Elegant Objects Refactoring Strategy
 **Effort:** Medium
-**Dependencies:** P17-T1
+**Dependencies:** P17-T2
 **Status:** Selected
-**Stack Base:** codex/p33-t8-next-corpus-intake-readiness-decision
+**Last Archived:** P17-T2 CLI Domain Command Objects
+
+## Recently Archived
+
+- `P17-T2` split selected CLI report execution bodies into
+  `src/spec_harvester/cli_report_commands.py`. The completed slice introduced
+  `CodeDuplicationReportCommand`, `ArchitectureLintCommand`, and
+  `ProceduralStyleReportCommand` for `code-duplication-report`,
+  `architecture-lint`, and `procedural-style-report` while preserving parser
+  flags, JSON error output, report schemas, trust-boundary text, and exit-code
+  behavior. The procedural-style smoke recorded behaviorRichClassCount: 3 for
+  the new command-object slice.
 
 ## Description
 
-Split the CLI execution shell from domain command behavior by introducing
-small command objects for selected `code-duplication-report`,
-`architecture-lint`, and `procedural-style-report` flows while preserving
-parser flags, JSON error output, report schemas, and exit-code behavior.
+Refactor report builders behind behavior-rich report objects one output
+contract at a time, starting with low-risk governance or accepted candidate
+reports and preserving report schemas, issue codes, and markdown output.
 
-This task is a narrow EO refactoring slice. It must not change report payloads,
-public CLI names, option names, defaults, trust-boundary text, or failure
-semantics.
+This is the next Phase 17 EO refactoring slice after the CLI shell/domain
+command split. Keep the scope narrow and add characterization tests before
+moving mature report-building behavior.
 
 ## Next Step
 
