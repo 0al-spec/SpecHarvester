@@ -179,6 +179,12 @@ spec-harvester selected-candidate-handoff-proposal \
   --proposal-body .smoke/selected-handoff/selected-candidate-handoff-proposal.md
 ```
 
+P31-T3 records a generated dry-run handoff proposal for the real P30 selected
+candidates in
+`tests/fixtures/selected_candidate_handoff_proposal/p31-t3-real-selected-candidate-handoff.example.json`
+and [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md).
+This is still producer preview evidence only, not SpecPM acceptance.
+
 ## Fresh Candidate Refresh Run
 
 When a package-set bundle is generated to evaluate whether current SpecPM

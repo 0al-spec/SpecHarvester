@@ -131,6 +131,7 @@ def build_selected_candidate_handoff_proposal(
     options: SelectedCandidateHandoffProposalOptions,
 ) -> dict[str, Any]:
     dry_run_path = options.selected_handoff_dry_run.resolve()
+    dry_run_display_path = options.selected_handoff_dry_run
     dry_run = read_required_json(dry_run_path)
     check_identity(
         dry_run,
@@ -150,7 +151,8 @@ def build_selected_candidate_handoff_proposal(
         item for item in list_value(dry_run.get("deferredCandidates")) if isinstance(item, dict)
     ]
     selected_records = [
-        selected_candidate_record(options, dry_run_path, candidate) for candidate in selected
+        selected_candidate_record(options, dry_run_display_path, dry_run_path, candidate)
+        for candidate in selected
     ]
     deferred_records = [deferred_candidate_record(candidate) for candidate in deferred]
 
@@ -159,7 +161,7 @@ def build_selected_candidate_handoff_proposal(
         "kind": SELECTED_CANDIDATE_HANDOFF_PROPOSAL_KIND,
         "schemaVersion": SELECTED_CANDIDATE_HANDOFF_PROPOSAL_SCHEMA_VERSION,
         "authority": "producer_preview_evidence_only",
-        "source": source_record(dry_run, dry_run_path),
+        "source": source_record(dry_run, dry_run_display_path, dry_run_path),
         "summary": {
             "selectedCandidateCount": len(selected_records),
             "deferredCandidateCount": len(deferred_records),
@@ -270,6 +272,7 @@ def write_selected_candidate_handoff_proposal_markdown(
 
 def selected_candidate_record(
     options: SelectedCandidateHandoffProposalOptions,
+    dry_run_display_path: Path,
     dry_run_path: Path,
     candidate: dict[str, Any],
 ) -> dict[str, Any]:
@@ -280,7 +283,14 @@ def selected_candidate_record(
     viewer_dir = static_viewer_path(options, candidate)
     preflight = producer_preflight_record(candidate, preflight_path)
     viewer = static_viewer_record(candidate, viewer_dir)
-    evidence = evidence_links(candidate, candidate_dir, preflight_path, viewer_dir, dry_run_path)
+    evidence = evidence_links(
+        candidate,
+        candidate_dir,
+        preflight_path,
+        viewer_dir,
+        dry_run_display_path,
+        dry_run_path,
+    )
 
     return {
         "id": candidate_id,
@@ -327,7 +337,7 @@ def candidate_bundle_path(
 ) -> Path:
     candidate_id = string_value(candidate.get("id"))
     if options.candidate_root is None:
-        return Path(string_value(candidate.get("sourceCandidatePath"))).resolve()
+        return Path(string_value(candidate.get("sourceCandidatePath")))
     root = options.candidate_root.resolve()
     candidate_path = root / candidate_id / "candidate"
     if candidate_path.exists():
@@ -423,6 +433,7 @@ def evidence_links(
     candidate_dir: Path,
     preflight_path: Path,
     viewer_dir: Path,
+    dry_run_display_path: Path,
     dry_run_path: Path,
 ) -> list[dict[str, Any]]:
     links = [
@@ -473,7 +484,7 @@ def evidence_links(
             ),
             artifact_link(
                 role="selected_handoff_dry_run",
-                path=str(dry_run_path),
+                path=str(dry_run_display_path),
                 path_scope="local_path",
                 source_path=dry_run_path,
             ),
@@ -530,7 +541,11 @@ def registry_acceptance_decision(candidate: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def source_record(dry_run: dict[str, Any], dry_run_path: Path) -> dict[str, Any]:
+def source_record(
+    dry_run: dict[str, Any],
+    dry_run_display_path: Path,
+    dry_run_path: Path,
+) -> dict[str, Any]:
     inputs = mapping_value(dry_run.get("inputs"))
     triage = mapping_value(inputs.get("candidateLayerTriageFixture"))
     product_verdict = mapping_value(dry_run.get("productVerdict"))
@@ -544,7 +559,7 @@ def source_record(dry_run: dict[str, Any], dry_run_path: Path) -> dict[str, Any]
         "selectedDryRunFixture": {
             "apiVersion": string_value(dry_run.get("apiVersion")),
             "kind": string_value(dry_run.get("kind")),
-            "path": str(dry_run_path),
+            "path": str(dry_run_display_path),
             "digest": f"sha256:{sha256_file(dry_run_path)}",
             "status": string_value(product_verdict.get("status")),
         },
@@ -555,9 +570,9 @@ def safe_candidate_path(candidate_dir: Path, relative_path: str) -> Path | None:
     relative = Path(relative_path)
     if relative.is_absolute() or ".." in relative.parts:
         return None
-    candidate = (candidate_dir / relative).resolve(strict=False)
+    candidate = candidate_dir / relative
     try:
-        candidate.relative_to(candidate_dir.resolve())
+        candidate.resolve(strict=False).relative_to(candidate_dir.resolve())
     except ValueError:
         return None
     return candidate

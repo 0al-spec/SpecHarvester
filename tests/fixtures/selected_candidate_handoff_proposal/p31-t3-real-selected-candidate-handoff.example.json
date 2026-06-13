@@ -1,0 +1,519 @@
+{
+  "apiVersion": "spec-harvester.selected-candidate-handoff-proposal/v0",
+  "authority": "producer_preview_evidence_only",
+  "deferredCandidates": [
+    {
+      "handoffStatus": "excluded_from_selected_handoff",
+      "id": "xyflow.workspace",
+      "reason": "needs_regeneration",
+      "requiredAction": "Regenerate package-set AI draft evidence with package-set identity."
+    },
+    {
+      "handoffStatus": "excluded_from_selected_handoff",
+      "id": "xyflow.react",
+      "reason": "needs_regeneration",
+      "requiredAction": "Regenerate package-set AI draft evidence with package-set identity."
+    },
+    {
+      "handoffStatus": "excluded_from_selected_handoff",
+      "id": "xyflow.svelte",
+      "reason": "needs_regeneration",
+      "requiredAction": "Regenerate package-set AI draft evidence with package-set identity."
+    },
+    {
+      "handoffStatus": "excluded_from_selected_handoff",
+      "id": "xyflow.system",
+      "reason": "needs_regeneration",
+      "requiredAction": "Regenerate package-set AI draft evidence with package-set identity."
+    },
+    {
+      "handoffStatus": "excluded_from_selected_handoff",
+      "id": "cupertino.core",
+      "reason": "needs_regeneration",
+      "requiredAction": "Regenerate AI enrichment or provide an author-curated summary."
+    },
+    {
+      "handoffStatus": "excluded_from_selected_handoff",
+      "id": "navigation_split_view.core",
+      "reason": "needs_regeneration",
+      "requiredAction": "Resolve package id normalization before handoff."
+    }
+  ],
+  "futureConsumerBoundary": {
+    "producerCanAccept": false,
+    "specpmMayAcceptAfterMaintainerReview": true,
+    "specpmMayPreflight": true
+  },
+  "kind": "SpecHarvesterSelectedCandidateHandoffProposal",
+  "maintainerChecklist": [
+    "Verify selected candidate identity, namespace, and package version before intake.",
+    "Verify every required evidence role and digest before trusting the handoff.",
+    "Run SpecPM-side validation and preflight before any accepted-source change.",
+    "Reject or request regeneration for weak evidence, package identity drift, or warning-bearing generated claims.",
+    "Record the external registry acceptance decision outside producer evidence."
+  ],
+  "nonAuthority": [
+    "This proposal is review evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata.",
+    "It does not create a SpecPM pull request.",
+    "It does not run prepare-accepted-entry.",
+    "It does not run accepted-package-update-proposal."
+  ],
+  "notExecuted": [
+    "prepare-accepted-entry",
+    "accepted-package-update-proposal",
+    "SpecPM pull request creation",
+    "registry mutation",
+    "relation acceptance",
+    "baseline seeding",
+    "preview_only removal"
+  ],
+  "requiredEvidenceRoles": [
+    {
+      "required": true,
+      "role": "candidate_bundle",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "specpm.yaml",
+      "required": true,
+      "role": "manifest",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "specs/*.spec.yaml",
+      "required": true,
+      "role": "boundary_spec",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "producer-receipt.json",
+      "required": true,
+      "role": "producer_receipt",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "validation-report.json",
+      "required": true,
+      "role": "validation_report",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "diagnostics.json",
+      "required": true,
+      "role": "diagnostics",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "author-ready-draft-quality-report.json",
+      "required": true,
+      "role": "quality_report",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "preflight/<package_id>.json",
+      "required": true,
+      "role": "producer_preflight",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "viewer/<package_id>/index.html",
+      "required": true,
+      "role": "static_viewer",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "viewer/<package_id>/spec-package.json",
+      "required": true,
+      "role": "static_viewer_payload",
+      "scope": "selected_candidate"
+    },
+    {
+      "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
+      "required": true,
+      "role": "selected_handoff_dry_run",
+      "scope": "proposal"
+    }
+  ],
+  "schemaVersion": 1,
+  "selectedCandidates": [
+    {
+      "candidateBundlePath": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/flask/flask.core",
+      "evidenceLinks": [
+        {
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/flask/flask.core",
+          "pathScope": "local_path",
+          "role": "candidate_bundle",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:2b4a1c4d9aaeef5efbb8424fe3f748d7895551a7d852814c7ce3d163e789630f",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/flask/flask.core/specpm.yaml",
+          "pathScope": "local_path",
+          "role": "manifest",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:309b518b319fff5a2cdc1ca9abb9432919621a3fa327e20e3e3357592b1c2ad1",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/flask/flask.core/specs/flask.spec.yaml",
+          "pathScope": "local_path",
+          "role": "boundary_spec",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:23f56cb23d477fab8a3b11b62348751d4ea2306522b6642ce330432107bde6fe",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/flask/flask.core/producer-receipt.json",
+          "pathScope": "local_path",
+          "role": "producer_receipt",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:8e3e1ae6266cdd039ced62c59b701dba0abf47b881362e57ae94991b0c561eed",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/flask/flask.core/validation-report.json",
+          "pathScope": "local_path",
+          "role": "validation_report",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:62da575a03f6be1773a4b783185a7ff29d392cf499e29e96955cf2e9123f0713",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/flask/flask.core/diagnostics.json",
+          "pathScope": "local_path",
+          "role": "diagnostics",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:75bf9010e50638a26eb62f3f6ff936a8882b10ff176a793378a60d9fcfbb469d",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/flask/flask.core/author-ready-draft-quality-report.json",
+          "pathScope": "local_path",
+          "role": "quality_report",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:836abcf074a43cfa84526cb992eab0a6b7c1354e34bd0d275e407606d46787f7",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t5-selected-handoff/preflight/flask.core.json",
+          "pathScope": "local_path",
+          "role": "producer_preflight",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:3feea0d6acb3a2809f732bd81ee760e05d7a6f33d607ecc0a9e5a1180e5287c3",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t5-selected-handoff/viewers/flask.core/index.html",
+          "pathScope": "local_path",
+          "role": "static_viewer",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:06667c14b9c90a8988a35f8c99f530cfd36edd84297a5b3fe23c2aa2aa172d84",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t5-selected-handoff/viewers/flask.core/spec-package.json",
+          "pathScope": "local_path",
+          "role": "static_viewer_payload",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:05522256a4a1940f0f80b510674efc686e2996f178692e589a51757e0f2922b0",
+          "digestSource": "local_file",
+          "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
+          "pathScope": "local_path",
+          "role": "selected_handoff_dry_run",
+          "status": "present"
+        }
+      ],
+      "id": "flask.core",
+      "maintainerAction": "review_for_possible_specpm_intake",
+      "previewOnly": true,
+      "producerPreflight": {
+        "diagnosticCount": 0,
+        "errorCount": 0,
+        "reportDigest": "sha256:836abcf074a43cfa84526cb992eab0a6b7c1354e34bd0d275e407606d46787f7",
+        "reportPath": "/tmp/specharvester-p30-t5-selected-handoff/preflight/flask.core.json",
+        "status": "passed",
+        "warningCount": 0
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "repositoryId": "flask",
+      "staticViewer": {
+        "indexDigest": "sha256:3feea0d6acb3a2809f732bd81ee760e05d7a6f33d607ecc0a9e5a1180e5287c3",
+        "indexPath": "/tmp/specharvester-p30-t5-selected-handoff/viewers/flask.core/index.html",
+        "outputPath": "/tmp/specharvester-p30-t5-selected-handoff/viewers/flask.core",
+        "specPackageDigest": "sha256:06667c14b9c90a8988a35f8c99f530cfd36edd84297a5b3fe23c2aa2aa172d84",
+        "specPackagePath": "/tmp/specharvester-p30-t5-selected-handoff/viewers/flask.core/spec-package.json",
+        "status": "ok"
+      },
+      "triageClassification": "candidate_layer_review_required"
+    },
+    {
+      "candidateBundlePath": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/gin/gin.core",
+      "evidenceLinks": [
+        {
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/gin/gin.core",
+          "pathScope": "local_path",
+          "role": "candidate_bundle",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:501be249e4d10598e069da3e12a6bc43af7de8084b725b0768acb6b7d167d3a4",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/gin/gin.core/specpm.yaml",
+          "pathScope": "local_path",
+          "role": "manifest",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:99e4520b4465f4d524bfa50ca54dccc57cafde7fad56b56261b3eb16ebc29506",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/gin/gin.core/specs/gin.spec.yaml",
+          "pathScope": "local_path",
+          "role": "boundary_spec",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:b47be79ba1c0fa137d2e80b58514e08360b615109c5469a5a9ca56c545f4cd0c",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/gin/gin.core/producer-receipt.json",
+          "pathScope": "local_path",
+          "role": "producer_receipt",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:b3bf292e36a8f2c038dd04aad0b80a825f959aa63882e92df4f489fbf2c6d16a",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/gin/gin.core/validation-report.json",
+          "pathScope": "local_path",
+          "role": "validation_report",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:7406004edcf4366c3ed7dbc62c63c4f58b782aff5874ac84127f31fafec399dd",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/gin/gin.core/diagnostics.json",
+          "pathScope": "local_path",
+          "role": "diagnostics",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:622e6f05fd78d32dd56ab202067a0e0e07b30d521284904e769390409e9d1576",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/gin/gin.core/author-ready-draft-quality-report.json",
+          "pathScope": "local_path",
+          "role": "quality_report",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:e6738829bed9b409eff3df6a5cfe1524cda6b1762a352779e78154439490547f",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t5-selected-handoff/preflight/gin.core.json",
+          "pathScope": "local_path",
+          "role": "producer_preflight",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:e15ef3f031a0e11196f11ff76593af985eb24ad016cb5b3eb313a4f3fb09557d",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t5-selected-handoff/viewers/gin.core/index.html",
+          "pathScope": "local_path",
+          "role": "static_viewer",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:c9d3e34021d6eba53f96aa92939ec2cebb64a44173b34782971f2f18ad2b93b0",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t5-selected-handoff/viewers/gin.core/spec-package.json",
+          "pathScope": "local_path",
+          "role": "static_viewer_payload",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:05522256a4a1940f0f80b510674efc686e2996f178692e589a51757e0f2922b0",
+          "digestSource": "local_file",
+          "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
+          "pathScope": "local_path",
+          "role": "selected_handoff_dry_run",
+          "status": "present"
+        }
+      ],
+      "id": "gin.core",
+      "maintainerAction": "review_for_possible_specpm_intake",
+      "previewOnly": true,
+      "producerPreflight": {
+        "diagnosticCount": 0,
+        "errorCount": 0,
+        "reportDigest": "sha256:e6738829bed9b409eff3df6a5cfe1524cda6b1762a352779e78154439490547f",
+        "reportPath": "/tmp/specharvester-p30-t5-selected-handoff/preflight/gin.core.json",
+        "status": "passed",
+        "warningCount": 0
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "repositoryId": "gin",
+      "staticViewer": {
+        "indexDigest": "sha256:e15ef3f031a0e11196f11ff76593af985eb24ad016cb5b3eb313a4f3fb09557d",
+        "indexPath": "/tmp/specharvester-p30-t5-selected-handoff/viewers/gin.core/index.html",
+        "outputPath": "/tmp/specharvester-p30-t5-selected-handoff/viewers/gin.core",
+        "specPackageDigest": "sha256:c9d3e34021d6eba53f96aa92939ec2cebb64a44173b34782971f2f18ad2b93b0",
+        "specPackagePath": "/tmp/specharvester-p30-t5-selected-handoff/viewers/gin.core/spec-package.json",
+        "status": "ok"
+      },
+      "triageClassification": "candidate_layer_review_required"
+    },
+    {
+      "candidateBundlePath": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/docc2context/docc2context.core",
+      "evidenceLinks": [
+        {
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/docc2context/docc2context.core",
+          "pathScope": "local_path",
+          "role": "candidate_bundle",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:1ff2ff07c56e842543aa1b5c8dd42592d0d4d161330d8e53048f9b04f7dd06d8",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/docc2context/docc2context.core/specpm.yaml",
+          "pathScope": "local_path",
+          "role": "manifest",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:fe4227c16ebe8bd72c94a53b856aa31e4253036b60bec4a1bc63fb975639955b",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/docc2context/docc2context.core/specs/docc2context.spec.yaml",
+          "pathScope": "local_path",
+          "role": "boundary_spec",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:ed359c0063bbba5750cc0e448577f346f33ea4bd4ad2c33be38f2186890f1a6b",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/docc2context/docc2context.core/producer-receipt.json",
+          "pathScope": "local_path",
+          "role": "producer_receipt",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:315cb32df1087655b93bff7473b113a174a8784e1db38788ae7b28ed79f7b287",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/docc2context/docc2context.core/validation-report.json",
+          "pathScope": "local_path",
+          "role": "validation_report",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:a7e06d36283586e3d9d9a2a5a6edf8e0515e08532dcd577943ac98bf006e5d9e",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/docc2context/docc2context.core/diagnostics.json",
+          "pathScope": "local_path",
+          "role": "diagnostics",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:1eca3f7727b99e4799604cca32f1f294110a2682cd9f344a8983e27902dae588",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t3.f7iGn0/live-lm-studio/package-sets/docc2context/docc2context.core/author-ready-draft-quality-report.json",
+          "pathScope": "local_path",
+          "role": "quality_report",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:7d0e119e59c56397d42b28922dfe281fa77a6b06b899663e1a27e2ba2918a282",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t5-selected-handoff/preflight/docc2context.core.json",
+          "pathScope": "local_path",
+          "role": "producer_preflight",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:4baee2a08ed2d996d633a81863a5b0097fed3736df4595027c4d452605dbf804",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t5-selected-handoff/viewers/docc2context.core/index.html",
+          "pathScope": "local_path",
+          "role": "static_viewer",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:d6ad8328a2300d0f5f6e3c89895182e28c5f28d43cbc71d4dc40d4be3c67d81a",
+          "digestSource": "local_file",
+          "path": "/tmp/specharvester-p30-t5-selected-handoff/viewers/docc2context.core/spec-package.json",
+          "pathScope": "local_path",
+          "role": "static_viewer_payload",
+          "status": "present"
+        },
+        {
+          "digest": "sha256:05522256a4a1940f0f80b510674efc686e2996f178692e589a51757e0f2922b0",
+          "digestSource": "local_file",
+          "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
+          "pathScope": "local_path",
+          "role": "selected_handoff_dry_run",
+          "status": "present"
+        }
+      ],
+      "id": "docc2context.core",
+      "maintainerAction": "review_for_possible_specpm_intake",
+      "previewOnly": true,
+      "producerPreflight": {
+        "diagnosticCount": 0,
+        "errorCount": 0,
+        "reportDigest": "sha256:7d0e119e59c56397d42b28922dfe281fa77a6b06b899663e1a27e2ba2918a282",
+        "reportPath": "/tmp/specharvester-p30-t5-selected-handoff/preflight/docc2context.core.json",
+        "status": "passed",
+        "warningCount": 0
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "repositoryId": "docc2context",
+      "staticViewer": {
+        "indexDigest": "sha256:4baee2a08ed2d996d633a81863a5b0097fed3736df4595027c4d452605dbf804",
+        "indexPath": "/tmp/specharvester-p30-t5-selected-handoff/viewers/docc2context.core/index.html",
+        "outputPath": "/tmp/specharvester-p30-t5-selected-handoff/viewers/docc2context.core",
+        "specPackageDigest": "sha256:d6ad8328a2300d0f5f6e3c89895182e28c5f28d43cbc71d4dc40d4be3c67d81a",
+        "specPackagePath": "/tmp/specharvester-p30-t5-selected-handoff/viewers/docc2context.core/spec-package.json",
+        "status": "ok"
+      },
+      "triageClassification": "candidate_layer_review_required"
+    }
+  ],
+  "source": {
+    "corpusId": "p30-limited-popular-libraries",
+    "selectedDryRunFixture": {
+      "apiVersion": "spec-harvester.limited-popular-library-selected-handoff-dry-run/v0",
+      "digest": "sha256:05522256a4a1940f0f80b510674efc686e2996f178692e589a51757e0f2922b0",
+      "kind": "SpecHarvesterLimitedPopularLibrarySelectedHandoffDryRun",
+      "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
+      "status": "selected_handoff_dry_run_ready"
+    },
+    "triageFixture": {
+      "kind": "SpecHarvesterLimitedPopularLibraryCandidateLayerTriage",
+      "path": "tests/fixtures/limited_popular_library_candidate_layer_triage/p30-t4-limited-popular-libraries.example.json",
+      "status": "ready_for_selected_handoff_dry_run"
+    }
+  },
+  "summary": {
+    "deferredCandidateCount": 6,
+    "registryMutationCount": 0,
+    "requiredEvidenceRoleCount": 11,
+    "selectedCandidateCount": 3,
+    "specpmPullRequestCreated": false
+  }
+}

@@ -63,6 +63,25 @@ viewer status `ok`, and keeps
 `registryAcceptanceDecision.status: external_required` with
 `producerAuthority: evidence_only`.
 
+## P31-T3 Real Dry Run
+
+P31-T3 runs the helper on the recorded P30-T5 selected candidate evidence and
+commits both generated artifacts:
+
+```text
+tests/fixtures/selected_candidate_handoff_proposal/p31-t3-real-selected-candidate-handoff.example.json
+docs/SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md
+```
+
+The fixture records the real P30 selected candidates `flask.core`, `gin.core`,
+and `docc2context.core`. It preserves `producer_preview_evidence_only`
+authority, `previewOnly: true`, zero-warning producer preflight, static viewer
+status `ok`, and `registryAcceptanceDecision.status: external_required`.
+
+The P31-T3 artifact is still not SpecPM acceptance. It does not create a
+SpecPM pull request, does not accept packages, does not accept relations, seed
+baselines, remove `preview_only`, or publish registry metadata.
+
 ## Selected Candidates
 
 The example proposal includes exactly three selected candidates:
