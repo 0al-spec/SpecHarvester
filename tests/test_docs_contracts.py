@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff" in next_text:
+        assert_p32_t4_last_archived(next_text)
+        assert_p32_t3_recent(next_text)
+        assert_p32_t4_recent(next_text)
+        assert_phase_32_t5_active(next_text)
+        return
+
     if "# Next Task: P32-T4 Single-Package Deferred Candidate Regeneration Dry Run" in next_text:
         assert_p32_t3_last_archived(next_text)
         assert_p32_t2_recent(next_text)
@@ -405,6 +412,13 @@ def assert_p32_t2_last_archived(next_text: str) -> None:
 
 def assert_p32_t3_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P32-T3 Xyflow Package-Set Identity Regeneration Dry Run" in next_text
+
+
+def assert_p32_t4_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P32-T4 Single-Package Deferred Candidate Regeneration Dry Run"
+        in next_text
+    )
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1189,6 +1203,24 @@ def assert_p32_t3_recent(next_text: str) -> None:
     assert "selectedHandoffEligible: true" in next_text
 
 
+def assert_p32_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P32-T4` recorded the single-package deferred candidate regeneration dry run"
+        in next_text
+    )
+    assert "SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md" in next_text
+    assert "SinglePackageDeferredCandidateRegenerationDryRun" in next_text
+    assert "p32-t4-single-package-deferred-candidate-regeneration.example.json" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "candidate_layer_review_required" in next_text
+    assert "selectedHandoffEligible: true" in next_text
+    assert "cupertino.core" in next_text
+    assert "needs_regeneration" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "producer preview evidence" in normalized
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1283,6 +1315,34 @@ def assert_phase_32_t4_active(next_text: str) -> None:
     assert "avoid package execution" in normalized
     assert "dependency installation" in normalized
     assert "refreshed candidate-layer review" in normalized
+
+
+def assert_phase_32_t5_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
+    assert "P32-T4 is complete" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
+    assert "xyflow.system" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "cupertino.core" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "preview_only" in next_text
+    assert "static viewer evidence" in normalized
+    assert "producer preflight status" in normalized
+    assert "digest-backed evidence roles" in normalized
+    assert "external_required" in next_text
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "seed baselines" in normalized
+    assert "SpecPM pull request" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

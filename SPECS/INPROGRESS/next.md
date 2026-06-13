@@ -1,21 +1,13 @@
-# Next Task: P32-T4 Single-Package Deferred Candidate Regeneration Dry Run
+# Next Task: P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff
 
-**Status:** In Progress
+**Status:** Planned
 **Selected:** 2026-06-13
-**Task:** P32-T4 Single-Package Deferred Candidate Regeneration Dry Run
+**Task:** P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
-**Last Archived:** P32-T3 Xyflow Package-Set Identity Regeneration Dry Run
+**Last Archived:** P32-T4 Single-Package Deferred Candidate Regeneration Dry Run
 
 ## Recently Archived
 
-- `P32-T2` added `docs/DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md` and
-  `<doc:DeferredCandidateRegenerationRunbook>`. It maps
-  `package_set_identity_regeneration`,
-  `warning_bearing_enrichment_regeneration`, and
-  `identity_drift_resolution` to safe local commands, expected artifacts, stop
-  conditions, re-entry criteria, and non-authority boundaries for
-  `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`,
-  `cupertino.core`, and `navigation_split_view.core`.
 - `P32-T3` recorded the xyflow-only package-set identity regeneration dry run
   in `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`,
   `<doc:XyflowPackageSetIdentityRegenerationDryRun>`, and
@@ -26,23 +18,41 @@
   bundle-set preflight with warning count `0` and error count `0`, rendered the
   static viewer, kept `preview_only`, and recorded
   `candidate_layer_review_required` with `selectedHandoffEligible: true`.
+- `P32-T4` recorded the single-package deferred candidate regeneration dry run
+  in `docs/SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`,
+  `<doc:SinglePackageDeferredCandidateRegenerationDryRun>`, and
+  `tests/fixtures/single_package_deferred_candidate_regeneration/p32-t4-single-package-deferred-candidate-regeneration.example.json`.
+  The run classified `navigation_split_view.core` as
+  `candidate_layer_review_required` with `selectedHandoffEligible: true`, and
+  kept `cupertino.core` at `needs_regeneration` because
+  `refined_summary_missing` remains unresolved. The artifact remains producer
+  preview evidence only.
 
 ## Outcome
 
-P32-T3 is complete. The xyflow package-set identity blocker is resolved enough
-for the regenerated xyflow candidates to re-enter candidate-layer review and a
-future refreshed selected handoff, while remaining producer preview evidence
-only.
+P32-T4 is complete. The limited corpus now has regenerated evidence for the
+xyflow package-set candidates and the NavigationSplitView single-package
+candidate. Cupertino remains explicitly deferred until regenerated enrichment
+or author-curated summary evidence resolves its missing refined summary.
 
 ## Next Step
 
-Implement `P32-T4`: run single-package deferred candidate regeneration or
-repair for `cupertino.core` and `navigation_split_view.core` using the P32-T2
-runbook.
+Implement `P32-T5`: produce refreshed candidate-layer triage and selected
+handoff evidence for regenerated candidates that satisfy hard gates.
 
-The run should resolve or explicitly keep deferred the Cupertino
-`refined_summary_missing` warning and the NavigationSplitView identity drift
-around `navigation-split-view.core` versus `navigation_split_view.core`. It
-must preserve `preview_only`, keep registry acceptance external, avoid package
-execution or dependency installation, and record whether each candidate can
-enter refreshed candidate-layer review.
+The refreshed triage should include:
+
+- original selected candidates from P30-T5: `flask.core`, `gin.core`, and
+  `docc2context.core`;
+- regenerated eligible candidates from P32-T3 and P32-T4:
+  `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`, and
+  `navigation_split_view.core`;
+- explicitly deferred candidates such as `cupertino.core` with the remaining
+  blocker `refined_summary_missing`.
+
+The selected handoff must preserve `preview_only`,
+`producer_preview_evidence_only`, static viewer evidence, producer preflight
+status, digest-backed evidence roles, and `external_required` registry
+acceptance decisions. It must not accept packages, accept relations, seed
+baselines, remove `preview_only`, publish registry metadata, or create a
+SpecPM pull request.

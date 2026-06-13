@@ -1,6 +1,6 @@
 # P32-T4 Single-Package Deferred Candidate Regeneration Dry Run
 
-**Status:** Planned
+**Status:** Archived
 **Selected:** 2026-06-13
 **Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
 
@@ -85,3 +85,24 @@ id, and the current source manifest must be updated before the rerun.
 - No baseline seeding.
 - No removal of `preview_only`.
 - No registry publication.
+
+## Archive
+
+**Archived:** 2026-06-13
+**Verdict:** PASS
+
+The dry run was recorded in
+`tests/fixtures/single_package_deferred_candidate_regeneration/p32-t4-single-package-deferred-candidate-regeneration.example.json`
+and documented in `docs/SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`
+plus `<doc:SinglePackageDeferredCandidateRegenerationDryRun>`.
+
+The product result is intentionally split:
+
+- `navigation_split_view.core` can re-enter refreshed candidate-layer triage
+  with `candidate_layer_review_required` and `selectedHandoffEligible: true`;
+- `cupertino.core` remains `needs_regeneration` until
+  `refined_summary_missing` is resolved by regenerated enrichment or
+  author-curated summary evidence.
+
+The next selected task is P32-T5: refresh candidate-layer triage and selected
+handoff evidence for regenerated candidates that satisfy hard gates.

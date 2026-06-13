@@ -1143,7 +1143,7 @@ Acceptance:
 - [x] `P32-T3` Run xyflow package-set identity regeneration as a dry run and
   record whether `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, and
   `xyflow.system` can enter selected handoff.
-- [ ] `P32-T4` Run single-package deferred candidate regeneration or repair for
+- [x] `P32-T4` Run single-package deferred candidate regeneration or repair for
   `cupertino.core` and `navigation_split_view.core`.
 - [ ] `P32-T5` Produce refreshed candidate-layer triage and selected handoff
   evidence for regenerated candidates that satisfy hard gates.
