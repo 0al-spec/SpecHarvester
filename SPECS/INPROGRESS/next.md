@@ -1,9 +1,9 @@
-# Next Task: Phase 26 Complete
+# Next Task: P32-T1 Autonomous Deferred Candidate Work Plan
 
-**Status:** Phase Complete
+**Status:** In Progress
 **Selected:** 2026-06-13
-**Task:** Backlog Selection
-**Phase:** Phase 26. Package-Set SpecPM Handoff Automation
+**Task:** P32-T1 Autonomous Deferred Candidate Work Plan
+**Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
 **Last Archived:** P26-T3 Package-Set Proposal Intake Checklist
 
 ## Recently Archived
@@ -29,14 +29,20 @@
 
 ## Outcome
 
-Phase 26 is complete. SpecHarvester now has package-set handoff proposal
-artifacts, trusted dry-run workflow boundaries, proposal-only AI enrichment,
-proposal-only LLM package-set draft evidence, and a SpecPM-facing package-set
-proposal intake checklist.
+Phase 26 is complete. The next selected task turns the current autonomous
+candidate technical debt into a concrete work plan. P29 fixed the original
+Flask/Gin/xyflow runner debt, while P30/P31 exposed the next debt boundary:
+selected candidates are handoff-ready, but deferred candidates still require
+targeted regeneration, identity cleanup, or author-curated evidence before
+SpecPM intake.
 
 ## Next Step
 
-No Phase 26 task remains selected. Choose the next backlog task explicitly;
-the current product debt points toward an autonomous/deferred candidate work
-plan that connects the P30/P31 corpus findings to targeted regeneration and
-SpecPM intake readiness.
+Implement `P32-T1`: update the autonomous candidate technical-debt plan,
+roadmap, workplan, and docs-contract tests with a bounded sequence for
+deferred candidate regeneration and SpecPM intake readiness.
+
+The plan should cover `xyflow.*` package-set identity regeneration,
+`cupertino.core` warning-bearing enrichment or author summary evidence,
+`navigation_split_view.core` identity-drift resolution, refreshed triage,
+selected handoff rerun, and the SpecPM-side consumer preflight boundary.
