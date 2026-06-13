@@ -1217,7 +1217,8 @@ Acceptance:
 - [ ] `P33-T8` Record the next-corpus intake readiness decision using the
   passing durable selected handoff preflight result, preserving review evidence
   boundaries and stopping before registry acceptance, baseline seeding,
-  relation acceptance, or `preview_only` removal.
+  relation acceptance, or `preview_only` removal in
+  [`NEXT_CORPUS_INTAKE_READINESS_DECISION.md`](../docs/NEXT_CORPUS_INTAKE_READINESS_DECISION.md).
 
 Motivation:
 

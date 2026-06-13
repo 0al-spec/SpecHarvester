@@ -108,9 +108,10 @@ errors.
 P33-T7 makes the selected scope machine-preflightable by SpecPM. It still does
 not make any candidate an accepted registry package.
 
-The next bounded follow-up should record the intake readiness decision for the
-preflighted selected scope, similar to the earlier limited-corpus readiness
-step.
+The next bounded follow-up is recorded in
+[`NEXT_CORPUS_INTAKE_READINESS_DECISION.md`](NEXT_CORPUS_INTAKE_READINESS_DECISION.md):
+the preflighted selected scope is ready for author/maintainer review with
+explicit deferral for `mcpm.system` and `specgraph.system`.
 
 ## Non-Authority Boundary
 

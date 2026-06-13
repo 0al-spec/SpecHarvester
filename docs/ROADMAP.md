@@ -511,10 +511,11 @@ separate follow-up task.
 
 ## Milestone 13: Bounded Corpus Expansion Planning
 
-Status: Planned.
+Status: Complete.
 
 Goal: define the next autonomous candidate corpus as a bounded, local-only,
-operator-selected batch before any new scrape runs.
+operator-selected batch before any new scrape runs and stop at reviewable
+producer evidence.
 
 Tasks:
 
@@ -537,7 +538,10 @@ Tasks:
   ([`NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`](NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md)).
 - create durable selected handoff evidence for the selected scope and prove it
   passes SpecPM selected handoff preflight
-  ([`NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`](NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md)).
+  ([`NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`](NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md));
+- record `P33-T8`, the final intake readiness decision for the preflighted
+  selected scope
+  ([`NEXT_CORPUS_INTAKE_READINESS_DECISION.md`](NEXT_CORPUS_INTAKE_READINESS_DECISION.md)).
 
 Success criteria:
 
@@ -552,6 +556,10 @@ Success criteria:
 - P33-T7 records that the durable selected handoff artifact passes SpecPM
   selected handoff preflight with three selected candidates, two deferred
   candidates, and zero warnings or errors;
+- P33-T8 records `ready_for_author_maintainer_review_with_explicit_deferral`:
+  `serena.core`, `transmission.core`, and `specpm.core` are ready for
+  author/maintainer review, while `mcpm.system` and `specgraph.system` remain
+  deferred;
 - the result remains review evidence only and does not accept packages, accept
   relations, seed baselines, remove `preview_only`, publish registry metadata,
   or treat AI output as registry truth.
