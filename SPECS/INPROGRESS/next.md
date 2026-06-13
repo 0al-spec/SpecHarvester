@@ -1,6 +1,6 @@
 # Next Task: P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations
 **Phase:** Phase 31. Selected Candidate SpecPM Intake Handoff
