@@ -9,6 +9,7 @@ python3 -m spec_harvester package-set-ai-enrichment-proposal \
   --source-checkout ../../xyflow \
   --provider-base-url http://127.0.0.1:1234 \
   --model openai/gpt-oss-20b \
+  --json-repair-max-attempts 1 \
   --request-output .smoke/xyflow-package-set/ai/requests.json \
   --output .smoke/xyflow-package-set/ai/ai-enrichment-proposals.json
 ```
@@ -36,6 +37,18 @@ For package-local generated artifacts, the normalizer accepts paths relative to
 the proposal package. For example, `harvest.json` in the `xyflow.react`
 proposal is normalized to `xyflow.react/harvest.json` when that package-local
 artifact was supplied in the compact request.
+
+## Bounded JSON Repair
+
+Live local provider output is parsed separately for each package member. When a
+member response is malformed, SpecHarvester can send bounded repair prompts
+through `--json-repair-max-attempts`.
+
+Repair metadata is recorded in the affected member `providerReceipt` through
+`jsonRepairNeeded`, `jsonRepairAttemptCount`, and `jsonRepairStatus`.
+Exhausted repair attempts emit `ai_json_repair_exhausted` and produce a failed
+proposal artifact when possible. Raw prompts, raw provider responses, secrets,
+and chain-of-thought are not persisted.
 
 Proposal outputs include `stopPolicySummary` with `stop_for_author_review`,
 `continue_generation`, or `blocked_until_inputs_change`. This summary tells

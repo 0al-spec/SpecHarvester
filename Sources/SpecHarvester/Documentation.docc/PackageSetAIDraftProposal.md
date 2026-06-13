@@ -11,6 +11,7 @@ python3 -m spec_harvester package-set-ai-draft-proposal \
   --source-checkout ../../vite \
   --provider-base-url http://127.0.0.1:1234 \
   --model openai/gpt-oss-20b \
+  --json-repair-max-attempts 1 \
   --request-output candidates/vite/ai-draft/request.json \
   --output candidates/vite/ai-draft/package-set-ai-draft-proposal.json
 ```
@@ -39,6 +40,22 @@ The model output proposes:
 SpecHarvester normalizes this output and emits diagnostics. Unsupported
 evidence paths produce `model_evidence_path_unsupported`; relations fail closed
 when they target packages that were not selected.
+
+## Bounded JSON Repair
+
+Live local provider output is parsed as one JSON object. If the initial LM
+Studio/OpenAI-compatible response is malformed, SpecHarvester can send a bounded
+number of repair prompts through `--json-repair-max-attempts`.
+
+Repair is recorded as proposal evidence only:
+
+- `ai_json_repair_needed` marks malformed initial output;
+- `providerReceipt.jsonRepairAttemptCount` and `jsonRepairStatus` expose the
+  machine-readable repair outcome;
+- exhausted repair emits `ai_json_repair_exhausted` and a failed proposal
+  artifact when possible;
+- raw prompts, raw provider responses, secrets, and chain-of-thought are not
+  persisted.
 
 This keeps the original `LLM + schema` model while avoiding a hardcoded
 framework encyclopedia. Deterministic inventory is evidence, the model proposes

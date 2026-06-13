@@ -114,6 +114,10 @@ Acceptance:
   evidence with AI status `failed` or `needs_regeneration`, not silent success.
 - The batch report identifies `ai_json_repair_needed` and does not leak secrets,
   raw prompts, raw responses, or chain-of-thought.
+- Package-set AI draft and enrichment proposal receipts record
+  `jsonRepairNeeded`, `jsonRepairAttemptCount`, and `jsonRepairStatus`; the
+  autonomous batch report exposes `diagnosticCodes` and `jsonRepair` summaries
+  for AI proposal records.
 
 ## P29-T6 Corpus Quality Gate After Fallbacks
 

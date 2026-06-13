@@ -82,6 +82,7 @@ from spec_harvester.license_provenance_reports import (
     build_license_provenance_risk_report,
     write_license_provenance_report,
 )
+from spec_harvester.model_json_repair import DEFAULT_JSON_REPAIR_MAX_ATTEMPTS
 from spec_harvester.namespace_reports import (
     build_namespace_upstream_report,
     write_namespace_upstream_report,
@@ -312,6 +313,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--provider-name",
         default=DEFAULT_PROVIDER_NAME,
         help=f"Provider label recorded in proposal artifacts. Default: {DEFAULT_PROVIDER_NAME}.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--json-repair-max-attempts",
+        type=int,
+        default=DEFAULT_JSON_REPAIR_MAX_ATTEMPTS,
+        help=(
+            "Maximum malformed JSON repair prompts per local model call. "
+            f"Default: {DEFAULT_JSON_REPAIR_MAX_ATTEMPTS}."
+        ),
     )
     autonomous_candidate_batch.set_defaults(func=run_autonomous_candidate_batch_cli)
 
@@ -616,6 +626,15 @@ def build_parser() -> argparse.ArgumentParser:
         default=0.0,
         help="Provider temperature. Default: 0.",
     )
+    package_set_ai_draft.add_argument(
+        "--json-repair-max-attempts",
+        type=int,
+        default=DEFAULT_JSON_REPAIR_MAX_ATTEMPTS,
+        help=(
+            "Maximum malformed JSON repair prompts for live provider output. "
+            f"Default: {DEFAULT_JSON_REPAIR_MAX_ATTEMPTS}."
+        ),
+    )
     package_set_ai_draft.set_defaults(func=run_package_set_ai_draft_proposal)
 
     package_set_ai_enrichment = subcommands.add_parser(
@@ -678,6 +697,15 @@ def build_parser() -> argparse.ArgumentParser:
         type=float,
         default=0.0,
         help="Provider temperature. Default: 0.",
+    )
+    package_set_ai_enrichment.add_argument(
+        "--json-repair-max-attempts",
+        type=int,
+        default=DEFAULT_JSON_REPAIR_MAX_ATTEMPTS,
+        help=(
+            "Maximum malformed JSON repair prompts per live provider call. "
+            f"Default: {DEFAULT_JSON_REPAIR_MAX_ATTEMPTS}."
+        ),
     )
     package_set_ai_enrichment.set_defaults(func=run_package_set_ai_enrichment)
 
@@ -1259,6 +1287,7 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 lm_studio_base_url=args.lm_studio_base_url,
                 lm_studio_model=args.lm_studio_model,
                 provider_name=args.provider_name,
+                json_repair_max_attempts=args.json_repair_max_attempts,
             )
         )
     except ValueError as exc:
@@ -1385,6 +1414,7 @@ def run_package_set_ai_draft_proposal(args: argparse.Namespace) -> int:
         timeout_seconds=args.timeout_seconds,
         max_output_tokens=args.max_output_tokens,
         temperature=args.temperature,
+        json_repair_max_attempts=args.json_repair_max_attempts,
     )
     if args.request_output is not None:
         write_package_set_ai_draft_request(
@@ -1417,6 +1447,7 @@ def run_package_set_ai_enrichment(args: argparse.Namespace) -> int:
         timeout_seconds=args.timeout_seconds,
         max_output_tokens=args.max_output_tokens,
         temperature=args.temperature,
+        json_repair_max_attempts=args.json_repair_max_attempts,
     )
     if args.request_output is not None:
         write_model_request_records(args.request_output, model_request_records(options))

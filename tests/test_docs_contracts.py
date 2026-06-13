@@ -7,6 +7,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P29-T6 Corpus Quality Gate After Fallbacks" in next_text:
+        assert_p29_t5_last_archived(next_text)
+        assert_p29_t1_recent(next_text)
+        assert_p29_t2_recent(next_text)
+        assert_p29_t3_recent(next_text)
+        assert_p29_t4_recent(next_text)
+        assert_p29_t5_recent(next_text)
+        assert_phase_29_t6_active(next_text)
+        return
+
     if "# Next Task: P29-T5 LM Studio JSON Repair and Retry" in next_text:
         assert_p29_t4_last_archived(next_text)
         assert_p29_t1_recent(next_text)
@@ -167,6 +177,10 @@ def assert_p29_t3_last_archived(next_text: str) -> None:
 
 def assert_p29_t4_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P29-T4 Single-Package Candidate Fallback" in next_text
+
+
+def assert_p29_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P29-T5 LM Studio JSON Repair and Retry" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -478,7 +492,7 @@ def assert_p29_t4_recent(next_text: str) -> None:
 def assert_phase_29_t5_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P29-T5 LM Studio JSON Repair and Retry" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "LM Studio/OpenAI-compatible JSON repair/retry" in normalized
     assert "malformed local model output" in normalized
     assert "no-raw-response persistence boundary" in normalized
@@ -486,6 +500,31 @@ def assert_phase_29_t5_active(next_text: str) -> None:
     assert "repair attempt counts" in normalized
     assert "raw prompts, raw provider responses, secrets, and chain-of-thought" in normalized
     assert "needs_regeneration" in next_text
+
+
+def assert_p29_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P29-T5` implemented bounded LM Studio/OpenAI-compatible JSON repair/retry" in next_text
+    assert "package-set AI draft and enrichment proposal generation" in normalized
+    assert "jsonRepairNeeded" in next_text
+    assert "jsonRepairAttemptCount" in next_text
+    assert "jsonRepairStatus" in next_text
+    assert "ai_json_repair_needed" in next_text
+    assert "ai_json_repair_exhausted" in next_text
+    assert "diagnosticCodes" in next_text
+    assert "jsonRepair" in next_text
+    assert "raw prompts, raw provider responses, secrets, or chain-of-thought" in normalized
+
+
+def assert_phase_29_t6_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P29-T6 Corpus Quality Gate After Fallbacks" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "mixed local Flask/Gin/xyflow corpus" in normalized
+    assert "at least one reviewable preview candidate" in normalized
+    assert "deterministic preflight" in normalized
+    assert "live LM Studio status" in normalized
+    assert "larger popular-library scraping" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

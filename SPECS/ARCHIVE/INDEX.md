@@ -107,6 +107,7 @@
 | P28-T5 | [P28-T5_First_Submission_or_Seeded_Baseline_Workflow/](P28-T5_First_Submission_or_Seeded_Baseline_Workflow/) | 2026-06-13 | PASS |
 | P29-T3 | [P29-T3_Corpus_Baseline_and_Gap_Report/](P29-T3_Corpus_Baseline_and_Gap_Report/) | 2026-06-13 | PASS |
 | P29-T4 | [P29-T4_Single-Package_Candidate_Fallback/](P29-T4_Single-Package_Candidate_Fallback/) | 2026-06-13 | PASS |
+| P29-T5 | [P29-T5_LM_Studio_JSON_Repair_and_Retry/](P29-T5_LM_Studio_JSON_Repair_and_Retry/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -143,6 +144,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t5_first_submission_baseline_workflow.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t3_corpus_baseline_gap_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t4_single_package_candidate_fallback.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t5_lm_studio_json_repair_retry.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -166,6 +168,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P29-T5 | Archived REVIEW_p29_t5_lm_studio_json_repair_retry report |
+| 2026-06-13 | P29-T5 | Archived LM Studio JSON Repair and Retry (PASS) |
 | 2026-06-13 | P28-T5 | Archived REVIEW_p28_t5_first_submission_baseline_workflow report |
 | 2026-06-13 | P28-T5 | Archived First-Submission or Seeded-Baseline Workflow (PASS) |
 | 2026-06-13 | P28-T4 | Archived REVIEW_p28_t4_package_set_role_selection_profiles report |

@@ -122,23 +122,23 @@ It should not answer:
 - Should public index metadata be published?
 - Should a missing baseline be seeded automatically?
 
-## Known Follow-Up Work
+## Known Corpus Follow-Up Work
 
 The first mixed corpus run identified two known gaps that do not invalidate
-this policy:
+this policy. Both now have producer-side mitigation paths, but the mixed corpus
+still needs a post-fallback quality gate before broad scraping:
 
-- `single_package_fallback_needed`: single-package repositories such as Flask
-  and Gin can collect useful evidence but currently produce `0` package-set
-  candidates.
-- `ai_json_repair_needed`: local LM Studio/OpenAI-compatible output can return
-  malformed JSON under real corpus load and needs bounded repair/retry handling.
+- `single_package_fallback_needed`: mitigated by the deterministic
+  single-package candidate fallback for repositories such as Flask and Gin.
+- `ai_json_repair_needed`: mitigated by bounded local
+  LM Studio/OpenAI-compatible JSON repair diagnostics.
 
 Those gaps are tracked in
 [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md).
 The first durable Flask/Gin/xyflow baseline is recorded in
 [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md).
-Until they are fixed, maintainers should classify affected repositories as
-`needs_regeneration` or `blocked`, not as accepted.
+Until the post-mitigation corpus quality gate passes, maintainers should treat
+affected repositories as candidate-layer evidence, not as accepted packages.
 
 ## SpecPM Handoff
 

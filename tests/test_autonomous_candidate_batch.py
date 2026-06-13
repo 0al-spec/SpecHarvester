@@ -9,6 +9,7 @@ from spec_harvester.autonomous_candidate_batch import (
     AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME,
     AutonomousCandidateBatch,
     AutonomousCandidateBatchOptions,
+    ai_proposal_record,
     run_autonomous_candidate_batch,
 )
 from spec_harvester.cli import main
@@ -157,6 +158,44 @@ def test_autonomous_candidate_batch_records_normalized_lm_studio_base_url(
     )
 
     assert batch.ai_mode_record()["baseUrl"] == "http://localhost:1234"
+    assert batch.ai_mode_record()["jsonRepairMaxAttempts"] == 1
+
+
+def test_autonomous_candidate_batch_ai_record_surfaces_json_repair_diagnostics(
+    tmp_path: Path,
+) -> None:
+    proposal = {
+        "status": "failed",
+        "authority": "proposal_only_not_registry_acceptance",
+        "summary": {},
+        "diagnostics": [
+            {"severity": "warning", "code": "ai_json_repair_needed"},
+            {"severity": "error", "code": "ai_json_repair_exhausted"},
+        ],
+        "providerReceipt": {
+            "jsonRepairNeeded": True,
+            "jsonRepairAttemptCount": 1,
+            "jsonRepairStatus": "exhausted",
+        },
+        "privacy": {"rawModelResponsesPersisted": False},
+    }
+
+    record = ai_proposal_record(
+        tmp_path / "request.json",
+        tmp_path / "proposal.json",
+        proposal,
+    )
+
+    assert record["status"] == "failed"
+    assert record["diagnosticCodes"] == [
+        "ai_json_repair_exhausted",
+        "ai_json_repair_needed",
+    ]
+    assert record["jsonRepair"] == {
+        "attemptCount": 1,
+        "needed": True,
+        "status": "exhausted",
+    }
 
 
 def test_autonomous_candidate_batch_cli_writes_report(
