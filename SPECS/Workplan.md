@@ -1096,7 +1096,7 @@ Acceptance:
   P30 selected candidates and record a dry-run handoff proposal fixture.
 - [x] `P31-T4` Define the downstream SpecPM-side preflight expectations for
   `SpecHarvesterSelectedCandidateHandoffProposal` evidence.
-- [ ] `P31-T5` Record targeted regeneration requirements for deferred P30
+- [x] `P31-T5` Record targeted regeneration requirements for deferred P30
   candidates before any package-set, warning-bearing, or identity-drift
   candidate can enter selected handoff.
 

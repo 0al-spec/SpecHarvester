@@ -95,7 +95,8 @@ The proposal explicitly keeps `xyflow.workspace`, `xyflow.react`,
 `navigation_split_view.core` out of selected handoff. All six remain
 `needs_regeneration` until targeted regeneration, package identity fixes,
 author-supplied summary evidence, warning resolution, or package-set-specific
-review makes them suitable for selected handoff.
+review makes them suitable for selected handoff. P31-T5 records those
+requirements in <doc:DeferredSelectedCandidateRegenerationRequirements>.
 
 ## Maintainer Checklist
 
@@ -127,5 +128,5 @@ SpecPM truth.
 
 See also <doc:LimitedPopularLibrarySelectedHandoffDryRun>,
 <doc:LimitedPopularLibraryCandidateLayerTriage>,
-<doc:SelectedCandidateHandoffPreflightExpectations>, and
-<doc:SpecPMHandoff>.
+<doc:SelectedCandidateHandoffPreflightExpectations>,
+<doc:DeferredSelectedCandidateRegenerationRequirements>, and <doc:SpecPMHandoff>.

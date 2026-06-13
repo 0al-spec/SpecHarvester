@@ -193,6 +193,13 @@ digests, producer preflight status, static viewer status, registry acceptance
 decision boundaries, and non-authority statements. Passing that future
 preflight still does not accept packages.
 
+P31-T5 records the regeneration requirements for the six deferred P30
+candidates in
+[`DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md`](DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md).
+Those requirements cover package-set identity regeneration, warning-bearing
+enrichment regeneration, and identity-drift resolution before any deferred
+candidate can enter selected handoff.
+
 ## Fresh Candidate Refresh Run
 
 When a package-set bundle is generated to evaluate whether current SpecPM
