@@ -310,6 +310,8 @@ Tasks:
 - keep CI provider-free through `--skip-ai`;
 - feed only reviewed candidate-layer evidence into later SpecPM-side intake
   policy.
+- document the SpecPM-facing candidate-layer intake policy before expanding
+  autonomous corpus scraping.
 
 Technical-debt follow-up from the first mixed corpus check:
 
@@ -330,6 +332,8 @@ Success criteria:
 - SpecPM remains the acceptance and registry authority.
 
 See [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md).
+See also
+[`AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`](AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md).
 
 ## Non-Goals
 

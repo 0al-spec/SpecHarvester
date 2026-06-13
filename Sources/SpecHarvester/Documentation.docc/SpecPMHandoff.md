@@ -114,6 +114,21 @@ This package-set proposal is review evidence. It does not accept packages,
 accept relations, publish registry metadata, or replace SpecPM maintainer
 review. See <doc:PackageSetHandoffProposal>.
 
+## Autonomous Candidate Batch Intake
+
+For autonomous popular-library runs, review the candidate layer before any
+SpecPM proposal or refresh decision work. The batch report links deterministic
+collection, package-set preview bundles, bundle-set preflight, AI
+draft/enrichment proposals, and author-ready stop-policy summaries.
+
+Candidate-layer review can classify a repository as
+`candidate_layer_review_required`, `needs_regeneration`, `blocked`, or
+`not_for_intake`. These states are review guidance only. They do not accept
+packages, accept relations, seed baselines, remove `preview_only`, or publish
+registry metadata.
+
+See <doc:AutonomousCandidateIntakePolicy>.
+
 ## Fresh Candidate Refresh Run
 
 Use <doc:FreshCandidateRefreshRun> when a generated package-set output should

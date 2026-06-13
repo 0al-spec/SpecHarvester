@@ -136,3 +136,6 @@ popular local checkouts
 This keeps the original `LLM + schema` product idea: the model helps produce a
 repository-personalized valid starter package, while final curation remains
 with repository authors, their agents, and SpecPM maintainers.
+
+For the SpecPM-facing review boundary for these batch artifacts, see
+[`AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`](AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md).

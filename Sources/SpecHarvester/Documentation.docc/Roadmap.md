@@ -156,6 +156,10 @@ such as Flask and Gin need a fallback preview candidate path, and local LM
 Studio/OpenAI-compatible output needs bounded JSON repair/retry. See
 <doc:AutonomousCandidateTechDebtPlan>.
 
+Before expanding autonomous corpus scraping, SpecHarvester documents the
+SpecPM-facing candidate-layer review boundary in
+<doc:AutonomousCandidateIntakePolicy>.
+
 ## Non-Goals
 
 SpecHarvester does not become the registry, the canonical package authority,

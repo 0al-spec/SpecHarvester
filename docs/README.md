@@ -146,10 +146,13 @@ Published DocC site:
 53. [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md):
     MVP autonomous popular-library scraping runner over local source manifests,
     package-set preview bundles, local LM Studio proposals, and batch reports
-54. [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md):
+54. [`AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`](AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md):
+    SpecPM-facing candidate-layer intake policy for autonomous batch output,
+    review states, maintainer checks, and authority boundaries
+55. [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md):
     Phase 29 follow-up plan for single-package fallback, LM Studio JSON
     repair/retry, and mixed-corpus quality gates
-55. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+56. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
