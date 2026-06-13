@@ -93,6 +93,10 @@ P30-T3 records the live LM Studio corpus report in
 <doc:LimitedPopularLibraryLiveLMStudioBatch> with verdict
 `ready_for_candidate_layer_triage`.
 
+P30-T4 records the candidate-layer triage report in
+<doc:LimitedPopularLibraryCandidateLayerTriage> with verdict
+`ready_for_selected_handoff_dry_run`.
+
 See also <doc:RepositorySourceManifests>, <doc:AutonomousCandidateBatch>,
 <doc:AutonomousCandidateIntakePolicy>, and
 <doc:AutonomousCandidateCorpusQualityGate>.

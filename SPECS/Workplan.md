@@ -1045,7 +1045,7 @@ Acceptance:
 - [x] `P30-T3` Run the same limited corpus through live LM Studio/OpenAI-
   compatible AI draft and enrichment with cost/time caps, repair summaries, and
   bounded diagnostics.
-- [ ] `P30-T4` Produce a candidate-layer triage report that classifies each
+- [x] `P30-T4` Produce a candidate-layer triage report that classifies each
   generated preview package as `candidate_layer_review_required`,
   `needs_regeneration`, `blocked`, or `not_for_intake`.
 - [ ] `P30-T5` Prepare SpecPM handoff dry-run evidence for selected candidates

@@ -87,6 +87,7 @@ PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
   --json-repair-max-attempts 1
 ```
 
-See also <doc:LimitedPopularLibraryDeterministicBatch>,
+See also <doc:LimitedPopularLibraryCandidateLayerTriage>,
+<doc:LimitedPopularLibraryDeterministicBatch>,
 <doc:LimitedPopularLibraryCorpusPlan>, and
 <doc:AutonomousCandidateIntakePolicy>.
