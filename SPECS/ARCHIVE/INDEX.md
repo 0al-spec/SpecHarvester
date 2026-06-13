@@ -139,6 +139,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t7_limited_corpus_intake_readiness_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t6_specpm_selected_candidate_handoff_preflight.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t5_refreshed_candidate_layer_selected_handoff.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run.md` |
