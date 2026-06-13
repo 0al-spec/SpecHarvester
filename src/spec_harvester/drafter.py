@@ -71,6 +71,223 @@ class SemanticIntentProfile:
     clusters: list[dict[str, Any]]
 
 
+@dataclass(frozen=True)
+class SinglePackageDraftBundle:
+    options: DraftOptions
+    package_id: str
+    spec_path: str
+    manifest: dict[str, Any]
+    boundary_spec: dict[str, Any]
+    snapshot_path: Path
+    public_interface_index: dict[str, Any] | None
+    manifest_capabilities: tuple[str, ...]
+    manifest_intents: tuple[str, ...]
+
+    def materialize(self) -> dict[str, Any]:
+        self.prepare_directories()
+        bundle_snapshot_path = ensure_bundle_harvest_snapshot(self.snapshot_path, self.options.out)
+        interface_index_output = self.write_public_interface_index()
+        self.write_spec_files()
+        output_files = self.initial_output_files(interface_index_output)
+        report_request = self.report_request(output_files)
+        validation_report_path = ProducerValidationReport(report_request).write()
+        diagnostics_report = ProducerDiagnosticsReport(report_request)
+        diagnostics_payload = diagnostics_report.payload()
+        diagnostics_report_path = diagnostics_report.write()
+        output_files = self.with_report_outputs(output_files)
+        quality_report_path = self.write_quality_report(
+            output_files,
+            validation_report_path,
+            diagnostics_report_path,
+        )
+        quality_report_payload = read_optional_report_object(
+            quality_report_path,
+            missing_status="missing",
+        )
+        output_files = (
+            *output_files,
+            CandidateOutputFile(
+                root=self.options.out,
+                path=AUTHOR_READY_QUALITY_REPORT_FILENAME,
+                role="quality_report",
+            ),
+        )
+        receipt_path = self.write_receipt(
+            output_files,
+            bundle_snapshot_path,
+            interface_index_output,
+            validation_report_path,
+            diagnostics_report_path,
+            diagnostics_payload,
+        )
+        return self.result_payload(
+            validation_report_path,
+            diagnostics_report_path,
+            quality_report_path,
+            quality_report_payload,
+            receipt_path,
+            interface_index_output,
+        )
+
+    def prepare_directories(self) -> None:
+        self.options.out.mkdir(parents=True, exist_ok=True)
+        (self.options.out / "specs").mkdir(parents=True, exist_ok=True)
+
+    def write_public_interface_index(self) -> Path | None:
+        if self.public_interface_index is None:
+            return None
+        output = self.options.out / PUBLIC_INTERFACE_INDEX_OUTPUT
+        output.write_text(
+            render_public_interface_index_json(self.public_interface_index),
+            encoding="utf-8",
+        )
+        return output
+
+    def write_spec_files(self) -> None:
+        (self.options.out / "specpm.yaml").write_text(
+            render_yaml(self.manifest),
+            encoding="utf-8",
+        )
+        (self.options.out / self.spec_path).write_text(
+            render_yaml(self.boundary_spec),
+            encoding="utf-8",
+        )
+
+    def initial_output_files(
+        self,
+        interface_index_output: Path | None,
+    ) -> tuple[CandidateOutputFile, ...]:
+        output_files = [
+            CandidateOutputFile(root=self.options.out, path="specpm.yaml", role="manifest"),
+            CandidateOutputFile(root=self.options.out, path=self.spec_path, role="boundary_spec"),
+        ]
+        if interface_index_output is not None:
+            output_files.append(
+                CandidateOutputFile(
+                    root=self.options.out,
+                    path=PUBLIC_INTERFACE_INDEX_OUTPUT,
+                    role="evidence",
+                )
+            )
+        output_files.append(
+            CandidateOutputFile(root=self.options.out, path="harvest.json", role="evidence")
+        )
+        return tuple(output_files)
+
+    def report_request(
+        self,
+        output_files: tuple[CandidateOutputFile, ...],
+    ) -> ProducerReportRequest:
+        return ProducerReportRequest(
+            candidate_root=self.options.out,
+            package_id=self.package_id,
+            package_version=self.options.version,
+            package_api_version=SPEC_API_VERSION,
+            spec_paths=(self.spec_path,),
+            output_files=output_files,
+            has_external_inputs=False,
+        )
+
+    def with_report_outputs(
+        self,
+        output_files: tuple[CandidateOutputFile, ...],
+    ) -> tuple[CandidateOutputFile, ...]:
+        return (
+            *output_files,
+            CandidateOutputFile(
+                root=self.options.out,
+                path=VALIDATION_REPORT_FILENAME,
+                role="validation_report",
+            ),
+            CandidateOutputFile(
+                root=self.options.out,
+                path=DIAGNOSTICS_REPORT_FILENAME,
+                role="diagnostics",
+            ),
+        )
+
+    def write_quality_report(
+        self,
+        output_files: tuple[CandidateOutputFile, ...],
+        validation_report_path: Path,
+        diagnostics_report_path: Path,
+    ) -> Path:
+        return AuthorReadyDraftQualityReport(
+            AuthorReadyDraftQualityReportRequest(
+                report=self.report_request(output_files),
+                validation_report_path=validation_report_path,
+                diagnostics_report_path=diagnostics_report_path,
+            )
+        ).write()
+
+    def write_receipt(
+        self,
+        output_files: tuple[CandidateOutputFile, ...],
+        bundle_snapshot_path: Path,
+        interface_index_output: Path | None,
+        validation_report_path: Path,
+        diagnostics_report_path: Path,
+        diagnostics_payload: dict[str, Any],
+    ) -> Path:
+        return ProducerReceipt(
+            ProducerReceiptRequest(
+                candidate_root=self.options.out,
+                package_id=self.package_id,
+                package_version=self.options.version,
+                package_api_version=SPEC_API_VERSION,
+                spec_paths=(self.spec_path,),
+                snapshot_path=bundle_snapshot_path,
+                public_interface_index_path=interface_index_output,
+                configuration={
+                    "author": self.options.author,
+                    "interfaceIndex": interface_index_output is not None,
+                    "name": self.options.name,
+                    "packageId": self.options.package_id,
+                    "version": self.options.version,
+                },
+                output_files=output_files,
+                validation_report_path=validation_report_path,
+                diagnostics_report_path=diagnostics_report_path,
+                diagnostics_entries=tuple(diagnostics_payload["entries"]),
+            )
+        ).write()
+
+    def result_payload(
+        self,
+        validation_report_path: Path,
+        diagnostics_report_path: Path,
+        quality_report_path: Path,
+        quality_report_payload: dict[str, Any],
+        receipt_path: Path,
+        interface_index_output: Path | None,
+    ) -> dict[str, Any]:
+        result = {
+            "status": "ok",
+            "output": str(self.options.out),
+            "manifest": str(self.options.out / "specpm.yaml"),
+            "spec": str(self.options.out / self.spec_path),
+            "validationReport": str(validation_report_path),
+            "diagnosticsReport": str(diagnostics_report_path),
+            "qualityReport": str(quality_report_path),
+            "authorReadyDraftSummary": author_ready_stop_policy_summary(
+                [
+                    {
+                        "packageId": self.package_id,
+                        "qualityReportPath": AUTHOR_READY_QUALITY_REPORT_FILENAME,
+                        "qualityReport": quality_report_payload,
+                    }
+                ]
+            ),
+            "producerReceipt": str(receipt_path),
+            "packageId": self.package_id,
+            "capabilityCount": len(self.manifest_capabilities),
+            "intentCount": len(self.manifest_intents),
+        }
+        if interface_index_output is not None:
+            result["interfaceIndex"] = str(interface_index_output)
+        return result
+
+
 def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
     snapshot_path = resolve_snapshot_path(options.snapshot)
     snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
@@ -261,132 +478,17 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         "keywords": ["generated", "specharvester", bounded_context],
     }
 
-    options.out.mkdir(parents=True, exist_ok=True)
-    specs_dir = options.out / "specs"
-    specs_dir.mkdir(parents=True, exist_ok=True)
-    bundle_snapshot_path = ensure_bundle_harvest_snapshot(snapshot_path, options.out)
-    interface_index_output: Path | None = None
-    if public_interface_index is not None:
-        interface_index_output = options.out / PUBLIC_INTERFACE_INDEX_OUTPUT
-        interface_index_output.write_text(
-            render_public_interface_index_json(public_interface_index),
-            encoding="utf-8",
-        )
-    (options.out / "specpm.yaml").write_text(render_yaml(manifest), encoding="utf-8")
-    (options.out / spec_path).write_text(render_yaml(boundary_spec), encoding="utf-8")
-    output_files = [
-        CandidateOutputFile(root=options.out, path="specpm.yaml", role="manifest"),
-        CandidateOutputFile(root=options.out, path=spec_path, role="boundary_spec"),
-    ]
-    if interface_index_output is not None:
-        output_files.append(
-            CandidateOutputFile(
-                root=options.out,
-                path=PUBLIC_INTERFACE_INDEX_OUTPUT,
-                role="evidence",
-            )
-        )
-    output_files.append(CandidateOutputFile(root=options.out, path="harvest.json", role="evidence"))
-    report_request = ProducerReportRequest(
-        candidate_root=options.out,
+    return SinglePackageDraftBundle(
+        options=options,
         package_id=package_id,
-        package_version=options.version,
-        package_api_version=SPEC_API_VERSION,
-        spec_paths=(spec_path,),
-        output_files=tuple(output_files),
-        has_external_inputs=False,
-    )
-    validation_report_path = ProducerValidationReport(report_request).write()
-    diagnostics_report = ProducerDiagnosticsReport(report_request)
-    diagnostics_payload = diagnostics_report.payload()
-    diagnostics_report_path = diagnostics_report.write()
-    output_files.extend(
-        [
-            CandidateOutputFile(
-                root=options.out,
-                path=VALIDATION_REPORT_FILENAME,
-                role="validation_report",
-            ),
-            CandidateOutputFile(
-                root=options.out,
-                path=DIAGNOSTICS_REPORT_FILENAME,
-                role="diagnostics",
-            ),
-        ]
-    )
-    quality_report_request = AuthorReadyDraftQualityReportRequest(
-        report=ProducerReportRequest(
-            candidate_root=options.out,
-            package_id=package_id,
-            package_version=options.version,
-            package_api_version=SPEC_API_VERSION,
-            spec_paths=(spec_path,),
-            output_files=tuple(output_files),
-            has_external_inputs=False,
-        ),
-        validation_report_path=validation_report_path,
-        diagnostics_report_path=diagnostics_report_path,
-    )
-    quality_report_path = AuthorReadyDraftQualityReport(quality_report_request).write()
-    quality_report_payload = read_optional_report_object(
-        quality_report_path,
-        missing_status="missing",
-    )
-    output_files.append(
-        CandidateOutputFile(
-            root=options.out,
-            path=AUTHOR_READY_QUALITY_REPORT_FILENAME,
-            role="quality_report",
-        )
-    )
-    receipt_path = ProducerReceipt(
-        ProducerReceiptRequest(
-            candidate_root=options.out,
-            package_id=package_id,
-            package_version=options.version,
-            package_api_version=SPEC_API_VERSION,
-            spec_paths=(spec_path,),
-            snapshot_path=bundle_snapshot_path,
-            public_interface_index_path=interface_index_output,
-            configuration={
-                "author": options.author,
-                "interfaceIndex": interface_index_output is not None,
-                "name": options.name,
-                "packageId": options.package_id,
-                "version": options.version,
-            },
-            output_files=tuple(output_files),
-            validation_report_path=validation_report_path,
-            diagnostics_report_path=diagnostics_report_path,
-            diagnostics_entries=tuple(diagnostics_payload["entries"]),
-        )
-    ).write()
-
-    result = {
-        "status": "ok",
-        "output": str(options.out),
-        "manifest": str(options.out / "specpm.yaml"),
-        "spec": str(options.out / spec_path),
-        "validationReport": str(validation_report_path),
-        "diagnosticsReport": str(diagnostics_report_path),
-        "qualityReport": str(quality_report_path),
-        "authorReadyDraftSummary": author_ready_stop_policy_summary(
-            [
-                {
-                    "packageId": package_id,
-                    "qualityReportPath": AUTHOR_READY_QUALITY_REPORT_FILENAME,
-                    "qualityReport": quality_report_payload,
-                }
-            ]
-        ),
-        "producerReceipt": str(receipt_path),
-        "packageId": package_id,
-        "capabilityCount": len(manifest_capabilities),
-        "intentCount": len(manifest_intents),
-    }
-    if interface_index_output is not None:
-        result["interfaceIndex"] = str(interface_index_output)
-    return result
+        spec_path=spec_path,
+        manifest=manifest,
+        boundary_spec=boundary_spec,
+        snapshot_path=snapshot_path,
+        public_interface_index=public_interface_index,
+        manifest_capabilities=tuple(manifest_capabilities),
+        manifest_intents=tuple(manifest_intents),
+    ).materialize()
 
 
 def ensure_bundle_harvest_snapshot(snapshot_path: Path, candidate_root: Path) -> Path:

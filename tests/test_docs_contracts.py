@@ -4443,6 +4443,8 @@ def test_docc_and_github_docs_cover_eo_refactoring_strategy() -> None:
             "PythonPublicApiAnalyzer",
             "GoPublicApiAnalyzer",
             "JavaScriptTypeScriptPublicApiAnalyzer",
+            "P17-T5",
+            "SinglePackageDraftBundle",
             "top-level function",
             "DTO-only dataclasses",
             "characterization tests",

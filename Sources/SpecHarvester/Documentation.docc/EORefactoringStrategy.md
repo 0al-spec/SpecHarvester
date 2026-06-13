@@ -146,6 +146,14 @@ Each slice needs characterization tests around generated artifacts before
 moving logic. Do not combine behavior moves with prompt, schema, or policy
 changes in the same PR.
 
+P17-T5 starts this sequence with the single-package draft bundle materialization
+slice. `SinglePackageDraftBundle` owns the explicit output behavior for
+candidate directories, bundled harvest snapshots, optional public interface
+indexes, `specpm.yaml`, boundary spec files, producer validation and diagnostics
+reports, author-ready quality reports, producer receipts, and the wrapper result
+payload. `draft_spec_package` still owns the manifest, boundary spec,
+capability, intent, evidence, and provenance assembly decisions.
+
 ### 6. Refactor SpecNode Orchestration Last
 
 `specnode_refinement.py` has the largest procedural cluster and several external
