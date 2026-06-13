@@ -1,6 +1,6 @@
 # Next Task: P29-T6 Corpus Quality Gate After Fallbacks
 
-**Status:** Selected
+**Status:** In Progress
 **Selected:** 2026-06-13
 **Task:** P29-T6 Corpus Quality Gate After Fallbacks
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
