@@ -123,3 +123,8 @@ SpecPM-side preflight and acceptance remain downstream work.
 - No candidate curation.
 - No regeneration of deferred candidates.
 - No registry publication.
+
+## Archive Status
+
+Archived: 2026-06-13
+Verdict: PASS

@@ -1089,7 +1089,7 @@ Acceptance:
 - [x] `P31-T1` Define a selected candidate handoff proposal contract that turns
   P30-style selected candidate dry-run evidence into portable SpecPM review
   evidence without accepting packages or creating registry authority.
-- [ ] `P31-T2` Implement a `selected-candidate-handoff-proposal` producer helper
+- [x] `P31-T2` Implement a `selected-candidate-handoff-proposal` producer helper
   that reads selected candidate bundles, producer preflight reports, and static
   viewer outputs, then emits JSON and Markdown handoff artifacts.
 - [ ] `P31-T3` Run the selected candidate handoff proposal helper on the real
