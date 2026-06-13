@@ -132,6 +132,7 @@
 | P33-T3 | [P33-T3_Deterministic_Next-Corpus_Dry_Run/](P33-T3_Deterministic_Next-Corpus_Dry_Run/) | 2026-06-13 | PASS |
 | P33-T4 | [P33-T4_Live_Local-Model_Next-Corpus_Dry_Run/](P33-T4_Live_Local-Model_Next-Corpus_Dry_Run/) | 2026-06-14 | PASS |
 | P33-T5 | [P33-T5_Next-Corpus_Candidate-Layer_Triage/](P33-T5_Next-Corpus_Candidate-Layer_Triage/) | 2026-06-14 | PASS |
+| P33-T6 | [P33-T6_Next-Corpus_SpecPM_Preflight_and_Intake_Decision/](P33-T6_Next-Corpus_SpecPM_Preflight_and_Intake_Decision/) | 2026-06-14 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -215,6 +216,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P33-T6 | Archived Next-Corpus SpecPM Preflight and Intake Decision (PASS) |
 | 2026-06-14 | P33-T5 | Archived REVIEW_p33_t5_next_corpus_candidate_layer_triage report |
 | 2026-06-14 | P33-T5 | Archived Next-Corpus Candidate-Layer Triage (PASS) |
 | 2026-06-14 | P33-T4 | Archived REVIEW_p33_t4_live_local_model_next_corpus_dry_run report |

@@ -61,3 +61,18 @@ mutating registry state.
 - Do not seed baselines, remove `preview_only`, publish registry metadata, or
   create a SpecPM pull request.
 
+## Archive
+
+Archived: 2026-06-14
+Verdict: PASS
+
+P33-T6 ran the current SpecPM selected candidate handoff preflight against the
+committed P33-T5 candidate-layer triage fixture. The gate returned
+`selected_handoff_payload_missing`, which confirms that P33-T5 triage is not a
+supported selected handoff payload.
+
+The intake decision is
+`not_ready_requires_durable_selected_handoff_artifact`. The next selected task
+is P33-T7: create durable selected handoff evidence for `serena.core`,
+`transmission.core`, and `specpm.core`, or explicitly extend the SpecPM
+consumer gate before maintainer intake review.
