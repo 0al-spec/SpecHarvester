@@ -1,0 +1,470 @@
+{
+  "ai": {
+    "chainOfThoughtPersisted": false,
+    "mode": "local_lm_studio",
+    "model": "openai/gpt-oss-20b",
+    "provider": "lm_studio",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false
+  },
+  "aiDraft": {
+    "decision": "continue_generation",
+    "diagnosticCodes": [
+      "package_set_id_missing"
+    ],
+    "errorCount": 0,
+    "status": "warning",
+    "stopPolicyStatus": "needs_regeneration",
+    "warningCount": 1
+  },
+  "aiEnrichment": {
+    "decision": "stop_for_author_review",
+    "errorCount": 0,
+    "proposalCount": 4,
+    "status": "completed",
+    "stopPolicyStatus": "author_ready_draft",
+    "warningCount": 0
+  },
+  "apiVersion": "spec-harvester.xyflow-package-set-identity-regeneration-dry-run/v0",
+  "authorReadyDraft": {
+    "blockingReasons": [],
+    "decision": "stop_for_author_review",
+    "memberCounts": {
+      "author_ready_draft": 4,
+      "blocked": 0,
+      "needs_regeneration": 0,
+      "total": 4
+    },
+    "members": [
+      {
+        "actionItemCount": 3,
+        "decision": "stop_for_author_review",
+        "packageId": "xyflow.react",
+        "qualityReportPath": "xyflow.react/author-ready-draft-quality-report.json",
+        "status": "author_ready_draft",
+        "stopReason": "remaining_work_is_author_reviewable"
+      },
+      {
+        "actionItemCount": 3,
+        "decision": "stop_for_author_review",
+        "packageId": "xyflow.svelte",
+        "qualityReportPath": "xyflow.svelte/author-ready-draft-quality-report.json",
+        "status": "author_ready_draft",
+        "stopReason": "remaining_work_is_author_reviewable"
+      },
+      {
+        "actionItemCount": 3,
+        "decision": "stop_for_author_review",
+        "packageId": "xyflow.system",
+        "qualityReportPath": "xyflow.system/author-ready-draft-quality-report.json",
+        "status": "author_ready_draft",
+        "stopReason": "remaining_work_is_author_reviewable"
+      },
+      {
+        "actionItemCount": 3,
+        "decision": "stop_for_author_review",
+        "packageId": "xyflow.workspace",
+        "qualityReportPath": "xyflow.workspace/author-ready-draft-quality-report.json",
+        "status": "author_ready_draft",
+        "stopReason": "remaining_work_is_author_reviewable"
+      }
+    ],
+    "nonAuthority": [
+      "The stop-policy summary is producer-side review evidence only.",
+      "It is not SpecPM registry acceptance.",
+      "It is not maintainer approval.",
+      "It is not upstream project endorsement."
+    ],
+    "reviewableDimensions": [
+      {
+        "count": 4,
+        "id": "claimConservatism",
+        "packageIds": [
+          "xyflow.react",
+          "xyflow.svelte",
+          "xyflow.system",
+          "xyflow.workspace"
+        ],
+        "ratings": [
+          "reviewable"
+        ]
+      },
+      {
+        "count": 4,
+        "id": "packageTopology",
+        "packageIds": [
+          "xyflow.react",
+          "xyflow.svelte",
+          "xyflow.system",
+          "xyflow.workspace"
+        ],
+        "ratings": [
+          "reviewable"
+        ]
+      },
+      {
+        "count": 4,
+        "id": "repositorySpecificity",
+        "packageIds": [
+          "xyflow.react",
+          "xyflow.svelte",
+          "xyflow.system",
+          "xyflow.workspace"
+        ],
+        "ratings": [
+          "reviewable"
+        ]
+      }
+    ],
+    "schemaVersion": 1,
+    "status": "author_ready_draft",
+    "summary": "All member candidates are valid starter packages ready for author review.",
+    "topAuthorActionItems": [
+      {
+        "category": "author_review",
+        "id": "review_capabilities_and_intents",
+        "packageId": "xyflow.react",
+        "severity": "info",
+        "summary": "Confirm capabilities, intents, constraints, and evidence support.",
+        "target": "specs/*.spec.yaml"
+      },
+      {
+        "category": "author_review",
+        "id": "review_package_identity_and_summary",
+        "packageId": "xyflow.react",
+        "severity": "info",
+        "summary": "Confirm package id, name, summary, license, keywords, and version.",
+        "target": "specpm.yaml"
+      },
+      {
+        "category": "handoff",
+        "id": "run_specpm_validation_before_submission",
+        "packageId": "xyflow.react",
+        "severity": "info",
+        "summary": "Run downstream SpecPM validation before requesting public index acceptance.",
+        "target": "SpecPM"
+      },
+      {
+        "category": "author_review",
+        "id": "review_capabilities_and_intents",
+        "packageId": "xyflow.svelte",
+        "severity": "info",
+        "summary": "Confirm capabilities, intents, constraints, and evidence support.",
+        "target": "specs/*.spec.yaml"
+      },
+      {
+        "category": "author_review",
+        "id": "review_package_identity_and_summary",
+        "packageId": "xyflow.svelte",
+        "severity": "info",
+        "summary": "Confirm package id, name, summary, license, keywords, and version.",
+        "target": "specpm.yaml"
+      },
+      {
+        "category": "handoff",
+        "id": "run_specpm_validation_before_submission",
+        "packageId": "xyflow.svelte",
+        "severity": "info",
+        "summary": "Run downstream SpecPM validation before requesting public index acceptance.",
+        "target": "SpecPM"
+      },
+      {
+        "category": "author_review",
+        "id": "review_capabilities_and_intents",
+        "packageId": "xyflow.system",
+        "severity": "info",
+        "summary": "Confirm capabilities, intents, constraints, and evidence support.",
+        "target": "specs/*.spec.yaml"
+      },
+      {
+        "category": "author_review",
+        "id": "review_package_identity_and_summary",
+        "packageId": "xyflow.system",
+        "severity": "info",
+        "summary": "Confirm package id, name, summary, license, keywords, and version.",
+        "target": "specpm.yaml"
+      }
+    ]
+  },
+  "authority": "producer_preview_evidence_only",
+  "candidateLayerDecision": {
+    "nextStep": "Include regenerated xyflow package-set candidates in the refreshed P32-T5 candidate-layer triage and selected handoff evidence if no later review blocks them.",
+    "reason": "xyflow package-set identity, members, contains relations, preflight, viewer, and author-ready evidence satisfy P32-T2 re-entry criteria. AI draft warning package_set_id_missing is retained as proposal-only context and is resolved by deterministic package-set identity evidence plus clean bundle-set preflight.",
+    "selectedHandoffEligible": true,
+    "status": "candidate_layer_review_required"
+  },
+  "kind": "SpecHarvesterXyflowPackageSetIdentityRegenerationDryRun",
+  "members": [
+    {
+      "actualPackageId": "xyflow.workspace",
+      "artifacts": [
+        {
+          "digest": "sha256:6fb6dcfecbfe64904e4ca168af05fc564c114508aed96b87271f34c9124f4a85",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.workspace/specpm.yaml",
+          "role": "member_manifest"
+        },
+        {
+          "digest": "sha256:b8d0755b3099fb19e7b1905b55be179a67d1b814158c0ae533af760e0cc9f61c",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.workspace/producer-receipt.json",
+          "role": "member_producer_receipt"
+        },
+        {
+          "digest": "sha256:8019258699830aa80074ff6f262dbfcbd30c53ef27b9e9eea0c39d7a26fefc5d",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.workspace/validation-report.json",
+          "role": "member_validation_report"
+        },
+        {
+          "digest": "sha256:cf9bf7b972acd966b534ed001c8fd4f3d794dea61aa70c0ed444c9fb322fcb70",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.workspace/diagnostics.json",
+          "role": "member_diagnostics"
+        },
+        {
+          "digest": "sha256:85231b32b8e49cc23f3c6d1a94a85695f566f84dac721700403f607f8f2a0cb7",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.workspace/author-ready-draft-quality-report.json",
+          "role": "member_quality_report"
+        }
+      ],
+      "authorReadyDraftStatus": "author_ready_draft",
+      "diagnosticsStatus": "clean",
+      "packageId": "xyflow.workspace",
+      "previewOnly": true,
+      "validationStatus": "valid"
+    },
+    {
+      "actualPackageId": "xyflow.react",
+      "artifacts": [
+        {
+          "digest": "sha256:8a13423b8c2063f108051eeb87e4581b8174d898c3060223d29a9b47e83ba56b",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.react/specpm.yaml",
+          "role": "member_manifest"
+        },
+        {
+          "digest": "sha256:bd12f5cf16aec0e34fabc7bf53ca61bb2b06760f6781e3ae7b108215155b95ba",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.react/producer-receipt.json",
+          "role": "member_producer_receipt"
+        },
+        {
+          "digest": "sha256:8521f20ddb6ff1744495382521de533047c8238e2ce4f4e9454b74b19b06e48c",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.react/validation-report.json",
+          "role": "member_validation_report"
+        },
+        {
+          "digest": "sha256:da16ab100c0c70fada8851200ce70279f38b8a12010161c10df37e1217ba976f",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.react/diagnostics.json",
+          "role": "member_diagnostics"
+        },
+        {
+          "digest": "sha256:df43b240d453351c906fa30947bcc1d014fd5295b5c433de2dd337418557c971",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.react/author-ready-draft-quality-report.json",
+          "role": "member_quality_report"
+        }
+      ],
+      "authorReadyDraftStatus": "author_ready_draft",
+      "diagnosticsStatus": "clean",
+      "packageId": "xyflow.react",
+      "previewOnly": true,
+      "validationStatus": "valid"
+    },
+    {
+      "actualPackageId": "xyflow.svelte",
+      "artifacts": [
+        {
+          "digest": "sha256:6f104495b9fd79437e99458bbfe297d8bd757f3b3676d7f539953ee1ea2e40c2",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.svelte/specpm.yaml",
+          "role": "member_manifest"
+        },
+        {
+          "digest": "sha256:f5b7c10bb6be955879b984cecaba0b339be65c34b3be800d8a1b5bf852e6d1c3",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.svelte/producer-receipt.json",
+          "role": "member_producer_receipt"
+        },
+        {
+          "digest": "sha256:f0798554c7af104fc7f020074af79f43d651b6fc5d2bfe39219977aeafb41803",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.svelte/validation-report.json",
+          "role": "member_validation_report"
+        },
+        {
+          "digest": "sha256:8c167768db4f3c713ebb3ebfbc86520ffc9bb728f7ba1cc76dae153b2c56610e",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.svelte/diagnostics.json",
+          "role": "member_diagnostics"
+        },
+        {
+          "digest": "sha256:a57ede4c95330dca9fa414e96523c4fb3043fffcc00aa26514df149cf2f6574c",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.svelte/author-ready-draft-quality-report.json",
+          "role": "member_quality_report"
+        }
+      ],
+      "authorReadyDraftStatus": "author_ready_draft",
+      "diagnosticsStatus": "clean",
+      "packageId": "xyflow.svelte",
+      "previewOnly": true,
+      "validationStatus": "valid"
+    },
+    {
+      "actualPackageId": "xyflow.system",
+      "artifacts": [
+        {
+          "digest": "sha256:2b99f46f5c41bf10eeb0d949ec47702cce7e5f2fe69c5abaea85d6eb38ff1828",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.system/specpm.yaml",
+          "role": "member_manifest"
+        },
+        {
+          "digest": "sha256:af3bca7f429116b9b8271488a48d596e3059f63341158166d1dc9f3e342e8cde",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.system/producer-receipt.json",
+          "role": "member_producer_receipt"
+        },
+        {
+          "digest": "sha256:47ec371dbb3401ea9b282b3745e0fac04e8bd9d2bd057af00be8642a761c8140",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.system/validation-report.json",
+          "role": "member_validation_report"
+        },
+        {
+          "digest": "sha256:c5427cf685a0cb943d352163d851ac5fb548c7bb0a936eda328263c129548300",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.system/diagnostics.json",
+          "role": "member_diagnostics"
+        },
+        {
+          "digest": "sha256:44084cb84b270d12022c6c756449effde6c3aa5f596700d5728a7ad815c4f333",
+          "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/xyflow.system/author-ready-draft-quality-report.json",
+          "role": "member_quality_report"
+        }
+      ],
+      "authorReadyDraftStatus": "author_ready_draft",
+      "diagnosticsStatus": "clean",
+      "packageId": "xyflow.system",
+      "previewOnly": true,
+      "validationStatus": "valid"
+    }
+  ],
+  "nonAuthority": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "createsSpecPMPullRequest": false,
+    "producerEvidenceOnly": true,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false,
+    "seedsBaselines": false,
+    "treatsAIOutputAsRegistryTruth": false
+  },
+  "packageSet": {
+    "allPackageIds": [
+      "xyflow.workspace",
+      "xyflow.react",
+      "xyflow.svelte",
+      "xyflow.system"
+    ],
+    "artifacts": [
+      {
+        "digest": "sha256:8c4b822f3ba770e595e3ea402fe60a72d1cac64b173faf239527c4c5bb4d374e",
+        "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/package-set-draft.json",
+        "role": "package_set_draft"
+      },
+      {
+        "digest": "sha256:3df4bcd37c77c3fc43e861131c462bd49a548170fe2cd5828ece9e5a05ad6ef0",
+        "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/package-relation-proposals.json",
+        "role": "package_relation_proposals"
+      },
+      {
+        "digest": "sha256:9cbd967fe5cf0a0241498163572d83e7ab4cadc02c12574d17592980feae8e82",
+        "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/bundle-set-preflight.json",
+        "role": "bundle_set_preflight"
+      },
+      {
+        "digest": "sha256:5a183d3ed0bab6fdd8ce310e8bc59685365e2763e50165e9ff77e33c60bc7da5",
+        "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/ai/package-set-ai-draft-proposal.json",
+        "role": "package_set_ai_draft_proposal"
+      },
+      {
+        "digest": "sha256:e9f31e590761e5df13e2f5f3d5102e5f7cc863ea04d62ba89ce263e6e14981d9",
+        "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/package-sets/xyflow/ai/package-set-ai-enrichment-proposal.json",
+        "role": "package_set_ai_enrichment_proposal"
+      },
+      {
+        "digest": "sha256:46a504275b3522a3732fc60fdd70e3372785ad7b364defd3bafc63bfe665c208",
+        "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/viewer/index.html",
+        "role": "static_viewer_index"
+      },
+      {
+        "digest": "sha256:b8fce19d94b10247efcec99425244ccde07db47760cae292eb466bc9ab07fd89",
+        "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/viewer/package-set.json",
+        "role": "static_viewer_payload"
+      }
+    ],
+    "candidateCount": 4,
+    "memberPackageIds": [
+      "xyflow.react",
+      "xyflow.svelte",
+      "xyflow.system"
+    ],
+    "packageSetId": "xyflow.workspace",
+    "skippedPackageCount": 7
+  },
+  "preflight": {
+    "candidateCount": 4,
+    "candidatePreflightPassedCount": 4,
+    "errorCount": 0,
+    "relationCount": 3,
+    "status": "passed",
+    "warningCount": 0
+  },
+  "relations": [
+    {
+      "authority": "producer_observed_review_evidence",
+      "id": "xyflow.workspace.contains.xyflow.react",
+      "reviewStatus": "producer_observed",
+      "sourcePackageId": "xyflow.workspace",
+      "targetPackageId": "xyflow.react",
+      "type": "contains"
+    },
+    {
+      "authority": "producer_observed_review_evidence",
+      "id": "xyflow.workspace.contains.xyflow.svelte",
+      "reviewStatus": "producer_observed",
+      "sourcePackageId": "xyflow.workspace",
+      "targetPackageId": "xyflow.svelte",
+      "type": "contains"
+    },
+    {
+      "authority": "producer_observed_review_evidence",
+      "id": "xyflow.workspace.contains.xyflow.system",
+      "reviewStatus": "producer_observed",
+      "sourcePackageId": "xyflow.workspace",
+      "targetPackageId": "xyflow.system",
+      "type": "contains"
+    }
+  ],
+  "run": {
+    "attemptId": "20260613T181500Z",
+    "input": "inputs/limited-popular-libraries",
+    "outputRoot": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow",
+    "selectedRepositoryIds": [
+      "xyflow"
+    ],
+    "skippedRepositoryIds": [
+      "flask",
+      "gin",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ],
+    "taskId": "P32-T3"
+  },
+  "schemaVersion": 1,
+  "source": {
+    "checkout": "/Users/egor/Development/GitHub/xyflow",
+    "manifestPath": "inputs/limited-popular-libraries/repositories.yml",
+    "manifestValidationDigest": "sha256:b22cbb4547db77fae7e5760b6cbbb3c19a39ae32f3ef3ceb46462ebbc2277fb8",
+    "manifestValidationPath": ".smoke/p32-deferred-regeneration/20260613T181500Z/source-manifest-validation.json",
+    "repository": "https://github.com/xyflow/xyflow",
+    "repositoryId": "xyflow",
+    "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+    "sourceManifestDigest": "sha256:2fafa8089327deb123b8906dafd4c84cda948cd6c3f2687ce403733b7732f8bd"
+  },
+  "viewer": {
+    "candidateCount": 4,
+    "packageSetId": "xyflow.workspace",
+    "path": ".smoke/p32-deferred-regeneration/20260613T181500Z/xyflow/viewer",
+    "relationCount": 3,
+    "status": "ok"
+  }
+}

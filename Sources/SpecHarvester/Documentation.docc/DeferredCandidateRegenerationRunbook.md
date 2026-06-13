@@ -84,6 +84,11 @@ Refreshed triage must use `candidate_layer_review_required`,
 `candidate_layer_review_required` candidates may enter a future selected
 handoff dry run.
 
+P32-T3 records the xyflow package-set identity regeneration result in
+<doc:XyflowPackageSetIdentityRegenerationDryRun>. That dry run classifies
+`xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, and `xyflow.system` as
+`candidate_layer_review_required` with `selectedHandoffEligible: true`.
+
 ## Non-Authority Boundary
 
 The runbook cannot clone repositories, fetch updates, install dependencies,
@@ -94,6 +99,7 @@ registry truth, or replace author or SpecPM maintainer review.
 
 See also <doc:AutonomousCandidateTechDebtPlan>,
 <doc:DeferredSelectedCandidateRegenerationRequirements>,
+<doc:XyflowPackageSetIdentityRegenerationDryRun>,
 <doc:LimitedPopularLibraryCandidateLayerTriage>,
 <doc:LimitedPopularLibrarySelectedHandoffDryRun>,
 <doc:SelectedCandidateHandoffProposal>, and <doc:SpecPMHandoff>.

@@ -468,7 +468,8 @@ Tasks:
 - record the autonomous deferred candidate work plan;
 - write a deferred candidate regeneration runbook
   ([`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md));
-- run xyflow package-set identity regeneration as a dry run;
+- run xyflow package-set identity regeneration as a dry run
+  ([`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md));
 - run single-package deferred candidate regeneration or repair for
   `cupertino.core` and `navigation_split_view.core`;
 - refresh candidate-layer triage and selected handoff evidence;
@@ -490,6 +491,8 @@ Success criteria:
 See [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md).
 P32-T2 records the regeneration runbook in
 [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md).
+P32-T3 records the xyflow package-set identity regeneration dry run in
+[`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md).
 
 ## Non-Goals
 

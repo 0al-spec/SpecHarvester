@@ -147,6 +147,12 @@ Acceptance:
 - If identity drift remains, the report says `needs_regeneration`, not
   selected.
 
+Artifact:
+
+- [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md)
+  records the P32-T3 xyflow-only dry run. The recorded decision is
+  `candidate_layer_review_required` with `selectedHandoffEligible: true`.
+
 ### P32-T4 Single-Package Deferred Candidate Regeneration Dry Run
 
 Owner: SpecHarvester.

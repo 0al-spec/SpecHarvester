@@ -99,6 +99,10 @@ review makes them suitable for selected handoff. P31-T5 records those
 requirements in <doc:DeferredSelectedCandidateRegenerationRequirements>.
 P32-T2 records the safe operator procedure in
 <doc:DeferredCandidateRegenerationRunbook>.
+P32-T3 records a xyflow-only package-set identity regeneration dry run in
+<doc:XyflowPackageSetIdentityRegenerationDryRun>. That evidence makes the
+xyflow package-set candidates eligible for refreshed candidate-layer review,
+but still does not accept packages or relations.
 
 ## Maintainer Checklist
 

@@ -260,6 +260,12 @@ The refreshed triage must use the existing states:
 Only candidates classified as `candidate_layer_review_required` may enter a
 future selected handoff dry run.
 
+P32-T3 records the xyflow package-set identity regeneration result in
+[`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md).
+That dry run classifies `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`,
+and `xyflow.system` as `candidate_layer_review_required` with
+`selectedHandoffEligible: true`.
+
 ## Non-Authority Boundary
 
 This runbook cannot:
@@ -283,6 +289,7 @@ See also:
 
 - [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md)
 - [`DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md`](DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md)
+- [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md)
 - [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md)
 - [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md)
 - [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md)
