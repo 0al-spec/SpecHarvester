@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P20-T6 CodeGraph Adapter Boundary" in next_text:
+        assert_p20_t5_last_archived(next_text)
+        assert_p20_t5_recent(next_text)
+        assert_p17_t6_recent(next_text)
+        assert_phase_20_t6_active(next_text)
+        return
+
     if "# Next Task: P20-T5 Scoped Source-Unit Draft Intent Boundaries" in next_text:
         assert_p17_t6_last_archived(next_text)
         assert_p17_t5_recent(next_text)
@@ -757,6 +764,28 @@ def assert_phase_20_t5_active(next_text: str) -> None:
     assert "repository, package, folder module, and single-file source-unit intent" in normalized
     assert "do not overclaim package-manager ownership" in normalized
     assert "scoped evidence" in normalized
+
+
+def assert_p20_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P20-T5 Scoped Source-Unit Draft Intent Boundaries" in next_text
+
+
+def assert_p20_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P20-T5` added deterministic source-unit intent boundaries" in next_text
+    assert "repository, package, folder/module, and single-file draft targets" in normalized
+    assert "SpecNode `compactModelInput`" in next_text
+    assert "package-manager ownership claims" in normalized
+
+
+def assert_phase_20_t6_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P20-T6 CodeGraph Adapter Boundary" in next_text
+    assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 20. Scoped Source Unit Harvesting" in next_text
+    assert "explicit opt-in CodeGraph adapter boundary" in normalized
+    assert "never installs or downloads tools" in normalized
+    assert "source_graph_index" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:

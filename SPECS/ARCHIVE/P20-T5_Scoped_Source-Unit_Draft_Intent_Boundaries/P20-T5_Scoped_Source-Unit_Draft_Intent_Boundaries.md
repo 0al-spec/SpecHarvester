@@ -67,3 +67,7 @@ the evidence that was actually harvested.
 - Full pytest suite.
 - Ruff check and format check.
 - Swift docs build and DocC generation if the task changes public docs.
+
+---
+**Archived:** 2026-06-14
+**Verdict:** PASS

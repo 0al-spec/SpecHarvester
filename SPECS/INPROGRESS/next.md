@@ -1,15 +1,20 @@
-# Next Task: P20-T5 Scoped Source-Unit Draft Intent Boundaries
+# Next Task: P20-T6 CodeGraph Adapter Boundary
 
 **Priority:** P1
 **Phase:** Phase 20. Scoped Source Unit Harvesting
 **Effort:** Medium
-**Dependencies:** P20-T4, P17-T6
-**Status:** Selected
-**Active Branch:** `codex/p20-t5-scoped-source-unit-draft-intent-boundaries`
-**Last Archived:** P17-T6 SpecNode Refinement Orchestration Objects
+**Dependencies:** P20-T3, P20-T5
+**Status:** Ready
+**Last Archived:** P20-T5 Scoped Source-Unit Draft Intent Boundaries
 
 ## Recently Archived
 
+- `P20-T5` added deterministic source-unit intent boundaries for repository,
+  package, folder/module, and single-file draft targets, surfaced those
+  boundaries in generated summaries, scope includes, constraints, provenance,
+  and SpecNode `compactModelInput`, and preserved the rule that scoped evidence
+  must not be upgraded into repository-level or package-manager ownership
+  claims without supporting package manifest evidence.
 - `P17-T6` moved bounded SpecNode retry orchestration behind
   `SpecNodeRefinementRetrySequence` while preserving
   `run_specnode_refinement_retry_orchestration`, provider interfaces,
@@ -26,20 +31,20 @@
   wrapper result fields, output roles, digests, and the receipt self-hash
   boundary. The procedural-style smoke recorded behaviorRichClassCount: 1 and
   reduced `drafter.py` topLevelFunctionSpan from 1665 to 1550.
-- `P20-T4` extended scoped-source validation with real monorepo smoke fixtures,
-  including a Tuist-managed Swift folder, a single-file target, and a non-Swift
-  folder target, giving P20-T5 concrete scoped evidence cases to preserve.
 
 ## Description
 
-Teach drafting/refinement prompts to distinguish repository, package, folder
-module, and single-file source-unit intent so generated specs do not overclaim
-package-manager ownership when only scoped evidence exists.
+Implement an explicit opt-in CodeGraph adapter boundary that never installs or
+downloads tools, records analyzer and executable provenance, and normalizes JSON
+or SQLite graph evidence into a SpecHarvester-owned `source_graph_index`
+evidence shape.
 
-This resumes Phase 20 after the Phase 17 EO refactoring stack. Keep the change
-focused on source-unit intent boundaries for draft and refinement behavior, not
-on CodeGraph integration or new source graph evidence.
+This continues Phase 20 after source-unit intent boundaries. Keep the change
+focused on the adapter trust boundary and normalized evidence contract; do not
+make CodeGraph a default analyzer and do not index third-party projects unless
+the operator explicitly opts in.
 
 ## Next Step
 
-Run the BRANCH and PLAN commands for P20-T5.
+Run the BRANCH and PLAN commands for P20-T6 after the P20-T5 stacked PR is
+reviewed or when the maintainer asks to continue the stack.
