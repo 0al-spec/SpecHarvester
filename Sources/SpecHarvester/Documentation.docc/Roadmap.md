@@ -136,6 +136,12 @@ The live LM Studio result is recorded in
 `ready_for_candidate_layer_triage`: all six repositories processed, nine
 preview candidates preserved, three relation proposals preserved, JSON repair
 not needed, and model findings bounded to candidate review diagnostics.
+The candidate-layer triage result is recorded in
+<doc:LimitedPopularLibraryCandidateLayerTriage> with verdict
+`ready_for_selected_handoff_dry_run`: `flask.core`, `gin.core`, and
+`docc2context.core` are selected for P30-T5 dry-run handoff, while xyflow,
+Cupertino, and NavigationSplitView candidates remain deferred until targeted
+regeneration or package-identity fixes.
 
 ### Ecosystem Analyzer Depth
 
@@ -208,4 +214,5 @@ repositories.
 - <doc:AutonomousCandidateCorpusBaseline>
 - <doc:SinglePackageCandidateFallback>
 - <doc:LimitedPopularLibraryLiveLMStudioBatch>
+- <doc:LimitedPopularLibraryCandidateLayerTriage>
 - <doc:XyflowPackageSetSmoke>

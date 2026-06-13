@@ -175,6 +175,10 @@ P30-T3 records the live LM Studio corpus report in
 [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md)
 with verdict `ready_for_candidate_layer_triage`.
 
+P30-T4 records the candidate-layer triage report in
+[`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md)
+with verdict `ready_for_selected_handoff_dry_run`.
+
 ## Related Contracts
 
 - [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md)

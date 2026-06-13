@@ -1,0 +1,252 @@
+{
+  "apiVersion": "spec-harvester.limited-popular-library-candidate-layer-triage/v0",
+  "authority": "producer_preview_evidence_only",
+  "corpus": {
+    "id": "p30-limited-popular-libraries",
+    "manifestPath": "inputs/limited-popular-libraries/repositories.yml",
+    "repositories": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ]
+  },
+  "inputs": {
+    "deterministicFixture": {
+      "kind": "SpecHarvesterLimitedPopularLibraryDeterministicBatch",
+      "path": "tests/fixtures/limited_popular_library_deterministic_batch/p30-t2-limited-popular-libraries.example.json",
+      "status": "ready_for_live_lm_studio_limited_corpus"
+    },
+    "liveLmStudioFixture": {
+      "kind": "SpecHarvesterLimitedPopularLibraryLiveLMStudioBatch",
+      "path": "tests/fixtures/limited_popular_library_live_lm_studio_batch/p30-t3-limited-popular-libraries.example.json",
+      "status": "ready_for_candidate_layer_triage"
+    }
+  },
+  "kind": "SpecHarvesterLimitedPopularLibraryCandidateLayerTriage",
+  "nonAuthority": [
+    "This triage report is review evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata.",
+    "It does not treat AI output as canonical SpecPackage, BoundarySpec, relation, or registry truth."
+  ],
+  "productVerdict": {
+    "candidateQuality": "selected_candidates_ready_for_dry_run_handoff",
+    "pipelineHealth": "deterministic_and_live_evidence_triaged",
+    "status": "ready_for_selected_handoff_dry_run",
+    "summary": "Proceed to P30-T5 only for selected candidate-layer review packages. Defer package-set and warning-bearing candidates until targeted regeneration or explicit maintainer approval resolves their findings."
+  },
+  "schemaVersion": 1,
+  "selectedForP30T5": [
+    "flask.core",
+    "gin.core",
+    "docc2context.core"
+  ],
+  "summary": {
+    "blockedCandidateCount": 0,
+    "candidateLayerReviewRequiredCount": 3,
+    "deferredCandidateCount": 6,
+    "findingBlockedCount": 0,
+    "findingCandidateLayerReviewRequiredCount": 2,
+    "findingNeedsRegenerationCount": 4,
+    "findingNotForIntakeCount": 0,
+    "needsRegenerationCandidateCount": 6,
+    "notForIntakeCandidateCount": 0,
+    "p30T5SelectedCandidateCount": 3,
+    "previewCandidateCount": 9,
+    "relationProposalCount": 3,
+    "repositoryCount": 6,
+    "uniqueFindingCodeCount": 4
+  },
+  "triageFindings": [
+    {
+      "affectedCandidateIds": [
+        "flask.core",
+        "gin.core"
+      ],
+      "classification": "candidate_layer_review_required",
+      "code": "excluded_package_unknown",
+      "count": 2,
+      "origin": "ai_draft",
+      "reason": "The warning did not change generated candidate ids, deterministic preflight, or author-ready status. Treat it as bounded model-output noise and exclude the unknown-package fragment from handoff evidence.",
+      "recommendedAction": "Proceed with selected deterministic candidates while ignoring the noisy AI draft exclusion field."
+    },
+    {
+      "affectedCandidateIds": [
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "navigation_split_view.core"
+      ],
+      "classification": "needs_regeneration",
+      "code": "package_set_id_missing",
+      "count": 2,
+      "origin": "ai_draft",
+      "reason": "The AI draft proposal omitted expected package-set identity. Do not use that AI draft evidence for handoff until the proposal is regenerated or the schema is corrected.",
+      "recommendedAction": "Regenerate AI draft evidence before package-set or affected package handoff."
+    },
+    {
+      "affectedCandidateIds": [
+        "cupertino.core"
+      ],
+      "classification": "needs_regeneration",
+      "code": "refined_summary_missing",
+      "count": 1,
+      "origin": "ai_enrichment",
+      "reason": "The AI enrichment proposal did not provide a refined summary, so the candidate needs another enrichment pass before selected handoff.",
+      "recommendedAction": "Regenerate enrichment or ask the author to supply a package-specific summary."
+    },
+    {
+      "affectedCandidateIds": [
+        "navigation_split_view.core"
+      ],
+      "classification": "needs_regeneration",
+      "code": "package_id_hint_mismatch",
+      "count": 1,
+      "origin": "deterministic_draft",
+      "reason": "The manifest package id hint uses navigation-split-view.core while generated output normalized to navigation_split_view.core. Resolve the naming policy before handoff.",
+      "recommendedAction": "Fix the manifest hint, update normalization policy, or record explicit maintainer approval for the generated id."
+    }
+  ],
+  "triagePolicy": {
+    "blocked": "Required local input is missing or a hard gate failed.",
+    "candidate_layer_review_required": "Valid starter package can proceed to author or maintainer review without becoming accepted registry truth.",
+    "needs_regeneration": "Producer output should be regenerated or corrected before selected handoff.",
+    "not_for_intake": "Useful calibration evidence that should not be handed to SpecPM."
+  },
+  "triagedCandidates": [
+    {
+      "classification": "candidate_layer_review_required",
+      "evidencePolicy": "deterministic_candidate_plus_completed_enrichment",
+      "findingCodes": [
+        "excluded_package_unknown"
+      ],
+      "id": "flask.core",
+      "p30T5Selected": true,
+      "reason": "Deterministic preflight passed, author-ready status is present, enrichment completed, and the only AI draft warning is non-blocking model noise.",
+      "repositoryId": "flask",
+      "requiredBeforeHandoff": [
+        "Ignore noisy excluded_package_unknown draft field during handoff review."
+      ]
+    },
+    {
+      "classification": "candidate_layer_review_required",
+      "evidencePolicy": "deterministic_candidate_plus_completed_enrichment",
+      "findingCodes": [
+        "excluded_package_unknown"
+      ],
+      "id": "gin.core",
+      "p30T5Selected": true,
+      "reason": "Deterministic preflight passed, author-ready status is present, enrichment completed, and the only AI draft warning is non-blocking model noise.",
+      "repositoryId": "gin",
+      "requiredBeforeHandoff": [
+        "Ignore noisy excluded_package_unknown draft field during handoff review."
+      ]
+    },
+    {
+      "classification": "needs_regeneration",
+      "evidencePolicy": "defer_ai_draft_until_package_set_identity_is_present",
+      "findingCodes": [
+        "package_set_id_missing"
+      ],
+      "id": "xyflow.workspace",
+      "p30T5Selected": false,
+      "reason": "Package-set deterministic output is reviewable, but package-set AI draft evidence must be regenerated before selected handoff.",
+      "repositoryId": "xyflow",
+      "requiredBeforeHandoff": [
+        "Regenerate package-set AI draft evidence with package-set identity."
+      ]
+    },
+    {
+      "classification": "needs_regeneration",
+      "evidencePolicy": "defer_ai_draft_until_package_set_identity_is_present",
+      "findingCodes": [
+        "package_set_id_missing"
+      ],
+      "id": "xyflow.react",
+      "p30T5Selected": false,
+      "reason": "Member candidate is tied to package-set AI draft evidence that omitted package-set identity.",
+      "repositoryId": "xyflow",
+      "requiredBeforeHandoff": [
+        "Regenerate package-set AI draft evidence with package-set identity."
+      ]
+    },
+    {
+      "classification": "needs_regeneration",
+      "evidencePolicy": "defer_ai_draft_until_package_set_identity_is_present",
+      "findingCodes": [
+        "package_set_id_missing"
+      ],
+      "id": "xyflow.svelte",
+      "p30T5Selected": false,
+      "reason": "Member candidate is tied to package-set AI draft evidence that omitted package-set identity.",
+      "repositoryId": "xyflow",
+      "requiredBeforeHandoff": [
+        "Regenerate package-set AI draft evidence with package-set identity."
+      ]
+    },
+    {
+      "classification": "needs_regeneration",
+      "evidencePolicy": "defer_ai_draft_until_package_set_identity_is_present",
+      "findingCodes": [
+        "package_set_id_missing"
+      ],
+      "id": "xyflow.system",
+      "p30T5Selected": false,
+      "reason": "Member candidate is tied to package-set AI draft evidence that omitted package-set identity.",
+      "repositoryId": "xyflow",
+      "requiredBeforeHandoff": [
+        "Regenerate package-set AI draft evidence with package-set identity."
+      ]
+    },
+    {
+      "classification": "needs_regeneration",
+      "evidencePolicy": "regenerate_enrichment_before_handoff",
+      "findingCodes": [
+        "refined_summary_missing"
+      ],
+      "id": "cupertino.core",
+      "p30T5Selected": false,
+      "reason": "Deterministic candidate is valid, but selected handoff should wait for usable enrichment or author-supplied summary evidence.",
+      "repositoryId": "cupertino",
+      "requiredBeforeHandoff": [
+        "Regenerate AI enrichment or provide an author-curated summary."
+      ]
+    },
+    {
+      "classification": "needs_regeneration",
+      "evidencePolicy": "fix_package_identity_before_handoff",
+      "findingCodes": [
+        "package_set_id_missing",
+        "package_id_hint_mismatch"
+      ],
+      "id": "navigation_split_view.core",
+      "p30T5Selected": false,
+      "reason": "The generated id differs from the manifest hint and AI draft evidence also lacks expected package-set identity.",
+      "repositoryId": "navigation-split-view",
+      "requiredBeforeHandoff": [
+        "Resolve package id normalization for navigation-split-view.core versus navigation_split_view.core.",
+        "Regenerate AI draft evidence after the identity policy is resolved."
+      ]
+    },
+    {
+      "classification": "candidate_layer_review_required",
+      "evidencePolicy": "deterministic_candidate_plus_completed_enrichment",
+      "findingCodes": [],
+      "id": "docc2context.core",
+      "p30T5Selected": true,
+      "reason": "Deterministic preflight passed, author-ready status is present, AI draft completed, AI enrichment completed, and no candidate-layer finding was recorded.",
+      "repositoryId": "docc2context",
+      "requiredBeforeHandoff": [
+        "Author or maintainer semantic review remains required."
+      ]
+    }
+  ]
+}
