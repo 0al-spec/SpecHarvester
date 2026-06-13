@@ -140,6 +140,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t3_second_real_repository_refresh_compare.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t4_package_set_role_selection_profiles.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t5_first_submission_baseline_workflow.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t3_corpus_baseline_gap_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -367,6 +368,7 @@
 | 2026-06-13 | P29-T2 | Archived SpecPM Candidate-Layer Intake Policy (PASS) |
 | 2026-06-13 | P29-T2 | Archived REVIEW_p29_t2_autonomous_candidate_intake_policy report |
 | 2026-06-13 | P29-T3 | Archived Corpus Baseline and Gap Report (PASS) |
+| 2026-06-13 | P29-T3 | Archived REVIEW_p29_t3_corpus_baseline_gap_report report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |
