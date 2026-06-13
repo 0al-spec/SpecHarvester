@@ -5,6 +5,7 @@
 **Effort:** Large
 **Dependencies:** P17-T4
 **Status:** Selected
+**Active Branch:** `codex/p17-t5-collector-drafter-vertical-slice-objects`
 **Last Archived:** P17-T4 Public API Analyzer Pipeline Objects
 
 ## Recently Archived
