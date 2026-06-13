@@ -269,6 +269,12 @@ P32-T3 records the xyflow package-set identity regeneration result in
 That dry run classifies `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`,
 and `xyflow.system` as `candidate_layer_review_required` with
 `selectedHandoffEligible: true`.
+P32-T4 records the single-package regeneration result in
+[`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md).
+That dry run keeps `cupertino.core` at `needs_regeneration` because
+`refined_summary_missing` remains unresolved, and classifies
+`navigation_split_view.core` as `candidate_layer_review_required` with
+`selectedHandoffEligible: true`.
 
 ## Non-Authority Boundary
 

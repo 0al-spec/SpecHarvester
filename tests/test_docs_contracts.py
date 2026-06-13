@@ -4575,6 +4575,238 @@ def test_xyflow_package_set_identity_regeneration_dry_run_records_p32_t3_contrac
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
+def test_single_package_deferred_candidate_regeneration_records_p32_t4_contract() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "single_package_deferred_candidate_regeneration"
+        / "p32-t4-single-package-deferred-candidate-regeneration.example.json"
+    )
+    github_doc = ROOT / "docs" / "SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SinglePackageDeferredCandidateRegenerationDryRun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    tech_debt = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    tech_debt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+    runbook = ROOT / "docs" / "DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md"
+    runbook_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "DeferredCandidateRegenerationRunbook.md"
+    )
+    selected_handoff = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md"
+    selected_handoff_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffProposal.md"
+    )
+    specpm_handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    specpm_handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Single-Package Deferred Candidate Regeneration Dry Run",
+            "P32-T4",
+            "inputs/limited-popular-libraries/repositories.yml",
+            "autonomous-candidate-batch",
+            "--select cupertino",
+            "--select navigation-split-view",
+            "render-spec-site",
+            "preflight-candidate-bundle",
+            "p32-t4-single-package-deferred-candidate-regeneration.example.json",
+            "SpecHarvesterSinglePackageDeferredCandidateRegenerationDryRun",
+            "spec-harvester.single-package-deferred-regeneration-dry-run/v0",
+            "cupertino.core",
+            "navigation_split_view.core",
+            "navigation-split-view.core",
+            "preview_only: true",
+            "refined_summary_missing",
+            "excluded_package_unknown",
+            "needs_regeneration",
+            "candidate_layer_review_required",
+            "selectedHandoffEligible: false",
+            "selectedHandoffEligible: true",
+            "authorReadyDraft.status: author_ready_draft",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "remove `preview_only`",
+            "publish registry metadata",
+            "SpecPM pull request",
+            "AI output as registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.single-package-deferred-regeneration-dry-run/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterSinglePackageDeferredCandidateRegenerationDryRun"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["run"]["taskId"] == "P32-T4"
+    assert payload["run"]["attemptId"] == "20260613T184534Z"
+    assert payload["run"]["selectedRepositoryIds"] == [
+        "cupertino",
+        "navigation-split-view",
+    ]
+    assert set(payload["run"]["skippedRepositoryIds"]) == {
+        "flask",
+        "gin",
+        "xyflow",
+        "docc2context",
+    }
+    assert payload["source"]["manifestPath"] == "inputs/limited-popular-libraries/repositories.yml"
+    source_manifest = ROOT / payload["source"]["manifestPath"]
+    assert payload["source"]["sourceManifestDigest"] == (
+        "sha256:" + hashlib.sha256(source_manifest.read_bytes()).hexdigest()
+    )
+    assert payload["source"]["sourceManifestStatus"] == "ok"
+    source_repositories = {record["id"]: record for record in payload["source"]["repositories"]}
+    assert source_repositories["cupertino"]["worktreeClean"] is True
+    assert source_repositories["cupertino"]["revision"] == (
+        "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b"
+    )
+    assert source_repositories["navigation-split-view"]["worktreeClean"] is True
+    assert source_repositories["navigation-split-view"]["packageId"] == (
+        "navigation_split_view.core"
+    )
+    assert source_repositories["navigation-split-view"]["previousManifestPackageId"] == (
+        "navigation-split-view.core"
+    )
+    assert source_repositories["navigation-split-view"]["revision"] == (
+        "2c88df50b8f587560b91f6027e9ea275aee17060"
+    )
+    assert payload["ai"] == {
+        "chainOfThoughtPersisted": False,
+        "mode": "local_lm_studio",
+        "model": "openai/gpt-oss-20b",
+        "provider": "lm_studio",
+        "rawPromptPersisted": False,
+        "rawResponsePersisted": False,
+    }
+    assert payload["summary"] == {
+        "candidateCount": 2,
+        "passedPreflightCount": 2,
+        "processedCount": 2,
+        "relationCount": 0,
+        "selectedHandoffEligibleCount": 1,
+        "skippedCount": 4,
+        "stillDeferredCount": 1,
+    }
+
+    candidates = {candidate["packageId"]: candidate for candidate in payload["candidates"]}
+    assert set(candidates) == {"cupertino.core", "navigation_split_view.core"}
+
+    cupertino = candidates["cupertino.core"]
+    assert cupertino["candidateLayerDecision"]["status"] == "needs_regeneration"
+    assert cupertino["candidateLayerDecision"]["selectedHandoffEligible"] is False
+    assert cupertino["aiDraft"]["status"] == "completed"
+    assert cupertino["aiDraft"]["diagnosticCodes"] == []
+    assert cupertino["aiEnrichment"]["status"] == "warning"
+    assert cupertino["aiEnrichment"]["diagnosticCodes"] == ["refined_summary_missing"]
+    assert cupertino["aiEnrichment"]["warningCount"] == 1
+
+    navigation = candidates["navigation_split_view.core"]
+    assert navigation["canonicalPackageId"] == "navigation_split_view.core"
+    assert navigation["previousDriftPackageId"] == "navigation-split-view.core"
+    assert navigation["rejectedOrAliasedPackageIds"] == ["navigation-split-view.core"]
+    assert navigation["candidateLayerDecision"]["status"] == "candidate_layer_review_required"
+    assert navigation["candidateLayerDecision"]["selectedHandoffEligible"] is True
+    assert navigation["aiDraft"]["status"] == "warning"
+    assert navigation["aiDraft"]["diagnosticCodes"] == ["excluded_package_unknown"]
+    assert navigation["aiEnrichment"]["status"] == "completed"
+    assert navigation["aiEnrichment"]["diagnosticCodes"] == []
+
+    for candidate in payload["candidates"]:
+        assert candidate["actualPackageId"] == candidate["packageId"]
+        assert candidate["manifestPackageId"] == candidate["packageId"]
+        assert candidate["previewOnly"] is True
+        assert candidate["validationStatus"] == "valid"
+        assert candidate["diagnosticsStatus"] == "clean"
+        assert candidate["authorReadyDraftStatus"] == "author_ready_draft"
+        assert candidate["bundleSetPreflight"] == {
+            "candidateCount": 1,
+            "errorCount": 0,
+            "status": "passed",
+            "warningCount": 0,
+        }
+        assert candidate["candidatePreflight"] == {
+            "errorCount": 0,
+            "status": "passed",
+            "warningCount": 0,
+        }
+        assert candidate["viewer"]["status"] == "ok"
+        assert {artifact["role"] for artifact in candidate["artifacts"]} == {
+            "member_candidate_preflight",
+            "member_diagnostics",
+            "member_manifest",
+            "member_producer_receipt",
+            "member_quality_report",
+            "member_validation_report",
+        }
+        for artifact in candidate["artifacts"]:
+            assert artifact["digest"].startswith("sha256:")
+            assert len(artifact["digest"]) == len("sha256:") + 64
+
+    assert payload["nonAuthority"] == {
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "createsSpecPMPullRequest": False,
+        "producerEvidenceOnly": True,
+        "publishesRegistryMetadata": False,
+        "removesPreviewOnly": False,
+        "seedsBaselines": False,
+        "treatsAIOutputAsRegistryTruth": False,
+    }
+
+    assert "SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md" in (
+        docs_index.read_text(encoding="utf-8")
+    )
+    assert "<doc:SinglePackageDeferredCandidateRegenerationDryRun>" in (
+        docc_root.read_text(encoding="utf-8")
+    )
+    for path in (tech_debt, runbook, selected_handoff, specpm_handoff, roadmap):
+        assert "SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md" in (
+            path.read_text(encoding="utf-8")
+        )
+    for path in (
+        tech_debt_docc,
+        runbook_docc,
+        selected_handoff_docc,
+        specpm_handoff_docc,
+        roadmap_docc,
+    ):
+        assert "SinglePackageDeferredCandidateRegenerationDryRun" in path.read_text(
+            encoding="utf-8"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_autonomous_candidate_corpus_baseline_fixture_records_gap_outcomes() -> None:
     fixture = (
         ROOT

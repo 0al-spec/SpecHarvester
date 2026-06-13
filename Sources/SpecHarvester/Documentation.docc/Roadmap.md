@@ -209,6 +209,12 @@ triage and selected handoff evidence, coordinates SpecPM-side selected
 candidate handoff preflight, and records a limited corpus intake readiness
 decision.
 
+P32-T4 records the single-package deferred regeneration dry run in
+<doc:SinglePackageDeferredCandidateRegenerationDryRun>. It keeps
+`cupertino.core` deferred because `refined_summary_missing` remains unresolved
+and makes `navigation_split_view.core` eligible for refreshed candidate-layer
+review under the canonical underscore id.
+
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
 no `preview_only` removal, and no broad autonomous scraping before the limited

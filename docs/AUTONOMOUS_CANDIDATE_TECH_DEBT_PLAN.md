@@ -176,6 +176,15 @@ Acceptance:
   rejects or aliases the non-canonical id.
 - Producer preflight and viewer evidence are clean before selection.
 
+Artifact:
+
+- [`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md)
+  records the P32-T4 dry run. `navigation_split_view.core` is
+  `candidate_layer_review_required` with `selectedHandoffEligible: true`;
+  `cupertino.core` remains `needs_regeneration` until
+  `refined_summary_missing` is resolved by regenerated enrichment or
+  author-curated summary evidence.
+
 ### P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff
 
 Owner: SpecHarvester.

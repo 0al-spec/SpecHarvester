@@ -210,6 +210,11 @@ P32-T3 records the xyflow package-set identity regeneration result in
 [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md).
 That artifact can feed a future refreshed selected handoff, but it remains
 producer preview evidence and not SpecPM acceptance.
+P32-T4 records the single-package deferred regeneration result in
+[`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md).
+That artifact keeps `cupertino.core` deferred and makes
+`navigation_split_view.core` eligible for refreshed candidate-layer review,
+while still remaining producer preview evidence only.
 
 ## Fresh Candidate Refresh Run
 
