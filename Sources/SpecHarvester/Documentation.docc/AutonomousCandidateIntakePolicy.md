@@ -94,3 +94,6 @@ The first mixed corpus run identified two known gaps:
 Those gaps are tracked in <doc:AutonomousCandidateTechDebtPlan>. Until they are
 fixed, maintainers should classify affected repositories as `needs_regeneration`
 or `blocked`, not as accepted.
+
+The first durable Flask/Gin/xyflow baseline is recorded in
+<doc:AutonomousCandidateCorpusBaseline>.

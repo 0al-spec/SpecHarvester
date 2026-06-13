@@ -159,6 +159,10 @@ Studio/OpenAI-compatible output needs bounded JSON repair/retry. See
 Before expanding autonomous corpus scraping, SpecHarvester documents the
 SpecPM-facing candidate-layer review boundary in
 <doc:AutonomousCandidateIntakePolicy>.
+The current mixed-corpus baseline is recorded in
+<doc:AutonomousCandidateCorpusBaseline>, including Flask/Gin
+`single_package_fallback_needed` outcomes and the xyflow
+`ai_json_repair_needed` LM Studio diagnostic.
 
 ## Non-Goals
 
@@ -179,4 +183,5 @@ repositories.
 - <doc:AuthorReadyDraftQualityBar>
 - <doc:PackageSetAIEnrichment>
 - <doc:AutonomousCandidateBatch>
+- <doc:AutonomousCandidateCorpusBaseline>
 - <doc:XyflowPackageSetSmoke>

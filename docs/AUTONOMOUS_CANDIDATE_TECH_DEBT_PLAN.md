@@ -53,6 +53,12 @@ Acceptance:
 - The report explicitly marks malformed model JSON as `ai_json_repair_needed`.
 - No generated preview candidate is promoted to SpecPM acceptance.
 
+Artifact:
+
+- [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md)
+  records the Flask/Gin/xyflow baseline as
+  `SpecHarvesterAutonomousCandidateCorpusBaseline`.
+
 ## P29-T4 Single-Package Candidate Fallback
 
 Motivation:

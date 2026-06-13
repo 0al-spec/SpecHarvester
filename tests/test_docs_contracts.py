@@ -1,11 +1,20 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P29-T4 Single-Package Candidate Fallback" in next_text:
+        assert_p29_t3_last_archived(next_text)
+        assert_p29_t1_recent(next_text)
+        assert_p29_t2_recent(next_text)
+        assert_p29_t3_recent(next_text)
+        assert_phase_29_t4_active(next_text)
+        return
+
     if "# Next Task: P29-T3 Corpus Baseline and Gap Report" in next_text:
         assert_p29_t2_last_archived(next_text)
         assert_p29_t1_recent(next_text)
@@ -141,6 +150,10 @@ def assert_p29_t1_last_archived(next_text: str) -> None:
 
 def assert_p29_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P29-T2 SpecPM Candidate-Layer Intake Policy" in next_text
+
+
+def assert_p29_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P29-T3 Corpus Baseline and Gap Report" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -389,10 +402,25 @@ def assert_p29_t2_recent(next_text: str) -> None:
     assert "publish registry metadata" in normalized
 
 
+def assert_p29_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P29-T3` recorded the Flask, Gin, and xyflow corpus baseline" in next_text
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md" in next_text
+    assert "AutonomousCandidateCorpusBaseline" in next_text
+    assert "SpecHarvesterAutonomousCandidateCorpusBaseline" in next_text
+    assert "deterministic `--skip-ai` outcomes" in next_text
+    assert "live LM Studio statuses" in normalized
+    assert "pipelineHealth: deterministic_pipeline_passed" in next_text
+    assert "candidateQuality: needs_follow_up" in next_text
+    assert "single_package_fallback_needed" in next_text
+    assert "stop_for_author_review" in next_text
+    assert "ai_json_repair_needed" in next_text
+
+
 def assert_phase_29_t3_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P29-T3 Corpus Baseline and Gap Report" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "Flask, Gin, and xyflow" in next_text
     assert "deterministic `--skip-ai` outcomes" in next_text
     assert "live LM Studio outcome" in normalized
@@ -401,6 +429,21 @@ def assert_phase_29_t3_active(next_text: str) -> None:
     assert "single_package_fallback_needed" in next_text
     assert "ai_json_repair_needed" in next_text
     assert "no generated preview candidate is promoted to SpecPM acceptance" in normalized
+
+
+def assert_phase_29_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P29-T4 Single-Package Candidate Fallback" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "single-package candidate fallback" in normalized
+    assert "Flask and Gin" in next_text
+    assert "deterministic evidence and public interface indexes" in normalized
+    assert "package-set drafting selects no workspace members" in normalized
+    assert "one preview candidate" in normalized
+    assert "preview_only" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "avoid inventing `contains` relations" in next_text
+    assert "SpecPM registry acceptance out of scope" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -3249,3 +3292,146 @@ def test_autonomous_candidate_tech_debt_plan_docs_cover_corpus_followups() -> No
     assert "Local LM Studio JSON failures" in workplan_text
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_autonomous_candidate_corpus_baseline_fixture_records_gap_outcomes() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "autonomous_candidate_corpus_baseline"
+        / "flask-gin-xyflow.example.json"
+    )
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.autonomous-candidate-corpus-baseline/v0"
+    assert payload["kind"] == "SpecHarvesterAutonomousCandidateCorpusBaseline"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["corpus"]["id"] == "local-flask-gin-xyflow"
+    assert payload["corpus"]["repositories"] == ["flask", "gin", "xyflow"]
+    assert payload["source"]["provider"] == "lm_studio"
+    assert payload["source"]["model"] == "openai/gpt-oss-20b"
+    assert payload["summary"] == {
+        "deterministicPassedCount": 3,
+        "deterministicFailedCount": 0,
+        "liveLmStudioFailedCount": 1,
+        "repositoryCount": 3,
+    }
+
+    by_id = {item["id"]: item for item in payload["repositoryResults"]}
+    assert set(by_id) == {"flask", "gin", "xyflow"}
+
+    for repo_id, package_id, revision in (
+        ("flask", "flask.core", "954f5684e4841aad84a8eec7ace7b81a0d3f6831"),
+        ("gin", "gin.core", "5f4f9643258dc2a65e684b63f12c8d543c936c67"),
+    ):
+        result = by_id[repo_id]
+        assert result["packageId"] == package_id
+        assert result["revision"] == revision
+        assert result["deterministic"] == {
+            "status": "passed",
+            "candidateCount": 0,
+            "relationCount": 0,
+            "preflight": "passed",
+        }
+        assert result["authorReadyDecision"] == "blocked_until_inputs_change"
+        assert result["gapCodes"] == ["single_package_fallback_needed"]
+        assert result["liveLmStudio"]["status"] == "needs_regeneration"
+        assert result["liveLmStudio"]["aiDraft"] == "completed"
+        assert result["liveLmStudio"]["aiEnrichment"] == "completed"
+        assert result["liveLmStudio"]["proposalSubjectCount"] == 0
+
+    xyflow = by_id["xyflow"]
+    assert xyflow["packageId"] == "xyflow.workspace"
+    assert xyflow["revision"] == "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd"
+    assert xyflow["deterministic"] == {
+        "status": "passed",
+        "candidateCount": 4,
+        "relationCount": 3,
+        "preflight": "passed",
+    }
+    assert xyflow["authorReadyDecision"] == "stop_for_author_review"
+    assert xyflow["gapCodes"] == ["ai_json_repair_needed"]
+    assert xyflow["liveLmStudio"]["status"] == "needs_regeneration"
+    assert xyflow["liveLmStudio"]["aiDraft"] == "failed"
+    assert xyflow["liveLmStudio"]["aiEnrichment"] == "not_run_after_ai_draft_failure"
+    assert xyflow["liveLmStudio"]["proposalSubjectCount"] == 4
+    assert xyflow["liveLmStudio"]["diagnostics"][0]["code"] == "model_output_invalid_json"
+
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not publish packages or relations" in non_authority
+    assert "does not remove preview_only" in non_authority
+    assert payload["productVerdict"]["pipelineHealth"] == "deterministic_pipeline_passed"
+    assert payload["productVerdict"]["candidateQuality"] == "needs_follow_up"
+
+
+def test_autonomous_candidate_corpus_baseline_docs_cover_mixed_corpus_verdict() -> None:
+    github_doc = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateCorpusBaseline.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    intake = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md"
+    intake_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateIntakePolicy.md"
+    )
+    tech_debt = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    tech_debt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Autonomous Candidate Corpus Baseline",
+            "SpecHarvesterAutonomousCandidateCorpusBaseline",
+            "local-flask-gin-xyflow",
+            "flask.core",
+            "gin.core",
+            "xyflow.workspace",
+            "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+            "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+            "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+            "single_package_fallback_needed",
+            "ai_json_repair_needed",
+            "blocked_until_inputs_change",
+            "stop_for_author_review",
+            "model_output_invalid_json",
+            "deterministic_pipeline_passed",
+            "needs_follow_up",
+            "producer_preview_evidence_only",
+            "preview_only",
+            "no generated preview candidate is promoted to SpecPM acceptance",
+            "P29-T4",
+            "P29-T5",
+            "P29-T6",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:AutonomousCandidateCorpusBaseline>" in docc_root.read_text(encoding="utf-8")
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md" in roadmap.read_text(encoding="utf-8")
+    assert "AutonomousCandidateCorpusBaseline" in roadmap_docc.read_text(encoding="utf-8")
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md" in intake.read_text(encoding="utf-8")
+    assert "AutonomousCandidateCorpusBaseline" in intake_docc.read_text(encoding="utf-8")
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md" in tech_debt.read_text(encoding="utf-8")
+    assert "AutonomousCandidateCorpusBaseline" in tech_debt_docc.read_text(encoding="utf-8")

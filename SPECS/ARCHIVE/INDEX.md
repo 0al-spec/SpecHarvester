@@ -105,6 +105,7 @@
 | P28-T3 | [P28-T3_Second_Real_Repository_Refresh_Compare_Run/](P28-T3_Second_Real_Repository_Refresh_Compare_Run/) | 2026-06-12 | PASS |
 | P28-T4 | [P28-T4_Package_Set_Role_Selection_Profiles/](P28-T4_Package_Set_Role_Selection_Profiles/) | 2026-06-13 | PASS |
 | P28-T5 | [P28-T5_First_Submission_or_Seeded_Baseline_Workflow/](P28-T5_First_Submission_or_Seeded_Baseline_Workflow/) | 2026-06-13 | PASS |
+| P29-T3 | [P29-T3_Corpus_Baseline_and_Gap_Report/](P29-T3_Corpus_Baseline_and_Gap_Report/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -139,6 +140,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t3_second_real_repository_refresh_compare.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t4_package_set_role_selection_profiles.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p28_t5_first_submission_baseline_workflow.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t3_corpus_baseline_gap_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -365,6 +367,8 @@
 | 2026-06-13 | P29-T1 | Archived REVIEW_p29_t1_autonomous_candidate_batch_runner report |
 | 2026-06-13 | P29-T2 | Archived SpecPM Candidate-Layer Intake Policy (PASS) |
 | 2026-06-13 | P29-T2 | Archived REVIEW_p29_t2_autonomous_candidate_intake_policy report |
+| 2026-06-13 | P29-T3 | Archived Corpus Baseline and Gap Report (PASS) |
+| 2026-06-13 | P29-T3 | Archived REVIEW_p29_t3_corpus_baseline_gap_report report |
 | 2026-05-21 | P12-T1 | Archived Strict License Filename Compatibility (PASS) |
 | 2026-05-21 | P12-T1 | Archived REVIEW_p12_t1_strict_license_filename_compatibility report |
 | 2026-05-21 | P12-T2 | Archived Go Public Interface Evidence (PASS) |

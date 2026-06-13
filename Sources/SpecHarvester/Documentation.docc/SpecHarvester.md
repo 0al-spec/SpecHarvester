@@ -86,6 +86,7 @@ The canonical source files remain in the repository:
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`
 - `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`
+- `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -155,6 +156,7 @@ the host.
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateIntakePolicy>
 - <doc:AutonomousCandidateTechDebtPlan>
+- <doc:AutonomousCandidateCorpusBaseline>
 - <doc:ProposalAutomation>
 
 ### Architecture
