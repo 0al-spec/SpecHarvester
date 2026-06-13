@@ -983,7 +983,7 @@ Acceptance:
 - [x] `P29-T2` Add a SpecPM-facing candidate-layer intake policy for autonomous
   batch output so generated preview packages can be reviewed without implying
   accepted registry authority.
-- [ ] `P29-T3` Run the autonomous batch runner on a small popular-library set,
+- [x] `P29-T3` Run the autonomous batch runner on a small popular-library set,
   record quality and stop-policy outcomes, and decide which candidates deserve
   curated SpecPM submission work.
 - [ ] `P29-T4` Add a single-package candidate fallback for repositories such

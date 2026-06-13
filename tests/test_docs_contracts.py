@@ -7,6 +7,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P29-T4 Single-Package Candidate Fallback" in next_text:
+        assert_p29_t3_last_archived(next_text)
+        assert_p29_t1_recent(next_text)
+        assert_p29_t2_recent(next_text)
+        assert_p29_t3_recent(next_text)
+        assert_phase_29_t4_active(next_text)
+        return
+
     if "# Next Task: P29-T3 Corpus Baseline and Gap Report" in next_text:
         assert_p29_t2_last_archived(next_text)
         assert_p29_t1_recent(next_text)
@@ -142,6 +150,10 @@ def assert_p29_t1_last_archived(next_text: str) -> None:
 
 def assert_p29_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P29-T2 SpecPM Candidate-Layer Intake Policy" in next_text
+
+
+def assert_p29_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P29-T3 Corpus Baseline and Gap Report" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -390,6 +402,21 @@ def assert_p29_t2_recent(next_text: str) -> None:
     assert "publish registry metadata" in normalized
 
 
+def assert_p29_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P29-T3` recorded the Flask, Gin, and xyflow corpus baseline" in next_text
+    assert "AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md" in next_text
+    assert "AutonomousCandidateCorpusBaseline" in next_text
+    assert "SpecHarvesterAutonomousCandidateCorpusBaseline" in next_text
+    assert "deterministic `--skip-ai` outcomes" in next_text
+    assert "live LM Studio statuses" in normalized
+    assert "pipelineHealth: deterministic_pipeline_passed" in next_text
+    assert "candidateQuality: needs_follow_up" in next_text
+    assert "single_package_fallback_needed" in next_text
+    assert "stop_for_author_review" in next_text
+    assert "ai_json_repair_needed" in next_text
+
+
 def assert_phase_29_t3_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P29-T3 Corpus Baseline and Gap Report" in next_text
@@ -402,6 +429,21 @@ def assert_phase_29_t3_active(next_text: str) -> None:
     assert "single_package_fallback_needed" in next_text
     assert "ai_json_repair_needed" in next_text
     assert "no generated preview candidate is promoted to SpecPM acceptance" in normalized
+
+
+def assert_phase_29_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P29-T4 Single-Package Candidate Fallback" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "single-package candidate fallback" in normalized
+    assert "Flask and Gin" in next_text
+    assert "deterministic evidence and public interface indexes" in normalized
+    assert "package-set drafting selects no workspace members" in normalized
+    assert "one preview candidate" in normalized
+    assert "preview_only" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "avoid inventing `contains` relations" in next_text
+    assert "SpecPM registry acceptance out of scope" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:

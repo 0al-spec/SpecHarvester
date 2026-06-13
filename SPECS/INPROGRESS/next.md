@@ -1,10 +1,10 @@
-# Next Task: P29-T3 Corpus Baseline and Gap Report
+# Next Task: P29-T4 Single-Package Candidate Fallback
 
-**Status:** In Progress
+**Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P29-T3 Corpus Baseline and Gap Report
+**Task:** P29-T4 Single-Package Candidate Fallback
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
-**Last Archived:** P29-T2 SpecPM Candidate-Layer Intake Policy
+**Last Archived:** P29-T3 Corpus Baseline and Gap Report
 
 ## Recently Archived
 
@@ -48,21 +48,34 @@
 - The P29-T2 policy explicitly states that candidate-layer review cannot accept
   packages, accept relations, seed baselines, remove `preview_only`, publish
   registry metadata, or replace SpecPM validation and maintainer review.
+- `P29-T3` recorded the Flask, Gin, and xyflow corpus baseline in
+  `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`,
+  `<doc:AutonomousCandidateCorpusBaseline>`, and
+  `SpecHarvesterAutonomousCandidateCorpusBaseline`. The baseline captured
+  deterministic `--skip-ai` outcomes, live LM Studio statuses, candidate counts,
+  relation counts, preflight status, and non-authority boundaries.
+- The P29-T3 baseline showed `pipelineHealth: deterministic_pipeline_passed`
+  and `candidateQuality: needs_follow_up`: Flask and Gin produced `0`
+  candidates and `0` relations with `single_package_fallback_needed`, while
+  xyflow produced `4` candidates and `3` relations with
+  `stop_for_author_review` plus the live LM Studio `ai_json_repair_needed`
+  diagnostic.
 
 ## Outcome
 
-SpecHarvester now has both an autonomous batch runner and a SpecPM-facing
-candidate-layer intake policy. Producer output can be reviewed as evidence
-without implying accepted registry authority.
+SpecHarvester has a durable mixed-corpus baseline before fallback or model
+repair behavior changes. The baseline proves the deterministic runner is healthy
+as plumbing, while candidate quality still needs follow-up work before broad
+popular-library scraping.
 
 ## Next Step
 
-Implement `P29-T3`: record the Flask, Gin, and xyflow autonomous batch corpus
-baseline and gap report.
+Implement `P29-T4`: add a single-package candidate fallback for repositories
+such as Flask and Gin where deterministic evidence and public interface indexes
+are available but package-set drafting selects no workspace members.
 
-The baseline should capture deterministic `--skip-ai` outcomes and a live
-LM Studio outcome when available. It should record candidate counts, relation
-counts, preflight status, author-ready stop-policy status, and AI status. It
-must explicitly mark Flask and Gin as `single_package_fallback_needed`, mark
-malformed model JSON as `ai_json_repair_needed` when observed, and preserve the
-boundary that no generated preview candidate is promoted to SpecPM acceptance.
+The fallback should produce one preview candidate, preserve `preview_only` and
+`producer_preview_evidence_only`, avoid inventing `contains` relations, emit
+the same producer receipt, validation report, diagnostics, and author-ready
+quality report artifacts as other preview candidates, and keep SpecPM registry
+acceptance out of scope.
