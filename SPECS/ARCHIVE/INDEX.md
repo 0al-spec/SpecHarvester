@@ -149,6 +149,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t3_report_builder_behavior_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t2_cli_domain_command_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t8_next_corpus_intake_readiness_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t7_durable_next_corpus_selected_handoff_artifact.md` |
@@ -224,6 +225,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P17-T3 | Archived REVIEW_p17_t3_report_builder_behavior_objects report |
 | 2026-06-14 | P17-T3 | Archived Report Builder Behavior Objects (PASS) |
 | 2026-06-14 | P17-T2 | Archived REVIEW_p17_t2_cli_domain_command_objects report |
 | 2026-06-14 | P17-T2 | Archived CLI Domain Command Objects (PASS) |
