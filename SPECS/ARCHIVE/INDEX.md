@@ -130,6 +130,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t4_selected_candidate_handoff_preflight_expectations.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t3_real_selected_candidate_handoff_proposal_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t2_selected_candidate_handoff_proposal_helper.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p31_t1_selected_candidate_handoff_proposal_contract.md` |
@@ -187,6 +188,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P31-T4 | Archived REVIEW_p31_t4_selected_candidate_handoff_preflight_expectations report |
 | 2026-06-13 | P31-T4 | Archived SpecPM Selected Candidate Handoff Preflight Expectations (PASS) |
 | 2026-06-13 | P31-T3 | Archived REVIEW_p31_t3_real_selected_candidate_handoff_proposal_dry_run report |
 | 2026-06-13 | P31-T3 | Archived Real Selected Candidate Handoff Proposal Dry Run (PASS) |
