@@ -1,8 +1,9 @@
 # Next Task: P35-T6 Selected Corpus Dry-Run Readiness
 
-**Status:** Planned
+**Status:** In Progress
 **Phase:** Phase 35. Curated Multi-Ecosystem Corpus Selection
 **Task:** `P35-T6` Run or document selected corpus plan dry-run readiness
+**Branch:** `feature/P35-T6-selected-corpus-readiness`
 **Last Archived:** P35-T5 Explainable Corpus Selection Report
 
 ## Recently Archived
