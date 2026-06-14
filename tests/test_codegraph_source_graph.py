@@ -205,3 +205,26 @@ def test_codegraph_source_graph_cli_writes_output_and_errors_as_json(
     assert missing_result == 2
     assert error_payload["status"] == "error"
     assert "does not exist" in error_payload["message"]
+
+
+def test_codegraph_source_graph_cli_reports_corrupt_sqlite_as_json(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    corrupt = tmp_path / "codegraph.db"
+    corrupt.write_text("not sqlite", encoding="utf-8")
+
+    result = main(
+        [
+            "codegraph-source-graph-index",
+            "--input",
+            str(corrupt),
+            "--input-format",
+            "sqlite",
+        ]
+    )
+
+    error_payload = json.loads(capsys.readouterr().out)
+    assert result == 2
+    assert error_payload["status"] == "error"
+    assert "Invalid CodeGraph SQLite input" in error_payload["message"]

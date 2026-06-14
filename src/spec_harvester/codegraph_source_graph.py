@@ -71,9 +71,10 @@ class CodeGraphSQLiteEvidence:
     def records(self) -> dict[str, list[dict[str, Any]]]:
         if not self.path.exists() or not self.path.is_file():
             raise ValueError(f"CodeGraph SQLite input does not exist: {self.path}")
-        connection = sqlite3.connect(f"file:{self.path}?mode=ro", uri=True)
-        connection.row_factory = sqlite3.Row
+        connection: sqlite3.Connection | None = None
         try:
+            connection = sqlite3.connect(f"file:{self.path}?mode=ro", uri=True)
+            connection.row_factory = sqlite3.Row
             tables = sqlite_table_names(connection)
             return {
                 "files": sqlite_records(connection, "files") if "files" in tables else [],
@@ -83,8 +84,11 @@ class CodeGraphSQLiteEvidence:
                     sqlite_records(connection, "diagnostics") if "diagnostics" in tables else []
                 ),
             }
+        except sqlite3.DatabaseError as exc:
+            raise ValueError(f"Invalid CodeGraph SQLite input: {exc}") from exc
         finally:
-            connection.close()
+            if connection is not None:
+                connection.close()
 
 
 @dataclass(frozen=True)
