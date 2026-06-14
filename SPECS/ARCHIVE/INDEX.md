@@ -269,6 +269,7 @@
 | 2026-06-14 | P36-T2 | Archived Python Web-Framework Parser Profile Fixture (PASS) |
 | 2026-06-14 | P36-T2 | Archived REVIEW_p36_t2_python_web_framework_parser_profile report |
 | 2026-06-14 | P36-T3 | Archived Plugin-Aware Source Classification Hook (PASS) |
+| 2026-06-14 | P36-T3 | Archived REVIEW_p36_t3_plugin_aware_source_classification_hook report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
