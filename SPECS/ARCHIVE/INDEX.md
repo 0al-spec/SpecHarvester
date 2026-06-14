@@ -149,6 +149,7 @@
 | P35-T1 | [P35-T1_Corpus_Selection_Policy/](P35-T1_Corpus_Selection_Policy/) | 2026-06-14 | PASS |
 | P35-T2 | [P35-T2_SpecHarvesterCorpusPlan/](P35-T2_SpecHarvesterCorpusPlan/) | 2026-06-14 | PASS |
 | P35-T3 | [P35-T3_Candidate_Source_Classifier_Plan/](P35-T3_Candidate_Source_Classifier_Plan/) | 2026-06-14 | PASS |
+| P35-T4 | [P35-T4_Multi_Ecosystem_Seed_Corpus_Plan/](P35-T4_Multi_Ecosystem_Seed_Corpus_Plan/) | 2026-06-14 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -250,6 +251,7 @@
 |------|---------|--------|
 | 2026-06-14 | P35-T3 | Archived REVIEW_p35_t3_source_classifier_plan report |
 | 2026-06-14 | P35-T3 | Archived Candidate Source Classifier Plan (PASS) |
+| 2026-06-14 | P35-T4 | Archived Multi-Ecosystem Seed Corpus Plan (PASS) |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |

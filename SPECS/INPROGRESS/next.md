@@ -1,70 +1,63 @@
-# Next Task: P35-T4 Multi-Ecosystem Seed Corpus Plan
+# Next Task: P35-T5 Explainable Corpus Selection Report
 
-**Status:** In Progress
+**Status:** Planned
 **Phase:** Phase 35. Curated Multi-Ecosystem Corpus Selection
-**Task:** `P35-T4` Create the first multi-ecosystem seed corpus plan
-**Branch:** `feature/P35-T4-seed-corpus-plan`
-**Last Archived:** P35-T3 Candidate Source Classifier Plan
+**Task:** `P35-T5` Add an explainable corpus selection report
+**Last Archived:** P35-T4 Multi-Ecosystem Seed Corpus Plan
 
 ## Recently Archived
 
-- `P35-T3` added
-  [`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](../../docs/CANDIDATE_SOURCE_CLASSIFIER_PLAN.md)
-  and the DocC mirror `CandidateSourceClassifierPlan`.
-- The classifier plan defines
-  `SpecHarvesterCandidateSourceClassificationPlan` with
-  `apiVersion: spec-harvester.source-classification-plan/v0`,
-  `schemaVersion: 1`, and `authority: producer_classification_plan_only`.
-- The fixture
-  `tests/fixtures/source_classifier_plan/p35-t3-source-classifier-plan.example.json`
-  covers package-set root, primary package, plugin, example, tooling,
-  type-only, generated, internal, deprecated, and evidence-only classes.
-- The classifier plan records allowed actions: `select_primary`,
-  `select_member`, `defer`, `exclude`, and `include_as_evidence_only`.
+- `P35-T4` added
+  [`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](../../docs/MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md)
+  and the DocC mirror `MultiEcosystemSeedCorpusPlan`.
+- The seed plan fixture
+  `tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json`
+  uses `SpecHarvesterCorpusPlan` with `apiVersion:
+  spec-harvester.corpus-plan/v0`, `schemaVersion: 1`, and
+  `authority: producer_corpus_plan_only`.
+- The selected seed set covers `react.workspace`, `fastapi.core`,
+  `serde.core`, `gin.core`, and `swift_argument_parser.core`.
+- The fixture records selected, deferred, and rejected sources plus
+  `classifierExpectations`, expected analyzer coverage, stop conditions,
+  operator-managed pinned local checkouts, and non-authority statements.
 
 ## Context
 
-P35-T1 defined the selection policy, P35-T2 defined the corpus plan shape, and
-P35-T3 defined source classification. P35-T4 should now create the first
-bounded multi-ecosystem seed corpus plan that uses those contracts without
-running collection or publishing registry metadata.
+P35-T1 defined the source selection policy, P35-T2 defined the corpus plan
+shape, P35-T3 defined source classification, and P35-T4 created the first
+bounded seed corpus. P35-T5 should make that selection explainable as a review
+report before any dry-run readiness check or autonomous batch run.
 
 ## Motivation
 
-- The project needs a concrete seed corpus to avoid arguing only from abstract
-  policy.
-- The seed corpus should represent important libraries across ecosystems while
-  remaining small enough for review.
-- The plan must be explicit about selected, deferred, and rejected sources
-  before autonomous candidate generation runs.
+- Operators need to understand why a source was selected, deferred, or
+  rejected without reading the full fixture by hand.
+- The report should make importance signals, exclusion reasons, quota
+  decisions, and the downstream autonomous-batch command plan explicit.
+- The report should remain review evidence and must not imply collection,
+  drafting, AI enrichment, SpecPM handoff, or registry acceptance.
 
 ## Goal
 
-Create the first multi-ecosystem seed corpus plan artifact for Phase 35.
+Add an explainable corpus selection report for the P35 seed corpus.
 
 ## Proposed Scope
 
-- Select a small bounded corpus across JavaScript/TypeScript, Python, Rust,
-  Go, and at least one additional ecosystem.
-- Use `SpecHarvesterCorpusPlan` fields and reason codes.
-- Include source-classification expectations from P35-T3.
-- Record selected, deferred, and rejected sources.
-- Preserve local checkout requirements and non-authority boundaries.
-- Do not run collection, drafting, AI enrichment, or SpecPM handoff in this
-  task.
+- Document a machine-readable explainable selection report shape.
+- Reference the P35-T4 seed corpus plan fixture.
+- Record selected sources, deferred sources, rejected sources, importance
+  signals, exclusion reasons, quota decisions, and the downstream
+  autonomous-batch command plan.
+- Preserve non-authority statements: the report does not run collection, does
+  not publish registry metadata, does not accept packages, does not accept
+  relations, does not remove `preview_only`, and does not treat AI output as
+  registry truth.
 
 ## Acceptance
 
-- The seed plan is machine-readable and references the P35-T2/P35-T3 contract
-  shape.
-- Every selected source has an ecosystem, repository, package family,
-  selected-because reason codes, local checkout expectation, expected analyzer
-  coverage, and stop conditions.
-- No source requires clone/fetch, dependency installation, harvested code
-  execution, registry publication, package acceptance, relation acceptance,
-  baseline seeding, `preview_only` removal, or AI output as registry truth.
-- The plan does not require clone/fetch, dependency installation, harvested
-  code execution, registry publication, package acceptance, relation
-  acceptance, baseline seeding, `preview_only` removal, or AI output as
-  registry truth.
-- The next task remains `P35-T5` explainable corpus selection report.
+- The report is documented in GitHub Markdown and DocC.
+- A regression fixture exists for the explainable report.
+- Tests validate selected/deferred/rejected counts, source references,
+  importance signals, exclusion reasons, quota decisions, command plan, and
+  non-authority boundary.
+- The next task remains `P35-T6` selected corpus dry-run readiness.
