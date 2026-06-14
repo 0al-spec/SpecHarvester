@@ -1,74 +1,47 @@
-# Next Task: P36-T4 FastAPI AI-Enabled Parser Profile Rerun
+# Next Task: Phase 36 Complete
 
-**Status:** In Progress
+**Status:** Complete
 **Phase:** Phase 36. Repository Parsing Plugin System
-**Task:** `P36-T4` Re-run the FastAPI AI-enabled candidate batch with the Python parser profile
-**Branch:** `feature/P36-T4-fastapi-ai-enabled-parser-profile-rerun`
-**Last Archived:** P36-T3 Plugin-Aware Source Classification Hook
+**Last Archived:** P36-T4 FastAPI AI-Enabled Parser Profile Rerun
 
 ## Recently Archived
 
-- `P36-T3` added an opt-in parser profile hook for static analyzer path
-  classification.
-- `collect-batch` and `autonomous-candidate-batch` now accept
-  `--parser-profile python.web_framework.v0`.
-- The Python public API analyzer now proves default analyzer behavior remains
-  unchanged when no parser profile is selected.
-- When `python.web_framework.v0` is selected, paths classified with
-  `publicInterfaceEligible: false` are excluded from public interface
-  entrypoints.
-- Public interface package records include `repositoryParsingProfile` and
-  `pathClassification` review metadata.
-- Unknown parser profile ids fail closed.
-- The hook remains producer-side path classification evidence only: it does
-  not publish registry metadata, accept packages or relations, remove
-  `preview_only`, or treat AI output as registry truth.
-- In plain terms, it does not treat AI output as registry truth.
+- `P36-T4` reran FastAPI with `--parser-profile python.web_framework.v0`
+  and live LM Studio model `openai/gpt-oss-20b`.
+- Baseline public interface evidence had `1121` entrypoints, `6009` symbols,
+  and `454` `docs_src/*` entrypoints.
+- Profiled public interface evidence had `48` entrypoints, `298` symbols, and
+  `0` `docs_src/*` entrypoints.
+- FastAPI package entrypoints stayed at `48`, proving the profile removed
+  tutorial evidence without dropping the package surface.
+- The autonomous candidate batch passed with one candidate and bundle-set
+  preflight passed.
+- The candidate reported `author_ready_draft`.
+- AI draft and AI enrichment artifacts had warning-level gaps, so the result
+  is closer to registry-review quality on evidence boundary but is not a clean
+  registry handoff.
+- The durable report fixture is
+  `tests/fixtures/fastapi_parser_profile_rerun/p36-t4-fastapi-parser-profile-rerun.example.json`.
 
-## Context
+## Phase Result
 
-P36-T1 documented the repository parsing plugin contract. P36-T2 added the
-Python web-framework profile fixture. P36-T3 made that profile executable in
-the analyzer path.
+Phase 36 is complete:
 
-P36-T4 should now run the practical FastAPI comparison that motivated the
-phase: an AI-enabled candidate batch using `python.web_framework.v0`, compared
-against the earlier FastAPI run that over-captured `docs_src/*` tutorial code
-as public API evidence.
+- `P36-T1` documented the repository parsing plugin contract.
+- `P36-T2` added the Python web-framework parser profile fixture.
+- `P36-T3` implemented the opt-in plugin-aware source classification hook.
+- `P36-T4` verified the hook on a real FastAPI AI-enabled run.
 
-## Motivation
+## Boundary
 
-- Verify that the new parser profile improves real FastAPI evidence selection.
-- Measure evidence volume and claim quality after excluding tutorial files
-  from `public-interface-index.json`.
-- Decide whether the new output is closer to registry-review quality.
+The Phase 36 outputs are producer-side evidence only. They do not publish
+registry metadata, accept packages or relations, remove `preview_only`, or
+treat AI output as registry truth.
 
-## Goal
+In plain terms, Phase 36 does not publish registry metadata and does not treat
+AI output as registry truth.
 
-Re-run FastAPI through the AI-enabled autonomous candidate pipeline with the
-Python web-framework parser profile and record the comparison result.
+## Suggested Next Work
 
-## Proposed Scope
-
-- Locate or create a bounded local FastAPI source manifest using an existing
-  checkout when available.
-- Run autonomous candidate batch with:
-  - `--parser-profile python.web_framework.v0`
-  - live LM Studio/OpenAI-compatible model when available;
-  - deterministic fallback documentation if the local model endpoint is not
-    reachable.
-- Compare public interface evidence volume before/after parser profile use.
-- Inspect generated candidate quality, author-ready verdicts, and AI
-  proposal status.
-- Record a durable fixture or report summarizing whether FastAPI output is
-  closer to registry-review quality.
-
-## Acceptance
-
-- The run proves that `docs_src/*` no longer appears as public interface
-  entrypoints when the parser profile is selected.
-- The run records public interface entrypoint/symbol counts and candidate
-  quality verdicts.
-- The run records whether live AI was used and which provider/model was used.
-- The report explicitly states that output remains producer-side evidence only
-  and is not registry acceptance.
+No next task is selected. A future phase can generalize parser profiles beyond
+Python web frameworks or add additional technology-specific profile fixtures.
