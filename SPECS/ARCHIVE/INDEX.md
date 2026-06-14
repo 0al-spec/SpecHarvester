@@ -146,6 +146,7 @@
 | P33-T8 | [P33-T8_Next-Corpus_Intake_Readiness_Decision/](P33-T8_Next-Corpus_Intake_Readiness_Decision/) | 2026-06-14 | PASS |
 | P34-T1 | [P34-T1_AI_Enrichment_Candidate_Patch_Proposal/](P34-T1_AI_Enrichment_Candidate_Patch_Proposal/) | 2026-06-14 | PASS |
 | P34-T2 | [P34-T2_Autonomous_Batch_AI_Enriched_Preview_Output/](P34-T2_Autonomous_Batch_AI_Enriched_Preview_Output/) | 2026-06-14 | PASS |
+| P35-T1 | [P35-T1_Corpus_Selection_Policy/](P35-T1_Corpus_Selection_Policy/) | 2026-06-14 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -242,6 +243,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P35-T1 | Archived Corpus Selection Policy (PASS) |
 | 2026-06-14 | P34-T2 | Archived REVIEW_p34_t2_autonomous_ai_enriched_output report |
 | 2026-06-14 | P34-T2 | Archived Autonomous Batch AI Enriched Preview Output (PASS) |
 | 2026-06-14 | P20-T8 | Archived REVIEW_p20_t8_docc_warning_cleanup report |

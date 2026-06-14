@@ -1326,7 +1326,7 @@ Acceptance:
 
 ## Phase 35. Curated Multi-Ecosystem Corpus Selection
 
-- [ ] `P35-T1` Document the corpus selection policy that prevents autonomous
+- [x] `P35-T1` Document the corpus selection policy that prevents autonomous
   harvesting from becoming an open-ended crawl across every popular registry
   package. The policy must define importance signals, exclusion rules,
   ecosystem quotas, local checkout requirements, and the review boundary for

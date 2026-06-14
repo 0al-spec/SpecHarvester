@@ -1,81 +1,75 @@
-# Next Task: P35-T1 Corpus Selection Policy
+# Next Task: P35-T2 SpecHarvesterCorpusPlan
 
-**Status:** In Progress
+**Status:** Planned
 **Phase:** Phase 35. Curated Multi-Ecosystem Corpus Selection
-**Task:** `P35-T1` Document the corpus selection policy
-**Branch:** `feature/P35-T1-corpus-selection-policy`
-**Last Archived:** P34-T2 Autonomous Batch AI Enriched Preview Output
+**Task:** `P35-T2` Define a machine-readable `SpecHarvesterCorpusPlan`
+**Last Archived:** P35-T1 Corpus Selection Policy
+
+## Recently Archived
+
+- `P35-T1` added [`CORPUS_SELECTION_POLICY.md`](../../docs/CORPUS_SELECTION_POLICY.md)
+  and the DocC mirror `CorpusSelectionPolicy`.
+- The policy establishes SpecHarvester as a bounded curated corpus builder,
+  not an open-ended registry crawler.
+- The policy defines repository/package-family selection units, importance
+  signals, ecosystem quotas, exclusion and deferral rules, pinned local
+  checkout requirements, and the producer-evidence boundary.
+- The policy preserves local-only operation: no clone/fetch, dependency
+  installation, harvested code execution, registry publication, package or
+  relation acceptance, `preview_only` removal, or AI output as registry truth.
 
 ## Context
 
-Phase 34 made AI-enabled autonomous batch output useful for review: clean
-package-set AI enrichment proposals can now be applied into copied enriched
-preview candidates while preserving `preview_only` and keeping SpecPM as the
-acceptance boundary.
-
-The next risk is corpus quality. Registry search results such as npm
-`react` sorted by downloads mix real author-facing libraries with ecosystem
-plumbing, internal utilities, type packages, shims, parsers, generated
-artifacts, and unrelated high-download packages. Without a selection policy,
-SpecHarvester would drift toward broad crawling instead of producing strong
-author-ready starter packages for important libraries.
+P35-T1 defined the semantics of source selection. P35-T2 should turn those
+semantics into a machine-readable planning contract that later tasks can use
+for seed corpus planning, source classification, explainable reports, and
+dry-run readiness checks.
 
 ## Motivation
 
-- Autonomous harvesting should target important libraries and package families,
-  not every popular package returned by a registry search.
-- The corpus must cover more than JavaScript/TypeScript while staying bounded
-  and explainable.
-- Operators need to know why a repository was selected, which subpackages are
-  in scope, which sources are excluded, and which evidence must exist before a
-  harvesting run starts.
+- Operators need a stable artifact that records why each repository or package
+  family is selected before harvesting runs.
+- The plan should be reviewable before local collection, deterministic
+  drafting, AI enrichment, or SpecPM handoff checks execute.
+- Later automation should not infer corpus scope from raw npm/PyPI/crates.io
+  search results or ad hoc notes.
 
 ## Goal
 
-Document a corpus selection policy that defines how SpecHarvester chooses
-important multi-ecosystem repository/package-family targets for autonomous
-candidate generation.
+Define `SpecHarvesterCorpusPlan`, a versioned machine-readable format for
+curated source batches.
 
 ## Proposed Scope
 
-- Define library importance signals:
-  - dependency centrality;
-  - registry usage;
-  - public API richness;
-  - ecosystem archetype coverage;
-  - release and maintenance health;
-  - source availability and license clarity;
-  - security and supply-chain relevance;
-  - author/maintainer review value.
-- Define exclusion and deferral rules for:
-  - internal utilities;
-  - types-only packages;
-  - generated-only packages;
-  - deprecated sources;
-  - examples and test fixtures;
-  - build tooling;
-  - registry search noise.
-- Define ecosystem quota expectations for a small curated corpus across
-  JavaScript/TypeScript, Python, Rust, Go, and at least one additional
-  ecosystem.
-- Preserve local-only operation: no clone/fetch, dependency installation,
-  harvested code execution, registry publication, package acceptance, relation
-  acceptance, `preview_only` removal, or AI-as-registry-truth.
-
-## Expected Follow-Ups
-
-- `P35-T2` Define `SpecHarvesterCorpusPlan`.
-- `P35-T3` Add candidate source classifier plan.
-- `P35-T4` Create the first multi-ecosystem seed corpus plan.
-- `P35-T5` Add explainable corpus selection report.
-- `P35-T6` Run or document selected corpus plan dry-run readiness.
+- Define document identity:
+  - `apiVersion`;
+  - `kind`;
+  - `schemaVersion`;
+  - corpus name;
+  - producer-evidence authority boundary.
+- Define source entries:
+  - ecosystem;
+  - repository;
+  - package family;
+  - category;
+  - pinned local checkout path or required checkout reference;
+  - selected-because reason codes;
+  - excluded or deferred subpackage reason codes;
+  - expected analyzer coverage;
+  - stop conditions.
+- Define summary fields:
+  - per-ecosystem quotas;
+  - selected/deferred/rejected counts;
+  - non-authority statements;
+  - downstream autonomous-batch command plan.
+- Add a fixture or example corpus plan that can be used by `P35-T4`.
 
 ## Acceptance
 
-- The policy clearly says SpecHarvester is a bounded curated corpus builder,
-  not an open-ended crawler.
-- The policy covers non-JS ecosystems and avoids npm-specific assumptions.
-- The policy defines why sources are selected and why noisy packages are
-  excluded or deferred.
-- The policy preserves the producer-evidence boundary: selected corpus entries
-  do not imply SpecPM acceptance, registry publication, or maintainer approval.
+- The schema is ecosystem-neutral and does not assume npm as the default.
+- Every selected source explains why it exists in the corpus.
+- Every excluded or deferred source uses a reviewable reason code.
+- The plan remains local-first and does not authorize clone/fetch, dependency
+  installation, harvested code execution, registry publication, acceptance, or
+  `preview_only` removal.
+- Docs and tests make the contract visible from the primary entrypoints.
