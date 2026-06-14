@@ -1,8 +1,9 @@
 # Next Task: P35-T5 Explainable Corpus Selection Report
 
-**Status:** Planned
+**Status:** In Progress
 **Phase:** Phase 35. Curated Multi-Ecosystem Corpus Selection
 **Task:** `P35-T5` Add an explainable corpus selection report
+**Branch:** `feature/P35-T5-explainable-corpus-selection-report`
 **Last Archived:** P35-T4 Multi-Ecosystem Seed Corpus Plan
 
 ## Recently Archived
