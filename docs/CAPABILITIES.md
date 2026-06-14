@@ -30,6 +30,7 @@ local repository checkout
 | Package-set preflight and viewer | Check member bundles, relation proposals, evidence digests, and render static review pages for package-set output. | [`BUNDLE_SET_PREFLIGHT.md`](BUNDLE_SET_PREFLIGHT.md), [`PACKAGE_SET_VIEWER.md`](PACKAGE_SET_VIEWER.md) |
 | Author-ready quality reporting | Classify generated output as `author_ready_draft`, `needs_regeneration`, or `blocked`, with hard gates, review dimensions, and action items. | [`AUTHOR_READY_DRAFT_QUALITY_BAR.md`](AUTHOR_READY_DRAFT_QUALITY_BAR.md), [`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md) |
 | Local AI draft and enrichment proposals | Use local OpenAI-compatible providers such as LM Studio for proposal-only package-set drafting and enrichment. | [`PACKAGE_SET_AI_DRAFT_PROPOSAL.md`](PACKAGE_SET_AI_DRAFT_PROPOSAL.md), [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md) |
+| AI-enriched preview candidate copies | Apply clean AI enrichment proposals into copied preview candidates with patch reports for review. | [`AI_ENRICHMENT_CANDIDATE_PATCH.md`](AI_ENRICHMENT_CANDIDATE_PATCH.md) |
 | Selected/deferred candidate triage | Separate review-ready candidates from candidates that need targeted regeneration, repair, or explicit deferral. | [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md), [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md) |
 | SpecPM handoff evidence | Emit portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md), [`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md) |
 | Bounded corpus runs | Run operator-selected local checkout batches with deterministic and optional live local-model paths, then record selected/deferred outcomes. | [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md), [`BOUNDED_CORPUS_EXPANSION_PLAN.md`](BOUNDED_CORPUS_EXPANSION_PLAN.md) |
@@ -97,6 +98,8 @@ artifacts remain review evidence:
 - model JSON is schema checked and may pass through bounded repair;
 - package identity, evidence paths, privacy flags, and interface kinds must
   still pass deterministic checks;
+- clean enrichment proposals may be applied only into copied preview candidates
+  through [`AI_ENRICHMENT_CANDIDATE_PATCH.md`](AI_ENRICHMENT_CANDIDATE_PATCH.md);
 - accepted registry output still requires maintainer review.
 
 ## SpecPM Boundary

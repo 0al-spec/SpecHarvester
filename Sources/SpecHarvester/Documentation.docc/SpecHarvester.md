@@ -87,6 +87,7 @@ The canonical source files remain in the repository:
 - `docs/BASELINE_SUBMISSION_HANDOFF.md`
 - `docs/PACKAGE_SET_AI_DRAFT_PROPOSAL.md`
 - `docs/PACKAGE_SET_AI_ENRICHMENT.md`
+- `docs/AI_ENRICHMENT_CANDIDATE_PATCH.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`
 - `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`
@@ -181,6 +182,7 @@ the host.
 - <doc:BaselineSubmissionHandoff>
 - <doc:PackageSetAIDraftProposal>
 - <doc:PackageSetAIEnrichment>
+- <doc:AIEnrichmentCandidatePatch>
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateIntakePolicy>
 - <doc:AutonomousCandidateTechDebtPlan>

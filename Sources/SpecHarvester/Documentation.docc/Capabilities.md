@@ -27,6 +27,7 @@ local repository checkout
 | Package-set preflight and viewer | Member bundle checks, relation proposal checks, evidence digest checks, and static package-set review pages. | <doc:BundleSetPreflight>, <doc:PackageSetViewer> |
 | Author-ready quality reporting | `author_ready_draft`, `needs_regeneration`, and `blocked` verdicts with hard gates, dimensions, and action items. | <doc:AuthorReadyDraftQualityBar>, <doc:AuthorReadyDraftQualityReport> |
 | Local AI proposals | LM Studio/OpenAI-compatible proposal-only package-set drafting and enrichment. | <doc:PackageSetAIDraftProposal>, <doc:PackageSetAIEnrichment> |
+| AI-enriched preview candidate copies | Clean AI enrichment proposals can be applied into copied preview candidates with patch reports for review. | <doc:AIEnrichmentCandidatePatch> |
 | Selected/deferred candidate triage | Review-ready candidates are separated from candidates needing regeneration, repair, or explicit deferral. | <doc:SelectedCandidateHandoffProposal>, <doc:DeferredCandidateRegenerationRunbook> |
 | SpecPM handoff evidence | Portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | <doc:SpecPMHandoff>, <doc:SelectedCandidateHandoffPreflightExpectations> |
 | Bounded corpus runs | Operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:AutonomousCandidateBatch>, <doc:BoundedCorpusExpansionPlan> |
