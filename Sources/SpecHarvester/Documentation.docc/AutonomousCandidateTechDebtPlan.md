@@ -125,6 +125,11 @@ or replace author or SpecPM maintainer review.
 - Goal: run refreshed selected handoff through SpecPM preflight and record
   whether the corpus is ready for author review, needs more regeneration, or
   should stop before broader scraping.
+- Result: <doc:LimitedCorpusIntakeReadinessDecision> records
+  `ready_for_author_maintainer_review_with_explicit_deferral`: eight selected
+  preview candidates are ready for author/maintainer review, `cupertino.core`
+  remains deferred on `refined_summary_missing`, and broader autonomous
+  scraping requires a separate follow-up task.
 
 ## Suggested Order
 

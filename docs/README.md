@@ -168,6 +168,9 @@ Published DocC site:
 59. [`REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`](REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md):
     P32-T5 refreshed candidate-layer selected handoff, selected/deferred
     decisions, source fixture digests, and SpecPM-side preflight boundary
+60. [`LIMITED_CORPUS_INTAKE_READINESS_DECISION.md`](LIMITED_CORPUS_INTAKE_READINESS_DECISION.md):
+    P32-T7 limited corpus intake readiness decision, selected/deferred
+    dispositions, SpecPM preflight result, and expansion boundary
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

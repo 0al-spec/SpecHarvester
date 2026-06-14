@@ -77,18 +77,20 @@ viewer output, but AI enrichment still reports `refined_summary_missing`.
 It should not enter selected handoff until regenerated enrichment or
 author-curated summary evidence resolves that blocker.
 
-## Next Gate
+## Consumer Gate Result
 
-The next gate is SpecPM-side selected candidate handoff preflight:
+The SpecPM-side selected candidate handoff preflight was merged in
+[`0al-spec/SpecPM#140`](https://github.com/0al-spec/SpecPM/pull/140):
 
 ```text
 SpecPMSelectedCandidateHandoffPreflightReport
 apiVersion: specpm.selected-candidate-handoff-preflight/v0
 ```
 
-That future gate should consume the refreshed handoff fixture as review
-evidence, validate candidate identity and evidence roles, and preserve the
-external registry acceptance boundary.
+The P32-T5 fixture passed that gate with eight selected candidates, one
+deferred candidate, zero warnings, zero errors, and three source digests
+verified. P32-T7 records the resulting intake readiness decision in
+[`LIMITED_CORPUS_INTAKE_READINESS_DECISION.md`](LIMITED_CORPUS_INTAKE_READINESS_DECISION.md).
 
 ## Non-Authority Boundary
 
@@ -111,4 +113,3 @@ See also:
 - [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md)
 - [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md)
 - [`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md)
-

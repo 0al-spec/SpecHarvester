@@ -1149,7 +1149,7 @@ Acceptance:
   evidence for regenerated candidates that satisfy hard gates.
 - [x] `P32-T6` Add or coordinate the SpecPM-side selected candidate handoff
   preflight for `SpecHarvesterSelectedCandidateHandoffProposal`.
-- [ ] `P32-T7` Record the limited corpus intake readiness decision after
+- [x] `P32-T7` Record the limited corpus intake readiness decision after
   refreshed selected handoff evidence passes SpecPM-side preflight or remains
   explicitly deferred.
 

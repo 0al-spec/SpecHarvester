@@ -55,18 +55,22 @@ or author-curated summary evidence before selected handoff.
 
 ## Next Gate
 
-The next gate is the SpecPM-side
+The SpecPM-side selected candidate handoff preflight was merged in
+[0al-spec/SpecPM#140](https://github.com/0al-spec/SpecPM/pull/140). It emits
 `SpecPMSelectedCandidateHandoffPreflightReport` with
 `apiVersion: specpm.selected-candidate-handoff-preflight/v0`.
 
-Passing that future gate is still review evidence only. It does not accept
-packages, accept relations, seed baselines, remove `preview_only`, publish
-registry metadata, create a SpecPM pull request, treat AI output as registry
-truth, or replace author or maintainer review.
+The P32-T5 fixture passed that gate with eight selected candidates, one
+deferred candidate, zero warnings, zero errors, and three source digests
+verified. P32-T7 records the resulting intake readiness decision in
+<doc:LimitedCorpusIntakeReadinessDecision>. Passing preflight is still review
+evidence only. It does not accept packages, accept relations, seed baselines,
+remove `preview_only`, publish registry metadata, create a SpecPM pull request,
+treat AI output as registry truth, or replace author or maintainer review.
 
 See also <doc:AutonomousCandidateTechDebtPlan>,
 <doc:DeferredCandidateRegenerationRunbook>,
-<doc:SelectedCandidateHandoffProposal>, <doc:SpecPMHandoff>,
+<doc:SelectedCandidateHandoffProposal>,
+<doc:LimitedCorpusIntakeReadinessDecision>, <doc:SpecPMHandoff>,
 <doc:XyflowPackageSetIdentityRegenerationDryRun>, and
 <doc:SinglePackageDeferredCandidateRegenerationDryRun>.
-

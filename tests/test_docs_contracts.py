@@ -10,6 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 32 Complete" in next_text:
+        assert_p32_t7_last_archived(next_text)
+        assert_p32_t5_recent(next_text)
+        assert_p32_t6_recent(next_text)
+        assert_p32_t7_recent(next_text)
+        assert_phase_32_complete(next_text)
+        return
+
     if "# Next Task: P32-T7 Limited Corpus Intake Readiness Decision" in next_text:
         assert_p32_t6_last_archived(next_text)
         assert_p32_t5_recent(next_text)
@@ -444,6 +452,10 @@ def assert_p32_t5_last_archived(next_text: str) -> None:
 
 def assert_p32_t6_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P32-T6 SpecPM Selected Candidate Handoff Preflight" in next_text
+
+
+def assert_p32_t7_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P32-T7 Limited Corpus Intake Readiness Decision" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1278,6 +1290,22 @@ def assert_p32_t6_recent(next_text: str) -> None:
     assert "review evidence only" in normalized
 
 
+def assert_p32_t7_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P32-T7` recorded the limited corpus intake readiness decision" in next_text
+    assert "LIMITED_CORPUS_INTAKE_READINESS_DECISION.md" in next_text
+    assert "SpecHarvesterLimitedCorpusIntakeReadinessDecision" in next_text
+    assert "ready_for_author_maintainer_review_with_explicit_deferral" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "cupertino.core" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "broader autonomous scraping requires a separate follow-up task" in normalized
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1290,6 +1318,18 @@ def assert_phase_26_complete(next_text: str) -> None:
     assert "SpecPM-facing package-set proposal intake checklist" in normalized
     assert "No Phase 26 task remains selected" in next_text
     assert "autonomous/deferred candidate work plan" in normalized
+
+
+def assert_phase_32_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 32 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "Phase 32 is complete" in next_text
+    assert "limited corpus is review-ready" in normalized
+    assert "not registry-accepted" in normalized
+    assert "No Phase 32 task remains selected" in next_text
+    assert "separate follow-up task" in normalized
+    assert "broader autonomous scraping" in normalized
 
 
 def assert_phase_26_t3_active(next_text: str) -> None:
@@ -5184,6 +5224,204 @@ def test_refreshed_candidate_layer_selected_handoff_records_p32_t5_contract() ->
         roadmap_docc,
     ):
         assert "RefreshedCandidateLayerSelectedHandoff" in path.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_limited_corpus_intake_readiness_decision_records_p32_t7_contract() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "limited_corpus_intake_readiness_decision"
+        / "p32-t7-limited-corpus-intake-readiness-decision.example.json"
+    )
+    github_doc = ROOT / "docs" / "LIMITED_CORPUS_INTAKE_READINESS_DECISION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedCorpusIntakeReadinessDecision.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    tech_debt = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    tech_debt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+    refreshed_doc = ROOT / "docs" / "REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md"
+    refreshed_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RefreshedCandidateLayerSelectedHandoff.md"
+    )
+    specpm_handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    specpm_handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Limited Corpus Intake Readiness Decision",
+            "P32-T7",
+            "p32-t7-limited-corpus-intake-readiness-decision.example.json",
+            "SpecHarvesterLimitedCorpusIntakeReadinessDecision",
+            "spec-harvester.limited-corpus-intake-readiness-decision/v0",
+            "producer_preview_evidence_only",
+            "ready_for_author_maintainer_review_with_explicit_deferral",
+            "flask.core",
+            "gin.core",
+            "docc2context.core",
+            "xyflow.workspace",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "navigation_split_view.core",
+            "cupertino.core",
+            "refined_summary_missing",
+            "0al-spec/SpecPM#140",
+            "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+            "preflight-selected-candidate-handoff",
+            "selectedCandidateCount: 8" if path == github_doc else "eight selected",
+            "deferredCandidateCount: 1" if path == github_doc else "one deferred",
+            "digestVerifiedCount: 3" if path == github_doc else "three source digests",
+            "broader autonomous scraping",
+            "separate follow-up task",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "remove `preview_only`",
+            "publish registry metadata",
+            "SpecPM pull request",
+            "AI output as registry truth",
+            "review-ready, not registry-accepted",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == ("spec-harvester.limited-corpus-intake-readiness-decision/v0")
+    assert payload["kind"] == "SpecHarvesterLimitedCorpusIntakeReadinessDecision"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["run"] == {
+        "taskId": "P32-T7",
+        "corpusId": "p30-limited-popular-libraries",
+        "decision": "ready_for_author_maintainer_review_with_explicit_deferral",
+        "newHarvestExecuted": False,
+        "aiRunExecuted": False,
+        "specpmPullRequestCreated": False,
+    }
+
+    source_by_id = {source["id"]: source for source in payload["sources"]}
+    expected_sources = {
+        "p32_t5_refreshed_selected_handoff": (
+            "SpecHarvesterRefreshedCandidateLayerSelectedHandoff",
+            "tests/fixtures/refreshed_candidate_layer_selected_handoff/p32-t5-refreshed-candidate-layer-selected-handoff.example.json",
+            "source_fixture_committed",
+        ),
+        "p32_t6_specpm_selected_handoff_preflight": (
+            "SpecPMSelectedCandidateHandoffPreflightReport",
+            "SPECS/ARCHIVE/P32-T6_SpecPM_Selected_Candidate_Handoff_Preflight/P32-T6_Validation_Report.md",
+            "consumer_preflight_recorded",
+        ),
+    }
+    assert set(source_by_id) == set(expected_sources)
+    for source_id, (kind, relative_path, status) in expected_sources.items():
+        source = source_by_id[source_id]
+        source_path = ROOT / relative_path
+        assert source["kind"] == kind
+        assert source["path"] == relative_path
+        assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert source["status"] == status
+
+    assert payload["specpmConsumerGate"] == {
+        "repository": "https://github.com/0al-spec/SpecPM",
+        "pullRequest": "https://github.com/0al-spec/SpecPM/pull/140",
+        "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+        "command": "specpm producer-bundle preflight-selected-candidate-handoff",
+        "kind": "SpecPMSelectedCandidateHandoffPreflightReport",
+        "apiVersion": "specpm.selected-candidate-handoff-preflight/v0",
+        "status": "passed",
+        "summary": {
+            "selectedCandidateCount": 8,
+            "deferredCandidateCount": 1,
+            "requiredEvidenceRoleCount": 6,
+            "digestVerifiedCount": 3,
+            "errorCount": 0,
+            "warningCount": 0,
+        },
+    }
+    assert payload["decision"] == {
+        "status": "ready_for_author_maintainer_review_with_explicit_deferral",
+        "selectedCandidateDisposition": "ready_for_author_maintainer_review",
+        "deferredCandidateDisposition": "cupertino_remains_deferred",
+        "corpusExpansionDisposition": "separate_follow_up_required",
+        "reason": (
+            "The refreshed selected handoff passed SpecPM consumer preflight "
+            "with zero warnings and zero errors, while cupertino.core still "
+            "lacks resolved summary evidence."
+        ),
+    }
+
+    selected = {candidate["id"]: candidate for candidate in payload["selectedCandidates"]}
+    assert list(selected) == [
+        "flask.core",
+        "gin.core",
+        "docc2context.core",
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "navigation_split_view.core",
+    ]
+    for candidate in selected.values():
+        assert candidate["disposition"] == "ready_for_author_maintainer_review"
+        assert candidate["previewOnly"] is True
+        assert candidate["registryAcceptanceDecision"] == "external_required"
+
+    assert payload["deferredCandidates"] == [
+        {
+            "id": "cupertino.core",
+            "disposition": "deferred_until_summary_evidence",
+            "blockers": ["refined_summary_missing"],
+            "selectedHandoffEligible": False,
+        }
+    ]
+    assert payload["corpusExpansion"] == {
+        "limitedCorpusReadyForReview": True,
+        "broaderAutonomousScrapingAllowed": False,
+        "separateFollowUpRequired": True,
+        "recommendedNextStep": "plan_next_bounded_corpus_after_stack_review",
+    }
+    assert payload["nonAuthority"] == {
+        "decisionRecordOnly": True,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "createsSpecPMPullRequest": False,
+        "producerEvidenceOnly": True,
+        "publishesRegistryMetadata": False,
+        "removesPreviewOnly": False,
+        "seedsBaselines": False,
+        "treatsAIOutputAsRegistryTruth": False,
+    }
+
+    assert "LIMITED_CORPUS_INTAKE_READINESS_DECISION.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:LimitedCorpusIntakeReadinessDecision>" in docc_root.read_text(encoding="utf-8")
+    for path in (tech_debt, refreshed_doc, specpm_handoff, roadmap):
+        assert "LIMITED_CORPUS_INTAKE_READINESS_DECISION.md" in path.read_text(encoding="utf-8")
+    for path in (tech_debt_docc, refreshed_docc, specpm_handoff_docc, roadmap_docc):
+        assert "LimitedCorpusIntakeReadinessDecision" in path.read_text(encoding="utf-8")
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

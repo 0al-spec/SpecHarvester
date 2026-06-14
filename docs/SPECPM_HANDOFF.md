@@ -224,6 +224,11 @@ P32-T5 fixture passes that gate with eight selected candidates, one deferred
 `cupertino.core`, and three source digests verified. It still does not create a
 SpecPM pull request, accept packages, accept relations, seed baselines, remove
 `preview_only`, or publish registry metadata.
+P32-T7 records the intake readiness decision in
+[`LIMITED_CORPUS_INTAKE_READINESS_DECISION.md`](LIMITED_CORPUS_INTAKE_READINESS_DECISION.md):
+the selected preview candidates are ready for author/maintainer review,
+`cupertino.core` remains deferred, and broader autonomous scraping requires a
+separate follow-up task.
 
 ## Fresh Candidate Refresh Run
 
