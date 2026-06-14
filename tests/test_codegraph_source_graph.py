@@ -145,6 +145,23 @@ def test_codegraph_source_graph_rejects_unsafe_paths(tmp_path: Path) -> None:
         raise AssertionError("Expected unsafe CodeGraph path to be rejected")
 
 
+def test_codegraph_source_graph_rejects_backslash_paths(tmp_path: Path) -> None:
+    evidence = tmp_path / "codegraph.json"
+    evidence.write_text(
+        json.dumps({"files": [{"path": "src\\main.py", "language": "python"}]}),
+        encoding="utf-8",
+    )
+
+    try:
+        build_codegraph_source_graph_index(
+            CodeGraphSourceGraphOptions(input=evidence, input_format="json")
+        )
+    except ValueError as exc:
+        assert "Unsafe CodeGraph path" in str(exc)
+    else:
+        raise AssertionError("Expected backslash CodeGraph path to be rejected")
+
+
 def test_codegraph_source_graph_cli_writes_output_and_errors_as_json(
     tmp_path: Path,
     capsys,

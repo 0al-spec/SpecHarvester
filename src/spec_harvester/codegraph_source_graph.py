@@ -343,7 +343,9 @@ def safe_optional_relative_path(value: str | None) -> str | None:
 def safe_relative_path(value: str) -> str:
     if not value:
         raise ValueError("CodeGraph path must be a non-empty relative path")
-    normalized = value.replace("\\", "/")
+    if "\\" in value:
+        raise ValueError(f"Unsafe CodeGraph path: {value}")
+    normalized = value
     path = PurePosixPath(normalized)
     if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
         if normalized != ".":

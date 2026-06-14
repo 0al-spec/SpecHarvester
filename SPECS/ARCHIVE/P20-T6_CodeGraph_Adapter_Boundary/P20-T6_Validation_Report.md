@@ -19,14 +19,14 @@
 ## Validation Commands
 
 - `PYTHONPATH=src pytest tests/test_codegraph_source_graph.py -q`:
-  `4 passed`
+  `5 passed`
 - `PYTHONPATH=src pytest tests/test_codegraph_source_graph.py tests/test_docs_contracts.py -q`:
   `93 passed`
-- `PYTHONPATH=src python -m pytest`: `686 passed, 1 skipped`
+- `PYTHONPATH=src python -m pytest`: `687 passed, 1 skipped`
 - `ruff check src tests`: passed
 - `ruff format --check src tests`: `112 files already formatted`
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`:
-  `686 passed, 1 skipped`, total coverage `90.76%`
+  `687 passed, 1 skipped`, total coverage `90.76%`
 - `swift package dump-package >/dev/null`: passed
 - `swift build --target SpecHarvesterDocs`: passed
 - `git diff --check`: passed
