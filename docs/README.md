@@ -12,25 +12,27 @@ Published DocC site:
 ## Read This First
 
 1. [`../README.md`](../README.md): repository overview and GitHub workflow surface
-2. [`HOW_IT_WORKS.md`](HOW_IT_WORKS.md): end-to-end operator flow
-3. [`TRUST_BOUNDARY.md`](TRUST_BOUNDARY.md): non-negotiable execution rules
-4. [`ANALYZER_SANDBOX_REQUIREMENTS.md`](ANALYZER_SANDBOX_REQUIREMENTS.md):
+2. [`CAPABILITIES.md`](CAPABILITIES.md): current capability map, maturity
+   boundary, and non-goals
+3. [`HOW_IT_WORKS.md`](HOW_IT_WORKS.md): end-to-end operator flow
+4. [`TRUST_BOUNDARY.md`](TRUST_BOUNDARY.md): non-negotiable execution rules
+5. [`ANALYZER_SANDBOX_REQUIREMENTS.md`](ANALYZER_SANDBOX_REQUIREMENTS.md):
    requirements for future metadata-tool and build-tool analyzers
-5. [`TRUSTED_CLASSIFIER_EVALUATION.md`](TRUSTED_CLASSIFIER_EVALUATION.md):
+6. [`TRUSTED_CLASSIFIER_EVALUATION.md`](TRUSTED_CLASSIFIER_EVALUATION.md):
    registry and trust contract for optional external classifiers
-6. [`CODEGRAPH_SOURCE_GRAPH_ADAPTER.md`](CODEGRAPH_SOURCE_GRAPH_ADAPTER.md):
+7. [`CODEGRAPH_SOURCE_GRAPH_ADAPTER.md`](CODEGRAPH_SOURCE_GRAPH_ADAPTER.md):
    optional CodeGraph evidence normalization into `source_graph_index`
-7. [`CODEGRAPH_COMPATIBILITY_GUARD.md`](CODEGRAPH_COMPATIBILITY_GUARD.md):
+8. [`CODEGRAPH_COMPATIBILITY_GUARD.md`](CODEGRAPH_COMPATIBILITY_GUARD.md):
    offline pinned CodeGraph interface compatibility guard
-8. [`LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md`](LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md):
+9. [`LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md`](LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md):
    bounded README/API-contract semantic hints for manifest-poor repositories
-9. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
+10. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
    batch harvesting input manifest schema
-10. [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md): deterministic batch snapshot
+11. [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md): deterministic batch snapshot
    collection from local checkouts
-11. [`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md): advisory
+12. [`BATCH_VALIDATION_REPORTS.md`](BATCH_VALIDATION_REPORTS.md): advisory
    confidence and policy reports for batch output
-12. [`ACCEPTED_MANIFEST_ENTRIES.md`](ACCEPTED_MANIFEST_ENTRIES.md): prepare
+13. [`ACCEPTED_MANIFEST_ENTRIES.md`](ACCEPTED_MANIFEST_ENTRIES.md): prepare
    PR-ready accepted package manifest entries
 11. [`GOVERNANCE_REPORTS.md`](GOVERNANCE_REPORTS.md): detect duplicate intent
    and capability claims across accepted and candidate metadata
@@ -207,6 +209,10 @@ Published DocC site:
     P33-T8 intake readiness decision, selected candidates ready for
     author/maintainer review, explicit deferred candidates, passing SpecPM
     selected handoff preflight, and non-authority boundary
+69. [`CAPABILITIES.md`](CAPABILITIES.md):
+    current product capability map, supported repository shapes,
+    author-ready draft boundary, AI boundary, SpecPM boundary, and maturity
+    table
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

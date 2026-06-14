@@ -29,6 +29,7 @@ The canonical source files remain in the repository:
 
 - `README.md`
 - `docs/README.md`
+- `docs/CAPABILITIES.md`
 - `docs/HOW_IT_WORKS.md`
 - `docs/ARCHITECTURE.md`
 - `docs/TRUST_BOUNDARY.md`
@@ -126,6 +127,7 @@ the host.
 ### Start Here
 
 - <doc:GettingStarted>
+- <doc:Capabilities>
 - <doc:Workflow>
 - <doc:RepositorySourceManifests>
 - <doc:BatchCollection>

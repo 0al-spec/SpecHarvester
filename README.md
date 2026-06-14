@@ -15,6 +15,36 @@ Live DocC documentation:
 
 ## TL;DR
 
+SpecHarvester now supports the current author-ready producer loop:
+
+```text
+local repository checkout
+      |
+      v
+bounded evidence collection
+      |
+      v
+single-package or package-set candidate draft
+      |
+      v
+optional local LM Studio/OpenAI-compatible proposal
+      |
+      v
+validation, quality report, and static viewer
+      |
+      v
+selected/deferred handoff evidence for SpecPM review
+```
+
+The product target is a valid starter package, not a final accepted spec.
+Generated candidates remain review evidence until a maintainer accepts them
+through SpecPM.
+
+See [`docs/CAPABILITIES.md`](docs/CAPABILITIES.md) for the current capability
+map and maturity boundary.
+
+## Bootstrap Example
+
 Run the current bootstrap loop:
 
 ```bash
@@ -64,6 +94,8 @@ and maintainer review before they are treated as accepted registry source.
 ## Documentation Map
 
 - [`docs/README.md`](docs/README.md): documentation index and operator path
+- [`docs/CAPABILITIES.md`](docs/CAPABILITIES.md): current capability map,
+  maturity boundary, and non-goals
 - [`docs/HOW_IT_WORKS.md`](docs/HOW_IT_WORKS.md): end-to-end workflow
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): component model and boundaries
 - [`docs/TRUST_BOUNDARY.md`](docs/TRUST_BOUNDARY.md): zero-trust handling rules
@@ -83,38 +115,35 @@ and maintainer review before they are treated as accepted registry source.
 ## Current Workflow
 
 ```text
-repository list
+local repository checkout or source manifest
       |
       v
 safe evidence collector
       |
       v
-harvest.json
+harvest.json + workspace-inventory.json where relevant
       |
       v
-deterministic candidate drafter
+deterministic candidate or package-set drafter
       |
       v
-specpm.yaml + specs/*.spec.yaml
+specpm.yaml + specs/*.spec.yaml + relation proposals
       |
       v
-specpm validate
+SpecPM validation, producer preflight, and quality report
       |
       v
-candidate review
+static viewer and author/maintainer review
       |
       v
-controlled promotion
+selected/deferred handoff evidence
       |
       v
-accepted public registry source
+SpecPM-side preflight and explicit acceptance flow
 ```
 
-The current repository supports the first controlled candidate loop:
-
-```text
-checkout -> harvest.json -> generated candidate -> SpecPM validation -> promotion copy
-```
+The current repository supports both single-package and package-set preview
+loops. It intentionally stops before registry acceptance.
 
 ## Scope and Boundary
 
