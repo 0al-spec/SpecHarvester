@@ -587,7 +587,9 @@ Tasks:
 - define `P35-T2`, a machine-readable `SpecHarvesterCorpusPlan` format with
   selected-because reason codes, excluded-subpackage reason codes, source
   checkout pins, categories, package-family targets, and non-authority
-  statements;
+  statements
+  ([`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md),
+  `tests/fixtures/corpus_plan/p35-t2-corpus-plan.example.json`);
 - plan `P35-T3`, candidate source classification for primary packages,
   package-set roots, plugins, examples, tooling, type-only packages, generated
   artifacts, internal utilities, and deprecated sources;

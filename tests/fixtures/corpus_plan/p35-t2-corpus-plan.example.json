@@ -1,0 +1,334 @@
+{
+  "apiVersion": "spec-harvester.corpus-plan/v0",
+  "kind": "SpecHarvesterCorpusPlan",
+  "schemaVersion": 1,
+  "authority": "producer_corpus_plan_only",
+  "corpus": {
+    "name": "author-ready-mvp-corpus",
+    "purpose": "curated_author_ready_starter_specs",
+    "selectionMode": "curated_with_registry_signals",
+    "ecosystemQuotas": [
+      {
+        "ecosystem": "npm",
+        "limit": 2
+      },
+      {
+        "ecosystem": "pypi",
+        "limit": 2
+      },
+      {
+        "ecosystem": "crates",
+        "limit": 1
+      },
+      {
+        "ecosystem": "go",
+        "limit": 1
+      },
+      {
+        "ecosystem": "swift",
+        "limit": 1
+      }
+    ],
+    "summary": {
+      "selectedSourceCount": 5,
+      "deferredSourceCount": 1,
+      "rejectedSourceCount": 1
+    },
+    "downstreamCommandPlan": {
+      "command": "autonomous-candidate-batch",
+      "requiresPinnedLocalCheckouts": true,
+      "defaultAiMode": "operator_selected",
+      "mayApplyAiEnrichment": true
+    }
+  },
+  "sources": [
+    {
+      "id": "react",
+      "status": "selected",
+      "ecosystem": "npm",
+      "repository": "https://github.com/facebook/react",
+      "packageFamily": "react.workspace",
+      "categories": [
+        "framework",
+        "runtime_library",
+        "multi_package_repository"
+      ],
+      "localCheckout": {
+        "required": true,
+        "path": "../checkouts/react",
+        "revision": "1111111111111111111111111111111111111111",
+        "allowMutableRef": false
+      },
+      "selectedBecause": [
+        "high_dependency_centrality",
+        "high_registry_usage",
+        "framework_core",
+        "multi_package_repository",
+        "public_api_rich",
+        "source_available",
+        "license_clear"
+      ],
+      "deferredBecause": [],
+      "rejectedBecause": [],
+      "excludedSubpackages": [
+        {
+          "name": "internal-test-utils",
+          "reason": "test_fixture",
+          "decision": "exclude",
+          "notes": "Test utility package is evidence only, not a public package-family target."
+        }
+      ],
+      "expectedAnalyzerCoverage": [
+        {
+          "analyzer": "js_ts_public_api",
+          "scope": "exports",
+          "required": true
+        },
+        {
+          "analyzer": "workspace_inventory",
+          "scope": "package_set",
+          "required": true
+        }
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "primary_package_family_ambiguous"
+      ]
+    },
+    {
+      "id": "fastapi",
+      "status": "selected",
+      "ecosystem": "pypi",
+      "repository": "https://github.com/fastapi/fastapi",
+      "packageFamily": "fastapi.core",
+      "categories": [
+        "framework",
+        "runtime_library"
+      ],
+      "localCheckout": {
+        "required": true,
+        "path": "../checkouts/fastapi",
+        "revision": "2222222222222222222222222222222222222222",
+        "allowMutableRef": false
+      },
+      "selectedBecause": [
+        "high_dependency_centrality",
+        "high_registry_usage",
+        "framework_core",
+        "public_api_rich",
+        "author_review_value",
+        "source_available",
+        "license_clear"
+      ],
+      "deferredBecause": [],
+      "rejectedBecause": [],
+      "excludedSubpackages": [],
+      "expectedAnalyzerCoverage": [
+        {
+          "analyzer": "python_public_api",
+          "scope": "exports",
+          "required": true
+        },
+        {
+          "analyzer": "semantic_evidence_index",
+          "scope": "readme_docs",
+          "required": true
+        }
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "license_evidence_missing",
+        "expected_analyzer_unavailable"
+      ]
+    },
+    {
+      "id": "serde",
+      "status": "selected",
+      "ecosystem": "crates",
+      "repository": "https://github.com/serde-rs/serde",
+      "packageFamily": "serde.core",
+      "categories": [
+        "runtime_library",
+        "parser"
+      ],
+      "localCheckout": {
+        "required": true,
+        "path": "../checkouts/serde",
+        "revision": "3333333333333333333333333333333333333333",
+        "allowMutableRef": false
+      },
+      "selectedBecause": [
+        "high_dependency_centrality",
+        "public_api_rich",
+        "parser_or_schema_surface",
+        "security_supply_chain_relevant",
+        "source_available",
+        "license_clear"
+      ],
+      "deferredBecause": [],
+      "rejectedBecause": [],
+      "excludedSubpackages": [],
+      "expectedAnalyzerCoverage": [
+        {
+          "analyzer": "manifest_profile",
+          "scope": "cargo_manifest",
+          "required": true
+        }
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "expected_analyzer_unavailable"
+      ]
+    },
+    {
+      "id": "gin",
+      "status": "selected",
+      "ecosystem": "go",
+      "repository": "https://github.com/gin-gonic/gin",
+      "packageFamily": "gin.core",
+      "categories": [
+        "framework",
+        "runtime_library"
+      ],
+      "localCheckout": {
+        "required": true,
+        "path": "../checkouts/gin",
+        "revision": "4444444444444444444444444444444444444444",
+        "allowMutableRef": false
+      },
+      "selectedBecause": [
+        "high_registry_usage",
+        "framework_core",
+        "public_api_rich",
+        "single_package_reference_shape",
+        "source_available",
+        "license_clear"
+      ],
+      "deferredBecause": [],
+      "rejectedBecause": [],
+      "excludedSubpackages": [],
+      "expectedAnalyzerCoverage": [
+        {
+          "analyzer": "go_public_api",
+          "scope": "exports",
+          "required": true
+        }
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch"
+      ]
+    },
+    {
+      "id": "swift-argument-parser",
+      "status": "selected",
+      "ecosystem": "swift",
+      "repository": "https://github.com/apple/swift-argument-parser",
+      "packageFamily": "swift_argument_parser.core",
+      "categories": [
+        "cli",
+        "runtime_library"
+      ],
+      "localCheckout": {
+        "required": true,
+        "path": "../checkouts/swift-argument-parser",
+        "revision": "5555555555555555555555555555555555555555",
+        "allowMutableRef": false
+      },
+      "selectedBecause": [
+        "cli_surface",
+        "ecosystem_archetype",
+        "public_api_rich",
+        "source_available",
+        "license_clear"
+      ],
+      "deferredBecause": [],
+      "rejectedBecause": [],
+      "excludedSubpackages": [],
+      "expectedAnalyzerCoverage": [
+        {
+          "analyzer": "swift_public_api",
+          "scope": "products",
+          "required": true
+        }
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "license_evidence_missing"
+      ]
+    },
+    {
+      "id": "types-react",
+      "status": "deferred",
+      "ecosystem": "npm",
+      "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+      "packageFamily": "types.react",
+      "categories": [
+        "type_definitions"
+      ],
+      "localCheckout": {
+        "required": true,
+        "path": "../checkouts/DefinitelyTyped",
+        "revision": "6666666666666666666666666666666666666666",
+        "allowMutableRef": false
+      },
+      "selectedBecause": [],
+      "deferredBecause": [
+        "types_only_package",
+        "needs_dedicated_archetype_policy"
+      ],
+      "rejectedBecause": [],
+      "excludedSubpackages": [],
+      "expectedAnalyzerCoverage": [
+        {
+          "analyzer": "js_ts_public_api",
+          "scope": "types",
+          "required": false
+        }
+      ],
+      "stopConditions": [
+        "primary_package_family_ambiguous",
+        "selection_rationale_missing"
+      ]
+    },
+    {
+      "id": "react-internal-test-utils",
+      "status": "rejected",
+      "ecosystem": "npm",
+      "repository": "https://github.com/facebook/react",
+      "packageFamily": "react.internal_test_utils",
+      "categories": [
+        "test_fixture"
+      ],
+      "localCheckout": {
+        "required": false,
+        "path": "",
+        "revision": "",
+        "allowMutableRef": false
+      },
+      "selectedBecause": [],
+      "deferredBecause": [],
+      "rejectedBecause": [
+        "test_fixture",
+        "registry_search_noise"
+      ],
+      "excludedSubpackages": [],
+      "expectedAnalyzerCoverage": [],
+      "stopConditions": [
+        "selection_rationale_missing"
+      ]
+    }
+  ],
+  "nonAuthorityStatements": [
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_publish_registry_metadata",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth"
+  ]
+}

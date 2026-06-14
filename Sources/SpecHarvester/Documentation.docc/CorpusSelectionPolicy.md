@@ -51,7 +51,8 @@ The policy excludes or defers noisy sources before drafting:
 - sources with unclear license evidence.
 
 Deferral is not a permanent rejection. It means the source needs a more
-specific corpus plan, classifier, or review policy before autonomous drafting.
+specific <doc:SpecHarvesterCorpusPlan>, classifier, or review policy before
+autonomous drafting.
 
 ## Ecosystem Scope
 
@@ -83,7 +84,7 @@ treat generated output as registry truth.
 
 Phase 35 continues with:
 
-- `P35-T2`: `SpecHarvesterCorpusPlan`;
+- `P35-T2`: <doc:SpecHarvesterCorpusPlan>;
 - `P35-T3`: candidate source classification;
 - `P35-T4`: first multi-ecosystem seed corpus;
 - `P35-T5`: explainable corpus selection report;

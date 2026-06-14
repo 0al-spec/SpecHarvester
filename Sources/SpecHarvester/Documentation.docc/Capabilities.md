@@ -30,7 +30,7 @@ local repository checkout
 | AI-enriched preview candidate copies | Clean AI enrichment proposals can be applied into copied preview candidates with patch reports for review. | <doc:AIEnrichmentCandidatePatch> |
 | Selected/deferred candidate triage | Review-ready candidates are separated from candidates needing regeneration, repair, or explicit deferral. | <doc:SelectedCandidateHandoffProposal>, <doc:DeferredCandidateRegenerationRunbook> |
 | SpecPM handoff evidence | Portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | <doc:SpecPMHandoff>, <doc:SelectedCandidateHandoffPreflightExpectations> |
-| Bounded corpus runs | Important multi-ecosystem repository/package-family targets selected with explicit importance signals and exclusion rules, then operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:CorpusSelectionPolicy>, <doc:AutonomousCandidateBatch>, <doc:BoundedCorpusExpansionPlan> |
+| Bounded corpus runs | Important multi-ecosystem repository/package-family targets selected with explicit importance signals and exclusion rules, recorded in a machine-readable corpus plan, then operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:CorpusSelectionPolicy>, <doc:SpecHarvesterCorpusPlan>, <doc:AutonomousCandidateBatch> |
 | Optional CodeGraph input boundary | Pre-existing CodeGraph artifact normalization and offline pinned interface compatibility checks. | <doc:CodeGraphSourceGraphAdapter>, <doc:CodeGraphCompatibilityGuard> |
 
 ## Product Boundary
@@ -62,6 +62,10 @@ It does not accept the package into the registry.
 libraries across ecosystems before autonomous candidate generation. Source
 selection is a curated operator decision over repositories and package
 families, not an open-ended registry crawl.
+
+<doc:SpecHarvesterCorpusPlan> defines the machine-readable plan shape for
+selected, deferred, and rejected source decisions before any autonomous batch
+run starts.
 
 ## Non-Goals
 

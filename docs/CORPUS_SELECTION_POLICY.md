@@ -166,8 +166,8 @@ Every selected source should carry machine-readable rationale in the later
 }
 ```
 
-The exact schema is a follow-up task. This policy defines the required
-semantics before the schema is implemented.
+The concrete planning contract is
+[`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md).
 
 ## Review Boundary
 
@@ -200,7 +200,8 @@ SpecHarvester must not:
 
 This policy unlocks the rest of Phase 35:
 
-- `P35-T2`: define `SpecHarvesterCorpusPlan`;
+- `P35-T2`: define
+  [`SpecHarvesterCorpusPlan`](SPECHARVESTER_CORPUS_PLAN.md);
 - `P35-T3`: define candidate source classification;
 - `P35-T4`: create the first multi-ecosystem seed corpus;
 - `P35-T5`: emit explainable corpus selection reports;

@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P35-T3 Candidate Source Classifier Plan" in next_text:
+        assert_p35_t2_last_archived(next_text)
+        assert_p35_t2_recent(next_text)
+        assert_phase_35_t3_planned(next_text)
+        return
+
     if "# Next Task: P35-T2 SpecHarvesterCorpusPlan" in next_text:
         assert_p35_t1_last_archived(next_text)
         assert_p35_t1_recent(next_text)
@@ -2262,7 +2268,8 @@ def assert_p35_t1_recent(next_text: str) -> None:
 def assert_phase_35_t2_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P35-T2 SpecHarvesterCorpusPlan" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P35-T2-corpus-plan`" in next_text
     assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
     assert "`P35-T2` Define a machine-readable `SpecHarvesterCorpusPlan`" in next_text
     assert "versioned machine-readable format" in normalized
@@ -2274,6 +2281,52 @@ def assert_phase_35_t2_planned(next_text: str) -> None:
     assert "per-ecosystem quotas" in normalized
     assert "non-authority statements" in normalized
     assert "downstream autonomous-batch command plan" in normalized
+    assert "does not authorize clone/fetch" in normalized
+    assert "dependency installation" in normalized
+    assert "harvested code execution" in normalized
+    assert "registry publication" in normalized
+    assert "`preview_only` removal" in normalized
+
+
+def assert_p35_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P35-T2 SpecHarvesterCorpusPlan" in next_text
+
+
+def assert_p35_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P35-T2` added [`SPECHARVESTER_CORPUS_PLAN.md`]" in next_text
+    assert "SpecHarvesterCorpusPlan" in next_text
+    assert "spec-harvester.corpus-plan/v0" in next_text
+    assert "producer_corpus_plan_only" in next_text
+    assert "p35-t2-corpus-plan.example.json" in next_text
+    assert "selected, deferred, and rejected source decisions" in normalized
+    assert "npm, PyPI, crates, Go, and Swift" in normalized
+    assert "selected/deferred/rejected reason codes" in normalized
+    assert "expected analyzer coverage" in normalized
+    assert "stop conditions" in normalized
+    assert "non-authority statements" in normalized
+
+
+def assert_phase_35_t3_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P35-T3 Candidate Source Classifier Plan" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
+    assert "`P35-T3` Add a candidate source classifier plan" in next_text
+    assert "package_set_root" in next_text
+    assert "primary_package" in next_text
+    assert "plugin_package" in next_text
+    assert "example_package" in next_text
+    assert "tooling_package" in next_text
+    assert "types_only_package" in next_text
+    assert "generated_artifact" in next_text
+    assert "internal_utility" in next_text
+    assert "deprecated_source" in next_text
+    assert "evidence_only" in next_text
+    assert "workspace inventory" in normalized
+    assert "package manifests" in normalized
+    assert "explicit operator overrides" in normalized
+    assert "which source classes may become primary candidates" in normalized
     assert "does not authorize clone/fetch" in normalized
     assert "dependency installation" in normalized
     assert "harvested code execution" in normalized
@@ -10436,3 +10489,135 @@ def test_curated_multi_ecosystem_corpus_selection_phase_is_planned() -> None:
     assert "<doc:CorpusSelectionPolicy>" in docc_root.read_text(encoding="utf-8")
     assert "CORPUS_SELECTION_POLICY.md" in capabilities.read_text(encoding="utf-8")
     assert "CorpusSelectionPolicy" in capabilities_docc.read_text(encoding="utf-8")
+
+
+def test_spec_harvester_corpus_plan_contract_is_documented() -> None:
+    github_doc = ROOT / "docs" / "SPECHARVESTER_CORPUS_PLAN.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvesterCorpusPlan.md"
+    )
+    fixture_path = ROOT / "tests" / "fixtures" / "corpus_plan" / ("p35-t2-corpus-plan.example.json")
+    policy = ROOT / "docs" / "CORPUS_SELECTION_POLICY.md"
+    policy_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "CorpusSelectionPolicy.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "SpecHarvesterCorpusPlan",
+            "spec-harvester.corpus-plan/v0",
+            "producer_corpus_plan_only",
+            "selected, deferred, or rejected",
+            "repository/package-family",
+            "selectedBecause",
+            "deferredBecause",
+            "rejectedBecause",
+            "excludedSubpackages",
+            "expectedAnalyzerCoverage",
+            "stopConditions",
+            "high_dependency_centrality",
+            "types_only_package",
+            "registry_search_noise",
+            "does_not_clone_or_fetch_repositories",
+            "does_not_install_dependencies",
+            "does_not_execute_harvested_code",
+            "does_not_publish_registry_metadata",
+            "does_not_accept_packages",
+            "does_not_accept_relations",
+            "does_not_seed_baselines",
+            "does_not_remove_preview_only",
+            "does_not_treat_ai_output_as_registry_truth",
+            "p35-t2-corpus-plan.example.json",
+            "P35-T3",
+            "P35-T6",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.corpus-plan/v0"
+    assert payload["kind"] == "SpecHarvesterCorpusPlan"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_corpus_plan_only"
+    assert payload["corpus"]["summary"] == {
+        "selectedSourceCount": 5,
+        "deferredSourceCount": 1,
+        "rejectedSourceCount": 1,
+    }
+    assert payload["corpus"]["downstreamCommandPlan"] == {
+        "command": "autonomous-candidate-batch",
+        "requiresPinnedLocalCheckouts": True,
+        "defaultAiMode": "operator_selected",
+        "mayApplyAiEnrichment": True,
+    }
+
+    sources = payload["sources"]
+    assert len(sources) == 7
+    assert {item["ecosystem"] for item in sources if item["status"] == "selected"} == {
+        "npm",
+        "pypi",
+        "crates",
+        "go",
+        "swift",
+    }
+    assert {item["status"] for item in sources} == {"selected", "deferred", "rejected"}
+    assert {item["id"] for item in sources if item["status"] == "deferred"} == {"types-react"}
+    assert {item["id"] for item in sources if item["status"] == "rejected"} == {
+        "react-internal-test-utils"
+    }
+    for source in sources:
+        assert source["id"]
+        assert source["ecosystem"]
+        assert source["repository"]
+        assert source["packageFamily"]
+        assert source["categories"]
+        assert set(source) >= {
+            "localCheckout",
+            "selectedBecause",
+            "deferredBecause",
+            "rejectedBecause",
+            "excludedSubpackages",
+            "expectedAnalyzerCoverage",
+            "stopConditions",
+        }
+        if source["status"] == "selected":
+            assert source["selectedBecause"]
+            assert source["localCheckout"]["required"] is True
+            assert source["localCheckout"]["allowMutableRef"] is False
+            assert len(source["localCheckout"]["revision"]) == 40
+        if source["status"] == "deferred":
+            assert source["deferredBecause"]
+        if source["status"] == "rejected":
+            assert source["rejectedBecause"]
+
+    assert payload["nonAuthorityStatements"] == [
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_execute_harvested_code",
+        "does_not_publish_registry_metadata",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_ai_output_as_registry_truth",
+    ]
+
+    assert "SPECHARVESTER_CORPUS_PLAN.md" in policy.read_text(encoding="utf-8")
+    assert "SpecHarvesterCorpusPlan" in policy_docc.read_text(encoding="utf-8")
+    assert "SPECHARVESTER_CORPUS_PLAN.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/SPECHARVESTER_CORPUS_PLAN.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:SpecHarvesterCorpusPlan>" in docc_root.read_text(encoding="utf-8")
+    assert "SPECHARVESTER_CORPUS_PLAN.md" in capabilities.read_text(encoding="utf-8")
+    assert "SpecHarvesterCorpusPlan" in capabilities_docc.read_text(encoding="utf-8")
+    assert "SPECHARVESTER_CORPUS_PLAN.md" in roadmap.read_text(encoding="utf-8")
+    assert "SpecHarvesterCorpusPlan" in roadmap_docc.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
