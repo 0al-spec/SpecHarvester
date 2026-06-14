@@ -1,8 +1,9 @@
 # Next Task: P35-T2 SpecHarvesterCorpusPlan
 
-**Status:** Planned
+**Status:** In Progress
 **Phase:** Phase 35. Curated Multi-Ecosystem Corpus Selection
 **Task:** `P35-T2` Define a machine-readable `SpecHarvesterCorpusPlan`
+**Branch:** `feature/P35-T2-corpus-plan`
 **Last Archived:** P35-T1 Corpus Selection Policy
 
 ## Recently Archived
