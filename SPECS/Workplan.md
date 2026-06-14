@@ -1252,3 +1252,40 @@ Acceptance:
   relation acceptance, and no `preview_only` removal.
 - The next-corpus result must stop at author/maintainer review evidence unless
   a separate SpecPM maintainer acceptance flow is explicitly opened.
+
+## Phase 34. AI-Enabled Candidate Curation
+
+- [ ] `P34-T1` Add an AI enrichment candidate patch proposal helper that turns
+  a clean `SpecHarvesterPackageSetAIEnrichmentProposal` into a reviewable
+  enriched candidate copy plus machine-readable patch report without accepting
+  packages, mutating the source bundle, removing `preview_only`, or treating
+  model output as registry truth.
+
+Motivation:
+
+- Live LM Studio/OpenAI-compatible enrichment already produces better
+  repository-specific summaries and capabilities than deterministic drafting
+  for repositories such as FastAPI.
+- Today those improvements remain proposal JSON beside the generated bundle.
+  Operators need a safe, deterministic handoff step that applies clean model
+  proposals into a separate review candidate so AI-enabled usage becomes the
+  normal review path.
+
+Goal:
+
+- Make AI enrichment practically useful by producing a reviewable enriched
+  candidate artifact while preserving SpecHarvester as producer evidence and
+  SpecPM as the validation, acceptance, and registry authority.
+
+Acceptance:
+
+- The helper reads a package-set AI enrichment proposal and a generated
+  candidate bundle, rejects failed/warning proposals by default, and writes an
+  enriched candidate copy plus patch report under an explicit output root.
+- Applied changes are limited to reviewable summary/capability/interface
+  enrichment from supported evidence paths.
+- The source candidate bundle is not mutated, `preview_only` remains true,
+  model output remains proposal evidence, and no SpecPM acceptance or registry
+  publication is implied.
+- CLI, docs, DocC, tests, and Flow archive record the boundary and the FastAPI
+  comparison motivation.

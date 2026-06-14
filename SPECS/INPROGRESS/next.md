@@ -1,11 +1,11 @@
-# Next Task: Phase 20 Complete
+# Next Task: P34-T1 AI Enrichment Candidate Patch Proposal
 
-**Priority:** N/A
-**Phase:** Phase 20. Scoped Source Unit Harvesting
-**Effort:** N/A
-**Dependencies:** P20-T8
-**Status:** Complete
-**Active Branch:** `codex/p20-t8-docc-warning-cleanup`
+**Priority:** High
+**Phase:** Phase 34. AI-Enabled Candidate Curation
+**Effort:** Medium
+**Dependencies:** P26-T4, P27-T2, P29-T5, P33-T4
+**Status:** Active
+**Active Branch:** `codex/p34-t1-ai-enrichment-application`
 **Last Archived:** P20-T8 DocC Warning Cleanup
 
 ## Recently Archived
@@ -39,18 +39,19 @@
 
 ## Description
 
-Phase 20 is complete. SpecHarvester now supports scoped source-unit harvesting,
-Tuist manifest parsing, scoped validation fixtures, source-unit draft intent
-boundaries, an explicit opt-in CodeGraph source graph adapter, a pinned
-CodeGraph compatibility guard, and clean DocC generation for the known stale
-documentation warnings.
+Live LM Studio/OpenAI-compatible enrichment can produce better
+repository-specific summaries and capabilities than deterministic drafting, but
+the improvements currently remain proposal JSON beside the generated bundle.
 
-The CodeGraph integration remains bounded: compatibility checking uses local
-fixtures and optional explicitly provided executables only. Ordinary CI does not
-install CodeGraph, run npm/npx, download tools, access the network, or index
-third-party repositories.
+P34-T1 adds a deterministic helper that reads a clean
+`SpecHarvesterPackageSetAIEnrichmentProposal`, copies a generated candidate
+bundle to a review output directory, applies supported summary/capability/
+interface enrichments, and emits a machine-readable patch report. The helper
+must not mutate the source bundle, remove `preview_only`, accept packages,
+accept relations, publish registry metadata, or treat model output as registry
+truth.
 
 ## Next Step
 
-Open the P20-T8 maintenance PR and wait for review/CI before selecting any new
-phase.
+Plan and implement P34-T1, then run the helper against the recorded FastAPI
+AI enrichment smoke output to verify the AI-enabled review path.
