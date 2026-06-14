@@ -14,6 +14,7 @@ from spec_harvester.specnode_refinement import (
     SpecNodeModelJSONParseError,
     SpecNodeProviderUnavailable,
     SpecNodeRefinementRetryOptions,
+    SpecNodeRefinementRetrySequence,
     SpecNodeRefinementSmokeOptions,
     SpecNodeRefinementValidationError,
     SpecNodeRetryOrchestrationValidationError,
@@ -550,6 +551,32 @@ def test_specnode_retry_orchestration_approves_without_retry(
     assert run["attempts"][0]["retryDirectiveSet"]["directives"] == []
     assert len(provider.received_jobs) == 1
     assert len(reviewer.received_review_jobs) == 1
+
+
+def test_specnode_retry_sequence_matches_public_wrapper(
+    tmp_path: Path,
+) -> None:
+    candidate = build_candidate_workspace(tmp_path)
+    object_run = SpecNodeRefinementRetrySequence(
+        SpecNodeRefinementRetryOptions(
+            candidate_workspace=candidate,
+            provider=ScriptedSpecNodeProvider(),
+            reviewer=ScriptedSemanticReviewer([("approve", [])]),
+            max_attempts=3,
+        )
+    ).run()
+    wrapper_run = run_specnode_refinement_retry_orchestration(
+        SpecNodeRefinementRetryOptions(
+            candidate_workspace=candidate,
+            provider=ScriptedSpecNodeProvider(),
+            reviewer=ScriptedSemanticReviewer([("approve", [])]),
+            max_attempts=3,
+        )
+    )
+
+    assert object_run == wrapper_run
+    assert object_run["status"] == "approved"
+    assert object_run["attempts"][0]["status"] == "approved"
 
 
 def test_specnode_retry_orchestration_converts_findings_to_bounded_retry_directives(

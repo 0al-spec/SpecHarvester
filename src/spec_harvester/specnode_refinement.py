@@ -291,6 +291,235 @@ class SpecNodeRefinementRetryOptions:
     producer_version: str = DEFAULT_PRODUCER_VERSION
 
 
+@dataclass(frozen=True)
+class SpecNodeRefinementRetrySequence:
+    options: SpecNodeRefinementRetryOptions
+
+    def run(self) -> dict[str, Any]:
+        _validate_retry_max_attempts(self.options.max_attempts)
+        bundle = self.bundle()
+        preview_plan = self.preview_plan(bundle)
+        bundle_digest = canonical_json_sha256_digest(bundle)
+        preview_digest = canonical_json_sha256_digest(preview_plan)
+
+        attempts: list[dict[str, Any]] = []
+        retry_directive_set: dict[str, Any] | None = None
+        status = "retry_limit_reached"
+
+        for attempt_index in range(self.options.max_attempts):
+            attempt = self.attempt(
+                attempt_index=attempt_index,
+                bundle=bundle,
+                preview_plan=preview_plan,
+                bundle_digest=bundle_digest,
+                preview_digest=preview_digest,
+                retry_directive_set=retry_directive_set,
+            )
+            retry_directive_set = attempt["retryDirectiveSet"]
+            status = attempt["status"]
+            attempts.append(attempt)
+            if status in {"approved", "retry_limit_reached"}:
+                break
+
+        run = self.run_payload(
+            status=status,
+            attempts=attempts,
+            bundle_digest=bundle_digest,
+            preview_digest=preview_digest,
+            final_refinement_digest=self.last_attempt_digest(attempts, "refinementResult"),
+            final_semantic_review_digest=self.last_attempt_digest(
+                attempts,
+                "semanticReviewResult",
+            ),
+        )
+        validate_specnode_refinement_retry_run(
+            run,
+            bundle=bundle,
+            preview_plan=preview_plan,
+        )
+        return run
+
+    def bundle(self) -> dict[str, Any]:
+        return build_specnode_artifact_bundle(
+            self.options.candidate_workspace,
+            producer_version=self.options.producer_version,
+        )
+
+    def preview_plan(self, bundle: dict[str, Any]) -> dict[str, Any]:
+        return build_refine_preview_plan(bundle, self.options.candidate_workspace)
+
+    def attempt(
+        self,
+        *,
+        attempt_index: int,
+        bundle: dict[str, Any],
+        preview_plan: dict[str, Any],
+        bundle_digest: str,
+        preview_digest: str,
+        retry_directive_set: dict[str, Any] | None,
+    ) -> dict[str, Any]:
+        refinement_job = self.refinement_job(
+            attempt_index=attempt_index,
+            bundle=bundle,
+            preview_plan=preview_plan,
+            retry_directive_set=retry_directive_set,
+        )
+        refinement_result = self.refinement_result(refinement_job, preview_plan, bundle)
+        review_job = build_specnode_semantic_review_job(
+            bundle,
+            preview_plan,
+            refinement_result,
+            producer_version=self.options.producer_version,
+        )
+        semantic_review_result = self.semantic_review_result(
+            review_job,
+            preview_plan,
+            refinement_result,
+            bundle,
+        )
+        next_directive_set = build_specnode_retry_directives(semantic_review_result)
+        status = self.attempt_status(
+            semantic_review_result,
+            attempt_index=attempt_index,
+        )
+        return _retry_attempt_record(
+            attempt_index=attempt_index,
+            source_bundle_digest=bundle_digest,
+            source_preview_plan_digest=preview_digest,
+            refinement_job=refinement_job,
+            refinement_result=refinement_result,
+            review_job=review_job,
+            semantic_review_result=semantic_review_result,
+            retry_directive_set=next_directive_set,
+            status=status,
+        )
+
+    def refinement_job(
+        self,
+        *,
+        attempt_index: int,
+        bundle: dict[str, Any],
+        preview_plan: dict[str, Any],
+        retry_directive_set: dict[str, Any] | None,
+    ) -> dict[str, Any]:
+        if attempt_index == 0:
+            return build_specnode_refinement_job(
+                bundle,
+                preview_plan,
+                producer_version=self.options.producer_version,
+            )
+        if retry_directive_set is None:
+            raise SpecNodeRetryOrchestrationValidationError(
+                "retry attempt requires retry directive set"
+            )
+        return build_specnode_retry_refinement_job(
+            bundle,
+            preview_plan,
+            retry_directive_set,
+            attempt_index=attempt_index,
+            producer_version=self.options.producer_version,
+        )
+
+    def refinement_result(
+        self,
+        refinement_job: dict[str, Any],
+        preview_plan: dict[str, Any],
+        bundle: dict[str, Any],
+    ) -> dict[str, Any]:
+        try:
+            result = self.options.provider.refine(
+                job=refinement_job,
+                preview_plan=preview_plan,
+            )
+        except SpecNodeProviderUnavailable:
+            result = build_provider_unavailable_result(refinement_job, preview_plan)
+        validate_specnode_refinement_result(
+            result,
+            job=refinement_job,
+            preview_plan=preview_plan,
+            bundle=bundle,
+        )
+        return result
+
+    def semantic_review_result(
+        self,
+        review_job: dict[str, Any],
+        preview_plan: dict[str, Any],
+        refinement_result: dict[str, Any],
+        bundle: dict[str, Any],
+    ) -> dict[str, Any]:
+        result = self.options.reviewer.review(
+            review_job=review_job,
+            preview_plan=preview_plan,
+            refinement_result=refinement_result,
+        )
+        validate_specnode_semantic_review_result(
+            result,
+            review_job=review_job,
+            preview_plan=preview_plan,
+            refinement_result=refinement_result,
+            bundle=bundle,
+        )
+        return result
+
+    def attempt_status(
+        self,
+        semantic_review_result: dict[str, Any],
+        *,
+        attempt_index: int,
+    ) -> str:
+        verdict = semantic_review_result.get("verdict")
+        if verdict == "approve":
+            return "approved"
+        if attempt_index + 1 >= self.options.max_attempts:
+            return "retry_limit_reached"
+        return "retry_scheduled"
+
+    def run_payload(
+        self,
+        *,
+        status: str,
+        attempts: list[dict[str, Any]],
+        bundle_digest: str,
+        preview_digest: str,
+        final_refinement_digest: str | None,
+        final_semantic_review_digest: str | None,
+    ) -> dict[str, Any]:
+        return {
+            "schemaVersion": SPECNODE_SCHEMA_VERSION,
+            "kind": "SpecNodeRefinementRetryRun",
+            "contract": {
+                "kind": "SpecNodeRefinementRetryOrchestrationContract",
+                "retryOrchestrationContractVersion": RETRY_ORCHESTRATION_CONTRACT_VERSION,
+            },
+            "status": status,
+            "retryPolicy": {
+                "kind": "SpecNodeRefinementRetryPolicy",
+                "maxAttempts": self.options.max_attempts,
+                "attemptCount": len(attempts),
+                "artifactReuse": "same_bundle_and_preview_plan",
+                "retryDirectiveSource": "SpecNodeSemanticReviewFinding",
+            },
+            "sourceBundle": {
+                "kind": "SpecHarvesterSpecNodeArtifactBundle",
+                "digest": bundle_digest,
+            },
+            "previewPlan": {
+                "kind": "SpecHarvesterRefinePreviewPlan",
+                "digest": preview_digest,
+            },
+            "attempts": attempts,
+            "finalRefinementResultDigest": final_refinement_digest,
+            "finalSemanticReviewResultDigest": final_semantic_review_digest,
+        }
+
+    def last_attempt_digest(self, attempts: list[dict[str, Any]], key: str) -> str | None:
+        if not attempts:
+            return None
+        digest = _nested_digest(attempts[-1], key)
+        return digest if isinstance(digest, str) else None
+
+
 def run_specnode_refinement_smoke(options: SpecNodeRefinementSmokeOptions) -> dict[str, Any]:
     bundle = build_specnode_artifact_bundle(
         options.candidate_workspace,
@@ -350,146 +579,7 @@ def run_specnode_refinement_smoke(options: SpecNodeRefinementSmokeOptions) -> di
 def run_specnode_refinement_retry_orchestration(
     options: SpecNodeRefinementRetryOptions,
 ) -> dict[str, Any]:
-    _validate_retry_max_attempts(options.max_attempts)
-    bundle = build_specnode_artifact_bundle(
-        options.candidate_workspace,
-        producer_version=options.producer_version,
-    )
-    preview_plan = build_refine_preview_plan(bundle, options.candidate_workspace)
-    bundle_digest = canonical_json_sha256_digest(bundle)
-    preview_digest = canonical_json_sha256_digest(preview_plan)
-
-    attempts: list[dict[str, Any]] = []
-    retry_directive_set: dict[str, Any] | None = None
-    status = "retry_limit_reached"
-    final_refinement_result: dict[str, Any] | None = None
-    final_semantic_review_result: dict[str, Any] | None = None
-
-    for attempt_index in range(options.max_attempts):
-        if attempt_index == 0:
-            refinement_job = build_specnode_refinement_job(
-                bundle,
-                preview_plan,
-                producer_version=options.producer_version,
-            )
-        else:
-            if retry_directive_set is None:
-                raise SpecNodeRetryOrchestrationValidationError(
-                    "retry attempt requires retry directive set"
-                )
-            refinement_job = build_specnode_retry_refinement_job(
-                bundle,
-                preview_plan,
-                retry_directive_set,
-                attempt_index=attempt_index,
-                producer_version=options.producer_version,
-            )
-
-        try:
-            refinement_result = options.provider.refine(
-                job=refinement_job,
-                preview_plan=preview_plan,
-            )
-        except SpecNodeProviderUnavailable:
-            refinement_result = build_provider_unavailable_result(refinement_job, preview_plan)
-        validate_specnode_refinement_result(
-            refinement_result,
-            job=refinement_job,
-            preview_plan=preview_plan,
-            bundle=bundle,
-        )
-
-        review_job = build_specnode_semantic_review_job(
-            bundle,
-            preview_plan,
-            refinement_result,
-            producer_version=options.producer_version,
-        )
-        semantic_review_result = options.reviewer.review(
-            review_job=review_job,
-            preview_plan=preview_plan,
-            refinement_result=refinement_result,
-        )
-        validate_specnode_semantic_review_result(
-            semantic_review_result,
-            review_job=review_job,
-            preview_plan=preview_plan,
-            refinement_result=refinement_result,
-            bundle=bundle,
-        )
-
-        retry_directive_set = build_specnode_retry_directives(semantic_review_result)
-        verdict = semantic_review_result.get("verdict")
-        is_final_attempt = attempt_index + 1 >= options.max_attempts
-        if verdict == "approve":
-            attempt_status = "approved"
-            status = "approved"
-        elif is_final_attempt:
-            attempt_status = "retry_limit_reached"
-            status = "retry_limit_reached"
-        else:
-            attempt_status = "retry_scheduled"
-            status = "retry_scheduled"
-
-        attempts.append(
-            _retry_attempt_record(
-                attempt_index=attempt_index,
-                source_bundle_digest=bundle_digest,
-                source_preview_plan_digest=preview_digest,
-                refinement_job=refinement_job,
-                refinement_result=refinement_result,
-                review_job=review_job,
-                semantic_review_result=semantic_review_result,
-                retry_directive_set=retry_directive_set,
-                status=attempt_status,
-            )
-        )
-        final_refinement_result = refinement_result
-        final_semantic_review_result = semantic_review_result
-        if status in {"approved", "retry_limit_reached"}:
-            break
-
-    run = {
-        "schemaVersion": SPECNODE_SCHEMA_VERSION,
-        "kind": "SpecNodeRefinementRetryRun",
-        "contract": {
-            "kind": "SpecNodeRefinementRetryOrchestrationContract",
-            "retryOrchestrationContractVersion": RETRY_ORCHESTRATION_CONTRACT_VERSION,
-        },
-        "status": status,
-        "retryPolicy": {
-            "kind": "SpecNodeRefinementRetryPolicy",
-            "maxAttempts": options.max_attempts,
-            "attemptCount": len(attempts),
-            "artifactReuse": "same_bundle_and_preview_plan",
-            "retryDirectiveSource": "SpecNodeSemanticReviewFinding",
-        },
-        "sourceBundle": {
-            "kind": "SpecHarvesterSpecNodeArtifactBundle",
-            "digest": bundle_digest,
-        },
-        "previewPlan": {
-            "kind": "SpecHarvesterRefinePreviewPlan",
-            "digest": preview_digest,
-        },
-        "attempts": attempts,
-        "finalRefinementResultDigest": (
-            canonical_json_sha256_digest(final_refinement_result)
-            if final_refinement_result is not None
-            else None
-        ),
-        "finalSemanticReviewResultDigest": (
-            canonical_json_sha256_digest(final_semantic_review_result)
-            if final_semantic_review_result is not None
-            else None
-        ),
-    }
-    validate_specnode_refinement_retry_run(
-        run,
-        bundle=bundle,
-        preview_plan=preview_plan,
-    )
-    return run
+    return SpecNodeRefinementRetrySequence(options).run()
 
 
 def build_specnode_artifact_bundle(

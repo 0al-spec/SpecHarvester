@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P20-T5 Scoped Source-Unit Draft Intent Boundaries" in next_text:
+        assert_p17_t6_last_archived(next_text)
+        assert_p17_t5_recent(next_text)
+        assert_p17_t6_recent(next_text)
+        assert_phase_20_t5_active(next_text)
+        return
+
     if "# Next Task: P17-T6 SpecNode Refinement Orchestration Objects" in next_text:
         assert_p17_t5_last_archived(next_text)
         assert_p17_t4_recent(next_text)
@@ -601,6 +608,10 @@ def assert_p17_t5_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P17-T5 Collector and Drafter Vertical Slice Objects" in next_text
 
 
+def assert_p17_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P17-T6 SpecNode Refinement Orchestration Objects" in next_text
+
+
 def assert_phase_17_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P17-T2 CLI Domain Command Objects" in next_text
@@ -725,6 +736,27 @@ def assert_phase_17_t6_active(next_text: str) -> None:
     assert "validation" in normalized
     assert "retry" in normalized
     assert "unavailable-result objects" in normalized
+
+
+def assert_p17_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P17-T6` moved bounded SpecNode retry orchestration" in next_text
+    assert "SpecNodeRefinementRetrySequence" in next_text
+    assert "run_specnode_refinement_retry_orchestration" in next_text
+    assert "provider-unavailable fallback" in normalized
+    assert "semantic review validation" in normalized
+    assert "behaviorRichClassCount: 1" in next_text
+    assert "topLevelFunctionSpan from 1690 to 1551" in next_text
+
+
+def assert_phase_20_t5_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P20-T5 Scoped Source-Unit Draft Intent Boundaries" in next_text
+    assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 20. Scoped Source Unit Harvesting" in next_text
+    assert "repository, package, folder module, and single-file source-unit intent" in normalized
+    assert "do not overclaim package-manager ownership" in normalized
+    assert "scoped evidence" in normalized
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -4479,6 +4511,8 @@ def test_docc_and_github_docs_cover_eo_refactoring_strategy() -> None:
             "JavaScriptTypeScriptPublicApiAnalyzer",
             "P17-T5",
             "SinglePackageDraftBundle",
+            "P17-T6",
+            "SpecNodeRefinementRetrySequence",
             "top-level function",
             "DTO-only dataclasses",
             "characterization tests",
