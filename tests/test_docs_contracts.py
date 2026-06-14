@@ -16,6 +16,27 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_20_t8_active(next_text)
         return
 
+    if "# Next Task: P34-T2 Autonomous Batch AI Enriched Preview Output" in next_text:
+        assert_p34_t1_last_archived(next_text)
+        assert_p34_t1_recent(next_text)
+        assert_p20_t8_recent(next_text)
+        assert_phase_34_t2_active(next_text)
+        return
+
+    if "# Next Task: Phase 34 Complete" in next_text:
+        assert_p34_t1_last_archived(next_text)
+        assert_p34_t1_recent(next_text)
+        assert_p20_t8_recent(next_text)
+        assert_phase_34_complete(next_text)
+        return
+
+    if "# Next Task: P34-T1 AI Enrichment Candidate Patch Proposal" in next_text:
+        assert_p20_t8_last_archived(next_text)
+        assert_p20_t8_recent(next_text)
+        assert_p20_t7_recent(next_text)
+        assert_phase_34_t1_active(next_text)
+        return
+
     if "# Next Task: Phase 20 Complete" in next_text:
         if "**Last Archived:** P20-T8 DocC Warning Cleanup" in next_text:
             assert_p20_t8_last_archived(next_text)
@@ -622,6 +643,10 @@ def assert_p33_t7_last_archived(next_text: str) -> None:
 
 def assert_p33_t8_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P33-T8 Next-Corpus Intake Readiness Decision" in next_text
+
+
+def assert_p34_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P34-T1 AI Enrichment Candidate Patch Proposal" in next_text
 
 
 def assert_p17_t2_last_archived(next_text: str) -> None:
@@ -2095,6 +2120,97 @@ def assert_p33_t8_recent(next_text: str) -> None:
     assert "does not remove `preview_only`" in normalized
     assert "does not publish registry metadata" in normalized
     assert "does not create a SpecPM pull request" in normalized
+
+
+def assert_phase_34_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P34-T1 AI Enrichment Candidate Patch Proposal" in next_text
+    assert "**Status:** Active" in next_text
+    assert "Phase 34. AI-Enabled Candidate Curation" in next_text
+    assert "Live LM Studio/OpenAI-compatible enrichment" in normalized
+    assert "SpecHarvesterPackageSetAIEnrichmentProposal" in next_text
+    assert "review output directory" in normalized
+    assert "machine-readable patch report" in normalized
+    assert "mutate the source bundle" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "treat model output as registry truth" in normalized
+    assert "recorded FastAPI AI enrichment smoke output" in normalized
+
+
+def assert_phase_34_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P34-T2 Autonomous Batch AI Enriched Preview Output" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Phase 34. AI-Enabled Candidate Curation" in next_text
+    assert "P34-T1 made AI enrichment practically applicable" in normalized
+    assert "explicit operator command" in normalized
+    assert "autonomous corpus runs" in normalized
+    assert "opt-in mode" in normalized
+    assert "clean AI enrichment proposals" in normalized
+    assert "copied enriched preview candidates" in normalized
+    assert "ai-enrichment-candidate-patch.json" in next_text
+    assert "default autonomous batch behavior must remain proposal-only" in normalized
+    assert "completed, clean, package aligned, and diagnostic-free" in normalized
+    assert "must not:" in next_text
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "seed baselines" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "mutate source candidates" in normalized
+    assert "publish registry metadata" in normalized
+    assert "create a SpecPM pull request" in normalized
+    assert "treat AI output as maintainer approval" in normalized
+    assert "treat AI output as upstream project endorsement" in normalized
+    assert "replace SpecPM validation" in normalized
+    assert "autonomous-candidate-batch" in next_text
+
+
+def assert_p34_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P34-T1` added `apply-ai-enrichment-proposal`" in next_text
+    assert "SpecHarvesterPackageSetAIEnrichmentProposal" in next_text
+    assert "enriched preview candidate copy" in normalized
+    assert "ai-enrichment-candidate-patch.json" in next_text
+    assert "before/after digests" in normalized
+    assert "provider provenance" in normalized
+    assert "non-authority boundary statements" in normalized
+    assert "rejects failed or warning-bearing proposal reports" in normalized
+    assert "package id drift" in normalized
+    assert "output paths inside the source bundle" in normalized
+    assert "FastAPI live LM Studio smoke" in normalized
+    assert "patch `status: prepared`" in normalized
+    assert "`8` changes" in next_text
+    assert "`0` skipped changes" in next_text
+    assert "previewOnly: true" in next_text
+    assert "sourceMutated: false" in next_text
+    assert "producer preflight with zero diagnostics" in normalized
+    assert "preview_only_package" in next_text
+    assert "fastapi.core.http_routing" in next_text
+    assert "fastapi.core.openapi_generation" in next_text
+
+
+def assert_phase_34_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 34 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "Phase 34. AI-Enabled Candidate Curation" in next_text
+    assert "AI-enabled candidate curation now has a safe deterministic bridge" in normalized
+    assert "Model output can improve starter package quality" in normalized
+    assert "without becoming registry truth" in normalized
+    assert "does not:" in next_text
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "seed baselines" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "publish registry metadata" in normalized
+    assert "create a SpecPM pull request" in normalized
+    assert "treat AI output as maintainer approval" in normalized
+    assert "treat AI output as upstream project endorsement" in normalized
+    assert "replace SpecPM validation" in normalized
+    assert "integrating the helper into the autonomous batch path" in normalized
 
 
 def assert_phase_33_complete(next_text: str) -> None:
@@ -10046,3 +10162,39 @@ def test_capabilities_docs_are_linked_from_primary_entrypoints() -> None:
     root_text = docc_root.read_text(encoding="utf-8")
     assert "docs/CAPABILITIES.md" in root_text
     assert "<doc:Capabilities>" in root_text
+
+
+def test_ai_enrichment_candidate_patch_docs_cover_review_boundary() -> None:
+    github_doc = ROOT / "docs" / "AI_ENRICHMENT_CANDIDATE_PATCH.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "AIEnrichmentCandidatePatch.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "apply-ai-enrichment-proposal",
+            "SpecHarvesterPackageSetAIEnrichmentProposal",
+            "enriched preview candidate copy",
+            "ai-enrichment-candidate-patch.json",
+            "preview_only: true",
+            "not registry truth",
+            "does not accept packages",
+            "does not accept relations",
+            "does not remove `preview_only`",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AI_ENRICHMENT_CANDIDATE_PATCH.md" in docs_index.read_text(encoding="utf-8")
+    assert "AI_ENRICHMENT_CANDIDATE_PATCH.md" in capabilities.read_text(encoding="utf-8")
+    assert "AIEnrichmentCandidatePatch" in capabilities_docc.read_text(encoding="utf-8")
+    root_text = docc_root.read_text(encoding="utf-8")
+    assert "docs/AI_ENRICHMENT_CANDIDATE_PATCH.md" in root_text
+    assert "<doc:AIEnrichmentCandidatePatch>" in root_text

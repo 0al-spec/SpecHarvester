@@ -21,6 +21,10 @@ from spec_harvester.accepted_update_proposal import (
     write_accepted_package_update_proposal,
     write_accepted_package_update_proposal_markdown,
 )
+from spec_harvester.ai_enrichment_candidate_patch import (
+    AIEnrichmentCandidatePatchOptions,
+    build_ai_enrichment_candidate_patch,
+)
 from spec_harvester.author_ready_calibration_matrix import (
     build_author_ready_calibration_matrix,
     write_author_ready_calibration_matrix,
@@ -764,6 +768,39 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     package_set_ai_enrichment.set_defaults(func=run_package_set_ai_enrichment)
+
+    apply_ai_enrichment = subcommands.add_parser(
+        "apply-ai-enrichment-proposal",
+        help="Apply a clean AI enrichment proposal to a copied preview candidate.",
+    )
+    apply_ai_enrichment.add_argument(
+        "--proposal",
+        type=Path,
+        required=True,
+        help="package-set-ai-enrichment-proposal.json to apply.",
+    )
+    apply_ai_enrichment.add_argument(
+        "--candidate",
+        type=Path,
+        required=True,
+        help="Generated candidate bundle to copy and enrich.",
+    )
+    apply_ai_enrichment.add_argument(
+        "--package-id",
+        help="Package id to apply when the proposal contains multiple packages.",
+    )
+    apply_ai_enrichment.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+        help="Output directory for the enriched preview candidate copy.",
+    )
+    apply_ai_enrichment.add_argument(
+        "--report",
+        type=Path,
+        help="Optional path for the machine-readable patch report.",
+    )
+    apply_ai_enrichment.set_defaults(func=run_apply_ai_enrichment_proposal)
 
     promote = subcommands.add_parser(
         "promote",
@@ -1628,6 +1665,24 @@ def run_package_set_ai_enrichment(args: argparse.Namespace) -> int:
         write_package_set_ai_enrichment_proposal(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["status"] in {"completed", "warning"} else 1
+
+
+def run_apply_ai_enrichment_proposal(args: argparse.Namespace) -> int:
+    try:
+        result = build_ai_enrichment_candidate_patch(
+            AIEnrichmentCandidatePatchOptions(
+                proposal=args.proposal,
+                candidate=args.candidate,
+                output=args.output,
+                package_id=args.package_id,
+                report=args.report,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
 
 
 def run_codegraph_source_graph_index(args: argparse.Namespace) -> int:

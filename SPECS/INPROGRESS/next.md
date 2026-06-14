@@ -1,15 +1,36 @@
-# Next Task: Phase 20 Complete
+# Next Task: P34-T2 Autonomous Batch AI Enriched Preview Output
 
-**Priority:** N/A
-**Phase:** Phase 20. Scoped Source Unit Harvesting
-**Effort:** N/A
-**Dependencies:** P20-T8
-**Status:** Complete
-**Active Branch:** `codex/p20-t8-docc-warning-cleanup`
-**Last Archived:** P20-T8 DocC Warning Cleanup
+**Priority:** High
+**Phase:** Phase 34. AI-Enabled Candidate Curation
+**Effort:** Medium
+**Dependencies:** P34-T1, P29-T5, P33-T4
+**Status:** Selected
+**Active Branch:** TBD
+**Last Archived:** P34-T1 AI Enrichment Candidate Patch Proposal
 
 ## Recently Archived
 
+- `P34-T1` added `apply-ai-enrichment-proposal`, a deterministic helper that
+  reads a clean `SpecHarvesterPackageSetAIEnrichmentProposal`, copies a
+  generated candidate bundle into an enriched preview candidate copy, applies
+  supported summary, capability, and interface enrichments, refreshes producer
+  receipt digests, and writes `ai-enrichment-candidate-patch.json` with
+  before/after digests, provider provenance, applied changes, skipped changes,
+  and non-authority boundary statements.
+- The helper rejects failed or warning-bearing proposal reports, package id
+  drift between the proposal and `specpm.yaml`, unresolved package diagnostics,
+  output paths inside the source bundle, and report paths that would mutate the
+  source candidate.
+- The FastAPI live LM Studio smoke was re-run through the helper. The enriched
+  `fastapi.core` preview candidate produced patch `status: prepared`, applied
+  `8` changes with `0` skipped changes, preserved `previewOnly: true`, kept
+  `sourceMutated: false`, passed producer preflight with zero diagnostics, and
+  passed SpecPM validation with only the expected `preview_only_package`
+  warning. The enriched candidate includes repository-specific capabilities
+  such as `fastapi.core.http_routing`,
+  `fastapi.core.middleware_support`,
+  `fastapi.core.request_response_context`, and
+  `fastapi.core.openapi_generation`.
 - `P20-T8` cleaned up stale DocC warnings by converting
   `AcceptedPackageUpdateProposals` from a symbol-page heading into a normal
   documentation article and by changing literal command references in
@@ -17,40 +38,36 @@
   to inline code markup. DocC static generation now completes with no
   `warning:` output for `AcceptedPackageUpdateProposals`,
   `python -m spec_harvester quality-report`, or `specpm validate`.
-- `P20-T7` added the pinned `codegraph-compatibility-report` guard for
-  validating the local `@colbymchenry/codegraph@0.9.7` compatibility fixture,
-  package integrity metadata, `optional_preprovisioned` binary policy,
-  `CODEGRAPH_NO_DOWNLOAD=1`, required JSON CLI commands with `--json`, and
-  fixture-backed normalization into `source_graph_index` without installing
-  CodeGraph, running npm/npx, accessing the network, or indexing third-party
-  repositories in ordinary CI.
-- `P20-T6` added the explicit opt-in `codegraph-source-graph-index` boundary
-  for normalizing pre-existing CodeGraph JSON or SQLite evidence into
-  `source_graph_index`, including untrusted optional-tool provenance, input and
-  executable digests, safe-path enforcement, deterministic ordering, bounded
-  nodes/edges, diagnostics, GitHub docs, and DocC coverage without installing
-  CodeGraph, running npm, downloading tools, or indexing repositories in CI.
-- `P20-T5` added deterministic source-unit intent boundaries for repository,
-  package, folder/module, and single-file draft targets, surfaced those
-  boundaries in generated summaries, scope includes, constraints, provenance,
-  and SpecNode `compactModelInput`, and preserved the rule that scoped evidence
-  must not be upgraded into repository-level or package-manager ownership
-  claims without supporting package manifest evidence.
 
 ## Description
 
-Phase 20 is complete. SpecHarvester now supports scoped source-unit harvesting,
-Tuist manifest parsing, scoped validation fixtures, source-unit draft intent
-boundaries, an explicit opt-in CodeGraph source graph adapter, a pinned
-CodeGraph compatibility guard, and clean DocC generation for the known stale
-documentation warnings.
+P34-T1 made AI enrichment practically applicable through an explicit operator
+command. P34-T2 should make that useful in autonomous corpus runs by adding an
+opt-in mode that applies clean AI enrichment proposals into copied enriched
+preview candidates and emits `ai-enrichment-candidate-patch.json` reports
+beside the usual proposal-only artifacts.
 
-The CodeGraph integration remains bounded: compatibility checking uses local
-fixtures and optional explicitly provided executables only. Ordinary CI does not
-install CodeGraph, run npm/npx, download tools, access the network, or index
-third-party repositories.
+The default autonomous batch behavior must remain proposal-only. Enriched
+preview output is allowed only when the proposal is completed, clean, package
+aligned, and diagnostic-free for the selected package.
+
+## Boundary
+
+P34-T2 must not:
+
+- accept packages;
+- accept relations;
+- seed baselines;
+- remove `preview_only`;
+- mutate source candidates;
+- publish registry metadata;
+- create a SpecPM pull request;
+- treat AI output as maintainer approval;
+- treat AI output as upstream project endorsement;
+- replace SpecPM validation.
 
 ## Next Step
 
-Open the P20-T8 maintenance PR and wait for review/CI before selecting any new
-phase.
+Plan P34-T2 as a separate PR. Start by tracing
+`autonomous-candidate-batch` output layout and deciding where an opt-in
+enriched preview root and patch summary should appear in the batch report.
