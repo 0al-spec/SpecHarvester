@@ -258,6 +258,7 @@
 | 2026-06-14 | P35-T5 | Archived Explainable Corpus Selection Report (PASS) |
 | 2026-06-14 | P35-T5 | Archived REVIEW_p35_t5_explainable_corpus_selection_report report |
 | 2026-06-14 | P35-T6 | Archived Selected Corpus Dry-Run Readiness (PASS) |
+| 2026-06-14 | P35-T6 | Archived REVIEW_p35_t6_selected_corpus_readiness report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
