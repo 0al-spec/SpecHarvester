@@ -33,29 +33,202 @@ class PackageDiffInputRecord:
     upstream_artifacts: tuple[dict[str, str], ...]
 
 
-def build_accepted_candidate_diff_report(
-    *,
-    accepted_root: Path,
-    candidates_root: Path,
-) -> dict[str, Any]:
-    accepted_records, accepted_issues = collect_package_diff_records(accepted_root, "accepted")
-    candidate_records, candidate_issues = collect_package_diff_records(candidates_root, "candidate")
-    issues = accepted_issues + candidate_issues
+@dataclass(frozen=True)
+class PackageDiffSource:
+    root: Path
+    source: str
 
-    accepted_by_id = latest_accepted_by_package_id(accepted_records)
-    comparisons = [
-        build_candidate_comparison(candidate, accepted_by_id.get(candidate.package_id))
-        for candidate in sorted(
-            candidate_records,
-            key=lambda item: (item.package_id, semver_sort_key(item.package_version), item.path),
-        )
-    ]
+    def records_and_issues(self) -> tuple[list[PackageDiffInputRecord], list[dict[str, str]]]:
+        root = self.root.resolve()
+        if not root.exists() or not root.is_dir():
+            raise ValueError(f"Source root does not exist or is not a directory: {root}")
 
-    return {
-        "schemaVersion": ACCEPTED_CANDIDATE_DIFF_REPORT_SCHEMA_VERSION,
-        "kind": ACCEPTED_CANDIDATE_DIFF_REPORT_KIND,
-        "status": "partial" if issues else "ok",
-        "summary": {
+        records: list[PackageDiffInputRecord] = []
+        issues: list[dict[str, str]] = []
+        for manifest_path in sorted(root.rglob("specpm.yaml"), key=lambda item: str(item)):
+            if manifest_path.is_symlink():
+                issues.append(self.symlink_issue(manifest_path))
+                continue
+            try:
+                records.append(self.record(manifest_path))
+            except ValueError as exc:
+                issues.append(self.invalid_manifest_issue(manifest_path, exc))
+
+        return sorted(records, key=lambda item: (item.source, item.package_id, item.path)), issues
+
+    def record(self, manifest_path: Path) -> PackageDiffInputRecord:
+        return parse_specpm_diff_record(manifest_path, self.source)
+
+    def symlink_issue(self, manifest_path: Path) -> dict[str, str]:
+        return {
+            "path": str(manifest_path),
+            "source": self.source,
+            "code": "specpm_symlink",
+            "message": "Skip symlinked specpm.yaml in accepted/candidate diff scan.",
+        }
+
+    def invalid_manifest_issue(self, manifest_path: Path, error: ValueError) -> dict[str, str]:
+        return {
+            "path": str(manifest_path),
+            "source": self.source,
+            "code": "invalid_specpm_manifest",
+            "message": str(error),
+        }
+
+
+@dataclass(frozen=True)
+class AcceptedPackageVersions:
+    records: tuple[PackageDiffInputRecord, ...]
+
+    def latest_by_package_id(self) -> dict[str, PackageDiffInputRecord]:
+        latest: dict[str, PackageDiffInputRecord] = {}
+        for record in self.records:
+            current = latest.get(record.package_id)
+            if current is None or semver_sort_key(record.package_version) > semver_sort_key(
+                current.package_version
+            ):
+                latest[record.package_id] = record
+        return latest
+
+
+@dataclass(frozen=True)
+class PackageRecordDiff:
+    accepted: PackageDiffInputRecord
+    candidate: PackageDiffInputRecord
+
+    def changes(self) -> dict[str, Any]:
+        return {
+            "metadata": self.metadata_changes(),
+            "intents": self.intent_changes(),
+            "capabilities": self.capability_changes(),
+            "upstreamArtifacts": self.upstream_artifact_changes(),
+        }
+
+    def has_changes(self) -> bool:
+        return has_changes(self.changes())
+
+    def metadata_changes(self) -> list[dict[str, str | None]]:
+        return diff_metadata(self.accepted.metadata, self.candidate.metadata)
+
+    def intent_changes(self) -> dict[str, list[str]]:
+        accepted_intents = set(self.accepted.intents)
+        candidate_intents = set(self.candidate.intents)
+        return {
+            "added": sorted(candidate_intents - accepted_intents),
+            "removed": sorted(accepted_intents - candidate_intents),
+        }
+
+    def capability_changes(self) -> dict[str, list[str]]:
+        accepted_capabilities = set(self.accepted.capabilities)
+        candidate_capabilities = set(self.candidate.capabilities)
+        return {
+            "added": sorted(candidate_capabilities - accepted_capabilities),
+            "removed": sorted(accepted_capabilities - candidate_capabilities),
+        }
+
+    def upstream_artifact_changes(self) -> dict[str, Any]:
+        upstream_changed = self.accepted.upstream_artifacts != self.candidate.upstream_artifacts
+        return {
+            "changed": upstream_changed,
+            "old": list(self.accepted.upstream_artifacts) if upstream_changed else [],
+            "new": list(self.candidate.upstream_artifacts) if upstream_changed else [],
+        }
+
+
+@dataclass(frozen=True)
+class CandidateComparison:
+    candidate: PackageDiffInputRecord
+    accepted: PackageDiffInputRecord | None
+
+    def as_dict(self) -> dict[str, Any]:
+        if self.accepted is None:
+            return self.new_package()
+
+        delta = PackageRecordDiff(self.accepted, self.candidate)
+        changes = delta.changes()
+        status = "changed" if has_changes(changes) else "unchanged"
+        return {
+            "packageId": self.candidate.package_id,
+            "oldPackageVersion": self.accepted.package_version,
+            "newPackageVersion": self.candidate.package_version,
+            "status": status,
+            "accepted": record_reference(self.accepted),
+            "candidate": record_reference(self.candidate),
+            "changes": changes,
+        }
+
+    def new_package(self) -> dict[str, Any]:
+        return {
+            "packageId": self.candidate.package_id,
+            "oldPackageVersion": None,
+            "newPackageVersion": self.candidate.package_version,
+            "status": "new_package",
+            "accepted": None,
+            "candidate": record_reference(self.candidate),
+            "changes": {
+                "metadata": [],
+                "intents": {"added": list(self.candidate.intents), "removed": []},
+                "capabilities": {"added": list(self.candidate.capabilities), "removed": []},
+                "upstreamArtifacts": {
+                    "changed": bool(self.candidate.upstream_artifacts),
+                    "old": [],
+                    "new": list(self.candidate.upstream_artifacts),
+                },
+            },
+        }
+
+
+@dataclass(frozen=True)
+class AcceptedCandidateDiffReport:
+    accepted_root: Path
+    candidates_root: Path
+
+    def report(self) -> dict[str, Any]:
+        accepted_records, accepted_issues = PackageDiffSource(
+            self.accepted_root, "accepted"
+        ).records_and_issues()
+        candidate_records, candidate_issues = PackageDiffSource(
+            self.candidates_root, "candidate"
+        ).records_and_issues()
+        issues = accepted_issues + candidate_issues
+        comparisons = self.comparisons(accepted_records, candidate_records)
+
+        return {
+            "schemaVersion": ACCEPTED_CANDIDATE_DIFF_REPORT_SCHEMA_VERSION,
+            "kind": ACCEPTED_CANDIDATE_DIFF_REPORT_KIND,
+            "status": "partial" if issues else "ok",
+            "summary": self.summary(accepted_records, candidate_records, comparisons, issues),
+            "comparisons": comparisons,
+            "issues": self.sorted_issues(issues),
+            "trustBoundary": TRUST_BOUNDARY_NOTES,
+        }
+
+    def comparisons(
+        self,
+        accepted_records: list[PackageDiffInputRecord],
+        candidate_records: list[PackageDiffInputRecord],
+    ) -> list[dict[str, Any]]:
+        accepted_by_id = AcceptedPackageVersions(tuple(accepted_records)).latest_by_package_id()
+        return [
+            CandidateComparison(candidate, accepted_by_id.get(candidate.package_id)).as_dict()
+            for candidate in sorted(
+                candidate_records,
+                key=lambda item: (
+                    item.package_id,
+                    semver_sort_key(item.package_version),
+                    item.path,
+                ),
+            )
+        ]
+
+    def summary(
+        self,
+        accepted_records: list[PackageDiffInputRecord],
+        candidate_records: list[PackageDiffInputRecord],
+        comparisons: list[dict[str, Any]],
+        issues: list[dict[str, str]],
+    ) -> dict[str, int]:
+        return {
             "acceptedRecords": len(accepted_records),
             "candidateRecords": len(candidate_records),
             "comparedCount": sum(1 for item in comparisons if item["status"] != "new_package"),
@@ -63,47 +236,37 @@ def build_accepted_candidate_diff_report(
             "changedCount": sum(1 for item in comparisons if item["status"] == "changed"),
             "unchangedCount": sum(1 for item in comparisons if item["status"] == "unchanged"),
             "issueCount": len(issues),
-        },
-        "comparisons": comparisons,
-        "issues": sorted(issues, key=lambda item: (item["path"], item["code"])),
-        "trustBoundary": TRUST_BOUNDARY_NOTES,
-    }
+        }
+
+    def sorted_issues(self, issues: list[dict[str, str]]) -> list[dict[str, str]]:
+        return sorted(issues, key=lambda item: (item["path"], item["code"]))
+
+
+@dataclass(frozen=True)
+class AcceptedCandidateDiffReportWriter:
+    path: Path
+    report: dict[str, Any]
+
+    def write(self) -> None:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.write_text(
+            json.dumps(self.report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+
+
+def build_accepted_candidate_diff_report(
+    *,
+    accepted_root: Path,
+    candidates_root: Path,
+) -> dict[str, Any]:
+    return AcceptedCandidateDiffReport(accepted_root, candidates_root).report()
 
 
 def collect_package_diff_records(
     source_root: Path,
     source: str,
 ) -> tuple[list[PackageDiffInputRecord], list[dict[str, str]]]:
-    root = source_root.resolve()
-    if not root.exists() or not root.is_dir():
-        raise ValueError(f"Source root does not exist or is not a directory: {root}")
-
-    records: list[PackageDiffInputRecord] = []
-    issues: list[dict[str, str]] = []
-    for manifest_path in sorted(root.rglob("specpm.yaml"), key=lambda item: str(item)):
-        if manifest_path.is_symlink():
-            issues.append(
-                {
-                    "path": str(manifest_path),
-                    "source": source,
-                    "code": "specpm_symlink",
-                    "message": "Skip symlinked specpm.yaml in accepted/candidate diff scan.",
-                }
-            )
-            continue
-        try:
-            records.append(parse_specpm_diff_record(manifest_path, source))
-        except ValueError as exc:
-            issues.append(
-                {
-                    "path": str(manifest_path),
-                    "source": source,
-                    "code": "invalid_specpm_manifest",
-                    "message": str(exc),
-                }
-            )
-
-    return sorted(records, key=lambda item: (item.source, item.package_id, item.path)), issues
+    return PackageDiffSource(source_root, source).records_and_issues()
 
 
 def parse_specpm_diff_record(manifest_path: Path, source: str) -> PackageDiffInputRecord:
@@ -127,79 +290,21 @@ def parse_specpm_diff_record(manifest_path: Path, source: str) -> PackageDiffInp
 def latest_accepted_by_package_id(
     records: list[PackageDiffInputRecord],
 ) -> dict[str, PackageDiffInputRecord]:
-    latest: dict[str, PackageDiffInputRecord] = {}
-    for record in records:
-        current = latest.get(record.package_id)
-        if current is None or semver_sort_key(record.package_version) > semver_sort_key(
-            current.package_version
-        ):
-            latest[record.package_id] = record
-    return latest
+    return AcceptedPackageVersions(tuple(records)).latest_by_package_id()
 
 
 def build_candidate_comparison(
     candidate: PackageDiffInputRecord,
     accepted: PackageDiffInputRecord | None,
 ) -> dict[str, Any]:
-    if accepted is None:
-        return {
-            "packageId": candidate.package_id,
-            "oldPackageVersion": None,
-            "newPackageVersion": candidate.package_version,
-            "status": "new_package",
-            "accepted": None,
-            "candidate": record_reference(candidate),
-            "changes": {
-                "metadata": [],
-                "intents": {"added": list(candidate.intents), "removed": []},
-                "capabilities": {"added": list(candidate.capabilities), "removed": []},
-                "upstreamArtifacts": {
-                    "changed": bool(candidate.upstream_artifacts),
-                    "old": [],
-                    "new": list(candidate.upstream_artifacts),
-                },
-            },
-        }
-
-    changes = diff_records(accepted, candidate)
-    status = "changed" if has_changes(changes) else "unchanged"
-    return {
-        "packageId": candidate.package_id,
-        "oldPackageVersion": accepted.package_version,
-        "newPackageVersion": candidate.package_version,
-        "status": status,
-        "accepted": record_reference(accepted),
-        "candidate": record_reference(candidate),
-        "changes": changes,
-    }
+    return CandidateComparison(candidate, accepted).as_dict()
 
 
 def diff_records(
     accepted: PackageDiffInputRecord,
     candidate: PackageDiffInputRecord,
 ) -> dict[str, Any]:
-    accepted_intents = set(accepted.intents)
-    candidate_intents = set(candidate.intents)
-    accepted_capabilities = set(accepted.capabilities)
-    candidate_capabilities = set(candidate.capabilities)
-    upstream_changed = accepted.upstream_artifacts != candidate.upstream_artifacts
-
-    return {
-        "metadata": diff_metadata(accepted.metadata, candidate.metadata),
-        "intents": {
-            "added": sorted(candidate_intents - accepted_intents),
-            "removed": sorted(accepted_intents - candidate_intents),
-        },
-        "capabilities": {
-            "added": sorted(candidate_capabilities - accepted_capabilities),
-            "removed": sorted(accepted_capabilities - candidate_capabilities),
-        },
-        "upstreamArtifacts": {
-            "changed": upstream_changed,
-            "old": list(accepted.upstream_artifacts) if upstream_changed else [],
-            "new": list(candidate.upstream_artifacts) if upstream_changed else [],
-        },
-    }
+    return PackageRecordDiff(accepted, candidate).changes()
 
 
 def diff_metadata(old: dict[str, str], new: dict[str, str]) -> list[dict[str, str | None]]:
@@ -259,5 +364,4 @@ def artifact_sort_key(item: dict[str, str]) -> tuple[str, str, str, str]:
 
 
 def write_accepted_candidate_diff_report(path: Path, report: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    AcceptedCandidateDiffReportWriter(path, report).write()

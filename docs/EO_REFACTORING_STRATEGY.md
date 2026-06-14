@@ -100,6 +100,16 @@ Each report object should own the domain decision and expose a deterministic
 `report()` method. Filesystem traversal and parsing should be injected through
 existing source record and manifest objects where possible.
 
+P17-T3 starts this sequence with the accepted candidate diff report contract.
+`accepted_diff.py` now keeps public wrapper functions for CLI and downstream
+imports, while `AcceptedCandidateDiffReport`, `PackageDiffSource`,
+`AcceptedPackageVersions`, `CandidateComparison`, `PackageRecordDiff`, and
+`AcceptedCandidateDiffReportWriter` own report assembly, source scanning,
+latest accepted selection, candidate comparison, record delta calculation, and
+JSON writing behavior. The `SpecHarvesterAcceptedCandidateDiffReport` schema,
+issue codes, comparison statuses, trust boundary, and CLI output behavior remain
+unchanged.
+
 ### 4. Refactor Public API Analyzer Pipelines
 
 The public API analyzers should become language-specific analyzer objects with

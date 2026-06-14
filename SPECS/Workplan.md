@@ -509,7 +509,7 @@ Acceptance:
   introducing small command objects for selected `code-duplication-report`,
   `architecture-lint`, and report-generation flows while preserving parser
   flags, JSON error output, and exit-code behavior.
-- [ ] `P17-T3` Refactor report builders behind behavior-rich report objects one
+- [x] `P17-T3` Refactor report builders behind behavior-rich report objects one
   output contract at a time, starting with low-risk governance or accepted
   candidate reports and preserving report schemas, issue codes, and markdown
   output.

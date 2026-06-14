@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P17-T4 Public API Analyzer Pipeline Objects" in next_text:
+        assert_p17_t3_last_archived(next_text)
+        assert_p17_t2_recent(next_text)
+        assert_p17_t3_recent(next_text)
+        assert_phase_17_t4_active(next_text)
+        return
+
     if "# Next Task: P17-T3 Report Builder Behavior Objects" in next_text:
         assert_p17_t2_last_archived(next_text)
         assert_p17_t2_recent(next_text)
@@ -568,6 +575,10 @@ def assert_p17_t2_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P17-T2 CLI Domain Command Objects" in next_text
 
 
+def assert_p17_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P17-T3 Report Builder Behavior Objects" in next_text
+
+
 def assert_phase_17_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P17-T2 CLI Domain Command Objects" in next_text
@@ -612,6 +623,34 @@ def assert_phase_17_t3_active(next_text: str) -> None:
     assert "preserving report schemas" in normalized
     assert "issue codes" in normalized
     assert "markdown output" in normalized
+
+
+def assert_p17_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P17-T3` moved accepted candidate diff report behavior" in next_text
+    assert "AcceptedCandidateDiffReport" in next_text
+    assert "PackageDiffSource" in next_text
+    assert "AcceptedPackageVersions" in next_text
+    assert "CandidateComparison" in next_text
+    assert "PackageRecordDiff" in next_text
+    assert "AcceptedCandidateDiffReportWriter" in next_text
+    assert "SpecHarvesterAcceptedCandidateDiffReport" in next_text
+    assert "issue codes" in normalized
+    assert "comparison statuses" in normalized
+    assert "trust-boundary text" in normalized
+    assert "behaviorRichClassCount: 4" in next_text
+    assert "topLevelFunctionSpan from 204 to 87" in next_text
+
+
+def assert_phase_17_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P17-T4 Public API Analyzer Pipeline Objects" in next_text
+    assert "**Status:** Selected" in next_text or "**Status:** In Progress" in next_text
+    assert "Phase 17. Elegant Objects Refactoring Strategy" in next_text
+    assert "public API analyzer pipelines" in next_text
+    assert "language-specific analyzer objects" in normalized
+    assert "shared payload and option objects" in normalized
+    assert "parse, diagnostic, symbol, or evidence decisions" in normalized
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -4357,6 +4396,9 @@ def test_docc_and_github_docs_cover_eo_refactoring_strategy() -> None:
             "P17-T2",
             "cli_report_commands.py",
             "CodeDuplicationReportCommand",
+            "P17-T3",
+            "AcceptedCandidateDiffReport",
+            "PackageRecordDiff",
             "top-level function",
             "DTO-only dataclasses",
             "characterization tests",
