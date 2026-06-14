@@ -1347,7 +1347,7 @@ Acceptance:
 - [x] `P35-T5` Add an explainable corpus selection report that records selected
   sources, rejected or deferred sources, importance signals, exclusion reasons,
   quota decisions, and the downstream autonomous-batch command plan.
-- [ ] `P35-T6` Run or document a dry-run readiness check for the selected
+- [x] `P35-T6` Run or document a dry-run readiness check for the selected
   corpus plan, proving that each selected repository has a pinned local
   checkout, a clear package-family target, expected ecosystem analyzer
   coverage, and an explicit stop condition before author/maintainer review.
