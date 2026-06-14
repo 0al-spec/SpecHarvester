@@ -57,6 +57,17 @@ from spec_harvester.code_duplication_report import (
     BACKEND_PYLINT,
     DEFAULT_MIN_LINES,
 )
+from spec_harvester.codegraph_source_graph import (
+    DEFAULT_MAX_EDGES as CODEGRAPH_DEFAULT_MAX_EDGES,
+)
+from spec_harvester.codegraph_source_graph import (
+    DEFAULT_MAX_NODES as CODEGRAPH_DEFAULT_MAX_NODES,
+)
+from spec_harvester.codegraph_source_graph import (
+    CodeGraphSourceGraphOptions,
+    build_codegraph_source_graph_index,
+    write_codegraph_source_graph_index,
+)
 from spec_harvester.collector import (
     DEFAULT_MAX_FILE_BYTES,
     HarvestOptions,
@@ -1031,6 +1042,69 @@ def build_parser() -> argparse.ArgumentParser:
     )
     procedural_style.set_defaults(func=run_procedural_style_report)
 
+    codegraph_source_graph = subcommands.add_parser(
+        "codegraph-source-graph-index",
+        help="Normalize existing CodeGraph JSON or SQLite evidence into source_graph_index.",
+    )
+    codegraph_source_graph.add_argument(
+        "--input",
+        type=Path,
+        required=True,
+        help="Existing CodeGraph JSON output or SQLite database. No tool execution occurs.",
+    )
+    codegraph_source_graph.add_argument(
+        "--input-format",
+        choices=("json", "sqlite"),
+        required=True,
+        help="Input artifact format to normalize.",
+    )
+    codegraph_source_graph.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where source_graph_index JSON is written.",
+    )
+    codegraph_source_graph.add_argument(
+        "--source-repository",
+        help="Optional source repository URL recorded in normalized provenance.",
+    )
+    codegraph_source_graph.add_argument(
+        "--source-revision",
+        help="Optional source revision recorded in normalized provenance.",
+    )
+    codegraph_source_graph.add_argument(
+        "--source-target-kind",
+        choices=("repository", "folder", "file"),
+        default="repository",
+        help="Harvest source target kind. Default: repository.",
+    )
+    codegraph_source_graph.add_argument(
+        "--source-target-path",
+        default=".",
+        help="Harvest source target path. Default: .",
+    )
+    codegraph_source_graph.add_argument(
+        "--analyzer-version",
+        help="Optional CodeGraph analyzer version recorded in trust provenance.",
+    )
+    codegraph_source_graph.add_argument(
+        "--executable",
+        type=Path,
+        help="Optional pre-provisioned CodeGraph executable path to digest, not run.",
+    )
+    codegraph_source_graph.add_argument(
+        "--max-nodes",
+        type=int,
+        default=CODEGRAPH_DEFAULT_MAX_NODES,
+        help=f"Maximum normalized nodes to include. Default: {CODEGRAPH_DEFAULT_MAX_NODES}.",
+    )
+    codegraph_source_graph.add_argument(
+        "--max-edges",
+        type=int,
+        default=CODEGRAPH_DEFAULT_MAX_EDGES,
+        help=f"Maximum normalized edges to include. Default: {CODEGRAPH_DEFAULT_MAX_EDGES}.",
+    )
+    codegraph_source_graph.set_defaults(func=run_codegraph_source_graph_index)
+
     accepted_diff = subcommands.add_parser(
         "accepted-candidate-diff-report",
         help="Build accepted-vs-candidate package metadata diff report.",
@@ -1521,6 +1595,31 @@ def run_package_set_ai_enrichment(args: argparse.Namespace) -> int:
         write_package_set_ai_enrichment_proposal(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["status"] in {"completed", "warning"} else 1
+
+
+def run_codegraph_source_graph_index(args: argparse.Namespace) -> int:
+    try:
+        result = build_codegraph_source_graph_index(
+            CodeGraphSourceGraphOptions(
+                input=args.input,
+                input_format=args.input_format,
+                source_repository=args.source_repository,
+                source_revision=args.source_revision,
+                source_target_kind=args.source_target_kind,
+                source_target_path=args.source_target_path,
+                analyzer_version=args.analyzer_version,
+                executable=args.executable,
+                max_nodes=args.max_nodes,
+                max_edges=args.max_edges,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    if args.output is not None:
+        write_codegraph_source_graph_index(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
 
 
 def run_promote(args: argparse.Namespace) -> int:

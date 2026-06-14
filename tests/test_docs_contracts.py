@@ -2722,6 +2722,38 @@ def test_docc_and_github_docs_cover_workspace_inventory() -> None:
     assert "<doc:WorkspaceInventory>" in root_page.read_text(encoding="utf-8")
 
 
+def test_docc_and_github_docs_cover_codegraph_source_graph_adapter() -> None:
+    github_doc = ROOT / "docs" / "CODEGRAPH_SOURCE_GRAPH_ADAPTER.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "CodeGraphSourceGraphAdapter.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "codegraph-source-graph-index",
+            "source_graph_index",
+            "spec-harvester-codegraph-v1",
+            "untrusted_optional_tool",
+            "third_party_local_binary",
+            "executedRepositoryCode",
+            "allowedNetwork",
+            "out_of_band_required",
+            "does not install CodeGraph",
+            "JSON output or SQLite database",
+            "P20-T7",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "CODEGRAPH_SOURCE_GRAPH_ADAPTER.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:CodeGraphSourceGraphAdapter>" in root_page.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_docc_and_github_docs_cover_package_set_drafting() -> None:
     github_doc = ROOT / "docs" / "PACKAGE_SET_DRAFTING.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "PackageSetDrafting.md"
