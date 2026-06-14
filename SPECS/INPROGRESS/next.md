@@ -1,85 +1,65 @@
-# Next Task: P36-T1 Repository Parsing Plugin Contract
+# Next Task: P36-T2 Python Web-Framework Parser Profile Fixture
 
 **Status:** In Progress
 **Phase:** Phase 36. Repository Parsing Plugin System
-**Task:** `P36-T1` Document repository parsing plugin contract
-**Branch:** `feature/P36-T1-repository-parsing-plugin-plan`
-**Last Archived:** P35-T6 Selected Corpus Dry-Run Readiness
+**Task:** `P36-T2` Add Python web-framework parser profile fixture
+**Branch:** `feature/P36-T2-python-web-framework-parser-profile`
+**Last Archived:** P36-T1 Repository Parsing Plugin Contract
 
 ## Recently Archived
 
-- `P35-T6` added
-  [`SELECTED_CORPUS_DRY_RUN_READINESS.md`](../../docs/SELECTED_CORPUS_DRY_RUN_READINESS.md)
-  and the DocC mirror `SelectedCorpusDryRunReadiness`.
-- The readiness fixture
-  `tests/fixtures/selected_corpus_readiness/p35-t6-readiness.example.json`
-  defines `SpecHarvesterSelectedCorpusReadinessReport` with `apiVersion:
-  spec-harvester.selected-corpus-readiness/v0`, `schemaVersion: 1`, and
-  `authority: producer_readiness_report_only`.
-- Phase 35 completed the bounded curated corpus selection foundation and
-  stopped before autonomous collection until selected repositories have
-  verified pinned local checkouts.
-- The readiness verdict was `blocked_pending_local_checkouts`, with selected
-  sources blocked by `local_checkout_not_verified` until the downstream
-  `autonomous-candidate-batch` gate can be rerun safely.
+- `P36-T1` added
+  [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](../../docs/REPOSITORY_PARSING_PLUGIN_CONTRACT.md)
+  and the DocC mirror `RepositoryParsingPluginContract`.
+- The contract defines `SpecHarvesterRepositoryParsingPluginDecision` with
+  `apiVersion: spec-harvester.repository-parsing-plugin/v0`,
+  `schemaVersion: 1`, and `authority:
+  producer_path_classification_only`.
+- It separates `public_interface` evidence from `semantic_usage`,
+  `documentation`, `example`, `test`, `generated`, `tooling`, `internal`, and
+  `ignored` path roles.
+- It uses the FastAPI `docs_src/*` over-capture as the motivating case while
+  keeping the future Python web-framework parser profile reusable rather than
+  repository-specific.
+- The non-authority boundary remains explicit: plugin decisions do not publish
+  registry metadata, do not accept packages or relations, do not remove
+  `preview_only`, and do not treat AI output as registry truth.
 
 ## Context
 
-The FastAPI rerun with live local AI now produces a valid
-`author_ready_draft`, but the Python public API analyzer over-captures
-documentation tutorial files such as `docs_src/*` as public interface
-evidence. Those files are valuable for intent and usage semantics, but they
-should not inflate the package public API boundary.
-
-This is not just a FastAPI detail. Repository layouts vary by language,
-framework, and ecosystem. SpecHarvester needs a plugin-shaped parsing policy
-layer so technology-specific rules can classify repository paths without
-hardcoding every repository in the core analyzer.
+P36-T1 defined the contract. P36-T2 should now turn that contract into a
+machine-readable fixture for Python web frameworks. The fixture should describe
+how FastAPI-style repositories classify package code as public interface
+evidence while classifying docs, tutorials, examples, and tests as semantic
+usage evidence unless a plugin rule explicitly promotes a path.
 
 ## Motivation
 
-- Keep documentation, tutorials, examples, and tests useful as semantic usage
-  evidence for LLM enrichment and reviewer context.
-- Keep `public_interface_index` focused on package surfaces intended for
-  consumers.
-- Avoid repository-specific one-off exceptions by defining a reusable
-  language/framework parsing plugin contract.
-- Preserve the SpecHarvester boundary: parser decisions are producer review
-  evidence only, not registry acceptance.
+- Make the plugin contract concrete enough for implementation.
+- Prevent future Python analyzer changes from hardcoding FastAPI-specific
+  paths in core logic.
+- Preserve documentation/tutorial usefulness for LLM enrichment without
+  inflating public API symbol counts.
 
 ## Goal
 
-Document the repository parsing plugin contract before implementation.
-
-The contract should define:
-
-- plugin inputs: source manifest metadata, repository checkout path, detected
-  ecosystem/package layout, candidate package id, and analyzer plans;
-- plugin outputs: path classifications and evidence roles such as
-  `public_interface`, `semantic_usage`, `documentation`, `example`, `test`,
-  `generated`, `tooling`, `internal`, and `ignored`;
-- rule precedence and fallback behavior when no plugin matches;
-- how plugin decisions are recorded as review evidence;
-- safety/non-authority boundaries.
+Add a machine-readable Python web-framework parser profile fixture.
 
 ## Proposed Scope
 
-- Add GitHub Markdown and DocC documentation for the parsing plugin contract.
-- Use FastAPI `docs_src` over-capture as the motivating example.
-- Define a future Python web-framework parser profile as the first intended
-  implementation target.
-- Update capabilities/roadmap/workplan references.
+- Define the fixture shape and example profile id.
+- Include path role rules for package roots, docs, `docs_src`, examples,
+  tests, generated artifacts, tooling, internal paths, and fallback behavior.
+- Include sample decisions for FastAPI-like paths.
+- Link the fixture from the plugin contract docs and DocC mirror.
 - Add docs-contract regression coverage.
 
 ## Acceptance
 
-- The contract clearly separates public API evidence from semantic
-  usage/documentation evidence.
-- The FastAPI case is framed as a Python web-framework profile, not a
-  repository-specific special case.
-- The contract explains how future plugins can support language and technology
-  rules without broad crawler behavior.
-- The non-authority boundary is explicit: plugin decisions do not publish
-  registry metadata. The task does not publish registry metadata, does not
-  accept packages or relations, does not remove `preview_only`, and does not
-  treat AI output as registry truth.
+- The fixture uses the P36-T1 contract vocabulary.
+- FastAPI package code is public interface eligible.
+- `docs_src`, tutorials, examples, and tests are semantic usage or
+  non-public-interface evidence by default.
+- The fixture remains producer-side review evidence only and does not publish
+  registry metadata, does not accept packages or relations, does not remove
+  `preview_only`, and does not treat AI output as registry truth.

@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P36-T2 Python Web-Framework Parser Profile Fixture" in next_text:
+        assert_p36_t1_last_archived(next_text)
+        assert_p36_t1_recent(next_text)
+        assert_phase_36_t2_active(next_text)
+        return
+
     if "# Next Task: P36-T1 Repository Parsing Plugin Contract" in next_text:
         assert_p35_t6_last_archived(next_text)
         assert_p35_t6_recent(next_text)
@@ -2544,6 +2550,56 @@ def assert_phase_36_t1_active(next_text: str) -> None:
     assert "rule precedence" in normalized
     assert "fallback behavior" in normalized
     assert "non-authority boundary" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_p36_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P36-T1 Repository Parsing Plugin Contract" in next_text
+
+
+def assert_p36_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P36-T1` added" in next_text
+    assert "REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in next_text
+    assert "RepositoryParsingPluginContract" in next_text
+    assert "SpecHarvesterRepositoryParsingPluginDecision" in next_text
+    assert "spec-harvester.repository-parsing-plugin/v0" in next_text
+    assert "producer_path_classification_only" in next_text
+    assert "public_interface" in next_text
+    assert "semantic_usage" in next_text
+    assert "documentation" in next_text
+    assert "example" in next_text
+    assert "test" in next_text
+    assert "generated" in next_text
+    assert "tooling" in next_text
+    assert "internal" in next_text
+    assert "ignored" in next_text
+    assert "FastAPI" in next_text
+    assert "docs_src/*" in next_text
+    assert "Python web-framework parser profile" in normalized
+    assert "non-authority boundary" in normalized
+    assert "do not publish registry metadata" in normalized
+    assert "do not accept packages" in normalized
+    assert "do not treat AI output as registry truth" in normalized
+
+
+def assert_phase_36_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P36-T2 Python Web-Framework Parser Profile Fixture" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "Phase 36. Repository Parsing Plugin System" in next_text
+    assert "`feature/P36-T2-python-web-framework-parser-profile`" in next_text
+    assert "`P36-T2` Add Python web-framework parser profile fixture" in next_text
+    assert "machine-readable Python web-framework parser profile fixture" in normalized
+    assert "FastAPI-style repositories" in normalized
+    assert "public interface evidence" in normalized
+    assert "semantic usage evidence" in normalized
+    assert "docs_src" in next_text
+    assert "tutorials" in normalized
+    assert "examples" in normalized
+    assert "tests" in normalized
     assert "does not publish registry metadata" in normalized
     assert "does not accept packages" in normalized
     assert "does not treat AI output as registry truth" in normalized

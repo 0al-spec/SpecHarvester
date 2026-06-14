@@ -1389,7 +1389,7 @@ Acceptance:
 
 ## Phase 36. Repository Parsing Plugin System
 
-- [ ] `P36-T1` Document the repository parsing plugin contract, using the
+- [x] `P36-T1` Document the repository parsing plugin contract, using the
   FastAPI `docs_src` over-capture as the first motivating case. The contract
   must distinguish public API evidence from semantic usage/documentation
   evidence and define how language/framework-specific rules can classify
