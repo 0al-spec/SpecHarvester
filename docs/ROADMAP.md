@@ -319,7 +319,7 @@ Technical-debt follow-up from the first mixed corpus check:
 - add a single-package candidate fallback for popular repositories that are not
   workspaces;
 - add bounded LM Studio/OpenAI-compatible JSON repair/retry for malformed
-  local model output;
+  local model output, with `jsonRepair` summaries and safe diagnostics;
 - re-run the mixed corpus as a quality gate before expanding autonomous
   scraping.
 

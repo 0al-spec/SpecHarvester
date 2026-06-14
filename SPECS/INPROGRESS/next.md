@@ -1,10 +1,10 @@
-# Next Task: P29-T5 LM Studio JSON Repair and Retry
+# Next Task: P29-T6 Corpus Quality Gate After Fallbacks
 
 **Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P29-T5 LM Studio JSON Repair and Retry
+**Task:** P29-T6 Corpus Quality Gate After Fallbacks
 **Phase:** Phase 29. Autonomous Candidate Harvest MVP
-**Last Archived:** P29-T4 Single-Package Candidate Fallback
+**Last Archived:** P29-T5 LM Studio JSON Repair and Retry
 
 ## Recently Archived
 
@@ -70,21 +70,25 @@
   `producer_preview_evidence_only`, producer receipt, validation report,
   diagnostics, author-ready quality report, and SpecPM registry acceptance
   boundaries.
+- `P29-T5` implemented bounded LM Studio/OpenAI-compatible JSON repair/retry
+  for live package-set AI draft and enrichment proposal generation. Proposal
+  receipts now record `jsonRepairNeeded`, `jsonRepairAttemptCount`, and
+  `jsonRepairStatus`; diagnostics include `ai_json_repair_needed` and
+  `ai_json_repair_exhausted`; autonomous batch AI records expose
+  `diagnosticCodes` and `jsonRepair` summaries without persisting raw prompts,
+  raw provider responses, secrets, or chain-of-thought.
 
 ## Outcome
 
-SpecHarvester can now produce reviewable single-package preview candidates for
-Flask/Gin-style repositories without requiring workspace topology. This removes
-the deterministic `single_package_fallback_needed` blocker from the P29-T3
-baseline.
+SpecHarvester now has both concrete P29 technical-debt mitigations from the
+first mixed corpus run: deterministic single-package fallback for Flask/Gin-style
+repositories and bounded local model JSON repair diagnostics for LM
+Studio/OpenAI-compatible proposal generation.
 
 ## Next Step
 
-Implement `P29-T5`: add bounded LM Studio/OpenAI-compatible JSON repair/retry
-for malformed local model output while preserving the no-raw-response
-persistence boundary.
-
-The repair path should record structured diagnostics and repair attempt counts,
-keep raw prompts, raw provider responses, secrets, and chain-of-thought out of
-committed artifacts, and leave exhausted repairs as `failed` or
-`needs_regeneration` review evidence rather than silent success.
+Implement `P29-T6`: re-run the mixed local Flask/Gin/xyflow corpus after
+fallback and repair support, record whether each repository produces at least
+one reviewable preview candidate, verify deterministic preflight, capture live
+LM Studio status when available, and decide whether the autonomous candidate MVP
+is ready for larger popular-library scraping.

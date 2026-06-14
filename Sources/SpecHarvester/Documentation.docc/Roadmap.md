@@ -152,8 +152,8 @@ registry metadata, or accept packages. SpecPM remains the acceptance and
 registry authority.
 
 The first mixed corpus check exposed follow-up work: single-package repositories
-such as Flask and Gin need a fallback preview candidate path, and local LM
-Studio/OpenAI-compatible output needs bounded JSON repair/retry. See
+such as Flask and Gin needed a fallback preview candidate path, and local LM
+Studio/OpenAI-compatible output needed bounded JSON repair/retry. See
 <doc:AutonomousCandidateTechDebtPlan>.
 
 Before expanding autonomous corpus scraping, SpecHarvester documents the
@@ -165,6 +165,10 @@ The current mixed-corpus baseline is recorded in
 `ai_json_repair_needed` LM Studio diagnostic.
 The Flask/Gin deterministic fallback is documented in
 <doc:SinglePackageCandidateFallback>.
+The local model repair path records `ai_json_repair_needed`,
+`ai_json_repair_exhausted`, provider receipt `jsonRepairStatus`, and batch
+`jsonRepair` summaries without persisting raw prompts, raw responses, secrets,
+or chain-of-thought.
 
 ## Non-Goals
 

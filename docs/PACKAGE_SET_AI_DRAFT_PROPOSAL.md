@@ -39,6 +39,7 @@ python3 -m spec_harvester package-set-ai-draft-proposal \
   --source-checkout ../../vite \
   --provider-base-url http://127.0.0.1:1234 \
   --model openai/gpt-oss-20b \
+  --json-repair-max-attempts 1 \
   --request-output candidates/vite/ai-draft/request.json \
   --output candidates/vite/ai-draft/package-set-ai-draft-proposal.json
 ```
@@ -103,6 +104,24 @@ The model returns one JSON object:
 supplied inventory. `evidencePaths` must refer to supplied compact evidence.
 Unsupported evidence paths produce `model_evidence_path_unsupported`
 diagnostics. Relations fail closed when the target is not selected.
+
+## Bounded JSON Repair
+
+Live local provider output is parsed as one JSON object. When the first LM
+Studio/OpenAI-compatible response is malformed, SpecHarvester can send a small
+bounded number of repair prompts through `--json-repair-max-attempts`.
+
+Repair is diagnostic evidence, not model trust:
+
+- `ai_json_repair_needed` records that the initial response was malformed;
+- `providerReceipt.jsonRepairNeeded`, `jsonRepairAttemptCount`, and
+  `jsonRepairStatus` record machine-readable repair metadata;
+- successful repair continues through the normal proposal normalizer and may
+  return `warning` because repair was needed;
+- exhausted repair attempts produce `ai_json_repair_exhausted` and a `failed`
+  proposal artifact when possible;
+- raw prompts, raw provider responses, secrets, and chain-of-thought remain
+  unpersisted.
 
 ## Relationship to Author-Ready Drafts
 

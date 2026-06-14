@@ -59,6 +59,9 @@ replace author or maintainer review.
 - Acceptance: invalid JSON becomes a structured diagnostic, repair attempts are
   bounded, successful repair records attempt count, and raw prompts, raw
   responses, secrets, and chain-of-thought are not persisted.
+- Artifact surface: package-set AI draft and enrichment receipts record
+  `jsonRepairNeeded`, `jsonRepairAttemptCount`, and `jsonRepairStatus`; batch
+  AI records expose `diagnosticCodes` and `jsonRepair` summaries.
 
 `P29-T6 Corpus Quality Gate After Fallbacks`
 
