@@ -58,6 +58,12 @@ P33-T7 records that artifact in <doc:NextCorpusDurableSelectedHandoff>. The
 durable selected handoff passes SpecPM selected handoff preflight without
 warnings or errors.
 
+P33-T8 records the intake readiness decision in
+<doc:NextCorpusIntakeReadinessDecision>. The selected candidates
+`serena.core`, `transmission.core`, and `specpm.core` are ready for
+author/maintainer review with explicit deferral for `mcpm.system` and
+`specgraph.system`.
+
 ## Source Manifest
 
 `P33-T2` must add the next-corpus source manifest fixture before any scrape

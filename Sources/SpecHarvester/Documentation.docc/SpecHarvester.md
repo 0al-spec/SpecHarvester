@@ -94,6 +94,7 @@ The canonical source files remain in the repository:
 - `docs/NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`
 - `docs/NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`
 - `docs/NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`
+- `docs/NEXT_CORPUS_INTAKE_READINESS_DECISION.md`
 - `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`
 - `docs/SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
@@ -184,6 +185,7 @@ the host.
 - <doc:NextCorpusCandidateLayerTriage>
 - <doc:NextCorpusSpecPMPreflightIntakeDecision>
 - <doc:NextCorpusDurableSelectedHandoff>
+- <doc:NextCorpusIntakeReadinessDecision>
 - <doc:DeferredCandidateRegenerationRunbook>
 - <doc:XyflowPackageSetIdentityRegenerationDryRun>
 - <doc:SinglePackageDeferredCandidateRegenerationDryRun>

@@ -33,5 +33,10 @@ This makes the selected scope machine-preflightable before maintainer intake
 review. It does not accept packages, accept relations, publish registry
 metadata, create a SpecPM pull request, or remove `preview_only`.
 
+P33-T8 records the resulting intake readiness decision in
+<doc:NextCorpusIntakeReadinessDecision>: the selected scope is ready for
+author/maintainer review with explicit deferral for `mcpm.system` and
+`specgraph.system`.
+
 See the GitHub-facing source page:
 `docs/NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`.

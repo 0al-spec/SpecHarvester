@@ -250,6 +250,34 @@ Acceptance:
   [`NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`](NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md).
 - P33-T7 is recorded in
   [`NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`](NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md).
+- P33-T8 is recorded in
+  [`NEXT_CORPUS_INTAKE_READINESS_DECISION.md`](NEXT_CORPUS_INTAKE_READINESS_DECISION.md).
+
+### P33-T8 Next-Corpus Intake Readiness Decision
+
+Owner: SpecHarvester + SpecPM.
+
+Motivation:
+
+- The P33-T7 durable selected handoff passed SpecPM preflight.
+- The project needs an explicit stop point that says selected candidates are
+  ready for author/maintainer review without implying registry acceptance.
+
+Goal:
+
+- Record the intake readiness decision for the selected scope and preserve
+  explicit deferral for unresolved candidates.
+
+Acceptance:
+
+- The decision status is
+  `ready_for_author_maintainer_review_with_explicit_deferral`.
+- The selected scope is `serena.core`, `transmission.core`, and `specpm.core`.
+- The deferred scope is `mcpm.system` and `specgraph.system`.
+- The decision records the passing SpecPM selected handoff preflight result.
+- The decision remains review evidence only and does not accept packages,
+  accept relations, seed baselines, remove `preview_only`, publish registry
+  metadata, or create a SpecPM pull request.
 
 ## Non-Authority Boundary
 

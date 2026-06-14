@@ -277,6 +277,13 @@ handoff artifact for `serena.core`, `transmission.core`, and `specpm.core`
 passes SpecPM selected handoff preflight with two deferred candidates and zero
 warnings or errors.
 
+<doc:NextCorpusIntakeReadinessDecision> records `P33-T8`: the final Phase 33
+decision status is
+`ready_for_author_maintainer_review_with_explicit_deferral`. The selected
+candidates `serena.core`, `transmission.core`, and `specpm.core` are ready for
+author/maintainer review, while `mcpm.system` and `specgraph.system` remain
+deferred.
+
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
 no `preview_only` removal, and no AI output as registry truth.
