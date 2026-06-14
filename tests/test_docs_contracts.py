@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P35-T3 Candidate Source Classifier Plan" in next_text:
+        assert_p35_t2_last_archived(next_text)
+        assert_p35_t2_recent(next_text)
+        assert_phase_35_t3_planned(next_text)
+        return
+
     if "# Next Task: P35-T2 SpecHarvesterCorpusPlan" in next_text:
         assert_p35_t1_last_archived(next_text)
         assert_p35_t1_recent(next_text)
@@ -2275,6 +2281,52 @@ def assert_phase_35_t2_planned(next_text: str) -> None:
     assert "per-ecosystem quotas" in normalized
     assert "non-authority statements" in normalized
     assert "downstream autonomous-batch command plan" in normalized
+    assert "does not authorize clone/fetch" in normalized
+    assert "dependency installation" in normalized
+    assert "harvested code execution" in normalized
+    assert "registry publication" in normalized
+    assert "`preview_only` removal" in normalized
+
+
+def assert_p35_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P35-T2 SpecHarvesterCorpusPlan" in next_text
+
+
+def assert_p35_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P35-T2` added [`SPECHARVESTER_CORPUS_PLAN.md`]" in next_text
+    assert "SpecHarvesterCorpusPlan" in next_text
+    assert "spec-harvester.corpus-plan/v0" in next_text
+    assert "producer_corpus_plan_only" in next_text
+    assert "p35-t2-corpus-plan.example.json" in next_text
+    assert "selected, deferred, and rejected source decisions" in normalized
+    assert "npm, PyPI, crates, Go, and Swift" in normalized
+    assert "selected/deferred/rejected reason codes" in normalized
+    assert "expected analyzer coverage" in normalized
+    assert "stop conditions" in normalized
+    assert "non-authority statements" in normalized
+
+
+def assert_phase_35_t3_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P35-T3 Candidate Source Classifier Plan" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
+    assert "`P35-T3` Add a candidate source classifier plan" in next_text
+    assert "package_set_root" in next_text
+    assert "primary_package" in next_text
+    assert "plugin_package" in next_text
+    assert "example_package" in next_text
+    assert "tooling_package" in next_text
+    assert "types_only_package" in next_text
+    assert "generated_artifact" in next_text
+    assert "internal_utility" in next_text
+    assert "deprecated_source" in next_text
+    assert "evidence_only" in next_text
+    assert "workspace inventory" in normalized
+    assert "package manifests" in normalized
+    assert "explicit operator overrides" in normalized
+    assert "which source classes may become primary candidates" in normalized
     assert "does not authorize clone/fetch" in normalized
     assert "dependency installation" in normalized
     assert "harvested code execution" in normalized

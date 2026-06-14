@@ -1331,7 +1331,7 @@ Acceptance:
   package. The policy must define importance signals, exclusion rules,
   ecosystem quotas, local checkout requirements, and the review boundary for
   selected sources.
-- [ ] `P35-T2` Define a machine-readable `SpecHarvesterCorpusPlan` format for
+- [x] `P35-T2` Define a machine-readable `SpecHarvesterCorpusPlan` format for
   curated source batches, including ecosystem, repository, package-family,
   category, selected-because reason codes, excluded-subpackage reason codes,
   source checkout pins, and non-authority statements.
