@@ -11,6 +11,7 @@ from spec_harvester.interface_index import (
 )
 from spec_harvester.js_ts_public_api import analyze_js_ts_public_api
 from spec_harvester.python_public_api import analyze_python_public_api
+from spec_harvester.repository_parsing_profile import repository_parsing_profile
 from spec_harvester.swift_public_api import analyze_swift_public_api
 
 PUBLIC_INTERFACE_INDEX_FILENAME = "public-interface-index.json"
@@ -62,6 +63,7 @@ def run_project_profile_analyzers(
     cache_dir: Path | None = None,
     parser_profile_id: str | None = None,
 ) -> dict[str, Any]:
+    repository_parsing_profile(parser_profile_id)
     plan_entries = project_profile_analyzer_plan(snapshot)
     source_revision = snapshot_source_revision(snapshot)
     indexes: list[dict[str, Any]] = []

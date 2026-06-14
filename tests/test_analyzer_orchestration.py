@@ -83,6 +83,30 @@ def test_run_project_profile_analyzers_applies_parser_profile_to_python_only(
     assert decisions["docs_src/tutorial.py"]["semanticUsageEligible"] is True
 
 
+def test_run_project_profile_analyzers_rejects_unknown_parser_profile_before_plan(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "js-demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps({"name": "demo", "version": "1.0.0", "exports": "./index.js"}),
+        encoding="utf-8",
+    )
+    (repo / "index.js").write_text("export function ok() {}\n", encoding="utf-8")
+    snapshot = collect_local_repository(HarvestOptions(source=repo, revision="abc123"))
+
+    try:
+        run_project_profile_analyzers(
+            source=repo,
+            snapshot=snapshot,
+            parser_profile_id="unknown.profile",
+        )
+    except ValueError as exc:
+        assert "Unsupported repository parsing profile" in str(exc)
+    else:
+        raise AssertionError("expected unknown parser profile to fail before analyzer dispatch")
+
+
 def test_run_project_profile_analyzers_emits_js_ts_public_interface_index(
     tmp_path: Path,
 ) -> None:
