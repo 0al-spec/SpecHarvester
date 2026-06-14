@@ -160,6 +160,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t2_corpus_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t1_corpus_selection_policy.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t8_docc_warning_cleanup.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t7_codegraph_compatibility_guard.md` |
@@ -245,6 +246,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
 | 2026-06-14 | P35-T1 | Archived Corpus Selection Policy (PASS) |
