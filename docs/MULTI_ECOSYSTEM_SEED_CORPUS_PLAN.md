@@ -152,4 +152,5 @@ This plan enables:
 
 - `P35-T5`: explainable corpus selection report
   ([`EXPLAINABLE_CORPUS_SELECTION_REPORT.md`](EXPLAINABLE_CORPUS_SELECTION_REPORT.md));
-- `P35-T6`: selected corpus dry-run readiness check.
+- `P35-T6`: selected corpus dry-run readiness check
+  ([`SELECTED_CORPUS_DRY_RUN_READINESS.md`](SELECTED_CORPUS_DRY_RUN_READINESS.md)).

@@ -234,6 +234,9 @@ Published DocC site:
 74. [`EXPLAINABLE_CORPUS_SELECTION_REPORT.md`](EXPLAINABLE_CORPUS_SELECTION_REPORT.md):
     Phase 35 report contract for selected, deferred, and rejected source
     explanations, quota decisions, and downstream command planning
+75. [`SELECTED_CORPUS_DRY_RUN_READINESS.md`](SELECTED_CORPUS_DRY_RUN_READINESS.md):
+    Phase 35 readiness report proving selected seed sources are blocked until
+    pinned local checkouts are verified
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

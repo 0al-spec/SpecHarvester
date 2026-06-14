@@ -607,11 +607,15 @@ Tasks:
   `tests/fixtures/explainable_corpus_selection_report/p35-t5-selection-report.example.json`);
 - run or document `P35-T6`, a dry-run readiness check proving every selected
   source has a pinned local checkout, package-family target, expected analyzer
-  coverage, and explicit stop condition before author/maintainer review.
+  coverage, and explicit stop condition before author/maintainer review
+  ([`SELECTED_CORPUS_DRY_RUN_READINESS.md`](SELECTED_CORPUS_DRY_RUN_READINESS.md),
+  `tests/fixtures/selected_corpus_readiness/p35-t6-readiness.example.json`).
 
 Success criteria:
 
 - corpus expansion remains operator-selected, bounded, and explainable;
+- the Phase 35 seed corpus is blocked until operator-provided pinned local
+  checkouts are verified;
 - selection uses multiple signals instead of raw registry search ranking:
   dependency centrality, registry usage, public API richness, ecosystem
   archetype coverage, release health, source availability, license clarity,
