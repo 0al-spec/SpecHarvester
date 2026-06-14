@@ -569,6 +569,52 @@ Success criteria:
   relations, seed baselines, remove `preview_only`, publish registry metadata,
   or treat AI output as registry truth.
 
+## Milestone 14: Curated Multi-Ecosystem Corpus Selection
+
+Status: Planned.
+
+Goal: define how SpecHarvester selects important library repositories and
+package families across ecosystems before running autonomous harvesting, so the
+project grows through bounded curated corpora rather than open-ended registry
+crawling.
+
+Tasks:
+
+- document `P35-T1`, the corpus selection policy, including importance
+  signals, exclusion rules, ecosystem quotas, local checkout requirements, and
+  the producer-evidence boundary;
+- define `P35-T2`, a machine-readable `SpecHarvesterCorpusPlan` format with
+  selected-because reason codes, excluded-subpackage reason codes, source
+  checkout pins, categories, package-family targets, and non-authority
+  statements;
+- plan `P35-T3`, candidate source classification for primary packages,
+  package-set roots, plugins, examples, tooling, type-only packages, generated
+  artifacts, internal utilities, and deprecated sources;
+- create `P35-T4`, the first bounded multi-ecosystem seed corpus plan across
+  JavaScript/TypeScript, Python, Rust, Go, and at least one additional
+  ecosystem;
+- add `P35-T5`, an explainable corpus selection report that records selected,
+  rejected, and deferred sources with importance signals, exclusion reasons,
+  quota decisions, and the downstream autonomous-batch command plan;
+- run or document `P35-T6`, a dry-run readiness check proving every selected
+  source has a pinned local checkout, package-family target, expected analyzer
+  coverage, and explicit stop condition before author/maintainer review.
+
+Success criteria:
+
+- corpus expansion remains operator-selected, bounded, and explainable;
+- selection uses multiple signals instead of raw registry search ranking:
+  dependency centrality, registry usage, public API richness, ecosystem
+  archetype coverage, release health, source availability, license clarity,
+  security/supply-chain relevance, and author review value;
+- internal utilities, types-only packages, generated-only packages, deprecated
+  sources, examples, test fixtures, build tooling, and search noise are
+  excluded or deferred with machine-readable reasons;
+- the corpus plan does not clone/fetch repositories, install dependencies,
+  execute harvested code, publish registry metadata, accept packages, accept
+  relations, seed baselines, remove `preview_only`, or treat AI output as
+  registry truth.
+
 ## Non-Goals
 
 SpecHarvester does not:

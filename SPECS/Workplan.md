@@ -1323,3 +1323,66 @@ Acceptance:
 - Docs, DocC, tests, and a practical smoke show that AI-enabled autonomous
   runs can produce reviewable enriched candidates without implying SpecPM
   acceptance or registry publication.
+
+## Phase 35. Curated Multi-Ecosystem Corpus Selection
+
+- [ ] `P35-T1` Document the corpus selection policy that prevents autonomous
+  harvesting from becoming an open-ended crawl across every popular registry
+  package. The policy must define importance signals, exclusion rules,
+  ecosystem quotas, local checkout requirements, and the review boundary for
+  selected sources.
+- [ ] `P35-T2` Define a machine-readable `SpecHarvesterCorpusPlan` format for
+  curated source batches, including ecosystem, repository, package-family,
+  category, selected-because reason codes, excluded-subpackage reason codes,
+  source checkout pins, and non-authority statements.
+- [ ] `P35-T3` Add a candidate source classifier plan for distinguishing
+  primary packages, package-set roots, plugins, examples, tooling, type-only
+  packages, generated artifacts, internal utilities, and deprecated sources
+  before drafting.
+- [ ] `P35-T4` Create the first multi-ecosystem seed corpus plan with a small
+  bounded set of important repositories across JavaScript/TypeScript, Python,
+  Rust, Go, and at least one additional ecosystem, without cloning, fetching,
+  installing dependencies, executing harvested code, or publishing registry
+  metadata.
+- [ ] `P35-T5` Add an explainable corpus selection report that records selected
+  sources, rejected or deferred sources, importance signals, exclusion reasons,
+  quota decisions, and the downstream autonomous-batch command plan.
+- [ ] `P35-T6` Run or document a dry-run readiness check for the selected
+  corpus plan, proving that each selected repository has a pinned local
+  checkout, a clear package-family target, expected ecosystem analyzer
+  coverage, and an explicit stop condition before author/maintainer review.
+
+Motivation:
+
+- npm and other registry popularity searches return ecosystem plumbing,
+  internal utilities, type packages, generated artifacts, and unrelated
+  high-download packages alongside the libraries authors actually care about.
+- SpecHarvester needs to support autonomous exploration of important
+  libraries across ecosystems without turning into a crawler that collects
+  every possible framework, shim, parser, or internal package.
+- AI-enabled candidate generation is most useful when the source corpus is
+  curated, bounded, explainable, and reviewable before any harvesting run.
+
+Goal:
+
+- Establish a bounded, multi-ecosystem corpus selection layer that chooses
+  important repository/package-family targets for author-ready draft generation
+  while keeping SpecHarvester local-first and SpecPM as the acceptance and
+  registry authority.
+
+Acceptance:
+
+- The phase defines what makes a library important using multiple signals:
+  dependency centrality, registry usage, public API richness, ecosystem
+  archetype coverage, release/maintenance health, source availability,
+  security/supply-chain relevance, and review value.
+- The phase defines exclusion and deferral rules for internal utilities,
+  types-only packages, generated-only packages, deprecated sources, examples,
+  test fixtures, build tooling, and registry search noise.
+- The corpus plan remains operator-selected and bounded by ecosystem quotas;
+  it must not clone/fetch repositories, install harvested dependencies,
+  execute harvested code, publish registry metadata, accept packages, accept
+  relations, remove `preview_only`, or treat AI output as registry truth.
+- Every selected source must explain why it was selected, which package-family
+  or repository root it represents, which subpackages are excluded, and what
+  evidence is required before running autonomous candidate generation.
