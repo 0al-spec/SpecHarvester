@@ -252,6 +252,7 @@
 | 2026-06-14 | P35-T3 | Archived REVIEW_p35_t3_source_classifier_plan report |
 | 2026-06-14 | P35-T3 | Archived Candidate Source Classifier Plan (PASS) |
 | 2026-06-14 | P35-T4 | Archived Multi-Ecosystem Seed Corpus Plan (PASS) |
+| 2026-06-14 | P35-T4 | Archived REVIEW_p35_t4_seed_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
