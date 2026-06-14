@@ -1335,7 +1335,7 @@ Acceptance:
   curated source batches, including ecosystem, repository, package-family,
   category, selected-because reason codes, excluded-subpackage reason codes,
   source checkout pins, and non-authority statements.
-- [ ] `P35-T3` Add a candidate source classifier plan for distinguishing
+- [x] `P35-T3` Add a candidate source classifier plan for distinguishing
   primary packages, package-set roots, plugins, examples, tooling, type-only
   packages, generated artifacts, internal utilities, and deprecated sources
   before drafting.

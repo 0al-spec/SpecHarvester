@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P35-T4 Multi-Ecosystem Seed Corpus Plan" in next_text:
+        assert_p35_t3_last_archived(next_text)
+        assert_p35_t3_recent(next_text)
+        assert_phase_35_t4_planned(next_text)
+        return
+
     if "# Next Task: P35-T3 Candidate Source Classifier Plan" in next_text:
         assert_p35_t2_last_archived(next_text)
         assert_p35_t2_recent(next_text)
@@ -2333,6 +2339,57 @@ def assert_phase_35_t3_planned(next_text: str) -> None:
     assert "harvested code execution" in normalized
     assert "registry publication" in normalized
     assert "`preview_only` removal" in normalized
+
+
+def assert_p35_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P35-T3 Candidate Source Classifier Plan" in next_text
+
+
+def assert_p35_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P35-T3` added" in next_text
+    assert "CANDIDATE_SOURCE_CLASSIFIER_PLAN.md" in next_text
+    assert "CandidateSourceClassifierPlan" in next_text
+    assert "SpecHarvesterCandidateSourceClassificationPlan" in next_text
+    assert "spec-harvester.source-classification-plan/v0" in next_text
+    assert "producer_classification_plan_only" in next_text
+    assert "p35-t3-source-classifier-plan.example.json" in next_text
+    assert "package-set root" in normalized
+    assert "primary package" in normalized
+    assert "plugin" in normalized
+    assert "example" in normalized
+    assert "tooling" in normalized
+    assert "type-only" in normalized
+    assert "generated" in normalized
+    assert "internal" in normalized
+    assert "deprecated" in normalized
+    assert "evidence-only" in normalized
+    assert "select_primary" in next_text
+    assert "select_member" in next_text
+    assert "include_as_evidence_only" in next_text
+
+
+def assert_phase_35_t4_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P35-T4 Multi-Ecosystem Seed Corpus Plan" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
+    assert "`P35-T4` Create the first multi-ecosystem seed corpus plan" in next_text
+    assert "JavaScript/TypeScript, Python, Rust, Go" in normalized
+    assert "SpecHarvesterCorpusPlan" in next_text
+    assert "source-classification expectations" in normalized
+    assert "selected, deferred, and rejected sources" in normalized
+    assert "local checkout requirements" in normalized
+    assert "Do not run collection" in next_text
+    assert "drafting" in normalized
+    assert "AI enrichment" in normalized
+    assert "SpecPM handoff" in normalized
+    assert "does not require clone/fetch" in normalized
+    assert "dependency installation" in normalized
+    assert "harvested code execution" in normalized
+    assert "registry publication" in normalized
+    assert "`preview_only` removal" in normalized
+    assert "AI output as registry truth" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:

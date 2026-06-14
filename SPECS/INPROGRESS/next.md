@@ -1,80 +1,69 @@
-# Next Task: P35-T3 Candidate Source Classifier Plan
+# Next Task: P35-T4 Multi-Ecosystem Seed Corpus Plan
 
-**Status:** In Progress
+**Status:** Planned
 **Phase:** Phase 35. Curated Multi-Ecosystem Corpus Selection
-**Task:** `P35-T3` Add a candidate source classifier plan
-**Branch:** `feature/P35-T3-source-classifier-plan`
-**Last Archived:** P35-T2 SpecHarvesterCorpusPlan
+**Task:** `P35-T4` Create the first multi-ecosystem seed corpus plan
+**Last Archived:** P35-T3 Candidate Source Classifier Plan
 
 ## Recently Archived
 
-- `P35-T2` added [`SPECHARVESTER_CORPUS_PLAN.md`](../../docs/SPECHARVESTER_CORPUS_PLAN.md)
-  and the DocC mirror `SpecHarvesterCorpusPlan`.
-- The contract defines `apiVersion: spec-harvester.corpus-plan/v0`,
-  `kind: SpecHarvesterCorpusPlan`, `schemaVersion: 1`, and
-  `authority: producer_corpus_plan_only`.
+- `P35-T3` added
+  [`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](../../docs/CANDIDATE_SOURCE_CLASSIFIER_PLAN.md)
+  and the DocC mirror `CandidateSourceClassifierPlan`.
+- The classifier plan defines
+  `SpecHarvesterCandidateSourceClassificationPlan` with
+  `apiVersion: spec-harvester.source-classification-plan/v0`,
+  `schemaVersion: 1`, and `authority: producer_classification_plan_only`.
 - The fixture
-  `tests/fixtures/corpus_plan/p35-t2-corpus-plan.example.json` records
-  selected, deferred, and rejected source decisions across npm, PyPI, crates,
-  Go, and Swift.
-- The plan shape records source status, ecosystem, repository, package family,
-  categories, local checkout expectations, selected/deferred/rejected reason
-  codes, excluded subpackages, expected analyzer coverage, stop conditions, and
-  non-authority statements.
+  `tests/fixtures/source_classifier_plan/p35-t3-source-classifier-plan.example.json`
+  covers package-set root, primary package, plugin, example, tooling,
+  type-only, generated, internal, deprecated, and evidence-only classes.
+- The classifier plan records allowed actions: `select_primary`,
+  `select_member`, `defer`, `exclude`, and `include_as_evidence_only`.
 
 ## Context
 
-P35-T2 defined how to represent selected, deferred, and rejected corpus sources.
-P35-T3 should define how SpecHarvester classifies package-like source units
-before drafting so package-set roots, primary packages, plugins, examples,
-tooling, type-only packages, generated artifacts, internal utilities, and
-deprecated sources are handled consistently.
+P35-T1 defined the selection policy, P35-T2 defined the corpus plan shape, and
+P35-T3 defined source classification. P35-T4 should now create the first
+bounded multi-ecosystem seed corpus plan that uses those contracts without
+running collection or publishing registry metadata.
 
 ## Motivation
 
-- Corpus plans can declare selected and excluded sources, but later automation
-  still needs a deterministic classification vocabulary.
-- Without a classifier plan, package-set drafting can accidentally promote
-  examples, internal utilities, types-only packages, generated artifacts, or
-  build tooling as primary package candidates.
-- The classifier should make decisions explainable before autonomous candidate
-  generation runs.
+- The project needs a concrete seed corpus to avoid arguing only from abstract
+  policy.
+- The seed corpus should represent important libraries across ecosystems while
+  remaining small enough for review.
+- The plan must be explicit about selected, deferred, and rejected sources
+  before autonomous candidate generation runs.
 
 ## Goal
 
-Document the candidate source classifier plan for Phase 35.
+Create the first multi-ecosystem seed corpus plan artifact for Phase 35.
 
 ## Proposed Scope
 
-- Define source classes:
-  - `package_set_root`;
-  - `primary_package`;
-  - `plugin_package`;
-  - `example_package`;
-  - `tooling_package`;
-  - `types_only_package`;
-  - `generated_artifact`;
-  - `internal_utility`;
-  - `deprecated_source`;
-  - `evidence_only`.
-- Define classifier inputs:
-  - corpus plan source entries;
-  - repository source manifests;
-  - workspace inventory;
-  - package manifests;
-  - static evidence paths;
-  - explicit operator overrides.
-- Define output shape for classification evidence.
-- Preserve local-only, non-authority boundaries.
+- Select a small bounded corpus across JavaScript/TypeScript, Python, Rust,
+  Go, and at least one additional ecosystem.
+- Use `SpecHarvesterCorpusPlan` fields and reason codes.
+- Include source-classification expectations from P35-T3.
+- Record selected, deferred, and rejected sources.
+- Preserve local checkout requirements and non-authority boundaries.
+- Do not run collection, drafting, AI enrichment, or SpecPM handoff in this
+  task.
 
 ## Acceptance
 
-- The plan explains which source classes may become primary candidates and
-  which must remain excluded, deferred, or evidence-only.
-- The plan describes how classification results should feed `P35-T4` seed
-  corpus planning and later explainable reports.
-- The plan does not implement a classifier yet unless the task explicitly
-  chooses a small documentation-only fixture.
-- The boundary remains local-first and does not authorize clone/fetch,
-  dependency installation, harvested code execution, registry publication,
-  acceptance, or `preview_only` removal.
+- The seed plan is machine-readable and references the P35-T2/P35-T3 contract
+  shape.
+- Every selected source has an ecosystem, repository, package family,
+  selected-because reason codes, local checkout expectation, expected analyzer
+  coverage, and stop conditions.
+- No source requires clone/fetch, dependency installation, harvested code
+  execution, registry publication, package acceptance, relation acceptance,
+  baseline seeding, `preview_only` removal, or AI output as registry truth.
+- The plan does not require clone/fetch, dependency installation, harvested
+  code execution, registry publication, package acceptance, relation
+  acceptance, baseline seeding, `preview_only` removal, or AI output as
+  registry truth.
+- The next task remains `P35-T5` explainable corpus selection report.
