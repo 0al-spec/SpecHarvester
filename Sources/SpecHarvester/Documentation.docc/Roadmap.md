@@ -255,6 +255,13 @@ revision.
 candidates, zero relation proposals, five passing bundle-set preflights, and
 package-id review signals for `mcpm-sh` and `specgraph`.
 
+<doc:NextCorpusLiveLocalModelBatch> records `P33-T4`: the live LM Studio run
+used `openai/gpt-oss-20b`, preserved the five preview candidates and zero
+relation proposals, passed five bundle-set preflights, produced five AI draft
+proposals and five AI enrichment proposals, required zero JSON repair attempts,
+recorded `76291` provider tokens, and reached
+`ready_for_candidate_layer_triage`.
+
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
 no `preview_only` removal, and no AI output as registry truth.

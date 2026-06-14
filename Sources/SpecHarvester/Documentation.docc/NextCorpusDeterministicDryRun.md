@@ -27,6 +27,8 @@ preflight errors, zero preflight warnings, and zero blocker classes. Every
 repository can proceed to P33-T4 live local-model review.
 
 In short, the deterministic result is ready for P33-T4 live local-model review.
+The live local-model result is recorded in
+<doc:NextCorpusLiveLocalModelBatch>.
 
 ## Review Signals
 

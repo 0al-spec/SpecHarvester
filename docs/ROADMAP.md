@@ -526,7 +526,9 @@ Tasks:
   `inputs/p33-next-corpus/repositories.yml`);
 - record `P33-T3`, the deterministic collection and draft generation run without AI
   ([`NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`](NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md));
-- run live local-model draft/enrichment with bounded JSON repair;
+- record `P33-T4`, the live local-model draft/enrichment run with bounded JSON
+  repair and provider receipts
+  ([`NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`](NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md));
 - produce candidate-layer triage and selected handoff evidence;
 - run or coordinate SpecPM-side selected handoff preflight and record the next
   intake readiness decision.

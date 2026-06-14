@@ -189,6 +189,16 @@ Acceptance:
 - JSON repair stays within bounded retry policy.
 - AI output remains proposal-only and never registry truth.
 
+Artifact:
+
+- [`NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`](NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md)
+  records the P33-T4 live LM Studio run with `openai/gpt-oss-20b`. It
+  processed all five repositories, produced five preview candidates, produced
+  zero relation proposals, passed five bundle-set preflights, recorded five AI
+  draft proposals and five AI enrichment proposals, required zero JSON repair
+  attempts, recorded `76291` provider tokens, and is ready for P33-T5
+  candidate-layer triage.
+
 ### P33-T5 Next-Corpus Candidate-Layer Triage
 
 Owner: SpecHarvester.

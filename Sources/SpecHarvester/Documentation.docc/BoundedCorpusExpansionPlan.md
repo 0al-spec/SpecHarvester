@@ -34,6 +34,14 @@ produced five preview candidates, produced zero relation proposals, passed five
 bundle-set preflights, recorded package-id review signals for `mcpm-sh` and
 `specgraph`, and is ready for P33-T4 live local-model review.
 
+P33-T4 records the live local-model dry run in
+<doc:NextCorpusLiveLocalModelBatch>. It used LM Studio with
+`openai/gpt-oss-20b`, preserved the deterministic five preview candidates and
+zero relation proposals, passed five bundle-set preflights, produced five AI
+draft proposals and five AI enrichment proposals, required zero JSON repair
+attempts, recorded `76291` provider tokens, and is ready for P33-T5
+candidate-layer triage.
+
 ## Source Manifest
 
 `P33-T2` must add the next-corpus source manifest fixture before any scrape

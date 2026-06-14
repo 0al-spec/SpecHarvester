@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-06-13
+**Last Updated:** 2026-06-14
 
 ## Archived Tasks
 
@@ -130,6 +130,7 @@
 | P33-T1 | [P33-T1_Bounded_Corpus_Expansion_Plan/](P33-T1_Bounded_Corpus_Expansion_Plan/) | 2026-06-13 | PASS |
 | P33-T2 | [P33-T2_Next-Corpus_Source_Manifest_Fixture/](P33-T2_Next-Corpus_Source_Manifest_Fixture/) | 2026-06-13 | PASS |
 | P33-T3 | [P33-T3_Deterministic_Next-Corpus_Dry_Run/](P33-T3_Deterministic_Next-Corpus_Dry_Run/) | 2026-06-13 | PASS |
+| P33-T4 | [P33-T4_Live_Local-Model_Next-Corpus_Dry_Run/](P33-T4_Live_Local-Model_Next-Corpus_Dry_Run/) | 2026-06-14 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -142,6 +143,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t4_live_local_model_next_corpus_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t3_deterministic_next_corpus_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t2_next_corpus_source_manifest_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t1_bounded_corpus_expansion_plan.md` |
@@ -211,6 +213,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P33-T4 | Archived REVIEW_p33_t4_live_local_model_next_corpus_dry_run report |
+| 2026-06-14 | P33-T4 | Archived Live Local-Model Next-Corpus Dry Run (PASS) |
 | 2026-06-13 | P32-T3 | Archived REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run report |
 | 2026-06-13 | P32-T3 | Archived Xyflow Package-Set Identity Regeneration Dry Run (PASS) |
 | 2026-06-13 | P32-T4 | Archived Single-Package Deferred Candidate Regeneration Dry Run (PASS) |
