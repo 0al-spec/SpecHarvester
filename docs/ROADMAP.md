@@ -423,6 +423,10 @@ Success criteria:
 
 See
 [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md).
+The helper command is `selected-candidate-handoff-proposal` and writes
+`selected-candidate-handoff-proposal.json` plus
+`selected-candidate-handoff-proposal.md` from the selected handoff dry-run
+source evidence.
 
 ## Non-Goals
 
