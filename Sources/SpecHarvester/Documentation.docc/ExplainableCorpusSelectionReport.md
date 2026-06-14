@@ -83,4 +83,4 @@ seed baselines, remove `preview_only`, or treat AI output as registry truth.
 
 ## Follow-Up Work
 
-This report enables `P35-T6` selected corpus dry-run readiness.
+This report enables `P35-T6` <doc:SelectedCorpusDryRunReadiness>.

@@ -10,10 +10,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 35 Complete" in next_text:
+        assert_p35_t6_last_archived(next_text)
+        assert_p35_t6_recent(next_text)
+        assert_phase_35_complete(next_text)
+        return
+
     if "# Next Task: P35-T6 Selected Corpus Dry-Run Readiness" in next_text:
         assert_p35_t5_last_archived(next_text)
         assert_p35_t5_recent(next_text)
-        assert_phase_35_t6_planned(next_text)
+        assert_phase_35_t6_active(next_text)
         return
 
     if "# Next Task: P35-T5 Explainable Corpus Selection Report" in next_text:
@@ -2466,16 +2472,50 @@ def assert_p35_t5_recent(next_text: str) -> None:
     assert "non-authority" in normalized
 
 
-def assert_phase_35_t6_planned(next_text: str) -> None:
+def assert_phase_35_t6_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P35-T6 Selected Corpus Dry-Run Readiness" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P35-T6-selected-corpus-readiness`" in next_text
     assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
     assert "`P35-T6` Run or document selected corpus plan dry-run readiness" in next_text
     assert "pinned local checkout" in normalized
     assert "package-family target" in normalized
     assert "expected analyzer coverage" in normalized
     assert "explicit stop condition" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_p35_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P35-T6 Selected Corpus Dry-Run Readiness" in next_text
+
+
+def assert_p35_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P35-T6` added" in next_text
+    assert "SELECTED_CORPUS_DRY_RUN_READINESS.md" in next_text
+    assert "SelectedCorpusDryRunReadiness" in next_text
+    assert "p35-t6-readiness.example.json" in next_text
+    assert "SpecHarvesterSelectedCorpusReadinessReport" in next_text
+    assert "spec-harvester.selected-corpus-readiness/v0" in next_text
+    assert "producer_readiness_report_only" in next_text
+    assert "blocked_pending_local_checkouts" in next_text
+    assert "local_checkout_not_verified" in next_text
+    assert "autonomous-candidate-batch" in next_text
+    assert "non-authority" in normalized
+
+
+def assert_phase_35_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 35 Complete" in next_text
+    assert "**Status:** Complete" in next_text
+    assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
+    for task_id in ("P35-T1", "P35-T2", "P35-T3", "P35-T4", "P35-T5", "P35-T6"):
+        assert task_id in next_text
+    assert "bounded curated corpus" in normalized
+    assert "blocked until operator-provided pinned local checkouts are verified" in normalized
     assert "does not publish registry metadata" in normalized
     assert "does not accept packages" in normalized
     assert "does not treat AI output as registry truth" in normalized
@@ -11342,4 +11382,202 @@ def test_explainable_corpus_selection_report_is_documented() -> None:
     assert "ExplainableCorpusSelectionReport" in capabilities_docc.read_text(encoding="utf-8")
     assert "EXPLAINABLE_CORPUS_SELECTION_REPORT.md" in roadmap.read_text(encoding="utf-8")
     assert "ExplainableCorpusSelectionReport" in roadmap_docc.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_selected_corpus_dry_run_readiness_is_documented() -> None:
+    github_doc = ROOT / "docs" / "SELECTED_CORPUS_DRY_RUN_READINESS.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCorpusDryRunReadiness.md"
+    )
+    fixture_path = (
+        ROOT / "tests" / "fixtures" / "selected_corpus_readiness" / "p35-t6-readiness.example.json"
+    )
+    seed_plan = ROOT / "docs" / "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md"
+    seed_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "MultiEcosystemSeedCorpusPlan.md"
+    )
+    selection_report = ROOT / "docs" / "EXPLAINABLE_CORPUS_SELECTION_REPORT.md"
+    selection_report_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "ExplainableCorpusSelectionReport.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "SpecHarvesterSelectedCorpusReadinessReport",
+            "spec-harvester.selected-corpus-readiness/v0",
+            "producer_readiness_report_only",
+            "p35-t6-readiness.example.json",
+            "blocked_pending_local_checkouts",
+            "local_checkout_not_verified",
+            "react.workspace",
+            "fastapi.core",
+            "serde.core",
+            "gin.core",
+            "swift_argument_parser.core",
+            "workspace_inventory",
+            "js_ts_public_api",
+            "python_public_api",
+            "rust_public_api",
+            "go_public_api",
+            "swift_public_api",
+            "readme_semantic_hints",
+            "autonomous-candidate-batch",
+            "all_selected_sources_have_verified_pinned_local_checkouts",
+            "does not clone",
+            "install dependencies",
+            "execute harvested code",
+            "publish registry metadata",
+            "accept packages",
+            "accept relations",
+            "remove `preview_only`",
+            "registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.selected-corpus-readiness/v0"
+    assert payload["kind"] == "SpecHarvesterSelectedCorpusReadinessReport"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_readiness_report_only"
+    assert payload["seedCorpusPlan"] == {
+        "path": (
+            "tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json"
+        ),
+        "apiVersion": "spec-harvester.corpus-plan/v0",
+        "kind": "SpecHarvesterCorpusPlan",
+        "name": "phase35-seed-corpus",
+    }
+    assert payload["selectionReport"] == {
+        "path": (
+            "tests/fixtures/explainable_corpus_selection_report/"
+            "p35-t5-selection-report.example.json"
+        ),
+        "apiVersion": "spec-harvester.corpus-selection-report/v0",
+        "kind": "SpecHarvesterCorpusSelectionReport",
+    }
+    assert payload["summary"] == {
+        "selectedSourceCount": 5,
+        "readySourceCount": 0,
+        "blockedSourceCount": 5,
+        "warningSourceCount": 0,
+        "readinessStatus": "blocked_pending_local_checkouts",
+        "dryRunAllowed": False,
+        "autonomousCandidateBatchAllowed": False,
+    }
+
+    readiness = payload["sourceReadiness"]
+    assert len(readiness) == 5
+    assert {item["sourceId"] for item in readiness} == {
+        "react",
+        "fastapi",
+        "serde",
+        "gin",
+        "swift-argument-parser",
+    }
+    assert {item["packageFamily"] for item in readiness} == {
+        "react.workspace",
+        "fastapi.core",
+        "serde.core",
+        "gin.core",
+        "swift_argument_parser.core",
+    }
+    assert {item["readinessStatus"] for item in readiness} == {"blocked"}
+    for item in readiness:
+        checkout = item["localCheckout"]
+        assert checkout["path"].startswith("../checkouts/")
+        assert len(checkout["expectedRevision"]) == 40
+        assert checkout["allowMutableRef"] is False
+        assert checkout["verificationStatus"] == "not_verified"
+        assert checkout["operatorAction"] == "provide_pinned_local_checkout"
+        assert item["requiredAnalyzers"]
+        assert "missing_pinned_local_checkout" in item["stopConditions"]
+        assert "source_revision_mismatch" in item["stopConditions"]
+        assert item["blockingReasons"] == ["local_checkout_not_verified"]
+
+    assert next(item for item in readiness if item["sourceId"] == "react")["requiredAnalyzers"] == [
+        "workspace_inventory",
+        "js_ts_public_api",
+    ]
+    assert next(item for item in readiness if item["sourceId"] == "fastapi")[
+        "requiredAnalyzers"
+    ] == ["python_public_api", "readme_semantic_hints"]
+    assert next(item for item in readiness if item["sourceId"] == "serde")["requiredAnalyzers"] == [
+        "rust_public_api",
+        "readme_semantic_hints",
+    ]
+    assert next(item for item in readiness if item["sourceId"] == "gin")["requiredAnalyzers"] == [
+        "go_public_api",
+        "readme_semantic_hints",
+    ]
+    assert next(item for item in readiness if item["sourceId"] == "swift-argument-parser")[
+        "requiredAnalyzers"
+    ] == ["swift_public_api", "readme_semantic_hints"]
+
+    assert payload["operatorActions"] == [
+        {
+            "action": "provide_pinned_local_checkouts",
+            "required": True,
+            "sourceIds": ["react", "fastapi", "serde", "gin", "swift-argument-parser"],
+        },
+        {
+            "action": "rerun_readiness_check_after_checkout_verification",
+            "required": True,
+            "sourceIds": ["react", "fastapi", "serde", "gin", "swift-argument-parser"],
+        },
+    ]
+    assert payload["downstreamCommandGate"] == {
+        "command": "autonomous-candidate-batch",
+        "allowed": False,
+        "blockedUntil": "all_selected_sources_have_verified_pinned_local_checkouts",
+        "mustNotRunCollection": True,
+        "mustNotRunDrafting": True,
+        "mustNotRunAiEnrichment": True,
+        "mustNotCreateSpecPMHandoff": True,
+    }
+    assert payload["nonAuthorityStatements"] == [
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_execute_harvested_code",
+        "does_not_publish_registry_metadata",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_ai_output_as_registry_truth",
+    ]
+
+    assert "SELECTED_CORPUS_DRY_RUN_READINESS.md" in seed_plan.read_text(encoding="utf-8")
+    assert "SelectedCorpusDryRunReadiness" in seed_plan_docc.read_text(encoding="utf-8")
+    assert "SELECTED_CORPUS_DRY_RUN_READINESS.md" in selection_report.read_text(encoding="utf-8")
+    assert "SelectedCorpusDryRunReadiness" in selection_report_docc.read_text(encoding="utf-8")
+    assert "SELECTED_CORPUS_DRY_RUN_READINESS.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/SELECTED_CORPUS_DRY_RUN_READINESS.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:SelectedCorpusDryRunReadiness>" in docc_root.read_text(encoding="utf-8")
+    assert "SELECTED_CORPUS_DRY_RUN_READINESS.md" in capabilities.read_text(encoding="utf-8")
+    assert "SelectedCorpusDryRunReadiness" in capabilities_docc.read_text(encoding="utf-8")
+    assert "SELECTED_CORPUS_DRY_RUN_READINESS.md" in roadmap.read_text(encoding="utf-8")
+    assert "SelectedCorpusDryRunReadiness" in roadmap_docc.read_text(encoding="utf-8")
     assert_current_next_task(next_task.read_text(encoding="utf-8"))

@@ -151,6 +151,7 @@
 | P35-T3 | [P35-T3_Candidate_Source_Classifier_Plan/](P35-T3_Candidate_Source_Classifier_Plan/) | 2026-06-14 | PASS |
 | P35-T4 | [P35-T4_Multi_Ecosystem_Seed_Corpus_Plan/](P35-T4_Multi_Ecosystem_Seed_Corpus_Plan/) | 2026-06-14 | PASS |
 | P35-T5 | [P35-T5_Explainable_Corpus_Selection_Report/](P35-T5_Explainable_Corpus_Selection_Report/) | 2026-06-14 | PASS |
+| P35-T6 | [P35-T6_Selected_Corpus_Dry_Run_Readiness/](P35-T6_Selected_Corpus_Dry_Run_Readiness/) | 2026-06-14 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -256,6 +257,8 @@
 | 2026-06-14 | P35-T4 | Archived REVIEW_p35_t4_seed_corpus_plan report |
 | 2026-06-14 | P35-T5 | Archived Explainable Corpus Selection Report (PASS) |
 | 2026-06-14 | P35-T5 | Archived REVIEW_p35_t5_explainable_corpus_selection_report report |
+| 2026-06-14 | P35-T6 | Archived Selected Corpus Dry-Run Readiness (PASS) |
+| 2026-06-14 | P35-T6 | Archived REVIEW_p35_t6_selected_corpus_readiness report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |

@@ -1,0 +1,202 @@
+{
+  "apiVersion": "spec-harvester.selected-corpus-readiness/v0",
+  "kind": "SpecHarvesterSelectedCorpusReadinessReport",
+  "schemaVersion": 1,
+  "authority": "producer_readiness_report_only",
+  "seedCorpusPlan": {
+    "path": "tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json",
+    "apiVersion": "spec-harvester.corpus-plan/v0",
+    "kind": "SpecHarvesterCorpusPlan",
+    "name": "phase35-seed-corpus"
+  },
+  "selectionReport": {
+    "path": "tests/fixtures/explainable_corpus_selection_report/p35-t5-selection-report.example.json",
+    "apiVersion": "spec-harvester.corpus-selection-report/v0",
+    "kind": "SpecHarvesterCorpusSelectionReport"
+  },
+  "summary": {
+    "selectedSourceCount": 5,
+    "readySourceCount": 0,
+    "blockedSourceCount": 5,
+    "warningSourceCount": 0,
+    "readinessStatus": "blocked_pending_local_checkouts",
+    "dryRunAllowed": false,
+    "autonomousCandidateBatchAllowed": false
+  },
+  "sourceReadiness": [
+    {
+      "sourceId": "react",
+      "ecosystem": "npm",
+      "packageFamily": "react.workspace",
+      "localCheckout": {
+        "path": "../checkouts/react",
+        "expectedRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "allowMutableRef": false,
+        "verificationStatus": "not_verified",
+        "operatorAction": "provide_pinned_local_checkout"
+      },
+      "requiredAnalyzers": [
+        "workspace_inventory",
+        "js_ts_public_api"
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "primary_package_family_ambiguous",
+        "expected_analyzer_unavailable"
+      ],
+      "readinessStatus": "blocked",
+      "blockingReasons": [
+        "local_checkout_not_verified"
+      ]
+    },
+    {
+      "sourceId": "fastapi",
+      "ecosystem": "pypi",
+      "packageFamily": "fastapi.core",
+      "localCheckout": {
+        "path": "../checkouts/fastapi",
+        "expectedRevision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "allowMutableRef": false,
+        "verificationStatus": "not_verified",
+        "operatorAction": "provide_pinned_local_checkout"
+      },
+      "requiredAnalyzers": [
+        "python_public_api",
+        "readme_semantic_hints"
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "license_evidence_missing",
+        "expected_analyzer_unavailable"
+      ],
+      "readinessStatus": "blocked",
+      "blockingReasons": [
+        "local_checkout_not_verified"
+      ]
+    },
+    {
+      "sourceId": "serde",
+      "ecosystem": "crates",
+      "packageFamily": "serde.core",
+      "localCheckout": {
+        "path": "../checkouts/serde",
+        "expectedRevision": "cccccccccccccccccccccccccccccccccccccccc",
+        "allowMutableRef": false,
+        "verificationStatus": "not_verified",
+        "operatorAction": "provide_pinned_local_checkout"
+      },
+      "requiredAnalyzers": [
+        "rust_public_api",
+        "readme_semantic_hints"
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "license_evidence_missing",
+        "expected_analyzer_unavailable"
+      ],
+      "readinessStatus": "blocked",
+      "blockingReasons": [
+        "local_checkout_not_verified"
+      ]
+    },
+    {
+      "sourceId": "gin",
+      "ecosystem": "go",
+      "packageFamily": "gin.core",
+      "localCheckout": {
+        "path": "../checkouts/gin",
+        "expectedRevision": "dddddddddddddddddddddddddddddddddddddddd",
+        "allowMutableRef": false,
+        "verificationStatus": "not_verified",
+        "operatorAction": "provide_pinned_local_checkout"
+      },
+      "requiredAnalyzers": [
+        "go_public_api",
+        "readme_semantic_hints"
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "license_evidence_missing",
+        "expected_analyzer_unavailable"
+      ],
+      "readinessStatus": "blocked",
+      "blockingReasons": [
+        "local_checkout_not_verified"
+      ]
+    },
+    {
+      "sourceId": "swift-argument-parser",
+      "ecosystem": "swift",
+      "packageFamily": "swift_argument_parser.core",
+      "localCheckout": {
+        "path": "../checkouts/swift-argument-parser",
+        "expectedRevision": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "allowMutableRef": false,
+        "verificationStatus": "not_verified",
+        "operatorAction": "provide_pinned_local_checkout"
+      },
+      "requiredAnalyzers": [
+        "swift_public_api",
+        "readme_semantic_hints"
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "license_evidence_missing",
+        "expected_analyzer_unavailable"
+      ],
+      "readinessStatus": "blocked",
+      "blockingReasons": [
+        "local_checkout_not_verified"
+      ]
+    }
+  ],
+  "operatorActions": [
+    {
+      "action": "provide_pinned_local_checkouts",
+      "required": true,
+      "sourceIds": [
+        "react",
+        "fastapi",
+        "serde",
+        "gin",
+        "swift-argument-parser"
+      ]
+    },
+    {
+      "action": "rerun_readiness_check_after_checkout_verification",
+      "required": true,
+      "sourceIds": [
+        "react",
+        "fastapi",
+        "serde",
+        "gin",
+        "swift-argument-parser"
+      ]
+    }
+  ],
+  "downstreamCommandGate": {
+    "command": "autonomous-candidate-batch",
+    "allowed": false,
+    "blockedUntil": "all_selected_sources_have_verified_pinned_local_checkouts",
+    "mustNotRunCollection": true,
+    "mustNotRunDrafting": true,
+    "mustNotRunAiEnrichment": true,
+    "mustNotCreateSpecPMHandoff": true
+  },
+  "nonAuthorityStatements": [
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_publish_registry_metadata",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth"
+  ]
+}

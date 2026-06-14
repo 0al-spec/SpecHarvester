@@ -356,7 +356,7 @@ requirements, and producer-evidence boundaries. `P35-T2` defines
 classification through <doc:CandidateSourceClassifierPlan>. `P35-T4` records
 the bounded seed corpus in <doc:MultiEcosystemSeedCorpusPlan>, and `P35-T5`
 records selection explanations in <doc:ExplainableCorpusSelectionReport>.
-Follow-up tasks define dry-run readiness checks.
+`P35-T6` records dry-run readiness in <doc:SelectedCorpusDryRunReadiness>.
 
 This phase explicitly covers JavaScript/TypeScript, Python, Rust, Go, and at
 least one additional ecosystem. It also records why registry search noise such
@@ -367,6 +367,9 @@ packages must be excluded or deferred before autonomous candidate generation.
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
 no `preview_only` removal, and no AI output as registry truth.
+
+The Phase 35 seed corpus is blocked until operator-provided pinned local
+checkouts are verified.
 
 ## Non-Goals
 

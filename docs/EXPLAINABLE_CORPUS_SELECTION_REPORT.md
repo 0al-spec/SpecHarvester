@@ -135,4 +135,5 @@ The report keeps the standard Phase 35 boundary:
 
 ## Follow-Up Work
 
-This report enables `P35-T6`: selected corpus dry-run readiness.
+This report enables `P35-T6`: selected corpus dry-run readiness
+([`SELECTED_CORPUS_DRY_RUN_READINESS.md`](SELECTED_CORPUS_DRY_RUN_READINESS.md)).
