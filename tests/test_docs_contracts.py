@@ -11892,10 +11892,22 @@ def test_python_web_framework_parser_profile_fixture_is_documented() -> None:
     assert rules["docs_src_semantic_usage"]["role"] == "semantic_usage"
     assert rules["docs_src_semantic_usage"]["publicInterfaceEligible"] is False
     assert rules["docs_src_semantic_usage"]["semanticUsageEligible"] is True
+    assert rules["examples_semantic_usage"]["match"]["pathSegments"] == ["examples", "example"]
     assert rules["tests_not_public_interface"]["role"] == "test"
     assert rules["tests_not_public_interface"]["publicInterfaceEligible"] is False
+    assert rules["tests_not_public_interface"]["match"]["pathSegments"] == ["tests", "test"]
     assert rules["generated_artifacts_not_public_interface"]["role"] == "generated"
+    assert rules["generated_artifacts_not_public_interface"]["match"]["pathSegments"] == [
+        "build",
+        "dist",
+        "site",
+    ]
     assert rules["repository_tooling_not_public_interface"]["role"] == "tooling"
+    assert rules["repository_tooling_not_public_interface"]["match"]["pathSegments"] == [
+        ".github",
+        "scripts",
+        "tools",
+    ]
     assert rules["private_python_modules_internal"]["role"] == "internal"
 
     assert payload["fallback"] == {

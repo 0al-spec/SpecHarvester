@@ -24,8 +24,8 @@ Default behavior remains unchanged when no parser profile is selected.
 - Added Python analyzer path classification metadata:
   `repositoryParsingProfile` and `pathClassification`.
 - Added regression coverage for default behavior, FastAPI-like profile
-  decisions, unknown profile failure before analyzer dispatch, analyzer
-  orchestration, and batch collection.
+  decisions, nested package-internal non-public paths, unknown profile failure
+  before analyzer dispatch, analyzer orchestration, and batch collection.
 - Updated GitHub docs and DocC mirror.
 
 ## Validation Commands
@@ -37,7 +37,7 @@ Default behavior remains unchanged when no parser profile is selected.
 - `PYTHONPATH=src ruff check .` -> passed
 - `PYTHONPATH=src ruff format --check src tests` -> passed
 - `git diff --check` -> passed
-- `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` -> `731 passed, 1 skipped`, total coverage `91.02%`
+- `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` -> `731 passed, 1 skipped`, total coverage `91.03%`
 - `swift build --target SpecHarvesterDocs` -> passed
 - `swift package dump-package >/dev/null` -> passed
 - `swift package --allow-writing-to-directory ./.docc-build generate-documentation --target SpecHarvester --output-path ./.docc-build --transform-for-static-hosting --hosting-base-path SpecHarvester` -> passed

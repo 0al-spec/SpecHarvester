@@ -21,6 +21,11 @@ None remaining.
   be silently ignored for non-Python analyzer plans. Fixed in follow-up commit
   `e6427e7` by validating the parser profile before analyzer dispatch and
   adding regression coverage.
+- [Low] Nested package-internal non-public paths such as
+  `fastapi/tests/test_routes.py`, `fastapi/examples/demo.py`, and
+  `fastapi/*_pb2.py` could still be captured by the broad `fastapi/` package
+  root rule. Fixed in review follow-up by treating selector groups as
+  alternatives and adding segment/filename regression coverage.
 
 ### Architectural Notes
 
@@ -35,7 +40,7 @@ None remaining.
 ### Tests
 
 - `PYTHONPATH=src pytest -q` -> `731 passed, 1 skipped`
-- `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` -> `731 passed, 1 skipped`, total coverage `91.02%`
+- `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` -> `731 passed, 1 skipped`, total coverage `91.03%`
 - `PYTHONPATH=src ruff check .` -> passed
 - `PYTHONPATH=src ruff format --check src tests` -> passed
 - `git diff --check` -> passed

@@ -59,25 +59,27 @@ class RepositoryParsingRule:
         )
 
     def matches(self, path: str) -> bool:
-        prefixes = tuple(str(item) for item in self.match.get("pathPrefixes", []))
-        if prefixes and not any(path.startswith(prefix) for prefix in prefixes):
-            return False
-
         extensions = tuple(str(item) for item in self.match.get("fileExtensions", []))
         if extensions and not path.endswith(extensions):
             return False
 
+        selector_matches: list[bool] = []
+
+        prefixes = tuple(str(item) for item in self.match.get("pathPrefixes", []))
+        if prefixes:
+            selector_matches.append(any(path.startswith(prefix) for prefix in prefixes))
+
         filename_patterns = tuple(str(item) for item in self.match.get("filenamePatterns", []))
-        if filename_patterns and not any(
-            fnmatchcase(path_name(path), item) for item in filename_patterns
-        ):
-            return False
+        if filename_patterns:
+            selector_matches.append(
+                any(fnmatchcase(path_name(path), item) for item in filename_patterns)
+            )
 
         segments = tuple(str(item) for item in self.match.get("pathSegments", []))
-        if segments and not any(segment in path.split("/") for segment in segments):
-            return False
+        if segments:
+            selector_matches.append(any(segment in path.split("/") for segment in segments))
 
-        return True
+        return any(selector_matches) if selector_matches else True
 
 
 @dataclass(frozen=True)
@@ -178,7 +180,10 @@ PYTHON_WEB_FRAMEWORK_RULES: tuple[dict[str, Any], ...] = (
     },
     {
         "id": "examples_semantic_usage",
-        "match": {"pathPrefixes": ["examples/", "example/"]},
+        "match": {
+            "pathPrefixes": ["examples/", "example/"],
+            "pathSegments": ["examples", "example"],
+        },
         "role": "example",
         "reasonCodes": ["example_code", "semantic_context"],
         "publicInterfaceEligible": False,
@@ -188,6 +193,7 @@ PYTHON_WEB_FRAMEWORK_RULES: tuple[dict[str, Any], ...] = (
         "id": "tests_not_public_interface",
         "match": {
             "pathPrefixes": ["tests/", "test/"],
+            "pathSegments": ["tests", "test"],
             "filenamePatterns": ["test_*.py", "*_test.py"],
         },
         "role": "test",
@@ -199,6 +205,7 @@ PYTHON_WEB_FRAMEWORK_RULES: tuple[dict[str, Any], ...] = (
         "id": "generated_artifacts_not_public_interface",
         "match": {
             "pathPrefixes": ["build/", "dist/", "site/"],
+            "pathSegments": ["build", "dist", "site"],
             "filenamePatterns": ["*.generated.py", "*_pb2.py"],
         },
         "role": "generated",
@@ -208,7 +215,10 @@ PYTHON_WEB_FRAMEWORK_RULES: tuple[dict[str, Any], ...] = (
     },
     {
         "id": "repository_tooling_not_public_interface",
-        "match": {"pathPrefixes": [".github/", "scripts/", "tools/"]},
+        "match": {
+            "pathPrefixes": [".github/", "scripts/", "tools/"],
+            "pathSegments": [".github", "scripts", "tools"],
+        },
         "role": "tooling",
         "reasonCodes": ["repository_tooling", "not_public_api"],
         "publicInterfaceEligible": False,

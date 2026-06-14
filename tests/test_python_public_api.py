@@ -352,6 +352,9 @@ def test_analyze_python_public_api_honors_python_web_framework_parser_profile(
         "build",
         "scripts",
         "fastapi/_internal",
+        "fastapi/tests",
+        "fastapi/examples",
+        "fastapi/scripts",
     ):
         (repo / folder).mkdir(parents=True)
     (repo / "fastapi" / "applications.py").write_text(
@@ -377,6 +380,22 @@ def test_analyze_python_public_api_honors_python_web_framework_parser_profile(
         "def compat():\n    pass\n",
         encoding="utf-8",
     )
+    (repo / "fastapi" / "tests" / "test_routes.py").write_text(
+        "def test_routes():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "fastapi" / "examples" / "demo.py").write_text(
+        "def demo():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "fastapi" / "schemas_pb2.py").write_text(
+        "def generated_schema():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "fastapi" / "scripts" / "release.py").write_text(
+        "def package_release():\n    pass\n",
+        encoding="utf-8",
+    )
     (repo / "standalone.py").write_text("def fallback():\n    pass\n", encoding="utf-8")
 
     index = analyze_python_public_api(
@@ -398,6 +417,10 @@ def test_analyze_python_public_api_honors_python_web_framework_parser_profile(
     )
     assert decisions["docs_src/first_steps/tutorial001.py"]["semanticUsageEligible"] is True
     assert decisions["tests/test_applications.py"]["role"] == "test"
+    assert decisions["fastapi/tests/test_routes.py"]["role"] == "test"
+    assert decisions["fastapi/examples/demo.py"]["role"] == "example"
+    assert decisions["fastapi/schemas_pb2.py"]["role"] == "generated"
+    assert decisions["fastapi/scripts/release.py"]["role"] == "tooling"
     assert decisions["standalone.py"]["matchedRuleId"] == "conservative_default_fallback"
     for path, decision in decisions.items():
         if path != "fastapi/applications.py":
