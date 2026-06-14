@@ -159,6 +159,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t1_corpus_selection_policy.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t8_docc_warning_cleanup.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t7_codegraph_compatibility_guard.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t6_codegraph_adapter_boundary.md` |
@@ -243,6 +244,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
 | 2026-06-14 | P35-T1 | Archived Corpus Selection Policy (PASS) |
 | 2026-06-14 | P34-T2 | Archived REVIEW_p34_t2_autonomous_ai_enriched_output report |
 | 2026-06-14 | P34-T2 | Archived Autonomous Batch AI Enriched Preview Output (PASS) |
