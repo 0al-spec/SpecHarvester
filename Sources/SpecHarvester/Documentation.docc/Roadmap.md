@@ -200,8 +200,9 @@ The next planned focus is to convert the P30/P31 deferred candidate findings
 into a bounded regeneration and intake-readiness sequence before any broader
 popular-library scraping is attempted.
 
-The sequence records the work plan, adds a deferred candidate regeneration
-runbook, reruns xyflow package-set identity regeneration, repairs or
+The sequence records the work plan, adds the deferred candidate regeneration
+runbook in <doc:DeferredCandidateRegenerationRunbook>, reruns xyflow
+package-set identity regeneration, repairs or
 regenerates `cupertino.core` and `navigation_split_view.core`, refreshes
 candidate-layer triage and selected handoff evidence, coordinates
 SpecPM-side selected candidate handoff preflight, and records a limited corpus

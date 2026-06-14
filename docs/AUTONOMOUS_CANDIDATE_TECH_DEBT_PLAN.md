@@ -115,6 +115,11 @@ Acceptance:
 - It defines when a candidate remains deferred versus when it can re-enter
   candidate-layer triage.
 
+Artifact:
+
+- [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md)
+  records the P32-T2 operator runbook before any regeneration run.
+
 ### P32-T3 Xyflow Package-Set Identity Regeneration Dry Run
 
 Owner: SpecHarvester.

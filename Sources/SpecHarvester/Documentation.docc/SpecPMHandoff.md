@@ -178,6 +178,8 @@ candidates in <doc:DeferredSelectedCandidateRegenerationRequirements>. Those
 requirements cover package-set identity regeneration, warning-bearing
 enrichment regeneration, and identity-drift resolution before any deferred
 candidate can enter selected handoff.
+Use <doc:DeferredCandidateRegenerationRunbook> before attempting those
+regeneration runs.
 
 ## Fresh Candidate Refresh Run
 

@@ -61,6 +61,8 @@ or replace author or SpecPM maintainer review.
   should run it safely.
 - Goal: map each blocker class to producer commands, expected artifacts, and
   stop conditions.
+- Artifact: <doc:DeferredCandidateRegenerationRunbook> records the P32-T2
+  operator runbook before any regeneration run.
 
 `P32-T3 Xyflow Package-Set Identity Regeneration Dry Run`
 
