@@ -10,8 +10,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    if "# Next Task: Phase 20 Complete" in next_text:
+    if "# Next Task: P20-T8 DocC Warning Cleanup" in next_text:
         assert_p20_t7_last_archived(next_text)
+        assert_p20_t7_recent(next_text)
+        assert_phase_20_t8_active(next_text)
+        return
+
+    if "# Next Task: Phase 20 Complete" in next_text:
+        if "**Last Archived:** P20-T8 DocC Warning Cleanup" in next_text:
+            assert_p20_t8_last_archived(next_text)
+            assert_p20_t8_recent(next_text)
+        else:
+            assert_p20_t7_last_archived(next_text)
         assert_p20_t7_recent(next_text)
         assert_p20_t6_recent(next_text)
         assert_p20_t5_recent(next_text)
@@ -830,6 +840,10 @@ def assert_p20_t7_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P20-T7 CodeGraph Compatibility Guard" in next_text
 
 
+def assert_p20_t8_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P20-T8 DocC Warning Cleanup" in next_text
+
+
 def assert_p20_t7_recent(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "`P20-T7` added the pinned `codegraph-compatibility-report` guard" in next_text
@@ -842,6 +856,36 @@ def assert_p20_t7_recent(next_text: str) -> None:
     assert "indexing third-party repositories in ordinary CI" in normalized
 
 
+def assert_p20_t8_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P20-T8` cleaned up stale DocC warnings" in next_text
+    assert "AcceptedPackageUpdateProposals" in next_text
+    assert "symbol-page heading" in normalized
+    assert "normal documentation article" in normalized
+    assert "RealRepositoryQualityReport" in next_text
+    assert "double-backtick markup" in normalized
+    assert "inline code markup" in normalized
+    assert "DocC static generation now completes with no `warning:` output" in normalized
+    assert "python -m spec_harvester quality-report" in next_text
+    assert "specpm validate" in next_text
+
+
+def assert_phase_20_t8_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P20-T8 DocC Warning Cleanup" in next_text
+    assert "**Status:** Active" in next_text
+    assert "Phase 20. Scoped Source Unit Harvesting" in next_text
+    assert "AcceptedPackageUpdateProposals" in next_text
+    assert "symbol page heading" in normalized
+    assert "RealRepositoryQualityReport" in next_text
+    assert "python -m spec_harvester quality-report" in next_text
+    assert "specpm validate" in next_text
+    assert "runtime behavior" in normalized
+    assert "registry behavior" in normalized
+    assert "SpecPM handoff contracts" in normalized
+    assert "without those stale warnings" in normalized
+
+
 def assert_phase_20_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 20 Complete" in next_text
@@ -852,6 +896,7 @@ def assert_phase_20_complete(next_text: str) -> None:
     assert "source-unit draft intent boundaries" in normalized
     assert "explicit opt-in CodeGraph source graph adapter" in normalized
     assert "pinned CodeGraph compatibility guard" in normalized
+    assert "clean DocC generation" in normalized
     assert "Ordinary CI does not install CodeGraph" in normalized
 
 
@@ -4724,6 +4769,9 @@ def test_docc_and_github_docs_cover_accepted_package_update_proposals() -> None:
             "SpecPMRegistryAcceptanceDecision",
         ):
             assert required in text
+        if path == docc_doc:
+            assert text.startswith("# Accepted Package Update Proposals")
+            assert "# ``AcceptedPackageUpdateProposals``" not in text
 
     assert "<doc:AcceptedPackageUpdateProposals>" in root_page.read_text(encoding="utf-8")
     assert "<doc:AcceptedPackageUpdateProposals>" in workflow_page.read_text(encoding="utf-8")
@@ -5010,6 +5058,11 @@ def test_real_repository_quality_report_docs_cover_required_fields() -> None:
             "must not be committed",
         ):
             assert required in text, f"Required term {required!r} not found in {path}"
+        if path == docc_doc:
+            assert "`python -m spec_harvester quality-report`" in text
+            assert "`specpm validate`" in text
+            assert "``python -m spec_harvester quality-report``" not in text
+            assert "``specpm validate``" not in text
 
     assert "REAL_REPOSITORY_QUALITY_REPORT.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:RealRepositoryQualityReport>" in docc_root.read_text(encoding="utf-8")

@@ -91,6 +91,7 @@
 | P20-T5 | [P20-T5_Scoped_Source-Unit_Draft_Intent_Boundaries/](P20-T5_Scoped_Source-Unit_Draft_Intent_Boundaries/) | 2026-06-14 | PASS |
 | P20-T6 | [P20-T6_CodeGraph_Adapter_Boundary/](P20-T6_CodeGraph_Adapter_Boundary/) | 2026-06-14 | PASS |
 | P20-T7 | [P20-T7_CodeGraph_Compatibility_Guard/](P20-T7_CodeGraph_Compatibility_Guard/) | 2026-06-14 | PASS |
+| P20-T8 | [P20-T8_DocC_Warning_Cleanup/](P20-T8_DocC_Warning_Cleanup/) | 2026-06-14 | PASS |
 | P21-T1 | [P21-T1_Producer_Candidate_Bundle_Output_Planning/](P21-T1_Producer_Candidate_Bundle_Output_Planning/) | 2026-06-02 | PASS |
 | P21-T2 | [P21-T2_Producer_Receipt_Emission/](P21-T2_Producer_Receipt_Emission/) | 2026-06-02 | PASS |
 | P21-T3 | [P21-T3_Validation_and_Diagnostics_Report_Emission/](P21-T3_Validation_and_Diagnostics_Report_Emission/) | 2026-06-02 | PASS |
@@ -155,6 +156,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t8_docc_warning_cleanup.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t7_codegraph_compatibility_guard.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t6_codegraph_adapter_boundary.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t5_scoped_source_unit_draft_intent_boundaries.md` |
@@ -237,6 +239,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P20-T8 | Archived REVIEW_p20_t8_docc_warning_cleanup report |
+| 2026-06-14 | P20-T8 | Archived DocC Warning Cleanup (PASS) |
 | 2026-06-14 | P20-T7 | Archived REVIEW_p20_t7_codegraph_compatibility_guard report |
 | 2026-06-14 | P20-T7 | Archived CodeGraph Compatibility Guard (PASS) |
 | 2026-06-14 | P20-T6 | Archived REVIEW_p20_t6_codegraph_adapter_boundary report |
