@@ -440,6 +440,15 @@ The expected future report is `SpecPMSelectedCandidateHandoffPreflightReport`
 with `apiVersion: specpm.selected-candidate-handoff-preflight/v0`, and a pass
 means internally consistent review evidence, not package acceptance.
 
+P31-T5 records deferred selected-candidate regeneration requirements in
+[`DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md`](DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md)
+and the
+`SpecHarvesterDeferredSelectedCandidateRegenerationRequirements` fixture with
+`apiVersion: spec-harvester.deferred-selected-candidate-regeneration-requirements/v0`.
+The requirements cover package-set identity regeneration, warning-bearing
+enrichment regeneration, and identity-drift resolution before deferred
+candidates can enter selected handoff.
+
 ## Non-Goals
 
 SpecHarvester does not:

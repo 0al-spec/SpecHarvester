@@ -1,0 +1,249 @@
+{
+  "apiVersion": "spec-harvester.deferred-selected-candidate-regeneration-requirements/v0",
+  "kind": "SpecHarvesterDeferredSelectedCandidateRegenerationRequirements",
+  "schemaVersion": 1,
+  "authority": "producer_preview_evidence_only",
+  "source": {
+    "candidateLayerTriage": {
+      "path": "tests/fixtures/limited_popular_library_candidate_layer_triage/p30-t4-limited-popular-libraries.example.json",
+      "digest": "sha256:f78fdc1e94f1fe14100b42b908d76b5a3d02729189f65a7f381bc8535666af58"
+    },
+    "selectedHandoffDryRun": {
+      "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
+      "digest": "sha256:05522256a4a1940f0f80b510674efc686e2996f178692e589a51757e0f2922b0"
+    },
+    "selectedHandoffProposal": {
+      "path": "tests/fixtures/selected_candidate_handoff_proposal/p31-t3-real-selected-candidate-handoff.example.json",
+      "digest": "sha256:c7202874cbd964c6673d91ac44ab1ff69fa9f2e13a642b57f8e508158cb10d54"
+    }
+  },
+  "summary": {
+    "deferredCandidateCount": 6,
+    "packageSetIdentityRegenerationCount": 4,
+    "warningBearingRegenerationCount": 1,
+    "identityDriftResolutionCount": 1,
+    "selectedHandoffEligibleNowCount": 0,
+    "registryMutationCount": 0,
+    "specpmPullRequestCreated": false
+  },
+  "requirements": [
+    {
+      "candidateId": "xyflow.workspace",
+      "repositoryId": "xyflow",
+      "currentClassification": "needs_regeneration",
+      "handoffStatus": "excluded_from_selected_handoff",
+      "blockerClass": "package_set_identity_regeneration",
+      "findingCodes": ["package_set_id_missing"],
+      "requiredBeforeSelectedHandoff": [
+        "Regenerate package-set AI draft evidence with package-set identity.",
+        "Regenerate or verify package-set AI enrichment against the regenerated package-set bundle.",
+        "Re-run bundle-set preflight and require passed status with zero warnings and zero errors.",
+        "Re-render package-set static viewer and require status ok.",
+        "Re-run selected-candidate handoff proposal only after all selected members pass producer-side gates."
+      ],
+      "requiredEvidenceRoles": [
+        "package_set_draft",
+        "package_relation_proposals",
+        "bundle_set_preflight",
+        "package_set_viewer",
+        "package_set_ai_draft_proposal",
+        "package_set_ai_enrichment_proposal",
+        "member_quality_report"
+      ],
+      "minimumProofBeforeSelection": {
+        "previewOnly": true,
+        "producerPreflightStatus": "passed",
+        "producerPreflightWarningCount": 0,
+        "producerPreflightErrorCount": 0,
+        "staticViewerStatus": "ok",
+        "registryAcceptanceDecision": "external_required"
+      }
+    },
+    {
+      "candidateId": "xyflow.react",
+      "repositoryId": "xyflow",
+      "currentClassification": "needs_regeneration",
+      "handoffStatus": "excluded_from_selected_handoff",
+      "blockerClass": "package_set_identity_regeneration",
+      "findingCodes": ["package_set_id_missing"],
+      "requiredBeforeSelectedHandoff": [
+        "Regenerate member evidence from a package-set AI draft that carries package-set identity.",
+        "Verify the member remains attached to xyflow.workspace through a contains relation.",
+        "Re-run member producer preflight and require passed status with zero warnings and zero errors.",
+        "Re-render member static viewer and require status ok."
+      ],
+      "requiredEvidenceRoles": [
+        "member_candidate_bundle",
+        "member_manifest",
+        "member_producer_receipt",
+        "member_quality_report",
+        "member_producer_preflight",
+        "package_relation_summary"
+      ],
+      "minimumProofBeforeSelection": {
+        "previewOnly": true,
+        "producerPreflightStatus": "passed",
+        "producerPreflightWarningCount": 0,
+        "producerPreflightErrorCount": 0,
+        "staticViewerStatus": "ok",
+        "registryAcceptanceDecision": "external_required"
+      }
+    },
+    {
+      "candidateId": "xyflow.svelte",
+      "repositoryId": "xyflow",
+      "currentClassification": "needs_regeneration",
+      "handoffStatus": "excluded_from_selected_handoff",
+      "blockerClass": "package_set_identity_regeneration",
+      "findingCodes": ["package_set_id_missing"],
+      "requiredBeforeSelectedHandoff": [
+        "Regenerate member evidence from a package-set AI draft that carries package-set identity.",
+        "Verify the member remains attached to xyflow.workspace through a contains relation.",
+        "Re-run member producer preflight and require passed status with zero warnings and zero errors.",
+        "Re-render member static viewer and require status ok."
+      ],
+      "requiredEvidenceRoles": [
+        "member_candidate_bundle",
+        "member_manifest",
+        "member_producer_receipt",
+        "member_quality_report",
+        "member_producer_preflight",
+        "package_relation_summary"
+      ],
+      "minimumProofBeforeSelection": {
+        "previewOnly": true,
+        "producerPreflightStatus": "passed",
+        "producerPreflightWarningCount": 0,
+        "producerPreflightErrorCount": 0,
+        "staticViewerStatus": "ok",
+        "registryAcceptanceDecision": "external_required"
+      }
+    },
+    {
+      "candidateId": "xyflow.system",
+      "repositoryId": "xyflow",
+      "currentClassification": "needs_regeneration",
+      "handoffStatus": "excluded_from_selected_handoff",
+      "blockerClass": "package_set_identity_regeneration",
+      "findingCodes": ["package_set_id_missing"],
+      "requiredBeforeSelectedHandoff": [
+        "Regenerate member evidence from a package-set AI draft that carries package-set identity.",
+        "Verify the member remains attached to xyflow.workspace through a contains relation.",
+        "Re-run member producer preflight and require passed status with zero warnings and zero errors.",
+        "Re-render member static viewer and require status ok."
+      ],
+      "requiredEvidenceRoles": [
+        "member_candidate_bundle",
+        "member_manifest",
+        "member_producer_receipt",
+        "member_quality_report",
+        "member_producer_preflight",
+        "package_relation_summary"
+      ],
+      "minimumProofBeforeSelection": {
+        "previewOnly": true,
+        "producerPreflightStatus": "passed",
+        "producerPreflightWarningCount": 0,
+        "producerPreflightErrorCount": 0,
+        "staticViewerStatus": "ok",
+        "registryAcceptanceDecision": "external_required"
+      }
+    },
+    {
+      "candidateId": "cupertino.core",
+      "repositoryId": "cupertino",
+      "currentClassification": "needs_regeneration",
+      "handoffStatus": "excluded_from_selected_handoff",
+      "blockerClass": "warning_bearing_enrichment_regeneration",
+      "findingCodes": ["refined_summary_missing"],
+      "requiredBeforeSelectedHandoff": [
+        "Regenerate AI enrichment until refined summary evidence is present and diagnostics are clean.",
+        "Alternatively attach author-curated summary evidence and mark the model gap as resolved by review.",
+        "Re-run candidate bundle preflight and require passed status with zero warnings and zero errors.",
+        "Re-render static viewer and require status ok."
+      ],
+      "requiredEvidenceRoles": [
+        "candidate_bundle",
+        "producer_receipt",
+        "validation_report",
+        "diagnostics",
+        "quality_report",
+        "producer_preflight",
+        "static_viewer",
+        "author_curated_summary"
+      ],
+      "minimumProofBeforeSelection": {
+        "previewOnly": true,
+        "producerPreflightStatus": "passed",
+        "producerPreflightWarningCount": 0,
+        "producerPreflightErrorCount": 0,
+        "staticViewerStatus": "ok",
+        "registryAcceptanceDecision": "external_required"
+      }
+    },
+    {
+      "candidateId": "navigation_split_view.core",
+      "repositoryId": "navigation-split-view",
+      "currentClassification": "needs_regeneration",
+      "handoffStatus": "excluded_from_selected_handoff",
+      "blockerClass": "identity_drift_resolution",
+      "findingCodes": ["package_set_id_missing", "package_id_hint_mismatch"],
+      "requiredBeforeSelectedHandoff": [
+        "Choose and document the canonical package id before handoff.",
+        "Resolve navigation-split-view.core versus navigation_split_view.core normalization.",
+        "Regenerate deterministic, AI draft, and enrichment evidence under the canonical package id.",
+        "Reject or alias the non-canonical id explicitly before selected handoff.",
+        "Re-run candidate bundle preflight and require passed status with zero warnings and zero errors.",
+        "Re-render static viewer and require status ok."
+      ],
+      "requiredEvidenceRoles": [
+        "candidate_bundle",
+        "manifest",
+        "producer_receipt",
+        "validation_report",
+        "diagnostics",
+        "quality_report",
+        "producer_preflight",
+        "static_viewer",
+        "identity_resolution_note"
+      ],
+      "minimumProofBeforeSelection": {
+        "previewOnly": true,
+        "producerPreflightStatus": "passed",
+        "producerPreflightWarningCount": 0,
+        "producerPreflightErrorCount": 0,
+        "staticViewerStatus": "ok",
+        "registryAcceptanceDecision": "external_required"
+      }
+    }
+  ],
+  "selectionPolicy": {
+    "mayEnterSelectedHandoffWhen": [
+      "currentClassification is no longer needs_regeneration",
+      "handoffStatus is selected_candidate_ready",
+      "all required evidence roles for the blocker class are present",
+      "producer preflight status is passed with zero warnings and zero errors",
+      "static viewer status is ok",
+      "registryAcceptanceDecision.status remains external_required",
+      "preview_only is preserved until SpecPM maintainer acceptance"
+    ],
+    "mustRemainDeferredWhen": [
+      "package-set identity remains missing",
+      "warning-bearing enrichment evidence is unresolved",
+      "package id normalization or identity drift is unresolved",
+      "producer preflight has warnings or errors",
+      "static viewer output is missing",
+      "operator cannot point to regenerated evidence digests"
+    ]
+  },
+  "nonAuthority": {
+    "regenerationRequirementsOnly": true,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "publishesRegistryMetadata": false,
+    "createsSpecPMPullRequest": false,
+    "replacesMaintainerReview": false
+  }
+}

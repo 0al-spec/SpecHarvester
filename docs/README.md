@@ -280,6 +280,9 @@ Published DocC site:
   live P30 LM Studio result and candidate-layer triage input
 - [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md):
   P30 triage decisions and selected dry-run handoff candidates
+- [`DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md`](DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md):
+  P31-T5 requirements for regenerating deferred package-set, warning-bearing,
+  and identity-drift candidates before selected handoff
 
 ## GitHub Process Surface
 
