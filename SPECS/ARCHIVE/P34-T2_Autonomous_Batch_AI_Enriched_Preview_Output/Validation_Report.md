@@ -15,10 +15,10 @@ counts.
 
 | Command | Result |
 | --- | --- |
-| `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py -q` | PASS, `9 passed` |
-| `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py tests/test_ai_enrichment_candidate_patch.py tests/test_docs_contracts.py -q` | PASS, `111 passed` |
-| `PYTHONPATH=src pytest -q` | PASS, `716 passed, 1 skipped` |
-| `PYTHONPATH=src pytest --cov=src --cov-report=term-missing -q` | PASS, `716 passed, 1 skipped`, total coverage `91%` |
+| `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py -q` | PASS, `10 passed` |
+| `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py tests/test_ai_enrichment_candidate_patch.py tests/test_docs_contracts.py -q` | PASS, `112 passed` |
+| `PYTHONPATH=src pytest -q` | PASS, `717 passed, 1 skipped` |
+| `PYTHONPATH=src pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90 -q` | PASS, `717 passed, 1 skipped`, total coverage `90.96%` |
 | `PYTHONPATH=src ruff check .` | PASS |
 | `PYTHONPATH=src ruff format --check src tests` | PASS |
 | `git diff --check` | PASS |

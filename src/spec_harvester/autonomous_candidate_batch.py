@@ -576,6 +576,12 @@ def repository_status(record: dict[str, Any]) -> str:
             "skipped",
         }:
             return "failed"
+    enriched_preview = record.get("aiEnrichedPreview")
+    if isinstance(enriched_preview, dict) and enriched_preview.get("status") not in {
+        "prepared",
+        "skipped",
+    }:
+        return "failed"
     return "passed"
 
 

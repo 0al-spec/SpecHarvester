@@ -283,6 +283,47 @@ def test_autonomous_candidate_batch_skips_warning_ai_enrichment_application(
     assert not (output / "package-sets" / "demo" / "enriched").exists()
 
 
+def test_autonomous_candidate_batch_failed_ai_enrichment_application_fails_repository(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_package_set_ai_draft_proposal",
+        lambda _options: completed_ai_draft_proposal(),
+    )
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_package_set_ai_enrichment_proposal",
+        lambda _options: completed_ai_enrichment_proposal("demo.workspace"),
+    )
+
+    def fail_patch(_options: object) -> dict[str, object]:
+        raise RuntimeError("unexpected patch failure")
+
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_ai_enrichment_candidate_patch",
+        fail_patch,
+    )
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            lm_studio_model="openai/gpt-oss-20b",
+            apply_ai_enrichment=True,
+        )
+    )
+
+    enriched = report["repositories"][0]["aiEnrichedPreview"]
+    assert report["status"] == "failed"
+    assert report["repositories"][0]["status"] == "failed"
+    assert enriched["status"] == "failed"
+    assert enriched["summary"]["failedCount"] == 3
+    assert enriched["failed"][0]["reason"] == "ai_enrichment_patch_failed"
+
+
 def test_autonomous_candidate_batch_cli_writes_report(
     tmp_path: Path,
     capsys,
