@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P20-T7 CodeGraph Compatibility Guard" in next_text:
+        assert_p20_t6_last_archived(next_text)
+        assert_p20_t6_recent(next_text)
+        assert_p20_t5_recent(next_text)
+        assert_phase_20_t7_active(next_text)
+        return
+
     if "# Next Task: P20-T6 CodeGraph Adapter Boundary" in next_text:
         assert_p20_t5_last_archived(next_text)
         assert_p20_t5_recent(next_text)
@@ -786,6 +793,29 @@ def assert_phase_20_t6_active(next_text: str) -> None:
     assert "explicit opt-in CodeGraph adapter boundary" in normalized
     assert "never installs or downloads tools" in normalized
     assert "source_graph_index" in next_text
+
+
+def assert_p20_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P20-T6 CodeGraph Adapter Boundary" in next_text
+
+
+def assert_p20_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P20-T6` added the explicit opt-in `codegraph-source-graph-index`" in next_text
+    assert "pre-existing CodeGraph JSON or SQLite evidence" in normalized
+    assert "untrusted optional-tool provenance" in normalized
+    assert "without installing CodeGraph" in normalized
+    assert "without" in normalized and "indexing repositories in CI" in normalized
+
+
+def assert_phase_20_t7_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P20-T7 CodeGraph Compatibility Guard" in next_text
+    assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 20. Scoped Source Unit Harvesting" in next_text
+    assert "pinned CodeGraph interface compatibility guard" in normalized
+    assert "CLI JSON flags" in normalized
+    assert "without indexing third-party projects in ordinary CI" in normalized
 
 
 def assert_p26_t5_archived(next_text: str) -> None:

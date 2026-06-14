@@ -70,3 +70,7 @@ Implement an explicit opt-in CodeGraph adapter boundary that:
 - Coverage gate with `--cov-fail-under=90`.
 - Swift package manifest and docs target build.
 - Advisory architecture lint if a new module or CLI command object is added.
+
+---
+**Archived:** 2026-06-14
+**Verdict:** PASS
