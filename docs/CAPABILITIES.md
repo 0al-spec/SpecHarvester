@@ -33,7 +33,7 @@ local repository checkout
 | AI-enriched preview candidate copies | Apply clean AI enrichment proposals into copied preview candidates with patch reports for review. | [`AI_ENRICHMENT_CANDIDATE_PATCH.md`](AI_ENRICHMENT_CANDIDATE_PATCH.md) |
 | Selected/deferred candidate triage | Separate review-ready candidates from candidates that need targeted regeneration, repair, or explicit deferral. | [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md), [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md) |
 | SpecPM handoff evidence | Emit portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md), [`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md) |
-| Bounded corpus runs | Select important multi-ecosystem repository/package-family targets with explicit importance signals and exclusion rules, record the machine-readable corpus plan, then run operator-selected local checkout batches with deterministic and optional live local-model paths. | [`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md), [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md), [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md) |
+| Bounded corpus runs | Select important multi-ecosystem repository/package-family targets with explicit importance signals and exclusion rules, record the machine-readable corpus plan, then run operator-selected local checkout batches with deterministic and optional live local-model paths. | [`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md), [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md), [`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md), [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md) |
 | Optional CodeGraph input boundary | Normalize pre-existing CodeGraph artifacts into source graph evidence and check pinned interface compatibility offline. | [`CODEGRAPH_SOURCE_GRAPH_ADAPTER.md`](CODEGRAPH_SOURCE_GRAPH_ADAPTER.md), [`CODEGRAPH_COMPATIBILITY_GUARD.md`](CODEGRAPH_COMPATIBILITY_GUARD.md) |
 
 ## Repository Shapes
@@ -72,6 +72,11 @@ decisions before any autonomous batch run starts.
 [`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](CANDIDATE_SOURCE_CLASSIFIER_PLAN.md)
 defines how package-like units inside selected repositories should be
 classified before drafting.
+
+[`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md)
+records the first bounded seed set across JavaScript/TypeScript, Python, Rust,
+Go, and Swift. It is a plan for future local-checkout runs, not permission to
+clone repositories or publish registry metadata.
 
 ## Author-Ready Draft Boundary
 
@@ -177,7 +182,8 @@ For a practical path through the current system:
    [`PACKAGE_SET_AI_ENRICHMENT.md`](PACKAGE_SET_AI_ENRICHMENT.md) for monorepos.
 5. Use [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md)
    and [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md) when preparing SpecPM review.
-6. Use [`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md) and
-   [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md), then check
-   [`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](CANDIDATE_SOURCE_CLASSIFIER_PLAN.md)
+6. Use [`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md),
+   [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md),
+   [`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](CANDIDATE_SOURCE_CLASSIFIER_PLAN.md),
+   and [`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md)
    before running any larger corpus.

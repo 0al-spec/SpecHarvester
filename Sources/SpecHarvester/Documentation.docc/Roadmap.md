@@ -353,9 +353,9 @@ The planned work starts with `P35-T1`, <doc:CorpusSelectionPolicy>, which define
 importance signals, exclusion rules, ecosystem quotas, local checkout
 requirements, and producer-evidence boundaries. `P35-T2` defines
 <doc:SpecHarvesterCorpusPlan>, and `P35-T3` defines candidate source
-classification through <doc:CandidateSourceClassifierPlan>. Follow-up tasks define a bounded
-multi-ecosystem seed corpus, explainable corpus selection reports, and dry-run
-readiness checks.
+classification through <doc:CandidateSourceClassifierPlan>. `P35-T4` records
+the bounded seed corpus in <doc:MultiEcosystemSeedCorpusPlan>. Follow-up tasks
+define explainable corpus selection reports and dry-run readiness checks.
 
 This phase explicitly covers JavaScript/TypeScript, Python, Rust, Go, and at
 least one additional ecosystem. It also records why registry search noise such

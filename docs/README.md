@@ -228,6 +228,9 @@ Published DocC site:
     Phase 35 classifier plan for package-set roots, primary packages, plugins,
     examples, tooling, type-only packages, generated artifacts, internal
     utilities, deprecated sources, evidence-only units, and allowed actions
+73. [`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md):
+    first bounded Phase 35 seed corpus plan across JavaScript/TypeScript,
+    Python, Rust, Go, and Swift
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

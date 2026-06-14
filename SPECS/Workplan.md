@@ -1339,7 +1339,7 @@ Acceptance:
   primary packages, package-set roots, plugins, examples, tooling, type-only
   packages, generated artifacts, internal utilities, and deprecated sources
   before drafting.
-- [ ] `P35-T4` Create the first multi-ecosystem seed corpus plan with a small
+- [x] `P35-T4` Create the first multi-ecosystem seed corpus plan with a small
   bounded set of important repositories across JavaScript/TypeScript, Python,
   Rust, Go, and at least one additional ecosystem, without cloning, fetching,
   installing dependencies, executing harvested code, or publishing registry

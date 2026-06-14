@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P35-T5 Explainable Corpus Selection Report" in next_text:
+        assert_p35_t4_last_archived(next_text)
+        assert_p35_t4_recent(next_text)
+        assert_phase_35_t5_planned(next_text)
+        return
+
     if "# Next Task: P35-T4 Multi-Ecosystem Seed Corpus Plan" in next_text:
         assert_p35_t3_last_archived(next_text)
         assert_p35_t3_recent(next_text)
@@ -2372,7 +2378,8 @@ def assert_p35_t3_recent(next_text: str) -> None:
 def assert_phase_35_t4_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P35-T4 Multi-Ecosystem Seed Corpus Plan" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P35-T4-seed-corpus-plan`" in next_text
     assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
     assert "`P35-T4` Create the first multi-ecosystem seed corpus plan" in next_text
     assert "JavaScript/TypeScript, Python, Rust, Go" in normalized
@@ -2390,6 +2397,46 @@ def assert_phase_35_t4_planned(next_text: str) -> None:
     assert "registry publication" in normalized
     assert "`preview_only` removal" in normalized
     assert "AI output as registry truth" in normalized
+
+
+def assert_p35_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P35-T4 Multi-Ecosystem Seed Corpus Plan" in next_text
+
+
+def assert_p35_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P35-T4` added" in next_text
+    assert "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md" in next_text
+    assert "MultiEcosystemSeedCorpusPlan" in next_text
+    assert "p35-t4-seed-corpus-plan.example.json" in next_text
+    assert "react.workspace" in next_text
+    assert "fastapi.core" in next_text
+    assert "serde.core" in next_text
+    assert "gin.core" in next_text
+    assert "swift_argument_parser.core" in next_text
+    assert "selected, deferred, and rejected" in normalized
+    assert "classifierExpectations" in next_text
+    assert "operator-managed pinned local checkouts" in normalized
+    assert "non-authority" in normalized
+
+
+def assert_phase_35_t5_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P35-T5 Explainable Corpus Selection Report" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
+    assert "`P35-T5` Add an explainable corpus selection report" in next_text
+    assert "selected sources" in normalized
+    assert "deferred sources" in normalized
+    assert "rejected sources" in normalized
+    assert "importance signals" in normalized
+    assert "exclusion reasons" in normalized
+    assert "quota decisions" in normalized
+    assert "downstream autonomous-batch command plan" in normalized
+    assert "does not run collection" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
@@ -10834,4 +10881,237 @@ def test_candidate_source_classifier_plan_contract_is_documented() -> None:
     assert "CandidateSourceClassifierPlan" in capabilities_docc.read_text(encoding="utf-8")
     assert "CANDIDATE_SOURCE_CLASSIFIER_PLAN.md" in roadmap.read_text(encoding="utf-8")
     assert "CandidateSourceClassifierPlan" in roadmap_docc.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_multi_ecosystem_seed_corpus_plan_is_documented() -> None:
+    github_doc = ROOT / "docs" / "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "MultiEcosystemSeedCorpusPlan.md"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "multi_ecosystem_seed_corpus_plan"
+        / "p35-t4-seed-corpus-plan.example.json"
+    )
+    corpus_plan = ROOT / "docs" / "SPECHARVESTER_CORPUS_PLAN.md"
+    corpus_plan_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvesterCorpusPlan.md"
+    )
+    classifier_plan = ROOT / "docs" / "CANDIDATE_SOURCE_CLASSIFIER_PLAN.md"
+    classifier_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "CandidateSourceClassifierPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "SpecHarvesterCorpusPlan",
+            "spec-harvester.corpus-plan/v0",
+            "producer_corpus_plan_only",
+            "p35-t4-seed-corpus-plan.example.json",
+            "SPECHARVESTER_CORPUS_PLAN.md" if path == github_doc else "SpecHarvesterCorpusPlan",
+            "CANDIDATE_SOURCE_CLASSIFIER_PLAN.md"
+            if path == github_doc
+            else "CandidateSourceClassifierPlan",
+            "react.workspace",
+            "fastapi.core",
+            "serde.core",
+            "gin.core",
+            "swift_argument_parser.core",
+            "types_only_package",
+            "registry_search_noise",
+            "classifierExpectations",
+            "operator-managed pinned local checkout",
+            "JavaScript/TypeScript, Python, Rust, Go, and Swift",
+            "does not clone repositories",
+            "install dependencies",
+            "execute harvested code",
+            "publish registry metadata",
+            "accept packages",
+            "accept relations",
+            "remove `preview_only`",
+            "registry truth",
+            "P35-T5",
+            "P35-T6",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.corpus-plan/v0"
+    assert payload["kind"] == "SpecHarvesterCorpusPlan"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_corpus_plan_only"
+    assert payload["corpus"]["name"] == "phase35-seed-corpus"
+    assert payload["corpus"]["purpose"] == "curated_multi_ecosystem_author_ready_starter_specs"
+    assert payload["corpus"]["selectionMode"] == "curated_seed_plan_with_classifier_expectations"
+    assert payload["corpus"]["summary"] == {
+        "selectedSourceCount": 5,
+        "deferredSourceCount": 2,
+        "rejectedSourceCount": 1,
+    }
+    assert payload["corpus"]["downstreamCommandPlan"] == {
+        "command": "autonomous-candidate-batch",
+        "requiresPinnedLocalCheckouts": True,
+        "defaultAiMode": "operator_selected",
+        "mayApplyAiEnrichment": True,
+        "requiresExplainableSelectionReport": True,
+        "requiresDryRunReadinessCheck": True,
+    }
+    assert payload["corpus"]["contractReferences"] == [
+        {
+            "path": "docs/SPECHARVESTER_CORPUS_PLAN.md",
+            "apiVersion": "spec-harvester.corpus-plan/v0",
+            "kind": "SpecHarvesterCorpusPlan",
+        },
+        {
+            "path": "docs/CANDIDATE_SOURCE_CLASSIFIER_PLAN.md",
+            "apiVersion": "spec-harvester.source-classification-plan/v0",
+            "kind": "SpecHarvesterCandidateSourceClassificationPlan",
+        },
+    ]
+
+    sources = payload["sources"]
+    assert len(sources) == 8
+    assert {item["status"] for item in sources} == {"selected", "deferred", "rejected"}
+    selected = {item["id"]: item for item in sources if item["status"] == "selected"}
+    assert set(selected) == {"react", "fastapi", "serde", "gin", "swift-argument-parser"}
+    assert {item["ecosystem"] for item in selected.values()} == {
+        "npm",
+        "pypi",
+        "crates",
+        "go",
+        "swift",
+    }
+    assert {item["packageFamily"] for item in selected.values()} == {
+        "react.workspace",
+        "fastapi.core",
+        "serde.core",
+        "gin.core",
+        "swift_argument_parser.core",
+    }
+    assert {item["id"] for item in sources if item["status"] == "deferred"} == {
+        "types-react",
+        "radix-ui-internal-primitives",
+    }
+    assert {item["id"] for item in sources if item["status"] == "rejected"} == {
+        "react-internal-test-utils"
+    }
+
+    allowed_classes = {
+        "package_set_root",
+        "primary_package",
+        "plugin_package",
+        "example_package",
+        "tooling_package",
+        "types_only_package",
+        "generated_artifact",
+        "internal_utility",
+        "deprecated_source",
+        "evidence_only",
+    }
+    allowed_actions = {
+        "select_primary",
+        "select_member",
+        "defer",
+        "exclude",
+        "include_as_evidence_only",
+    }
+    required_non_authority = [
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_execute_harvested_code",
+        "does_not_publish_registry_metadata",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_ai_output_as_registry_truth",
+    ]
+    assert payload["nonAuthorityStatements"] == required_non_authority
+
+    for source in sources:
+        assert source["id"]
+        assert source["ecosystem"]
+        assert source["repository"].startswith("https://github.com/")
+        assert source["packageFamily"]
+        assert source["categories"]
+        assert source["classifierExpectations"]
+        assert set(source) >= {
+            "localCheckout",
+            "selectedBecause",
+            "deferredBecause",
+            "rejectedBecause",
+            "excludedSubpackages",
+            "expectedAnalyzerCoverage",
+            "stopConditions",
+        }
+        checkout = source["localCheckout"]
+        assert checkout["required"] is True
+        assert checkout["allowMutableRef"] is False
+        assert checkout["revisionRequiredBeforeRun"] is True
+        assert len(checkout["revision"]) == 40
+        for expectation in source["classifierExpectations"]:
+            assert expectation["unitId"]
+            assert expectation["class"] in allowed_classes
+            assert expectation["action"] in allowed_actions
+            assert isinstance(expectation["required"], bool)
+        if source["status"] == "selected":
+            assert source["selectedBecause"]
+            assert source["expectedAnalyzerCoverage"]
+            assert "missing_pinned_local_checkout" in source["stopConditions"]
+            assert "source_revision_mismatch" in source["stopConditions"]
+        if source["status"] == "deferred":
+            assert source["deferredBecause"]
+            assert "selection_rationale_missing" in source["stopConditions"]
+        if source["status"] == "rejected":
+            assert source["rejectedBecause"] == ["test_fixture", "registry_search_noise"]
+            assert not source["expectedAnalyzerCoverage"]
+
+    assert any(
+        expectation["class"] == "package_set_root"
+        for source in sources
+        for expectation in source["classifierExpectations"]
+    )
+    assert any(
+        expectation["action"] == "select_member"
+        for source in sources
+        for expectation in source["classifierExpectations"]
+    )
+    assert any(
+        item["reason"] == "build_tooling"
+        for source in sources
+        for item in source["excludedSubpackages"]
+    )
+
+    assert "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md" in corpus_plan.read_text(encoding="utf-8")
+    assert "MultiEcosystemSeedCorpusPlan" in corpus_plan_docc.read_text(encoding="utf-8")
+    assert "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md" in classifier_plan.read_text(encoding="utf-8")
+    assert "MultiEcosystemSeedCorpusPlan" in classifier_plan_docc.read_text(encoding="utf-8")
+    assert "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:MultiEcosystemSeedCorpusPlan>" in docc_root.read_text(encoding="utf-8")
+    assert "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md" in capabilities.read_text(encoding="utf-8")
+    assert "MultiEcosystemSeedCorpusPlan" in capabilities_docc.read_text(encoding="utf-8")
+    assert "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md" in roadmap.read_text(encoding="utf-8")
+    assert "MultiEcosystemSeedCorpusPlan" in roadmap_docc.read_text(encoding="utf-8")
     assert_current_next_task(next_task.read_text(encoding="utf-8"))

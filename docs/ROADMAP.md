@@ -597,7 +597,9 @@ Tasks:
   `tests/fixtures/source_classifier_plan/p35-t3-source-classifier-plan.example.json`);
 - create `P35-T4`, the first bounded multi-ecosystem seed corpus plan across
   JavaScript/TypeScript, Python, Rust, Go, and at least one additional
-  ecosystem;
+  ecosystem
+  ([`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md),
+  `tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json`);
 - add `P35-T5`, an explainable corpus selection report that records selected,
   rejected, and deferred sources with importance signals, exclusion reasons,
   quota decisions, and the downstream autonomous-batch command plan;

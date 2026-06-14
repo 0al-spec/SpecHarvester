@@ -93,6 +93,6 @@ The example fixture is
 
 ## Follow-Up Work
 
-This plan enables `P35-T4` first multi-ecosystem seed corpus planning,
-`P35-T5` explainable corpus selection reports, and `P35-T6` selected corpus
-dry-run readiness.
+This plan enables `P35-T4` <doc:MultiEcosystemSeedCorpusPlan>, `P35-T5`
+explainable corpus selection reports, and `P35-T6` selected corpus dry-run
+readiness.
