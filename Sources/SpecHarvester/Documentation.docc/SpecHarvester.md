@@ -95,6 +95,7 @@ The canonical source files remain in the repository:
 - `docs/LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`
 - `docs/SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`
 - `docs/SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md`
+- `docs/SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -173,6 +174,7 @@ the host.
 - <doc:LimitedPopularLibrarySelectedHandoffDryRun>
 - <doc:SelectedCandidateHandoffProposal>
 - <doc:SelectedCandidateHandoffProposalP31T3>
+- <doc:SelectedCandidateHandoffPreflightExpectations>
 - <doc:SinglePackageCandidateFallback>
 - <doc:ProposalAutomation>
 

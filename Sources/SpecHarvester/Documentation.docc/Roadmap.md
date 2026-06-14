@@ -174,6 +174,12 @@ and <doc:SelectedCandidateHandoffProposalP31T3>. That artifact covers
 `flask.core`, `gin.core`, and `docc2context.core` only; the deferred P30
 candidates remain excluded until regeneration.
 
+P31-T4 records downstream SpecPM-side preflight expectations in
+<doc:SelectedCandidateHandoffPreflightExpectations>. The expected future
+report is `SpecPMSelectedCandidateHandoffPreflightReport` with
+`apiVersion: specpm.selected-candidate-handoff-preflight/v0`, and a pass means
+internally consistent review evidence, not package acceptance.
+
 ### Ecosystem Analyzer Depth
 
 Future generator quality should come primarily from deterministic analyzer
