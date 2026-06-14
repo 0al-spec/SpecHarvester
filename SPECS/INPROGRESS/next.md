@@ -4,8 +4,8 @@
 **Phase:** Phase 34. AI-Enabled Candidate Curation
 **Effort:** Medium
 **Dependencies:** P34-T1, P29-T5, P33-T4
-**Status:** Selected
-**Active Branch:** TBD
+**Status:** In Progress
+**Active Branch:** `codex/p34-t2-autonomous-ai-enriched-output`
 **Last Archived:** P34-T1 AI Enrichment Candidate Patch Proposal
 
 ## Recently Archived
