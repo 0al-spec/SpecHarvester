@@ -77,6 +77,7 @@
 | P16-T17 | [P16-T17_Real_Repository_Quality_Rating_Policy_Objects/](P16-T17_Real_Repository_Quality_Rating_Policy_Objects/) | 2026-05-26 | PASS |
 | P16-T18 | [P16-T18_Duplicate_Code_Practical_Minimum_Audit/](P16-T18_Duplicate_Code_Practical_Minimum_Audit/) | 2026-05-26 | PASS |
 | P17-T1 | [P17-T1_Procedural_Style_Metrics_Report/](P17-T1_Procedural_Style_Metrics_Report/) | 2026-05-29 | PASS |
+| P17-T2 | [P17-T2_CLI_Domain_Command_Objects/](P17-T2_CLI_Domain_Command_Objects/) | 2026-06-14 | PASS |
 | P18-T1 | [P18-T1_Swift_Public_API_Analyzer/](P18-T1_Swift_Public_API_Analyzer/) | 2026-05-29 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P20-T1 | [P20-T1_Scoped_Source_Target_Harvesting/](P20-T1_Scoped_Source_Target_Harvesting/) | 2026-05-31 | PASS |
@@ -147,6 +148,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t2_cli_domain_command_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t8_next_corpus_intake_readiness_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t7_durable_next_corpus_selected_handoff_artifact.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t6_next_corpus_specpm_preflight_intake_decision.md` |
@@ -221,6 +223,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P17-T2 | Archived REVIEW_p17_t2_cli_domain_command_objects report |
+| 2026-06-14 | P17-T2 | Archived CLI Domain Command Objects (PASS) |
 | 2026-06-14 | P33-T8 | Archived REVIEW_p33_t8_next_corpus_intake_readiness_decision report |
 | 2026-06-14 | P33-T8 | Archived Next-Corpus Intake Readiness Decision (PASS) |
 | 2026-06-14 | P33-T7 | Archived REVIEW_p33_t7_durable_next_corpus_selected_handoff_artifact report |
