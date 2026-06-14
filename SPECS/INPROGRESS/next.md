@@ -1,10 +1,10 @@
-# Next Task: Phase 26 Complete
+# Next Task: P32-T2 Deferred Candidate Regeneration Runbook
 
-**Status:** Phase Complete
+**Status:** In Progress
 **Selected:** 2026-06-13
-**Task:** Backlog Selection
-**Phase:** Phase 26. Package-Set SpecPM Handoff Automation
-**Last Archived:** P26-T3 Package-Set Proposal Intake Checklist
+**Task:** P32-T2 Deferred Candidate Regeneration Runbook
+**Phase:** Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
+**Last Archived:** P32-T1 Autonomous Deferred Candidate Work Plan
 
 ## Recently Archived
 
@@ -26,17 +26,25 @@
   member evidence roles, `registryAcceptanceDecision.status:
   external_required`, `producerAuthority: evidence_only`, and the rule that
   package member acceptance is separate from relation acceptance.
+- `P32-T1` updated `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md` and
+  `<doc:AutonomousCandidateTechDebtPlan>` as the current Phase 32 plan. It
+  distinguishes completed P29 debt from current P30/P31 deferred-candidate
+  debt, names all six deferred candidates, defines P32-T1 through P32-T7 with
+  repository owners, and keeps broad autonomous scraping, package acceptance,
+  relation acceptance, registry publication, baseline seeding, dependency
+  installation, and harvested-code execution out of scope.
 
 ## Outcome
 
-Phase 26 is complete. SpecHarvester now has package-set handoff proposal
-artifacts, trusted dry-run workflow boundaries, proposal-only AI enrichment,
-proposal-only LLM package-set draft evidence, and a SpecPM-facing package-set
-proposal intake checklist.
+P32-T1 is complete. The deferred candidate work plan now defines the bounded
+sequence for turning P30/P31 deferred candidates into regenerated, repaired, or
+explicitly still-deferred evidence before any broader autonomous scraping.
 
 ## Next Step
 
-No Phase 26 task remains selected. Choose the next backlog task explicitly;
-the current product debt points toward an autonomous/deferred candidate work
-plan that connects the P30/P31 corpus findings to targeted regeneration and
-SpecPM intake readiness.
+Implement `P32-T2`: add the deferred candidate regeneration runbook.
+
+The runbook should map `package_set_identity_regeneration`,
+`warning_bearing_enrichment_regeneration`, and `identity_drift_resolution` to
+safe local commands, expected artifacts, stop conditions, and non-authority
+boundaries before any regeneration run is attempted.

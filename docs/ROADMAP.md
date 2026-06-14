@@ -397,7 +397,7 @@ deferred candidates stay out of the handoff.
 
 ## Milestone 11: Selected Candidate SpecPM Intake Handoff
 
-Status: in progress.
+Status: Complete.
 
 Goal: turn selected candidate dry-run evidence into portable SpecPM review
 evidence while preserving the boundary that SpecHarvester is only the producer
@@ -454,6 +454,39 @@ P26-T3 records the package-set proposal intake checklist in
 It names `SpecHarvesterPackageSetHandoffProposal`,
 `spec-harvester.package-set-handoff-proposal/v0`, the required evidence roles,
 and the boundary between package member acceptance and relation acceptance.
+
+## Milestone 12: Autonomous Deferred Candidate Regeneration
+
+Status: Planned.
+
+Goal: convert the P30/P31 deferred candidate findings into a bounded
+regeneration and intake-readiness sequence before any broader popular-library
+scraping is attempted.
+
+Tasks:
+
+- record the autonomous deferred candidate work plan;
+- write a deferred candidate regeneration runbook;
+- run xyflow package-set identity regeneration as a dry run;
+- run single-package deferred candidate regeneration or repair for
+  `cupertino.core` and `navigation_split_view.core`;
+- refresh candidate-layer triage and selected handoff evidence;
+- add or coordinate SpecPM-side selected candidate handoff preflight;
+- record a limited corpus intake readiness decision.
+
+Success criteria:
+
+- all six deferred P30 candidates remain explicitly tracked until regenerated,
+  repaired, blocked, or rejected;
+- regeneration uses local pinned checkouts and does not clone, fetch, install
+  dependencies, execute harvested code, publish registry metadata, accept
+  packages, accept relations, seed baselines, or remove `preview_only`;
+- SpecPM-side preflight remains consumer review evidence only;
+- the project does not expand to broad autonomous popular-library scraping
+  until the limited corpus has clean selected handoff evidence or documented
+  deferrals.
+
+See [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md).
 
 ## Non-Goals
 

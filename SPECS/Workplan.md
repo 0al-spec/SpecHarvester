@@ -1131,3 +1131,55 @@ Acceptance:
 - SpecHarvester-side docs and examples give SpecPM enough stable roles to build
   future consumer-side preflight without requiring SpecHarvester write
   credentials.
+
+## Phase 32. Autonomous Deferred Candidate Regeneration and Intake Readiness
+
+- [x] `P32-T1` Record the autonomous deferred candidate work plan that
+  distinguishes completed P29 debt from current P30/P31 deferred-candidate
+  debt, names task owners, and keeps broad autonomous scraping out of scope.
+- [ ] `P32-T2` Add a deferred candidate regeneration runbook that maps blocker
+  classes to safe producer commands, expected artifacts, stop conditions, and
+  non-authority boundaries.
+- [ ] `P32-T3` Run xyflow package-set identity regeneration as a dry run and
+  record whether `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, and
+  `xyflow.system` can enter selected handoff.
+- [ ] `P32-T4` Run single-package deferred candidate regeneration or repair for
+  `cupertino.core` and `navigation_split_view.core`.
+- [ ] `P32-T5` Produce refreshed candidate-layer triage and selected handoff
+  evidence for regenerated candidates that satisfy hard gates.
+- [ ] `P32-T6` Add or coordinate the SpecPM-side selected candidate handoff
+  preflight for `SpecHarvesterSelectedCandidateHandoffProposal`.
+- [ ] `P32-T7` Record the limited corpus intake readiness decision after
+  refreshed selected handoff evidence passes SpecPM-side preflight or remains
+  explicitly deferred.
+
+Motivation:
+
+- P29 closed the first autonomous runner debt, and P30/P31 proved selected
+  handoff evidence for three candidates, but six limited-corpus candidates
+  remain deferred.
+- The project needs a bounded way to regenerate or repair deferred candidates
+  before any broader popular-library scraping is attempted.
+- The work must keep SpecHarvester as a producer of preview evidence and
+  SpecPM as the validation, acceptance, relation, baseline, and registry
+  authority.
+
+Goal:
+
+- Turn the P30/P31 deferred-candidate findings into a reviewable sequence that
+  can move candidates from `needs_regeneration` to selected handoff only when
+  evidence is clean and maintainer review remains external.
+
+Acceptance:
+
+- The plan covers `xyflow.*` package-set identity regeneration,
+  `cupertino.core` warning-bearing enrichment or author summary evidence, and
+  `navigation_split_view.core` identity-drift resolution.
+- Regeneration tasks use local pinned checkouts and do not clone, fetch,
+  install dependencies, execute harvested code, publish registry metadata,
+  accept packages, accept relations, seed baselines, or remove `preview_only`.
+- Refreshed triage uses the existing candidate-layer states:
+  `candidate_layer_review_required`, `needs_regeneration`, `blocked`, and
+  `not_for_intake`.
+- SpecPM-side preflight remains consumer review evidence only and does not make
+  producer output authoritative.
