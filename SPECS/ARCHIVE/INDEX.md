@@ -144,6 +144,7 @@
 | P33-T6 | [P33-T6_Next-Corpus_SpecPM_Preflight_and_Intake_Decision/](P33-T6_Next-Corpus_SpecPM_Preflight_and_Intake_Decision/) | 2026-06-14 | PASS |
 | P33-T7 | [P33-T7_Durable_Next-Corpus_Selected_Handoff_Artifact/](P33-T7_Durable_Next-Corpus_Selected_Handoff_Artifact/) | 2026-06-14 | PASS |
 | P33-T8 | [P33-T8_Next-Corpus_Intake_Readiness_Decision/](P33-T8_Next-Corpus_Intake_Readiness_Decision/) | 2026-06-14 | PASS |
+| P34-T1 | [P34-T1_AI_Enrichment_Candidate_Patch_Proposal/](P34-T1_AI_Enrichment_Candidate_Patch_Proposal/) | 2026-06-14 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |

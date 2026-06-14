@@ -1255,7 +1255,7 @@ Acceptance:
 
 ## Phase 34. AI-Enabled Candidate Curation
 
-- [ ] `P34-T1` Add an AI enrichment candidate patch proposal helper that turns
+- [x] `P34-T1` Add an AI enrichment candidate patch proposal helper that turns
   a clean `SpecHarvesterPackageSetAIEnrichmentProposal` into a reviewable
   enriched candidate copy plus machine-readable patch report without accepting
   packages, mutating the source bundle, removing `preview_only`, or treating
