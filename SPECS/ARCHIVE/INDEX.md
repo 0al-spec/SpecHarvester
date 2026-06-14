@@ -156,6 +156,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t8_docc_warning_cleanup.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t7_codegraph_compatibility_guard.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t6_codegraph_adapter_boundary.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t5_scoped_source_unit_draft_intent_boundaries.md` |
@@ -238,6 +239,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P20-T8 | Archived REVIEW_p20_t8_docc_warning_cleanup report |
 | 2026-06-14 | P20-T8 | Archived DocC Warning Cleanup (PASS) |
 | 2026-06-14 | P20-T7 | Archived REVIEW_p20_t7_codegraph_compatibility_guard report |
 | 2026-06-14 | P20-T7 | Archived CodeGraph Compatibility Guard (PASS) |
