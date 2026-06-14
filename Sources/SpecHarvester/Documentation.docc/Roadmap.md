@@ -352,8 +352,8 @@ plan rather than raw registry search results or open-ended crawling.
 The planned work starts with `P35-T1`, <doc:CorpusSelectionPolicy>, which defines
 importance signals, exclusion rules, ecosystem quotas, local checkout
 requirements, and producer-evidence boundaries. `P35-T2` defines
-<doc:SpecHarvesterCorpusPlan>. Follow-up tasks define candidate source
-classification, a bounded
+<doc:SpecHarvesterCorpusPlan>, and `P35-T3` defines candidate source
+classification through <doc:CandidateSourceClassifierPlan>. Follow-up tasks define a bounded
 multi-ecosystem seed corpus, explainable corpus selection reports, and dry-run
 readiness checks.
 

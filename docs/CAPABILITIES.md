@@ -69,6 +69,10 @@ registry search crawl.
 machine-readable plan shape for selected, deferred, and rejected source
 decisions before any autonomous batch run starts.
 
+[`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](CANDIDATE_SOURCE_CLASSIFIER_PLAN.md)
+defines how package-like units inside selected repositories should be
+classified before drafting.
+
 ## Author-Ready Draft Boundary
 
 The current product quality target is:
@@ -174,5 +178,6 @@ For a practical path through the current system:
 5. Use [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md)
    and [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md) when preparing SpecPM review.
 6. Use [`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md) and
-   [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md) before
-   running any larger corpus.
+   [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md), then check
+   [`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](CANDIDATE_SOURCE_CLASSIFIER_PLAN.md)
+   before running any larger corpus.

@@ -224,6 +224,10 @@ Published DocC site:
     machine-readable `SpecHarvesterCorpusPlan` contract for curated source
     batches, selected/deferred/rejected decisions, reason codes, expected
     analyzer coverage, stop conditions, and non-authority statements
+72. [`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](CANDIDATE_SOURCE_CLASSIFIER_PLAN.md):
+    Phase 35 classifier plan for package-set roots, primary packages, plugins,
+    examples, tooling, type-only packages, generated artifacts, internal
+    utilities, deprecated sources, evidence-only units, and allowed actions
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications
