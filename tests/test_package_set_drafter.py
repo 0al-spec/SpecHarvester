@@ -229,6 +229,73 @@ def test_package_set_drafter_autonomous_popular_profile_keeps_primary_roles(
     ]
 
 
+def test_package_set_drafter_uses_single_package_fallback_for_python_repo(
+    tmp_path: Path,
+) -> None:
+    inventory = write_single_package_inventory_fixture(
+        tmp_path,
+        repository_id="flask",
+        repository="https://github.com/pallets/flask",
+        package_id="flask.core",
+        checkout=make_python_single_package_checkout(tmp_path / "flask"),
+    )
+    out = tmp_path / "draft-set"
+
+    result = draft_package_set(
+        PackageSetDraftOptions(
+            inventory=inventory,
+            out=out,
+            role_profile=AUTONOMOUS_POPULAR_MVP_ROLE_SELECTION_PROFILE,
+        )
+    )
+
+    assert result["status"] == "ok"
+    assert result["candidateCount"] == 1
+    assert result["relationCount"] == 0
+    assert [candidate["packageId"] for candidate in result["candidates"]] == ["flask.core"]
+    summary = json.loads((out / "package-set-draft.json").read_text(encoding="utf-8"))
+    assert summary["source"]["packageId"] == "flask.core"
+    assert summary["summary"] == {
+        "candidateCount": 1,
+        "packageInventoryCount": 0,
+        "relationProposalCount": 0,
+        "skippedCount": 0,
+    }
+    assert summary["candidates"][0]["selectionReason"] == (
+        "single_package_source_manifest_fallback"
+    )
+    assert summary["candidates"][0]["role"] == "single_package"
+    assert summary["relationProposals"]["relationCount"] == 0
+    relations = json.loads((out / "package-relation-proposals.json").read_text(encoding="utf-8"))
+    assert relations["relations"] == []
+    assert relations["summary"] == {
+        "containsCount": 0,
+        "relationCount": 0,
+        "sourcePackageCount": 0,
+        "targetPackageCount": 0,
+    }
+
+    manifest = load_manifest(out, "flask.core")
+    assert manifest["metadata"]["id"] == "flask.core"
+    assert manifest["preview_only"] is True
+    assert (out / "flask.core" / "public-interface-index.json").is_file()
+    assert (out / "flask.core" / "producer-receipt.json").is_file()
+    assert (out / "flask.core" / "validation-report.json").is_file()
+    assert (out / "flask.core" / "diagnostics.json").is_file()
+    assert (out / "flask.core" / "author-ready-draft-quality-report.json").is_file()
+
+    preflight = run_bundle_set_preflight(BundleSetPreflightOptions(bundle_set=out))
+    assert preflight["status"] == "passed"
+    assert preflight["summary"] == {
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "diagnosticCount": 0,
+        "errorCount": 0,
+        "relationCount": 0,
+        "warningCount": 0,
+    }
+
+
 def test_package_set_drafter_explicit_roles_override_profile(tmp_path: Path) -> None:
     inventory = write_generic_monorepo_inventory_fixture(tmp_path)
     out = tmp_path / "draft-set"
@@ -834,6 +901,65 @@ def write_autonomous_popular_inventory_fixture(tmp_path: Path) -> Path:
     }
     inventory.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return inventory
+
+
+def write_single_package_inventory_fixture(
+    tmp_path: Path,
+    *,
+    repository_id: str,
+    repository: str,
+    package_id: str,
+    checkout: Path,
+) -> Path:
+    inputs = tmp_path / f"{repository_id}-inputs"
+    candidates = tmp_path / f"{repository_id}-candidates"
+    inputs.mkdir()
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: {repository_id}
+    repository: {repository}
+    revision: 0123456789abcdef0123456789abcdef01234567
+    checkout: {relative_to(checkout, inputs)}
+    packageId: {package_id}
+""",
+        encoding="utf-8",
+    )
+    collect_batch_snapshots(
+        BatchCollectOptions(
+            inputs=inputs,
+            out=candidates,
+            emit_interface_indexes=True,
+            emit_workspace_inventory=True,
+        )
+    )
+    return candidates / repository_id / "workspace-inventory.json"
+
+
+def make_python_single_package_checkout(path: Path) -> Path:
+    path.mkdir(parents=True)
+    (path / "README.md").write_text(
+        "# Flask\n\nA Python web framework for building web applications.\n",
+        encoding="utf-8",
+    )
+    (path / "LICENSE.txt").write_text("BSD-3-Clause\n", encoding="utf-8")
+    (path / "pyproject.toml").write_text(
+        """
+[project]
+name = "flask"
+version = "3.0.0"
+description = "A simple framework for building complex web applications."
+license = {text = "BSD-3-Clause"}
+""".lstrip(),
+        encoding="utf-8",
+    )
+    package_root = path / "src" / "flask"
+    package_root.mkdir(parents=True)
+    (package_root / "__init__.py").write_text(
+        "class Flask:\n    pass\n\n__all__ = ['Flask']\n",
+        encoding="utf-8",
+    )
+    return path
 
 
 def generic_package_record(

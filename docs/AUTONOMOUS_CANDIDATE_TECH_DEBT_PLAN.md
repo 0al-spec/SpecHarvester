@@ -84,6 +84,12 @@ Acceptance:
 - The fallback preserves the producer boundary: `preview_only`,
   `producer_preview_evidence_only`, and no registry mutation.
 
+Artifact:
+
+- [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md)
+  documents the implemented fallback and its
+  `single_package_source_manifest_fallback` selection reason.
+
 ## P29-T5 LM Studio JSON Repair and Retry
 
 Motivation:

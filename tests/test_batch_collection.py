@@ -444,6 +444,7 @@ repositories:
     assert inventory["source"]["repository"] == "https://github.com/xyflow/xyflow"
     assert inventory["source"]["exactRevision"] == "abc123"
     assert inventory["source"]["revisionAuthority"] == "source_manifest_revision"
+    assert inventory["source"]["packageId"] == "xyflow.workspace"
     assert inventory["privacy"]["rawSourceIncluded"] is False
     assert inventory["privacy"]["packageScriptsExecuted"] is False
 

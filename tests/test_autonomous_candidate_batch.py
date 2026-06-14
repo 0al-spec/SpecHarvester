@@ -52,6 +52,57 @@ def test_autonomous_candidate_batch_runs_offline_preview_pipeline(
     assert (output / "package-sets" / "demo" / "bundle-set-preflight.json").is_file()
 
 
+def test_autonomous_candidate_batch_uses_single_package_fallback(
+    tmp_path: Path,
+) -> None:
+    inputs = write_single_package_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+        )
+    )
+
+    assert report["status"] == "passed"
+    assert report["summary"]["processedCount"] == 1
+    assert report["summary"]["passedPreflightCount"] == 1
+    repository = report["repositories"][0]
+    assert repository["id"] == "gin"
+    assert repository["packageId"] == "gin.core"
+    assert repository["status"] == "passed"
+    assert repository["packageSetDraft"]["candidateCount"] == 1
+    assert repository["packageSetDraft"]["relationCount"] == 0
+    assert repository["preflight"]["status"] == "passed"
+    assert repository["preflight"]["candidateCount"] == 1
+    assert repository["preflight"]["relationCount"] == 0
+    assert repository["aiDraft"]["status"] == "skipped"
+    assert repository["aiEnrichment"]["status"] == "skipped"
+    assert repository["authorReadyDraftSummary"]["memberCounts"]["total"] == 1
+
+    bundle_set = output / "package-sets" / "gin"
+    summary = json.loads((bundle_set / "package-set-draft.json").read_text(encoding="utf-8"))
+    assert summary["candidates"][0]["packageId"] == "gin.core"
+    assert summary["candidates"][0]["selectionReason"] == (
+        "single_package_source_manifest_fallback"
+    )
+    assert summary["relationProposals"]["relationCount"] == 0
+    relation_payload = json.loads(
+        (bundle_set / "package-relation-proposals.json").read_text(encoding="utf-8")
+    )
+    assert relation_payload["relations"] == []
+    assert "id: gin.core" in (bundle_set / "gin.core" / "specpm.yaml").read_text(encoding="utf-8")
+    assert "preview_only: true" in (bundle_set / "gin.core" / "specpm.yaml").read_text(
+        encoding="utf-8"
+    )
+    assert (bundle_set / "gin.core" / "producer-receipt.json").is_file()
+    assert (bundle_set / "gin.core" / "validation-report.json").is_file()
+    assert (bundle_set / "gin.core" / "diagnostics.json").is_file()
+    assert (bundle_set / "gin.core" / "author-ready-draft-quality-report.json").is_file()
+
+
 def test_autonomous_candidate_batch_requires_model_without_skip_ai(
     tmp_path: Path,
 ) -> None:
@@ -150,6 +201,24 @@ repositories:
     return inputs
 
 
+def write_single_package_source_manifest(tmp_path: Path) -> Path:
+    inputs = tmp_path / "single-inputs"
+    checkout = write_go_single_package_checkout(tmp_path / "gin")
+    inputs.mkdir()
+    (inputs / "repositories.yml").write_text(
+        f"""
+repositories:
+  - id: gin
+    repository: https://github.com/gin-gonic/gin
+    revision: 0123456789abcdef0123456789abcdef01234567
+    checkout: {checkout}
+    packageId: gin.core
+""",
+        encoding="utf-8",
+    )
+    return inputs
+
+
 def write_workspace_checkout(path: Path) -> Path:
     path.mkdir()
     (path / "README.md").write_text(
@@ -179,6 +248,24 @@ def write_workspace_checkout(path: Path) -> Path:
         path / "packages" / "ui",
         "@demo/ui",
         "UI binding package.",
+    )
+    return path
+
+
+def write_go_single_package_checkout(path: Path) -> Path:
+    path.mkdir()
+    (path / "README.md").write_text(
+        "# Gin\n\nGin is a web framework written in Go.\n",
+        encoding="utf-8",
+    )
+    (path / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (path / "go.mod").write_text(
+        "module github.com/gin-gonic/gin\n\ngo 1.22\n",
+        encoding="utf-8",
+    )
+    (path / "gin.go").write_text(
+        "package gin\n\nfunc New() *Engine { return &Engine{} }\n\ntype Engine struct{}\n",
+        encoding="utf-8",
     )
     return path
 

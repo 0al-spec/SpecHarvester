@@ -60,5 +60,9 @@ Report identity:
 Generated package files remain `preview_only` producer evidence. SpecPM remains
 the validation, acceptance, relation, and registry authority.
 
+For single-package repositories with no workspace package records, the runner
+uses the deterministic <doc:SinglePackageCandidateFallback> path to produce one
+preview candidate with `0` relation proposals.
+
 For the SpecPM-facing review boundary for these batch artifacts, see
 <doc:AutonomousCandidateIntakePolicy>.
