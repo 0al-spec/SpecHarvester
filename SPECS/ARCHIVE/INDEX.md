@@ -122,6 +122,7 @@
 | P31-T5 | [P31-T5_Deferred_Selected_Candidate_Regeneration_Requirements/](P31-T5_Deferred_Selected_Candidate_Regeneration_Requirements/) | 2026-06-13 | PASS |
 | P32-T1 | [P32-T1_Autonomous_Deferred_Candidate_Work_Plan/](P32-T1_Autonomous_Deferred_Candidate_Work_Plan/) | 2026-06-13 | PASS |
 | P32-T2 | [P32-T2_Deferred_Candidate_Regeneration_Runbook/](P32-T2_Deferred_Candidate_Regeneration_Runbook/) | 2026-06-13 | PASS |
+| P32-T3 | [P32-T3_Xyflow_Package-Set_Identity_Regeneration_Dry_Run/](P32-T3_Xyflow_Package-Set_Identity_Regeneration_Dry_Run/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -134,6 +135,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t2_deferred_candidate_regeneration_runbook.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t1_autonomous_deferred_candidate_work_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p26_t3_package_set_proposal_intake_checklist.md` |
@@ -196,6 +198,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-13 | P32-T3 | Archived REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run report |
+| 2026-06-13 | P32-T3 | Archived Xyflow Package-Set Identity Regeneration Dry Run (PASS) |
 | 2026-06-13 | P32-T2 | Archived REVIEW_p32_t2_deferred_candidate_regeneration_runbook report |
 | 2026-06-13 | P32-T2 | Archived Deferred Candidate Regeneration Runbook (PASS) |
 | 2026-06-13 | P31-T5 | Archived REVIEW_p31_t5_deferred_selected_candidate_regeneration_requirements report |

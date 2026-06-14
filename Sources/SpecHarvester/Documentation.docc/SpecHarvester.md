@@ -87,6 +87,7 @@ The canonical source files remain in the repository:
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`
 - `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`
+- `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
 - `docs/SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`
 - `docs/LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`
@@ -169,6 +170,7 @@ the host.
 - <doc:AutonomousCandidateIntakePolicy>
 - <doc:AutonomousCandidateTechDebtPlan>
 - <doc:DeferredCandidateRegenerationRunbook>
+- <doc:XyflowPackageSetIdentityRegenerationDryRun>
 - <doc:AutonomousCandidateCorpusBaseline>
 - <doc:AutonomousCandidateCorpusQualityGate>
 - <doc:LimitedPopularLibraryCorpusPlan>
