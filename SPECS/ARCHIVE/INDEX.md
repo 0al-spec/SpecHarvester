@@ -166,6 +166,7 @@
 | Folder | Description |
 |--------|-------------|
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t3_source_classifier_plan.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p36_t1_repository_parsing_plugin_contract.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t2_corpus_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t1_corpus_selection_policy.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t8_docc_warning_cleanup.md` |
@@ -261,6 +262,7 @@
 | 2026-06-14 | P35-T6 | Archived Selected Corpus Dry-Run Readiness (PASS) |
 | 2026-06-14 | P35-T6 | Archived REVIEW_p35_t6_selected_corpus_readiness report |
 | 2026-06-14 | P36-T1 | Archived Repository Parsing Plugin Contract (PASS) |
+| 2026-06-14 | P36-T1 | Archived REVIEW_p36_t1_repository_parsing_plugin_contract report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
