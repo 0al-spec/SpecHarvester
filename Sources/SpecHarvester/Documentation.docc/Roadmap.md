@@ -149,6 +149,21 @@ The selected handoff dry run is recorded in
 digests, and `external_required` registry acceptance decisions while all
 deferred candidates stay out of the handoff.
 
+### Selected Candidate SpecPM Intake Handoff
+
+The active intake-handoff focus is to turn selected candidate dry-run evidence
+into portable SpecPM review evidence while preserving the boundary that
+SpecHarvester is only the producer of preview artifacts.
+
+`SpecHarvesterSelectedCandidateHandoffProposal` records selected candidates,
+deferred candidates, required evidence roles, producer preflight status, static
+viewer status, and external registry acceptance decisions. Passing producer
+preflight remains review evidence only. No proposal accepts packages, accepts
+relations, seeds baselines, removes `preview_only`, publishes registry
+metadata, or creates a SpecPM pull request.
+
+See <doc:SelectedCandidateHandoffProposal>.
+
 ### Ecosystem Analyzer Depth
 
 Future generator quality should come primarily from deterministic analyzer

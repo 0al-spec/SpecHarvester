@@ -89,6 +89,12 @@ producer-side preflight reports, and static viewer artifacts. This is enough
 for a future SpecPM review dry run, but it is not enough for registry
 acceptance.
 
+P31-T1 turns this recorded dry run into the portable
+`SpecHarvesterSelectedCandidateHandoffProposal` contract described in
+[`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md).
+That proposal shape preserves the same selected/deferred candidate split,
+required evidence roles, and external registry acceptance boundary.
+
 P30-T5 does not remove `preview_only`. It does not run
 `prepare-accepted-entry` or `accepted-package-update-proposal`. It does not
 publish registry metadata or create a SpecPM pull request.
@@ -131,4 +137,5 @@ See also:
 - [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md)
 - [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md)
 - [`LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`](LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md)
+- [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md)
 - [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md)

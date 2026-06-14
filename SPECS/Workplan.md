@@ -1083,3 +1083,51 @@ Acceptance:
   SpecPM registry truth.
 - SpecPM handoff dry-run evidence is produced only for selected candidates and
   remains external to registry acceptance.
+
+## Phase 31. Selected Candidate SpecPM Intake Handoff
+
+- [x] `P31-T1` Define a selected candidate handoff proposal contract that turns
+  P30-style selected candidate dry-run evidence into portable SpecPM review
+  evidence without accepting packages or creating registry authority.
+- [ ] `P31-T2` Implement a `selected-candidate-handoff-proposal` producer helper
+  that reads selected candidate bundles, producer preflight reports, and static
+  viewer outputs, then emits JSON and Markdown handoff artifacts.
+- [ ] `P31-T3` Run the selected candidate handoff proposal helper on the real
+  P30 selected candidates and record a dry-run handoff proposal fixture.
+- [ ] `P31-T4` Define the downstream SpecPM-side preflight expectations for
+  `SpecHarvesterSelectedCandidateHandoffProposal` evidence.
+- [ ] `P31-T5` Record targeted regeneration requirements for deferred P30
+  candidates before any package-set, warning-bearing, or identity-drift
+  candidate can enter selected handoff.
+
+Motivation:
+
+- P30-T5 proves selected candidates can have digest-backed producer preflight
+  and viewer evidence, but that fixture is a recorded dry run rather than a
+  portable handoff artifact.
+- SpecPM-side intake needs a stable evidence envelope before maintainers can
+  review selected single-package candidates without rerunning SpecHarvester.
+- Deferred candidates need an explicit regeneration track so the selected
+  handoff path does not quietly absorb package-set identity drift or weak
+  enrichment output.
+
+Goal:
+
+- Bridge P30 selected candidate evidence into a reviewable SpecPM handoff shape
+  while preserving the boundary that SpecHarvester produces evidence and
+  SpecPM owns validation, acceptance, registry metadata, and maintainer
+  decisions.
+
+Acceptance:
+
+- Selected candidate handoff proposal artifacts identify selected candidates,
+  deferred candidates, required evidence roles, producer preflight status,
+  static viewer status, privacy/provenance boundaries, and external registry
+  acceptance decisions.
+- The proposal contract is explicit that passing producer preflight is review
+  evidence only and does not accept packages, accept relations, seed baselines,
+  remove `preview_only`, publish registry metadata, or create a SpecPM pull
+  request.
+- SpecHarvester-side docs and examples give SpecPM enough stable roles to build
+  future consumer-side preflight without requiring SpecHarvester write
+  credentials.
