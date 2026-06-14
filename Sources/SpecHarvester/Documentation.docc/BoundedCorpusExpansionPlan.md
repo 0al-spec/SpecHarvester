@@ -42,6 +42,12 @@ draft proposals and five AI enrichment proposals, required zero JSON repair
 attempts, recorded `76291` provider tokens, and is ready for P33-T5
 candidate-layer triage.
 
+P33-T5 records candidate-layer triage in
+<doc:NextCorpusCandidateLayerTriage>. It selects `serena.core`,
+`transmission.core`, and `specpm.core` for P33-T6 selected handoff preflight,
+keeps `mcpm.system` and `specgraph.system` deferred, and records zero blocked
+or not-for-intake candidates.
+
 ## Source Manifest
 
 `P33-T2` must add the next-corpus source manifest fixture before any scrape

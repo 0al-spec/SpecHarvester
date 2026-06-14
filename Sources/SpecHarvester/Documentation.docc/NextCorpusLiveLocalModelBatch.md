@@ -42,6 +42,9 @@ The live run preserved deterministic candidate and relation counts and produced
 proposal evidence without requiring JSON repair. The useful next action is
 P33-T5 candidate-layer triage.
 
+P33-T5 classification is recorded in
+<doc:NextCorpusCandidateLayerTriage>.
+
 ## Non-Authority Boundary
 
 P33-T4 did not clone repositories, fetch remote state, install dependencies,

@@ -529,7 +529,9 @@ Tasks:
 - record `P33-T4`, the live local-model draft/enrichment run with bounded JSON
   repair and provider receipts
   ([`NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`](NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md));
-- produce candidate-layer triage and selected handoff evidence;
+- record `P33-T5`, the candidate-layer triage and selected handoff readiness
+  evidence
+  ([`NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`](NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md));
 - run or coordinate SpecPM-side selected handoff preflight and record the next
   intake readiness decision.
 

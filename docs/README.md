@@ -187,6 +187,10 @@ Published DocC site:
     P33-T4 live LM Studio next-corpus dry-run evidence, including provider
     receipts, JSON repair outcome, AI draft/enrichment diagnostics,
     candidate-layer findings, and triage readiness
+65. [`NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`](NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md):
+    P33-T5 candidate-layer triage for the next corpus, including selected and
+    deferred candidates, finding classifications, selected handoff readiness,
+    and non-authority boundaries
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

@@ -1,0 +1,210 @@
+{
+  "apiVersion": "spec-harvester.next-corpus-candidate-layer-triage/v0",
+  "authority": "producer_preview_evidence_only",
+  "corpus": {
+    "id": "p33-next-bounded-corpus",
+    "manifestPath": "inputs/p33-next-corpus/repositories.yml",
+    "repositories": [
+      "serena",
+      "transmission",
+      "mcpm-sh",
+      "specgraph",
+      "specpm"
+    ]
+  },
+  "inputs": {
+    "deterministicFixture": {
+      "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
+      "kind": "SpecHarvesterNextCorpusDeterministicDryRun",
+      "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
+      "status": "ready_for_live_local_model_next_corpus"
+    },
+    "liveLocalModelFixture": {
+      "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
+      "kind": "SpecHarvesterNextCorpusLiveLocalModelBatch",
+      "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json",
+      "status": "ready_for_candidate_layer_triage"
+    },
+    "sourceManifest": {
+      "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+      "path": "inputs/p33-next-corpus/repositories.yml"
+    }
+  },
+  "kind": "SpecHarvesterNextCorpusCandidateLayerTriage",
+  "nonAuthority": [
+    "This triage report is review evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata.",
+    "It does not create a SpecPM pull request.",
+    "It does not treat AI output as canonical SpecPackage, BoundarySpec, relation, or registry truth."
+  ],
+  "productVerdict": {
+    "candidateQuality": "selected_candidates_ready_for_consumer_preflight",
+    "pipelineHealth": "deterministic_and_live_evidence_triaged",
+    "status": "ready_for_p33_t6_selected_handoff_preflight",
+    "summary": "Proceed to P33-T6 only for serena.core, transmission.core, and specpm.core. Keep mcpm.system and specgraph.system deferred until package identity drift and warning-bearing AI draft evidence are resolved or explicitly approved."
+  },
+  "schemaVersion": 1,
+  "selectedForP33T6": [
+    "serena.core",
+    "transmission.core",
+    "specpm.core"
+  ],
+  "summary": {
+    "blockedCandidateCount": 0,
+    "candidateLayerReviewRequiredCount": 3,
+    "deferredCandidateCount": 2,
+    "findingBlockedCount": 0,
+    "findingCandidateLayerReviewRequiredCount": 2,
+    "findingGroupCount": 4,
+    "findingNeedsRegenerationCount": 2,
+    "findingNotForIntakeCount": 0,
+    "needsRegenerationCandidateCount": 2,
+    "notForIntakeCandidateCount": 0,
+    "p33T6SelectedCandidateCount": 3,
+    "previewCandidateCount": 5,
+    "relationProposalCount": 0,
+    "repositoryCount": 5,
+    "uniqueFindingCodeCount": 3
+  },
+  "triageFindings": [
+    {
+      "affectedCandidateIds": [
+        "serena.core",
+        "transmission.core"
+      ],
+      "classification": "candidate_layer_review_required",
+      "code": "ai_draft_no_proposal_subjects",
+      "count": 2,
+      "origin": "ai_draft",
+      "reason": "The AI draft proposal completed without selected members, relations, or excluded packages, but deterministic single-package candidates and enrichment evidence are usable.",
+      "recommendedAction": "Proceed with selected handoff review while treating the empty AI draft subject list as non-blocking single-package model noise."
+    },
+    {
+      "affectedCandidateIds": [
+        "specpm.core"
+      ],
+      "classification": "candidate_layer_review_required",
+      "code": "ai_draft_warning_diagnostics",
+      "count": 1,
+      "origin": "ai_draft",
+      "reason": "The AI draft warning is limited to an unknown exclusion plus no proposal subjects for a single-package candidate with passing deterministic preflight and completed enrichment.",
+      "recommendedAction": "Proceed with selected handoff review and ignore the unknown exclusion fragment unless author review identifies a real package boundary issue."
+    },
+    {
+      "affectedCandidateIds": [
+        "mcpm.system"
+      ],
+      "classification": "needs_regeneration",
+      "code": "ai_draft_warning_diagnostics",
+      "count": 1,
+      "origin": "ai_draft",
+      "reason": "The AI draft selected mcpm.system with selected_member_role_unknown, model_evidence_path_unsupported, and excluded_package_also_selected diagnostics.",
+      "recommendedAction": "Regenerate or manually review the AI draft evidence before selected handoff."
+    },
+    {
+      "affectedCandidateIds": [
+        "mcpm.system",
+        "specgraph.system"
+      ],
+      "classification": "needs_regeneration",
+      "code": "package_id_hint_changed_by_package_set_selection",
+      "count": 2,
+      "origin": "deterministic_draft",
+      "reason": "The source manifest package id hint differs from the generated reviewable candidate id.",
+      "recommendedAction": "Resolve package id policy, update the manifest hint, regenerate the candidate, or record explicit maintainer approval for the generated id before selected handoff."
+    }
+  ],
+  "triagePolicy": {
+    "blocked": "Required local input is missing or a hard gate failed.",
+    "candidate_layer_review_required": "Valid starter package can proceed to author or maintainer review without becoming accepted registry truth.",
+    "needs_regeneration": "Producer output should be regenerated, corrected, or explicitly approved before selected handoff.",
+    "not_for_intake": "Useful calibration evidence that should not be handed to SpecPM."
+  },
+  "triagedCandidates": [
+    {
+      "classification": "candidate_layer_review_required",
+      "evidencePolicy": "deterministic_candidate_plus_completed_enrichment",
+      "findingCodes": [
+        "ai_draft_no_proposal_subjects"
+      ],
+      "handoffStatus": "selected_for_p33_t6",
+      "id": "serena.core",
+      "p33T6Selected": true,
+      "reason": "Deterministic preflight passed, author-ready status is present, enrichment completed, and the empty AI draft subject list is non-blocking for a single-package candidate.",
+      "repositoryId": "serena",
+      "requiredBeforeHandoff": [
+        "Author or maintainer semantic review remains required.",
+        "Ignore the empty AI draft subject list during selected handoff review."
+      ]
+    },
+    {
+      "classification": "candidate_layer_review_required",
+      "evidencePolicy": "deterministic_candidate_plus_completed_enrichment",
+      "findingCodes": [
+        "ai_draft_no_proposal_subjects"
+      ],
+      "handoffStatus": "selected_for_p33_t6",
+      "id": "transmission.core",
+      "p33T6Selected": true,
+      "reason": "Deterministic preflight passed, author-ready status is present, enrichment completed, and the empty AI draft subject list is non-blocking for a single-package candidate.",
+      "repositoryId": "transmission",
+      "requiredBeforeHandoff": [
+        "Author or maintainer semantic review remains required.",
+        "Ignore the empty AI draft subject list during selected handoff review."
+      ]
+    },
+    {
+      "classification": "needs_regeneration",
+      "evidencePolicy": "defer_until_package_identity_and_ai_draft_warnings_are_resolved",
+      "findingCodes": [
+        "package_id_hint_changed_by_package_set_selection",
+        "ai_draft_warning_diagnostics"
+      ],
+      "handoffStatus": "deferred_from_p33_t6",
+      "id": "mcpm.system",
+      "p33T6Selected": false,
+      "reason": "The generated id differs from the manifest hint and the AI draft evidence contains warning-level role, evidence path, and exclusion diagnostics.",
+      "repositoryId": "mcpm-sh",
+      "requiredBeforeHandoff": [
+        "Resolve mcpm.core versus mcpm.system package identity.",
+        "Regenerate or manually review AI draft evidence."
+      ]
+    },
+    {
+      "classification": "needs_regeneration",
+      "evidencePolicy": "defer_until_package_identity_is_resolved",
+      "findingCodes": [
+        "package_id_hint_changed_by_package_set_selection"
+      ],
+      "handoffStatus": "deferred_from_p33_t6",
+      "id": "specgraph.system",
+      "p33T6Selected": false,
+      "reason": "The generated id differs from the manifest hint, so selected handoff should wait for a package identity decision.",
+      "repositoryId": "specgraph",
+      "requiredBeforeHandoff": [
+        "Resolve specgraph.core versus specgraph.system package identity."
+      ]
+    },
+    {
+      "classification": "candidate_layer_review_required",
+      "evidencePolicy": "deterministic_candidate_plus_completed_enrichment",
+      "findingCodes": [
+        "ai_draft_warning_diagnostics"
+      ],
+      "handoffStatus": "selected_for_p33_t6",
+      "id": "specpm.core",
+      "p33T6Selected": true,
+      "reason": "Deterministic preflight passed, author-ready status is present, enrichment completed, and the AI draft warning is bounded to an unknown exclusion plus no proposal subjects for a single-package candidate.",
+      "repositoryId": "specpm",
+      "requiredBeforeHandoff": [
+        "Author or maintainer semantic review remains required.",
+        "Ignore the unknown exclusion fragment unless review identifies a real package boundary issue."
+      ]
+    }
+  ]
+}

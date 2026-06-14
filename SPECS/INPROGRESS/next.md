@@ -1,24 +1,13 @@
-# Next Task: P33-T5 Next-Corpus Candidate-Layer Triage
+# Next Task: P33-T6 Next-Corpus SpecPM Preflight and Intake Decision
 
 **Status:** Selected
 **Selected:** 2026-06-14
-**Task:** P33-T5 Next-Corpus Candidate-Layer Triage
+**Task:** P33-T6 Next-Corpus SpecPM Preflight and Intake Decision
 **Phase:** Phase 33. Bounded Corpus Expansion Planning
-**Last Archived:** P33-T4 Live Local-Model Next-Corpus Dry Run
+**Last Archived:** P33-T5 Next-Corpus Candidate-Layer Triage
 
 ## Recently Archived
 
-- `P33-T3` recorded the deterministic next-corpus dry run in
-  `docs/NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`,
-  `<doc:NextCorpusDeterministicDryRun>`, and
-  `tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json`.
-  The fixture identity is `SpecHarvesterNextCorpusDeterministicDryRun` with
-  `apiVersion: spec-harvester.next-corpus-deterministic-dry-run/v0`. It
-  processed five repositories, produced five preview candidates, zero relation
-  proposals, and five bundle-set preflights. It recorded `mcpm.system` and
-  `specgraph.system` package-id review signals and is ready for P33-T4 live
-  local-model review. It remains review evidence only, does not accept
-  packages, does not accept relations, and does not remove `preview_only`.
 - `P33-T4` recorded the live local-model next-corpus dry run in
   `docs/NEXT_CORPUS_LIVE_LOCAL_MODEL_BATCH.md`,
   `<doc:NextCorpusLiveLocalModelBatch>`, and
@@ -34,23 +23,41 @@
   `ai_draft_warning_diagnostics` findings. It remains review evidence only,
   does not accept packages, does not accept relations, and does not remove
   `preview_only`.
+- `P33-T5` recorded the next-corpus candidate-layer triage in
+  `docs/NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`,
+  `<doc:NextCorpusCandidateLayerTriage>`, and
+  `tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json`.
+  The fixture identity is `SpecHarvesterNextCorpusCandidateLayerTriage` with
+  `apiVersion: spec-harvester.next-corpus-candidate-layer-triage/v0`. It
+  selected three selected candidates for P33-T6: `serena.core`,
+  `transmission.core`, and `specpm.core`. It kept two deferred candidates:
+  `mcpm.system` and `specgraph.system`. It recorded zero blocked candidates
+  and zero not-for-intake candidates. It carried forward
+  `ai_draft_no_proposal_subjects`, `ai_draft_warning_diagnostics`, and
+  `package_id_hint_changed_by_package_set_selection` while reaching
+  `ready_for_p33_t6_selected_handoff_preflight`. It remains review evidence
+  only, does not accept packages, does not accept relations, and does not
+  remove `preview_only`.
 
 ## Current Selection
 
-Implement `P33-T5`: produce candidate-layer triage for the next corpus.
+Implement `P33-T6`: run or coordinate SpecPM-side preflight for the selected
+handoff evidence from P33-T5 and record the next intake readiness decision.
 
-The triage must classify every P33-T4 candidate into selected, deferred,
-blocked, and not-for-intake states. It must carry forward the P33-T4 live
-local-model findings:
+The selected handoff scope is limited to:
 
-- `ai_draft_no_proposal_subjects` for `serena` and `transmission`;
-- `ai_draft_warning_diagnostics` for `mcpm-sh` and `specpm`;
-- package-id review signals for `mcpm-sh` and `specgraph`;
-- the clean enrichment status for all five repositories.
+- `serena.core`;
+- `transmission.core`;
+- `specpm.core`.
 
-The output should state which candidates, if any, are ready for selected
-handoff evidence and which require regeneration, explicit author review, or
-exclusion from intake.
+Deferred candidates must stay outside P33-T6 selected handoff preflight:
+
+- `mcpm.system`;
+- `specgraph.system`.
+
+The task should record whether the selected handoff evidence is ready for
+SpecPM maintainer review, remains producer-only review evidence, or needs
+another bounded follow-up.
 
 ## Boundaries
 
@@ -58,7 +65,7 @@ This task must not run a new scrape, must not rerun LM Studio, must not clone
 repositories, must not fetch remote state, must not install dependencies, must
 not execute harvested code, must not run package scripts, must not publish
 registry metadata, must not accept packages, must not accept relations, must
-not seed baselines, must not remove `preview_only`, must not create a SpecPM
-pull request, or treat AI output as registry truth.
+not seed baselines, must not remove `preview_only`, or treat AI output as
+registry truth.
 
 It must not accept packages and must not publish registry metadata.
