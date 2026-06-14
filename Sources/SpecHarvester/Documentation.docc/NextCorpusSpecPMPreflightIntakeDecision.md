@@ -25,7 +25,8 @@ The intake decision is
 `mcpm.system` and `specgraph.system` remain deferred. The selected candidates
 need a durable selected handoff payload before SpecPM maintainer intake review.
 P33-T7 is the next bounded follow-up for that durable selected handoff
-artifact.
+artifact. The completed artifact is recorded in
+<doc:NextCorpusDurableSelectedHandoff>.
 
 See the GitHub-facing source page:
 `docs/NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`.

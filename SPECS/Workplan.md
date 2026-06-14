@@ -1209,11 +1209,15 @@ Acceptance:
   [`NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`](../docs/NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md).
 - [x] `P33-T6` Coordinate or run the SpecPM-side preflight for the next-corpus
   selected handoff and record the next intake readiness decision.
-- [ ] `P33-T7` Create a durable next-corpus selected handoff artifact for
+- [x] `P33-T7` Create a durable next-corpus selected handoff artifact for
   `serena.core`, `transmission.core`, and `specpm.core`, or explicitly extend
   the SpecPM selected handoff consumer gate, so the selected scope can be
   machine-preflighted before maintainer intake review without fabricating
   per-file evidence digests.
+- [ ] `P33-T8` Record the next-corpus intake readiness decision using the
+  passing durable selected handoff preflight result, preserving review evidence
+  boundaries and stopping before registry acceptance, baseline seeding,
+  relation acceptance, or `preview_only` removal.
 
 Motivation:
 

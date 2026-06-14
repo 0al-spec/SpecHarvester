@@ -272,6 +272,11 @@ SpecPM selected handoff preflight rejects the P33-T5 candidate-layer triage
 fixture with `selected_handoff_payload_missing`, so the next corpus needs a
 durable selected handoff artifact before maintainer intake review.
 
+<doc:NextCorpusDurableSelectedHandoff> records `P33-T7`: the durable selected
+handoff artifact for `serena.core`, `transmission.core`, and `specpm.core`
+passes SpecPM selected handoff preflight with two deferred candidates and zero
+warnings or errors.
+
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,
 no `preview_only` removal, and no AI output as registry truth.

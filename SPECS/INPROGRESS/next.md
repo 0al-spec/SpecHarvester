@@ -1,68 +1,64 @@
-# Next Task: P33-T7 Durable Next-Corpus Selected Handoff Artifact
+# Next Task: P33-T8 Next-Corpus Intake Readiness Decision
 
 **Status:** Selected
 **Selected:** 2026-06-14
-**Task:** P33-T7 Durable Next-Corpus Selected Handoff Artifact
+**Task:** P33-T8 Next-Corpus Intake Readiness Decision
 **Phase:** Phase 33. Bounded Corpus Expansion Planning
-**Last Archived:** P33-T6 Next-Corpus SpecPM Preflight and Intake Decision
+**Last Archived:** P33-T7 Durable Next-Corpus Selected Handoff Artifact
 
 ## Recently Archived
 
-- `P33-T5` recorded the next-corpus candidate-layer triage in
-  `docs/NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`,
-  `<doc:NextCorpusCandidateLayerTriage>`, and
-  `tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json`.
-  The fixture identity is `SpecHarvesterNextCorpusCandidateLayerTriage` with
-  `apiVersion: spec-harvester.next-corpus-candidate-layer-triage/v0`. It
-  selected three candidates for P33-T6: `serena.core`, `transmission.core`,
-  and `specpm.core`. It kept two deferred candidates: `mcpm.system` and
-  `specgraph.system`. It recorded zero blocked candidates and zero
-  not-for-intake candidates while reaching
-  `ready_for_p33_t6_selected_handoff_preflight`. It remains review evidence
-  only, does not accept packages, does not accept relations, does not remove
-  `preview_only`, does not publish registry metadata, and does not create a
-  SpecPM pull request. Short form: three selected, two deferred, zero blocked,
-  and zero not-for-intake candidates. The carried findings are
-  `ai_draft_no_proposal_subjects`, `ai_draft_warning_diagnostics`, and
-  `package_id_hint_changed_by_package_set_selection`.
 - `P33-T6` recorded the next-corpus SpecPM preflight intake decision in
   `docs/NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`,
   `<doc:NextCorpusSpecPMPreflightIntakeDecision>`, and
   `tests/fixtures/next_corpus_specpm_preflight_intake_decision/p33-t6-next-corpus-specpm-preflight-intake-decision.example.json`.
   The fixture identity is
-  `SpecHarvesterNextCorpusSpecPMPreflightIntakeDecision` with `apiVersion:
-  spec-harvester.next-corpus-specpm-preflight-intake-decision/v0`. The current
-  SpecPM selected handoff preflight returned `selected_handoff_payload_missing`
-  against the P33-T5 triage fixture, proving the selected scope needs a
-  durable selected handoff payload before maintainer intake review. The intake
-  decision is `not_ready_requires_durable_selected_handoff_artifact`. It
-  preserves selected candidates `serena.core`, `transmission.core`, and
-  `specpm.core`, keeps `mcpm.system` and `specgraph.system` deferred, and
-  remains review evidence only with no package acceptance, relation
-  acceptance, baseline seeding, `preview_only` removal, registry publication,
-  or SpecPM pull request creation.
+  `SpecHarvesterNextCorpusSpecPMPreflightIntakeDecision` with
+  `apiVersion: spec-harvester.next-corpus-specpm-preflight-intake-decision/v0`.
+  The current SpecPM selected handoff preflight returned
+  `selected_handoff_payload_missing` against the P33-T5 triage fixture,
+  proving the selected scope needed a durable selected handoff payload before
+  maintainer intake review. The decision status was
+  `not_ready_requires_durable_selected_handoff_artifact`. It preserved
+  selected candidates `serena.core`, `transmission.core`, and `specpm.core`,
+  kept `mcpm.system` and `specgraph.system` deferred, and remained review
+  evidence only with no package acceptance, relation acceptance, baseline
+  seeding, `preview_only` removal, registry publication, or SpecPM pull request
+  creation.
+- `P33-T7` recorded the durable selected handoff in
+  `docs/NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`,
+  `<doc:NextCorpusDurableSelectedHandoff>`, and
+  `tests/fixtures/next_corpus_durable_selected_handoff/p33-t7-next-corpus-selected-handoff.example.json`.
+  The fixture identity is `SpecHarvesterSelectedCandidateHandoffProposal` with
+  `apiVersion: spec-harvester.selected-candidate-handoff-proposal/v0` and
+  `authority: producer_preview_evidence_only`. It selected `serena.core`,
+  `transmission.core`, and `specpm.core`, deferred `mcpm.system` and
+  `specgraph.system`, referenced four committed evidence roles, and passed
+  SpecPM selected handoff preflight with selectedCandidateCount: 3,
+  deferredCandidateCount: 2, requiredEvidenceRoleCount: 4,
+  digestVerifiedCount: 1, zero warnings, and zero errors. It does not accept
+  packages, does not accept relations, does not remove `preview_only`, does
+  not publish registry metadata, and does not create a SpecPM pull request.
 
 ## Current Selection
 
-Implement `P33-T7`: create durable selected handoff evidence for the P33 next
-corpus selected scope, or explicitly extend the SpecPM selected handoff
-consumer gate so the selected scope can be machine-preflighted before
-maintainer intake review.
+Implement `P33-T8`: record the next-corpus intake readiness decision using the
+passing P33-T7 durable selected handoff preflight result.
 
-The selected handoff scope remains limited to:
+The selected handoff scope remains:
 
 - `serena.core`;
 - `transmission.core`;
 - `specpm.core`.
 
-Deferred candidates stay outside selected handoff:
+Deferred candidates remain outside intake readiness:
 
 - `mcpm.system`;
 - `specgraph.system`.
 
-The task should produce or enable a supported SpecPM input such as
-`SpecHarvesterSelectedCandidateHandoffProposal` without fabricating per-file
-evidence digests from summary-only fixtures.
+The decision should state whether the selected scope is ready for
+author/maintainer review, while keeping registry acceptance in a separate
+SpecPM maintainer flow.
 
 ## Boundaries
 

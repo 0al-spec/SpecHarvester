@@ -120,6 +120,11 @@ evidence for `serena.core`, `transmission.core`, and `specpm.core`, or
 explicitly extend the SpecPM consumer gate to accept the P33 decision shape.
 That task must not invent per-file evidence digests from summary-only fixtures.
 
+P33-T7 is recorded in
+[`NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`](NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md).
+It creates a supported selected handoff artifact and passes SpecPM selected
+handoff preflight.
+
 ## Non-Authority Boundary
 
 P33-T6 does not:

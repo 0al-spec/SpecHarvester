@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P33-T8 Next-Corpus Intake Readiness Decision" in next_text:
+        assert_p33_t7_last_archived(next_text)
+        assert_p33_t6_recent(next_text)
+        assert_p33_t7_recent(next_text)
+        assert_phase_33_t8_active(next_text)
+        return
+
     if "# Next Task: P33-T7 Durable Next-Corpus Selected Handoff Artifact" in next_text:
         assert_p33_t6_last_archived(next_text)
         assert_p33_t5_recent(next_text)
@@ -530,6 +537,10 @@ def assert_p33_t5_last_archived(next_text: str) -> None:
 
 def assert_p33_t6_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P33-T6 Next-Corpus SpecPM Preflight and Intake Decision" in next_text
+
+
+def assert_p33_t7_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P33-T7 Durable Next-Corpus Selected Handoff Artifact" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1643,6 +1654,53 @@ def assert_phase_33_t7_active(next_text: str) -> None:
     assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
     assert "durable selected handoff evidence" in normalized
     assert "machine-preflighted before maintainer intake review" in normalized
+    assert "serena.core" in next_text
+    assert "transmission.core" in next_text
+    assert "specpm.core" in next_text
+    assert "mcpm.system" in next_text
+    assert "specgraph.system" in next_text
+    assert "must not run a new scrape" in normalized
+    assert "must not rerun LM Studio" in normalized
+    assert "must not accept packages" in normalized
+    assert "must not publish registry metadata" in normalized
+    assert "must not remove `preview_only`" in normalized
+
+
+def assert_p33_t7_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P33-T7` recorded the durable selected handoff" in next_text
+    assert "NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md" in next_text
+    assert "NextCorpusDurableSelectedHandoff" in next_text
+    assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
+    assert "spec-harvester.selected-candidate-handoff-proposal/v0" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "serena.core" in next_text
+    assert "transmission.core" in next_text
+    assert "specpm.core" in next_text
+    assert "mcpm.system" in next_text
+    assert "specgraph.system" in next_text
+    assert "four committed evidence roles" in normalized
+    assert "selectedCandidateCount: 3" in next_text
+    assert "deferredCandidateCount: 2" in next_text
+    assert "requiredEvidenceRoleCount: 4" in next_text
+    assert "digestVerifiedCount: 1" in next_text
+    assert "zero warnings" in normalized
+    assert "zero errors" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not accept relations" in normalized
+    assert "does not remove `preview_only`" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not create a SpecPM pull request" in normalized
+
+
+def assert_phase_33_t8_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P33-T8 Next-Corpus Intake Readiness Decision" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 33. Bounded Corpus Expansion Planning" in next_text
+    assert "passing P33-T7 durable selected handoff preflight result" in normalized
+    assert "ready for author/maintainer review" in normalized
+    assert "separate SpecPM maintainer flow" in normalized
     assert "serena.core" in next_text
     assert "transmission.core" in next_text
     assert "specpm.core" in next_text
@@ -6946,6 +7004,215 @@ def test_next_corpus_specpm_preflight_intake_decision_docs_cover_p33_t6_verdict(
     )
     assert "NextCorpusSpecPMPreflightIntakeDecision" in triage_docc.read_text(encoding="utf-8")
     assert "P33-T7" in workplan.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_next_corpus_durable_selected_handoff_records_p33_t7_contract() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_durable_selected_handoff"
+        / "p33-t7-next-corpus-selected-handoff.example.json"
+    )
+    triage_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_candidate_layer_triage"
+        / "p33-t5-next-corpus-candidate-layer-triage.example.json"
+    )
+    deterministic_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_deterministic_dry_run"
+        / "p33-t3-next-corpus-deterministic-dry-run.example.json"
+    )
+    live_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_live_local_model_batch"
+        / "p33-t4-next-corpus-live-local-model.example.json"
+    )
+    source_manifest = ROOT / "inputs" / "p33-next-corpus" / "repositories.yml"
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.selected-candidate-handoff-proposal/v0"
+    assert payload["kind"] == "SpecHarvesterSelectedCandidateHandoffProposal"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["summary"] == {
+        "deferredCandidateCount": 2,
+        "registryMutationCount": 0,
+        "requiredEvidenceRoleCount": 4,
+        "selectedCandidateCount": 3,
+        "specpmPullRequestCreated": False,
+    }
+    assert [candidate["id"] for candidate in payload["selectedCandidates"]] == [
+        "serena.core",
+        "transmission.core",
+        "specpm.core",
+    ]
+    assert [candidate["id"] for candidate in payload["deferredCandidates"]] == [
+        "mcpm.system",
+        "specgraph.system",
+    ]
+    required_roles = {item["role"]: item for item in payload["requiredEvidenceRoles"]}
+    assert required_roles == {
+        "selected_handoff_dry_run": {
+            "path": (
+                "tests/fixtures/next_corpus_candidate_layer_triage/"
+                "p33-t5-next-corpus-candidate-layer-triage.example.json"
+            ),
+            "required": True,
+            "role": "selected_handoff_dry_run",
+            "scope": "proposal",
+        },
+        "source_manifest": {
+            "path": "inputs/p33-next-corpus/repositories.yml",
+            "required": True,
+            "role": "source_manifest",
+            "scope": "proposal",
+        },
+        "deterministic_dry_run": {
+            "path": (
+                "tests/fixtures/next_corpus_deterministic_dry_run/"
+                "p33-t3-next-corpus-deterministic-dry-run.example.json"
+            ),
+            "required": True,
+            "role": "deterministic_dry_run",
+            "scope": "proposal",
+        },
+        "live_local_model_batch": {
+            "path": (
+                "tests/fixtures/next_corpus_live_local_model_batch/"
+                "p33-t4-next-corpus-live-local-model.example.json"
+            ),
+            "required": True,
+            "role": "live_local_model_batch",
+            "scope": "proposal",
+        },
+    }
+    expected_digests = {
+        "selected_handoff_dry_run": "sha256:"
+        + hashlib.sha256(triage_fixture.read_bytes()).hexdigest(),
+        "source_manifest": "sha256:" + hashlib.sha256(source_manifest.read_bytes()).hexdigest(),
+        "deterministic_dry_run": "sha256:"
+        + hashlib.sha256(deterministic_fixture.read_bytes()).hexdigest(),
+        "live_local_model_batch": "sha256:" + hashlib.sha256(live_fixture.read_bytes()).hexdigest(),
+    }
+    for candidate in payload["selectedCandidates"]:
+        assert candidate["previewOnly"] is True
+        assert candidate["triageClassification"] == "candidate_layer_review_required"
+        assert candidate["maintainerAction"] == "review_for_possible_specpm_intake"
+        assert candidate["producerPreflight"] == {
+            "diagnosticCount": 0,
+            "errorCount": 0,
+            "status": "passed",
+            "warningCount": 0,
+        }
+        assert candidate["staticViewer"]["status"] == "ok"
+        assert candidate["registryAcceptanceDecision"] == {
+            "producerAuthority": "evidence_only",
+            "requiredFor": "public_index_acceptance",
+            "status": "external_required",
+        }
+        links = {item["role"]: item for item in candidate["evidenceLinks"]}
+        assert set(links) == set(expected_digests)
+        for role, expected_digest in expected_digests.items():
+            assert links[role]["digest"] == expected_digest
+            assert links[role]["digestSource"] == "committed_file"
+            assert links[role]["pathScope"] == "repo_relative"
+            assert links[role]["status"] == "present"
+
+    source = payload["source"]["selectedDryRunFixture"]
+    assert source == {
+        "apiVersion": "spec-harvester.next-corpus-candidate-layer-triage/v0",
+        "digest": "sha256:" + hashlib.sha256(triage_fixture.read_bytes()).hexdigest(),
+        "kind": "SpecHarvesterNextCorpusCandidateLayerTriage",
+        "path": (
+            "tests/fixtures/next_corpus_candidate_layer_triage/"
+            "p33-t5-next-corpus-candidate-layer-triage.example.json"
+        ),
+        "status": "selected_handoff_dry_run_ready",
+    }
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not accept packages" in non_authority
+    assert "does not accept relations" in non_authority
+    assert "does not seed baselines" in non_authority
+    assert "does not remove preview_only" in non_authority
+    assert "does not publish registry metadata" in non_authority
+    assert "does not create a SpecPM pull request" in non_authority
+    assert "does not fabricate per-file evidence digests" in non_authority
+
+
+def test_next_corpus_durable_selected_handoff_docs_cover_p33_t7_verdict() -> None:
+    github_doc = ROOT / "docs" / "NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "NextCorpusDurableSelectedHandoff.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    bounded_plan = ROOT / "docs" / "BOUNDED_CORPUS_EXPANSION_PLAN.md"
+    bounded_plan_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BoundedCorpusExpansionPlan.md"
+    )
+    preflight_decision = ROOT / "docs" / "NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md"
+    preflight_decision_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "NextCorpusSpecPMPreflightIntakeDecision.md"
+    )
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Next-Corpus Durable Selected Handoff",
+            "P33-T7",
+            "SpecHarvesterSelectedCandidateHandoffProposal",
+            "spec-harvester.selected-candidate-handoff-proposal/v0",
+            "producer_preview_evidence_only",
+            "serena.core",
+            "transmission.core",
+            "specpm.core",
+            "mcpm.system",
+            "specgraph.system",
+            "selectedCandidateCount: 3",
+            "deferredCandidateCount: 2",
+            "requiredEvidenceRoleCount: 4",
+            "digestVerifiedCount: 1",
+            "zero warnings",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "preview_only",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:NextCorpusDurableSelectedHandoff>" in docc_root.read_text(encoding="utf-8")
+    assert "NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md" in roadmap.read_text(encoding="utf-8")
+    assert "NextCorpusDurableSelectedHandoff" in roadmap_docc.read_text(encoding="utf-8")
+    assert "NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md" in bounded_plan.read_text(encoding="utf-8")
+    assert "NextCorpusDurableSelectedHandoff" in bounded_plan_docc.read_text(encoding="utf-8")
+    assert "NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md" in preflight_decision.read_text(
+        encoding="utf-8"
+    )
+    assert "NextCorpusDurableSelectedHandoff" in preflight_decision_docc.read_text(encoding="utf-8")
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

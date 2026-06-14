@@ -535,6 +535,9 @@ Tasks:
 - run or coordinate SpecPM-side selected handoff preflight and record the next
   intake readiness decision
   ([`NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`](NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md)).
+- create durable selected handoff evidence for the selected scope and prove it
+  passes SpecPM selected handoff preflight
+  ([`NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md`](NEXT_CORPUS_DURABLE_SELECTED_HANDOFF.md)).
 
 Success criteria:
 
@@ -546,6 +549,9 @@ Success criteria:
 - P33-T6 records that the current P33-T5 triage artifact is not a supported
   SpecPM selected handoff payload and requires a durable selected handoff
   follow-up before maintainer intake review;
+- P33-T7 records that the durable selected handoff artifact passes SpecPM
+  selected handoff preflight with three selected candidates, two deferred
+  candidates, and zero warnings or errors;
 - the result remains review evidence only and does not accept packages, accept
   relations, seed baselines, remove `preview_only`, publish registry metadata,
   or treat AI output as registry truth.
