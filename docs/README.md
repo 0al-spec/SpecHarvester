@@ -220,6 +220,10 @@ Published DocC site:
     Phase 35 policy for bounded multi-ecosystem source selection, importance
     signals, exclusion rules, ecosystem quotas, pinned local checkout
     requirements, and non-authority boundaries
+71. [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md):
+    machine-readable `SpecHarvesterCorpusPlan` contract for curated source
+    batches, selected/deferred/rejected decisions, reason codes, expected
+    analyzer coverage, stop conditions, and non-authority statements
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

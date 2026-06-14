@@ -33,7 +33,7 @@ local repository checkout
 | AI-enriched preview candidate copies | Apply clean AI enrichment proposals into copied preview candidates with patch reports for review. | [`AI_ENRICHMENT_CANDIDATE_PATCH.md`](AI_ENRICHMENT_CANDIDATE_PATCH.md) |
 | Selected/deferred candidate triage | Separate review-ready candidates from candidates that need targeted regeneration, repair, or explicit deferral. | [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md), [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md) |
 | SpecPM handoff evidence | Emit portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md), [`SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`](SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md) |
-| Bounded corpus runs | Select important multi-ecosystem repository/package-family targets with explicit importance signals and exclusion rules, then run operator-selected local checkout batches with deterministic and optional live local-model paths. | [`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md), [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md), [`BOUNDED_CORPUS_EXPANSION_PLAN.md`](BOUNDED_CORPUS_EXPANSION_PLAN.md) |
+| Bounded corpus runs | Select important multi-ecosystem repository/package-family targets with explicit importance signals and exclusion rules, record the machine-readable corpus plan, then run operator-selected local checkout batches with deterministic and optional live local-model paths. | [`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md), [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md), [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md) |
 | Optional CodeGraph input boundary | Normalize pre-existing CodeGraph artifacts into source graph evidence and check pinned interface compatibility offline. | [`CODEGRAPH_SOURCE_GRAPH_ADAPTER.md`](CODEGRAPH_SOURCE_GRAPH_ADAPTER.md), [`CODEGRAPH_COMPATIBILITY_GUARD.md`](CODEGRAPH_COMPATIBILITY_GUARD.md) |
 
 ## Repository Shapes
@@ -64,6 +64,10 @@ repositories into SpecPM automatically.
 boundary for choosing important libraries across ecosystems. The policy treats
 repository/package-family selection as a curated operator decision, not a raw
 registry search crawl.
+
+[`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md) defines the
+machine-readable plan shape for selected, deferred, and rejected source
+decisions before any autonomous batch run starts.
 
 ## Author-Ready Draft Boundary
 
@@ -170,5 +174,5 @@ For a practical path through the current system:
 5. Use [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md)
    and [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md) when preparing SpecPM review.
 6. Use [`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md) and
-   [`BOUNDED_CORPUS_EXPANSION_PLAN.md`](BOUNDED_CORPUS_EXPANSION_PLAN.md)
-   before running any larger corpus.
+   [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md) before
+   running any larger corpus.
