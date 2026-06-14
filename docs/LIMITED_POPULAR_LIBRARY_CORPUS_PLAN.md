@@ -140,6 +140,10 @@ P30-T5 handoff:
 - do not treat producer receipt, AI proposal, or triage status as registry
   authority.
 
+The selected handoff dry-run result is recorded in
+[`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md)
+with verdict `selected_handoff_dry_run_ready`.
+
 ## Stop Conditions
 
 Stop the run, or mark the affected repository as blocked, when:

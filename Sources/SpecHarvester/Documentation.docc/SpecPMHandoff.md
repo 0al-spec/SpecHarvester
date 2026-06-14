@@ -129,6 +129,13 @@ registry metadata.
 
 See <doc:AutonomousCandidateIntakePolicy>.
 
+The P30 limited popular-library selected handoff dry run records this boundary
+for `flask.core`, `gin.core`, and `docc2context.core` in
+<doc:LimitedPopularLibrarySelectedHandoffDryRun>. It includes producer
+preflight reports, static viewer digests, required bundle file digests, and
+`registryAcceptanceDecision.status: external_required` without creating a
+SpecPM pull request or accepting packages.
+
 ## Fresh Candidate Refresh Run
 
 Use <doc:FreshCandidateRefreshRun> when a generated package-set output should

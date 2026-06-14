@@ -97,6 +97,10 @@ P30-T4 records the candidate-layer triage report in
 <doc:LimitedPopularLibraryCandidateLayerTriage> with verdict
 `ready_for_selected_handoff_dry_run`.
 
+P30-T5 records the selected handoff dry run in
+<doc:LimitedPopularLibrarySelectedHandoffDryRun> with verdict
+`selected_handoff_dry_run_ready`.
+
 See also <doc:RepositorySourceManifests>, <doc:AutonomousCandidateBatch>,
 <doc:AutonomousCandidateIntakePolicy>, and
 <doc:AutonomousCandidateCorpusQualityGate>.

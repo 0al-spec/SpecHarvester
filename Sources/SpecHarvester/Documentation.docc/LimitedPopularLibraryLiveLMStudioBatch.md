@@ -76,6 +76,10 @@ The generated output remains producer preview evidence. SpecPM remains the
 validation, acceptance, relation, baseline, and registry authority.
 The live run does not remove `preview_only` from generated candidates.
 
+P30-T5 selected handoff dry-run evidence is recorded separately in
+<doc:LimitedPopularLibrarySelectedHandoffDryRun> after the P30-T4 triage
+narrows the handoff set to `flask.core`, `gin.core`, and `docc2context.core`.
+
 ## Command
 
 ```bash
@@ -88,6 +92,7 @@ PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
 ```
 
 See also <doc:LimitedPopularLibraryCandidateLayerTriage>,
+<doc:LimitedPopularLibrarySelectedHandoffDryRun>,
 <doc:LimitedPopularLibraryDeterministicBatch>,
 <doc:LimitedPopularLibraryCorpusPlan>, and
 <doc:AutonomousCandidateIntakePolicy>.

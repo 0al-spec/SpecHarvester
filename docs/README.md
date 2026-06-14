@@ -172,10 +172,13 @@ Published DocC site:
 61. [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md):
     P30 candidate-layer triage report, selected P30-T5 candidates,
     regeneration decisions, and non-authority boundaries
-62. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
+62. [`LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md`](LIMITED_POPULAR_LIBRARY_SELECTED_HANDOFF_DRY_RUN.md):
+    P30 selected candidate handoff dry-run evidence, preflight/viewer digests,
+    deferred candidates, and external registry acceptance boundary
+63. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
     deterministic fallback for Flask/Gin-style repositories with no workspace
     package records
-63. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+64. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
