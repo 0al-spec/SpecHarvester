@@ -371,6 +371,29 @@ no `preview_only` removal, and no AI output as registry truth.
 The Phase 35 seed corpus is blocked until operator-provided pinned local
 checkouts are verified.
 
+### Repository Parsing Plugin System
+
+Phase 36 records the next precision layer after the FastAPI AI-enabled rerun:
+repository parsing plugins should classify repository paths by evidence role
+before public interface indexes are assembled.
+
+`P36-T1` defines <doc:RepositoryParsingPluginContract>. The contract separates
+public API evidence from semantic usage/documentation evidence, uses FastAPI
+`docs_src/*` over-capture as the motivating case, and keeps the intended
+Python web-framework parser profile reusable rather than repository-specific.
+
+Planned follow-ups:
+
+- `P36-T2`: add a machine-readable Python web-framework parser profile
+  fixture;
+- `P36-T3`: implement the first plugin-aware source classification hook;
+- `P36-T4`: rerun FastAPI with the parser profile and compare evidence volume
+  and claim quality.
+
+Plugin decisions remain producer-side evidence only: no registry publication,
+no package or relation acceptance, no baseline seeding, no `preview_only`
+removal, and no AI output as registry truth.
+
 ## Non-Goals
 
 SpecHarvester does not become the registry, the canonical package authority,

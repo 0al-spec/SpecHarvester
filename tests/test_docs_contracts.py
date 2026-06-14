@@ -10,6 +10,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P36-T2 Python Web-Framework Parser Profile Fixture" in next_text:
+        assert_p36_t1_last_archived(next_text)
+        assert_p36_t1_recent(next_text)
+        assert_phase_36_t2_active(next_text)
+        return
+
+    if "# Next Task: P36-T1 Repository Parsing Plugin Contract" in next_text:
+        assert_p35_t6_last_archived(next_text)
+        assert_p35_t6_recent(next_text)
+        assert_phase_36_t1_active(next_text)
+        return
+
     if "# Next Task: Phase 35 Complete" in next_text:
         assert_p35_t6_last_archived(next_text)
         assert_p35_t6_recent(next_text)
@@ -2516,6 +2528,78 @@ def assert_phase_35_complete(next_text: str) -> None:
         assert task_id in next_text
     assert "bounded curated corpus" in normalized
     assert "blocked until operator-provided pinned local checkouts are verified" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_phase_36_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P36-T1 Repository Parsing Plugin Contract" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "Phase 36. Repository Parsing Plugin System" in next_text
+    assert "`feature/P36-T1-repository-parsing-plugin-plan`" in next_text
+    assert "`P36-T1` Document repository parsing plugin contract" in next_text
+    assert "FastAPI rerun" in normalized
+    assert "docs_src/*" in next_text
+    assert "public interface evidence" in normalized
+    assert "semantic usage evidence" in normalized
+    assert "Python web-framework parser profile" in normalized
+    assert "plugin inputs" in normalized
+    assert "plugin outputs" in normalized
+    assert "rule precedence" in normalized
+    assert "fallback behavior" in normalized
+    assert "non-authority boundary" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_p36_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P36-T1 Repository Parsing Plugin Contract" in next_text
+
+
+def assert_p36_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P36-T1` added" in next_text
+    assert "REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in next_text
+    assert "RepositoryParsingPluginContract" in next_text
+    assert "SpecHarvesterRepositoryParsingPluginDecision" in next_text
+    assert "spec-harvester.repository-parsing-plugin/v0" in next_text
+    assert "producer_path_classification_only" in next_text
+    assert "public_interface" in next_text
+    assert "semantic_usage" in next_text
+    assert "documentation" in next_text
+    assert "example" in next_text
+    assert "test" in next_text
+    assert "generated" in next_text
+    assert "tooling" in next_text
+    assert "internal" in next_text
+    assert "ignored" in next_text
+    assert "FastAPI" in next_text
+    assert "docs_src/*" in next_text
+    assert "Python web-framework parser profile" in normalized
+    assert "non-authority boundary" in normalized
+    assert "do not publish registry metadata" in normalized
+    assert "do not accept packages" in normalized
+    assert "do not treat AI output as registry truth" in normalized
+
+
+def assert_phase_36_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P36-T2 Python Web-Framework Parser Profile Fixture" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "Phase 36. Repository Parsing Plugin System" in next_text
+    assert "`feature/P36-T2-python-web-framework-parser-profile`" in next_text
+    assert "`P36-T2` Add Python web-framework parser profile fixture" in next_text
+    assert "machine-readable Python web-framework parser profile fixture" in normalized
+    assert "FastAPI-style repositories" in normalized
+    assert "public interface evidence" in normalized
+    assert "semantic usage evidence" in normalized
+    assert "docs_src" in next_text
+    assert "tutorials" in normalized
+    assert "examples" in normalized
+    assert "tests" in normalized
     assert "does not publish registry metadata" in normalized
     assert "does not accept packages" in normalized
     assert "does not treat AI output as registry truth" in normalized
@@ -11580,4 +11664,76 @@ def test_selected_corpus_dry_run_readiness_is_documented() -> None:
     assert "SelectedCorpusDryRunReadiness" in capabilities_docc.read_text(encoding="utf-8")
     assert "SELECTED_CORPUS_DRY_RUN_READINESS.md" in roadmap.read_text(encoding="utf-8")
     assert "SelectedCorpusDryRunReadiness" in roadmap_docc.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_parsing_plugin_contract_is_documented() -> None:
+    github_doc = ROOT / "docs" / "REPOSITORY_PARSING_PLUGIN_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryParsingPluginContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "Repository Parsing Plugin Contract",
+            "FastAPI",
+            "docs_src/*",
+            "public_interface",
+            "semantic_usage",
+            "documentation",
+            "example",
+            "test",
+            "generated",
+            "tooling",
+            "internal",
+            "ignored",
+            "spec-harvester.repository-parsing-plugin/v0",
+            "SpecHarvesterRepositoryParsingPluginDecision",
+            "producer_path_classification_only",
+            "plugin inputs" if path == github_doc else "Inputs",
+            "plugin outputs" if path == github_doc else "Outputs",
+            "rule precedence" if path == github_doc else "Rule Precedence",
+            "publicInterfaceEligible",
+            "semanticUsageEligible",
+            "Python web-framework profile",
+            "public interface evidence",
+            "semantic usage evidence",
+            "does not publish registry metadata",
+            "does not accept packages",
+            "does not treat AI output as registry truth",
+            "P36-T2",
+            "P36-T3",
+            "P36-T4",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:RepositoryParsingPluginContract>" in docc_root.read_text(encoding="utf-8")
+    assert "REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in capabilities.read_text(encoding="utf-8")
+    assert "RepositoryParsingPluginContract" in capabilities_docc.read_text(encoding="utf-8")
+    assert "REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in roadmap.read_text(encoding="utf-8")
+    assert "RepositoryParsingPluginContract" in roadmap_docc.read_text(encoding="utf-8")
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "## Phase 36. Repository Parsing Plugin System" in workplan_text
+    assert "`P36-T1` Document the repository parsing plugin contract" in workplan_text
+    assert "`P36-T2` Add a machine-readable parser rule profile fixture" in workplan_text
+    assert "`P36-T3` Implement the first plugin-aware source classification hook" in workplan_text
+    assert "`P36-T4` Re-run the FastAPI AI-enabled candidate batch" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))

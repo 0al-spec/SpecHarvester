@@ -1,50 +1,65 @@
-# Next Task: Phase 35 Complete
+# Next Task: P36-T2 Python Web-Framework Parser Profile Fixture
 
-**Status:** Complete
-**Phase:** Phase 35. Curated Multi-Ecosystem Corpus Selection
-**Last Archived:** P35-T6 Selected Corpus Dry-Run Readiness
+**Status:** In Progress
+**Phase:** Phase 36. Repository Parsing Plugin System
+**Task:** `P36-T2` Add Python web-framework parser profile fixture
+**Branch:** `feature/P36-T2-python-web-framework-parser-profile`
+**Last Archived:** P36-T1 Repository Parsing Plugin Contract
 
 ## Recently Archived
 
-- `P35-T6` added
-  [`SELECTED_CORPUS_DRY_RUN_READINESS.md`](../../docs/SELECTED_CORPUS_DRY_RUN_READINESS.md)
-  and the DocC mirror `SelectedCorpusDryRunReadiness`.
-- The readiness fixture
-  `tests/fixtures/selected_corpus_readiness/p35-t6-readiness.example.json`
-  defines `SpecHarvesterSelectedCorpusReadinessReport` with `apiVersion:
-  spec-harvester.selected-corpus-readiness/v0`, `schemaVersion: 1`, and
-  `authority: producer_readiness_report_only`.
-- The report covers `react`, `fastapi`, `serde`, `gin`, and
-  `swift-argument-parser`.
-- The readiness verdict is `blocked_pending_local_checkouts`, with every
-  selected source blocked by `local_checkout_not_verified`.
-- The downstream `autonomous-candidate-batch` command gate is `allowed:
-  false` until all selected sources have verified pinned local checkouts.
+- `P36-T1` added
+  [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](../../docs/REPOSITORY_PARSING_PLUGIN_CONTRACT.md)
+  and the DocC mirror `RepositoryParsingPluginContract`.
+- The contract defines `SpecHarvesterRepositoryParsingPluginDecision` with
+  `apiVersion: spec-harvester.repository-parsing-plugin/v0`,
+  `schemaVersion: 1`, and `authority:
+  producer_path_classification_only`.
+- It separates `public_interface` evidence from `semantic_usage`,
+  `documentation`, `example`, `test`, `generated`, `tooling`, `internal`, and
+  `ignored` path roles.
+- It uses the FastAPI `docs_src/*` over-capture as the motivating case while
+  keeping the future Python web-framework parser profile reusable rather than
+  repository-specific.
+- The non-authority boundary remains explicit: plugin decisions do not publish
+  registry metadata, do not accept packages or relations, do not remove
+  `preview_only`, and do not treat AI output as registry truth.
 
-## Phase Summary
+## Context
 
-Phase 35 completed the curated multi-ecosystem corpus selection foundation:
+P36-T1 defined the contract. P36-T2 should now turn that contract into a
+machine-readable fixture for Python web frameworks. The fixture should describe
+how FastAPI-style repositories classify package code as public interface
+evidence while classifying docs, tutorials, examples, and tests as semantic
+usage evidence unless a plugin rule explicitly promotes a path.
 
-- `P35-T1` documented the corpus selection policy.
-- `P35-T2` defined `SpecHarvesterCorpusPlan`.
-- `P35-T3` defined candidate source classification.
-- `P35-T4` created the first bounded seed corpus.
-- `P35-T5` added the explainable corpus selection report.
-- `P35-T6` added the selected corpus dry-run readiness report.
+## Motivation
 
-## Result
+- Make the plugin contract concrete enough for implementation.
+- Prevent future Python analyzer changes from hardcoding FastAPI-specific
+  paths in core logic.
+- Preserve documentation/tutorial usefulness for LLM enrichment without
+  inflating public API symbol counts.
 
-SpecHarvester now has a bounded curated corpus planning path instead of an
-open-ended registry crawl. The seed corpus is selected and explainable, but it
-is blocked until operator-provided pinned local checkouts are verified.
+## Goal
 
-The non-authority boundary remains explicit: the phase does not publish
-registry metadata, does not accept packages or relations, does not seed
-baselines, does not remove `preview_only`, and does not treat AI output as
-registry truth.
+Add a machine-readable Python web-framework parser profile fixture.
 
-## Suggested Next Step
+## Proposed Scope
 
-Choose a new phase for operator-provided local checkout preparation and
-readiness rerun, or pause corpus expansion until the selected repositories are
-available locally at verified pinned revisions.
+- Define the fixture shape and example profile id.
+- Include path role rules for package roots, docs, `docs_src`, examples,
+  tests, generated artifacts, tooling, internal paths, and fallback behavior.
+- Include sample decisions for FastAPI-like paths.
+- Link the fixture from the plugin contract docs and DocC mirror.
+- Add docs-contract regression coverage.
+
+## Acceptance
+
+- The fixture uses the P36-T1 contract vocabulary.
+- FastAPI package code is public interface eligible.
+- `docs_src`, tutorials, examples, and tests are semantic usage or
+  non-public-interface evidence by default.
+- The fixture remains producer-side review evidence only and does not publish
+  registry metadata, does not accept packages or relations, does not remove
+  `preview_only`, and does not treat AI output as registry truth.

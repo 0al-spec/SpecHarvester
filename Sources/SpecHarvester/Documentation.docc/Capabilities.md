@@ -31,6 +31,7 @@ local repository checkout
 | Selected/deferred candidate triage | Review-ready candidates are separated from candidates needing regeneration, repair, or explicit deferral. | <doc:SelectedCandidateHandoffProposal>, <doc:DeferredCandidateRegenerationRunbook> |
 | SpecPM handoff evidence | Portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | <doc:SpecPMHandoff>, <doc:SelectedCandidateHandoffPreflightExpectations> |
 | Bounded corpus runs | Important multi-ecosystem repository/package-family targets selected with explicit importance signals and exclusion rules, recorded in a machine-readable corpus plan, explainable selection report, and dry-run readiness gate, then operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:CorpusSelectionPolicy>, <doc:SpecHarvesterCorpusPlan>, <doc:MultiEcosystemSeedCorpusPlan>, <doc:ExplainableCorpusSelectionReport>, <doc:SelectedCorpusDryRunReadiness>, <doc:AutonomousCandidateBatch> |
+| Repository parsing plugin contract | Planned plugin-shaped path classification layer for future language/framework parser profiles, separating public interface evidence from semantic usage/documentation evidence. | <doc:RepositoryParsingPluginContract> |
 | Optional CodeGraph input boundary | Pre-existing CodeGraph artifact normalization and offline pinned interface compatibility checks. | <doc:CodeGraphSourceGraphAdapter>, <doc:CodeGraphCompatibilityGuard> |
 
 ## Product Boundary
@@ -82,6 +83,11 @@ any readiness check or autonomous batch.
 <doc:SelectedCorpusDryRunReadiness> records that the Phase 35 seed corpus is
 blocked until operator-provided pinned local checkouts are verified.
 
+<doc:RepositoryParsingPluginContract> defines the Phase 36 plugin contract for
+repository path classification. It keeps documentation, tutorials, examples,
+and tests available as semantic usage evidence while keeping public interface
+indexes focused on package surfaces intended for consumers.
+
 ## Non-Goals
 
 SpecHarvester does not clone or discover repositories during documented corpus
@@ -102,5 +108,6 @@ registry.
 | Selected/deferred handoff | Working review evidence path |
 | SpecPM consumer preflight integration | Working for supported handoff artifacts |
 | Curated multi-ecosystem corpus selection | Planned policy boundary |
+| Repository parsing plugin profiles | Planned contract; implementation not started |
 | Broad autonomous public-library scraping | Not ready; bounded local corpus only |
 | Final accepted spec authoring | Out of scope for SpecHarvester |
