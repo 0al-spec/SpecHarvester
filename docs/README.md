@@ -152,7 +152,10 @@ Published DocC site:
 55. [`AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`](AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md):
     Phase 29 follow-up plan for single-package fallback, LM Studio JSON
     repair/retry, and mixed-corpus quality gates
-56. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+56. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
+    first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
+    LM Studio gap classifications
+57. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References

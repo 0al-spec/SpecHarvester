@@ -35,6 +35,8 @@ replace author or maintainer review.
 - Acceptance: mark Flask and Gin as `single_package_fallback_needed`, mark
   malformed model JSON as `ai_json_repair_needed`, and keep all output
   producer-side only.
+- Artifact: <doc:AutonomousCandidateCorpusBaseline> records the Flask/Gin/xyflow
+  baseline as `SpecHarvesterAutonomousCandidateCorpusBaseline`.
 
 `P29-T4 Single-Package Candidate Fallback`
 

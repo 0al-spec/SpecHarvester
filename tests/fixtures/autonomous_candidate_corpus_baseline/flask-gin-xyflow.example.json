@@ -1,0 +1,114 @@
+{
+  "apiVersion": "spec-harvester.autonomous-candidate-corpus-baseline/v0",
+  "authority": "producer_preview_evidence_only",
+  "corpus": {
+    "id": "local-flask-gin-xyflow",
+    "repositories": [
+      "flask",
+      "gin",
+      "xyflow"
+    ]
+  },
+  "kind": "SpecHarvesterAutonomousCandidateCorpusBaseline",
+  "nonAuthority": [
+    "This baseline is review evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It does not publish packages or relations.",
+    "It does not remove preview_only."
+  ],
+  "productVerdict": {
+    "candidateQuality": "needs_follow_up",
+    "pipelineHealth": "deterministic_pipeline_passed",
+    "summary": "The autonomous batch runner works as plumbing for the mixed corpus, but single-package fallback and local model JSON repair are required before broad popular-library scraping."
+  },
+  "repositoryResults": [
+    {
+      "authorReadyDecision": "blocked_until_inputs_change",
+      "deterministic": {
+        "candidateCount": 0,
+        "preflight": "passed",
+        "relationCount": 0,
+        "status": "passed"
+      },
+      "gapCodes": [
+        "single_package_fallback_needed"
+      ],
+      "id": "flask",
+      "liveLmStudio": {
+        "aiDraft": "completed",
+        "aiEnrichment": "completed",
+        "diagnostics": [],
+        "proposalSubjectCount": 0,
+        "status": "needs_regeneration"
+      },
+      "packageId": "flask.core",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831"
+    },
+    {
+      "authorReadyDecision": "blocked_until_inputs_change",
+      "deterministic": {
+        "candidateCount": 0,
+        "preflight": "passed",
+        "relationCount": 0,
+        "status": "passed"
+      },
+      "gapCodes": [
+        "single_package_fallback_needed"
+      ],
+      "id": "gin",
+      "liveLmStudio": {
+        "aiDraft": "completed",
+        "aiEnrichment": "completed",
+        "diagnostics": [],
+        "proposalSubjectCount": 0,
+        "status": "needs_regeneration"
+      },
+      "packageId": "gin.core",
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67"
+    },
+    {
+      "authorReadyDecision": "stop_for_author_review",
+      "deterministic": {
+        "candidateCount": 4,
+        "preflight": "passed",
+        "relationCount": 3,
+        "status": "passed"
+      },
+      "gapCodes": [
+        "ai_json_repair_needed"
+      ],
+      "id": "xyflow",
+      "liveLmStudio": {
+        "aiDraft": "failed",
+        "aiEnrichment": "not_run_after_ai_draft_failure",
+        "diagnostics": [
+          {
+            "code": "model_output_invalid_json",
+            "message": "Model output must be valid JSON",
+            "severity": "error"
+          }
+        ],
+        "proposalSubjectCount": 4,
+        "status": "needs_regeneration"
+      },
+      "packageId": "xyflow.workspace",
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd"
+    }
+  ],
+  "schemaVersion": 1,
+  "source": {
+    "deterministicRunRoot": "/tmp/specharvester-corpus-check-jxx0KG",
+    "liveLmStudioRunRoot": "/tmp/specharvester-corpus-live-check-WU7nbK",
+    "model": "openai/gpt-oss-20b",
+    "provider": "lm_studio"
+  },
+  "summary": {
+    "deterministicFailedCount": 0,
+    "deterministicPassedCount": 3,
+    "liveLmStudioFailedCount": 1,
+    "repositoryCount": 3
+  }
+}
