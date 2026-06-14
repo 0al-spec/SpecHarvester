@@ -52,6 +52,28 @@ def test_codegraph_compatibility_report_fails_missing_json_command(
     assert "affected" in checks["required_json_cli_commands"]["message"]
 
 
+def test_codegraph_compatibility_report_fails_unpinned_package_metadata(
+    tmp_path: Path,
+) -> None:
+    fixture = mutable_fixture(tmp_path)
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    payload["package"]["name"] = "malicious"
+    payload["package"]["version"] = "999.0.0"
+    payload["package"]["shasum"] = "unexpected"
+    payload["package"]["platformPackage"]["integrity"] = "unexpected"
+    fixture.write_text(json.dumps(payload), encoding="utf-8")
+
+    report = build_codegraph_compatibility_report(CodeGraphCompatibilityOptions(fixture=fixture))
+
+    checks = {check["id"]: check for check in report["checks"]}
+    assert report["status"] == "failed"
+    assert checks["pinned_package_metadata"]["status"] == "failed"
+    assert "package.name" in checks["pinned_package_metadata"]["message"]
+    assert "package.version" in checks["pinned_package_metadata"]["message"]
+    assert "package.shasum" in checks["pinned_package_metadata"]["message"]
+    assert "platformPackage.integrity" in checks["pinned_package_metadata"]["message"]
+
+
 def test_codegraph_compatibility_report_fails_missing_json_flag(
     tmp_path: Path,
 ) -> None:
@@ -137,6 +159,29 @@ def test_codegraph_compatibility_cli_returns_failure_for_failed_report(
         "integrity"
         in {check["id"]: check for check in report["checks"]}["pinned_package_metadata"]["message"]
     )
+
+
+def test_codegraph_compatibility_cli_reports_unreadable_fixture_as_json(
+    tmp_path: Path,
+    capsys,
+    monkeypatch,
+) -> None:
+    fixture = mutable_fixture(tmp_path)
+    original_read_text = Path.read_text
+
+    def blocked_read_text(self: Path, *args, **kwargs) -> str:
+        if self == fixture:
+            raise OSError("permission denied")
+        return original_read_text(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "read_text", blocked_read_text)
+
+    result = main(["codegraph-compatibility-report", "--fixture", str(fixture)])
+
+    report = json.loads(capsys.readouterr().out)
+    assert result == 2
+    assert report["status"] == "error"
+    assert "Unable to read CodeGraph compatibility fixture" in report["message"]
 
 
 def mutable_fixture(tmp_path: Path) -> Path:

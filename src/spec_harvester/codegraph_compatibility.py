@@ -26,6 +26,25 @@ REQUIRED_JSON_COMMANDS = (
     "impact",
     "affected",
 )
+EXPECTED_PACKAGE_METADATA = {
+    "name": "@colbymchenry/codegraph",
+    "version": "0.9.7",
+    "integrity": (
+        "sha512-sBZnnKGkUdmM3BOkvfFq6wdK2OC/sA7nLMh28voan82xFzRp8irEVCakywfOXfDE4bkVMod"
+        "Wvucz85f3+YMO6w=="
+    ),
+    "shasum": "72131a74720bebf719e13ebcbf37f0554cc6cac0",
+    "license": "MIT",
+}
+EXPECTED_PLATFORM_PACKAGE_METADATA = {
+    "name": "@colbymchenry/codegraph-darwin-arm64",
+    "version": "0.9.7",
+    "integrity": (
+        "sha512-bQSQSBAeC2HRC4A0wH/T1sOxvLgtNlc7pIjz6vV03ccg0T7zhD0WfyO+HTQRdD1RzAdAILh"
+        "IB1TJpCQsREoHrg=="
+    ),
+    "shasum": "303af1dd3152a6024615ea4ae8c09007239273af",
+}
 
 
 @dataclass(frozen=True)
@@ -104,6 +123,8 @@ class CodeGraphCompatibilityFixture:
             raise ValueError(f"CodeGraph compatibility fixture does not exist: {self.path}")
         try:
             payload = json.loads(self.path.read_text(encoding="utf-8"))
+        except OSError as exc:
+            raise ValueError(f"Unable to read CodeGraph compatibility fixture: {exc}") from exc
         except json.JSONDecodeError as exc:
             raise ValueError(f"Invalid CodeGraph compatibility fixture JSON: {exc.msg}") from exc
         if not isinstance(payload, dict):
@@ -123,13 +144,33 @@ class CodeGraphCompatibilityFixture:
         package = self.package_record()
         missing = [
             key
-            for key in ("name", "version", "integrity", "license")
+            for key in EXPECTED_PACKAGE_METADATA
             if not isinstance(package.get(key), str) or not package.get(key)
         ]
         if missing:
             return failed_check(
                 "pinned_package_metadata",
                 f"Package metadata missing required fields: {', '.join(missing)}",
+            )
+        mismatches = metadata_mismatches(package, EXPECTED_PACKAGE_METADATA, "package")
+        platform_package = package.get("platformPackage")
+        if not isinstance(platform_package, dict):
+            mismatches.append("platformPackage must be an object")
+        else:
+            mismatches.extend(
+                metadata_mismatches(
+                    platform_package,
+                    EXPECTED_PLATFORM_PACKAGE_METADATA,
+                    "platformPackage",
+                )
+            )
+        if mismatches:
+            return failed_check(
+                "pinned_package_metadata",
+                (
+                    "Package metadata does not match pinned CodeGraph release: "
+                    f"{', '.join(mismatches)}"
+                ),
             )
         return passed_check(
             "pinned_package_metadata",
@@ -322,6 +363,18 @@ def build_codegraph_compatibility_report(
 def write_codegraph_compatibility_report(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def metadata_mismatches(
+    actual: dict[str, Any],
+    expected: dict[str, str],
+    label: str,
+) -> list[str]:
+    return [
+        f"{label}.{key}"
+        for key, expected_value in expected.items()
+        if actual.get(key) != expected_value
+    ]
 
 
 def report_status(checks: list[dict[str, Any]]) -> str:
