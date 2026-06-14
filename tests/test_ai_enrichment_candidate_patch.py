@@ -191,7 +191,107 @@ def test_ai_enrichment_candidate_patch_rejects_output_inside_source(tmp_path: Pa
     assert not (candidate / "enriched").exists()
 
 
-def write_candidate(root: Path, *, package_id: str = "fastapi.core") -> Path:
+def test_ai_enrichment_candidate_patch_rejects_non_preview_candidates(tmp_path: Path) -> None:
+    candidate = write_candidate(tmp_path / "candidate", preview_only=False)
+    proposal = write_proposal(tmp_path / "ai" / "proposal.json")
+
+    status = main(
+        [
+            "apply-ai-enrichment-proposal",
+            "--proposal",
+            str(proposal),
+            "--candidate",
+            str(candidate),
+            "--package-id",
+            "fastapi.core",
+            "--output",
+            str(tmp_path / "out"),
+        ]
+    )
+
+    assert status == 2
+    assert not (tmp_path / "out").exists()
+
+
+def test_ai_enrichment_candidate_patch_rejects_missing_preview_only(tmp_path: Path) -> None:
+    candidate = write_candidate(tmp_path / "candidate", preview_only=None)
+    proposal = write_proposal(tmp_path / "ai" / "proposal.json")
+
+    status = main(
+        [
+            "apply-ai-enrichment-proposal",
+            "--proposal",
+            str(proposal),
+            "--candidate",
+            str(candidate),
+            "--package-id",
+            "fastapi.core",
+            "--output",
+            str(tmp_path / "out"),
+        ]
+    )
+
+    assert status == 2
+    assert not (tmp_path / "out").exists()
+
+
+def test_ai_enrichment_candidate_patch_rejects_escaping_spec_paths(tmp_path: Path) -> None:
+    outside = tmp_path / "outside.spec.yaml"
+    outside.write_text("sentinel: keep\n", encoding="utf-8")
+    candidate = write_candidate(tmp_path / "candidate", spec_path="../outside.spec.yaml")
+    proposal = write_proposal(tmp_path / "ai" / "proposal.json")
+
+    status = main(
+        [
+            "apply-ai-enrichment-proposal",
+            "--proposal",
+            str(proposal),
+            "--candidate",
+            str(candidate),
+            "--package-id",
+            "fastapi.core",
+            "--output",
+            str(tmp_path / "out"),
+        ]
+    )
+
+    assert status == 2
+    assert outside.read_text(encoding="utf-8") == "sentinel: keep\n"
+    assert not (tmp_path / "out").exists()
+
+
+def test_ai_enrichment_candidate_patch_rejects_absolute_spec_paths(tmp_path: Path) -> None:
+    outside = tmp_path / "outside.spec.yaml"
+    outside.write_text("sentinel: keep\n", encoding="utf-8")
+    candidate = write_candidate(tmp_path / "candidate", spec_path=str(outside))
+    proposal = write_proposal(tmp_path / "ai" / "proposal.json")
+
+    status = main(
+        [
+            "apply-ai-enrichment-proposal",
+            "--proposal",
+            str(proposal),
+            "--candidate",
+            str(candidate),
+            "--package-id",
+            "fastapi.core",
+            "--output",
+            str(tmp_path / "out"),
+        ]
+    )
+
+    assert status == 2
+    assert outside.read_text(encoding="utf-8") == "sentinel: keep\n"
+    assert not (tmp_path / "out").exists()
+
+
+def write_candidate(
+    root: Path,
+    *,
+    package_id: str = "fastapi.core",
+    preview_only: bool | None = True,
+    spec_path: str = "specs/fastapi.spec.yaml",
+) -> Path:
     root.mkdir(parents=True)
     (root / "specs").mkdir()
     (root / "harvest.json").write_text('{"status":"ok"}\n', encoding="utf-8")
@@ -212,8 +312,7 @@ def write_candidate(root: Path, *, package_id: str = "fastapi.core") -> Path:
             "version": "0.1.0",
             "summary": "Generated FastAPI starter package.",
         },
-        "preview_only": True,
-        "specs": [{"path": "specs/fastapi.spec.yaml"}],
+        "specs": [{"path": spec_path}],
         "index": {
             "provides": {
                 "capabilities": ["fastapi.core"],
@@ -222,6 +321,8 @@ def write_candidate(root: Path, *, package_id: str = "fastapi.core") -> Path:
             "requires": {"capabilities": []},
         },
     }
+    if preview_only is not None:
+        manifest["preview_only"] = preview_only
     spec = {
         "apiVersion": "specpm.dev/v0.1",
         "kind": "BoundarySpec",

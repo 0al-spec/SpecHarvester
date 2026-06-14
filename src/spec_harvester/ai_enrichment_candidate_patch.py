@@ -58,6 +58,9 @@ def build_ai_enrichment_candidate_patch(
             f"Candidate package id {candidate_package_id!r} does not match proposal "
             f"package id {package_id!r}."
         )
+    if source_manifest.get("preview_only") is not True:
+        raise ValueError("Candidate manifest must declare preview_only: true.")
+    validate_manifest_spec_paths(source, source_manifest)
 
     before = candidate_digests(source)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -66,7 +69,7 @@ def build_ai_enrichment_candidate_patch(
     manifest_path = output / "specpm.yaml"
     manifest = read_yaml_object(manifest_path)
     spec_relative = first_spec_path(manifest)
-    spec_path = output / spec_relative
+    spec_path = safe_bundle_file(output, spec_relative, "specs[].path")
     spec = read_yaml_object(spec_path)
 
     applied: list[dict[str, Any]] = []
@@ -313,7 +316,9 @@ def refresh_receipt(candidate: Path) -> None:
             if not isinstance(output, dict):
                 continue
             relative = string_value(output.get("path"))
-            target = candidate / relative
+            if not relative:
+                continue
+            target = safe_bundle_file(candidate, relative, "producer receipt output path")
             if relative and target.is_file() and relative != "producer-receipt.json":
                 output["digest"] = digest_record(sha256_file(target))
     path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -322,13 +327,14 @@ def refresh_receipt(candidate: Path) -> None:
 def candidate_digests(root: Path) -> dict[str, dict[str, str]]:
     paths = ["specpm.yaml"]
     manifest = read_yaml_object(root / "specpm.yaml")
+    validate_manifest_spec_paths(root, manifest)
     paths.extend(manifest_spec_paths(manifest))
     if (root / "producer-receipt.json").is_file():
         paths.append("producer-receipt.json")
     return {
-        path: digest_record(sha256_file(root / path))
+        path: digest_record(sha256_file(safe_bundle_file(root, path, "candidate digest path")))
         for path in sorted(set(paths))
-        if (root / path).is_file()
+        if safe_bundle_file(root, path, "candidate digest path").is_file()
     }
 
 
@@ -346,6 +352,11 @@ def manifest_spec_paths(manifest: dict[str, Any]) -> list[str]:
         for item in specs
         if isinstance(item, dict) and isinstance(item.get("path"), str) and item["path"]
     ]
+
+
+def validate_manifest_spec_paths(root: Path, manifest: dict[str, Any]) -> None:
+    for spec_path in manifest_spec_paths(manifest):
+        safe_bundle_file(root, spec_path, "specs[].path")
 
 
 def proposal_summary(report: dict[str, Any], proposal: dict[str, Any]) -> dict[str, Any]:
@@ -448,3 +459,16 @@ def path_is_relative_to(path: Path, parent: Path) -> bool:
     except ValueError:
         return False
     return True
+
+
+def safe_bundle_file(root: Path, relative: str, label: str) -> Path:
+    if not relative:
+        raise ValueError(f"{label} must not be empty.")
+    path = Path(relative)
+    if path.is_absolute():
+        raise ValueError(f"{label} must be bundle-relative: {relative}")
+    resolved_root = root.resolve()
+    resolved = (resolved_root / path).resolve()
+    if not path_is_relative_to(resolved, resolved_root):
+        raise ValueError(f"{label} must stay inside the candidate bundle: {relative}")
+    return resolved

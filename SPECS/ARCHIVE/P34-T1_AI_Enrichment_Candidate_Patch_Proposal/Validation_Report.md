@@ -95,3 +95,49 @@ P34-T1 meets the task goal. A clean local-model
 preview candidate with a machine-readable patch report, refreshed receipt
 digests, producer preflight compatibility, and preserved non-authority
 boundaries.
+
+## Review Fix Validation
+
+PR review identified two P2 safety gaps:
+
+- `specs[].path` could be absolute or `..`-escaping and point outside the
+  copied candidate.
+- a non-preview source candidate could be enriched when `preview_only` was
+  missing or false.
+
+Added guards and regression coverage:
+
+- source candidate `specpm.yaml` must declare `preview_only: true`;
+- `specs[].path` must be bundle-relative and contained by the candidate root
+  before copying/applying;
+- candidate digest reads use the same safe bundle path resolver;
+- producer receipt output digest refresh uses safe bundle paths.
+
+Validation:
+
+- `PYTHONPATH=src pytest tests/test_ai_enrichment_candidate_patch.py -q`
+  - `10 passed`
+- `PYTHONPATH=src ruff check src/spec_harvester/ai_enrichment_candidate_patch.py tests/test_ai_enrichment_candidate_patch.py`
+  - passed
+- `PYTHONPATH=src ruff format --check src/spec_harvester/ai_enrichment_candidate_patch.py tests/test_ai_enrichment_candidate_patch.py`
+  - passed
+- `PYTHONPATH=src pytest -q`
+  - `714 passed, 1 skipped`
+- `PYTHONPATH=src ruff check .`
+  - passed
+- `PYTHONPATH=src ruff format --check src tests`
+  - passed
+- `git diff --check`
+  - passed
+- `swift build --target SpecHarvesterDocs`
+  - passed
+
+Practical FastAPI re-smoke after safety fixes:
+
+- patch report `status`: `prepared`
+- applied changes: `8`
+- skipped changes: `0`
+- `previewOnly`: `true`
+- `sourceMutated`: `false`
+- producer preflight status: `passed`
+- producer preflight diagnostics/errors/warnings: `0/0/0`
