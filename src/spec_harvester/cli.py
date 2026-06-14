@@ -57,6 +57,11 @@ from spec_harvester.code_duplication_report import (
     BACKEND_PYLINT,
     DEFAULT_MIN_LINES,
 )
+from spec_harvester.codegraph_compatibility import (
+    CodeGraphCompatibilityOptions,
+    build_codegraph_compatibility_report,
+    write_codegraph_compatibility_report,
+)
 from spec_harvester.codegraph_source_graph import (
     DEFAULT_MAX_EDGES as CODEGRAPH_DEFAULT_MAX_EDGES,
 )
@@ -1105,6 +1110,34 @@ def build_parser() -> argparse.ArgumentParser:
     )
     codegraph_source_graph.set_defaults(func=run_codegraph_source_graph_index)
 
+    codegraph_compatibility = subcommands.add_parser(
+        "codegraph-compatibility-report",
+        help="Validate pinned CodeGraph fixture compatibility without indexing repositories.",
+    )
+    codegraph_compatibility.add_argument(
+        "--fixture",
+        type=Path,
+        required=True,
+        help="Pinned CodeGraph compatibility fixture JSON.",
+    )
+    codegraph_compatibility.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where compatibility report JSON is written.",
+    )
+    codegraph_compatibility.add_argument(
+        "--executable",
+        type=Path,
+        help="Optional pre-provisioned CodeGraph executable to version-probe.",
+    )
+    codegraph_compatibility.add_argument(
+        "--timeout-seconds",
+        type=int,
+        default=5,
+        help="Timeout for optional executable version probe. Default: 5.",
+    )
+    codegraph_compatibility.set_defaults(func=run_codegraph_compatibility_report)
+
     accepted_diff = subcommands.add_parser(
         "accepted-candidate-diff-report",
         help="Build accepted-vs-candidate package metadata diff report.",
@@ -1620,6 +1653,24 @@ def run_codegraph_source_graph_index(args: argparse.Namespace) -> int:
         write_codegraph_source_graph_index(args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
+
+
+def run_codegraph_compatibility_report(args: argparse.Namespace) -> int:
+    try:
+        result = build_codegraph_compatibility_report(
+            CodeGraphCompatibilityOptions(
+                fixture=args.fixture,
+                executable=args.executable,
+                timeout_seconds=args.timeout_seconds,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    if args.output is not None:
+        write_codegraph_compatibility_report(args.output, result)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
 
 
 def run_promote(args: argparse.Namespace) -> int:

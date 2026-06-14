@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "kind": "SpecHarvesterCodeGraphCompatibilityFixture",
+  "package": {
+    "name": "@colbymchenry/codegraph",
+    "version": "0.9.7",
+    "integrity": "sha512-sBZnnKGkUdmM3BOkvfFq6wdK2OC/sA7nLMh28voan82xFzRp8irEVCakywfOXfDE4bkVModWvucz85f3+YMO6w==",
+    "shasum": "72131a74720bebf719e13ebcbf37f0554cc6cac0",
+    "license": "MIT",
+    "platformPackage": {
+      "name": "@colbymchenry/codegraph-darwin-arm64",
+      "version": "0.9.7",
+      "integrity": "sha512-bQSQSBAeC2HRC4A0wH/T1sOxvLgtNlc7pIjz6vV03ccg0T7zhD0WfyO+HTQRdD1RzAdAILhIB1TJpCQsREoHrg==",
+      "shasum": "303af1dd3152a6024615ea4ae8c09007239273af"
+    }
+  },
+  "binary": {
+    "availability": "optional_preprovisioned",
+    "versionCommand": [
+      "--version"
+    ],
+    "environment": {
+      "CODEGRAPH_NO_DOWNLOAD": "1"
+    }
+  },
+  "requiredJsonCommands": [
+    {
+      "name": "affected",
+      "args": [
+        "affected",
+        "--json"
+      ]
+    },
+    {
+      "name": "callees",
+      "args": [
+        "callees",
+        "--json"
+      ]
+    },
+    {
+      "name": "callers",
+      "args": [
+        "callers",
+        "--json"
+      ]
+    },
+    {
+      "name": "files",
+      "args": [
+        "files",
+        "--json"
+      ]
+    },
+    {
+      "name": "impact",
+      "args": [
+        "impact",
+        "--json"
+      ]
+    },
+    {
+      "name": "query",
+      "args": [
+        "query",
+        "--json"
+      ]
+    },
+    {
+      "name": "status",
+      "args": [
+        "status",
+        "--json"
+      ]
+    }
+  ],
+  "sampleEvidence": {
+    "files": [
+      {
+        "path": "Sources/App.swift",
+        "language": "swift",
+        "sha256": "sha256:fixture",
+        "sizeBytes": 128
+      }
+    ],
+    "nodes": [
+      {
+        "id": "node-1",
+        "kind": "struct",
+        "name": "App",
+        "filePath": "Sources/App.swift",
+        "language": "swift",
+        "startLine": 1,
+        "endLine": 4
+      }
+    ],
+    "edges": [
+      {
+        "source": "node-1",
+        "target": "node-2",
+        "kind": "contains",
+        "provenance": "tree-sitter"
+      }
+    ],
+    "diagnostics": []
+  }
+}

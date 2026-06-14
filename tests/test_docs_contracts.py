@@ -2784,6 +2784,41 @@ def test_docc_and_github_docs_cover_codegraph_source_graph_adapter() -> None:
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
+def test_docc_and_github_docs_cover_codegraph_compatibility_guard() -> None:
+    github_doc = ROOT / "docs" / "CODEGRAPH_COMPATIBILITY_GUARD.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "CodeGraphCompatibilityGuard.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    root_page = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "codegraph-compatibility-report",
+            "SpecHarvesterCodeGraphCompatibilityReport",
+            "CODEGRAPH_NO_DOWNLOAD=1",
+            "optional_preprovisioned",
+            "status",
+            "query",
+            "files",
+            "callers",
+            "callees",
+            "impact",
+            "affected",
+            "source_graph_index",
+            "does not index",
+            "ordinary CI",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "CODEGRAPH_COMPATIBILITY_GUARD.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:CodeGraphCompatibilityGuard>" in root_page.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_docc_and_github_docs_cover_package_set_drafting() -> None:
     github_doc = ROOT / "docs" / "PACKAGE_SET_DRAFTING.md"
     docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "PackageSetDrafting.md"
