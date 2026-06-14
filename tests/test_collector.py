@@ -1951,6 +1951,35 @@ def test_draft_spec_package_uses_documentation_semantics_without_package_manifes
     assert "README.md" in spec
 
 
+def test_draft_spec_package_treats_unparsed_package_manifest_as_package_boundary(
+    tmp_path: Path,
+) -> None:
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = {
+        "kind": "SpecHarvesterEvidenceSnapshot",
+        "source": {
+            "repository": "https://github.com/gin-gonic/gin",
+            "revision": "abc123",
+            "label": "gin",
+        },
+        "policy": {"execution": "none"},
+        "files": [{"path": "go.mod", "kind": "package_manifest"}],
+    }
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    draft_spec_package(DraftOptions(snapshot=candidate, out=candidate, package_id="gin.core"))
+
+    spec = Path(candidate / "specs" / "gin.spec.yaml").read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "summary: Observed public package boundary for Gin." in manifest
+    assert "intent.package.public_repository_metadata" in manifest
+    assert "intentKind: package" in spec
+    assert "claimScope: repository_package" in spec
+    assert "packageManagerOwnership: claimed_from_harvested_package_manifest" in spec
+    assert "not_claimed_without_package_manifest" not in spec
+
+
 def test_draft_spec_package_uses_source_unit_metadata_for_scoped_folder(
     tmp_path: Path,
 ) -> None:
@@ -1976,14 +2005,62 @@ def test_draft_spec_package_uses_source_unit_metadata_for_scoped_folder(
     spec = Path(result["spec"]).read_text(encoding="utf-8")
     manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
     assert "id: player.core" in manifest
-    assert "summary: Observed source unit boundary for Player." in manifest
-    assert "title: Player Generated Source Unit Boundary" in spec
-    assert (
-        "Describe observed source unit metadata from an allowlisted scoped harvest snapshot."
-        in spec
+    assert "summary: Observed folder/module source-unit boundary for Player." in manifest
+    assert "intent.source_unit.folder_module_metadata" in manifest
+    assert "intent.package.public_repository_metadata" not in manifest
+    assert "title: Player Generated Folder Module Boundary" in spec
+    folder_scope = (
+        "Describe observed folder/module source-unit metadata from an "
+        "allowlisted scoped harvest snapshot."
     )
+    assert folder_scope in spec
+    assert "id: source_unit_intent_boundary" in spec
+    assert "intentKind: folder_module" in spec
+    assert "packageManagerOwnership: not_claimed_from_scoped_evidence" in spec
+    assert "Folder/module candidates must not claim repository-level" in spec
     assert "sourceTarget:" in spec
     assert "path: Modules/Player" in spec
+
+
+def test_draft_spec_package_uses_source_unit_metadata_for_single_file(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "monorepo"
+    feature = repo / "Modules" / "Player"
+    feature.mkdir(parents=True)
+    (repo / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (feature / "API.swift").write_text("public struct PlayerAPI {}\n", encoding="utf-8")
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            target=Path("Modules/Player/API.swift"),
+            repository="https://github.com/example/monorepo",
+            revision="abc123",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    spec = Path(result["spec"]).read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "summary: Observed single-file source-unit boundary" in manifest
+    assert "intent.source_unit.single_file_metadata" in manifest
+    assert "intent.package.public_repository_metadata" not in manifest
+    assert "Generated Single File Boundary" in spec
+    single_file_scope = (
+        "Describe observed single-file source-unit metadata from an "
+        "allowlisted scoped harvest snapshot."
+    )
+    assert single_file_scope in spec
+    assert "id: source_unit_intent_boundary" in spec
+    assert "intentKind: single_file" in spec
+    assert "claimScope: scoped_single_file" in spec
+    assert "packageManagerOwnership: not_claimed_from_scoped_evidence" in spec
+    assert "Single-file candidates must not claim repository-level" in spec
+    assert "path: Modules/Player/API.swift" in spec
 
 
 def test_draft_spec_package_uses_tuist_target_products_as_swift_intents(

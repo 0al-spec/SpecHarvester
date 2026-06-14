@@ -9,6 +9,7 @@ from typing import Any
 import pytest
 
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
+from spec_harvester.collector import HarvestOptions, collect_local_repository
 from spec_harvester.drafter import DraftOptions, draft_spec_package
 from spec_harvester.specnode_refinement import (
     SpecNodeModelJSONParseError,
@@ -78,6 +79,41 @@ def test_specnode_refinement_smoke_uses_local_provider_with_compact_inputs(
     assert "SpecNode Smoke Fixture is a web framework" not in serialized_plan
     assert "MIT License" not in serialized_plan
     assert candidate_file_snapshot(candidate) == before_files
+
+
+def test_specnode_refinement_preview_includes_scoped_source_unit_boundary(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "monorepo"
+    feature = repo / "Modules" / "Player"
+    feature.mkdir(parents=True)
+    (repo / "LICENSE").write_text("MIT\n", encoding="utf-8")
+    (feature / "API.swift").write_text("public struct PlayerAPI {}\n", encoding="utf-8")
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(
+            source=repo,
+            target=Path("Modules/Player"),
+            repository="https://github.com/example/monorepo",
+            revision="abc123",
+        )
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+    draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    bundle = build_specnode_artifact_bundle(candidate)
+    preview_plan = build_refine_preview_plan(bundle, candidate)
+
+    boundary = preview_plan["compactModelInput"]["sourceUnitIntentBoundary"]
+    assert boundary == {
+        "intentKind": "folder_module",
+        "sourceTargetKind": "folder",
+        "claimScope": "scoped_folder_module",
+        "packageManagerOwnership": "not_claimed_from_scoped_evidence",
+        "reviewInstruction": "Keep review scoped to the harvested folder/module target.",
+        "sourceTargetPath": "Modules/Player",
+    }
 
 
 def test_specnode_refinement_smoke_returns_deterministic_fallback_without_provider(

@@ -594,7 +594,7 @@ Acceptance:
 - [x] `P20-T4` Extend scoped-source validation with real monorepo smoke fixtures,
   including a Tuist-managed Swift folder, a single-file target, and at least one
   non-Swift folder target.
-- [ ] `P20-T5` Teach drafting/refinement prompts to distinguish repository,
+- [x] `P20-T5` Teach drafting/refinement prompts to distinguish repository,
   package, folder module, and single-file source-unit intent so generated specs
   do not overclaim package-manager ownership when only scoped evidence exists.
 - [ ] `P20-T6` Implement an explicit opt-in CodeGraph adapter boundary that
