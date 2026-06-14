@@ -85,5 +85,5 @@ registry truth.
 
 ## Follow-Up Work
 
-This plan enables `P35-T5` explainable corpus selection reports and `P35-T6`
+This plan enables `P35-T5` <doc:ExplainableCorpusSelectionReport> and `P35-T6`
 dry-run readiness checks.

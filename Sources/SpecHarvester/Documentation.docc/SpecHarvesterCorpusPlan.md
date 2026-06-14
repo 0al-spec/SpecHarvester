@@ -119,5 +119,5 @@ The first concrete seed corpus plan is documented in
 ## Follow-Up Work
 
 This contract enables `P35-T3` <doc:CandidateSourceClassifierPlan>, `P35-T4`
-<doc:MultiEcosystemSeedCorpusPlan>, `P35-T5` explainable selection reports,
-and `P35-T6` dry-run readiness checks.
+<doc:MultiEcosystemSeedCorpusPlan>, `P35-T5`
+<doc:ExplainableCorpusSelectionReport>, and `P35-T6` dry-run readiness checks.
