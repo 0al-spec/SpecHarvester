@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P36-T1 Repository Parsing Plugin Contract" in next_text:
+        assert_p35_t6_last_archived(next_text)
+        assert_p35_t6_recent(next_text)
+        assert_phase_36_t1_active(next_text)
+        return
+
     if "# Next Task: Phase 35 Complete" in next_text:
         assert_p35_t6_last_archived(next_text)
         assert_p35_t6_recent(next_text)
@@ -2516,6 +2522,28 @@ def assert_phase_35_complete(next_text: str) -> None:
         assert task_id in next_text
     assert "bounded curated corpus" in normalized
     assert "blocked until operator-provided pinned local checkouts are verified" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_phase_36_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P36-T1 Repository Parsing Plugin Contract" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "Phase 36. Repository Parsing Plugin System" in next_text
+    assert "`feature/P36-T1-repository-parsing-plugin-plan`" in next_text
+    assert "`P36-T1` Document repository parsing plugin contract" in next_text
+    assert "FastAPI rerun" in normalized
+    assert "docs_src/*" in next_text
+    assert "public interface evidence" in normalized
+    assert "semantic usage evidence" in normalized
+    assert "Python web-framework parser profile" in normalized
+    assert "plugin inputs" in normalized
+    assert "plugin outputs" in normalized
+    assert "rule precedence" in normalized
+    assert "fallback behavior" in normalized
+    assert "non-authority boundary" in normalized
     assert "does not publish registry metadata" in normalized
     assert "does not accept packages" in normalized
     assert "does not treat AI output as registry truth" in normalized

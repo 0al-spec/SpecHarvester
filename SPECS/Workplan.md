@@ -1386,3 +1386,57 @@ Acceptance:
 - Every selected source must explain why it was selected, which package-family
   or repository root it represents, which subpackages are excluded, and what
   evidence is required before running autonomous candidate generation.
+
+## Phase 36. Repository Parsing Plugin System
+
+- [ ] `P36-T1` Document the repository parsing plugin contract, using the
+  FastAPI `docs_src` over-capture as the first motivating case. The contract
+  must distinguish public API evidence from semantic usage/documentation
+  evidence and define how language/framework-specific rules can classify
+  source roots, package roots, examples, docs, tests, generated files, and
+  tooling without hardcoding every repository in the core analyzer.
+- [ ] `P36-T2` Add a machine-readable parser rule profile fixture for Python
+  web frameworks that treats FastAPI package code as public interface evidence
+  while treating `docs_src`, tutorials, examples, and tests as semantic usage
+  evidence unless explicitly promoted by a plugin rule.
+- [ ] `P36-T3` Implement the first plugin-aware source classification hook in
+  the collection/analyzer path, keeping default behavior backwards-compatible
+  and requiring explicit opt-in for technology-specific rule profiles.
+- [ ] `P36-T4` Re-run the FastAPI AI-enabled candidate batch with the Python
+  web-framework parser profile, compare evidence volume and claim quality
+  against the P35/P34 FastAPI run, and record whether the output is closer to
+  registry-review quality.
+
+Motivation:
+
+- The FastAPI rerun now produces a valid `author_ready_draft`, but the Python
+  analyzer treats documentation tutorial files such as `docs_src/*` as public
+  interface evidence. Those files are useful for intent and usage semantics,
+  but they should not inflate the public API boundary.
+- Repository structure differs by language, framework, and ecosystem. A
+  single hardcoded analyzer rule will either underfit real repositories or
+  become a pile of one-off exceptions.
+- SpecHarvester needs a bounded extension point where repository parsing rules
+  can evolve per technology without turning autonomous harvesting into a
+  global, unreviewable crawler.
+
+Goal:
+
+- Introduce a plugin-shaped parsing policy layer that can classify repository
+  paths by evidence role before candidate drafting: public interface evidence,
+  semantic usage evidence, docs, examples, tests, generated artifacts, tooling,
+  internal implementation, or ignored paths.
+
+Acceptance:
+
+- The phase defines a stable plugin contract before implementation: inputs,
+  outputs, rule precedence, default fallback behavior, safety boundaries, and
+  review evidence emitted by plugin decisions.
+- The FastAPI case is represented as a general Python web-framework profile,
+  not a repository-specific special case.
+- Documentation and tutorial sources remain available to LLM/semantic
+  enrichment as usage evidence, while public API indexes focus on package
+  surfaces intended for consumers.
+- Plugin decisions remain producer-side evidence only: they do not publish
+  registry metadata, accept packages or relations, remove `preview_only`, or
+  treat AI output as registry truth.
