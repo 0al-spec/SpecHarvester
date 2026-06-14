@@ -40,12 +40,11 @@ Each input is digest-backed in the fixture.
 
 ## Selected Scope
 
-P33-T5 selected three candidates for the next handoff boundary:
+P33-T5 selected two candidates for the next handoff boundary:
 
 | Candidate | Repository | P33-T6 result |
 | --- | --- | --- |
 | `serena.core` | `serena` | needs durable selected handoff payload |
-| `transmission.core` | `transmission` | needs durable selected handoff payload |
 | `specpm.core` | `specpm` | needs durable selected handoff payload |
 
 The selected candidates remain useful producer evidence, but they are not yet
@@ -54,10 +53,11 @@ fixture is not itself a supported SpecPM handoff payload.
 
 ## Deferred Scope
 
-P33-T6 keeps two candidates outside the selected handoff preflight:
+P33-T6 keeps three candidates outside the selected handoff preflight:
 
 | Candidate | Repository | Reason |
 | --- | --- | --- |
+| `transmission.core` | `transmission` | multi-component package boundary needs regeneration or explicit approval |
 | `mcpm.system` | `mcpm-sh` | package identity drift and warning-bearing AI draft evidence |
 | `specgraph.system` | `specgraph` | package identity drift |
 
@@ -69,8 +69,8 @@ committed P33-T5 triage fixture:
 ```bash
 PYTHONPATH=src python3 -m specpm.cli producer-bundle \
   preflight-selected-candidate-handoff \
-  --body /Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json \
-  --root /Users/egor/Development/GitHub/0AL/SpecHarvester \
+  --body tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json \
+  --root . \
   --json
 ```
 
@@ -116,7 +116,7 @@ not_ready_requires_durable_selected_handoff_artifact
 ```
 
 The next bounded task is P33-T7. It should create durable selected handoff
-evidence for `serena.core`, `transmission.core`, and `specpm.core`, or
+evidence for `serena.core` and `specpm.core`, or
 explicitly extend the SpecPM consumer gate to accept the P33 decision shape.
 That task must not invent per-file evidence digests from summary-only fixtures.
 

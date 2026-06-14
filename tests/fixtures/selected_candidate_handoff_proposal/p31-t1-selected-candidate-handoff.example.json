@@ -18,6 +18,8 @@
     "It does not remove preview_only.",
     "It does not publish registry metadata.",
     "It does not create a SpecPM pull request.",
+    "It does not merge a SpecPM pull request.",
+    "It does not replace maintainer review.",
     "It does not run prepare-accepted-entry.",
     "It does not run accepted-package-update-proposal."
   ],
@@ -152,6 +154,8 @@
           "role": "static_viewer_payload"
         },
         {
+          "digest": "sha256:05522256a4a1940f0f80b510674efc686e2996f178692e589a51757e0f2922b0",
+          "digestSource": "selected_handoff_dry_run",
           "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
           "role": "selected_handoff_dry_run"
         }
@@ -231,6 +235,8 @@
           "role": "static_viewer_payload"
         },
         {
+          "digest": "sha256:05522256a4a1940f0f80b510674efc686e2996f178692e589a51757e0f2922b0",
+          "digestSource": "selected_handoff_dry_run",
           "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
           "role": "selected_handoff_dry_run"
         }
@@ -310,6 +316,8 @@
           "role": "static_viewer_payload"
         },
         {
+          "digest": "sha256:05522256a4a1940f0f80b510674efc686e2996f178692e589a51757e0f2922b0",
+          "digestSource": "selected_handoff_dry_run",
           "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
           "role": "selected_handoff_dry_run"
         }

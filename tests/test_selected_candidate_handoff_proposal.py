@@ -114,6 +114,8 @@ def test_selected_candidate_handoff_proposal_builds_review_artifact(
     assert "review evidence only" in non_authority
     assert "does not accept packages" in non_authority
     assert "does not create a SpecPM pull request" in non_authority
+    assert "does not merge a SpecPM pull request" in non_authority
+    assert "does not replace maintainer review" in non_authority
 
 
 def test_selected_candidate_handoff_proposal_markdown_mentions_boundary(
@@ -197,6 +199,12 @@ def test_selected_candidate_handoff_proposal_keeps_relative_dry_run_path(
         evidence = {item["role"]: item for item in candidate["evidenceLinks"]}
         assert evidence["selected_handoff_dry_run"]["path"] == expected_path
         assert evidence["selected_handoff_dry_run"]["digest"] == file_digest(DRY_RUN_FIXTURE)
+        assert evidence["manifest"]["status"] == "expected"
+        assert evidence["manifest"]["digestSource"] == "selected_handoff_dry_run"
+        assert evidence["producer_preflight"]["status"] == "expected"
+        assert evidence["producer_preflight"]["digestSource"] == "selected_handoff_dry_run"
+        assert evidence["static_viewer"]["status"] == "expected"
+        assert evidence["static_viewer"]["digestSource"] == "selected_handoff_dry_run"
 
 
 def test_p31_t3_real_selected_candidate_handoff_fixture_records_helper_run() -> None:
@@ -250,13 +258,19 @@ def test_p31_t3_real_selected_candidate_handoff_fixture_records_helper_run() -> 
         evidence = {item["role"]: item for item in candidate["evidenceLinks"]}
         assert set(evidence) == required_roles
         assert evidence["manifest"]["path"].startswith("/tmp/specharvester-p30-t3.")
-        assert evidence["manifest"]["digestSource"] == "local_file"
+        assert evidence["manifest"]["status"] == "expected"
+        assert evidence["manifest"]["digestSource"] == "selected_handoff_dry_run"
         assert evidence["producer_preflight"]["path"].endswith(f"/{candidate_id}.json")
-        assert evidence["producer_preflight"]["digestSource"] == "local_file"
+        assert evidence["producer_preflight"]["status"] == "expected"
+        assert evidence["producer_preflight"]["digestSource"] == "selected_handoff_dry_run"
         assert evidence["static_viewer"]["path"].endswith(f"/{candidate_id}/index.html")
+        assert evidence["static_viewer"]["status"] == "expected"
+        assert evidence["static_viewer"]["digestSource"] == "selected_handoff_dry_run"
         assert evidence["static_viewer_payload"]["path"].endswith(
             f"/{candidate_id}/spec-package.json"
         )
+        assert evidence["static_viewer_payload"]["status"] == "expected"
+        assert evidence["static_viewer_payload"]["digestSource"] == "selected_handoff_dry_run"
         assert evidence["selected_handoff_dry_run"]["path"] == (
             "tests/fixtures/limited_popular_library_selected_handoff_dry_run/"
             "p30-t5-limited-popular-libraries.example.json"
@@ -268,6 +282,8 @@ def test_p31_t3_real_selected_candidate_handoff_fixture_records_helper_run() -> 
     assert "not SpecPM registry acceptance" in non_authority
     assert "does not accept packages" in non_authority
     assert "does not create a SpecPM pull request" in non_authority
+    assert "does not merge a SpecPM pull request" in non_authority
+    assert "does not replace maintainer review" in non_authority
 
 
 def test_selected_candidate_handoff_proposal_rejects_invalid_dry_run_identity(
@@ -321,6 +337,32 @@ def test_selected_candidate_handoff_proposal_rejects_warning_preflight_report(
                 preflight_root=artifacts["preflight_root"],
             )
         )
+
+
+def test_selected_candidate_handoff_proposal_marks_digest_mismatch(
+    tmp_path: Path,
+) -> None:
+    artifacts = write_selected_candidate_artifacts(tmp_path)
+    manifest = artifacts["candidate_root"] / "flask.core" / "candidate" / "specpm.yaml"
+    manifest.write_text("mutated after selected handoff\n", encoding="utf-8")
+
+    proposal = build_selected_candidate_handoff_proposal(
+        SelectedCandidateHandoffProposalOptions(
+            selected_handoff_dry_run=artifacts["dry_run"],
+            candidate_root=artifacts["candidate_root"],
+            preflight_root=artifacts["preflight_root"],
+            viewer_root=artifacts["viewer_root"],
+        )
+    )
+
+    flask = next(item for item in proposal["selectedCandidates"] if item["id"] == "flask.core")
+    evidence = {item["role"]: item for item in flask["evidenceLinks"]}
+    assert evidence["manifest"]["status"] == "rejected"
+    assert evidence["manifest"]["digestSource"] == "local_file"
+    assert evidence["manifest"]["expectedDigest"] == (
+        "sha256:2b4a1c4d9aaeef5efbb8424fe3f748d7895551a7d852814c7ce3d163e789630f"
+    )
+    assert evidence["manifest"]["diagnostic"] == "local_file_digest_mismatch"
 
 
 def write_selected_candidate_artifacts(tmp_path: Path) -> dict[str, Path]:

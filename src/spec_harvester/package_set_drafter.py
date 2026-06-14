@@ -308,7 +308,7 @@ def package_records(inventory: dict[str, Any]) -> list[dict[str, Any]]:
 def source_package_id(source: dict[str, Any]) -> str:
     package_id = source.get("packageId")
     if isinstance(package_id, str) and package_id.strip():
-        return package_id.strip()
+        return safe_package_id(package_id.strip())
     repository = source.get("repository")
     namespace = "repository"
     if isinstance(repository, str) and repository.strip():
@@ -861,7 +861,15 @@ def relative_output_path(output_root: Path, path: Any) -> str:
 
 
 def safe_candidate_dir(package_id: str) -> str:
-    return re.sub(r"[^A-Za-z0-9._-]+", "-", package_id).strip("-") or "package"
+    candidate = re.sub(r"[^A-Za-z0-9._-]+", "-", package_id).strip("-.")
+    parts = [part for part in candidate.split(".") if part and part != ".."]
+    candidate = ".".join(parts).strip("-.")
+    return candidate or "package"
+
+
+def safe_package_id(package_id: str) -> str:
+    candidate = safe_candidate_dir(package_id).replace("-", "_").lower()
+    return candidate if candidate != "package" else "package.core"
 
 
 def package_display_name(package: dict[str, Any]) -> str:

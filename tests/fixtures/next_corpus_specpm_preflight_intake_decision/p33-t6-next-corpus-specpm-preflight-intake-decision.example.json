@@ -16,6 +16,13 @@
     {
       "candidateLayerStatus": "needs_regeneration",
       "handoffStatus": "deferred_from_p33_t6",
+      "id": "transmission.core",
+      "reason": "Multi-component package boundary needs regeneration or explicit maintainer approval before selected handoff.",
+      "repositoryId": "transmission"
+    },
+    {
+      "candidateLayerStatus": "needs_regeneration",
+      "handoffStatus": "deferred_from_p33_t6",
       "id": "mcpm.system",
       "reason": "Package identity drift and warning-bearing AI draft evidence must be regenerated or explicitly approved before selected handoff.",
       "repositoryId": "mcpm-sh"
@@ -31,23 +38,23 @@
   "inputs": {
     "candidateLayerTriageFixture": {
       "apiVersion": "spec-harvester.next-corpus-candidate-layer-triage/v0",
-      "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+      "digest": "sha256:c25a809a3b4cd708b2e92a747c3c645a5e0cf6e2ff1e6462b0be6bc483e5ddda",
       "kind": "SpecHarvesterNextCorpusCandidateLayerTriage",
       "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
       "status": "ready_for_p33_t6_selected_handoff_preflight"
     },
     "deterministicFixture": {
-      "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
+      "digest": "sha256:ff547efb557922b5d278c68d0c077f1f12c3f81c9992c6c25318b70f1fbc967e",
       "kind": "SpecHarvesterNextCorpusDeterministicDryRun",
       "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json"
     },
     "liveLocalModelFixture": {
-      "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
+      "digest": "sha256:d2469aa06d2d13d00dc942df2a2a14a35b20d88d27c99b12fb4ba4d8daffea59",
       "kind": "SpecHarvesterNextCorpusLiveLocalModelBatch",
       "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json"
     },
     "sourceManifest": {
-      "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+      "digest": "sha256:51ecc86773bf53d968fec1387dbdddd79c8066c351e704998ff54137b0518133",
       "path": "inputs/p33-next-corpus/repositories.yml"
     }
   },
@@ -81,13 +88,6 @@
     {
       "candidateLayerStatus": "candidate_layer_review_required",
       "handoffStatus": "selected_scope_preflight_not_ready",
-      "id": "transmission.core",
-      "reason": "Selected by P33-T5, but needs a durable selected handoff payload before SpecPM maintainer intake review.",
-      "repositoryId": "transmission"
-    },
-    {
-      "candidateLayerStatus": "candidate_layer_review_required",
-      "handoffStatus": "selected_scope_preflight_not_ready",
       "id": "specpm.core",
       "reason": "Selected by P33-T5, but needs a durable selected handoff payload before SpecPM maintainer intake review.",
       "repositoryId": "specpm"
@@ -102,9 +102,9 @@
       "producer-bundle",
       "preflight-selected-candidate-handoff",
       "--body",
-      "/Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
+      "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
       "--root",
-      "/Users/egor/Development/GitHub/0AL/SpecHarvester",
+      ".",
       "--json"
     ],
     "diagnosticCodes": [
@@ -127,11 +127,11 @@
     "status": "failed"
   },
   "summary": {
-    "deferredCandidateCount": 2,
+    "deferredCandidateCount": 3,
     "preflightErrorCount": 1,
     "preflightWarningCount": 0,
     "registryMutationCount": 0,
-    "selectedCandidateCount": 3,
+    "selectedCandidateCount": 2,
     "specpmPullRequestCreated": false
   }
 }

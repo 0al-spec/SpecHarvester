@@ -1,131 +1,131 @@
 {
   "apiVersion": "spec-harvester.limited-corpus-intake-readiness-decision/v0",
-  "kind": "SpecHarvesterLimitedCorpusIntakeReadinessDecision",
-  "schemaVersion": 1,
   "authority": "producer_preview_evidence_only",
-  "run": {
-    "taskId": "P32-T7",
-    "corpusId": "p30-limited-popular-libraries",
-    "decision": "ready_for_author_maintainer_review_with_explicit_deferral",
-    "newHarvestExecuted": false,
-    "aiRunExecuted": false,
-    "specpmPullRequestCreated": false
-  },
-  "sources": [
-    {
-      "id": "p32_t5_refreshed_selected_handoff",
-      "kind": "SpecHarvesterRefreshedCandidateLayerSelectedHandoff",
-      "path": "tests/fixtures/refreshed_candidate_layer_selected_handoff/p32-t5-refreshed-candidate-layer-selected-handoff.example.json",
-      "digest": "sha256:61a3aebcfdbc934288c18af272b2bdf4b1e64c86fe2092487f93f64b67097d02",
-      "status": "source_fixture_committed"
-    },
-    {
-      "id": "p32_t6_specpm_selected_handoff_preflight",
-      "kind": "SpecPMSelectedCandidateHandoffPreflightReport",
-      "path": "SPECS/ARCHIVE/P32-T6_SpecPM_Selected_Candidate_Handoff_Preflight/P32-T6_Validation_Report.md",
-      "digest": "sha256:39115673fe5042dbc9b0054a9c1292e24598c3fab83733aa012c5cfa56c99268",
-      "status": "consumer_preflight_recorded"
-    }
-  ],
-  "specpmConsumerGate": {
-    "repository": "https://github.com/0al-spec/SpecPM",
-    "pullRequest": "https://github.com/0al-spec/SpecPM/pull/140",
-    "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
-    "command": "specpm producer-bundle preflight-selected-candidate-handoff",
-    "kind": "SpecPMSelectedCandidateHandoffPreflightReport",
-    "apiVersion": "specpm.selected-candidate-handoff-preflight/v0",
-    "status": "passed",
-    "summary": {
-      "selectedCandidateCount": 8,
-      "deferredCandidateCount": 1,
-      "requiredEvidenceRoleCount": 6,
-      "digestVerifiedCount": 3,
-      "errorCount": 0,
-      "warningCount": 0
-    }
+  "corpusExpansion": {
+    "broaderAutonomousScrapingAllowed": false,
+    "limitedCorpusReadyForReview": true,
+    "recommendedNextStep": "plan_next_bounded_corpus_after_stack_review",
+    "separateFollowUpRequired": true
   },
   "decision": {
-    "status": "ready_for_author_maintainer_review_with_explicit_deferral",
-    "selectedCandidateDisposition": "ready_for_author_maintainer_review",
-    "deferredCandidateDisposition": "cupertino_remains_deferred",
     "corpusExpansionDisposition": "separate_follow_up_required",
-    "reason": "The refreshed selected handoff passed SpecPM consumer preflight with zero warnings and zero errors, while cupertino.core still lacks resolved summary evidence."
+    "deferredCandidateDisposition": "cupertino_remains_deferred",
+    "reason": "The refreshed selected handoff passed SpecPM consumer preflight with zero warnings and zero errors, while cupertino.core still lacks resolved summary evidence.",
+    "selectedCandidateDisposition": "ready_for_author_maintainer_review",
+    "status": "ready_for_author_maintainer_review_with_explicit_deferral"
   },
-  "selectedCandidates": [
-    {
-      "id": "flask.core",
-      "disposition": "ready_for_author_maintainer_review",
-      "previewOnly": true,
-      "registryAcceptanceDecision": "external_required"
-    },
-    {
-      "id": "gin.core",
-      "disposition": "ready_for_author_maintainer_review",
-      "previewOnly": true,
-      "registryAcceptanceDecision": "external_required"
-    },
-    {
-      "id": "docc2context.core",
-      "disposition": "ready_for_author_maintainer_review",
-      "previewOnly": true,
-      "registryAcceptanceDecision": "external_required"
-    },
-    {
-      "id": "xyflow.workspace",
-      "disposition": "ready_for_author_maintainer_review",
-      "previewOnly": true,
-      "registryAcceptanceDecision": "external_required"
-    },
-    {
-      "id": "xyflow.react",
-      "disposition": "ready_for_author_maintainer_review",
-      "previewOnly": true,
-      "registryAcceptanceDecision": "external_required"
-    },
-    {
-      "id": "xyflow.svelte",
-      "disposition": "ready_for_author_maintainer_review",
-      "previewOnly": true,
-      "registryAcceptanceDecision": "external_required"
-    },
-    {
-      "id": "xyflow.system",
-      "disposition": "ready_for_author_maintainer_review",
-      "previewOnly": true,
-      "registryAcceptanceDecision": "external_required"
-    },
-    {
-      "id": "navigation_split_view.core",
-      "disposition": "ready_for_author_maintainer_review",
-      "previewOnly": true,
-      "registryAcceptanceDecision": "external_required"
-    }
-  ],
   "deferredCandidates": [
     {
-      "id": "cupertino.core",
-      "disposition": "deferred_until_summary_evidence",
       "blockers": [
         "refined_summary_missing"
       ],
+      "disposition": "deferred_until_summary_evidence",
+      "id": "cupertino.core",
       "selectedHandoffEligible": false
     }
   ],
-  "corpusExpansion": {
-    "limitedCorpusReadyForReview": true,
-    "broaderAutonomousScrapingAllowed": false,
-    "separateFollowUpRequired": true,
-    "recommendedNextStep": "plan_next_bounded_corpus_after_stack_review"
-  },
+  "kind": "SpecHarvesterLimitedCorpusIntakeReadinessDecision",
   "nonAuthority": {
-    "decisionRecordOnly": true,
     "acceptsPackages": false,
     "acceptsRelations": false,
     "createsSpecPMPullRequest": false,
+    "decisionRecordOnly": true,
     "producerEvidenceOnly": true,
     "publishesRegistryMetadata": false,
     "removesPreviewOnly": false,
     "seedsBaselines": false,
     "treatsAIOutputAsRegistryTruth": false
+  },
+  "run": {
+    "aiRunExecuted": false,
+    "corpusId": "p30-limited-popular-libraries",
+    "decision": "ready_for_author_maintainer_review_with_explicit_deferral",
+    "newHarvestExecuted": false,
+    "specpmPullRequestCreated": false,
+    "taskId": "P32-T7"
+  },
+  "schemaVersion": 1,
+  "selectedCandidates": [
+    {
+      "disposition": "ready_for_author_maintainer_review",
+      "id": "flask.core",
+      "previewOnly": true,
+      "registryAcceptanceDecision": "external_required"
+    },
+    {
+      "disposition": "ready_for_author_maintainer_review",
+      "id": "gin.core",
+      "previewOnly": true,
+      "registryAcceptanceDecision": "external_required"
+    },
+    {
+      "disposition": "ready_for_author_maintainer_review",
+      "id": "docc2context.core",
+      "previewOnly": true,
+      "registryAcceptanceDecision": "external_required"
+    },
+    {
+      "disposition": "ready_for_author_maintainer_review",
+      "id": "xyflow.workspace",
+      "previewOnly": true,
+      "registryAcceptanceDecision": "external_required"
+    },
+    {
+      "disposition": "ready_for_author_maintainer_review",
+      "id": "xyflow.react",
+      "previewOnly": true,
+      "registryAcceptanceDecision": "external_required"
+    },
+    {
+      "disposition": "ready_for_author_maintainer_review",
+      "id": "xyflow.svelte",
+      "previewOnly": true,
+      "registryAcceptanceDecision": "external_required"
+    },
+    {
+      "disposition": "ready_for_author_maintainer_review",
+      "id": "xyflow.system",
+      "previewOnly": true,
+      "registryAcceptanceDecision": "external_required"
+    },
+    {
+      "disposition": "ready_for_author_maintainer_review",
+      "id": "navigation_split_view.core",
+      "previewOnly": true,
+      "registryAcceptanceDecision": "external_required"
+    }
+  ],
+  "sources": [
+    {
+      "digest": "sha256:32b085d5128b70cb9b3fc5c899cdeaa778d8018de58b60ad8c43bca94a3bb801",
+      "id": "p32_t5_refreshed_selected_handoff",
+      "kind": "SpecHarvesterRefreshedCandidateLayerSelectedHandoff",
+      "path": "tests/fixtures/refreshed_candidate_layer_selected_handoff/p32-t5-refreshed-candidate-layer-selected-handoff.example.json",
+      "status": "source_fixture_committed"
+    },
+    {
+      "digest": "sha256:39115673fe5042dbc9b0054a9c1292e24598c3fab83733aa012c5cfa56c99268",
+      "id": "p32_t6_specpm_selected_handoff_preflight",
+      "kind": "SpecPMSelectedCandidateHandoffPreflightReport",
+      "path": "SPECS/ARCHIVE/P32-T6_SpecPM_Selected_Candidate_Handoff_Preflight/P32-T6_Validation_Report.md",
+      "status": "consumer_preflight_recorded"
+    }
+  ],
+  "specpmConsumerGate": {
+    "apiVersion": "specpm.selected-candidate-handoff-preflight/v0",
+    "command": "specpm producer-bundle preflight-selected-candidate-handoff",
+    "kind": "SpecPMSelectedCandidateHandoffPreflightReport",
+    "pullRequest": "https://github.com/0al-spec/SpecPM/pull/140",
+    "repository": "https://github.com/0al-spec/SpecPM",
+    "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+    "status": "passed",
+    "summary": {
+      "deferredCandidateCount": 1,
+      "digestVerifiedCount": 3,
+      "errorCount": 0,
+      "requiredEvidenceRoleCount": 6,
+      "selectedCandidateCount": 8,
+      "warningCount": 0
+    }
   }
 }

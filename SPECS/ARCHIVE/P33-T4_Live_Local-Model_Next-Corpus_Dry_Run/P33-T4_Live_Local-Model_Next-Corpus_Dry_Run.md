@@ -1,7 +1,7 @@
 # P33-T4 Live Local-Model Next-Corpus Dry Run
 
 **Status:** Planned
-**Selected:** 2026-06-14
+**Selected:** 2026-06-13
 **Phase:** Phase 33. Bounded Corpus Expansion Planning
 
 ## Motivation
@@ -76,5 +76,5 @@ candidate-layer triage.
 `p33_t4_live_local_model_next_corpus_dry_run`
 
 ---
-**Archived:** 2026-06-14
+**Archived:** 2026-06-13
 **Verdict:** PASS

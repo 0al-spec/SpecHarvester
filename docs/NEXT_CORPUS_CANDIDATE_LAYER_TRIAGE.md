@@ -53,7 +53,7 @@ dependencies, mutate generated candidates, or run SpecPM preflight.
 | Candidate | Repository | Classification | P33-T6 selected | Reason |
 | --- | --- | --- | --- | --- |
 | `serena.core` | `serena` | `candidate_layer_review_required` | yes | deterministic preflight and enrichment are usable; empty AI draft subject list is non-blocking single-package model noise |
-| `transmission.core` | `transmission` | `candidate_layer_review_required` | yes | deterministic preflight and enrichment are usable; empty AI draft subject list is non-blocking single-package model noise |
+| `transmission.core` | `transmission` | `needs_regeneration` | no | multi-component C/C++ application boundary needs explicit package scope before selected handoff |
 | `mcpm.system` | `mcpm-sh` | `needs_regeneration` | no | manifest hint is `mcpm.core`, generated id is `mcpm.system`, and AI draft has warning-level role, evidence path, and exclusion diagnostics |
 | `specgraph.system` | `specgraph` | `needs_regeneration` | no | manifest hint is `specgraph.core`, while generated id is `specgraph.system` |
 | `specpm.core` | `specpm` | `candidate_layer_review_required` | yes | deterministic preflight and enrichment are usable; `excluded_package_unknown` plus no proposal subjects is bounded single-package AI draft noise |
@@ -62,18 +62,19 @@ Aggregate counts:
 
 - preview candidates: `5`;
 - relation proposals: `0`;
-- `candidate_layer_review_required`: `3`;
-- `needs_regeneration`: `2`;
+- `candidate_layer_review_required`: `2`;
+- `needs_regeneration`: `3`;
 - `blocked`: `0`;
 - `not_for_intake`: `0`;
-- selected for P33-T6 selected handoff preflight: `3`;
-- deferred from P33-T6: `2`.
+- selected for P33-T6 selected handoff preflight: `2`;
+- deferred from P33-T6: `3`.
 
 ## Finding Classification
 
 | Finding | Origin | Classification | Count | Action |
 | --- | --- | --- | ---: | --- |
-| `ai_draft_no_proposal_subjects` | AI draft | `candidate_layer_review_required` | `2` | treat as non-blocking single-package model noise for `serena.core` and `transmission.core` |
+| `ai_draft_no_proposal_subjects` | AI draft | `candidate_layer_review_required` | `1` | treat as non-blocking single-package model noise for `serena.core` |
+| `multi_component_empty_ai_draft_subjects` | AI draft | `needs_regeneration` | `1` | select a Transmission package boundary and regenerate before selected handoff |
 | `ai_draft_warning_diagnostics` | AI draft | `candidate_layer_review_required` | `1` | treat `specpm.core` unknown exclusion/no-subject warning as bounded single-package model noise |
 | `ai_draft_warning_diagnostics` | AI draft | `needs_regeneration` | `1` | regenerate or manually review `mcpm.system` AI draft evidence before selected handoff |
 | `package_id_hint_changed_by_package_set_selection` | deterministic draft | `needs_regeneration` | `2` | resolve package identity before selecting `mcpm.system` or `specgraph.system` |
@@ -85,7 +86,6 @@ Verdict: `ready_for_p33_t6_selected_handoff_preflight`.
 P33 should proceed to P33-T6 only for:
 
 - `serena.core`;
-- `transmission.core`;
 - `specpm.core`.
 
 P33-T6 records the consumer preflight outcome in
@@ -96,11 +96,13 @@ selected handoff payload before SpecPM maintainer intake review.
 The deferred candidates remain useful review evidence:
 
 - `mcpm.system`;
+- `transmission.core`;
 - `specgraph.system`.
 
 They should not be included in selected handoff preflight until package
-identity drift is resolved, regenerated, or explicitly approved. `mcpm.system`
-also needs regenerated or manually reviewed AI draft evidence because the model
+identity drift, multi-component package scope, or warning-bearing AI draft
+evidence is resolved, regenerated, or explicitly approved. `mcpm.system` also
+needs regenerated or manually reviewed AI draft evidence because the model
 returned `selected_member_role_unknown`, `model_evidence_path_unsupported`, and
 `excluded_package_also_selected`.
 

@@ -4,6 +4,12 @@
   "deferredCandidates": [
     {
       "handoffStatus": "excluded_from_selected_handoff",
+      "id": "transmission.core",
+      "reason": "needs_regeneration",
+      "requiredAction": "Select a multi-component Transmission package boundary and regenerate AI draft evidence before selected handoff."
+    },
+    {
+      "handoffStatus": "excluded_from_selected_handoff",
       "id": "mcpm.system",
       "reason": "needs_regeneration",
       "requiredAction": "Resolve mcpm.core versus mcpm.system package identity and regenerate or manually review warning-bearing AI draft evidence."
@@ -87,7 +93,7 @@
     {
       "evidenceLinks": [
         {
-          "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+          "digest": "sha256:c25a809a3b4cd708b2e92a747c3c645a5e0cf6e2ff1e6462b0be6bc483e5ddda",
           "digestSource": "committed_file",
           "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
           "pathScope": "repo_relative",
@@ -95,7 +101,7 @@
           "status": "present"
         },
         {
-          "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+          "digest": "sha256:51ecc86773bf53d968fec1387dbdddd79c8066c351e704998ff54137b0518133",
           "digestSource": "committed_file",
           "path": "inputs/p33-next-corpus/repositories.yml",
           "pathScope": "repo_relative",
@@ -103,7 +109,7 @@
           "status": "present"
         },
         {
-          "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
+          "digest": "sha256:ff547efb557922b5d278c68d0c077f1f12c3f81c9992c6c25318b70f1fbc967e",
           "digestSource": "committed_file",
           "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
           "pathScope": "repo_relative",
@@ -111,7 +117,7 @@
           "status": "present"
         },
         {
-          "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
+          "digest": "sha256:d2469aa06d2d13d00dc942df2a2a14a35b20d88d27c99b12fb4ba4d8daffea59",
           "digestSource": "committed_file",
           "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json",
           "pathScope": "repo_relative",
@@ -135,15 +141,15 @@
       },
       "repositoryId": "serena",
       "staticViewer": {
-        "source": "P33-T4 committed summary fixture",
-        "status": "ok"
+        "source": "committed evidence unavailable",
+        "status": "unknown"
       },
       "triageClassification": "candidate_layer_review_required"
     },
     {
       "evidenceLinks": [
         {
-          "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+          "digest": "sha256:c25a809a3b4cd708b2e92a747c3c645a5e0cf6e2ff1e6462b0be6bc483e5ddda",
           "digestSource": "committed_file",
           "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
           "pathScope": "repo_relative",
@@ -151,7 +157,7 @@
           "status": "present"
         },
         {
-          "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+          "digest": "sha256:51ecc86773bf53d968fec1387dbdddd79c8066c351e704998ff54137b0518133",
           "digestSource": "committed_file",
           "path": "inputs/p33-next-corpus/repositories.yml",
           "pathScope": "repo_relative",
@@ -159,7 +165,7 @@
           "status": "present"
         },
         {
-          "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
+          "digest": "sha256:ff547efb557922b5d278c68d0c077f1f12c3f81c9992c6c25318b70f1fbc967e",
           "digestSource": "committed_file",
           "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
           "pathScope": "repo_relative",
@@ -167,63 +173,7 @@
           "status": "present"
         },
         {
-          "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
-          "digestSource": "committed_file",
-          "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json",
-          "pathScope": "repo_relative",
-          "role": "live_local_model_batch",
-          "status": "present"
-        }
-      ],
-      "id": "transmission.core",
-      "maintainerAction": "review_for_possible_specpm_intake",
-      "previewOnly": true,
-      "producerPreflight": {
-        "diagnosticCount": 0,
-        "errorCount": 0,
-        "status": "passed",
-        "warningCount": 0
-      },
-      "registryAcceptanceDecision": {
-        "producerAuthority": "evidence_only",
-        "requiredFor": "public_index_acceptance",
-        "status": "external_required"
-      },
-      "repositoryId": "transmission",
-      "staticViewer": {
-        "source": "P33-T4 committed summary fixture",
-        "status": "ok"
-      },
-      "triageClassification": "candidate_layer_review_required"
-    },
-    {
-      "evidenceLinks": [
-        {
-          "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
-          "digestSource": "committed_file",
-          "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
-          "pathScope": "repo_relative",
-          "role": "selected_handoff_dry_run",
-          "status": "present"
-        },
-        {
-          "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
-          "digestSource": "committed_file",
-          "path": "inputs/p33-next-corpus/repositories.yml",
-          "pathScope": "repo_relative",
-          "role": "source_manifest",
-          "status": "present"
-        },
-        {
-          "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
-          "digestSource": "committed_file",
-          "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
-          "pathScope": "repo_relative",
-          "role": "deterministic_dry_run",
-          "status": "present"
-        },
-        {
-          "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
+          "digest": "sha256:d2469aa06d2d13d00dc942df2a2a14a35b20d88d27c99b12fb4ba4d8daffea59",
           "digestSource": "committed_file",
           "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json",
           "pathScope": "repo_relative",
@@ -247,8 +197,8 @@
       },
       "repositoryId": "specpm",
       "staticViewer": {
-        "source": "P33-T4 committed summary fixture",
-        "status": "ok"
+        "source": "committed evidence unavailable",
+        "status": "unknown"
       },
       "triageClassification": "candidate_layer_review_required"
     }
@@ -256,17 +206,17 @@
   "source": {
     "selectedDryRunFixture": {
       "apiVersion": "spec-harvester.next-corpus-candidate-layer-triage/v0",
-      "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+      "digest": "sha256:c25a809a3b4cd708b2e92a747c3c645a5e0cf6e2ff1e6462b0be6bc483e5ddda",
       "kind": "SpecHarvesterNextCorpusCandidateLayerTriage",
       "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
       "status": "selected_handoff_dry_run_ready"
     }
   },
   "summary": {
-    "deferredCandidateCount": 2,
+    "deferredCandidateCount": 3,
     "registryMutationCount": 0,
     "requiredEvidenceRoleCount": 4,
-    "selectedCandidateCount": 3,
+    "selectedCandidateCount": 2,
     "specpmPullRequestCreated": false
   }
 }

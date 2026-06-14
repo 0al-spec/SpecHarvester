@@ -305,6 +305,45 @@ def test_package_set_ai_enrichment_repairs_malformed_live_json(
     assert report["privacy"]["rawModelResponsesPersisted"] is False
 
 
+def test_package_set_ai_enrichment_marks_exhausted_json_repair_as_missing_output(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    smoke = write_xyflow_smoke(tmp_path)
+
+    class FakeResponse:
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {
+                    "model": "test-model",
+                    "choices": [{"message": {"content": "not json"}}],
+                    "usage": {"total_tokens": 1},
+                }
+            ).encode("utf-8")
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda *_args, **_kwargs: FakeResponse())
+
+    report = build_package_set_ai_enrichment_proposal(
+        PackageSetAIEnrichmentOptions(
+            bundle_set=smoke / "package-set",
+            provider_base_url="http://127.0.0.1:1234",
+            model="test-model",
+            json_repair_max_attempts=1,
+        )
+    )
+
+    statuses = {item["packageId"]: item["status"] for item in report["proposals"]}
+    assert report["status"] == "failed"
+    assert set(statuses.values()) == {"missing_model_output"}
+    assert "model_output_missing" in {item["code"] for item in report["diagnostics"]}
+
+
 def test_parse_model_json_object_wraps_invalid_json() -> None:
     try:
         parse_model_json_object("not json")

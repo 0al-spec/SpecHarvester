@@ -14,19 +14,19 @@
   },
   "inputs": {
     "deterministicFixture": {
-      "digest": "sha256:3e8c4b69b33429b3fc2d339c0e119f53d06b52476e3b07648b736b5a46e2eba6",
+      "digest": "sha256:ff547efb557922b5d278c68d0c077f1f12c3f81c9992c6c25318b70f1fbc967e",
       "kind": "SpecHarvesterNextCorpusDeterministicDryRun",
       "path": "tests/fixtures/next_corpus_deterministic_dry_run/p33-t3-next-corpus-deterministic-dry-run.example.json",
       "status": "ready_for_live_local_model_next_corpus"
     },
     "liveLocalModelFixture": {
-      "digest": "sha256:1eaf50a41ae59e783f5714a1f3e0c32ab87bdc927a2d4404c8a168c345f2446f",
+      "digest": "sha256:d2469aa06d2d13d00dc942df2a2a14a35b20d88d27c99b12fb4ba4d8daffea59",
       "kind": "SpecHarvesterNextCorpusLiveLocalModelBatch",
       "path": "tests/fixtures/next_corpus_live_local_model_batch/p33-t4-next-corpus-live-local-model.example.json",
       "status": "ready_for_candidate_layer_triage"
     },
     "sourceManifest": {
-      "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+      "digest": "sha256:51ecc86773bf53d968fec1387dbdddd79c8066c351e704998ff54137b0518133",
       "path": "inputs/p33-next-corpus/repositories.yml"
     }
   },
@@ -46,43 +46,52 @@
     "candidateQuality": "selected_candidates_ready_for_consumer_preflight",
     "pipelineHealth": "deterministic_and_live_evidence_triaged",
     "status": "ready_for_p33_t6_selected_handoff_preflight",
-    "summary": "Proceed to P33-T6 only for serena.core, transmission.core, and specpm.core. Keep mcpm.system and specgraph.system deferred until package identity drift and warning-bearing AI draft evidence are resolved or explicitly approved."
+    "summary": "Proceed to P33-T6 only for serena.core and specpm.core. Keep transmission.core, mcpm.system, and specgraph.system deferred until multi-component package boundaries, package identity drift, and warning-bearing AI draft evidence are resolved or explicitly approved."
   },
   "schemaVersion": 1,
   "selectedForP33T6": [
     "serena.core",
-    "transmission.core",
     "specpm.core"
   ],
   "summary": {
     "blockedCandidateCount": 0,
-    "candidateLayerReviewRequiredCount": 3,
-    "deferredCandidateCount": 2,
+    "candidateLayerReviewRequiredCount": 2,
+    "deferredCandidateCount": 3,
     "findingBlockedCount": 0,
     "findingCandidateLayerReviewRequiredCount": 2,
-    "findingGroupCount": 4,
-    "findingNeedsRegenerationCount": 2,
+    "findingGroupCount": 5,
+    "findingNeedsRegenerationCount": 3,
     "findingNotForIntakeCount": 0,
-    "needsRegenerationCandidateCount": 2,
+    "needsRegenerationCandidateCount": 3,
     "notForIntakeCandidateCount": 0,
-    "p33T6SelectedCandidateCount": 3,
+    "p33T6SelectedCandidateCount": 2,
     "previewCandidateCount": 5,
     "relationProposalCount": 0,
     "repositoryCount": 5,
-    "uniqueFindingCodeCount": 3
+    "uniqueFindingCodeCount": 4
   },
   "triageFindings": [
     {
       "affectedCandidateIds": [
-        "serena.core",
-        "transmission.core"
+        "serena.core"
       ],
       "classification": "candidate_layer_review_required",
       "code": "ai_draft_no_proposal_subjects",
-      "count": 2,
+      "count": 1,
       "origin": "ai_draft",
-      "reason": "The AI draft proposal completed without selected members, relations, or excluded packages, but deterministic single-package candidates and enrichment evidence are usable.",
+      "reason": "The AI draft proposal completed without selected members, relations, or excluded packages, but deterministic single-package candidate and enrichment evidence are usable.",
       "recommendedAction": "Proceed with selected handoff review while treating the empty AI draft subject list as non-blocking single-package model noise."
+    },
+    {
+      "affectedCandidateIds": [
+        "transmission.core"
+      ],
+      "classification": "needs_regeneration",
+      "code": "multi_component_empty_ai_draft_subjects",
+      "count": 1,
+      "origin": "ai_draft",
+      "reason": "Transmission is a multi-component C/C++ application candidate, so an empty AI draft subject list is not sufficient evidence for selected handoff.",
+      "recommendedAction": "Regenerate with a package-boundary profile or provide maintainer-approved component selection before selected handoff."
     },
     {
       "affectedCandidateIds": [
@@ -143,19 +152,19 @@
       ]
     },
     {
-      "classification": "candidate_layer_review_required",
-      "evidencePolicy": "deterministic_candidate_plus_completed_enrichment",
+      "classification": "needs_regeneration",
+      "evidencePolicy": "defer_until_multi_component_package_boundary_is_selected",
       "findingCodes": [
-        "ai_draft_no_proposal_subjects"
+        "multi_component_empty_ai_draft_subjects"
       ],
-      "handoffStatus": "selected_for_p33_t6",
+      "handoffStatus": "deferred_from_p33_t6",
       "id": "transmission.core",
-      "p33T6Selected": true,
-      "reason": "Deterministic preflight passed, author-ready status is present, enrichment completed, and the empty AI draft subject list is non-blocking for a single-package candidate.",
+      "p33T6Selected": false,
+      "reason": "Deterministic preflight passed, but Transmission is multi-component and the AI draft did not identify proposal subjects, so selected handoff needs a clearer package boundary.",
       "repositoryId": "transmission",
       "requiredBeforeHandoff": [
-        "Author or maintainer semantic review remains required.",
-        "Ignore the empty AI draft subject list during selected handoff review."
+        "Choose the intended Transmission package boundary or component scope.",
+        "Regenerate AI draft evidence with explicit package subjects, or record maintainer approval."
       ]
     },
     {

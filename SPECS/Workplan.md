@@ -601,7 +601,7 @@ Acceptance:
   never installs or downloads tools, records analyzer and executable
   provenance, and normalizes JSON or SQLite graph evidence into a
   SpecHarvester-owned `source_graph_index` evidence shape.
-- [ ] `P20-T7` Add a pinned CodeGraph interface compatibility guard that
+- [x] `P20-T7` Add a pinned CodeGraph interface compatibility guard that
   verifies the expected package version, binary availability contract, CLI JSON
   flags, and normalized schema mapping without indexing third-party projects in
   ordinary CI.
