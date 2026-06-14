@@ -169,6 +169,9 @@ The local model repair path records `ai_json_repair_needed`,
 `ai_json_repair_exhausted`, provider receipt `jsonRepairStatus`, and batch
 `jsonRepair` summaries without persisting raw prompts, raw responses, secrets,
 or chain-of-thought.
+The post-fallback quality gate is recorded in
+<doc:AutonomousCandidateCorpusQualityGate> with verdict
+`ready_for_limited_popular_library_scraping`.
 
 ## Non-Goals
 
