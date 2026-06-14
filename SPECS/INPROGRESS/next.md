@@ -1,8 +1,9 @@
 # Next Task: P35-T3 Candidate Source Classifier Plan
 
-**Status:** Planned
+**Status:** In Progress
 **Phase:** Phase 35. Curated Multi-Ecosystem Corpus Selection
 **Task:** `P35-T3` Add a candidate source classifier plan
+**Branch:** `feature/P35-T3-source-classifier-plan`
 **Last Archived:** P35-T2 SpecHarvesterCorpusPlan
 
 ## Recently Archived
