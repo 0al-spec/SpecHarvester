@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P36-T3 Plugin-Aware Source Classification Hook" in next_text:
+        assert_p36_t2_last_archived(next_text)
+        assert_p36_t2_recent(next_text)
+        assert_phase_36_t3_active(next_text)
+        return
+
     if "# Next Task: P36-T2 Python Web-Framework Parser Profile Fixture" in next_text:
         assert_p36_t1_last_archived(next_text)
         assert_p36_t1_recent(next_text)
@@ -2600,6 +2606,56 @@ def assert_phase_36_t2_active(next_text: str) -> None:
     assert "tutorials" in normalized
     assert "examples" in normalized
     assert "tests" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_p36_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P36-T2 Python Web-Framework Parser Profile Fixture" in next_text
+
+
+def assert_p36_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P36-T2` added" in next_text
+    assert "python-web-framework-v0.example.json" in next_text
+    assert "SpecHarvesterRepositoryParsingProfile" in next_text
+    assert "spec-harvester.repository-parsing-profile/v0" in next_text
+    assert "producer_path_classification_profile_only" in next_text
+    assert "python.web_framework.v0" in next_text
+    assert "SpecHarvesterRepositoryParsingPluginDecision" in next_text
+    assert "spec-harvester.repository-parsing-plugin/v0" in next_text
+    assert "producer_path_classification_only" in next_text
+    assert "operator_override" in next_text
+    assert "selected_parser_profile_rule" in next_text
+    assert "conservative_default_fallback" in next_text
+    assert "fastapi/applications.py" in next_text
+    assert "public_interface" in next_text
+    assert "docs_src/first_steps/tutorial001.py" in next_text
+    assert "semantic_usage" in next_text
+    assert "tests/test_applications.py" in next_text
+    assert "test" in next_text
+    assert "documentation, tutorials, examples, and tests" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_phase_36_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P36-T3 Plugin-Aware Source Classification Hook" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "Phase 36. Repository Parsing Plugin System" in next_text
+    assert "`feature/P36-T3-plugin-aware-source-classification-hook`" in next_text
+    assert "`P36-T3` Implement plugin-aware source classification hook" in next_text
+    assert "parser profile loader" in normalized
+    assert "deterministic path classification" in normalized
+    assert "opt-in" in normalized
+    assert "No parser profile selected means current behavior remains unchanged" in next_text
+    assert "python.web_framework.v0" in next_text
+    assert "publicInterfaceEligible" in next_text
+    assert "semanticUsageEligible" in next_text
+    assert "does not clone/fetch repositories" in normalized
     assert "does not publish registry metadata" in normalized
     assert "does not accept packages" in normalized
     assert "does not treat AI output as registry truth" in normalized
