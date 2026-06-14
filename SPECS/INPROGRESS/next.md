@@ -1,8 +1,9 @@
 # Next Task: P35-T1 Corpus Selection Policy
 
-**Status:** Planned
+**Status:** In Progress
 **Phase:** Phase 35. Curated Multi-Ecosystem Corpus Selection
 **Task:** `P35-T1` Document the corpus selection policy
+**Branch:** `feature/P35-T1-corpus-selection-policy`
 **Last Archived:** P34-T2 Autonomous Batch AI Enriched Preview Output
 
 ## Context
