@@ -6,6 +6,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P29-T3 Corpus Baseline and Gap Report" in next_text:
+        assert_p29_t2_last_archived(next_text)
+        assert_p29_t1_recent(next_text)
+        assert_p29_t2_recent(next_text)
+        assert_phase_29_t3_active(next_text)
+        return
+
     if "# Next Task: P29-T2 SpecPM Candidate-Layer Intake Policy" in next_text:
         assert_p29_t1_last_archived(next_text)
         assert_p29_t1_recent(next_text)
@@ -130,6 +137,10 @@ def assert_p28_t5_last_archived(next_text: str) -> None:
 
 def assert_p29_t1_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P29-T1 Autonomous Candidate Batch Runner" in next_text
+
+
+def assert_p29_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P29-T2 SpecPM Candidate-Layer Intake Policy" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -352,7 +363,7 @@ def assert_p29_t1_recent(next_text: str) -> None:
 def assert_phase_29_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P29-T2 SpecPM Candidate-Layer Intake Policy" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "SpecPM-facing candidate-layer intake policy" in normalized
     assert "autonomous batch output" in normalized
     assert "AI draft/enrichment proposals" in normalized
@@ -360,6 +371,36 @@ def assert_phase_29_t2_active(next_text: str) -> None:
     assert "P29-T4" in next_text
     assert "P29-T5" in next_text
     assert "P29-T6" in next_text
+
+
+def assert_p29_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P29-T2` documented" in next_text
+    assert "AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md" in next_text
+    assert "AutonomousCandidateIntakePolicy" in next_text
+    assert "candidate_layer_review_required" in next_text
+    assert "needs_regeneration" in next_text
+    assert "not_for_intake" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "SpecHarvesterPackageSetAIDraftProposal" in next_text
+    assert "SpecHarvesterPackageSetAIEnrichmentProposal" in next_text
+    assert "accept packages" in normalized
+    assert "remove `preview_only`" in next_text
+    assert "publish registry metadata" in normalized
+
+
+def assert_phase_29_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P29-T3 Corpus Baseline and Gap Report" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Flask, Gin, and xyflow" in next_text
+    assert "deterministic `--skip-ai` outcomes" in next_text
+    assert "live LM Studio outcome" in normalized
+    assert "candidate counts" in normalized
+    assert "relation counts" in normalized
+    assert "single_package_fallback_needed" in next_text
+    assert "ai_json_repair_needed" in next_text
+    assert "no generated preview candidate is promoted to SpecPM acceptance" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -3092,6 +3133,68 @@ def test_autonomous_candidate_batch_docs_cover_local_lm_studio_boundary() -> Non
     assert "<doc:AutonomousCandidateBatch>" in docc_root.read_text(encoding="utf-8")
     assert "Autonomous Candidate Harvest MVP" in roadmap.read_text(encoding="utf-8")
     assert "Autonomous Candidate Harvest MVP" in roadmap_docc.read_text(encoding="utf-8")
+
+
+def test_autonomous_candidate_intake_policy_docs_cover_specpm_review_boundary() -> None:
+    github_doc = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateIntakePolicy.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    handoff_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    autonomous_batch = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_BATCH.md"
+    autonomous_batch_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "AutonomousCandidateBatch.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Autonomous Candidate Intake Policy",
+            "SpecHarvesterAutonomousCandidateBatchReport",
+            "SpecHarvesterPackageSetAIDraftProposal",
+            "SpecHarvesterPackageSetAIEnrichmentProposal",
+            "bundle-set-preflight.json",
+            "authorReadyDraftSummary",
+            "stopPolicySummary",
+            "candidate_layer_review_required",
+            "needs_regeneration",
+            "blocked",
+            "not_for_intake",
+            "producer_preview_evidence_only",
+            "provider receipts",
+            "privacy flags",
+            "candidate count",
+            "relation count",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "remove `preview_only`",
+            "publish registry metadata",
+            "single_package_fallback_needed",
+            "ai_json_repair_needed",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:AutonomousCandidateIntakePolicy>" in docc_root.read_text(encoding="utf-8")
+    assert "AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md" in handoff.read_text(encoding="utf-8")
+    assert "<doc:AutonomousCandidateIntakePolicy>" in handoff_docc.read_text(encoding="utf-8")
+    assert "AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md" in autonomous_batch.read_text(encoding="utf-8")
+    assert "<doc:AutonomousCandidateIntakePolicy>" in autonomous_batch_docc.read_text(
+        encoding="utf-8"
+    )
+    assert "AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md" in roadmap.read_text(encoding="utf-8")
+    assert "AutonomousCandidateIntakePolicy" in roadmap_docc.read_text(encoding="utf-8")
 
 
 def test_autonomous_candidate_tech_debt_plan_docs_cover_corpus_followups() -> None:
