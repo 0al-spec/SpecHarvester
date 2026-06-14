@@ -23,6 +23,13 @@ DRY_RUN_FIXTURE = (
     / "limited_popular_library_selected_handoff_dry_run"
     / "p30-t5-limited-popular-libraries.example.json"
 )
+P31_T3_FIXTURE = (
+    ROOT
+    / "tests"
+    / "fixtures"
+    / "selected_candidate_handoff_proposal"
+    / "p31-t3-real-selected-candidate-handoff.example.json"
+)
 
 
 def test_selected_candidate_handoff_proposal_builds_review_artifact(
@@ -165,6 +172,102 @@ def test_selected_candidate_handoff_proposal_cli_writes_json_and_markdown(
     assert printed == written
     assert written["kind"] == SELECTED_CANDIDATE_HANDOFF_PROPOSAL_KIND
     assert "docc2context.core" in body.read_text(encoding="utf-8")
+
+
+def test_selected_candidate_handoff_proposal_keeps_relative_dry_run_path(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.chdir(ROOT)
+
+    proposal = build_selected_candidate_handoff_proposal(
+        SelectedCandidateHandoffProposalOptions(
+            selected_handoff_dry_run=Path(
+                "tests/fixtures/limited_popular_library_selected_handoff_dry_run/"
+                "p30-t5-limited-popular-libraries.example.json"
+            )
+        )
+    )
+
+    expected_path = (
+        "tests/fixtures/limited_popular_library_selected_handoff_dry_run/"
+        "p30-t5-limited-popular-libraries.example.json"
+    )
+    assert proposal["source"]["selectedDryRunFixture"]["path"] == expected_path
+    for candidate in proposal["selectedCandidates"]:
+        evidence = {item["role"]: item for item in candidate["evidenceLinks"]}
+        assert evidence["selected_handoff_dry_run"]["path"] == expected_path
+        assert evidence["selected_handoff_dry_run"]["digest"] == file_digest(DRY_RUN_FIXTURE)
+
+
+def test_p31_t3_real_selected_candidate_handoff_fixture_records_helper_run() -> None:
+    payload = json.loads(P31_T3_FIXTURE.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == SELECTED_CANDIDATE_HANDOFF_PROPOSAL_API_VERSION
+    assert payload["kind"] == SELECTED_CANDIDATE_HANDOFF_PROPOSAL_KIND
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["summary"] == {
+        "deferredCandidateCount": 6,
+        "registryMutationCount": 0,
+        "requiredEvidenceRoleCount": 11,
+        "selectedCandidateCount": 3,
+        "specpmPullRequestCreated": False,
+    }
+    assert payload["source"]["selectedDryRunFixture"] == {
+        "apiVersion": "spec-harvester.limited-popular-library-selected-handoff-dry-run/v0",
+        "digest": file_digest(DRY_RUN_FIXTURE),
+        "kind": "SpecHarvesterLimitedPopularLibrarySelectedHandoffDryRun",
+        "path": (
+            "tests/fixtures/limited_popular_library_selected_handoff_dry_run/"
+            "p30-t5-limited-popular-libraries.example.json"
+        ),
+        "status": "selected_handoff_dry_run_ready",
+    }
+
+    selected = {item["id"]: item for item in payload["selectedCandidates"]}
+    assert list(selected) == ["flask.core", "gin.core", "docc2context.core"]
+    assert {item["id"] for item in payload["deferredCandidates"]} == {
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "cupertino.core",
+        "navigation_split_view.core",
+    }
+    required_roles = {item["role"] for item in payload["requiredEvidenceRoles"]}
+    for candidate_id, candidate in selected.items():
+        assert candidate["candidateBundlePath"].startswith("/tmp/specharvester-p30-t3.")
+        assert candidate["previewOnly"] is True
+        assert candidate["producerPreflight"]["status"] == "passed"
+        assert candidate["producerPreflight"]["warningCount"] == 0
+        assert candidate["producerPreflight"]["errorCount"] == 0
+        assert candidate["staticViewer"]["status"] == "ok"
+        assert candidate["registryAcceptanceDecision"] == {
+            "producerAuthority": "evidence_only",
+            "requiredFor": "public_index_acceptance",
+            "status": "external_required",
+        }
+        evidence = {item["role"]: item for item in candidate["evidenceLinks"]}
+        assert set(evidence) == required_roles
+        assert evidence["manifest"]["path"].startswith("/tmp/specharvester-p30-t3.")
+        assert evidence["manifest"]["digestSource"] == "local_file"
+        assert evidence["producer_preflight"]["path"].endswith(f"/{candidate_id}.json")
+        assert evidence["producer_preflight"]["digestSource"] == "local_file"
+        assert evidence["static_viewer"]["path"].endswith(f"/{candidate_id}/index.html")
+        assert evidence["static_viewer_payload"]["path"].endswith(
+            f"/{candidate_id}/spec-package.json"
+        )
+        assert evidence["selected_handoff_dry_run"]["path"] == (
+            "tests/fixtures/limited_popular_library_selected_handoff_dry_run/"
+            "p30-t5-limited-popular-libraries.example.json"
+        )
+        assert evidence["selected_handoff_dry_run"]["digest"] == file_digest(DRY_RUN_FIXTURE)
+
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not accept packages" in non_authority
+    assert "does not create a SpecPM pull request" in non_authority
 
 
 def test_selected_candidate_handoff_proposal_rejects_invalid_dry_run_identity(

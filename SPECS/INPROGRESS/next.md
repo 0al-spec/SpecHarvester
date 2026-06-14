@@ -1,10 +1,10 @@
-# Next Task: P31-T3 Real Selected Candidate Handoff Proposal Dry Run
+# Next Task: P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations
 
 **Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P31-T3 Real Selected Candidate Handoff Proposal Dry Run
+**Task:** P31-T4 SpecPM Selected Candidate Handoff Preflight Expectations
 **Phase:** Phase 31. Selected Candidate SpecPM Intake Handoff
-**Last Archived:** P31-T2 Selected Candidate Handoff Proposal Helper
+**Last Archived:** P31-T3 Real Selected Candidate Handoff Proposal Dry Run
 
 ## Recently Archived
 
@@ -38,21 +38,32 @@
   with `producer_preview_evidence_only` authority. It does not create a SpecPM
   pull request, accept packages, accept relations, seed baselines, remove
   `preview_only`, or publish registry metadata.
+- `P31-T3` ran `selected-candidate-handoff-proposal` on the recorded P30-T5
+  selected handoff dry-run evidence and committed
+  `tests/fixtures/selected_candidate_handoff_proposal/p31-t3-real-selected-candidate-handoff.example.json`
+  plus `docs/SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md`. The generated
+  fixture records exactly the selected candidates `flask.core`, `gin.core`,
+  and `docc2context.core`; keeps all six P30 deferred candidates excluded; and
+  preserves `producer_preview_evidence_only`, `previewOnly: true`,
+  zero-warning producer preflight, static viewer status `ok`, and
+  `registryAcceptanceDecision.status: external_required`. It remains review
+  evidence only and not SpecPM acceptance.
 
 ## Outcome
 
-The selected candidate handoff contract and producer helper exist. The next
-gap is practical evidence: the helper has not yet been run on the real P30
-selected candidate artifacts to record a portable dry-run handoff proposal
-fixture.
+The selected candidate handoff contract, producer helper, and real selected
+candidate dry-run fixture exist. The next gap is downstream: SpecPM still needs
+clear consumer-side preflight expectations for this evidence envelope.
 
 ## Next Step
 
-Implement `P31-T3`: run `selected-candidate-handoff-proposal` on the real P30
-selected candidates (`flask.core`, `gin.core`, and `docc2context.core`) and
-record the resulting JSON and Markdown handoff proposal fixture.
+Implement `P31-T4`: define downstream SpecPM-side preflight expectations for
+`SpecHarvesterSelectedCandidateHandoffProposal` evidence. The policy should
+state what SpecPM must verify before maintainer review, including identity,
+selected/deferred candidates, evidence roles, digests, preflight status, viewer
+status, registry acceptance decision boundaries, and non-authority statements.
 
-SpecPM acceptance remains out of scope. The dry-run fixture must remain
-producer preview evidence only and must not mutate candidate bundles, create a
-SpecPM pull request, accept packages, accept relations, seed baselines, remove
-`preview_only`, or publish registry metadata.
+SpecPM acceptance remains out of scope for this SpecHarvester task. The next
+artifact should describe consumer-side expectations; it must not accept
+packages, accept relations, seed baselines, remove `preview_only`, publish
+registry metadata, or create a SpecPM pull request.

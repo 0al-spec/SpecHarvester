@@ -1092,7 +1092,7 @@ Acceptance:
 - [x] `P31-T2` Implement a `selected-candidate-handoff-proposal` producer helper
   that reads selected candidate bundles, producer preflight reports, and static
   viewer outputs, then emits JSON and Markdown handoff artifacts.
-- [ ] `P31-T3` Run the selected candidate handoff proposal helper on the real
+- [x] `P31-T3` Run the selected candidate handoff proposal helper on the real
   P30 selected candidates and record a dry-run handoff proposal fixture.
 - [ ] `P31-T4` Define the downstream SpecPM-side preflight expectations for
   `SpecHarvesterSelectedCandidateHandoffProposal` evidence.

@@ -180,10 +180,13 @@ Published DocC site:
     review evidence, selected/deferred candidates, required evidence roles,
     `selected-candidate-handoff-proposal` JSON/Markdown output, and
     non-authority boundaries
-64. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
+64. [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md):
+    P31-T3 generated selected candidate handoff proposal Markdown companion for
+    the real P30 selected candidates
+65. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
     deterministic fallback for Flask/Gin-style repositories with no workspace
     package records
-64. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+66. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References

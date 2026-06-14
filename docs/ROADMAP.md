@@ -428,6 +428,12 @@ The helper command is `selected-candidate-handoff-proposal` and writes
 `selected-candidate-handoff-proposal.md` from the selected handoff dry-run
 source evidence.
 
+P31-T3 records the real selected candidate helper run in
+`tests/fixtures/selected_candidate_handoff_proposal/p31-t3-real-selected-candidate-handoff.example.json`
+and [`SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md`](SELECTED_CANDIDATE_HANDOFF_PROPOSAL_P31_T3.md).
+That artifact covers `flask.core`, `gin.core`, and `docc2context.core` only;
+the deferred P30 candidates remain excluded until regeneration.
+
 ## Non-Goals
 
 SpecHarvester does not:
