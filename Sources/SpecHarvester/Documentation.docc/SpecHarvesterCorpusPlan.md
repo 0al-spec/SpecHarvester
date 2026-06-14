@@ -114,6 +114,6 @@ selected, deferred, and rejected source decisions.
 
 ## Follow-Up Work
 
-This contract enables `P35-T3` candidate source classification, `P35-T4` seed
-corpus planning, `P35-T5` explainable selection reports, and `P35-T6` dry-run
-readiness checks.
+This contract enables `P35-T3` <doc:CandidateSourceClassifierPlan>, `P35-T4`
+seed corpus planning, `P35-T5` explainable selection reports, and `P35-T6`
+dry-run readiness checks.

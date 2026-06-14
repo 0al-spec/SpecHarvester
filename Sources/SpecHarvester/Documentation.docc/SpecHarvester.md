@@ -101,6 +101,7 @@ The canonical source files remain in the repository:
 - `docs/NEXT_CORPUS_INTAKE_READINESS_DECISION.md`
 - `docs/CORPUS_SELECTION_POLICY.md`
 - `docs/SPECHARVESTER_CORPUS_PLAN.md`
+- `docs/CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`
 - `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`
 - `docs/SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
@@ -198,6 +199,7 @@ the host.
 - <doc:NextCorpusIntakeReadinessDecision>
 - <doc:CorpusSelectionPolicy>
 - <doc:SpecHarvesterCorpusPlan>
+- <doc:CandidateSourceClassifierPlan>
 - <doc:DeferredCandidateRegenerationRunbook>
 - <doc:XyflowPackageSetIdentityRegenerationDryRun>
 - <doc:SinglePackageDeferredCandidateRegenerationDryRun>

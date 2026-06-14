@@ -234,7 +234,7 @@ covering JavaScript/TypeScript, Python, Rust, Go, and Swift.
 
 This contract enables:
 
-- `P35-T3`: candidate source classification;
+- `P35-T3`: [`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](CANDIDATE_SOURCE_CLASSIFIER_PLAN.md);
 - `P35-T4`: first multi-ecosystem seed corpus plan;
 - `P35-T5`: explainable corpus selection report;
 - `P35-T6`: selected corpus dry-run readiness.

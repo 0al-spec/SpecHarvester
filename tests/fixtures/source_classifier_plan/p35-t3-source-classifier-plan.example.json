@@ -1,0 +1,187 @@
+{
+  "apiVersion": "spec-harvester.source-classification-plan/v0",
+  "kind": "SpecHarvesterCandidateSourceClassificationPlan",
+  "schemaVersion": 1,
+  "authority": "producer_classification_plan_only",
+  "corpusPlan": {
+    "path": "tests/fixtures/corpus_plan/p35-t2-corpus-plan.example.json",
+    "apiVersion": "spec-harvester.corpus-plan/v0",
+    "kind": "SpecHarvesterCorpusPlan"
+  },
+  "summary": {
+    "decisionCount": 10,
+    "selectPrimaryCount": 1,
+    "selectMemberCount": 1,
+    "deferCount": 3,
+    "excludeCount": 3,
+    "evidenceOnlyCount": 2
+  },
+  "decisions": [
+    {
+      "sourceId": "react",
+      "unitId": "react.workspace",
+      "class": "package_set_root",
+      "action": "select_primary",
+      "reasonCodes": [
+        "workspace_root",
+        "public_package_family",
+        "corpus_plan_selected"
+      ],
+      "evidencePaths": [
+        "workspace-inventory.json",
+        "package.json"
+      ],
+      "confidence": "high",
+      "stopConditions": []
+    },
+    {
+      "sourceId": "react",
+      "unitId": "react-dom",
+      "class": "primary_package",
+      "action": "select_member",
+      "reasonCodes": [
+        "package_manifest_public",
+        "export_surface_present",
+        "documented_user_facing_api"
+      ],
+      "evidencePaths": [
+        "packages/react-dom/package.json",
+        "packages/react-dom/index.js"
+      ],
+      "confidence": "high",
+      "stopConditions": []
+    },
+    {
+      "sourceId": "react",
+      "unitId": "react-devtools-extension",
+      "class": "plugin_package",
+      "action": "defer",
+      "reasonCodes": [
+        "host_plugin_policy_missing"
+      ],
+      "evidencePaths": [
+        "packages/react-devtools-extensions/package.json"
+      ],
+      "confidence": "medium",
+      "stopConditions": [
+        "plugin_host_policy_missing"
+      ]
+    },
+    {
+      "sourceId": "react",
+      "unitId": "react-example-todo",
+      "class": "example_package",
+      "action": "exclude",
+      "reasonCodes": [
+        "example_package"
+      ],
+      "evidencePaths": [
+        "fixtures/todo/package.json"
+      ],
+      "confidence": "high",
+      "stopConditions": []
+    },
+    {
+      "sourceId": "react",
+      "unitId": "react-build-scripts",
+      "class": "tooling_package",
+      "action": "include_as_evidence_only",
+      "reasonCodes": [
+        "tooling_package"
+      ],
+      "evidencePaths": [
+        "scripts/package.json"
+      ],
+      "confidence": "medium",
+      "stopConditions": []
+    },
+    {
+      "sourceId": "types-react",
+      "unitId": "@types/react",
+      "class": "types_only_package",
+      "action": "defer",
+      "reasonCodes": [
+        "types_only_package"
+      ],
+      "evidencePaths": [
+        "types/react/index.d.ts"
+      ],
+      "confidence": "high",
+      "stopConditions": [
+        "package_family_ambiguous"
+      ]
+    },
+    {
+      "sourceId": "react",
+      "unitId": "react-generated-fixture",
+      "class": "generated_artifact",
+      "action": "defer",
+      "reasonCodes": [
+        "generated_artifact",
+        "generated_provenance_missing"
+      ],
+      "evidencePaths": [
+        "fixtures/generated/package.json"
+      ],
+      "confidence": "low",
+      "stopConditions": [
+        "generated_provenance_missing"
+      ]
+    },
+    {
+      "sourceId": "react",
+      "unitId": "shared-internal",
+      "class": "internal_utility",
+      "action": "exclude",
+      "reasonCodes": [
+        "internal_utility"
+      ],
+      "evidencePaths": [
+        "packages/shared/package.json"
+      ],
+      "confidence": "high",
+      "stopConditions": []
+    },
+    {
+      "sourceId": "react",
+      "unitId": "legacy-renderer",
+      "class": "deprecated_source",
+      "action": "exclude",
+      "reasonCodes": [
+        "deprecated_source"
+      ],
+      "evidencePaths": [
+        "packages/legacy-renderer/package.json"
+      ],
+      "confidence": "medium",
+      "stopConditions": [
+        "deprecated_package_rationale_missing"
+      ]
+    },
+    {
+      "sourceId": "fastapi",
+      "unitId": "fastapi-readme",
+      "class": "evidence_only",
+      "action": "include_as_evidence_only",
+      "reasonCodes": [
+        "documented_user_facing_api"
+      ],
+      "evidencePaths": [
+        "README.md"
+      ],
+      "confidence": "high",
+      "stopConditions": []
+    }
+  ],
+  "nonAuthorityStatements": [
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_publish_registry_metadata",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth"
+  ]
+}

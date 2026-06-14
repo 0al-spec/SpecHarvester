@@ -67,6 +67,9 @@ families, not an open-ended registry crawl.
 selected, deferred, and rejected source decisions before any autonomous batch
 run starts.
 
+<doc:CandidateSourceClassifierPlan> defines how package-like units inside
+selected repositories should be classified before drafting.
+
 ## Non-Goals
 
 SpecHarvester does not clone or discover repositories during documented corpus

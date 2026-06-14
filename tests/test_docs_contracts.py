@@ -2310,7 +2310,8 @@ def assert_p35_t2_recent(next_text: str) -> None:
 def assert_phase_35_t3_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P35-T3 Candidate Source Classifier Plan" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P35-T3-source-classifier-plan`" in next_text
     assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
     assert "`P35-T3` Add a candidate source classifier plan" in next_text
     assert "package_set_root" in next_text
@@ -10620,4 +10621,160 @@ def test_spec_harvester_corpus_plan_contract_is_documented() -> None:
     assert "SpecHarvesterCorpusPlan" in capabilities_docc.read_text(encoding="utf-8")
     assert "SPECHARVESTER_CORPUS_PLAN.md" in roadmap.read_text(encoding="utf-8")
     assert "SpecHarvesterCorpusPlan" in roadmap_docc.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_candidate_source_classifier_plan_contract_is_documented() -> None:
+    github_doc = ROOT / "docs" / "CANDIDATE_SOURCE_CLASSIFIER_PLAN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "CandidateSourceClassifierPlan.md"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "source_classifier_plan"
+        / ("p35-t3-source-classifier-plan.example.json")
+    )
+    corpus_plan = ROOT / "docs" / "SPECHARVESTER_CORPUS_PLAN.md"
+    corpus_plan_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvesterCorpusPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "SpecHarvesterCandidateSourceClassificationPlan",
+            "spec-harvester.source-classification-plan/v0",
+            "producer_classification_plan_only",
+            "package_set_root",
+            "primary_package",
+            "plugin_package",
+            "example_package",
+            "tooling_package",
+            "types_only_package",
+            "generated_artifact",
+            "internal_utility",
+            "deprecated_source",
+            "evidence_only",
+            "select_primary",
+            "select_member",
+            "defer",
+            "exclude",
+            "include_as_evidence_only",
+            "SpecHarvesterCorpusPlan",
+            "workspace inventory",
+            "package manifests",
+            "explicit operator overrides",
+            "reasonCodes",
+            "stopConditions",
+            "does not clone",
+            "install dependencies",
+            "execute harvested code",
+            "publish registry metadata",
+            "accept packages",
+            "accept relations",
+            "remove `preview_only`",
+            "registry truth",
+            "p35-t3-source-classifier-plan.example.json",
+            "P35-T4",
+            "P35-T6",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.source-classification-plan/v0"
+    assert payload["kind"] == "SpecHarvesterCandidateSourceClassificationPlan"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_classification_plan_only"
+    assert payload["corpusPlan"] == {
+        "path": "tests/fixtures/corpus_plan/p35-t2-corpus-plan.example.json",
+        "apiVersion": "spec-harvester.corpus-plan/v0",
+        "kind": "SpecHarvesterCorpusPlan",
+    }
+    assert payload["summary"] == {
+        "decisionCount": 10,
+        "selectPrimaryCount": 1,
+        "selectMemberCount": 1,
+        "deferCount": 3,
+        "excludeCount": 3,
+        "evidenceOnlyCount": 2,
+    }
+
+    decisions = payload["decisions"]
+    assert len(decisions) == 10
+    assert {item["class"] for item in decisions} == {
+        "package_set_root",
+        "primary_package",
+        "plugin_package",
+        "example_package",
+        "tooling_package",
+        "types_only_package",
+        "generated_artifact",
+        "internal_utility",
+        "deprecated_source",
+        "evidence_only",
+    }
+    assert {item["action"] for item in decisions} == {
+        "select_primary",
+        "select_member",
+        "defer",
+        "exclude",
+        "include_as_evidence_only",
+    }
+    assert {item["confidence"] for item in decisions} == {"high", "medium", "low"}
+    non_primary_classes = {
+        "example_package",
+        "tooling_package",
+        "types_only_package",
+        "generated_artifact",
+        "internal_utility",
+        "deprecated_source",
+        "evidence_only",
+    }
+    for decision in decisions:
+        assert decision["sourceId"]
+        assert decision["unitId"]
+        assert decision["reasonCodes"]
+        assert decision["evidencePaths"]
+        assert "stopConditions" in decision
+        if decision["class"] in non_primary_classes:
+            assert decision["action"] != "select_primary"
+    assert any(item["action"] == "select_member" for item in decisions)
+    assert any(item["action"] == "include_as_evidence_only" for item in decisions)
+
+    assert payload["nonAuthorityStatements"] == [
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_execute_harvested_code",
+        "does_not_publish_registry_metadata",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_ai_output_as_registry_truth",
+    ]
+
+    assert "CANDIDATE_SOURCE_CLASSIFIER_PLAN.md" in corpus_plan.read_text(encoding="utf-8")
+    assert "CandidateSourceClassifierPlan" in corpus_plan_docc.read_text(encoding="utf-8")
+    assert "CANDIDATE_SOURCE_CLASSIFIER_PLAN.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/CANDIDATE_SOURCE_CLASSIFIER_PLAN.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:CandidateSourceClassifierPlan>" in docc_root.read_text(encoding="utf-8")
+    assert "CANDIDATE_SOURCE_CLASSIFIER_PLAN.md" in capabilities.read_text(encoding="utf-8")
+    assert "CandidateSourceClassifierPlan" in capabilities_docc.read_text(encoding="utf-8")
+    assert "CANDIDATE_SOURCE_CLASSIFIER_PLAN.md" in roadmap.read_text(encoding="utf-8")
+    assert "CandidateSourceClassifierPlan" in roadmap_docc.read_text(encoding="utf-8")
     assert_current_next_task(next_task.read_text(encoding="utf-8"))

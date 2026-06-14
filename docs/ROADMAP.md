@@ -592,7 +592,9 @@ Tasks:
   `tests/fixtures/corpus_plan/p35-t2-corpus-plan.example.json`);
 - plan `P35-T3`, candidate source classification for primary packages,
   package-set roots, plugins, examples, tooling, type-only packages, generated
-  artifacts, internal utilities, and deprecated sources;
+  artifacts, internal utilities, and deprecated sources
+  ([`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](CANDIDATE_SOURCE_CLASSIFIER_PLAN.md),
+  `tests/fixtures/source_classifier_plan/p35-t3-source-classifier-plan.example.json`);
 - create `P35-T4`, the first bounded multi-ecosystem seed corpus plan across
   JavaScript/TypeScript, Python, Rust, Go, and at least one additional
   ecosystem;
