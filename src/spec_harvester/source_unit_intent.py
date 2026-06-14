@@ -97,6 +97,13 @@ class SourceUnitIntentBoundary:
             return f"Describe observed single-file source-unit metadata for {package_name}."
         return f"Describe observed repository metadata for {package_name}."
 
+    def fallback_intent_ids(self) -> list[str]:
+        if self.intent_kind() == "folder_module":
+            return ["intent.source_unit.folder_module_metadata"]
+        if self.intent_kind() == "single_file":
+            return ["intent.source_unit.single_file_metadata"]
+        return ["intent.package.public_repository_metadata"]
+
     def boundary_title(self, package_name: str) -> str:
         if self.intent_kind() == "package":
             return f"{package_name} Generated Public Package Boundary"
@@ -204,8 +211,5 @@ def contains_package_manifest(files: Any) -> bool:
     if not isinstance(files, list):
         return False
     return any(
-        isinstance(item, Mapping)
-        and item.get("kind") == "package_manifest"
-        and isinstance(item.get("package"), Mapping)
-        for item in files
+        isinstance(item, Mapping) and item.get("kind") == "package_manifest" for item in files
     )

@@ -343,7 +343,7 @@ def draft_spec_package(options: DraftOptions) -> dict[str, Any]:
         fallback_intents = (
             semantic_profile.intent_ids
             if semantic_profile is not None
-            else ["intent.package.public_repository_metadata"]
+            else source_unit_boundary.fallback_intent_ids()
         )
         capability_entries = [
             {

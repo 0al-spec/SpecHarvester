@@ -1951,6 +1951,35 @@ def test_draft_spec_package_uses_documentation_semantics_without_package_manifes
     assert "README.md" in spec
 
 
+def test_draft_spec_package_treats_unparsed_package_manifest_as_package_boundary(
+    tmp_path: Path,
+) -> None:
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = {
+        "kind": "SpecHarvesterEvidenceSnapshot",
+        "source": {
+            "repository": "https://github.com/gin-gonic/gin",
+            "revision": "abc123",
+            "label": "gin",
+        },
+        "policy": {"execution": "none"},
+        "files": [{"path": "go.mod", "kind": "package_manifest"}],
+    }
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    draft_spec_package(DraftOptions(snapshot=candidate, out=candidate, package_id="gin.core"))
+
+    spec = Path(candidate / "specs" / "gin.spec.yaml").read_text(encoding="utf-8")
+    manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
+    assert "summary: Observed public package boundary for Gin." in manifest
+    assert "intent.package.public_repository_metadata" in manifest
+    assert "intentKind: package" in spec
+    assert "claimScope: repository_package" in spec
+    assert "packageManagerOwnership: claimed_from_harvested_package_manifest" in spec
+    assert "not_claimed_without_package_manifest" not in spec
+
+
 def test_draft_spec_package_uses_source_unit_metadata_for_scoped_folder(
     tmp_path: Path,
 ) -> None:
@@ -1977,6 +2006,8 @@ def test_draft_spec_package_uses_source_unit_metadata_for_scoped_folder(
     manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
     assert "id: player.core" in manifest
     assert "summary: Observed folder/module source-unit boundary for Player." in manifest
+    assert "intent.source_unit.folder_module_metadata" in manifest
+    assert "intent.package.public_repository_metadata" not in manifest
     assert "title: Player Generated Folder Module Boundary" in spec
     folder_scope = (
         "Describe observed folder/module source-unit metadata from an "
@@ -2016,6 +2047,8 @@ def test_draft_spec_package_uses_source_unit_metadata_for_single_file(
     spec = Path(result["spec"]).read_text(encoding="utf-8")
     manifest = (candidate / "specpm.yaml").read_text(encoding="utf-8")
     assert "summary: Observed single-file source-unit boundary" in manifest
+    assert "intent.source_unit.single_file_metadata" in manifest
+    assert "intent.package.public_repository_metadata" not in manifest
     assert "Generated Single File Boundary" in spec
     single_file_scope = (
         "Describe observed single-file source-unit metadata from an "
