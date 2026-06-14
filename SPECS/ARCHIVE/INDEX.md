@@ -161,6 +161,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t3_source_classifier_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t2_corpus_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t1_corpus_selection_policy.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t8_docc_warning_cleanup.md` |
@@ -247,6 +248,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P35-T3 | Archived REVIEW_p35_t3_source_classifier_plan report |
 | 2026-06-14 | P35-T3 | Archived Candidate Source Classifier Plan (PASS) |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
