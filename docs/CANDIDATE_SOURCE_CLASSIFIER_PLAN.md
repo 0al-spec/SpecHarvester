@@ -178,6 +178,7 @@ internal, deprecated, and evidence-only classification decisions.
 
 This plan enables:
 
-- `P35-T4`: first multi-ecosystem seed corpus plan;
+- `P35-T4`: first multi-ecosystem seed corpus plan
+  ([`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md));
 - `P35-T5`: explainable corpus selection report;
 - `P35-T6`: selected corpus dry-run readiness.

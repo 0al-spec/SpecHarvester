@@ -112,8 +112,12 @@ The example fixture is
 It covers JavaScript/TypeScript, Python, Rust, Go, and Swift, and records
 selected, deferred, and rejected source decisions.
 
+The first concrete seed corpus plan is documented in
+<doc:MultiEcosystemSeedCorpusPlan> and represented by
+`tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json`.
+
 ## Follow-Up Work
 
 This contract enables `P35-T3` <doc:CandidateSourceClassifierPlan>, `P35-T4`
-seed corpus planning, `P35-T5` explainable selection reports, and `P35-T6`
-dry-run readiness checks.
+<doc:MultiEcosystemSeedCorpusPlan>, `P35-T5` explainable selection reports,
+and `P35-T6` dry-run readiness checks.

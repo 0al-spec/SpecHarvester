@@ -30,7 +30,7 @@ local repository checkout
 | AI-enriched preview candidate copies | Clean AI enrichment proposals can be applied into copied preview candidates with patch reports for review. | <doc:AIEnrichmentCandidatePatch> |
 | Selected/deferred candidate triage | Review-ready candidates are separated from candidates needing regeneration, repair, or explicit deferral. | <doc:SelectedCandidateHandoffProposal>, <doc:DeferredCandidateRegenerationRunbook> |
 | SpecPM handoff evidence | Portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | <doc:SpecPMHandoff>, <doc:SelectedCandidateHandoffPreflightExpectations> |
-| Bounded corpus runs | Important multi-ecosystem repository/package-family targets selected with explicit importance signals and exclusion rules, recorded in a machine-readable corpus plan, then operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:CorpusSelectionPolicy>, <doc:SpecHarvesterCorpusPlan>, <doc:AutonomousCandidateBatch> |
+| Bounded corpus runs | Important multi-ecosystem repository/package-family targets selected with explicit importance signals and exclusion rules, recorded in a machine-readable corpus plan, then operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:CorpusSelectionPolicy>, <doc:SpecHarvesterCorpusPlan>, <doc:MultiEcosystemSeedCorpusPlan>, <doc:AutonomousCandidateBatch> |
 | Optional CodeGraph input boundary | Pre-existing CodeGraph artifact normalization and offline pinned interface compatibility checks. | <doc:CodeGraphSourceGraphAdapter>, <doc:CodeGraphCompatibilityGuard> |
 
 ## Product Boundary
@@ -69,6 +69,11 @@ run starts.
 
 <doc:CandidateSourceClassifierPlan> defines how package-like units inside
 selected repositories should be classified before drafting.
+
+<doc:MultiEcosystemSeedCorpusPlan> records the first bounded seed set across
+JavaScript/TypeScript, Python, Rust, Go, and Swift. It is a plan for future
+local-checkout runs, not permission to clone repositories or publish registry
+metadata.
 
 ## Non-Goals
 

@@ -230,11 +230,20 @@ tests/fixtures/corpus_plan/p35-t2-corpus-plan.example.json
 It demonstrates a small selected/deferred/rejected multi-ecosystem corpus plan
 covering JavaScript/TypeScript, Python, Rust, Go, and Swift.
 
+The first concrete seed corpus plan is documented in
+[`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md)
+and represented by:
+
+```text
+tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json
+```
+
 ## Follow-Up Work
 
 This contract enables:
 
 - `P35-T3`: [`CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`](CANDIDATE_SOURCE_CLASSIFIER_PLAN.md);
-- `P35-T4`: first multi-ecosystem seed corpus plan;
+- `P35-T4`: first multi-ecosystem seed corpus plan
+  ([`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md));
 - `P35-T5`: explainable corpus selection report;
 - `P35-T6`: selected corpus dry-run readiness.
