@@ -533,7 +533,8 @@ Tasks:
   evidence
   ([`NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`](NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md));
 - run or coordinate SpecPM-side selected handoff preflight and record the next
-  intake readiness decision.
+  intake readiness decision
+  ([`NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`](NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md)).
 
 Success criteria:
 
@@ -542,6 +543,9 @@ Success criteria:
   dependency installation, harvested code execution, and network discovery;
 - deterministic, live-model, candidate-layer, and SpecPM-side gates are
   recorded before any registry-facing handoff;
+- P33-T6 records that the current P33-T5 triage artifact is not a supported
+  SpecPM selected handoff payload and requires a durable selected handoff
+  follow-up before maintainer intake review;
 - the result remains review evidence only and does not accept packages, accept
   relations, seed baselines, remove `preview_only`, publish registry metadata,
   or treat AI output as registry truth.

@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P33-T7 Durable Next-Corpus Selected Handoff Artifact" in next_text:
+        assert_p33_t6_last_archived(next_text)
+        assert_p33_t5_recent(next_text)
+        assert_p33_t6_recent(next_text)
+        assert_phase_33_t7_active(next_text)
+        return
+
     if "# Next Task: P33-T6 Next-Corpus SpecPM Preflight and Intake Decision" in next_text:
         assert_p33_t5_last_archived(next_text)
         assert_p33_t4_recent(next_text)
@@ -519,6 +526,10 @@ def assert_p33_t4_last_archived(next_text: str) -> None:
 
 def assert_p33_t5_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P33-T5 Next-Corpus Candidate-Layer Triage" in next_text
+
+
+def assert_p33_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P33-T6 Next-Corpus SpecPM Preflight and Intake Decision" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1600,6 +1611,48 @@ def assert_phase_33_t5_active(next_text: str) -> None:
     assert "must not accept packages" in normalized
     assert "must not publish registry metadata" in normalized
     assert "must not create a SpecPM pull request" in normalized
+
+
+def assert_p33_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P33-T6` recorded the next-corpus SpecPM preflight intake decision" in next_text
+    assert "NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md" in next_text
+    assert "NextCorpusSpecPMPreflightIntakeDecision" in next_text
+    assert "SpecHarvesterNextCorpusSpecPMPreflightIntakeDecision" in next_text
+    assert "spec-harvester.next-corpus-specpm-preflight-intake-decision/v0" in next_text
+    assert "selected_handoff_payload_missing" in next_text
+    assert "not_ready_requires_durable_selected_handoff_artifact" in next_text
+    assert "durable selected handoff payload" in normalized
+    assert "serena.core" in next_text
+    assert "transmission.core" in next_text
+    assert "specpm.core" in next_text
+    assert "mcpm.system" in next_text
+    assert "specgraph.system" in next_text
+    assert "review evidence only" in normalized
+    assert "no package acceptance" in normalized
+    assert "relation acceptance" in normalized
+    assert "registry publication" in normalized
+    assert "SpecPM pull request creation" in normalized
+
+
+def assert_phase_33_t7_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P33-T7 Durable Next-Corpus Selected Handoff Artifact" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 33. Bounded Corpus Expansion Planning" in next_text
+    assert "SpecHarvesterSelectedCandidateHandoffProposal" in next_text
+    assert "durable selected handoff evidence" in normalized
+    assert "machine-preflighted before maintainer intake review" in normalized
+    assert "serena.core" in next_text
+    assert "transmission.core" in next_text
+    assert "specpm.core" in next_text
+    assert "mcpm.system" in next_text
+    assert "specgraph.system" in next_text
+    assert "must not run a new scrape" in normalized
+    assert "must not rerun LM Studio" in normalized
+    assert "must not accept packages" in normalized
+    assert "must not publish registry metadata" in normalized
+    assert "must not remove `preview_only`" in normalized
 
 
 def assert_phase_33_t6_active(next_text: str) -> None:
@@ -6711,6 +6764,188 @@ def test_next_corpus_candidate_layer_triage_docs_cover_p33_t5_verdict() -> None:
     assert "NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md" in live.read_text(encoding="utf-8")
     assert "NextCorpusCandidateLayerTriage" in live_docc.read_text(encoding="utf-8")
     assert "NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md" in workplan.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_next_corpus_specpm_preflight_intake_decision_records_p33_t6_contract() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_specpm_preflight_intake_decision"
+        / "p33-t6-next-corpus-specpm-preflight-intake-decision.example.json"
+    )
+    triage_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_candidate_layer_triage"
+        / "p33-t5-next-corpus-candidate-layer-triage.example.json"
+    )
+    deterministic_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_deterministic_dry_run"
+        / "p33-t3-next-corpus-deterministic-dry-run.example.json"
+    )
+    live_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_live_local_model_batch"
+        / "p33-t4-next-corpus-live-local-model.example.json"
+    )
+    source_manifest = ROOT / "inputs" / "p33-next-corpus" / "repositories.yml"
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.next-corpus-specpm-preflight-intake-decision/v0"
+    assert payload["kind"] == "SpecHarvesterNextCorpusSpecPMPreflightIntakeDecision"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["inputs"]["candidateLayerTriageFixture"] == {
+        "apiVersion": "spec-harvester.next-corpus-candidate-layer-triage/v0",
+        "digest": "sha256:" + hashlib.sha256(triage_fixture.read_bytes()).hexdigest(),
+        "kind": "SpecHarvesterNextCorpusCandidateLayerTriage",
+        "path": (
+            "tests/fixtures/next_corpus_candidate_layer_triage/"
+            "p33-t5-next-corpus-candidate-layer-triage.example.json"
+        ),
+        "status": "ready_for_p33_t6_selected_handoff_preflight",
+    }
+    assert payload["inputs"]["deterministicFixture"]["digest"] == (
+        "sha256:" + hashlib.sha256(deterministic_fixture.read_bytes()).hexdigest()
+    )
+    assert payload["inputs"]["liveLocalModelFixture"]["digest"] == (
+        "sha256:" + hashlib.sha256(live_fixture.read_bytes()).hexdigest()
+    )
+    assert payload["inputs"]["sourceManifest"]["digest"] == (
+        "sha256:" + hashlib.sha256(source_manifest.read_bytes()).hexdigest()
+    )
+    assert payload["summary"] == {
+        "deferredCandidateCount": 2,
+        "preflightErrorCount": 1,
+        "preflightWarningCount": 0,
+        "registryMutationCount": 0,
+        "selectedCandidateCount": 3,
+        "specpmPullRequestCreated": False,
+    }
+    assert [candidate["id"] for candidate in payload["selectedCandidates"]] == [
+        "serena.core",
+        "transmission.core",
+        "specpm.core",
+    ]
+    assert [candidate["id"] for candidate in payload["deferredCandidates"]] == [
+        "mcpm.system",
+        "specgraph.system",
+    ]
+    assert {candidate["handoffStatus"] for candidate in payload["selectedCandidates"]} == {
+        "selected_scope_preflight_not_ready"
+    }
+    assert {candidate["handoffStatus"] for candidate in payload["deferredCandidates"]} == {
+        "deferred_from_p33_t6"
+    }
+    assert payload["specpmPreflight"]["status"] == "failed"
+    assert payload["specpmPreflight"]["diagnosticCodes"] == ["selected_handoff_payload_missing"]
+    assert payload["specpmPreflight"]["inputKind"] == "SpecHarvesterNextCorpusCandidateLayerTriage"
+    assert payload["specpmPreflight"]["report"] == {
+        "deferredCandidateCount": 0,
+        "digestVerifiedCount": 0,
+        "errorCount": 1,
+        "requiredEvidenceRoleCount": 0,
+        "selectedCandidateCount": 0,
+        "warningCount": 0,
+    }
+    assert payload["intakeReadinessDecision"] == {
+        "reason": (
+            "P33-T5 is a candidate-layer triage fixture, not a supported "
+            "SpecHarvester selected handoff payload. SpecPM correctly rejects "
+            "it before maintainer intake review."
+        ),
+        "requiredFollowUp": "P33-T7 Durable Next-Corpus Selected Handoff Artifact",
+        "selectedScopeStatus": "selected_candidates_need_durable_handoff_payload",
+        "status": "not_ready_requires_durable_selected_handoff_artifact",
+    }
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not accept packages" in non_authority
+    assert "does not accept relations" in non_authority
+    assert "does not seed baselines" in non_authority
+    assert "does not remove preview_only" in non_authority
+    assert "does not publish registry metadata" in non_authority
+    assert "does not create a SpecPM pull request" in non_authority
+    assert "does not treat AI output as canonical" in non_authority
+
+
+def test_next_corpus_specpm_preflight_intake_decision_docs_cover_p33_t6_verdict() -> None:
+    github_doc = ROOT / "docs" / "NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "NextCorpusSpecPMPreflightIntakeDecision.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    bounded_plan = ROOT / "docs" / "BOUNDED_CORPUS_EXPANSION_PLAN.md"
+    bounded_plan_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BoundedCorpusExpansionPlan.md"
+    )
+    triage_doc = ROOT / "docs" / "NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md"
+    triage_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "NextCorpusCandidateLayerTriage.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Next-Corpus SpecPM Preflight and Intake Decision",
+            "P33-T6",
+            "SpecHarvesterNextCorpusSpecPMPreflightIntakeDecision",
+            "spec-harvester.next-corpus-specpm-preflight-intake-decision/v0",
+            "producer_preview_evidence_only",
+            "serena.core",
+            "transmission.core",
+            "specpm.core",
+            "mcpm.system",
+            "specgraph.system",
+            "selected_handoff_payload_missing",
+            "not_ready_requires_durable_selected_handoff_artifact",
+            "P33-T7",
+            "durable selected handoff",
+            "SpecPM maintainer intake review",
+            "not registry acceptance" if path == github_doc else "not registry failure",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:NextCorpusSpecPMPreflightIntakeDecision>" in docc_root.read_text(encoding="utf-8")
+    assert "NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md" in roadmap.read_text(encoding="utf-8")
+    assert "NextCorpusSpecPMPreflightIntakeDecision" in roadmap_docc.read_text(encoding="utf-8")
+    assert "NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md" in bounded_plan.read_text(
+        encoding="utf-8"
+    )
+    assert "NextCorpusSpecPMPreflightIntakeDecision" in bounded_plan_docc.read_text(
+        encoding="utf-8"
+    )
+    assert "NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md" in triage_doc.read_text(
+        encoding="utf-8"
+    )
+    assert "NextCorpusSpecPMPreflightIntakeDecision" in triage_docc.read_text(encoding="utf-8")
+    assert "P33-T7" in workplan.read_text(encoding="utf-8")
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

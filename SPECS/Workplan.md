@@ -1207,8 +1207,13 @@ Acceptance:
   evidence with explicit selected, deferred, blocked, and not-for-intake
   states in
   [`NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`](../docs/NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md).
-- [ ] `P33-T6` Coordinate or run the SpecPM-side preflight for the next-corpus
+- [x] `P33-T6` Coordinate or run the SpecPM-side preflight for the next-corpus
   selected handoff and record the next intake readiness decision.
+- [ ] `P33-T7` Create a durable next-corpus selected handoff artifact for
+  `serena.core`, `transmission.core`, and `specpm.core`, or explicitly extend
+  the SpecPM selected handoff consumer gate, so the selected scope can be
+  machine-preflighted before maintainer intake review without fabricating
+  per-file evidence digests.
 
 Motivation:
 

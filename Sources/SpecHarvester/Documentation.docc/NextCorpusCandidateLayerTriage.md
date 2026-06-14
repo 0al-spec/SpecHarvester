@@ -57,11 +57,12 @@ package identity drift is resolved, regenerated, or explicitly approved.
 
 Verdict: `ready_for_p33_t6_selected_handoff_preflight`.
 
-P33-T6 may run or coordinate selected handoff preflight for `serena.core`,
-`transmission.core`, and `specpm.core` only. This does not accept packages,
-accept relations, seed baselines, remove `preview_only`, publish registry
-metadata, create a SpecPM pull request, or treat model output as registry
-truth.
+P33-T6 records the consumer preflight outcome in
+<doc:NextCorpusSpecPMPreflightIntakeDecision>. The selected scope is valid as
+triage evidence, but it still needs a durable selected handoff payload before
+SpecPM maintainer intake review. This does not accept packages, accept
+relations, seed baselines, remove `preview_only`, publish registry metadata,
+create a SpecPM pull request, or treat model output as registry truth.
 
 ## Source
 

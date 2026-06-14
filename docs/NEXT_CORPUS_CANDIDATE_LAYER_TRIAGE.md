@@ -88,6 +88,11 @@ P33 should proceed to P33-T6 only for:
 - `transmission.core`;
 - `specpm.core`.
 
+P33-T6 records the consumer preflight outcome in
+[`NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md`](NEXT_CORPUS_SPECPM_PREFLIGHT_INTAKE_DECISION.md):
+the selected scope is valid as triage evidence, but it still needs a durable
+selected handoff payload before SpecPM maintainer intake review.
+
 The deferred candidates remain useful review evidence:
 
 - `mcpm.system`;
@@ -99,9 +104,9 @@ also needs regenerated or manually reviewed AI draft evidence because the model
 returned `selected_member_role_unknown`, `model_evidence_path_unsupported`, and
 `excluded_package_also_selected`.
 
-This is still not registry intake. P33-T6 may run or coordinate a selected
-handoff preflight for the selected candidates, but SpecPM remains the
-validation, acceptance, relation, baseline, and registry authority.
+This is still not registry intake. P33-T6 records the current SpecPM consumer
+gate result for the selected candidates, but SpecPM remains the validation,
+acceptance, relation, baseline, and registry authority.
 
 ## Non-Authority Boundary
 
