@@ -605,6 +605,10 @@ Acceptance:
   verifies the expected package version, binary availability contract, CLI JSON
   flags, and normalized schema mapping without indexing third-party projects in
   ordinary CI.
+- [ ] `P20-T8` Clean up stale DocC warnings by making
+  `AcceptedPackageUpdateProposals` resolve as a documentation page and by
+  replacing literal command references in real-repository quality docs with
+  non-symbol code formatting.
 
 Acceptance:
 
@@ -623,6 +627,9 @@ Acceptance:
 - Third-party graph adapter compatibility tests pin external versions and never
   require live network downloads or third-party project runtime execution in
   ordinary CI.
+- DocC static generation completes without the stale
+  `AcceptedPackageUpdateProposals`, `python -m spec_harvester quality-report`,
+  and `specpm validate` warnings.
 
 ## Phase 21. Producer Candidate Bundle Contract
 

@@ -1,11 +1,11 @@
-# Next Task: Phase 20 Complete
+# Next Task: P20-T8 DocC Warning Cleanup
 
-**Priority:** N/A
+**Priority:** Medium
 **Phase:** Phase 20. Scoped Source Unit Harvesting
-**Effort:** N/A
+**Effort:** Small
 **Dependencies:** P20-T7
-**Status:** Complete
-**Active Branch:** `codex/p20-t7-codegraph-compatibility-guard`
+**Status:** Active
+**Active Branch:** `codex/p20-t8-docc-warning-cleanup`
 **Last Archived:** P20-T7 CodeGraph Compatibility Guard
 
 ## Recently Archived
@@ -29,28 +29,33 @@
   and SpecNode `compactModelInput`, and preserved the rule that scoped evidence
   must not be upgraded into repository-level or package-manager ownership
   claims without supporting package manifest evidence.
-- `P17-T6` moved bounded SpecNode retry orchestration behind
-  `SpecNodeRefinementRetrySequence` while preserving
-  `run_specnode_refinement_retry_orchestration`, provider interfaces,
-  provider-unavailable fallback payloads, semantic review validation, retry
-  directive construction, retry attempt records, final digest binding, and
-  retry-run validation. The procedural-style smoke recorded
-  behaviorRichClassCount: 1 and reduced `specnode_refinement.py`
-  topLevelFunctionSpan from 1690 to 1551.
 
 ## Description
 
-Phase 20 is complete. SpecHarvester now supports scoped source-unit harvesting,
-Tuist manifest parsing, scoped validation fixtures, source-unit draft intent
-boundaries, an explicit opt-in CodeGraph source graph adapter, and a pinned
-CodeGraph compatibility guard.
+DocC static generation currently succeeds but emits stale warnings:
 
-The CodeGraph integration remains bounded: compatibility checking uses local
-fixtures and optional explicitly provided executables only. Ordinary CI does not
-install CodeGraph, run npm/npx, download tools, access the network, or index
-third-party repositories.
+- `AcceptedPackageUpdateProposals` is referenced as a DocC page from multiple
+  pages but its article is written as a symbol page heading.
+- `RealRepositoryQualityReport` uses DocC symbol-style double-backtick markup
+  for literal CLI commands: `python -m spec_harvester quality-report` and
+  `specpm validate`.
+
+P20-T8 should remove those warnings without changing runtime behavior,
+registry behavior, package generation, or SpecPM handoff contracts.
+
+## Acceptance
+
+- `AcceptedPackageUpdateProposals` resolves as a DocC documentation page from
+  `SpecHarvester`, `GettingStarted`, and `Workflow`.
+- Literal CLI commands in `RealRepositoryQualityReport` are rendered as code,
+  not treated as DocC symbol references.
+- `swift package --allow-writing-to-directory ./.docc-build generate-documentation ...`
+  completes without those stale warnings.
+- Python tests, docs contract tests, ruff, format check, and `git diff --check`
+  remain green.
 
 ## Next Step
 
-Open the P20-T7 stacked PR above P20-T6 and wait for review/CI before selecting
-any new phase.
+Inspect the affected DocC pages, apply minimal Markdown fixes, and record a
+validation report showing that DocC warning output is clean for the targeted
+warnings.
