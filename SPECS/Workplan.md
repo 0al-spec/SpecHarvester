@@ -605,7 +605,7 @@ Acceptance:
   verifies the expected package version, binary availability contract, CLI JSON
   flags, and normalized schema mapping without indexing third-party projects in
   ordinary CI.
-- [ ] `P20-T8` Clean up stale DocC warnings by making
+- [x] `P20-T8` Clean up stale DocC warnings by making
   `AcceptedPackageUpdateProposals` resolve as a documentation page and by
   replacing literal command references in real-repository quality docs with
   non-symbol code formatting.

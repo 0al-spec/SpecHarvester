@@ -1,15 +1,22 @@
-# Next Task: P20-T8 DocC Warning Cleanup
+# Next Task: Phase 20 Complete
 
-**Priority:** Medium
+**Priority:** N/A
 **Phase:** Phase 20. Scoped Source Unit Harvesting
-**Effort:** Small
-**Dependencies:** P20-T7
-**Status:** Active
+**Effort:** N/A
+**Dependencies:** P20-T8
+**Status:** Complete
 **Active Branch:** `codex/p20-t8-docc-warning-cleanup`
-**Last Archived:** P20-T7 CodeGraph Compatibility Guard
+**Last Archived:** P20-T8 DocC Warning Cleanup
 
 ## Recently Archived
 
+- `P20-T8` cleaned up stale DocC warnings by converting
+  `AcceptedPackageUpdateProposals` from a symbol-page heading into a normal
+  documentation article and by changing literal command references in
+  `RealRepositoryQualityReport` from DocC symbol-style double-backtick markup
+  to inline code markup. DocC static generation now completes with no
+  `warning:` output for `AcceptedPackageUpdateProposals`,
+  `python -m spec_harvester quality-report`, or `specpm validate`.
 - `P20-T7` added the pinned `codegraph-compatibility-report` guard for
   validating the local `@colbymchenry/codegraph@0.9.7` compatibility fixture,
   package integrity metadata, `optional_preprovisioned` binary policy,
@@ -32,30 +39,18 @@
 
 ## Description
 
-DocC static generation currently succeeds but emits stale warnings:
+Phase 20 is complete. SpecHarvester now supports scoped source-unit harvesting,
+Tuist manifest parsing, scoped validation fixtures, source-unit draft intent
+boundaries, an explicit opt-in CodeGraph source graph adapter, a pinned
+CodeGraph compatibility guard, and clean DocC generation for the known stale
+documentation warnings.
 
-- `AcceptedPackageUpdateProposals` is referenced as a DocC page from multiple
-  pages but its article is written as a symbol page heading.
-- `RealRepositoryQualityReport` uses DocC symbol-style double-backtick markup
-  for literal CLI commands: `python -m spec_harvester quality-report` and
-  `specpm validate`.
-
-P20-T8 should remove those warnings without changing runtime behavior,
-registry behavior, package generation, or SpecPM handoff contracts.
-
-## Acceptance
-
-- `AcceptedPackageUpdateProposals` resolves as a DocC documentation page from
-  `SpecHarvester`, `GettingStarted`, and `Workflow`.
-- Literal CLI commands in `RealRepositoryQualityReport` are rendered as code,
-  not treated as DocC symbol references.
-- `swift package --allow-writing-to-directory ./.docc-build generate-documentation ...`
-  completes without those stale warnings.
-- Python tests, docs contract tests, ruff, format check, and `git diff --check`
-  remain green.
+The CodeGraph integration remains bounded: compatibility checking uses local
+fixtures and optional explicitly provided executables only. Ordinary CI does not
+install CodeGraph, run npm/npx, download tools, access the network, or index
+third-party repositories.
 
 ## Next Step
 
-Inspect the affected DocC pages, apply minimal Markdown fixes, and record a
-validation report showing that DocC warning output is clean for the targeted
-warnings.
+Open the P20-T8 maintenance PR and wait for review/CI before selecting any new
+phase.

@@ -17,7 +17,11 @@ def assert_current_next_task(next_text: str) -> None:
         return
 
     if "# Next Task: Phase 20 Complete" in next_text:
-        assert_p20_t7_last_archived(next_text)
+        if "**Last Archived:** P20-T8 DocC Warning Cleanup" in next_text:
+            assert_p20_t8_last_archived(next_text)
+            assert_p20_t8_recent(next_text)
+        else:
+            assert_p20_t7_last_archived(next_text)
         assert_p20_t7_recent(next_text)
         assert_p20_t6_recent(next_text)
         assert_p20_t5_recent(next_text)
@@ -836,6 +840,10 @@ def assert_p20_t7_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P20-T7 CodeGraph Compatibility Guard" in next_text
 
 
+def assert_p20_t8_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P20-T8 DocC Warning Cleanup" in next_text
+
+
 def assert_p20_t7_recent(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "`P20-T7` added the pinned `codegraph-compatibility-report` guard" in next_text
@@ -846,6 +854,20 @@ def assert_p20_t7_recent(next_text: str) -> None:
     assert "fixture-backed normalization into `source_graph_index`" in next_text
     assert "without installing CodeGraph" in normalized
     assert "indexing third-party repositories in ordinary CI" in normalized
+
+
+def assert_p20_t8_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P20-T8` cleaned up stale DocC warnings" in next_text
+    assert "AcceptedPackageUpdateProposals" in next_text
+    assert "symbol-page heading" in normalized
+    assert "normal documentation article" in normalized
+    assert "RealRepositoryQualityReport" in next_text
+    assert "double-backtick markup" in normalized
+    assert "inline code markup" in normalized
+    assert "DocC static generation now completes with no `warning:` output" in normalized
+    assert "python -m spec_harvester quality-report" in next_text
+    assert "specpm validate" in next_text
 
 
 def assert_phase_20_t8_active(next_text: str) -> None:
@@ -874,6 +896,7 @@ def assert_phase_20_complete(next_text: str) -> None:
     assert "source-unit draft intent boundaries" in normalized
     assert "explicit opt-in CodeGraph source graph adapter" in normalized
     assert "pinned CodeGraph compatibility guard" in normalized
+    assert "clean DocC generation" in normalized
     assert "Ordinary CI does not install CodeGraph" in normalized
 
 
