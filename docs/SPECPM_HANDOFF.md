@@ -215,6 +215,12 @@ P32-T4 records the single-package deferred regeneration result in
 That artifact keeps `cupertino.core` deferred and makes
 `navigation_split_view.core` eligible for refreshed candidate-layer review,
 while still remaining producer preview evidence only.
+P32-T5 records the refreshed selected handoff result in
+[`REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`](REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md).
+That artifact is the producer-side input for the future SpecPM selected
+candidate handoff preflight. It keeps `cupertino.core` deferred and still does
+not create a SpecPM pull request, accept packages, accept relations, seed
+baselines, remove `preview_only`, or publish registry metadata.
 
 ## Fresh Candidate Refresh Run
 

@@ -1,0 +1,510 @@
+{
+  "apiVersion": "spec-harvester.refreshed-candidate-layer-selected-handoff/v0",
+  "kind": "SpecHarvesterRefreshedCandidateLayerSelectedHandoff",
+  "schemaVersion": 1,
+  "authority": "producer_preview_evidence_only",
+  "run": {
+    "taskId": "P32-T5",
+    "corpusId": "p30-limited-popular-libraries",
+    "decision": "refresh_selected_handoff_from_recorded_evidence",
+    "newHarvestExecuted": false,
+    "aiRunExecuted": false
+  },
+  "sources": [
+    {
+      "id": "p30_t5_selected_handoff_dry_run",
+      "taskId": "P30-T5",
+      "kind": "SpecHarvesterLimitedPopularLibrarySelectedHandoffDryRun",
+      "path": "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
+      "digest": "sha256:05522256a4a1940f0f80b510674efc686e2996f178692e589a51757e0f2922b0",
+      "status": "source_fixture_committed"
+    },
+    {
+      "id": "p32_t3_xyflow_regeneration",
+      "taskId": "P32-T3",
+      "kind": "SpecHarvesterXyflowPackageSetIdentityRegenerationDryRun",
+      "path": "tests/fixtures/xyflow_package_set_identity_regeneration/p32-t3-xyflow-package-set-identity-regeneration.example.json",
+      "digest": "sha256:c905b0ec81af87783f6e7df1edac8c3d0f132ceb9449327529d6b0f945792ea4",
+      "status": "source_fixture_committed"
+    },
+    {
+      "id": "p32_t4_single_package_regeneration",
+      "taskId": "P32-T4",
+      "kind": "SpecHarvesterSinglePackageDeferredCandidateRegenerationDryRun",
+      "path": "tests/fixtures/single_package_deferred_candidate_regeneration/p32-t4-single-package-deferred-candidate-regeneration.example.json",
+      "digest": "sha256:67f8371417e17d15c17a6320e5763963f66535656b4d705070c958d61f581461",
+      "status": "source_fixture_committed"
+    }
+  ],
+  "summary": {
+    "selectedCandidateCount": 8,
+    "deferredCandidateCount": 1,
+    "candidateLayerReviewRequiredCount": 8,
+    "needsRegenerationCount": 1,
+    "producerPreflightPassedCount": 8,
+    "viewerOkCount": 8,
+    "registryMutationCount": 0,
+    "specpmPullRequestCreated": false
+  },
+  "selectedCandidates": [
+    {
+      "id": "flask.core",
+      "repositoryId": "flask",
+      "sourceTaskId": "P30-T5",
+      "sourceFixtureId": "p30_t5_selected_handoff_dry_run",
+      "candidateLayerDecision": {
+        "status": "candidate_layer_review_required",
+        "selectedHandoffEligible": true
+      },
+      "handoffRecommendation": "ready_for_specpm_dry_run_review",
+      "previewOnly": true,
+      "producerPreflight": {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0,
+        "reportDigest": "sha256:836abcf074a43cfa84526cb992eab0a6b7c1354e34bd0d275e407606d46787f7"
+      },
+      "viewer": {
+        "status": "ok",
+        "indexDigest": "sha256:3feea0d6acb3a2809f732bd81ee760e05d7a6f33d607ecc0a9e5a1180e5287c3",
+        "specPackageDigest": "sha256:06667c14b9c90a8988a35f8c99f530cfd36edd84297a5b3fe23c2aa2aa172d84"
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "evidenceRoles": [
+        {
+          "role": "manifest",
+          "digest": "sha256:2b4a1c4d9aaeef5efbb8424fe3f748d7895551a7d852814c7ce3d163e789630f"
+        },
+        {
+          "role": "boundary_spec",
+          "digest": "sha256:309b518b319fff5a2cdc1ca9abb9432919621a3fa327e20e3e3357592b1c2ad1"
+        },
+        {
+          "role": "producer_receipt",
+          "digest": "sha256:23f56cb23d477fab8a3b11b62348751d4ea2306522b6642ce330432107bde6fe"
+        },
+        {
+          "role": "validation_report",
+          "digest": "sha256:8e3e1ae6266cdd039ced62c59b701dba0abf47b881362e57ae94991b0c561eed"
+        },
+        {
+          "role": "diagnostics",
+          "digest": "sha256:62da575a03f6be1773a4b783185a7ff29d392cf499e29e96955cf2e9123f0713"
+        },
+        {
+          "role": "quality_report",
+          "digest": "sha256:75bf9010e50638a26eb62f3f6ff936a8882b10ff176a793378a60d9fcfbb469d"
+        }
+      ]
+    },
+    {
+      "id": "gin.core",
+      "repositoryId": "gin",
+      "sourceTaskId": "P30-T5",
+      "sourceFixtureId": "p30_t5_selected_handoff_dry_run",
+      "candidateLayerDecision": {
+        "status": "candidate_layer_review_required",
+        "selectedHandoffEligible": true
+      },
+      "handoffRecommendation": "ready_for_specpm_dry_run_review",
+      "previewOnly": true,
+      "producerPreflight": {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0,
+        "reportDigest": "sha256:e6738829bed9b409eff3df6a5cfe1524cda6b1762a352779e78154439490547f"
+      },
+      "viewer": {
+        "status": "ok",
+        "indexDigest": "sha256:e15ef3f031a0e11196f11ff76593af985eb24ad016cb5b3eb313a4f3fb09557d",
+        "specPackageDigest": "sha256:c9d3e34021d6eba53f96aa92939ec2cebb64a44173b34782971f2f18ad2b93b0"
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "evidenceRoles": [
+        {
+          "role": "manifest",
+          "digest": "sha256:501be249e4d10598e069da3e12a6bc43af7de8084b725b0768acb6b7d167d3a4"
+        },
+        {
+          "role": "boundary_spec",
+          "digest": "sha256:99e4520b4465f4d524bfa50ca54dccc57cafde7fad56b56261b3eb16ebc29506"
+        },
+        {
+          "role": "producer_receipt",
+          "digest": "sha256:b47be79ba1c0fa137d2e80b58514e08360b615109c5469a5a9ca56c545f4cd0c"
+        },
+        {
+          "role": "validation_report",
+          "digest": "sha256:b3bf292e36a8f2c038dd04aad0b80a825f959aa63882e92df4f489fbf2c6d16a"
+        },
+        {
+          "role": "diagnostics",
+          "digest": "sha256:7406004edcf4366c3ed7dbc62c63c4f58b782aff5874ac84127f31fafec399dd"
+        },
+        {
+          "role": "quality_report",
+          "digest": "sha256:622e6f05fd78d32dd56ab202067a0e0e07b30d521284904e769390409e9d1576"
+        }
+      ]
+    },
+    {
+      "id": "docc2context.core",
+      "repositoryId": "docc2context",
+      "sourceTaskId": "P30-T5",
+      "sourceFixtureId": "p30_t5_selected_handoff_dry_run",
+      "candidateLayerDecision": {
+        "status": "candidate_layer_review_required",
+        "selectedHandoffEligible": true
+      },
+      "handoffRecommendation": "ready_for_specpm_dry_run_review",
+      "previewOnly": true,
+      "producerPreflight": {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0,
+        "reportDigest": "sha256:7d0e119e59c56397d42b28922dfe281fa77a6b06b899663e1a27e2ba2918a282"
+      },
+      "viewer": {
+        "status": "ok",
+        "indexDigest": "sha256:4baee2a08ed2d996d633a81863a5b0097fed3736df4595027c4d452605dbf804",
+        "specPackageDigest": "sha256:d6ad8328a2300d0f5f6e3c89895182e28c5f28d43cbc71d4dc40d4be3c67d81a"
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "evidenceRoles": [
+        {
+          "role": "manifest",
+          "digest": "sha256:1ff2ff07c56e842543aa1b5c8dd42592d0d4d161330d8e53048f9b04f7dd06d8"
+        },
+        {
+          "role": "boundary_spec",
+          "digest": "sha256:fe4227c16ebe8bd72c94a53b856aa31e4253036b60bec4a1bc63fb975639955b"
+        },
+        {
+          "role": "producer_receipt",
+          "digest": "sha256:ed359c0063bbba5750cc0e448577f346f33ea4bd4ad2c33be38f2186890f1a6b"
+        },
+        {
+          "role": "validation_report",
+          "digest": "sha256:315cb32df1087655b93bff7473b113a174a8784e1db38788ae7b28ed79f7b287"
+        },
+        {
+          "role": "diagnostics",
+          "digest": "sha256:a7e06d36283586e3d9d9a2a5a6edf8e0515e08532dcd577943ac98bf006e5d9e"
+        },
+        {
+          "role": "quality_report",
+          "digest": "sha256:1eca3f7727b99e4799604cca32f1f294110a2682cd9f344a8983e27902dae588"
+        }
+      ]
+    },
+    {
+      "id": "xyflow.workspace",
+      "repositoryId": "xyflow",
+      "sourceTaskId": "P32-T3",
+      "sourceFixtureId": "p32_t3_xyflow_regeneration",
+      "candidateLayerDecision": {
+        "status": "candidate_layer_review_required",
+        "selectedHandoffEligible": true
+      },
+      "handoffRecommendation": "ready_for_specpm_dry_run_review",
+      "previewOnly": true,
+      "producerPreflight": {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "viewer": {
+        "status": "ok",
+        "packageSetId": "xyflow.workspace"
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "evidenceRoles": [
+        {
+          "role": "member_manifest",
+          "digest": "sha256:6fb6dcfecbfe64904e4ca168af05fc564c114508aed96b87271f34c9124f4a85"
+        },
+        {
+          "role": "member_producer_receipt",
+          "digest": "sha256:b8d0755b3099fb19e7b1905b55be179a67d1b814158c0ae533af760e0cc9f61c"
+        },
+        {
+          "role": "member_validation_report",
+          "digest": "sha256:8019258699830aa80074ff6f262dbfcbd30c53ef27b9e9eea0c39d7a26fefc5d"
+        },
+        {
+          "role": "member_diagnostics",
+          "digest": "sha256:cf9bf7b972acd966b534ed001c8fd4f3d794dea61aa70c0ed444c9fb322fcb70"
+        },
+        {
+          "role": "member_quality_report",
+          "digest": "sha256:85231b32b8e49cc23f3c6d1a94a85695f566f84dac721700403f607f8f2a0cb7"
+        }
+      ]
+    },
+    {
+      "id": "xyflow.react",
+      "repositoryId": "xyflow",
+      "sourceTaskId": "P32-T3",
+      "sourceFixtureId": "p32_t3_xyflow_regeneration",
+      "candidateLayerDecision": {
+        "status": "candidate_layer_review_required",
+        "selectedHandoffEligible": true
+      },
+      "handoffRecommendation": "ready_for_specpm_dry_run_review",
+      "previewOnly": true,
+      "producerPreflight": {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "viewer": {
+        "status": "ok",
+        "packageSetId": "xyflow.workspace"
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "evidenceRoles": [
+        {
+          "role": "member_manifest",
+          "digest": "sha256:8a13423b8c2063f108051eeb87e4581b8174d898c3060223d29a9b47e83ba56b"
+        },
+        {
+          "role": "member_producer_receipt",
+          "digest": "sha256:bd12f5cf16aec0e34fabc7bf53ca61bb2b06760f6781e3ae7b108215155b95ba"
+        },
+        {
+          "role": "member_validation_report",
+          "digest": "sha256:8521f20ddb6ff1744495382521de533047c8238e2ce4f4e9454b74b19b06e48c"
+        },
+        {
+          "role": "member_diagnostics",
+          "digest": "sha256:da16ab100c0c70fada8851200ce70279f38b8a12010161c10df37e1217ba976f"
+        },
+        {
+          "role": "member_quality_report",
+          "digest": "sha256:df43b240d453351c906fa30947bcc1d014fd5295b5c433de2dd337418557c971"
+        }
+      ]
+    },
+    {
+      "id": "xyflow.svelte",
+      "repositoryId": "xyflow",
+      "sourceTaskId": "P32-T3",
+      "sourceFixtureId": "p32_t3_xyflow_regeneration",
+      "candidateLayerDecision": {
+        "status": "candidate_layer_review_required",
+        "selectedHandoffEligible": true
+      },
+      "handoffRecommendation": "ready_for_specpm_dry_run_review",
+      "previewOnly": true,
+      "producerPreflight": {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "viewer": {
+        "status": "ok",
+        "packageSetId": "xyflow.workspace"
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "evidenceRoles": [
+        {
+          "role": "member_manifest",
+          "digest": "sha256:6f104495b9fd79437e99458bbfe297d8bd757f3b3676d7f539953ee1ea2e40c2"
+        },
+        {
+          "role": "member_producer_receipt",
+          "digest": "sha256:f5b7c10bb6be955879b984cecaba0b339be65c34b3be800d8a1b5bf852e6d1c3"
+        },
+        {
+          "role": "member_validation_report",
+          "digest": "sha256:f0798554c7af104fc7f020074af79f43d651b6fc5d2bfe39219977aeafb41803"
+        },
+        {
+          "role": "member_diagnostics",
+          "digest": "sha256:8c167768db4f3c713ebb3ebfbc86520ffc9bb728f7ba1cc76dae153b2c56610e"
+        },
+        {
+          "role": "member_quality_report",
+          "digest": "sha256:a57ede4c95330dca9fa414e96523c4fb3043fffcc00aa26514df149cf2f6574c"
+        }
+      ]
+    },
+    {
+      "id": "xyflow.system",
+      "repositoryId": "xyflow",
+      "sourceTaskId": "P32-T3",
+      "sourceFixtureId": "p32_t3_xyflow_regeneration",
+      "candidateLayerDecision": {
+        "status": "candidate_layer_review_required",
+        "selectedHandoffEligible": true
+      },
+      "handoffRecommendation": "ready_for_specpm_dry_run_review",
+      "previewOnly": true,
+      "producerPreflight": {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "viewer": {
+        "status": "ok",
+        "packageSetId": "xyflow.workspace"
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "evidenceRoles": [
+        {
+          "role": "member_manifest",
+          "digest": "sha256:2b99f46f5c41bf10eeb0d949ec47702cce7e5f2fe69c5abaea85d6eb38ff1828"
+        },
+        {
+          "role": "member_producer_receipt",
+          "digest": "sha256:af3bca7f429116b9b8271488a48d596e3059f63341158166d1dc9f3e342e8cde"
+        },
+        {
+          "role": "member_validation_report",
+          "digest": "sha256:47ec371dbb3401ea9b282b3745e0fac04e8bd9d2bd057af00be8642a761c8140"
+        },
+        {
+          "role": "member_diagnostics",
+          "digest": "sha256:c5427cf685a0cb943d352163d851ac5fb548c7bb0a936eda328263c129548300"
+        },
+        {
+          "role": "member_quality_report",
+          "digest": "sha256:44084cb84b270d12022c6c756449effde6c3aa5f596700d5728a7ad815c4f333"
+        }
+      ]
+    },
+    {
+      "id": "navigation_split_view.core",
+      "repositoryId": "navigation-split-view",
+      "sourceTaskId": "P32-T4",
+      "sourceFixtureId": "p32_t4_single_package_regeneration",
+      "candidateLayerDecision": {
+        "nextStep": "Include navigation_split_view.core in P32-T5 refreshed candidate-layer triage unless later review blocks it.",
+        "reason": "NavigationSplitView now starts from manifest packageId navigation_split_view.core, and generated specpm.yaml, validation, candidate preflight, bundle-set preflight, and viewer output all agree on that identity. The remaining AI draft excluded_package_unknown warning is proposal-only context and does not contradict the deterministic single-package candidate identity.",
+        "selectedHandoffEligible": true,
+        "status": "candidate_layer_review_required"
+      },
+      "handoffRecommendation": "ready_for_specpm_dry_run_review",
+      "previewOnly": true,
+      "producerPreflight": {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "viewer": {
+        "packageId": "navigation_split_view.core",
+        "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/viewer/navigation_split_view.core",
+        "status": "ok"
+      },
+      "registryAcceptanceDecision": {
+        "producerAuthority": "evidence_only",
+        "requiredFor": "public_index_acceptance",
+        "status": "external_required"
+      },
+      "canonicalPackageId": "navigation_split_view.core",
+      "rejectedOrAliasedPackageIds": [
+        "navigation-split-view.core"
+      ],
+      "evidenceRoles": [
+        {
+          "role": "member_manifest",
+          "digest": "sha256:99776282a3529f64e0483fd9ed97aaf0fc644db37dbf5e0e1767d321af6e6994"
+        },
+        {
+          "role": "member_producer_receipt",
+          "digest": "sha256:b0e83efd58a6da72f4a0063c9eaef4e46283cbb76b7798a6d058ca0cebbb7280"
+        },
+        {
+          "role": "member_validation_report",
+          "digest": "sha256:34f62e217c8b4c0b321c55b8ba957f79c209cb3bad90eff4416e1f8a1f26608d"
+        },
+        {
+          "role": "member_diagnostics",
+          "digest": "sha256:96a3feccf6e6b00eba4ea08c0dde41da74227a28c478db045407a341631384f8"
+        },
+        {
+          "role": "member_quality_report",
+          "digest": "sha256:20b94bc4a0ce444bad94e3068cf6394025f66a58f9ca116f063cad796fb25141"
+        },
+        {
+          "role": "member_candidate_preflight",
+          "digest": "sha256:96f8f6ec0fbc16616b54b106af8f38792e063e53d6f52cc3268e8cda696d68e4"
+        }
+      ]
+    }
+  ],
+  "deferredCandidates": [
+    {
+      "id": "cupertino.core",
+      "repositoryId": "cupertino",
+      "sourceTaskId": "P32-T4",
+      "sourceFixtureId": "p32_t4_single_package_regeneration",
+      "candidateLayerDecision": {
+        "nextStep": "Attach author-curated summary evidence or rerun enrichment before including cupertino.core in P32-T5 selected handoff.",
+        "reason": "Cupertino regenerated a valid preview candidate with clean producer preflight and viewer output, but AI enrichment still reports refined_summary_missing. The candidate should stay deferred until regenerated enrichment supplies a refined summary or author-curated summary evidence is attached.",
+        "selectedHandoffEligible": false,
+        "status": "needs_regeneration"
+      },
+      "blockers": [
+        "refined_summary_missing"
+      ],
+      "previewOnly": true,
+      "producerPreflight": {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "viewer": {
+        "packageId": "cupertino.core",
+        "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/viewer/cupertino.core",
+        "status": "ok"
+      },
+      "nextAction": "Attach author-curated summary evidence or rerun enrichment before selected handoff."
+    }
+  ],
+  "expectedConsumerGate": {
+    "repository": "SpecPM",
+    "kind": "SpecPMSelectedCandidateHandoffPreflightReport",
+    "apiVersion": "specpm.selected-candidate-handoff-preflight/v0",
+    "status": "required_before_acceptance",
+    "nextTask": "P32-T6"
+  },
+  "nonAuthority": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "createsSpecPMPullRequest": false,
+    "producerEvidenceOnly": true,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false,
+    "seedsBaselines": false,
+    "treatsAIOutputAsRegistryTruth": false
+  }
+}

@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P32-T6 SpecPM Selected Candidate Handoff Preflight" in next_text:
+        assert_p32_t5_last_archived(next_text)
+        assert_p32_t4_recent(next_text)
+        assert_p32_t5_recent(next_text)
+        assert_phase_32_t6_active(next_text)
+        return
+
     if "# Next Task: P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff" in next_text:
         assert_p32_t4_last_archived(next_text)
         assert_p32_t3_recent(next_text)
@@ -417,6 +424,13 @@ def assert_p32_t3_last_archived(next_text: str) -> None:
 def assert_p32_t4_last_archived(next_text: str) -> None:
     assert (
         "**Last Archived:** P32-T4 Single-Package Deferred Candidate Regeneration Dry Run"
+        in next_text
+    )
+
+
+def assert_p32_t5_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff"
         in next_text
     )
 
@@ -1220,6 +1234,26 @@ def assert_p32_t4_recent(next_text: str) -> None:
     assert "producer preview evidence" in normalized
 
 
+def assert_p32_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P32-T5` recorded the refreshed selected handoff" in next_text
+    assert "REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md" in next_text
+    assert "RefreshedCandidateLayerSelectedHandoff" in next_text
+    assert "p32-t5-refreshed-candidate-layer-selected-handoff.example.json" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "xyflow.react" in next_text
+    assert "xyflow.svelte" in next_text
+    assert "xyflow.system" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "cupertino.core" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "SpecPM-side selected candidate handoff preflight" in normalized
+    assert "producer preview evidence" in normalized
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1342,6 +1376,26 @@ def assert_phase_32_t5_active(next_text: str) -> None:
     assert "accept relations" in normalized
     assert "seed baselines" in normalized
     assert "SpecPM pull request" in normalized
+
+
+def assert_phase_32_t6_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P32-T6 SpecPM Selected Candidate Handoff Preflight" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "Phase 32. Autonomous Deferred Candidate Regeneration" in next_text
+    assert "P32-T5 is complete" in next_text
+    assert "SpecHarvesterRefreshedCandidateLayerSelectedHandoff" in next_text
+    assert "SpecPMSelectedCandidateHandoffPreflightReport" in next_text
+    assert "specpm.selected-candidate-handoff-preflight/v0" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "navigation_split_view.core" in next_text
+    assert "cupertino.core" in next_text
+    assert "producer preview evidence" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not accept relations" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -4863,6 +4917,222 @@ def test_single_package_deferred_candidate_regeneration_records_p32_t4_contract(
         assert "SinglePackageDeferredCandidateRegenerationDryRun" in path.read_text(
             encoding="utf-8"
         )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_refreshed_candidate_layer_selected_handoff_records_p32_t5_contract() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "refreshed_candidate_layer_selected_handoff"
+        / "p32-t5-refreshed-candidate-layer-selected-handoff.example.json"
+    )
+    github_doc = ROOT / "docs" / "REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RefreshedCandidateLayerSelectedHandoff.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    tech_debt = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md"
+    tech_debt_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AutonomousCandidateTechDebtPlan.md"
+    )
+    runbook = ROOT / "docs" / "DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md"
+    runbook_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "DeferredCandidateRegenerationRunbook.md"
+    )
+    selected_handoff = ROOT / "docs" / "SELECTED_CANDIDATE_HANDOFF_PROPOSAL.md"
+    selected_handoff_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "SelectedCandidateHandoffProposal.md"
+    )
+    specpm_handoff = ROOT / "docs" / "SPECPM_HANDOFF.md"
+    specpm_handoff_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecPMHandoff.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Refreshed Candidate-Layer Selected Handoff",
+            "P32-T5",
+            "p32-t5-refreshed-candidate-layer-selected-handoff.example.json",
+            "SpecHarvesterRefreshedCandidateLayerSelectedHandoff",
+            "spec-harvester.refreshed-candidate-layer-selected-handoff/v0",
+            "producer_preview_evidence_only",
+            "flask.core",
+            "gin.core",
+            "docc2context.core",
+            "xyflow.workspace",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "navigation_split_view.core",
+            "cupertino.core",
+            "candidate_layer_review_required",
+            "selectedHandoffEligible: true",
+            "needs_regeneration",
+            "refined_summary_missing",
+            "SpecPMSelectedCandidateHandoffPreflightReport",
+            "specpm.selected-candidate-handoff-preflight/v0",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "remove `preview_only`",
+            "publish registry metadata",
+            "SpecPM pull request",
+            "AI output as registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == ("spec-harvester.refreshed-candidate-layer-selected-handoff/v0")
+    assert payload["kind"] == "SpecHarvesterRefreshedCandidateLayerSelectedHandoff"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["run"] == {
+        "taskId": "P32-T5",
+        "corpusId": "p30-limited-popular-libraries",
+        "decision": "refresh_selected_handoff_from_recorded_evidence",
+        "newHarvestExecuted": False,
+        "aiRunExecuted": False,
+    }
+
+    source_by_id = {source["id"]: source for source in payload["sources"]}
+    expected_sources = {
+        "p30_t5_selected_handoff_dry_run": (
+            "SpecHarvesterLimitedPopularLibrarySelectedHandoffDryRun",
+            "tests/fixtures/limited_popular_library_selected_handoff_dry_run/p30-t5-limited-popular-libraries.example.json",
+        ),
+        "p32_t3_xyflow_regeneration": (
+            "SpecHarvesterXyflowPackageSetIdentityRegenerationDryRun",
+            "tests/fixtures/xyflow_package_set_identity_regeneration/p32-t3-xyflow-package-set-identity-regeneration.example.json",
+        ),
+        "p32_t4_single_package_regeneration": (
+            "SpecHarvesterSinglePackageDeferredCandidateRegenerationDryRun",
+            "tests/fixtures/single_package_deferred_candidate_regeneration/p32-t4-single-package-deferred-candidate-regeneration.example.json",
+        ),
+    }
+    assert set(source_by_id) == set(expected_sources)
+    for source_id, (kind, relative_path) in expected_sources.items():
+        source = source_by_id[source_id]
+        source_path = ROOT / relative_path
+        assert source["kind"] == kind
+        assert source["path"] == relative_path
+        assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert source["status"] == "source_fixture_committed"
+
+    assert payload["summary"] == {
+        "selectedCandidateCount": 8,
+        "deferredCandidateCount": 1,
+        "candidateLayerReviewRequiredCount": 8,
+        "needsRegenerationCount": 1,
+        "producerPreflightPassedCount": 8,
+        "viewerOkCount": 8,
+        "registryMutationCount": 0,
+        "specpmPullRequestCreated": False,
+    }
+
+    selected = {candidate["id"]: candidate for candidate in payload["selectedCandidates"]}
+    assert list(selected) == [
+        "flask.core",
+        "gin.core",
+        "docc2context.core",
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "navigation_split_view.core",
+    ]
+    for candidate in selected.values():
+        assert candidate["candidateLayerDecision"]["status"] == "candidate_layer_review_required"
+        assert candidate["candidateLayerDecision"]["selectedHandoffEligible"] is True
+        assert candidate["handoffRecommendation"] == "ready_for_specpm_dry_run_review"
+        assert candidate["previewOnly"] is True
+        assert candidate["producerPreflight"]["status"] == "passed"
+        assert candidate["producerPreflight"]["warningCount"] == 0
+        assert candidate["producerPreflight"]["errorCount"] == 0
+        assert candidate["viewer"]["status"] == "ok"
+        assert candidate["registryAcceptanceDecision"] == {
+            "producerAuthority": "evidence_only",
+            "requiredFor": "public_index_acceptance",
+            "status": "external_required",
+        }
+        assert candidate["evidenceRoles"]
+        for evidence in candidate["evidenceRoles"]:
+            assert evidence["digest"].startswith("sha256:")
+            assert len(evidence["digest"]) == len("sha256:") + 64
+
+    assert selected["navigation_split_view.core"]["canonicalPackageId"] == (
+        "navigation_split_view.core"
+    )
+    assert selected["navigation_split_view.core"]["rejectedOrAliasedPackageIds"] == [
+        "navigation-split-view.core"
+    ]
+
+    deferred = {candidate["id"]: candidate for candidate in payload["deferredCandidates"]}
+    assert set(deferred) == {"cupertino.core"}
+    cupertino = deferred["cupertino.core"]
+    assert cupertino["candidateLayerDecision"]["status"] == "needs_regeneration"
+    assert cupertino["candidateLayerDecision"]["selectedHandoffEligible"] is False
+    assert cupertino["blockers"] == ["refined_summary_missing"]
+    assert cupertino["producerPreflight"] == {
+        "status": "passed",
+        "warningCount": 0,
+        "errorCount": 0,
+    }
+    assert cupertino["viewer"]["status"] == "ok"
+
+    assert payload["expectedConsumerGate"] == {
+        "repository": "SpecPM",
+        "kind": "SpecPMSelectedCandidateHandoffPreflightReport",
+        "apiVersion": "specpm.selected-candidate-handoff-preflight/v0",
+        "status": "required_before_acceptance",
+        "nextTask": "P32-T6",
+    }
+    assert payload["nonAuthority"] == {
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "createsSpecPMPullRequest": False,
+        "producerEvidenceOnly": True,
+        "publishesRegistryMetadata": False,
+        "removesPreviewOnly": False,
+        "seedsBaselines": False,
+        "treatsAIOutputAsRegistryTruth": False,
+    }
+
+    assert "REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:RefreshedCandidateLayerSelectedHandoff>" in docc_root.read_text(encoding="utf-8")
+    for path in (tech_debt, runbook, selected_handoff, specpm_handoff, roadmap):
+        assert "REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md" in path.read_text(encoding="utf-8")
+    for path in (
+        tech_debt_docc,
+        runbook_docc,
+        selected_handoff_docc,
+        specpm_handoff_docc,
+        roadmap_docc,
+    ):
+        assert "RefreshedCandidateLayerSelectedHandoff" in path.read_text(encoding="utf-8")
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

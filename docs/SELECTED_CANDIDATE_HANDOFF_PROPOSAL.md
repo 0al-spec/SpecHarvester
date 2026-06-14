@@ -147,6 +147,11 @@ P32-T4 records single-package deferred regeneration in
 `navigation_split_view.core` can re-enter refreshed candidate-layer review,
 while `cupertino.core` remains deferred until `refined_summary_missing` is
 resolved.
+P32-T5 records the refreshed selected handoff in
+[`REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`](REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md).
+It selects `flask.core`, `gin.core`, `docc2context.core`, `xyflow.workspace`,
+`xyflow.react`, `xyflow.svelte`, `xyflow.system`, and
+`navigation_split_view.core`, while keeping `cupertino.core` deferred.
 
 ## Maintainer Checklist
 
@@ -196,4 +201,5 @@ See also:
 - [`DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md`](DEFERRED_CANDIDATE_REGENERATION_RUNBOOK.md)
 - [`XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`](XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md)
 - [`SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`](SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md)
+- [`REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md`](REFRESHED_CANDIDATE_LAYER_SELECTED_HANDOFF.md)
 - [`SPECPM_HANDOFF.md`](SPECPM_HANDOFF.md)

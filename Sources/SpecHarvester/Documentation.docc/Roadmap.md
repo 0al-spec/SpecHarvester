@@ -214,6 +214,10 @@ P32-T4 records the single-package deferred regeneration dry run in
 `cupertino.core` deferred because `refined_summary_missing` remains unresolved
 and makes `navigation_split_view.core` eligible for refreshed candidate-layer
 review under the canonical underscore id.
+P32-T5 records the refreshed selected handoff in
+<doc:RefreshedCandidateLayerSelectedHandoff>: eight candidates are ready for
+SpecPM-side selected handoff preflight, while `cupertino.core` remains
+deferred on `refined_summary_missing`.
 
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no
 registry publication, no package or relation acceptance, no baseline seeding,

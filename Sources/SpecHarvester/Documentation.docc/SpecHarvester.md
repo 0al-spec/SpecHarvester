@@ -173,6 +173,7 @@ the host.
 - <doc:DeferredCandidateRegenerationRunbook>
 - <doc:XyflowPackageSetIdentityRegenerationDryRun>
 - <doc:SinglePackageDeferredCandidateRegenerationDryRun>
+- <doc:RefreshedCandidateLayerSelectedHandoff>
 - <doc:AutonomousCandidateCorpusBaseline>
 - <doc:AutonomousCandidateCorpusQualityGate>
 - <doc:LimitedPopularLibraryCorpusPlan>
