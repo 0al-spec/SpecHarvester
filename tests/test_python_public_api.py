@@ -4,7 +4,21 @@ import json
 from pathlib import Path
 
 from spec_harvester.interface_index import validate_public_interface_index
-from spec_harvester.python_public_api import analyze_python_public_api
+from spec_harvester.public_api_analyzer_options import PublicApiAnalyzerOptions
+from spec_harvester.python_public_api import PythonPublicApiAnalyzer, analyze_python_public_api
+
+
+def test_python_public_api_analyzer_object_matches_public_wrapper(tmp_path: Path) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "api.py").write_text("def ok():\n    return True\n", encoding="utf-8")
+    options = PublicApiAnalyzerOptions(
+        source=package,
+        package_id="demo.python",
+        source_revision="abc123",
+    )
+
+    assert PythonPublicApiAnalyzer(options).index() == analyze_python_public_api(options)
 
 
 def test_analyze_python_public_api_extracts_public_symbols_deterministically(

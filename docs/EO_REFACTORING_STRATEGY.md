@@ -123,6 +123,14 @@ shared payload and option objects:
 The goal is not to hide language-specific algorithms. The goal is to move parse,
 diagnostic, symbol, and evidence decisions behind named analyzer behaviors.
 
+P17-T4 starts this sequence at the top-level pipeline boundary. Python, Go, and
+JavaScript/TypeScript analyzers now expose `PythonPublicApiAnalyzer`,
+`GoPublicApiAnalyzer`, and `JavaScriptTypeScriptPublicApiAnalyzer` objects with
+deterministic `index()` methods. Public wrapper functions remain available, and
+the analyzers still use `PublicApiAnalyzerOptions`, existing payload records,
+existing parser/symbol helpers, analyzer ids, versions, cache payloads,
+diagnostics, evidence records, and `PublicInterfaceIndex` validation behavior.
+
 ### 5. Refactor Collector and Drafter in Thin Vertical Slices
 
 `collector.py` and `drafter.py` are central and should be changed last, in thin

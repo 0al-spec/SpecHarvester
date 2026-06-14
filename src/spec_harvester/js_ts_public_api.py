@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from dataclasses import dataclass
 from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
@@ -94,36 +95,66 @@ def analyze_js_ts_public_api(
 
 
 def analyze_js_ts_public_api_with_options(options: PublicApiAnalyzerOptions) -> dict[str, Any]:
-    root = options.root("JavaScript/TypeScript")
-    cache = options.cache()
-    packages: list[dict[str, Any]] = []
-    diagnostics: list[dict[str, Any]] = []
-    for manifest_path in package_manifest_files(root):
-        package_record = analyze_package_manifest(
+    return JavaScriptTypeScriptPublicApiAnalyzer(options).index()
+
+
+@dataclass(frozen=True)
+class JavaScriptTypeScriptPublicApiAnalyzer:
+    options: PublicApiAnalyzerOptions
+
+    def index(self) -> dict[str, Any]:
+        root = self.root()
+        packages, diagnostics = self.packages(root, self.cache())
+        index = new_public_interface_index(
+            source_revision=self.options.source_revision,
+            analyzers=[self.analyzer_record()],
+            packages=packages,
+            diagnostics=diagnostics,
+        )
+        validate_public_interface_index(index)
+        return index
+
+    def root(self) -> Path:
+        return self.options.root("JavaScript/TypeScript")
+
+    def cache(self) -> AnalyzerCache | None:
+        return self.options.cache()
+
+    def analyzer_record(self) -> dict[str, Any]:
+        return analyzer_record(
+            JS_TS_PUBLIC_API_ANALYZER_ID,
+            JS_TS_PUBLIC_API_ANALYZER_VERSION,
+            execution="none",
+            confidence="medium",
+        )
+
+    def packages(
+        self,
+        root: Path,
+        cache: AnalyzerCache | None,
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        packages: list[dict[str, Any]] = []
+        diagnostics: list[dict[str, Any]] = []
+        for manifest_path in package_manifest_files(root):
+            package_record = self.package_record(root, manifest_path, diagnostics, cache)
+            if package_record is not None:
+                packages.append(package_record)
+        return packages, diagnostics
+
+    def package_record(
+        self,
+        root: Path,
+        manifest_path: Path,
+        diagnostics: list[dict[str, Any]],
+        cache: AnalyzerCache | None,
+    ) -> dict[str, Any] | None:
+        return analyze_package_manifest(
             root,
             manifest_path,
-            package_id=options.package_id,
+            package_id=self.options.package_id,
             diagnostics=diagnostics,
             cache=cache,
         )
-        if package_record is not None:
-            packages.append(package_record)
-
-    index = new_public_interface_index(
-        source_revision=options.source_revision,
-        analyzers=[
-            analyzer_record(
-                JS_TS_PUBLIC_API_ANALYZER_ID,
-                JS_TS_PUBLIC_API_ANALYZER_VERSION,
-                execution="none",
-                confidence="medium",
-            )
-        ],
-        packages=packages,
-        diagnostics=diagnostics,
-    )
-    validate_public_interface_index(index)
-    return index
 
 
 def package_manifest_files(root: Path) -> list[Path]:

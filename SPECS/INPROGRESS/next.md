@@ -1,14 +1,21 @@
-# Next Task: P17-T4 Public API Analyzer Pipeline Objects
+# Next Task: P17-T5 Collector and Drafter Vertical Slice Objects
 
 **Priority:** P1
 **Phase:** Phase 17. Elegant Objects Refactoring Strategy
 **Effort:** Large
-**Dependencies:** P17-T3
+**Dependencies:** P17-T4
 **Status:** Selected
-**Last Archived:** P17-T3 Report Builder Behavior Objects
+**Last Archived:** P17-T4 Public API Analyzer Pipeline Objects
 
 ## Recently Archived
 
+- `P17-T4` moved the Python, Go, and JavaScript/TypeScript public API analyzer
+  entry pipelines behind `PythonPublicApiAnalyzer`, `GoPublicApiAnalyzer`, and
+  `JavaScriptTypeScriptPublicApiAnalyzer` objects while preserving analyzer
+  ids, versions, confidence values, cache payloads, diagnostics, evidence
+  records, wrapper signatures, and `PublicInterfaceIndex` validation behavior.
+  The procedural-style smoke recorded behaviorRichClassCount: 3 and reduced
+  analyzer topLevelFunctionSpan from 1085 to 927.
 - `P17-T3` moved accepted candidate diff report behavior behind
   `AcceptedCandidateDiffReport`, `PackageDiffSource`,
   `AcceptedPackageVersions`, `CandidateComparison`, `PackageRecordDiff`, and
@@ -28,14 +35,15 @@
 
 ## Description
 
-Refactor public API analyzer pipelines into language-specific analyzer objects
-that use shared payload and option objects without hiding language-specific
-parse, diagnostic, symbol, or evidence decisions.
+Refactor collector and drafter behavior in thin vertical slices, adding
+characterization tests before moving repository profile, license inference,
+semantic evidence, intent profile, package draft assembly, or artifact-writing
+logic.
 
-This is the next Phase 17 EO refactoring slice after the accepted diff report
-object seam. Keep the scope narrow and start with one language analyzer before
-attempting broader analyzer orchestration changes.
+This is the next Phase 17 EO refactoring slice after report and analyzer seams.
+Keep the scope especially narrow because collector and drafter behavior touches
+generated candidate package content.
 
 ## Next Step
 
-Run the BRANCH and PLAN commands for P17-T4.
+Run the BRANCH and PLAN commands for P17-T5.

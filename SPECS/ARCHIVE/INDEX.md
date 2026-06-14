@@ -79,6 +79,7 @@
 | P17-T1 | [P17-T1_Procedural_Style_Metrics_Report/](P17-T1_Procedural_Style_Metrics_Report/) | 2026-05-29 | PASS |
 | P17-T2 | [P17-T2_CLI_Domain_Command_Objects/](P17-T2_CLI_Domain_Command_Objects/) | 2026-06-14 | PASS |
 | P17-T3 | [P17-T3_Report_Builder_Behavior_Objects/](P17-T3_Report_Builder_Behavior_Objects/) | 2026-06-14 | PASS |
+| P17-T4 | [P17-T4_Public_API_Analyzer_Pipeline_Objects/](P17-T4_Public_API_Analyzer_Pipeline_Objects/) | 2026-06-14 | PASS |
 | P18-T1 | [P18-T1_Swift_Public_API_Analyzer/](P18-T1_Swift_Public_API_Analyzer/) | 2026-05-29 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P20-T1 | [P20-T1_Scoped_Source_Target_Harvesting/](P20-T1_Scoped_Source_Target_Harvesting/) | 2026-05-31 | PASS |
@@ -149,6 +150,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t4_public_api_analyzer_pipeline_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t3_report_builder_behavior_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t2_cli_domain_command_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t8_next_corpus_intake_readiness_decision.md` |
@@ -225,6 +227,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P17-T4 | Archived REVIEW_p17_t4_public_api_analyzer_pipeline_objects report |
+| 2026-06-14 | P17-T4 | Archived Public API Analyzer Pipeline Objects (PASS) |
 | 2026-06-14 | P17-T3 | Archived REVIEW_p17_t3_report_builder_behavior_objects report |
 | 2026-06-14 | P17-T3 | Archived Report Builder Behavior Objects (PASS) |
 | 2026-06-14 | P17-T2 | Archived REVIEW_p17_t2_cli_domain_command_objects report |

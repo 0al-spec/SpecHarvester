@@ -4,7 +4,30 @@ import json
 from pathlib import Path
 
 from spec_harvester.interface_index import validate_public_interface_index
-from spec_harvester.js_ts_public_api import analyze_js_ts_public_api
+from spec_harvester.js_ts_public_api import (
+    JavaScriptTypeScriptPublicApiAnalyzer,
+    analyze_js_ts_public_api,
+)
+from spec_harvester.public_api_analyzer_options import PublicApiAnalyzerOptions
+
+
+def test_js_ts_public_api_analyzer_object_matches_public_wrapper(tmp_path: Path) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "package.json").write_text(
+        json.dumps({"name": "demo", "main": "./index.js"}),
+        encoding="utf-8",
+    )
+    (package / "index.js").write_text("export function ok() {}\n", encoding="utf-8")
+    options = PublicApiAnalyzerOptions(
+        source=package,
+        package_id="demo.js",
+        source_revision="abc123",
+    )
+
+    assert JavaScriptTypeScriptPublicApiAnalyzer(options).index() == analyze_js_ts_public_api(
+        options
+    )
 
 
 def test_analyze_js_ts_public_api_extracts_manifest_entrypoints_and_exports(

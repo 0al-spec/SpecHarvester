@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P17-T5 Collector and Drafter Vertical Slice Objects" in next_text:
+        assert_p17_t4_last_archived(next_text)
+        assert_p17_t3_recent(next_text)
+        assert_p17_t4_recent(next_text)
+        assert_phase_17_t5_active(next_text)
+        return
+
     if "# Next Task: P17-T4 Public API Analyzer Pipeline Objects" in next_text:
         assert_p17_t3_last_archived(next_text)
         assert_p17_t2_recent(next_text)
@@ -579,6 +586,10 @@ def assert_p17_t3_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P17-T3 Report Builder Behavior Objects" in next_text
 
 
+def assert_p17_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P17-T4 Public API Analyzer Pipeline Objects" in next_text
+
+
 def assert_phase_17_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P17-T2 CLI Domain Command Objects" in next_text
@@ -651,6 +662,35 @@ def assert_phase_17_t4_active(next_text: str) -> None:
     assert "language-specific analyzer objects" in normalized
     assert "shared payload and option objects" in normalized
     assert "parse, diagnostic, symbol, or evidence decisions" in normalized
+
+
+def assert_p17_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P17-T4` moved the Python, Go, and JavaScript/TypeScript public API analyzer" in next_text
+    )
+    assert "PythonPublicApiAnalyzer" in next_text
+    assert "GoPublicApiAnalyzer" in next_text
+    assert "JavaScriptTypeScriptPublicApiAnalyzer" in next_text
+    assert "PublicInterfaceIndex" in next_text
+    assert "analyzer ids" in normalized
+    assert "cache payloads" in normalized
+    assert "evidence records" in normalized
+    assert "behaviorRichClassCount: 3" in next_text
+    assert "topLevelFunctionSpan from 1085 to 927" in next_text
+
+
+def assert_phase_17_t5_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P17-T5 Collector and Drafter Vertical Slice Objects" in next_text
+    assert "**Status:** Selected" in next_text or "**Status:** In Progress" in next_text
+    assert "Phase 17. Elegant Objects Refactoring Strategy" in next_text
+    assert "collector and drafter behavior" in normalized
+    assert "thin vertical slices" in normalized
+    assert "repository profile" in normalized
+    assert "license inference" in normalized
+    assert "semantic evidence" in normalized
+    assert "package draft assembly" in normalized
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -4399,6 +4439,10 @@ def test_docc_and_github_docs_cover_eo_refactoring_strategy() -> None:
             "P17-T3",
             "AcceptedCandidateDiffReport",
             "PackageRecordDiff",
+            "P17-T4",
+            "PythonPublicApiAnalyzer",
+            "GoPublicApiAnalyzer",
+            "JavaScriptTypeScriptPublicApiAnalyzer",
             "top-level function",
             "DTO-only dataclasses",
             "characterization tests",
