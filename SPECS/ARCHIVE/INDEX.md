@@ -154,6 +154,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t6_codegraph_adapter_boundary.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t5_scoped_source_unit_draft_intent_boundaries.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t6_specnode_refinement_orchestration_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t5_collector_drafter_vertical_slice_objects.md` |
@@ -234,6 +235,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P20-T6 | Archived REVIEW_p20_t6_codegraph_adapter_boundary report |
 | 2026-06-14 | P20-T6 | Archived CodeGraph Adapter Boundary (PASS) |
 | 2026-06-14 | P20-T5 | Archived REVIEW_p20_t5_scoped_source_unit_draft_intent_boundaries report |
 | 2026-06-14 | P20-T5 | Archived Scoped Source-Unit Draft Intent Boundaries (PASS) |
