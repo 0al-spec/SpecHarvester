@@ -1,4 +1,4 @@
-# ``AcceptedPackageUpdateProposals``
+# Accepted Package Update Proposals
 
 `accepted-package-update-proposal` builds a PR-ready artifact for a reviewed
 candidate when updating an accepted package version.

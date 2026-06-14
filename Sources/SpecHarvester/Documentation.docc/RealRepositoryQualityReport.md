@@ -9,14 +9,14 @@ complements the execution report produced by the P15-T2 runner.
 
 ## Purpose
 
-``python -m spec_harvester quality-report`` reads an execution report and
+`python -m spec_harvester quality-report` reads an execution report and
 per-candidate artifact directories and emits a quality report covering:
 
 - **Package intent accuracy** — is the drafted intent plausible and backed by
   evidence?
 - **Capability/evidence support quality** — do capability claims reference
   deterministic evidence?
-- **SpecPM validation status** — did the candidate pass ``specpm validate``?
+- **SpecPM validation status** — did the candidate pass `specpm validate`?
 - **Retry effectiveness** — did external SpecNode refinement improve the result?
 - **Token usage** — prompt and completion token counts (when available).
 - **Deterministic analyzer coverage** — how many analyzer types contributed to
