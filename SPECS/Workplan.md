@@ -1039,7 +1039,7 @@ Acceptance:
 - [x] `P30-T1` Define the limited popular-library corpus expansion plan,
   source-manifest shape, selection criteria, operator runbook, and non-authority
   boundaries before running a larger scrape.
-- [ ] `P30-T2` Run deterministic `--skip-ai` scraping over the selected limited
+- [x] `P30-T2` Run deterministic `--skip-ai` scraping over the selected limited
   popular-library corpus and record collection, candidate, relation, preflight,
   and stop-policy outcomes.
 - [ ] `P30-T3` Run the same limited corpus through live LM Studio/OpenAI-
