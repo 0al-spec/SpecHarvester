@@ -272,6 +272,7 @@
 | 2026-06-14 | P36-T3 | Archived Plugin-Aware Source Classification Hook (PASS) |
 | 2026-06-14 | P36-T3 | Archived REVIEW_p36_t3_plugin_aware_source_classification_hook report |
 | 2026-06-14 | P36-T4 | Archived FastAPI AI-Enabled Parser Profile Rerun (PASS) |
+| 2026-06-14 | P36-T4 | Archived REVIEW_p36_t4_fastapi_parser_profile_rerun report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
