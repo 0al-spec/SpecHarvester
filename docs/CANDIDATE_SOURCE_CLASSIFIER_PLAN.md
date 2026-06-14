@@ -37,7 +37,7 @@ The planned machine-readable classification report shape is:
 | `types_only_package` | Type definitions or type-only facade without runtime behavior. | `defer` |
 | `generated_artifact` | Generated package, checked-in output, fixture bundle, or generated API surface. | `defer` until provenance is clear |
 | `internal_utility` | Package-like internal helper not intended as public package family. | `exclude` or `include_as_evidence_only` |
-| `deprecated_source` | Deprecated package or package family. | `defer` or `reject` |
+| `deprecated_source` | Deprecated package or package family. | `defer` or `exclude` |
 | `evidence_only` | Source unit useful as evidence but not a package candidate. | `include_as_evidence_only` |
 
 ## Actions
