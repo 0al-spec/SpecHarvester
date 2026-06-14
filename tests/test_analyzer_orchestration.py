@@ -49,6 +49,64 @@ def test_run_project_profile_analyzers_emits_python_public_interface_index(
     assert index["summary"]["symbolCount"] == 1
 
 
+def test_run_project_profile_analyzers_applies_parser_profile_to_python_only(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "fastapi-style"
+    repo.mkdir()
+    (repo / "pyproject.toml").write_text("[project]\nname = 'fastapi'\n", encoding="utf-8")
+    fastapi = repo / "fastapi"
+    docs_src = repo / "docs_src"
+    fastapi.mkdir()
+    docs_src.mkdir()
+    (fastapi / "applications.py").write_text("class FastAPI:\n    pass\n", encoding="utf-8")
+    (docs_src / "tutorial.py").write_text("def tutorial_app():\n    pass\n", encoding="utf-8")
+    snapshot = collect_local_repository(HarvestOptions(source=repo, revision="abc123"))
+
+    result = run_project_profile_analyzers(
+        source=repo,
+        snapshot=snapshot,
+        package_id="fastapi.core",
+        parser_profile_id="python.web_framework.v0",
+    )
+
+    index = result["index"]
+    assert result["status"] == "complete"
+    assert result["parserProfileId"] == "python.web_framework.v0"
+    assert [entrypoint["path"] for entrypoint in index["packages"][0]["entrypoints"]] == [
+        "fastapi/applications.py"
+    ]
+    decisions = {
+        decision["path"]: decision for decision in index["packages"][0]["pathClassification"]
+    }
+    assert decisions["docs_src/tutorial.py"]["publicInterfaceEligible"] is False
+    assert decisions["docs_src/tutorial.py"]["semanticUsageEligible"] is True
+
+
+def test_run_project_profile_analyzers_rejects_unknown_parser_profile_before_plan(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "js-demo"
+    repo.mkdir()
+    (repo / "package.json").write_text(
+        json.dumps({"name": "demo", "version": "1.0.0", "exports": "./index.js"}),
+        encoding="utf-8",
+    )
+    (repo / "index.js").write_text("export function ok() {}\n", encoding="utf-8")
+    snapshot = collect_local_repository(HarvestOptions(source=repo, revision="abc123"))
+
+    try:
+        run_project_profile_analyzers(
+            source=repo,
+            snapshot=snapshot,
+            parser_profile_id="unknown.profile",
+        )
+    except ValueError as exc:
+        assert "Unsupported repository parsing profile" in str(exc)
+    else:
+        raise AssertionError("expected unknown parser profile to fail before analyzer dispatch")
+
+
 def test_run_project_profile_analyzers_emits_js_ts_public_interface_index(
     tmp_path: Path,
 ) -> None:

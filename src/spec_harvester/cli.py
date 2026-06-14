@@ -257,6 +257,14 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     collect_batch.add_argument(
+        "--parser-profile",
+        dest="parser_profile_id",
+        help=(
+            "Optional repository parsing profile id for static analyzer path "
+            "classification. Example: python.web_framework.v0."
+        ),
+    )
+    collect_batch.add_argument(
         "--emit-workspace-inventory",
         action="store_true",
         help=(
@@ -305,6 +313,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--analyzer-cache-dir",
         type=Path,
         help="Optional root for per-repository static analyzer caches.",
+    )
+    autonomous_candidate_batch.add_argument(
+        "--parser-profile",
+        dest="parser_profile_id",
+        help=(
+            "Optional repository parsing profile id for static analyzer path "
+            "classification. Example: python.web_framework.v0."
+        ),
     )
     autonomous_candidate_batch.add_argument(
         "--role-profile",
@@ -1457,6 +1473,7 @@ def run_collect_batch(args: argparse.Namespace) -> int:
             emit_interface_indexes=args.emit_interface_indexes,
             analyzer_cache_dir=args.analyzer_cache_dir,
             emit_workspace_inventory=args.emit_workspace_inventory,
+            parser_profile_id=args.parser_profile_id,
         )
     )
     print(json.dumps(result, indent=2, sort_keys=True))
@@ -1473,6 +1490,7 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 max_file_bytes=args.max_file_bytes,
                 strict_public=not args.relaxed_private,
                 analyzer_cache_dir=args.analyzer_cache_dir,
+                parser_profile_id=args.parser_profile_id,
                 role_profile=args.role_profile,
                 roles=tuple(args.role),
                 skip_ai=args.skip_ai,

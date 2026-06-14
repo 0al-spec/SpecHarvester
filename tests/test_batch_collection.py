@@ -402,6 +402,57 @@ repositories:
     assert any(cache.joinpath("demo").glob("*.json"))
 
 
+def test_collect_batch_snapshots_applies_opt_in_parser_profile(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    inputs.mkdir()
+    checkout = make_checkout(tmp_path / "fastapi", "# FastAPI\n")
+    (checkout / "pyproject.toml").write_text("[project]\nname = 'fastapi'\n", encoding="utf-8")
+    (checkout / "fastapi").mkdir()
+    (checkout / "docs_src").mkdir()
+    (checkout / "fastapi" / "applications.py").write_text(
+        "class FastAPI:\n    pass\n",
+        encoding="utf-8",
+    )
+    (checkout / "docs_src" / "tutorial.py").write_text(
+        "def tutorial_app():\n    pass\n",
+        encoding="utf-8",
+    )
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: fastapi
+    repository: https://github.com/fastapi/fastapi
+    revision: abc
+    checkout: {relative_to(checkout, inputs)}
+    packageId: fastapi.core
+""",
+        encoding="utf-8",
+    )
+
+    result = collect_batch_snapshots(
+        BatchCollectOptions(
+            inputs=inputs,
+            out=out,
+            emit_interface_indexes=True,
+            parser_profile_id="python.web_framework.v0",
+        )
+    )
+
+    interface_index = result["collected"][0]["interfaceIndex"]
+    assert interface_index["parserProfileId"] == "python.web_framework.v0"
+    index = json.loads((out / "fastapi" / "public-interface-index.json").read_text())
+    package = index["packages"][0]
+    assert [entrypoint["path"] for entrypoint in package["entrypoints"]] == [
+        "fastapi/applications.py"
+    ]
+    decisions = {decision["path"]: decision for decision in package["pathClassification"]}
+    assert decisions["docs_src/tutorial.py"]["publicInterfaceEligible"] is False
+    assert decisions["fastapi/applications.py"]["publicInterfaceEligible"] is True
+
+
 def test_collect_batch_snapshots_emits_deterministic_workspace_inventory(
     tmp_path: Path,
 ) -> None:

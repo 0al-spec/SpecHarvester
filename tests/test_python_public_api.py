@@ -318,3 +318,123 @@ def test_analyze_python_public_api_accepts_single_file_source(tmp_path: Path) ->
     assert package["id"] == "demo.module"
     assert package["entrypoints"][0]["path"] == "module.py"
     assert package["entrypoints"][0]["symbols"][0]["name"] == "ok"
+
+
+def test_analyze_python_public_api_keeps_docs_src_by_default(tmp_path: Path) -> None:
+    repo = tmp_path / "fastapi-style"
+    (repo / "fastapi").mkdir(parents=True)
+    (repo / "docs_src" / "first_steps").mkdir(parents=True)
+    (repo / "fastapi" / "applications.py").write_text(
+        "class FastAPI:\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "docs_src" / "first_steps" / "tutorial001.py").write_text(
+        "def tutorial_app():\n    return None\n",
+        encoding="utf-8",
+    )
+
+    index = analyze_python_public_api(repo, package_id="fastapi.core")
+
+    paths = [entrypoint["path"] for entrypoint in index["packages"][0]["entrypoints"]]
+    assert paths == ["docs_src/first_steps/tutorial001.py", "fastapi/applications.py"]
+
+
+def test_analyze_python_public_api_honors_python_web_framework_parser_profile(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "fastapi-style"
+    for folder in (
+        "fastapi",
+        "docs_src/first_steps",
+        "docs",
+        "examples",
+        "tests",
+        "build",
+        "scripts",
+        "fastapi/_internal",
+        "fastapi/tests",
+        "fastapi/examples",
+        "fastapi/scripts",
+    ):
+        (repo / folder).mkdir(parents=True)
+    (repo / "fastapi" / "applications.py").write_text(
+        "class FastAPI:\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "docs_src" / "first_steps" / "tutorial001.py").write_text(
+        "def tutorial_app():\n    return None\n",
+        encoding="utf-8",
+    )
+    (repo / "docs" / "conf.py").write_text("project = 'FastAPI'\n", encoding="utf-8")
+    (repo / "examples" / "app.py").write_text("def example():\n    pass\n", encoding="utf-8")
+    (repo / "tests" / "test_applications.py").write_text(
+        "def test_app():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "build" / "api.generated.py").write_text(
+        "def generated():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "scripts" / "release.py").write_text("def release():\n    pass\n", encoding="utf-8")
+    (repo / "fastapi" / "_internal" / "compat.py").write_text(
+        "def compat():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "fastapi" / "tests" / "test_routes.py").write_text(
+        "def test_routes():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "fastapi" / "examples" / "demo.py").write_text(
+        "def demo():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "fastapi" / "schemas_pb2.py").write_text(
+        "def generated_schema():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "fastapi" / "scripts" / "release.py").write_text(
+        "def package_release():\n    pass\n",
+        encoding="utf-8",
+    )
+    (repo / "standalone.py").write_text("def fallback():\n    pass\n", encoding="utf-8")
+
+    index = analyze_python_public_api(
+        repo,
+        package_id="fastapi.core",
+        parser_profile_id="python.web_framework.v0",
+    )
+
+    assert [entrypoint["path"] for entrypoint in index["packages"][0]["entrypoints"]] == [
+        "fastapi/applications.py"
+    ]
+    assert index["summary"]["status"] == "complete"
+    package = index["packages"][0]
+    assert package["repositoryParsingProfile"] == "python.web_framework.v0"
+    decisions = {decision["path"]: decision for decision in package["pathClassification"]}
+    assert decisions["fastapi/applications.py"]["publicInterfaceEligible"] is True
+    assert decisions["docs_src/first_steps/tutorial001.py"]["matchedRuleId"] == (
+        "docs_src_semantic_usage"
+    )
+    assert decisions["docs_src/first_steps/tutorial001.py"]["semanticUsageEligible"] is True
+    assert decisions["tests/test_applications.py"]["role"] == "test"
+    assert decisions["fastapi/tests/test_routes.py"]["role"] == "test"
+    assert decisions["fastapi/examples/demo.py"]["role"] == "example"
+    assert decisions["fastapi/schemas_pb2.py"]["role"] == "generated"
+    assert decisions["fastapi/scripts/release.py"]["role"] == "tooling"
+    assert decisions["standalone.py"]["matchedRuleId"] == "conservative_default_fallback"
+    for path, decision in decisions.items():
+        if path != "fastapi/applications.py":
+            assert decision["publicInterfaceEligible"] is False
+
+
+def test_analyze_python_public_api_rejects_unknown_parser_profile(tmp_path: Path) -> None:
+    package = tmp_path / "demo"
+    package.mkdir()
+    (package / "api.py").write_text("def ok():\n    return True\n", encoding="utf-8")
+
+    try:
+        analyze_python_public_api(package, parser_profile_id="unknown.profile")
+    except ValueError as exc:
+        assert "Unsupported repository parsing profile" in str(exc)
+    else:
+        raise AssertionError("expected unknown parser profile to fail")

@@ -101,6 +101,10 @@
         "pathPrefixes": [
           "examples/",
           "example/"
+        ],
+        "pathSegments": [
+          "examples",
+          "example"
         ]
       },
       "role": "example",
@@ -117,6 +121,10 @@
         "pathPrefixes": [
           "tests/",
           "test/"
+        ],
+        "pathSegments": [
+          "tests",
+          "test"
         ],
         "filenamePatterns": [
           "test_*.py",
@@ -139,6 +147,11 @@
           "dist/",
           "site/"
         ],
+        "pathSegments": [
+          "build",
+          "dist",
+          "site"
+        ],
         "filenamePatterns": [
           "*.generated.py",
           "*_pb2.py"
@@ -159,6 +172,11 @@
           ".github/",
           "scripts/",
           "tools/"
+        ],
+        "pathSegments": [
+          ".github",
+          "scripts",
+          "tools"
         ]
       },
       "role": "tooling",

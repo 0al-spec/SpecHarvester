@@ -45,6 +45,7 @@ class BatchCollectOptions:
     emit_interface_indexes: bool = False
     analyzer_cache_dir: Path | None = None
     emit_workspace_inventory: bool = False
+    parser_profile_id: str | None = None
 
 
 def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
@@ -104,6 +105,7 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
                     options.analyzer_cache_dir,
                     repository["id"],
                 ),
+                parser_profile_id=options.parser_profile_id,
             )
         workspace_inventory = None
         if options.emit_workspace_inventory:

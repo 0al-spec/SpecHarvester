@@ -6,7 +6,9 @@ from typing import Any
 
 from spec_harvester.analyzer_cache import AnalyzerCache
 
-PUBLIC_API_ANALYZER_OPTION_KEYS = frozenset({"package_id", "source_revision", "cache_dir"})
+PUBLIC_API_ANALYZER_OPTION_KEYS = frozenset(
+    {"package_id", "source_revision", "cache_dir", "parser_profile_id"}
+)
 
 
 @dataclass(frozen=True)
@@ -15,6 +17,7 @@ class PublicApiAnalyzerOptions:
     package_id: str | None = None
     source_revision: str | None = None
     cache_dir: Path | None = None
+    parser_profile_id: str | None = None
 
     @classmethod
     def from_call(
@@ -38,6 +41,7 @@ class PublicApiAnalyzerOptions:
             package_id=kwargs.get("package_id"),
             source_revision=kwargs.get("source_revision"),
             cache_dir=kwargs.get("cache_dir"),
+            parser_profile_id=kwargs.get("parser_profile_id"),
         )
 
     def root(self, language: str) -> Path:

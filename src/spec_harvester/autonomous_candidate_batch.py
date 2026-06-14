@@ -103,6 +103,7 @@ class AutonomousCandidateBatchOptions:
     max_file_bytes: int = DEFAULT_MAX_FILE_BYTES
     strict_public: bool = True
     analyzer_cache_dir: Path | None = None
+    parser_profile_id: str | None = None
     role_profile: str = DEFAULT_AUTONOMOUS_ROLE_PROFILE
     roles: tuple[str, ...] = ()
     skip_ai: bool = False
@@ -202,6 +203,7 @@ class AutonomousCandidateBatch:
                 emit_interface_indexes=True,
                 analyzer_cache_dir=self.options.analyzer_cache_dir or self.out / "analyzer-cache",
                 emit_workspace_inventory=True,
+                parser_profile_id=self.options.parser_profile_id,
             )
         )
 

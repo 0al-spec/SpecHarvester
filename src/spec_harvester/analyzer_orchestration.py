@@ -11,6 +11,7 @@ from spec_harvester.interface_index import (
 )
 from spec_harvester.js_ts_public_api import analyze_js_ts_public_api
 from spec_harvester.python_public_api import analyze_python_public_api
+from spec_harvester.repository_parsing_profile import repository_parsing_profile
 from spec_harvester.swift_public_api import analyze_swift_public_api
 
 PUBLIC_INTERFACE_INDEX_FILENAME = "public-interface-index.json"
@@ -29,12 +30,14 @@ class AnalyzerAdapter:
     plan_id: str
     analyze: AnalyzerFunction
     uses_manifest_package_ids: bool = False
+    supports_parser_profile: bool = False
 
 
 ANALYZER_ADAPTERS: dict[str, AnalyzerAdapter] = {
     PYTHON_PROJECT_PROFILE_ANALYZER_ID: AnalyzerAdapter(
         plan_id=PYTHON_PROJECT_PROFILE_ANALYZER_ID,
         analyze=analyze_python_public_api,
+        supports_parser_profile=True,
     ),
     JS_TS_PROJECT_PROFILE_ANALYZER_ID: AnalyzerAdapter(
         plan_id=JS_TS_PROJECT_PROFILE_ANALYZER_ID,
@@ -58,7 +61,9 @@ def run_project_profile_analyzers(
     snapshot: dict[str, Any],
     package_id: str | None = None,
     cache_dir: Path | None = None,
+    parser_profile_id: str | None = None,
 ) -> dict[str, Any]:
+    repository_parsing_profile(parser_profile_id)
     plan_entries = project_profile_analyzer_plan(snapshot)
     source_revision = snapshot_source_revision(snapshot)
     indexes: list[dict[str, Any]] = []
@@ -91,12 +96,14 @@ def run_project_profile_analyzers(
             continue
 
         try:
-            index = adapter.analyze(
-                source,
-                package_id=None if adapter.uses_manifest_package_ids else package_id,
-                source_revision=source_revision,
-                cache_dir=cache_dir,
-            )
+            analyzer_kwargs: dict[str, Any] = {
+                "package_id": None if adapter.uses_manifest_package_ids else package_id,
+                "source_revision": source_revision,
+                "cache_dir": cache_dir,
+            }
+            if adapter.supports_parser_profile:
+                analyzer_kwargs["parser_profile_id"] = parser_profile_id
+            index = adapter.analyze(source, **analyzer_kwargs)
         except (OSError, RuntimeError, ValueError) as exc:
             diagnostics.append(
                 {
@@ -117,6 +124,7 @@ def run_project_profile_analyzers(
         "index": index,
         "plannedAnalyzerIds": [str(plan.get("id") or "") for plan in plan_entries],
         "executedAnalyzerIds": sorted(executed_analyzer_ids),
+        "parserProfileId": parser_profile_id,
         "skippedAnalyzerPlans": sorted(
             skipped_plans,
             key=lambda item: (item["id"], item["reason"], item["status"]),
@@ -236,6 +244,7 @@ def interface_index_batch_record(
         "status": result["status"],
         "plannedAnalyzerIds": result["plannedAnalyzerIds"],
         "executedAnalyzerIds": result["executedAnalyzerIds"],
+        "parserProfileId": result.get("parserProfileId"),
         "skippedAnalyzerPlans": result["skippedAnalyzerPlans"],
         "diagnostics": result["diagnostics"],
     }

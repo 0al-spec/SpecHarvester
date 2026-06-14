@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P36-T4 FastAPI AI-Enabled Parser Profile Rerun" in next_text:
+        assert_p36_t3_last_archived(next_text)
+        assert_p36_t3_recent(next_text)
+        assert_phase_36_t4_active(next_text)
+        return
+
     if "# Next Task: P36-T3 Plugin-Aware Source Classification Hook" in next_text:
         assert_p36_t2_last_archived(next_text)
         assert_p36_t2_recent(next_text)
@@ -2659,6 +2665,38 @@ def assert_phase_36_t3_active(next_text: str) -> None:
     assert "does not publish registry metadata" in normalized
     assert "does not accept packages" in normalized
     assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_p36_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P36-T3 Plugin-Aware Source Classification Hook" in next_text
+
+
+def assert_p36_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P36-T3` added an opt-in parser profile hook" in next_text
+    assert "`python.web_framework.v0`" in next_text
+    assert "`--parser-profile python.web_framework.v0`" in next_text
+    assert "repositoryParsingProfile" in next_text
+    assert "pathClassification" in next_text
+    assert "default analyzer behavior remains unchanged" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_phase_36_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P36-T4 FastAPI AI-Enabled Parser Profile Rerun" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "Phase 36. Repository Parsing Plugin System" in next_text
+    assert "`feature/P36-T4-fastapi-ai-enabled-parser-profile-rerun`" in next_text
+    assert "`P36-T4` Re-run the FastAPI AI-enabled candidate batch" in next_text
+    assert "FastAPI" in next_text
+    assert "LM Studio" in next_text
+    assert "python.web_framework.v0" in next_text
+    assert "evidence volume" in normalized
+    assert "claim quality" in normalized
+    assert "registry-review quality" in normalized
+    assert "producer-side evidence only" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
@@ -11767,6 +11805,9 @@ def test_repository_parsing_plugin_contract_is_documented() -> None:
             "publicInterfaceEligible",
             "semanticUsageEligible",
             "Python web-framework profile",
+            "--parser-profile python.web_framework.v0",
+            "repositoryParsingProfile",
+            "pathClassification",
             "public interface evidence",
             "semantic usage evidence",
             "does not publish registry metadata",
@@ -11851,10 +11892,22 @@ def test_python_web_framework_parser_profile_fixture_is_documented() -> None:
     assert rules["docs_src_semantic_usage"]["role"] == "semantic_usage"
     assert rules["docs_src_semantic_usage"]["publicInterfaceEligible"] is False
     assert rules["docs_src_semantic_usage"]["semanticUsageEligible"] is True
+    assert rules["examples_semantic_usage"]["match"]["pathSegments"] == ["examples", "example"]
     assert rules["tests_not_public_interface"]["role"] == "test"
     assert rules["tests_not_public_interface"]["publicInterfaceEligible"] is False
+    assert rules["tests_not_public_interface"]["match"]["pathSegments"] == ["tests", "test"]
     assert rules["generated_artifacts_not_public_interface"]["role"] == "generated"
+    assert rules["generated_artifacts_not_public_interface"]["match"]["pathSegments"] == [
+        "build",
+        "dist",
+        "site",
+    ]
     assert rules["repository_tooling_not_public_interface"]["role"] == "tooling"
+    assert rules["repository_tooling_not_public_interface"]["match"]["pathSegments"] == [
+        ".github",
+        "scripts",
+        "tools",
+    ]
     assert rules["private_python_modules_internal"]["role"] == "internal"
 
     assert payload["fallback"] == {
