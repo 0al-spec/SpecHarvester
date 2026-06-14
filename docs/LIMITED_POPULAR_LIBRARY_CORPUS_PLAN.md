@@ -171,6 +171,10 @@ P30-T2 records the deterministic corpus report in
 [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md)
 with verdict `ready_for_live_lm_studio_limited_corpus`.
 
+P30-T3 records the live LM Studio corpus report in
+[`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md)
+with verdict `ready_for_candidate_layer_triage`.
+
 ## Related Contracts
 
 - [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md)

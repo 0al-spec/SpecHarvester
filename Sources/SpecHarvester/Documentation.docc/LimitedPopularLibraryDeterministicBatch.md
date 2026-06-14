@@ -93,6 +93,7 @@ autonomous-candidate-batch-report.json sha256:f2e6ad92cb9a6686e8d7bf333b173aeb91
 batch-validation-report.json           sha256:ef81c8a2f8a4b7a720f19112bd46b72c96e5c9ff07695c9591221950e58c29f5
 ```
 
-See also <doc:LimitedPopularLibraryCorpusPlan>,
+See also <doc:LimitedPopularLibraryLiveLMStudioBatch>,
+<doc:LimitedPopularLibraryCorpusPlan>,
 <doc:AutonomousCandidateCorpusQualityGate>, and
 <doc:AutonomousCandidateIntakePolicy>.

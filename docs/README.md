@@ -166,10 +166,13 @@ Published DocC site:
 59. [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md):
     P30 deterministic `--skip-ai` limited corpus result, candidate counts,
     preflight outcomes, author-ready decisions, and product verdict
-60. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
+60. [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md):
+    P30 live LM Studio limited corpus result, AI draft/enrichment statuses,
+    JSON repair summary, provider token usage, and candidate-layer triage verdict
+61. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
     deterministic fallback for Flask/Gin-style repositories with no workspace
     package records
-61. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+62. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -256,6 +259,8 @@ Published DocC site:
   generator gaps
 - [`LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`](LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md):
   deterministic P30 corpus result before live LM Studio comparison
+- [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md):
+  live P30 LM Studio result and candidate-layer triage input
 
 ## GitHub Process Surface
 

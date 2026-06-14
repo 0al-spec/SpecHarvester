@@ -89,6 +89,10 @@ P30-T2 records the deterministic corpus report in
 <doc:LimitedPopularLibraryDeterministicBatch> with verdict
 `ready_for_live_lm_studio_limited_corpus`.
 
+P30-T3 records the live LM Studio corpus report in
+<doc:LimitedPopularLibraryLiveLMStudioBatch> with verdict
+`ready_for_candidate_layer_triage`.
+
 See also <doc:RepositorySourceManifests>, <doc:AutonomousCandidateBatch>,
 <doc:AutonomousCandidateIntakePolicy>, and
 <doc:AutonomousCandidateCorpusQualityGate>.
