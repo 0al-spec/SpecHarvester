@@ -80,6 +80,7 @@
 | P17-T2 | [P17-T2_CLI_Domain_Command_Objects/](P17-T2_CLI_Domain_Command_Objects/) | 2026-06-14 | PASS |
 | P17-T3 | [P17-T3_Report_Builder_Behavior_Objects/](P17-T3_Report_Builder_Behavior_Objects/) | 2026-06-14 | PASS |
 | P17-T4 | [P17-T4_Public_API_Analyzer_Pipeline_Objects/](P17-T4_Public_API_Analyzer_Pipeline_Objects/) | 2026-06-14 | PASS |
+| P17-T5 | [P17-T5_Collector_and_Drafter_Vertical_Slice_Objects/](P17-T5_Collector_and_Drafter_Vertical_Slice_Objects/) | 2026-06-14 | PASS |
 | P18-T1 | [P18-T1_Swift_Public_API_Analyzer/](P18-T1_Swift_Public_API_Analyzer/) | 2026-05-29 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P20-T1 | [P20-T1_Scoped_Source_Target_Harvesting/](P20-T1_Scoped_Source_Target_Harvesting/) | 2026-05-31 | PASS |
@@ -150,6 +151,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t5_collector_drafter_vertical_slice_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t4_public_api_analyzer_pipeline_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t3_report_builder_behavior_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t2_cli_domain_command_objects.md` |
@@ -227,6 +229,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P17-T5 | Archived REVIEW_p17_t5_collector_drafter_vertical_slice_objects report |
+| 2026-06-14 | P17-T5 | Archived Collector and Drafter Vertical Slice Objects (PASS) |
 | 2026-06-14 | P17-T4 | Archived REVIEW_p17_t4_public_api_analyzer_pipeline_objects report |
 | 2026-06-14 | P17-T4 | Archived Public API Analyzer Pipeline Objects (PASS) |
 | 2026-06-14 | P17-T3 | Archived REVIEW_p17_t3_report_builder_behavior_objects report |

@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P17-T6 SpecNode Refinement Orchestration Objects" in next_text:
+        assert_p17_t5_last_archived(next_text)
+        assert_p17_t4_recent(next_text)
+        assert_p17_t5_recent(next_text)
+        assert_phase_17_t6_active(next_text)
+        return
+
     if "# Next Task: P17-T5 Collector and Drafter Vertical Slice Objects" in next_text:
         assert_p17_t4_last_archived(next_text)
         assert_p17_t3_recent(next_text)
@@ -590,6 +597,10 @@ def assert_p17_t4_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P17-T4 Public API Analyzer Pipeline Objects" in next_text
 
 
+def assert_p17_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P17-T5 Collector and Drafter Vertical Slice Objects" in next_text
+
+
 def assert_phase_17_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P17-T2 CLI Domain Command Objects" in next_text
@@ -691,6 +702,29 @@ def assert_phase_17_t5_active(next_text: str) -> None:
     assert "license inference" in normalized
     assert "semantic evidence" in normalized
     assert "package draft assembly" in normalized
+
+
+def assert_p17_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P17-T5` moved single-package draft bundle materialization" in next_text
+    assert "SinglePackageDraftBundle" in next_text
+    assert "harvest.json" in next_text
+    assert "producer receipts" in normalized
+    assert "author-ready quality reports" in normalized
+    assert "behaviorRichClassCount: 1" in next_text
+    assert "topLevelFunctionSpan from 1665 to 1550" in next_text
+
+
+def assert_phase_17_t6_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P17-T6 SpecNode Refinement Orchestration Objects" in next_text
+    assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 17. Elegant Objects Refactoring Strategy" in next_text
+    assert "SpecNode refinement orchestration" in next_text
+    assert "provider" in normalized
+    assert "validation" in normalized
+    assert "retry" in normalized
+    assert "unavailable-result objects" in normalized
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -4443,6 +4477,8 @@ def test_docc_and_github_docs_cover_eo_refactoring_strategy() -> None:
             "PythonPublicApiAnalyzer",
             "GoPublicApiAnalyzer",
             "JavaScriptTypeScriptPublicApiAnalyzer",
+            "P17-T5",
+            "SinglePackageDraftBundle",
             "top-level function",
             "DTO-only dataclasses",
             "characterization tests",

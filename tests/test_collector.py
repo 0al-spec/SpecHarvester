@@ -27,6 +27,7 @@ from spec_harvester.collector import (
 )
 from spec_harvester.drafter import (
     DraftOptions,
+    SinglePackageDraftBundle,
     draft_spec_package,
     public_interface_semantic_terms,
     render_scalar,
@@ -928,6 +929,119 @@ def test_cli_writes_harvest_snapshot(tmp_path: Path, capsys) -> None:  # type: i
     snapshot = json.loads((out / "harvest.json").read_text(encoding="utf-8"))
     assert snapshot["summary"]["fileCount"] == 1
     assert json.loads(capsys.readouterr().out)["status"] == "ok"
+
+
+def test_single_package_draft_bundle_materializes_reports_and_receipt(tmp_path: Path) -> None:
+    snapshot_path = tmp_path / "snapshot.json"
+    snapshot_path.write_text(
+        json.dumps(
+            {
+                "kind": "SpecHarvesterEvidenceSnapshot",
+                "source": {
+                    "repository": "https://github.com/example/demo",
+                    "revision": "abc123",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    spec_path = "specs/demo.spec.yaml"
+
+    result = SinglePackageDraftBundle(
+        options=DraftOptions(
+            snapshot=snapshot_path,
+            out=candidate,
+            package_id="example.demo",
+            author="Example Author",
+        ),
+        package_id="example.demo",
+        spec_path=spec_path,
+        manifest={
+            "apiVersion": "specpm.dev/v0.1",
+            "kind": "SpecPackage",
+            "metadata": {
+                "id": "example.demo",
+                "name": "Demo",
+                "version": "0.1.0",
+                "summary": "Demo package.",
+                "license": "NOASSERTION",
+                "authors": [{"name": "Example Author"}],
+            },
+            "preview_only": True,
+            "specs": [{"path": spec_path}],
+            "index": {
+                "provides": {
+                    "capabilities": ["example.demo"],
+                    "intents": ["intent.package.public_repository_metadata"],
+                },
+                "requires": {"capabilities": []},
+            },
+        },
+        boundary_spec={
+            "apiVersion": "specpm.dev/v0.1",
+            "kind": "BoundarySpec",
+            "metadata": {
+                "id": "example.demo",
+                "title": "Demo Boundary",
+                "version": "0.1.0",
+                "status": "draft",
+                "authors": [{"name": "Example Author"}],
+            },
+            "intent": {"summary": "Demo package."},
+            "scope": {"boundedContext": "demo", "includes": [], "excludes": []},
+            "provides": {
+                "capabilities": [
+                    {
+                        "id": "example.demo",
+                        "role": "primary",
+                        "summary": "Demo package.",
+                        "intentIds": ["intent.package.public_repository_metadata"],
+                    }
+                ]
+            },
+            "requires": {"capabilities": []},
+            "interfaces": {"inbound": [], "outbound": []},
+            "effects": {"sideEffects": []},
+            "constraints": [],
+            "evidence": [],
+            "provenance": {},
+        },
+        snapshot_path=snapshot_path,
+        public_interface_index=None,
+        manifest_capabilities=("example.demo",),
+        manifest_intents=("intent.package.public_repository_metadata",),
+    ).materialize()
+
+    receipt = json.loads((candidate / "producer-receipt.json").read_text(encoding="utf-8"))
+    validation_report = json.loads(
+        (candidate / "validation-report.json").read_text(encoding="utf-8")
+    )
+    diagnostics_report = json.loads((candidate / "diagnostics.json").read_text(encoding="utf-8"))
+    quality_report = json.loads(
+        (candidate / "author-ready-draft-quality-report.json").read_text(encoding="utf-8")
+    )
+    output_roles = {item["path"]: item["role"] for item in receipt["outputs"]}
+
+    assert result["status"] == "ok"
+    assert result["manifest"] == str(candidate / "specpm.yaml")
+    assert result["spec"] == str(candidate / spec_path)
+    assert result["producerReceipt"] == str(candidate / "producer-receipt.json")
+    assert result["capabilityCount"] == 1
+    assert result["intentCount"] == 1
+    assert result["authorReadyDraftSummary"]["decision"] == "stop_for_author_review"
+    assert output_roles == {
+        "author-ready-draft-quality-report.json": "quality_report",
+        "diagnostics.json": "diagnostics",
+        "harvest.json": "evidence",
+        "specpm.yaml": "manifest",
+        "specs/demo.spec.yaml": "boundary_spec",
+        "validation-report.json": "validation_report",
+    }
+    assert "producer-receipt.json" not in output_roles
+    assert receipt["validation"]["status"] == validation_report["status"]
+    assert receipt["diagnostics"]["status"] == diagnostics_report["status"]
+    assert quality_report["status"] == "author_ready_draft"
 
 
 def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:

@@ -516,7 +516,7 @@ Acceptance:
 - [x] `P17-T4` Refactor public API analyzer pipelines into language-specific
   analyzer objects that use shared payload and option objects without hiding
   language-specific parse, diagnostic, symbol, or evidence decisions.
-- [ ] `P17-T5` Refactor collector and drafter behavior in thin vertical slices,
+- [x] `P17-T5` Refactor collector and drafter behavior in thin vertical slices,
   adding characterization tests before moving repository profile, license
   inference, semantic evidence, intent profile, package draft assembly, or
   artifact-writing logic.
