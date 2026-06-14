@@ -234,6 +234,21 @@ corpus is reviewable.
 
 See <doc:AutonomousCandidateTechDebtPlan>.
 
+### Bounded Corpus Expansion Planning
+
+The next phase after Phase 32 is a bounded corpus expansion plan, not an
+unbounded popular-framework crawl.
+
+<doc:BoundedCorpusExpansionPlan> records `P33-T1`: the next corpus must have a
+pinned local source manifest, a five-repository limit, deterministic and
+live-model validation gates, candidate-layer triage, SpecPM-side selected
+handoff preflight, stop conditions, and a non-authority boundary before any new
+scrape runs.
+
+The boundary remains unchanged: no clone/fetch/install/execute behavior, no
+registry publication, no package or relation acceptance, no baseline seeding,
+no `preview_only` removal, and no AI output as registry truth.
+
 ### Ecosystem Analyzer Depth
 
 Future generator quality should come primarily from deterministic analyzer

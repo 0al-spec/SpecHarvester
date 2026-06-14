@@ -1183,3 +1183,50 @@ Acceptance:
   `not_for_intake`.
 - SpecPM-side preflight remains consumer review evidence only and does not make
   producer output authoritative.
+
+## Phase 33. Bounded Corpus Expansion Planning
+
+- [x] `P33-T1` Record the bounded corpus expansion plan in
+  [`BOUNDED_CORPUS_EXPANSION_PLAN.md`](../docs/BOUNDED_CORPUS_EXPANSION_PLAN.md),
+  defining the next source manifest requirements, five-repository limit,
+  validation gate, stop conditions, author/maintainer handoff, and
+  non-authority boundary before any broader autonomous scraping continues.
+- [ ] `P33-T2` Add the next-corpus source manifest fixture with pinned local
+  checkout requirements, repository selection rationale, and no network
+  discovery behavior.
+- [ ] `P33-T3` Run the next-corpus deterministic collection and draft dry run
+  without AI, recording candidate counts, preflight outcomes, and blocker
+  classes.
+- [ ] `P33-T4` Run the next-corpus live local-model draft/enrichment dry run
+  with bounded JSON repair and provider receipts.
+- [ ] `P33-T5` Produce next-corpus candidate-layer triage and selected handoff
+  evidence with explicit selected, deferred, blocked, and not-for-intake
+  states.
+- [ ] `P33-T6` Coordinate or run the SpecPM-side preflight for the next-corpus
+  selected handoff and record the next intake readiness decision.
+
+Motivation:
+
+- Phase 32 intentionally stopped before broader autonomous scraping. The next
+  expansion must be bounded, reviewable, and explicit rather than an open-ended
+  framework crawl.
+- The limited corpus is ready for author/maintainer review, but that does not
+  mean SpecHarvester can ingest arbitrary popular repositories without a new
+  source manifest, validation gate, and stop policy.
+
+Goal:
+
+- Define the next corpus expansion as a small, operator-selected local checkout
+  batch that can produce review evidence without granting registry authority or
+  silently expanding scope.
+
+Acceptance:
+
+- The plan defines repository count limits, source manifest requirements,
+  validation gates, stop conditions, and non-authority boundaries before any
+  new scrape runs.
+- Every follow-up task remains local-only: no clone/fetch, no dependency
+  install, no harvested code execution, no registry publication, no package or
+  relation acceptance, and no `preview_only` removal.
+- The next-corpus result must stop at author/maintainer review evidence unless
+  a separate SpecPM maintainer acceptance flow is explicitly opened.

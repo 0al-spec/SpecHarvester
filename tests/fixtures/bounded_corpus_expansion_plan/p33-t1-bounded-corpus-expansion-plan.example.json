@@ -1,0 +1,111 @@
+{
+  "apiVersion": "spec-harvester.bounded-corpus-expansion-plan/v0",
+  "kind": "SpecHarvesterBoundedCorpusExpansionPlan",
+  "schemaVersion": 1,
+  "authority": "producer_preview_evidence_only",
+  "task": {
+    "id": "P33-T1",
+    "phase": "Phase 33. Bounded Corpus Expansion Planning",
+    "status": "planned"
+  },
+  "decision": {
+    "status": "next_corpus_requires_explicit_source_manifest_before_scrape",
+    "reason": "Phase 32 produced a review-ready limited corpus, but broader autonomous scraping requires its own source manifest, repository count, validation gate, stop conditions, and non-authority boundary."
+  },
+  "corpus": {
+    "id": "p33-next-bounded-popular-library-corpus",
+    "maximumRepositoryCount": 5,
+    "recommendedRepositoryCount": 5,
+    "selectionRationale": [
+      "cover more than the original Flask/Gin/xyflow smoke corpus",
+      "stay small enough for author-ready review",
+      "include diverse repository shapes without broad framework crawling"
+    ]
+  },
+  "sourceManifest": {
+    "required": true,
+    "plannedTask": "P33-T2",
+    "artifactRole": "next_corpus_source_manifest",
+    "requirements": [
+      "repository_id",
+      "local_checkout_path",
+      "pinned_revision",
+      "selection_rationale",
+      "expected_package_shape",
+      "no_network_discovery"
+    ],
+    "forbiddenBehavior": [
+      "clone",
+      "fetch_remote_state",
+      "install_dependencies",
+      "execute_harvested_code",
+      "run_package_scripts"
+    ]
+  },
+  "gateSequence": [
+    {
+      "id": "deterministic_collection_and_draft",
+      "task": "P33-T3",
+      "requiredBefore": "live_local_model",
+      "evidenceOnly": true
+    },
+    {
+      "id": "live_local_model_draft_and_enrichment",
+      "task": "P33-T4",
+      "requiredBefore": "candidate_layer_triage",
+      "boundedJsonRepair": true,
+      "proposalOnly": true
+    },
+    {
+      "id": "candidate_layer_triage",
+      "task": "P33-T5",
+      "states": [
+        "candidate_layer_review_required",
+        "needs_regeneration",
+        "blocked",
+        "not_for_intake"
+      ]
+    },
+    {
+      "id": "specpm_selected_handoff_preflight",
+      "task": "P33-T6",
+      "consumerAuthority": "SpecPM",
+      "acceptanceAuthority": false
+    }
+  ],
+  "stopConditions": [
+    "source_manifest_missing_or_invalid",
+    "repository_count_exceeds_five",
+    "checkout_missing_unpinned_remote_or_outside_approved_corpus",
+    "deterministic_preflight_failed",
+    "source_digest_drift",
+    "package_identity_or_topology_drift",
+    "local_model_unavailable_without_fallback",
+    "json_repair_retry_exhausted",
+    "candidate_layer_state_unclassified",
+    "specpm_preflight_error_or_authority_ambiguity"
+  ],
+  "authorMaintainerHandoff": {
+    "authorReviewRequired": true,
+    "maintainerReviewRequiredForRegistryAcceptance": true,
+    "automaticRegistryAcceptance": false,
+    "resultDisposition": "review_evidence_only"
+  },
+  "nonAuthority": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "createsSpecPMPullRequest": false,
+    "producerEvidenceOnly": true,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false,
+    "seedsBaselines": false,
+    "treatsAIOutputAsRegistryTruth": false
+  },
+  "nextTasks": [
+    "P33-T2",
+    "P33-T3",
+    "P33-T4",
+    "P33-T5",
+    "P33-T6"
+  ]
+}

@@ -297,3 +297,15 @@ Artifact:
 
 This order keeps the current corpus bounded and reviewable before any broader
 autonomous popular-library scrape is attempted.
+
+## Phase 33 Follow-Up
+
+Phase 32 ended with a review-ready limited corpus, not with permission for
+unbounded scraping.
+
+The next follow-up is
+[`BOUNDED_CORPUS_EXPANSION_PLAN.md`](BOUNDED_CORPUS_EXPANSION_PLAN.md), which
+records `P33-T1` and requires the next corpus to define its own source
+manifest, five-repository limit, deterministic and live-model validation gates,
+candidate-layer triage gate, SpecPM-side preflight gate, stop conditions, and
+non-authority boundary before any new scrape runs.
