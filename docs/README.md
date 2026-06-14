@@ -29,7 +29,10 @@ Published DocC site:
 10. [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](REPOSITORY_PARSING_PLUGIN_CONTRACT.md):
    repository path classification contract for future language/framework
    parser profiles
-11. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
+11. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
+   practical FastAPI rerun showing the Python web-framework parser profile
+   removing `docs_src/*` from public interface evidence
+12. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
    batch harvesting input manifest schema
 11. [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md): deterministic batch snapshot
    collection from local checkouts
@@ -292,6 +295,8 @@ Published DocC site:
 - [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](REPOSITORY_PARSING_PLUGIN_CONTRACT.md):
   repository path classification contract for future language/framework parser
   profiles
+- [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
+  FastAPI parser profile rerun with evidence volume and AI quality verdict
 - [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
   automation for proposing accepted-source diffs into SpecPM
 - [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md):

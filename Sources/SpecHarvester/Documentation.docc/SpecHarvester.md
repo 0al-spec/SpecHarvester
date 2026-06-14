@@ -152,6 +152,7 @@ the host.
 - <doc:CodeGraphSourceGraphAdapter>
 - <doc:CodeGraphCompatibilityGuard>
 - <doc:RepositoryParsingPluginContract>
+- <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
 - <doc:ProceduralStyleReport>
 - <doc:EORefactoringStrategy>
@@ -235,5 +236,6 @@ the host.
 - <doc:TrustedClassifierEvaluation>
 - <doc:LanguageNeutralSemanticExtraction>
 - <doc:RepositoryParsingPluginContract>
+- <doc:FastAPIParserProfileRerun>
 - <doc:TreeSitterEvaluation>
 - <doc:Roadmap>

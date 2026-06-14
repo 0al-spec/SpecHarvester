@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 36 Complete" in next_text:
+        assert_p36_t4_last_archived(next_text)
+        assert_p36_t4_recent(next_text)
+        assert_phase_36_complete(next_text)
+        return
+
     if "# Next Task: P36-T4 FastAPI AI-Enabled Parser Profile Rerun" in next_text:
         assert_p36_t3_last_archived(next_text)
         assert_p36_t3_recent(next_text)
@@ -2697,6 +2703,38 @@ def assert_phase_36_t4_active(next_text: str) -> None:
     assert "claim quality" in normalized
     assert "registry-review quality" in normalized
     assert "producer-side evidence only" in normalized
+
+
+def assert_p36_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P36-T4 FastAPI AI-Enabled Parser Profile Rerun" in next_text
+
+
+def assert_p36_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P36-T4` reran FastAPI" in next_text
+    assert "`--parser-profile python.web_framework.v0`" in next_text
+    assert "`openai/gpt-oss-20b`" in next_text
+    assert "`1121` entrypoints" in next_text
+    assert "`454` `docs_src/*` entrypoints" in next_text
+    assert "`48` entrypoints" in next_text
+    assert "`0` `docs_src/*` entrypoints" in next_text
+    assert "author_ready_draft" in next_text
+    assert "not a clean registry handoff" in normalized
+    assert "p36-t4-fastapi-parser-profile-rerun.example.json" in next_text
+
+
+def assert_phase_36_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 36 Complete" in next_text
+    assert "**Status:** Complete" in next_text
+    assert "Phase 36. Repository Parsing Plugin System" in next_text
+    assert "`P36-T1` documented the repository parsing plugin contract" in next_text
+    assert "`P36-T2` added the Python web-framework parser profile fixture" in next_text
+    assert "`P36-T3` implemented the opt-in plugin-aware source classification hook" in next_text
+    assert "`P36-T4` verified the hook on a real FastAPI AI-enabled run" in next_text
+    assert "No next task is selected" in next_text
+    assert "does not publish registry metadata" in normalized
+    assert "does not treat AI output as registry truth" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
@@ -11957,3 +11995,84 @@ def test_python_web_framework_parser_profile_fixture_is_documented() -> None:
         assert "tests/test_applications.py" in normalized
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_fastapi_parser_profile_rerun_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "fastapi_parser_profile_rerun"
+        / "p36-t4-fastapi-parser-profile-rerun.example.json"
+    )
+    github_doc = ROOT / "docs" / "FASTAPI_PARSER_PROFILE_RERUN.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "FastAPIParserProfileRerun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.fastapi-parser-profile-rerun/v0"
+    assert payload["kind"] == "SpecHarvesterFastAPIParserProfileRerunReport"
+    assert payload["schemaVersion"] == 1
+    assert payload["source"] == {
+        "repository": "https://github.com/fastapi/fastapi",
+        "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "packageId": "fastapi.core",
+    }
+    assert payload["parserProfile"]["id"] == "python.web_framework.v0"
+    assert payload["ai"]["mode"] == "local_lm_studio"
+    assert payload["ai"]["model"] == "openai/gpt-oss-20b"
+    assert payload["ai"]["rawPromptPersisted"] is False
+    assert payload["ai"]["rawResponsePersisted"] is False
+
+    comparison = payload["comparison"]
+    assert comparison["baseline"]["publicInterface"]["entrypointCount"] == 1121
+    assert comparison["baseline"]["publicInterface"]["symbolCount"] == 6009
+    assert comparison["baseline"]["publicInterface"]["docsSrcEntrypointCount"] == 454
+    assert comparison["profiled"]["publicInterface"]["entrypointCount"] == 48
+    assert comparison["profiled"]["publicInterface"]["symbolCount"] == 298
+    assert comparison["profiled"]["publicInterface"]["docsSrcEntrypointCount"] == 0
+    assert comparison["profiled"]["publicInterface"]["packageEntrypointCount"] == 48
+    assert comparison["delta"]["docsSrcEntrypointCount"] == -454
+
+    batch = payload["autonomousBatch"]
+    assert batch["status"] == "passed"
+    assert batch["passedPreflightCount"] == 1
+    assert batch["aiDraftStatus"] == "warning"
+    assert batch["aiEnrichmentStatus"] == "warning"
+    assert batch["aiEnrichedPreviewStatus"] == "skipped"
+    assert batch["authorReadyDraftStatus"] == "author_ready_draft"
+
+    verdict = payload["verdict"]
+    assert verdict["publicInterfaceBoundaryImproved"] is True
+    assert verdict["docsSrcExcludedFromPublicInterface"] is True
+    assert verdict["closerToRegistryReviewQuality"] is True
+    assert verdict["registryReviewQuality"] == "closer_but_not_clean_handoff"
+    assert "It does not treat AI output as registry truth." in payload["nonAuthority"]
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        assert "FastAPI Parser Profile Rerun" in normalized
+        assert "python.web_framework.v0" in normalized
+        assert "openai/gpt-oss-20b" in normalized
+        assert "1121" in normalized
+        assert "454" in normalized
+        assert "48" in normalized
+        assert "warning" in normalized
+        assert "not a clean registry handoff" in normalized
+        assert "does not treat AI output as registry truth" in normalized
+
+    assert "FASTAPI_PARSER_PROFILE_RERUN.md" in docs_index.read_text(encoding="utf-8")
+    assert "FastAPIParserProfileRerun" in docc_root.read_text(encoding="utf-8")
+    assert "FASTAPI_PARSER_PROFILE_RERUN.md" in capabilities.read_text(encoding="utf-8")
+    assert "FastAPIParserProfileRerun" in capabilities_docc.read_text(encoding="utf-8")
+    assert "FASTAPI_PARSER_PROFILE_RERUN.md" in roadmap.read_text(encoding="utf-8")
+    assert "FastAPIParserProfileRerun" in roadmap_docc.read_text(encoding="utf-8")

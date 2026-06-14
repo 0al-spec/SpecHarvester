@@ -1402,7 +1402,7 @@ Acceptance:
 - [x] `P36-T3` Implement the first plugin-aware source classification hook in
   the collection/analyzer path, keeping default behavior backwards-compatible
   and requiring explicit opt-in for technology-specific rule profiles.
-- [ ] `P36-T4` Re-run the FastAPI AI-enabled candidate batch with the Python
+- [x] `P36-T4` Re-run the FastAPI AI-enabled candidate batch with the Python
   web-framework parser profile, compare evidence volume and claim quality
   against the P35/P34 FastAPI run, and record whether the output is closer to
   registry-review quality.
