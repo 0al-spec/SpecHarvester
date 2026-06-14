@@ -91,6 +91,7 @@ The canonical source files remain in the repository:
 - `docs/LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md`
 - `docs/LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md`
 - `docs/LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`
+- `docs/LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`
 - `docs/ROADMAP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
@@ -165,6 +166,7 @@ the host.
 - <doc:LimitedPopularLibraryCorpusPlan>
 - <doc:LimitedPopularLibraryDeterministicBatch>
 - <doc:LimitedPopularLibraryLiveLMStudioBatch>
+- <doc:LimitedPopularLibraryCandidateLayerTriage>
 - <doc:SinglePackageCandidateFallback>
 - <doc:ProposalAutomation>
 

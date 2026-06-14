@@ -9,6 +9,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P30-T5 Selected Candidate Handoff Dry Run" in next_text:
+        assert_p30_t4_last_archived(next_text)
+        assert_p29_t6_recent(next_text)
+        assert_p30_t1_recent(next_text)
+        assert_p30_t2_recent(next_text)
+        assert_p30_t3_recent(next_text)
+        assert_p30_t4_recent(next_text)
+        assert_phase_30_t5_active(next_text)
+        return
+
     if "# Next Task: P30-T4 Candidate-Layer Triage Report" in next_text:
         assert_p30_t3_last_archived(next_text)
         assert_p29_t6_recent(next_text)
@@ -240,6 +250,10 @@ def assert_p30_t2_last_archived(next_text: str) -> None:
 
 def assert_p30_t3_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P30-T3 Live LM Studio Limited Corpus Batch" in next_text
+
+
+def assert_p30_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P30-T4 Candidate-Layer Triage Report" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -727,7 +741,8 @@ def assert_p30_t3_recent(next_text: str) -> None:
 def assert_phase_30_t4_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P30-T4 Candidate-Layer Triage Report" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:**" in next_text
+    assert "In Progress" in next_text or "Selected" in next_text
     assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
     assert "candidate-layer triage report" in normalized
     assert "candidate_layer_review_required" in next_text
@@ -738,6 +753,41 @@ def assert_phase_30_t4_active(next_text: str) -> None:
     assert "package_set_id_missing" in next_text
     assert "refined_summary_missing" in next_text
     assert "package_id_hint_mismatch" in next_text
+
+
+def assert_p30_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P30-T4` recorded the candidate-layer triage report" in next_text
+    assert "LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md" in next_text
+    assert "SpecHarvesterLimitedPopularLibraryCandidateLayerTriage" in next_text
+    assert "ready_for_selected_handoff_dry_run" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "candidate_layer_review_required" in next_text
+    assert "needs_regeneration" in next_text
+    assert "3 selected" in normalized
+    assert "6 deferred" in normalized
+    assert "excluded_package_unknown" in next_text
+    assert "package_set_id_missing" in next_text
+    assert "refined_summary_missing" in next_text
+    assert "package_id_hint_mismatch" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "not SpecPM acceptance" in normalized
+
+
+def assert_phase_30_t5_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P30-T5 Selected Candidate Handoff Dry Run" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
+    assert "SpecPM handoff dry-run evidence" in normalized
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "preview_only" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "external registry acceptance authority" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -4459,6 +4509,265 @@ def test_limited_popular_library_live_lm_studio_batch_docs_cover_p30_t3_verdict(
     assert "LimitedPopularLibraryLiveLMStudioBatch" in deterministic_docc.read_text(
         encoding="utf-8"
     )
+
+
+def test_limited_popular_library_candidate_layer_triage_fixture_records_p30_t4_outcome() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "limited_popular_library_candidate_layer_triage"
+        / "p30-t4-limited-popular-libraries.example.json"
+    )
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert (
+        payload["apiVersion"] == "spec-harvester.limited-popular-library-candidate-layer-triage/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterLimitedPopularLibraryCandidateLayerTriage"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["corpus"]["id"] == "p30-limited-popular-libraries"
+    assert payload["corpus"]["manifestPath"] == "inputs/limited-popular-libraries/repositories.yml"
+    assert payload["corpus"]["repositories"] == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert payload["inputs"]["deterministicFixture"] == {
+        "kind": "SpecHarvesterLimitedPopularLibraryDeterministicBatch",
+        "path": (
+            "tests/fixtures/limited_popular_library_deterministic_batch/"
+            "p30-t2-limited-popular-libraries.example.json"
+        ),
+        "status": "ready_for_live_lm_studio_limited_corpus",
+    }
+    assert payload["inputs"]["liveLmStudioFixture"] == {
+        "kind": "SpecHarvesterLimitedPopularLibraryLiveLMStudioBatch",
+        "path": (
+            "tests/fixtures/limited_popular_library_live_lm_studio_batch/"
+            "p30-t3-limited-popular-libraries.example.json"
+        ),
+        "status": "ready_for_candidate_layer_triage",
+    }
+    assert payload["summary"] == {
+        "blockedCandidateCount": 0,
+        "candidateLayerReviewRequiredCount": 3,
+        "deferredCandidateCount": 6,
+        "findingBlockedCount": 0,
+        "findingCandidateLayerReviewRequiredCount": 2,
+        "findingNeedsRegenerationCount": 4,
+        "findingNotForIntakeCount": 0,
+        "needsRegenerationCandidateCount": 6,
+        "notForIntakeCandidateCount": 0,
+        "p30T5SelectedCandidateCount": 3,
+        "previewCandidateCount": 9,
+        "relationProposalCount": 3,
+        "repositoryCount": 6,
+        "uniqueFindingCodeCount": 4,
+    }
+    assert payload["selectedForP30T5"] == ["flask.core", "gin.core", "docc2context.core"]
+    assert payload["productVerdict"] == {
+        "candidateQuality": "selected_candidates_ready_for_dry_run_handoff",
+        "pipelineHealth": "deterministic_and_live_evidence_triaged",
+        "status": "ready_for_selected_handoff_dry_run",
+        "summary": (
+            "Proceed to P30-T5 only for selected candidate-layer review packages. "
+            "Defer package-set and warning-bearing candidates until targeted "
+            "regeneration or explicit maintainer approval resolves their findings."
+        ),
+    }
+
+    assert set(payload["triagePolicy"]) == {
+        "candidate_layer_review_required",
+        "needs_regeneration",
+        "blocked",
+        "not_for_intake",
+    }
+
+    candidates = {item["id"]: item for item in payload["triagedCandidates"]}
+    assert list(candidates) == [
+        "flask.core",
+        "gin.core",
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "cupertino.core",
+        "navigation_split_view.core",
+        "docc2context.core",
+    ]
+    selected = {
+        candidate_id
+        for candidate_id, candidate in candidates.items()
+        if candidate["p30T5Selected"] is True
+    }
+    assert selected == {"flask.core", "gin.core", "docc2context.core"}
+    review_required = {
+        candidate_id
+        for candidate_id, candidate in candidates.items()
+        if candidate["classification"] == "candidate_layer_review_required"
+    }
+    assert review_required == {"flask.core", "gin.core", "docc2context.core"}
+    needs_regeneration = {
+        candidate_id
+        for candidate_id, candidate in candidates.items()
+        if candidate["classification"] == "needs_regeneration"
+    }
+    assert needs_regeneration == {
+        "xyflow.workspace",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "cupertino.core",
+        "navigation_split_view.core",
+    }
+    assert candidates["flask.core"]["findingCodes"] == ["excluded_package_unknown"]
+    assert candidates["gin.core"]["findingCodes"] == ["excluded_package_unknown"]
+    assert candidates["docc2context.core"]["findingCodes"] == []
+    assert candidates["navigation_split_view.core"]["findingCodes"] == [
+        "package_set_id_missing",
+        "package_id_hint_mismatch",
+    ]
+    assert all(candidates[item]["p30T5Selected"] is False for item in needs_regeneration)
+
+    findings = {item["code"]: item for item in payload["triageFindings"]}
+    assert set(findings) == {
+        "excluded_package_unknown",
+        "package_set_id_missing",
+        "refined_summary_missing",
+        "package_id_hint_mismatch",
+    }
+    assert findings["excluded_package_unknown"]["classification"] == (
+        "candidate_layer_review_required"
+    )
+    assert findings["excluded_package_unknown"]["count"] == 2
+    assert findings["excluded_package_unknown"]["affectedCandidateIds"] == [
+        "flask.core",
+        "gin.core",
+    ]
+    for code in (
+        "package_set_id_missing",
+        "refined_summary_missing",
+        "package_id_hint_mismatch",
+    ):
+        assert findings[code]["classification"] == "needs_regeneration"
+    assert findings["package_set_id_missing"]["count"] == 2
+    assert findings["refined_summary_missing"]["affectedCandidateIds"] == ["cupertino.core"]
+    assert findings["package_id_hint_mismatch"]["affectedCandidateIds"] == [
+        "navigation_split_view.core"
+    ]
+
+    non_authority = " ".join(payload["nonAuthority"])
+    assert "review evidence only" in non_authority
+    assert "not SpecPM registry acceptance" in non_authority
+    assert "does not accept packages" in non_authority
+    assert "does not accept relations" in non_authority
+    assert "does not seed baselines" in non_authority
+    assert "does not remove preview_only" in non_authority
+    assert "does not publish registry metadata" in non_authority
+    assert "does not treat AI output as canonical" in non_authority
+
+
+def test_limited_popular_library_candidate_layer_triage_docs_cover_p30_t4_verdict() -> None:
+    github_doc = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryCandidateLayerTriage.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    corpus_plan = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md"
+    corpus_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryCorpusPlan.md"
+    )
+    deterministic = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_DETERMINISTIC_BATCH.md"
+    deterministic_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryDeterministicBatch.md"
+    )
+    live = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md"
+    live_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryLiveLMStudioBatch.md"
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Limited Popular-Library Candidate-Layer Triage",
+            "SpecHarvesterLimitedPopularLibraryCandidateLayerTriage",
+            "spec-harvester.limited-popular-library-candidate-layer-triage/v0",
+            "producer_preview_evidence_only",
+            "candidate_layer_review_required",
+            "needs_regeneration",
+            "blocked",
+            "not_for_intake",
+            "flask.core",
+            "gin.core",
+            "xyflow.workspace",
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "cupertino.core",
+            "navigation_split_view.core",
+            "docc2context.core",
+            "excluded_package_unknown",
+            "package_set_id_missing",
+            "refined_summary_missing",
+            "package_id_hint_mismatch",
+            "ready_for_selected_handoff_dry_run",
+            "P30-T5",
+            "remove `preview_only`" if path == github_doc else "preview_only",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
+    assert "<doc:LimitedPopularLibraryCandidateLayerTriage>" in docc_root.read_text(
+        encoding="utf-8"
+    )
+    assert "LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md" in roadmap.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibraryCandidateLayerTriage" in roadmap_docc.read_text(encoding="utf-8")
+    assert "LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md" in corpus_plan.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibraryCandidateLayerTriage" in corpus_plan_docc.read_text(
+        encoding="utf-8"
+    )
+    assert "LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md" in deterministic.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibraryCandidateLayerTriage" in deterministic_docc.read_text(
+        encoding="utf-8"
+    )
+    assert "LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md" in live.read_text(encoding="utf-8")
+    assert "LimitedPopularLibraryCandidateLayerTriage" in live_docc.read_text(encoding="utf-8")
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

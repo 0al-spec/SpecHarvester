@@ -169,10 +169,13 @@ Published DocC site:
 60. [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md):
     P30 live LM Studio limited corpus result, AI draft/enrichment statuses,
     JSON repair summary, provider token usage, and candidate-layer triage verdict
-61. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
+61. [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md):
+    P30 candidate-layer triage report, selected P30-T5 candidates,
+    regeneration decisions, and non-authority boundaries
+62. [`SINGLE_PACKAGE_CANDIDATE_FALLBACK.md`](SINGLE_PACKAGE_CANDIDATE_FALLBACK.md):
     deterministic fallback for Flask/Gin-style repositories with no workspace
     package records
-62. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
+63. [`../SPECS/README.md`](../SPECS/README.md): Flow workflow for planning,
     implementing, validating, and archiving tasks
 
 ## Design References
@@ -261,6 +264,8 @@ Published DocC site:
   deterministic P30 corpus result before live LM Studio comparison
 - [`LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md`](LIMITED_POPULAR_LIBRARY_LIVE_LM_STUDIO_BATCH.md):
   live P30 LM Studio result and candidate-layer triage input
+- [`LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md`](LIMITED_POPULAR_LIBRARY_CANDIDATE_LAYER_TRIAGE.md):
+  P30 triage decisions and selected dry-run handoff candidates
 
 ## GitHub Process Surface
 
