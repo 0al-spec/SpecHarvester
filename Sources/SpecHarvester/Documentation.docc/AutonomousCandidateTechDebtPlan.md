@@ -83,6 +83,12 @@ or replace author or SpecPM maintainer review.
   summary/enrichment and identity-normalization failures.
 - Goal: regenerate or repair those single-package candidates and record whether
   they can re-enter selected handoff.
+- Artifact: <doc:SinglePackageDeferredCandidateRegenerationDryRun> records the
+  P32-T4 dry run. `navigation_split_view.core` is
+  `candidate_layer_review_required` with `selectedHandoffEligible: true`;
+  `cupertino.core` remains `needs_regeneration` until
+  `refined_summary_missing` is resolved by regenerated enrichment or
+  author-curated summary evidence.
 
 `P32-T5 Refreshed Candidate-Layer Triage and Selected Handoff`
 

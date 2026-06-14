@@ -54,9 +54,11 @@ xyflow.workspace contains xyflow.system
 enrichment or attach author-curated summary evidence.
 
 `identity_drift_resolution` applies to `navigation_split_view.core` when
-`package_id_hint_mismatch` or `package_set_id_missing` remains unresolved. The
-operator must choose the canonical package id, record the rejected or aliased
-non-canonical id, and regenerate under that policy.
+`package_id_hint_mismatch` or `package_set_id_missing` remains unresolved.
+P32-T4 chooses `navigation_split_view.core` for the current source manifest
+because it matches the generated and validated candidate identity; the old
+`navigation-split-view.core` hint remains historical drift evidence unless a
+maintainer explicitly aliases it later.
 
 ## Stop Conditions
 
@@ -88,6 +90,11 @@ P32-T3 records the xyflow package-set identity regeneration result in
 <doc:XyflowPackageSetIdentityRegenerationDryRun>. That dry run classifies
 `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, and `xyflow.system` as
 `candidate_layer_review_required` with `selectedHandoffEligible: true`.
+P32-T4 records the single-package regeneration result in
+<doc:SinglePackageDeferredCandidateRegenerationDryRun>. That dry run keeps
+`cupertino.core` at `needs_regeneration` because `refined_summary_missing`
+remains unresolved, and classifies `navigation_split_view.core` as
+`candidate_layer_review_required` with `selectedHandoffEligible: true`.
 
 ## Non-Authority Boundary
 
@@ -100,6 +107,7 @@ registry truth, or replace author or SpecPM maintainer review.
 See also <doc:AutonomousCandidateTechDebtPlan>,
 <doc:DeferredSelectedCandidateRegenerationRequirements>,
 <doc:XyflowPackageSetIdentityRegenerationDryRun>,
+<doc:SinglePackageDeferredCandidateRegenerationDryRun>,
 <doc:LimitedPopularLibraryCandidateLayerTriage>,
 <doc:LimitedPopularLibrarySelectedHandoffDryRun>,
 <doc:SelectedCandidateHandoffProposal>, and <doc:SpecPMHandoff>.

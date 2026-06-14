@@ -1,0 +1,245 @@
+{
+  "ai": {
+    "chainOfThoughtPersisted": false,
+    "mode": "local_lm_studio",
+    "model": "openai/gpt-oss-20b",
+    "provider": "lm_studio",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false
+  },
+  "apiVersion": "spec-harvester.single-package-deferred-regeneration-dry-run/v0",
+  "authority": "producer_preview_evidence_only",
+  "candidates": [
+    {
+      "actualPackageId": "cupertino.core",
+      "aiDraft": {
+        "diagnosticCodes": [],
+        "errorCount": 0,
+        "status": "completed",
+        "stopPolicyStatus": "needs_regeneration",
+        "warningCount": 0
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [
+          "refined_summary_missing"
+        ],
+        "errorCount": 0,
+        "proposalCount": 1,
+        "status": "warning",
+        "stopPolicyStatus": "needs_regeneration",
+        "warningCount": 1
+      },
+      "artifacts": [
+        {
+          "digest": "sha256:fdd5f099c3a9cbd88d48fa8c84d3c78052f4757349d2e9d83765f8ab3d7e7b37",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/cupertino/cupertino.core/specpm.yaml",
+          "role": "member_manifest"
+        },
+        {
+          "digest": "sha256:99bc360ebc9dc1bafb45e320330600e4c3d0e85c4f29b0359e09a02199afc954",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/cupertino/cupertino.core/producer-receipt.json",
+          "role": "member_producer_receipt"
+        },
+        {
+          "digest": "sha256:15b1a2849a981b708144d972faf41c22b39c6a5b9c30b9bf6ef40f3c287f02df",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/cupertino/cupertino.core/validation-report.json",
+          "role": "member_validation_report"
+        },
+        {
+          "digest": "sha256:2a9d221d1d3d7cac89dae075d58de0cb795ce6b1885d141c0a35682b196f83ac",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/cupertino/cupertino.core/diagnostics.json",
+          "role": "member_diagnostics"
+        },
+        {
+          "digest": "sha256:54f24fdced9b267df6f4c733394143fc228dd3d5348a3d2c41c8b6755a4e6f0d",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/cupertino/cupertino.core/author-ready-draft-quality-report.json",
+          "role": "member_quality_report"
+        },
+        {
+          "digest": "sha256:c9ab6258f52aca6766ac771e314d0babea450ff32fabafdbd338e9ffcdfb85f1",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/cupertino/cupertino.core/candidate-preflight.json",
+          "role": "member_candidate_preflight"
+        }
+      ],
+      "authorReadyDraftStatus": "author_ready_draft",
+      "bundleSetPreflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "candidateLayerDecision": {
+        "nextStep": "Attach author-curated summary evidence or rerun enrichment before including cupertino.core in P32-T5 selected handoff.",
+        "reason": "Cupertino regenerated a valid preview candidate with clean producer preflight and viewer output, but AI enrichment still reports refined_summary_missing. The candidate should stay deferred until regenerated enrichment supplies a refined summary or author-curated summary evidence is attached.",
+        "selectedHandoffEligible": false,
+        "status": "needs_regeneration"
+      },
+      "candidatePath": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/cupertino/cupertino.core",
+      "candidatePreflight": {
+        "errorCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "checkout": "/Users/egor/Development/GitHub/cupertino",
+      "diagnosticsStatus": "clean",
+      "manifestPackageId": "cupertino.core",
+      "packageId": "cupertino.core",
+      "previewOnly": true,
+      "repositoryId": "cupertino",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "validationStatus": "valid",
+      "viewer": {
+        "packageId": "cupertino.core",
+        "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/viewer/cupertino.core",
+        "status": "ok"
+      }
+    },
+    {
+      "actualPackageId": "navigation_split_view.core",
+      "aiDraft": {
+        "diagnosticCodes": [
+          "excluded_package_unknown"
+        ],
+        "errorCount": 0,
+        "status": "warning",
+        "stopPolicyStatus": "needs_regeneration",
+        "warningCount": 1
+      },
+      "aiEnrichment": {
+        "diagnosticCodes": [],
+        "errorCount": 0,
+        "proposalCount": 1,
+        "status": "completed",
+        "stopPolicyStatus": "author_ready_draft",
+        "warningCount": 0
+      },
+      "artifacts": [
+        {
+          "digest": "sha256:99776282a3529f64e0483fd9ed97aaf0fc644db37dbf5e0e1767d321af6e6994",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/navigation-split-view/navigation_split_view.core/specpm.yaml",
+          "role": "member_manifest"
+        },
+        {
+          "digest": "sha256:b0e83efd58a6da72f4a0063c9eaef4e46283cbb76b7798a6d058ca0cebbb7280",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/navigation-split-view/navigation_split_view.core/producer-receipt.json",
+          "role": "member_producer_receipt"
+        },
+        {
+          "digest": "sha256:34f62e217c8b4c0b321c55b8ba957f79c209cb3bad90eff4416e1f8a1f26608d",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/navigation-split-view/navigation_split_view.core/validation-report.json",
+          "role": "member_validation_report"
+        },
+        {
+          "digest": "sha256:96a3feccf6e6b00eba4ea08c0dde41da74227a28c478db045407a341631384f8",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/navigation-split-view/navigation_split_view.core/diagnostics.json",
+          "role": "member_diagnostics"
+        },
+        {
+          "digest": "sha256:20b94bc4a0ce444bad94e3068cf6394025f66a58f9ca116f063cad796fb25141",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/navigation-split-view/navigation_split_view.core/author-ready-draft-quality-report.json",
+          "role": "member_quality_report"
+        },
+        {
+          "digest": "sha256:96f8f6ec0fbc16616b54b106af8f38792e063e53d6f52cc3268e8cda696d68e4",
+          "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/navigation-split-view/navigation_split_view.core/candidate-preflight.json",
+          "role": "member_candidate_preflight"
+        }
+      ],
+      "authorReadyDraftStatus": "author_ready_draft",
+      "bundleSetPreflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "candidateLayerDecision": {
+        "nextStep": "Include navigation_split_view.core in P32-T5 refreshed candidate-layer triage unless later review blocks it.",
+        "reason": "NavigationSplitView now starts from manifest packageId navigation_split_view.core, and generated specpm.yaml, validation, candidate preflight, bundle-set preflight, and viewer output all agree on that identity. The remaining AI draft excluded_package_unknown warning is proposal-only context and does not contradict the deterministic single-package candidate identity.",
+        "selectedHandoffEligible": true,
+        "status": "candidate_layer_review_required"
+      },
+      "candidatePath": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package/package-sets/navigation-split-view/navigation_split_view.core",
+      "candidatePreflight": {
+        "errorCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "canonicalPackageId": "navigation_split_view.core",
+      "checkout": "/Users/egor/Development/GitHub/NavigationSplitView",
+      "diagnosticsStatus": "clean",
+      "manifestPackageId": "navigation_split_view.core",
+      "packageId": "navigation_split_view.core",
+      "previewOnly": true,
+      "previousDriftPackageId": "navigation-split-view.core",
+      "rejectedOrAliasedPackageIds": [
+        "navigation-split-view.core"
+      ],
+      "repositoryId": "navigation-split-view",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "validationStatus": "valid",
+      "viewer": {
+        "packageId": "navigation_split_view.core",
+        "path": ".smoke/p32-deferred-regeneration/20260613T184534Z/viewer/navigation_split_view.core",
+        "status": "ok"
+      }
+    }
+  ],
+  "kind": "SpecHarvesterSinglePackageDeferredCandidateRegenerationDryRun",
+  "nonAuthority": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "createsSpecPMPullRequest": false,
+    "producerEvidenceOnly": true,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false,
+    "seedsBaselines": false,
+    "treatsAIOutputAsRegistryTruth": false
+  },
+  "run": {
+    "attemptId": "20260613T184534Z",
+    "outputRoot": ".smoke/p32-deferred-regeneration/20260613T184534Z/single-package",
+    "selectedRepositoryIds": [
+      "cupertino",
+      "navigation-split-view"
+    ],
+    "skippedRepositoryIds": [
+      "flask",
+      "gin",
+      "xyflow",
+      "docc2context"
+    ],
+    "taskId": "P32-T4"
+  },
+  "schemaVersion": 1,
+  "source": {
+    "manifestPath": "inputs/limited-popular-libraries/repositories.yml",
+    "repositories": [
+      {
+        "checkout": "/Users/egor/Development/GitHub/cupertino",
+        "id": "cupertino",
+        "packageId": "cupertino.core",
+        "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+        "worktreeClean": true
+      },
+      {
+        "checkout": "/Users/egor/Development/GitHub/NavigationSplitView",
+        "id": "navigation-split-view",
+        "packageId": "navigation_split_view.core",
+        "previousManifestPackageId": "navigation-split-view.core",
+        "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+        "worktreeClean": true
+      }
+    ],
+    "sourceManifestDigest": "sha256:bb37eedc8700521474dfef1f291c217433bef9f8e0ccc76dcbfedf84def48d3b",
+    "sourceManifestStatus": "ok"
+  },
+  "summary": {
+    "candidateCount": 2,
+    "passedPreflightCount": 2,
+    "processedCount": 2,
+    "relationCount": 0,
+    "selectedHandoffEligibleCount": 1,
+    "skippedCount": 4,
+    "stillDeferredCount": 1
+  }
+}
