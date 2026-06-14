@@ -26,7 +26,10 @@ Published DocC site:
    offline pinned CodeGraph interface compatibility guard
 9. [`LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md`](LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md):
    bounded README/API-contract semantic hints for manifest-poor repositories
-10. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
+10. [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](REPOSITORY_PARSING_PLUGIN_CONTRACT.md):
+   repository path classification contract for future language/framework
+   parser profiles
+11. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
    batch harvesting input manifest schema
 11. [`BATCH_COLLECTION.md`](BATCH_COLLECTION.md): deterministic batch snapshot
    collection from local checkouts
@@ -286,6 +289,9 @@ Published DocC site:
   Universal Ctags, and Tree-sitter
 - [`LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md`](LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md):
   README/API-contract semantic extraction for manifest-poor repositories
+- [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](REPOSITORY_PARSING_PLUGIN_CONTRACT.md):
+  repository path classification contract for future language/framework parser
+  profiles
 - [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
   automation for proposing accepted-source diffs into SpecPM
 - [`SPECNODE_INTEGRATION_CONTRACT.md`](SPECNODE_INTEGRATION_CONTRACT.md):

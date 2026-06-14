@@ -11609,3 +11609,75 @@ def test_selected_corpus_dry_run_readiness_is_documented() -> None:
     assert "SELECTED_CORPUS_DRY_RUN_READINESS.md" in roadmap.read_text(encoding="utf-8")
     assert "SelectedCorpusDryRunReadiness" in roadmap_docc.read_text(encoding="utf-8")
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_parsing_plugin_contract_is_documented() -> None:
+    github_doc = ROOT / "docs" / "REPOSITORY_PARSING_PLUGIN_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryParsingPluginContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "Repository Parsing Plugin Contract",
+            "FastAPI",
+            "docs_src/*",
+            "public_interface",
+            "semantic_usage",
+            "documentation",
+            "example",
+            "test",
+            "generated",
+            "tooling",
+            "internal",
+            "ignored",
+            "spec-harvester.repository-parsing-plugin/v0",
+            "SpecHarvesterRepositoryParsingPluginDecision",
+            "producer_path_classification_only",
+            "plugin inputs" if path == github_doc else "Inputs",
+            "plugin outputs" if path == github_doc else "Outputs",
+            "rule precedence" if path == github_doc else "Rule Precedence",
+            "publicInterfaceEligible",
+            "semanticUsageEligible",
+            "Python web-framework profile",
+            "public interface evidence",
+            "semantic usage evidence",
+            "does not publish registry metadata",
+            "does not accept packages",
+            "does not treat AI output as registry truth",
+            "P36-T2",
+            "P36-T3",
+            "P36-T4",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:RepositoryParsingPluginContract>" in docc_root.read_text(encoding="utf-8")
+    assert "REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in capabilities.read_text(encoding="utf-8")
+    assert "RepositoryParsingPluginContract" in capabilities_docc.read_text(encoding="utf-8")
+    assert "REPOSITORY_PARSING_PLUGIN_CONTRACT.md" in roadmap.read_text(encoding="utf-8")
+    assert "RepositoryParsingPluginContract" in roadmap_docc.read_text(encoding="utf-8")
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "## Phase 36. Repository Parsing Plugin System" in workplan_text
+    assert "`P36-T1` Document the repository parsing plugin contract" in workplan_text
+    assert "`P36-T2` Add a machine-readable parser rule profile fixture" in workplan_text
+    assert "`P36-T3` Implement the first plugin-aware source classification hook" in workplan_text
+    assert "`P36-T4` Re-run the FastAPI AI-enabled candidate batch" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
