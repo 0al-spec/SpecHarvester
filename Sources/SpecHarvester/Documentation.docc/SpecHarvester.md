@@ -103,6 +103,7 @@ The canonical source files remain in the repository:
 - `docs/SPECHARVESTER_CORPUS_PLAN.md`
 - `docs/CANDIDATE_SOURCE_CLASSIFIER_PLAN.md`
 - `docs/MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`
+- `docs/EXPLAINABLE_CORPUS_SELECTION_REPORT.md`
 - `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`
 - `docs/SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
@@ -202,6 +203,7 @@ the host.
 - <doc:SpecHarvesterCorpusPlan>
 - <doc:CandidateSourceClassifierPlan>
 - <doc:MultiEcosystemSeedCorpusPlan>
+- <doc:ExplainableCorpusSelectionReport>
 - <doc:DeferredCandidateRegenerationRunbook>
 - <doc:XyflowPackageSetIdentityRegenerationDryRun>
 - <doc:SinglePackageDeferredCandidateRegenerationDryRun>

@@ -1,0 +1,281 @@
+{
+  "apiVersion": "spec-harvester.corpus-selection-report/v0",
+  "kind": "SpecHarvesterCorpusSelectionReport",
+  "schemaVersion": 1,
+  "authority": "producer_selection_report_only",
+  "seedCorpusPlan": {
+    "path": "tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json",
+    "apiVersion": "spec-harvester.corpus-plan/v0",
+    "kind": "SpecHarvesterCorpusPlan",
+    "name": "phase35-seed-corpus"
+  },
+  "summary": {
+    "selectedSourceCount": 5,
+    "deferredSourceCount": 2,
+    "rejectedSourceCount": 1,
+    "ecosystemCount": 5,
+    "selectionReviewStatus": "ready_for_dry_run_readiness_review"
+  },
+  "quotaDecisions": [
+    {
+      "ecosystem": "npm",
+      "limit": 1,
+      "selectedSourceIds": [
+        "react"
+      ],
+      "deferredSourceIds": [
+        "types-react",
+        "radix-ui-internal-primitives"
+      ],
+      "rejectedSourceIds": [
+        "react-internal-test-utils"
+      ],
+      "decision": "quota_filled_with_primary_package_family",
+      "notes": "The npm seed slot is assigned to the React package family; type-only, internal/plugin, and fixture-like packages remain non-selected."
+    },
+    {
+      "ecosystem": "pypi",
+      "limit": 1,
+      "selectedSourceIds": [
+        "fastapi"
+      ],
+      "deferredSourceIds": [],
+      "rejectedSourceIds": [],
+      "decision": "quota_filled_with_framework_core",
+      "notes": "FastAPI represents a Python framework core with public API richness and author review value."
+    },
+    {
+      "ecosystem": "crates",
+      "limit": 1,
+      "selectedSourceIds": [
+        "serde"
+      ],
+      "deferredSourceIds": [],
+      "rejectedSourceIds": [],
+      "decision": "quota_filled_with_schema_data_layer_archetype",
+      "notes": "Serde represents the Rust schema and data serialization archetype."
+    },
+    {
+      "ecosystem": "go",
+      "limit": 1,
+      "selectedSourceIds": [
+        "gin"
+      ],
+      "deferredSourceIds": [],
+      "rejectedSourceIds": [],
+      "decision": "quota_filled_with_framework_core",
+      "notes": "Gin represents a Go web framework archetype with a concise public API surface."
+    },
+    {
+      "ecosystem": "swift",
+      "limit": 1,
+      "selectedSourceIds": [
+        "swift-argument-parser"
+      ],
+      "deferredSourceIds": [],
+      "rejectedSourceIds": [],
+      "decision": "quota_filled_with_cli_archetype",
+      "notes": "Swift Argument Parser represents the Swift CLI library archetype."
+    }
+  ],
+  "sourceDecisions": [
+    {
+      "sourceId": "react",
+      "status": "selected",
+      "ecosystem": "npm",
+      "packageFamily": "react.workspace",
+      "importanceSignals": [
+        "high_dependency_centrality",
+        "high_registry_usage",
+        "framework_core",
+        "multi_package_repository",
+        "public_api_rich"
+      ],
+      "reasonCodes": [
+        "source_available",
+        "license_clear"
+      ],
+      "selectionExplanation": "React is the primary npm seed because it is a core UI framework, a multi-package repository, and a package-set calibration target.",
+      "classifierExpectationSummary": {
+        "primaryExpectationCount": 2,
+        "deferredExpectationCount": 1,
+        "evidenceOnlyOrExcludedExpectationCount": 0
+      },
+      "downstreamDisposition": "include_in_readiness_check"
+    },
+    {
+      "sourceId": "fastapi",
+      "status": "selected",
+      "ecosystem": "pypi",
+      "packageFamily": "fastapi.core",
+      "importanceSignals": [
+        "high_registry_usage",
+        "framework_core",
+        "public_api_rich",
+        "ecosystem_archetype",
+        "author_review_value"
+      ],
+      "reasonCodes": [
+        "source_available",
+        "license_clear"
+      ],
+      "selectionExplanation": "FastAPI is the Python framework seed because it has a clear public API surface and strong author-review value.",
+      "classifierExpectationSummary": {
+        "primaryExpectationCount": 1,
+        "deferredExpectationCount": 0,
+        "evidenceOnlyOrExcludedExpectationCount": 1
+      },
+      "downstreamDisposition": "include_in_readiness_check"
+    },
+    {
+      "sourceId": "serde",
+      "status": "selected",
+      "ecosystem": "crates",
+      "packageFamily": "serde.core",
+      "importanceSignals": [
+        "high_dependency_centrality",
+        "high_registry_usage",
+        "parser_or_schema_surface",
+        "data_layer_surface",
+        "ecosystem_archetype"
+      ],
+      "reasonCodes": [
+        "source_available",
+        "license_clear"
+      ],
+      "selectionExplanation": "Serde is the Rust seed because it represents schema and data serialization contracts with broad dependency centrality.",
+      "classifierExpectationSummary": {
+        "primaryExpectationCount": 1,
+        "deferredExpectationCount": 1,
+        "evidenceOnlyOrExcludedExpectationCount": 0
+      },
+      "downstreamDisposition": "include_in_readiness_check"
+    },
+    {
+      "sourceId": "gin",
+      "status": "selected",
+      "ecosystem": "go",
+      "packageFamily": "gin.core",
+      "importanceSignals": [
+        "high_registry_usage",
+        "framework_core",
+        "public_api_rich",
+        "ecosystem_archetype"
+      ],
+      "reasonCodes": [
+        "source_available",
+        "license_clear"
+      ],
+      "selectionExplanation": "Gin is the Go seed because it is a compact web framework archetype with a reviewable public API surface.",
+      "classifierExpectationSummary": {
+        "primaryExpectationCount": 1,
+        "deferredExpectationCount": 0,
+        "evidenceOnlyOrExcludedExpectationCount": 1
+      },
+      "downstreamDisposition": "include_in_readiness_check"
+    },
+    {
+      "sourceId": "swift-argument-parser",
+      "status": "selected",
+      "ecosystem": "swift",
+      "packageFamily": "swift_argument_parser.core",
+      "importanceSignals": [
+        "high_registry_usage",
+        "cli_surface",
+        "ecosystem_archetype",
+        "public_api_rich"
+      ],
+      "reasonCodes": [
+        "source_available",
+        "license_clear"
+      ],
+      "selectionExplanation": "Swift Argument Parser is the Swift seed because it represents a focused CLI library archetype.",
+      "classifierExpectationSummary": {
+        "primaryExpectationCount": 1,
+        "deferredExpectationCount": 0,
+        "evidenceOnlyOrExcludedExpectationCount": 1
+      },
+      "downstreamDisposition": "include_in_readiness_check"
+    },
+    {
+      "sourceId": "types-react",
+      "status": "deferred",
+      "ecosystem": "npm",
+      "packageFamily": "types.react",
+      "importanceSignals": [
+        "high_registry_usage"
+      ],
+      "reasonCodes": [
+        "types_only_package",
+        "needs_dedicated_archetype_policy"
+      ],
+      "selectionExplanation": "The type-only React package is important but needs a dedicated type-package policy before autonomous drafting.",
+      "classifierExpectationSummary": {
+        "primaryExpectationCount": 0,
+        "deferredExpectationCount": 1,
+        "evidenceOnlyOrExcludedExpectationCount": 0
+      },
+      "downstreamDisposition": "defer_until_archetype_policy"
+    },
+    {
+      "sourceId": "radix-ui-internal-primitives",
+      "status": "deferred",
+      "ecosystem": "npm",
+      "packageFamily": "radix_ui.internal_primitives",
+      "importanceSignals": [
+        "ui_library",
+        "high_registry_usage"
+      ],
+      "reasonCodes": [
+        "internal_utility",
+        "needs_dedicated_archetype_policy",
+        "ecosystem_quota_exceeded"
+      ],
+      "selectionExplanation": "Radix UI primitives are useful ecosystem signals, but internal/plugin boundaries need a dedicated policy and the npm seed quota is already filled.",
+      "classifierExpectationSummary": {
+        "primaryExpectationCount": 0,
+        "deferredExpectationCount": 1,
+        "evidenceOnlyOrExcludedExpectationCount": 0
+      },
+      "downstreamDisposition": "defer_until_archetype_policy"
+    },
+    {
+      "sourceId": "react-internal-test-utils",
+      "status": "rejected",
+      "ecosystem": "npm",
+      "packageFamily": "react.internal_test_utils",
+      "importanceSignals": [],
+      "reasonCodes": [
+        "test_fixture",
+        "registry_search_noise"
+      ],
+      "selectionExplanation": "React internal test utilities are rejected because they are fixture-like registry search noise, not a public package-family target.",
+      "classifierExpectationSummary": {
+        "primaryExpectationCount": 0,
+        "deferredExpectationCount": 0,
+        "evidenceOnlyOrExcludedExpectationCount": 1
+      },
+      "downstreamDisposition": "exclude_from_readiness_check"
+    }
+  ],
+  "downstreamCommandPlan": {
+    "command": "autonomous-candidate-batch",
+    "inputPlan": "tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json",
+    "requiresPinnedLocalCheckouts": true,
+    "requiresDryRunReadinessCheck": true,
+    "defaultAiMode": "operator_selected",
+    "mayApplyAiEnrichment": true,
+    "mustStopBeforeCollectionUntil": "P35-T6 readiness check passes"
+  },
+  "nonAuthorityStatements": [
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_publish_registry_metadata",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth"
+  ]
+}

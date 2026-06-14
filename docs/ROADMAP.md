@@ -602,7 +602,9 @@ Tasks:
   `tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json`);
 - add `P35-T5`, an explainable corpus selection report that records selected,
   rejected, and deferred sources with importance signals, exclusion reasons,
-  quota decisions, and the downstream autonomous-batch command plan;
+  quota decisions, and the downstream autonomous-batch command plan
+  ([`EXPLAINABLE_CORPUS_SELECTION_REPORT.md`](EXPLAINABLE_CORPUS_SELECTION_REPORT.md),
+  `tests/fixtures/explainable_corpus_selection_report/p35-t5-selection-report.example.json`);
 - run or document `P35-T6`, a dry-run readiness check proving every selected
   source has a pinned local checkout, package-family target, expected analyzer
   coverage, and explicit stop condition before author/maintainer review.

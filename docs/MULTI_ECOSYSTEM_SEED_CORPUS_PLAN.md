@@ -150,5 +150,6 @@ The seed corpus plan includes the standard non-authority statements:
 
 This plan enables:
 
-- `P35-T5`: explainable corpus selection report;
+- `P35-T5`: explainable corpus selection report
+  ([`EXPLAINABLE_CORPUS_SELECTION_REPORT.md`](EXPLAINABLE_CORPUS_SELECTION_REPORT.md));
 - `P35-T6`: selected corpus dry-run readiness check.

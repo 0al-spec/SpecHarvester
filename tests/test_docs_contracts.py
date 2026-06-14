@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P35-T6 Selected Corpus Dry-Run Readiness" in next_text:
+        assert_p35_t5_last_archived(next_text)
+        assert_p35_t5_recent(next_text)
+        assert_phase_35_t6_planned(next_text)
+        return
+
     if "# Next Task: P35-T5 Explainable Corpus Selection Report" in next_text:
         assert_p35_t4_last_archived(next_text)
         assert_p35_t4_recent(next_text)
@@ -2423,7 +2429,8 @@ def assert_p35_t4_recent(next_text: str) -> None:
 def assert_phase_35_t5_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P35-T5 Explainable Corpus Selection Report" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P35-T5-explainable-corpus-selection-report`" in next_text
     assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
     assert "`P35-T5` Add an explainable corpus selection report" in next_text
     assert "selected sources" in normalized
@@ -2434,6 +2441,41 @@ def assert_phase_35_t5_planned(next_text: str) -> None:
     assert "quota decisions" in normalized
     assert "downstream autonomous-batch command plan" in normalized
     assert "does not run collection" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_p35_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P35-T5 Explainable Corpus Selection Report" in next_text
+
+
+def assert_p35_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P35-T5` added" in next_text
+    assert "EXPLAINABLE_CORPUS_SELECTION_REPORT.md" in next_text
+    assert "ExplainableCorpusSelectionReport" in next_text
+    assert "p35-t5-selection-report.example.json" in next_text
+    assert "SpecHarvesterCorpusSelectionReport" in next_text
+    assert "spec-harvester.corpus-selection-report/v0" in next_text
+    assert "producer_selection_report_only" in next_text
+    assert "selected, deferred, and rejected" in normalized
+    assert "importance signals" in normalized
+    assert "quota decisions" in normalized
+    assert "downstream autonomous-batch command plan" in normalized
+    assert "non-authority" in normalized
+
+
+def assert_phase_35_t6_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P35-T6 Selected Corpus Dry-Run Readiness" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
+    assert "`P35-T6` Run or document selected corpus plan dry-run readiness" in next_text
+    assert "pinned local checkout" in normalized
+    assert "package-family target" in normalized
+    assert "expected analyzer coverage" in normalized
+    assert "explicit stop condition" in normalized
     assert "does not publish registry metadata" in normalized
     assert "does not accept packages" in normalized
     assert "does not treat AI output as registry truth" in normalized
@@ -11114,4 +11156,190 @@ def test_multi_ecosystem_seed_corpus_plan_is_documented() -> None:
     assert "MultiEcosystemSeedCorpusPlan" in capabilities_docc.read_text(encoding="utf-8")
     assert "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md" in roadmap.read_text(encoding="utf-8")
     assert "MultiEcosystemSeedCorpusPlan" in roadmap_docc.read_text(encoding="utf-8")
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_explainable_corpus_selection_report_is_documented() -> None:
+    github_doc = ROOT / "docs" / "EXPLAINABLE_CORPUS_SELECTION_REPORT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "ExplainableCorpusSelectionReport.md"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "explainable_corpus_selection_report"
+        / "p35-t5-selection-report.example.json"
+    )
+    seed_plan = ROOT / "docs" / "MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md"
+    seed_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "MultiEcosystemSeedCorpusPlan.md"
+    )
+    corpus_plan = ROOT / "docs" / "SPECHARVESTER_CORPUS_PLAN.md"
+    corpus_plan_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvesterCorpusPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "SpecHarvesterCorpusSelectionReport",
+            "spec-harvester.corpus-selection-report/v0",
+            "producer_selection_report_only",
+            "p35-t5-selection-report.example.json",
+            "p35-t4-seed-corpus-plan.example.json",
+            "selected sources",
+            "deferred sources",
+            "rejected sources",
+            "importance signals",
+            "exclusion reasons",
+            "quota decisions",
+            "downstream autonomous-batch command plan",
+            "react.workspace",
+            "fastapi.core",
+            "serde.core",
+            "gin.core",
+            "swift_argument_parser.core",
+            "types_only_package",
+            "registry_search_noise",
+            "autonomous-candidate-batch",
+            "P35-T6",
+            "does not clone" if path == docc_doc else "does_not_clone_or_fetch_repositories",
+            "install dependencies",
+            "execute harvested code",
+            "publish registry metadata",
+            "accept packages",
+            "accept relations",
+            "remove `preview_only`",
+            "registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.corpus-selection-report/v0"
+    assert payload["kind"] == "SpecHarvesterCorpusSelectionReport"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_selection_report_only"
+    assert payload["seedCorpusPlan"] == {
+        "path": (
+            "tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json"
+        ),
+        "apiVersion": "spec-harvester.corpus-plan/v0",
+        "kind": "SpecHarvesterCorpusPlan",
+        "name": "phase35-seed-corpus",
+    }
+    assert payload["summary"] == {
+        "selectedSourceCount": 5,
+        "deferredSourceCount": 2,
+        "rejectedSourceCount": 1,
+        "ecosystemCount": 5,
+        "selectionReviewStatus": "ready_for_dry_run_readiness_review",
+    }
+
+    quota_decisions = payload["quotaDecisions"]
+    assert len(quota_decisions) == 5
+    assert {item["ecosystem"] for item in quota_decisions} == {
+        "npm",
+        "pypi",
+        "crates",
+        "go",
+        "swift",
+    }
+    assert {item["limit"] for item in quota_decisions} == {1}
+    assert {item["selectedSourceIds"][0] for item in quota_decisions} == {
+        "react",
+        "fastapi",
+        "serde",
+        "gin",
+        "swift-argument-parser",
+    }
+    npm_quota = next(item for item in quota_decisions if item["ecosystem"] == "npm")
+    assert npm_quota["deferredSourceIds"] == ["types-react", "radix-ui-internal-primitives"]
+    assert npm_quota["rejectedSourceIds"] == ["react-internal-test-utils"]
+    assert npm_quota["decision"] == "quota_filled_with_primary_package_family"
+
+    source_decisions = payload["sourceDecisions"]
+    assert len(source_decisions) == 8
+    assert {item["status"] for item in source_decisions} == {"selected", "deferred", "rejected"}
+    selected = {item["sourceId"]: item for item in source_decisions if item["status"] == "selected"}
+    assert set(selected) == {"react", "fastapi", "serde", "gin", "swift-argument-parser"}
+    assert {item["downstreamDisposition"] for item in selected.values()} == {
+        "include_in_readiness_check"
+    }
+    assert {item["packageFamily"] for item in selected.values()} == {
+        "react.workspace",
+        "fastapi.core",
+        "serde.core",
+        "gin.core",
+        "swift_argument_parser.core",
+    }
+    for decision in source_decisions:
+        assert decision["sourceId"]
+        assert decision["ecosystem"]
+        assert decision["packageFamily"]
+        assert "selectionExplanation" in decision
+        assert decision["classifierExpectationSummary"]
+        assert "downstreamDisposition" in decision
+        if decision["status"] == "selected":
+            assert decision["importanceSignals"]
+            assert decision["reasonCodes"]
+        if decision["status"] == "deferred":
+            assert "needs_dedicated_archetype_policy" in decision["reasonCodes"]
+            assert decision["downstreamDisposition"] == "defer_until_archetype_policy"
+        if decision["status"] == "rejected":
+            assert decision["importanceSignals"] == []
+            assert decision["reasonCodes"] == ["test_fixture", "registry_search_noise"]
+            assert decision["downstreamDisposition"] == "exclude_from_readiness_check"
+
+    assert payload["downstreamCommandPlan"] == {
+        "command": "autonomous-candidate-batch",
+        "inputPlan": (
+            "tests/fixtures/multi_ecosystem_seed_corpus_plan/p35-t4-seed-corpus-plan.example.json"
+        ),
+        "requiresPinnedLocalCheckouts": True,
+        "requiresDryRunReadinessCheck": True,
+        "defaultAiMode": "operator_selected",
+        "mayApplyAiEnrichment": True,
+        "mustStopBeforeCollectionUntil": "P35-T6 readiness check passes",
+    }
+    assert payload["nonAuthorityStatements"] == [
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_execute_harvested_code",
+        "does_not_publish_registry_metadata",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_ai_output_as_registry_truth",
+    ]
+
+    assert "EXPLAINABLE_CORPUS_SELECTION_REPORT.md" in seed_plan.read_text(encoding="utf-8")
+    assert "ExplainableCorpusSelectionReport" in seed_plan_docc.read_text(encoding="utf-8")
+    assert "EXPLAINABLE_CORPUS_SELECTION_REPORT.md" in corpus_plan.read_text(encoding="utf-8")
+    assert "ExplainableCorpusSelectionReport" in corpus_plan_docc.read_text(encoding="utf-8")
+    assert "EXPLAINABLE_CORPUS_SELECTION_REPORT.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/EXPLAINABLE_CORPUS_SELECTION_REPORT.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:ExplainableCorpusSelectionReport>" in docc_root.read_text(encoding="utf-8")
+    assert "EXPLAINABLE_CORPUS_SELECTION_REPORT.md" in capabilities.read_text(encoding="utf-8")
+    assert "ExplainableCorpusSelectionReport" in capabilities_docc.read_text(encoding="utf-8")
+    assert "EXPLAINABLE_CORPUS_SELECTION_REPORT.md" in roadmap.read_text(encoding="utf-8")
+    assert "ExplainableCorpusSelectionReport" in roadmap_docc.read_text(encoding="utf-8")
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
