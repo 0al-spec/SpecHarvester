@@ -597,7 +597,7 @@ Acceptance:
 - [x] `P20-T5` Teach drafting/refinement prompts to distinguish repository,
   package, folder module, and single-file source-unit intent so generated specs
   do not overclaim package-manager ownership when only scoped evidence exists.
-- [ ] `P20-T6` Implement an explicit opt-in CodeGraph adapter boundary that
+- [x] `P20-T6` Implement an explicit opt-in CodeGraph adapter boundary that
   never installs or downloads tools, records analyzer and executable
   provenance, and normalizes JSON or SQLite graph evidence into a
   SpecHarvester-owned `source_graph_index` evidence shape.

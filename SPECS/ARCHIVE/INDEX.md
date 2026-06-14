@@ -89,6 +89,7 @@
 | P20-T3 | [P20-T3_CodeGraph_Adapter_Evaluation/](P20-T3_CodeGraph_Adapter_Evaluation/) | 2026-05-31 | PASS |
 | P20-T4 | [P20-T4_Scoped_Source_Validation_Fixtures/](P20-T4_Scoped_Source_Validation_Fixtures/) | 2026-06-01 | PASS |
 | P20-T5 | [P20-T5_Scoped_Source-Unit_Draft_Intent_Boundaries/](P20-T5_Scoped_Source-Unit_Draft_Intent_Boundaries/) | 2026-06-14 | PASS |
+| P20-T6 | [P20-T6_CodeGraph_Adapter_Boundary/](P20-T6_CodeGraph_Adapter_Boundary/) | 2026-06-14 | PASS |
 | P21-T1 | [P21-T1_Producer_Candidate_Bundle_Output_Planning/](P21-T1_Producer_Candidate_Bundle_Output_Planning/) | 2026-06-02 | PASS |
 | P21-T2 | [P21-T2_Producer_Receipt_Emission/](P21-T2_Producer_Receipt_Emission/) | 2026-06-02 | PASS |
 | P21-T3 | [P21-T3_Validation_and_Diagnostics_Report_Emission/](P21-T3_Validation_and_Diagnostics_Report_Emission/) | 2026-06-02 | PASS |
@@ -153,6 +154,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t6_codegraph_adapter_boundary.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p20_t5_scoped_source_unit_draft_intent_boundaries.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t6_specnode_refinement_orchestration_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t5_collector_drafter_vertical_slice_objects.md` |
@@ -233,6 +235,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-14 | P20-T6 | Archived REVIEW_p20_t6_codegraph_adapter_boundary report |
+| 2026-06-14 | P20-T6 | Archived CodeGraph Adapter Boundary (PASS) |
 | 2026-06-14 | P20-T5 | Archived REVIEW_p20_t5_scoped_source_unit_draft_intent_boundaries report |
 | 2026-06-14 | P20-T5 | Archived Scoped Source-Unit Draft Intent Boundaries (PASS) |
 | 2026-06-14 | P17-T6 | Archived REVIEW_p17_t6_specnode_refinement_orchestration_objects report |
