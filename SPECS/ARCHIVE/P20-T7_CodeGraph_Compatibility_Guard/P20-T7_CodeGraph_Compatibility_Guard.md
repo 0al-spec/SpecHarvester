@@ -67,3 +67,7 @@ index repositories in CI.
 - Coverage gate with `--cov-fail-under=90`.
 - Swift package manifest and docs target build.
 - Advisory architecture lint for the new module/command path.
+
+---
+**Archived:** 2026-06-14
+**Verdict:** PASS

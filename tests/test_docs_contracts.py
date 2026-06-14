@@ -10,6 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 20 Complete" in next_text:
+        assert_p20_t7_last_archived(next_text)
+        assert_p20_t7_recent(next_text)
+        assert_p20_t6_recent(next_text)
+        assert_p20_t5_recent(next_text)
+        assert_phase_20_complete(next_text)
+        return
+
     if "# Next Task: P20-T7 CodeGraph Compatibility Guard" in next_text:
         assert_p20_t6_last_archived(next_text)
         assert_p20_t6_recent(next_text)
@@ -816,6 +824,35 @@ def assert_phase_20_t7_active(next_text: str) -> None:
     assert "pinned CodeGraph interface compatibility guard" in normalized
     assert "CLI JSON flags" in normalized
     assert "without indexing third-party projects in ordinary CI" in normalized
+
+
+def assert_p20_t7_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P20-T7 CodeGraph Compatibility Guard" in next_text
+
+
+def assert_p20_t7_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P20-T7` added the pinned `codegraph-compatibility-report` guard" in next_text
+    assert "@colbymchenry/codegraph@0.9.7" in next_text
+    assert "optional_preprovisioned" in next_text
+    assert "CODEGRAPH_NO_DOWNLOAD=1" in next_text
+    assert "required JSON CLI commands with `--json`" in next_text
+    assert "fixture-backed normalization into `source_graph_index`" in next_text
+    assert "without installing CodeGraph" in normalized
+    assert "indexing third-party repositories in ordinary CI" in normalized
+
+
+def assert_phase_20_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 20 Complete" in next_text
+    assert "**Status:** Complete" in next_text
+    assert "Phase 20. Scoped Source Unit Harvesting" in next_text
+    assert "scoped source-unit harvesting" in normalized
+    assert "Tuist manifest parsing" in normalized
+    assert "source-unit draft intent boundaries" in normalized
+    assert "explicit opt-in CodeGraph source graph adapter" in normalized
+    assert "pinned CodeGraph compatibility guard" in normalized
+    assert "Ordinary CI does not install CodeGraph" in normalized
 
 
 def assert_p26_t5_archived(next_text: str) -> None:

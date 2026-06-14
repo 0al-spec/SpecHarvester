@@ -1,15 +1,22 @@
-# Next Task: P20-T7 CodeGraph Compatibility Guard
+# Next Task: Phase 20 Complete
 
-**Priority:** P1
+**Priority:** N/A
 **Phase:** Phase 20. Scoped Source Unit Harvesting
-**Effort:** Medium
-**Dependencies:** P20-T6
-**Status:** Selected
+**Effort:** N/A
+**Dependencies:** P20-T7
+**Status:** Complete
 **Active Branch:** `codex/p20-t7-codegraph-compatibility-guard`
-**Last Archived:** P20-T6 CodeGraph Adapter Boundary
+**Last Archived:** P20-T7 CodeGraph Compatibility Guard
 
 ## Recently Archived
 
+- `P20-T7` added the pinned `codegraph-compatibility-report` guard for
+  validating the local `@colbymchenry/codegraph@0.9.7` compatibility fixture,
+  package integrity metadata, `optional_preprovisioned` binary policy,
+  `CODEGRAPH_NO_DOWNLOAD=1`, required JSON CLI commands with `--json`, and
+  fixture-backed normalization into `source_graph_index` without installing
+  CodeGraph, running npm/npx, accessing the network, or indexing third-party
+  repositories in ordinary CI.
 - `P20-T6` added the explicit opt-in `codegraph-source-graph-index` boundary
   for normalizing pre-existing CodeGraph JSON or SQLite evidence into
   `source_graph_index`, including untrusted optional-tool provenance, input and
@@ -33,15 +40,17 @@
 
 ## Description
 
-Add a pinned CodeGraph interface compatibility guard that verifies the expected
-package version, binary availability contract, CLI JSON flags, and normalized
-schema mapping without indexing third-party projects in ordinary CI.
+Phase 20 is complete. SpecHarvester now supports scoped source-unit harvesting,
+Tuist manifest parsing, scoped validation fixtures, source-unit draft intent
+boundaries, an explicit opt-in CodeGraph source graph adapter, and a pinned
+CodeGraph compatibility guard.
 
-This is the compatibility layer for the P20-T6 adapter boundary. Keep it focused
-on pinned metadata, fixture-backed CLI surface expectations, and normalized
-schema mapping. Do not add live repository indexing to ordinary CI.
+The CodeGraph integration remains bounded: compatibility checking uses local
+fixtures and optional explicitly provided executables only. Ordinary CI does not
+install CodeGraph, run npm/npx, download tools, access the network, or index
+third-party repositories.
 
 ## Next Step
 
-Run the BRANCH and PLAN commands for P20-T7 after the P20-T6 stacked PR is
-reviewed or when the maintainer asks to continue the stack.
+Open the P20-T7 stacked PR above P20-T6 and wait for review/CI before selecting
+any new phase.
