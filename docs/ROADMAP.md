@@ -524,7 +524,8 @@ Tasks:
   requirements
   ([`NEXT_CORPUS_SOURCE_MANIFEST.md`](NEXT_CORPUS_SOURCE_MANIFEST.md),
   `inputs/p33-next-corpus/repositories.yml`);
-- run deterministic collection and draft generation without AI;
+- record `P33-T3`, the deterministic collection and draft generation run without AI
+  ([`NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`](NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md));
 - run live local-model draft/enrichment with bounded JSON repair;
 - produce candidate-layer triage and selected handoff evidence;
 - run or coordinate SpecPM-side selected handoff preflight and record the next

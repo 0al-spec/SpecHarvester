@@ -160,6 +160,15 @@ Acceptance:
 - The run records source digests and package shape decisions.
 - The run stops before live AI if hard gates fail.
 
+Artifact:
+
+- [`NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`](NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md)
+  records the P33-T3 deterministic `--skip-ai` run. It processed all five
+  repositories, produced five preview candidates, produced zero relation
+  proposals, passed five bundle-set preflights, recorded package-id review
+  signals for `mcpm-sh` and `specgraph`, and is ready for P33-T4 live
+  local-model review.
+
 ### P33-T4 Live Local-Model Next-Corpus Dry Run
 
 Owner: SpecHarvester.

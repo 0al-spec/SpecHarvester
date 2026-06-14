@@ -41,8 +41,9 @@ The fixture does not accept packages, accept relations, create a SpecPM pull
 request, publish registry metadata, seed baselines, remove `preview_only`, or
 treat AI output as registry truth.
 
-The next step is P33-T3: deterministic collection and draft dry run over this
-source manifest.
+P33-T3 deterministic collection and draft evidence is recorded in
+<doc:NextCorpusDeterministicDryRun>. The next step is P33-T4: live local-model
+draft/enrichment dry run over this same source manifest.
 
 ## Source
 

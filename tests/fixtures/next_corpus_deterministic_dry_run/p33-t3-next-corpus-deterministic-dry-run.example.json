@@ -1,0 +1,238 @@
+{
+  "apiVersion": "spec-harvester.next-corpus-deterministic-dry-run/v0",
+  "authority": "producer_preview_evidence_only",
+  "corpus": {
+    "id": "p33-next-bounded-corpus",
+    "manifestPath": "inputs/p33-next-corpus/repositories.yml",
+    "repositories": [
+      "serena",
+      "transmission",
+      "mcpm-sh",
+      "specgraph",
+      "specpm"
+    ]
+  },
+  "kind": "SpecHarvesterNextCorpusDeterministicDryRun",
+  "nonAuthority": [
+    "This deterministic dry run is review evidence only.",
+    "It did not execute live local-model draft or enrichment providers.",
+    "It did not clone repositories, fetch remote state, install dependencies, execute harvested code, or run package scripts.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not seed baselines.",
+    "It does not remove preview_only.",
+    "It does not publish registry metadata.",
+    "It does not create a SpecPM pull request."
+  ],
+  "productVerdict": {
+    "candidateQuality": "valid_starter_packages_require_author_review",
+    "pipelineHealth": "deterministic_pipeline_passed",
+    "status": "ready_for_live_local_model_next_corpus",
+    "summary": "The deterministic P33 next-corpus run processed all five repositories with passing bundle-set preflight and author-ready draft stop-policy decisions. The corpus is ready for P33-T4 live local-model draft/enrichment review, while package-id alignment for mcpm-sh and specgraph remains candidate-layer review work."
+  },
+  "repositoryResults": [
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "blockerClasses": [],
+      "candidateIds": [
+        "serena.core"
+      ],
+      "collectionConfidence": "high",
+      "collectionStatus": "collected",
+      "id": "serena",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "entrypointCount": 165,
+        "packageCount": 2,
+        "status": "complete",
+        "symbolCount": 1906
+      },
+      "manifestPackageId": "serena.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToLiveModelReview": true,
+      "repository": "https://github.com/oraios/serena",
+      "revision": "892ef9cf19e2c154a75cb58f4b34c8589eada346",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    },
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "blockerClasses": [],
+      "candidateIds": [
+        "transmission.core"
+      ],
+      "collectionConfidence": "high",
+      "collectionStatus": "collected",
+      "id": "transmission",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "status": "skipped"
+      },
+      "manifestPackageId": "transmission.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToLiveModelReview": true,
+      "repository": "https://github.com/transmission/transmission",
+      "revision": "98fdf2dc0bfc77e537992ce50fa310b1c3ac636a",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    },
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "blockerClasses": [],
+      "candidateIds": [
+        "mcpm.system"
+      ],
+      "candidateLayerFindings": [
+        {
+          "id": "package_id_hint_changed_by_package_set_selection",
+          "severity": "review",
+          "summary": "The source manifest packageId hint is mcpm.core, while deterministic package-set drafting produced mcpm.system as the reviewable candidate id."
+        }
+      ],
+      "collectionConfidence": "high",
+      "collectionStatus": "collected",
+      "id": "mcpm-sh",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "entrypointCount": 107,
+        "packageCount": 2,
+        "status": "complete",
+        "symbolCount": 702
+      },
+      "manifestPackageId": "mcpm.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToLiveModelReview": true,
+      "repository": "https://github.com/pathintegral-institute/mcpm.sh",
+      "revision": "3a21496dbddffa8b352797aaa498fd4f4d094161",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    },
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "blockerClasses": [],
+      "candidateIds": [
+        "specgraph.system"
+      ],
+      "candidateLayerFindings": [
+        {
+          "id": "package_id_hint_changed_by_package_set_selection",
+          "severity": "review",
+          "summary": "The source manifest packageId hint is specgraph.core, while deterministic package-set drafting produced specgraph.system as the reviewable candidate id."
+        }
+      ],
+      "collectionConfidence": "high",
+      "collectionStatus": "collected",
+      "id": "specgraph",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "entrypointCount": 0,
+        "packageCount": 1,
+        "status": "complete",
+        "symbolCount": 0
+      },
+      "manifestPackageId": "specgraph.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToLiveModelReview": true,
+      "repository": "https://github.com/SoundBlaster/SpecGraph",
+      "revision": "2a3e247337acb8102bd4b1d00781c095acc59b16",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    },
+    {
+      "aiDraft": "skipped",
+      "aiEnrichment": "skipped",
+      "authorReadyDecision": "stop_for_author_review",
+      "authorReadyStatus": "author_ready_draft",
+      "blockerClasses": [],
+      "candidateIds": [
+        "specpm.core"
+      ],
+      "collectionConfidence": "high",
+      "collectionStatus": "collected",
+      "id": "specpm",
+      "interfaceIndex": {
+        "diagnosticCount": 0,
+        "entrypointCount": 13,
+        "packageCount": 2,
+        "status": "complete",
+        "symbolCount": 810
+      },
+      "manifestPackageId": "specpm.core",
+      "packageSetDraftStatus": "ok",
+      "preflight": {
+        "candidateCount": 1,
+        "errorCount": 0,
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "proceedToLiveModelReview": true,
+      "repository": "https://github.com/0al-spec/SpecPM",
+      "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+      "skippedPackageCount": 0,
+      "status": "passed"
+    }
+  ],
+  "schemaVersion": 1,
+  "source": {
+    "batchReportDigest": "sha256:ffcf06735fac8945f8633250b5761af3a233aca7450ce1a18e858aaccfced282",
+    "batchValidationReportDigest": "sha256:ef177176f518d3a5ae9db9ef28b6ed8ac59376cd1f02653a6d0f69b230ab550d",
+    "mode": "skip_ai",
+    "runRoot": "/tmp/specharvester-p33-t3.QV2pVD/deterministic",
+    "sourceManifestDigest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75"
+  },
+  "summary": {
+    "aiDraftSkippedCount": 5,
+    "aiEnrichmentSkippedCount": 5,
+    "candidateCount": 5,
+    "collectedCount": 5,
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 5,
+    "processedCount": 5,
+    "relationCount": 0,
+    "repositoryCount": 5,
+    "reviewFindingCount": 2,
+    "skippedPackageCount": 0
+  }
+}

@@ -129,6 +129,7 @@
 | P32-T7 | [P32-T7_Limited_Corpus_Intake_Readiness_Decision/](P32-T7_Limited_Corpus_Intake_Readiness_Decision/) | 2026-06-13 | PASS |
 | P33-T1 | [P33-T1_Bounded_Corpus_Expansion_Plan/](P33-T1_Bounded_Corpus_Expansion_Plan/) | 2026-06-13 | PASS |
 | P33-T2 | [P33-T2_Next-Corpus_Source_Manifest_Fixture/](P33-T2_Next-Corpus_Source_Manifest_Fixture/) | 2026-06-13 | PASS |
+| P33-T3 | [P33-T3_Deterministic_Next-Corpus_Dry_Run/](P33-T3_Deterministic_Next-Corpus_Dry_Run/) | 2026-06-13 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -141,6 +142,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t3_deterministic_next_corpus_dry_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t2_next_corpus_source_manifest_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t1_bounded_corpus_expansion_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p32_t7_limited_corpus_intake_readiness_decision.md` |
@@ -439,6 +441,8 @@
 | 2026-06-13 | P26-T3 | Archived REVIEW_p26_t3_package_set_proposal_intake_checklist report |
 | 2026-06-13 | P32-T1 | Archived Autonomous Deferred Candidate Work Plan (PASS) |
 | 2026-06-13 | P32-T1 | Archived REVIEW_p32_t1_autonomous_deferred_candidate_work_plan report |
+| 2026-06-13 | P33-T3 | Archived Deterministic Next-Corpus Dry Run (PASS) |
+| 2026-06-13 | P33-T3 | Archived REVIEW_p33_t3_deterministic_next_corpus_dry_run report |
 | 2026-06-11 | P27-T1 | Archived Author-Ready Draft Quality Bar (PASS) |
 | 2026-06-11 | P27-T2 | Archived Author-Ready Draft Quality Report (PASS) |
 | 2026-06-11 | P27-T2 | Archived REVIEW_p27_t2_author_ready_draft_quality_report report |

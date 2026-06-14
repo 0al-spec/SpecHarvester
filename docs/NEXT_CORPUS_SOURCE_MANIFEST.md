@@ -86,5 +86,7 @@ P33-T2 does not:
 - remove `preview_only`;
 - treat AI output as registry truth.
 
-The next step is P33-T3: deterministic collection and draft dry run over this
-source manifest.
+P33-T3 deterministic collection and draft evidence is recorded in
+[`NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md`](NEXT_CORPUS_DETERMINISTIC_DRY_RUN.md).
+The next step is P33-T4: live local-model draft/enrichment dry run over this
+same source manifest.
