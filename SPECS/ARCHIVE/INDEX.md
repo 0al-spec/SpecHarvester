@@ -255,6 +255,7 @@
 | 2026-06-14 | P35-T4 | Archived Multi-Ecosystem Seed Corpus Plan (PASS) |
 | 2026-06-14 | P35-T4 | Archived REVIEW_p35_t4_seed_corpus_plan report |
 | 2026-06-14 | P35-T5 | Archived Explainable Corpus Selection Report (PASS) |
+| 2026-06-14 | P35-T5 | Archived REVIEW_p35_t5_explainable_corpus_selection_report report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
