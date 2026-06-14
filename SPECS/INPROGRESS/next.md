@@ -1,25 +1,13 @@
-# Next Task: P33-T2 Next-Corpus Source Manifest Fixture
+# Next Task: P33-T3 Deterministic Next-Corpus Dry Run
 
 **Status:** Selected
 **Selected:** 2026-06-13
-**Task:** P33-T2 Next-Corpus Source Manifest Fixture
+**Task:** P33-T3 Deterministic Next-Corpus Dry Run
 **Phase:** Phase 33. Bounded Corpus Expansion Planning
-**Last Archived:** P33-T1 Bounded Corpus Expansion Plan
+**Last Archived:** P33-T2 Next-Corpus Source Manifest Fixture
 
 ## Recently Archived
 
-- `P32-T7` recorded the limited corpus intake readiness decision in
-  `docs/LIMITED_CORPUS_INTAKE_READINESS_DECISION.md`,
-  `<doc:LimitedCorpusIntakeReadinessDecision>`, and
-  `tests/fixtures/limited_corpus_intake_readiness_decision/p32-t7-limited-corpus-intake-readiness-decision.example.json`.
-  The fixture identity is
-  `SpecHarvesterLimitedCorpusIntakeReadinessDecision`, and the decision is
-  `ready_for_author_maintainer_review_with_explicit_deferral`: selected
-  preview candidates `flask.core`, `gin.core`, `docc2context.core`,
-  `xyflow.workspace`, `xyflow.react`, `xyflow.svelte`, `xyflow.system`, and
-  `navigation_split_view.core` are ready for author/maintainer review,
-  `cupertino.core` remains deferred on `refined_summary_missing`, and broader
-  autonomous scraping requires a separate follow-up task.
 - `P33-T1` recorded the bounded corpus expansion plan in
   `docs/BOUNDED_CORPUS_EXPANSION_PLAN.md`,
   `<doc:BoundedCorpusExpansionPlan>`, and
@@ -31,24 +19,37 @@
   SpecPM-side selected handoff preflight, stop conditions, and keeps the result
   as review evidence only. It does not accept packages, does not accept
   relations, and does not remove `preview_only`.
+- `P33-T2` recorded the next-corpus source manifest fixture in
+  `docs/NEXT_CORPUS_SOURCE_MANIFEST.md`,
+  `<doc:NextCorpusSourceManifest>`,
+  `inputs/p33-next-corpus/repositories.yml`, and
+  `tests/fixtures/next_corpus_source_manifest/p33-t2-next-corpus-source-manifest.example.json`.
+  The fixture identity is `SpecHarvesterNextCorpusSourceManifestFixture` with
+  `apiVersion: spec-harvester.next-corpus-source-manifest/v0`. It selects
+  `serena`, `transmission`, `mcpm-sh`, `specgraph`, and `specpm`, records exact
+  pinned revisions, allows no network discovery, and remains review evidence
+  only. It does not clone, does not fetch, does not install dependencies, and
+  does not execute harvested code.
 
 ## Current Selection
 
-Implement `P33-T2`: add the next-corpus source manifest fixture.
+Implement `P33-T3`: run the deterministic collection and draft dry run over
+`inputs/p33-next-corpus/repositories.yml` without AI.
 
-The fixture must define:
+The dry run must record:
 
-- no more than five repositories;
-- repository IDs;
-- local checkout paths;
-- pinned revisions;
-- selection rationale;
-- expected package shape;
-- no network discovery behavior.
+- candidate counts;
+- relation counts, if any;
+- preflight outcomes;
+- blocker classes;
+- source manifest digest;
+- whether every repository can proceed to live local-model review.
 
 ## Boundaries
 
-This task must not clone repositories, fetch remote state, install
-dependencies, execute harvested code, run package scripts, publish registry
-metadata, accept packages, accept relations, seed baselines, remove
-`preview_only`, or treat AI output as registry truth.
+This task must not run live local-model calls, clone repositories, fetch remote
+state, install dependencies, execute harvested code, run package scripts,
+publish registry metadata, accept packages, accept relations, seed baselines,
+remove `preview_only`, or treat AI output as registry truth.
+
+It must not accept packages and must not publish registry metadata.

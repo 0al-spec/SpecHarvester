@@ -22,6 +22,12 @@ package, accept a relation, seed a baseline, remove `preview_only`, or publish
 registry metadata. The next-corpus result stops at author/maintainer review
 evidence unless a later SpecPM maintainer acceptance flow is explicitly opened.
 
+P33-T2 records the next-corpus source manifest in
+<doc:NextCorpusSourceManifest>. The source manifest is
+`inputs/p33-next-corpus/repositories.yml`, and the companion fixture is
+`SpecHarvesterNextCorpusSourceManifestFixture` with
+`apiVersion: spec-harvester.next-corpus-source-manifest/v0`.
+
 ## Source Manifest
 
 `P33-T2` must add the next-corpus source manifest fixture before any scrape

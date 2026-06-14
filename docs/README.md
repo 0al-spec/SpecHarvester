@@ -175,6 +175,10 @@ Published DocC site:
     P33-T1 bounded next-corpus expansion plan with source manifest
     requirements, five-repository limit, validation gates, stop conditions, and
     non-authority boundary
+62. [`NEXT_CORPUS_SOURCE_MANIFEST.md`](NEXT_CORPUS_SOURCE_MANIFEST.md):
+    P33-T2 next-corpus source manifest fixture for `serena`, `transmission`,
+    `mcpm-sh`, `specgraph`, and `specpm` with pinned local checkout revisions
+    and no network discovery behavior
 60. [`AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`](AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md):
     first mixed Flask/Gin/xyflow corpus baseline with deterministic and live
     LM Studio gap classifications

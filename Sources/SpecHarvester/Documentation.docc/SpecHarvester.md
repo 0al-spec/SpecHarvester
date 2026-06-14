@@ -88,6 +88,7 @@ The canonical source files remain in the repository:
 - `docs/AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`
 - `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`
 - `docs/BOUNDED_CORPUS_EXPANSION_PLAN.md`
+- `docs/NEXT_CORPUS_SOURCE_MANIFEST.md`
 - `docs/XYFLOW_PACKAGE_SET_IDENTITY_REGENERATION_DRY_RUN.md`
 - `docs/SINGLE_PACKAGE_DEFERRED_CANDIDATE_REGENERATION_DRY_RUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_CORPUS_BASELINE.md`
@@ -172,6 +173,7 @@ the host.
 - <doc:AutonomousCandidateIntakePolicy>
 - <doc:AutonomousCandidateTechDebtPlan>
 - <doc:BoundedCorpusExpansionPlan>
+- <doc:NextCorpusSourceManifest>
 - <doc:DeferredCandidateRegenerationRunbook>
 - <doc:XyflowPackageSetIdentityRegenerationDryRun>
 - <doc:SinglePackageDeferredCandidateRegenerationDryRun>

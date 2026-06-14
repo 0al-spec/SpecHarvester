@@ -1191,9 +1191,11 @@ Acceptance:
   defining the next source manifest requirements, five-repository limit,
   validation gate, stop conditions, author/maintainer handoff, and
   non-authority boundary before any broader autonomous scraping continues.
-- [ ] `P33-T2` Add the next-corpus source manifest fixture with pinned local
-  checkout requirements, repository selection rationale, and no network
-  discovery behavior.
+- [x] `P33-T2` Add the next-corpus source manifest fixture in
+  [`NEXT_CORPUS_SOURCE_MANIFEST.md`](../docs/NEXT_CORPUS_SOURCE_MANIFEST.md)
+  and `inputs/p33-next-corpus/repositories.yml` with pinned local checkout
+  requirements, repository selection rationale, and no network discovery
+  behavior.
 - [ ] `P33-T3` Run the next-corpus deterministic collection and draft dry run
   without AI, recording candidate counts, preflight outcomes, and blocker
   classes.

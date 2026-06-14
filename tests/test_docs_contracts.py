@@ -10,6 +10,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P33-T3 Deterministic Next-Corpus Dry Run" in next_text:
+        assert_p33_t2_last_archived(next_text)
+        assert_p33_t1_recent(next_text)
+        assert_p33_t2_recent(next_text)
+        assert_phase_33_t3_active(next_text)
+        return
+
     if "# Next Task: P33-T2 Next-Corpus Source Manifest Fixture" in next_text:
         assert_p33_t1_last_archived(next_text)
         assert_p32_t7_recent(next_text)
@@ -475,6 +482,10 @@ def assert_p32_t7_last_archived(next_text: str) -> None:
 
 def assert_p33_t1_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P33-T1 Bounded Corpus Expansion Plan" in next_text
+
+
+def assert_p33_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P33-T2 Next-Corpus Source Manifest Fixture" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -1343,6 +1354,28 @@ def assert_p33_t1_recent(next_text: str) -> None:
     assert "does not remove `preview_only`" in normalized
 
 
+def assert_p33_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P33-T2` recorded the next-corpus source manifest fixture" in next_text
+    assert "NEXT_CORPUS_SOURCE_MANIFEST.md" in next_text
+    assert "NextCorpusSourceManifest" in next_text
+    assert "SpecHarvesterNextCorpusSourceManifestFixture" in next_text
+    assert "spec-harvester.next-corpus-source-manifest/v0" in next_text
+    assert "inputs/p33-next-corpus/repositories.yml" in next_text
+    assert "serena" in next_text
+    assert "transmission" in next_text
+    assert "mcpm-sh" in next_text
+    assert "specgraph" in next_text
+    assert "specpm" in next_text
+    assert "exact pinned revisions" in normalized
+    assert "no network discovery" in normalized
+    assert "review evidence only" in normalized
+    assert "does not clone" in normalized
+    assert "does not fetch" in normalized
+    assert "does not install dependencies" in normalized
+    assert "does not execute harvested code" in normalized
+
+
 def assert_phase_26_complete(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: Phase 26 Complete" in next_text
@@ -1409,6 +1442,22 @@ def assert_phase_33_t2_active(next_text: str) -> None:
     assert "fetch" in normalized
     assert "install dependencies" in normalized
     assert "execute harvested code" in normalized
+
+
+def assert_phase_33_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P33-T3 Deterministic Next-Corpus Dry Run" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Selected" in next_text
+    assert "Phase 33. Bounded Corpus Expansion Planning" in next_text
+    assert "deterministic collection and draft dry run" in normalized
+    assert "inputs/p33-next-corpus/repositories.yml" in next_text
+    assert "without AI" in normalized
+    assert "candidate counts" in normalized
+    assert "preflight outcomes" in normalized
+    assert "blocker classes" in normalized
+    assert "must not run live local-model" in normalized
+    assert "must not accept packages" in normalized
+    assert "must not publish registry metadata" in normalized
 
 
 def assert_phase_26_t3_active(next_text: str) -> None:
@@ -5640,6 +5689,143 @@ def test_bounded_corpus_expansion_plan_records_p33_t1_contract() -> None:
         assert "BoundedCorpusExpansionPlan" in text
         assert "P33-T1" in text
         assert "five-repository" in text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_next_corpus_source_manifest_records_p33_t2_contract() -> None:
+    manifest_path = ROOT / "inputs" / "p33-next-corpus" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "next_corpus_source_manifest"
+        / "p33-t2-next-corpus-source-manifest.example.json"
+    )
+    github_doc = ROOT / "docs" / "NEXT_CORPUS_SOURCE_MANIFEST.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "NextCorpusSourceManifest.md"
+    )
+    bounded_plan = ROOT / "docs" / "BOUNDED_CORPUS_EXPANSION_PLAN.md"
+    bounded_plan_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "BoundedCorpusExpansionPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Next-Corpus Source Manifest",
+            "P33-T2",
+            "SpecHarvesterNextCorpusSourceManifestFixture",
+            "spec-harvester.next-corpus-source-manifest/v0",
+            "inputs/p33-next-corpus/repositories.yml",
+            "p33-t2-next-corpus-source-manifest.example.json",
+            "exactly five repositories",
+            "serena",
+            "transmission",
+            "mcpm-sh",
+            "specgraph",
+            "specpm",
+            "single_python_agent_toolkit",
+            "multi_component_c_cxx_application",
+            "mixed_javascript_python_registry_tool",
+            "javascript_spec_graph_tool",
+            "swift_python_registry_tooling",
+            "pinned revision" if path == github_doc else "exact pinned revision",
+            "no network discovery",
+            "clone repositories",
+            "fetch remote state",
+            "install dependencies",
+            "execute harvested repository code",
+            "run package scripts",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "AI output as registry truth",
+            "P33-T3",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.next-corpus-source-manifest/v0"
+    assert payload["kind"] == "SpecHarvesterNextCorpusSourceManifestFixture"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_preview_evidence_only"
+    assert payload["task"] == {
+        "id": "P33-T2",
+        "phase": "Phase 33. Bounded Corpus Expansion Planning",
+        "status": "planned",
+    }
+    assert payload["sourceManifest"] == {
+        "path": "inputs/p33-next-corpus/repositories.yml",
+        "digest": "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+        "entryCount": 5,
+        "maximumRepositoryCount": 5,
+        "allEntriesPinnedByRevision": True,
+        "usesNetworkDiscovery": False,
+    }
+    assert payload["localOnlyPolicy"] == {
+        "requiresExistingCheckouts": True,
+        "cloneAllowed": False,
+        "fetchAllowed": False,
+        "dependencyInstallAllowed": False,
+        "harvestedCodeExecutionAllowed": False,
+        "packageScriptsAllowed": False,
+        "networkDiscoveryAllowed": False,
+    }
+    assert payload["nonAuthority"] == {
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "createsSpecPMPullRequest": False,
+        "producerEvidenceOnly": True,
+        "publishesRegistryMetadata": False,
+        "removesPreviewOnly": False,
+        "seedsBaselines": False,
+        "treatsAIOutputAsRegistryTruth": False,
+    }
+    assert payload["nextTask"] == "P33-T3"
+
+    records = read_repository_source_manifests(ROOT / "inputs" / "p33-next-corpus")
+    assert [record["id"] for record in records] == [
+        "serena",
+        "transmission",
+        "mcpm-sh",
+        "specgraph",
+        "specpm",
+    ]
+    fixture_by_id = {repository["id"]: repository for repository in payload["repositories"]}
+    assert set(fixture_by_id) == {record["id"] for record in records}
+    for index, record in enumerate(records):
+        fixture = fixture_by_id[record["id"]]
+        assert record["sourceManifest"] == {"path": "repositories.yml", "entryIndex": index}
+        assert record["repository"] == fixture["repository"]
+        assert record["revision"] == fixture["revision"]
+        assert record["ref"] is None
+        assert record["checkout"] == fixture["checkout"]
+        assert record["packageId"] == fixture["packageId"]
+        assert record["labels"] == fixture["labels"]
+        assert fixture["expectedPackageShape"]
+        assert fixture["selectionRationale"]
+
+    assert "NEXT_CORPUS_SOURCE_MANIFEST.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:NextCorpusSourceManifest>" in docc_root.read_text(encoding="utf-8")
+    for path in (bounded_plan, roadmap, workplan):
+        text = path.read_text(encoding="utf-8")
+        assert "NEXT_CORPUS_SOURCE_MANIFEST.md" in text
+        assert "P33-T2" in text
+        assert "inputs/p33-next-corpus/repositories.yml" in text
+    for path in (bounded_plan_docc, roadmap_docc):
+        text = path.read_text(encoding="utf-8")
+        assert "NextCorpusSourceManifest" in text
+        assert "P33-T2" in text
+        assert "inputs/p33-next-corpus/repositories.yml" in text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

@@ -520,8 +520,10 @@ Tasks:
 
 - record `P33-T1`, the bounded corpus expansion plan
   ([`BOUNDED_CORPUS_EXPANSION_PLAN.md`](BOUNDED_CORPUS_EXPANSION_PLAN.md));
-- add the next-corpus source manifest fixture with pinned local checkout
-  requirements;
+- add `P33-T2`, the next-corpus source manifest fixture with pinned local checkout
+  requirements
+  ([`NEXT_CORPUS_SOURCE_MANIFEST.md`](NEXT_CORPUS_SOURCE_MANIFEST.md),
+  `inputs/p33-next-corpus/repositories.yml`);
 - run deterministic collection and draft generation without AI;
 - run live local-model draft/enrichment with bounded JSON repair;
 - produce candidate-layer triage and selected handoff evidence;
