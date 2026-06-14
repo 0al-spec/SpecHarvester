@@ -2143,7 +2143,8 @@ def assert_phase_34_t1_active(next_text: str) -> None:
 def assert_phase_34_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P34-T2 Autonomous Batch AI Enriched Preview Output" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`codex/p34-t2-autonomous-ai-enriched-output`" in next_text
     assert "Phase 34. AI-Enabled Candidate Curation" in next_text
     assert "P34-T1 made AI enrichment practically applicable" in normalized
     assert "explicit operator command" in normalized
@@ -5281,11 +5282,18 @@ def test_autonomous_candidate_batch_docs_cover_local_lm_studio_boundary() -> Non
             "LM Studio",
             "openai/gpt-oss-20b",
             "--skip-ai",
+            "--apply-ai-enrichment",
+            "aiEnrichedPreview",
+            "ai-enrichment-candidate-patch.json",
+            "enriched preview candidates",
             "autonomous_popular_mvp",
             "preview_only",
             "does not clone repositories",
             "execute harvested code",
             "install dependencies",
+            "does not accept packages",
+            "does not accept relations",
+            "does not remove `preview_only`",
             "SpecPM remains",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"

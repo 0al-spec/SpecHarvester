@@ -16,6 +16,18 @@ python3 -m spec_harvester autonomous-candidate-batch \
   --json-repair-max-attempts 1
 ```
 
+Opt in to copied AI-enriched preview candidates:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --lm-studio-base-url http://127.0.0.1:1234 \
+  --lm-studio-model openai/gpt-oss-20b \
+  --json-repair-max-attempts 1 \
+  --apply-ai-enrichment
+```
+
 Run without model calls for CI or offline smoke:
 
 ```bash
@@ -40,6 +52,7 @@ source manifest
   -> draft-package-set
   -> preflight-bundle-set
   -> optional local LM Studio AI draft/enrichment proposals
+  -> optional copied AI-enriched preview candidates
   -> autonomous-candidate-batch-report.json
 ```
 
@@ -60,6 +73,21 @@ Report identity:
 
 Generated package files remain `preview_only` producer evidence. SpecPM remains
 the validation, acceptance, relation, and registry authority.
+
+When `--apply-ai-enrichment` is set, clean
+`SpecHarvesterPackageSetAIEnrichmentProposal` artifacts can be applied through
+the deterministic `apply-ai-enrichment-proposal` helper into
+`package-sets/<repository-id>/enriched/<package-id>/`. Each copied candidate
+keeps `preview_only` and receives `ai-enrichment-candidate-patch.json`.
+
+The `aiEnrichedPreview` report section records applied, skipped, and failed
+counts. Warning-bearing, failed, missing, or package-misaligned AI enrichment
+proposals remain sidecar-only and are counted as skipped.
+
+This mode does not accept packages, does not accept relations, does not remove
+`preview_only`, does not mutate source candidates, does not publish registry
+metadata, does not create a SpecPM pull request, and does not treat AI output
+as upstream project endorsement.
 
 Live AI mode uses bounded JSON repair for malformed local provider output.
 `--json-repair-max-attempts` limits repair prompts per model call. Batch AI
