@@ -22,6 +22,14 @@
     {
       "candidateLayerStatus": "needs_regeneration",
       "handoffStatus": "explicitly_deferred_from_intake_readiness",
+      "id": "transmission.core",
+      "reason": "Multi-component package boundary needs regeneration or explicit maintainer approval before intake readiness.",
+      "repositoryId": "transmission",
+      "requiredAction": "Select a Transmission package boundary and regenerate AI draft evidence before selected handoff."
+    },
+    {
+      "candidateLayerStatus": "needs_regeneration",
+      "handoffStatus": "explicitly_deferred_from_intake_readiness",
       "id": "mcpm.system",
       "reason": "Package identity drift and warning-bearing AI draft evidence must be regenerated or explicitly approved before selected handoff.",
       "repositoryId": "mcpm-sh",
@@ -39,20 +47,20 @@
   "inputs": {
     "candidateLayerTriageFixture": {
       "apiVersion": "spec-harvester.next-corpus-candidate-layer-triage/v0",
-      "digest": "sha256:3249d6c2837a35ec2934fd31a263741d28a7744f2372f7a4860efd0ad923b459",
+      "digest": "sha256:c25a809a3b4cd708b2e92a747c3c645a5e0cf6e2ff1e6462b0be6bc483e5ddda",
       "kind": "SpecHarvesterNextCorpusCandidateLayerTriage",
       "path": "tests/fixtures/next_corpus_candidate_layer_triage/p33-t5-next-corpus-candidate-layer-triage.example.json",
       "status": "selected_candidates_triaged"
     },
     "durableSelectedHandoff": {
       "apiVersion": "spec-harvester.selected-candidate-handoff-proposal/v0",
-      "digest": "sha256:e10b7ced92ccd8662fd09e9ddf72613cfea863d9cc589d6a6f9d86cc7ca149b4",
+      "digest": "sha256:5c123efee4df41c5fc54cfe5ae2bd7f29d20ca8ea8e0cf4c90ba6f7754703658",
       "kind": "SpecHarvesterSelectedCandidateHandoffProposal",
       "path": "tests/fixtures/next_corpus_durable_selected_handoff/p33-t7-next-corpus-selected-handoff.example.json",
       "status": "specpm_preflight_passed"
     },
     "sourceManifest": {
-      "digest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75",
+      "digest": "sha256:51ecc86773bf53d968fec1387dbdddd79c8066c351e704998ff54137b0518133",
       "path": "inputs/p33-next-corpus/repositories.yml"
     },
     "specpmPreflight": {
@@ -62,11 +70,11 @@
       "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
       "status": "passed",
       "summary": {
-        "deferredCandidateCount": 2,
+        "deferredCandidateCount": 3,
         "digestVerifiedCount": 1,
         "errorCount": 0,
         "requiredEvidenceRoleCount": 4,
-        "selectedCandidateCount": 3,
+        "selectedCandidateCount": 2,
         "warningCount": 0
       }
     }
@@ -118,19 +126,6 @@
     {
       "candidateLayerStatus": "candidate_layer_review_required",
       "handoffStatus": "ready_for_author_maintainer_review",
-      "id": "transmission.core",
-      "maintainerAction": "review_for_possible_specpm_intake",
-      "previewOnly": true,
-      "registryAcceptanceDecision": {
-        "producerAuthority": "evidence_only",
-        "requiredFor": "public_index_acceptance",
-        "status": "external_required"
-      },
-      "repositoryId": "transmission"
-    },
-    {
-      "candidateLayerStatus": "candidate_layer_review_required",
-      "handoffStatus": "ready_for_author_maintainer_review",
       "id": "specpm.core",
       "maintainerAction": "review_for_possible_specpm_intake",
       "previewOnly": true,
@@ -143,11 +138,11 @@
     }
   ],
   "summary": {
-    "deferredCandidateCount": 2,
+    "deferredCandidateCount": 3,
     "preflightErrorCount": 0,
     "preflightWarningCount": 0,
     "registryMutationCount": 0,
-    "selectedCandidateCount": 3,
+    "selectedCandidateCount": 2,
     "specpmPreflightStatus": "passed",
     "specpmPullRequestCreated": false
   }

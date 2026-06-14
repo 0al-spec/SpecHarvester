@@ -88,6 +88,7 @@ Safe command shape:
 ```bash
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
   inputs/limited-popular-libraries \
+  --select xyflow \
   --out .smoke/p32-deferred-regeneration/<attempt-id>/xyflow \
   --lm-studio-base-url http://127.0.0.1:1234 \
   --lm-studio-model openai/gpt-oss-20b \
@@ -100,12 +101,12 @@ proposal commands:
 ```bash
 PYTHONPATH=src python -m spec_harvester package-set-ai-draft-proposal \
   .smoke/p32-deferred-regeneration/<attempt-id>/xyflow/collected/xyflow/workspace-inventory.json \
-  --source-checkout ../../../../xyflow \
+  --source-checkout ../../../xyflow \
   --request-output .smoke/p32-deferred-regeneration/<attempt-id>/xyflow/ai-draft/request.json
 
 PYTHONPATH=src python -m spec_harvester package-set-ai-enrichment-proposal \
   --bundle-set .smoke/p32-deferred-regeneration/<attempt-id>/xyflow/package-sets/xyflow \
-  --source-checkout ../../../../xyflow \
+  --source-checkout ../../../xyflow \
   --request-output .smoke/p32-deferred-regeneration/<attempt-id>/xyflow/ai-enrichment/request.json
 ```
 
@@ -142,6 +143,7 @@ Safe command shape:
 ```bash
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
   inputs/limited-popular-libraries \
+  --select cupertino \
   --out .smoke/p32-deferred-regeneration/<attempt-id>/cupertino \
   --lm-studio-base-url http://127.0.0.1:1234 \
   --lm-studio-model openai/gpt-oss-20b \
@@ -196,6 +198,7 @@ Safe command shape after the canonical id decision:
 ```bash
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
   inputs/limited-popular-libraries \
+  --select navigation-split-view \
   --out .smoke/p32-deferred-regeneration/<attempt-id>/navigation-split-view \
   --lm-studio-base-url http://127.0.0.1:1234 \
   --lm-studio-model openai/gpt-oss-20b \

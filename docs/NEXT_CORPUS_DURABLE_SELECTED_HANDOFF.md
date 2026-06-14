@@ -26,16 +26,16 @@ Its identity is:
 
 ## Selected Candidates
 
-The durable handoff contains three selected candidates:
+The durable handoff contains two selected candidates:
 
 | Candidate | Repository | Maintainer action |
 | --- | --- | --- |
 | `serena.core` | `serena` | `review_for_possible_specpm_intake` |
-| `transmission.core` | `transmission` | `review_for_possible_specpm_intake` |
 | `specpm.core` | `specpm` | `review_for_possible_specpm_intake` |
 
 Every selected candidate remains `previewOnly: true`, carries producer
-preflight status `passed`, has static viewer status `ok`, and keeps
+preflight status `passed`, has static viewer status `unknown` because no
+committed viewer artifact is available, and keeps
 `registryAcceptanceDecision.status: external_required`.
 
 ## Deferred Candidates
@@ -44,6 +44,7 @@ The durable handoff excludes:
 
 | Candidate | Reason |
 | --- | --- |
+| `transmission.core` | multi-component package boundary needs regeneration or explicit approval |
 | `mcpm.system` | package identity drift plus warning-bearing AI draft evidence |
 | `specgraph.system` | package identity drift |
 
@@ -72,8 +73,8 @@ The durable handoff passed the current SpecPM selected handoff preflight:
 ```bash
 PYTHONPATH=src python3 -m specpm.cli producer-bundle \
   preflight-selected-candidate-handoff \
-  --body /Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/next_corpus_durable_selected_handoff/p33-t7-next-corpus-selected-handoff.example.json \
-  --root /Users/egor/Development/GitHub/0AL/SpecHarvester \
+  --body tests/fixtures/next_corpus_durable_selected_handoff/p33-t7-next-corpus-selected-handoff.example.json \
+  --root . \
   --json
 ```
 
@@ -89,8 +90,8 @@ Summary:
 {
   "status": "passed",
   "summary": {
-    "selectedCandidateCount": 3,
-    "deferredCandidateCount": 2,
+    "selectedCandidateCount": 2,
+    "deferredCandidateCount": 3,
     "requiredEvidenceRoleCount": 4,
     "digestVerifiedCount": 1,
     "errorCount": 0,
@@ -99,7 +100,7 @@ Summary:
 }
 ```
 
-Counter summary: selectedCandidateCount: 3, deferredCandidateCount: 2,
+Counter summary: selectedCandidateCount: 2, deferredCandidateCount: 3,
 requiredEvidenceRoleCount: 4, digestVerifiedCount: 1, zero warnings, and zero
 errors.
 
@@ -111,7 +112,7 @@ not make any candidate an accepted registry package.
 The next bounded follow-up is recorded in
 [`NEXT_CORPUS_INTAKE_READINESS_DECISION.md`](NEXT_CORPUS_INTAKE_READINESS_DECISION.md):
 the preflighted selected scope is ready for author/maintainer review with
-explicit deferral for `mcpm.system` and `specgraph.system`.
+explicit deferral for `transmission.core`, `mcpm.system`, and `specgraph.system`.
 
 ## Non-Authority Boundary
 

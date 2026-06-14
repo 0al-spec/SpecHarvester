@@ -43,10 +43,10 @@ attempts, recorded `76291` provider tokens, and is ready for P33-T5
 candidate-layer triage.
 
 P33-T5 records candidate-layer triage in
-<doc:NextCorpusCandidateLayerTriage>. It selects `serena.core`,
-`transmission.core`, and `specpm.core` for P33-T6 selected handoff preflight,
-keeps `mcpm.system` and `specgraph.system` deferred, and records zero blocked
-or not-for-intake candidates.
+<doc:NextCorpusCandidateLayerTriage>. It selects `serena.core` and
+`specpm.core` for P33-T6 selected handoff preflight, keeps
+`transmission.core`, `mcpm.system`, and `specgraph.system` deferred, and
+records zero blocked or not-for-intake candidates.
 
 P33-T6 records the consumer boundary in
 <doc:NextCorpusSpecPMPreflightIntakeDecision>. The current SpecPM selected
@@ -60,8 +60,8 @@ warnings or errors.
 
 P33-T8 records the intake readiness decision in
 <doc:NextCorpusIntakeReadinessDecision>. The selected candidates
-`serena.core`, `transmission.core`, and `specpm.core` are ready for
-author/maintainer review with explicit deferral for `mcpm.system` and
+`serena.core` and `specpm.core` are ready for author/maintainer review with
+explicit deferral for `transmission.core`, `mcpm.system`, and
 `specgraph.system`.
 
 ## Source Manifest

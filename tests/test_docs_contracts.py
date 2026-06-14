@@ -1803,8 +1803,8 @@ def assert_p33_t5_recent(next_text: str) -> None:
     assert "specpm.core" in next_text
     assert "mcpm.system" in next_text
     assert "specgraph.system" in next_text
-    assert "three selected" in normalized
-    assert "two deferred" in normalized
+    assert "two selected" in normalized
+    assert "three deferred" in normalized
     assert "zero blocked" in normalized
     assert "zero not-for-intake" in normalized
     assert "ready_for_p33_t6_selected_handoff_preflight" in next_text
@@ -1992,8 +1992,8 @@ def assert_p33_t7_recent(next_text: str) -> None:
     assert "mcpm.system" in next_text
     assert "specgraph.system" in next_text
     assert "four committed evidence roles" in normalized
-    assert "selectedCandidateCount: 3" in next_text
-    assert "deferredCandidateCount: 2" in next_text
+    assert "selectedCandidateCount: 2" in next_text
+    assert "deferredCandidateCount: 3" in next_text
     assert "requiredEvidenceRoleCount: 4" in next_text
     assert "digestVerifiedCount: 1" in next_text
     assert "zero warnings" in normalized
@@ -2038,8 +2038,8 @@ def assert_p33_t8_recent(next_text: str) -> None:
     assert "specpm.core" in next_text
     assert "mcpm.system" in next_text
     assert "specgraph.system" in next_text
-    assert "selectedCandidateCount: 3" in next_text
-    assert "deferredCandidateCount: 2" in next_text
+    assert "selectedCandidateCount: 2" in next_text
+    assert "deferredCandidateCount: 3" in next_text
     assert "SpecPM preflight status: passed" in next_text
     assert "zero warnings" in normalized
     assert "zero errors" in normalized
@@ -6656,6 +6656,7 @@ def test_next_corpus_deterministic_dry_run_records_p33_t3_contract() -> None:
         "It does not create a SpecPM pull request.",
     ):
         assert forbidden in payload["nonAuthority"]
+    assert payload["nonAuthorityFlags"] == {"treatsAIOutputAsRegistryTruth": False}
 
     records = read_repository_source_manifests(ROOT / "inputs" / "p33-next-corpus")
     record_by_id = {record["id"]: record for record in records}
@@ -7055,31 +7056,31 @@ def test_next_corpus_candidate_layer_triage_records_p33_t5_contract() -> None:
     }
     assert payload["summary"] == {
         "blockedCandidateCount": 0,
-        "candidateLayerReviewRequiredCount": 3,
-        "deferredCandidateCount": 2,
+        "candidateLayerReviewRequiredCount": 2,
+        "deferredCandidateCount": 3,
         "findingBlockedCount": 0,
         "findingCandidateLayerReviewRequiredCount": 2,
-        "findingGroupCount": 4,
-        "findingNeedsRegenerationCount": 2,
+        "findingGroupCount": 5,
+        "findingNeedsRegenerationCount": 3,
         "findingNotForIntakeCount": 0,
-        "needsRegenerationCandidateCount": 2,
+        "needsRegenerationCandidateCount": 3,
         "notForIntakeCandidateCount": 0,
-        "p33T6SelectedCandidateCount": 3,
+        "p33T6SelectedCandidateCount": 2,
         "previewCandidateCount": 5,
         "relationProposalCount": 0,
         "repositoryCount": 5,
-        "uniqueFindingCodeCount": 3,
+        "uniqueFindingCodeCount": 4,
     }
-    assert payload["selectedForP33T6"] == ["serena.core", "transmission.core", "specpm.core"]
+    assert payload["selectedForP33T6"] == ["serena.core", "specpm.core"]
     assert payload["productVerdict"] == {
         "candidateQuality": "selected_candidates_ready_for_consumer_preflight",
         "pipelineHealth": "deterministic_and_live_evidence_triaged",
         "status": "ready_for_p33_t6_selected_handoff_preflight",
         "summary": (
-            "Proceed to P33-T6 only for serena.core, transmission.core, and "
-            "specpm.core. Keep mcpm.system and specgraph.system deferred until "
-            "package identity drift and warning-bearing AI draft evidence are "
-            "resolved or explicitly approved."
+            "Proceed to P33-T6 only for serena.core and specpm.core. Keep "
+            "transmission.core, mcpm.system, and specgraph.system deferred until "
+            "multi-component package boundaries, package identity drift, and "
+            "warning-bearing AI draft evidence are resolved or explicitly approved."
         ),
     }
     assert set(payload["triagePolicy"]) == {
@@ -7102,27 +7103,29 @@ def test_next_corpus_candidate_layer_triage_records_p33_t5_contract() -> None:
         for candidate_id, candidate in candidates.items()
         if candidate["p33T6Selected"] is True
     }
-    assert selected == {"serena.core", "transmission.core", "specpm.core"}
+    assert selected == {"serena.core", "specpm.core"}
     deferred = {
         candidate_id
         for candidate_id, candidate in candidates.items()
         if candidate["p33T6Selected"] is False
     }
-    assert deferred == {"mcpm.system", "specgraph.system"}
+    assert deferred == {"transmission.core", "mcpm.system", "specgraph.system"}
     review_required = {
         candidate_id
         for candidate_id, candidate in candidates.items()
         if candidate["classification"] == "candidate_layer_review_required"
     }
-    assert review_required == {"serena.core", "transmission.core", "specpm.core"}
+    assert review_required == {"serena.core", "specpm.core"}
     needs_regeneration = {
         candidate_id
         for candidate_id, candidate in candidates.items()
         if candidate["classification"] == "needs_regeneration"
     }
-    assert needs_regeneration == {"mcpm.system", "specgraph.system"}
+    assert needs_regeneration == {"transmission.core", "mcpm.system", "specgraph.system"}
     assert candidates["serena.core"]["findingCodes"] == ["ai_draft_no_proposal_subjects"]
-    assert candidates["transmission.core"]["findingCodes"] == ["ai_draft_no_proposal_subjects"]
+    assert candidates["transmission.core"]["findingCodes"] == [
+        "multi_component_empty_ai_draft_subjects"
+    ]
     assert candidates["specpm.core"]["findingCodes"] == ["ai_draft_warning_diagnostics"]
     assert candidates["mcpm.system"]["findingCodes"] == [
         "package_id_hint_changed_by_package_set_selection",
@@ -7142,7 +7145,12 @@ def test_next_corpus_candidate_layer_triage_records_p33_t5_contract() -> None:
         (
             "ai_draft_no_proposal_subjects",
             "candidate_layer_review_required",
-            ("serena.core", "transmission.core"),
+            ("serena.core",),
+        ),
+        (
+            "multi_component_empty_ai_draft_subjects",
+            "needs_regeneration",
+            ("transmission.core",),
         ),
         (
             "ai_draft_warning_diagnostics",
@@ -7314,19 +7322,19 @@ def test_next_corpus_specpm_preflight_intake_decision_records_p33_t6_contract() 
         "sha256:" + hashlib.sha256(source_manifest.read_bytes()).hexdigest()
     )
     assert payload["summary"] == {
-        "deferredCandidateCount": 2,
+        "deferredCandidateCount": 3,
         "preflightErrorCount": 1,
         "preflightWarningCount": 0,
         "registryMutationCount": 0,
-        "selectedCandidateCount": 3,
+        "selectedCandidateCount": 2,
         "specpmPullRequestCreated": False,
     }
     assert [candidate["id"] for candidate in payload["selectedCandidates"]] == [
         "serena.core",
-        "transmission.core",
         "specpm.core",
     ]
     assert [candidate["id"] for candidate in payload["deferredCandidates"]] == [
+        "transmission.core",
         "mcpm.system",
         "specgraph.system",
     ]
@@ -7477,18 +7485,18 @@ def test_next_corpus_durable_selected_handoff_records_p33_t7_contract() -> None:
     assert payload["schemaVersion"] == 1
     assert payload["authority"] == "producer_preview_evidence_only"
     assert payload["summary"] == {
-        "deferredCandidateCount": 2,
+        "deferredCandidateCount": 3,
         "registryMutationCount": 0,
         "requiredEvidenceRoleCount": 4,
-        "selectedCandidateCount": 3,
+        "selectedCandidateCount": 2,
         "specpmPullRequestCreated": False,
     }
     assert [candidate["id"] for candidate in payload["selectedCandidates"]] == [
         "serena.core",
-        "transmission.core",
         "specpm.core",
     ]
     assert [candidate["id"] for candidate in payload["deferredCandidates"]] == [
+        "transmission.core",
         "mcpm.system",
         "specgraph.system",
     ]
@@ -7546,7 +7554,7 @@ def test_next_corpus_durable_selected_handoff_records_p33_t7_contract() -> None:
             "status": "passed",
             "warningCount": 0,
         }
-        assert candidate["staticViewer"]["status"] == "ok"
+        assert candidate["staticViewer"]["status"] == "unknown"
         assert candidate["registryAcceptanceDecision"] == {
             "producerAuthority": "evidence_only",
             "requiredFor": "public_index_acceptance",
@@ -7624,8 +7632,8 @@ def test_next_corpus_durable_selected_handoff_docs_cover_p33_t7_verdict() -> Non
             "specpm.core",
             "mcpm.system",
             "specgraph.system",
-            "selectedCandidateCount: 3",
-            "deferredCandidateCount: 2",
+            "selectedCandidateCount: 2",
+            "deferredCandidateCount: 3",
             "requiredEvidenceRoleCount: 4",
             "digestVerifiedCount: 1",
             "zero warnings",
@@ -7708,11 +7716,11 @@ def test_next_corpus_intake_readiness_decision_records_p33_t8_contract() -> None
         "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
         "status": "passed",
         "summary": {
-            "deferredCandidateCount": 2,
+            "deferredCandidateCount": 3,
             "digestVerifiedCount": 1,
             "errorCount": 0,
             "requiredEvidenceRoleCount": 4,
-            "selectedCandidateCount": 3,
+            "selectedCandidateCount": 2,
             "warningCount": 0,
         },
     }
@@ -7723,20 +7731,20 @@ def test_next_corpus_intake_readiness_decision_records_p33_t8_contract() -> None
         "status": "ready_for_author_maintainer_review_with_explicit_deferral",
     }
     assert payload["summary"] == {
-        "deferredCandidateCount": 2,
+        "deferredCandidateCount": 3,
         "preflightErrorCount": 0,
         "preflightWarningCount": 0,
         "registryMutationCount": 0,
-        "selectedCandidateCount": 3,
+        "selectedCandidateCount": 2,
         "specpmPreflightStatus": "passed",
         "specpmPullRequestCreated": False,
     }
     assert [candidate["id"] for candidate in payload["selectedCandidates"]] == [
         "serena.core",
-        "transmission.core",
         "specpm.core",
     ]
     assert [candidate["id"] for candidate in payload["deferredCandidates"]] == [
+        "transmission.core",
         "mcpm.system",
         "specgraph.system",
     ]
@@ -7823,8 +7831,8 @@ def test_next_corpus_intake_readiness_decision_docs_cover_p33_t8_verdict() -> No
             "specpm.core",
             "mcpm.system",
             "specgraph.system",
-            "selectedCandidateCount: 3",
-            "deferredCandidateCount: 2",
+            "selectedCandidateCount: 2",
+            "deferredCandidateCount: 3",
             "requiredEvidenceRoleCount: 4",
             "digestVerifiedCount: 1",
             "zero warnings",
@@ -8476,7 +8484,7 @@ def test_limited_popular_library_live_lm_studio_batch_fixture_records_p30_t3_out
         "aiDraftProposalCount": 6,
         "aiDraftWarningCount": 4,
         "aiEnrichmentCompletedCount": 5,
-        "aiEnrichmentProposalCount": 6,
+        "aiEnrichmentProposalCount": 9,
         "aiEnrichmentWarningCount": 1,
         "candidateCount": 9,
         "collectedCount": 6,

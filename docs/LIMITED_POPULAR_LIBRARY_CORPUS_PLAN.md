@@ -88,7 +88,7 @@ repositories:
   - id: flask
     repository: https://github.com/pallets/flask
     revision: 954f5684e4841aad84a8eec7ace7b81a0d3f6831
-    checkout: ../../../../flask
+    checkout: ../../../flask
     packageId: flask.core
     labels: [python, web_framework, single_package, seed_corpus]
 ```
@@ -111,6 +111,12 @@ P30-T2 deterministic gate:
 ```bash
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
   inputs/limited-popular-libraries \
+  --select flask \
+  --select gin \
+  --select xyflow \
+  --select cupertino \
+  --select navigation-split-view \
+  --select docc2context \
   --out .smoke/limited-popular-libraries-deterministic \
   --skip-ai
 ```
@@ -120,6 +126,12 @@ P30-T3 live LM Studio gate:
 ```bash
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
   inputs/limited-popular-libraries \
+  --select flask \
+  --select gin \
+  --select xyflow \
+  --select cupertino \
+  --select navigation-split-view \
+  --select docc2context \
   --out .smoke/limited-popular-libraries-live \
   --lm-studio-base-url http://127.0.0.1:1234 \
   --lm-studio-model openai/gpt-oss-20b \

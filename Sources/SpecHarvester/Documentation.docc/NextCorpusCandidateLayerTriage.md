@@ -24,11 +24,11 @@ The triage covers five preview candidates and zero relation proposals.
 Selected for P33-T6 selected handoff preflight:
 
 - `serena.core`;
-- `transmission.core`;
 - `specpm.core`.
 
 Deferred from P33-T6:
 
+- `transmission.core`;
 - `mcpm.system`;
 - `specgraph.system`.
 
@@ -39,8 +39,12 @@ The selected candidates are classified as
 
 ## Finding Classification
 
-P33-T5 treats `ai_draft_no_proposal_subjects` for `serena.core` and
-`transmission.core` as non-blocking single-package model noise.
+P33-T5 treats `ai_draft_no_proposal_subjects` for `serena.core` as
+non-blocking single-package model noise.
+
+P33-T5 defers `transmission.core` because Transmission is a multi-component
+C/C++ application candidate and the AI draft did not identify proposal
+subjects.
 
 P33-T5 treats `ai_draft_warning_diagnostics` for `specpm.core` as
 candidate-layer review evidence because the warning is limited to

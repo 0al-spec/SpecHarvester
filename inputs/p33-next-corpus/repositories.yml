@@ -6,25 +6,25 @@ repositories:
   - id: serena
     repository: https://github.com/oraios/serena
     revision: 892ef9cf19e2c154a75cb58f4b34c8589eada346
-    checkout: ../../../../serena
+    checkout: ../../../serena
     packageId: serena.core
     labels: [python, agent_toolkit, single_package, p33_next_corpus]
   - id: transmission
     repository: https://github.com/transmission/transmission
     revision: 98fdf2dc0bfc77e537992ce50fa310b1c3ac636a
-    checkout: ../../../../transmission
+    checkout: ../../../transmission
     packageId: transmission.core
     labels: [c, cpp, cmake, multi_component, p33_next_corpus]
   - id: mcpm-sh
     repository: https://github.com/pathintegral-institute/mcpm.sh
     revision: 3a21496dbddffa8b352797aaa498fd4f4d094161
-    checkout: ../../../../mcpm.sh
+    checkout: ../../../mcpm.sh
     packageId: mcpm.core
     labels: [javascript, python, registry_tooling, mixed_language, p33_next_corpus]
   - id: specgraph
     repository: https://github.com/SoundBlaster/SpecGraph
     revision: 2a3e247337acb8102bd4b1d00781c095acc59b16
-    checkout: ../../../../SpecGraph
+    checkout: ../../../SpecGraph
     packageId: specgraph.core
     labels: [javascript, typescript, spec_tooling, single_package, p33_next_corpus]
   - id: specpm

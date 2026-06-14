@@ -296,6 +296,26 @@ def test_package_set_drafter_uses_single_package_fallback_for_python_repo(
     }
 
 
+def test_package_set_drafter_sanitizes_single_package_manifest_id(
+    tmp_path: Path,
+) -> None:
+    inventory = write_single_package_inventory_fixture(
+        tmp_path,
+        repository_id="unsafe",
+        repository="https://github.com/example/unsafe",
+        package_id="../..",
+        checkout=make_python_single_package_checkout(tmp_path / "unsafe"),
+    )
+    out = tmp_path / "draft-set"
+
+    result = draft_package_set(PackageSetDraftOptions(inventory=inventory, out=out))
+
+    assert result["status"] == "ok"
+    assert [candidate["packageId"] for candidate in result["candidates"]] == ["package.core"]
+    assert (out / "package.core" / "specpm.yaml").is_file()
+    assert not (tmp_path / "specpm.yaml").exists()
+
+
 def test_package_set_drafter_explicit_roles_override_profile(tmp_path: Path) -> None:
     inventory = write_generic_monorepo_inventory_fixture(tmp_path)
     out = tmp_path / "draft-set"

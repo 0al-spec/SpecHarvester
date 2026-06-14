@@ -58,8 +58,8 @@ Preflight summary:
 {
   "status": "passed",
   "summary": {
-    "selectedCandidateCount": 3,
-    "deferredCandidateCount": 2,
+    "selectedCandidateCount": 2,
+    "deferredCandidateCount": 3,
     "requiredEvidenceRoleCount": 4,
     "digestVerifiedCount": 1,
     "errorCount": 0,
@@ -68,7 +68,7 @@ Preflight summary:
 }
 ```
 
-Counter summary: selectedCandidateCount: 3, deferredCandidateCount: 2,
+Counter summary: selectedCandidateCount: 2, deferredCandidateCount: 3,
 requiredEvidenceRoleCount: 4, digestVerifiedCount: 1, zero warnings, and zero
 errors.
 
@@ -79,7 +79,6 @@ The selected review scope contains:
 | Candidate | Repository | Status |
 | --- | --- | --- |
 | `serena.core` | `serena` | `ready_for_author_maintainer_review` |
-| `transmission.core` | `transmission` | `ready_for_author_maintainer_review` |
 | `specpm.core` | `specpm` | `ready_for_author_maintainer_review` |
 
 All selected candidates remain `previewOnly: true` and keep
@@ -91,11 +90,12 @@ The decision explicitly keeps these candidates outside intake readiness:
 
 | Candidate | Repository | Reason |
 | --- | --- | --- |
+| `transmission.core` | `transmission` | multi-component package boundary needs regeneration or explicit approval |
 | `mcpm.system` | `mcpm-sh` | package identity drift plus warning-bearing AI draft evidence |
 | `specgraph.system` | `specgraph` | package identity drift |
 
-They remain deferred until the package identity and AI draft evidence findings
-are resolved or explicitly reviewed in a later task.
+They remain deferred until package identity, package boundary, and AI draft
+evidence findings are resolved or explicitly reviewed in a later task.
 
 ## Meaning
 

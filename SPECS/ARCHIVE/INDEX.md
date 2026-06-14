@@ -138,7 +138,7 @@
 | P33-T1 | [P33-T1_Bounded_Corpus_Expansion_Plan/](P33-T1_Bounded_Corpus_Expansion_Plan/) | 2026-06-13 | PASS |
 | P33-T2 | [P33-T2_Next-Corpus_Source_Manifest_Fixture/](P33-T2_Next-Corpus_Source_Manifest_Fixture/) | 2026-06-13 | PASS |
 | P33-T3 | [P33-T3_Deterministic_Next-Corpus_Dry_Run/](P33-T3_Deterministic_Next-Corpus_Dry_Run/) | 2026-06-13 | PASS |
-| P33-T4 | [P33-T4_Live_Local-Model_Next-Corpus_Dry_Run/](P33-T4_Live_Local-Model_Next-Corpus_Dry_Run/) | 2026-06-14 | PASS |
+| P33-T4 | [P33-T4_Live_Local-Model_Next-Corpus_Dry_Run/](P33-T4_Live_Local-Model_Next-Corpus_Dry_Run/) | 2026-06-13 | PASS |
 | P33-T5 | [P33-T5_Next-Corpus_Candidate-Layer_Triage/](P33-T5_Next-Corpus_Candidate-Layer_Triage/) | 2026-06-14 | PASS |
 | P33-T6 | [P33-T6_Next-Corpus_SpecPM_Preflight_and_Intake_Decision/](P33-T6_Next-Corpus_SpecPM_Preflight_and_Intake_Decision/) | 2026-06-14 | PASS |
 | P33-T7 | [P33-T7_Durable_Next-Corpus_Selected_Handoff_Artifact/](P33-T7_Durable_Next-Corpus_Selected_Handoff_Artifact/) | 2026-06-14 | PASS |
@@ -261,8 +261,8 @@
 | 2026-06-14 | P33-T6 | Archived Next-Corpus SpecPM Preflight and Intake Decision (PASS) |
 | 2026-06-14 | P33-T5 | Archived REVIEW_p33_t5_next_corpus_candidate_layer_triage report |
 | 2026-06-14 | P33-T5 | Archived Next-Corpus Candidate-Layer Triage (PASS) |
-| 2026-06-14 | P33-T4 | Archived REVIEW_p33_t4_live_local_model_next_corpus_dry_run report |
-| 2026-06-14 | P33-T4 | Archived Live Local-Model Next-Corpus Dry Run (PASS) |
+| 2026-06-13 | P33-T4 | Archived REVIEW_p33_t4_live_local_model_next_corpus_dry_run report |
+| 2026-06-13 | P33-T4 | Archived Live Local-Model Next-Corpus Dry Run (PASS) |
 | 2026-06-13 | P32-T3 | Archived REVIEW_p32_t3_xyflow_package_set_identity_regeneration_dry_run report |
 | 2026-06-13 | P32-T3 | Archived Xyflow Package-Set Identity Regeneration Dry Run (PASS) |
 | 2026-06-13 | P32-T4 | Archived Single-Package Deferred Candidate Regeneration Dry Run (PASS) |

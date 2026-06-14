@@ -139,7 +139,7 @@ PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch \
 Recorded digests:
 
 ```text
-inputs/p33-next-corpus/repositories.yml        sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75
+inputs/p33-next-corpus/repositories.yml        sha256:51ecc86773bf53d968fec1387dbdddd79c8066c351e704998ff54137b0518133
 autonomous-candidate-batch-report.json        sha256:cdf22a5ddec014e49c432925f1b71710140d8667954daba36684f8d9c12a1ff2
 reports/batch-validation-report.json          sha256:993c8eb865a8f3aa35d35b84eb49ea06862062f0acca8eeb999fce11c27dec42
 ```

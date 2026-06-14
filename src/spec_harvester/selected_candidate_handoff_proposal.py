@@ -104,6 +104,8 @@ NON_AUTHORITY = [
     "It does not remove preview_only.",
     "It does not publish registry metadata.",
     "It does not create a SpecPM pull request.",
+    "It does not merge a SpecPM pull request.",
+    "It does not replace maintainer review.",
     "It does not run prepare-accepted-entry.",
     "It does not run accepted-package-update-proposal.",
 ]
@@ -281,13 +283,22 @@ def selected_candidate_record(
     candidate_dir = candidate_bundle_path(options, candidate)
     preflight_path = producer_preflight_path(options, candidate)
     viewer_dir = static_viewer_path(options, candidate)
-    preflight = producer_preflight_record(candidate, preflight_path)
-    viewer = static_viewer_record(candidate, viewer_dir)
+    candidate_display_path = candidate_bundle_display_path(options, candidate)
+    preflight_display_path = producer_preflight_display_path(options, candidate)
+    viewer_display_dir = static_viewer_display_path(options, candidate)
+    candidate_source = candidate_dir if options.candidate_root is not None else None
+    preflight_source = preflight_path if options.preflight_root is not None else None
+    viewer_source = viewer_dir if options.viewer_root is not None else None
+    preflight = producer_preflight_record(candidate, preflight_display_path, preflight_source)
+    viewer = static_viewer_record(candidate, viewer_display_dir, viewer_source)
     evidence = evidence_links(
         candidate,
-        candidate_dir,
-        preflight_path,
-        viewer_dir,
+        candidate_display_path,
+        candidate_source,
+        preflight_display_path,
+        preflight_source,
+        viewer_display_dir,
+        viewer_source,
         dry_run_display_path,
         dry_run_path,
     )
@@ -295,7 +306,7 @@ def selected_candidate_record(
     return {
         "id": candidate_id,
         "repositoryId": string_value(candidate.get("repositoryId")),
-        "candidateBundlePath": str(candidate_dir),
+        "candidateBundlePath": str(candidate_display_path),
         "previewOnly": True,
         "triageClassification": string_value(candidate.get("triageClassification")),
         "maintainerAction": "review_for_possible_specpm_intake",
@@ -345,6 +356,19 @@ def candidate_bundle_path(
     return root / candidate_id
 
 
+def candidate_bundle_display_path(
+    options: SelectedCandidateHandoffProposalOptions,
+    candidate: dict[str, Any],
+) -> Path:
+    candidate_id = string_value(candidate.get("id"))
+    if options.candidate_root is None:
+        return Path(string_value(candidate.get("sourceCandidatePath")))
+    candidate_path = options.candidate_root / candidate_id / "candidate"
+    if candidate_path.exists():
+        return candidate_path
+    return options.candidate_root / candidate_id
+
+
 def producer_preflight_path(
     options: SelectedCandidateHandoffProposalOptions,
     candidate: dict[str, Any],
@@ -352,6 +376,16 @@ def producer_preflight_path(
     candidate_id = string_value(candidate.get("id"))
     if options.preflight_root is not None:
         return options.preflight_root.resolve() / f"{candidate_id}.json"
+    return Path(string_value(mapping_value(candidate.get("producerPreflight")).get("reportPath")))
+
+
+def producer_preflight_display_path(
+    options: SelectedCandidateHandoffProposalOptions,
+    candidate: dict[str, Any],
+) -> Path:
+    candidate_id = string_value(candidate.get("id"))
+    if options.preflight_root is not None:
+        return options.preflight_root / f"{candidate_id}.json"
     return Path(string_value(mapping_value(candidate.get("producerPreflight")).get("reportPath")))
 
 
@@ -365,9 +399,23 @@ def static_viewer_path(
     return Path(string_value(mapping_value(candidate.get("viewer")).get("outputPath")))
 
 
-def producer_preflight_record(candidate: dict[str, Any], path: Path) -> dict[str, Any]:
+def static_viewer_display_path(
+    options: SelectedCandidateHandoffProposalOptions,
+    candidate: dict[str, Any],
+) -> Path:
+    candidate_id = string_value(candidate.get("id"))
+    if options.viewer_root is not None:
+        return options.viewer_root / candidate_id
+    return Path(string_value(mapping_value(candidate.get("viewer")).get("outputPath")))
+
+
+def producer_preflight_record(
+    candidate: dict[str, Any],
+    display_path: Path,
+    source_path: Path | None,
+) -> dict[str, Any]:
     declared = mapping_value(candidate.get("producerPreflight"))
-    report = read_optional_json(path)
+    report = read_optional_json(source_path) if source_path is not None else None
     if report is not None:
         validate_preflight_report(string_value(candidate.get("id")), report)
         summary = mapping_value(report.get("summary"))
@@ -376,15 +424,15 @@ def producer_preflight_record(candidate: dict[str, Any], path: Path) -> dict[str
             "warningCount": integer_value(summary.get("warningCount")),
             "errorCount": integer_value(summary.get("errorCount")),
             "diagnosticCount": integer_value(summary.get("diagnosticCount")),
-            "reportPath": str(path),
-            "reportDigest": f"sha256:{sha256_file(path)}",
+            "reportPath": str(display_path),
+            "reportDigest": f"sha256:{sha256_file(source_path)}",
         }
     return {
         "status": string_value(declared.get("status")),
         "warningCount": integer_value(declared.get("warningCount")),
         "errorCount": integer_value(declared.get("errorCount")),
         "diagnosticCount": integer_value(declared.get("diagnosticCount")),
-        "reportPath": str(path),
+        "reportPath": str(display_path),
         "reportDigest": string_value(declared.get("reportDigest")),
     }
 
@@ -406,23 +454,29 @@ def validate_preflight_report(candidate_id: str, report: dict[str, Any]) -> None
         raise ValueError(f"{candidate_id} preflight report errorCount must be 0.")
 
 
-def static_viewer_record(candidate: dict[str, Any], viewer_dir: Path) -> dict[str, Any]:
+def static_viewer_record(
+    candidate: dict[str, Any],
+    display_dir: Path,
+    source_dir: Path | None,
+) -> dict[str, Any]:
     declared = mapping_value(candidate.get("viewer"))
-    index = viewer_dir / "index.html"
-    payload = viewer_dir / "spec-package.json"
+    index = display_dir / "index.html"
+    payload = display_dir / "spec-package.json"
+    source_index = source_dir / "index.html" if source_dir is not None else None
+    source_payload = source_dir / "spec-package.json" if source_dir is not None else None
     return {
         "status": string_value(declared.get("status")),
-        "outputPath": str(viewer_dir),
+        "outputPath": str(display_dir),
         "indexPath": str(index),
         "indexDigest": (
-            f"sha256:{sha256_file(index)}"
-            if index.is_file()
+            f"sha256:{sha256_file(source_index)}"
+            if source_index is not None and source_index.is_file()
             else string_value(declared.get("indexDigest"))
         ),
         "specPackagePath": str(payload),
         "specPackageDigest": (
-            f"sha256:{sha256_file(payload)}"
-            if payload.is_file()
+            f"sha256:{sha256_file(source_payload)}"
+            if source_payload is not None and source_payload.is_file()
             else string_value(declared.get("specPackageDigest"))
         ),
     }
@@ -430,31 +484,40 @@ def static_viewer_record(candidate: dict[str, Any], viewer_dir: Path) -> dict[st
 
 def evidence_links(
     candidate: dict[str, Any],
-    candidate_dir: Path,
-    preflight_path: Path,
-    viewer_dir: Path,
+    candidate_display_path: Path,
+    candidate_source_path: Path | None,
+    preflight_display_path: Path,
+    preflight_source_path: Path | None,
+    viewer_display_dir: Path,
+    viewer_source_dir: Path | None,
     dry_run_display_path: Path,
     dry_run_path: Path,
 ) -> list[dict[str, Any]]:
     links = [
         artifact_link(
             role="candidate_bundle",
-            path=str(candidate_dir),
+            path=str(candidate_display_path),
             path_scope="local_path",
-            source_path=candidate_dir,
+            source_path=candidate_source_path,
         )
     ]
     for required_file in object_list(candidate.get("requiredFiles")):
         role = string_value(required_file.get("role"))
         relative_path = string_value(required_file.get("path"))
-        source_path = safe_candidate_path(candidate_dir, relative_path)
+        display_path = safe_candidate_path(candidate_display_path, relative_path)
+        source_path = (
+            safe_candidate_path(candidate_source_path, relative_path)
+            if candidate_source_path is not None
+            else None
+        )
         links.append(
             artifact_link(
                 role=role,
-                path=str(source_path) if source_path is not None else relative_path,
+                path=str(display_path) if display_path is not None else relative_path,
                 path_scope="local_path",
                 source_path=source_path,
                 fallback_digest=string_value(required_file.get("digest")),
+                missing_status="rejected" if display_path is None else "expected",
             )
         )
     viewer = mapping_value(candidate.get("viewer"))
@@ -463,23 +526,27 @@ def evidence_links(
         [
             artifact_link(
                 role="producer_preflight",
-                path=str(preflight_path),
+                path=str(preflight_display_path),
                 path_scope="local_path",
-                source_path=preflight_path,
+                source_path=preflight_source_path,
                 fallback_digest=string_value(preflight.get("reportDigest")),
             ),
             artifact_link(
                 role="static_viewer",
-                path=str(viewer_dir / "index.html"),
+                path=str(viewer_display_dir / "index.html"),
                 path_scope="local_path",
-                source_path=viewer_dir / "index.html",
+                source_path=viewer_source_dir / "index.html"
+                if viewer_source_dir is not None
+                else None,
                 fallback_digest=string_value(viewer.get("indexDigest")),
             ),
             artifact_link(
                 role="static_viewer_payload",
-                path=str(viewer_dir / "spec-package.json"),
+                path=str(viewer_display_dir / "spec-package.json"),
                 path_scope="local_path",
-                source_path=viewer_dir / "spec-package.json",
+                source_path=viewer_source_dir / "spec-package.json"
+                if viewer_source_dir is not None
+                else None,
                 fallback_digest=string_value(viewer.get("specPackageDigest")),
             ),
             artifact_link(
@@ -500,9 +567,10 @@ def artifact_link(
     path_scope: str,
     source_path: Path | None,
     fallback_digest: str = "",
+    missing_status: str = "expected",
 ) -> dict[str, Any]:
     if source_path is None:
-        status = "rejected"
+        status = missing_status
     elif source_path.exists():
         status = "present"
     else:
@@ -514,8 +582,13 @@ def artifact_link(
         "status": status,
     }
     if source_path is not None and source_path.is_file():
-        link["digest"] = f"sha256:{sha256_file(source_path)}"
+        actual_digest = f"sha256:{sha256_file(source_path)}"
+        link["digest"] = actual_digest
         link["digestSource"] = "local_file"
+        if fallback_digest and actual_digest != fallback_digest:
+            link["status"] = "rejected"
+            link["expectedDigest"] = fallback_digest
+            link["diagnostic"] = "local_file_digest_mismatch"
     elif fallback_digest:
         link["digest"] = fallback_digest
         link["digestSource"] = "selected_handoff_dry_run"

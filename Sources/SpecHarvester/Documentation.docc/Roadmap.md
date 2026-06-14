@@ -263,9 +263,10 @@ recorded `76291` provider tokens, and reached
 `ready_for_candidate_layer_triage`.
 
 <doc:NextCorpusCandidateLayerTriage> records `P33-T5`: selected candidates
-`serena.core`, `transmission.core`, and `specpm.core` are ready for P33-T6
-selected handoff preflight, while `mcpm.system` and `specgraph.system` remain
-deferred on package identity and AI draft evidence findings.
+`serena.core` and `specpm.core` are ready for P33-T6 selected handoff
+preflight, while `transmission.core`, `mcpm.system`, and `specgraph.system`
+remain deferred on package boundary, package identity, and AI draft evidence
+findings.
 
 <doc:NextCorpusSpecPMPreflightIntakeDecision> records `P33-T6`: the current
 SpecPM selected handoff preflight rejects the P33-T5 candidate-layer triage
@@ -273,15 +274,14 @@ fixture with `selected_handoff_payload_missing`, so the next corpus needs a
 durable selected handoff artifact before maintainer intake review.
 
 <doc:NextCorpusDurableSelectedHandoff> records `P33-T7`: the durable selected
-handoff artifact for `serena.core`, `transmission.core`, and `specpm.core`
-passes SpecPM selected handoff preflight with two deferred candidates and zero
-warnings or errors.
+handoff artifact for `serena.core` and `specpm.core` passes SpecPM selected
+handoff preflight with three deferred candidates and zero warnings or errors.
 
 <doc:NextCorpusIntakeReadinessDecision> records `P33-T8`: the final Phase 33
 decision status is
 `ready_for_author_maintainer_review_with_explicit_deferral`. The selected
-candidates `serena.core`, `transmission.core`, and `specpm.core` are ready for
-author/maintainer review, while `mcpm.system` and `specgraph.system` remain
+candidates `serena.core` and `specpm.core` are ready for author/maintainer
+review, while `transmission.core`, `mcpm.system`, and `specgraph.system` remain
 deferred.
 
 The boundary remains unchanged: no clone/fetch/install/execute behavior, no

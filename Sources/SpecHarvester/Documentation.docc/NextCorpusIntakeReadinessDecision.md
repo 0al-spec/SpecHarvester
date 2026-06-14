@@ -12,23 +12,24 @@ The fixture lives at
 The decision status is
 `ready_for_author_maintainer_review_with_explicit_deferral`.
 
-The selected candidates `serena.core`, `transmission.core`, and `specpm.core`
-are ready for author/maintainer review because the P33-T7 durable selected
-handoff passed SpecPM selected handoff preflight.
+The selected candidates `serena.core` and `specpm.core` are ready for
+author/maintainer review because the P33-T7 durable selected handoff passed
+SpecPM selected handoff preflight.
 
-The deferred candidates remain `mcpm.system` and `specgraph.system`.
+The deferred candidates remain `transmission.core`, `mcpm.system`, and
+`specgraph.system`.
 
 ## SpecPM Result
 
 The current SpecPM selected candidate handoff preflight passes with
-`selectedCandidateCount: 3`, `deferredCandidateCount: 2`,
+`selectedCandidateCount: 2`, `deferredCandidateCount: 3`,
 `requiredEvidenceRoleCount: 4`, `digestVerifiedCount: 1`, and zero warnings or
 errors.
 
 SpecPM revision:
 `8a5ce3dece3d18bf8f601a5a599520bd520c7839`.
 
-Counter summary: selectedCandidateCount: 3, deferredCandidateCount: 2,
+Counter summary: selectedCandidateCount: 2, deferredCandidateCount: 3,
 requiredEvidenceRoleCount: 4, digestVerifiedCount: 1, zero warnings, and zero
 errors.
 

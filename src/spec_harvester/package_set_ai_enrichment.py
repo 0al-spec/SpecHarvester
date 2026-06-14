@@ -211,7 +211,8 @@ def build_package_set_ai_enrichment_proposal(
             output, receipt = provider.complete_json(request)
             reported_package_id = string_value(output.get("packageId"))
             output = dict(output)
-            output["packageId"] = request["packageId"]
+            if output:
+                output["packageId"] = request["packageId"]
             receipt["reportedPackageId"] = reported_package_id
             model_outputs[request["packageId"]] = (output, receipt)
 

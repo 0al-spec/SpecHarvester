@@ -294,7 +294,7 @@
     "batchValidationReportDigest": "sha256:993c8eb865a8f3aa35d35b84eb49ea06862062f0acca8eeb999fce11c27dec42",
     "mode": "local_lm_studio",
     "runRoot": "/tmp/specharvester-p33-t4.yQPfwg/live-lm-studio",
-    "sourceManifestDigest": "sha256:72f3064da9f455c069a5fef6eb25321b74a7e075c5287edcede108a0f4cbed75"
+    "sourceManifestDigest": "sha256:51ecc86773bf53d968fec1387dbdddd79c8066c351e704998ff54137b0518133"
   },
   "summary": {
     "aiDraftCompletedCount": 3,

@@ -222,11 +222,10 @@ Acceptance:
 Artifact:
 
 - [`NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md`](NEXT_CORPUS_CANDIDATE_LAYER_TRIAGE.md)
-  records the P33-T5 triage. It selects `serena.core`, `transmission.core`,
-  and `specpm.core` for P33-T6 selected handoff preflight, keeps
-  `mcpm.system` and `specgraph.system` deferred, records zero blocked
-  candidates and zero not-for-intake candidates, and preserves the
-  non-authority boundary.
+  records the P33-T5 triage. It selects `serena.core` and `specpm.core` for
+  P33-T6 selected handoff preflight, keeps `transmission.core`, `mcpm.system`,
+  and `specgraph.system` deferred, records zero blocked candidates and zero
+  not-for-intake candidates, and preserves the non-authority boundary.
 
 ### P33-T6 Next-Corpus SpecPM Preflight and Intake Decision
 
@@ -272,8 +271,9 @@ Acceptance:
 
 - The decision status is
   `ready_for_author_maintainer_review_with_explicit_deferral`.
-- The selected scope is `serena.core`, `transmission.core`, and `specpm.core`.
-- The deferred scope is `mcpm.system` and `specgraph.system`.
+- The selected scope is `serena.core` and `specpm.core`.
+- The deferred scope is `transmission.core`, `mcpm.system`, and
+  `specgraph.system`.
 - The decision records the passing SpecPM selected handoff preflight result.
 - The decision remains review evidence only and does not accept packages,
   accept relations, seed baselines, remove `preview_only`, publish registry
