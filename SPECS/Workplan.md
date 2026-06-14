@@ -830,7 +830,7 @@ Acceptance:
 - [x] `P26-T2` Extend trusted SpecPM proposal automation or dry-run workflow
   inputs so package-set proposal artifacts can be generated and attached
   without granting cross-repository write credentials to untrusted events.
-- [ ] `P26-T3` Define the SpecPM-side package-set proposal intake checklist and
+- [x] `P26-T3` Define the SpecPM-side package-set proposal intake checklist and
   evidence roles required before maintainers accept package members or
   relations.
 - [x] `P26-T4` Add proposal-only package-set AI enrichment so operators can
