@@ -18,6 +18,10 @@ from spec_harvester.public_api_entrypoint_cache import (
     read_cached_public_api_entrypoint,
     write_cached_public_api_entrypoint,
 )
+from spec_harvester.repository_parsing_profile import (
+    RepositoryParsingProfile,
+    repository_parsing_profile,
+)
 
 PYTHON_PUBLIC_API_ANALYZER_ID = "python-ast-public-api"
 PYTHON_PUBLIC_API_ANALYZER_VERSION = "0.1.0"
@@ -61,11 +65,15 @@ class PythonPublicApiAnalyzer:
 
     def index(self) -> dict[str, Any]:
         root = self.source_root()
-        entrypoints, diagnostics = self.entrypoints(root, self.relative_root(root), self.cache())
+        entrypoints, diagnostics, path_decisions = self.entrypoints(
+            root,
+            self.relative_root(root),
+            self.cache(),
+        )
         index = new_public_interface_index(
             source_revision=self.options.source_revision,
             analyzers=[self.analyzer_record()],
-            packages=[self.package_record(root, entrypoints)],
+            packages=[self.package_record(root, entrypoints, path_decisions)],
             diagnostics=diagnostics,
         )
         validate_public_interface_index(index)
@@ -88,41 +96,68 @@ class PythonPublicApiAnalyzer:
             confidence="high",
         )
 
-    def package_record(self, root: Path, entrypoints: list[dict[str, Any]]) -> dict[str, Any]:
-        return {
+    def package_record(
+        self,
+        root: Path,
+        entrypoints: list[dict[str, Any]],
+        path_decisions: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        record: dict[str, Any] = {
             "id": self.options.package_id_or(root.name),
             "path": ".",
             "language": "python",
             "entrypoints": entrypoints,
         }
+        if path_decisions:
+            record["repositoryParsingProfile"] = self.options.parser_profile_id
+            record["pathClassification"] = path_decisions
+        return record
 
     def entrypoints(
         self,
         root: Path,
         relative_root: Path,
         cache: AnalyzerCache | None,
-    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
         entrypoints: list[dict[str, Any]] = []
         diagnostics: list[dict[str, Any]] = []
+        path_decisions: list[dict[str, Any]] = []
+        profile = repository_parsing_profile(self.options.parser_profile_id)
         for path in python_source_files(root):
-            entrypoint, file_diagnostics = self.entrypoint(path, relative_root, cache)
+            entrypoint, file_diagnostics, decision = self.entrypoint(
+                path,
+                relative_root,
+                cache,
+                profile,
+            )
             if entrypoint is not None:
                 entrypoints.append(entrypoint)
             diagnostics.extend(file_diagnostics)
-        return entrypoints, diagnostics
+            if decision is not None:
+                path_decisions.append(decision)
+        return entrypoints, diagnostics, path_decisions
 
     def entrypoint(
         self,
         path: Path,
         relative_root: Path,
         cache: AnalyzerCache | None,
-    ) -> tuple[dict[str, Any] | None, list[dict[str, Any]]]:
+        profile: RepositoryParsingProfile | None = None,
+    ) -> tuple[dict[str, Any] | None, list[dict[str, Any]], dict[str, Any] | None]:
         relative = path.relative_to(relative_root).as_posix()
+        decision_record = None
+        if profile is not None:
+            decision = profile.classify(relative)
+            decision_record = decision.to_record()
+            if not decision.public_interface_eligible:
+                return None, [], decision_record
+
         data = path.read_bytes()
         digest = hashlib.sha256(data).hexdigest()
         cached_payload = read_cached_python_payload(cache, relative, digest)
         if cached_payload is not None:
-            return cached_payload
+            entrypoint, diagnostics = cached_payload
+            return entrypoint, diagnostics, decision_record
 
         text = data.decode("utf-8", errors="replace")
         try:
@@ -130,14 +165,14 @@ class PythonPublicApiAnalyzer:
         except (SyntaxError, ValueError) as exc:
             diagnostic = parse_diagnostic(relative, digest, exc)
             write_cached_python_payload(cache, digest, None, [diagnostic])
-            return None, [diagnostic]
+            return None, [diagnostic], decision_record
 
         entrypoint = {
             "path": relative,
             "symbols": module_symbols(module, relative, digest),
         }
         write_cached_python_payload(cache, digest, entrypoint, [])
-        return entrypoint, []
+        return entrypoint, [], decision_record
 
 
 def python_source_root(source: Path) -> Path:

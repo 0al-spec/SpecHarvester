@@ -260,8 +260,36 @@ tests/test_applications.py
   -> publicInterfaceEligible: false
 ```
 
-The fixture is data only. It does not execute parser logic until a later task
-implements the plugin-aware source classification hook.
+## Plugin-Aware Classification Hook
+
+P36-T3 makes the Python web-framework profile executable for static analyzer
+path selection. The hook is explicit opt-in:
+
+```bash
+PYTHONPATH=src python -m spec_harvester collect-batch inputs \
+  --out output \
+  --emit-interface-indexes \
+  --parser-profile python.web_framework.v0
+```
+
+The same profile can be passed through autonomous candidate batch runs:
+
+```bash
+PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch inputs \
+  --out output \
+  --lm-studio-model openai/gpt-oss-20b \
+  --parser-profile python.web_framework.v0
+```
+
+When no parser profile is selected, the analyzer keeps its previous behavior.
+When `python.web_framework.v0` is selected, Python paths classified with
+`publicInterfaceEligible: false` are excluded from
+`public-interface-index.json` entrypoints. Package records include
+`repositoryParsingProfile` and `pathClassification` review metadata so a
+maintainer can see why paths were included or excluded.
+
+The hook currently supports only `python.web_framework.v0`. Unknown parser
+profile ids fail closed with a clear error.
 
 ## Safety Boundary
 
