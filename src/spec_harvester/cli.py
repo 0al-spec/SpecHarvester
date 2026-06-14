@@ -346,6 +346,14 @@ def build_parser() -> argparse.ArgumentParser:
             f"Default: {DEFAULT_JSON_REPAIR_MAX_ATTEMPTS}."
         ),
     )
+    autonomous_candidate_batch.add_argument(
+        "--apply-ai-enrichment",
+        action="store_true",
+        help=(
+            "Opt in to applying clean AI enrichment proposals into copied "
+            "preview candidates with ai-enrichment-candidate-patch.json reports."
+        ),
+    )
     autonomous_candidate_batch.set_defaults(func=run_autonomous_candidate_batch_cli)
 
     draft = subcommands.add_parser(
@@ -1472,6 +1480,7 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 lm_studio_model=args.lm_studio_model,
                 provider_name=args.provider_name,
                 json_repair_max_attempts=args.json_repair_max_attempts,
+                apply_ai_enrichment=args.apply_ai_enrichment,
             )
         )
     except ValueError as exc:

@@ -166,6 +166,9 @@ Status: alpha-ready for local operator use.
 Completed scope:
 
 - package-set AI enrichment proposal command;
+- deterministic application of clean AI enrichment proposals into copied
+  preview candidates;
+- opt-in autonomous batch output for AI-enriched preview candidates;
 - compact evidence request generation;
 - live local OpenAI-compatible provider path for LM Studio;
 - external model-output mode;
@@ -178,6 +181,8 @@ Success criteria:
 
 - AI enrichment can suggest summaries, capabilities, interfaces, confidence,
   and evidence gaps without mutating generated specs;
+- autonomous AI-enabled runs can emit copied enriched preview candidates with
+  `ai-enrichment-candidate-patch.json` while preserving `preview_only`;
 - SpecPM can consume AI enrichment as proposal-only evidence through its own
   preflight and review policy;
 - private or unsupported evidence paths are rejected or downgraded to

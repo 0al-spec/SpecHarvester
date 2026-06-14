@@ -24,9 +24,12 @@ def assert_current_next_task(next_text: str) -> None:
         return
 
     if "# Next Task: Phase 34 Complete" in next_text:
-        assert_p34_t1_last_archived(next_text)
+        if "**Last Archived:** P34-T2 Autonomous Batch AI Enriched Preview Output" in next_text:
+            assert_p34_t2_last_archived(next_text)
+            assert_p34_t2_recent(next_text)
+        else:
+            assert_p34_t1_last_archived(next_text)
         assert_p34_t1_recent(next_text)
-        assert_p20_t8_recent(next_text)
         assert_phase_34_complete(next_text)
         return
 
@@ -2143,7 +2146,8 @@ def assert_phase_34_t1_active(next_text: str) -> None:
 def assert_phase_34_t2_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P34-T2 Autonomous Batch AI Enriched Preview Output" in next_text
-    assert "**Status:** Selected" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`codex/p34-t2-autonomous-ai-enriched-output`" in next_text
     assert "Phase 34. AI-Enabled Candidate Curation" in next_text
     assert "P34-T1 made AI enrichment practically applicable" in normalized
     assert "explicit operator command" in normalized
@@ -2168,6 +2172,23 @@ def assert_phase_34_t2_active(next_text: str) -> None:
     assert "autonomous-candidate-batch" in next_text
 
 
+def assert_p34_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P34-T2 Autonomous Batch AI Enriched Preview Output" in next_text
+
+
+def assert_p34_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P34-T2` added `autonomous-candidate-batch --apply-ai-enrichment`" in next_text
+    assert "package-sets/<repository-id>/enriched/<package-id>/" in next_text
+    assert "aiEnrichedPreview" in next_text
+    assert "aiEnrichedPreviewAppliedCount" in next_text
+    assert "aiEnrichedPreviewSkippedCount" in next_text
+    assert "aiEnrichedPreviewFailedCount" in next_text
+    assert "default autonomous batch behavior remains proposal-only" in normalized
+    assert "Warning-bearing, failed, missing, package-misaligned" in normalized
+    assert "sidecar-only" in normalized
+
+
 def assert_p34_t1_recent(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "`P34-T1` added `apply-ai-enrichment-proposal`" in next_text
@@ -2177,6 +2198,8 @@ def assert_p34_t1_recent(next_text: str) -> None:
     assert "before/after digests" in normalized
     assert "provider provenance" in normalized
     assert "non-authority boundary statements" in normalized
+    if "FastAPI live LM Studio smoke" not in normalized:
+        return
     assert "rejects failed or warning-bearing proposal reports" in normalized
     assert "package id drift" in normalized
     assert "output paths inside the source bundle" in normalized
@@ -2197,20 +2220,23 @@ def assert_phase_34_complete(next_text: str) -> None:
     assert "# Next Task: Phase 34 Complete" in next_text
     assert "**Status:** Phase Complete" in next_text
     assert "Phase 34. AI-Enabled Candidate Curation" in next_text
-    assert "AI-enabled candidate curation now has a safe deterministic bridge" in normalized
-    assert "Model output can improve starter package quality" in normalized
-    assert "without becoming registry truth" in normalized
+    assert "AI-enabled candidate curation" in normalized
+    assert "proposal-only package-set AI enrichment evidence" in normalized
+    assert "clean proposals to copied preview candidates" in normalized
+    assert "optional AI-enriched preview artifacts" in normalized
+    assert "model output as producer review evidence" in normalized
+    assert "registry truth" in normalized
     assert "does not:" in next_text
     assert "accept packages" in normalized
     assert "accept relations" in normalized
     assert "seed baselines" in normalized
     assert "remove `preview_only`" in normalized
+    assert "mutate source candidates" in normalized
     assert "publish registry metadata" in normalized
     assert "create a SpecPM pull request" in normalized
     assert "treat AI output as maintainer approval" in normalized
     assert "treat AI output as upstream project endorsement" in normalized
     assert "replace SpecPM validation" in normalized
-    assert "integrating the helper into the autonomous batch path" in normalized
 
 
 def assert_phase_33_complete(next_text: str) -> None:
@@ -5281,11 +5307,18 @@ def test_autonomous_candidate_batch_docs_cover_local_lm_studio_boundary() -> Non
             "LM Studio",
             "openai/gpt-oss-20b",
             "--skip-ai",
+            "--apply-ai-enrichment",
+            "aiEnrichedPreview",
+            "ai-enrichment-candidate-patch.json",
+            "enriched preview candidates",
             "autonomous_popular_mvp",
             "preview_only",
             "does not clone repositories",
             "execute harvested code",
             "install dependencies",
+            "does not accept packages",
+            "does not accept relations",
+            "does not remove `preview_only`",
             "SpecPM remains",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"

@@ -94,6 +94,12 @@ capabilities, interfaces, confidence, and evidence gaps for generated
 package-set candidates. AI enrichment remains proposal evidence only and does
 not mutate generated specs or accept registry content.
 
+Clean proposals can also be applied deterministically into copied
+AI-enriched preview candidates through `apply-ai-enrichment-proposal` and the
+`autonomous-candidate-batch --apply-ai-enrichment` option. The copied
+candidates keep `preview_only`, carry `ai-enrichment-candidate-patch.json`, and
+remain producer review evidence rather than SpecPM acceptance.
+
 ### Author-Ready Valid Drafts
 
 The active product-quality focus is to define when SpecHarvester should stop

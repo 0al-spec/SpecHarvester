@@ -5,6 +5,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.ai_enrichment_candidate_patch import (
+    AI_ENRICHMENT_CANDIDATE_PATCH_FILENAME,
+    AIEnrichmentCandidatePatchOptions,
+    build_ai_enrichment_candidate_patch,
+)
 from spec_harvester.batch_collection import BatchCollectOptions, collect_batch_snapshots
 from spec_harvester.bundle_set_preflight import (
     BundleSetPreflightOptions,
@@ -70,6 +75,7 @@ COLLECTED_DIRNAME = "collected"
 PACKAGE_SETS_DIRNAME = "package-sets"
 REPORTS_DIRNAME = "reports"
 AI_DIRNAME = "ai"
+ENRICHED_DIRNAME = "enriched"
 BUNDLE_SET_PREFLIGHT_FILENAME = "bundle-set-preflight.json"
 AI_DRAFT_REQUEST_FILENAME = "package-set-ai-draft-request.json"
 AI_DRAFT_PROPOSAL_FILENAME = "package-set-ai-draft-proposal.json"
@@ -110,6 +116,7 @@ class AutonomousCandidateBatchOptions:
     ai_enrichment_max_output_tokens: int = DEFAULT_AI_ENRICHMENT_MAX_OUTPUT_TOKENS
     ai_enrichment_temperature: float = DEFAULT_AI_ENRICHMENT_TEMPERATURE
     json_repair_max_attempts: int = DEFAULT_JSON_REPAIR_MAX_ATTEMPTS
+    apply_ai_enrichment: bool = False
 
 
 class AutonomousCandidateBatch:
@@ -146,6 +153,15 @@ class AutonomousCandidateBatch:
                 ),
                 "aiDraftProposalCount": count_present(repositories, "aiDraft"),
                 "aiEnrichmentProposalCount": count_present(repositories, "aiEnrichment"),
+                "aiEnrichedPreviewAppliedCount": sum_nested_summary(
+                    repositories, "aiEnrichedPreview", "appliedCount"
+                ),
+                "aiEnrichedPreviewSkippedCount": sum_nested_summary(
+                    repositories, "aiEnrichedPreview", "skippedCount"
+                ),
+                "aiEnrichedPreviewFailedCount": sum_nested_summary(
+                    repositories, "aiEnrichedPreview", "failedCount"
+                ),
             },
             "repositories": repositories,
             "skipped": collection["skipped"],
@@ -225,6 +241,7 @@ class AutonomousCandidateBatch:
             if self.options.skip_ai:
                 record["aiDraft"] = skipped_ai_record("ai_disabled_by_operator")
                 record["aiEnrichment"] = skipped_ai_record("ai_disabled_by_operator")
+                record["aiEnrichedPreview"] = skipped_ai_record("ai_disabled_by_operator")
             else:
                 record["aiDraft"] = self.ai_draft_record(
                     inventory=inventory,
@@ -235,6 +252,11 @@ class AutonomousCandidateBatch:
                     bundle_set=bundle_set,
                     source_checkout=Path(collected["checkout"]),
                     ai_root=ai_root,
+                )
+                record["aiEnrichedPreview"] = self.ai_enriched_preview_record(
+                    bundle_set=bundle_set,
+                    draft_result=draft_result,
+                    ai_enrichment=record["aiEnrichment"],
                 )
             record["authorReadyDraftSummary"] = author_ready_summary(bundle_set)
             record["status"] = repository_status(record)
@@ -297,6 +319,109 @@ class AutonomousCandidateBatch:
         proposal = build_package_set_ai_enrichment_proposal(options)
         write_package_set_ai_enrichment_proposal(output_path, proposal)
         return ai_proposal_record(request_path, output_path, proposal)
+
+    def ai_enriched_preview_record(
+        self,
+        *,
+        bundle_set: Path,
+        draft_result: dict[str, Any],
+        ai_enrichment: dict[str, Any],
+    ) -> dict[str, Any]:
+        if not self.options.apply_ai_enrichment:
+            return skipped_ai_record("operator_disabled")
+        proposal_path = ai_enrichment.get("output")
+        if ai_enrichment.get("status") != "completed" or not isinstance(proposal_path, str):
+            skipped = [
+                {
+                    "packageId": candidate.get("packageId"),
+                    "reason": "ai_enrichment_not_clean",
+                }
+                for candidate in candidate_records(draft_result)
+            ]
+            return {
+                "status": "skipped",
+                "reason": "ai_enrichment_not_clean",
+                "summary": {"appliedCount": 0, "skippedCount": len(skipped), "failedCount": 0},
+                "applied": [],
+                "skipped": skipped,
+                "failed": [],
+            }
+
+        enriched_root = bundle_set / ENRICHED_DIRNAME
+        applied: list[dict[str, Any]] = []
+        skipped: list[dict[str, Any]] = []
+        failed: list[dict[str, Any]] = []
+        for candidate in candidate_records(draft_result):
+            package_id = str(candidate.get("packageId") or "")
+            candidate_path = safe_bundle_path(bundle_set, candidate.get("candidatePath"))
+            if not package_id or not candidate_path.is_dir():
+                skipped.append(
+                    {
+                        "packageId": package_id,
+                        "reason": "candidate_path_missing",
+                    }
+                )
+                continue
+            output = enriched_root / safe_enriched_candidate_dir(package_id)
+            try:
+                patch = build_ai_enrichment_candidate_patch(
+                    AIEnrichmentCandidatePatchOptions(
+                        proposal=Path(proposal_path),
+                        candidate=candidate_path,
+                        output=output,
+                        package_id=package_id,
+                    )
+                )
+            except ValueError as exc:
+                skipped.append(
+                    {
+                        "packageId": package_id,
+                        "reason": "ai_enrichment_patch_skipped",
+                        "message": str(exc),
+                    }
+                )
+                continue
+            except Exception as exc:  # noqa: BLE001
+                failed.append(
+                    {
+                        "packageId": package_id,
+                        "reason": "ai_enrichment_patch_failed",
+                        "message": str(exc),
+                    }
+                )
+                continue
+            applied.append(
+                {
+                    "packageId": package_id,
+                    "candidate": str(output),
+                    "patchReport": str(output / AI_ENRICHMENT_CANDIDATE_PATCH_FILENAME),
+                    "appliedChangeCount": len(patch.get("appliedChanges", [])),
+                    "skippedChangeCount": len(patch.get("skippedChanges", [])),
+                    "previewOnly": bool(mapping_value(patch.get("subject")).get("previewOnly")),
+                    "sourceMutated": bool(mapping_value(patch.get("subject")).get("sourceMutated")),
+                }
+            )
+        status = "failed" if failed else ("prepared" if applied else "skipped")
+        return {
+            "status": status,
+            "root": str(enriched_root),
+            "authority": "producer_preview_evidence_only",
+            "summary": {
+                "appliedCount": len(applied),
+                "skippedCount": len(skipped),
+                "failedCount": len(failed),
+            },
+            "applied": applied,
+            "skipped": skipped,
+            "failed": failed,
+            "nonGoals": [
+                "specpm_acceptance",
+                "relation_acceptance",
+                "preview_only_removal",
+                "source_candidate_mutation",
+                "registry_publication",
+            ],
+        }
 
     def ai_mode_record(self) -> dict[str, Any]:
         if self.options.skip_ai:
@@ -451,6 +576,12 @@ def repository_status(record: dict[str, Any]) -> str:
             "skipped",
         }:
             return "failed"
+    enriched_preview = record.get("aiEnrichedPreview")
+    if isinstance(enriched_preview, dict) and enriched_preview.get("status") not in {
+        "prepared",
+        "skipped",
+    }:
+        return "failed"
     return "passed"
 
 
@@ -495,6 +626,48 @@ def count_present(repositories: list[dict[str, Any]], key: str) -> int:
         if isinstance(repository.get(key), dict)
         and repository[key].get("status") in {"completed", "warning"}
     )
+
+
+def sum_nested_summary(repositories: list[dict[str, Any]], key: str, summary_key: str) -> int:
+    total = 0
+    for repository in repositories:
+        record = repository.get(key)
+        if not isinstance(record, dict):
+            continue
+        summary = record.get("summary")
+        if not isinstance(summary, dict):
+            continue
+        value = summary.get(summary_key)
+        if isinstance(value, int):
+            total += value
+    return total
+
+
+def candidate_records(draft_result: dict[str, Any]) -> list[dict[str, Any]]:
+    return [item for item in draft_result.get("candidates", []) if isinstance(item, dict)]
+
+
+def safe_bundle_path(root: Path, relative: Any) -> Path:
+    value = str(relative or "")
+    path = Path(value)
+    if not value or path.is_absolute():
+        return root / "__invalid__"
+    resolved_root = root.resolve()
+    resolved = (resolved_root / path).resolve()
+    try:
+        resolved.relative_to(resolved_root)
+    except ValueError:
+        return root / "__invalid__"
+    return resolved
+
+
+def safe_enriched_candidate_dir(package_id: str) -> str:
+    candidate = "".join(ch if ch.isalnum() or ch in "._-" else "-" for ch in package_id)
+    return candidate.strip(".-") or "package"
+
+
+def mapping_value(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
 
 
 def read_json(path: Path) -> dict[str, Any]:

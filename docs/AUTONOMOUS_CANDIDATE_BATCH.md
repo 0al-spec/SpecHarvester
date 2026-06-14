@@ -30,6 +30,19 @@ python3 -m spec_harvester autonomous-candidate-batch \
   --json-repair-max-attempts 1
 ```
 
+Opt in to copied AI-enriched preview candidates when clean enrichment proposals
+should become reviewable candidate artifacts:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --lm-studio-base-url http://127.0.0.1:1234 \
+  --lm-studio-model openai/gpt-oss-20b \
+  --json-repair-max-attempts 1 \
+  --apply-ai-enrichment
+```
+
 Run deterministically without model calls for CI or offline smoke:
 
 ```bash
@@ -59,6 +72,7 @@ repository source manifest
   -> preflight-bundle-set
   -> optional local LM Studio package-set AI draft proposal
   -> optional local LM Studio package-set AI enrichment proposal
+  -> optional copied AI-enriched preview candidates
   -> autonomous-candidate-batch-report.json
 ```
 
@@ -72,11 +86,16 @@ output/
   package-sets/<repository-id>/bundle-set-preflight.json
   package-sets/<repository-id>/ai/package-set-ai-draft-proposal.json
   package-sets/<repository-id>/ai/package-set-ai-enrichment-proposal.json
+  package-sets/<repository-id>/enriched/<package-id>/specpm.yaml
+  package-sets/<repository-id>/enriched/<package-id>/ai-enrichment-candidate-patch.json
   reports/batch-validation-report.json
   autonomous-candidate-batch-report.json
 ```
 
 AI proposal files are present only when live local model execution is enabled.
+The `enriched/` subtree is present only when `--apply-ai-enrichment` is set and
+the package's `SpecHarvesterPackageSetAIEnrichmentProposal` is clean enough for
+the deterministic `apply-ai-enrichment-proposal` helper.
 
 ## Report Identity
 
@@ -97,6 +116,8 @@ The report records:
 - candidate and relation counts;
 - author-ready stop-policy summary;
 - AI draft and enrichment proposal status when enabled;
+- `aiEnrichedPreview` status, applied/skipped/failed counts, copied candidate
+  paths, and `ai-enrichment-candidate-patch.json` paths when enabled;
 - explicit producer-evidence authority and non-goals.
 
 The default `autonomous_popular_mvp` role profile selects workspace,
@@ -112,11 +133,20 @@ Live AI mode is local and operator-controlled:
 - `--lm-studio-model` is required unless `--skip-ai` is set;
 - `--json-repair-max-attempts` bounds malformed JSON repair prompts per local
   model call;
+- `--apply-ai-enrichment` is an explicit second opt-in that turns clean
+  proposal evidence into copied preview candidate artifacts;
 - provider execution is recorded as `operator_opt_in_local`;
 - compact structured requests can be inspected, but raw prompts, raw provider
   responses, secrets, and chain-of-thought are not persisted;
 - CI should use `--skip-ai` or existing external `--model-output` fixtures for
   lower-level AI proposal commands.
+
+`--apply-ai-enrichment` does not change authority. It does not accept packages,
+does not accept relations, does not remove `preview_only`, does not mutate
+source candidates, does not publish registry metadata, does not create a SpecPM
+pull request, and does not treat AI output as upstream project endorsement.
+Warning-bearing, failed, missing, or package-misaligned AI enrichment proposals
+remain sidecar-only and are counted as skipped.
 
 When local model output is malformed, AI proposal records surface
 `diagnosticCodes` such as `ai_json_repair_needed` and

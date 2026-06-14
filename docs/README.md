@@ -156,7 +156,7 @@ Published DocC site:
 54. [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md):
     MVP autonomous popular-library scraping runner over local source manifests,
     package-set preview bundles, local LM Studio proposals, bounded JSON repair,
-    and batch reports
+    optional copied AI-enriched preview candidates, and batch reports
 54. [`AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`](AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md):
     SpecPM-facing candidate-layer intake policy for autonomous batch output,
     review states, maintainer checks, and authority boundaries

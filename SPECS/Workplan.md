@@ -1290,7 +1290,7 @@ Acceptance:
 - CLI, docs, DocC, tests, and Flow archive record the boundary and the FastAPI
   comparison motivation.
 
-- [ ] `P34-T2` Add an optional autonomous batch output mode that applies clean
+- [x] `P34-T2` Add an optional autonomous batch output mode that applies clean
   AI enrichment proposals into enriched preview candidate copies and emits patch
   reports alongside the normal proposal-only artifacts without accepting
   packages, mutating source candidates, or publishing registry metadata.

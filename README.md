@@ -15,6 +15,19 @@ Live DocC documentation:
 
 ## TL;DR
 
+SpecHarvester is currently a **developer/operator tool**. The supported
+distribution mode is source checkout plus local Python install. It is not yet a
+PyPI/Homebrew/Docker-distributed end-user package.
+
+```bash
+git clone https://github.com/0al-spec/SpecHarvester.git
+cd SpecHarvester
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -e ".[dev]"
+spec-harvester --help
+```
+
 SpecHarvester now supports the current author-ready producer loop:
 
 ```text
@@ -30,6 +43,9 @@ single-package or package-set candidate draft
 optional local LM Studio/OpenAI-compatible proposal
       |
       v
+optional copied AI-enriched preview candidate
+      |
+      v
 validation, quality report, and static viewer
       |
       v
@@ -43,34 +59,30 @@ through SpecPM.
 See [`docs/CAPABILITIES.md`](docs/CAPABILITIES.md) for the current capability
 map and maturity boundary.
 
-## Bootstrap Example
+## Bootstrap Example: Single Candidate
 
-Run the current bootstrap loop:
+Run the current single-candidate loop after the local install above:
 
 ```bash
-python3 -m spec_harvester collect-local /path/to/repo \
+spec-harvester collect-local /path/to/repo \
   --repository https://github.com/example/project \
   --revision <commit-sha> \
   --out candidates/github.com/example/project
 
-python3 -m spec_harvester draft candidates/github.com/example/project \
+spec-harvester draft candidates/github.com/example/project \
   --package-id project.core \
   --out candidates/github.com/example/project
 
-python3 -m spec_harvester render-spec-site \
+spec-harvester render-spec-site \
   --candidate candidates/github.com/example/project \
   --output previews/github.com/example/project
-
-python3 -m spec_harvester promote candidates/github.com/example/project \
-  --accepted-root accepted \
-  --manifest accepted/accepted-packages.yml
 ```
 
 For monorepos, the source can be scoped to a folder or file target while still
 preserving repository provenance:
 
 ```bash
-python3 -m spec_harvester collect-local /path/to/monorepo \
+spec-harvester collect-local /path/to/monorepo \
   --target Modules/Player \
   --repository https://github.com/example/project \
   --revision <commit-sha> \
@@ -85,11 +97,46 @@ candidates/github.com/example/project/specpm.yaml
 candidates/github.com/example/project/specs/project.spec.yaml
 previews/github.com/example/project/index.html
 previews/github.com/example/project/spec-package.json
-accepted/<package_id>/<version>/
 ```
 
-Drafted specs are deterministic candidates. They must pass `specpm validate`
-and maintainer review before they are treated as accepted registry source.
+Drafted specs are deterministic preview candidates. They must pass SpecPM
+validation and maintainer review before they are treated as accepted registry
+source. `promote` and `prepare-accepted-entry` are maintainer staging helpers;
+they are not public registry publication by themselves.
+
+## Autonomous Batch Example
+
+Run a deterministic local batch without model calls:
+
+```bash
+spec-harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai
+```
+
+Run an AI-enabled local batch through LM Studio or another local
+OpenAI-compatible endpoint:
+
+```bash
+spec-harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --lm-studio-base-url http://127.0.0.1:1234 \
+  --lm-studio-model openai/gpt-oss-20b \
+  --json-repair-max-attempts 1 \
+  --apply-ai-enrichment
+```
+
+`--apply-ai-enrichment` is an explicit second opt-in. Clean AI enrichment
+proposals are applied into copied preview candidates under:
+
+```text
+package-sets/<repository-id>/enriched/<package-id>/
+```
+
+The original generated candidates are not mutated, `preview_only` stays true,
+and the batch output remains review evidence for SpecPM maintainers.
 
 ## Documentation Map
 
@@ -197,7 +244,7 @@ generated/                transient generated artifacts, future
 
 ## Development
 
-Install locally:
+Install locally for development:
 
 ```bash
 python3 -m venv .venv
@@ -205,12 +252,31 @@ python3 -m venv .venv
 python -m pip install -e ".[dev]"
 ```
 
+For a non-editable pinned Git install, use an exact commit or tag:
+
+```bash
+python -m pip install \
+  "git+https://github.com/0al-spec/SpecHarvester.git@<commit-or-tag>"
+```
+
+The installed console script is:
+
+```bash
+spec-harvester --help
+```
+
+During source-tree debugging without installing, use:
+
+```bash
+PYTHONPATH=src python -m spec_harvester --help
+```
+
 Quality gates:
 
 ```bash
-pytest
-ruff check src tests
-ruff format --check src tests
+PYTHONPATH=src pytest -q
+PYTHONPATH=src ruff check .
+PYTHONPATH=src ruff format --check src tests
 ```
 
 ## CI and Promotion

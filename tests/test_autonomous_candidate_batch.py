@@ -42,7 +42,11 @@ def test_autonomous_candidate_batch_runs_offline_preview_pipeline(
     assert repository["preflight"]["status"] == "passed"
     assert repository["aiDraft"]["status"] == "skipped"
     assert repository["aiEnrichment"]["status"] == "skipped"
+    assert repository["aiEnrichedPreview"]["status"] == "skipped"
     assert repository["authorReadyDraftSummary"]["decision"] == "stop_for_author_review"
+    assert report["summary"]["aiEnrichedPreviewAppliedCount"] == 0
+    assert report["summary"]["aiEnrichedPreviewSkippedCount"] == 0
+    assert report["summary"]["aiEnrichedPreviewFailedCount"] == 0
 
     saved = json.loads(
         (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).read_text(encoding="utf-8")
@@ -81,6 +85,7 @@ def test_autonomous_candidate_batch_uses_single_package_fallback(
     assert repository["preflight"]["relationCount"] == 0
     assert repository["aiDraft"]["status"] == "skipped"
     assert repository["aiEnrichment"]["status"] == "skipped"
+    assert repository["aiEnrichedPreview"]["status"] == "skipped"
     assert repository["authorReadyDraftSummary"]["memberCounts"]["total"] == 1
 
     bundle_set = output / "package-sets" / "gin"
@@ -196,6 +201,127 @@ def test_autonomous_candidate_batch_ai_record_surfaces_json_repair_diagnostics(
         "needed": True,
         "status": "exhausted",
     }
+
+
+def test_autonomous_candidate_batch_applies_clean_ai_enrichment_when_opted_in(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_package_set_ai_draft_proposal",
+        lambda _options: completed_ai_draft_proposal(),
+    )
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_package_set_ai_enrichment_proposal",
+        lambda _options: completed_ai_enrichment_proposal("demo.workspace"),
+    )
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            lm_studio_model="openai/gpt-oss-20b",
+            apply_ai_enrichment=True,
+        )
+    )
+
+    assert report["status"] == "passed"
+    assert report["summary"]["aiEnrichedPreviewAppliedCount"] == 1
+    assert report["summary"]["aiEnrichedPreviewSkippedCount"] == 2
+    assert report["summary"]["aiEnrichedPreviewFailedCount"] == 0
+    enriched = report["repositories"][0]["aiEnrichedPreview"]
+    assert enriched["status"] == "prepared"
+    assert enriched["summary"] == {
+        "appliedCount": 1,
+        "failedCount": 0,
+        "skippedCount": 2,
+    }
+    assert enriched["applied"][0]["packageId"] == "demo.workspace"
+    assert enriched["applied"][0]["previewOnly"] is True
+    assert enriched["applied"][0]["sourceMutated"] is False
+    enriched_root = output / "package-sets" / "demo" / "enriched" / "demo.workspace"
+    assert (enriched_root / "specpm.yaml").is_file()
+    assert (enriched_root / "ai-enrichment-candidate-patch.json").is_file()
+    assert "AI-enriched Demo Workspace" in (enriched_root / "specpm.yaml").read_text(
+        encoding="utf-8"
+    )
+
+
+def test_autonomous_candidate_batch_skips_warning_ai_enrichment_application(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_package_set_ai_draft_proposal",
+        lambda _options: completed_ai_draft_proposal(),
+    )
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_package_set_ai_enrichment_proposal",
+        lambda _options: completed_ai_enrichment_proposal("demo.workspace", status="warning"),
+    )
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            lm_studio_model="openai/gpt-oss-20b",
+            apply_ai_enrichment=True,
+        )
+    )
+
+    enriched = report["repositories"][0]["aiEnrichedPreview"]
+    assert enriched["status"] == "skipped"
+    assert enriched["reason"] == "ai_enrichment_not_clean"
+    assert enriched["summary"]["appliedCount"] == 0
+    assert enriched["summary"]["skippedCount"] == 3
+    assert not (output / "package-sets" / "demo" / "enriched").exists()
+
+
+def test_autonomous_candidate_batch_failed_ai_enrichment_application_fails_repository(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_package_set_ai_draft_proposal",
+        lambda _options: completed_ai_draft_proposal(),
+    )
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_package_set_ai_enrichment_proposal",
+        lambda _options: completed_ai_enrichment_proposal("demo.workspace"),
+    )
+
+    def fail_patch(_options: object) -> dict[str, object]:
+        raise RuntimeError("unexpected patch failure")
+
+    monkeypatch.setattr(
+        "spec_harvester.autonomous_candidate_batch.build_ai_enrichment_candidate_patch",
+        fail_patch,
+    )
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            lm_studio_model="openai/gpt-oss-20b",
+            apply_ai_enrichment=True,
+        )
+    )
+
+    enriched = report["repositories"][0]["aiEnrichedPreview"]
+    assert report["status"] == "failed"
+    assert report["repositories"][0]["status"] == "failed"
+    assert enriched["status"] == "failed"
+    assert enriched["summary"]["failedCount"] == 3
+    assert enriched["failed"][0]["reason"] == "ai_enrichment_patch_failed"
 
 
 def test_autonomous_candidate_batch_cli_writes_report(
@@ -324,3 +450,77 @@ def write_package_manifest(package_root: Path, name: str, description: str) -> N
         encoding="utf-8",
     )
     (package_root / "README.md").write_text(f"# {name}\n\n{description}\n", encoding="utf-8")
+
+
+def completed_ai_draft_proposal() -> dict[str, object]:
+    return {
+        "apiVersion": "spec-harvester.package-set-ai-draft/v0",
+        "kind": "SpecHarvesterPackageSetAIDraftProposal",
+        "schemaVersion": 1,
+        "status": "completed",
+        "authority": "proposal_only_not_registry_acceptance",
+        "summary": {"proposalCount": 1},
+        "diagnostics": [],
+        "providerReceipt": {
+            "jsonRepairNeeded": False,
+            "jsonRepairAttemptCount": 0,
+            "jsonRepairStatus": "not_needed",
+        },
+        "privacy": {"rawModelResponsesPersisted": False},
+    }
+
+
+def completed_ai_enrichment_proposal(
+    package_id: str, *, status: str = "completed"
+) -> dict[str, object]:
+    return {
+        "apiVersion": "spec-harvester.package-set-ai-enrichment/v0",
+        "kind": "SpecHarvesterPackageSetAIEnrichmentProposal",
+        "schemaVersion": 1,
+        "status": status,
+        "authority": "proposal_only_not_registry_acceptance",
+        "provider": {
+            "name": "lm_studio",
+            "model": "openai/gpt-oss-20b",
+            "execution": "operator_opt_in_local",
+        },
+        "summary": {"proposalCount": 1},
+        "diagnostics": [],
+        "proposals": [
+            {
+                "packageId": package_id,
+                "status": "proposed",
+                "refinedSummary": (
+                    "AI-enriched Demo Workspace captures the public workspace "
+                    "contract for reviewable starter specs."
+                ),
+                "overallConfidence": "high",
+                "capabilities": [
+                    {
+                        "id": "demo.workspace.ai_enriched_review",
+                        "summary": "Provides AI-enriched review evidence for the demo workspace.",
+                        "intentIds": ["intent.spec_authoring.review_ready_starter"],
+                        "evidencePaths": [f"{package_id}/specpm.yaml"],
+                        "confidence": "high",
+                    }
+                ],
+                "interfaces": [
+                    {
+                        "id": f"package.{package_id}",
+                        "kind": "library",
+                        "summary": "Reviewable package interface for the demo workspace.",
+                        "evidencePaths": [f"{package_id}/specpm.yaml"],
+                        "confidence": "high",
+                    }
+                ],
+                "evidenceGaps": [],
+                "providerReceipt": {
+                    "responseDigest": "sha256:test",
+                    "jsonRepairNeeded": False,
+                    "jsonRepairAttemptCount": 0,
+                    "jsonRepairStatus": "not_needed",
+                },
+            }
+        ],
+        "privacy": {"rawModelResponsesPersisted": False},
+    }
