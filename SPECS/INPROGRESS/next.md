@@ -4,7 +4,8 @@
 **Phase:** Phase 20. Scoped Source Unit Harvesting
 **Effort:** Medium
 **Dependencies:** P20-T6
-**Status:** Ready
+**Status:** Selected
+**Active Branch:** `codex/p20-t7-codegraph-compatibility-guard`
 **Last Archived:** P20-T6 CodeGraph Adapter Boundary
 
 ## Recently Archived
