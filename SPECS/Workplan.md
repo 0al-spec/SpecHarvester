@@ -1399,7 +1399,7 @@ Acceptance:
   web frameworks that treats FastAPI package code as public interface evidence
   while treating `docs_src`, tutorials, examples, and tests as semantic usage
   evidence unless explicitly promoted by a plugin rule.
-- [ ] `P36-T3` Implement the first plugin-aware source classification hook in
+- [x] `P36-T3` Implement the first plugin-aware source classification hook in
   the collection/analyzer path, keeping default behavior backwards-compatible
   and requiring explicit opt-in for technology-specific rule profiles.
 - [ ] `P36-T4` Re-run the FastAPI AI-enabled candidate batch with the Python

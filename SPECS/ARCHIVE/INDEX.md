@@ -154,6 +154,7 @@
 | P35-T6 | [P35-T6_Selected_Corpus_Dry_Run_Readiness/](P35-T6_Selected_Corpus_Dry_Run_Readiness/) | 2026-06-14 | PASS |
 | P36-T1 | [P36-T1_Repository_Parsing_Plugin_Contract/](P36-T1_Repository_Parsing_Plugin_Contract/) | 2026-06-14 | PASS |
 | P36-T2 | [P36-T2_Python_Web_Framework_Parser_Profile_Fixture/](P36-T2_Python_Web_Framework_Parser_Profile_Fixture/) | 2026-06-14 | PASS |
+| P36-T3 | [P36-T3_Plugin-Aware_Source_Classification_Hook/](P36-T3_Plugin-Aware_Source_Classification_Hook/) | 2026-06-14 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -267,6 +268,7 @@
 | 2026-06-14 | P36-T1 | Archived REVIEW_p36_t1_repository_parsing_plugin_contract report |
 | 2026-06-14 | P36-T2 | Archived Python Web-Framework Parser Profile Fixture (PASS) |
 | 2026-06-14 | P36-T2 | Archived REVIEW_p36_t2_python_web_framework_parser_profile report |
+| 2026-06-14 | P36-T3 | Archived Plugin-Aware Source Classification Hook (PASS) |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |

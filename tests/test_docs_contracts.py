@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P36-T4 FastAPI AI-Enabled Parser Profile Rerun" in next_text:
+        assert_p36_t3_last_archived(next_text)
+        assert_p36_t3_recent(next_text)
+        assert_phase_36_t4_active(next_text)
+        return
+
     if "# Next Task: P36-T3 Plugin-Aware Source Classification Hook" in next_text:
         assert_p36_t2_last_archived(next_text)
         assert_p36_t2_recent(next_text)
@@ -2659,6 +2665,38 @@ def assert_phase_36_t3_active(next_text: str) -> None:
     assert "does not publish registry metadata" in normalized
     assert "does not accept packages" in normalized
     assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_p36_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P36-T3 Plugin-Aware Source Classification Hook" in next_text
+
+
+def assert_p36_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P36-T3` added an opt-in parser profile hook" in next_text
+    assert "`python.web_framework.v0`" in next_text
+    assert "`--parser-profile python.web_framework.v0`" in next_text
+    assert "repositoryParsingProfile" in next_text
+    assert "pathClassification" in next_text
+    assert "default analyzer behavior remains unchanged" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_phase_36_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P36-T4 FastAPI AI-Enabled Parser Profile Rerun" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "Phase 36. Repository Parsing Plugin System" in next_text
+    assert "`feature/P36-T4-fastapi-ai-enabled-parser-profile-rerun`" in next_text
+    assert "`P36-T4` Re-run the FastAPI AI-enabled candidate batch" in next_text
+    assert "FastAPI" in next_text
+    assert "LM Studio" in next_text
+    assert "python.web_framework.v0" in next_text
+    assert "evidence volume" in normalized
+    assert "claim quality" in normalized
+    assert "registry-review quality" in normalized
+    assert "producer-side evidence only" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
