@@ -1,0 +1,83 @@
+{
+  "apiVersion": "spec-harvester.fastapi-parser-profile-rerun/v0",
+  "kind": "SpecHarvesterFastAPIParserProfileRerunReport",
+  "schemaVersion": 1,
+  "source": {
+    "repository": "https://github.com/fastapi/fastapi",
+    "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+    "packageId": "fastapi.core"
+  },
+  "parserProfile": {
+    "id": "python.web_framework.v0",
+    "authority": "producer_path_classification_only"
+  },
+  "ai": {
+    "mode": "local_lm_studio",
+    "provider": "lm_studio",
+    "baseUrl": "http://127.0.0.1:1234",
+    "model": "openai/gpt-oss-20b",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "comparison": {
+    "baseline": {
+      "parserProfileId": null,
+      "publicInterface": {
+        "status": "complete",
+        "entrypointCount": 1121,
+        "symbolCount": 6009,
+        "docsSrcEntrypointCount": 454,
+        "packageEntrypointCount": 48
+      }
+    },
+    "profiled": {
+      "parserProfileId": "python.web_framework.v0",
+      "publicInterface": {
+        "status": "complete",
+        "entrypointCount": 48,
+        "symbolCount": 298,
+        "docsSrcEntrypointCount": 0,
+        "packageEntrypointCount": 48
+      }
+    },
+    "delta": {
+      "entrypointCount": -1073,
+      "symbolCount": -5711,
+      "docsSrcEntrypointCount": -454,
+      "packageEntrypointCount": 0
+    }
+  },
+  "autonomousBatch": {
+    "status": "passed",
+    "processedCount": 1,
+    "passedPreflightCount": 1,
+    "candidateCount": 1,
+    "relationCount": 0,
+    "aiDraftStatus": "warning",
+    "aiDraftDiagnosticCodes": [
+      "excluded_package_unknown"
+    ],
+    "aiEnrichmentStatus": "warning",
+    "aiEnrichmentDiagnosticCodes": [
+      "ai_json_repair_needed"
+    ],
+    "aiEnrichedPreviewStatus": "skipped",
+    "authorReadyDraftStatus": "author_ready_draft"
+  },
+  "verdict": {
+    "publicInterfaceBoundaryImproved": true,
+    "docsSrcExcludedFromPublicInterface": true,
+    "closerToRegistryReviewQuality": true,
+    "registryReviewQuality": "closer_but_not_clean_handoff",
+    "summary": "The parser profile removes FastAPI docs_src tutorial files from public interface evidence while preserving FastAPI package entrypoints. The generated candidate is a valid author-ready starter package, but live AI proposal artifacts still have warning-level gaps and should not be treated as a clean registry handoff."
+  },
+  "nonAuthority": [
+    "The rerun report is producer-side evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It is not maintainer approval.",
+    "It does not publish registry metadata.",
+    "It does not remove preview_only.",
+    "It does not treat AI output as registry truth."
+  ]
+}

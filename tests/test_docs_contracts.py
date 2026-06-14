@@ -11957,3 +11957,84 @@ def test_python_web_framework_parser_profile_fixture_is_documented() -> None:
         assert "tests/test_applications.py" in normalized
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_fastapi_parser_profile_rerun_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "fastapi_parser_profile_rerun"
+        / "p36-t4-fastapi-parser-profile-rerun.example.json"
+    )
+    github_doc = ROOT / "docs" / "FASTAPI_PARSER_PROFILE_RERUN.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "FastAPIParserProfileRerun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.fastapi-parser-profile-rerun/v0"
+    assert payload["kind"] == "SpecHarvesterFastAPIParserProfileRerunReport"
+    assert payload["schemaVersion"] == 1
+    assert payload["source"] == {
+        "repository": "https://github.com/fastapi/fastapi",
+        "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "packageId": "fastapi.core",
+    }
+    assert payload["parserProfile"]["id"] == "python.web_framework.v0"
+    assert payload["ai"]["mode"] == "local_lm_studio"
+    assert payload["ai"]["model"] == "openai/gpt-oss-20b"
+    assert payload["ai"]["rawPromptPersisted"] is False
+    assert payload["ai"]["rawResponsePersisted"] is False
+
+    comparison = payload["comparison"]
+    assert comparison["baseline"]["publicInterface"]["entrypointCount"] == 1121
+    assert comparison["baseline"]["publicInterface"]["symbolCount"] == 6009
+    assert comparison["baseline"]["publicInterface"]["docsSrcEntrypointCount"] == 454
+    assert comparison["profiled"]["publicInterface"]["entrypointCount"] == 48
+    assert comparison["profiled"]["publicInterface"]["symbolCount"] == 298
+    assert comparison["profiled"]["publicInterface"]["docsSrcEntrypointCount"] == 0
+    assert comparison["profiled"]["publicInterface"]["packageEntrypointCount"] == 48
+    assert comparison["delta"]["docsSrcEntrypointCount"] == -454
+
+    batch = payload["autonomousBatch"]
+    assert batch["status"] == "passed"
+    assert batch["passedPreflightCount"] == 1
+    assert batch["aiDraftStatus"] == "warning"
+    assert batch["aiEnrichmentStatus"] == "warning"
+    assert batch["aiEnrichedPreviewStatus"] == "skipped"
+    assert batch["authorReadyDraftStatus"] == "author_ready_draft"
+
+    verdict = payload["verdict"]
+    assert verdict["publicInterfaceBoundaryImproved"] is True
+    assert verdict["docsSrcExcludedFromPublicInterface"] is True
+    assert verdict["closerToRegistryReviewQuality"] is True
+    assert verdict["registryReviewQuality"] == "closer_but_not_clean_handoff"
+    assert "It does not treat AI output as registry truth." in payload["nonAuthority"]
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        assert "FastAPI Parser Profile Rerun" in normalized
+        assert "python.web_framework.v0" in normalized
+        assert "openai/gpt-oss-20b" in normalized
+        assert "1121" in normalized
+        assert "454" in normalized
+        assert "48" in normalized
+        assert "warning" in normalized
+        assert "not a clean registry handoff" in normalized
+        assert "does not treat AI output as registry truth" in normalized
+
+    assert "FASTAPI_PARSER_PROFILE_RERUN.md" in docs_index.read_text(encoding="utf-8")
+    assert "FastAPIParserProfileRerun" in docc_root.read_text(encoding="utf-8")
+    assert "FASTAPI_PARSER_PROFILE_RERUN.md" in capabilities.read_text(encoding="utf-8")
+    assert "FastAPIParserProfileRerun" in capabilities_docc.read_text(encoding="utf-8")
+    assert "FASTAPI_PARSER_PROFILE_RERUN.md" in roadmap.read_text(encoding="utf-8")
+    assert "FastAPIParserProfileRerun" in roadmap_docc.read_text(encoding="utf-8")

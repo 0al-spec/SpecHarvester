@@ -382,13 +382,20 @@ public API evidence from semantic usage/documentation evidence, uses FastAPI
 `docs_src/*` over-capture as the motivating case, and keeps the intended
 Python web-framework parser profile reusable rather than repository-specific.
 
-Planned follow-ups:
+Completed follow-ups:
 
 - `P36-T2`: add a machine-readable Python web-framework parser profile
   fixture;
 - `P36-T3`: implement the first plugin-aware source classification hook;
 - `P36-T4`: rerun FastAPI with the parser profile and compare evidence volume
   and claim quality.
+
+The P36-T4 FastAPI rerun is recorded in
+<doc:FastAPIParserProfileRerun>. It shows `docs_src/*` public interface
+entrypoints dropping from `454` to `0` while FastAPI package entrypoints stay
+at `48`. The output is closer to registry-review quality on evidence boundary,
+but AI proposal artifacts still had warning-level gaps, so the result remains
+an author-ready starter package rather than a clean registry handoff.
 
 Plugin decisions remain producer-side evidence only: no registry publication,
 no package or relation acceptance, no baseline seeding, no `preview_only`
