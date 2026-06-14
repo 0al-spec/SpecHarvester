@@ -16,6 +16,13 @@ def assert_current_next_task(next_text: str) -> None:
         assert_phase_20_t8_active(next_text)
         return
 
+    if "# Next Task: P34-T2 Autonomous Batch AI Enriched Preview Output" in next_text:
+        assert_p34_t1_last_archived(next_text)
+        assert_p34_t1_recent(next_text)
+        assert_p20_t8_recent(next_text)
+        assert_phase_34_t2_active(next_text)
+        return
+
     if "# Next Task: Phase 34 Complete" in next_text:
         assert_p34_t1_last_archived(next_text)
         assert_p34_t1_recent(next_text)
@@ -2131,6 +2138,34 @@ def assert_phase_34_t1_active(next_text: str) -> None:
     assert "publish registry metadata" in normalized
     assert "treat model output as registry truth" in normalized
     assert "recorded FastAPI AI enrichment smoke output" in normalized
+
+
+def assert_phase_34_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P34-T2 Autonomous Batch AI Enriched Preview Output" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Phase 34. AI-Enabled Candidate Curation" in next_text
+    assert "P34-T1 made AI enrichment practically applicable" in normalized
+    assert "explicit operator command" in normalized
+    assert "autonomous corpus runs" in normalized
+    assert "opt-in mode" in normalized
+    assert "clean AI enrichment proposals" in normalized
+    assert "copied enriched preview candidates" in normalized
+    assert "ai-enrichment-candidate-patch.json" in next_text
+    assert "default autonomous batch behavior must remain proposal-only" in normalized
+    assert "completed, clean, package aligned, and diagnostic-free" in normalized
+    assert "must not:" in next_text
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "seed baselines" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "mutate source candidates" in normalized
+    assert "publish registry metadata" in normalized
+    assert "create a SpecPM pull request" in normalized
+    assert "treat AI output as maintainer approval" in normalized
+    assert "treat AI output as upstream project endorsement" in normalized
+    assert "replace SpecPM validation" in normalized
+    assert "autonomous-candidate-batch" in next_text
 
 
 def assert_p34_t1_recent(next_text: str) -> None:

@@ -1,8 +1,11 @@
-# Next Task: Phase 34 Complete
+# Next Task: P34-T2 Autonomous Batch AI Enriched Preview Output
 
-**Status:** Phase Complete
-**Completed:** 2026-06-14
+**Priority:** High
 **Phase:** Phase 34. AI-Enabled Candidate Curation
+**Effort:** Medium
+**Dependencies:** P34-T1, P29-T5, P33-T4
+**Status:** Selected
+**Active Branch:** TBD
 **Last Archived:** P34-T1 AI Enrichment Candidate Patch Proposal
 
 ## Recently Archived
@@ -36,22 +39,27 @@
   `warning:` output for `AcceptedPackageUpdateProposals`,
   `python -m spec_harvester quality-report`, or `specpm validate`.
 
-## Phase Summary
+## Description
 
-Phase 34 currently has one completed task.
+P34-T1 made AI enrichment practically applicable through an explicit operator
+command. P34-T2 should make that useful in autonomous corpus runs by adding an
+opt-in mode that applies clean AI enrichment proposals into copied enriched
+preview candidates and emits `ai-enrichment-candidate-patch.json` reports
+beside the usual proposal-only artifacts.
 
-AI-enabled candidate curation now has a safe deterministic bridge from local
-model proposal output into reviewable preview candidate artifacts. Model output
-can improve starter package quality without becoming registry truth.
+The default autonomous batch behavior must remain proposal-only. Enriched
+preview output is allowed only when the proposal is completed, clean, package
+aligned, and diagnostic-free for the selected package.
 
 ## Boundary
 
-Phase 34 completion does not:
+P34-T2 must not:
 
 - accept packages;
 - accept relations;
 - seed baselines;
 - remove `preview_only`;
+- mutate source candidates;
 - publish registry metadata;
 - create a SpecPM pull request;
 - treat AI output as maintainer approval;
@@ -60,6 +68,6 @@ Phase 34 completion does not:
 
 ## Next Step
 
-Select a follow-up only after review. The most likely next task is integrating
-the helper into the autonomous batch path so AI-enabled runs can emit enriched
-preview candidates automatically when the enrichment proposal is clean.
+Plan P34-T2 as a separate PR. Start by tracing
+`autonomous-candidate-batch` output layout and deciding where an opt-in
+enriched preview root and patch summary should appear in the batch report.

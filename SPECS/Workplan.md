@@ -1289,3 +1289,37 @@ Acceptance:
   publication is implied.
 - CLI, docs, DocC, tests, and Flow archive record the boundary and the FastAPI
   comparison motivation.
+
+- [ ] `P34-T2` Add an optional autonomous batch output mode that applies clean
+  AI enrichment proposals into enriched preview candidate copies and emits patch
+  reports alongside the normal proposal-only artifacts without accepting
+  packages, mutating source candidates, or publishing registry metadata.
+
+Motivation:
+
+- P34-T1 makes AI enrichment useful through an explicit operator command, but
+  autonomous corpus runs still stop at sidecar proposal JSON unless the helper
+  is invoked manually for each candidate.
+- AI-enabled usage should become the practical review path when local
+  LM Studio/OpenAI-compatible enrichment succeeds cleanly.
+
+Goal:
+
+- Let autonomous batch runs optionally emit author-reviewable enriched preview
+  candidates for clean AI proposals while preserving deterministic validation,
+  preview-only status, and non-authority boundaries.
+
+Acceptance:
+
+- The autonomous batch path exposes an explicit opt-in option for enriched
+  preview output and keeps the default proposal-only behavior unchanged.
+- Clean completed enrichment proposals produce copied enriched candidates plus
+  `ai-enrichment-candidate-patch.json` reports; failed, warning-bearing, or
+  diagnostic-bearing proposals remain sidecar-only and require regeneration or
+  review.
+- The output preserves `preview_only`, refreshes producer receipt digests,
+  passes producer preflight where possible, and records summary counts in the
+  batch report.
+- Docs, DocC, tests, and a practical smoke show that AI-enabled autonomous
+  runs can produce reviewable enriched candidates without implying SpecPM
+  acceptance or registry publication.
