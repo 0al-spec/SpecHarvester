@@ -167,6 +167,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t3_report_builder_behavior_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p17_t2_cli_domain_command_objects.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t8_next_corpus_intake_readiness_decision.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p34_t1_ai_enrichment_candidate_patch.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t7_durable_next_corpus_selected_handoff_artifact.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t6_next_corpus_specpm_preflight_intake_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p33_t5_next_corpus_candidate_layer_triage.md` |
