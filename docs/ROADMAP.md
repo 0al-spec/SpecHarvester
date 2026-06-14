@@ -582,7 +582,8 @@ Tasks:
 
 - document `P35-T1`, the corpus selection policy, including importance
   signals, exclusion rules, ecosystem quotas, local checkout requirements, and
-  the producer-evidence boundary;
+  the producer-evidence boundary
+  ([`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md));
 - define `P35-T2`, a machine-readable `SpecHarvesterCorpusPlan` format with
   selected-because reason codes, excluded-subpackage reason codes, source
   checkout pins, categories, package-family targets, and non-authority

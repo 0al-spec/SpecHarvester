@@ -30,7 +30,7 @@ local repository checkout
 | AI-enriched preview candidate copies | Clean AI enrichment proposals can be applied into copied preview candidates with patch reports for review. | <doc:AIEnrichmentCandidatePatch> |
 | Selected/deferred candidate triage | Review-ready candidates are separated from candidates needing regeneration, repair, or explicit deferral. | <doc:SelectedCandidateHandoffProposal>, <doc:DeferredCandidateRegenerationRunbook> |
 | SpecPM handoff evidence | Portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | <doc:SpecPMHandoff>, <doc:SelectedCandidateHandoffPreflightExpectations> |
-| Bounded corpus runs | Operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:AutonomousCandidateBatch>, <doc:BoundedCorpusExpansionPlan> |
+| Bounded corpus runs | Important multi-ecosystem repository/package-family targets selected with explicit importance signals and exclusion rules, then operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:CorpusSelectionPolicy>, <doc:AutonomousCandidateBatch>, <doc:BoundedCorpusExpansionPlan> |
 | Optional CodeGraph input boundary | Pre-existing CodeGraph artifact normalization and offline pinned interface compatibility checks. | <doc:CodeGraphSourceGraphAdapter>, <doc:CodeGraphCompatibilityGuard> |
 
 ## Product Boundary
@@ -56,6 +56,13 @@ authority, and public-index publisher.
 Passing preflight means the bundle is internally consistent enough for review.
 It does not accept the package into the registry.
 
+## Corpus Selection Boundary
+
+<doc:CorpusSelectionPolicy> defines how SpecHarvester chooses important
+libraries across ecosystems before autonomous candidate generation. Source
+selection is a curated operator decision over repositories and package
+families, not an open-ended registry crawl.
+
 ## Non-Goals
 
 SpecHarvester does not clone or discover repositories during documented corpus
@@ -75,5 +82,6 @@ registry.
 | Local LM Studio proposal path | Working, proposal-only |
 | Selected/deferred handoff | Working review evidence path |
 | SpecPM consumer preflight integration | Working for supported handoff artifacts |
+| Curated multi-ecosystem corpus selection | Planned policy boundary |
 | Broad autonomous public-library scraping | Not ready; bounded local corpus only |
 | Final accepted spec authoring | Out of scope for SpecHarvester |

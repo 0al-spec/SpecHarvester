@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P35-T2 SpecHarvesterCorpusPlan" in next_text:
+        assert_p35_t1_last_archived(next_text)
+        assert_p35_t1_recent(next_text)
+        assert_phase_35_t2_planned(next_text)
+        return
+
     if "# Next Task: P35-T1 Corpus Selection Policy" in next_text:
         assert_p34_t2_last_archived(next_text)
         assert_phase_35_t1_active(next_text)
@@ -2197,7 +2203,8 @@ def assert_p34_t2_recent(next_text: str) -> None:
 def assert_phase_35_t1_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P35-T1 Corpus Selection Policy" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P35-T1-corpus-selection-policy`" in next_text
     assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
     assert "Registry search results such as npm `react` sorted by downloads" in normalized
     assert "ecosystem plumbing" in normalized
@@ -2226,6 +2233,52 @@ def assert_phase_35_t1_active(next_text: str) -> None:
     assert "`P35-T4` Create the first multi-ecosystem seed corpus plan" in next_text
     assert "`P35-T5` Add explainable corpus selection report" in next_text
     assert "`P35-T6` Run or document selected corpus plan dry-run readiness" in next_text
+
+
+def assert_p35_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P35-T1 Corpus Selection Policy" in next_text
+
+
+def assert_p35_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P35-T1` added [`CORPUS_SELECTION_POLICY.md`]" in next_text
+    assert "bounded curated corpus builder" in normalized
+    assert "not an open-ended registry crawler" in normalized
+    assert "repository/package-family selection units" in normalized
+    assert "importance signals" in normalized
+    assert "ecosystem quotas" in normalized
+    assert "exclusion and deferral rules" in normalized
+    assert "pinned local checkout requirements" in normalized
+    assert "producer-evidence boundary" in normalized
+    assert "no clone/fetch" in normalized
+    assert "dependency installation" in normalized
+    assert "harvested code execution" in normalized
+    assert "registry publication" in normalized
+    assert "package or relation acceptance" in normalized
+    assert "`preview_only` removal" in normalized
+    assert "AI output as registry truth" in normalized
+
+
+def assert_phase_35_t2_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P35-T2 SpecHarvesterCorpusPlan" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
+    assert "`P35-T2` Define a machine-readable `SpecHarvesterCorpusPlan`" in next_text
+    assert "versioned machine-readable format" in normalized
+    assert "ecosystem-neutral" in normalized
+    assert "selected-because reason codes" in normalized
+    assert "excluded or deferred subpackage reason codes" in normalized
+    assert "expected analyzer coverage" in normalized
+    assert "stop conditions" in normalized
+    assert "per-ecosystem quotas" in normalized
+    assert "non-authority statements" in normalized
+    assert "downstream autonomous-batch command plan" in normalized
+    assert "does not authorize clone/fetch" in normalized
+    assert "dependency installation" in normalized
+    assert "harvested code execution" in normalized
+    assert "registry publication" in normalized
+    assert "`preview_only` removal" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
@@ -10277,6 +10330,16 @@ def test_curated_multi_ecosystem_corpus_selection_phase_is_planned() -> None:
     next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
     roadmap = ROOT / "docs" / "ROADMAP.md"
     roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    corpus_policy = ROOT / "docs" / "CORPUS_SELECTION_POLICY.md"
+    corpus_policy_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "CorpusSelectionPolicy.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
 
     workplan_text = workplan.read_text(encoding="utf-8")
     normalized_workplan = " ".join(workplan_text.split())
@@ -10307,6 +10370,7 @@ def test_curated_multi_ecosystem_corpus_selection_phase_is_planned() -> None:
     for required in (
         "Milestone 14: Curated Multi-Ecosystem Corpus Selection",
         "bounded curated corpora rather than open-ended registry crawling",
+        "CORPUS_SELECTION_POLICY.md",
         "SpecHarvesterCorpusPlan",
         "selected-because reason codes",
         "excluded-subpackage reason codes",
@@ -10332,3 +10396,43 @@ def test_curated_multi_ecosystem_corpus_selection_phase_is_planned() -> None:
         "no AI output as registry truth",
     ):
         assert required in docc_text, f"Required term {required!r} not found"
+
+    for path in (corpus_policy, corpus_policy_docc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "bounded curated corpus builder",
+            "not an open-ended registry crawler",
+            "repository or package family",
+            "dependency centrality",
+            "registry usage",
+            "public API richness",
+            "ecosystem archetype coverage",
+            "release and maintenance health",
+            "source availability",
+            "license clarity",
+            "security and supply-chain relevance",
+            "JavaScript/TypeScript, Python, Rust, Go",
+            "internal utilities",
+            "types-only packages",
+            "generated-only packages",
+            "deprecated sources",
+            "examples and test fixtures",
+            "build tooling",
+            "registry search noise",
+            "clone repositories",
+            "install dependencies",
+            "execute harvested code",
+            "accept packages",
+            "accept relations",
+            "remove `preview_only`",
+            "registry truth",
+            "P35-T2",
+            "P35-T6",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "CORPUS_SELECTION_POLICY.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/CORPUS_SELECTION_POLICY.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:CorpusSelectionPolicy>" in docc_root.read_text(encoding="utf-8")
+    assert "CORPUS_SELECTION_POLICY.md" in capabilities.read_text(encoding="utf-8")
+    assert "CorpusSelectionPolicy" in capabilities_docc.read_text(encoding="utf-8")

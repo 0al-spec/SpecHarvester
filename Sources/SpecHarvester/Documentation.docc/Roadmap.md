@@ -349,7 +349,7 @@ Phase 35 records the next planning step: SpecHarvester should select important
 library repositories and package families through a bounded, explainable corpus
 plan rather than raw registry search results or open-ended crawling.
 
-The planned work starts with `P35-T1`, a corpus selection policy that defines
+The planned work starts with `P35-T1`, <doc:CorpusSelectionPolicy>, which defines
 importance signals, exclusion rules, ecosystem quotas, local checkout
 requirements, and producer-evidence boundaries. Follow-up tasks define
 `SpecHarvesterCorpusPlan`, candidate source classification, a bounded
