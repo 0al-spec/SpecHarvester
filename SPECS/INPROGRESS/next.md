@@ -1,15 +1,25 @@
-# Next Task: P34-T2 Autonomous Batch AI Enriched Preview Output
+# Next Task: Phase 34 Complete
 
-**Priority:** High
+**Status:** Phase Complete
+**Completed:** 2026-06-14
 **Phase:** Phase 34. AI-Enabled Candidate Curation
-**Effort:** Medium
-**Dependencies:** P34-T1, P29-T5, P33-T4
-**Status:** In Progress
-**Active Branch:** `codex/p34-t2-autonomous-ai-enriched-output`
-**Last Archived:** P34-T1 AI Enrichment Candidate Patch Proposal
+**Last Archived:** P34-T2 Autonomous Batch AI Enriched Preview Output
 
 ## Recently Archived
 
+- `P34-T2` added `autonomous-candidate-batch --apply-ai-enrichment`, an
+  explicit opt-in mode that applies clean package-set AI enrichment proposals
+  into copied enriched preview candidates under
+  `package-sets/<repository-id>/enriched/<package-id>/`.
+- The batch report now records `aiEnrichedPreview` status, applied/skipped/
+  failed records, and summary counts:
+  `aiEnrichedPreviewAppliedCount`, `aiEnrichedPreviewSkippedCount`, and
+  `aiEnrichedPreviewFailedCount`.
+- The default autonomous batch behavior remains proposal-only. Offline
+  `--skip-ai` runs and live AI runs without `--apply-ai-enrichment` do not emit
+  enriched preview candidates.
+- Warning-bearing, failed, missing, package-misaligned, or otherwise rejected
+  enrichment proposals remain sidecar-only and are counted as skipped.
 - `P34-T1` added `apply-ai-enrichment-proposal`, a deterministic helper that
   reads a clean `SpecHarvesterPackageSetAIEnrichmentProposal`, copies a
   generated candidate bundle into an enriched preview candidate copy, applies
@@ -17,43 +27,22 @@
   receipt digests, and writes `ai-enrichment-candidate-patch.json` with
   before/after digests, provider provenance, applied changes, skipped changes,
   and non-authority boundary statements.
-- The helper rejects failed or warning-bearing proposal reports, package id
-  drift between the proposal and `specpm.yaml`, unresolved package diagnostics,
-  output paths inside the source bundle, and report paths that would mutate the
-  source candidate.
-- The FastAPI live LM Studio smoke was re-run through the helper. The enriched
-  `fastapi.core` preview candidate produced patch `status: prepared`, applied
-  `8` changes with `0` skipped changes, preserved `previewOnly: true`, kept
-  `sourceMutated: false`, passed producer preflight with zero diagnostics, and
-  passed SpecPM validation with only the expected `preview_only_package`
-  warning. The enriched candidate includes repository-specific capabilities
-  such as `fastapi.core.http_routing`,
-  `fastapi.core.middleware_support`,
-  `fastapi.core.request_response_context`, and
-  `fastapi.core.openapi_generation`.
-- `P20-T8` cleaned up stale DocC warnings by converting
-  `AcceptedPackageUpdateProposals` from a symbol-page heading into a normal
-  documentation article and by changing literal command references in
-  `RealRepositoryQualityReport` from DocC symbol-style double-backtick markup
-  to inline code markup. DocC static generation now completes with no
-  `warning:` output for `AcceptedPackageUpdateProposals`,
-  `python -m spec_harvester quality-report`, or `specpm validate`.
 
-## Description
+## Phase Summary
 
-P34-T1 made AI enrichment practically applicable through an explicit operator
-command. P34-T2 should make that useful in autonomous corpus runs by adding an
-opt-in mode that applies clean AI enrichment proposals into copied enriched
-preview candidates and emits `ai-enrichment-candidate-patch.json` reports
-beside the usual proposal-only artifacts.
+Phase 34 made AI-enabled candidate curation practically reviewable.
 
-The default autonomous batch behavior must remain proposal-only. Enriched
-preview output is allowed only when the proposal is completed, clean, package
-aligned, and diagnostic-free for the selected package.
+SpecHarvester can now:
+
+- produce proposal-only package-set AI enrichment evidence;
+- deterministically apply clean proposals to copied preview candidates;
+- run autonomous batch output with optional AI-enriched preview artifacts;
+- preserve `preview_only`;
+- keep model output as producer review evidence rather than registry truth.
 
 ## Boundary
 
-P34-T2 must not:
+Phase 34 completion does not:
 
 - accept packages;
 - accept relations;
@@ -68,6 +57,9 @@ P34-T2 must not:
 
 ## Next Step
 
-Plan P34-T2 as a separate PR. Start by tracing
-`autonomous-candidate-batch` output layout and deciding where an opt-in
-enriched preview root and patch summary should appear in the batch report.
+After review, the most useful next task is a practical corpus run using
+`autonomous-candidate-batch --apply-ai-enrichment` on the existing bounded
+popular-library checkout corpus. That run should compare deterministic
+preview candidates, proposal-only AI artifacts, copied AI-enriched preview
+candidates, author-ready quality reports, and SpecPM handoff readiness without
+publishing registry metadata.
