@@ -29,6 +29,12 @@
 - Real `xyflow` smoke at `a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd` passed
   with 4 candidates, 3 relations, preflight `passed`, and
   `authorReadyDraftSummary.decision: stop_for_author_review`.
+- Follow-up corpus check over local Flask, Gin, and xyflow found two concrete
+  technical-debt items now captured in
+  `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`: Flask and Gin collect public
+  evidence but produce `0` package candidates without a single-package
+  fallback, and live LM Studio output can still need bounded JSON repair/retry
+  when the model returns malformed JSON.
 
 ## Outcome
 
@@ -46,3 +52,11 @@ The policy should explain how `SpecHarvesterAutonomousCandidateBatchReport`,
 package-set preview bundles, AI draft/enrichment proposals, and author-ready
 summaries can be reviewed by SpecPM maintainers without turning producer output
 into registry authority.
+
+After that policy boundary, the planned autonomous-runner technical-debt stack
+is:
+
+1. `P29-T3` corpus baseline and gap report.
+2. `P29-T4` single-package candidate fallback.
+3. `P29-T5` LM Studio JSON repair/retry.
+4. `P29-T6` corpus quality gate after fallback and retry support.

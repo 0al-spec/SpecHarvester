@@ -151,6 +151,11 @@ not clone repositories, execute harvested code, install dependencies, publish
 registry metadata, or accept packages. SpecPM remains the acceptance and
 registry authority.
 
+The first mixed corpus check exposed follow-up work: single-package repositories
+such as Flask and Gin need a fallback preview candidate path, and local LM
+Studio/OpenAI-compatible output needs bounded JSON repair/retry. See
+<doc:AutonomousCandidateTechDebtPlan>.
+
 ## Non-Goals
 
 SpecHarvester does not become the registry, the canonical package authority,
