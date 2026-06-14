@@ -9959,3 +9959,37 @@ def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> Non
     assert "SinglePackageCandidateFallback" in tech_debt_docc.read_text(encoding="utf-8")
     assert "SINGLE_PACKAGE_CANDIDATE_FALLBACK.md" in roadmap.read_text(encoding="utf-8")
     assert "SinglePackageCandidateFallback" in roadmap_docc.read_text(encoding="utf-8")
+
+
+def test_capabilities_docs_are_linked_from_primary_entrypoints() -> None:
+    github_doc = ROOT / "docs" / "CAPABILITIES.md"
+    docc_doc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    root_readme = ROOT / "README.md"
+    docs_index = ROOT / "docs" / "README.md"
+    workflow_doc = ROOT / "docs" / "HOW_IT_WORKS.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "current product capability map",
+            "valid starter package",
+            "Package-set drafting",
+            "Author-ready quality reporting",
+            "Local AI",
+            "Selected/deferred",
+            "SpecPM handoff",
+            "Bounded corpus",
+            "CodeGraph",
+            "Broad autonomous public-library scraping",
+            "Out of scope for SpecHarvester",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert "docs/CAPABILITIES.md" in root_readme.read_text(encoding="utf-8")
+    assert "CAPABILITIES.md" in docs_index.read_text(encoding="utf-8")
+    assert "CAPABILITIES.md" in workflow_doc.read_text(encoding="utf-8")
+    root_text = docc_root.read_text(encoding="utf-8")
+    assert "docs/CAPABILITIES.md" in root_text
+    assert "<doc:Capabilities>" in root_text

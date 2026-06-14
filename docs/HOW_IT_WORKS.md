@@ -11,6 +11,44 @@ so maintainers can decide whether they belong in a public registry.
 
 ## One-Screen Summary
 
+The current product flow is:
+
+```text
+public repository URL or source manifest
+        |
+        v
+local checkout at a pinned revision
+        |
+        v
+bounded static evidence collection
+        |
+        v
+single-package or package-set candidate draft
+        |
+        v
+optional local model proposal, never registry truth
+        |
+        v
+SpecPM validation, producer preflight, quality report
+        |
+        v
+static viewer and author action items
+        |
+        v
+selected/deferred handoff evidence
+        |
+        v
+SpecPM-side preflight and maintainer review
+```
+
+The output target is an author-ready valid starter package. Acceptance into a
+public registry remains an explicit SpecPM maintainer decision.
+
+The detailed product capability map is in [`CAPABILITIES.md`](CAPABILITIES.md).
+
+The original bootstrap loop is the smallest single-package version of that
+flow:
+
 ```text
 public repository URL
         |
