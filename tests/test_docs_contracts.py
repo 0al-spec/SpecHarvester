@@ -3,10 +3,25 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from spec_harvester.source_manifest import read_repository_source_manifests
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P30-T2 Deterministic Limited Corpus Batch" in next_text:
+        assert_p30_t1_last_archived(next_text)
+        assert_p29_t6_recent(next_text)
+        assert_p30_t1_recent(next_text)
+        assert_phase_30_t2_active(next_text)
+        return
+
+    if "# Next Task: P30-T1 Limited Popular-Library Corpus Plan" in next_text:
+        assert_p29_t6_last_archived(next_text)
+        assert_p29_t6_recent(next_text)
+        assert_phase_30_t1_active(next_text)
+        return
+
     if "# Next Task: P29-T6 Corpus Quality Gate After Fallbacks" in next_text:
         assert_p29_t5_last_archived(next_text)
         assert_p29_t1_recent(next_text)
@@ -196,6 +211,10 @@ def assert_p29_t5_last_archived(next_text: str) -> None:
 
 def assert_p29_t6_last_archived(next_text: str) -> None:
     assert "**Last Archived:** P29-T6 Corpus Quality Gate After Fallbacks" in next_text
+
+
+def assert_p30_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P30-T1 Limited Popular-Library Corpus Plan" in next_text
 
 
 def assert_p26_t5_archived(next_text: str) -> None:
@@ -572,6 +591,55 @@ def assert_phase_29_complete(next_text: str) -> None:
     assert "candidate-layer review" in normalized
     assert "not accepted registry truth" in normalized
     assert "select the next phase" in normalized
+
+
+def assert_phase_30_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P30-T1 Limited Popular-Library Corpus Plan" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
+    assert "P29-T6 Corpus Quality Gate After Fallbacks" in next_text
+    assert "ready_for_limited_popular_library_scraping" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "producer_preview_evidence_only" in next_text
+    assert "preview_only" in next_text
+    assert "not automatic SpecPM acceptance" in normalized
+    assert "source-manifest shape" in normalized
+    assert "selection criteria" in normalized
+    assert "operator runbook" in normalized
+    assert "non-authority boundaries" in normalized
+
+
+def assert_p30_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P30-T1` defined the limited popular-library corpus plan" in next_text
+    assert "LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md" in next_text
+    assert "LimitedPopularLibraryCorpusPlan" in next_text
+    assert "inputs/limited-popular-libraries/repositories.yml" in next_text
+    assert "flask.core" in next_text
+    assert "gin.core" in next_text
+    assert "xyflow.workspace" in next_text
+    assert "cupertino.core" in next_text
+    assert "navigation-split-view.core" in next_text
+    assert "docc2context.core" in next_text
+    assert "source-manifest shape" in normalized
+    assert "selection criteria" in normalized
+    assert "operator runbook" in normalized
+    assert "stop conditions" in normalized
+    assert "candidate-layer triage states" in normalized
+    assert "non-authority boundaries" in normalized
+
+
+def assert_phase_30_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P30-T2 Deterministic Limited Corpus Batch" in next_text
+    assert "**Status:** Selected" in next_text
+    assert "Phase 30. Limited Popular-Library Scraping Batch" in next_text
+    assert "deterministic `--skip-ai` path" in next_text
+    assert "collection, candidate, relation" in normalized
+    assert "preflight, and stop-policy outcomes" in normalized
 
 
 def test_analyzer_sandbox_requirements_docs_cover_required_controls() -> None:
@@ -3703,6 +3771,98 @@ def test_autonomous_candidate_corpus_quality_gate_docs_cover_readiness_verdict()
     assert "AutonomousCandidateCorpusQualityGate" in roadmap_docc.read_text(encoding="utf-8")
     assert "AUTONOMOUS_CANDIDATE_CORPUS_QUALITY_GATE.md" in tech_debt.read_text(encoding="utf-8")
     assert "AutonomousCandidateCorpusQualityGate" in tech_debt_docc.read_text(encoding="utf-8")
+
+
+def test_limited_popular_library_corpus_plan_docs_and_manifest_are_aligned() -> None:
+    github_doc = ROOT / "docs" / "LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LimitedPopularLibraryCorpusPlan.md"
+    )
+    manifest = ROOT / "inputs" / "limited-popular-libraries" / "repositories.yml"
+    generic_manifest = ROOT / "inputs" / "repositories.example.yml"
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Limited Popular-Library Corpus Plan",
+            "ready_for_limited_popular_library_scraping",
+            "inputs/limited-popular-libraries/repositories.yml",
+            "operator-provided local public checkouts",
+            "producer_preview_evidence_only",
+            "preview_only",
+            "accepted SpecPM truth",
+            "flask.core",
+            "gin.core",
+            "xyflow.workspace",
+            "cupertino.core",
+            "navigation-split-view.core",
+            "docc2context.core",
+            "candidate_layer_review_required",
+            "needs_regeneration",
+            "blocked",
+            "not_for_intake",
+            "json-repair-max-attempts 1",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    records = read_repository_source_manifests(ROOT / "inputs", include_disabled=True)
+    by_path = {}
+    for record in records:
+        by_path.setdefault(record["sourceManifest"]["path"], []).append(record)
+
+    limited_records = read_repository_source_manifests(
+        ROOT / "inputs" / "limited-popular-libraries",
+        include_disabled=True,
+    )
+    limited = limited_records
+    assert [record["id"] for record in limited] == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert {record["packageId"] for record in limited} == {
+        "flask.core",
+        "gin.core",
+        "xyflow.workspace",
+        "cupertino.core",
+        "navigation-split-view.core",
+        "docc2context.core",
+    }
+    assert all(record["revision"] for record in limited)
+    assert all(record["checkout"] for record in limited)
+    assert all("seed_corpus" in record["labels"] for record in limited)
+    assert by_path["repositories.example.yml"][0]["id"] == "xyflow-example"
+    assert generic_manifest.read_text(encoding="utf-8").startswith("# Minimal source list")
+    assert manifest.read_text(encoding="utf-8").startswith(
+        "# P30-T1 limited popular-library seed corpus."
+    )
+
+    assert "LIMITED_POPULAR_LIBRARY_CORPUS_PLAN.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:LimitedPopularLibraryCorpusPlan>" in docc_root.read_text(encoding="utf-8")
+    assert "Milestone 10: Limited Popular-Library Scraping Batch" in roadmap.read_text(
+        encoding="utf-8"
+    )
+    assert "LimitedPopularLibraryCorpusPlan" in roadmap_docc.read_text(encoding="utf-8")
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "Phase 30. Limited Popular-Library Scraping Batch" in workplan_text
+    for task_id in ("P30-T1", "P30-T2", "P30-T3", "P30-T4", "P30-T5"):
+        assert f"`{task_id}`" in workplan_text
+    assert "- [x] `P30-T1`" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
 def test_single_package_candidate_fallback_docs_cover_producer_boundary() -> None:

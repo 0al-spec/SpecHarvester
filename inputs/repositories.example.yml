@@ -1,9 +1,8 @@
-# Example source list for future batch harvesting.
-schemaVersion: 1
+# Minimal source list for batch harvesting examples.
 repositories:
-  - id: github.com/xyflow/xyflow
+  - id: xyflow-example
     repository: https://github.com/xyflow/xyflow
     ref: main
-    revision: null
-    packageId: xyflow.core
-    status: candidate
+    checkout: ../checkouts/xyflow
+    packageId: xyflow.workspace
+    labels: [javascript, package_set, example]
