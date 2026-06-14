@@ -10,6 +10,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P35-T1 Corpus Selection Policy" in next_text:
+        assert_p34_t2_last_archived(next_text)
+        assert_phase_35_t1_active(next_text)
+        return
+
     if "# Next Task: P20-T8 DocC Warning Cleanup" in next_text:
         assert_p20_t7_last_archived(next_text)
         assert_p20_t7_recent(next_text)
@@ -2187,6 +2192,40 @@ def assert_p34_t2_recent(next_text: str) -> None:
     assert "default autonomous batch behavior remains proposal-only" in normalized
     assert "Warning-bearing, failed, missing, package-misaligned" in normalized
     assert "sidecar-only" in normalized
+
+
+def assert_phase_35_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P35-T1 Corpus Selection Policy" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "Phase 35. Curated Multi-Ecosystem Corpus Selection" in next_text
+    assert "Registry search results such as npm `react` sorted by downloads" in normalized
+    assert "ecosystem plumbing" in normalized
+    assert "internal utilities" in normalized
+    assert "type packages" in normalized
+    assert "shims" in normalized
+    assert "parsers" in normalized
+    assert "generated artifacts" in normalized
+    assert "unrelated high-download packages" in normalized
+    assert "important multi-ecosystem repository/package-family targets" in normalized
+    assert "dependency centrality" in normalized
+    assert "registry usage" in normalized
+    assert "public API richness" in normalized
+    assert "ecosystem archetype coverage" in normalized
+    assert "JavaScript/TypeScript, Python, Rust, Go" in next_text
+    assert "no clone/fetch" in normalized
+    assert "dependency installation" in normalized
+    assert "harvested code execution" in normalized
+    assert "registry publication" in normalized
+    assert "package acceptance" in normalized
+    assert "relation acceptance" in normalized
+    assert "`preview_only` removal" in normalized
+    assert "AI-as-registry-truth" in normalized
+    assert "`P35-T2` Define `SpecHarvesterCorpusPlan`" in next_text
+    assert "`P35-T3` Add candidate source classifier plan" in next_text
+    assert "`P35-T4` Create the first multi-ecosystem seed corpus plan" in next_text
+    assert "`P35-T5` Add explainable corpus selection report" in next_text
+    assert "`P35-T6` Run or document selected corpus plan dry-run readiness" in next_text
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
@@ -10231,3 +10270,65 @@ def test_ai_enrichment_candidate_patch_docs_cover_review_boundary() -> None:
     root_text = docc_root.read_text(encoding="utf-8")
     assert "docs/AI_ENRICHMENT_CANDIDATE_PATCH.md" in root_text
     assert "<doc:AIEnrichmentCandidatePatch>" in root_text
+
+
+def test_curated_multi_ecosystem_corpus_selection_phase_is_planned() -> None:
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    normalized_workplan = " ".join(workplan_text.split())
+    for required in (
+        "Phase 35. Curated Multi-Ecosystem Corpus Selection",
+        "`P35-T1` Document the corpus selection policy",
+        "`P35-T2` Define a machine-readable `SpecHarvesterCorpusPlan`",
+        "`P35-T3` Add a candidate source classifier plan",
+        "`P35-T4` Create the first multi-ecosystem seed corpus plan",
+        "`P35-T5` Add an explainable corpus selection report",
+        "`P35-T6` Run or document a dry-run readiness check",
+        "JavaScript/TypeScript, Python, Rust, Go",
+        "internal utilities",
+        "types-only packages",
+        "generated-only packages",
+        "deprecated sources",
+        "registry search noise",
+        "operator-selected and bounded by ecosystem quotas",
+        "must not clone/fetch repositories",
+        "treat AI output as registry truth",
+    ):
+        assert required in normalized_workplan, f"Required term {required!r} not found"
+
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+    roadmap_text = roadmap.read_text(encoding="utf-8")
+    normalized_roadmap = " ".join(roadmap_text.split())
+    for required in (
+        "Milestone 14: Curated Multi-Ecosystem Corpus Selection",
+        "bounded curated corpora rather than open-ended registry crawling",
+        "SpecHarvesterCorpusPlan",
+        "selected-because reason codes",
+        "excluded-subpackage reason codes",
+        "JavaScript/TypeScript, Python, Rust, Go",
+        "explainable corpus selection report",
+        "does not clone/fetch repositories",
+        "remove `preview_only`",
+        "registry truth",
+    ):
+        assert required in normalized_roadmap, f"Required term {required!r} not found"
+
+    docc_text = " ".join(roadmap_docc.read_text(encoding="utf-8").split())
+    for required in (
+        "Curated Multi-Ecosystem Corpus Selection",
+        "bounded, explainable corpus plan",
+        "SpecHarvesterCorpusPlan",
+        "candidate source classification",
+        "JavaScript/TypeScript, Python, Rust, Go",
+        "internal utilities",
+        "types-only packages",
+        "generated artifacts",
+        "no clone/fetch/install/execute behavior",
+        "no AI output as registry truth",
+    ):
+        assert required in docc_text, f"Required term {required!r} not found"

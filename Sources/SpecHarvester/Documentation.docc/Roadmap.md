@@ -343,6 +343,29 @@ The post-fallback quality gate is recorded in
 <doc:AutonomousCandidateCorpusQualityGate> with verdict
 `ready_for_limited_popular_library_scraping`.
 
+### Curated Multi-Ecosystem Corpus Selection
+
+Phase 35 records the next planning step: SpecHarvester should select important
+library repositories and package families through a bounded, explainable corpus
+plan rather than raw registry search results or open-ended crawling.
+
+The planned work starts with `P35-T1`, a corpus selection policy that defines
+importance signals, exclusion rules, ecosystem quotas, local checkout
+requirements, and producer-evidence boundaries. Follow-up tasks define
+`SpecHarvesterCorpusPlan`, candidate source classification, a bounded
+multi-ecosystem seed corpus, explainable corpus selection reports, and dry-run
+readiness checks.
+
+This phase explicitly covers JavaScript/TypeScript, Python, Rust, Go, and at
+least one additional ecosystem. It also records why registry search noise such
+as internal utilities, types-only packages, generated artifacts, deprecated
+sources, examples, test fixtures, build tooling, and unrelated high-download
+packages must be excluded or deferred before autonomous candidate generation.
+
+The boundary remains unchanged: no clone/fetch/install/execute behavior, no
+registry publication, no package or relation acceptance, no baseline seeding,
+no `preview_only` removal, and no AI output as registry truth.
+
 ## Non-Goals
 
 SpecHarvester does not become the registry, the canonical package authority,
