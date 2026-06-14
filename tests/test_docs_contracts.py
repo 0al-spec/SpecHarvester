@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P36-T3 Plugin-Aware Source Classification Hook" in next_text:
+        assert_p36_t2_last_archived(next_text)
+        assert_p36_t2_recent(next_text)
+        assert_phase_36_t3_active(next_text)
+        return
+
     if "# Next Task: P36-T2 Python Web-Framework Parser Profile Fixture" in next_text:
         assert_p36_t1_last_archived(next_text)
         assert_p36_t1_recent(next_text)
@@ -2600,6 +2606,56 @@ def assert_phase_36_t2_active(next_text: str) -> None:
     assert "tutorials" in normalized
     assert "examples" in normalized
     assert "tests" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_p36_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P36-T2 Python Web-Framework Parser Profile Fixture" in next_text
+
+
+def assert_p36_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P36-T2` added" in next_text
+    assert "python-web-framework-v0.example.json" in next_text
+    assert "SpecHarvesterRepositoryParsingProfile" in next_text
+    assert "spec-harvester.repository-parsing-profile/v0" in next_text
+    assert "producer_path_classification_profile_only" in next_text
+    assert "python.web_framework.v0" in next_text
+    assert "SpecHarvesterRepositoryParsingPluginDecision" in next_text
+    assert "spec-harvester.repository-parsing-plugin/v0" in next_text
+    assert "producer_path_classification_only" in next_text
+    assert "operator_override" in next_text
+    assert "selected_parser_profile_rule" in next_text
+    assert "conservative_default_fallback" in next_text
+    assert "fastapi/applications.py" in next_text
+    assert "public_interface" in next_text
+    assert "docs_src/first_steps/tutorial001.py" in next_text
+    assert "semantic_usage" in next_text
+    assert "tests/test_applications.py" in next_text
+    assert "test" in next_text
+    assert "documentation, tutorials, examples, and tests" in normalized
+    assert "does not publish registry metadata" in normalized
+    assert "does not accept packages" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_phase_36_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P36-T3 Plugin-Aware Source Classification Hook" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "Phase 36. Repository Parsing Plugin System" in next_text
+    assert "`feature/P36-T3-plugin-aware-source-classification-hook`" in next_text
+    assert "`P36-T3` Implement plugin-aware source classification hook" in next_text
+    assert "parser profile loader" in normalized
+    assert "deterministic path classification" in normalized
+    assert "opt-in" in normalized
+    assert "No parser profile selected means current behavior remains unchanged" in next_text
+    assert "python.web_framework.v0" in next_text
+    assert "publicInterfaceEligible" in next_text
+    assert "semanticUsageEligible" in next_text
+    assert "does not clone/fetch repositories" in normalized
     assert "does not publish registry metadata" in normalized
     assert "does not accept packages" in normalized
     assert "does not treat AI output as registry truth" in normalized
@@ -11736,4 +11792,115 @@ def test_repository_parsing_plugin_contract_is_documented() -> None:
     assert "`P36-T2` Add a machine-readable parser rule profile fixture" in workplan_text
     assert "`P36-T3` Implement the first plugin-aware source classification hook" in workplan_text
     assert "`P36-T4` Re-run the FastAPI AI-enabled candidate batch" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_python_web_framework_parser_profile_fixture_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_parsing_profiles"
+        / "python-web-framework-v0.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PARSING_PLUGIN_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryParsingPluginContract.md"
+    )
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.repository-parsing-profile/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryParsingProfile"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_path_classification_profile_only"
+    assert payload["profile"]["id"] == "python.web_framework.v0"
+    assert payload["profile"]["ecosystem"] == "pypi"
+    assert payload["profile"]["language"] == "python"
+    assert payload["contract"] == {
+        "decisionApiVersion": "spec-harvester.repository-parsing-plugin/v0",
+        "decisionKind": "SpecHarvesterRepositoryParsingPluginDecision",
+        "decisionAuthority": "producer_path_classification_only",
+    }
+    assert payload["rulePrecedence"] == [
+        "operator_override",
+        "selected_parser_profile_rule",
+        "language_package_manager_rule",
+        "generic_repository_classifier_rule",
+        "conservative_default_fallback",
+    ]
+    assert set(payload["evidenceRoles"]) == {
+        "public_interface",
+        "semantic_usage",
+        "documentation",
+        "example",
+        "test",
+        "generated",
+        "tooling",
+        "internal",
+        "ignored",
+    }
+
+    rules = {rule["id"]: rule for rule in payload["rules"]}
+    assert rules["python_package_root_public_interface"]["role"] == "public_interface"
+    assert rules["python_package_root_public_interface"]["publicInterfaceEligible"] is True
+    assert rules["docs_src_semantic_usage"]["role"] == "semantic_usage"
+    assert rules["docs_src_semantic_usage"]["publicInterfaceEligible"] is False
+    assert rules["docs_src_semantic_usage"]["semanticUsageEligible"] is True
+    assert rules["tests_not_public_interface"]["role"] == "test"
+    assert rules["tests_not_public_interface"]["publicInterfaceEligible"] is False
+    assert rules["generated_artifacts_not_public_interface"]["role"] == "generated"
+    assert rules["repository_tooling_not_public_interface"]["role"] == "tooling"
+    assert rules["private_python_modules_internal"]["role"] == "internal"
+
+    assert payload["fallback"] == {
+        "role": "semantic_usage",
+        "reasonCodes": [
+            "unmatched_python_web_framework_path",
+            "conservative_non_public_interface_default",
+        ],
+        "publicInterfaceEligible": False,
+        "semanticUsageEligible": True,
+    }
+
+    decisions = {decision["path"]: decision for decision in payload["sampleDecisions"]}
+    assert decisions["fastapi/applications.py"]["role"] == "public_interface"
+    assert decisions["fastapi/applications.py"]["publicInterfaceEligible"] is True
+    assert decisions["docs_src/first_steps/tutorial001.py"]["role"] == "semantic_usage"
+    assert decisions["docs_src/first_steps/tutorial001.py"]["publicInterfaceEligible"] is False
+    assert decisions["docs_src/first_steps/tutorial001.py"]["semanticUsageEligible"] is True
+    assert decisions["tests/test_applications.py"]["role"] == "test"
+    assert decisions["tests/test_applications.py"]["publicInterfaceEligible"] is False
+
+    assert payload["nonAuthorityStatements"] == [
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_execute_harvested_code",
+        "does_not_publish_registry_metadata",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_ai_output_as_registry_truth",
+    ]
+    assert payload["followUp"] == {
+        "implementationTask": "P36-T3",
+        "fastapiComparisonTask": "P36-T4",
+    }
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        assert "python-web-framework-v0.example.json" in normalized
+        assert "spec-harvester.repository-parsing-profile/v0" in normalized
+        assert "SpecHarvesterRepositoryParsingProfile" in normalized
+        assert "producer_path_classification_profile_only" in normalized
+        assert "python.web_framework.v0" in normalized
+        assert "fastapi/applications.py" in normalized
+        assert "docs_src/first_steps/tutorial001.py" in normalized
+        assert "tests/test_applications.py" in normalized
+
     assert_current_next_task(next_task.read_text(encoding="utf-8"))

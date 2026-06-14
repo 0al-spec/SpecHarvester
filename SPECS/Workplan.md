@@ -1395,7 +1395,7 @@ Acceptance:
   evidence and define how language/framework-specific rules can classify
   source roots, package roots, examples, docs, tests, generated files, and
   tooling without hardcoding every repository in the core analyzer.
-- [ ] `P36-T2` Add a machine-readable parser rule profile fixture for Python
+- [x] `P36-T2` Add a machine-readable parser rule profile fixture for Python
   web frameworks that treats FastAPI package code as public interface evidence
   while treating `docs_src`, tutorials, examples, and tests as semantic usage
   evidence unless explicitly promoted by a plugin rule.

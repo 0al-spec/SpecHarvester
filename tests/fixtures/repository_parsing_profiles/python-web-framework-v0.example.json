@@ -1,0 +1,256 @@
+{
+  "apiVersion": "spec-harvester.repository-parsing-profile/v0",
+  "kind": "SpecHarvesterRepositoryParsingProfile",
+  "schemaVersion": 1,
+  "authority": "producer_path_classification_profile_only",
+  "profile": {
+    "id": "python.web_framework.v0",
+    "title": "Python Web Framework Repository Parsing Profile",
+    "version": "0.1.0",
+    "status": "draft",
+    "ecosystem": "pypi",
+    "language": "python",
+    "appliesTo": [
+      "python_web_framework",
+      "asgi_framework",
+      "wsgi_framework",
+      "fastapi_style_repository"
+    ]
+  },
+  "contract": {
+    "decisionApiVersion": "spec-harvester.repository-parsing-plugin/v0",
+    "decisionKind": "SpecHarvesterRepositoryParsingPluginDecision",
+    "decisionAuthority": "producer_path_classification_only"
+  },
+  "rulePrecedence": [
+    "operator_override",
+    "selected_parser_profile_rule",
+    "language_package_manager_rule",
+    "generic_repository_classifier_rule",
+    "conservative_default_fallback"
+  ],
+  "evidenceRoles": [
+    "public_interface",
+    "semantic_usage",
+    "documentation",
+    "example",
+    "test",
+    "generated",
+    "tooling",
+    "internal",
+    "ignored"
+  ],
+  "rules": [
+    {
+      "id": "python_package_root_public_interface",
+      "match": {
+        "pathPrefixes": [
+          "fastapi/"
+        ],
+        "fileExtensions": [
+          ".py"
+        ]
+      },
+      "role": "public_interface",
+      "reasonCodes": [
+        "python_package_root",
+        "consumer_facing_api_surface"
+      ],
+      "publicInterfaceEligible": true,
+      "semanticUsageEligible": false
+    },
+    {
+      "id": "docs_src_semantic_usage",
+      "match": {
+        "pathPrefixes": [
+          "docs_src/"
+        ],
+        "fileExtensions": [
+          ".py",
+          ".md",
+          ".rst"
+        ]
+      },
+      "role": "semantic_usage",
+      "subrole": "example",
+      "reasonCodes": [
+        "documentation_example",
+        "not_package_root"
+      ],
+      "publicInterfaceEligible": false,
+      "semanticUsageEligible": true
+    },
+    {
+      "id": "docs_semantic_usage",
+      "match": {
+        "pathPrefixes": [
+          "docs/"
+        ]
+      },
+      "role": "documentation",
+      "reasonCodes": [
+        "documentation",
+        "semantic_context"
+      ],
+      "publicInterfaceEligible": false,
+      "semanticUsageEligible": true
+    },
+    {
+      "id": "examples_semantic_usage",
+      "match": {
+        "pathPrefixes": [
+          "examples/",
+          "example/"
+        ]
+      },
+      "role": "example",
+      "reasonCodes": [
+        "example_code",
+        "semantic_context"
+      ],
+      "publicInterfaceEligible": false,
+      "semanticUsageEligible": true
+    },
+    {
+      "id": "tests_not_public_interface",
+      "match": {
+        "pathPrefixes": [
+          "tests/",
+          "test/"
+        ],
+        "filenamePatterns": [
+          "test_*.py",
+          "*_test.py"
+        ]
+      },
+      "role": "test",
+      "reasonCodes": [
+        "test_fixture",
+        "not_public_api"
+      ],
+      "publicInterfaceEligible": false,
+      "semanticUsageEligible": false
+    },
+    {
+      "id": "generated_artifacts_not_public_interface",
+      "match": {
+        "pathPrefixes": [
+          "build/",
+          "dist/",
+          "site/"
+        ],
+        "filenamePatterns": [
+          "*.generated.py",
+          "*_pb2.py"
+        ]
+      },
+      "role": "generated",
+      "reasonCodes": [
+        "generated_artifact",
+        "provenance_required"
+      ],
+      "publicInterfaceEligible": false,
+      "semanticUsageEligible": false
+    },
+    {
+      "id": "repository_tooling_not_public_interface",
+      "match": {
+        "pathPrefixes": [
+          ".github/",
+          "scripts/",
+          "tools/"
+        ]
+      },
+      "role": "tooling",
+      "reasonCodes": [
+        "repository_tooling",
+        "not_public_api"
+      ],
+      "publicInterfaceEligible": false,
+      "semanticUsageEligible": false
+    },
+    {
+      "id": "private_python_modules_internal",
+      "match": {
+        "pathSegments": [
+          "__pycache__",
+          "_internal",
+          "_private"
+        ]
+      },
+      "role": "internal",
+      "reasonCodes": [
+        "internal_implementation",
+        "not_public_api"
+      ],
+      "publicInterfaceEligible": false,
+      "semanticUsageEligible": false
+    }
+  ],
+  "fallback": {
+    "role": "semantic_usage",
+    "reasonCodes": [
+      "unmatched_python_web_framework_path",
+      "conservative_non_public_interface_default"
+    ],
+    "publicInterfaceEligible": false,
+    "semanticUsageEligible": true
+  },
+  "sampleDecisions": [
+    {
+      "path": "fastapi/applications.py",
+      "role": "public_interface",
+      "appliesToPackageId": "fastapi.core",
+      "matchedRuleId": "python_package_root_public_interface",
+      "reasonCodes": [
+        "python_package_root",
+        "consumer_facing_api_surface"
+      ],
+      "confidence": "high",
+      "publicInterfaceEligible": true,
+      "semanticUsageEligible": false
+    },
+    {
+      "path": "docs_src/first_steps/tutorial001.py",
+      "role": "semantic_usage",
+      "subrole": "example",
+      "appliesToPackageId": "fastapi.core",
+      "matchedRuleId": "docs_src_semantic_usage",
+      "reasonCodes": [
+        "documentation_example",
+        "not_package_root"
+      ],
+      "confidence": "high",
+      "publicInterfaceEligible": false,
+      "semanticUsageEligible": true
+    },
+    {
+      "path": "tests/test_applications.py",
+      "role": "test",
+      "appliesToPackageId": "fastapi.core",
+      "matchedRuleId": "tests_not_public_interface",
+      "reasonCodes": [
+        "test_fixture",
+        "not_public_api"
+      ],
+      "confidence": "high",
+      "publicInterfaceEligible": false,
+      "semanticUsageEligible": false
+    }
+  ],
+  "nonAuthorityStatements": [
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_publish_registry_metadata",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "implementationTask": "P36-T3",
+    "fastapiComparisonTask": "P36-T4"
+  }
+}

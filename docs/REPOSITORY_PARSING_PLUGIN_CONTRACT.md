@@ -216,6 +216,53 @@ Future parser plugin output should summarize:
 The report should be hashable and referenceable from producer receipts and
 handoff artifacts.
 
+## Parser Profile Fixture
+
+P36-T2 adds the first machine-readable parser profile fixture:
+
+```text
+tests/fixtures/repository_parsing_profiles/python-web-framework-v0.example.json
+```
+
+The fixture uses:
+
+```json
+{
+  "apiVersion": "spec-harvester.repository-parsing-profile/v0",
+  "kind": "SpecHarvesterRepositoryParsingProfile",
+  "schemaVersion": 1,
+  "authority": "producer_path_classification_profile_only",
+  "profile": {
+    "id": "python.web_framework.v0"
+  }
+}
+```
+
+It records rule precedence, evidence roles, path role rules, fallback behavior,
+sample FastAPI-like decisions, and non-authority statements.
+
+The fixture treats `fastapi/` package code as `public_interface` evidence and
+treats `docs_src/`, docs, examples, and tests as non-public-interface evidence
+by default:
+
+```text
+fastapi/applications.py
+  -> public_interface
+  -> publicInterfaceEligible: true
+
+docs_src/first_steps/tutorial001.py
+  -> semantic_usage
+  -> publicInterfaceEligible: false
+  -> semanticUsageEligible: true
+
+tests/test_applications.py
+  -> test
+  -> publicInterfaceEligible: false
+```
+
+The fixture is data only. It does not execute parser logic until a later task
+implements the plugin-aware source classification hook.
+
 ## Safety Boundary
 
 Plugin decisions are producer-side evidence only.

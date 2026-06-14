@@ -1,65 +1,72 @@
-# Next Task: P36-T2 Python Web-Framework Parser Profile Fixture
+# Next Task: P36-T3 Plugin-Aware Source Classification Hook
 
 **Status:** In Progress
 **Phase:** Phase 36. Repository Parsing Plugin System
-**Task:** `P36-T2` Add Python web-framework parser profile fixture
-**Branch:** `feature/P36-T2-python-web-framework-parser-profile`
-**Last Archived:** P36-T1 Repository Parsing Plugin Contract
+**Task:** `P36-T3` Implement plugin-aware source classification hook
+**Branch:** `feature/P36-T3-plugin-aware-source-classification-hook`
+**Last Archived:** P36-T2 Python Web-Framework Parser Profile Fixture
 
 ## Recently Archived
 
-- `P36-T1` added
-  [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](../../docs/REPOSITORY_PARSING_PLUGIN_CONTRACT.md)
-  and the DocC mirror `RepositoryParsingPluginContract`.
-- The contract defines `SpecHarvesterRepositoryParsingPluginDecision` with
-  `apiVersion: spec-harvester.repository-parsing-plugin/v0`,
+- `P36-T2` added
+  `tests/fixtures/repository_parsing_profiles/python-web-framework-v0.example.json`.
+- The fixture defines `SpecHarvesterRepositoryParsingProfile` with
+  `apiVersion: spec-harvester.repository-parsing-profile/v0`,
   `schemaVersion: 1`, and `authority:
+  producer_path_classification_profile_only`.
+- The profile id is `python.web_framework.v0`.
+- It uses the P36-T1 decision contract:
+  `SpecHarvesterRepositoryParsingPluginDecision` with `apiVersion:
+  spec-harvester.repository-parsing-plugin/v0` and `authority:
   producer_path_classification_only`.
-- It separates `public_interface` evidence from `semantic_usage`,
-  `documentation`, `example`, `test`, `generated`, `tooling`, `internal`, and
-  `ignored` path roles.
-- It uses the FastAPI `docs_src/*` over-capture as the motivating case while
-  keeping the future Python web-framework parser profile reusable rather than
-  repository-specific.
-- The non-authority boundary remains explicit: plugin decisions do not publish
-  registry metadata, do not accept packages or relations, do not remove
-  `preview_only`, and do not treat AI output as registry truth.
+- It records rule precedence:
+  `operator_override`, `selected_parser_profile_rule`,
+  `language_package_manager_rule`, `generic_repository_classifier_rule`, and
+  `conservative_default_fallback`.
+- It classifies `fastapi/applications.py` as `public_interface`,
+  `docs_src/first_steps/tutorial001.py` as `semantic_usage`, and
+  `tests/test_applications.py` as `test`.
+- It keeps documentation, tutorials, examples, and tests out of public
+  interface evidence by default while preserving semantic usage evidence where
+  useful.
+- The non-authority boundary remains explicit: the fixture does not publish
+  registry metadata, does not accept packages or relations, does not remove
+  `preview_only`, and does not treat AI output as registry truth.
 
 ## Context
 
-P36-T1 defined the contract. P36-T2 should now turn that contract into a
-machine-readable fixture for Python web frameworks. The fixture should describe
-how FastAPI-style repositories classify package code as public interface
-evidence while classifying docs, tutorials, examples, and tests as semantic
-usage evidence unless a plugin rule explicitly promotes a path.
+P36-T1 defined the plugin contract and P36-T2 added the first parser profile
+fixture. P36-T3 should now add the first plugin-aware source classification
+hook so collection/analyzer code can consume parser profile decisions in an
+opt-in, backwards-compatible way.
 
 ## Motivation
 
-- Make the plugin contract concrete enough for implementation.
-- Prevent future Python analyzer changes from hardcoding FastAPI-specific
-  paths in core logic.
-- Preserve documentation/tutorial usefulness for LLM enrichment without
-  inflating public API symbol counts.
+- Make the Python web-framework profile executable by the pipeline.
+- Keep default analyzer behavior backwards-compatible when no parser profile
+  is selected.
+- Avoid hardcoding FastAPI-specific path exclusions in core analyzer code.
 
 ## Goal
 
-Add a machine-readable Python web-framework parser profile fixture.
+Implement the first plugin-aware source classification hook.
 
 ## Proposed Scope
 
-- Define the fixture shape and example profile id.
-- Include path role rules for package roots, docs, `docs_src`, examples,
-  tests, generated artifacts, tooling, internal paths, and fallback behavior.
-- Include sample decisions for FastAPI-like paths.
-- Link the fixture from the plugin contract docs and DocC mirror.
-- Add docs-contract regression coverage.
+- Add a small parser profile loader/decision helper for the fixture shape.
+- Add deterministic path classification for selected profiles.
+- Keep parser profile use opt-in.
+- Wire the hook only far enough for tests to prove path role decisions can be
+  produced and consumed safely; avoid broad behavior changes.
+- Add regression coverage for FastAPI-like paths.
 
 ## Acceptance
 
-- The fixture uses the P36-T1 contract vocabulary.
-- FastAPI package code is public interface eligible.
-- `docs_src`, tutorials, examples, and tests are semantic usage or
-  non-public-interface evidence by default.
-- The fixture remains producer-side review evidence only and does not publish
-  registry metadata, does not accept packages or relations, does not remove
-  `preview_only`, and does not treat AI output as registry truth.
+- No parser profile selected means current behavior remains unchanged.
+- Selecting `python.web_framework.v0` can classify FastAPI-like package,
+  `docs_src`, docs, examples, tests, generated, tooling, internal, and fallback
+  paths.
+- Decisions preserve `publicInterfaceEligible` and `semanticUsageEligible`.
+- The hook does not clone/fetch repositories, install dependencies, execute
+  harvested code, publish registry metadata, accept packages or relations,
+  remove `preview_only`, or treat AI output as registry truth.
