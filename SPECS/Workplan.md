@@ -1440,3 +1440,76 @@ Acceptance:
 - Plugin decisions remain producer-side evidence only: they do not publish
   registry metadata, accept packages or relations, remove `preview_only`, or
   treat AI output as registry truth.
+
+## Phase 37. Repository Profile Plugin Selection
+
+- [ ] `P37-T1` Document a language- and framework-agnostic repository profile
+  selection contract. The contract must define profile detection inputs,
+  candidate scoring, selection modes, conflict behavior, operator overrides,
+  and a replayable decision artifact without naming any language or framework
+  as normative.
+- [ ] `P37-T2` Add a machine-readable `SpecHarvesterRepositoryProfileDetection`
+  fixture format that records detected candidate profiles, confidence,
+  evidence paths, rejected profiles, selected profile, fallback profile,
+  override source, diagnostics, and non-authority statements.
+- [ ] `P37-T3` Implement an opt-in repository profile detection CLI/report
+  surface that reads only static repository evidence and emits the detection
+  artifact without collecting source files, installing dependencies, executing
+  harvested code, invoking AI, or drafting packages.
+- [ ] `P37-T4` Connect repository profile selection to autonomous candidate
+  batch as an explicit `auto | none | <profile-id>` decision layer, preserving
+  backwards-compatible generic behavior when confidence is low, ambiguous, or
+  disabled.
+- [ ] `P37-T5` Define generic workspace/member discovery hints produced by
+  profiles: package-set root, member packages, meta packages, primary
+  packages, CLI/bridge packages, plugin packages, examples, tests, docs,
+  generated artifacts, internal utilities, and evidence-only sources.
+- [ ] `P37-T6` Add cross-ecosystem profile fixtures that prove the selection
+  contract is not Python-specific: one workspace-shaped fixture, one
+  single-package fixture, one nested-package fixture, and one ambiguous
+  multi-signal fixture.
+- [ ] `P37-T7` Re-run a real repository with profile auto-selection and record
+  a quality comparison against manual targeting. FastMCP may be used as the
+  motivating validation case, but the report must evaluate the generic
+  subsystem: detection evidence, selected profile, confidence, overrides,
+  public-interface precision, topology hints, and author-ready output quality.
+
+Motivation:
+
+- The FastMCP dry run showed that an explicit target can produce a better
+  starter package than a generic repository-wide run, but the operator should
+  not have to hand-author targets for every repository shape.
+- Plugin selection must be explainable and reviewable. A hidden heuristic that
+  silently decides between workspace, single-package, nested-package, or
+  framework profiles would make generated packages hard to audit.
+- Repository layout is ecosystem-specific, but the selection subsystem should
+  remain ecosystem-neutral: language/framework plugins may provide evidence,
+  while the core policy chooses, records, and exposes the decision.
+
+Goal:
+
+- Introduce a repository profile selection layer that chooses or rejects
+  candidate plugins from static evidence, records why a profile was selected,
+  and keeps profile choice as producer-side evidence rather than registry
+  authority.
+
+Acceptance:
+
+- The phase defines `detect candidates -> score evidence -> select or
+  fallback -> record decision` as the common shape for all repository profile
+  plugins.
+- Explicit CLI and manifest overrides take precedence over auto-detection;
+  auto-detection only selects a profile when confidence is high and conflicts
+  are absent.
+- Ambiguous, low-confidence, missing, or conflicting profile signals fall back
+  to generic behavior with diagnostics instead of silently selecting a
+  technology-specific profile.
+- Detection reads static repository evidence only: manifests, lock/workspace
+  files, package metadata, directory layout, and allowlisted metadata files.
+- The subsystem does not clone/fetch repositories, install dependencies,
+  execute harvested code, invoke package managers, run AI, publish registry
+  metadata, accept packages or relations, remove `preview_only`, or treat AI
+  output as registry truth.
+- Real-repository validation may use FastMCP, FastAPI, or another local
+  checkout, but the phase output must describe reusable plugin selection
+  behavior rather than repository-specific special cases.
