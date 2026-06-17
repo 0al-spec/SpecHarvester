@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P37-T1 Repository Profile Selection Contract" in next_text:
+        assert_p36_t4_last_archived(next_text)
+        assert_p36_t4_recent(next_text)
+        assert_phase_37_t1_active(next_text)
+        return
+
     if "# Next Task: Phase 36 Complete" in next_text:
         assert_p36_t4_last_archived(next_text)
         assert_p36_t4_recent(next_text)
@@ -2735,6 +2741,41 @@ def assert_phase_36_complete(next_text: str) -> None:
     assert "No next task is selected" in next_text
     assert "does not publish registry metadata" in normalized
     assert "does not treat AI output as registry truth" in normalized
+
+
+def assert_phase_37_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P37-T1 Repository Profile Selection Contract" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P37-T1-repository-profile-selection-contract`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert (
+        "`P37-T1` documents a language- and framework-agnostic repository profile "
+        "selection contract" in normalized
+    )
+    assert (
+        "detect candidates -> score evidence -> select or fallback -> record decision" in next_text
+    )
+    assert "static detection inputs" in normalized
+    assert "candidate profile scoring" in normalized
+    assert "explicit CLI and manifest overrides" in normalized
+    assert "`auto`, `none`, and explicit profile selection modes" in next_text
+    assert "ambiguous, low-confidence, conflicting, and unsupported profile handling" in normalized
+    assert "fallback to generic behavior" in normalized
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "FastMCP" in next_text
+    assert "Python, JavaScript/TypeScript, Rust, Go, Swift, JVM" in next_text
+    assert "`P37-T2` Add a machine-readable" in next_text
+    assert "`P37-T3` Implement an opt-in repository profile detection" in next_text
+    assert (
+        "`P37-T4` Connect repository profile selection to autonomous candidate batch" in next_text
+    )
+    assert "`P37-T5` Define generic workspace/member discovery hints" in next_text
+    assert "`P37-T6` Add cross-ecosystem profile fixtures" in next_text
+    assert "`P37-T7` Re-run a real repository with profile auto-selection" in next_text
+    assert "does not publish registry metadata" in normalized
+    assert "does not treat AI output as registry truth" in normalized
+    assert "remove `preview_only`" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
@@ -11871,6 +11912,48 @@ def test_repository_parsing_plugin_contract_is_documented() -> None:
     assert "`P36-T2` Add a machine-readable parser rule profile fixture" in workplan_text
     assert "`P36-T3` Implement the first plugin-aware source classification hook" in workplan_text
     assert "`P36-T4` Re-run the FastAPI AI-enabled candidate batch" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_profile_plugin_selection_plan_is_documented() -> None:
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    normalized_workplan = " ".join(workplan_text.split())
+    assert "## Phase 37. Repository Profile Plugin Selection" in workplan_text
+    for required in (
+        "`P37-T1` Document a language- and framework-agnostic repository profile "
+        "selection contract",
+        "`P37-T2` Add a machine-readable `SpecHarvesterRepositoryProfileDetection`",
+        "`P37-T3` Implement an opt-in repository profile detection CLI/report surface",
+        "`P37-T4` Connect repository profile selection to autonomous candidate batch",
+        "`P37-T5` Define generic workspace/member discovery hints",
+        "`P37-T6` Add cross-ecosystem profile fixtures",
+        "`P37-T7` Re-run a real repository with profile auto-selection",
+        "detect candidates -> score evidence -> select or fallback -> record decision",
+        "Explicit CLI and manifest overrides take precedence",
+        "Ambiguous, low-confidence, missing, or conflicting profile signals fall back",
+        "Real-repository validation may use FastMCP",
+    ):
+        assert required in normalized_workplan
+
+    for path in (roadmap, roadmap_docc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        assert "Repository Profile Plugin Selection" in text
+        assert (
+            "detect candidates -> score evidence -> select or fallback -> record decision" in text
+        )
+        assert "SpecHarvesterRepositoryProfileDetection" in text
+        assert "`auto | none | <profile-id>`" in text
+        assert "FastMCP remains a validation case" in normalized
+        assert "not a hardcoded profile rule" in normalized
+        assert "does not clone or fetch repositories" in normalized
+        assert "does not treat AI output as registry truth" in normalized
+
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

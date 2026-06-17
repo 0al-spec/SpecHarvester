@@ -661,6 +661,46 @@ Plugin decisions remain producer-side evidence only: no registry publication,
 no package or relation acceptance, no baseline seeding, no `preview_only`
 removal, and no AI output as registry truth.
 
+### Repository Profile Plugin Selection
+
+Phase 37 plans the next layer after parser profiles: deciding which repository
+profile plugin, if any, should be applied to a given checkout.
+
+The planned work starts with `P37-T1`, a language- and framework-agnostic
+selection contract. The shared model is:
+
+```text
+detect candidates -> score evidence -> select or fallback -> record decision
+```
+
+Planned follow-ups:
+
+- `P37-T2`: define a machine-readable
+  `SpecHarvesterRepositoryProfileDetection` fixture format;
+- `P37-T3`: add an opt-in detection CLI/report surface that emits profile
+  decisions without collecting source, invoking AI, or drafting packages;
+- `P37-T4`: connect profile selection to autonomous candidate batch through
+  explicit `auto | none | <profile-id>` modes;
+- `P37-T5`: define generic workspace/member discovery hints for package-set
+  roots, members, meta packages, primary packages, CLI/bridge packages,
+  plugin packages, examples, tests, docs, generated artifacts, internal
+  utilities, and evidence-only sources;
+- `P37-T6`: add cross-ecosystem fixtures so the subsystem is not tied to one
+  language or framework;
+- `P37-T7`: rerun a real repository with profile auto-selection and compare
+  it against manual targeting.
+
+The motivating FastMCP dry run showed why this layer is needed: generic
+repository-wide collection can over-include docs/examples, while manual member
+targets can produce better author-ready starter packages. FastMCP remains a
+validation case, not a hardcoded profile rule.
+
+Selection decisions remain producer-side evidence only. Profile selection does
+not clone or fetch repositories, install dependencies, execute harvested code,
+invoke package managers, run AI, publish registry metadata, accept packages or
+relations, remove `preview_only`, or accept plugin decisions as registry
+truth. Profile selection does not treat AI output as registry truth.
+
 ## Non-Goals
 
 SpecHarvester does not:
