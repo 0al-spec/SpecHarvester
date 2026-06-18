@@ -1468,11 +1468,16 @@ Acceptance:
   contract is not Python-specific: one workspace-shaped fixture, one
   single-package fixture, one nested-package fixture, and one ambiguous
   multi-signal fixture.
-- [ ] `P37-T7` Re-run a real repository with profile auto-selection and record
+- [x] `P37-T7` Re-run a real repository with profile auto-selection and record
   a quality comparison against manual targeting. FastMCP may be used as the
   motivating validation case, but the report must evaluate the generic
   subsystem: detection evidence, selected profile, confidence, overrides,
   public-interface precision, topology hints, and author-ready output quality.
+- [ ] `P37-T8` Make repository profile detection consume harvested package
+  manifest evidence when workspace inventory has no manifest records. The
+  FastMCP real run showed `harvest.json` can see a root package manifest while
+  `workspace-inventory.json` reports no manifests, causing auto-selection to
+  fall back despite available static evidence.
 
 Motivation:
 

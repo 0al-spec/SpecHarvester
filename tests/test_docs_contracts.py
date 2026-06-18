@@ -10,6 +10,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if (
+        "# Next Task: P37-T8 Harvest Manifest Evidence for Repository Profile Detection"
+        in next_text
+    ):
+        assert_p37_t7_last_archived(next_text)
+        assert_p37_t7_recent(next_text)
+        assert_phase_37_t8_active(next_text)
+        return
+
     if "# Next Task: P37-T7 Real Repository Profile Auto-Selection Run" in next_text:
         assert_p37_t6_last_archived(next_text)
         assert_p37_t6_recent(next_text)
@@ -3095,7 +3104,7 @@ def assert_p37_t6_recent(next_text: str) -> None:
 def assert_phase_37_t7_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P37-T7 Real Repository Profile Auto-Selection Run" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Planned" in next_text
     assert "`feature/P37-T7-real-repository-profile-auto-selection`" in next_text
     assert "Phase 37. Repository Profile Plugin Selection" in next_text
     assert "`P37-T7` reruns a real repository with profile auto-selection" in normalized
@@ -3116,6 +3125,202 @@ def assert_phase_37_t7_active(next_text: str) -> None:
         "or AI output as registry truth" in normalized
     )
     assert "producer-side evidence" in normalized
+
+
+def assert_p37_t7_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P37-T7 Real Repository Profile Auto-Selection Run" in next_text
+
+
+def assert_p37_t7_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P37-T7` recorded a real FastMCP auto-selection comparison" in next_text
+    assert "p37-t7-fastmcp-auto-selection-comparison.example.json" in next_text
+    assert "REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md" in next_text
+    assert "SpecHarvesterRepositoryProfileRealRunComparison" in next_text
+    assert "`generic.repository.v0`" in next_text
+    assert "`fastmcp_slim`" in next_text
+    assert "`772` to `260`" in next_text
+    assert "`follow_up_required`" in next_text
+    assert "`P37-T8`" in next_text
+    assert "harvested package manifest evidence" in normalized
+    assert "workspace inventory has no manifest records" in normalized
+    assert "producer-side evidence only" in normalized
+    assert "not accept packages" in normalized
+    assert "not accept relations" in normalized
+    assert "not publish registry metadata" in normalized
+    assert "not remove `preview_only`" in normalized
+    assert "not treat profile decisions" in normalized
+
+
+def assert_phase_37_t8_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P37-T8 Harvest Manifest Evidence for Repository Profile Detection"
+        in next_text
+    )
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P37-T8-harvest-manifest-evidence-for-profile-detection`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert (
+        "`P37-T8` makes repository profile detection consume harvested package manifest evidence"
+        in normalized
+    )
+    assert "when workspace inventory has no manifest records" in normalized
+    assert "must remain language- and framework-agnostic" in normalized
+    assert "must not implement a FastMCP-specific profile" in normalized
+    assert "must not treat manifest evidence as registry truth" in normalized
+    assert "producer-side evidence" in normalized
+
+
+def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_profile_real_runs"
+        / "p37-t7-fastmcp-auto-selection-comparison.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryProfileRealRunFastMCP.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    docc_capabilities = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    contract = ROOT / "docs" / "REPOSITORY_PROFILE_SELECTION_CONTRACT.md"
+    docc_contract = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryProfileSelectionContract.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    docc_roadmap = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.repository-profile-real-run/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryProfileRealRunComparison"
+    assert payload["schemaVersion"] == 1
+    assert payload["task"] == "P37-T7"
+    assert payload["source"]["repositoryId"] == "fastmcp"
+    assert payload["source"]["repositoryUrl"] == "https://github.com/jlowin/fastmcp"
+    assert payload["source"]["revision"] == "3b8538e2422a1c43fdb69661c610de7985b785f2"
+    assert payload["run"] == {
+        "runRoot": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z",
+        "aiMode": "disabled",
+        "networkAccess": "not_required",
+        "repositoryAcquisition": "operator_managed_local_checkout",
+    }
+
+    auto = payload["autoSelectionRun"]
+    assert auto["target"] == {"kind": "repository", "path": "."}
+    assert "--repository-profile-selection auto" in auto["command"]
+    auto_detection = auto["repositoryProfileDetection"]
+    assert auto_detection["mode"] == "auto"
+    assert auto_detection["decision"] == "fallback"
+    assert auto_detection["selectedProfileId"] is None
+    assert auto_detection["fallbackProfileId"] == "generic.repository.v0"
+    assert auto_detection["confidence"] == "low"
+    assert auto_detection["reasonCodes"] == ["insufficient_high_confidence_profile_evidence"]
+    assert auto["harvest"]["summary"]["packageManifestCount"] == 1
+    assert auto["harvest"]["packageManifestPaths"] == ["pyproject.toml"]
+    assert auto["workspaceInventory"]["summary"]["packageManifestCount"] == 0
+    assert auto["publicInterface"]["summary"]["entrypointCount"] == 772
+    assert auto["publicInterface"]["summary"]["symbolCount"] == 9199
+    assert auto["authorReadyDraft"]["status"] == "author_ready_draft"
+
+    manual = payload["manualTargetRun"]
+    assert manual["target"] == {"kind": "folder", "path": "fastmcp_slim"}
+    assert "--repository-profile-selection none" in manual["command"]
+    assert manual["repositoryProfileDetection"]["decision"] == "disabled"
+    assert manual["repositoryProfileDetection"]["confidence"] == "blocked"
+    assert manual["publicInterface"]["summary"]["entrypointCount"] == 260
+    assert manual["publicInterface"]["summary"]["symbolCount"] == 1563
+    assert manual["authorReadyDraft"]["status"] == "author_ready_draft"
+
+    comparison = payload["comparison"]
+    assert comparison["autoExplainsOutput"] is True
+    assert comparison["autoImprovesTargeting"] is False
+    assert comparison["manualTargetingStillNarrower"] is True
+    assert comparison["entrypointReductionFromManualTargeting"] == 512
+    assert comparison["symbolReductionFromManualTargeting"] == 7636
+    assert comparison["publicInterfacePrecisionVerdict"] == "manual_targeting_materially_narrower"
+    assert comparison["topologyHintVerdict"] == "auto_selection_lacks_manifest_evidence"
+    assert comparison["verdict"] == "follow_up_required"
+    assert comparison["recommendedFollowUp"] == "P37-T8"
+
+    for digest in collect_digest_values(payload):
+        assert digest.startswith("sha256:")
+        assert len(digest) == len("sha256:") + 64
+
+    for required in (
+        "This comparison is producer-side evidence only.",
+        "It does not accept packages.",
+        "It does not accept relations.",
+        "It does not publish registry metadata.",
+        "It does not remove preview_only.",
+        "It does not treat profile decisions as registry truth.",
+        "It does not treat manual targeting as registry truth.",
+        "It does not treat AI output as registry truth.",
+    ):
+        assert required in payload["trustBoundary"]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        for required in (
+            "SpecHarvesterRepositoryProfileRealRunComparison",
+            "p37-t7-fastmcp-auto-selection-comparison.example.json",
+            "3b8538e2422a1c43fdb69661c610de7985b785f2",
+            "--repository-profile-selection auto",
+            "--repository-profile-selection none",
+            "generic.repository.v0",
+            "fastmcp_slim",
+            "772",
+            "260",
+            "follow_up_required",
+            "P37-T8",
+            "producer-side evidence only",
+        ):
+            assert required in text, f"Required term {required!r} not found in {path}"
+
+    assert "REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md" in docs_index.read_text(encoding="utf-8")
+    assert "<doc:RepositoryProfileRealRunFastMCP>" in docc_root.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md" in capabilities.read_text(encoding="utf-8")
+    assert "<doc:RepositoryProfileRealRunFastMCP>" in docc_capabilities.read_text(encoding="utf-8")
+    assert "p37-t7-fastmcp-auto-selection-comparison.example.json" in contract.read_text(
+        encoding="utf-8"
+    )
+    assert "p37-t7-fastmcp-auto-selection-comparison.example.json" in docc_contract.read_text(
+        encoding="utf-8"
+    )
+    assert "REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md" in roadmap.read_text(encoding="utf-8")
+    assert "<doc:RepositoryProfileRealRunFastMCP>" in docc_roadmap.read_text(encoding="utf-8")
+
+
+def collect_digest_values(value: object) -> list[str]:
+    if isinstance(value, dict):
+        digests = []
+        for key, child in value.items():
+            if key == "digest" and isinstance(child, str):
+                digests.append(child)
+            else:
+                digests.extend(collect_digest_values(child))
+        return digests
+    if isinstance(value, list):
+        digests = []
+        for child in value:
+            digests.extend(collect_digest_values(child))
+        return digests
+    return []
 
 
 def assert_p34_t1_recent(next_text: str) -> None:

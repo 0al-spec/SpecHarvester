@@ -162,6 +162,7 @@
 | P37-T4 | [P37-T4_Repository_Profile_Batch_Integration/](P37-T4_Repository_Profile_Batch_Integration/) | 2026-06-19 | PASS |
 | P37-T5 | [P37-T5_Generic_Profile_Discovery_Hints/](P37-T5_Generic_Profile_Discovery_Hints/) | 2026-06-19 | PASS |
 | P37-T6 | [P37-T6_Cross_Ecosystem_Profile_Fixtures/](P37-T6_Cross_Ecosystem_Profile_Fixtures/) | 2026-06-19 | PASS |
+| P37-T7 | [P37-T7_Real_Repository_Profile_Auto_Selection_Run/](P37-T7_Real_Repository_Profile_Auto_Selection_Run/) | 2026-06-19 | PASS_WITH_FOLLOW_UP |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -174,6 +175,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t7_real_repository_profile_auto_selection.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t6_cross_ecosystem_profile_fixtures.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t5_generic_profile_discovery_hints.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t4_repository_profile_batch_integration.md` |
@@ -297,6 +299,8 @@
 | 2026-06-19 | P37-T5 | Archived REVIEW_p37_t5_generic_profile_discovery_hints report |
 | 2026-06-19 | P37-T6 | Archived Cross-Ecosystem Profile Fixtures (PASS) |
 | 2026-06-19 | P37-T6 | Archived REVIEW_p37_t6_cross_ecosystem_profile_fixtures report |
+| 2026-06-19 | P37-T7 | Archived Real Repository Profile Auto-Selection Run (PASS_WITH_FOLLOW_UP) |
+| 2026-06-19 | P37-T7 | Archived REVIEW_p37_t7_real_repository_profile_auto_selection report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
