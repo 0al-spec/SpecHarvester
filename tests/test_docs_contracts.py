@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P37-T7 Real Repository Profile Auto-Selection Run" in next_text:
+        assert_p37_t6_last_archived(next_text)
+        assert_p37_t6_recent(next_text)
+        assert_phase_37_t7_active(next_text)
+        return
+
     if "# Next Task: P37-T6 Cross-Ecosystem Profile Fixtures" in next_text:
         assert_p37_t5_last_archived(next_text)
         assert_p37_t5_recent(next_text)
@@ -3056,6 +3062,60 @@ def assert_phase_37_t6_active(next_text: str) -> None:
     assert "must not implement ecosystem-specific plugins" in normalized
     assert "must not treat profile decisions or profile hints as registry truth" in normalized
     assert "`P37-T7` Re-run a real repository with profile auto-selection" in next_text
+
+
+def assert_p37_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P37-T6 Cross-Ecosystem Profile Fixtures" in next_text
+
+
+def assert_p37_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P37-T6` added cross-ecosystem repository profile detection fixtures" in next_text
+    assert "tests/fixtures/repository_profile_detection/" in next_text
+    assert "cross-ecosystem-workspace.example.json" in next_text
+    assert "cross-ecosystem-single-package.example.json" in next_text
+    assert "cross-ecosystem-nested-package.example.json" in next_text
+    assert "cross-ecosystem-ambiguous-multi-signal.example.json" in next_text
+    assert "generic.package_set.v0" in next_text
+    assert "generic.single_package.v0" in next_text
+    assert "generic.repository.v0" in next_text
+    assert "package_set_root" in next_text
+    assert "member_package" in next_text
+    assert "documentation_source" in next_text
+    assert "REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md" in next_text
+    assert "do not implement ecosystem-specific plugins" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat profile decisions as registry truth" in normalized
+    assert "treat profile hints as registry truth" in normalized
+
+
+def assert_phase_37_t7_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P37-T7 Real Repository Profile Auto-Selection Run" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P37-T7-real-repository-profile-auto-selection`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert "`P37-T7` reruns a real repository with profile auto-selection" in normalized
+    assert "FastMCP may be used as the motivating validation case" in normalized
+    for required in (
+        "detection evidence",
+        "selected profile",
+        "confidence",
+        "overrides",
+        "public-interface precision",
+        "topology hints",
+        "author-ready output quality",
+    ):
+        assert required in next_text
+    assert "must not implement ecosystem-specific plugins" in normalized
+    assert (
+        "must not treat profile decisions, profile hints, manual targeting, or AI output as registry truth"
+        in normalized
+    )
+    assert "producer-side evidence" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
