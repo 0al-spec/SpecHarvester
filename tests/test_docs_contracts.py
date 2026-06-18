@@ -2971,7 +2971,7 @@ def assert_p37_t4_recent(next_text: str) -> None:
 def assert_phase_37_t5_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P37-T5 Generic Profile Discovery Hints" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "`feature/P37-T5-generic-profile-discovery-hints`" in next_text
     assert "Phase 37. Repository Profile Plugin Selection" in next_text
     assert "`P37-T5` defines generic workspace/member discovery hints" in normalized
@@ -12260,12 +12260,109 @@ def test_repository_profile_selection_contract_is_documented() -> None:
         assert "does not treat AI output as registry truth" in normalized
 
     assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_DISCOVERY_HINTS.md" in docs_index.read_text(encoding="utf-8")
     assert "docs/REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in docc_root.read_text(encoding="utf-8")
+    assert "docs/REPOSITORY_PROFILE_DISCOVERY_HINTS.md" in docc_root.read_text(encoding="utf-8")
     assert "<doc:RepositoryProfileSelectionContract>" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:RepositoryProfileDiscoveryHints>" in docc_root.read_text(encoding="utf-8")
     assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in capabilities.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_DISCOVERY_HINTS.md" in capabilities.read_text(encoding="utf-8")
     assert "RepositoryProfileSelectionContract" in capabilities_docc.read_text(encoding="utf-8")
+    assert "RepositoryProfileDiscoveryHints" in capabilities_docc.read_text(encoding="utf-8")
     assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in roadmap.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_DISCOVERY_HINTS.md" in roadmap.read_text(encoding="utf-8")
     assert "RepositoryProfileSelectionContract" in roadmap_docc.read_text(encoding="utf-8")
+    assert "RepositoryProfileDiscoveryHints" in roadmap_docc.read_text(encoding="utf-8")
+
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_profile_discovery_hints_vocabulary_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_profile_detection"
+        / "generic-hint-vocabulary.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PROFILE_DISCOVERY_HINTS.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryProfileDiscoveryHints.md"
+    )
+    selection_doc = ROOT / "docs" / "REPOSITORY_PROFILE_SELECTION_CONTRACT.md"
+    selection_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryProfileSelectionContract.md"
+    )
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.repository-profile-hints/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryProfileHintVocabulary"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_profile_hint_vocabulary_only"
+    assert payload["summary"] == {
+        "hintCount": 13,
+        "defaultConsumerBehavior": "review_only",
+        "registryAuthority": False,
+    }
+    assert [item["hint"] for item in payload["hints"]] == [
+        "package_set_root",
+        "member_package",
+        "meta_package",
+        "primary_package",
+        "cli_package",
+        "bridge_package",
+        "plugin_package",
+        "example_package",
+        "test_package",
+        "documentation_source",
+        "generated_artifact",
+        "internal_utility",
+        "evidence_only",
+    ]
+    for item in payload["hints"]:
+        assert item["title"]
+        assert item["pathSubject"]
+        assert item["summary"]
+        assert item["consumerAction"]
+        assert "does_not_treat_profile_hints_as_registry_truth" in item["nonAuthorityStatements"]
+
+    for path in (github_doc, docc_doc, selection_doc, selection_docc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "spec-harvester.repository-profile-hints/v0",
+            "SpecHarvesterRepositoryProfileHintVocabulary",
+            "producer_profile_hint_vocabulary_only",
+            "generic-hint-vocabulary.example.json",
+            "package_set_root",
+            "member_package",
+            "meta_package",
+            "primary_package",
+            "cli_package",
+            "bridge_package",
+            "plugin_package",
+            "example_package",
+            "test_package",
+            "documentation_source",
+            "generated_artifact",
+            "internal_utility",
+            "evidence_only",
+            "does not accept packages",
+            "does not accept relations",
+            "remove `preview_only`",
+            "publish registry metadata",
+            "treat profile hints as registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 

@@ -1,6 +1,6 @@
 # Next Task: P37-T5 Generic Profile Discovery Hints
 
-**Status:** Planned
+**Status:** In Progress
 **Branch:** `feature/P37-T5-generic-profile-discovery-hints`
 **Phase:** Phase 37. Repository Profile Plugin Selection
 **Last Archived:** P37-T4 Repository Profile Batch Integration

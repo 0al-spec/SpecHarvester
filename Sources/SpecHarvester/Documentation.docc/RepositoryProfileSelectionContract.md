@@ -219,6 +219,18 @@ publish registry metadata, or treat plugin decisions as registry truth.
 
 ## Generic Hints
 
+P37-T5 defines the generic hint vocabulary in
+<doc:RepositoryProfileDiscoveryHints> and the fixture:
+
+```text
+tests/fixtures/repository_profile_detection/generic-hint-vocabulary.example.json
+```
+
+The vocabulary artifact uses
+`apiVersion: spec-harvester.repository-profile-hints/v0`,
+`kind: SpecHarvesterRepositoryProfileHintVocabulary`, and
+`authority: producer_profile_hint_vocabulary_only`.
+
 Profiles may propose ecosystem-neutral hints:
 
 - `package_set_root`;
@@ -236,8 +248,9 @@ Profiles may propose ecosystem-neutral hints:
 - `evidence_only`.
 
 Hints are advisory. They may guide workspace inventory, source classification,
-candidate drafting, and reviewer UI, but they do not accept packages or
-relations.
+candidate drafting, and reviewer UI, but the hint boundary does not accept
+packages, does not accept relations, does not remove `preview_only`, does not
+publish registry metadata, and does not treat profile hints as registry truth.
 
 ## Fallback Behavior
 

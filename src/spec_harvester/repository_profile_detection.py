@@ -5,6 +5,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from spec_harvester.repository_profile_hints import (
+    HINT_DOCUMENTATION_SOURCE,
+    HINT_MEMBER_PACKAGE,
+    HINT_PACKAGE_SET_ROOT,
+    validate_repository_profile_hint,
+)
 from spec_harvester.source_manifest import read_repository_source_manifests
 
 API_VERSION = "spec-harvester.repository-profile-detection/v0"
@@ -390,7 +396,7 @@ def advisory_downstream_hints(
             if is_workspace_path(path):
                 hints.append(
                     hint(
-                        "package_set_root",
+                        HINT_PACKAGE_SET_ROOT,
                         workspace_root_for_path(path),
                         "high",
                         ["workspace_manifest_present"],
@@ -399,7 +405,7 @@ def advisory_downstream_hints(
             elif is_member_manifest_path(path):
                 hints.append(
                     hint(
-                        "member_package",
+                        HINT_MEMBER_PACKAGE,
                         str(Path(path).parent.as_posix()),
                         "high",
                         ["member_manifest_present"],
@@ -408,7 +414,7 @@ def advisory_downstream_hints(
             elif is_documentation_path(path):
                 hints.append(
                     hint(
-                        "documentation_source",
+                        HINT_DOCUMENTATION_SOURCE,
                         path.split("/", 1)[0],
                         "medium",
                         ["documentation_path_present"],
@@ -424,7 +430,7 @@ def hint(
     reason_codes: list[str],
 ) -> dict[str, Any]:
     return {
-        "hint": name,
+        "hint": validate_repository_profile_hint(name),
         "path": path,
         "confidence": confidence,
         "reasonCodes": reason_codes,

@@ -426,7 +426,9 @@ Planned follow-ups:
 - `P37-T5`: define generic workspace/member discovery hints for package-set
   roots, members, meta packages, primary packages, CLI/bridge packages,
   plugin packages, examples, tests, docs, generated artifacts, internal
-  utilities, and evidence-only sources;
+  utilities, and evidence-only sources through
+  <doc:RepositoryProfileDiscoveryHints> and
+  `SpecHarvesterRepositoryProfileHintVocabulary`;
 - `P37-T6`: add cross-ecosystem fixtures so the subsystem is not tied to one
   language or framework;
 - `P37-T7`: rerun a real repository with profile auto-selection and compare
