@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P37-T4 Repository Profile Batch Integration" in next_text:
+        assert_p37_t3_last_archived(next_text)
+        assert_p37_t3_recent(next_text)
+        assert_phase_37_t4_active(next_text)
+        return
+
     if "# Next Task: P37-T3 Repository Profile Detection CLI" in next_text:
         assert_p37_t2_last_archived(next_text)
         assert_p37_t2_recent(next_text)
@@ -2888,6 +2894,52 @@ def assert_phase_37_t3_active(next_text: str) -> None:
     assert "does not clone or fetch repositories" in normalized
     assert "does not run AI" in normalized
     assert "does not draft packages" in normalized
+
+
+def assert_p37_t3_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P37-T3 Repository Profile Detection CLI" in next_text
+
+
+def assert_p37_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P37-T3` added the opt-in `repository-profile-detect`" in next_text
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "spec-harvester.repository-profile-detection/v0" in next_text
+    assert "schemaVersion: 1" in next_text
+    assert "producer_profile_selection_only" in next_text
+    assert "--selection auto" in next_text
+    assert "--selection none" in next_text
+    assert "--output" in next_text
+    assert "candidate profiles" in normalized
+    assert "rejected profiles" in normalized
+    assert "diagnostics" in normalized
+    assert "non-authority statements" in normalized
+    assert "advisory downstream hints" in normalized
+    assert "does not collect source files" in normalized
+    assert "does not run AI" in normalized
+    assert "does not draft packages" in normalized
+    assert "does not treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_37_t4_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P37-T4 Repository Profile Batch Integration" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P37-T4-repository-profile-batch-integration`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert "`P37-T4` connects repository profile selection" in normalized
+    assert "auto | none | <profile-id>" in next_text
+    assert "autonomous candidate batch" in normalized
+    assert "backwards-compatible generic behavior" in normalized
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "producer-side evidence only" in normalized
+    assert "avoid treating advisory hints as registry truth" in normalized
+    assert "avoid changing package acceptance" in normalized
+    assert "`P37-T5` Define generic workspace/member discovery hints" in next_text
+    assert "`P37-T6` Add cross-ecosystem profile fixtures" in next_text
+    assert "`P37-T7` Re-run a real repository with profile auto-selection" in next_text
+    assert "does not publish registry metadata" in normalized
+    assert "does not treat AI output or plugin decisions as registry truth" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:

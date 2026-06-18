@@ -1452,7 +1452,7 @@ Acceptance:
   fixture format that records detected candidate profiles, confidence,
   evidence paths, rejected profiles, selected profile, fallback profile,
   override source, diagnostics, and non-authority statements.
-- [ ] `P37-T3` Implement an opt-in repository profile detection CLI/report
+- [x] `P37-T3` Implement an opt-in repository profile detection CLI/report
   surface that reads only static repository evidence and emits the detection
   artifact without collecting source files, installing dependencies, executing
   harvested code, invoking AI, or drafting packages.
