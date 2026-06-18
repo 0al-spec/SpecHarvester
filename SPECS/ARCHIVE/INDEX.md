@@ -170,6 +170,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t2_repository_profile_detection_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t1_repository_profile_selection_contract.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t3_source_classifier_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p36_t1_repository_parsing_plugin_contract.md` |
@@ -279,6 +280,7 @@
 | 2026-06-18 | P37-T1 | Archived Repository Profile Selection Contract (PASS) |
 | 2026-06-18 | P37-T1 | Archived REVIEW_p37_t1_repository_profile_selection_contract report |
 | 2026-06-18 | P37-T2 | Archived Repository Profile Detection Fixture (PASS) |
+| 2026-06-18 | P37-T2 | Archived REVIEW_p37_t2_repository_profile_detection_fixture report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
