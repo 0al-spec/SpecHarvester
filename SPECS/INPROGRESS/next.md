@@ -1,74 +1,54 @@
-# Next Task: P37-T8 Harvest Manifest Evidence for Repository Profile Detection
+# Next Task: Phase 37 Complete
 
-**Status:** In Progress
-**Branch:** `feature/P37-T8-harvest-manifest-evidence-for-profile-detection`
+**Status:** Complete
+**Branch:** `main`
 **Phase:** Phase 37. Repository Profile Plugin Selection
-**Last Archived:** P37-T7 Real Repository Profile Auto-Selection Run
+**Last Archived:** P37-T8 Harvest Manifest Evidence for Repository Profile Detection
 
 ## Recently Archived
 
-- `P37-T7` recorded a real FastMCP auto-selection comparison in
-  `tests/fixtures/repository_profile_real_runs/p37-t7-fastmcp-auto-selection-comparison.example.json`.
-- The fixture uses `SpecHarvesterRepositoryProfileRealRunComparison` and is
-  documented in `REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md`.
-- The real run used `--repository-profile-selection auto` for repository-wide
-  input and `--repository-profile-selection none` for explicit manual
-  `fastmcp_slim` targeting.
-- Auto-selection passed as evidence but fell back to `generic.repository.v0`
-  with low confidence.
-- Manual `fastmcp_slim` targeting reduced public interface entrypoints from
-  `772` to `260` and symbols from `9199` to `1563`.
-- Both outputs remained `author_ready_draft`; the quality delta was public
-  interface precision, not SpecPM acceptance.
-- The verdict is `follow_up_required`: `harvest.json` saw `pyproject.toml`,
-  but `workspace-inventory.json` had no manifest records, so profile detection
-  lacked high-confidence manifest evidence.
-- The result is producer-side evidence only. It does not accept packages, does
-  not accept relations, does not publish registry metadata, does not remove
-  `preview_only`, and does not treat profile decisions, profile hints, manual
-  targeting, or AI output as registry truth.
+- `P37-T8` made repository profile detection consume harvested package manifest
+  evidence when workspace inventory has no manifest records.
+- Autonomous batch still prefers `workspace-inventory.json` workspace/member
+  manifest evidence when available.
+- When workspace inventory is empty, repository profile detection now falls
+  back to already-collected `harvest.json` files with `kind:
+  package_manifest` or `kind: workspace_manifest`.
+- A root-manifest single-package checkout now selects
+  `generic.single_package.v0` with high confidence using harvested manifest
+  evidence such as `go.mod`.
+- Disabled profile selection still records `decision: disabled`; ambiguous and
+  conflicting evidence still falls back instead of silently selecting a profile.
+- Docs and DocC now describe the harvested-manifest fallback path.
+- Harvested manifest paths remain producer-side evidence only. They do not
+  accept packages, do not accept relations, do not publish registry metadata,
+  do not remove `preview_only`, do not treat manifests as registry truth, and
+  do not replace maintainer review.
 
-## Current Task
+## Phase Summary
 
-`P37-T8` makes repository profile detection consume harvested package manifest
-evidence when workspace inventory has no manifest records.
+Phase 37 introduced a language- and framework-agnostic repository profile
+selection layer:
 
-The implementation must remain language- and framework-agnostic. The goal is
-not to recognize FastMCP. The goal is to let the generic profile detection layer
-see already-collected static manifest paths such as root `pyproject.toml`,
-`package.json`, `Cargo.toml`, `go.mod`, `Package.swift`, or equivalent future
-manifest records when workspace inventory is empty.
+- P37-T1 documented the selection contract.
+- P37-T2 added the machine-readable detection fixture.
+- P37-T3 added the opt-in CLI/report surface.
+- P37-T4 connected selection to autonomous candidate batch sidecar evidence.
+- P37-T5 added the generic discovery hint vocabulary.
+- P37-T6 added cross-ecosystem fixtures.
+- P37-T7 recorded a real FastMCP auto-selection comparison.
+- P37-T8 closed the harvested-manifest evidence gap found by P37-T7.
 
-## Motivation
+## Suggested Next Planning Area
 
-P37-T7 showed that the current profile layer can explain fallback decisions, but
-it can miss manifest evidence already present in `harvest.json`. That causes
-auto-selection to fall back even when static package-manifest evidence exists.
-
-## Non-Goals
-
-This task must not implement a FastMCP-specific profile, Python-specific
-profile, framework-specific profile, package manager execution, dependency
-installation, network lookup, AI call, package acceptance, relation acceptance,
-registry publication, `preview_only` removal, or SpecPM promotion.
-
-It must not treat manifest evidence as registry truth. Manifest evidence remains
-producer-side evidence for selecting or rejecting a profile.
-
-## Planned Deliverables
-
-- Extend repository profile detection input construction in autonomous batch so
-  harvested package manifest paths can be used when workspace inventory has no
-  manifest records.
-- Add regression coverage for a root-manifest real-run shape without making
-  FastMCP normative.
-- Preserve fallback behavior for ambiguous, low-confidence, and conflicting
-  evidence.
-- Update docs and DocC to describe the manifest evidence fallback path.
-- Record the validation result through Flow.
+Start a new phase before implementation. The likely next planning area is
+turning repository profile decisions and parser profiles into a broader,
+language- and framework-agnostic plugin subsystem with explicit plugin
+registration, evidence producers, applicability checks, and deterministic
+selection boundaries.
 
 ## Boundary
 
-Repository profile selection remains producer-side evidence. It may improve
-operator targeting, but it does not accept generated package claims or registry
-state.
+Repository profile selection remains producer-side evidence. It can improve
+operator targeting for candidate generation, but it does not accept generated
+package claims or registry state.
