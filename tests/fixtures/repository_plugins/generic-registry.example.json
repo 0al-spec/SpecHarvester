@@ -38,6 +38,7 @@
       "pluginId": "spec_harvester.generic.parser_profile.v0",
       "version": "0.1.0",
       "role": "parser_profile",
+      "authority": "producer_side_evidence_only",
       "title": "Generic Parser Profile Contract",
       "summary": "Classifies static repository paths before public-interface indexing.",
       "inputEvidenceKinds": [
@@ -84,6 +85,7 @@
       "pluginId": "spec_harvester.generic.repository_profile.v0",
       "version": "0.1.0",
       "role": "repository_profile",
+      "authority": "producer_side_evidence_only",
       "title": "Generic Repository Profile Contract",
       "summary": "Classifies repository shape from static evidence and emits advisory downstream hints.",
       "inputEvidenceKinds": [
@@ -133,6 +135,7 @@
       "pluginId": "spec_harvester.generic.manifest_summary.v0",
       "version": "0.1.0",
       "role": "evidence_producer",
+      "authority": "producer_side_evidence_only",
       "title": "Generic Manifest Summary Evidence",
       "summary": "Summarizes allowlisted manifest metadata as bounded review evidence.",
       "inputEvidenceKinds": [
@@ -177,6 +180,7 @@
       "pluginId": "spec_harvester.generic.package_topology.v0",
       "version": "0.1.0",
       "role": "topology_helper",
+      "authority": "producer_side_evidence_only",
       "title": "Generic Package Topology Helper",
       "summary": "Proposes package-set membership hints from static workspace and manifest evidence.",
       "inputEvidenceKinds": [
@@ -223,6 +227,7 @@
       "pluginId": "spec_harvester.generic.review_surface.v0",
       "version": "0.1.0",
       "role": "review_surface",
+      "authority": "producer_side_evidence_only",
       "title": "Generic Review Surface Data",
       "summary": "Declares viewer/report-only data panels for plugin evidence review.",
       "inputEvidenceKinds": [

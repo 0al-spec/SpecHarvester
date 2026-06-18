@@ -12900,6 +12900,8 @@ def test_repository_plugin_registry_fixture_is_documented() -> None:
         assert plugin["version"] == "0.1.0"
         assert plugin["title"]
         assert plugin["summary"]
+        assert plugin["authority"] == payload["contract"]["outputAuthority"]
+        assert plugin["authority"] == "producer_side_evidence_only"
         assert plugin["inputEvidenceKinds"]
         assert plugin["outputArtifactKinds"]
         assert plugin["applicabilitySignals"]
