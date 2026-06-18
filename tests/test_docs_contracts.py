@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P37-T2 Repository Profile Detection Fixture" in next_text:
+        assert_p37_t1_last_archived(next_text)
+        assert_p37_t1_recent(next_text)
+        assert_phase_37_t2_active(next_text)
+        return
+
     if "# Next Task: P37-T1 Repository Profile Selection Contract" in next_text:
         assert_p36_t4_last_archived(next_text)
         assert_p36_t4_recent(next_text)
@@ -2776,6 +2782,54 @@ def assert_phase_37_t1_active(next_text: str) -> None:
     assert "does not publish registry metadata" in normalized
     assert "does not treat AI output as registry truth" in normalized
     assert "remove `preview_only`" in normalized
+
+
+def assert_p37_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P37-T1 Repository Profile Selection Contract" in next_text
+
+
+def assert_p37_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P37-T1` added [`REPOSITORY_PROFILE_SELECTION_CONTRACT.md`]" in next_text
+    assert "RepositoryProfileSelectionContract" in next_text
+    assert (
+        "detect candidates -> score evidence -> select or fallback -> record decision" in next_text
+    )
+    assert "auto | none | <profile-id>" in normalized
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "spec-harvester.repository-profile-detection/v0" in next_text
+    assert "producer_profile_selection_only" in next_text
+    assert "static inputs" in normalized
+    assert "override precedence" in normalized
+    assert "confidence levels" in normalized
+    assert "fallback behavior" in normalized
+    assert "generic workspace/member hints" in normalized
+    assert "non-authority boundaries" in normalized
+
+
+def assert_phase_37_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P37-T2 Repository Profile Detection Fixture" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P37-T2-repository-profile-detection-fixture`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert "`P37-T2` adds a machine-readable" in normalized
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "repository identity and source manifest metadata" in normalized
+    assert "selection mode and override source" in normalized
+    assert "selected profile id or `null`" in next_text
+    assert "fallback profile id" in normalized
+    assert "candidate profiles with confidence" in normalized
+    assert "rejected profiles and reason codes" in normalized
+    assert "diagnostics with severity" in normalized
+    assert "non-authority statements" in normalized
+    assert "advisory downstream hints" in normalized
+    assert "`P37-T3` Implement an opt-in repository profile detection" in next_text
+    assert (
+        "`P37-T4` Connect repository profile selection to autonomous candidate batch" in next_text
+    )
+    assert "does not publish registry metadata" in normalized
+    assert "does not treat AI output or plugin decisions as registry truth" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
