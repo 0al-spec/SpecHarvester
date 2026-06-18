@@ -11957,6 +11957,89 @@ def test_repository_profile_plugin_selection_plan_is_documented() -> None:
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
+def test_repository_profile_selection_contract_is_documented() -> None:
+    github_doc = ROOT / "docs" / "REPOSITORY_PROFILE_SELECTION_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryProfileSelectionContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Profile Selection Contract",
+            "language- and framework-agnostic",
+            "detect candidates -> score evidence -> select or fallback -> record decision",
+            "spec-harvester.repository-profile-detection/v0",
+            "SpecHarvesterRepositoryProfileDetection",
+            "producer_profile_selection_only",
+            "`none`",
+            "`auto`",
+            "`<profile-id>`",
+            "explicit CLI profile override",
+            "source manifest `repositoryProfile` override",
+            "high-confidence auto-detected profile",
+            "generic fallback profile",
+            "`high`",
+            "`medium`",
+            "`low`",
+            "`blocked`",
+            "`package_set_root`",
+            "`member_package`",
+            "`meta_package`",
+            "`primary_package`",
+            "`cli_package`",
+            "`bridge_package`",
+            "`plugin_package`",
+            "`example_package`",
+            "`test_package`",
+            "`documentation_source`",
+            "`generated_artifact`",
+            "`internal_utility`",
+            "`evidence_only`",
+            "generic.repository.v0",
+            "Repository profiles answer",
+            "Parser profiles answer",
+            "FastMCP and FastAPI are validation cases",
+            "not normative profile rules",
+            "P37-T2",
+            "P37-T3",
+            "P37-T4",
+            "P37-T5",
+            "P37-T6",
+            "P37-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        assert "does not clone or fetch repositories" in normalized
+        assert "does not treat plugin decisions as registry truth" in normalized
+        assert "does not treat AI output as registry truth" in normalized
+
+    assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:RepositoryProfileSelectionContract>" in docc_root.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in capabilities.read_text(encoding="utf-8")
+    assert "RepositoryProfileSelectionContract" in capabilities_docc.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in roadmap.read_text(encoding="utf-8")
+    assert "RepositoryProfileSelectionContract" in roadmap_docc.read_text(encoding="utf-8")
+
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_python_web_framework_parser_profile_fixture_is_documented() -> None:
     fixture_path = (
         ROOT

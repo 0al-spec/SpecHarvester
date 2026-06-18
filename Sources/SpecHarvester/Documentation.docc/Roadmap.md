@@ -406,8 +406,9 @@ removal, and no AI output as registry truth.
 Phase 37 plans the next layer after parser profiles: deciding which repository
 profile plugin, if any, should be applied to a given checkout.
 
-The planned work starts with `P37-T1`, a language- and framework-agnostic
-selection contract. The shared model is:
+The planned work starts with `P37-T1`,
+<doc:RepositoryProfileSelectionContract>, a language- and
+framework-agnostic selection contract. The shared model is:
 
 ```text
 detect candidates -> score evidence -> select or fallback -> record decision
