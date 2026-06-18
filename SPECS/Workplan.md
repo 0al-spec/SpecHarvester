@@ -1518,3 +1518,59 @@ Acceptance:
 - Real-repository validation may use FastMCP, FastAPI, or another local
   checkout, but the phase output must describe reusable plugin selection
   behavior rather than repository-specific special cases.
+
+## Phase 38. Repository Plugin Subsystem
+
+- [ ] `P38-T1` Document a language- and framework-agnostic repository plugin
+  subsystem contract. The contract must define plugin registration, static
+  evidence producers, applicability checks, deterministic selection boundaries,
+  declared capabilities, authority limits, diagnostics, and non-goals without
+  making Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven,
+  Gradle, or any other ecosystem normative.
+- [ ] `P38-T2` Add a machine-readable repository plugin registry fixture that
+  records plugin ids, versioned contracts, provided evidence kinds, input
+  requirements, safety constraints, applicability signals, and declared output
+  artifacts.
+- [ ] `P38-T3` Add a plugin applicability report fixture that evaluates several
+  generic plugins against static repository evidence and records selected,
+  rejected, fallback, and blocked decisions without running plugin code.
+- [ ] `P38-T4` Connect plugin registry and applicability output to autonomous
+  candidate batch as sidecar producer evidence, preserving existing parser and
+  repository profile behavior unless a high-confidence plugin decision is
+  explicitly selected.
+- [ ] `P38-T5` Add cross-ecosystem plugin subsystem fixtures that cover
+  manifest-backed single packages, workspaces, documentation-heavy
+  repositories, nested package roots, and ambiguous mixed layouts.
+- [ ] `P38-T6` Run one real repository through the plugin subsystem evidence
+  path and compare it with the current Phase 37 profile selection behavior.
+
+Motivation:
+
+- Phase 36 introduced parser profile hooks, and Phase 37 introduced repository
+  profile selection. The next layer should unify these ideas into a broader
+  plugin subsystem instead of growing one-off profile mechanisms.
+- The subsystem must let future language/framework plugins provide static
+  evidence and applicability signals while the core pipeline remains
+  deterministic, auditable, and ecosystem-neutral.
+- Plugins must be explicit review evidence. They must not become hidden
+  heuristics that silently decide package claims, registry acceptance, or
+  public metadata.
+
+Goal:
+
+- Define a repository plugin subsystem that can register plugins, evaluate
+  applicability from static evidence, record diagnostics, and expose
+  deterministic producer-side decisions before analyzer path selection,
+  package-set drafting, AI proposals, or SpecPM handoff.
+
+Acceptance:
+
+- The phase keeps plugin contracts language- and framework-agnostic.
+- Plugin selection reads static local evidence only and never executes
+  harvested code, package managers, dependency installation, network calls, or
+  AI.
+- Plugin output remains producer-side evidence and does not accept packages,
+  accept relations, publish registry metadata, remove `preview_only`, or treat
+  plugin decisions as registry truth.
+- Parser profiles and repository profiles can be represented as plugin roles
+  without rewriting existing behavior in the initial contract task.
