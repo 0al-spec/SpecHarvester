@@ -181,8 +181,41 @@ profile id such as `--selection custom.vendor_profile.v0`.
 This CLI only emits `SpecHarvesterRepositoryProfileDetection`. It reads static
 metadata supplied by the operator, writes JSON to stdout, and optionally writes
 the same payload to `--output`. It does not collect source files, run analyzers,
-invoke package managers, run AI, draft packages, or connect the result to
-autonomous candidate batch behavior.
+invoke package managers, run AI, or draft packages.
+
+## Autonomous Candidate Batch Integration
+
+P37-T4 connects the same decision artifact to `autonomous-candidate-batch` as
+producer-side evidence:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --repository-profile-selection auto
+```
+
+The option accepts `none`, `auto`, or an explicit profile id. The default is
+`none`, which emits a disabled artifact and preserves generic behavior. `auto`
+reads already-collected `workspace-inventory.json` evidence and selects only
+high-confidence, conflict-free generic profiles. Explicit profile ids are
+recorded as CLI overrides.
+
+Each processed repository gets a `repositoryProfileDetection` summary in the
+batch report and a JSON artifact under:
+
+```text
+reports/repository-profile-detections/<repository-id>/repository-profile-detection.json
+```
+
+The report records `repositoryProfileSelection` with
+`authority: producer_profile_selection_only` and
+`advisoryHintsAppliedToDrafting: false`.
+
+This is not drafting authority. The batch does not apply advisory hints to
+candidate drafting, accept packages, accept relations, remove `preview_only`,
+publish registry metadata, or treat plugin decisions as registry truth.
 
 ## Generic Hints
 

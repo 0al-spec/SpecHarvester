@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P37-T5 Generic Profile Discovery Hints" in next_text:
+        assert_p37_t4_last_archived(next_text)
+        assert_p37_t4_recent(next_text)
+        assert_phase_37_t5_active(next_text)
+        return
+
     if "# Next Task: P37-T4 Repository Profile Batch Integration" in next_text:
         assert_p37_t3_last_archived(next_text)
         assert_p37_t3_recent(next_text)
@@ -2940,6 +2946,54 @@ def assert_phase_37_t4_active(next_text: str) -> None:
     assert "`P37-T7` Re-run a real repository with profile auto-selection" in next_text
     assert "does not publish registry metadata" in normalized
     assert "does not treat AI output or plugin decisions as registry truth" in normalized
+
+
+def assert_p37_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P37-T4 Repository Profile Batch Integration" in next_text
+
+
+def assert_p37_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P37-T4` connected repository profile selection" in normalized
+    assert "autonomous-candidate-batch" in next_text
+    assert "--repository-profile-selection none|auto|<profile-id>" in next_text
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "reports/repository-profile-detections/<repository-id>/" in next_text
+    assert "repositoryProfileSelection" in next_text
+    assert "repositoryProfileDetection" in next_text
+    assert "workspace-inventory.json" in next_text
+    assert "generic.package_set.v0" in next_text
+    assert "advisoryHintsAppliedToDrafting: false" in next_text
+    assert "does not accept packages" in normalized
+    assert "does not treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_37_t5_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P37-T5 Generic Profile Discovery Hints" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P37-T5-generic-profile-discovery-hints`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert "`P37-T5` defines generic workspace/member discovery hints" in normalized
+    for required in (
+        "package-set root",
+        "member packages",
+        "meta packages",
+        "primary packages",
+        "CLI packages",
+        "bridge packages",
+        "plugin packages",
+        "example packages",
+        "test packages",
+        "documentation sources",
+        "generated artifacts",
+        "internal utilities",
+        "evidence-only sources",
+    ):
+        assert required in next_text
+    assert "`P37-T6` Add cross-ecosystem profile fixtures" in next_text
+    assert "`P37-T7` Re-run a real repository with profile auto-selection" in next_text
+    assert "must not treat profile hints as registry truth" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
@@ -12190,6 +12244,12 @@ def test_repository_profile_selection_contract_is_documented() -> None:
             "--selection none",
             "--source-manifest inputs",
             "--output repository-profile-detection.json",
+            "autonomous-candidate-batch",
+            "--repository-profile-selection auto",
+            "repositoryProfileSelection",
+            "repositoryProfileDetection",
+            "reports/repository-profile-detections/<repository-id>/repository-profile-detection.json",
+            "advisoryHintsAppliedToDrafting: false",
             "does not collect source files",
         ):
             assert required in text or required in normalized, (

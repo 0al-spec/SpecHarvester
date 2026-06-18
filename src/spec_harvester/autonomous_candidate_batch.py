@@ -63,6 +63,12 @@ from spec_harvester.package_set_drafter import (
     PackageSetDraftOptions,
     draft_package_set,
 )
+from spec_harvester.repository_profile_detection import (
+    RepositoryIdentity,
+    RepositoryProfileDetectionOptions,
+    build_repository_profile_detection,
+    write_repository_profile_detection,
+)
 
 AUTONOMOUS_CANDIDATE_BATCH_API_VERSION = "spec-harvester.autonomous-candidate-batch/v0"
 AUTONOMOUS_CANDIDATE_BATCH_KIND = "SpecHarvesterAutonomousCandidateBatchReport"
@@ -81,6 +87,7 @@ AI_DRAFT_REQUEST_FILENAME = "package-set-ai-draft-request.json"
 AI_DRAFT_PROPOSAL_FILENAME = "package-set-ai-draft-proposal.json"
 AI_ENRICHMENT_REQUEST_FILENAME = "package-set-ai-enrichment-requests.json"
 AI_ENRICHMENT_PROPOSAL_FILENAME = "package-set-ai-enrichment-proposal.json"
+REPOSITORY_PROFILE_DETECTION_FILENAME = "repository-profile-detection.json"
 
 TRUST_BOUNDARY_NOTES = [
     "Autonomous candidate batch output is producer evidence only.",
@@ -118,6 +125,7 @@ class AutonomousCandidateBatchOptions:
     ai_enrichment_temperature: float = DEFAULT_AI_ENRICHMENT_TEMPERATURE
     json_repair_max_attempts: int = DEFAULT_JSON_REPAIR_MAX_ATTEMPTS
     apply_ai_enrichment: bool = False
+    repository_profile_selection: str = "none"
 
 
 class AutonomousCandidateBatch:
@@ -144,6 +152,7 @@ class AutonomousCandidateBatch:
             "selectedIds": list(self.options.selected_ids),
             "collection": collection_record(collection, self.validation_report_path()),
             "ai": self.ai_mode_record(),
+            "repositoryProfileSelection": self.repository_profile_selection_record(),
             "summary": {
                 "collectedCount": collection["collectedCount"],
                 "skippedCount": collection["skippedCount"],
@@ -163,6 +172,12 @@ class AutonomousCandidateBatch:
                 "aiEnrichedPreviewFailedCount": sum_nested_summary(
                     repositories, "aiEnrichedPreview", "failedCount"
                 ),
+                "repositoryProfileDetectionCount": count_present(
+                    repositories, "repositoryProfileDetection"
+                ),
+                "repositoryProfileSelectedCount": count_profile_decision(repositories, "selected"),
+                "repositoryProfileFallbackCount": count_profile_decision(repositories, "fallback"),
+                "repositoryProfileDisabledCount": count_profile_decision(repositories, "disabled"),
             },
             "repositories": repositories,
             "skipped": collection["skipped"],
@@ -190,6 +205,8 @@ class AutonomousCandidateBatch:
             normalize_local_provider_base_url(self.options.lm_studio_base_url)
         if self.options.json_repair_max_attempts < 0:
             raise ValueError("--json-repair-max-attempts must be zero or greater")
+        if not self.repository_profile_selection():
+            raise ValueError("--repository-profile-selection must be non-empty")
 
     def collect(self) -> dict[str, Any]:
         return collect_batch_snapshots(
@@ -211,6 +228,12 @@ class AutonomousCandidateBatch:
         repository_id = str(collected["id"])
         bundle_set = self.package_sets_root / repository_id
         ai_root = bundle_set / AI_DIRNAME
+        repository_profile_detection_path = (
+            self.reports_root
+            / "repository-profile-detections"
+            / repository_id
+            / REPOSITORY_PROFILE_DETECTION_FILENAME
+        )
         record: dict[str, Any] = {
             "id": repository_id,
             "repository": collected["repository"],
@@ -227,6 +250,11 @@ class AutonomousCandidateBatch:
         }
         try:
             inventory = inventory_path(collected)
+            record["repositoryProfileDetection"] = self.repository_profile_detection_record(
+                collected=collected,
+                inventory=inventory,
+                output_path=repository_profile_detection_path,
+            )
             draft_result = draft_package_set(
                 PackageSetDraftOptions(
                     inventory=inventory,
@@ -272,6 +300,39 @@ class AutonomousCandidateBatch:
                 }
             )
         return record
+
+    def repository_profile_detection_record(
+        self,
+        *,
+        collected: dict[str, Any],
+        inventory: Path,
+        output_path: Path,
+    ) -> dict[str, Any]:
+        payload = build_repository_profile_detection(
+            RepositoryProfileDetectionOptions(
+                repository=repository_identity_from_collected(collected),
+                selection=self.repository_profile_selection(),
+                evidence_paths=repository_profile_evidence_paths(inventory),
+            )
+        )
+        write_repository_profile_detection(output_path, payload)
+        selection = payload["selection"]
+        return {
+            "status": "completed",
+            "path": str(output_path),
+            "authority": payload["authority"],
+            "mode": selection["mode"],
+            "overrideSource": selection["overrideSource"],
+            "selectedProfileId": selection["selectedProfileId"],
+            "fallbackProfileId": selection["fallbackProfileId"],
+            "confidence": selection["confidence"],
+            "decision": selection["decision"],
+            "reasonCodes": selection["reasonCodes"],
+            "candidateProfileCount": len(payload.get("candidateProfiles", [])),
+            "rejectedProfileCount": len(payload.get("rejectedProfiles", [])),
+            "advisoryHintCount": len(payload.get("advisoryDownstreamHints", [])),
+            "diagnosticCodes": diagnostic_codes(payload),
+        }
 
     def ai_draft_record(
         self, *, inventory: Path, source_checkout: Path, ai_root: Path
@@ -445,6 +506,20 @@ class AutonomousCandidateBatch:
             "chainOfThoughtPersisted": False,
         }
 
+    def repository_profile_selection_record(self) -> dict[str, Any]:
+        return {
+            "mode": self.repository_profile_selection(),
+            "defaultMode": "none",
+            "artifact": REPOSITORY_PROFILE_DETECTION_FILENAME,
+            "authority": "producer_profile_selection_only",
+            "execution": "static_collected_evidence_only",
+            "advisoryHintsAppliedToDrafting": False,
+            "registryAuthority": False,
+        }
+
+    def repository_profile_selection(self) -> str:
+        return self.options.repository_profile_selection.strip()
+
     def validation_report_path(self) -> Path:
         return self.reports_root / "batch-validation-report.json"
 
@@ -468,6 +543,35 @@ def inventory_path(collected: dict[str, Any]) -> Path:
     if not isinstance(output, str) or not output:
         raise ValueError("workspace inventory output path is missing from collect-batch result")
     return Path(output)
+
+
+def repository_identity_from_collected(collected: dict[str, Any]) -> RepositoryIdentity:
+    source_manifest = mapping_value(collected.get("sourceManifest"))
+    return RepositoryIdentity(
+        repository_id=str(collected["id"]),
+        repository_url=str(collected["repository"]),
+        ref=string_or_none(collected.get("ref")),
+        revision=string_or_none(collected.get("revision")),
+        source_manifest_path=string_or_none(source_manifest.get("path")),
+        source_manifest_entry_id=str(collected["id"]),
+        declared_repository_profile=None,
+    )
+
+
+def repository_profile_evidence_paths(inventory: Path) -> tuple[str, ...]:
+    payload = read_json(inventory)
+    paths: list[str] = []
+    for item in payload.get("workspaceManifests", []):
+        if isinstance(item, dict) and isinstance(item.get("path"), str):
+            paths.append(item["path"])
+    for item in payload.get("packages", []):
+        if isinstance(item, dict) and isinstance(item.get("manifestPath"), str):
+            paths.append(item["manifestPath"])
+    return tuple(unique_sorted(paths))
+
+
+def unique_sorted(values: list[str]) -> list[str]:
+    return sorted({value for value in values if value})
 
 
 def package_set_draft_record(bundle_set: Path, draft_result: dict[str, Any]) -> dict[str, Any]:
@@ -630,6 +734,15 @@ def count_present(repositories: list[dict[str, Any]], key: str) -> int:
     )
 
 
+def count_profile_decision(repositories: list[dict[str, Any]], decision: str) -> int:
+    return sum(
+        1
+        for repository in repositories
+        if isinstance(repository.get("repositoryProfileDetection"), dict)
+        and repository["repositoryProfileDetection"].get("decision") == decision
+    )
+
+
 def sum_nested_summary(repositories: list[dict[str, Any]], key: str, summary_key: str) -> int:
     total = 0
     for repository in repositories:
@@ -670,6 +783,10 @@ def safe_enriched_candidate_dir(package_id: str) -> str:
 
 def mapping_value(value: Any) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
+
+
+def string_or_none(value: Any) -> str | None:
+    return value if isinstance(value, str) else None
 
 
 def read_json(path: Path) -> dict[str, Any]:

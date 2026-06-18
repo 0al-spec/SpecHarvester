@@ -7,6 +7,7 @@ from spec_harvester.autonomous_candidate_batch import (
     AUTONOMOUS_CANDIDATE_BATCH_API_VERSION,
     AUTONOMOUS_CANDIDATE_BATCH_KIND,
     AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME,
+    REPOSITORY_PROFILE_DETECTION_FILENAME,
     AutonomousCandidateBatch,
     AutonomousCandidateBatchOptions,
     ai_proposal_record,
@@ -33,10 +34,22 @@ def test_autonomous_candidate_batch_runs_offline_preview_pipeline(
     assert report["kind"] == AUTONOMOUS_CANDIDATE_BATCH_KIND
     assert report["status"] == "passed"
     assert report["ai"]["mode"] == "disabled"
+    assert report["repositoryProfileSelection"]["mode"] == "none"
+    assert report["repositoryProfileSelection"]["authority"] == "producer_profile_selection_only"
+    assert report["repositoryProfileSelection"]["advisoryHintsAppliedToDrafting"] is False
     assert report["summary"]["processedCount"] == 1
     assert report["summary"]["passedPreflightCount"] == 1
+    assert report["summary"]["repositoryProfileDetectionCount"] == 1
+    assert report["summary"]["repositoryProfileDisabledCount"] == 1
+    assert report["summary"]["repositoryProfileSelectedCount"] == 0
     repository = report["repositories"][0]
     assert repository["status"] == "passed"
+    assert repository["repositoryProfileDetection"]["status"] == "completed"
+    assert repository["repositoryProfileDetection"]["decision"] == "disabled"
+    assert repository["repositoryProfileDetection"]["selectedProfileId"] is None
+    assert repository["repositoryProfileDetection"]["path"].endswith(
+        REPOSITORY_PROFILE_DETECTION_FILENAME
+    )
     assert repository["packageSetDraft"]["candidateCount"] == 3
     assert repository["packageSetDraft"]["relationCount"] == 2
     assert repository["preflight"]["status"] == "passed"
@@ -55,6 +68,97 @@ def test_autonomous_candidate_batch_runs_offline_preview_pipeline(
     assert (output / "collected" / "demo" / "workspace-inventory.json").is_file()
     assert (output / "package-sets" / "demo" / "package-set-draft.json").is_file()
     assert (output / "package-sets" / "demo" / "bundle-set-preflight.json").is_file()
+    detection = json.loads(
+        Path(repository["repositoryProfileDetection"]["path"]).read_text(encoding="utf-8")
+    )
+    assert detection["selection"]["decision"] == "disabled"
+    assert detection["selection"]["mode"] == "none"
+    assert detection["authority"] == "producer_profile_selection_only"
+
+
+def test_autonomous_candidate_batch_records_auto_repository_profile_selection(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_profile_selection="auto",
+        )
+    )
+
+    repository = report["repositories"][0]
+    detection = repository["repositoryProfileDetection"]
+
+    assert report["status"] == "passed"
+    assert report["repositoryProfileSelection"]["mode"] == "auto"
+    assert report["summary"]["repositoryProfileDetectionCount"] == 1
+    assert report["summary"]["repositoryProfileSelectedCount"] == 1
+    assert report["summary"]["repositoryProfileDisabledCount"] == 0
+    assert detection["decision"] == "selected"
+    assert detection["selectedProfileId"] == "generic.package_set.v0"
+    assert detection["confidence"] == "high"
+    assert detection["advisoryHintCount"] >= 3
+    assert repository["packageSetDraft"]["candidateCount"] == 3
+    assert repository["packageSetDraft"]["relationCount"] == 2
+
+    payload = json.loads(Path(detection["path"]).read_text(encoding="utf-8"))
+    assert payload["kind"] == "SpecHarvesterRepositoryProfileDetection"
+    assert payload["selection"]["selectedProfileId"] == "generic.package_set.v0"
+    assert "does_not_treat_plugin_decisions_as_registry_truth" in payload["nonAuthorityStatements"]
+    assert {"hint": "package_set_root", "path": "."} in [
+        {"hint": item["hint"], "path": item["path"]} for item in payload["advisoryDownstreamHints"]
+    ]
+
+
+def test_autonomous_candidate_batch_normalizes_repository_profile_selection(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_profile_selection=" auto ",
+        )
+    )
+
+    detection = report["repositories"][0]["repositoryProfileDetection"]
+
+    assert report["repositoryProfileSelection"]["mode"] == "auto"
+    assert detection["mode"] == "auto"
+
+
+def test_autonomous_candidate_batch_records_explicit_repository_profile_override(
+    tmp_path: Path,
+) -> None:
+    inputs = write_single_package_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_profile_selection="custom.repository_profile.v0",
+        )
+    )
+
+    detection = report["repositories"][0]["repositoryProfileDetection"]
+
+    assert report["status"] == "passed"
+    assert detection["decision"] == "selected"
+    assert detection["overrideSource"] == "cli"
+    assert detection["selectedProfileId"] == "custom.repository_profile.v0"
+    assert detection["reasonCodes"] == ["explicit_cli_profile_override"]
+    assert report["repositories"][0]["packageSetDraft"]["candidateCount"] == 1
 
 
 def test_autonomous_candidate_batch_uses_single_package_fallback(
@@ -338,6 +442,8 @@ def test_autonomous_candidate_batch_cli_writes_report(
             "--out",
             str(output),
             "--skip-ai",
+            "--repository-profile-selection",
+            "auto",
         ]
     )
 
@@ -346,6 +452,9 @@ def test_autonomous_candidate_batch_cli_writes_report(
     assert printed["status"] == "passed"
     assert printed["collection"]["validationReport"].endswith("batch-validation-report.json")
     assert printed["repositories"][0]["preflight"]["status"] == "passed"
+    assert printed["repositories"][0]["repositoryProfileDetection"]["selectedProfileId"] == (
+        "generic.package_set.v0"
+    )
 
 
 def write_source_manifest(tmp_path: Path) -> Path:

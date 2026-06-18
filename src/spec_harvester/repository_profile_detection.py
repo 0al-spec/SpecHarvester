@@ -44,6 +44,7 @@ MANIFEST_FILENAMES = {
     "build.gradle.kts",
 }
 WORKSPACE_FILENAMES = {
+    "package.json",
     "workspace.yaml",
     "workspace.yml",
     "pnpm-workspace.yaml",
@@ -442,7 +443,10 @@ def unique_hints(hints: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def is_workspace_path(path: str) -> bool:
-    return Path(path).name in WORKSPACE_FILENAMES
+    pure = Path(path)
+    if pure.name == "package.json":
+        return len(pure.parts) == 1
+    return pure.name in WORKSPACE_FILENAMES
 
 
 def workspace_root_for_path(path: str) -> str:

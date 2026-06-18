@@ -52,6 +52,20 @@ python3 -m spec_harvester autonomous-candidate-batch \
   --skip-ai
 ```
 
+Opt in to repository profile detection evidence while keeping candidate
+drafting generic:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --repository-profile-selection auto
+```
+
+`--repository-profile-selection` accepts `none`, `auto`, or an explicit
+profile id. The default is `none`.
+
 The input is the existing repository source manifest directory documented in
 [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md). The command
 expects local public checkouts; it does not clone, fetch, or browse for
@@ -68,6 +82,7 @@ For each selected repository, the runner orchestrates:
 ```text
 repository source manifest
   -> collect-batch with workspace inventory and public interface indexes
+  -> optional repository profile detection evidence
   -> draft-package-set using role profile autonomous_popular_mvp by default
   -> preflight-bundle-set
   -> optional local LM Studio package-set AI draft proposal
@@ -82,6 +97,7 @@ Outputs are written under the requested output root:
 output/
   collected/<repository-id>/harvest.json
   collected/<repository-id>/workspace-inventory.json
+  reports/repository-profile-detections/<repository-id>/repository-profile-detection.json
   package-sets/<repository-id>/package-set-draft.json
   package-sets/<repository-id>/bundle-set-preflight.json
   package-sets/<repository-id>/ai/package-set-ai-draft-proposal.json
@@ -110,9 +126,12 @@ the deterministic `apply-ai-enrichment-proposal` helper.
 The report records:
 
 - collection status and validation report path;
+- repository profile selection mode and authority;
 - processed, skipped, and failed repository counts;
 - per-repository harvest, workspace inventory, package-set draft, and preflight
   paths;
+- per-repository `repositoryProfileDetection` path, selected profile id,
+  decision, confidence, reason codes, and diagnostic codes;
 - candidate and relation counts;
 - author-ready stop-policy summary;
 - AI draft and enrichment proposal status when enabled;
@@ -124,6 +143,13 @@ The default `autonomous_popular_mvp` role profile selects workspace,
 `core_runtime`, React/Svelte binding, and generic member package roles while
 still excluding examples, tests, fixtures, and private tooling from primary
 candidate output.
+
+Repository profile detection is producer-side evidence only. Even when
+`--repository-profile-selection auto` selects `generic.package_set.v0`, the
+batch records `advisoryHintsAppliedToDrafting: false` and preserves the
+existing generic drafting path. Detection output does not accept packages,
+accept relations, remove `preview_only`, publish registry metadata, or treat
+plugin decisions as registry truth.
 
 ## LM Studio Boundary
 
