@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-06-14
+**Last Updated:** 2026-06-18
 
 ## Archived Tasks
 
@@ -156,6 +156,7 @@
 | P36-T2 | [P36-T2_Python_Web_Framework_Parser_Profile_Fixture/](P36-T2_Python_Web_Framework_Parser_Profile_Fixture/) | 2026-06-14 | PASS |
 | P36-T3 | [P36-T3_Plugin-Aware_Source_Classification_Hook/](P36-T3_Plugin-Aware_Source_Classification_Hook/) | 2026-06-14 | PASS |
 | P36-T4 | [P36-T4_FastAPI_AI-Enabled_Parser_Profile_Rerun/](P36-T4_FastAPI_AI-Enabled_Parser_Profile_Rerun/) | 2026-06-14 | PASS |
+| P37-T1 | [P37-T1_Repository_Profile_Selection_Contract/](P37-T1_Repository_Profile_Selection_Contract/) | 2026-06-18 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -168,6 +169,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t1_repository_profile_selection_contract.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p35_t3_source_classifier_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p36_t1_repository_parsing_plugin_contract.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p36_t2_python_web_framework_parser_profile.md` |
@@ -273,6 +275,8 @@
 | 2026-06-14 | P36-T3 | Archived REVIEW_p36_t3_plugin_aware_source_classification_hook report |
 | 2026-06-14 | P36-T4 | Archived FastAPI AI-Enabled Parser Profile Rerun (PASS) |
 | 2026-06-14 | P36-T4 | Archived REVIEW_p36_t4_fastapi_parser_profile_rerun report |
+| 2026-06-18 | P37-T1 | Archived Repository Profile Selection Contract (PASS) |
+| 2026-06-18 | P37-T1 | Archived REVIEW_p37_t1_repository_profile_selection_contract report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |

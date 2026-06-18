@@ -1443,7 +1443,7 @@ Acceptance:
 
 ## Phase 37. Repository Profile Plugin Selection
 
-- [ ] `P37-T1` Document a language- and framework-agnostic repository profile
+- [x] `P37-T1` Document a language- and framework-agnostic repository profile
   selection contract. The contract must define profile detection inputs,
   candidate scoring, selection modes, conflict behavior, operator overrides,
   and a replayable decision artifact without naming any language or framework

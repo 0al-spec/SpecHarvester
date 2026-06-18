@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P37-T2 Repository Profile Detection Fixture" in next_text:
+        assert_p37_t1_last_archived(next_text)
+        assert_p37_t1_recent(next_text)
+        assert_phase_37_t2_active(next_text)
+        return
+
     if "# Next Task: P37-T1 Repository Profile Selection Contract" in next_text:
         assert_p36_t4_last_archived(next_text)
         assert_p36_t4_recent(next_text)
@@ -2776,6 +2782,54 @@ def assert_phase_37_t1_active(next_text: str) -> None:
     assert "does not publish registry metadata" in normalized
     assert "does not treat AI output as registry truth" in normalized
     assert "remove `preview_only`" in normalized
+
+
+def assert_p37_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P37-T1 Repository Profile Selection Contract" in next_text
+
+
+def assert_p37_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P37-T1` added [`REPOSITORY_PROFILE_SELECTION_CONTRACT.md`]" in next_text
+    assert "RepositoryProfileSelectionContract" in next_text
+    assert (
+        "detect candidates -> score evidence -> select or fallback -> record decision" in next_text
+    )
+    assert "auto | none | <profile-id>" in normalized
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "spec-harvester.repository-profile-detection/v0" in next_text
+    assert "producer_profile_selection_only" in next_text
+    assert "static inputs" in normalized
+    assert "override precedence" in normalized
+    assert "confidence levels" in normalized
+    assert "fallback behavior" in normalized
+    assert "generic workspace/member hints" in normalized
+    assert "non-authority boundaries" in normalized
+
+
+def assert_phase_37_t2_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P37-T2 Repository Profile Detection Fixture" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P37-T2-repository-profile-detection-fixture`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert "`P37-T2` adds a machine-readable" in normalized
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "repository identity and source manifest metadata" in normalized
+    assert "selection mode and override source" in normalized
+    assert "selected profile id or `null`" in next_text
+    assert "fallback profile id" in normalized
+    assert "candidate profiles with confidence" in normalized
+    assert "rejected profiles and reason codes" in normalized
+    assert "diagnostics with severity" in normalized
+    assert "non-authority statements" in normalized
+    assert "advisory downstream hints" in normalized
+    assert "`P37-T3` Implement an opt-in repository profile detection" in next_text
+    assert (
+        "`P37-T4` Connect repository profile selection to autonomous candidate batch" in next_text
+    )
+    assert "does not publish registry metadata" in normalized
+    assert "does not treat AI output or plugin decisions as registry truth" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
@@ -11953,6 +12007,89 @@ def test_repository_profile_plugin_selection_plan_is_documented() -> None:
         assert "not a hardcoded profile rule" in normalized
         assert "does not clone or fetch repositories" in normalized
         assert "does not treat AI output as registry truth" in normalized
+
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_profile_selection_contract_is_documented() -> None:
+    github_doc = ROOT / "docs" / "REPOSITORY_PROFILE_SELECTION_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryProfileSelectionContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Profile Selection Contract",
+            "language- and framework-agnostic",
+            "detect candidates -> score evidence -> select or fallback -> record decision",
+            "spec-harvester.repository-profile-detection/v0",
+            "SpecHarvesterRepositoryProfileDetection",
+            "producer_profile_selection_only",
+            "`none`",
+            "`auto`",
+            "`<profile-id>`",
+            "explicit CLI profile override",
+            "source manifest `repositoryProfile` override",
+            "high-confidence auto-detected profile",
+            "generic fallback profile",
+            "`high`",
+            "`medium`",
+            "`low`",
+            "`blocked`",
+            "`package_set_root`",
+            "`member_package`",
+            "`meta_package`",
+            "`primary_package`",
+            "`cli_package`",
+            "`bridge_package`",
+            "`plugin_package`",
+            "`example_package`",
+            "`test_package`",
+            "`documentation_source`",
+            "`generated_artifact`",
+            "`internal_utility`",
+            "`evidence_only`",
+            "generic.repository.v0",
+            "Repository profiles answer",
+            "Parser profiles answer",
+            "FastMCP and FastAPI are validation cases",
+            "not normative profile rules",
+            "P37-T2",
+            "P37-T3",
+            "P37-T4",
+            "P37-T5",
+            "P37-T6",
+            "P37-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        assert "does not clone or fetch repositories" in normalized
+        assert "does not treat plugin decisions as registry truth" in normalized
+        assert "does not treat AI output as registry truth" in normalized
+
+    assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:RepositoryProfileSelectionContract>" in docc_root.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in capabilities.read_text(encoding="utf-8")
+    assert "RepositoryProfileSelectionContract" in capabilities_docc.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in roadmap.read_text(encoding="utf-8")
+    assert "RepositoryProfileSelectionContract" in roadmap_docc.read_text(encoding="utf-8")
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
