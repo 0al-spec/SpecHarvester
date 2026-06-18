@@ -1527,7 +1527,7 @@ Acceptance:
   declared capabilities, authority limits, diagnostics, and non-goals without
   making Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven,
   Gradle, or any other ecosystem normative.
-- [ ] `P38-T2` Add a machine-readable repository plugin registry fixture that
+- [x] `P38-T2` Add a machine-readable repository plugin registry fixture that
   records plugin ids, versioned contracts, provided evidence kinds, input
   requirements, safety constraints, applicability signals, and declared output
   artifacts.

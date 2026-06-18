@@ -42,7 +42,10 @@ Published DocC site:
 15. [`REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md`](REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md):
    language- and framework-agnostic contract for future repository plugins,
    registration metadata, applicability reports, and authority boundaries
-16. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
+16. [`REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md`](REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md):
+   machine-readable `SpecHarvesterRepositoryPluginRegistry` fixture shape for
+   declared producer-side plugin contracts
+17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
 14. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
@@ -319,6 +322,9 @@ Published DocC site:
   repository plugin subsystem contract for plugin identity, roles,
   registration metadata, static evidence, applicability checks, diagnostics,
   and authority boundaries
+- [`REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md`](REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md):
+  machine-readable registry fixture for declared producer-side plugin
+  contracts, safety constraints, static evidence kinds, and output artifacts
 - [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
   FastAPI parser profile rerun with evidence volume and AI quality verdict
 - [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted
