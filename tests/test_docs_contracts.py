@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P37-T6 Cross-Ecosystem Profile Fixtures" in next_text:
+        assert_p37_t5_last_archived(next_text)
+        assert_p37_t5_recent(next_text)
+        assert_phase_37_t6_active(next_text)
+        return
+
     if "# Next Task: P37-T5 Generic Profile Discovery Hints" in next_text:
         assert_p37_t4_last_archived(next_text)
         assert_p37_t4_recent(next_text)
@@ -2994,6 +3000,62 @@ def assert_phase_37_t5_active(next_text: str) -> None:
     assert "`P37-T6` Add cross-ecosystem profile fixtures" in next_text
     assert "`P37-T7` Re-run a real repository with profile auto-selection" in next_text
     assert "must not treat profile hints as registry truth" in normalized
+
+
+def assert_p37_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P37-T5 Generic Profile Discovery Hints" in next_text
+
+
+def assert_p37_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P37-T5` defined `SpecHarvesterRepositoryProfileHintVocabulary`" in next_text
+    assert "spec-harvester.repository-profile-hints/v0" in next_text
+    assert "SpecHarvesterRepositoryProfileHintVocabulary" in next_text
+    assert "producer_profile_hint_vocabulary_only" in next_text
+    assert "generic-hint-vocabulary.example.json" in next_text
+    for required in (
+        "package_set_root",
+        "member_package",
+        "meta_package",
+        "primary_package",
+        "cli_package",
+        "bridge_package",
+        "plugin_package",
+        "example_package",
+        "test_package",
+        "documentation_source",
+        "generated_artifact",
+        "internal_utility",
+        "evidence_only",
+    ):
+        assert required in next_text
+    assert "rejects unknown built-in generic hint ids" in normalized
+    assert "do not accept packages" in normalized
+    assert "do not accept relations" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "publish registry metadata" in normalized
+    assert "treat profile hints as registry truth" in normalized
+
+
+def assert_phase_37_t6_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P37-T6 Cross-Ecosystem Profile Fixtures" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P37-T6-cross-ecosystem-profile-fixtures`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert "`P37-T6` adds cross-ecosystem profile fixtures" in normalized
+    for required in (
+        "one workspace-shaped repository",
+        "one single-package repository",
+        "one nested-package repository",
+        "one ambiguous multi-signal repository",
+    ):
+        assert required in next_text
+    assert "not language-specific" in normalized
+    assert "generic hint vocabulary" in normalized
+    assert "must not implement ecosystem-specific plugins" in normalized
+    assert "must not treat profile decisions or profile hints as registry truth" in normalized
+    assert "`P37-T7` Re-run a real repository with profile auto-selection" in next_text
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
