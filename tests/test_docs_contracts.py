@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P37-T3 Repository Profile Detection CLI" in next_text:
+        assert_p37_t2_last_archived(next_text)
+        assert_p37_t2_recent(next_text)
+        assert_phase_37_t3_active(next_text)
+        return
+
     if "# Next Task: P37-T2 Repository Profile Detection Fixture" in next_text:
         assert_p37_t1_last_archived(next_text)
         assert_p37_t1_recent(next_text)
@@ -2830,6 +2836,58 @@ def assert_phase_37_t2_active(next_text: str) -> None:
     )
     assert "does not publish registry metadata" in normalized
     assert "does not treat AI output or plugin decisions as registry truth" in normalized
+
+
+def assert_p37_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P37-T2 Repository Profile Detection Fixture" in next_text
+
+
+def assert_p37_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P37-T2` added the machine-readable fixture" in next_text
+    assert "generic-package-set.example.json" in next_text
+    assert "spec-harvester.repository-profile-detection/v0" in next_text
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "schemaVersion: 1" in next_text
+    assert "producer_profile_selection_only" in next_text
+    assert "generic.package_set.v0" in next_text
+    assert "generic.repository.v0" in next_text
+    assert "rejected lower-confidence profiles" in normalized
+    assert "diagnostics" in normalized
+    assert "package_set_root" in next_text
+    assert "member_package" in next_text
+    assert "documentation_source" in next_text
+    assert "non-authority boundary" in normalized
+
+
+def assert_phase_37_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P37-T3 Repository Profile Detection CLI" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P37-T3-repository-profile-detection-cli`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert "`P37-T3` implements an opt-in repository profile detection" in normalized
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "read only static repository evidence" in normalized
+    assert "auto | none | <profile-id>" in next_text
+    assert "optional CLI override metadata" in normalized
+    assert "emit the detection artifact shape introduced in P37-T2" in normalized
+    assert "fallback to `generic.repository.v0`" in next_text
+    assert "candidate profiles" in normalized
+    assert "rejected profiles" in normalized
+    assert "non-authority statements" in normalized
+    assert "advisory downstream hints" in normalized
+    assert (
+        "`P37-T4` Connect repository profile selection to autonomous candidate batch" in next_text
+    )
+    assert "`P37-T5` Define generic workspace/member discovery hints" in next_text
+    assert "`P37-T6` Add cross-ecosystem profile fixtures" in next_text
+    assert "`P37-T7` Re-run a real repository with profile auto-selection" in next_text
+    assert "does not publish registry metadata" in normalized
+    assert "does not treat AI output or plugin decisions as registry truth" in normalized
+    assert "does not clone or fetch repositories" in normalized
+    assert "does not run AI" in normalized
+    assert "does not draft packages" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:
@@ -12090,6 +12148,142 @@ def test_repository_profile_selection_contract_is_documented() -> None:
     assert "RepositoryProfileSelectionContract" in capabilities_docc.read_text(encoding="utf-8")
     assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in roadmap.read_text(encoding="utf-8")
     assert "RepositoryProfileSelectionContract" in roadmap_docc.read_text(encoding="utf-8")
+
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_profile_detection_fixture_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_profile_detection"
+        / "generic-package-set.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PROFILE_SELECTION_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryProfileSelectionContract.md"
+    )
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.repository-profile-detection/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryProfileDetection"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_profile_selection_only"
+    assert payload["repository"]["id"] == "example.generic-package-set"
+    assert payload["repository"]["revision"] == "0" * 40
+    assert payload["sourceManifest"] == {
+        "path": "tests/fixtures/repository_profile_detection/source-manifest.example.yml",
+        "entryId": "example.generic-package-set",
+        "declaredRepositoryProfile": None,
+    }
+
+    selection = payload["selection"]
+    assert selection["mode"] == "auto"
+    assert selection["overrideSource"] == "none"
+    assert selection["selectedProfileId"] == "generic.package_set.v0"
+    assert selection["fallbackProfileId"] == "generic.repository.v0"
+    assert selection["confidence"] == "high"
+    assert selection["decision"] == "selected"
+    assert "workspace_manifest_present" in selection["reasonCodes"]
+
+    candidates = {candidate["profileId"]: candidate for candidate in payload["candidateProfiles"]}
+    assert set(candidates) == {
+        "generic.package_set.v0",
+        "generic.single_package.v0",
+        "generic.documentation_site.v0",
+    }
+    selected = candidates["generic.package_set.v0"]
+    assert selected["confidence"] == "high"
+    assert selected["score"] == 0.92
+    assert selected["recommendedAction"] == "select"
+    assert selected["conflicts"] == []
+    assert selected["evidencePaths"] == [
+        "workspace.yaml",
+        "packages/core/package.json",
+        "packages/adapter/package.json",
+    ]
+
+    single_package = candidates["generic.single_package.v0"]
+    assert single_package["confidence"] == "medium"
+    assert single_package["recommendedAction"] == "fallback"
+    assert single_package["conflicts"] == ["generic.package_set.v0"]
+
+    documentation_site = candidates["generic.documentation_site.v0"]
+    assert documentation_site["confidence"] == "low"
+    assert documentation_site["recommendedAction"] == "require_override"
+
+    rejected = {profile["profileId"]: profile for profile in payload["rejectedProfiles"]}
+    assert set(rejected) == {"generic.single_package.v0", "generic.documentation_site.v0"}
+    assert (
+        "conflicts_with_package_set_evidence"
+        in rejected["generic.single_package.v0"]["reasonCodes"]
+    )
+    assert "low_confidence" in rejected["generic.documentation_site.v0"]["reasonCodes"]
+
+    diagnostics = payload["diagnostics"]
+    assert diagnostics == [
+        {
+            "severity": "info",
+            "code": "repository_profile_selected",
+            "message": "Selected generic.package_set.v0 from static workspace evidence.",
+            "evidencePaths": [
+                "workspace.yaml",
+                "packages/core/package.json",
+                "packages/adapter/package.json",
+            ],
+        }
+    ]
+
+    hints = {(hint["hint"], hint["path"]): hint for hint in payload["advisoryDownstreamHints"]}
+    assert ("package_set_root", ".") in hints
+    assert ("member_package", "packages/core") in hints
+    assert ("member_package", "packages/adapter") in hints
+    assert ("documentation_source", "docs") in hints
+    assert all("reasonCodes" in hint for hint in hints.values())
+
+    assert payload["nonAuthorityStatements"] == [
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_execute_harvested_code",
+        "does_not_invoke_package_managers",
+        "does_not_run_ai",
+        "does_not_draft_packages",
+        "does_not_publish_registry_metadata",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_plugin_decisions_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth",
+    ]
+    assert payload["followUp"] == {
+        "implementationTask": "P37-T3",
+        "batchIntegrationTask": "P37-T4",
+        "hintVocabularyTask": "P37-T5",
+        "crossEcosystemFixturesTask": "P37-T6",
+        "realRepositoryValidationTask": "P37-T7",
+    }
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        assert "generic-package-set.example.json" in normalized
+        assert "spec-harvester.repository-profile-detection/v0" in normalized
+        assert "SpecHarvesterRepositoryProfileDetection" in normalized
+        assert "producer_profile_selection_only" in normalized
+        assert "generic.package_set.v0" in normalized
+        assert "generic.repository.v0" in normalized
+        assert "package_set_root" in normalized
+        assert "member_package" in normalized
+        assert "documentation_source" in normalized
+        assert "does not clone/fetch repositories" in normalized
+        assert "publish registry metadata" in normalized
+        assert "does not treat plugin decisions as registry truth" in normalized
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
