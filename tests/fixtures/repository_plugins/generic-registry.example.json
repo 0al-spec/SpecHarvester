@@ -1,0 +1,291 @@
+{
+  "apiVersion": "spec-harvester.repository-plugins/v0",
+  "kind": "SpecHarvesterRepositoryPluginRegistry",
+  "schemaVersion": 1,
+  "authority": "producer_plugin_registry_only",
+  "contract": {
+    "purpose": "Declare available producer-side repository plugin contracts for review and deterministic applicability evaluation.",
+    "inputAuthority": "static_local_evidence_only",
+    "outputAuthority": "producer_side_evidence_only",
+    "selectionAuthority": "producer_plugin_applicability_only"
+  },
+  "roles": [
+    "parser_profile",
+    "repository_profile",
+    "evidence_producer",
+    "topology_helper",
+    "review_surface"
+  ],
+  "inputEvidenceKinds": [
+    "source_manifest",
+    "harvest_snapshot",
+    "workspace_inventory",
+    "public_interface_index",
+    "repository_profile_detection",
+    "repository_parsing_profile_decision",
+    "operator_label"
+  ],
+  "outputArtifactKinds": [
+    "repository_parsing_profile_decision",
+    "repository_profile_detection",
+    "manifest_summary",
+    "public_interface_index",
+    "package_topology_hint",
+    "review_panel_data"
+  ],
+  "plugins": [
+    {
+      "pluginId": "spec_harvester.generic.parser_profile.v0",
+      "version": "0.1.0",
+      "role": "parser_profile",
+      "title": "Generic Parser Profile Contract",
+      "summary": "Classifies static repository paths before public-interface indexing.",
+      "inputEvidenceKinds": [
+        "source_manifest",
+        "harvest_snapshot",
+        "operator_label"
+      ],
+      "outputArtifactKinds": [
+        "repository_parsing_profile_decision"
+      ],
+      "safetyConstraints": {
+        "execution": "none",
+        "networkAccess": "none",
+        "packageManagers": "not_invoked",
+        "dependencies": "not_installed",
+        "harvestedCode": "not_executed",
+        "ai": "not_invoked"
+      },
+      "applicabilitySignals": [
+        "path_shape",
+        "source_file_extension",
+        "operator_override"
+      ],
+      "conflictsWith": [],
+      "fallbackBehavior": {
+        "decision": "fallback",
+        "reasonCode": "conservative_default_path_classification"
+      },
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "parser_profile_registered",
+          "message": "Parser profile contract is available as producer-side path classification evidence."
+        }
+      ],
+      "nonAuthorityStatements": [
+        "does_not_execute_plugins",
+        "does_not_accept_packages",
+        "does_not_publish_registry_metadata",
+        "does_not_treat_plugin_output_as_registry_truth"
+      ]
+    },
+    {
+      "pluginId": "spec_harvester.generic.repository_profile.v0",
+      "version": "0.1.0",
+      "role": "repository_profile",
+      "title": "Generic Repository Profile Contract",
+      "summary": "Classifies repository shape from static evidence and emits advisory downstream hints.",
+      "inputEvidenceKinds": [
+        "source_manifest",
+        "harvest_snapshot",
+        "workspace_inventory"
+      ],
+      "outputArtifactKinds": [
+        "repository_profile_detection"
+      ],
+      "safetyConstraints": {
+        "execution": "none",
+        "networkAccess": "none",
+        "packageManagers": "not_invoked",
+        "dependencies": "not_installed",
+        "harvestedCode": "not_executed",
+        "ai": "not_invoked"
+      },
+      "applicabilitySignals": [
+        "root_manifest",
+        "workspace_manifest",
+        "member_manifest",
+        "documentation_path"
+      ],
+      "conflictsWith": [],
+      "fallbackBehavior": {
+        "decision": "fallback",
+        "reasonCode": "fallback_to_generic_repository_profile"
+      },
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "repository_profile_registered",
+          "message": "Repository profile contract is available as producer-side repository shape evidence."
+        }
+      ],
+      "nonAuthorityStatements": [
+        "does_not_execute_plugins",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_plugin_output_as_registry_truth"
+      ]
+    },
+    {
+      "pluginId": "spec_harvester.generic.manifest_summary.v0",
+      "version": "0.1.0",
+      "role": "evidence_producer",
+      "title": "Generic Manifest Summary Evidence",
+      "summary": "Summarizes allowlisted manifest metadata as bounded review evidence.",
+      "inputEvidenceKinds": [
+        "harvest_snapshot",
+        "workspace_inventory"
+      ],
+      "outputArtifactKinds": [
+        "manifest_summary"
+      ],
+      "safetyConstraints": {
+        "execution": "none",
+        "networkAccess": "none",
+        "packageManagers": "not_invoked",
+        "dependencies": "not_installed",
+        "harvestedCode": "not_executed",
+        "ai": "not_invoked"
+      },
+      "applicabilitySignals": [
+        "manifest_file_present",
+        "manifest_metadata_present"
+      ],
+      "conflictsWith": [],
+      "fallbackBehavior": {
+        "decision": "skip",
+        "reasonCode": "missing_manifest_evidence"
+      },
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "manifest_summary_registered",
+          "message": "Manifest summary evidence can be emitted from static harvest artifacts."
+        }
+      ],
+      "nonAuthorityStatements": [
+        "does_not_execute_plugins",
+        "does_not_infer_unobserved_claims",
+        "does_not_accept_packages",
+        "does_not_treat_plugin_output_as_registry_truth"
+      ]
+    },
+    {
+      "pluginId": "spec_harvester.generic.package_topology.v0",
+      "version": "0.1.0",
+      "role": "topology_helper",
+      "title": "Generic Package Topology Helper",
+      "summary": "Proposes package-set membership hints from static workspace and manifest evidence.",
+      "inputEvidenceKinds": [
+        "workspace_inventory",
+        "repository_profile_detection",
+        "manifest_summary"
+      ],
+      "outputArtifactKinds": [
+        "package_topology_hint"
+      ],
+      "safetyConstraints": {
+        "execution": "none",
+        "networkAccess": "none",
+        "packageManagers": "not_invoked",
+        "dependencies": "not_installed",
+        "harvestedCode": "not_executed",
+        "ai": "not_invoked"
+      },
+      "applicabilitySignals": [
+        "workspace_root",
+        "member_package",
+        "package_set_relation_candidate"
+      ],
+      "conflictsWith": [],
+      "fallbackBehavior": {
+        "decision": "skip",
+        "reasonCode": "missing_topology_evidence"
+      },
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "topology_helper_registered",
+          "message": "Package topology hints are review evidence and not accepted relations."
+        }
+      ],
+      "nonAuthorityStatements": [
+        "does_not_execute_plugins",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_treat_plugin_output_as_registry_truth"
+      ]
+    },
+    {
+      "pluginId": "spec_harvester.generic.review_surface.v0",
+      "version": "0.1.0",
+      "role": "review_surface",
+      "title": "Generic Review Surface Data",
+      "summary": "Declares viewer/report-only data panels for plugin evidence review.",
+      "inputEvidenceKinds": [
+        "repository_profile_detection",
+        "repository_parsing_profile_decision",
+        "manifest_summary",
+        "package_topology_hint"
+      ],
+      "outputArtifactKinds": [
+        "review_panel_data"
+      ],
+      "safetyConstraints": {
+        "execution": "none",
+        "networkAccess": "none",
+        "packageManagers": "not_invoked",
+        "dependencies": "not_installed",
+        "harvestedCode": "not_executed",
+        "ai": "not_invoked"
+      },
+      "applicabilitySignals": [
+        "review_artifact_present"
+      ],
+      "conflictsWith": [],
+      "fallbackBehavior": {
+        "decision": "skip",
+        "reasonCode": "missing_review_evidence"
+      },
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "review_surface_registered",
+          "message": "Review surface output is viewer/report evidence only."
+        }
+      ],
+      "nonAuthorityStatements": [
+        "does_not_execute_plugins",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_treat_plugin_output_as_registry_truth"
+      ]
+    }
+  ],
+  "nonAuthorityStatements": [
+    "does_not_load_third_party_plugin_code",
+    "does_not_execute_plugins",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_invoke_package_managers",
+    "does_not_run_ai",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_plugin_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "applicabilityReportTask": "P38-T3",
+    "batchIntegrationTask": "P38-T4",
+    "crossEcosystemFixtureTask": "P38-T5",
+    "realRepositoryRunTask": "P38-T6"
+  }
+}

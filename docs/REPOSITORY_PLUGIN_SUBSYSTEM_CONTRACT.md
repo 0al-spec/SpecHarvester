@@ -92,6 +92,11 @@ requirements, output artifacts, diagnostics, and authority statements.
 The future machine-readable registry fixture is planned as
 `SpecHarvesterRepositoryPluginRegistry`.
 
+P38-T2 records the first fixture in
+[`REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md`](REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md)
+and
+`tests/fixtures/repository_plugins/generic-registry.example.json`.
+
 ```json
 {
   "apiVersion": "spec-harvester.repository-plugins/v0",
@@ -265,4 +270,3 @@ The trust boundary is:
 plugin output = review evidence
 SpecPM acceptance = maintainer-controlled registry decision
 ```
-

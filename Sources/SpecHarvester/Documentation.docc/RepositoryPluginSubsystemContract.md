@@ -66,6 +66,9 @@ Each plugin declaration should include:
 The future machine-readable registry fixture is planned as
 `SpecHarvesterRepositoryPluginRegistry`:
 
+P38-T2 records the first fixture in <doc:RepositoryPluginRegistryFixture> and
+`tests/fixtures/repository_plugins/generic-registry.example.json`.
+
 ```json
 {
   "apiVersion": "spec-harvester.repository-plugins/v0",
@@ -165,4 +168,3 @@ or registry publication.
 plugin output = review evidence
 SpecPM acceptance = maintainer-controlled registry decision
 ```
-

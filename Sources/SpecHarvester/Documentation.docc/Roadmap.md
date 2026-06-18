@@ -474,11 +474,12 @@ register plugins -> collect static evidence -> evaluate applicability
   -> select, fallback, or block -> emit producer-side evidence
 ```
 
-Planned follow-ups:
+P38-T2 adds the first `SpecHarvesterRepositoryPluginRegistry` registry fixture
+in <doc:RepositoryPluginRegistryFixture> and
+`tests/fixtures/repository_plugins/generic-registry.example.json`.
 
-- `P38-T2`: add a machine-readable `SpecHarvesterRepositoryPluginRegistry`
-  fixture for plugin ids, roles, input requirements, safety constraints,
-  applicability signals, and output artifacts;
+Follow-ups after the registry fixture:
+
 - `P38-T3`: add a `SpecHarvesterRepositoryPluginApplicabilityReport` fixture
   for selected, rejected, fallback, and blocked decisions;
 - `P38-T4`: connect registry and applicability output to autonomous candidate

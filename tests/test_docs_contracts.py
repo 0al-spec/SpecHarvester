@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P38-T3 Repository Plugin Applicability Report Fixture" in next_text:
+        assert_p38_t2_last_archived(next_text)
+        assert_p38_t2_recent(next_text)
+        assert_phase_38_t3_planned(next_text)
+        return
+
     if "# Next Task: P38-T2 Repository Plugin Registry Fixture" in next_text:
         assert_p38_t1_last_archived(next_text)
         assert_p38_t1_recent(next_text)
@@ -3284,7 +3290,7 @@ def assert_p38_t1_recent(next_text: str) -> None:
 def assert_phase_38_t2_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P38-T2 Repository Plugin Registry Fixture" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Planned" in next_text
     assert "`feature/P38-T2-repository-plugin-registry-fixture`" in next_text
     assert "Phase 38. Repository Plugin Subsystem" in next_text
     assert "machine-readable repository plugin registry fixture" in normalized
@@ -3297,6 +3303,48 @@ def assert_phase_38_t2_planned(next_text: str) -> None:
     assert "applicability signals" in normalized
     assert "producer-side evidence" in normalized
     assert "must not implement plugin execution" in normalized
+    assert "must not change parser profile behavior" in normalized
+    assert "must not change repository profile scoring" in normalized
+
+
+def assert_p38_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P38-T2 Repository Plugin Registry Fixture" in next_text
+
+
+def assert_p38_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P38-T2` added the machine-readable repository plugin registry fixture" in normalized
+    assert "generic-registry.example.json" in next_text
+    assert "SpecHarvesterRepositoryPluginRegistry" in next_text
+    assert "producer_plugin_registry_only" in next_text
+    assert "parser_profile" in next_text
+    assert "repository_profile" in next_text
+    assert "evidence_producer" in next_text
+    assert "topology_helper" in next_text
+    assert "review_surface" in next_text
+    assert "static evidence" in normalized
+    assert "safety constraints" in normalized
+    assert "producer-side evidence" in normalized
+    assert "not execute plugins" in normalized
+    assert "not accept packages" in normalized
+    assert "not accept relations" in normalized
+    assert "not publish registry metadata" in normalized
+    assert "not remove `preview_only`" in normalized
+    assert "not treat plugin output as registry truth" in normalized
+
+
+def assert_phase_38_t3_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P38-T3 Repository Plugin Applicability Report Fixture" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P38-T3-repository-plugin-applicability-report-fixture`" in next_text
+    assert "Phase 38. Repository Plugin Subsystem" in next_text
+    assert "SpecHarvesterRepositoryPluginApplicabilityReport" in next_text
+    assert "selected, rejected, fallback, and blocked decisions" in normalized
+    assert "reads the P38-T2 registry fixture" in normalized
+    assert "producer-side evidence" in normalized
+    assert "must not implement plugin execution" in normalized
+    assert "must not run plugins" in normalized
     assert "must not change parser profile behavior" in normalized
     assert "must not change repository profile scoring" in normalized
 
@@ -12766,6 +12814,209 @@ def test_repository_plugin_subsystem_contract_is_documented() -> None:
         assert "producer-side evidence" in normalized
         assert "treat plugin output as registry truth" in normalized
 
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_registry_fixture_is_documented() -> None:
+    fixture_path = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "generic-registry.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginRegistryFixture.md"
+    )
+    subsystem_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    subsystem_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.repository-plugins/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryPluginRegistry"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_plugin_registry_only"
+    assert payload["contract"] == {
+        "purpose": (
+            "Declare available producer-side repository plugin contracts for review "
+            "and deterministic applicability evaluation."
+        ),
+        "inputAuthority": "static_local_evidence_only",
+        "outputAuthority": "producer_side_evidence_only",
+        "selectionAuthority": "producer_plugin_applicability_only",
+    }
+    assert payload["roles"] == [
+        "parser_profile",
+        "repository_profile",
+        "evidence_producer",
+        "topology_helper",
+        "review_surface",
+    ]
+    assert set(payload["inputEvidenceKinds"]) == {
+        "source_manifest",
+        "harvest_snapshot",
+        "workspace_inventory",
+        "public_interface_index",
+        "repository_profile_detection",
+        "repository_parsing_profile_decision",
+        "operator_label",
+    }
+    assert set(payload["outputArtifactKinds"]) == {
+        "repository_parsing_profile_decision",
+        "repository_profile_detection",
+        "manifest_summary",
+        "public_interface_index",
+        "package_topology_hint",
+        "review_panel_data",
+    }
+
+    plugins = {plugin["pluginId"]: plugin for plugin in payload["plugins"]}
+    assert set(plugins) == {
+        "spec_harvester.generic.parser_profile.v0",
+        "spec_harvester.generic.repository_profile.v0",
+        "spec_harvester.generic.manifest_summary.v0",
+        "spec_harvester.generic.package_topology.v0",
+        "spec_harvester.generic.review_surface.v0",
+    }
+    assert {plugin["role"] for plugin in plugins.values()} == set(payload["roles"])
+    for plugin in plugins.values():
+        assert plugin["version"] == "0.1.0"
+        assert plugin["title"]
+        assert plugin["summary"]
+        assert plugin["inputEvidenceKinds"]
+        assert plugin["outputArtifactKinds"]
+        assert plugin["applicabilitySignals"]
+        assert isinstance(plugin["conflictsWith"], list)
+        assert plugin["fallbackBehavior"]["decision"] in {"fallback", "skip"}
+        assert plugin["fallbackBehavior"]["reasonCode"]
+        assert plugin["diagnostics"][0]["severity"] == "info"
+        assert plugin["diagnostics"][0]["code"]
+        assert plugin["safetyConstraints"] == {
+            "execution": "none",
+            "networkAccess": "none",
+            "packageManagers": "not_invoked",
+            "dependencies": "not_installed",
+            "harvestedCode": "not_executed",
+            "ai": "not_invoked",
+        }
+        assert "does_not_execute_plugins" in plugin["nonAuthorityStatements"]
+        assert "does_not_treat_plugin_output_as_registry_truth" in plugin["nonAuthorityStatements"]
+
+    assert payload["nonAuthorityStatements"] == [
+        "does_not_load_third_party_plugin_code",
+        "does_not_execute_plugins",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_execute_harvested_code",
+        "does_not_invoke_package_managers",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_plugin_output_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth",
+    ]
+    assert payload["followUp"] == {
+        "applicabilityReportTask": "P38-T3",
+        "batchIntegrationTask": "P38-T4",
+        "crossEcosystemFixtureTask": "P38-T5",
+        "realRepositoryRunTask": "P38-T6",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Registry Fixture",
+            "SpecHarvesterRepositoryPluginRegistry",
+            "spec-harvester.repository-plugins/v0",
+            "producer_plugin_registry_only",
+            "generic-registry.example.json",
+            "parser_profile",
+            "repository_profile",
+            "evidence_producer",
+            "topology_helper",
+            "review_surface",
+            "inputEvidenceKinds",
+            "outputArtifactKinds",
+            "safetyConstraints",
+            "applicabilitySignals",
+            "fallbackBehavior",
+            "diagnostics",
+            "source_manifest",
+            "harvest_snapshot",
+            "workspace_inventory",
+            "public_interface_index",
+            "repository_profile_detection",
+            "repository_parsing_profile_decision",
+            "operator_label",
+            "not executable plugin",
+            "not accepted SpecPM package truth",
+            "Python",
+            "JavaScript",
+            "FastAPI",
+            "FastMCP",
+            "npm",
+            "Cargo",
+            "Go",
+            "SwiftPM",
+            "Maven",
+            "Gradle",
+            "P38-T3",
+            "P38-T4",
+            "P38-T5",
+            "P38-T6",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "does not load third-party plugin code",
+            "execute plugins",
+            "clone or fetch repositories",
+            "install dependencies",
+            "execute harvested code",
+            "invoke package managers",
+            "run AI",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat plugin output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    assert "REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:RepositoryPluginRegistryFixture>" in docc_root.read_text(encoding="utf-8")
+    assert "REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md" in capabilities.read_text(encoding="utf-8")
+    assert "RepositoryPluginRegistryFixture" in capabilities_docc.read_text(encoding="utf-8")
+    assert "REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md" in roadmap.read_text(encoding="utf-8")
+    assert "RepositoryPluginRegistryFixture" in roadmap_docc.read_text(encoding="utf-8")
+    assert "REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md" in subsystem_doc.read_text(encoding="utf-8")
+    assert "RepositoryPluginRegistryFixture" in subsystem_docc.read_text(encoding="utf-8")
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P38-T2` Add a machine-readable repository plugin registry fixture" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
