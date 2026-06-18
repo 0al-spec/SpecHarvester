@@ -12133,6 +12133,12 @@ def test_repository_profile_selection_contract_is_documented() -> None:
             "P37-T5",
             "P37-T6",
             "P37-T7",
+            "repository-profile-detect",
+            "--selection auto",
+            "--selection none",
+            "--source-manifest inputs",
+            "--output repository-profile-detection.json",
+            "does not collect source files",
         ):
             assert required in text or required in normalized, (
                 f"Required term {required!r} not found in {path}"

@@ -148,6 +148,42 @@ This fixture is intentionally generic. It proves the profile selection artifact
 shape without making Python, JavaScript, FastMCP, FastAPI, or any other
 ecosystem normative.
 
+## CLI Report Surface
+
+P37-T3 adds an opt-in CLI surface:
+
+```bash
+spec-harvester repository-profile-detect \
+  --repository-id example.generic-package-set \
+  --repository-url https://example.invalid/generic-package-set \
+  --revision 0000000000000000000000000000000000000000 \
+  --selection auto \
+  --evidence-path workspace.yaml \
+  --evidence-path packages/core/package.json \
+  --evidence-path packages/adapter/package.json \
+  --output repository-profile-detection.json
+```
+
+The command can also read repository identity from an existing source manifest
+directory:
+
+```bash
+spec-harvester repository-profile-detect \
+  --source-manifest inputs \
+  --source-id example.generic-package-set \
+  --selection auto \
+  --evidence-path workspace.yaml
+```
+
+The command accepts `--selection auto`, `--selection none`, or an explicit
+profile id such as `--selection custom.vendor_profile.v0`.
+
+This CLI only emits `SpecHarvesterRepositoryProfileDetection`. It reads static
+metadata supplied by the operator, writes JSON to stdout, and optionally writes
+the same payload to `--output`. It does not collect source files, run analyzers,
+invoke package managers, run AI, draft packages, or connect the result to
+autonomous candidate batch behavior.
+
 ## Generic Hints
 
 Profiles may propose ecosystem-neutral hints:

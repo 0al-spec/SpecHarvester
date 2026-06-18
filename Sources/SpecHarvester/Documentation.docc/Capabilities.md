@@ -32,7 +32,7 @@ local repository checkout
 | SpecPM handoff evidence | Portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | <doc:SpecPMHandoff>, <doc:SelectedCandidateHandoffPreflightExpectations> |
 | Bounded corpus runs | Important multi-ecosystem repository/package-family targets selected with explicit importance signals and exclusion rules, recorded in a machine-readable corpus plan, explainable selection report, and dry-run readiness gate, then operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:CorpusSelectionPolicy>, <doc:SpecHarvesterCorpusPlan>, <doc:MultiEcosystemSeedCorpusPlan>, <doc:ExplainableCorpusSelectionReport>, <doc:SelectedCorpusDryRunReadiness>, <doc:AutonomousCandidateBatch> |
 | Repository parsing profile hook | Opt-in path classification for language/framework parser profiles, with `python.web_framework.v0` validated on FastAPI to separate public interface evidence from semantic usage/documentation evidence. | <doc:RepositoryParsingPluginContract>, <doc:FastAPIParserProfileRerun> |
-| Repository profile selection contract | Planned language- and framework-agnostic selection layer for deciding which repository profile plugin, if any, should apply before parser path classification. | <doc:RepositoryProfileSelectionContract>, <doc:RepositoryParsingPluginContract> |
+| Repository profile detection report | Opt-in `repository-profile-detect` command that emits `SpecHarvesterRepositoryProfileDetection` from operator-supplied static evidence before parser path classification. | <doc:RepositoryProfileSelectionContract>, <doc:RepositoryParsingPluginContract> |
 | Optional CodeGraph input boundary | Pre-existing CodeGraph artifact normalization and offline pinned interface compatibility checks. | <doc:CodeGraphSourceGraphAdapter>, <doc:CodeGraphCompatibilityGuard> |
 
 ## Product Boundary
@@ -87,10 +87,11 @@ blocked until operator-provided pinned local checkouts are verified.
 <doc:RepositoryParsingPluginContract> defines the Phase 36 plugin contract for
 repository path classification. <doc:FastAPIParserProfileRerun> records the
 first practical profile run. <doc:RepositoryProfileSelectionContract> defines
-the Phase 37 contract for selecting repository profile plugins before path
-classification. The profile keeps documentation, tutorials, examples, and
-tests available as semantic usage evidence while keeping public interface
-indexes focused on package surfaces intended for consumers.
+the Phase 37 contract and the `repository-profile-detect` CLI report surface
+for selecting repository profile plugins before path classification. The
+profile keeps documentation, tutorials, examples, and tests available as
+semantic usage evidence while keeping public interface indexes focused on
+package surfaces intended for consumers.
 
 ## Non-Goals
 
