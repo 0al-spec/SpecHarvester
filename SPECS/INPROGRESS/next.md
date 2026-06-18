@@ -1,71 +1,75 @@
-# Next Task: P38-T2 Repository Plugin Registry Fixture
+# Next Task: P38-T3 Repository Plugin Applicability Report Fixture
 
-**Status:** In Progress
-**Branch:** `feature/P38-T2-repository-plugin-registry-fixture`
+**Status:** Planned
+**Branch:** `feature/P38-T3-repository-plugin-applicability-report-fixture`
 **Phase:** Phase 38. Repository Plugin Subsystem
-**Last Archived:** P38-T1 Repository Plugin Subsystem Contract
+**Last Archived:** P38-T2 Repository Plugin Registry Fixture
 
 ## Recently Archived
 
-- `P38-T1` documented the repository plugin subsystem contract in
-  `REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md`.
-- The contract defines plugin identity, plugin roles, registration metadata,
-  static evidence, applicability checks, deterministic selection boundaries,
-  output artifact categories, diagnostics, and authority limits.
-- The planned machine-readable artifacts are named
-  `SpecHarvesterRepositoryPluginRegistry` and
-  `SpecHarvesterRepositoryPluginApplicabilityReport`.
-- Parser profiles from Phase 36 map to the `parser_profile` role, and
-  repository profile selection from Phase 37 maps to the
-  `repository_profile` role.
-- Plugin output remains producer-side evidence only. It must not accept
+- `P38-T2` added the machine-readable repository plugin registry fixture at
+  `tests/fixtures/repository_plugins/generic-registry.example.json`.
+- The fixture defines `SpecHarvesterRepositoryPluginRegistry` with authority
+  `producer_plugin_registry_only`.
+- The registry records plugin roles for `parser_profile`,
+  `repository_profile`, `evidence_producer`, `topology_helper`, and
+  `review_surface`.
+- The fixture records static evidence kinds, output artifact kinds, safety
+  constraints, applicability signals, fallback behavior, diagnostics, and
+  non-authority statements.
+- Registry fixture output remains producer-side evidence only. It must not
+  load third-party plugin code, must not execute plugins, must not accept
   packages, must not accept relations, must not publish registry metadata, must
-  not seed baselines, must not remove `preview_only`, must not treat plugin
-  output as registry truth, and must not treat AI output as registry truth.
+  not remove `preview_only`, and must not treat plugin output as registry truth.
 
 ## Current Task
 
-`P38-T2` should add a machine-readable repository plugin registry fixture for
-the contract introduced in P38-T1.
+`P38-T3` should add a machine-readable
+`SpecHarvesterRepositoryPluginApplicabilityReport` fixture.
 
-The fixture should define `SpecHarvesterRepositoryPluginRegistry` with:
+The report should read the P38-T2 registry fixture conceptually and evaluate
+several generic plugins against static repository evidence, recording:
 
-- plugin ids;
-- versioned contracts;
-- plugin roles;
-- input evidence kinds;
-- output artifact kinds;
-- safety constraints;
-- applicability signals;
-- fallback behavior;
-- diagnostics vocabulary;
-- non-authority statements.
+P38-T3 reads the P38-T2 registry fixture as declared plugin contract input.
+
+```text
+selected, rejected, fallback, and blocked decisions
+```
+
+- selected plugin decisions;
+- rejected plugin decisions;
+- fallback decisions;
+- blocked decisions;
+- diagnostics and reason codes;
+- evidence paths used for the decision;
+- authority and non-authority boundaries.
 
 ## Motivation
 
-P38-T1 documented the plugin subsystem boundary, but downstream tasks need a
-small fixture before they can test applicability decisions, autonomous batch
-sidecar evidence, or cross-ecosystem plugin behavior.
+P38-T2 declares available plugin contracts, but the next layer needs a
+reviewable applicability decision shape before autonomous candidate batch can
+consume plugin decisions as sidecar evidence.
 
 ## Non-Goals
 
-P38-T2 must not implement plugin execution, must not load third-party code,
-must not change parser profile behavior, must not change repository profile
-scoring, must not run package managers, must not install dependencies, must
-not invoke AI, must not accept packages, must not accept relations, must not
-publish registry metadata, must not remove `preview_only`, and must not treat
-plugin registry records as accepted package truth.
+P38-T3 must not implement plugin execution, must not run plugins, must not
+load third-party code, must not change parser profile behavior, must not change
+repository profile scoring, must not run package managers, must not install
+dependencies, must not invoke AI, must not accept packages, must not accept
+relations, must not publish registry metadata, and must not remove
+`preview_only`.
 
 ## Planned Deliverables
 
-- Add a registry fixture for `SpecHarvesterRepositoryPluginRegistry`.
+- Add a fixture for `SpecHarvesterRepositoryPluginApplicabilityReport`.
 - Add docs and DocC references for the fixture.
 - Add docs-contract regression coverage.
-- Keep the fixture language- and framework-agnostic.
+- Keep decisions deterministic and based on static evidence.
 - Archive the task through Flow.
 
 ## Boundary
 
-The registry fixture is producer-side evidence about available plugin
-contracts. It is not plugin execution, registry acceptance, package acceptance,
-relation acceptance, or public metadata publication.
+Applicability reports are producer-side evidence. They can recommend which
+declared plugin contracts apply to a repository shape, but they are not plugin
+execution, package acceptance, relation acceptance, registry publication, or
+accepted package truth.

@@ -165,6 +165,7 @@
 | P37-T7 | [P37-T7_Real_Repository_Profile_Auto_Selection_Run/](P37-T7_Real_Repository_Profile_Auto_Selection_Run/) | 2026-06-19 | PASS_WITH_FOLLOW_UP |
 | P37-T8 | [P37-T8_Harvest_Manifest_Evidence_for_Repository_Profile_Detection/](P37-T8_Harvest_Manifest_Evidence_for_Repository_Profile_Detection/) | 2026-06-19 | PASS |
 | P38-T1 | [P38-T1_Repository_Plugin_Subsystem_Contract/](P38-T1_Repository_Plugin_Subsystem_Contract/) | 2026-06-19 | PASS |
+| P38-T2 | [P38-T2_Repository_Plugin_Registry_Fixture/](P38-T2_Repository_Plugin_Registry_Fixture/) | 2026-06-19 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -309,6 +310,7 @@
 | 2026-06-19 | P37-T8 | Archived REVIEW_p37_t8_harvest_manifest_evidence_for_profile_detection report |
 | 2026-06-19 | P38-T1 | Archived Repository Plugin Subsystem Contract (PASS) |
 | 2026-06-19 | P38-T1 | Archived REVIEW_p38_t1_repository_plugin_subsystem_contract report |
+| 2026-06-19 | P38-T2 | Archived Repository Plugin Registry Fixture (PASS) |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
