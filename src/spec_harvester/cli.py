@@ -150,6 +150,13 @@ from spec_harvester.real_repo_quality_report import (
     build_quality_report,
     write_quality_report,
 )
+from spec_harvester.repository_profile_detection import (
+    RepositoryIdentity,
+    RepositoryProfileDetectionOptions,
+    build_repository_profile_detection,
+    repository_identity_from_source_manifest,
+    write_repository_profile_detection,
+)
 from spec_harvester.selected_candidate_handoff_proposal import (
     SelectedCandidateHandoffProposalOptions,
     build_selected_candidate_handoff_proposal,
@@ -920,6 +927,48 @@ def build_parser() -> argparse.ArgumentParser:
         help="Include entries with enabled: false in the JSON output.",
     )
     source_manifests.set_defaults(func=run_source_manifests)
+
+    repository_profile_detect = subcommands.add_parser(
+        "repository-profile-detect",
+        help=(
+            "Emit a producer-side repository profile detection artifact from "
+            "operator-provided static evidence."
+        ),
+    )
+    repository_profile_detect.add_argument(
+        "--source-manifest",
+        type=Path,
+        help="Optional directory containing repository source manifests matching *.yml.",
+    )
+    repository_profile_detect.add_argument(
+        "--source-id",
+        help="Repository id to load from --source-manifest.",
+    )
+    repository_profile_detect.add_argument("--repository-id", help="Repository id.")
+    repository_profile_detect.add_argument("--repository-url", help="Repository URL.")
+    repository_profile_detect.add_argument("--ref", help="Repository ref.")
+    repository_profile_detect.add_argument("--revision", help="Repository revision.")
+    repository_profile_detect.add_argument(
+        "--selection",
+        default="auto",
+        help="Repository profile selection: auto, none, or an explicit profile id.",
+    )
+    repository_profile_detect.add_argument(
+        "--declared-repository-profile",
+        help="Optional source-manifest declared repository profile metadata.",
+    )
+    repository_profile_detect.add_argument(
+        "--evidence-path",
+        action="append",
+        default=[],
+        help="Repository-relative static evidence path. Can be repeated.",
+    )
+    repository_profile_detect.add_argument(
+        "--output",
+        type=Path,
+        help="Optional output path for repository-profile-detection.json.",
+    )
+    repository_profile_detect.set_defaults(func=run_repository_profile_detect)
 
     governance = subcommands.add_parser(
         "governance-report",
@@ -1791,6 +1840,46 @@ def run_source_manifests(args: argparse.Namespace) -> int:
         )
     )
     return 0
+
+
+def run_repository_profile_detect(args: argparse.Namespace) -> int:
+    repository = repository_identity_from_args(args)
+    payload = build_repository_profile_detection(
+        RepositoryProfileDetectionOptions(
+            repository=repository,
+            selection=args.selection,
+            evidence_paths=tuple(args.evidence_path),
+        )
+    )
+    if args.output is not None:
+        write_repository_profile_detection(args.output, payload)
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0
+
+
+def repository_identity_from_args(args: argparse.Namespace) -> RepositoryIdentity:
+    if args.source_manifest is not None:
+        return repository_identity_from_source_manifest(
+            args.source_manifest,
+            source_id=args.source_id,
+            declared_repository_profile=args.declared_repository_profile,
+        )
+
+    if not args.repository_id:
+        raise ValueError("--repository-id is required without --source-manifest")
+    if not args.repository_url:
+        raise ValueError("--repository-url is required without --source-manifest")
+    if (args.ref is None) == (args.revision is None):
+        raise ValueError("Exactly one of --ref or --revision is required without --source-manifest")
+    return RepositoryIdentity(
+        repository_id=args.repository_id,
+        repository_url=args.repository_url,
+        ref=args.ref,
+        revision=args.revision,
+        source_manifest_path=None,
+        source_manifest_entry_id=args.repository_id,
+        declared_repository_profile=args.declared_repository_profile,
+    )
 
 
 def run_governance_report(args: argparse.Namespace) -> int:
