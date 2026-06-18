@@ -50,6 +50,14 @@ python3 -m spec_harvester autonomous-candidate-batch \
 `--repository-profile-selection` accepts `none`, `auto`, or an explicit profile
 id. The default is `none`.
 
+In `auto` mode, repository profile detection first uses
+`workspace-inventory.json` workspace and member manifest records. If workspace
+inventory has no manifest records, the batch falls back to already-collected
+static manifest paths from `harvest.json`. This keeps detection
+language-neutral while allowing root manifests such as `pyproject.toml`,
+`package.json`, `Cargo.toml`, `go.mod`, and `Package.swift` to drive
+single-package profile evidence without executing package managers.
+
 The command expects existing local public checkouts from repository source
 manifests. It does not clone repositories, execute harvested code, install
 dependencies, publish registry metadata, or accept packages.
@@ -92,7 +100,8 @@ The report records `repositoryProfileSelection` and per-repository
 Repository profile detection remains producer evidence only. The batch records
 `advisoryHintsAppliedToDrafting: false`; it does not apply hints to candidate
 drafting, accept packages, accept relations, remove `preview_only`, publish
-registry metadata, or treat plugin decisions as registry truth.
+registry metadata, or treat plugin decisions, harvested manifest evidence, or
+profile hints as registry truth.
 
 Generated package files remain `preview_only` producer evidence. SpecPM remains
 the validation, acceptance, relation, and registry authority.

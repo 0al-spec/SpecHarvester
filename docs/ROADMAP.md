@@ -709,6 +709,10 @@ found `pyproject.toml`, `workspace-inventory.json` had no manifest records, and
 manual `fastmcp_slim` targeting reduced public interface entrypoints from `772`
 to `260`.
 
+P37-T8 closes that generic evidence-routing gap by supplementing empty
+workspace inventory evidence with already-collected static manifest paths from
+`harvest.json`.
+
 Selection decisions remain producer-side evidence only. Profile selection does
 not clone or fetch repositories, install dependencies, execute harvested code,
 invoke package managers, run AI, publish registry metadata, accept packages or

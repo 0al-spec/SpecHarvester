@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 37 Complete" in next_text:
+        assert_p37_t8_last_archived(next_text)
+        assert_p37_t8_recent(next_text)
+        assert_phase_37_complete(next_text)
+        return
+
     if (
         "# Next Task: P37-T8 Harvest Manifest Evidence for Repository Profile Detection"
         in next_text
@@ -3158,7 +3164,7 @@ def assert_phase_37_t8_active(next_text: str) -> None:
         "# Next Task: P37-T8 Harvest Manifest Evidence for Repository Profile Detection"
         in next_text
     )
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Planned" in next_text
     assert "`feature/P37-T8-harvest-manifest-evidence-for-profile-detection`" in next_text
     assert "Phase 37. Repository Profile Plugin Selection" in next_text
     assert (
@@ -3169,6 +3175,54 @@ def assert_phase_37_t8_active(next_text: str) -> None:
     assert "must remain language- and framework-agnostic" in normalized
     assert "must not implement a FastMCP-specific profile" in normalized
     assert "must not treat manifest evidence as registry truth" in normalized
+    assert "producer-side evidence" in normalized
+
+
+def assert_p37_t8_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P37-T8 Harvest Manifest Evidence for Repository Profile Detection"
+        in next_text
+    )
+
+
+def assert_p37_t8_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P37-T8` made repository profile detection consume harvested package manifest evidence"
+        in normalized
+    )
+    assert "workspace inventory has no manifest records" in next_text
+    assert "`workspace-inventory.json`" in next_text
+    assert "`harvest.json`" in next_text
+    assert "`generic.single_package.v0`" in next_text
+    assert "`go.mod`" in next_text
+    assert "ambiguous and conflicting evidence still falls back" in normalized
+    assert "producer-side evidence only" in normalized
+    assert "not accept packages" in normalized
+    assert "not accept relations" in normalized
+    assert "not publish registry metadata" in normalized
+    assert "not remove `preview_only`" in normalized
+    assert "not replace maintainer review" in normalized
+
+
+def assert_phase_37_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 37 Complete" in next_text
+    assert "**Status:** Complete" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    for required in (
+        "P37-T1 documented the selection contract",
+        "P37-T2 added the machine-readable detection fixture",
+        "P37-T3 added the opt-in CLI/report surface",
+        "P37-T4 connected selection to autonomous candidate batch sidecar evidence",
+        "P37-T5 added the generic discovery hint vocabulary",
+        "P37-T6 added cross-ecosystem fixtures",
+        "P37-T7 recorded a real FastMCP auto-selection comparison",
+        "P37-T8 closed the harvested-manifest evidence gap",
+    ):
+        assert required in next_text
+    assert "language- and framework-agnostic plugin subsystem" in normalized
+    assert "explicit plugin registration" in normalized
     assert "producer-side evidence" in normalized
 
 
@@ -6442,6 +6496,11 @@ def test_autonomous_candidate_batch_docs_cover_local_lm_studio_boundary() -> Non
             "openai/gpt-oss-20b",
             "--skip-ai",
             "--apply-ai-enrichment",
+            "--repository-profile-selection auto",
+            "workspace-inventory.json",
+            "harvest.json",
+            "harvested manifest evidence",
+            "profile hints as registry truth",
             "aiEnrichedPreview",
             "ai-enrichment-candidate-patch.json",
             "enriched preview candidates",

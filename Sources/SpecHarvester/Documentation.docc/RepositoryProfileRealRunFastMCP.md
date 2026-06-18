@@ -78,8 +78,9 @@ evidence and fell back.
 
 The verdict is `follow_up_required`.
 
-P37-T8 should make repository profile detection consume harvested package
-manifest evidence when workspace inventory has no manifest records.
+P37-T8 adds a generic harvested-manifest fallback so repository profile
+detection can consume package manifest evidence when workspace inventory has no
+manifest records.
 
 ## Boundary
 

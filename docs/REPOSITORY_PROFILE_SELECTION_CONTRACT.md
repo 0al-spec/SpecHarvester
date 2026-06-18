@@ -255,7 +255,9 @@ The option accepts:
 - `none`: default, emits a disabled decision artifact and preserves generic
   behavior;
 - `auto`: reads already-collected `workspace-inventory.json` evidence and
-  selects only high-confidence, conflict-free generic profiles;
+  selects only high-confidence, conflict-free generic profiles; when workspace
+  inventory has no manifest records, auto mode may supplement detection with
+  already-collected `harvest.json` package manifest paths;
 - `<profile-id>`: records an explicit operator override with
   `overrideSource: cli`.
 
@@ -352,9 +354,9 @@ records `follow_up_required` and recommends P37-T8.
 
 The reusable finding is not FastMCP-specific: `harvest.json` can see a package
 manifest while `workspace-inventory.json` has no manifest records, leaving
-profile detection without enough high-confidence evidence. P37-T8 should make
-repository profile detection consume harvested package manifest evidence when
-workspace inventory is empty.
+profile detection without enough high-confidence evidence. P37-T8 adds a
+generic fallback path so repository profile detection can consume harvested
+package manifest evidence when workspace inventory is empty.
 
 ## Fallback Behavior
 
@@ -400,6 +402,7 @@ classification:
 ```text
 source manifest
   -> repository profile detection
+  -> workspace inventory evidence or harvested manifest fallback evidence
   -> selected repository profile / generic fallback
   -> workspace/member hints
   -> parser profile path classification

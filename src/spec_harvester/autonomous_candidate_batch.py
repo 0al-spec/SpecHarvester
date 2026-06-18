@@ -312,7 +312,11 @@ class AutonomousCandidateBatch:
             RepositoryProfileDetectionOptions(
                 repository=repository_identity_from_collected(collected),
                 selection=self.repository_profile_selection(),
-                evidence_paths=repository_profile_evidence_paths(inventory),
+                evidence_paths=repository_profile_evidence_paths(
+                    inventory,
+                    harvest=Path(collected["output"]),
+                    source_target=string_or_none(collected.get("target")),
+                ),
             )
         )
         write_repository_profile_detection(output_path, payload)
@@ -558,7 +562,12 @@ def repository_identity_from_collected(collected: dict[str, Any]) -> RepositoryI
     )
 
 
-def repository_profile_evidence_paths(inventory: Path) -> tuple[str, ...]:
+def repository_profile_evidence_paths(
+    inventory: Path,
+    *,
+    harvest: Path | None = None,
+    source_target: str | None = None,
+) -> tuple[str, ...]:
     payload = read_json(inventory)
     paths: list[str] = []
     for item in payload.get("workspaceManifests", []):
@@ -567,7 +576,40 @@ def repository_profile_evidence_paths(inventory: Path) -> tuple[str, ...]:
     for item in payload.get("packages", []):
         if isinstance(item, dict) and isinstance(item.get("manifestPath"), str):
             paths.append(item["manifestPath"])
+    if not paths and harvest is not None:
+        paths.extend(
+            target_local_harvested_path(path, source_target)
+            for path in harvested_manifest_evidence_paths(harvest)
+        )
     return tuple(unique_sorted(paths))
+
+
+def harvested_manifest_evidence_paths(harvest: Path) -> tuple[str, ...]:
+    payload = read_json(harvest)
+    paths: list[str] = []
+    for item in payload.get("files", []):
+        if not isinstance(item, dict):
+            continue
+        if item.get("kind") not in {"package_manifest", "workspace_manifest"}:
+            continue
+        path = item.get("path")
+        if isinstance(path, str):
+            paths.append(path)
+    return tuple(unique_sorted(paths))
+
+
+def target_local_harvested_path(path: str, source_target: str | None) -> str:
+    target = (source_target or "").strip()
+    if not target or target == ".":
+        return path
+    target_parts = Path(target).parts
+    path_parts = Path(path).parts
+    if tuple(path_parts[: len(target_parts)]) != tuple(target_parts):
+        return path
+    remaining = path_parts[len(target_parts) :]
+    if remaining:
+        return Path(*remaining).as_posix()
+    return Path(path).name
 
 
 def unique_sorted(values: list[str]) -> list[str]:

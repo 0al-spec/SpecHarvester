@@ -66,6 +66,14 @@ python3 -m spec_harvester autonomous-candidate-batch \
 `--repository-profile-selection` accepts `none`, `auto`, or an explicit
 profile id. The default is `none`.
 
+In `auto` mode, repository profile detection first uses
+`workspace-inventory.json` workspace and member manifest records. If workspace
+inventory has no manifest records, the batch falls back to already-collected
+static manifest paths from `harvest.json`. This keeps detection
+language-neutral while allowing root manifests such as `pyproject.toml`,
+`package.json`, `Cargo.toml`, `go.mod`, and `Package.swift` to drive
+single-package profile evidence without executing package managers.
+
 The input is the existing repository source manifest directory documented in
 [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md). The command
 expects local public checkouts; it does not clone, fetch, or browse for
@@ -149,7 +157,8 @@ Repository profile detection is producer-side evidence only. Even when
 batch records `advisoryHintsAppliedToDrafting: false` and preserves the
 existing generic drafting path. Detection output does not accept packages,
 accept relations, remove `preview_only`, publish registry metadata, or treat
-plugin decisions as registry truth.
+plugin decisions, harvested manifest evidence, or profile hints as registry
+truth.
 
 ## LM Studio Boundary
 
