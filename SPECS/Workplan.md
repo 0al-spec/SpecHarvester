@@ -1521,7 +1521,7 @@ Acceptance:
 
 ## Phase 38. Repository Plugin Subsystem
 
-- [ ] `P38-T1` Document a language- and framework-agnostic repository plugin
+- [x] `P38-T1` Document a language- and framework-agnostic repository plugin
   subsystem contract. The contract must define plugin registration, static
   evidence producers, applicability checks, deterministic selection boundaries,
   declared capabilities, authority limits, diagnostics, and non-goals without

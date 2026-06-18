@@ -1,60 +1,71 @@
-# Next Task: P38-T1 Repository Plugin Subsystem Contract
+# Next Task: P38-T2 Repository Plugin Registry Fixture
 
-**Status:** In Progress
-**Branch:** `feature/P38-T1-repository-plugin-subsystem-contract`
+**Status:** Planned
+**Branch:** `feature/P38-T2-repository-plugin-registry-fixture`
 **Phase:** Phase 38. Repository Plugin Subsystem
-**Last Archived:** P37-T8 Harvest Manifest Evidence for Repository Profile Detection
+**Last Archived:** P38-T1 Repository Plugin Subsystem Contract
 
 ## Recently Archived
 
-- Phase 37 is complete.
-- P37-T8 closed the harvested-manifest evidence gap found by the real FastMCP
-  profile selection run.
-- Repository profile detection now uses `workspace-inventory.json` evidence
-  first and falls back to static manifest paths from `harvest.json` when
-  workspace inventory has no manifest records.
-- Repository profile selection remains producer-side evidence only: it does not
-  accept packages, accept relations, publish registry metadata, remove
-  `preview_only`, or replace maintainer review.
+- `P38-T1` documented the repository plugin subsystem contract in
+  `REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md`.
+- The contract defines plugin identity, plugin roles, registration metadata,
+  static evidence, applicability checks, deterministic selection boundaries,
+  output artifact categories, diagnostics, and authority limits.
+- The planned machine-readable artifacts are named
+  `SpecHarvesterRepositoryPluginRegistry` and
+  `SpecHarvesterRepositoryPluginApplicabilityReport`.
+- Parser profiles from Phase 36 map to the `parser_profile` role, and
+  repository profile selection from Phase 37 maps to the
+  `repository_profile` role.
+- Plugin output remains producer-side evidence only. It must not accept
+  packages, must not accept relations, must not publish registry metadata, must
+  not seed baselines, must not remove `preview_only`, must not treat plugin
+  output as registry truth, and must not treat AI output as registry truth.
 
 ## Current Task
 
-`P38-T1` documents a language- and framework-agnostic repository plugin
-subsystem contract.
+`P38-T2` should add a machine-readable repository plugin registry fixture for
+the contract introduced in P38-T1.
 
-The contract should unify the ideas from:
+The fixture should define `SpecHarvesterRepositoryPluginRegistry` with:
 
-- parser profiles from Phase 36;
-- repository profile selection from Phase 37;
-- future language/framework evidence producers;
-- deterministic applicability and selection boundaries.
+- plugin ids;
+- versioned contracts;
+- plugin roles;
+- input evidence kinds;
+- output artifact kinds;
+- safety constraints;
+- applicability signals;
+- fallback behavior;
+- diagnostics vocabulary;
+- non-authority statements.
 
 ## Motivation
 
-The current system has useful hooks for parser profiles and repository
-profiles, but a real autonomous library harvester needs a broader plugin
-subsystem. That subsystem should let future plugins provide static evidence and
-applicability signals without turning into hidden heuristics or
-ecosystem-specific special cases.
+P38-T1 documented the plugin subsystem boundary, but downstream tasks need a
+small fixture before they can test applicability decisions, autonomous batch
+sidecar evidence, or cross-ecosystem plugin behavior.
 
 ## Non-Goals
 
-This task must not implement plugin loading, execute plugin code, add
-ecosystem-specific plugins, change parser profile behavior, change repository
-profile scoring, run package managers, install dependencies, fetch network
-data, invoke AI, accept packages, accept relations, publish registry metadata,
-remove `preview_only`, or treat plugin output as registry truth.
+P38-T2 must not implement plugin execution, must not load third-party code,
+must not change parser profile behavior, must not change repository profile
+scoring, must not run package managers, must not install dependencies, must
+not invoke AI, must not accept packages, must not accept relations, must not
+publish registry metadata, must not remove `preview_only`, and must not treat
+plugin registry records as accepted package truth.
 
 ## Planned Deliverables
 
-- Add a GitHub-facing repository plugin subsystem contract.
-- Add a DocC mirror and index links.
-- Update capabilities, roadmap, and workplan references.
+- Add a registry fixture for `SpecHarvesterRepositoryPluginRegistry`.
+- Add docs and DocC references for the fixture.
 - Add docs-contract regression coverage.
+- Keep the fixture language- and framework-agnostic.
 - Archive the task through Flow.
 
 ## Boundary
 
-Repository plugins are producer-side evidence producers and applicability
-helpers. They can improve candidate generation and review, but they do not
-replace SpecPM validation or maintainer acceptance.
+The registry fixture is producer-side evidence about available plugin
+contracts. It is not plugin execution, registry acceptance, package acceptance,
+relation acceptance, or public metadata publication.
