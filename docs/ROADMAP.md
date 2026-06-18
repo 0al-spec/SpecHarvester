@@ -719,6 +719,43 @@ invoke package managers, run AI, publish registry metadata, accept packages or
 relations, remove `preview_only`, or accept plugin decisions as registry
 truth. Profile selection does not treat AI output as registry truth.
 
+### Repository Plugin Subsystem
+
+Phase 38 turns parser profiles and repository profiles into a broader
+language- and framework-agnostic plugin subsystem contract.
+
+The first step is `P38-T1`,
+[`REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md`](REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md),
+which defines plugin identity, plugin roles, registration metadata, static
+evidence inputs, applicability reports, deterministic selection boundaries,
+output artifact categories, diagnostics, and authority limits. The shared
+model is:
+
+```text
+register plugins -> collect static evidence -> evaluate applicability
+  -> select, fallback, or block -> emit producer-side evidence
+```
+
+Planned follow-ups:
+
+- `P38-T2`: add a machine-readable `SpecHarvesterRepositoryPluginRegistry`
+  fixture for plugin ids, roles, input requirements, safety constraints,
+  applicability signals, and output artifacts;
+- `P38-T3`: add a `SpecHarvesterRepositoryPluginApplicabilityReport` fixture
+  for selected, rejected, fallback, and blocked decisions;
+- `P38-T4`: connect registry and applicability output to autonomous candidate
+  batch as sidecar producer evidence;
+- `P38-T5`: add cross-ecosystem plugin subsystem fixtures;
+- `P38-T6`: run one real repository through the plugin subsystem evidence
+  path and compare it with the Phase 37 profile selection behavior.
+
+Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
+and other ecosystems remain examples, not normative plugin rules. Repository
+plugins must not clone or fetch repositories, install dependencies, execute
+harvested code, invoke package managers, run AI, publish registry metadata,
+accept packages or relations, remove `preview_only`, or treat plugin output as
+registry truth.
+
 ## Non-Goals
 
 SpecHarvester does not:

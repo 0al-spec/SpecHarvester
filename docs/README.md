@@ -39,7 +39,10 @@ Published DocC site:
 14. [`REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md`](REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md):
    real FastMCP auto-selection comparison against manual targeting, including
    the P37-T8 manifest-evidence follow-up
-15. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
+15. [`REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md`](REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md):
+   language- and framework-agnostic contract for future repository plugins,
+   registration metadata, applicability reports, and authority boundaries
+16. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
 14. [`REPOSITORY_SOURCE_MANIFESTS.md`](REPOSITORY_SOURCE_MANIFESTS.md):
@@ -312,6 +315,10 @@ Published DocC site:
   generic advisory path-role hints for repository profile output
 - [`REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md):
   cross-ecosystem fixture coverage for generic repository profile selection
+- [`REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md`](REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md):
+  repository plugin subsystem contract for plugin identity, roles,
+  registration metadata, static evidence, applicability checks, diagnostics,
+  and authority boundaries
 - [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
   FastAPI parser profile rerun with evidence volume and AI quality verdict
 - [`SPECPM_PROPOSAL_AUTOMATION.md`](SPECPM_PROPOSAL_AUTOMATION.md): trusted

@@ -10,6 +10,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P38-T2 Repository Plugin Registry Fixture" in next_text:
+        assert_p38_t1_last_archived(next_text)
+        assert_p38_t1_recent(next_text)
+        assert_phase_38_t2_planned(next_text)
+        return
+
+    if "# Next Task: P38-T1 Repository Plugin Subsystem Contract" in next_text:
+        assert_p37_t8_last_archived(next_text)
+        assert_phase_38_t1_active(next_text)
+        return
+
     if "# Next Task: Phase 37 Complete" in next_text:
         assert_p37_t8_last_archived(next_text)
         assert_p37_t8_recent(next_text)
@@ -3224,6 +3235,70 @@ def assert_phase_37_complete(next_text: str) -> None:
     assert "language- and framework-agnostic plugin subsystem" in normalized
     assert "explicit plugin registration" in normalized
     assert "producer-side evidence" in normalized
+
+
+def assert_phase_38_t1_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P38-T1 Repository Plugin Subsystem Contract" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Planned" in next_text
+    assert "`feature/P38-T1-repository-plugin-subsystem-contract`" in next_text
+    assert "Phase 38. Repository Plugin Subsystem" in next_text
+    assert "language- and framework-agnostic repository plugin subsystem contract" in normalized
+    assert "parser profiles from Phase 36" in normalized
+    assert "repository profile selection from Phase 37" in normalized
+    assert "static evidence" in normalized
+    assert "deterministic applicability and selection boundaries" in normalized
+    assert "producer-side evidence" in normalized
+    assert "must not implement plugin loading" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin output as registry truth" in normalized
+
+
+def assert_p38_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P38-T1 Repository Plugin Subsystem Contract" in next_text
+
+
+def assert_p38_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P38-T1` documented the repository plugin subsystem contract" in normalized
+    assert "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md" in next_text
+    assert "SpecHarvesterRepositoryPluginRegistry" in next_text
+    assert "SpecHarvesterRepositoryPluginApplicabilityReport" in next_text
+    assert "plugin identity" in normalized
+    assert "plugin roles" in normalized
+    assert "registration metadata" in normalized
+    assert "static evidence" in normalized
+    assert "applicability checks" in normalized
+    assert "deterministic selection boundaries" in normalized
+    assert "producer-side evidence" in normalized
+    assert "not accept packages" in normalized
+    assert "not accept relations" in normalized
+    assert "not publish registry metadata" in normalized
+    assert "not remove `preview_only`" in normalized
+    assert "not treat plugin output as registry truth" in normalized
+
+
+def assert_phase_38_t2_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P38-T2 Repository Plugin Registry Fixture" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P38-T2-repository-plugin-registry-fixture`" in next_text
+    assert "Phase 38. Repository Plugin Subsystem" in next_text
+    assert "machine-readable repository plugin registry fixture" in normalized
+    assert "SpecHarvesterRepositoryPluginRegistry" in next_text
+    assert "plugin ids" in normalized
+    assert "versioned contracts" in normalized
+    assert "input evidence kinds" in normalized
+    assert "output artifact kinds" in normalized
+    assert "safety constraints" in normalized
+    assert "applicability signals" in normalized
+    assert "producer-side evidence" in normalized
+    assert "must not implement plugin execution" in normalized
+    assert "must not change parser profile behavior" in normalized
+    assert "must not change repository profile scoring" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -12557,6 +12632,139 @@ def test_repository_profile_plugin_selection_plan_is_documented() -> None:
         assert "not a hardcoded profile rule" in normalized
         assert "does not clone or fetch repositories" in normalized
         assert "does not treat AI output as registry truth" in normalized
+
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_subsystem_contract_is_documented() -> None:
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Subsystem Contract",
+            "Phase 38",
+            "language- and framework-agnostic",
+            "Python",
+            "JavaScript",
+            "FastAPI",
+            "FastMCP",
+            "npm",
+            "Cargo",
+            "Go",
+            "SwiftPM",
+            "Maven",
+            "Gradle",
+            "plugin identity",
+            "Plugin Roles",
+            "registration metadata",
+            "static evidence",
+            "applicability",
+            "deterministic selection boundaries",
+            "output artifact categories",
+            "diagnostics",
+            "parser_profile",
+            "repository_profile",
+            "evidence_producer",
+            "topology_helper",
+            "review_surface",
+            "SpecHarvesterRepositoryPluginRegistry",
+            "spec-harvester.repository-plugins/v0",
+            "producer_plugin_registry_only",
+            "SpecHarvesterRepositoryPluginApplicabilityReport",
+            "spec-harvester.repository-plugin-applicability/v0",
+            "producer_plugin_applicability_only",
+            "repository_profile_detection",
+            "repository_parsing_profile_decision",
+            "public_interface_index",
+            "workspace_inventory",
+            "manifest_summary",
+            "package_topology_hint",
+            "candidate_quality_signal",
+            "review_panel_data",
+            "explicit operator or source-manifest override",
+            "high-confidence plugin applicability",
+            "blocked decision with diagnostics",
+            "No plugin output category is accepted package truth",
+            "producer-side evidence",
+            "SpecPM validation",
+            "maintainer acceptance",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden_boundary in (
+            "clone or fetch repositories",
+            "install dependencies",
+            "execute harvested code",
+            "invoke package managers",
+            "run AI",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat plugin output as registry truth",
+        ):
+            assert forbidden_boundary in normalized, (
+                f"Boundary {forbidden_boundary!r} not found in {path}"
+            )
+
+    assert "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
+    assert "docs/REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:RepositoryPluginSubsystemContract>" in docc_root.read_text(encoding="utf-8")
+    assert "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md" in capabilities.read_text(encoding="utf-8")
+    assert "RepositoryPluginSubsystemContract" in capabilities_docc.read_text(encoding="utf-8")
+    assert "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md" in roadmap.read_text(encoding="utf-8")
+    assert "RepositoryPluginSubsystemContract" in roadmap_docc.read_text(encoding="utf-8")
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    normalized_workplan = " ".join(workplan_text.split())
+    assert "## Phase 38. Repository Plugin Subsystem" in workplan_text
+    for required in (
+        "`P38-T1` Document a language- and framework-agnostic repository plugin",
+        "`P38-T2` Add a machine-readable repository plugin registry fixture",
+        "`P38-T3` Add a plugin applicability report fixture",
+        "`P38-T4` Connect plugin registry and applicability output",
+        "`P38-T5` Add cross-ecosystem plugin subsystem fixtures",
+        "`P38-T6` Run one real repository through the plugin subsystem",
+        "plugin contracts language- and framework-agnostic",
+        "static local evidence only",
+        "producer-side evidence",
+        "does not accept packages",
+        "accept relations",
+        "publish registry metadata",
+        "remove `preview_only`",
+    ):
+        assert required in workplan_text or required in normalized_workplan
+
+    for path in (roadmap, roadmap_docc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        assert "Repository Plugin Subsystem" in text
+        assert "SpecHarvesterRepositoryPluginRegistry" in text
+        assert "SpecHarvesterRepositoryPluginApplicabilityReport" in text
+        assert "register plugins -> collect static evidence -> evaluate applicability" in text
+        assert "not normative plugin rules" in normalized
+        assert "producer-side evidence" in normalized
+        assert "treat plugin output as registry truth" in normalized
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 

@@ -36,6 +36,7 @@ local repository checkout
 | Bounded corpus runs | Select important multi-ecosystem repository/package-family targets with explicit importance signals and exclusion rules, record the machine-readable corpus plan, explainable selection report, and dry-run readiness gate, then run operator-selected local checkout batches with deterministic and optional live local-model paths. | [`CORPUS_SELECTION_POLICY.md`](CORPUS_SELECTION_POLICY.md), [`SPECHARVESTER_CORPUS_PLAN.md`](SPECHARVESTER_CORPUS_PLAN.md), [`MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md`](MULTI_ECOSYSTEM_SEED_CORPUS_PLAN.md), [`EXPLAINABLE_CORPUS_SELECTION_REPORT.md`](EXPLAINABLE_CORPUS_SELECTION_REPORT.md), [`SELECTED_CORPUS_DRY_RUN_READINESS.md`](SELECTED_CORPUS_DRY_RUN_READINESS.md), [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md) |
 | Repository parsing profile hook | Opt-in path classification for language/framework parser profiles, with `python.web_framework.v0` validated on FastAPI to separate public interface evidence from semantic usage/documentation evidence. | [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](REPOSITORY_PARSING_PLUGIN_CONTRACT.md), [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md) |
 | Repository profile detection evidence | Opt-in `repository-profile-detect` command and `autonomous-candidate-batch --repository-profile-selection` sidecar artifacts that emit `SpecHarvesterRepositoryProfileDetection` from static evidence before parser path classification, plus a generic discovery hint vocabulary, cross-ecosystem fixture coverage, real FastMCP comparison evidence, and harvested-manifest fallback evidence when workspace inventory is empty. | [`REPOSITORY_PROFILE_SELECTION_CONTRACT.md`](REPOSITORY_PROFILE_SELECTION_CONTRACT.md), [`REPOSITORY_PROFILE_DISCOVERY_HINTS.md`](REPOSITORY_PROFILE_DISCOVERY_HINTS.md), [`REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md), [`REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md`](REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md), [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md), [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](REPOSITORY_PARSING_PLUGIN_CONTRACT.md) |
+| Repository plugin subsystem contract | Planned language- and framework-agnostic plugin subsystem contract for plugin identity, roles, registration metadata, static evidence, applicability checks, deterministic selection boundaries, output artifact categories, diagnostics, and non-authority rules. | [`REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md`](REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md), [`REPOSITORY_PARSING_PLUGIN_CONTRACT.md`](REPOSITORY_PARSING_PLUGIN_CONTRACT.md), [`REPOSITORY_PROFILE_SELECTION_CONTRACT.md`](REPOSITORY_PROFILE_SELECTION_CONTRACT.md) |
 | Optional CodeGraph input boundary | Normalize pre-existing CodeGraph artifacts into source graph evidence and check pinned interface compatibility offline. | [`CODEGRAPH_SOURCE_GRAPH_ADAPTER.md`](CODEGRAPH_SOURCE_GRAPH_ADAPTER.md), [`CODEGRAPH_COMPATIBILITY_GUARD.md`](CODEGRAPH_COMPATIBILITY_GUARD.md) |
 
 ## Repository Shapes
@@ -106,6 +107,11 @@ auto-selection fell back to `generic.repository.v0`; manual `fastmcp_slim`
 targeting produced a much narrower public interface index. P37-T8 adds
 harvested manifest fallback evidence when workspace inventory has no manifest
 records.
+[`REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md`](REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md)
+defines the Phase 38 contract that turns parser profiles, repository profiles,
+future evidence producers, topology helpers, and review surfaces into explicit
+plugin roles with registration metadata, applicability reports, deterministic
+selection boundaries, and producer-side authority limits.
 [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md) records
 the first practical profile run. The profile keeps documentation, tutorials,
 examples, and tests available as semantic usage
@@ -202,6 +208,7 @@ SpecHarvester does not:
 | Curated multi-ecosystem corpus selection | Planned policy boundary |
 | Repository parsing plugin profiles | Working explicit hook for one parser profile; broader selection still planned |
 | Repository profile selection | Working standalone report, autonomous batch evidence layer, generic hint vocabulary, cross-ecosystem fixtures, real FastMCP evidence, and harvested-manifest fallback evidence |
+| Repository plugin subsystem | Contract planned; no plugin loading, registry fixture, or applicability report implementation yet |
 | Broad autonomous public-library scraping | Not ready; bounded local corpus only |
 | Final accepted spec authoring | Out of scope for SpecHarvester |
 
