@@ -34,6 +34,8 @@ decisions without running plugin code.
   - a reference to the P38-T2 `SpecHarvesterRepositoryPluginRegistry` fixture;
   - static evidence summary;
   - selected, rejected, fallback, and blocked plugin decision records;
+  - `decisionAuthority: producer_plugin_applicability_only` on each decision;
+  - `pluginOutputAuthority: producer_side_evidence_only` on each decision;
   - diagnostics and reason codes;
   - non-authority statements.
 - Decisions are deterministic and based only on static evidence.
@@ -64,4 +66,3 @@ decisions without running plugin code.
 - `PYTHONPATH=src ruff format --check src tests`
 - `git diff --check`
 - `swift build --target SpecHarvesterDocs`
-

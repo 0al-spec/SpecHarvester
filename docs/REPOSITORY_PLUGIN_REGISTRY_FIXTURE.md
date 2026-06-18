@@ -55,6 +55,7 @@ Every `plugins[]` item must declare:
 - `pluginId`;
 - `version`;
 - `role`;
+- `authority`;
 - `title`;
 - `summary`;
 - `inputEvidenceKinds[]`;
@@ -78,6 +79,11 @@ These examples are language- and framework-agnostic. Ecosystem names may appear
 as future evidence sources or validation examples, but Python, JavaScript,
 FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle, and other ecosystems
 are not normative plugin rules.
+
+Each plugin record uses `authority: producer_side_evidence_only`, while the
+top-level registry record uses `authority: producer_plugin_registry_only`.
+This separates declared registry-record authority from the authority carried by
+plugin output evidence.
 
 ## Static Evidence Boundary
 
@@ -133,7 +139,10 @@ The registry fixture states that it does not:
 
 ## Relationship to Later Tasks
 
-- `P38-T3` should add `SpecHarvesterRepositoryPluginApplicabilityReport`.
+- `P38-T3` adds `SpecHarvesterRepositoryPluginApplicabilityReport` in
+  [`REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md`](REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md)
+  and
+  `tests/fixtures/repository_plugins/generic-applicability-report.example.json`.
 - `P38-T4` should connect registry/applicability evidence to autonomous
   candidate batch as sidecar producer evidence.
 - `P38-T5` should add cross-ecosystem plugin subsystem fixtures.

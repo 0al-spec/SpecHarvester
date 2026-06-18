@@ -478,10 +478,14 @@ P38-T2 adds the first `SpecHarvesterRepositoryPluginRegistry` registry fixture
 in <doc:RepositoryPluginRegistryFixture> and
 `tests/fixtures/repository_plugins/generic-registry.example.json`.
 
-Follow-ups after the registry fixture:
+P38-T3 adds the first `SpecHarvesterRepositoryPluginApplicabilityReport`
+fixture in <doc:RepositoryPluginApplicabilityReportFixture> and
+`tests/fixtures/repository_plugins/generic-applicability-report.example.json`.
+It records selected, rejected, fallback, and blocked plugin decisions from
+static evidence without running plugin code.
 
-- `P38-T3`: add a `SpecHarvesterRepositoryPluginApplicabilityReport` fixture
-  for selected, rejected, fallback, and blocked decisions;
+Follow-ups after the applicability fixture:
+
 - `P38-T4`: connect registry and applicability output to autonomous candidate
   batch as sidecar producer evidence;
 - `P38-T5`: add cross-ecosystem plugin subsystem fixtures;

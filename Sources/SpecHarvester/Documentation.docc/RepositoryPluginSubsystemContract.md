@@ -79,9 +79,10 @@ P38-T2 records the first fixture in <doc:RepositoryPluginRegistryFixture> and
 }
 ```
 
-Registration metadata should cover plugin ids, versions, roles, input evidence
-kinds, output artifact kinds, safety constraints, applicability signals,
-conflicts, fallback behavior, diagnostics, and non-authority statements.
+Registration metadata should cover plugin ids, versions, roles, producer-side
+authority, input evidence kinds, output artifact kinds, safety constraints,
+applicability signals, conflicts, fallback behavior, diagnostics, and
+non-authority statements.
 
 ## Static Evidence Inputs
 
@@ -103,7 +104,11 @@ model calls.
 
 ## Applicability Report
 
-The future selection report is planned as
+P38-T3 records the first fixture in
+<doc:RepositoryPluginApplicabilityReportFixture> and
+`tests/fixtures/repository_plugins/generic-applicability-report.example.json`.
+
+The selection report shape is
 `SpecHarvesterRepositoryPluginApplicabilityReport`:
 
 ```json
@@ -113,12 +118,18 @@ The future selection report is planned as
   "schemaVersion": 1,
   "authority": "producer_plugin_applicability_only",
   "mode": "auto",
-  "selectedPluginIds": [],
-  "candidatePlugins": [],
+  "selectedPlugins": [],
   "rejectedPlugins": [],
+  "fallbackPlugins": [],
+  "blockedPlugins": [],
   "diagnostics": []
 }
 ```
+
+The report explains why a plugin was selected, rejected, blocked, or why the
+system fell back to generic behavior. Each decision carries
+`decisionAuthority: producer_plugin_applicability_only` and
+`pluginOutputAuthority: producer_side_evidence_only`.
 
 ## Deterministic Selection Boundaries
 
