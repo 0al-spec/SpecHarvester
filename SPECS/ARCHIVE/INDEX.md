@@ -173,6 +173,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t5_generic_profile_discovery_hints.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t4_repository_profile_batch_integration.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t3_repository_profile_detection_cli.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t2_repository_profile_detection_fixture.md` |
@@ -291,6 +292,7 @@
 | 2026-06-19 | P37-T4 | Archived Repository Profile Batch Integration (PASS) |
 | 2026-06-19 | P37-T4 | Archived REVIEW_p37_t4_repository_profile_batch_integration report |
 | 2026-06-19 | P37-T5 | Archived Generic Profile Discovery Hints (PASS) |
+| 2026-06-19 | P37-T5 | Archived REVIEW_p37_t5_generic_profile_discovery_hints report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
