@@ -160,6 +160,50 @@ def test_autonomous_candidate_batch_uses_harvested_manifest_evidence_when_invent
     assert "does_not_treat_plugin_decisions_as_registry_truth" in payload["nonAuthorityStatements"]
 
 
+def test_autonomous_candidate_batch_normalizes_harvested_manifest_evidence_for_source_target(
+    tmp_path: Path,
+) -> None:
+    inputs = write_scoped_go_target_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_profile_selection="auto",
+        )
+    )
+
+    repository = report["repositories"][0]
+    detection = repository["repositoryProfileDetection"]
+
+    assert report["status"] == "passed"
+    assert detection["decision"] == "selected"
+    assert detection["selectedProfileId"] == "generic.single_package.v0"
+    assert detection["confidence"] == "high"
+    assert detection["reasonCodes"] == ["root_manifest_present"]
+
+    inventory = json.loads(
+        (output / "collected" / "gin-scoped" / "workspace-inventory.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert inventory["summary"]["packageManifestCount"] == 0
+
+    harvest = json.loads(
+        (output / "collected" / "gin-scoped" / "harvest.json").read_text(encoding="utf-8")
+    )
+    assert [
+        item["path"] for item in harvest["files"] if item.get("kind") == "package_manifest"
+    ] == ["packages/gin/go.mod"]
+
+    payload = json.loads(Path(detection["path"]).read_text(encoding="utf-8"))
+    candidates = {candidate["profileId"]: candidate for candidate in payload["candidateProfiles"]}
+    assert candidates["generic.single_package.v0"]["evidencePaths"] == ["go.mod"]
+    assert payload["diagnostics"][0]["evidencePaths"] == ["go.mod"]
+
+
 def test_autonomous_candidate_batch_normalizes_repository_profile_selection(
     tmp_path: Path,
 ) -> None:
@@ -531,6 +575,27 @@ repositories:
     repository: https://github.com/gin-gonic/gin
     revision: 0123456789abcdef0123456789abcdef01234567
     checkout: {checkout}
+    packageId: gin.core
+""",
+        encoding="utf-8",
+    )
+    return inputs
+
+
+def write_scoped_go_target_source_manifest(tmp_path: Path) -> Path:
+    inputs = tmp_path / "scoped-inputs"
+    checkout = tmp_path / "scoped-go"
+    (checkout / "packages").mkdir(parents=True)
+    write_go_single_package_checkout(checkout / "packages" / "gin")
+    inputs.mkdir()
+    (inputs / "repositories.yml").write_text(
+        f"""
+repositories:
+  - id: gin-scoped
+    repository: https://github.com/gin-gonic/gin
+    revision: 0123456789abcdef0123456789abcdef01234567
+    checkout: {checkout}
+    target: packages/gin
     packageId: gin.core
 """,
         encoding="utf-8",
