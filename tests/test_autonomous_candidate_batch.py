@@ -115,6 +115,27 @@ def test_autonomous_candidate_batch_records_auto_repository_profile_selection(
     ]
 
 
+def test_autonomous_candidate_batch_normalizes_repository_profile_selection(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_profile_selection=" auto ",
+        )
+    )
+
+    detection = report["repositories"][0]["repositoryProfileDetection"]
+
+    assert report["repositoryProfileSelection"]["mode"] == "auto"
+    assert detection["mode"] == "auto"
+
+
 def test_autonomous_candidate_batch_records_explicit_repository_profile_override(
     tmp_path: Path,
 ) -> None:

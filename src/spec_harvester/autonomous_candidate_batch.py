@@ -205,7 +205,7 @@ class AutonomousCandidateBatch:
             normalize_local_provider_base_url(self.options.lm_studio_base_url)
         if self.options.json_repair_max_attempts < 0:
             raise ValueError("--json-repair-max-attempts must be zero or greater")
-        if not self.options.repository_profile_selection.strip():
+        if not self.repository_profile_selection():
             raise ValueError("--repository-profile-selection must be non-empty")
 
     def collect(self) -> dict[str, Any]:
@@ -311,7 +311,7 @@ class AutonomousCandidateBatch:
         payload = build_repository_profile_detection(
             RepositoryProfileDetectionOptions(
                 repository=repository_identity_from_collected(collected),
-                selection=self.options.repository_profile_selection,
+                selection=self.repository_profile_selection(),
                 evidence_paths=repository_profile_evidence_paths(inventory),
             )
         )
@@ -508,7 +508,7 @@ class AutonomousCandidateBatch:
 
     def repository_profile_selection_record(self) -> dict[str, Any]:
         return {
-            "mode": self.options.repository_profile_selection,
+            "mode": self.repository_profile_selection(),
             "defaultMode": "none",
             "artifact": REPOSITORY_PROFILE_DETECTION_FILENAME,
             "authority": "producer_profile_selection_only",
@@ -516,6 +516,9 @@ class AutonomousCandidateBatch:
             "advisoryHintsAppliedToDrafting": False,
             "registryAuthority": False,
         }
+
+    def repository_profile_selection(self) -> str:
+        return self.options.repository_profile_selection.strip()
 
     def validation_report_path(self) -> Path:
         return self.reports_root / "batch-validation-report.json"

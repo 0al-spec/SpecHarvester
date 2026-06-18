@@ -39,13 +39,13 @@ change package acceptance, relation acceptance, registry publication, or
 ## Validation Commands
 
 - `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py tests/test_repository_profile_detection.py -q`
-  - Result: `20 passed`.
+  - Result: `21 passed`.
 - `PYTHONPATH=src pytest tests/test_docs_contracts.py -q -k 'repository_profile_selection_contract or repository_profile_plugin_selection_plan or current_next_task'`
   - Result: `2 passed, 102 deselected`.
 - `PYTHONPATH=src pytest -q`
-  - Result: `745 passed, 1 skipped`.
+  - Result: `746 passed, 1 skipped`.
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
-  - Result: `745 passed, 1 skipped`; total coverage `91.12%`.
+  - Result: `746 passed, 1 skipped`; total coverage `91.12%`.
 - `PYTHONPATH=src ruff check .`
   - Result: passed.
 - `PYTHONPATH=src ruff format --check src tests`
@@ -72,9 +72,12 @@ fixed before final validation:
   made the drafter reject a non-empty output directory;
 - treating every `package.json` as workspace evidence caused nested member
   manifests to be counted as workspace manifests.
+- top-level `repositoryProfileSelection.mode` needed the same whitespace
+  normalization as the emitted detection artifact.
 
 The final implementation writes detection artifacts under `reports/` and only
-treats root-level `package.json` as workspace evidence.
+treats root-level `package.json` as workspace evidence. The batch report and
+artifact now share the same normalized selection mode.
 
 ## Follow-Up
 
