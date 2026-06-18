@@ -3112,8 +3112,8 @@ def assert_phase_37_t7_active(next_text: str) -> None:
         assert required in next_text
     assert "must not implement ecosystem-specific plugins" in normalized
     assert (
-        "must not treat profile decisions, profile hints, manual targeting, or AI output as registry truth"
-        in normalized
+        "must not treat profile decisions, profile hints, manual targeting, "
+        "or AI output as registry truth" in normalized
     )
     assert "producer-side evidence" in normalized
 
