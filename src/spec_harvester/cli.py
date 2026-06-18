@@ -330,6 +330,14 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     autonomous_candidate_batch.add_argument(
+        "--repository-profile-selection",
+        default="none",
+        help=(
+            "Repository profile selection mode for producer-side evidence: "
+            "none, auto, or an explicit profile id. Default: none."
+        ),
+    )
+    autonomous_candidate_batch.add_argument(
         "--role-profile",
         choices=tuple(PACKAGE_SET_ROLE_PROFILES),
         default=DEFAULT_AUTONOMOUS_ROLE_PROFILE,
@@ -1548,6 +1556,7 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 provider_name=args.provider_name,
                 json_repair_max_attempts=args.json_repair_max_attempts,
                 apply_ai_enrichment=args.apply_ai_enrichment,
+                repository_profile_selection=args.repository_profile_selection,
             )
         )
     except ValueError as exc:

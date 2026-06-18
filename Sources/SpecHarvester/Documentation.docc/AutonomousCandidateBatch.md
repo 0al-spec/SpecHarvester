@@ -37,6 +37,19 @@ python3 -m spec_harvester autonomous-candidate-batch \
   --skip-ai
 ```
 
+Opt in to repository profile detection evidence:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --repository-profile-selection auto
+```
+
+`--repository-profile-selection` accepts `none`, `auto`, or an explicit profile
+id. The default is `none`.
+
 The command expects existing local public checkouts from repository source
 manifests. It does not clone repositories, execute harvested code, install
 dependencies, publish registry metadata, or accept packages.
@@ -49,6 +62,7 @@ Pipeline:
 source manifest
   -> collect-batch
   -> workspace inventory
+  -> optional repository profile detection evidence
   -> draft-package-set
   -> preflight-bundle-set
   -> optional local LM Studio AI draft/enrichment proposals
@@ -70,6 +84,15 @@ Report identity:
   "schemaVersion": 1
 }
 ```
+
+The report records `repositoryProfileSelection` and per-repository
+`repositoryProfileDetection` summaries. The JSON artifact is written under
+`reports/repository-profile-detections/<repository-id>/repository-profile-detection.json`.
+
+Repository profile detection remains producer evidence only. The batch records
+`advisoryHintsAppliedToDrafting: false`; it does not apply hints to candidate
+drafting, accept packages, accept relations, remove `preview_only`, publish
+registry metadata, or treat plugin decisions as registry truth.
 
 Generated package files remain `preview_only` producer evidence. SpecPM remains
 the validation, acceptance, relation, and registry authority.

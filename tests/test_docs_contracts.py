@@ -12190,6 +12190,12 @@ def test_repository_profile_selection_contract_is_documented() -> None:
             "--selection none",
             "--source-manifest inputs",
             "--output repository-profile-detection.json",
+            "autonomous-candidate-batch",
+            "--repository-profile-selection auto",
+            "repositoryProfileSelection",
+            "repositoryProfileDetection",
+            "reports/repository-profile-detections/<repository-id>/repository-profile-detection.json",
+            "advisoryHintsAppliedToDrafting: false",
             "does not collect source files",
         ):
             assert required in text or required in normalized, (

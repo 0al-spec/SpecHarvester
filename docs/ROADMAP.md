@@ -681,7 +681,8 @@ Planned follow-ups:
 - `P37-T3`: add an opt-in detection CLI/report surface that emits profile
   decisions without collecting source, invoking AI, or drafting packages;
 - `P37-T4`: connect profile selection to autonomous candidate batch through
-  explicit `auto | none | <profile-id>` modes;
+  explicit `auto | none | <profile-id>` modes and sidecar
+  `repository-profile-detection.json` artifacts;
 - `P37-T5`: define generic workspace/member discovery hints for package-set
   roots, members, meta packages, primary packages, CLI/bridge packages,
   plugin packages, examples, tests, docs, generated artifacts, internal
