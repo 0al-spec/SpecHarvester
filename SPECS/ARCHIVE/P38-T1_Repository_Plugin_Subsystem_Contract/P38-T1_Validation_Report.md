@@ -52,9 +52,9 @@ or treat AI output as registry truth.
 - `PYTHONPATH=src pytest tests/test_docs_contracts.py -q -k 'repository_plugin or current_next_task'`
   - Result: `1 passed, 107 deselected`
 - `PYTHONPATH=src pytest -q`
-  - Result: `758 passed, 1 skipped`
+  - Result: `759 passed, 1 skipped`
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
-  - Result: `758 passed, 1 skipped`, total coverage `91.15%`
+  - Result: `759 passed, 1 skipped`, total coverage `91.15%`
 - `PYTHONPATH=src ruff check .`
   - Result: passed
 - `PYTHONPATH=src ruff format --check src tests`
@@ -67,4 +67,3 @@ or treat AI output as registry truth.
 ## Verdict
 
 PASS. P38-T1 is ready for archive and review.
-

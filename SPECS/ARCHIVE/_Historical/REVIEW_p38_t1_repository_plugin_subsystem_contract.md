@@ -35,11 +35,10 @@ None.
   `PYTHONPATH=src pytest tests/test_docs_contracts.py -q -k 'repository_plugin or current_next_task'`.
 - Full test and coverage gates were recorded in
   `SPECS/ARCHIVE/P38-T1_Repository_Plugin_Subsystem_Contract/P38-T1_Validation_Report.md`:
-  `758 passed, 1 skipped`, coverage `91.15%`.
+  `759 passed, 1 skipped`, coverage `91.15%`.
 - Lint, format, diff check, and Swift docs build passed during EXECUTE.
 
 ### Next Steps
 
 - FOLLOW-UP skipped: no actionable review findings.
 - Proceed to ARCHIVE-REVIEW.
-
