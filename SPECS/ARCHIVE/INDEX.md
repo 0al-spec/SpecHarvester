@@ -157,6 +157,7 @@
 | P36-T3 | [P36-T3_Plugin-Aware_Source_Classification_Hook/](P36-T3_Plugin-Aware_Source_Classification_Hook/) | 2026-06-14 | PASS |
 | P36-T4 | [P36-T4_FastAPI_AI-Enabled_Parser_Profile_Rerun/](P36-T4_FastAPI_AI-Enabled_Parser_Profile_Rerun/) | 2026-06-14 | PASS |
 | P37-T1 | [P37-T1_Repository_Profile_Selection_Contract/](P37-T1_Repository_Profile_Selection_Contract/) | 2026-06-18 | PASS |
+| P37-T2 | [P37-T2_Repository_Profile_Detection_Fixture/](P37-T2_Repository_Profile_Detection_Fixture/) | 2026-06-18 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -277,6 +278,7 @@
 | 2026-06-14 | P36-T4 | Archived REVIEW_p36_t4_fastapi_parser_profile_rerun report |
 | 2026-06-18 | P37-T1 | Archived Repository Profile Selection Contract (PASS) |
 | 2026-06-18 | P37-T1 | Archived REVIEW_p37_t1_repository_profile_selection_contract report |
+| 2026-06-18 | P37-T2 | Archived Repository Profile Detection Fixture (PASS) |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |

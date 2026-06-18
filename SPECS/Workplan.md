@@ -1448,7 +1448,7 @@ Acceptance:
   candidate scoring, selection modes, conflict behavior, operator overrides,
   and a replayable decision artifact without naming any language or framework
   as normative.
-- [ ] `P37-T2` Add a machine-readable `SpecHarvesterRepositoryProfileDetection`
+- [x] `P37-T2` Add a machine-readable `SpecHarvesterRepositoryProfileDetection`
   fixture format that records detected candidate profiles, confidence,
   evidence paths, rejected profiles, selected profile, fallback profile,
   override source, diagnostics, and non-authority statements.

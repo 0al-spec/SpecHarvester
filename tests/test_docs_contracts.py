@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P37-T3 Repository Profile Detection CLI" in next_text:
+        assert_p37_t2_last_archived(next_text)
+        assert_p37_t2_recent(next_text)
+        assert_phase_37_t3_active(next_text)
+        return
+
     if "# Next Task: P37-T2 Repository Profile Detection Fixture" in next_text:
         assert_p37_t1_last_archived(next_text)
         assert_p37_t1_recent(next_text)
@@ -2830,6 +2836,58 @@ def assert_phase_37_t2_active(next_text: str) -> None:
     )
     assert "does not publish registry metadata" in normalized
     assert "does not treat AI output or plugin decisions as registry truth" in normalized
+
+
+def assert_p37_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P37-T2 Repository Profile Detection Fixture" in next_text
+
+
+def assert_p37_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P37-T2` added the machine-readable fixture" in next_text
+    assert "generic-package-set.example.json" in next_text
+    assert "spec-harvester.repository-profile-detection/v0" in next_text
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "schemaVersion: 1" in next_text
+    assert "producer_profile_selection_only" in next_text
+    assert "generic.package_set.v0" in next_text
+    assert "generic.repository.v0" in next_text
+    assert "rejected lower-confidence profiles" in normalized
+    assert "diagnostics" in normalized
+    assert "package_set_root" in next_text
+    assert "member_package" in next_text
+    assert "documentation_source" in next_text
+    assert "non-authority boundary" in normalized
+
+
+def assert_phase_37_t3_active(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P37-T3 Repository Profile Detection CLI" in next_text
+    assert "**Status:** In Progress" in next_text
+    assert "`feature/P37-T3-repository-profile-detection-cli`" in next_text
+    assert "Phase 37. Repository Profile Plugin Selection" in next_text
+    assert "`P37-T3` implements an opt-in repository profile detection" in normalized
+    assert "SpecHarvesterRepositoryProfileDetection" in next_text
+    assert "read only static repository evidence" in normalized
+    assert "auto | none | <profile-id>" in next_text
+    assert "optional CLI override metadata" in normalized
+    assert "emit the detection artifact shape introduced in P37-T2" in normalized
+    assert "fallback to `generic.repository.v0`" in next_text
+    assert "candidate profiles" in normalized
+    assert "rejected profiles" in normalized
+    assert "non-authority statements" in normalized
+    assert "advisory downstream hints" in normalized
+    assert (
+        "`P37-T4` Connect repository profile selection to autonomous candidate batch" in next_text
+    )
+    assert "`P37-T5` Define generic workspace/member discovery hints" in next_text
+    assert "`P37-T6` Add cross-ecosystem profile fixtures" in next_text
+    assert "`P37-T7` Re-run a real repository with profile auto-selection" in next_text
+    assert "does not publish registry metadata" in normalized
+    assert "does not treat AI output or plugin decisions as registry truth" in normalized
+    assert "does not clone or fetch repositories" in normalized
+    assert "does not run AI" in normalized
+    assert "does not draft packages" in normalized
 
 
 def assert_p34_t1_recent(next_text: str) -> None:

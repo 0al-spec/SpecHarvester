@@ -1,69 +1,63 @@
-# Next Task: P37-T2 Repository Profile Detection Fixture
+# Next Task: P37-T3 Repository Profile Detection CLI
 
 **Status:** In Progress
-**Branch:** `feature/P37-T2-repository-profile-detection-fixture`
+**Branch:** `feature/P37-T3-repository-profile-detection-cli`
 **Phase:** Phase 37. Repository Profile Plugin Selection
-**Last Archived:** P37-T1 Repository Profile Selection Contract
+**Last Archived:** P37-T2 Repository Profile Detection Fixture
 
 ## Recently Archived
 
-- `P37-T1` added [`REPOSITORY_PROFILE_SELECTION_CONTRACT.md`](../../docs/REPOSITORY_PROFILE_SELECTION_CONTRACT.md)
-  and the DocC mirror `RepositoryProfileSelectionContract`.
-- The contract defines the language- and framework-agnostic selection model:
-
-  ```text
-  detect candidates -> score evidence -> select or fallback -> record decision
-  ```
-
-- The contract defines static inputs, `auto | none | <profile-id>` selection
-  modes, override precedence, confidence levels, fallback behavior, generic
-  workspace/member hints, and non-authority boundaries.
-- The future decision artifact is
-  `SpecHarvesterRepositoryProfileDetection` with
-  `apiVersion: spec-harvester.repository-profile-detection/v0` and
+- `P37-T2` added the machine-readable fixture
+  [`generic-package-set.example.json`](../../tests/fixtures/repository_profile_detection/generic-package-set.example.json).
+- The fixture records
+  `apiVersion: spec-harvester.repository-profile-detection/v0`,
+  `kind: SpecHarvesterRepositoryProfileDetection`,
+  `schemaVersion: 1`, and
   `authority: producer_profile_selection_only`.
-- Docs, DocC, capabilities, roadmap, and docs-contract tests now reference the
-  repository profile selection contract.
+- The fixture demonstrates a high-confidence `auto` selection of
+  `generic.package_set.v0`, a `generic.repository.v0` fallback, rejected
+  lower-confidence profiles, diagnostics, and advisory downstream hints.
+- The fixture records `package_set_root`, `member_package`, and
+  `documentation_source` hints without treating them as registry truth.
+- Docs, DocC, and docs-contract tests now validate the fixture shape and
+  non-authority boundary.
 
 ## Current Task
 
-`P37-T2` adds a machine-readable
-`SpecHarvesterRepositoryProfileDetection` fixture format.
+`P37-T3` implements an opt-in repository profile detection CLI/report surface
+that emits a `SpecHarvesterRepositoryProfileDetection` artifact.
 
-The fixture should record:
+The command should:
 
-- repository identity and source manifest metadata;
-- selection mode and override source;
-- selected profile id or `null`;
-- fallback profile id;
-- candidate profiles with confidence, evidence paths, reason codes,
-  conflicts, and recommended actions;
-- rejected profiles and reason codes;
-- diagnostics with severity, code, message, and evidence paths;
-- non-authority statements;
-- advisory downstream hints produced by the selected profile.
+- read only static repository evidence already available from operator input;
+- accept `auto | none | <profile-id>` selection mode;
+- accept optional CLI override metadata;
+- emit the detection artifact shape introduced in P37-T2;
+- preserve explicit fallback to `generic.repository.v0`;
+- report candidate profiles, rejected profiles, diagnostics, non-authority
+  statements, and advisory downstream hints;
+- remain deterministic and reviewable.
 
 ## Motivation
 
-- P37-T1 documents the contract, but implementation needs a concrete fixture
-  before code can safely emit or validate profile selection reports.
-- The fixture should make profile selection replayable and reviewable without
-  introducing a detector implementation yet.
+- P37-T1 defined the selection contract.
+- P37-T2 made the artifact shape concrete.
+- P37-T3 should provide the first narrow executable surface so operators can
+  generate the artifact deliberately before it is wired into autonomous batch
+  behavior.
 
 ## Non-Goals
 
-This task must not implement runtime profile detection or change autonomous
-candidate batch behavior.
+This task must not connect profile selection to autonomous candidate batch
+behavior.
 
 It must not clone/fetch repositories, install dependencies, execute harvested
-code, invoke package managers, run AI, draft packages, publish registry
-metadata, accept packages or relations, remove `preview_only`, or treat AI
-output or plugin decisions as registry truth.
+code, invoke package managers, run AI, draft packages, collect source files,
+publish registry metadata, accept packages or relations, remove `preview_only`,
+or treat AI output or plugin decisions as registry truth.
 
 ## Planned Follow-Ups
 
-- `P37-T3` Implement an opt-in repository profile detection CLI/report
-  surface that emits the detection artifact only.
 - `P37-T4` Connect repository profile selection to autonomous candidate batch
   as `auto | none | <profile-id>`.
 - `P37-T5` Define generic workspace/member discovery hints produced by
@@ -75,10 +69,11 @@ output or plugin decisions as registry truth.
 
 ## Boundary
 
-Repository profile detection fixtures remain producer-side evidence only. They
-do not publish registry metadata, accept packages or relations, seed baselines,
-remove `preview_only`, or treat AI output or plugin decisions as registry
-truth.
+Repository profile detection remains producer-side evidence only. It does not
+publish registry metadata, accept packages or relations, seed baselines, remove
+`preview_only`, or treat AI output or plugin decisions as registry truth.
 
+It does not clone or fetch repositories.
+It does not run AI.
+It does not draft packages.
 It does not treat AI output or plugin decisions as registry truth.
-It does not publish registry metadata.
