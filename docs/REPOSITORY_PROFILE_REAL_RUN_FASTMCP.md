@@ -104,10 +104,10 @@ yet good enough to replace manual target selection for this FastMCP shape.
 follow_up_required
 ```
 
-P37-T8 should make repository profile detection consume harvested package
-manifest evidence when workspace inventory has no manifest records. That keeps
-the profile subsystem language- and framework-agnostic while closing the real
-FastMCP evidence gap found by P37-T7.
+P37-T8 adds a generic harvested-manifest fallback so repository profile
+detection can consume package manifest evidence when workspace inventory has no
+manifest records. That keeps the profile subsystem language- and
+framework-agnostic while closing the real FastMCP evidence gap found by P37-T7.
 
 ## Boundary
 

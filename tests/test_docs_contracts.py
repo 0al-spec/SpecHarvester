@@ -3158,7 +3158,7 @@ def assert_phase_37_t8_active(next_text: str) -> None:
         "# Next Task: P37-T8 Harvest Manifest Evidence for Repository Profile Detection"
         in next_text
     )
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Planned" in next_text
     assert "`feature/P37-T8-harvest-manifest-evidence-for-profile-detection`" in next_text
     assert "Phase 37. Repository Profile Plugin Selection" in next_text
     assert (
@@ -6442,6 +6442,11 @@ def test_autonomous_candidate_batch_docs_cover_local_lm_studio_boundary() -> Non
             "openai/gpt-oss-20b",
             "--skip-ai",
             "--apply-ai-enrichment",
+            "--repository-profile-selection auto",
+            "workspace-inventory.json",
+            "harvest.json",
+            "harvested manifest evidence",
+            "profile hints as registry truth",
             "aiEnrichedPreview",
             "ai-enrichment-candidate-patch.json",
             "enriched preview candidates",

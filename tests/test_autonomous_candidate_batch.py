@@ -115,6 +115,51 @@ def test_autonomous_candidate_batch_records_auto_repository_profile_selection(
     ]
 
 
+def test_autonomous_candidate_batch_uses_harvested_manifest_evidence_when_inventory_empty(
+    tmp_path: Path,
+) -> None:
+    inputs = write_single_package_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_profile_selection="auto",
+        )
+    )
+
+    repository = report["repositories"][0]
+    detection = repository["repositoryProfileDetection"]
+
+    assert report["status"] == "passed"
+    assert report["summary"]["repositoryProfileSelectedCount"] == 1
+    assert detection["decision"] == "selected"
+    assert detection["selectedProfileId"] == "generic.single_package.v0"
+    assert detection["confidence"] == "high"
+    assert detection["reasonCodes"] == ["root_manifest_present"]
+
+    inventory = json.loads(
+        (output / "collected" / "gin" / "workspace-inventory.json").read_text(encoding="utf-8")
+    )
+    assert inventory["summary"]["packageManifestCount"] == 0
+
+    harvest = json.loads(
+        (output / "collected" / "gin" / "harvest.json").read_text(encoding="utf-8")
+    )
+    assert harvest["summary"]["packageManifestCount"] == 1
+    assert [
+        item["path"] for item in harvest["files"] if item.get("kind") == "package_manifest"
+    ] == ["go.mod"]
+
+    payload = json.loads(Path(detection["path"]).read_text(encoding="utf-8"))
+    candidates = {candidate["profileId"]: candidate for candidate in payload["candidateProfiles"]}
+    assert candidates["generic.single_package.v0"]["evidencePaths"] == ["go.mod"]
+    assert payload["diagnostics"][0]["evidencePaths"] == ["go.mod"]
+    assert "does_not_treat_plugin_decisions_as_registry_truth" in payload["nonAuthorityStatements"]
+
+
 def test_autonomous_candidate_batch_normalizes_repository_profile_selection(
     tmp_path: Path,
 ) -> None:
