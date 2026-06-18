@@ -103,6 +103,44 @@ def test_build_repository_profile_detection_explicit_profile_records_cli_overrid
     assert payload["diagnostics"][0]["code"] == "repository_profile_cli_override"
 
 
+def test_build_repository_profile_detection_explicit_builtin_override_updates_candidate() -> None:
+    payload = build_repository_profile_detection(
+        RepositoryProfileDetectionOptions(
+            repository=repository_identity(),
+            selection=PACKAGE_SET_PROFILE_ID,
+            evidence_paths=("README.md",),
+        )
+    )
+
+    candidates = {candidate["profileId"]: candidate for candidate in payload["candidateProfiles"]}
+    selected = candidates[PACKAGE_SET_PROFILE_ID]
+
+    assert payload["selection"]["selectedProfileId"] == PACKAGE_SET_PROFILE_ID
+    assert selected["confidence"] == "high"
+    assert selected["score"] == 1.0
+    assert selected["evidencePaths"] == ["README.md"]
+    assert selected["reasonCodes"] == ["explicit_cli_profile_override"]
+    assert selected["recommendedAction"] == "select"
+
+
+def test_build_repository_profile_detection_derives_nested_workspace_root_hint() -> None:
+    payload = build_repository_profile_detection(
+        RepositoryProfileDetectionOptions(
+            repository=repository_identity(),
+            selection="auto",
+            evidence_paths=(
+                "examples/demo/pnpm-workspace.yaml",
+                "examples/demo/packages/core/package.json",
+                "examples/demo/packages/adapter/package.json",
+            ),
+        )
+    )
+
+    assert {"hint": "package_set_root", "path": "examples/demo"} in [
+        {"hint": item["hint"], "path": item["path"]} for item in payload["advisoryDownstreamHints"]
+    ]
+
+
 def test_build_repository_profile_detection_rejects_unsafe_evidence_paths() -> None:
     with pytest.raises(ValueError, match="repository-relative"):
         build_repository_profile_detection(

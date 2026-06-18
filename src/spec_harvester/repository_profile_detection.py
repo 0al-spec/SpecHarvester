@@ -341,19 +341,23 @@ def ensure_explicit_candidate(
     selected_profile_id: str,
     evidence_paths: tuple[str, ...],
 ) -> list[dict[str, Any]]:
-    if any(candidate["profileId"] == selected_profile_id for candidate in candidates):
-        return candidates
+    override_candidate = {
+        "profileId": selected_profile_id,
+        "title": "Explicit CLI Repository Profile",
+        "confidence": "high",
+        "score": 1.0,
+        "evidencePaths": list(evidence_paths),
+        "reasonCodes": ["explicit_cli_profile_override"],
+        "conflicts": [],
+        "recommendedAction": "select",
+    }
+    for index, candidate in enumerate(candidates):
+        if candidate["profileId"] == selected_profile_id:
+            updated = dict(override_candidate)
+            updated["title"] = candidate["title"]
+            return [*candidates[:index], updated, *candidates[index + 1 :]]
     return [
-        {
-            "profileId": selected_profile_id,
-            "title": "Explicit CLI Repository Profile",
-            "confidence": "high",
-            "score": 1.0,
-            "evidencePaths": list(evidence_paths),
-            "reasonCodes": ["explicit_cli_profile_override"],
-            "conflicts": [],
-            "recommendedAction": "select",
-        },
+        override_candidate,
         *candidates,
     ]
 
@@ -383,7 +387,14 @@ def advisory_downstream_hints(
     if selected_profile_id == PACKAGE_SET_PROFILE_ID:
         for path in evidence_paths:
             if is_workspace_path(path):
-                hints.append(hint("package_set_root", ".", "high", ["workspace_manifest_present"]))
+                hints.append(
+                    hint(
+                        "package_set_root",
+                        workspace_root_for_path(path),
+                        "high",
+                        ["workspace_manifest_present"],
+                    )
+                )
             elif is_member_manifest_path(path):
                 hints.append(
                     hint(
@@ -432,6 +443,11 @@ def unique_hints(hints: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def is_workspace_path(path: str) -> bool:
     return Path(path).name in WORKSPACE_FILENAMES
+
+
+def workspace_root_for_path(path: str) -> str:
+    parent = Path(path).parent.as_posix()
+    return "." if parent == "." else parent
 
 
 def is_root_manifest_path(path: str) -> bool:
