@@ -113,6 +113,41 @@ Each detected candidate profile should record:
 - non-authority statements;
 - downstream hints produced by the selected profile, if any.
 
+## Machine-Readable Fixture
+
+P37-T2 provides the first concrete fixture:
+
+```text
+tests/fixtures/repository_profile_detection/generic-package-set.example.json
+```
+
+The fixture records a high-confidence auto-selection for a generic package-set
+repository. It includes:
+
+- `apiVersion: spec-harvester.repository-profile-detection/v0`;
+- `kind: SpecHarvesterRepositoryProfileDetection`;
+- `schemaVersion: 1`;
+- `authority: producer_profile_selection_only`;
+- repository identity and source manifest metadata;
+- `selection.mode: auto`;
+- `selection.overrideSource: none`;
+- `selection.selectedProfileId: generic.package_set.v0`;
+- `selection.fallbackProfileId: generic.repository.v0`;
+- candidate profiles with confidence, score, evidence paths, reason codes,
+  conflicts, and recommended actions;
+- rejected profiles with reason codes;
+- diagnostics with severity, code, message, and evidence paths;
+- advisory downstream hints such as `package_set_root`, `member_package`, and
+  `documentation_source`;
+- non-authority statements proving the artifact does not clone/fetch
+  repositories, run AI, draft packages, publish registry metadata, accept
+  packages or relations, remove `preview_only`, or treat plugin decisions as
+  registry truth.
+
+This fixture is intentionally generic. It proves the profile selection artifact
+shape without making Python, JavaScript, FastMCP, FastAPI, or any other
+ecosystem normative.
+
 ## Generic Hints
 
 Profiles may propose ecosystem-neutral hints:

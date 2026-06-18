@@ -1,0 +1,168 @@
+{
+  "apiVersion": "spec-harvester.repository-profile-detection/v0",
+  "kind": "SpecHarvesterRepositoryProfileDetection",
+  "schemaVersion": 1,
+  "authority": "producer_profile_selection_only",
+  "repository": {
+    "id": "example.generic-package-set",
+    "name": "generic-package-set",
+    "url": "https://example.invalid/generic-package-set",
+    "ref": "main",
+    "revision": "0000000000000000000000000000000000000000"
+  },
+  "sourceManifest": {
+    "path": "tests/fixtures/repository_profile_detection/source-manifest.example.yml",
+    "entryId": "example.generic-package-set",
+    "declaredRepositoryProfile": null
+  },
+  "selection": {
+    "mode": "auto",
+    "overrideSource": "none",
+    "selectedProfileId": "generic.package_set.v0",
+    "fallbackProfileId": "generic.repository.v0",
+    "confidence": "high",
+    "decision": "selected",
+    "reasonCodes": [
+      "workspace_manifest_present",
+      "multiple_member_manifests_present",
+      "no_conflicting_profile_signals"
+    ]
+  },
+  "candidateProfiles": [
+    {
+      "profileId": "generic.package_set.v0",
+      "title": "Generic Package-Set Repository",
+      "confidence": "high",
+      "score": 0.92,
+      "evidencePaths": [
+        "workspace.yaml",
+        "packages/core/package.json",
+        "packages/adapter/package.json"
+      ],
+      "reasonCodes": [
+        "workspace_manifest_present",
+        "multiple_member_manifests_present"
+      ],
+      "conflicts": [],
+      "recommendedAction": "select"
+    },
+    {
+      "profileId": "generic.single_package.v0",
+      "title": "Generic Single-Package Repository",
+      "confidence": "medium",
+      "score": 0.54,
+      "evidencePaths": [
+        "package.json"
+      ],
+      "reasonCodes": [
+        "root_manifest_present",
+        "member_manifests_make_single_package_incomplete"
+      ],
+      "conflicts": [
+        "generic.package_set.v0"
+      ],
+      "recommendedAction": "fallback"
+    },
+    {
+      "profileId": "generic.documentation_site.v0",
+      "title": "Generic Documentation Site Repository",
+      "confidence": "low",
+      "score": 0.18,
+      "evidencePaths": [
+        "docs/index.md"
+      ],
+      "reasonCodes": [
+        "documentation_path_present",
+        "package_manifests_are_primary"
+      ],
+      "conflicts": [
+        "generic.package_set.v0"
+      ],
+      "recommendedAction": "require_override"
+    }
+  ],
+  "rejectedProfiles": [
+    {
+      "profileId": "generic.single_package.v0",
+      "reasonCodes": [
+        "lower_confidence_than_selected_profile",
+        "conflicts_with_package_set_evidence"
+      ]
+    },
+    {
+      "profileId": "generic.documentation_site.v0",
+      "reasonCodes": [
+        "low_confidence",
+        "documentation_paths_are_not_primary_package_shape"
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "repository_profile_selected",
+      "message": "Selected generic.package_set.v0 from static workspace evidence.",
+      "evidencePaths": [
+        "workspace.yaml",
+        "packages/core/package.json",
+        "packages/adapter/package.json"
+      ]
+    }
+  ],
+  "advisoryDownstreamHints": [
+    {
+      "hint": "package_set_root",
+      "path": ".",
+      "confidence": "high",
+      "reasonCodes": [
+        "workspace_manifest_present"
+      ]
+    },
+    {
+      "hint": "member_package",
+      "path": "packages/core",
+      "confidence": "high",
+      "reasonCodes": [
+        "member_manifest_present"
+      ]
+    },
+    {
+      "hint": "member_package",
+      "path": "packages/adapter",
+      "confidence": "high",
+      "reasonCodes": [
+        "member_manifest_present"
+      ]
+    },
+    {
+      "hint": "documentation_source",
+      "path": "docs",
+      "confidence": "medium",
+      "reasonCodes": [
+        "documentation_path_present"
+      ]
+    }
+  ],
+  "nonAuthorityStatements": [
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_invoke_package_managers",
+    "does_not_run_ai",
+    "does_not_draft_packages",
+    "does_not_publish_registry_metadata",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_plugin_decisions_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "implementationTask": "P37-T3",
+    "batchIntegrationTask": "P37-T4",
+    "hintVocabularyTask": "P37-T5",
+    "crossEcosystemFixturesTask": "P37-T6",
+    "realRepositoryValidationTask": "P37-T7"
+  }
+}
