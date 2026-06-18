@@ -13,6 +13,57 @@ from spec_harvester.repository_profile_detection import (
     RepositoryProfileDetectionOptions,
     build_repository_profile_detection,
 )
+from spec_harvester.repository_profile_hints import (
+    GENERIC_REPOSITORY_PROFILE_HINT_IDS,
+    build_repository_profile_hint_vocabulary,
+    validate_repository_profile_hint,
+)
+
+FIXTURES = Path(__file__).parent / "fixtures" / "repository_profile_detection"
+
+
+def test_repository_profile_hint_vocabulary_fixture_matches_builder() -> None:
+    payload = json.loads((FIXTURES / "generic-hint-vocabulary.example.json").read_text())
+
+    assert payload == build_repository_profile_hint_vocabulary()
+    assert payload["apiVersion"] == "spec-harvester.repository-profile-hints/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryProfileHintVocabulary"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_profile_hint_vocabulary_only"
+    assert payload["summary"] == {
+        "hintCount": 13,
+        "defaultConsumerBehavior": "review_only",
+        "registryAuthority": False,
+    }
+    assert [item["hint"] for item in payload["hints"]] == [
+        "package_set_root",
+        "member_package",
+        "meta_package",
+        "primary_package",
+        "cli_package",
+        "bridge_package",
+        "plugin_package",
+        "example_package",
+        "test_package",
+        "documentation_source",
+        "generated_artifact",
+        "internal_utility",
+        "evidence_only",
+    ]
+    for item in payload["hints"]:
+        assert item["hint"] in GENERIC_REPOSITORY_PROFILE_HINT_IDS
+        assert item["title"]
+        assert item["pathSubject"]
+        assert item["summary"]
+        assert item["consumerAction"]
+        assert "does_not_treat_profile_hints_as_registry_truth" in item["nonAuthorityStatements"]
+
+
+def test_repository_profile_hint_validation_rejects_unknown_hint() -> None:
+    assert validate_repository_profile_hint("member_package") == "member_package"
+
+    with pytest.raises(ValueError, match="Unknown generic repository profile hint"):
+        validate_repository_profile_hint("custom_unknown_hint")
 
 
 def test_build_repository_profile_detection_selects_package_set_from_static_evidence() -> None:

@@ -40,6 +40,7 @@ The canonical source files remain in the repository:
 - `docs/LANGUAGE_NEUTRAL_SEMANTIC_EXTRACTION.md`
 - `docs/REPOSITORY_PARSING_PLUGIN_CONTRACT.md`
 - `docs/REPOSITORY_PROFILE_SELECTION_CONTRACT.md`
+- `docs/REPOSITORY_PROFILE_DISCOVERY_HINTS.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
 - `docs/BATCH_VALIDATION_REPORTS.md`
@@ -154,6 +155,7 @@ the host.
 - <doc:CodeGraphCompatibilityGuard>
 - <doc:RepositoryParsingPluginContract>
 - <doc:RepositoryProfileSelectionContract>
+- <doc:RepositoryProfileDiscoveryHints>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
 - <doc:ProceduralStyleReport>

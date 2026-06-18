@@ -1,0 +1,202 @@
+{
+  "apiVersion": "spec-harvester.repository-profile-hints/v0",
+  "kind": "SpecHarvesterRepositoryProfileHintVocabulary",
+  "schemaVersion": 1,
+  "authority": "producer_profile_hint_vocabulary_only",
+  "hints": [
+    {
+      "hint": "package_set_root",
+      "title": "Package-Set Root",
+      "pathSubject": "workspace_root",
+      "summary": "Path likely anchors an aggregate package-set candidate.",
+      "consumerAction": "review_as_candidate_package_set_root",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "member_package",
+      "title": "Member Package",
+      "pathSubject": "package_root",
+      "summary": "Path likely contains a package that belongs to a package-set.",
+      "consumerAction": "review_as_candidate_member_package",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "meta_package",
+      "title": "Meta Package",
+      "pathSubject": "package_root",
+      "summary": "Path likely groups or re-exports other package surfaces.",
+      "consumerAction": "review_as_meta_or_aggregate_package",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "primary_package",
+      "title": "Primary Package",
+      "pathSubject": "package_root",
+      "summary": "Path likely contains a primary public package surface.",
+      "consumerAction": "review_as_primary_public_package",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "cli_package",
+      "title": "CLI Package",
+      "pathSubject": "package_root",
+      "summary": "Path likely contains a command-line package or executable surface.",
+      "consumerAction": "review_as_command_line_surface",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "bridge_package",
+      "title": "Bridge Package",
+      "pathSubject": "package_root",
+      "summary": "Path likely adapts one runtime, framework, or ecosystem to another.",
+      "consumerAction": "review_as_adapter_or_bridge_package",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "plugin_package",
+      "title": "Plugin Package",
+      "pathSubject": "package_root",
+      "summary": "Path likely extends a host package or framework.",
+      "consumerAction": "review_as_extension_surface",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "example_package",
+      "title": "Example Package",
+      "pathSubject": "package_root",
+      "summary": "Path likely exists to demonstrate usage rather than define a primary package.",
+      "consumerAction": "exclude_from_primary_members_unless_operator_selected",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "test_package",
+      "title": "Test Package",
+      "pathSubject": "package_root",
+      "summary": "Path likely contains test fixtures or test-only packages.",
+      "consumerAction": "exclude_from_public_interface_claims_by_default",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "documentation_source",
+      "title": "Documentation Source",
+      "pathSubject": "documentation_path",
+      "summary": "Path likely provides documentation or semantic usage evidence.",
+      "consumerAction": "use_as_semantic_usage_evidence",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "generated_artifact",
+      "title": "Generated Artifact",
+      "pathSubject": "source_or_output_path",
+      "summary": "Path likely contains generated source, build output, or checked-in artifacts.",
+      "consumerAction": "treat_as_generated_or_build_output",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "internal_utility",
+      "title": "Internal Utility",
+      "pathSubject": "package_or_source_path",
+      "summary": "Path likely supports the repository internally rather than defining public intent.",
+      "consumerAction": "exclude_from_primary_public_claims_by_default",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    },
+    {
+      "hint": "evidence_only",
+      "title": "Evidence Only",
+      "pathSubject": "evidence_path",
+      "summary": "Path should be retained as review evidence without becoming a package identity.",
+      "consumerAction": "retain_as_evidence_without_candidate_identity",
+      "nonAuthorityStatements": [
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_profile_hints_as_registry_truth"
+      ]
+    }
+  ],
+  "summary": {
+    "hintCount": 13,
+    "defaultConsumerBehavior": "review_only",
+    "registryAuthority": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_profile_hints_as_registry_truth"
+  ]
+}

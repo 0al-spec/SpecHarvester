@@ -1460,7 +1460,7 @@ Acceptance:
   batch as an explicit `auto | none | <profile-id>` decision layer, preserving
   backwards-compatible generic behavior when confidence is low, ambiguous, or
   disabled.
-- [ ] `P37-T5` Define generic workspace/member discovery hints produced by
+- [x] `P37-T5` Define generic workspace/member discovery hints produced by
   profiles: package-set root, member packages, meta packages, primary
   packages, CLI/bridge packages, plugin packages, examples, tests, docs,
   generated artifacts, internal utilities, and evidence-only sources.
