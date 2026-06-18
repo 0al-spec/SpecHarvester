@@ -1,6 +1,6 @@
 # Next Task: P37-T8 Harvest Manifest Evidence for Repository Profile Detection
 
-**Status:** Planned
+**Status:** In Progress
 **Branch:** `feature/P37-T8-harvest-manifest-evidence-for-profile-detection`
 **Phase:** Phase 37. Repository Profile Plugin Selection
 **Last Archived:** P37-T7 Real Repository Profile Auto-Selection Run
