@@ -1456,7 +1456,7 @@ Acceptance:
   surface that reads only static repository evidence and emits the detection
   artifact without collecting source files, installing dependencies, executing
   harvested code, invoking AI, or drafting packages.
-- [ ] `P37-T4` Connect repository profile selection to autonomous candidate
+- [x] `P37-T4` Connect repository profile selection to autonomous candidate
   batch as an explicit `auto | none | <profile-id>` decision layer, preserving
   backwards-compatible generic behavior when confidence is low, ambiguous, or
   disabled.

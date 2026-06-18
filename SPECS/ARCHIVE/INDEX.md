@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-06-18
+**Last Updated:** 2026-06-19
 
 ## Archived Tasks
 
@@ -159,6 +159,7 @@
 | P37-T1 | [P37-T1_Repository_Profile_Selection_Contract/](P37-T1_Repository_Profile_Selection_Contract/) | 2026-06-18 | PASS |
 | P37-T2 | [P37-T2_Repository_Profile_Detection_Fixture/](P37-T2_Repository_Profile_Detection_Fixture/) | 2026-06-18 | PASS |
 | P37-T3 | [P37-T3_Repository_Profile_Detection_CLI/](P37-T3_Repository_Profile_Detection_CLI/) | 2026-06-18 | PASS |
+| P37-T4 | [P37-T4_Repository_Profile_Batch_Integration/](P37-T4_Repository_Profile_Batch_Integration/) | 2026-06-19 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -285,6 +286,7 @@
 | 2026-06-18 | P37-T2 | Archived REVIEW_p37_t2_repository_profile_detection_fixture report |
 | 2026-06-18 | P37-T3 | Archived Repository Profile Detection CLI (PASS) |
 | 2026-06-18 | P37-T3 | Archived REVIEW_p37_t3_repository_profile_detection_cli report |
+| 2026-06-19 | P37-T4 | Archived Repository Profile Batch Integration (PASS) |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
