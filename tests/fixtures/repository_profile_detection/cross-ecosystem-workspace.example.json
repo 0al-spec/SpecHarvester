@@ -1,0 +1,165 @@
+{
+  "advisoryDownstreamHints": [
+    {
+      "confidence": "medium",
+      "hint": "documentation_source",
+      "path": "docs",
+      "reasonCodes": [
+        "documentation_path_present"
+      ]
+    },
+    {
+      "confidence": "high",
+      "hint": "member_package",
+      "path": "packages/core",
+      "reasonCodes": [
+        "member_manifest_present"
+      ]
+    },
+    {
+      "confidence": "high",
+      "hint": "member_package",
+      "path": "packages/ui",
+      "reasonCodes": [
+        "member_manifest_present"
+      ]
+    },
+    {
+      "confidence": "high",
+      "hint": "package_set_root",
+      "path": ".",
+      "reasonCodes": [
+        "workspace_manifest_present"
+      ]
+    }
+  ],
+  "apiVersion": "spec-harvester.repository-profile-detection/v0",
+  "authority": "producer_profile_selection_only",
+  "candidateProfiles": [
+    {
+      "confidence": "high",
+      "conflicts": [],
+      "evidencePaths": [
+        "pnpm-workspace.yaml",
+        "packages/core/package.json",
+        "packages/ui/package.json"
+      ],
+      "profileId": "generic.package_set.v0",
+      "reasonCodes": [
+        "workspace_manifest_present",
+        "multiple_member_manifests_present"
+      ],
+      "recommendedAction": "select",
+      "score": 0.92,
+      "title": "Generic Package-Set Repository"
+    },
+    {
+      "confidence": "low",
+      "conflicts": [
+        "generic.package_set.v0"
+      ],
+      "evidencePaths": [],
+      "profileId": "generic.single_package.v0",
+      "reasonCodes": [
+        "missing_root_manifest"
+      ],
+      "recommendedAction": "fallback",
+      "score": 0.24,
+      "title": "Generic Single-Package Repository"
+    },
+    {
+      "confidence": "low",
+      "conflicts": [
+        "generic.package_set.v0"
+      ],
+      "evidencePaths": [
+        "docs/guide.md"
+      ],
+      "profileId": "generic.documentation_site.v0",
+      "reasonCodes": [
+        "documentation_path_present",
+        "package_manifests_are_primary"
+      ],
+      "recommendedAction": "require_override",
+      "score": 0.18,
+      "title": "Generic Documentation Site Repository"
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "repository_profile_selected",
+      "evidencePaths": [
+        "pnpm-workspace.yaml",
+        "packages/core/package.json",
+        "packages/ui/package.json"
+      ],
+      "message": "Selected generic.package_set.v0 from static repository evidence.",
+      "severity": "info"
+    }
+  ],
+  "followUp": {
+    "batchIntegrationTask": "P37-T4",
+    "crossEcosystemFixturesTask": "P37-T6",
+    "hintVocabularyTask": "P37-T5",
+    "realRepositoryValidationTask": "P37-T7"
+  },
+  "kind": "SpecHarvesterRepositoryProfileDetection",
+  "nonAuthorityStatements": [
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_invoke_package_managers",
+    "does_not_run_ai",
+    "does_not_draft_packages",
+    "does_not_publish_registry_metadata",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_plugin_decisions_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "rejectedProfiles": [
+    {
+      "profileId": "generic.single_package.v0",
+      "reasonCodes": [
+        "not_selected",
+        "low_confidence",
+        "conflicts_with_selected_profile"
+      ]
+    },
+    {
+      "profileId": "generic.documentation_site.v0",
+      "reasonCodes": [
+        "not_selected",
+        "low_confidence",
+        "conflicts_with_selected_profile"
+      ]
+    }
+  ],
+  "repository": {
+    "id": "example.cross-ecosystem-workspace",
+    "name": "cross-ecosystem-workspace",
+    "ref": "main",
+    "revision": "1111111111111111111111111111111111111111",
+    "url": "https://example.invalid/cross-ecosystem/workspace"
+  },
+  "schemaVersion": 1,
+  "selection": {
+    "confidence": "high",
+    "decision": "selected",
+    "fallbackProfileId": "generic.repository.v0",
+    "mode": "auto",
+    "overrideSource": "none",
+    "reasonCodes": [
+      "workspace_manifest_present",
+      "multiple_member_manifests_present"
+    ],
+    "selectedProfileId": "generic.package_set.v0"
+  },
+  "sourceManifest": {
+    "declaredRepositoryProfile": null,
+    "entryId": "example.cross-ecosystem-workspace",
+    "path": null
+  }
+}

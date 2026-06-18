@@ -1464,7 +1464,7 @@ Acceptance:
   profiles: package-set root, member packages, meta packages, primary
   packages, CLI/bridge packages, plugin packages, examples, tests, docs,
   generated artifacts, internal utilities, and evidence-only sources.
-- [ ] `P37-T6` Add cross-ecosystem profile fixtures that prove the selection
+- [x] `P37-T6` Add cross-ecosystem profile fixtures that prove the selection
   contract is not Python-specific: one workspace-shaped fixture, one
   single-package fixture, one nested-package fixture, and one ambiguous
   multi-signal fixture.
