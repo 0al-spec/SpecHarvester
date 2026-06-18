@@ -177,6 +177,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t1_repository_plugin_subsystem_contract.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t8_harvest_manifest_evidence_for_profile_detection.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t7_real_repository_profile_auto_selection.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p37_t6_cross_ecosystem_profile_fixtures.md` |
@@ -307,6 +308,7 @@
 | 2026-06-19 | P37-T8 | Archived Harvest Manifest Evidence for Repository Profile Detection (PASS) |
 | 2026-06-19 | P37-T8 | Archived REVIEW_p37_t8_harvest_manifest_evidence_for_profile_detection report |
 | 2026-06-19 | P38-T1 | Archived Repository Plugin Subsystem Contract (PASS) |
+| 2026-06-19 | P38-T1 | Archived REVIEW_p38_t1_repository_plugin_subsystem_contract report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
