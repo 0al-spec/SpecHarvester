@@ -1468,7 +1468,7 @@ Acceptance:
   contract is not Python-specific: one workspace-shaped fixture, one
   single-package fixture, one nested-package fixture, and one ambiguous
   multi-signal fixture.
-- [ ] `P37-T7` Re-run a real repository with profile auto-selection and record
+- [x] `P37-T7` Re-run a real repository with profile auto-selection and record
   a quality comparison against manual targeting. FastMCP may be used as the
   motivating validation case, but the report must evaluate the generic
   subsystem: detection evidence, selected profile, confidence, overrides,
