@@ -9,6 +9,7 @@ from spec_harvester.cli import main
 from spec_harvester.repository_profile_detection import (
     GENERIC_FALLBACK_PROFILE_ID,
     PACKAGE_SET_PROFILE_ID,
+    SINGLE_PACKAGE_PROFILE_ID,
     RepositoryIdentity,
     RepositoryProfileDetectionOptions,
     build_repository_profile_detection,
@@ -20,6 +21,50 @@ from spec_harvester.repository_profile_hints import (
 )
 
 FIXTURES = Path(__file__).parent / "fixtures" / "repository_profile_detection"
+
+CROSS_ECOSYSTEM_SCENARIOS = {
+    "cross-ecosystem-workspace.example.json": {
+        "repository_id": "example.cross-ecosystem-workspace",
+        "repository_url": "https://example.invalid/cross-ecosystem/workspace",
+        "revision": "1" * 40,
+        "evidence_paths": (
+            "pnpm-workspace.yaml",
+            "packages/ui/package.json",
+            "packages/core/package.json",
+            "docs/guide.md",
+        ),
+    },
+    "cross-ecosystem-single-package.example.json": {
+        "repository_id": "example.cross-ecosystem-single-package",
+        "repository_url": "https://example.invalid/cross-ecosystem/single-package",
+        "revision": "2" * 40,
+        "evidence_paths": (
+            "pyproject.toml",
+            "README.md",
+            "docs/index.md",
+        ),
+    },
+    "cross-ecosystem-nested-package.example.json": {
+        "repository_id": "example.cross-ecosystem-nested-package",
+        "repository_url": "https://example.invalid/cross-ecosystem/nested-package",
+        "revision": "3" * 40,
+        "evidence_paths": (
+            "modules/core/go.mod",
+            "modules/plugin/go.mod",
+            "docs/usage.md",
+        ),
+    },
+    "cross-ecosystem-ambiguous-multi-signal.example.json": {
+        "repository_id": "example.cross-ecosystem-ambiguous-multi-signal",
+        "repository_url": "https://example.invalid/cross-ecosystem/ambiguous-multi-signal",
+        "revision": "4" * 40,
+        "evidence_paths": (
+            "pnpm-workspace.yaml",
+            "packages/core/package.json",
+            "docs/index.md",
+        ),
+    },
+}
 
 
 def test_repository_profile_hint_vocabulary_fixture_matches_builder() -> None:
@@ -64,6 +109,94 @@ def test_repository_profile_hint_validation_rejects_unknown_hint() -> None:
 
     with pytest.raises(ValueError, match="Unknown generic repository profile hint"):
         validate_repository_profile_hint("custom_unknown_hint")
+
+
+@pytest.mark.parametrize("fixture_name", sorted(CROSS_ECOSYSTEM_SCENARIOS))
+def test_cross_ecosystem_profile_fixture_matches_builder(fixture_name: str) -> None:
+    payload = json.loads((FIXTURES / fixture_name).read_text())
+
+    assert payload == cross_ecosystem_payload(fixture_name)
+    assert payload["apiVersion"] == "spec-harvester.repository-profile-detection/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryProfileDetection"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_profile_selection_only"
+    assert payload["selection"]["mode"] == "auto"
+    assert payload["selection"]["fallbackProfileId"] == GENERIC_FALLBACK_PROFILE_ID
+    assert "does_not_accept_packages" in payload["nonAuthorityStatements"]
+    assert "does_not_treat_plugin_decisions_as_registry_truth" in payload["nonAuthorityStatements"]
+
+
+def test_cross_ecosystem_profile_fixtures_cover_expected_selection_outcomes() -> None:
+    workspace = cross_ecosystem_fixture("cross-ecosystem-workspace.example.json")
+    assert workspace["selection"]["selectedProfileId"] == PACKAGE_SET_PROFILE_ID
+    assert workspace["selection"]["confidence"] == "high"
+    assert workspace["selection"]["decision"] == "selected"
+    assert workspace["selection"]["reasonCodes"] == [
+        "workspace_manifest_present",
+        "multiple_member_manifests_present",
+    ]
+    assert {(hint["hint"], hint["path"]) for hint in workspace["advisoryDownstreamHints"]} == {
+        ("documentation_source", "docs"),
+        ("member_package", "packages/core"),
+        ("member_package", "packages/ui"),
+        ("package_set_root", "."),
+    }
+
+    single_package = cross_ecosystem_fixture("cross-ecosystem-single-package.example.json")
+    assert single_package["selection"]["selectedProfileId"] == SINGLE_PACKAGE_PROFILE_ID
+    assert single_package["selection"]["confidence"] == "high"
+    assert single_package["selection"]["decision"] == "selected"
+    assert single_package["selection"]["reasonCodes"] == ["root_manifest_present"]
+    assert single_package["advisoryDownstreamHints"] == []
+
+    nested_package = cross_ecosystem_fixture("cross-ecosystem-nested-package.example.json")
+    assert nested_package["selection"]["selectedProfileId"] is None
+    assert nested_package["selection"]["decision"] == "fallback"
+    assert nested_package["selection"]["reasonCodes"] == [
+        "insufficient_high_confidence_profile_evidence"
+    ]
+    assert {
+        candidate["profileId"]: candidate["confidence"]
+        for candidate in nested_package["candidateProfiles"]
+    } == {
+        PACKAGE_SET_PROFILE_ID: "medium",
+        SINGLE_PACKAGE_PROFILE_ID: "low",
+        "generic.documentation_site.v0": "medium",
+    }
+
+    ambiguous = cross_ecosystem_fixture("cross-ecosystem-ambiguous-multi-signal.example.json")
+    assert ambiguous["selection"]["selectedProfileId"] is None
+    assert ambiguous["selection"]["decision"] == "fallback"
+    assert ambiguous["selection"]["reasonCodes"] == [
+        "insufficient_high_confidence_profile_evidence"
+    ]
+    candidates = {candidate["profileId"]: candidate for candidate in ambiguous["candidateProfiles"]}
+    assert candidates[PACKAGE_SET_PROFILE_ID]["confidence"] == "medium"
+    assert candidates[PACKAGE_SET_PROFILE_ID]["evidencePaths"] == [
+        "pnpm-workspace.yaml",
+        "packages/core/package.json",
+    ]
+    assert candidates["generic.documentation_site.v0"]["confidence"] == "medium"
+
+
+def cross_ecosystem_fixture(fixture_name: str) -> dict:
+    return json.loads((FIXTURES / fixture_name).read_text())
+
+
+def cross_ecosystem_payload(fixture_name: str) -> dict:
+    scenario = CROSS_ECOSYSTEM_SCENARIOS[fixture_name]
+    return build_repository_profile_detection(
+        RepositoryProfileDetectionOptions(
+            repository=RepositoryIdentity(
+                scenario["repository_id"],
+                scenario["repository_url"],
+                "main",
+                scenario["revision"],
+            ),
+            selection="auto",
+            evidence_paths=scenario["evidence_paths"],
+        )
+    )
 
 
 def test_build_repository_profile_detection_selects_package_set_from_static_evidence() -> None:

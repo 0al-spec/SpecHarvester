@@ -252,6 +252,31 @@ candidate drafting, and reviewer UI, but the hint boundary does not accept
 packages, does not accept relations, does not remove `preview_only`, does not
 publish registry metadata, and does not treat profile hints as registry truth.
 
+## Cross-Ecosystem Fixtures
+
+P37-T6 records cross-ecosystem fixture coverage in
+<doc:RepositoryProfileCrossEcosystemFixtures>.
+The GitHub source document is
+`docs/REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md`.
+
+The fixture set includes:
+
+- `cross-ecosystem-workspace.example.json` selects `generic.package_set.v0`;
+- `cross-ecosystem-single-package.example.json` selects
+  `generic.single_package.v0`;
+- `cross-ecosystem-nested-package.example.json` falls back to
+  `generic.repository.v0`;
+- `cross-ecosystem-ambiguous-multi-signal.example.json` falls back to
+  `generic.repository.v0`.
+
+These fixtures prove the profile selection contract against workspace-shaped,
+single-package, nested-package, and ambiguous multi-signal repositories without
+making any language or framework normative.
+
+They do not implement ecosystem-specific plugins, accept packages, accept
+relations, publish registry metadata, remove `preview_only`, treat profile
+decisions as registry truth, or treat profile hints as registry truth.
+
 ## Fallback Behavior
 
 Fallback must be explicit:

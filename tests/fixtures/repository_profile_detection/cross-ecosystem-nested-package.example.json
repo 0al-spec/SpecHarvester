@@ -1,0 +1,132 @@
+{
+  "advisoryDownstreamHints": [],
+  "apiVersion": "spec-harvester.repository-profile-detection/v0",
+  "authority": "producer_profile_selection_only",
+  "candidateProfiles": [
+    {
+      "confidence": "medium",
+      "conflicts": [
+        "generic.single_package.v0"
+      ],
+      "evidencePaths": [
+        "modules/core/go.mod",
+        "modules/plugin/go.mod"
+      ],
+      "profileId": "generic.package_set.v0",
+      "reasonCodes": [
+        "multiple_member_manifests_present"
+      ],
+      "recommendedAction": "fallback",
+      "score": 0.74,
+      "title": "Generic Package-Set Repository"
+    },
+    {
+      "confidence": "low",
+      "conflicts": [],
+      "evidencePaths": [],
+      "profileId": "generic.single_package.v0",
+      "reasonCodes": [
+        "missing_root_manifest"
+      ],
+      "recommendedAction": "fallback",
+      "score": 0.24,
+      "title": "Generic Single-Package Repository"
+    },
+    {
+      "confidence": "medium",
+      "conflicts": [],
+      "evidencePaths": [
+        "docs/usage.md"
+      ],
+      "profileId": "generic.documentation_site.v0",
+      "reasonCodes": [
+        "documentation_path_present"
+      ],
+      "recommendedAction": "require_override",
+      "score": 0.65,
+      "title": "Generic Documentation Site Repository"
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "repository_profile_fallback",
+      "evidencePaths": [
+        "docs/usage.md",
+        "modules/core/go.mod",
+        "modules/plugin/go.mod"
+      ],
+      "message": "Falling back to generic.repository.v0 from static repository evidence.",
+      "severity": "warning"
+    }
+  ],
+  "followUp": {
+    "batchIntegrationTask": "P37-T4",
+    "crossEcosystemFixturesTask": "P37-T6",
+    "hintVocabularyTask": "P37-T5",
+    "realRepositoryValidationTask": "P37-T7"
+  },
+  "kind": "SpecHarvesterRepositoryProfileDetection",
+  "nonAuthorityStatements": [
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_invoke_package_managers",
+    "does_not_run_ai",
+    "does_not_draft_packages",
+    "does_not_publish_registry_metadata",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_plugin_decisions_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "rejectedProfiles": [
+    {
+      "profileId": "generic.package_set.v0",
+      "reasonCodes": [
+        "not_selected",
+        "medium_confidence",
+        "conflicts_with_selected_profile"
+      ]
+    },
+    {
+      "profileId": "generic.single_package.v0",
+      "reasonCodes": [
+        "not_selected",
+        "low_confidence"
+      ]
+    },
+    {
+      "profileId": "generic.documentation_site.v0",
+      "reasonCodes": [
+        "not_selected",
+        "medium_confidence"
+      ]
+    }
+  ],
+  "repository": {
+    "id": "example.cross-ecosystem-nested-package",
+    "name": "cross-ecosystem-nested-package",
+    "ref": "main",
+    "revision": "3333333333333333333333333333333333333333",
+    "url": "https://example.invalid/cross-ecosystem/nested-package"
+  },
+  "schemaVersion": 1,
+  "selection": {
+    "confidence": "low",
+    "decision": "fallback",
+    "fallbackProfileId": "generic.repository.v0",
+    "mode": "auto",
+    "overrideSource": "none",
+    "reasonCodes": [
+      "insufficient_high_confidence_profile_evidence"
+    ],
+    "selectedProfileId": null
+  },
+  "sourceManifest": {
+    "declaredRepositoryProfile": null,
+    "entryId": "example.cross-ecosystem-nested-package",
+    "path": null
+  }
+}

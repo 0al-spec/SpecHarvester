@@ -690,7 +690,8 @@ Planned follow-ups:
   [`REPOSITORY_PROFILE_DISCOVERY_HINTS.md`](REPOSITORY_PROFILE_DISCOVERY_HINTS.md)
   and `SpecHarvesterRepositoryProfileHintVocabulary`;
 - `P37-T6`: add cross-ecosystem fixtures so the subsystem is not tied to one
-  language or framework;
+  language or framework through
+  [`REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md);
 - `P37-T7`: rerun a real repository with profile auto-selection and compare
   it against manual targeting.
 

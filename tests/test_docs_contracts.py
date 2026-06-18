@@ -3040,7 +3040,7 @@ def assert_p37_t5_recent(next_text: str) -> None:
 def assert_phase_37_t6_active(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P37-T6 Cross-Ecosystem Profile Fixtures" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text
     assert "`feature/P37-T6-cross-ecosystem-profile-fixtures`" in next_text
     assert "Phase 37. Repository Profile Plugin Selection" in next_text
     assert "`P37-T6` adds cross-ecosystem profile fixtures" in normalized
@@ -12301,6 +12301,11 @@ def test_repository_profile_selection_contract_is_documented() -> None:
             "P37-T5",
             "P37-T6",
             "P37-T7",
+            "REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md",
+            "cross-ecosystem-workspace.example.json",
+            "cross-ecosystem-single-package.example.json",
+            "cross-ecosystem-nested-package.example.json",
+            "cross-ecosystem-ambiguous-multi-signal.example.json",
             "repository-profile-detect",
             "--selection auto",
             "--selection none",
@@ -12323,18 +12328,33 @@ def test_repository_profile_selection_contract_is_documented() -> None:
 
     assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in docs_index.read_text(encoding="utf-8")
     assert "REPOSITORY_PROFILE_DISCOVERY_HINTS.md" in docs_index.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md" in docs_index.read_text(
+        encoding="utf-8"
+    )
     assert "docs/REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in docc_root.read_text(encoding="utf-8")
     assert "docs/REPOSITORY_PROFILE_DISCOVERY_HINTS.md" in docc_root.read_text(encoding="utf-8")
+    assert "docs/REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md" in docc_root.read_text(
+        encoding="utf-8"
+    )
     assert "<doc:RepositoryProfileSelectionContract>" in docc_root.read_text(encoding="utf-8")
     assert "<doc:RepositoryProfileDiscoveryHints>" in docc_root.read_text(encoding="utf-8")
+    assert "<doc:RepositoryProfileCrossEcosystemFixtures>" in docc_root.read_text(encoding="utf-8")
     assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in capabilities.read_text(encoding="utf-8")
     assert "REPOSITORY_PROFILE_DISCOVERY_HINTS.md" in capabilities.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md" in capabilities.read_text(
+        encoding="utf-8"
+    )
     assert "RepositoryProfileSelectionContract" in capabilities_docc.read_text(encoding="utf-8")
     assert "RepositoryProfileDiscoveryHints" in capabilities_docc.read_text(encoding="utf-8")
+    assert "RepositoryProfileCrossEcosystemFixtures" in capabilities_docc.read_text(
+        encoding="utf-8"
+    )
     assert "REPOSITORY_PROFILE_SELECTION_CONTRACT.md" in roadmap.read_text(encoding="utf-8")
     assert "REPOSITORY_PROFILE_DISCOVERY_HINTS.md" in roadmap.read_text(encoding="utf-8")
+    assert "REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md" in roadmap.read_text(encoding="utf-8")
     assert "RepositoryProfileSelectionContract" in roadmap_docc.read_text(encoding="utf-8")
     assert "RepositoryProfileDiscoveryHints" in roadmap_docc.read_text(encoding="utf-8")
+    assert "RepositoryProfileCrossEcosystemFixtures" in roadmap_docc.read_text(encoding="utf-8")
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
@@ -12422,6 +12442,89 @@ def test_repository_profile_discovery_hints_vocabulary_is_documented() -> None:
             "does not accept relations",
             "remove `preview_only`",
             "publish registry metadata",
+            "treat profile hints as registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_profile_cross_ecosystem_fixtures_are_documented() -> None:
+    fixture_dir = ROOT / "tests" / "fixtures" / "repository_profile_detection"
+    github_doc = ROOT / "docs" / "REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryProfileCrossEcosystemFixtures.md"
+    )
+    selection_doc = ROOT / "docs" / "REPOSITORY_PROFILE_SELECTION_CONTRACT.md"
+    selection_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryProfileSelectionContract.md"
+    )
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    fixtures = {
+        "cross-ecosystem-workspace.example.json": "generic.package_set.v0",
+        "cross-ecosystem-single-package.example.json": "generic.single_package.v0",
+        "cross-ecosystem-nested-package.example.json": None,
+        "cross-ecosystem-ambiguous-multi-signal.example.json": None,
+    }
+    for fixture_name, selected_profile in fixtures.items():
+        payload = json.loads((fixture_dir / fixture_name).read_text(encoding="utf-8"))
+        assert payload["apiVersion"] == "spec-harvester.repository-profile-detection/v0"
+        assert payload["kind"] == "SpecHarvesterRepositoryProfileDetection"
+        assert payload["schemaVersion"] == 1
+        assert payload["authority"] == "producer_profile_selection_only"
+        assert payload["selection"]["mode"] == "auto"
+        assert payload["selection"]["fallbackProfileId"] == "generic.repository.v0"
+        assert payload["selection"]["selectedProfileId"] == selected_profile
+        assert "does_not_accept_packages" in payload["nonAuthorityStatements"]
+        assert (
+            "does_not_treat_plugin_decisions_as_registry_truth" in payload["nonAuthorityStatements"]
+        )
+
+    workspace = json.loads(
+        (fixture_dir / "cross-ecosystem-workspace.example.json").read_text(encoding="utf-8")
+    )
+    assert {(hint["hint"], hint["path"]) for hint in workspace["advisoryDownstreamHints"]} == {
+        ("documentation_source", "docs"),
+        ("member_package", "packages/core"),
+        ("member_package", "packages/ui"),
+        ("package_set_root", "."),
+    }
+
+    for path in (github_doc, docc_doc, selection_doc, selection_docc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "cross-ecosystem-workspace.example.json",
+            "cross-ecosystem-single-package.example.json",
+            "cross-ecosystem-nested-package.example.json",
+            "cross-ecosystem-ambiguous-multi-signal.example.json",
+            "spec-harvester.repository-profile-detection/v0",
+            "SpecHarvesterRepositoryProfileDetection",
+            "producer_profile_selection_only",
+            "generic.package_set.v0",
+            "generic.single_package.v0",
+            "generic.repository.v0",
+            "package_set_root",
+            "member_package",
+            "documentation_source",
+            "workspace-shaped",
+            "single-package",
+            "nested-package",
+            "ambiguous multi-signal",
+            "do not implement ecosystem-specific plugins",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat profile decisions as registry truth",
             "treat profile hints as registry truth",
         ):
             assert required in normalized, f"Required term {required!r} not found in {path}"
