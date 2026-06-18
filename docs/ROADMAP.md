@@ -693,12 +693,21 @@ Planned follow-ups:
   language or framework through
   [`REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PROFILE_CROSS_ECOSYSTEM_FIXTURES.md);
 - `P37-T7`: rerun a real repository with profile auto-selection and compare
-  it against manual targeting.
+  it against manual targeting through
+  [`REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md`](REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md);
+- `P37-T8`: make repository profile detection consume harvested package
+  manifest evidence when workspace inventory has no manifest records.
 
 The motivating FastMCP dry run showed why this layer is needed: generic
 repository-wide collection can over-include docs/examples, while manual member
 targets can produce better author-ready starter packages. FastMCP remains a
 validation case, not a hardcoded profile rule.
+
+P37-T7 confirmed that finding on a real FastMCP checkout. Auto-selection passed
+and explained its fallback, but it did not improve targeting: `harvest.json`
+found `pyproject.toml`, `workspace-inventory.json` had no manifest records, and
+manual `fastmcp_slim` targeting reduced public interface entrypoints from `772`
+to `260`.
 
 Selection decisions remain producer-side evidence only. Profile selection does
 not clone or fetch repositories, install dependencies, execute harvested code,

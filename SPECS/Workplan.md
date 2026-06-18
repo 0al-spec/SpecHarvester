@@ -1473,6 +1473,11 @@ Acceptance:
   motivating validation case, but the report must evaluate the generic
   subsystem: detection evidence, selected profile, confidence, overrides,
   public-interface precision, topology hints, and author-ready output quality.
+- [ ] `P37-T8` Make repository profile detection consume harvested package
+  manifest evidence when workspace inventory has no manifest records. The
+  FastMCP real run showed `harvest.json` can see a root package manifest while
+  `workspace-inventory.json` reports no manifests, causing auto-selection to
+  fall back despite available static evidence.
 
 Motivation:
 

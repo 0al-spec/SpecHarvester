@@ -1,0 +1,219 @@
+{
+  "apiVersion": "spec-harvester.repository-profile-real-run/v0",
+  "kind": "SpecHarvesterRepositoryProfileRealRunComparison",
+  "schemaVersion": 1,
+  "task": "P37-T7",
+  "source": {
+    "repositoryId": "fastmcp",
+    "repositoryUrl": "https://github.com/jlowin/fastmcp",
+    "localCheckout": "/Users/egor/Development/GitHub/fastmcp",
+    "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2"
+  },
+  "run": {
+    "runRoot": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z",
+    "aiMode": "disabled",
+    "networkAccess": "not_required",
+    "repositoryAcquisition": "operator_managed_local_checkout"
+  },
+  "autoSelectionRun": {
+    "repositoryId": "fastmcp.auto-root",
+    "target": {
+      "kind": "repository",
+      "path": "."
+    },
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch $RUN_ROOT/auto-inputs --out $RUN_ROOT/auto-output --skip-ai --repository-profile-selection auto",
+    "inputManifest": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/auto-inputs/repositories.yml",
+      "digest": "sha256:4c06f5d4da019fa099fef7274f4d2547d6ccda91849ae9f4a4c8f58b5a082d17"
+    },
+    "batchReport": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/auto-output/autonomous-candidate-batch-report.json",
+      "digest": "sha256:a306bb1a74ad226b28f867c1a1b19b370a56456429f89bb76fbd02389bebd1cb",
+      "status": "passed"
+    },
+    "repositoryProfileDetection": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/auto-output/reports/repository-profile-detections/fastmcp.auto-root/repository-profile-detection.json",
+      "digest": "sha256:92d8ed517fc341aab644c14cc5fd7f0005f84fa8341ad632e4f91a67a4189464",
+      "mode": "auto",
+      "decision": "fallback",
+      "selectedProfileId": null,
+      "fallbackProfileId": "generic.repository.v0",
+      "confidence": "low",
+      "reasonCodes": [
+        "insufficient_high_confidence_profile_evidence"
+      ],
+      "diagnosticCodes": [
+        "repository_profile_fallback"
+      ],
+      "candidateProfiles": [
+        {
+          "profileId": "generic.package_set.v0",
+          "confidence": "low",
+          "score": 0.35,
+          "reasonCodes": [
+            "missing_package_set_evidence"
+          ]
+        },
+        {
+          "profileId": "generic.single_package.v0",
+          "confidence": "low",
+          "score": 0.24,
+          "reasonCodes": [
+            "missing_root_manifest"
+          ]
+        },
+        {
+          "profileId": "generic.documentation_site.v0",
+          "confidence": "low",
+          "score": 0.18,
+          "reasonCodes": [
+            "missing_documentation_site_evidence"
+          ]
+        }
+      ],
+      "advisoryHints": []
+    },
+    "harvest": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/auto-output/collected/fastmcp.auto-root/harvest.json",
+      "digest": "sha256:3b7949d90d239a9052cd4779e106ef072c9370b9a52ba9123bc972cabea8d232",
+      "summary": {
+        "targetKind": "repository",
+        "fileCount": 22,
+        "packageManifestCount": 1,
+        "licenseFileCount": 1,
+        "skippedFileCount": 0
+      },
+      "packageManifestPaths": [
+        "pyproject.toml"
+      ]
+    },
+    "workspaceInventory": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/auto-output/collected/fastmcp.auto-root/workspace-inventory.json",
+      "digest": "sha256:cf7209e4c81fbd7fa39424233d78cf9603b90a137dab5334be548c0a6999828b",
+      "summary": {
+        "packageCount": 0,
+        "packageManifestCount": 0,
+        "workspaceManifestCount": 0,
+        "diagnosticCount": 0
+      }
+    },
+    "publicInterface": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/auto-output/collected/fastmcp.auto-root/public-interface-index.json",
+      "digest": "sha256:f40ddc9b972a9c95da077d4c58c374ebfc055b3f14adec1be76571717fc7ea4f",
+      "summary": {
+        "status": "complete",
+        "packageCount": 1,
+        "entrypointCount": 772,
+        "symbolCount": 9199,
+        "diagnosticCount": 0
+      }
+    },
+    "authorReadyDraft": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/auto-output/package-sets/fastmcp.auto-root/fastmcp.auto_root/author-ready-draft-quality-report.json",
+      "digest": "sha256:204b8b807db31d57c7beeef959ca08e83a0c38a9e1d1da8e1db120e7f1fba278",
+      "status": "author_ready_draft",
+      "hardGateStatus": "passed",
+      "actionItemCount": 3
+    }
+  },
+  "manualTargetRun": {
+    "repositoryId": "fastmcp.manual-slim",
+    "target": {
+      "kind": "folder",
+      "path": "fastmcp_slim"
+    },
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch $RUN_ROOT/manual-inputs --out $RUN_ROOT/manual-output --skip-ai --repository-profile-selection none",
+    "inputManifest": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/manual-inputs/repositories.yml",
+      "digest": "sha256:80dfe7bb62155abe1c05cfd45a520ec227e349255a5e63a321bb007bbe3f5e2e"
+    },
+    "batchReport": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/manual-output/autonomous-candidate-batch-report.json",
+      "digest": "sha256:c1f094aef35f36da3a1fced124f010248d1fc0061aecfc5aaa33ad1f6432253d",
+      "status": "passed"
+    },
+    "repositoryProfileDetection": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/manual-output/reports/repository-profile-detections/fastmcp.manual-slim/repository-profile-detection.json",
+      "digest": "sha256:2916b58a892873b0dd40bab8c9902d336ca6e4dec92501909907802abdd080a3",
+      "mode": "none",
+      "decision": "disabled",
+      "selectedProfileId": null,
+      "fallbackProfileId": "generic.repository.v0",
+      "confidence": "blocked",
+      "reasonCodes": [
+        "profile_selection_disabled"
+      ],
+      "diagnosticCodes": [
+        "repository_profile_selection_disabled"
+      ],
+      "advisoryHints": []
+    },
+    "harvest": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/manual-output/collected/fastmcp.manual-slim/harvest.json",
+      "digest": "sha256:ef26753d26a5c36e38749c644b630b403ac32f13bea91be5ab8cc8c12c6df619",
+      "summary": {
+        "targetKind": "folder",
+        "fileCount": 263,
+        "packageManifestCount": 1,
+        "licenseFileCount": 1,
+        "skippedFileCount": 0
+      },
+      "packageManifestPaths": [
+        "fastmcp_slim/pyproject.toml"
+      ]
+    },
+    "workspaceInventory": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/manual-output/collected/fastmcp.manual-slim/workspace-inventory.json",
+      "digest": "sha256:bf3298a65d6b4d619b66b3fadc177c5417f950ec273f46e4c462b10cb61aa677",
+      "summary": {
+        "packageCount": 0,
+        "packageManifestCount": 0,
+        "workspaceManifestCount": 0,
+        "diagnosticCount": 0
+      }
+    },
+    "publicInterface": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/manual-output/collected/fastmcp.manual-slim/public-interface-index.json",
+      "digest": "sha256:fd05dc90aa15ca5e836c889144de3de078d15c329ce46607000c560614fe9214",
+      "summary": {
+        "status": "complete",
+        "packageCount": 1,
+        "entrypointCount": 260,
+        "symbolCount": 1563,
+        "diagnosticCount": 0
+      }
+    },
+    "authorReadyDraft": {
+      "path": "/tmp/specharvester-p37-t7-fastmcp-20260618T223329Z/manual-output/package-sets/fastmcp.manual-slim/fastmcp.manual_slim/author-ready-draft-quality-report.json",
+      "digest": "sha256:4f25419381d816bf5950e30517cc172268e4145593c610d7064bcd13b065ed33",
+      "status": "author_ready_draft",
+      "hardGateStatus": "passed",
+      "actionItemCount": 3
+    }
+  },
+  "comparison": {
+    "autoExplainsOutput": true,
+    "autoImprovesTargeting": false,
+    "manualTargetingStillNarrower": true,
+    "entrypointReductionFromManualTargeting": 512,
+    "symbolReductionFromManualTargeting": 7636,
+    "authorReadyStatusDelta": "none",
+    "publicInterfacePrecisionVerdict": "manual_targeting_materially_narrower",
+    "topologyHintVerdict": "auto_selection_lacks_manifest_evidence",
+    "verdict": "follow_up_required",
+    "recommendedFollowUp": "P37-T8"
+  },
+  "trustBoundary": [
+    "This comparison is producer-side evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It is not upstream FastMCP endorsement.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not publish registry metadata.",
+    "It does not remove preview_only.",
+    "It does not treat profile decisions as registry truth.",
+    "It does not treat profile hints as registry truth.",
+    "It does not treat manual targeting as registry truth.",
+    "It does not treat AI output as registry truth."
+  ]
+}

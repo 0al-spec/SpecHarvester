@@ -334,6 +334,28 @@ They do not implement ecosystem-specific plugins, accept packages, accept
 relations, publish registry metadata, remove `preview_only`, treat profile
 decisions as registry truth, or treat profile hints as registry truth.
 
+## Real FastMCP Comparison
+
+P37-T7 records a real FastMCP comparison in:
+
+```text
+tests/fixtures/repository_profile_real_runs/p37-t7-fastmcp-auto-selection-comparison.example.json
+```
+
+The GitHub-facing report is
+[`REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md`](REPOSITORY_PROFILE_REAL_RUN_FASTMCP.md).
+
+The run shows that repository-wide auto-selection currently falls back to
+`generic.repository.v0` with `confidence: low`, while explicit manual targeting
+of `fastmcp_slim` produces a narrower public interface index. The fixture
+records `follow_up_required` and recommends P37-T8.
+
+The reusable finding is not FastMCP-specific: `harvest.json` can see a package
+manifest while `workspace-inventory.json` has no manifest records, leaving
+profile detection without enough high-confidence evidence. P37-T8 should make
+repository profile detection consume harvested package manifest evidence when
+workspace inventory is empty.
+
 ## Fallback Behavior
 
 Fallback must be explicit:
