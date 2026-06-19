@@ -1,0 +1,160 @@
+{
+  "apiVersion": "spec-harvester.repository-plugin-static-evidence/v0",
+  "kind": "SpecHarvesterRepositoryPluginStaticEvidenceEnvelope",
+  "schemaVersion": 1,
+  "authority": "producer_plugin_static_evidence_only",
+  "inputAuthority": "static_local_evidence_only",
+  "registry": {
+    "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+    "digest": "sha256:6c0692de61fa97012c6a86e0283612ae3dc113f2a40b1bc33c741903dd710c74",
+    "kind": "SpecHarvesterRepositoryPluginRegistry",
+    "authority": "producer_plugin_registry_only"
+  },
+  "repository": {
+    "id": "example-workspace",
+    "sourceManifestPath": "inputs/repositories.yml",
+    "sourceManifestEntryId": "example-workspace",
+    "revision": "0123456789abcdef0123456789abcdef01234567"
+  },
+  "pathPolicy": {
+    "pathFormat": "posix_relative",
+    "parentSegmentsAllowed": false,
+    "absolutePathsAllowed": false,
+    "backslashAllowed": false,
+    "networkPathsAllowed": false
+  },
+  "evidenceKinds": [
+    "source_manifest",
+    "harvest_snapshot",
+    "workspace_inventory",
+    "public_interface_index",
+    "repository_profile_detection",
+    "repository_parsing_profile_decision",
+    "operator_label"
+  ],
+  "evidence": [
+    {
+      "kind": "source_manifest",
+      "path": "inputs/repositories.yml",
+      "digest": "sha256:a3fe0c15f5be481f508577f8a0f045a6c055e5e126ea1d717f6b7c3182f8c201",
+      "authority": "operator_declared_static_input",
+      "requiredFor": [
+        "parser_profile",
+        "repository_profile"
+      ]
+    },
+    {
+      "kind": "harvest_snapshot",
+      "path": "out/example-workspace/harvest.json",
+      "digest": "sha256:ab2f755ec16a4fb65b30f78f10d55025f8ac6822d3670460d2e8961f776f71ff",
+      "authority": "producer_collected_static_input",
+      "requiredFor": [
+        "parser_profile",
+        "repository_profile",
+        "evidence_producer"
+      ]
+    },
+    {
+      "kind": "workspace_inventory",
+      "path": "out/example-workspace/workspace-inventory.json",
+      "digest": "sha256:491ceaede2c3321e906a38291f0157d8efb80005d9c8a1af4ca81d2ba62a18e1",
+      "authority": "producer_collected_static_input",
+      "requiredFor": [
+        "repository_profile",
+        "evidence_producer",
+        "topology_helper"
+      ]
+    },
+    {
+      "kind": "repository_profile_detection",
+      "path": "out/example-workspace/repository-profile-detection.json",
+      "digest": "sha256:cfcdb2b697fb35b0596f9355cd07e42c457b557d364bd44d09cc2f36d3242faa",
+      "authority": "producer_profile_selection_only",
+      "requiredFor": [
+        "topology_helper",
+        "review_surface"
+      ]
+    },
+    {
+      "kind": "public_interface_index",
+      "path": "out/example-workspace/public-interface-index.json",
+      "digest": "sha256:0a40a9a59683f3eae8088ef557b867d4edf28c21678d7bd1b266e1c1385b946a",
+      "authority": "producer_static_interface_evidence_only",
+      "requiredFor": [
+        "evidence_producer",
+        "review_surface"
+      ]
+    },
+    {
+      "kind": "repository_parsing_profile_decision",
+      "path": "out/example-workspace/repository-parsing-profile-decision.json",
+      "digest": "sha256:db49f6b72128d4a27c42efab5656a334ab684b11515f6f59cc1636ef85fda8d1",
+      "authority": "producer_parser_profile_decision_only",
+      "requiredFor": [
+        "review_surface"
+      ]
+    },
+    {
+      "kind": "operator_label",
+      "path": "inputs/repository-plugin-labels.yml",
+      "digest": "sha256:919ba358d9d8aad67ae3fc794cef9b85686f3efde8866d2970c24e7494af5ccb",
+      "authority": "operator_declared_static_input",
+      "requiredFor": [
+        "parser_profile"
+      ]
+    }
+  ],
+  "advisorySignals": [
+    "root_manifest",
+    "workspace_manifest",
+    "member_manifest",
+    "public_interface_index_present",
+    "repository_profile_selected",
+    "parser_profile_available",
+    "operator_label_present"
+  ],
+  "summary": {
+    "evidenceCount": 7,
+    "evidenceKindCount": 7,
+    "advisorySignalCount": 7,
+    "safePathCount": 7,
+    "missingRequiredDigestCount": 0
+  },
+  "feeds": {
+    "task": "P39-T3",
+    "kind": "SpecHarvesterRepositoryPluginApplicabilityReport",
+    "apiVersion": "spec-harvester.repository-plugin-applicability/v0",
+    "authority": "producer_plugin_applicability_only"
+  },
+  "sidecarBoundary": {
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "evaluatorExecution": "not_run"
+  },
+  "nonAuthorityStatements": [
+    "does_not_load_third_party_plugin_code",
+    "does_not_execute_plugins",
+    "does_not_run_plugin_code",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_invoke_package_managers",
+    "does_not_run_ai",
+    "does_not_implement_evaluator_logic",
+    "does_not_add_cli",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_plugin_evidence_as_registry_truth",
+    "does_not_treat_plugin_decisions_as_registry_truth"
+  ],
+  "followUp": {
+    "evaluatorHelperTask": "P39-T3",
+    "cliReportTask": "P39-T4",
+    "batchIntegrationTask": "P39-T5",
+    "realValidationTask": "P39-T6"
+  }
+}

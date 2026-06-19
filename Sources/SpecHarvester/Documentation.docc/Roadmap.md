@@ -515,6 +515,13 @@ package managers, install dependencies, invoke AI, accept packages or
 relations, publish registry metadata, remove `preview_only`, or treat plugin
 decisions as registry truth.
 
+P39-T2 adds <doc:RepositoryPluginStaticEvidenceEnvelopeFixture> and
+`tests/fixtures/repository_plugins/static-evidence-envelope.example.json`.
+The fixture records `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope`,
+safe relative evidence paths, SHA-256 digests, `evidenceKinds[]`, advisory
+signals, and `appliedToDrafting: false` / `registryAuthority: false` sidecar
+boundaries before evaluator logic exists.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins must not clone or fetch repositories, install dependencies, execute

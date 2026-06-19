@@ -35,6 +35,8 @@ Allowed static inputs include:
 P39-T2 will define the machine-readable static evidence envelope that records
 repository identity, evidence paths, digests, available `evidenceKinds[]`,
 advisory signals, and authority statements.
+The P39-T2 fixture is documented in
+<doc:RepositoryPluginStaticEvidenceEnvelopeFixture>.
 
 The static evidence envelope uses source manifest metadata, `harvest.json`,
 `workspace-inventory.json`, `repository-profile-detection.json`,

@@ -91,3 +91,5 @@ registry truth.
 - `P39-T1`: record <doc:StaticRepositoryPluginApplicabilityEvaluator> as the
   plan for deriving applicability reports from a static evidence envelope
   instead of hand-authored sidecars.
+- `P39-T2`: record <doc:RepositoryPluginStaticEvidenceEnvelopeFixture> as the
+  bounded evidence input for future applicability report derivation.

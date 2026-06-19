@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P39-T3 Deterministic Static Applicability Evaluator Helper" in next_text:
+        assert_p39_t2_last_archived(next_text)
+        assert_p39_t2_recent(next_text)
+        assert_phase_39_t3_planned(next_text)
+        return
+
     if "# Next Task: P39-T2 Static Plugin Evidence Envelope Fixture" in next_text:
         assert_p39_t1_last_archived(next_text)
         assert_p39_t1_recent(next_text)
@@ -3688,6 +3694,59 @@ def assert_phase_39_t2_planned(next_text: str) -> None:
     assert "must not execute plugins" in normalized
     assert "must not run AI" in normalized
     assert "must not accept packages or relations" in normalized
+
+
+def assert_p39_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P39-T2 Static Plugin Evidence Envelope Fixture" in next_text
+
+
+def assert_p39_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P39-T2` added the machine-readable static plugin evidence envelope fixture" in normalized
+    )
+    assert "static-evidence-envelope.example.json" in next_text
+    assert "SpecHarvesterRepositoryPluginStaticEvidenceEnvelope" in next_text
+    assert "spec-harvester.repository-plugin-static-evidence/v0" in next_text
+    assert "source manifest metadata" in normalized
+    assert "harvest.json" in next_text
+    assert "workspace-inventory.json" in next_text
+    assert "repository-profile-detection.json" in next_text
+    assert "public-interface indexes" in next_text
+    assert "parser profile decisions" in normalized
+    assert "operator labels" in next_text
+    assert "safe relative paths" in normalized
+    assert "SHA-256 digests" in next_text
+    assert "evidenceKinds[]" in next_text
+    assert "advisory signals" in normalized
+    assert "appliedToDrafting: false" in next_text
+    assert "registryAuthority: false" in next_text
+    assert "producer-side evidence" in normalized
+    assert "not registry truth" in normalized
+
+
+def assert_phase_39_t3_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P39-T3 Deterministic Static Applicability Evaluator Helper" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P39-T3-deterministic-static-applicability-evaluator-helper`" in next_text
+    assert "Phase 39. Static Repository Plugin Applicability Evaluator" in next_text
+    assert "SpecHarvesterRepositoryPluginRegistry" in next_text
+    assert "SpecHarvesterRepositoryPluginStaticEvidenceEnvelope" in next_text
+    assert "SpecHarvesterRepositoryPluginApplicabilityReport" in next_text
+    assert "selected, rejected, fallback, and blocked plugin decisions" in normalized
+    assert "must not add a CLI" in normalized
+    assert "must not change autonomous batch behavior" in normalized
+    assert "must not load third-party plugin code" in normalized
+    assert "must not execute plugins" in normalized
+    assert "must not clone or fetch repositories" in normalized
+    assert "must not install dependencies" in normalized
+    assert "must not invoke package managers" in normalized
+    assert "must not run AI" in normalized
+    assert "must not accept packages or relations" in normalized
+    assert "must not publish registry metadata" in normalized
+    assert "must not remove `preview_only`" in normalized
+    assert "must not treat plugin decisions as registry truth" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -14227,6 +14286,283 @@ def test_static_repository_plugin_applicability_evaluator_plan_is_documented() -
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "## Phase 39. Static Repository Plugin Applicability Evaluator" in workplan_text
     assert "`P39-T1` Document the static repository plugin applicability evaluator" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_static_plugin_evidence_envelope_fixture_is_documented() -> None:
+    fixture_path = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "static-evidence-envelope.example.json"
+    )
+    registry_path = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "generic-registry.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginStaticEvidenceEnvelopeFixture.md"
+    )
+    evaluator_doc = ROOT / "docs" / "STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md"
+    evaluator_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "StaticRepositoryPluginApplicabilityEvaluator.md"
+    )
+    registry_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md"
+    registry_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginRegistryFixture.md"
+    )
+    applicability_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md"
+    applicability_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginApplicabilityReportFixture.md"
+    )
+    subsystem_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    subsystem_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.repository-plugin-static-evidence/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryPluginStaticEvidenceEnvelope"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_plugin_static_evidence_only"
+    assert payload["inputAuthority"] == "static_local_evidence_only"
+    assert payload["registry"] == {
+        "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+        "digest": "sha256:" + hashlib.sha256(registry_path.read_bytes()).hexdigest(),
+        "kind": "SpecHarvesterRepositoryPluginRegistry",
+        "authority": "producer_plugin_registry_only",
+    }
+    assert payload["repository"] == {
+        "id": "example-workspace",
+        "sourceManifestPath": "inputs/repositories.yml",
+        "sourceManifestEntryId": "example-workspace",
+        "revision": "0123456789abcdef0123456789abcdef01234567",
+    }
+    assert payload["pathPolicy"] == {
+        "pathFormat": "posix_relative",
+        "parentSegmentsAllowed": False,
+        "absolutePathsAllowed": False,
+        "backslashAllowed": False,
+        "networkPathsAllowed": False,
+    }
+    assert payload["evidenceKinds"] == registry["inputEvidenceKinds"]
+
+    evidence = payload["evidence"]
+    assert len(evidence) == payload["summary"]["evidenceCount"]
+    assert payload["summary"] == {
+        "evidenceCount": 7,
+        "evidenceKindCount": 7,
+        "advisorySignalCount": 7,
+        "safePathCount": 7,
+        "missingRequiredDigestCount": 0,
+    }
+    evidence_by_kind = {record["kind"]: record for record in evidence}
+    assert set(evidence_by_kind) == set(registry["inputEvidenceKinds"])
+    for record in evidence:
+        path = record["path"]
+        assert path
+        assert not path.startswith("/")
+        assert not path.startswith("\\")
+        assert "://" not in path
+        assert "\\" not in path
+        assert ".." not in path.split("/")
+        assert record["digest"].startswith("sha256:")
+        assert len(record["digest"]) == len("sha256:") + 64
+        assert set(record["requiredFor"]).issubset(set(registry["roles"]))
+        assert record["authority"] in {
+            "operator_declared_static_input",
+            "producer_collected_static_input",
+            "producer_profile_selection_only",
+            "producer_static_interface_evidence_only",
+            "producer_parser_profile_decision_only",
+        }
+
+    assert evidence_by_kind["source_manifest"]["path"] == "inputs/repositories.yml"
+    assert evidence_by_kind["harvest_snapshot"]["path"].endswith("/harvest.json")
+    assert evidence_by_kind["workspace_inventory"]["path"].endswith("/workspace-inventory.json")
+    assert evidence_by_kind["repository_profile_detection"]["path"].endswith(
+        "/repository-profile-detection.json"
+    )
+    assert evidence_by_kind["public_interface_index"]["path"].endswith(
+        "/public-interface-index.json"
+    )
+    assert evidence_by_kind["repository_parsing_profile_decision"]["path"].endswith(
+        "/repository-parsing-profile-decision.json"
+    )
+    assert evidence_by_kind["operator_label"]["path"] == "inputs/repository-plugin-labels.yml"
+
+    assert payload["advisorySignals"] == [
+        "root_manifest",
+        "workspace_manifest",
+        "member_manifest",
+        "public_interface_index_present",
+        "repository_profile_selected",
+        "parser_profile_available",
+        "operator_label_present",
+    ]
+    assert payload["feeds"] == {
+        "task": "P39-T3",
+        "kind": "SpecHarvesterRepositoryPluginApplicabilityReport",
+        "apiVersion": "spec-harvester.repository-plugin-applicability/v0",
+        "authority": "producer_plugin_applicability_only",
+    }
+    assert payload["sidecarBoundary"] == {
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "evaluatorExecution": "not_run",
+    }
+    for statement in (
+        "does_not_load_third_party_plugin_code",
+        "does_not_execute_plugins",
+        "does_not_run_plugin_code",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_execute_harvested_code",
+        "does_not_invoke_package_managers",
+        "does_not_run_ai",
+        "does_not_implement_evaluator_logic",
+        "does_not_add_cli",
+        "does_not_change_autonomous_batch_behavior",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_plugin_evidence_as_registry_truth",
+        "does_not_treat_plugin_decisions_as_registry_truth",
+    ):
+        assert statement in payload["nonAuthorityStatements"]
+    assert payload["followUp"] == {
+        "evaluatorHelperTask": "P39-T3",
+        "cliReportTask": "P39-T4",
+        "batchIntegrationTask": "P39-T5",
+        "realValidationTask": "P39-T6",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Static Evidence Envelope Fixture",
+            "SpecHarvesterRepositoryPluginStaticEvidenceEnvelope",
+            "spec-harvester.repository-plugin-static-evidence/v0",
+            "producer_plugin_static_evidence_only",
+            "static_local_evidence_only",
+            "static-evidence-envelope.example.json",
+            "SpecHarvesterRepositoryPluginRegistry",
+            "SpecHarvesterRepositoryPluginApplicabilityReport",
+            "source manifest metadata",
+            "harvest.json",
+            "workspace-inventory.json",
+            "repository-profile-detection.json",
+            "public-interface indexes",
+            "parser profile decisions",
+            "operator labels",
+            "evidenceKinds[]",
+            "source_manifest",
+            "harvest_snapshot",
+            "workspace_inventory",
+            "public_interface_index",
+            "repository_profile_detection",
+            "repository_parsing_profile_decision",
+            "operator_label",
+            "root_manifest",
+            "workspace_manifest",
+            "member_manifest",
+            "public_interface_index_present",
+            "repository_profile_selected",
+            "parser_profile_available",
+            "operator_label_present",
+            "sha256:<64 hex chars>",
+            "appliedToDrafting: false",
+            "registryAuthority: false",
+            "evaluatorExecution: not_run",
+            "P39-T3",
+            "P39-T4",
+            "P39-T5",
+            "P39-T6",
+            "repository-plugin-applicability-detect",
+            "autonomous-candidate-batch",
+            "producer-side evidence",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "does not load third-party plugin code",
+            "execute plugins",
+            "run plugin code",
+            "clone or fetch repositories",
+            "install dependencies",
+            "execute harvested code",
+            "invoke package managers",
+            "run AI",
+            "implement evaluator logic",
+            "add a CLI",
+            "change autonomous batch behavior",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat plugin evidence as registry truth",
+            "treat plugin decisions as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md"),
+        (docc_root, "docs/REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md"),
+        (docc_root, "<doc:RepositoryPluginStaticEvidenceEnvelopeFixture>"),
+        (capabilities, "REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md"),
+        (capabilities_docc, "RepositoryPluginStaticEvidenceEnvelopeFixture"),
+        (roadmap, "REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md"),
+        (roadmap_docc, "RepositoryPluginStaticEvidenceEnvelopeFixture"),
+        (evaluator_doc, "REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md"),
+        (evaluator_docc, "RepositoryPluginStaticEvidenceEnvelopeFixture"),
+        (registry_doc, "REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md"),
+        (registry_docc, "RepositoryPluginStaticEvidenceEnvelopeFixture"),
+        (applicability_doc, "REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md"),
+        (applicability_docc, "RepositoryPluginStaticEvidenceEnvelopeFixture"),
+        (subsystem_doc, "REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md"),
+        (subsystem_docc, "RepositoryPluginStaticEvidenceEnvelopeFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P39-T2` Add a machine-readable static plugin evidence envelope fixture" in (
+        workplan_text
+    )
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

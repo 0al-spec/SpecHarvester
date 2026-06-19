@@ -59,6 +59,10 @@ Published DocC site:
 20. [`STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`](STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md):
    Phase 39 plan for deriving repository plugin applicability reports from
    bounded static evidence instead of hand-authored sidecars
+21. [`REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`](REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md):
+   machine-readable
+   `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope` fixture for static
+   evidence available to future plugin applicability evaluation
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

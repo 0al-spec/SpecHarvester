@@ -98,3 +98,5 @@ as registry truth, or treat AI output as registry truth.
   batch as sidecar producer evidence.
 - `P38-T5`: add cross-ecosystem plugin subsystem fixtures.
 - `P38-T6`: run one real repository through the plugin evidence path.
+- `P39-T2`: add <doc:RepositoryPluginStaticEvidenceEnvelopeFixture> as the
+  static evidence envelope consumed by future applicability evaluation.
