@@ -206,6 +206,7 @@ the host.
 - <doc:TrustedLocalAdapterRealLocalSandboxRunReadiness>
 - <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture>
 - <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture>
+- <doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

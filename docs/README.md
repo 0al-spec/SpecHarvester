@@ -169,6 +169,12 @@ Published DocC site:
    fixture for request identity, verifier/readiness evidence requirements,
    scoped approval, runtime/output/audit policy, rejected unsafe shapes, and
    review-only non-authority statements
+44. [`TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md):
+   P42-T10
+   `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport`
+   fixture for P42-T8/P42-T9 request/preflight linkage validation while
+   preserving disabled execution, no adapter code loading, no process spawning,
+   no network access, no registry authority, and no adapter output acceptance
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

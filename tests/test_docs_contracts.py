@@ -39,6 +39,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def assert_current_next_task(next_text: str) -> None:
     if (
+        "# Next Task: P42-T11 Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff"
+    ) in next_text:
+        assert_p42_t10_last_archived(next_text)
+        assert_p42_t10_recent(next_text)
+        assert_phase_42_t11_planned(next_text)
+        return
+
+    if (
         "# Next Task: P42-T10 Disabled Explicit Real Local Trusted Adapter Sandbox Runner Skeleton"
     ) in next_text:
         assert_p42_t9_last_archived(next_text)
@@ -5325,6 +5333,93 @@ def assert_phase_42_t10_planned(next_text: str) -> None:
     assert "Do not implement real adapter execution" in normalized
     assert "Do not treat preflight pass as execution permission" in normalized
     assert "Do not treat the disabled runner skeleton as execution permission" in normalized
+
+
+def assert_p42_t10_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T10 Disabled Explicit Real Local Trusted Adapter Sandbox Runner "
+        "Skeleton"
+    ) in next_text
+
+
+def assert_p42_t10_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P42-T10` added `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport`"
+    ) in normalized
+    assert "disabled-explicit-real-local-trusted-adapter-sandbox-runner.example.json" in next_text
+    assert (
+        "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md" in next_text
+    )
+    assert "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton.md" in next_text
+    assert "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest" in normalized
+    assert "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport" in (
+        normalized
+    )
+    assert "pinned SHA-256 digests" in normalized
+    assert "request/preflight digest agreement" in normalized
+    assert "preflight_passed_review_only" in normalized
+    assert "no-execution boundaries" in normalized
+    assert "no consumed operator approval" in normalized
+    assert "disabled adapter execution" in normalized
+    assert "disabled adapter code loading" in normalized
+    assert "disabled process spawning" in normalized
+    assert "disabled runtime side effects" in normalized
+    assert "disabled registry authority" in normalized
+    assert "disabled adapter output acceptance" in normalized
+    assert "accepted, rejected, blocked, and warning checks" in normalized
+    assert "missing inputs" in normalized
+    assert "digest mismatch" in normalized
+    assert "non-review-only preflight decisions" in normalized
+    assert "execution permission drift" in normalized
+    assert "operator approval consumption" in normalized
+    assert "package/relation acceptance" in normalized
+    assert "baseline seeding" in normalized
+    assert "`preview_only` removal" in normalized
+    assert "runnerIsExecutionPermission: false" in normalized
+    assert "runnerIsOperatorApproval: false" in normalized
+    assert "runnerIsRegistryAuthority: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterCodeImportAttempted: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "executedAdapterCount: 0" in normalized
+    assert "runtimeInvoked: false" in normalized
+    assert "runtimeImplemented: false" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_phase_42_t11_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P42-T11 Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff"
+    ) in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert (
+        "`feature/P42-T11-explicit-real-local-trusted-adapter-sandbox-runner-evidence-handoff`"
+        in next_text
+    )
+    assert "explicit real local trusted adapter sandbox runner evidence handoff fixture" in (
+        normalized
+    )
+    assert "P42-T8 request, P42-T9 preflight, and P42-T10 disabled runner skeleton" in (normalized)
+    assert "review evidence without enabling real adapter execution" in normalized
+    assert "artifact identity and digest agreement" in normalized
+    assert "no adapter code loading" in normalized
+    assert "no process spawning" in normalized
+    assert "no dependency installation" in normalized
+    assert "no package manager invocation" in normalized
+    assert "no network access" in normalized
+    assert "no harvested code execution" in normalized
+    assert "no AI execution" in normalized
+    assert "no package acceptance" in normalized
+    assert "no relation acceptance" in normalized
+    assert "no baseline seeding" in normalized
+    assert "no registry metadata publishing" in normalized
+    assert "no `preview_only` removal" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
 
 
 def assert_phase_42_t8_planned(next_text: str) -> None:
@@ -20092,6 +20187,444 @@ def test_explicit_real_local_sandbox_run_request_preflight_fixture_is_documented
             "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md",
         ),
         (roadmap_docc, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_disabled_explicit_real_local_sandbox_runner_skeleton_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "disabled-explicit-real-local-trusted-adapter-sandbox-runner.example.json"
+    )
+    request_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "explicit-real-local-trusted-adapter-sandbox-run-request.example.json"
+    )
+    preflight_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "explicit-real-local-trusted-adapter-sandbox-run-request-preflight.example.json"
+    )
+    github_doc = (
+        ROOT
+        / "docs"
+        / "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md"
+    )
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton.md"
+    )
+    preflight_doc = (
+        ROOT
+        / "docs"
+        / "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md"
+    )
+    preflight_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    request_digest = "sha256:" + hashlib.sha256(request_fixture.read_bytes()).hexdigest()
+    preflight_digest = "sha256:" + hashlib.sha256(preflight_fixture.read_bytes()).hexdigest()
+
+    assert (
+        payload["apiVersion"]
+        == "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runner/v0"
+    )
+    assert (
+        payload["kind"] == "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport"
+    )
+    assert payload["schemaVersion"] == 1
+    assert (
+        payload["authority"]
+        == "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runner_only"
+    )
+    assert payload["contract"] == {
+        "purpose": (
+            "Validate explicit real local trusted adapter sandbox request/preflight linkage "
+            "through a disabled runner skeleton without granting execution authority."
+        ),
+        "contractVersion": "0.1.0",
+        "requestAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only"
+        ),
+        "preflightAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_run_request_preflight_only"
+        ),
+        "runnerAuthority": (
+            "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runner_only"
+        ),
+        "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+        "defaultExecution": "disabled",
+        "runnerIsExecutionPermission": False,
+        "runnerIsOperatorApproval": False,
+        "runnerIsRegistryAuthority": False,
+    }
+
+    assert payload["inputs"]["request"] == {
+        "path": (
+            "tests/fixtures/repository_plugins/"
+            "explicit-real-local-trusted-adapter-sandbox-run-request.example.json"
+        ),
+        "digest": request_digest,
+        "apiVersion": ("spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request/v0"),
+        "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest",
+        "schemaVersion": 1,
+        "authority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only",
+        "digestVerified": True,
+    }
+    assert payload["inputs"]["preflight"] == {
+        "path": (
+            "tests/fixtures/repository_plugins/"
+            "explicit-real-local-trusted-adapter-sandbox-run-request-preflight.example.json"
+        ),
+        "digest": preflight_digest,
+        "apiVersion": (
+            "spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request-preflight/v0"
+        ),
+        "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport",
+        "schemaVersion": 1,
+        "authority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_run_request_preflight_only"
+        ),
+        "requiredResultStatus": "passed",
+        "requiredDecision": "preflight_passed_review_only",
+        "digestVerified": True,
+    }
+    assert_safe_relative_path(payload["inputs"]["request"]["path"])
+    assert_safe_relative_path(payload["inputs"]["preflight"]["path"])
+
+    assert payload["linkageValidation"] == {
+        "requestDigestAgreement": True,
+        "preflightReferencesRequest": True,
+        "preflightRequestDigest": request_digest,
+        "requestIdentityMatchesPreflightValidatedRequest": True,
+        "preflightResultStatusAccepted": True,
+        "preflightDecisionAccepted": True,
+        "requestExecutionPermissionGranted": False,
+        "preflightExecutionPermissionGranted": False,
+        "runnerExecutionPermissionGranted": False,
+        "operatorApprovalConsumed": False,
+        "operatorApprovalProvidedByRunner": False,
+    }
+    assert payload["runner"] == {
+        "status": "disabled_review_only",
+        "mode": "linkage_validation_only_no_execution",
+        "command": "disabled-explicit-real-local-trusted-adapter-sandbox-runner",
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "networkAccess": "none",
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+
+    expected_accepted = {
+        "request_identity_and_digest_valid",
+        "preflight_identity_and_digest_valid",
+        "preflight_points_to_request_digest",
+        "preflight_result_passed_review_only",
+        "request_preflight_no_execution_permission",
+        "operator_approval_not_consumed_by_runner",
+        "adapter_execution_disabled",
+        "adapter_code_loading_disabled",
+        "process_spawn_disabled",
+        "runtime_side_effects_disabled",
+        "registry_authority_disabled",
+        "adapter_output_acceptance_disabled",
+    }
+    expected_rejected = {
+        "missing_request_input_rejected",
+        "missing_preflight_input_rejected",
+        "request_digest_mismatch_rejected",
+        "preflight_digest_mismatch_rejected",
+        "preflight_request_digest_mismatch_rejected",
+        "preflight_status_not_passed_rejected",
+        "preflight_decision_not_review_only_rejected",
+        "request_execution_permission_rejected",
+        "preflight_execution_permission_rejected",
+        "runner_execution_permission_rejected",
+        "operator_approval_consumed_rejected",
+        "network_access_rejected",
+        "dependency_installation_rejected",
+        "package_manager_invocation_rejected",
+        "registry_authority_rejected",
+        "adapter_output_registry_truth_rejected",
+    }
+    expected_blocked = {
+        "adapter_code_loading_blocked",
+        "adapter_import_blocked",
+        "adapter_process_spawn_blocked",
+        "real_runtime_invocation_blocked",
+        "dependency_installation_blocked",
+        "network_access_blocked",
+        "harvested_code_execution_blocked",
+        "ai_execution_blocked",
+        "package_acceptance_blocked",
+        "relation_acceptance_blocked",
+        "baseline_seeding_blocked",
+        "preview_only_removal_blocked",
+        "adapter_output_truth_blocked",
+    }
+    expected_warnings = {
+        "runner_disabled_review_only",
+        "future_runtime_not_implemented",
+        "operator_approval_not_consumed",
+    }
+    assert {check["code"] for check in payload["acceptedChecks"]} == expected_accepted
+    assert {check["code"] for check in payload["rejectedChecks"]} == expected_rejected
+    assert {check["code"] for check in payload["blockedChecks"]} == expected_blocked
+    assert {check["code"] for check in payload["warningChecks"]} == expected_warnings
+    for check in payload["acceptedChecks"]:
+        assert check["status"] == "passed"
+    for check in payload["rejectedChecks"]:
+        assert check["status"] == "rejected"
+    for check in payload["blockedChecks"]:
+        assert check["status"] == "blocked"
+    for check in payload["warningChecks"]:
+        assert check["status"] == "warning"
+
+    assert payload["summary"] == {
+        "acceptedCount": len(expected_accepted),
+        "rejectedCount": len(expected_rejected),
+        "blockedCount": len(expected_blocked),
+        "warningCount": len(expected_warnings),
+        "diagnosticCount": 2,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+    }
+    assert payload["executionBoundary"] == {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "requestIsExecutionPermission": False,
+        "preflightPassIsExecutionPermission": False,
+        "runnerIsExecutionPermission": False,
+        "runnerIsOperatorApproval": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert payload["diagnostics"] == [
+        {
+            "severity": "info",
+            "code": "disabled_explicit_real_local_sandbox_runner_skeleton",
+            "message": (
+                "Disabled runner skeleton validates P42-T8 request and P42-T9 preflight "
+                "linkage without loading adapter code or spawning processes."
+            ),
+        },
+        {
+            "severity": "warning",
+            "code": "runner_skeleton_is_not_execution_permission",
+            "message": (
+                "The disabled runner skeleton does not grant adapter execution authority, "
+                "operator approval, registry authority, or adapter output truth."
+            ),
+        },
+    ]
+
+    required_non_authority = {
+        "disabled_runner_is_not_execution_permission",
+        "disabled_runner_is_not_operator_approval",
+        "disabled_runner_is_not_registry_authority",
+        "request_fixture_is_not_execution_permission",
+        "preflight_pass_is_not_execution_permission",
+        "preflight_pass_is_not_operator_approval",
+        "does_not_load_third_party_adapter_code",
+        "does_not_import_adapter_code",
+        "does_not_execute_real_adapters",
+        "does_not_run_real_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_use_network",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_request_as_execution_permission",
+        "does_not_treat_preflight_as_execution_permission",
+        "does_not_treat_disabled_runner_as_execution_permission",
+        "does_not_grant_registry_authority",
+    }
+    assert required_non_authority == set(payload["nonAuthorityStatements"])
+    assert payload["followUp"] == {
+        "explicitRealLocalSandboxRunRequestTask": "P42-T8",
+        "explicitRealLocalSandboxRunRequestPreflightTask": "P42-T9",
+        "realLocalSandboxRunnerImplementationTask": ("deferred_until_after_disabled_runner_review"),
+        "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_review",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Disabled Explicit Real Local Sandbox Runner Skeleton",
+            "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport",
+            "disabled-explicit-real-local-trusted-adapter-sandbox-runner.example.json",
+            "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runner/v0",
+            "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runner_only",
+            "defaultExecution: disabled",
+            "runnerIsExecutionPermission: false",
+            "runnerIsOperatorApproval: false",
+            "runnerIsRegistryAuthority: false",
+            "explicit-real-local-trusted-adapter-sandbox-run-request.example.json",
+            request_digest,
+            "explicit-real-local-trusted-adapter-sandbox-run-request-preflight.example.json",
+            preflight_digest,
+            "requestDigestAgreement: true",
+            "preflightReferencesRequest: true",
+            "requestExecutionPermissionGranted: false",
+            "preflightExecutionPermissionGranted: false",
+            "runnerExecutionPermissionGranted: false",
+            "operatorApprovalConsumed: false",
+            "operatorApprovalProvidedByRunner: false",
+            "P42-T8 request identity and SHA-256 digest",
+            "P42-T9 preflight identity and SHA-256 digest",
+            "preflight request-digest agreement",
+            "preflight_passed_review_only",
+            "adapter execution disabled",
+            "adapter code loading disabled",
+            "process spawning disabled",
+            "runtime side effects disabled",
+            "registry authority disabled",
+            "adapter output acceptance disabled",
+            "missing request/preflight inputs",
+            "preflight/request digest mismatch",
+            "non-review-only preflight decision",
+            "adapter code loading",
+            "adapter import",
+            "adapter process spawning",
+            "real runtime invocation",
+            "dependency installation",
+            "network access",
+            "harvested-code execution",
+            "AI execution",
+            "package acceptance",
+            "relation acceptance",
+            "baseline seeding",
+            "`preview_only` removal",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterCodeImportAttempted: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "runtimeInvoked: false",
+            "runtimeImplemented: false",
+            "requestIsExecutionPermission: false",
+            "preflightPassIsExecutionPermission: false",
+            "registryAuthority: false",
+            "adapterOutputAccepted: false",
+            "does not load third-party adapter code",
+            "does not import adapter code",
+            "does not run adapter processes",
+            "does not install dependencies",
+            "does not invoke package managers",
+            "does not execute harvested repository code",
+            "does not run AI",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "does not treat the disabled runner skeleton as execution permission",
+            "P42-T8",
+            "P42-T9",
+            "P42-T10",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "runnerIsExecutionPermission: true",
+            "runnerIsOperatorApproval: true",
+            "runnerIsRegistryAuthority: true",
+            "adapterCodeLoaded: true",
+            "adapterCodeImportAttempted: true",
+            "adapterProcessSpawned: true",
+            "runtimeInvoked: true",
+            "networkAccess: allowed",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (
+            preflight_doc,
+            "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md",
+        ),
+        (preflight_docc, "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton"),
+        (
+            sandbox_plan,
+            "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md",
+        ),
+        (sandbox_plan_docc, "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton"),
+        (
+            docs_index,
+            "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md",
+        ),
+        (docc_root, "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton"),
+        (
+            capabilities,
+            "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md",
+        ),
+        (capabilities_docc, "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton"),
+        (
+            roadmap,
+            "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md",
+        ),
+        (roadmap_docc, "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

@@ -204,6 +204,7 @@ sandbox contract fixture
   -> real local sandbox run readiness gate
   -> explicit real local sandbox run request fixture
   -> explicit real local sandbox run request preflight fixture
+  -> disabled explicit real local sandbox runner skeleton
   -> real local adapter run only after review
 ```
 
@@ -239,4 +240,11 @@ a request preflight fixture. It checks request identity/digest,
 verifier/readiness evidence requirements, approval scope, runtime/output/audit
 policy, rejected unsafe shapes, blocked execution drift, and still keeps
 `preflightPassIsExecutionPermission: false`, `runtimeInvoked: false`, and
+`registryAuthority: false`.
+P42-T10 adds
+<doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton> as a
+disabled runner skeleton. It validates the P42-T8 request and P42-T9 preflight
+identity/digest linkage while preserving `adapterExecution: not_run`,
+`adapterCodeLoaded: false`, `adapterProcessSpawned: false`,
+`runtimeInvoked: false`, `runnerIsExecutionPermission: false`, and
 `registryAuthority: false`.

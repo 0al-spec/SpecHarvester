@@ -146,3 +146,6 @@ treat preflight as execution permission.
 - P42-T8 defines
   [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md).
 - P42-T9 adds this request preflight fixture.
+- P42-T10 defines
+  [`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md)
+  as the disabled request/preflight consumer skeleton.
