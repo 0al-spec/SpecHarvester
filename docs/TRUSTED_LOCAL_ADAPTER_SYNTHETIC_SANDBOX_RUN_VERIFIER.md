@@ -24,12 +24,18 @@ sandbox contract
   -> disabled sandbox runner validation
   -> explicitly approved synthetic sandbox run fixture
   -> synthetic sandbox run verifier
+  -> real local sandbox run readiness gate
   -> real local adapter run only after review
 ```
 
 It is producer-side review evidence only. It is not execution permission, not
 operator approval for arbitrary real runs, not registry acceptance, and not
 adapter output truth.
+
+P42-T7 adds
+[`SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport`](TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md)
+as a separate readiness gate for explicit future real-run review. Passing this
+verifier remains necessary evidence, but it is still not execution permission.
 
 ## Identity
 
@@ -125,3 +131,5 @@ The verifier states that it:
 - P42-T5 defines
   [`SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun`](TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md).
 - P42-T6 adds this verifier report and CLI gate.
+- P42-T7 adds
+  [`SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport`](TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md).
