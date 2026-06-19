@@ -1949,7 +1949,7 @@ Acceptance:
   network access, harvested-code execution, AI execution, package/relation
   acceptance, baseline seeding, registry publishing, `preview_only` removal,
   and adapter output truth.
-- [ ] `P42-T17` Add a disabled explicit real local trusted adapter sandbox
+- [x] `P42-T17` Add a disabled explicit real local trusted adapter sandbox
   runtime implementation skeleton that consumes the P42-T16 review packet and
   records the future runtime implementation surface while still refusing adapter
   code loading, adapter imports, process spawning, runtime invocation, and
@@ -1981,6 +1981,41 @@ Acceptance:
   `adapterCodeImportAttempted: false`, `adapterProcessSpawned: false`, and
   `adapterOutputAccepted: false`.
 - P42-T17 still blocks dependency installation, package-manager invocation,
+  network access, harvested-code execution, AI execution, package/relation
+  acceptance, baseline seeding, registry publishing, `preview_only` removal,
+  and adapter output truth.
+
+- [ ] `P42-T18` Add a disabled explicit real local trusted adapter sandbox
+  runtime implementation skeleton verifier that consumes the P42-T17 skeleton
+  fixture and validates identity, pinned P42-T16 review packet linkage,
+  disabled runtime surface fields, no-execution boundaries, no approval
+  consumption, and no registry authority.
+
+Motivation:
+
+- P42-T17 records the disabled runtime implementation surface, but reviewers
+  need a deterministic verifier before any future runtime implementation can
+  treat the skeleton as reviewed input.
+- The verifier should make skeleton drift explicit while preserving the same
+  no-execution and non-authority boundary.
+
+Goal:
+
+- Define a verifier report for the disabled runtime implementation skeleton
+  that validates P42-T17 without loading adapter code or invoking a runtime.
+
+Acceptance:
+
+- P42-T18 references P42-T17 with a pinned digest.
+- P42-T18 verifies P42-T17 identity, schema version, authority, linked P42-T16
+  review packet digest, disabled runtime surface count, accepted/rejected/
+  blocked/warning check counts, and execution boundary fields.
+- P42-T18 keeps `verifierIsExecutionPermission: false`,
+  `verifierIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
+  `runtimeImplemented: false`, `runtimeInvoked: false`,
+  `adapterCodeLoaded: false`, `adapterCodeImportAttempted: false`,
+  `adapterProcessSpawned: false`, and `adapterOutputAccepted: false`.
+- P42-T18 still blocks dependency installation, package-manager invocation,
   network access, harvested-code execution, AI execution, package/relation
   acceptance, baseline seeding, registry publishing, `preview_only` removal,
   and adapter output truth.

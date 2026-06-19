@@ -1,58 +1,59 @@
-# Next Task: P42-T17 Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Skeleton
+# Next Task: P42-T18 Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Skeleton Verifier
 
 **Status:** Planned
-**Branch:** `feature/P42-T17-disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton`
+**Branch:** `feature/P42-T18-disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton-verifier`
 **Phase:** Phase 42. Trusted Local Adapter Runtime Sandbox
-**Last Archived:** P42-T16 Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Review Packet
+**Last Archived:** P42-T17 Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Skeleton
 
 ## Recently Archived
 
-- `P42-T16` added
-  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket`.
-- The runtime implementation review packet fixture lives at
-  `tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-packet.example.json`.
+- `P42-T17` added
+  `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeleton`.
+- The disabled runtime implementation skeleton fixture lives at
+  `tests/fixtures/repository_plugins/disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton.example.json`.
 - GitHub docs are in
-  `docs/TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_PACKET.md`.
+  `docs/TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_SKELETON.md`.
 - DocC docs are in
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket.md`.
-- The packet references the P42-T15
-  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationEvidenceHandoff`
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton.md`.
+- The skeleton references the P42-T16
+  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket`
   fixture with a pinned SHA-256 digest.
-- The packet records implementation prerequisites for adapter package identity,
-  runtime entrypoint isolation, process spawning policy, dependency policy,
-  network policy, output digest verification, audit records, rollback policy,
-  and approval consumption rules.
-- The packet keeps `packetIsExecutionPermission: false`,
-  `packetIsRegistryAuthority: false`, `packetConsumesApproval: false`,
-  `packetImplementsRuntime: false`, `operatorApprovalConsumed: false`,
-  `adapterExecution: not_run`, `adapterCodeLoaded: false`,
-  `adapterCodeImportAttempted: false`, `adapterProcessSpawned: false`,
-  `runtimeInvoked: false`, `runtimeImplemented: false`,
-  `networkAccess: none`, `registryAuthority: false`, and
-  `adapterOutputAccepted: false`.
+- The skeleton records disabled runtime surface fields for entrypoint isolation,
+  process launcher boundary, dependency policy, network policy, output writer,
+  audit writer, rollback handler, and approval consumption boundary.
+- The skeleton keeps `implementationSkeletonIsExecutionPermission: false`,
+  `implementationSkeletonIsRegistryAuthority: false`,
+  `implementationSkeletonConsumesApproval: false`,
+  `implementationSkeletonImplementsRuntime: false`,
+  `operatorApprovalConsumed: false`, `adapterExecution: not_run`,
+  `adapterCodeLoaded: false`, `adapterCodeImportAttempted: false`,
+  `adapterProcessSpawned: false`, `runtimeInvoked: false`,
+  `runtimeImplemented: false`, `networkAccess: none`, `registryAuthority: false`,
+  and `adapterOutputAccepted: false`.
 
 ## Task
 
 Add a disabled explicit real local trusted adapter sandbox runtime
-implementation skeleton that consumes the P42-T16 review packet and records the
-future runtime implementation surface while still refusing adapter code loading,
-adapter imports, process spawning, runtime invocation, and approval
-consumption.
+implementation skeleton verifier that consumes the P42-T17 skeleton fixture and
+validates identity, pinned P42-T16 review packet linkage, disabled runtime
+surface fields, no-execution boundaries, no approval consumption, and no
+registry authority.
 
 ## Why This Is Next
 
-P42-T16 records the implementation prerequisites, but the project still needs a
-disabled skeleton that names the future runtime surface without introducing
-executable runtime behavior. The skeleton should make implementation shape
-reviewable before any adapter code can be loaded or invoked.
+P42-T17 records the disabled runtime implementation surface, but reviewers need
+a deterministic verifier before any future runtime implementation can treat the
+skeleton as reviewed input. The verifier should make skeleton drift explicit
+while preserving the same no-execution and non-authority boundary.
 
 ## Scope
 
-- Add a machine-readable disabled runtime implementation skeleton fixture.
-- Reference P42-T16 with a pinned digest.
-- Record disabled runtime surface fields for entrypoint isolation, process
-  launcher boundary, dependency policy, network policy, output writer, audit
-  writer, rollback handler, and approval consumption boundary.
+- Add a machine-readable disabled runtime implementation skeleton verifier
+  report fixture.
+- Reference P42-T17 with a pinned digest.
+- Verify P42-T17 identity, schema version, authority, linked P42-T16 review
+  packet digest, disabled runtime surface count, accepted/rejected/blocked/
+  warning check counts, and execution boundary fields.
 - Preserve no adapter code loading, no adapter import, no process spawning, no
   dependency installation, no package manager invocation, no network access, no
   harvested code execution, and no AI execution.
@@ -76,6 +77,6 @@ reviewable before any adapter code can be loaded or invoked.
 - Do not seed baselines.
 - Do not publish registry metadata.
 - Do not remove `preview_only`.
-- Do not treat P42-T16 as execution permission.
+- Do not treat P42-T17 as execution permission.
 - Do not consume approval by a real runtime.
 - Do not treat adapter output as registry truth.
