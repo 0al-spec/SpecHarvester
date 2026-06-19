@@ -312,3 +312,11 @@ records the future runtime surface while keeping
 `runtimeInvoked: false`, `adapterCodeLoaded: false`,
 `adapterCodeImportAttempted: false`, `adapterProcessSpawned: false`, and
 `adapterOutputAccepted: false`.
+P42-T18 adds
+[`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeletonVerifierReport`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_SKELETON_VERIFIER.md)
+as a verifier over the P42-T17 skeleton. It validates identity, pinned digest,
+linked P42-T16 review packet digest, disabled surface count, check counts,
+execution boundary, and non-authority statements while keeping
+`verifierIsExecutionPermission: false`, `verifierIsRegistryAuthority: false`,
+`verifierConsumesApproval: false`, `verifierInvokesRuntime: false`,
+`runtimeInvoked: false`, and `adapterOutputAccepted: false`.

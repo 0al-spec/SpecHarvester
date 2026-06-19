@@ -1026,6 +1026,15 @@ audit writer, rollback handler, and approval consumption boundary while keeping
 `implementationSkeletonIsRegistryAuthority: false`,
 `implementationSkeletonConsumesApproval: false`, `runtimeImplemented: false`,
 `runtimeInvoked: false`, and `adapterOutputAccepted: false`.
+P42-T18 adds
+[`TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_SKELETON_VERIFIER.md`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_SKELETON_VERIFIER.md)
+and the machine-readable
+`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeletonVerifierReport`
+fixture. It verifies the P42-T17 skeleton identity, digest, linked P42-T16
+review packet digest, disabled surface, check counts, execution boundary, and
+non-authority statements while keeping `verifierIsExecutionPermission: false`,
+`verifierIsRegistryAuthority: false`, `verifierConsumesApproval: false`,
+`verifierInvokesRuntime: false`, and `adapterOutputAccepted: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

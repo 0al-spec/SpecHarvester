@@ -1985,7 +1985,7 @@ Acceptance:
   acceptance, baseline seeding, registry publishing, `preview_only` removal,
   and adapter output truth.
 
-- [ ] `P42-T18` Add a disabled explicit real local trusted adapter sandbox
+- [x] `P42-T18` Add a disabled explicit real local trusted adapter sandbox
   runtime implementation skeleton verifier that consumes the P42-T17 skeleton
   fixture and validates identity, pinned P42-T16 review packet linkage,
   disabled runtime surface fields, no-execution boundaries, no approval

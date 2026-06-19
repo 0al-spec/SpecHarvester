@@ -217,3 +217,6 @@ registry truth, and does not treat the skeleton as execution permission.
 - P42-T16 defines
   <doc:TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket>.
 - P42-T17 adds this disabled runtime implementation skeleton.
+- P42-T18 adds
+  <doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeletonVerifier>
+  as a verifier over this disabled skeleton.
