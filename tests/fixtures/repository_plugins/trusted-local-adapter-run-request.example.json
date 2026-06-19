@@ -1,0 +1,245 @@
+{
+  "apiVersion": "spec-harvester.trusted-local-adapter-run-request/v0",
+  "kind": "SpecHarvesterTrustedLocalAdapterRunRequest",
+  "schemaVersion": 1,
+  "authority": "producer_trusted_local_adapter_run_request_only",
+  "contract": {
+    "purpose": "Record an explicit trusted local adapter run request for future preflight without granting execution authority.",
+    "contractVersion": "0.1.0",
+    "requestAuthority": "producer_local_operator_request_only",
+    "inputAuthority": "static_local_evidence_only",
+    "preflightAuthority": "producer_trusted_local_adapter_run_preflight_only",
+    "outputAuthority": "producer_adapter_output_only",
+    "defaultExecution": "disabled",
+    "requestIsExecutionPermission": false
+  },
+  "operatorOptIn": {
+    "required": true,
+    "provided": true,
+    "scope": "trusted_local_adapter_run_preflight_fixture_only",
+    "operator": "local_operator_fixture",
+    "acknowledgedBoundaries": [
+      "request_requires_preflight_before_execution",
+      "request_does_not_load_adapter_code",
+      "request_does_not_run_adapter_processes",
+      "request_does_not_grant_registry_authority"
+    ]
+  },
+  "adapterContractReferences": {
+    "manifest": {
+      "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+      "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+      "kind": "SpecHarvesterRepositoryPluginAdapterManifest",
+      "authority": "producer_plugin_adapter_manifest_only"
+    },
+    "preflightReport": {
+      "path": "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+      "digest": "sha256:cc5ae90fa5e1df8715e858573048f2bd78f85e1e89023854533f21f6999ae7c1",
+      "kind": "SpecHarvesterRepositoryPluginAdapterPreflightReport",
+      "authority": "producer_plugin_adapter_preflight_only"
+    },
+    "allowedAdapterIds": [
+      "spec_harvester.adapters.generic.parser_profile_summary.v0",
+      "spec_harvester.adapters.generic.manifest_summary.v0",
+      "spec_harvester.adapters.generic.package_topology_hint.v0"
+    ]
+  },
+  "repository": {
+    "id": "example-workspace",
+    "sourceManifestPath": "inputs/repositories.yml",
+    "sourceManifestEntryId": "example-workspace",
+    "revision": "0123456789abcdef0123456789abcdef01234567"
+  },
+  "pathPolicy": {
+    "pathFormat": "posix_relative",
+    "parentSegmentsAllowed": false,
+    "absolutePathsAllowed": false,
+    "backslashAllowed": false,
+    "networkPathsAllowed": false
+  },
+  "declaredInputArtifacts": [
+    {
+      "kind": "adapter_manifest",
+      "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+      "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+      "authority": "producer_plugin_adapter_manifest_only",
+      "required": true
+    },
+    {
+      "kind": "adapter_preflight_report",
+      "path": "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+      "digest": "sha256:cc5ae90fa5e1df8715e858573048f2bd78f85e1e89023854533f21f6999ae7c1",
+      "authority": "producer_plugin_adapter_preflight_only",
+      "required": true
+    },
+    {
+      "kind": "repository_plugin_static_evidence_envelope",
+      "path": "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+      "digest": "sha256:f91dcf8b81a235e2024559c12ef9a01decb5ae3fc6e748187fb353ba011e5a57",
+      "authority": "producer_plugin_static_evidence_only",
+      "required": true
+    },
+    {
+      "kind": "repository_plugin_registry",
+      "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+      "digest": "sha256:6c0692de61fa97012c6a86e0283612ae3dc113f2a40b1bc33c741903dd710c74",
+      "authority": "producer_plugin_registry_only",
+      "required": true
+    }
+  ],
+  "readAllowlist": {
+    "base": "repository_root",
+    "policy": "declared_artifact_paths_only",
+    "allowedPaths": [
+      "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+      "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+      "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+      "tests/fixtures/repository_plugins/generic-registry.example.json"
+    ],
+    "parentSegmentsAllowed": false,
+    "absolutePathsAllowed": false,
+    "backslashAllowed": false,
+    "networkPathsAllowed": false
+  },
+  "outputPolicy": {
+    "outputRoot": "artifacts/trusted-local-adapter-runs/example-workspace",
+    "pathFormat": "posix_relative",
+    "declaredOutputDirectoriesOnly": true,
+    "allowedOutputDirectories": [
+      "artifacts/trusted-local-adapter-runs/example-workspace"
+    ],
+    "requireOutputDigests": true,
+    "overwritePolicy": "replace_single_run_directory_only",
+    "declaredOutputs": [
+      {
+        "kind": "trusted_local_adapter_no_execution_report",
+        "path": "artifacts/trusted-local-adapter-runs/example-workspace/no-execution-report.json",
+        "authority": "producer_trusted_local_adapter_run_report_only",
+        "maxBytes": 32768
+      },
+      {
+        "kind": "trusted_local_adapter_diagnostics",
+        "path": "artifacts/trusted-local-adapter-runs/example-workspace/diagnostics.json",
+        "authority": "producer_trusted_local_adapter_diagnostics_only",
+        "maxBytes": 32768
+      }
+    ]
+  },
+  "resourceBudgets": {
+    "timeoutMs": 30000,
+    "adapterStartupTimeoutMs": 5000,
+    "maxOutputBytes": 65536,
+    "maxOutputFiles": 8,
+    "maxDiagnostics": 20,
+    "maxProcessCount": 0
+  },
+  "environmentPolicy": {
+    "inheritEnvironment": false,
+    "allowedEnvironmentVariables": [],
+    "deniedEnvironmentPatterns": [
+      "*"
+    ],
+    "secretsAccess": "not_allowed",
+    "currentWorkingDirectory": "isolated_output_directory"
+  },
+  "networkPolicy": {
+    "networkAccess": "none",
+    "loopbackAllowed": false,
+    "dnsAllowed": false,
+    "remoteFetchAllowed": false
+  },
+  "dependencyPolicy": {
+    "dependencyInstallation": "not_allowed",
+    "useExistingRepositoryDependencies": "not_allowed",
+    "packageManagers": "not_invoked",
+    "packageManagerCommands": []
+  },
+  "processPolicy": {
+    "adapterProcessExecution": "not_allowed_in_request_fixture",
+    "runnerMayValidateOnly": true,
+    "unboundedProcessExecution": "not_allowed",
+    "harvestedCodeExecution": "not_allowed",
+    "aiExecution": "not_run"
+  },
+  "executionBoundary": {
+    "adapterCodeLoaded": false,
+    "adapterExecution": "not_run",
+    "executedAdapterCount": 0,
+    "runtimeImplemented": false,
+    "preflightRequiredBeforeExecution": true,
+    "requestIsExecutionPermission": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false
+  },
+  "requestedAdapters": [
+    {
+      "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+      "requestedOutputs": [
+        "adapter_parser_profile_summary",
+        "adapter_review_panel_data"
+      ],
+      "executionMode": "future_trusted_local_tool_after_preflight",
+      "currentExecution": "not_run",
+      "authority": "producer_adapter_output_only"
+    },
+    {
+      "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+      "requestedOutputs": [
+        "adapter_manifest_summary",
+        "adapter_diagnostics"
+      ],
+      "executionMode": "future_trusted_local_tool_after_preflight",
+      "currentExecution": "not_run",
+      "authority": "producer_adapter_output_only"
+    },
+    {
+      "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+      "requestedOutputs": [
+        "adapter_topology_hint",
+        "adapter_diagnostics"
+      ],
+      "executionMode": "future_trusted_local_tool_after_preflight",
+      "currentExecution": "not_run",
+      "authority": "producer_adapter_output_only"
+    }
+  ],
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "trusted_local_adapter_run_request_fixture",
+      "message": "Run request fixture records future trusted local adapter intent and does not grant execution authority."
+    },
+    {
+      "severity": "info",
+      "code": "preflight_required_before_execution",
+      "message": "A future trusted local adapter run preflight must pass before any adapter code can be loaded or executed."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "request_is_not_execution_permission",
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_run_adapter_processes",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_adapter_preflight_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "trustedLocalAdapterRunPreflightTask": "P41-T3",
+    "disabledRunnerSkeletonTask": "P41-T4",
+    "batchEvidenceHandoffTask": "P41-T5",
+    "realLocalReadinessValidationTask": "P41-T6"
+  }
+}

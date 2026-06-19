@@ -860,12 +860,14 @@ while preserving `adapterExecution: not_run`, `adapterCodeLoaded: false`,
 
 Phase 41 starts with `P41-T1`,
 [`TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md`](TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md).
-The phase prepares a future trusted local adapter runtime without enabling
-execution yet. It defines follow-up tasks for
-`SpecHarvesterTrustedLocalAdapterRunRequest`, trusted local adapter run
-preflight, a disabled no-execution runner skeleton, explicit review-only batch
-evidence handoff, and real local readiness validation over FastMCP, FastAPI,
-xyflow, and Gin.
+P41-T2 adds
+[`TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md)
+and the machine-readable
+`SpecHarvesterTrustedLocalAdapterRunRequest` fixture. The phase prepares a
+future trusted local adapter runtime without enabling execution yet. It defines
+follow-up tasks for trusted local adapter run preflight, a disabled
+no-execution runner skeleton, explicit review-only batch evidence handoff, and
+real local readiness validation over FastMCP, FastAPI, xyflow, and Gin.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

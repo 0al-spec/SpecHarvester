@@ -101,6 +101,11 @@ Published DocC site:
    P41-T1 readiness plan for future trusted local adapter run requests,
    preflight, disabled runner skeleton, review-only evidence handoff, and real
    local readiness validation without enabling adapter execution
+31. [`TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md):
+   P41-T2 machine-readable `SpecHarvesterTrustedLocalAdapterRunRequest`
+   fixture for explicit operator opt-in, adapter manifest/preflight
+   references, declared input artifacts, safe read allowlists, output policy,
+   resource budgets, and non-authority statements
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

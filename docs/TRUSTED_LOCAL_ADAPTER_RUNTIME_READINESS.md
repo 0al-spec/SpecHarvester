@@ -28,7 +28,7 @@ preflight, runner, evidence handoff, and real validation sequence.
 | Task | Purpose |
 | --- | --- |
 | `P41-T1` | Document this readiness plan and add the next-task scaffold. |
-| `P41-T2` | Add `SpecHarvesterTrustedLocalAdapterRunRequest` as a machine-readable request fixture. |
+| `P41-T2` | Add [`SpecHarvesterTrustedLocalAdapterRunRequest`](TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md) as a machine-readable request fixture. |
 | `P41-T3` | Add a trusted local adapter run preflight report fixture that rejects unsafe requests before execution. |
 | `P41-T4` | Add a disabled-by-default runner skeleton that validates requests and emits a no-execution report. |
 | `P41-T5` | Connect trusted local adapter run reports to `autonomous-candidate-batch` as review-only producer evidence. |
@@ -53,6 +53,12 @@ preflight, runner, evidence handoff, and real validation sequence.
 - non-authority statements.
 
 The request is not permission to run by itself. It is input to preflight.
+
+P41-T2 records the first request fixture at
+`tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json`.
+It references the P40-T2 adapter manifest and P40-T3 adapter preflight report
+with SHA-256 digests, records explicit operator opt-in, declares safe input
+artifacts, and keeps `requestIsExecutionPermission: false`.
 
 ## Required Preflight Boundary
 

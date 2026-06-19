@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P41-T3 Trusted Local Adapter Run Preflight Report Fixture" in next_text:
+        assert_p41_t2_last_archived(next_text)
+        assert_p41_t2_recent(next_text)
+        assert_phase_41_t3_planned(next_text)
+        return
+
     if "# Next Task: P41-T2 Trusted Local Adapter Run Request Fixture" in next_text:
         assert_p41_t1_last_archived(next_text)
         assert_p41_t1_recent(next_text)
@@ -4500,6 +4506,59 @@ def assert_phase_41_t2_planned(next_text: str) -> None:
     assert "non-authority statements" in normalized
     assert "Do not implement adapter loading or execution" in normalized
     assert "Do not run adapter processes" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p41_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P41-T2 Trusted Local Adapter Run Request Fixture" in next_text
+
+
+def assert_p41_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P41-T2` added the machine-readable" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterRunRequest" in normalized
+    assert "trusted-local-adapter-run-request.example.json" in next_text
+    assert "TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md" in next_text
+    assert "TrustedLocalAdapterRunRequestFixture.md" in next_text
+    assert "adapter manifest/preflight references" in normalized
+    assert "explicit operator opt-in" in normalized
+    assert "safe relative read path allowlists" in normalized
+    assert "requestIsExecutionPermission: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "producer-side review evidence" in normalized
+
+
+def assert_phase_41_t3_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P41-T3 Trusted Local Adapter Run Preflight Report Fixture" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P41-T3-trusted-local-adapter-run-preflight-report-fixture`" in next_text
+    assert "Phase 41. Trusted Local Adapter Runtime Readiness" in next_text
+    assert "SpecHarvesterTrustedLocalAdapterRunPreflightReport" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterRunRequest" in normalized
+    assert "explicit operator opt-in" in normalized
+    assert "unsafe paths" in normalized
+    assert "missing or mismatched digests" in normalized
+    assert "undeclared input artifacts" in normalized
+    assert "undeclared output paths" in normalized
+    assert "network access" in normalized
+    assert "dependency installation" in normalized
+    assert "package manager invocation" in normalized
+    assert "harvested code execution" in normalized
+    assert "AI execution" in normalized
+    assert "unbounded process execution" in normalized
+    assert "preflight pass is not execution permission" in normalized
+    assert "Do not implement adapter loading or execution" in normalized
+    assert "Do not run adapter processes" in normalized
+    assert "Do not add a runner" in normalized
     assert "Do not clone or fetch repositories" in normalized
     assert "Do not install dependencies" in normalized
     assert "Do not invoke package managers" in normalized
@@ -16753,6 +16812,345 @@ def test_trusted_local_adapter_runtime_readiness_plan_is_documented() -> None:
     )
     assert "`P41-T5` Connect trusted local adapter run reports" in workplan_text
     assert "`P41-T6` Run a real local trusted-adapter readiness validation" in (workplan_text)
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_trusted_local_adapter_run_request_fixture_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-run-request.example.json"
+    )
+    manifest = ROOT / "tests" / "fixtures" / "repository_plugins" / "adapter-manifest.example.json"
+    preflight = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "adapter-preflight-report.example.json"
+    )
+    static_evidence = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "static-evidence-envelope.example.json"
+    )
+    registry = ROOT / "tests" / "fixtures" / "repository_plugins" / "generic-registry.example.json"
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRunRequestFixture.md"
+    )
+    readiness_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"
+    readiness_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeReadiness.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.trusted-local-adapter-run-request/v0"
+    assert payload["kind"] == "SpecHarvesterTrustedLocalAdapterRunRequest"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_trusted_local_adapter_run_request_only"
+    assert payload["contract"] == {
+        "purpose": (
+            "Record an explicit trusted local adapter run request for future "
+            "preflight without granting execution authority."
+        ),
+        "contractVersion": "0.1.0",
+        "requestAuthority": "producer_local_operator_request_only",
+        "inputAuthority": "static_local_evidence_only",
+        "preflightAuthority": "producer_trusted_local_adapter_run_preflight_only",
+        "outputAuthority": "producer_adapter_output_only",
+        "defaultExecution": "disabled",
+        "requestIsExecutionPermission": False,
+    }
+    assert payload["operatorOptIn"] == {
+        "required": True,
+        "provided": True,
+        "scope": "trusted_local_adapter_run_preflight_fixture_only",
+        "operator": "local_operator_fixture",
+        "acknowledgedBoundaries": [
+            "request_requires_preflight_before_execution",
+            "request_does_not_load_adapter_code",
+            "request_does_not_run_adapter_processes",
+            "request_does_not_grant_registry_authority",
+        ],
+    }
+    assert payload["pathPolicy"] == {
+        "pathFormat": "posix_relative",
+        "parentSegmentsAllowed": False,
+        "absolutePathsAllowed": False,
+        "backslashAllowed": False,
+        "networkPathsAllowed": False,
+    }
+
+    def assert_safe_relative_path(path: str) -> None:
+        assert path
+        assert not path.startswith("/")
+        assert "\\" not in path
+        assert "://" not in path
+        assert ".." not in path.split("/")
+
+    manifest_digest = f"sha256:{hashlib.sha256(manifest.read_bytes()).hexdigest()}"
+    preflight_digest = f"sha256:{hashlib.sha256(preflight.read_bytes()).hexdigest()}"
+    static_evidence_digest = f"sha256:{hashlib.sha256(static_evidence.read_bytes()).hexdigest()}"
+    registry_digest = f"sha256:{hashlib.sha256(registry.read_bytes()).hexdigest()}"
+
+    assert payload["adapterContractReferences"]["manifest"] == {
+        "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+        "digest": manifest_digest,
+        "kind": "SpecHarvesterRepositoryPluginAdapterManifest",
+        "authority": "producer_plugin_adapter_manifest_only",
+    }
+    assert payload["adapterContractReferences"]["preflightReport"] == {
+        "path": "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+        "digest": preflight_digest,
+        "kind": "SpecHarvesterRepositoryPluginAdapterPreflightReport",
+        "authority": "producer_plugin_adapter_preflight_only",
+    }
+    assert payload["adapterContractReferences"]["allowedAdapterIds"] == [
+        "spec_harvester.adapters.generic.parser_profile_summary.v0",
+        "spec_harvester.adapters.generic.manifest_summary.v0",
+        "spec_harvester.adapters.generic.package_topology_hint.v0",
+    ]
+
+    declared_inputs = {record["kind"]: record for record in payload["declaredInputArtifacts"]}
+    assert declared_inputs == {
+        "adapter_manifest": {
+            "kind": "adapter_manifest",
+            "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+            "digest": manifest_digest,
+            "authority": "producer_plugin_adapter_manifest_only",
+            "required": True,
+        },
+        "adapter_preflight_report": {
+            "kind": "adapter_preflight_report",
+            "path": "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+            "digest": preflight_digest,
+            "authority": "producer_plugin_adapter_preflight_only",
+            "required": True,
+        },
+        "repository_plugin_static_evidence_envelope": {
+            "kind": "repository_plugin_static_evidence_envelope",
+            "path": "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+            "digest": static_evidence_digest,
+            "authority": "producer_plugin_static_evidence_only",
+            "required": True,
+        },
+        "repository_plugin_registry": {
+            "kind": "repository_plugin_registry",
+            "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+            "digest": registry_digest,
+            "authority": "producer_plugin_registry_only",
+            "required": True,
+        },
+    }
+    for record in payload["declaredInputArtifacts"]:
+        assert_safe_relative_path(record["path"])
+        assert record["digest"].startswith("sha256:")
+        assert len(record["digest"]) == len("sha256:") + 64
+
+    assert payload["readAllowlist"] == {
+        "base": "repository_root",
+        "policy": "declared_artifact_paths_only",
+        "allowedPaths": [
+            "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+            "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+            "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+            "tests/fixtures/repository_plugins/generic-registry.example.json",
+        ],
+        "parentSegmentsAllowed": False,
+        "absolutePathsAllowed": False,
+        "backslashAllowed": False,
+        "networkPathsAllowed": False,
+    }
+    for path in payload["readAllowlist"]["allowedPaths"]:
+        assert_safe_relative_path(path)
+
+    output_policy = payload["outputPolicy"]
+    assert output_policy["outputRoot"] == "artifacts/trusted-local-adapter-runs/example-workspace"
+    assert output_policy["declaredOutputDirectoriesOnly"] is True
+    assert output_policy["allowedOutputDirectories"] == [
+        "artifacts/trusted-local-adapter-runs/example-workspace"
+    ]
+    assert output_policy["requireOutputDigests"] is True
+    assert output_policy["overwritePolicy"] == "replace_single_run_directory_only"
+    for path in output_policy["allowedOutputDirectories"]:
+        assert_safe_relative_path(path)
+    for record in output_policy["declaredOutputs"]:
+        assert record["authority"].startswith("producer_trusted_local_adapter_")
+        assert record["maxBytes"] <= 32768
+        assert_safe_relative_path(record["path"])
+
+    assert payload["resourceBudgets"] == {
+        "timeoutMs": 30000,
+        "adapterStartupTimeoutMs": 5000,
+        "maxOutputBytes": 65536,
+        "maxOutputFiles": 8,
+        "maxDiagnostics": 20,
+        "maxProcessCount": 0,
+    }
+    assert payload["environmentPolicy"] == {
+        "inheritEnvironment": False,
+        "allowedEnvironmentVariables": [],
+        "deniedEnvironmentPatterns": ["*"],
+        "secretsAccess": "not_allowed",
+        "currentWorkingDirectory": "isolated_output_directory",
+    }
+    assert payload["networkPolicy"] == {
+        "networkAccess": "none",
+        "loopbackAllowed": False,
+        "dnsAllowed": False,
+        "remoteFetchAllowed": False,
+    }
+    assert payload["dependencyPolicy"] == {
+        "dependencyInstallation": "not_allowed",
+        "useExistingRepositoryDependencies": "not_allowed",
+        "packageManagers": "not_invoked",
+        "packageManagerCommands": [],
+    }
+    assert payload["processPolicy"] == {
+        "adapterProcessExecution": "not_allowed_in_request_fixture",
+        "runnerMayValidateOnly": True,
+        "unboundedProcessExecution": "not_allowed",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+    }
+    assert payload["executionBoundary"] == {
+        "adapterCodeLoaded": False,
+        "adapterExecution": "not_run",
+        "executedAdapterCount": 0,
+        "runtimeImplemented": False,
+        "preflightRequiredBeforeExecution": True,
+        "requestIsExecutionPermission": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+    }
+
+    requested_adapters = {record["adapterId"]: record for record in payload["requestedAdapters"]}
+    assert set(requested_adapters) == set(payload["adapterContractReferences"]["allowedAdapterIds"])
+    for record in requested_adapters.values():
+        assert record["requestedOutputs"]
+        assert record["executionMode"] == "future_trusted_local_tool_after_preflight"
+        assert record["currentExecution"] == "not_run"
+        assert record["authority"] == "producer_adapter_output_only"
+
+    required_non_authority = {
+        "request_is_not_execution_permission",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_run_adapter_processes",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_adapter_preflight_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth",
+    }
+    assert required_non_authority.issubset(set(payload["nonAuthorityStatements"]))
+    assert payload["followUp"] == {
+        "trustedLocalAdapterRunPreflightTask": "P41-T3",
+        "disabledRunnerSkeletonTask": "P41-T4",
+        "batchEvidenceHandoffTask": "P41-T5",
+        "realLocalReadinessValidationTask": "P41-T6",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Run Request Fixture",
+            "SpecHarvesterTrustedLocalAdapterRunRequest",
+            "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json",
+            "spec-harvester.trusted-local-adapter-run-request/v0",
+            "producer_trusted_local_adapter_run_request_only",
+            "producer_local_operator_request_only",
+            "explicit operator opt-in",
+            "adapter manifest",
+            "adapter preflight report",
+            "declared input artifacts",
+            "sha256:",
+            "POSIX relative",
+            "Parent segments",
+            "absolute paths",
+            "backslashes",
+            "network paths",
+            "declared_artifact_paths_only",
+            "artifacts/trusted-local-adapter-runs/example-workspace",
+            "timeoutMs",
+            "adapterStartupTimeoutMs",
+            "maxOutputBytes",
+            "maxOutputFiles",
+            "maxDiagnostics",
+            "maxProcessCount",
+            "networkAccess: none",
+            "dependencyInstallation: not_allowed",
+            "packageManagers: not_invoked",
+            "adapterProcessExecution: not_allowed_in_request_fixture",
+            "harvestedCodeExecution: not_allowed",
+            "aiExecution: not_run",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "appliedToDrafting: false",
+            "registryAuthority: false",
+            "requestIsExecutionPermission: false",
+            "does not load third-party adapter code",
+            "does not run adapter processes",
+            "does not clone or fetch repositories",
+            "does not install dependencies",
+            "does not invoke package managers",
+            "does not execute harvested code",
+            "does not run AI",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "P41-T3",
+            "P41-T4",
+            "P41-T5",
+            "P41-T6",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+
+    for path, required in (
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md"),
+        (docc_root, "docs/TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md"),
+        (docc_root, "TrustedLocalAdapterRunRequestFixture"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md"),
+        (capabilities_docc, "TrustedLocalAdapterRunRequestFixture"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md"),
+        (roadmap_docc, "TrustedLocalAdapterRunRequestFixture"),
+        (readiness_doc, "TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md"),
+        (readiness_docc, "TrustedLocalAdapterRunRequestFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P41-T2` Add a machine-readable" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
