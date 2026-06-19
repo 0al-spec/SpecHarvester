@@ -4418,7 +4418,7 @@ def assert_phase_40_complete(next_text: str) -> None:
     assert "autonomous batch adapter evidence handoff" in normalized
     assert "cross-ecosystem adapter fixture matrix" in normalized
     assert "real local adapter-contract validation" in normalized
-    assert "future adapter runtime work must preserve explicit opt-in" in normalized
+    assert "Future adapter runtime work must preserve explicit opt-in" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:

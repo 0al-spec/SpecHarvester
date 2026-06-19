@@ -656,3 +656,5 @@
 | 2026-06-19 | P40-T5 | Archived REVIEW_p40_t5_adapter_evidence_batch_integration report |
 | 2026-06-19 | P40-T6 | Archived Repository Plugin Adapter Cross-Ecosystem Fixture Matrix (PASS) |
 | 2026-06-19 | P40-T6 | Archived REVIEW_p40_t6_adapter_cross_ecosystem_fixture_matrix report |
+| 2026-06-19 | P40-T7 | Archived Real Local Adapter-Contract Validation (PASS) |
+| 2026-06-19 | P40-T7 | Archived REVIEW_p40_t7_real_local_adapter_contract_validation report |
