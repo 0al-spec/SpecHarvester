@@ -231,6 +231,11 @@ Published DocC site:
    Phase 43 operational validation plan for proving SpecHarvester on a bounded
    pinned multi-ecosystem corpus before broader autonomous scraping or real
    adapter execution
+54. [`OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md):
+   machine-readable
+   `SpecHarvesterOperationalMVPValidationPlan` fixture for selected corpus
+   requirements, pinned local checkout policy, run modes, quality dimensions,
+   stop policy, and non-authority boundaries
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

@@ -1,0 +1,233 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-validation-plan/v0",
+  "kind": "SpecHarvesterOperationalMVPValidationPlan",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_validation_plan_only",
+  "phase": "P43",
+  "task": "P43-T2",
+  "sourcePlan": {
+    "task": "P43-T1",
+    "path": "docs/OPERATIONAL_MVP_VALIDATION_PLAN.md",
+    "authority": "documentation_plan_only"
+  },
+  "inputPolicy": {
+    "corpusSelection": "operator_selected_pinned_local_checkouts",
+    "localCheckoutRequired": true,
+    "exactRevisionRequired": true,
+    "placeholderFixture": true,
+    "implicitCloneOrFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "mutableRevisionAccepted": false,
+    "packageManagerInvocationAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "harvestedCodeExecutionAllowed": false
+  },
+  "corpus": [
+    {
+      "id": "xyflow",
+      "repositoryUrl": "https://github.com/xyflow/xyflow",
+      "localCheckoutPathPlaceholder": "<operator-provided-local-checkout>/xyflow",
+      "exactRevisionPlaceholder": "<40-hex-commit-sha>",
+      "ecosystemFamily": "javascript_typescript",
+      "expectedPackageFamilyShape": "package_set_monorepo",
+      "allowedRunModes": [
+        "static_only",
+        "ai_enabled_proposal"
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "unverified_exact_revision",
+        "generated_artifacts_fail_validation",
+        "package_set_topology_collapses_members"
+      ]
+    },
+    {
+      "id": "fastapi_or_fastmcp",
+      "repositoryUrl": "https://github.com/fastapi/fastapi",
+      "localCheckoutPathPlaceholder": "<operator-provided-local-checkout>/fastapi-or-fastmcp",
+      "exactRevisionPlaceholder": "<40-hex-commit-sha>",
+      "ecosystemFamily": "python",
+      "expectedPackageFamilyShape": "framework_library_package",
+      "allowedRunModes": [
+        "static_only",
+        "ai_enabled_proposal"
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "unverified_exact_revision",
+        "public_interface_evidence_over_captures_docs_examples_or_tests",
+        "generated_artifacts_fail_validation"
+      ]
+    },
+    {
+      "id": "gin",
+      "repositoryUrl": "https://github.com/gin-gonic/gin",
+      "localCheckoutPathPlaceholder": "<operator-provided-local-checkout>/gin",
+      "exactRevisionPlaceholder": "<40-hex-commit-sha>",
+      "ecosystemFamily": "go",
+      "expectedPackageFamilyShape": "single_package_framework",
+      "allowedRunModes": [
+        "static_only",
+        "ai_enabled_proposal"
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "unverified_exact_revision",
+        "generated_artifacts_fail_validation",
+        "specpm_handoff_not_ready"
+      ]
+    },
+    {
+      "id": "additional_ecosystem_placeholder",
+      "repositoryUrl": "https://example.invalid/operator-selected-repository",
+      "localCheckoutPathPlaceholder": "<operator-provided-local-checkout>/additional-ecosystem",
+      "exactRevisionPlaceholder": "<40-hex-commit-sha>",
+      "ecosystemFamily": "additional_operator_selected",
+      "expectedPackageFamilyShape": "one_more_repository_shape",
+      "allowedRunModes": [
+        "static_only",
+        "ai_enabled_proposal"
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "unverified_exact_revision",
+        "unsupported_repository_shape",
+        "requires_real_adapter_execution"
+      ]
+    }
+  ],
+  "runModes": [
+    {
+      "id": "static_only",
+      "authority": "deterministic_static_evidence_only",
+      "aiInvocation": "not_run",
+      "adapterExecution": "not_run",
+      "networkAccess": "not_allowed",
+      "packageManagerInvocation": "not_allowed",
+      "dependencyInstallation": "not_allowed",
+      "qualityDimensions": [
+        "validity",
+        "repositorySpecificity",
+        "evidencePrecision",
+        "packageTopology",
+        "claimConservatism",
+        "authorActionability",
+        "SpecPMHandoffReadiness"
+      ],
+      "stopPolicy": "shared_operational_mvp_stop_policy"
+    },
+    {
+      "id": "ai_enabled_proposal",
+      "authority": "proposal_only_ai_assistance",
+      "providerPolicy": "local_openai_compatible_optional",
+      "aiOutputAuthority": "proposal_only",
+      "adapterExecution": "not_run",
+      "networkAccess": "provider_endpoint_only_when_operator_configured",
+      "registryAuthority": false,
+      "qualityDimensions": [
+        "validity",
+        "repositorySpecificity",
+        "evidencePrecision",
+        "packageTopology",
+        "claimConservatism",
+        "authorActionability",
+        "SpecPMHandoffReadiness"
+      ],
+      "stopPolicy": "shared_operational_mvp_stop_policy"
+    }
+  ],
+  "qualityDimensions": [
+    {
+      "id": "validity",
+      "question": "Do generated artifacts validate and pass relevant preflight?",
+      "requiredForAuthorReady": true
+    },
+    {
+      "id": "repositorySpecificity",
+      "question": "Are summary, intent, capabilities, and evidence specific to the repository?",
+      "requiredForAuthorReady": true
+    },
+    {
+      "id": "evidencePrecision",
+      "question": "Is public interface evidence not dominated by docs, examples, tests, generated files, or internal tooling?",
+      "requiredForAuthorReady": true
+    },
+    {
+      "id": "packageTopology",
+      "question": "Is package-set or member structure useful for the repository shape?",
+      "requiredForAuthorReady": true
+    },
+    {
+      "id": "claimConservatism",
+      "question": "Are claims supported by observed evidence?",
+      "requiredForAuthorReady": true
+    },
+    {
+      "id": "authorActionability",
+      "question": "Can an author see what to keep, revise, reject, or enrich?",
+      "requiredForAuthorReady": true
+    },
+    {
+      "id": "SpecPMHandoffReadiness",
+      "question": "Is output ready for reviewable SpecPM handoff rather than automatic acceptance?",
+      "requiredForAuthorReady": true
+    }
+  ],
+  "stopPolicy": {
+    "id": "shared_operational_mvp_stop_policy",
+    "sharedStopConditions": [
+      "missing_pinned_local_checkout",
+      "unverified_exact_revision",
+      "generated_artifacts_fail_validation",
+      "generated_artifacts_fail_preflight",
+      "ai_output_attempts_registry_authority",
+      "evidence_over_capture_makes_starter_misleading",
+      "requires_real_adapter_execution",
+      "package_or_relation_acceptance_requires_maintainer_decision"
+    ],
+    "allowedOutcomes": [
+      "author_ready_draft",
+      "needs_quality_hardening",
+      "blocked"
+    ]
+  },
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "registryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "realCorpusRunPerformed": false,
+    "implicitRepositoryFetchAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_run_real_corpus",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_accept_mutable_repository_state",
+    "does_not_execute_harvested_code",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_run_adapter_code",
+    "does_not_run_ai",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ],
+  "followUp": {
+    "validationReportFixtureTask": "P43-T3",
+    "staticBaselineTask": "P43-T4",
+    "aiComparisonTask": "P43-T5",
+    "authorHandoffSummaryTask": "P43-T6",
+    "exitReportTask": "P43-T7"
+  }
+}

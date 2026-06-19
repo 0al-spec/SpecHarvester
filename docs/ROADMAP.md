@@ -1044,6 +1044,13 @@ valid, repository-specific starter packages that authors can reasonably edit.
 The phase compares static-only and AI-enabled results, records author-ready
 quality dimensions, and ends with an exit decision before broader autonomous
 scraping or any real adapter execution work.
+P43-T2 adds
+[`OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md)
+and the machine-readable `SpecHarvesterOperationalMVPValidationPlan` fixture.
+It records selected corpus requirements, pinned local checkout policy,
+`static_only` and `ai_enabled_proposal` run modes, quality dimensions, shared
+stop policy, and non-authority boundaries while keeping the fixture synthetic
+and producer-side only.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
