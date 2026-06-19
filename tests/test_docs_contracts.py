@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P40-T3 Repository Plugin Adapter Preflight Report Fixture" in next_text:
+        assert_p40_t2_last_archived(next_text)
+        assert_p40_t2_recent(next_text)
+        assert_phase_40_t3_planned(next_text)
+        return
+
     if "# Next Task: P40-T2 Repository Plugin Adapter Manifest Fixture" in next_text:
         assert_p40_t1_last_archived(next_text)
         assert_p40_t1_recent(next_text)
@@ -4087,6 +4093,64 @@ def assert_phase_40_t2_planned(next_text: str) -> None:
     assert "non-authority statements" in normalized
     assert "language- and framework-agnostic" in normalized
     assert "Do not implement adapter preflight" in normalized
+    assert "Do not implement adapter loading or execution" in normalized
+    assert "Do not change static plugin applicability evaluation" in normalized
+    assert "Do not change `autonomous-candidate-batch`" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p40_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P40-T2 Repository Plugin Adapter Manifest Fixture" in next_text
+
+
+def assert_p40_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P40-T2` added the first machine-readable" in normalized
+    assert "SpecHarvesterRepositoryPluginAdapterManifest" in next_text
+    assert "tests/fixtures/repository_plugins/adapter-manifest.example.json" in next_text
+    assert "docs/REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md" in next_text
+    assert "RepositoryPluginAdapterManifestFixture.md" in next_text
+    assert "adapter ids" in normalized
+    assert "contract versions" in normalized
+    assert "supported roles" in normalized
+    assert "required and optional evidence kinds" in normalized
+    assert "declared outputs" in normalized
+    assert "execution mode" in normalized
+    assert "sandbox requirements" in normalized
+    assert "capability requests" in normalized
+    assert "mode: static_only" in normalized
+    assert "defaultEnabled: false" in normalized
+    assert "requiresOperatorOptIn: true" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "runtimeImplemented: false" in normalized
+    assert "appliedToDrafting: false" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterPreflight: not_run" in normalized
+    assert "adapterExecution: not_run" in normalized
+
+
+def assert_phase_40_t3_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P40-T3 Repository Plugin Adapter Preflight Report Fixture" in (next_text)
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P40-T3-repository-plugin-adapter-preflight-report-fixture`" in (next_text)
+    assert "Phase 40. Repository Plugin Adapter Contract" in next_text
+    assert "SpecHarvesterRepositoryPluginAdapterPreflightReport" in next_text
+    assert "P40-T2 manifest fixture" in normalized
+    assert "static evidence envelope" in normalized
+    assert "allowed, rejected, fallback, and blocked adapter decisions" in normalized
+    assert "Refuse unsafe execution" in normalized
+    assert "missing required evidence" in normalized
+    assert "without executing adapter code" in normalized
+    assert "language- and framework-agnostic" in normalized
     assert "Do not implement adapter loading or execution" in normalized
     assert "Do not change static plugin applicability evaluation" in normalized
     assert "Do not change `autonomous-candidate-batch`" in normalized

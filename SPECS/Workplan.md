@@ -1637,7 +1637,7 @@ Acceptance:
   sandbox expectations, diagnostics, and authority boundaries without making
   Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven,
   Gradle, or any other ecosystem normative.
-- [ ] `P40-T2` Add a machine-readable
+- [x] `P40-T2` Add a machine-readable
   `SpecHarvesterRepositoryPluginAdapterManifest` fixture that records adapter
   ids, contract versions, supported roles, required and optional evidence
   kinds, declared outputs, execution mode, sandbox requirements, capability

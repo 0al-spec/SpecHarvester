@@ -175,6 +175,7 @@
 | P39-T5 | [P39-T5_Repository_Plugin_Applicability_Batch_Integration/](P39-T5_Repository_Plugin_Applicability_Batch_Integration/) | 2026-06-19 | PASS |
 | P39-T6 | [P39-T6_Real_Multi-Repository_Static_Evaluator_Validation/](P39-T6_Real_Multi-Repository_Static_Evaluator_Validation/) | 2026-06-19 | PASS |
 | P40-T1 | [P40-T1_Repository_Plugin_Adapter_Contract/](P40-T1_Repository_Plugin_Adapter_Contract/) | 2026-06-19 | PASS |
+| P40-T2 | [P40-T2_Repository_Plugin_Adapter_Manifest_Fixture/](P40-T2_Repository_Plugin_Adapter_Manifest_Fixture/) | 2026-06-19 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -641,3 +642,4 @@
 | 2026-06-19 | P39-T6 | Archived REVIEW_p39_t6_real_multi_repository_static_evaluator_validation report |
 | 2026-06-19 | P40-T1 | Archived Repository Plugin Adapter Contract (PASS) |
 | 2026-06-19 | P40-T1 | Archived REVIEW_p40_t1_repository_plugin_adapter_contract report |
+| 2026-06-19 | P40-T2 | Archived Repository Plugin Adapter Manifest Fixture (PASS) |
