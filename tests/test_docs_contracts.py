@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def assert_current_next_task(next_text: str) -> None:
     if (
+        "# Next Task: P42-T9 Explicit Real Local Trusted Adapter Sandbox Run Request Preflight "
+        "Fixture"
+    ) in next_text:
+        assert_p42_t8_last_archived(next_text)
+        assert_p42_t8_recent(next_text)
+        assert_phase_42_t9_planned(next_text)
+        return
+
+    if (
         "# Next Task: P42-T8 Explicit Real Local Trusted Adapter Sandbox Run Request Fixture"
         in next_text
     ):
@@ -5160,6 +5169,68 @@ def assert_p42_t7_recent(next_text: str) -> None:
     assert "readyForExecution: false" in normalized
     assert "registryAuthority: false" in normalized
     assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_p42_t8_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T8 Explicit Real Local Trusted Adapter Sandbox Run Request Fixture"
+        in next_text
+    )
+
+
+def assert_p42_t8_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P42-T8` added `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest`" in (
+        normalized
+    )
+    assert "explicit-real-local-trusted-adapter-sandbox-run-request.example.json" in next_text
+    assert "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md" in (next_text)
+    assert "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture.md" in next_text
+    assert "SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport" in normalized
+    assert "SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport" in normalized
+    assert "review-time prerequisite evidence" in normalized
+    assert "scoped future operator approval" in normalized
+    assert "adapter package identity" in normalized
+    assert "target repository identity" in normalized
+    assert "sandbox policy identity" in normalized
+    assert "runtime policy" in normalized
+    assert "filesystem/output policy" in normalized
+    assert "audit policy" in normalized
+    assert "rollback/review requirements" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "executedAdapterCount: 0" in normalized
+    assert "runtimeInvoked: false" in normalized
+    assert "requestIsExecutionPermission: false" in normalized
+    assert "requestIsOperatorApproval: false" in normalized
+    assert "readyForExecution: false" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_phase_42_t9_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P42-T9 Explicit Real Local Trusted Adapter Sandbox Run Request Preflight "
+        "Fixture"
+    ) in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert (
+        "`feature/P42-T9-explicit-real-local-trusted-adapter-sandbox-run-request-preflight-fixture`"
+        in next_text
+    )
+    assert "explicit real local trusted adapter sandbox run request preflight fixture" in (
+        normalized
+    )
+    assert "validates the P42-T8 request identity" in normalized
+    assert "prerequisite verifier/readiness evidence requirements" in normalized
+    assert "scoped approval binding" in normalized
+    assert "runtime policy" in normalized
+    assert "filesystem/output/audit declarations" in normalized
+    assert "refusing to grant execution permission" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not treat preflight pass as execution permission" in normalized
 
 
 def assert_phase_42_t8_planned(next_text: str) -> None:
@@ -19189,6 +19260,341 @@ def assert_safe_relative_path(path: str) -> None:
     assert not path.startswith("/")
     assert "\\" not in path
     assert "://" not in path
+
+
+def test_explicit_real_local_trusted_adapter_sandbox_run_request_fixture_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "explicit-real-local-trusted-adapter-sandbox-run-request.example.json"
+    )
+    github_doc = (
+        ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md"
+    )
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture.md"
+    )
+    verifier_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md"
+    verifier_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterSyntheticSandboxRunVerifier.md"
+    )
+    readiness_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md"
+    readiness_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRealLocalSandboxRunReadiness.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert (
+        payload["apiVersion"]
+        == "spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest"
+    assert payload["schemaVersion"] == 1
+    assert (
+        payload["authority"]
+        == "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only"
+    )
+    assert payload["contract"] == {
+        "purpose": (
+            "Record an explicit real local trusted adapter sandbox run review "
+            "request without granting execution authority."
+        ),
+        "contractVersion": "0.1.0",
+        "requestAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only"
+        ),
+        "verifierAuthority": SYNTHETIC_SANDBOX_RUN_VERIFIER_AUTHORITY,
+        "readinessAuthority": REAL_LOCAL_SANDBOX_READINESS_AUTHORITY,
+        "adapterOutputAuthority": "producer_adapter_output_candidate_evidence_only",
+        "defaultExecution": "disabled",
+        "requestIsExecutionPermission": False,
+        "requestIsOperatorApproval": False,
+        "requestIsRegistryAuthority": False,
+    }
+
+    evidence = payload["prerequisiteEvidence"]
+    assert evidence["syntheticSandboxRunVerifierReport"] == {
+        "apiVersion": SYNTHETIC_SANDBOX_RUN_VERIFIER_API_VERSION,
+        "kind": SYNTHETIC_SANDBOX_RUN_VERIFIER_KIND,
+        "schemaVersion": 1,
+        "authority": SYNTHETIC_SANDBOX_RUN_VERIFIER_AUTHORITY,
+        "required": True,
+        "statusRequired": "passed",
+        "pathRequiredAtReview": True,
+        "digestRequiredAtReview": True,
+        "verifierIsExecutionPermission": False,
+    }
+    assert evidence["realLocalSandboxReadinessReport"] == {
+        "apiVersion": REAL_LOCAL_SANDBOX_READINESS_API_VERSION,
+        "kind": REAL_LOCAL_SANDBOX_READINESS_KIND,
+        "schemaVersion": 1,
+        "authority": REAL_LOCAL_SANDBOX_READINESS_AUTHORITY,
+        "required": True,
+        "statusRequired": "ready_for_explicit_real_run_review",
+        "pathRequiredAtReview": True,
+        "digestRequiredAtReview": True,
+        "readyForExplicitReviewRequired": True,
+        "readyForExecutionRequired": False,
+        "readinessIsExecutionPermission": False,
+    }
+
+    approval = payload["operatorApproval"]
+    assert approval["approvalMode"] == "single_adapter_single_repository_single_real_sandbox_run"
+    assert approval["approvalProvidedByRequestFixture"] is False
+    assert approval["approvalRequiredBeforeExecution"] is True
+    assert approval["approvedForRealAdapterExecution"] is False
+    assert approval["approvalIsExecutionPermission"] is False
+    assert approval["approvalIsRegistryAcceptance"] is False
+    assert approval["approvalIsReusableAcrossRepositories"] is False
+    assert set(approval["approvalMustBind"]) == {
+        "adapterId",
+        "adapterDigest",
+        "targetRepositoryId",
+        "targetRepositoryRevision",
+        "sandboxPolicyId",
+        "sandboxPolicyVersion",
+        "verifierReportDigest",
+        "readinessReportDigest",
+        "outputRoot",
+        "auditRecordPath",
+    }
+    requested_binding = approval["requestedBinding"]
+    assert requested_binding["adapterId"] == (
+        "spec_harvester.adapters.generic.parser_profile_summary.v0"
+    )
+    assert requested_binding["adapterDigest"].startswith("sha256:")
+    assert requested_binding["sandboxPolicyId"] == (
+        "spec_harvester.trusted_local_adapter.local_sandbox.v0"
+    )
+    assert_safe_relative_path(requested_binding["outputRoot"])
+    assert_safe_relative_path(requested_binding["auditRecordPath"])
+
+    adapter_identity = payload["adapterPackageIdentity"]
+    assert adapter_identity["mutableRefAllowed"] is False
+    assert adapter_identity["pinnedRevisionOrDigestRequired"] is True
+    assert_safe_relative_path(adapter_identity["packageSource"]["path"])
+    assert adapter_identity["packageSource"]["digest"] == requested_binding["adapterDigest"]
+
+    runtime_policy = payload["runtimePolicy"]
+    assert runtime_policy["runtimeInvocationAllowedByRequestFixture"] is False
+    assert runtime_policy["processIsolationRequired"] is True
+    assert runtime_policy["sealedEnvironmentRequired"] is True
+    assert runtime_policy["dependencyIsolationRequired"] is True
+    assert runtime_policy["networkDefault"] == "deny"
+    assert runtime_policy["packageManagersDefault"] == "not_invoked"
+
+    output_policy = payload["filesystemAndOutputPolicy"]
+    assert output_policy["outputRoot"] == requested_binding["outputRoot"]
+    assert output_policy["pathFormat"] == "posix_relative"
+    assert output_policy["parentSegmentsAllowed"] is False
+    assert output_policy["absolutePathsAllowed"] is False
+    assert output_policy["backslashAllowed"] is False
+    assert output_policy["networkPathsAllowed"] is False
+    assert output_policy["outputDigestVerificationRequired"] is True
+    assert output_policy["outputIsRegistryTruth"] is False
+    assert_safe_relative_path(output_policy["outputRoot"])
+    for output in output_policy["declaredOutputs"]:
+        assert output["authority"] == "producer_adapter_output_candidate_evidence_only"
+        assert output["outputIsRegistryTruth"] is False
+        assert output["maxBytes"] <= 65536
+        assert_safe_relative_path(output["path"])
+
+    assert payload["auditPolicy"]["path"] == requested_binding["auditRecordPath"]
+    assert payload["auditPolicy"]["replayableAuditRecordRequired"] is True
+    assert payload["auditPolicy"]["runtimeCountersRequired"] is True
+    assert payload["auditPolicy"]["inputArtifactDigestsRequired"] is True
+    assert payload["auditPolicy"]["outputArtifactDigestsRequired"] is True
+    assert payload["rollbackAndReview"] == {
+        "status": "required_before_execution",
+        "maintainerReviewRequired": True,
+        "operatorReapprovalRequiredAfterChange": True,
+        "previewOnlyRemovalAllowed": False,
+        "registryAcceptanceAllowed": False,
+        "adapterOutputAcceptanceAllowed": False,
+    }
+    assert payload["requestGate"] == {
+        "mode": "review_request_only_no_execution",
+        "runtimeInvoked": False,
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "networkAccess": "none",
+    }
+    assert payload["executionBoundary"] == {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "realRunImplementationPresent": False,
+        "requestIsExecutionPermission": False,
+        "requestIsOperatorApproval": False,
+        "syntheticRunVerificationIsExecutionPermission": False,
+        "readinessGateIsExecutionPermission": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert payload["summary"]["readyForExplicitReview"] is True
+    assert payload["summary"]["readyForExecution"] is False
+    assert payload["summary"]["executedAdapterCount"] == 0
+    assert payload["summary"]["runtimeInvoked"] is False
+    assert payload["summary"]["acceptedCount"] == len(payload["validation"]["acceptedChecks"])
+    assert payload["validation"]["status"] == "fixture_declared"
+    assert payload["validation"]["errorCount"] == 0
+
+    required_non_authority = {
+        "explicit_real_local_sandbox_run_request_is_not_execution_permission",
+        "request_fixture_is_not_operator_approval",
+        "synthetic_run_verifier_is_not_execution_permission",
+        "readiness_gate_is_not_execution_permission",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_real_adapters",
+        "does_not_run_real_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_use_network",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_synthetic_adapter_output_as_registry_truth",
+        "does_not_treat_request_as_execution_permission",
+        "does_not_grant_registry_authority",
+    }
+    assert required_non_authority.issubset(set(payload["nonAuthorityStatements"]))
+    assert payload["followUp"] == {
+        "syntheticRunVerifierTask": "P42-T6",
+        "realLocalSandboxRunReadinessTask": "P42-T7",
+        "realLocalSandboxRunRequestPreflightTask": "P42-T9",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Explicit Real Local Sandbox Run Request Fixture",
+            "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest",
+            "explicit-real-local-trusted-adapter-sandbox-run-request.example.json",
+            "spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request/v0",
+            "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only",
+            "defaultExecution: disabled",
+            "requestIsExecutionPermission: false",
+            "requestIsOperatorApproval: false",
+            "requestIsRegistryAuthority: false",
+            "SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport",
+            "SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport",
+            "statusRequired: passed",
+            "ready_for_explicit_real_run_review",
+            "review-time paths and SHA-256 digests",
+            "approvalProvidedByRequestFixture: false",
+            "approvedForRealAdapterExecution: false",
+            "approvalIsExecutionPermission: false",
+            "approvalIsRegistryAcceptance: false",
+            "approvalIsReusableAcrossRepositories: false",
+            "process isolation",
+            "sealed environment",
+            "network deny-by-default",
+            "package managers not invoked",
+            "POSIX relative",
+            "parent segments",
+            "output digest verification",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "runtimeInvoked: false",
+            "realRunImplementationPresent: false",
+            "readinessGateIsExecutionPermission: false",
+            "registryAuthority: false",
+            "adapterOutputAccepted: false",
+            "does not load third-party adapter code",
+            "does not run adapter processes",
+            "does not install dependencies",
+            "does not invoke package managers",
+            "does not execute harvested repository code",
+            "does not run AI",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "P42-T6",
+            "P42-T7",
+            "P42-T8",
+            "P42-T9",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "adapterProcessSpawned: true",
+            "networkAccess: allowed",
+            "dependencyInstallation: allowed",
+            "readyForExecution: true",
+            "requestIsExecutionPermission: true",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (verifier_doc, "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md"),
+        (verifier_docc, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture"),
+        (readiness_doc, "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md"),
+        (readiness_docc, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture"),
+        (sandbox_plan, "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md"),
+        (sandbox_plan_docc, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture"),
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md"),
+        (docc_root, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md"),
+        (capabilities_docc, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md"),
+        (roadmap_docc, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
 def test_trusted_local_adapter_run_request_fixture_is_documented() -> None:

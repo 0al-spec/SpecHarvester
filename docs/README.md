@@ -157,6 +157,12 @@ Published DocC site:
    `SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport` CLI gate
    for future real local sandbox run review prerequisites while preserving no
    adapter execution
+42. [`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md):
+   P42-T8
+   `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest` fixture for
+   future real local sandbox run review requests, verifier/readiness evidence
+   references, scoped approval requirements, runtime/output/audit policy, and
+   request-only non-authority statements
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

@@ -126,3 +126,5 @@ The verifier states that it:
 - P42-T5 defines <doc:TrustedLocalAdapterSyntheticSandboxRunFixture>.
 - P42-T6 adds this verifier report and CLI gate.
 - P42-T7 adds <doc:TrustedLocalAdapterRealLocalSandboxRunReadiness>.
+- P42-T8 adds
+  <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture>.

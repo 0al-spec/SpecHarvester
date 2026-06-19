@@ -133,3 +133,5 @@ The verifier states that it:
 - P42-T6 adds this verifier report and CLI gate.
 - P42-T7 adds
   [`SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport`](TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md).
+- P42-T8 adds
+  [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md).

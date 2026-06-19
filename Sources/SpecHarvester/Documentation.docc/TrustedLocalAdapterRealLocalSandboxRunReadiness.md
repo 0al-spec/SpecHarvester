@@ -133,3 +133,7 @@ The readiness report states that it:
 - P42-T5 defines <doc:TrustedLocalAdapterSyntheticSandboxRunFixture>.
 - P42-T6 defines <doc:TrustedLocalAdapterSyntheticSandboxRunVerifier>.
 - P42-T7 adds this readiness gate for explicit future real-run review.
+- P42-T8 defines
+  <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture> as the
+  request-only fixture that can reference verifier/readiness evidence without
+  granting execution permission.
