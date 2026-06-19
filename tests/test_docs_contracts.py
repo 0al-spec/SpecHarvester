@@ -4072,7 +4072,7 @@ def assert_p40_t1_recent(next_text: str) -> None:
 def assert_phase_40_t2_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P40-T2 Repository Plugin Adapter Manifest Fixture" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
     assert "`feature/P40-T2-repository-plugin-adapter-manifest-fixture`" in next_text
     assert "Phase 40. Repository Plugin Adapter Contract" in next_text
     assert "SpecHarvesterRepositoryPluginAdapterManifest" in next_text
@@ -14854,6 +14854,8 @@ def test_repository_plugin_adapter_contract_is_documented() -> None:
         (roadmap_docc, "RepositoryPluginAdapterContract"),
         (subsystem_doc, "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"),
         (subsystem_docc, "RepositoryPluginAdapterContract"),
+        (github_doc, "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"),
+        (docc_doc, "RepositoryPluginAdapterManifestFixture"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
@@ -14864,6 +14866,278 @@ def test_repository_plugin_adapter_contract_is_documented() -> None:
     assert "`P40-T1` Document a language- and framework-agnostic repository plugin" in workplan_text
     assert "`P40-T2` Add a machine-readable" in workplan_text
     assert "`P40-T7` Run a real local adapter-contract validation" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_adapter_manifest_fixture_is_documented() -> None:
+    fixture = ROOT / "tests" / "fixtures" / "repository_plugins" / "adapter-manifest.example.json"
+    static_evidence = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "static-evidence-envelope.example.json"
+    )
+    registry = ROOT / "tests" / "fixtures" / "repository_plugins" / "generic-registry.example.json"
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterManifestFixture.md"
+    )
+    adapter_contract = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"
+    adapter_contract_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    subsystem_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    subsystem_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.repository-plugin-adapter/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryPluginAdapterManifest"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_plugin_adapter_manifest_only"
+    assert payload["contract"] == {
+        "purpose": (
+            "Declare future repository plugin adapter manifests for preflight and review "
+            "without granting execution authority."
+        ),
+        "contractVersion": "0.1.0",
+        "inputAuthority": "static_local_evidence_only",
+        "outputAuthority": "producer_adapter_output_only",
+        "preflightAuthority": "producer_plugin_adapter_preflight_only",
+        "defaultExecution": "disabled",
+    }
+    assert payload["pathPolicy"] == {
+        "pathFormat": "posix_relative",
+        "parentSegmentsAllowed": False,
+        "absolutePathsAllowed": False,
+        "backslashAllowed": False,
+        "networkPathsAllowed": False,
+    }
+    assert payload["summary"] == {
+        "adapterCount": 3,
+        "roleCount": 5,
+        "declaredInputArtifactCount": 2,
+        "outputArtifactKindCount": 5,
+        "defaultEnabledAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0,
+    }
+
+    declared_inputs = {record["kind"]: record for record in payload["declaredInputArtifacts"]}
+    assert declared_inputs["repository_plugin_static_evidence_envelope"] == {
+        "kind": "repository_plugin_static_evidence_envelope",
+        "path": "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+        "digest": "sha256:" + hashlib.sha256(static_evidence.read_bytes()).hexdigest(),
+        "authority": "producer_plugin_static_evidence_only",
+        "required": True,
+    }
+    assert declared_inputs["repository_plugin_registry"] == {
+        "kind": "repository_plugin_registry",
+        "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+        "digest": "sha256:" + hashlib.sha256(registry.read_bytes()).hexdigest(),
+        "authority": "producer_plugin_registry_only",
+        "required": True,
+    }
+    for record in payload["declaredInputArtifacts"]:
+        path = record["path"]
+        assert path
+        assert not path.startswith("/")
+        assert "\\" not in path
+        assert "://" not in path
+        assert ".." not in path.split("/")
+        assert record["digest"].startswith("sha256:")
+        assert len(record["digest"]) == len("sha256:") + 64
+
+    assert payload["supportedRoles"] == [
+        "parser_profile",
+        "repository_profile",
+        "evidence_producer",
+        "topology_helper",
+        "review_surface",
+    ]
+    assert "static_evidence_envelope" in payload["inputEvidenceKinds"]
+    assert set(payload["outputArtifactKinds"]) == {
+        "adapter_parser_profile_summary",
+        "adapter_manifest_summary",
+        "adapter_topology_hint",
+        "adapter_review_panel_data",
+        "adapter_diagnostics",
+    }
+
+    adapters = {adapter["adapterId"]: adapter for adapter in payload["adapters"]}
+    assert set(adapters) == {
+        "spec_harvester.adapters.generic.parser_profile_summary.v0",
+        "spec_harvester.adapters.generic.manifest_summary.v0",
+        "spec_harvester.adapters.generic.package_topology_hint.v0",
+    }
+    for adapter in adapters.values():
+        assert adapter["contractVersion"] == "0.1.0"
+        assert adapter["adapterVersion"] == "0.1.0"
+        assert adapter["authority"] == "producer_adapter_manifest_only"
+        assert adapter["roles"]
+        assert adapter["inputEvidence"]["requiredKinds"]
+        assert adapter["execution"] == {
+            "mode": "static_only",
+            "defaultEnabled": False,
+            "requiresOperatorOptIn": True,
+            "adapterCodeLoaded": False,
+            "runtimeImplemented": False,
+        }
+        assert adapter["sandboxRequirements"] == {
+            "readPathPolicy": "declared_evidence_paths_only",
+            "writePathPolicy": "none",
+            "networkAccess": "none",
+            "dependencyInstallation": "not_allowed",
+            "packageManagers": "not_invoked",
+            "harvestedCodeExecution": "not_allowed",
+            "processExecution": "not_allowed",
+            "environmentAccess": "none",
+            "timeoutMs": 0,
+            "maxOutputBytes": 0,
+        }
+        assert adapter["capabilityRequests"] == {
+            "filesystemRead": ["declared_input_artifacts"],
+            "filesystemWrite": [],
+            "network": [],
+            "process": [],
+            "ai": [],
+        }
+        for output in adapter["outputs"]:
+            assert output["authority"] == "producer_adapter_output_only"
+        assert (
+            "does_not_treat_adapter_output_as_registry_truth" in adapter["nonAuthorityStatements"]
+        )
+
+    assert payload["sidecarBoundary"] == {
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterPreflight": "not_run",
+        "adapterExecution": "not_run",
+    }
+    assert payload["followUp"] == {
+        "adapterPreflightTask": "P40-T3",
+        "adapterExecutionPolicyTask": "P40-T4",
+        "batchIntegrationTask": "P40-T5",
+        "crossEcosystemFixtureTask": "P40-T6",
+        "realValidationTask": "P40-T7",
+    }
+    for boundary in (
+        "does_not_implement_adapter_preflight",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_change_static_plugin_applicability_evaluation",
+        "does_not_change_autonomous_batch_behavior",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth",
+    ):
+        assert boundary in payload["nonAuthorityStatements"]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Adapter Manifest Fixture",
+            "SpecHarvesterRepositoryPluginAdapterManifest",
+            "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+            "spec-harvester.repository-plugin-adapter/v0",
+            "producer_plugin_adapter_manifest_only",
+            "producer_plugin_adapter_preflight_only",
+            "producer_adapter_output_only",
+            "declaredInputArtifacts[]",
+            "supportedRoles[]",
+            "inputEvidenceKinds[]",
+            "outputArtifactKinds[]",
+            "adapters[]",
+            "sidecarBoundary",
+            "nonAuthorityStatements[]",
+            "adapterId",
+            "contractVersion",
+            "adapterVersion",
+            "inputEvidence",
+            "sandboxRequirements",
+            "capabilityRequests",
+            "spec_harvester.adapters.generic.parser_profile_summary.v0",
+            "spec_harvester.adapters.generic.manifest_summary.v0",
+            "spec_harvester.adapters.generic.package_topology_hint.v0",
+            "mode: static_only",
+            "defaultEnabled: false",
+            "requiresOperatorOptIn: true",
+            "adapterCodeLoaded: false",
+            "runtimeImplemented: false",
+            "readPathPolicy",
+            "writePathPolicy",
+            "networkAccess",
+            "dependencyInstallation",
+            "packageManagers",
+            "harvestedCodeExecution",
+            "processExecution",
+            "environmentAccess",
+            "timeoutMs",
+            "maxOutputBytes",
+            "adapter_parser_profile_summary",
+            "adapter_manifest_summary",
+            "adapter_topology_hint",
+            "adapter_review_panel_data",
+            "adapter_diagnostics",
+            "P40-T3",
+            "P40-T4",
+            "P40-T5",
+            "P40-T6",
+            "P40-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+
+    for path, required in (
+        (docs_index, "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"),
+        (docc_root, "docs/REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"),
+        (docc_root, "<doc:RepositoryPluginAdapterManifestFixture>"),
+        (capabilities, "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"),
+        (capabilities_docc, "RepositoryPluginAdapterManifestFixture"),
+        (roadmap, "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"),
+        (roadmap_docc, "RepositoryPluginAdapterManifestFixture"),
+        (subsystem_doc, "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"),
+        (subsystem_docc, "RepositoryPluginAdapterManifestFixture"),
+        (adapter_contract, "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"),
+        (adapter_contract_docc, "RepositoryPluginAdapterManifestFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P40-T2` Add a machine-readable" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

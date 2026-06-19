@@ -88,8 +88,15 @@ a new versioned id instead of silently changing the existing contract.
 
 ## Manifest Shape
 
-P40-T2 should add the first
-`SpecHarvesterRepositoryPluginAdapterManifest` fixture. The expected shape is:
+P40-T2 adds the first
+[`SpecHarvesterRepositoryPluginAdapterManifest`](REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md)
+fixture at:
+
+```text
+tests/fixtures/repository_plugins/adapter-manifest.example.json
+```
+
+The fixture shape is:
 
 ```json
 {
