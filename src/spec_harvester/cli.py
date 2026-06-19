@@ -188,6 +188,11 @@ from spec_harvester.trusted_local_adapter_sandbox_runner import (
     build_trusted_local_adapter_sandbox_runner_validation_report,
     write_trusted_local_adapter_sandbox_runner_validation_report,
 )
+from spec_harvester.trusted_local_adapter_synthetic_sandbox_run_verifier import (
+    SyntheticTrustedLocalAdapterSandboxRunVerifierOptions,
+    build_synthetic_trusted_local_adapter_sandbox_run_verifier_report,
+    write_synthetic_trusted_local_adapter_sandbox_run_verifier_report,
+)
 from spec_harvester.xyflow_package_set_smoke import (
     XyflowPackageSetSmokeOptions,
     run_xyflow_package_set_smoke,
@@ -1129,6 +1134,32 @@ def build_parser() -> argparse.ArgumentParser:
     )
     trusted_local_adapter_sandbox_run.set_defaults(
         func=run_trusted_local_adapter_sandbox_runner_validation
+    )
+
+    synthetic_sandbox_run_verifier = subcommands.add_parser(
+        "synthetic-trusted-local-adapter-sandbox-run-verifier",
+        help=(
+            "Verify a synthetic trusted local adapter sandbox run fixture and linked "
+            "artifacts without enabling real adapter execution."
+        ),
+    )
+    synthetic_sandbox_run_verifier.add_argument(
+        "--fixture",
+        type=Path,
+        required=True,
+        help="Path to SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun JSON.",
+    )
+    synthetic_sandbox_run_verifier.add_argument(
+        "--output",
+        type=Path,
+        help=(
+            "Optional path where "
+            "SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport JSON is "
+            "written."
+        ),
+    )
+    synthetic_sandbox_run_verifier.set_defaults(
+        func=run_synthetic_trusted_local_adapter_sandbox_run_verifier
     )
 
     governance = subcommands.add_parser(
@@ -2087,6 +2118,22 @@ def run_trusted_local_adapter_sandbox_runner_validation(args: argparse.Namespace
         return 2
     if args.output is not None:
         write_trusted_local_adapter_sandbox_runner_validation_report(args.output, payload)
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0
+
+
+def run_synthetic_trusted_local_adapter_sandbox_run_verifier(
+    args: argparse.Namespace,
+) -> int:
+    try:
+        payload = build_synthetic_trusted_local_adapter_sandbox_run_verifier_report(
+            SyntheticTrustedLocalAdapterSandboxRunVerifierOptions(fixture=args.fixture)
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2, sort_keys=True))
+        return 2
+    if args.output is not None:
+        write_synthetic_trusted_local_adapter_sandbox_run_verifier_report(args.output, payload)
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
 

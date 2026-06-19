@@ -147,6 +147,11 @@ Published DocC site:
    `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun` fixture for
    explicitly approved synthetic run binding, synthetic output candidates,
    output digests, audit records, and review-only non-authority statements
+40. [`TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md`](TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md):
+   P42-T6
+   `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport` CLI
+   gate for linked artifact digests, approval binding, output byte
+   sizes/digests, audit references, and no-real-execution boundaries
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

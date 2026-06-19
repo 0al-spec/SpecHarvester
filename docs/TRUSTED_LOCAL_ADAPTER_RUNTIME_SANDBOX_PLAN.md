@@ -218,3 +218,8 @@ P42-T5 adds
 as an explicitly approved synthetic run fixture. It records approval binding,
 synthetic output candidates, output digests, audit records, and review-only
 non-authority statements without running a real adapter process.
+P42-T6 adds
+[`SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport`](TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md)
+as a deterministic verifier for fixture identity, linked artifact digests,
+approval binding, synthetic output byte sizes/digests, audit references, and
+no-real-execution boundaries without enabling real adapter execution.
