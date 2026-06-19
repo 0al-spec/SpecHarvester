@@ -758,6 +758,12 @@ requirements, pinned local checkout policy, `static_only` and
 `ai_enabled_proposal` run modes, quality dimensions, shared stop policy, and
 non-authority boundaries while keeping the fixture synthetic and producer-side
 only.
+P43-T3 adds <doc:OperationalMVPValidationReportFixture> and the
+machine-readable `SpecHarvesterOperationalMVPValidationReport` fixture. It
+records per-repository draft status, static-only result, AI-enabled result,
+author-ready verdict, evidence precision notes, stop-policy outcome, and SpecPM
+handoff readiness while keeping the example blocked before run instead of
+pretending a real corpus has executed.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

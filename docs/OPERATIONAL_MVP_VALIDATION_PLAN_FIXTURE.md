@@ -73,6 +73,13 @@ The fixture declares two run modes:
 Both modes use the same `qualityDimensions[]` and the same
 `shared_operational_mvp_stop_policy`.
 
+P43-T3 adds
+[`OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md)
+and the `SpecHarvesterOperationalMVPValidationReport` fixture. That report
+links back to this plan fixture with a pinned digest and records per-repository
+static-only, AI-enabled, quality, stop-policy, and SpecPM handoff readiness
+fields.
+
 ## Quality Dimensions
 
 Operational MVP validation records:
@@ -136,5 +143,6 @@ adapter output as registry truth.
 ## References
 
 - [`OPERATIONAL_MVP_VALIDATION_PLAN.md`](OPERATIONAL_MVP_VALIDATION_PLAN.md)
+- [`OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md)
 - [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md)

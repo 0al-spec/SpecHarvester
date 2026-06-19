@@ -63,6 +63,12 @@ local_openai_compatible_optional`, `aiOutputAuthority: proposal_only`,
 Both modes use the same `qualityDimensions[]` and the same
 `shared_operational_mvp_stop_policy`.
 
+P43-T3 adds <doc:OperationalMVPValidationReportFixture> and the
+`SpecHarvesterOperationalMVPValidationReport` fixture. That report links back
+to this plan fixture with a pinned digest and records per-repository
+static-only, AI-enabled, quality, stop-policy, and SpecPM handoff readiness
+fields.
+
 ## Quality Dimensions
 
 Operational MVP validation records `validity`, `repositorySpecificity`,
@@ -117,5 +123,6 @@ adapter output as registry truth.
 
 - `docs/OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md`
 - <doc:OperationalMVPValidationPlan>
+- <doc:OperationalMVPValidationReportFixture>
 - <doc:AuthorReadyDraftQualityReport>
 - <doc:AutonomousCandidateBatch>

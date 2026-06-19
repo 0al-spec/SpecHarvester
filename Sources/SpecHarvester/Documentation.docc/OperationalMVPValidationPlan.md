@@ -41,6 +41,13 @@ requirements, pinned local checkout policy, `static_only` and
 `ai_enabled_proposal` run modes, quality dimensions, shared stop policy, and the
 non-authority boundary before any real corpus run starts.
 
+P43-T3 records the companion report shape as
+<doc:OperationalMVPValidationReportFixture> and the
+`SpecHarvesterOperationalMVPValidationReport` fixture. The report fixture
+captures per-repository draft status, static-only result, AI-enabled result,
+author-ready verdict, evidence precision notes, stop-policy outcome, and SpecPM
+handoff readiness without claiming that a real corpus has run.
+
 ## Corpus
 
 The corpus is operator-selected and pinned. SpecHarvester must not clone or
@@ -121,6 +128,7 @@ enable trusted local adapter execution.
 
 - `docs/OPERATIONAL_MVP_VALIDATION_PLAN.md`
 - <doc:OperationalMVPValidationPlanFixture>
+- <doc:OperationalMVPValidationReportFixture>
 - <doc:AutonomousCandidateBatch>
 - <doc:AuthorReadyDraftQualityBar>
 - <doc:AuthorReadyDraftQualityReport>
