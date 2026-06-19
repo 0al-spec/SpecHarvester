@@ -1652,7 +1652,7 @@ Acceptance:
   path allowlists, no dependency installation, no package manager invocation,
   no network discovery, no harvested code execution, and explicit operator
   opt-in for every non-static mode.
-- [ ] `P40-T5` Connect adapter manifest and preflight output to
+- [x] `P40-T5` Connect adapter manifest and preflight output to
   `autonomous-candidate-batch` as review-only producer evidence while keeping
   the existing static evaluator path unchanged unless an operator explicitly
   supplies adapter evidence.
