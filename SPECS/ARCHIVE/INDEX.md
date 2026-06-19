@@ -713,3 +713,4 @@
 | 2026-06-19 | P42-T12 | Archived Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Review Gate (PASS) |
 | 2026-06-19 | P42-T12 | Archived REVIEW_p42_t12_runtime_implementation_review_gate report |
 | 2026-06-19 | P42-T13 | Archived Explicit Real Local Trusted Adapter Sandbox Operator Approval Binding Fixture (PASS) |
+| 2026-06-19 | P42-T13 | Archived REVIEW_p42_t13_operator_approval_binding report |
