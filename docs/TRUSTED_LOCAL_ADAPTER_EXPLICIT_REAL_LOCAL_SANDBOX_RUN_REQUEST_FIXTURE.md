@@ -135,5 +135,6 @@ does not seed baselines, does not publish registry metadata, does not remove
 - P42-T7 defines
   [`SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport`](TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md).
 - P42-T8 adds this request fixture.
-- P42-T9 is expected to add request preflight before any runtime can consume the
-  request.
+- P42-T9 adds
+  [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md)
+  before any runtime can consume the request.

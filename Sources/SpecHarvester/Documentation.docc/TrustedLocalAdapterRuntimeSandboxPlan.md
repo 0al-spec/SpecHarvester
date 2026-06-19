@@ -203,6 +203,7 @@ sandbox contract fixture
   -> synthetic sandbox run verifier
   -> real local sandbox run readiness gate
   -> explicit real local sandbox run request fixture
+  -> explicit real local sandbox run request preflight fixture
   -> real local adapter run only after review
 ```
 
@@ -231,4 +232,11 @@ as a request-only fixture for future real local sandbox run review. It requires
 P42-T6 verifier and P42-T7 readiness evidence, declares scoped approval plus
 runtime/output/audit policy, and still keeps `adapterExecution: not_run`,
 `runtimeInvoked: false`, `requestIsExecutionPermission: false`, and
+`registryAuthority: false`.
+P42-T9 adds
+<doc:TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture> as
+a request preflight fixture. It checks request identity/digest,
+verifier/readiness evidence requirements, approval scope, runtime/output/audit
+policy, rejected unsafe shapes, blocked execution drift, and still keeps
+`preflightPassIsExecutionPermission: false`, `runtimeInvoked: false`, and
 `registryAuthority: false`.

@@ -163,6 +163,12 @@ Published DocC site:
    future real local sandbox run review requests, verifier/readiness evidence
    references, scoped approval requirements, runtime/output/audit policy, and
    request-only non-authority statements
+43. [`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md):
+   P42-T9
+   `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport`
+   fixture for request identity, verifier/readiness evidence requirements,
+   scoped approval, runtime/output/audit policy, rejected unsafe shapes, and
+   review-only non-authority statements
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

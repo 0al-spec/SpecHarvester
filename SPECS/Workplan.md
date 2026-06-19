@@ -1799,12 +1799,17 @@ Acceptance:
   approval requirements, verifier/readiness references, runtime policy,
   filesystem/output/audit declarations, and non-authority statements while
   still refusing to load adapter code or spawn adapter processes.
-- [ ] `P42-T9` Add an explicit real local trusted adapter sandbox run request
+- [x] `P42-T9` Add an explicit real local trusted adapter sandbox run request
   preflight fixture that validates the P42-T8 request identity, prerequisite
   verifier/readiness evidence requirements, scoped approval binding, runtime
   policy, filesystem/output/audit declarations, and non-authority statements
   while still refusing to grant execution permission or spawn adapter
   processes.
+- [ ] `P42-T10` Add a disabled explicit real local trusted adapter sandbox
+  runner skeleton that validates the P42-T8 request and P42-T9 preflight
+  linkage while preserving no adapter code loading, no process spawning, no
+  dependency installation, no network access, no registry authority, and no
+  adapter output acceptance.
 
 Motivation:
 
