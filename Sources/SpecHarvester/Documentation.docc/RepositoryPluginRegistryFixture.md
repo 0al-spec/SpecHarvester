@@ -36,8 +36,8 @@ The fixture declares `contract`, `roles[]`, `inputEvidenceKinds[]`,
 `outputArtifactKinds[]`, `plugins[]`, `nonAuthorityStatements[]`, and
 `followUp`.
 
-Each plugin record declares `pluginId`, `version`, `role`, `title`, `summary`,
-`inputEvidenceKinds[]`, `outputArtifactKinds[]`, `safetyConstraints`,
+Each plugin record declares `pluginId`, `version`, `role`, `authority`, `title`,
+`summary`, `inputEvidenceKinds[]`, `outputArtifactKinds[]`, `safetyConstraints`,
 `applicabilitySignals[]`, `conflictsWith[]`, `fallbackBehavior`,
 `diagnostics[]`, and `nonAuthorityStatements[]`.
 
@@ -47,6 +47,11 @@ The P38-T2 fixture includes generic examples for `parser_profile`,
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems are examples only, not normative plugin rules.
+
+Each plugin record uses `authority: producer_side_evidence_only`, while the
+top-level registry record uses `authority: producer_plugin_registry_only`.
+This separates declared registry-record authority from the authority carried by
+plugin output evidence.
 
 ## Static Evidence
 
@@ -86,7 +91,9 @@ as registry truth, or treat AI output as registry truth.
 
 ## Follow-Ups
 
-- `P38-T3`: add `SpecHarvesterRepositoryPluginApplicabilityReport`.
+- `P38-T3`: add `SpecHarvesterRepositoryPluginApplicabilityReport` in
+  <doc:RepositoryPluginApplicabilityReportFixture> and
+  `tests/fixtures/repository_plugins/generic-applicability-report.example.json`.
 - `P38-T4`: connect registry/applicability evidence to autonomous candidate
   batch as sidecar producer evidence.
 - `P38-T5`: add cross-ecosystem plugin subsystem fixtures.

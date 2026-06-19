@@ -108,6 +108,7 @@ and
       "pluginId": "spec_harvester.generic.repository_profile.v0",
       "version": "0.1.0",
       "role": "repository_profile",
+      "authority": "producer_side_evidence_only",
       "inputEvidenceKinds": ["workspace_inventory", "harvest_manifest_paths"],
       "outputArtifactKinds": ["repository_profile_detection"],
       "safety": {
@@ -156,7 +157,12 @@ live model calls.
 
 ## Applicability Report
 
-The future selection report is planned as
+P38-T3 records the first fixture in
+[`REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md`](REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md)
+and
+`tests/fixtures/repository_plugins/generic-applicability-report.example.json`.
+
+The selection report shape is
 `SpecHarvesterRepositoryPluginApplicabilityReport`.
 
 ```json
@@ -166,15 +172,18 @@ The future selection report is planned as
   "schemaVersion": 1,
   "authority": "producer_plugin_applicability_only",
   "mode": "auto",
-  "selectedPluginIds": ["spec_harvester.generic.repository_profile.v0"],
-  "candidatePlugins": [],
+  "selectedPlugins": [],
   "rejectedPlugins": [],
+  "fallbackPlugins": [],
+  "blockedPlugins": [],
   "diagnostics": []
 }
 ```
 
-The report should explain why a plugin was selected, rejected, blocked, or why
-the system fell back to generic behavior.
+The report explains why a plugin was selected, rejected, blocked, or why the
+system fell back to generic behavior. Each decision carries
+`decisionAuthority: producer_plugin_applicability_only` and
+`pluginOutputAuthority: producer_side_evidence_only`.
 
 ## Deterministic Selection Boundaries
 

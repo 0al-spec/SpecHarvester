@@ -45,6 +45,10 @@ Published DocC site:
 16. [`REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md`](REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md):
    machine-readable `SpecHarvesterRepositoryPluginRegistry` fixture shape for
    declared producer-side plugin contracts
+17. [`REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md`](REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md):
+   machine-readable `SpecHarvesterRepositoryPluginApplicabilityReport` fixture
+   shape for selected, rejected, fallback, and blocked plugin decisions from
+   static evidence
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
