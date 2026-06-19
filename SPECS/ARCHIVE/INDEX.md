@@ -716,3 +716,4 @@
 | 2026-06-19 | P42-T13 | Archived Explicit Real Local Trusted Adapter Sandbox Operator Approval Binding Fixture (PASS) |
 | 2026-06-19 | P42-T13 | Archived REVIEW_p42_t13_operator_approval_binding report |
 | 2026-06-19 | P42-T14 | Archived Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Invocation Skeleton (PASS) |
+| 2026-06-19 | P42-T14 | Archived REVIEW_p42_t14_disabled_runtime_invocation_skeleton report |
