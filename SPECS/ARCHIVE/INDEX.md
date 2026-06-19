@@ -689,3 +689,4 @@
 | 2026-06-19 | P42-T3 | Archived Trusted Local Adapter Sandbox Preflight Report Fixture (PASS) |
 | 2026-06-19 | P42-T3 | Archived REVIEW_p42_t3_trusted_local_adapter_sandbox_preflight_report_fixture report |
 | 2026-06-19 | P42-T4 | Archived Disabled Trusted Local Adapter Sandbox Runner Validation (PASS) |
+| 2026-06-19 | P42-T4 | Archived REVIEW_p42_t4_disabled_trusted_local_adapter_sandbox_runner_validation report |
