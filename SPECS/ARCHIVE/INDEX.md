@@ -183,6 +183,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p39_t1_static_plugin_applicability_evaluator_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t6_real_repository_plugin_evidence_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t5_repository_plugin_cross_ecosystem_fixtures.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t4_repository_plugin_batch_integration.md` |
@@ -622,3 +623,4 @@
 | 2026-05-21 | P12-T6 | Archived Popular Repository Smoke Scenario Promotion (PASS) |
 | 2026-05-21 | P12-T6 | Archived REVIEW_p12_t6_popular_smoke_scenario report |
 | 2026-06-19 | P39-T1 | Archived Static Repository Plugin Applicability Evaluator Plan (PASS) |
+| 2026-06-19 | P39-T1 | Archived REVIEW_p39_t1_static_plugin_applicability_evaluator_plan report |
