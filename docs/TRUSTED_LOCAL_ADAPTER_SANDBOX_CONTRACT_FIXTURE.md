@@ -200,8 +200,9 @@ The fixture records explicit non-authority statements:
 - does not treat adapter output as registry truth;
 - does not treat sandbox contract as registry truth.
 
-## Follow-Up
+## Sandbox Preflight Report
 
-P42-T2 only defines the sandbox contract fixture. The next task is `P42-T3`,
-the trusted local adapter sandbox preflight report fixture. That task should
-validate this contract shape before any sandbox runner implementation exists.
+P42-T3 adds
+[`SpecHarvesterTrustedLocalAdapterSandboxPreflightReport`](TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md)
+as the review-only preflight fixture over this contract shape. Passing sandbox
+preflight is not execution permission and does not implement a runner.

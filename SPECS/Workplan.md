@@ -1772,11 +1772,15 @@ Acceptance:
   requirements, filesystem/environment/network/dependency policy, output
   verification, audit records, and non-authority statements before any runtime
   implementation.
-- [ ] `P42-T3` Add a trusted local adapter sandbox preflight report fixture that
+- [x] `P42-T3` Add a trusted local adapter sandbox preflight report fixture that
   validates `SpecHarvesterTrustedLocalAdapterSandboxContract` identity,
   operator approval requirements, process/filesystem/environment/dependency/
   network policy, output verification, audit requirements, and non-authority
   boundaries before any sandbox runner implementation.
+- [ ] `P42-T4` Add disabled trusted local adapter sandbox runner validation that
+  checks sandbox contract and sandbox preflight report linkage while preserving
+  no adapter code loading, no process spawning, no dependency installation, no
+  network access, and no registry authority.
 
 Motivation:
 

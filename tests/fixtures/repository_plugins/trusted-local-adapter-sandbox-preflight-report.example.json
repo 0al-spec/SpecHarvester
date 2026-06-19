@@ -1,0 +1,382 @@
+{
+  "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-preflight/v0",
+  "kind": "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport",
+  "schemaVersion": 1,
+  "authority": "producer_trusted_local_adapter_sandbox_preflight_only",
+  "contract": {
+    "purpose": "Validate a trusted local adapter sandbox contract before any sandbox runner implementation without granting execution authority.",
+    "contractVersion": "0.1.0",
+    "sandboxContractAuthority": "producer_trusted_local_adapter_sandbox_contract_only",
+    "sandboxPreflightAuthority": "producer_trusted_local_adapter_sandbox_preflight_only",
+    "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "defaultExecution": "disabled",
+    "preflightPassIsExecutionPermission": false
+  },
+  "sandboxContract": {
+    "path": "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-contract.example.json",
+    "digest": "sha256:cd0534fd18c3fad3b871fce3c52103a577f55c8a897d048ee0e9bcaf6f813faf",
+    "kind": "SpecHarvesterTrustedLocalAdapterSandboxContract",
+    "authority": "producer_trusted_local_adapter_sandbox_contract_only"
+  },
+  "result": {
+    "status": "passed",
+    "decision": "sandbox_preflight_passed_review_only",
+    "preflightPassIsExecutionPermission": false,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeImplemented": false,
+    "sandboxRunnerImplemented": false,
+    "operatorApprovalProvided": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "validatedSandboxContract": {
+    "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-contract/v0",
+    "kind": "SpecHarvesterTrustedLocalAdapterSandboxContract",
+    "schemaVersion": 1,
+    "authority": "producer_trusted_local_adapter_sandbox_contract_only",
+    "sandboxPolicyId": "spec_harvester.trusted_local_adapter.local_sandbox.v0",
+    "operatorApprovalRequiredBeforeRuntime": true,
+    "operatorApprovalProvidedByFixture": false,
+    "sandboxContractIsExecutionPermission": false,
+    "adapterExecution": "not_run",
+    "registryAuthority": false
+  },
+  "pathPolicy": {
+    "pathFormat": "posix_relative",
+    "parentSegmentsAllowed": false,
+    "absolutePathsAllowed": false,
+    "backslashAllowed": false,
+    "networkPathsAllowed": false
+  },
+  "acceptedChecks": [
+    {
+      "code": "sandbox_contract_identity_valid",
+      "status": "passed",
+      "target": "sandboxContract",
+      "message": "Sandbox contract apiVersion, kind, schemaVersion, and authority match the P42-T2 contract."
+    },
+    {
+      "code": "sandbox_contract_digest_verified",
+      "status": "passed",
+      "target": "sandboxContract.digest",
+      "message": "Sandbox contract reference is pinned by SHA-256 digest."
+    },
+    {
+      "code": "adapter_package_identity_digest_pinned",
+      "status": "passed",
+      "target": "adapterPackageIdentity",
+      "message": "Adapter package source is digest-pinned and mutable refs are disallowed."
+    },
+    {
+      "code": "sandbox_policy_identity_present",
+      "status": "passed",
+      "target": "sandboxPolicyIdentity",
+      "message": "Sandbox policy id, version, authority, and runtime digest requirement are present."
+    },
+    {
+      "code": "operator_approval_requirements_present",
+      "status": "passed",
+      "target": "operatorApprovalRequirements",
+      "message": "Operator approval is required before runtime and is scoped to one adapter, repository, and run."
+    },
+    {
+      "code": "process_policy_bounded_and_no_execution",
+      "status": "passed",
+      "target": "processPolicy",
+      "message": "Process policy keeps adapter execution disabled in the contract fixture and records bounded future runtime budgets."
+    },
+    {
+      "code": "filesystem_policy_safe_relative_declared_only",
+      "status": "passed",
+      "target": "filesystemPolicy",
+      "message": "Filesystem policy requires POSIX relative paths, declared input artifacts only, and declared output directories only."
+    },
+    {
+      "code": "environment_policy_sealed",
+      "status": "passed",
+      "target": "environmentPolicy",
+      "message": "Environment inheritance, secrets, GitHub tokens, SSH agent, cloud credentials, registry tokens, and model-provider tokens are denied."
+    },
+    {
+      "code": "dependency_policy_denies_installation",
+      "status": "passed",
+      "target": "dependencyPolicy",
+      "message": "Dependency installation, existing repository dependencies, package managers, and package manager commands are denied."
+    },
+    {
+      "code": "network_policy_denies_remote_access",
+      "status": "passed",
+      "target": "networkPolicy",
+      "message": "Network access, loopback, DNS, remote fetch, and target allowlists are denied by default."
+    },
+    {
+      "code": "output_verification_requirements_present",
+      "status": "passed",
+      "target": "outputVerification",
+      "message": "Output verification requires safe relative paths, byte sizes, SHA-256 digests, producer run ids, adapter ids/digests, source input digests, and diagnostics status."
+    },
+    {
+      "code": "audit_requirements_replayable",
+      "status": "passed",
+      "target": "auditRecordRequirements",
+      "message": "Audit record requirements are replayable and include request, preflight, operator approval, input, output, runtime counter, diagnostics, and non-authority fields."
+    },
+    {
+      "code": "execution_boundary_review_only",
+      "status": "passed",
+      "target": "executionBoundary",
+      "message": "Sandbox contract remains no-execution review evidence with no registry authority."
+    },
+    {
+      "code": "non_authority_statements_present",
+      "status": "passed",
+      "target": "nonAuthorityStatements",
+      "message": "Sandbox contract includes non-authority statements for execution, registry, acceptance, baseline, preview, adapter output, sandbox contract, and AI boundaries."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "code": "unsafe_parent_path_rejected",
+      "status": "rejected",
+      "target": "pathPolicy",
+      "examplePath": "../outside-repository/sandbox-contract.json",
+      "reason": "parent_segments_not_allowed"
+    },
+    {
+      "code": "unsafe_absolute_path_rejected",
+      "status": "rejected",
+      "target": "pathPolicy",
+      "examplePath": "/tmp/sandbox-contract.json",
+      "reason": "absolute_paths_not_allowed"
+    },
+    {
+      "code": "unsafe_backslash_path_rejected",
+      "status": "rejected",
+      "target": "pathPolicy",
+      "examplePath": "tests\\fixtures\\sandbox-contract.json",
+      "reason": "backslash_paths_not_allowed"
+    },
+    {
+      "code": "unsafe_network_path_rejected",
+      "status": "rejected",
+      "target": "pathPolicy",
+      "examplePath": "https://example.invalid/sandbox-contract.json",
+      "reason": "network_paths_not_allowed"
+    },
+    {
+      "code": "missing_sandbox_contract_digest_rejected",
+      "status": "rejected",
+      "target": "sandboxContract.digest",
+      "reason": "sha256_digest_required"
+    },
+    {
+      "code": "sandbox_contract_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "sandboxContract.digest",
+      "reason": "declared_digest_must_match_artifact_bytes"
+    },
+    {
+      "code": "mutable_adapter_ref_rejected",
+      "status": "rejected",
+      "target": "adapterPackageIdentity",
+      "reason": "adapter_package_identity_must_require_pinned_revision_or_digest"
+    },
+    {
+      "code": "missing_operator_approval_requirement_rejected",
+      "status": "rejected",
+      "target": "operatorApprovalRequirements",
+      "reason": "operator_approval_required_before_runtime"
+    },
+    {
+      "code": "approval_provided_by_contract_fixture_rejected",
+      "status": "rejected",
+      "target": "operatorApprovalRequirements",
+      "reason": "sandbox_contract_must_not_self_provide_operator_approval"
+    },
+    {
+      "code": "adapter_process_execution_allowed_rejected",
+      "status": "rejected",
+      "target": "processPolicy",
+      "reason": "adapter_process_execution_not_allowed_in_contract_fixture"
+    },
+    {
+      "code": "unbounded_process_tree_rejected",
+      "status": "rejected",
+      "target": "processPolicy.resourceBudgets",
+      "reason": "runtime_budgets_must_be_bounded"
+    },
+    {
+      "code": "environment_inheritance_rejected",
+      "status": "rejected",
+      "target": "environmentPolicy",
+      "reason": "environment_inheritance_not_allowed"
+    },
+    {
+      "code": "secrets_access_rejected",
+      "status": "rejected",
+      "target": "environmentPolicy",
+      "reason": "secrets_access_not_allowed"
+    },
+    {
+      "code": "dependency_installation_rejected",
+      "status": "rejected",
+      "target": "dependencyPolicy",
+      "reason": "dependency_installation_not_allowed"
+    },
+    {
+      "code": "package_manager_invocation_rejected",
+      "status": "rejected",
+      "target": "dependencyPolicy",
+      "reason": "package_managers_not_invoked"
+    },
+    {
+      "code": "network_access_rejected",
+      "status": "rejected",
+      "target": "networkPolicy",
+      "reason": "network_access_must_be_none"
+    },
+    {
+      "code": "missing_output_digest_requirement_rejected",
+      "status": "rejected",
+      "target": "outputVerification",
+      "reason": "sha256_output_digest_requirement_missing"
+    },
+    {
+      "code": "missing_audit_requirement_rejected",
+      "status": "rejected",
+      "target": "auditRecordRequirements",
+      "reason": "replayable_audit_record_required"
+    },
+    {
+      "code": "registry_authority_rejected",
+      "status": "rejected",
+      "target": "executionBoundary",
+      "reason": "sandbox_preflight_has_no_registry_authority"
+    },
+    {
+      "code": "adapter_output_registry_truth_rejected",
+      "status": "rejected",
+      "target": "outputVerification",
+      "reason": "adapter_output_is_candidate_evidence_only"
+    }
+  ],
+  "blockedChecks": [
+    {
+      "code": "sandbox_runner_execution_blocked",
+      "status": "blocked",
+      "target": "followUp",
+      "reason": "sandbox_runner_requires_future_P42_T4_disabled_runner_validation"
+    },
+    {
+      "code": "third_party_adapter_code_loading_blocked",
+      "status": "blocked",
+      "target": "executionBoundary",
+      "reason": "adapter_code_loading_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "adapter_process_spawn_blocked",
+      "status": "blocked",
+      "target": "executionBoundary",
+      "reason": "adapter_process_spawn_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "synthetic_approved_adapter_run_blocked",
+      "status": "blocked",
+      "target": "followUp",
+      "reason": "synthetic_approved_adapter_run_requires_later_P42_task"
+    },
+    {
+      "code": "real_local_adapter_run_blocked",
+      "status": "blocked",
+      "target": "followUp",
+      "reason": "real_local_adapter_run_deferred_until_after_review"
+    },
+    {
+      "code": "registry_authority_requested_blocked",
+      "status": "blocked",
+      "target": "executionBoundary",
+      "reason": "trusted_local_adapter_sandbox_preflight_has_no_registry_authority"
+    }
+  ],
+  "warningChecks": [
+    {
+      "code": "sandbox_preflight_is_review_evidence_only",
+      "status": "warning",
+      "target": "result",
+      "message": "Passing sandbox preflight is review evidence only and is not execution permission."
+    },
+    {
+      "code": "operator_approval_not_provided_by_fixture",
+      "status": "warning",
+      "target": "operatorApprovalRequirements",
+      "message": "The sandbox contract requires operator approval, but this fixture intentionally does not provide it."
+    }
+  ],
+  "summary": {
+    "acceptedCount": 14,
+    "rejectedCount": 20,
+    "blockedCount": 6,
+    "warningCount": 2,
+    "diagnosticCount": 2,
+    "executedAdapterCount": 0,
+    "runtimeImplementedAdapterCount": 0
+  },
+  "executionBoundary": {
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeImplemented": false,
+    "sandboxRunnerImplemented": false,
+    "sandboxPreflightIsExecutionPermission": false,
+    "operatorApprovalProvided": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "trusted_local_adapter_sandbox_preflight_fixture",
+      "message": "Sandbox preflight report fixture validates the P42-T2 contract shape without running adapter code."
+    },
+    {
+      "severity": "info",
+      "code": "sandbox_preflight_not_execution_permission",
+      "message": "Passing sandbox preflight is producer-side review evidence and does not grant permission to execute adapters."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "sandbox_preflight_is_not_execution_permission",
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_run_adapter_processes",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_sandbox_contract_as_registry_truth",
+    "does_not_treat_sandbox_preflight_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "sandboxPlanTask": "P42-T1",
+    "sandboxContractTask": "P42-T2",
+    "disabledSandboxRunnerValidationTask": "P42-T4",
+    "syntheticApprovedAdapterRunTask": "P42-T5",
+    "realLocalAdapterRunTask": "deferred_until_after_review"
+  }
+}

@@ -203,4 +203,7 @@ sandbox contract fixture
   -> real local adapter run only after review
 ```
 
-This ordering keeps the future runtime incremental and auditable.
+P42-T3 adds
+[`SpecHarvesterTrustedLocalAdapterSandboxPreflightReport`](TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md)
+as the review-only sandbox preflight report fixture. This ordering keeps the
+future runtime incremental and auditable.
