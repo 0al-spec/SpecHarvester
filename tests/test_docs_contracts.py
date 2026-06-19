@@ -10,6 +10,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P41-T2 Trusted Local Adapter Run Request Fixture" in next_text:
+        assert_p41_t1_last_archived(next_text)
+        assert_p41_t1_recent(next_text)
+        assert_phase_41_t2_planned(next_text)
+        return
+
+    if "# Next Task: P41-T1 Adapter Runtime Readiness Plan" in next_text:
+        assert_p40_t7_last_archived(next_text)
+        assert_p40_t7_recent(next_text)
+        assert_phase_41_t1_planned(next_text)
+        return
+
     if "# Next Task: Phase 40 Complete" in next_text:
         assert_p40_t7_last_archived(next_text)
         assert_p40_t7_recent(next_text)
@@ -4419,6 +4431,84 @@ def assert_phase_40_complete(next_text: str) -> None:
     assert "cross-ecosystem adapter fixture matrix" in normalized
     assert "real local adapter-contract validation" in normalized
     assert "Future adapter runtime work must preserve explicit opt-in" in normalized
+
+
+def assert_phase_41_t1_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P41-T1 Adapter Runtime Readiness Plan" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P41-T1-adapter-runtime-readiness-plan`" in next_text
+    assert "Phase 41. Trusted Local Adapter Runtime Readiness" in next_text
+    assert "trusted local adapter runtime readiness plan" in normalized
+    assert "future opt-in runtime without enabling adapter execution" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterRunRequest" in normalized
+    assert "trusted local adapter run preflight report fixture" in normalized
+    assert "disabled-by-default trusted local adapter runner skeleton" in normalized
+    assert "autonomous-candidate-batch" in normalized
+    assert "FastMCP" in normalized
+    assert "FastAPI" in normalized
+    assert "xyflow" in normalized
+    assert "Gin" in normalized
+    assert "Do not implement adapter loading or execution" in normalized
+    assert "Do not add a runner in this task" in normalized
+    assert "Do not create trusted local adapter run request fixtures" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not seed baselines" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p41_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P41-T1 Adapter Runtime Readiness Plan" in next_text
+
+
+def assert_p41_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P41-T1` documented trusted local adapter runtime readiness" in normalized
+    assert "docs/TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md" in next_text
+    assert "TrustedLocalAdapterRuntimeReadiness.md" in next_text
+    assert "SpecHarvesterTrustedLocalAdapterRunRequest" in normalized
+    assert "trusted local adapter run preflight" in normalized
+    assert "disabled no-execution runner skeleton" in normalized
+    assert "adapter execution remains disabled" in normalized
+    assert "producer-side review evidence" in normalized
+
+
+def assert_phase_41_t2_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P41-T2 Trusted Local Adapter Run Request Fixture" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P41-T2-trusted-local-adapter-run-request-fixture`" in next_text
+    assert "Phase 41. Trusted Local Adapter Runtime Readiness" in next_text
+    assert "SpecHarvesterTrustedLocalAdapterRunRequest" in normalized
+    assert "explicit operator opt-in" in normalized
+    assert "adapter manifest/preflight references" in normalized
+    assert "declared input artifacts" in normalized
+    assert "safe relative read path allowlists" in normalized
+    assert "output directory policy" in normalized
+    assert "resource budgets" in normalized
+    assert "environment policy" in normalized
+    assert "network policy" in normalized
+    assert "dependency policy" in normalized
+    assert "package manager policy" in normalized
+    assert "non-authority statements" in normalized
+    assert "Do not implement adapter loading or execution" in normalized
+    assert "Do not run adapter processes" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -16523,6 +16613,146 @@ def test_repository_plugin_adapter_real_local_validation_is_documented() -> None
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P40-T7` Run a real local adapter-contract validation" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_trusted_local_adapter_runtime_readiness_plan_is_documented() -> None:
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeReadiness.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    adapter_contract = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"
+    adapter_contract_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterContract.md"
+    )
+    execution_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md"
+    execution_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterExecutionPolicy.md"
+    )
+    real_validation_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"
+    real_validation_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterRealLocalValidation.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Runtime Readiness",
+            "P41-T1",
+            "Phase 41 Tasks",
+            "SpecHarvesterTrustedLocalAdapterRunRequest",
+            "trusted local adapter run preflight",
+            "disabled-by-default runner skeleton",
+            "no-execution report",
+            "autonomous-candidate-batch",
+            "FastMCP",
+            "FastAPI",
+            "xyflow",
+            "Gin",
+            "explicit operator opt-in",
+            "adapter manifest",
+            "adapter preflight",
+            "declared input artifacts",
+            "SHA-256 digests",
+            "safe relative read path allowlists",
+            "output directory policy",
+            "maximum output sizes",
+            "timeout budgets",
+            "environment variable policy",
+            "network policy",
+            "dependency policy",
+            "package manager policy",
+            "process execution policy",
+            "missing or mismatched digests",
+            "undeclared output paths",
+            "network access",
+            "dependency installation",
+            "package manager invocation",
+            "harvested code execution",
+            "AI execution",
+            "unbounded process execution",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "registryAuthority: false",
+            "appliedToDrafting: false",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "does not enable adapter execution",
+            "must not load third-party adapter code",
+            "launch adapter processes",
+            "no network discovery by default",
+            "no dependency installation",
+            "no package manager invocation",
+            "no harvested repository code execution",
+            "producer-side review-only authority",
+            "do not accept packages",
+            "accept relations",
+            "seed baselines",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"),
+        (docc_root, "docs/TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"),
+        (docc_root, "TrustedLocalAdapterRuntimeReadiness"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"),
+        (capabilities_docc, "TrustedLocalAdapterRuntimeReadiness"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"),
+        (roadmap_docc, "TrustedLocalAdapterRuntimeReadiness"),
+        (adapter_contract, "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"),
+        (adapter_contract_docc, "TrustedLocalAdapterRuntimeReadiness"),
+        (execution_doc, "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"),
+        (execution_docc, "TrustedLocalAdapterRuntimeReadiness"),
+        (real_validation_doc, "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"),
+        (real_validation_docc, "TrustedLocalAdapterRuntimeReadiness"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "## Phase 41. Trusted Local Adapter Runtime Readiness" in workplan_text
+    assert "`P41-T1` Document the trusted local adapter runtime readiness plan" in workplan_text
+    assert "`P41-T2` Add a machine-readable" in workplan_text
+    assert "`P41-T3` Add a trusted local adapter run preflight report fixture" in (workplan_text)
+    assert "`P41-T4` Implement a disabled-by-default trusted local adapter runner" in (
+        workplan_text
+    )
+    assert "`P41-T5` Connect trusted local adapter run reports" in workplan_text
+    assert "`P41-T6` Run a real local trusted-adapter readiness validation" in (workplan_text)
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

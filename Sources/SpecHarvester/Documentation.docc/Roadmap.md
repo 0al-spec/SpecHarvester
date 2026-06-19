@@ -583,6 +583,14 @@ checkouts. The run maps real repository evidence to P40-T6 matrix categories
 while preserving `adapterExecution: not_run`, `adapterCodeLoaded: false`,
 `appliedToDrafting: false`, and `registryAuthority: false`.
 
+Phase 41 starts with `P41-T1`, <doc:TrustedLocalAdapterRuntimeReadiness>.
+The phase prepares a future trusted local adapter runtime without enabling
+execution yet. It defines follow-up tasks for
+`SpecHarvesterTrustedLocalAdapterRunRequest`, trusted local adapter run
+preflight, a disabled no-execution runner skeleton, explicit review-only batch
+evidence handoff, and real local readiness validation over FastMCP, FastAPI,
+xyflow, and Gin.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install
