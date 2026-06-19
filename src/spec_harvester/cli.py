@@ -183,6 +183,11 @@ from spec_harvester.trusted_local_adapter_runner import (
     build_trusted_local_adapter_run_report,
     write_trusted_local_adapter_run_report,
 )
+from spec_harvester.trusted_local_adapter_sandbox_runner import (
+    TrustedLocalAdapterSandboxRunnerValidationOptions,
+    build_trusted_local_adapter_sandbox_runner_validation_report,
+    write_trusted_local_adapter_sandbox_runner_validation_report,
+)
 from spec_harvester.xyflow_package_set_smoke import (
     XyflowPackageSetSmokeOptions,
     run_xyflow_package_set_smoke,
@@ -1094,6 +1099,37 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path where SpecHarvesterTrustedLocalAdapterRunReport JSON is written.",
     )
     trusted_local_adapter_run.set_defaults(func=run_trusted_local_adapter_runner_skeleton)
+
+    trusted_local_adapter_sandbox_run = subcommands.add_parser(
+        "trusted-local-adapter-sandbox-runner-validation",
+        help=(
+            "Validate trusted local adapter sandbox contract/preflight artifacts and emit "
+            "a disabled no-execution sandbox runner validation report."
+        ),
+    )
+    trusted_local_adapter_sandbox_run.add_argument(
+        "--contract",
+        type=Path,
+        required=True,
+        help="Path to SpecHarvesterTrustedLocalAdapterSandboxContract JSON.",
+    )
+    trusted_local_adapter_sandbox_run.add_argument(
+        "--preflight",
+        type=Path,
+        required=True,
+        help="Path to SpecHarvesterTrustedLocalAdapterSandboxPreflightReport JSON.",
+    )
+    trusted_local_adapter_sandbox_run.add_argument(
+        "--output",
+        type=Path,
+        help=(
+            "Optional path where "
+            "SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport JSON is written."
+        ),
+    )
+    trusted_local_adapter_sandbox_run.set_defaults(
+        func=run_trusted_local_adapter_sandbox_runner_validation
+    )
 
     governance = subcommands.add_parser(
         "governance-report",
@@ -2034,6 +2070,23 @@ def run_trusted_local_adapter_runner_skeleton(args: argparse.Namespace) -> int:
         return 2
     if args.output is not None:
         write_trusted_local_adapter_run_report(args.output, payload)
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0
+
+
+def run_trusted_local_adapter_sandbox_runner_validation(args: argparse.Namespace) -> int:
+    try:
+        payload = build_trusted_local_adapter_sandbox_runner_validation_report(
+            TrustedLocalAdapterSandboxRunnerValidationOptions(
+                contract=args.contract,
+                preflight=args.preflight,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2, sort_keys=True))
+        return 2
+    if args.output is not None:
+        write_trusted_local_adapter_sandbox_runner_validation_report(args.output, payload)
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
 

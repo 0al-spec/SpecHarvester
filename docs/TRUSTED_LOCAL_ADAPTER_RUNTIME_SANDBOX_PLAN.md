@@ -207,3 +207,9 @@ P42-T3 adds
 [`SpecHarvesterTrustedLocalAdapterSandboxPreflightReport`](TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md)
 as the review-only sandbox preflight report fixture. This ordering keeps the
 future runtime incremental and auditable.
+P42-T4 adds
+[`SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport`](TRUSTED_LOCAL_ADAPTER_SANDBOX_RUNNER_VALIDATION.md)
+as disabled no-execution validation over the sandbox contract and preflight
+report while preserving `adapterExecution: not_run`,
+`adapterCodeLoaded: false`, `adapterProcessSpawned: false`,
+`executedAdapterCount: 0`, and `registryAuthority: false`.

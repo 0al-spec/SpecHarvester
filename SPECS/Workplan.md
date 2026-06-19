@@ -1777,10 +1777,14 @@ Acceptance:
   operator approval requirements, process/filesystem/environment/dependency/
   network policy, output verification, audit requirements, and non-authority
   boundaries before any sandbox runner implementation.
-- [ ] `P42-T4` Add disabled trusted local adapter sandbox runner validation that
+- [x] `P42-T4` Add disabled trusted local adapter sandbox runner validation that
   checks sandbox contract and sandbox preflight report linkage while preserving
   no adapter code loading, no process spawning, no dependency installation, no
   network access, and no registry authority.
+- [ ] `P42-T5` Add an explicitly approved synthetic trusted local adapter
+  sandbox run fixture that records operator approval binding, sandbox runner
+  validation input, synthetic adapter output candidates, output digests, audit
+  records, and non-authority statements without running a real adapter process.
 
 Motivation:
 
@@ -1803,6 +1807,8 @@ Goal:
 Acceptance:
 
 - The phase starts with documentation and machine-readable planning only.
+- Synthetic approved runs remain fixtures until the sandbox runner implementation
+  and real adapter execution gates are reviewed separately.
 - No task may enable adapter execution by default.
 - Any future runtime must require explicit operator approval, bounded process
   execution, safe input allowlists, sealed environment, dependency isolation,

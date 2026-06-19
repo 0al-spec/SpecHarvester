@@ -183,6 +183,7 @@
 | P42-T1 | [P42-T1_Trusted_Local_Adapter_Runtime_Sandbox_Plan/](P42-T1_Trusted_Local_Adapter_Runtime_Sandbox_Plan/) | 2026-06-19 | PASS |
 | P42-T2 | [P42-T2_Trusted_Local_Adapter_Sandbox_Contract_Fixture/](P42-T2_Trusted_Local_Adapter_Sandbox_Contract_Fixture/) | 2026-06-19 | PASS |
 | P42-T3 | [P42-T3_Trusted_Local_Adapter_Sandbox_Preflight_Report_Fixture/](P42-T3_Trusted_Local_Adapter_Sandbox_Preflight_Report_Fixture/) | 2026-06-19 | PASS |
+| P42-T4 | [P42-T4_Disabled_Trusted_Local_Adapter_Sandbox_Runner_Validation/](P42-T4_Disabled_Trusted_Local_Adapter_Sandbox_Runner_Validation/) | 2026-06-19 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -687,3 +688,5 @@
 | 2026-06-19 | P42-T2 | Archived REVIEW_p42_t2_trusted_local_adapter_sandbox_contract_fixture report |
 | 2026-06-19 | P42-T3 | Archived Trusted Local Adapter Sandbox Preflight Report Fixture (PASS) |
 | 2026-06-19 | P42-T3 | Archived REVIEW_p42_t3_trusted_local_adapter_sandbox_preflight_report_fixture report |
+| 2026-06-19 | P42-T4 | Archived Disabled Trusted Local Adapter Sandbox Runner Validation (PASS) |
+| 2026-06-19 | P42-T4 | Archived REVIEW_p42_t4_disabled_trusted_local_adapter_sandbox_runner_validation report |

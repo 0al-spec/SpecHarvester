@@ -907,6 +907,13 @@ and the machine-readable
 `SpecHarvesterTrustedLocalAdapterSandboxPreflightReport` fixture for sandbox
 contract identity/digest linkage, accepted/rejected/blocked checks,
 no-execution state, and review-only non-authority statements.
+P42-T4 adds
+[`TRUSTED_LOCAL_ADAPTER_SANDBOX_RUNNER_VALIDATION.md`](TRUSTED_LOCAL_ADAPTER_SANDBOX_RUNNER_VALIDATION.md)
+and `trusted-local-adapter-sandbox-runner-validation`, a disabled
+no-execution validation command that checks sandbox contract/preflight linkage
+and emits `SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport`
+without loading adapter code, spawning processes, installing dependencies,
+using network access, running AI, or granting registry authority.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

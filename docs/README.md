@@ -136,6 +136,12 @@ Published DocC site:
    `SpecHarvesterTrustedLocalAdapterSandboxPreflightReport` fixture for
    sandbox contract identity/digest linkage, accepted/rejected/blocked checks,
    no-execution state, and review-only non-authority statements
+38. [`TRUSTED_LOCAL_ADAPTER_SANDBOX_RUNNER_VALIDATION.md`](TRUSTED_LOCAL_ADAPTER_SANDBOX_RUNNER_VALIDATION.md):
+   P42-T4 disabled no-execution
+   `SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport` for
+   sandbox contract/preflight identity and digest linkage before any adapter
+   code loading, process spawning, dependency installation, network access, AI,
+   or registry authority
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
