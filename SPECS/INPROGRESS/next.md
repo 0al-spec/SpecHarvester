@@ -1,54 +1,49 @@
-# Next Task: P42-T1 Trusted Local Adapter Runtime Sandbox Plan
+# Next Task: P42-T2 Trusted Local Adapter Sandbox Contract Fixture
 
-**Status:** In Progress
-**Branch:** `feature/P42-T1-trusted-local-adapter-runtime-sandbox-plan`
+**Status:** Planned
+**Branch:** `feature/P42-T2-trusted-local-adapter-sandbox-contract-fixture`
 **Phase:** Phase 42. Trusted Local Adapter Runtime Sandbox
-**Last Archived:** P41-T6 Real Local Trusted-Adapter Readiness Validation
+**Last Archived:** P42-T1 Trusted Local Adapter Runtime Sandbox Plan
 
 ## Recently Archived
 
-- `P41-T6` recorded real local trusted-adapter readiness validation over
-  FastMCP, FastAPI, xyflow, and Gin.
+- `P42-T1` documented the trusted local adapter runtime sandbox plan.
 - GitHub docs are in
-  `docs/TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md`.
+  `docs/TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md`.
 - DocC docs are in
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterRealLocalReadinessValidation.md`.
-- The readiness fixture proved `autonomous-candidate-batch --skip-ai
-  --trusted-local-adapter-run-report` can carry explicit
-  `trustedLocalAdapterRunEvidence` without running adapters.
-- The preserved boundary remains `adapterExecution: not_run`,
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterRuntimeSandboxPlan.md`.
+- The plan requires explicit operator approval, adapter package identity,
+  process isolation, sealed environment, dependency isolation,
+  network-deny-by-default policy, output digests, audit records, and
+  review-only authority before any future adapter process can run.
+- The current state remains `adapterExecution: not_run`,
   `adapterCodeLoaded: false`, `adapterProcessSpawned: false`,
-  `executedAdapterCount: 0`, `appliedToDrafting: false`, and
-  `registryAuthority: false`.
-- Phase 41 intentionally left real adapter execution unimplemented.
+  `executedAdapterCount: 0`, and `registryAuthority: false`.
 
 ## Task
 
-Document the trusted local adapter runtime sandbox plan and add the next-task
-scaffold for turning Phase 41 no-execution readiness into a future explicitly
-approved sandboxed adapter runtime without enabling adapter execution yet.
+Add a machine-readable `SpecHarvesterTrustedLocalAdapterSandboxContract`
+fixture that records adapter package identity, sandbox policy identity, operator
+approval requirements, filesystem/environment/network/dependency policy, output
+verification, audit records, and non-authority statements before any runtime
+implementation.
 
 ## Why This Is Next
 
-The current system can validate run requests, preflight them, emit a disabled
-runner report, attach that report to batch output, and validate the path over
-real pinned local repositories. The remaining gap is not code execution; it is
-the sandbox contract that must exist before any future adapter process can be
-launched.
+P42-T1 defines the sandbox layers in documentation. The next step is to make
+that boundary machine-readable so future preflight and runner work can validate
+the same contract instead of relying on prose.
 
 ## Scope
 
-- Define the sandbox/runtime boundary for future trusted local adapter
-  execution.
-- Specify required operator approval, adapter package identity, process
-  isolation, filesystem allowlists, environment sealing, dependency isolation,
-  network-deny-by-default policy, timeout/output budgets, output digests, and
-  audit records.
-- Document how runtime output remains producer-side review evidence.
-- Add GitHub docs, DocC docs, roadmap/capability references, and docs-contract
-  regression coverage.
-- Add a next-task scaffold for the first future machine-readable sandbox
-  contract fixture.
+- Add a JSON fixture for `SpecHarvesterTrustedLocalAdapterSandboxContract`.
+- Record contract identity, adapter package identity, sandbox policy identity,
+  operator approval requirements, process limits, filesystem policy,
+  environment policy, dependency policy, network-deny-by-default policy,
+  output verification requirements, audit record requirements, and
+  non-authority statements.
+- Link the fixture from GitHub docs, DocC, roadmap/capabilities, and tests.
+- Preserve the no-execution boundary.
 
 ## Non-Goals
 
@@ -64,12 +59,11 @@ launched.
 - Do not seed baselines.
 - Do not publish registry metadata.
 - Do not remove `preview_only`.
-- Do not treat adapter output, runner reports, or sandbox plans as registry
-  truth.
+- Do not treat adapter output as registry truth.
 
 ## Phase 42. Trusted Local Adapter Runtime Sandbox
 
-- [ ] `P42-T1` Document the trusted local adapter runtime sandbox plan and add
+- [x] `P42-T1` Document the trusted local adapter runtime sandbox plan and add
   the next-task scaffold for turning Phase 41 no-execution readiness into a
   future explicitly approved sandboxed adapter runtime without enabling adapter
   execution yet.
@@ -82,23 +76,20 @@ launched.
 
 Motivation:
 
-- Phase 41 proves the no-execution path; Phase 42 must define the sandbox
-  before implementation.
-- Real adapter execution requires process isolation, adapter package identity,
-  dependency isolation, environment sealing, output verification, and explicit
-  approval.
-- A sandbox plan keeps future adapters useful for repository-specific quality
-  while preserving SpecPM/maintainer authority.
+- The sandbox plan should become verifiable data before a sandbox preflight or
+  runner implementation exists.
+- Future adapter runtime work needs a stable contract for approval, isolation,
+  dependency, network, output, and authority boundaries.
 
 Goal:
 
-- Establish the runtime sandbox contract boundary before any adapter process
-  can run.
+- Make the P42 sandbox boundary machine-readable without enabling adapter
+  execution.
 
 Acceptance:
 
-- Docs and DocC define the runtime sandbox boundary and remaining gaps.
-- No code path enables adapter execution.
-- The plan preserves explicit operator approval, no network by default,
-  no dependency installation by default, safe input/output policies, output
-  digests, and review-only authority.
+- The fixture records all required sandbox identity, policy, approval, output,
+  audit, and non-authority fields.
+- The fixture keeps `adapterExecution: not_run` and cannot be interpreted as
+  runtime permission.
+- Docs and tests prove the fixture remains producer-side review evidence only.

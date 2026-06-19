@@ -1762,7 +1762,7 @@ Acceptance:
 
 ## Phase 42. Trusted Local Adapter Runtime Sandbox
 
-- [ ] `P42-T1` Document the trusted local adapter runtime sandbox plan and add
+- [x] `P42-T1` Document the trusted local adapter runtime sandbox plan and add
   the next-task scaffold for turning Phase 41 no-execution readiness into a
   future explicitly approved sandboxed adapter runtime without enabling adapter
   execution yet.
