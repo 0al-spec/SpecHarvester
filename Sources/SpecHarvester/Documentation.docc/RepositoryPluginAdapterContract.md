@@ -211,3 +211,5 @@ and `adapterExecution: not_run`.
   the static cross-ecosystem adapter contract fixture matrix.
 - `P40-T7`: record real local adapter-contract validation
   (<doc:RepositoryPluginAdapterRealLocalValidation>).
+- `P41-T1`: document trusted local adapter runtime readiness
+  (<doc:TrustedLocalAdapterRuntimeReadiness>).

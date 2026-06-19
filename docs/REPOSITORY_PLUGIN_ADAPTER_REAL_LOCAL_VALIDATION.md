@@ -94,3 +94,7 @@ checkouts.
 The next phase should only add adapter runtime behavior if it preserves the
 same explicit opt-in, path allowlist, no-network, no-package-manager, and
 non-authority boundaries.
+
+P41-T1 records that readiness path in
+[`TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md`](TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md)
+without enabling adapter execution.

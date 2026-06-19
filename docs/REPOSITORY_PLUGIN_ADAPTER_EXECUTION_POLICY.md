@@ -159,5 +159,8 @@ evidence after digest recording, validation, and explicit operator selection.
 - P40-T7 records real local adapter-contract validation over existing pinned
   checkouts in
   [`REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`](REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md).
+- P41-T1 documents trusted local adapter runtime readiness in
+  [`TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md`](TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md)
+  without enabling adapter execution.
 
 P40-T4 intentionally does not enable adapter runtime.

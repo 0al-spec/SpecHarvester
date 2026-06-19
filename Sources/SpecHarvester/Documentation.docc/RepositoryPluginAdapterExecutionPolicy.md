@@ -157,5 +157,7 @@ evidence after digest recording, validation, and explicit operator selection.
   cross-ecosystem adapter contract fixtures.
 - P40-T7 records real local adapter-contract validation over existing pinned
   checkouts in <doc:RepositoryPluginAdapterRealLocalValidation>.
+- P41-T1 documents trusted local adapter runtime readiness in
+  <doc:TrustedLocalAdapterRuntimeReadiness> without enabling adapter execution.
 
 P40-T4 intentionally does not enable adapter runtime.

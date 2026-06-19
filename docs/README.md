@@ -97,6 +97,10 @@ Published DocC site:
    P40-T7 real local adapter-contract validation for FastMCP, FastAPI,
    xyflow, and Gin pinned checkouts, proving adapter evidence remains
    producer-side and `adapterExecution: not_run`
+30. [`TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md`](TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md):
+   P41-T1 readiness plan for future trusted local adapter run requests,
+   preflight, disabled runner skeleton, review-only evidence handoff, and real
+   local readiness validation without enabling adapter execution
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

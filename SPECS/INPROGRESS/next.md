@@ -17,6 +17,8 @@
 - Every case records `adapterExecution: not_run`,
   `adapterCodeLoaded: false`, `appliedToDrafting: false`, and
   `registryAuthority: false`.
+- The validation remains producer-side evidence only and does not load or
+  execute third-party adapter code.
 
 ## Task
 

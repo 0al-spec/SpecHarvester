@@ -259,3 +259,5 @@ The batch path must record:
   as the static cross-ecosystem adapter contract fixture matrix.
 - `P40-T7`: record real local adapter-contract validation
   ([`REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`](REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md)).
+- `P41-T1`: document trusted local adapter runtime readiness
+  ([`TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md`](TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md)).
