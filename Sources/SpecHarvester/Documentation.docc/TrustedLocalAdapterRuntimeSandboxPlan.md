@@ -265,3 +265,11 @@ prerequisites while keeping `gateIsExecutionPermission: false`,
 `gateIsOperatorApproval: false`, `gateIsRegistryAuthority: false`,
 `runtimeImplementationAllowed: false`, `runtimeInvoked: false`, and
 `runtimeImplemented: false`.
+P42-T13 adds
+<doc:TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding> as a
+bounded approval binding over the P42-T12 review gate. It records adapter
+package identity, target repository revision, input artifact digests, output
+directory, runtime budgets, network policy, dependency policy, and audit
+requirements while keeping `bindingIsExecutionPermission: false`,
+`bindingIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
+`adapterExecution: not_run`, and `runtimeInvoked: false`.

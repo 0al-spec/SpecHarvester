@@ -170,5 +170,6 @@ permission.
 - P42-T11 defines
   <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunnerEvidenceHandoff>.
 - P42-T12 adds this runtime implementation review gate.
-- P42-T13 should add the future operator approval binding fixture before any
-  runtime implementation task can execute adapters.
+- P42-T13 adds
+  <doc:TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding>
+  before any runtime implementation task can execute adapters.

@@ -21842,6 +21842,518 @@ def test_explicit_real_local_sandbox_runtime_implementation_review_gate_is_docum
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
+def test_explicit_real_local_sandbox_operator_approval_binding_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "explicit-real-local-trusted-adapter-sandbox-operator-approval-binding.example.json"
+    )
+    review_gate_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / (
+            "explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-"
+            "gate.example.json"
+        )
+    )
+    github_doc = (
+        ROOT
+        / "docs"
+        / "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md"
+    )
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding.md"
+    )
+    runtime_gate_doc = (
+        ROOT
+        / "docs"
+        / "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_GATE.md"
+    )
+    runtime_gate_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewGate.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    review_gate_digest = "sha256:" + hashlib.sha256(review_gate_fixture.read_bytes()).hexdigest()
+
+    assert payload["apiVersion"] == (
+        "spec-harvester.explicit-real-local-trusted-adapter-sandbox-operator-approval-binding/v0"
+    )
+    assert (
+        payload["kind"]
+        == "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding"
+    )
+    assert payload["schemaVersion"] == 1
+    assert (
+        payload["authority"]
+        == "producer_explicit_real_local_trusted_adapter_sandbox_operator_approval_binding_only"
+    )
+    assert payload["contract"] == {
+        "purpose": (
+            "Bind a bounded operator approval scope to explicit real local trusted "
+            "adapter sandbox runtime prerequisites while keeping adapter execution disabled."
+        ),
+        "contractVersion": "0.1.0",
+        "reviewGateAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_runtime_"
+            "implementation_review_gate_only"
+        ),
+        "approvalBindingAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_operator_approval_binding_only"
+        ),
+        "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+        "defaultExecution": "disabled",
+        "bindingIsExecutionPermission": False,
+        "bindingIsRegistryAuthority": False,
+        "bindingIsReusableApproval": False,
+    }
+
+    review_gate = payload["input"]["runtimeImplementationReviewGate"]
+    expected_runtime_review_gate_kind = (
+        "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate"
+    )
+    assert review_gate == {
+        "path": (
+            "tests/fixtures/repository_plugins/"
+            "explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-"
+            "gate.example.json"
+        ),
+        "digest": review_gate_digest,
+        "apiVersion": (
+            "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-"
+            "implementation-review-gate/v0"
+        ),
+        "kind": expected_runtime_review_gate_kind,
+        "schemaVersion": 1,
+        "authority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_runtime_"
+            "implementation_review_gate_only"
+        ),
+        "requiredStatus": "blocked_until_future_runtime_review",
+        "requiredMode": "runtime_implementation_review_gate_no_execution",
+        "digestVerified": True,
+    }
+    assert_safe_relative_path(review_gate["path"])
+
+    assert payload["reviewGateValidation"] == {
+        "reviewGateDigestAgreement": True,
+        "reviewGateStatusAccepted": True,
+        "reviewGateModeAccepted": True,
+        "reviewGateRequiresApprovalBinding": True,
+        "reviewGateIsExecutionPermission": False,
+        "reviewGateIsOperatorApproval": False,
+        "reviewGateIsRegistryAuthority": False,
+        "reviewGateRuntimeInvoked": False,
+        "reviewGateRuntimeImplemented": False,
+        "reviewGateAdapterOutputAccepted": False,
+    }
+
+    approval = payload["operatorApprovalBinding"]
+    assert approval["status"] == "approval_bound_review_only"
+    assert approval["scope"] == "future_single_bounded_local_adapter_run"
+    assert approval["approvalRecorded"] is True
+    assert approval["approvalConsumedByRuntime"] is False
+    assert approval["approvalReusable"] is False
+    assert approval["bindingIsExecutionPermission"] is False
+    assert approval["bindingIsRegistryAuthority"] is False
+    assert approval["adapterPackageIdentity"] == {
+        "adapterId": "example.trusted-local.adapter",
+        "adapterVersion": "0.1.0",
+        "adapterRevisionOrDigest": "sha256:example-adapter-package-digest",
+        "entrypoint": "adapter.run",
+        "verificationRequiredBeforeExecution": True,
+    }
+    assert approval["targetRepository"] == {
+        "repositoryId": "example/repository",
+        "revision": "example-revision",
+        "revisionPinned": True,
+    }
+    assert approval["inputArtifacts"] == [
+        {
+            "role": "runtime_implementation_review_gate",
+            "path": review_gate["path"],
+            "digest": review_gate_digest,
+        }
+    ]
+    assert_safe_relative_path(approval["inputArtifacts"][0]["path"])
+    assert approval["outputPolicy"] == {
+        "directory": "outputs/trusted-local-adapter-run",
+        "freshOutputDirectory": True,
+        "noInPlaceMutation": True,
+        "outputDigestsRequired": True,
+    }
+    assert_safe_relative_path(approval["outputPolicy"]["directory"])
+    assert approval["runtimeBudgets"] == {
+        "timeoutSeconds": 60,
+        "maxMemoryMegabytes": 512,
+        "maxOutputBytes": 1048576,
+        "maxProcessCount": 1,
+    }
+    assert approval["networkPolicy"] == {
+        "networkAccess": "none",
+        "dnsAllowed": False,
+        "remoteFetchAllowed": False,
+    }
+    assert approval["dependencyPolicy"] == {
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+    }
+    assert set(approval["auditRequirements"]) == {
+        "approval_binding_digest",
+        "review_gate_digest",
+        "adapter_package_identity",
+        "target_repository_revision",
+        "input_artifact_digests",
+        "output_artifact_digests",
+        "runtime_counters",
+        "non_authority_statements",
+    }
+
+    assert payload["binding"] == {
+        "status": "approval_bound_runtime_still_blocked",
+        "mode": "operator_approval_binding_no_execution",
+        "runtimeImplementationAllowed": False,
+        "runtimeInvocationAllowed": False,
+        "operatorApprovalBound": True,
+        "operatorApprovalConsumed": False,
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "networkAccess": "none",
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+
+    expected_accepted = {
+        "review_gate_artifact_identity_and_digest_valid",
+        "review_gate_status_blocked_until_future_runtime_review",
+        "approval_scope_bound",
+        "adapter_package_identity_bound",
+        "target_repository_revision_bound",
+        "input_artifact_digests_bound",
+        "output_directory_bound",
+        "runtime_budgets_bound",
+        "network_policy_bound",
+        "dependency_policy_bound",
+        "audit_requirements_bound",
+        "approval_binding_not_execution_permission",
+        "approval_binding_not_registry_authority",
+        "binding_preserves_no_runtime_side_effects",
+    }
+    expected_rejected = {
+        "missing_review_gate_artifact_rejected",
+        "review_gate_digest_mismatch_rejected",
+        "review_gate_status_not_blocked_rejected",
+        "unscoped_approval_rejected",
+        "reusable_approval_rejected",
+        "binding_execution_permission_rejected",
+        "binding_registry_authority_rejected",
+        "adapter_code_loading_rejected",
+        "adapter_process_spawn_rejected",
+        "dependency_installation_rejected",
+        "package_manager_invocation_rejected",
+        "network_access_rejected",
+        "runtime_invocation_rejected",
+        "missing_input_digest_binding_rejected",
+        "missing_output_directory_binding_rejected",
+        "adapter_output_registry_truth_rejected",
+    }
+    expected_blocked = {
+        "adapter_code_loading_blocked",
+        "adapter_import_blocked",
+        "adapter_process_spawn_blocked",
+        "real_runtime_invocation_blocked",
+        "dependency_installation_blocked",
+        "package_manager_invocation_blocked",
+        "network_access_blocked",
+        "harvested_code_execution_blocked",
+        "ai_execution_blocked",
+        "package_acceptance_blocked",
+        "relation_acceptance_blocked",
+        "baseline_seeding_blocked",
+        "preview_only_removal_blocked",
+        "adapter_output_truth_blocked",
+    }
+    expected_warnings = {
+        "approval_binding_review_only",
+        "future_runtime_implementation_required",
+        "approval_not_consumed",
+    }
+    assert {check["code"] for check in payload["acceptedChecks"]} == expected_accepted
+    assert {check["code"] for check in payload["rejectedChecks"]} == expected_rejected
+    assert {check["code"] for check in payload["blockedChecks"]} == expected_blocked
+    assert {check["code"] for check in payload["warningChecks"]} == expected_warnings
+    for check in payload["acceptedChecks"]:
+        assert check["status"] == "passed"
+    for check in payload["rejectedChecks"]:
+        assert check["status"] == "rejected"
+    for check in payload["blockedChecks"]:
+        assert check["status"] == "blocked"
+    for check in payload["warningChecks"]:
+        assert check["status"] == "warning"
+
+    assert payload["summary"] == {
+        "acceptedCount": len(expected_accepted),
+        "rejectedCount": len(expected_rejected),
+        "blockedCount": len(expected_blocked),
+        "warningCount": len(expected_warnings),
+        "diagnosticCount": 2,
+        "approvalRecorded": True,
+        "approvalConsumedByRuntime": False,
+        "approvalReusable": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+    }
+    assert payload["executionBoundary"] == {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "bindingIsExecutionPermission": False,
+        "bindingIsRegistryAuthority": False,
+        "approvalConsumedByRuntime": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert payload["diagnostics"] == [
+        {
+            "severity": "info",
+            "code": "explicit_real_local_sandbox_operator_approval_binding",
+            "message": (
+                "Operator approval binding records a bounded future run scope without "
+                "loading adapter code or spawning processes."
+            ),
+        },
+        {
+            "severity": "warning",
+            "code": "approval_binding_is_not_execution_permission",
+            "message": (
+                "The approval binding does not grant adapter execution authority, registry "
+                "authority, or adapter output truth."
+            ),
+        },
+    ]
+
+    required_non_authority = {
+        "approval_binding_is_not_execution_permission",
+        "approval_binding_is_not_registry_authority",
+        "approval_binding_is_not_reusable",
+        "review_gate_is_not_execution_permission",
+        "does_not_load_third_party_adapter_code",
+        "does_not_import_adapter_code",
+        "does_not_execute_real_adapters",
+        "does_not_run_real_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_use_network",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_approval_binding_as_execution_permission",
+        "does_not_grant_registry_authority",
+    }
+    assert required_non_authority == set(payload["nonAuthorityStatements"])
+    assert payload["followUp"] == {
+        "runtimeImplementationReviewGateTask": "P42-T12",
+        "realLocalSandboxRunnerImplementationTask": (
+            "deferred_until_after_operator_approval_binding_review"
+        ),
+        "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_review",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            ("Trusted Local Adapter Explicit Real Local Sandbox Operator Approval Binding"),
+            "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding",
+            ("explicit-real-local-trusted-adapter-sandbox-operator-approval-binding.example.json"),
+            (
+                "spec-harvester.explicit-real-local-trusted-adapter-sandbox-operator-"
+                "approval-binding/v0"
+            ),
+            ("producer_explicit_real_local_trusted_adapter_sandbox_operator_approval_binding_only"),
+            "defaultExecution: disabled",
+            "bindingIsExecutionPermission: false",
+            "bindingIsRegistryAuthority: false",
+            "bindingIsReusableApproval: false",
+            review_gate_digest,
+            "reviewGateDigestAgreement: true",
+            "reviewGateStatusAccepted: true",
+            "reviewGateModeAccepted: true",
+            "reviewGateRequiresApprovalBinding: true",
+            "reviewGateIsExecutionPermission: false",
+            "reviewGateIsOperatorApproval: false",
+            "reviewGateIsRegistryAuthority: false",
+            "reviewGateRuntimeInvoked: false",
+            "reviewGateRuntimeImplemented: false",
+            "reviewGateAdapterOutputAccepted: false",
+            "adapter package identity",
+            "target repository revision",
+            "input artifact digests",
+            "output directory",
+            "runtime budgets",
+            "network policy",
+            "dependency policy",
+            "audit requirements",
+            "approvalRecorded: true",
+            "approvalConsumedByRuntime: false",
+            "approvalReusable: false",
+            "P42-T12 review gate artifact identity and SHA-256 digest",
+            "review gate status `blocked_until_future_runtime_review`",
+            "bounded approval scope",
+            "no runtime side effects",
+            "missing review gate input",
+            "review gate digest mismatch",
+            "non-blocked review gate status",
+            "unscoped approval",
+            "reusable approval",
+            "binding execution permission",
+            "binding registry authority",
+            "adapter code loading",
+            "adapter process spawning",
+            "dependency installation",
+            "package manager invocation",
+            "network access",
+            "runtime invocation",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterCodeImportAttempted: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "runtimeInvoked: false",
+            "runtimeImplemented: false",
+            "registryAuthority: false",
+            "adapterOutputAccepted: false",
+            "does not load third-party adapter code",
+            "does not import adapter code",
+            "does not run adapter processes",
+            "does not install dependencies",
+            "does not invoke package managers",
+            "does not execute harvested repository code",
+            "does not run AI",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "does not treat the approval binding as execution permission",
+            "P42-T12",
+            "P42-T13",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "bindingIsExecutionPermission: true",
+            "bindingIsRegistryAuthority: true",
+            "bindingIsReusableApproval: true",
+            "approvalConsumedByRuntime: true",
+            "approvalReusable: true",
+            "adapterCodeLoaded: true",
+            "adapterCodeImportAttempted: true",
+            "adapterProcessSpawned: true",
+            "runtimeInvoked: true",
+            "runtimeImplemented: true",
+            "networkAccess: allowed",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (
+            runtime_gate_doc,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md",
+        ),
+        (
+            runtime_gate_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding",
+        ),
+        (
+            sandbox_plan,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md",
+        ),
+        (
+            sandbox_plan_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding",
+        ),
+        (
+            docs_index,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md",
+        ),
+        (
+            docc_root,
+            "TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding",
+        ),
+        (
+            capabilities,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md",
+        ),
+        (
+            capabilities_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding",
+        ),
+        (
+            roadmap,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md",
+        ),
+        (
+            roadmap_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding",
+        ),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_trusted_local_adapter_run_request_fixture_is_documented() -> None:
     fixture = (
         ROOT

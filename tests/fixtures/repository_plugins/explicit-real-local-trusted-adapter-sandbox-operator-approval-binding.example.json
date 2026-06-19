@@ -1,0 +1,483 @@
+{
+  "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-operator-approval-binding/v0",
+  "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding",
+  "schemaVersion": 1,
+  "authority": "producer_explicit_real_local_trusted_adapter_sandbox_operator_approval_binding_only",
+  "contract": {
+    "purpose": "Bind a bounded operator approval scope to explicit real local trusted adapter sandbox runtime prerequisites while keeping adapter execution disabled.",
+    "contractVersion": "0.1.0",
+    "reviewGateAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_review_gate_only",
+    "approvalBindingAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_operator_approval_binding_only",
+    "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "defaultExecution": "disabled",
+    "bindingIsExecutionPermission": false,
+    "bindingIsRegistryAuthority": false,
+    "bindingIsReusableApproval": false
+  },
+  "input": {
+    "runtimeImplementationReviewGate": {
+      "path": "tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-gate.example.json",
+      "digest": "sha256:0195ad160fddd7039d89e8f18033f5c9aafbcecf799bbfde7dd507c409cc0bf3",
+      "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-gate/v0",
+      "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate",
+      "schemaVersion": 1,
+      "authority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_review_gate_only",
+      "requiredStatus": "blocked_until_future_runtime_review",
+      "requiredMode": "runtime_implementation_review_gate_no_execution",
+      "digestVerified": true
+    }
+  },
+  "reviewGateValidation": {
+    "reviewGateDigestAgreement": true,
+    "reviewGateStatusAccepted": true,
+    "reviewGateModeAccepted": true,
+    "reviewGateRequiresApprovalBinding": true,
+    "reviewGateIsExecutionPermission": false,
+    "reviewGateIsOperatorApproval": false,
+    "reviewGateIsRegistryAuthority": false,
+    "reviewGateRuntimeInvoked": false,
+    "reviewGateRuntimeImplemented": false,
+    "reviewGateAdapterOutputAccepted": false
+  },
+  "operatorApprovalBinding": {
+    "status": "approval_bound_review_only",
+    "scope": "future_single_bounded_local_adapter_run",
+    "operator": "local_operator_fixture",
+    "approvalRecorded": true,
+    "approvalConsumedByRuntime": false,
+    "approvalReusable": false,
+    "bindingIsExecutionPermission": false,
+    "bindingIsRegistryAuthority": false,
+    "adapterPackageIdentity": {
+      "adapterId": "example.trusted-local.adapter",
+      "adapterVersion": "0.1.0",
+      "adapterRevisionOrDigest": "sha256:example-adapter-package-digest",
+      "entrypoint": "adapter.run",
+      "verificationRequiredBeforeExecution": true
+    },
+    "targetRepository": {
+      "repositoryId": "example/repository",
+      "revision": "example-revision",
+      "revisionPinned": true
+    },
+    "inputArtifacts": [
+      {
+        "role": "runtime_implementation_review_gate",
+        "path": "tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-gate.example.json",
+        "digest": "sha256:0195ad160fddd7039d89e8f18033f5c9aafbcecf799bbfde7dd507c409cc0bf3"
+      }
+    ],
+    "outputPolicy": {
+      "directory": "outputs/trusted-local-adapter-run",
+      "freshOutputDirectory": true,
+      "noInPlaceMutation": true,
+      "outputDigestsRequired": true
+    },
+    "runtimeBudgets": {
+      "timeoutSeconds": 60,
+      "maxMemoryMegabytes": 512,
+      "maxOutputBytes": 1048576,
+      "maxProcessCount": 1
+    },
+    "networkPolicy": {
+      "networkAccess": "none",
+      "dnsAllowed": false,
+      "remoteFetchAllowed": false
+    },
+    "dependencyPolicy": {
+      "dependencyInstallation": "not_allowed",
+      "packageManagers": "not_invoked"
+    },
+    "auditRequirements": [
+      "approval_binding_digest",
+      "review_gate_digest",
+      "adapter_package_identity",
+      "target_repository_revision",
+      "input_artifact_digests",
+      "output_artifact_digests",
+      "runtime_counters",
+      "non_authority_statements"
+    ]
+  },
+  "binding": {
+    "status": "approval_bound_runtime_still_blocked",
+    "mode": "operator_approval_binding_no_execution",
+    "runtimeImplementationAllowed": false,
+    "runtimeInvocationAllowed": false,
+    "operatorApprovalBound": true,
+    "operatorApprovalConsumed": false,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "harvestedCodeExecution": "not_allowed",
+    "aiExecution": "not_run",
+    "networkAccess": "none",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "acceptedChecks": [
+    {
+      "code": "review_gate_artifact_identity_and_digest_valid",
+      "status": "passed",
+      "target": "input.runtimeImplementationReviewGate",
+      "message": "P42-T12 runtime implementation review gate identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "review_gate_status_blocked_until_future_runtime_review",
+      "status": "passed",
+      "target": "input.runtimeImplementationReviewGate.requiredStatus",
+      "message": "Review gate status remains blocked_until_future_runtime_review."
+    },
+    {
+      "code": "approval_scope_bound",
+      "status": "passed",
+      "target": "operatorApprovalBinding.scope",
+      "message": "Approval is bound to one future bounded local adapter run."
+    },
+    {
+      "code": "adapter_package_identity_bound",
+      "status": "passed",
+      "target": "operatorApprovalBinding.adapterPackageIdentity",
+      "message": "Approval scope includes adapter package identity."
+    },
+    {
+      "code": "target_repository_revision_bound",
+      "status": "passed",
+      "target": "operatorApprovalBinding.targetRepository",
+      "message": "Approval scope includes a pinned target repository revision."
+    },
+    {
+      "code": "input_artifact_digests_bound",
+      "status": "passed",
+      "target": "operatorApprovalBinding.inputArtifacts",
+      "message": "Approval scope includes input artifact digests."
+    },
+    {
+      "code": "output_directory_bound",
+      "status": "passed",
+      "target": "operatorApprovalBinding.outputPolicy",
+      "message": "Approval scope includes a fresh output directory policy."
+    },
+    {
+      "code": "runtime_budgets_bound",
+      "status": "passed",
+      "target": "operatorApprovalBinding.runtimeBudgets",
+      "message": "Approval scope includes runtime budgets."
+    },
+    {
+      "code": "network_policy_bound",
+      "status": "passed",
+      "target": "operatorApprovalBinding.networkPolicy",
+      "message": "Approval scope includes network-deny policy."
+    },
+    {
+      "code": "dependency_policy_bound",
+      "status": "passed",
+      "target": "operatorApprovalBinding.dependencyPolicy",
+      "message": "Approval scope includes dependency-deny policy."
+    },
+    {
+      "code": "audit_requirements_bound",
+      "status": "passed",
+      "target": "operatorApprovalBinding.auditRequirements",
+      "message": "Approval scope includes audit requirements."
+    },
+    {
+      "code": "approval_binding_not_execution_permission",
+      "status": "passed",
+      "target": "contract.bindingIsExecutionPermission",
+      "message": "The approval binding is not execution permission by itself."
+    },
+    {
+      "code": "approval_binding_not_registry_authority",
+      "status": "passed",
+      "target": "contract.bindingIsRegistryAuthority",
+      "message": "The approval binding has no registry authority."
+    },
+    {
+      "code": "binding_preserves_no_runtime_side_effects",
+      "status": "passed",
+      "target": "binding",
+      "message": "No adapter code loading, process spawning, dependency installation, network access, harvested-code execution, or AI execution occurs."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "code": "missing_review_gate_artifact_rejected",
+      "status": "rejected",
+      "target": "input.runtimeImplementationReviewGate",
+      "reason": "review_gate_artifact_required"
+    },
+    {
+      "code": "review_gate_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "input.runtimeImplementationReviewGate.digest",
+      "reason": "review_gate_digest_must_match_p42_t12_fixture_bytes"
+    },
+    {
+      "code": "review_gate_status_not_blocked_rejected",
+      "status": "rejected",
+      "target": "input.runtimeImplementationReviewGate.requiredStatus",
+      "reason": "review_gate_status_must_remain_blocked"
+    },
+    {
+      "code": "unscoped_approval_rejected",
+      "status": "rejected",
+      "target": "operatorApprovalBinding.scope",
+      "reason": "approval_scope_must_be_bounded"
+    },
+    {
+      "code": "reusable_approval_rejected",
+      "status": "rejected",
+      "target": "operatorApprovalBinding.approvalReusable",
+      "reason": "approval_must_not_be_reusable"
+    },
+    {
+      "code": "binding_execution_permission_rejected",
+      "status": "rejected",
+      "target": "contract.bindingIsExecutionPermission",
+      "reason": "approval_binding_must_not_grant_execution_permission"
+    },
+    {
+      "code": "binding_registry_authority_rejected",
+      "status": "rejected",
+      "target": "contract.bindingIsRegistryAuthority",
+      "reason": "approval_binding_must_not_grant_registry_authority"
+    },
+    {
+      "code": "adapter_code_loading_rejected",
+      "status": "rejected",
+      "target": "binding.adapterCodeLoaded",
+      "reason": "adapter_code_loading_must_remain_false"
+    },
+    {
+      "code": "adapter_process_spawn_rejected",
+      "status": "rejected",
+      "target": "binding.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_must_remain_false"
+    },
+    {
+      "code": "dependency_installation_rejected",
+      "status": "rejected",
+      "target": "binding.dependencyInstallation",
+      "reason": "dependency_installation_not_allowed"
+    },
+    {
+      "code": "package_manager_invocation_rejected",
+      "status": "rejected",
+      "target": "binding.packageManagers",
+      "reason": "package_managers_not_invoked"
+    },
+    {
+      "code": "network_access_rejected",
+      "status": "rejected",
+      "target": "binding.networkAccess",
+      "reason": "network_access_must_remain_none"
+    },
+    {
+      "code": "runtime_invocation_rejected",
+      "status": "rejected",
+      "target": "binding.runtimeInvoked",
+      "reason": "runtime_invocation_must_remain_false"
+    },
+    {
+      "code": "missing_input_digest_binding_rejected",
+      "status": "rejected",
+      "target": "operatorApprovalBinding.inputArtifacts",
+      "reason": "approval_scope_must_include_input_artifact_digests"
+    },
+    {
+      "code": "missing_output_directory_binding_rejected",
+      "status": "rejected",
+      "target": "operatorApprovalBinding.outputPolicy.directory",
+      "reason": "approval_scope_must_include_output_directory"
+    },
+    {
+      "code": "adapter_output_registry_truth_rejected",
+      "status": "rejected",
+      "target": "binding.adapterOutputAccepted",
+      "reason": "adapter_output_is_not_registry_truth"
+    }
+  ],
+  "blockedChecks": [
+    {
+      "code": "adapter_code_loading_blocked",
+      "status": "blocked",
+      "target": "binding.adapterCodeLoaded",
+      "reason": "adapter_code_loading_requires_future_runtime_task"
+    },
+    {
+      "code": "adapter_import_blocked",
+      "status": "blocked",
+      "target": "binding.adapterCodeImportAttempted",
+      "reason": "adapter_import_requires_future_runtime_task"
+    },
+    {
+      "code": "adapter_process_spawn_blocked",
+      "status": "blocked",
+      "target": "binding.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_requires_future_runtime_task"
+    },
+    {
+      "code": "real_runtime_invocation_blocked",
+      "status": "blocked",
+      "target": "binding.runtimeInvoked",
+      "reason": "runtime_invocation_requires_future_runtime_task"
+    },
+    {
+      "code": "dependency_installation_blocked",
+      "status": "blocked",
+      "target": "binding.dependencyInstallation",
+      "reason": "dependency_installation_requires_future_policy_task"
+    },
+    {
+      "code": "package_manager_invocation_blocked",
+      "status": "blocked",
+      "target": "binding.packageManagers",
+      "reason": "package_manager_invocation_requires_future_policy_task"
+    },
+    {
+      "code": "network_access_blocked",
+      "status": "blocked",
+      "target": "binding.networkAccess",
+      "reason": "network_access_requires_future_policy_task"
+    },
+    {
+      "code": "harvested_code_execution_blocked",
+      "status": "blocked",
+      "target": "binding.harvestedCodeExecution",
+      "reason": "harvested_code_execution_is_out_of_scope"
+    },
+    {
+      "code": "ai_execution_blocked",
+      "status": "blocked",
+      "target": "binding.aiExecution",
+      "reason": "adapter_sidecar_must_not_trigger_ai_execution"
+    },
+    {
+      "code": "package_acceptance_blocked",
+      "status": "blocked",
+      "target": "binding.registryAuthority",
+      "reason": "package_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "relation_acceptance_blocked",
+      "status": "blocked",
+      "target": "binding.registryAuthority",
+      "reason": "relation_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "baseline_seeding_blocked",
+      "status": "blocked",
+      "target": "binding.registryAuthority",
+      "reason": "baseline_seeding_requires_separate_maintainer_review"
+    },
+    {
+      "code": "preview_only_removal_blocked",
+      "status": "blocked",
+      "target": "binding.registryAuthority",
+      "reason": "preview_only_removal_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "adapter_output_truth_blocked",
+      "status": "blocked",
+      "target": "binding.adapterOutputAccepted",
+      "reason": "adapter_output_truth_requires_specpm_maintainer_review"
+    }
+  ],
+  "warningChecks": [
+    {
+      "code": "approval_binding_review_only",
+      "status": "warning",
+      "target": "operatorApprovalBinding.status",
+      "message": "The approval binding is review evidence and is not execution permission by itself."
+    },
+    {
+      "code": "future_runtime_implementation_required",
+      "status": "warning",
+      "target": "binding.runtimeImplemented",
+      "message": "A future runtime implementation task is still required before execution."
+    },
+    {
+      "code": "approval_not_consumed",
+      "status": "warning",
+      "target": "operatorApprovalBinding.approvalConsumedByRuntime",
+      "message": "No runtime has consumed this approval binding."
+    }
+  ],
+  "summary": {
+    "acceptedCount": 14,
+    "rejectedCount": 16,
+    "blockedCount": 14,
+    "warningCount": 3,
+    "diagnosticCount": 2,
+    "approvalRecorded": true,
+    "approvalConsumedByRuntime": false,
+    "approvalReusable": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false
+  },
+  "executionBoundary": {
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "bindingIsExecutionPermission": false,
+    "bindingIsRegistryAuthority": false,
+    "approvalConsumedByRuntime": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "explicit_real_local_sandbox_operator_approval_binding",
+      "message": "Operator approval binding records a bounded future run scope without loading adapter code or spawning processes."
+    },
+    {
+      "severity": "warning",
+      "code": "approval_binding_is_not_execution_permission",
+      "message": "The approval binding does not grant adapter execution authority, registry authority, or adapter output truth."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "approval_binding_is_not_execution_permission",
+    "approval_binding_is_not_registry_authority",
+    "approval_binding_is_not_reusable",
+    "review_gate_is_not_execution_permission",
+    "does_not_load_third_party_adapter_code",
+    "does_not_import_adapter_code",
+    "does_not_execute_real_adapters",
+    "does_not_run_real_adapter_processes",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_use_network",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_approval_binding_as_execution_permission",
+    "does_not_grant_registry_authority"
+  ],
+  "followUp": {
+    "runtimeImplementationReviewGateTask": "P42-T12",
+    "realLocalSandboxRunnerImplementationTask": "deferred_until_after_operator_approval_binding_review",
+    "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_review"
+  }
+}
