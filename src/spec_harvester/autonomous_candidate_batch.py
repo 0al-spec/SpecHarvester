@@ -1464,6 +1464,8 @@ def require_trusted_run_exact_value(
     expected: str | int | bool,
 ) -> None:
     value = payload.get(field.rsplit(".", maxsplit=1)[-1])
+    if type(expected) is bool and type(value) is not bool:
+        raise ValueError(f"trusted local adapter run report {path} must include boolean {field}")
     if type(expected) is int and type(value) is not int:
         raise ValueError(f"trusted local adapter run report {path} must include integer {field}")
     if value != expected:

@@ -735,6 +735,34 @@ def test_autonomous_candidate_batch_rejects_boolean_trusted_run_count(
     assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
 
 
+def test_autonomous_candidate_batch_rejects_numeric_trusted_run_boolean_boundary(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    run_report = write_trusted_local_adapter_run_report_fixture(tmp_path)
+    payload = json.loads(run_report.read_text(encoding="utf-8"))
+    payload["runner"]["adapterCodeLoaded"] = 0
+    payload["executionBoundary"]["registryAuthority"] = 0
+    run_report.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                skip_ai=True,
+                trusted_local_adapter_run_report=run_report,
+            )
+        )
+    except ValueError as exc:
+        assert "boolean runner.adapterCodeLoaded" in str(exc)
+    else:
+        raise AssertionError("expected numeric trusted run boolean boundary to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
+
+
 def test_autonomous_candidate_batch_rejects_boolean_repository_plugin_applicability_counts(
     tmp_path: Path,
 ) -> None:
