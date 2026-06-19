@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P38-T6 Real Repository Plugin Evidence Run" in next_text:
+        assert_p38_t5_last_archived(next_text)
+        assert_p38_t5_recent(next_text)
+        assert_phase_38_t6_planned(next_text)
+        return
+
     if "# Next Task: P38-T5 Repository Plugin Cross-Ecosystem Fixtures" in next_text:
         assert_p38_t4_last_archived(next_text)
         assert_p38_t4_recent(next_text)
@@ -3480,6 +3486,76 @@ def assert_phase_38_t5_planned(next_text: str) -> None:
     assert "treat plugin decisions as registry truth" in normalized
     assert "Add cross-ecosystem plugin applicability fixture examples" in next_text
     assert "selected, rejected, fallback, and blocked decisions" in normalized
+
+
+def assert_p38_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P38-T5 Repository Plugin Cross-Ecosystem Fixtures" in next_text
+
+
+def assert_p38_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P38-T5` added cross-ecosystem static "
+        "`SpecHarvesterRepositoryPluginApplicabilityReport` fixtures" in normalized
+    )
+    assert "tests/fixtures/repository_plugins/cross_ecosystem/" in next_text
+    assert "manifest-backed single-package" in normalized
+    assert "workspace or multi-package" in normalized
+    assert "documentation-heavy" in normalized
+    assert "nested package root" in normalized
+    assert "ambiguous mixed" in normalized
+    assert "fixture identity" in normalized
+    assert "summary counts" in normalized
+    assert "decision sets" in normalized
+    assert "inputEvidenceKinds" in next_text
+    assert "staticEvidence.evidenceKinds" in next_text
+    assert "selectedPlugins" in next_text
+    assert "rejectedPlugins" in next_text
+    assert "fallbackPlugins" in next_text
+    assert "blockedPlugins" in next_text
+    assert "plugin_selected" in next_text
+    assert "plugin_fallback" in next_text
+    assert "plugin_rejected_low_confidence" in next_text
+    assert "plugin_blocked_required_evidence_missing" in next_text
+    assert "static producer-side review evidence" in normalized
+    assert "do not load third-party plugin code" in normalized
+    assert "execute plugins" in normalized
+    assert "run plugin code" in normalized
+    assert "clone or fetch repositories" in normalized
+    assert "install dependencies" in normalized
+    assert "execute harvested code" in normalized
+    assert "invoke package managers" in normalized
+    assert "run AI" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_38_t6_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P38-T6 Real Repository Plugin Evidence Run" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P38-T6-real-repository-plugin-evidence-run`" in next_text
+    assert "Phase 38. Repository Plugin Subsystem" in next_text
+    assert "one real repository through the repository plugin evidence path" in normalized
+    assert "Phase 37 repository profile selection behavior" in normalized
+    assert "already-available local checkout" in normalized
+    assert "producer-side evidence only" in normalized
+    assert "must not implement plugin execution" in normalized
+    assert "load third-party code" in normalized
+    assert "clone or fetch repositories" in normalized
+    assert "run package managers" in normalized
+    assert "install dependencies" in normalized
+    assert "execute harvested code" in normalized
+    assert "invoke AI" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+    assert "Record the result as a static review artifact or fixture" in next_text
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
