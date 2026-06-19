@@ -392,6 +392,14 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     autonomous_candidate_batch.add_argument(
+        "--trusted-local-adapter-run-report",
+        type=Path,
+        help=(
+            "Optional SpecHarvesterTrustedLocalAdapterRunReport JSON to copy into batch "
+            "output as review-only producer evidence without executing adapters."
+        ),
+    )
+    autonomous_candidate_batch.add_argument(
         "--role-profile",
         choices=tuple(PACKAGE_SET_ROLE_PROFILES),
         default=DEFAULT_AUTONOMOUS_ROLE_PROFILE,
@@ -1673,6 +1681,7 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 ),
                 repository_plugin_adapter_manifest=args.repository_plugin_adapter_manifest,
                 repository_plugin_adapter_preflight=args.repository_plugin_adapter_preflight,
+                trusted_local_adapter_run_report=args.trusted_local_adapter_run_report,
             )
         )
     except ValueError as exc:

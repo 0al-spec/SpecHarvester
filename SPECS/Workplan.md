@@ -1720,7 +1720,7 @@ Acceptance:
 - [x] `P41-T4` Implement a disabled-by-default trusted local adapter runner
   skeleton that can validate a request and emit a no-execution report without
   loading third-party adapter code or running adapter processes.
-- [ ] `P41-T5` Connect trusted local adapter run reports to
+- [x] `P41-T5` Connect trusted local adapter run reports to
   `autonomous-candidate-batch` as explicit review-only producer evidence while
   preserving the default static evaluator and existing adapter sidecar paths.
 - [ ] `P41-T6` Run a real local trusted-adapter readiness validation over

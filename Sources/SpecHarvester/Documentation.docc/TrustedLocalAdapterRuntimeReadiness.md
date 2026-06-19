@@ -31,7 +31,7 @@ preflight, runner, evidence handoff, and real validation sequence.
 | `P41-T2` | Add <doc:TrustedLocalAdapterRunRequestFixture> as a machine-readable request fixture. |
 | `P41-T3` | Add <doc:TrustedLocalAdapterRunPreflightReportFixture> as a machine-readable preflight report fixture that rejects unsafe requests before execution. |
 | `P41-T4` | Add <doc:TrustedLocalAdapterRunnerSkeleton> as a disabled-by-default runner skeleton that validates request/preflight linkage and emits a no-execution report. |
-| `P41-T5` | Connect trusted local adapter run reports to `autonomous-candidate-batch` as review-only producer evidence. |
+| `P41-T5` | Connect trusted local adapter run reports to `autonomous-candidate-batch` as review-only producer evidence through `--trusted-local-adapter-run-report`. |
 | `P41-T6` | Validate the readiness path against FastMCP, FastAPI, xyflow, and Gin pinned local checkouts without executing adapters. |
 
 ## Required Request Boundary
@@ -115,6 +115,27 @@ artifact.
 
 Any runner in this phase must not load third-party adapter code or launch
 adapter processes until a later task explicitly introduces that mode.
+
+## Batch Evidence Handoff
+
+P41-T5 adds an explicit `autonomous-candidate-batch
+--trusted-local-adapter-run-report` input. The batch accepts only a
+`SpecHarvesterTrustedLocalAdapterRunReport` with the disabled no-execution
+runner identity, copies it to
+`reports/trusted-local-adapter-run-evidence/trusted-local-adapter-run-report.json`,
+and records `trustedLocalAdapterRunEvidence`.
+
+The handoff records source and copied SHA-256 digests, report identity,
+diagnostic codes, runner status, and the no-execution boundary. It keeps
+`adapterExecution: not_run`, `adapterCodeLoaded: false`,
+`adapterProcessSpawned: false`, `executedAdapterCount: 0`,
+`appliedToDrafting: false`, and `registryAuthority: false`.
+
+This does not enable adapter execution, load adapter code, run adapter
+processes, install dependencies, invoke package managers, execute harvested
+code, run AI, change static plugin applicability behavior, accept packages,
+accept relations, seed baselines, remove `preview_only`, publish registry
+metadata, or treat a runner report as adapter output truth.
 
 Any future execution mode must preserve:
 

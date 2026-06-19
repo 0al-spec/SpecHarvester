@@ -140,6 +140,36 @@ applicability defaults, accept packages, accept relations, remove
 `preview_only`, publish registry metadata, or treat adapter output as registry
 truth.
 
+Attach a disabled trusted local adapter runner report as review-only evidence:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --trusted-local-adapter-run-report /tmp/trusted-local-adapter-run-report.json
+```
+
+`--trusted-local-adapter-run-report` accepts a
+`SpecHarvesterTrustedLocalAdapterRunReport` emitted by
+`trusted-local-adapter-runner-skeleton`. The batch validates the report
+identity, disabled runner status, no-execution boundary, and non-authority
+statements, copies it under
+`reports/trusted-local-adapter-run-evidence/trusted-local-adapter-run-report.json`,
+and records `trustedLocalAdapterRunEvidence` with source/copied SHA-256
+digests, report identity, diagnostic codes, `adapterExecution: not_run`,
+`adapterCodeLoaded: false`, `adapterProcessSpawned: false`,
+`executedAdapterCount: 0`, `appliedToDrafting: false`, and
+`registryAuthority: false`.
+
+Trusted local adapter run evidence is explicit operator-supplied producer
+evidence. The batch does not execute adapters, load adapter code, run adapter
+processes, install dependencies, invoke package managers, execute harvested
+code, run AI because of this sidecar, change static plugin applicability
+behavior, accept packages, accept relations, seed baselines, remove
+`preview_only`, publish registry metadata, or treat the runner report as
+adapter output truth.
+
 In `auto` mode, repository profile detection first uses
 `workspace-inventory.json` workspace and member manifest records. If workspace
 inventory has no manifest records, the batch falls back to already-collected
@@ -167,6 +197,7 @@ repository source manifest
   -> optional repository profile detection evidence
   -> optional repository plugin applicability sidecar evidence
   -> optional repository plugin adapter evidence sidecar
+  -> optional trusted local adapter run evidence sidecar
   -> draft-package-set using role profile autonomous_popular_mvp by default
   -> preflight-bundle-set
   -> optional local LM Studio package-set AI draft proposal
@@ -185,6 +216,7 @@ output/
   reports/repository-plugin-applicability/repository-plugin-applicability-report.json
   reports/repository-plugin-adapter-evidence/adapter-manifest.json
   reports/repository-plugin-adapter-evidence/adapter-preflight-report.json
+  reports/trusted-local-adapter-run-evidence/trusted-local-adapter-run-report.json
   package-sets/<repository-id>/package-set-draft.json
   package-sets/<repository-id>/bundle-set-preflight.json
   package-sets/<repository-id>/ai/package-set-ai-draft-proposal.json
@@ -225,6 +257,12 @@ The report records:
   `registryAuthority: false`, and `adapterExecution: not_run` when both
   `--repository-plugin-adapter-manifest` and
   `--repository-plugin-adapter-preflight` are supplied;
+- trusted local adapter run evidence sidecar path, source path, SHA-256
+  digests, authority, runner status, no-execution boundary, diagnostic codes,
+  `appliedToDrafting: false`, `registryAuthority: false`,
+  `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+  `adapterProcessSpawned: false`, and `executedAdapterCount: 0` when
+  `--trusted-local-adapter-run-report` is supplied;
 - processed, skipped, and failed repository counts;
 - per-repository harvest, workspace inventory, package-set draft, and preflight
   paths;
@@ -272,6 +310,18 @@ adapters, install dependencies, invoke package managers, execute harvested
 code, run AI, change static plugin applicability behavior, accept packages,
 accept relations, seed baselines, remove `preview_only`, publish registry
 metadata, or treat adapter output as registry truth.
+
+Trusted local adapter run evidence is sidecar producer evidence only. Even
+when `--trusted-local-adapter-run-report` is supplied, the batch records
+`trustedLocalAdapterRunEvidence` with `appliedToDrafting: false`,
+`registryAuthority: false`, `adapterExecution: not_run`,
+`adapterCodeLoaded: false`, `adapterProcessSpawned: false`, and
+`executedAdapterCount: 0`. It validates and copies the report for review, but
+does not run adapters, load third-party adapter code, run adapter processes,
+install dependencies, invoke package managers, execute harvested code, run AI,
+change static plugin applicability behavior, accept packages, accept
+relations, seed baselines, remove `preview_only`, publish registry metadata,
+or treat a runner report as adapter output truth.
 
 ## LM Studio Boundary
 

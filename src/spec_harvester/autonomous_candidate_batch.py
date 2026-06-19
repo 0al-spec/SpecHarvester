@@ -71,6 +71,12 @@ from spec_harvester.repository_profile_detection import (
     build_repository_profile_detection,
     write_repository_profile_detection,
 )
+from spec_harvester.trusted_local_adapter_runner import (
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_API_VERSION,
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_AUTHORITY,
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_KIND,
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_SCHEMA_VERSION,
+)
 
 AUTONOMOUS_CANDIDATE_BATCH_API_VERSION = "spec-harvester.autonomous-candidate-batch/v0"
 AUTONOMOUS_CANDIDATE_BATCH_KIND = "SpecHarvesterAutonomousCandidateBatchReport"
@@ -106,6 +112,30 @@ REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_API_VERSION = (
 )
 REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_KIND = "SpecHarvesterRepositoryPluginAdapterPreflightReport"
 REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_AUTHORITY = "producer_plugin_adapter_preflight_only"
+TRUSTED_LOCAL_ADAPTER_RUN_EVIDENCE_DIRNAME = "trusted-local-adapter-run-evidence"
+TRUSTED_LOCAL_ADAPTER_RUN_REPORT_FILENAME = "trusted-local-adapter-run-report.json"
+REQUIRED_TRUSTED_LOCAL_ADAPTER_RUN_NON_AUTHORITY_STATEMENTS = (
+    "runner_report_is_not_execution_permission",
+    "preflight_pass_is_not_execution_permission",
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_run_adapter_processes",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_adapter_preflight_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+)
 
 TRUST_BOUNDARY_NOTES = [
     "Autonomous candidate batch output is producer evidence only.",
@@ -149,6 +179,7 @@ class AutonomousCandidateBatchOptions:
     repository_plugin_static_evidence_envelope: Path | None = None
     repository_plugin_adapter_manifest: Path | None = None
     repository_plugin_adapter_preflight: Path | None = None
+    trusted_local_adapter_run_report: Path | None = None
 
 
 class AutonomousCandidateBatch:
@@ -164,6 +195,7 @@ class AutonomousCandidateBatch:
         self.out.mkdir(parents=True, exist_ok=True)
         repository_plugin_applicability = self.repository_plugin_applicability_record()
         repository_plugin_adapter_evidence = self.repository_plugin_adapter_evidence_record()
+        trusted_local_adapter_run_evidence = self.trusted_local_adapter_run_evidence_record()
         collection = self.collect()
         repositories = [self.repository_record(record) for record in collection["collected"]]
         status = batch_status(collection, repositories)
@@ -180,6 +212,7 @@ class AutonomousCandidateBatch:
             "repositoryProfileSelection": self.repository_profile_selection_record(),
             "repositoryPluginApplicability": repository_plugin_applicability,
             "repositoryPluginAdapterEvidence": repository_plugin_adapter_evidence,
+            "trustedLocalAdapterRunEvidence": trusted_local_adapter_run_evidence,
             "summary": {
                 "collectedCount": collection["collectedCount"],
                 "skippedCount": collection["skippedCount"],
@@ -210,6 +243,9 @@ class AutonomousCandidateBatch:
                 ),
                 "repositoryPluginAdapterEvidenceSidecarCount": (
                     1 if repository_plugin_adapter_evidence.get("status") == "recorded" else 0
+                ),
+                "trustedLocalAdapterRunEvidenceSidecarCount": (
+                    1 if trusted_local_adapter_run_evidence.get("status") == "recorded" else 0
                 ),
             },
             "repositories": repositories,
@@ -661,6 +697,31 @@ class AutonomousCandidateBatch:
             preflight_output=preflight_output,
         )
 
+    def trusted_local_adapter_run_evidence_record(self) -> dict[str, Any]:
+        source = self.options.trusted_local_adapter_run_report
+        if source is None:
+            return {
+                "status": "not_provided",
+                "reason": "operator_not_provided",
+                "appliedToDrafting": False,
+                "registryAuthority": False,
+                "adapterExecution": "not_run",
+            }
+
+        payload = read_json(source)
+        validate_trusted_local_adapter_run_report(payload, source)
+        output_path = (
+            self.reports_root
+            / TRUSTED_LOCAL_ADAPTER_RUN_EVIDENCE_DIRNAME
+            / TRUSTED_LOCAL_ADAPTER_RUN_REPORT_FILENAME
+        )
+        write_json(output_path, payload)
+        return trusted_local_adapter_run_evidence_record_from_payload(
+            payload=payload,
+            source=source,
+            output_path=output_path,
+        )
+
     def validation_report_path(self) -> Path:
         return self.reports_root / "batch-validation-report.json"
 
@@ -791,6 +852,107 @@ def repository_plugin_adapter_evidence_record_from_payload(
             "harvested_code_execution",
             "ai_execution",
             "static_plugin_applicability_behavior_change",
+            "specpm_acceptance",
+            "relation_acceptance",
+            "baseline_seeding",
+            "preview_only_removal",
+            "registry_publication",
+        ],
+    }
+
+
+def trusted_local_adapter_run_evidence_record_from_payload(
+    *,
+    payload: dict[str, Any],
+    source: Path,
+    output_path: Path,
+) -> dict[str, Any]:
+    runner = mapping_value(payload.get("runner"))
+    boundary = mapping_value(payload.get("executionBoundary"))
+    summary = mapping_value(payload.get("summary"))
+    validation = mapping_value(payload.get("validation"))
+    return {
+        "status": "recorded",
+        "source": str(source),
+        "sourceMode": "explicit_sidecar",
+        "sourceDigest": digest_record(sha256_file(source)),
+        "path": str(output_path),
+        "digest": digest_record(sha256_file(output_path)),
+        "apiVersion": payload["apiVersion"],
+        "kind": payload["kind"],
+        "schemaVersion": payload["schemaVersion"],
+        "authority": payload["authority"],
+        "runId": payload.get("runId"),
+        "runStatus": payload.get("status"),
+        "runner": {
+            "mode": runner.get("mode"),
+            "enabled": runner.get("enabled"),
+            "runtimeImplemented": runner.get("runtimeImplemented"),
+            "adapterExecution": runner.get("adapterExecution"),
+            "adapterCodeLoaded": runner.get("adapterCodeLoaded"),
+            "adapterProcessSpawned": runner.get("adapterProcessSpawned"),
+            "executedAdapterCount": int_value(runner.get("executedAdapterCount")),
+            "dependencyInstallation": runner.get("dependencyInstallation"),
+            "packageManagers": runner.get("packageManagers"),
+            "harvestedCodeExecution": runner.get("harvestedCodeExecution"),
+            "aiExecution": runner.get("aiExecution"),
+            "networkAccess": runner.get("networkAccess"),
+        },
+        "executionBoundary": {
+            "adapterExecution": boundary.get("adapterExecution"),
+            "adapterCodeLoaded": boundary.get("adapterCodeLoaded"),
+            "executedAdapterCount": int_value(boundary.get("executedAdapterCount")),
+            "runtimeImplemented": boundary.get("runtimeImplemented"),
+            "requestIsExecutionPermission": boundary.get("requestIsExecutionPermission"),
+            "preflightPassIsExecutionPermission": (
+                boundary.get("preflightPassIsExecutionPermission")
+            ),
+            "runnerReportIsExecutionPermission": (
+                boundary.get("runnerReportIsExecutionPermission")
+            ),
+            "appliedToDrafting": boundary.get("appliedToDrafting"),
+            "registryAuthority": boundary.get("registryAuthority"),
+            "adapterOutputAccepted": boundary.get("adapterOutputAccepted"),
+        },
+        "summary": {
+            "acceptedCount": int_value(summary.get("acceptedCount")),
+            "errorCount": int_value(summary.get("errorCount")),
+            "warningCount": int_value(summary.get("warningCount")),
+            "executedAdapterCount": int_value(summary.get("executedAdapterCount")),
+            "runtimeImplementedAdapterCount": int_value(
+                summary.get("runtimeImplementedAdapterCount")
+            ),
+        },
+        "validation": {
+            "status": validation.get("status"),
+            "errorCount": int_value(validation.get("errorCount")),
+            "warningCount": int_value(validation.get("warningCount")),
+        },
+        "diagnosticCodes": diagnostic_codes(payload),
+        "nonAuthorityStatements": sorted(
+            item
+            for item in list_value(payload.get("nonAuthorityStatements"))
+            if isinstance(item, str)
+        ),
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "adapterOutputAccepted": False,
+        "nonGoals": [
+            "adapter_loading",
+            "adapter_execution",
+            "third_party_adapter_code_loading",
+            "repository_clone",
+            "network_discovery",
+            "dependency_installation",
+            "package_manager_invocation",
+            "harvested_code_execution",
+            "ai_execution",
+            "static_plugin_applicability_behavior_change",
+            "autonomous_batch_behavior_change",
             "specpm_acceptance",
             "relation_acceptance",
             "baseline_seeding",
@@ -1189,6 +1351,126 @@ def validate_repository_plugin_adapter_preflight(
     if not isinstance(payload.get("nonAuthorityStatements"), list):
         raise ValueError(
             f"repository plugin adapter preflight {path} must include nonAuthorityStatements"
+        )
+
+
+def validate_trusted_local_adapter_run_report(payload: dict[str, Any], path: Path) -> None:
+    expected = {
+        "apiVersion": TRUSTED_LOCAL_ADAPTER_RUN_REPORT_API_VERSION,
+        "kind": TRUSTED_LOCAL_ADAPTER_RUN_REPORT_KIND,
+        "schemaVersion": TRUSTED_LOCAL_ADAPTER_RUN_REPORT_SCHEMA_VERSION,
+        "authority": TRUSTED_LOCAL_ADAPTER_RUN_REPORT_AUTHORITY,
+        "status": "no_execution_report_emitted",
+    }
+    for key, value in expected.items():
+        if payload.get(key) != value:
+            raise ValueError(
+                f"trusted local adapter run report {path} has unsupported {key}: "
+                f"{payload.get(key)!r}"
+            )
+
+    runner = mapping_value(payload.get("runner"))
+    expected_runner = {
+        "enabled": False,
+        "runtimeImplemented": False,
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "networkAccess": "none",
+    }
+    for key, value in expected_runner.items():
+        require_trusted_run_exact_value(runner, path, f"runner.{key}", value)
+    if runner.get("mode") != "disabled_no_execution_skeleton":
+        raise ValueError(
+            f"trusted local adapter run report {path} must record disabled runner mode"
+        )
+
+    validation = mapping_value(payload.get("validation"))
+    if validation.get("status") != "passed":
+        raise ValueError(
+            f"trusted local adapter run report {path} must record validation.status passed"
+        )
+    if validation.get("errorCount") != 0:
+        raise ValueError(
+            f"trusted local adapter run report {path} must record validation.errorCount 0"
+        )
+
+    boundary = mapping_value(payload.get("executionBoundary"))
+    expected_boundary = {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "executedAdapterCount": 0,
+        "runtimeImplemented": False,
+        "requestIsExecutionPermission": False,
+        "preflightPassIsExecutionPermission": False,
+        "runnerReportIsExecutionPermission": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    for key, value in expected_boundary.items():
+        require_trusted_run_exact_value(boundary, path, f"executionBoundary.{key}", value)
+
+    summary = mapping_value(payload.get("summary"))
+    for key in (
+        "acceptedCount",
+        "errorCount",
+        "warningCount",
+        "executedAdapterCount",
+        "runtimeImplementedAdapterCount",
+    ):
+        if type(summary.get(key)) is not int:
+            raise ValueError(
+                f"trusted local adapter run report {path} must include integer summary.{key}"
+            )
+    if summary["errorCount"] != 0:
+        raise ValueError(f"trusted local adapter run report {path} must record errorCount 0")
+    if summary["executedAdapterCount"] != 0:
+        raise ValueError(
+            f"trusted local adapter run report {path} must record executedAdapterCount 0"
+        )
+    if int_value(summary.get("runtimeImplementedAdapterCount")) != 0:
+        raise ValueError(
+            f"trusted local adapter run report {path} must record runtimeImplementedAdapterCount 0"
+        )
+
+    statements = payload.get("nonAuthorityStatements")
+    if not isinstance(statements, list):
+        raise ValueError(
+            f"trusted local adapter run report {path} must include nonAuthorityStatements"
+        )
+    missing = [
+        statement
+        for statement in REQUIRED_TRUSTED_LOCAL_ADAPTER_RUN_NON_AUTHORITY_STATEMENTS
+        if statement not in statements
+    ]
+    if missing:
+        raise ValueError(
+            f"trusted local adapter run report {path} is missing nonAuthorityStatements: "
+            f"{', '.join(missing)}"
+        )
+
+
+def require_trusted_run_exact_value(
+    payload: dict[str, Any],
+    path: Path,
+    field: str,
+    expected: str | int | bool,
+) -> None:
+    value = payload.get(field.rsplit(".", maxsplit=1)[-1])
+    if type(expected) is bool and type(value) is not bool:
+        raise ValueError(f"trusted local adapter run report {path} must include boolean {field}")
+    if type(expected) is int and type(value) is not int:
+        raise ValueError(f"trusted local adapter run report {path} must include integer {field}")
+    if value != expected:
+        raise ValueError(
+            f"trusted local adapter run report {path} must record {field} {expected!r}"
         )
 
 
