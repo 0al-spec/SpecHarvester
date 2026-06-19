@@ -169,3 +169,6 @@ permission.
 - P42-T12 defines
   [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_GATE.md).
 - P42-T13 adds this operator approval binding fixture.
+- P42-T14 adds
+  [`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationReport`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_SKELETON.md)
+  before any real runtime invocation can consume approval.

@@ -1,56 +1,55 @@
-# Next Task: P42-T14 Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Invocation Skeleton
+# Next Task: P42-T15 Explicit Real Local Trusted Adapter Sandbox Runtime Invocation Evidence Handoff
 
 **Status:** Planned
-**Branch:** `feature/P42-T14-disabled-explicit-real-local-trusted-adapter-sandbox-runtime-invocation-skeleton`
+**Branch:** `feature/P42-T15-explicit-real-local-trusted-adapter-sandbox-runtime-invocation-evidence-handoff`
 **Phase:** Phase 42. Trusted Local Adapter Runtime Sandbox
-**Last Archived:** P42-T13 Explicit Real Local Trusted Adapter Sandbox Operator Approval Binding Fixture
+**Last Archived:** P42-T14 Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Invocation Skeleton
 
 ## Recently Archived
 
-- `P42-T13` added
-  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding`.
-- The approval binding fixture lives at
-  `tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-operator-approval-binding.example.json`.
+- `P42-T14` added
+  `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationReport`.
+- The disabled invocation fixture lives at
+  `tests/fixtures/repository_plugins/disabled-explicit-real-local-trusted-adapter-sandbox-runtime-invocation.example.json`.
 - GitHub docs are in
-  `docs/TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md`.
+  `docs/TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_SKELETON.md`.
 - DocC docs are in
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding.md`.
-- The binding references the P42-T12
-  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate`
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeInvocationSkeleton.md`.
+- The skeleton references the P42-T13
+  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding`
   fixture with a pinned SHA-256 digest.
-- The binding records a bounded future single local adapter run scope.
-- The binding records adapter package identity, target repository revision,
-  input artifact digests, output directory, runtime budgets, network policy,
-  dependency policy, and audit requirements.
-- The binding keeps `bindingIsExecutionPermission: false`,
-  `bindingIsRegistryAuthority: false`, `bindingIsReusableApproval: false`,
-  `approvalConsumedByRuntime: false`, `approvalReusable: false`,
-  `adapterExecution: not_run`, `adapterCodeLoaded: false`,
-  `adapterCodeImportAttempted: false`, `adapterProcessSpawned: false`,
-  `runtimeInvoked: false`, `runtimeImplemented: false`,
-  `networkAccess: none`, `registryAuthority: false`, and
-  `adapterOutputAccepted: false`.
+- The skeleton validates approval binding identity, approval status, binding
+  status, binding mode, bounded approval scope, adapter package identity, target
+  repository revision, input artifact digests, output directory, runtime
+  budgets, network policy, dependency policy, and audit requirements.
+- The skeleton keeps `runtimeInvocationAllowed: false`,
+  `operatorApprovalConsumed: false`, `adapterExecution: not_run`,
+  `adapterCodeLoaded: false`, `adapterCodeImportAttempted: false`,
+  `adapterProcessSpawned: false`, `runtimeInvoked: false`,
+  `runtimeImplemented: false`, `networkAccess: none`,
+  `registryAuthority: false`, and `adapterOutputAccepted: false`.
 
 ## Task
 
-Add a disabled explicit real local trusted adapter sandbox runtime invocation
-skeleton that consumes the P42-T13 approval binding and emits a no-execution
-invocation report before any real adapter runtime can be implemented.
+Add an explicit real local trusted adapter sandbox runtime invocation evidence
+handoff that packages the P42-T13 approval binding and P42-T14 disabled
+invocation skeleton as portable review evidence before any real adapter runtime
+implementation.
 
 ## Why This Is Next
 
-P42-T13 binds an approval scope, but approval binding alone still must not
-become execution permission. The next safe layer is a disabled invocation
-skeleton that proves how a future runtime would validate the approval binding
-without loading adapter code or spawning a process.
+P42-T14 validates approval binding through a disabled invocation skeleton, but
+reviewers need a portable handoff that packages the approval and disabled
+invocation evidence together. The handoff should make the next real runtime
+implementation review explicit without turning disabled invocation evidence
+into execution permission.
 
 ## Scope
 
-- Add a machine-readable disabled runtime invocation skeleton/report fixture.
-- Reference the P42-T13 approval binding with a pinned digest.
-- Validate approval scope identity, adapter package identity, target
-  repository revision, input artifact digests, output directory, runtime
-  budgets, network policy, dependency policy, and audit requirements.
+- Add a machine-readable runtime invocation evidence handoff fixture.
+- Reference P42-T13 and P42-T14 with pinned digests.
+- Package approval binding evidence, disabled invocation evidence, audit
+  requirements, and non-authority statements.
 - Preserve no adapter code loading, no adapter import, no process spawning, no
   dependency installation, no package manager invocation, no network access, no
   harvested code execution, and no AI execution.
@@ -74,6 +73,6 @@ without loading adapter code or spawning a process.
 - Do not seed baselines.
 - Do not publish registry metadata.
 - Do not remove `preview_only`.
-- Do not treat P42-T13 as execution permission.
+- Do not treat P42-T13 or P42-T14 as execution permission.
 - Do not consume approval by a real runtime.
 - Do not treat adapter output as registry truth.

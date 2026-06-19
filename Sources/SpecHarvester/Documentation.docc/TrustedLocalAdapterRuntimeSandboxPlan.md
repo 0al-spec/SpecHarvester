@@ -208,6 +208,7 @@ sandbox contract fixture
   -> explicit real local sandbox runner evidence handoff
   -> explicit real local sandbox runtime implementation review gate
   -> explicit real local sandbox operator approval binding
+  -> disabled explicit real local sandbox runtime invocation skeleton
   -> real local adapter run only after review
 ```
 
@@ -273,3 +274,10 @@ directory, runtime budgets, network policy, dependency policy, and audit
 requirements while keeping `bindingIsExecutionPermission: false`,
 `bindingIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
 `adapterExecution: not_run`, and `runtimeInvoked: false`.
+P42-T14 adds
+<doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeInvocationSkeleton>
+as a disabled invocation skeleton over the P42-T13 approval binding. It
+validates the approval scope while keeping `runtimeInvocationAllowed: false`,
+`operatorApprovalConsumed: false`, `adapterCodeLoaded: false`,
+`adapterProcessSpawned: false`, `runtimeInvoked: false`, and
+`registryAuthority: false`.
