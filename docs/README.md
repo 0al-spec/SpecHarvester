@@ -200,6 +200,12 @@ Published DocC site:
    fixture for validating the P42-T13 approval binding through a disabled
    invocation skeleton while preserving no runtime invocation, no approval
    consumption, no registry authority, and no adapter output truth
+49. [`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_EVIDENCE_HANDOFF.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_EVIDENCE_HANDOFF.md):
+   P42-T15
+   `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationEvidenceHandoff`
+   fixture for packaging P42-T13 approval binding and P42-T14 disabled
+   invocation evidence as portable review material while preserving no
+   execution permission, no approval consumption, and no registry authority
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

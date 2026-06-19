@@ -997,6 +997,15 @@ invocation skeleton while keeping `runtimeInvocationAllowed: false`,
 `operatorApprovalConsumed: false`, `adapterCodeLoaded: false`,
 `adapterProcessSpawned: false`, `runtimeInvoked: false`, and
 `registryAuthority: false`.
+P42-T15 adds
+[`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_EVIDENCE_HANDOFF.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_EVIDENCE_HANDOFF.md)
+and the machine-readable
+`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationEvidenceHandoff`
+fixture. It packages P42-T13 approval binding and P42-T14 disabled invocation
+evidence as portable review material while keeping
+`handoffIsExecutionPermission: false`, `handoffIsRegistryAuthority: false`,
+`approvalConsumedByRuntime: false`, `runtimeInvoked: false`, and
+`adapterOutputAccepted: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

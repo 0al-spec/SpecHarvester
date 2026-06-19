@@ -1,0 +1,473 @@
+{
+  "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-invocation-evidence-handoff/v0",
+  "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationEvidenceHandoff",
+  "schemaVersion": 1,
+  "authority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_invocation_evidence_handoff_only",
+  "contract": {
+    "purpose": "Package P42-T13 approval binding and P42-T14 disabled invocation evidence as portable review material before any real runtime implementation.",
+    "contractVersion": "0.1.0",
+    "approvalBindingAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_operator_approval_binding_only",
+    "disabledInvocationAuthority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_invocation_only",
+    "handoffAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_invocation_evidence_handoff_only",
+    "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "defaultExecution": "disabled",
+    "handoffIsExecutionPermission": false,
+    "handoffIsRegistryAuthority": false,
+    "handoffConsumesApproval": false
+  },
+  "artifacts": [
+    {
+      "role": "operator_approval_binding",
+      "path": "tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-operator-approval-binding.example.json",
+      "digest": "sha256:c1d60ef17d878ca0a6119d28d51a61898828f0d34f77460ba16b912d76386b95",
+      "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-operator-approval-binding/v0",
+      "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding",
+      "schemaVersion": 1,
+      "authority": "producer_explicit_real_local_trusted_adapter_sandbox_operator_approval_binding_only",
+      "requiredStatus": "approval_bound_runtime_still_blocked",
+      "digestVerified": true
+    },
+    {
+      "role": "disabled_runtime_invocation",
+      "path": "tests/fixtures/repository_plugins/disabled-explicit-real-local-trusted-adapter-sandbox-runtime-invocation.example.json",
+      "digest": "sha256:626e9b8affbf6a668e3da13b32b7b3df8b4976e643eb3ccd9fe33df65fa1237d",
+      "apiVersion": "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runtime-invocation/v0",
+      "kind": "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationReport",
+      "schemaVersion": 1,
+      "authority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_invocation_only",
+      "requiredStatus": "blocked_no_execution",
+      "digestVerified": true
+    }
+  ],
+  "artifactValidation": {
+    "artifactCount": 2,
+    "approvalBindingDigestAgreement": true,
+    "disabledInvocationDigestAgreement": true,
+    "approvalBindingStatusAccepted": true,
+    "disabledInvocationStatusAccepted": true,
+    "approvalBindingIsExecutionPermission": false,
+    "disabledInvocationIsExecutionPermission": false,
+    "approvalConsumedByRuntime": false,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "adapterOutputAccepted": false
+  },
+  "approvalScopeSummary": {
+    "status": "packaged",
+    "scope": "future_single_bounded_local_adapter_run",
+    "adapterPackageIdentity": "validated_by_p42_t14",
+    "targetRepositoryRevision": "validated_by_p42_t14",
+    "inputArtifactDigests": "validated_by_p42_t14",
+    "outputDirectory": "validated_by_p42_t14",
+    "runtimeBudgets": "validated_by_p42_t14",
+    "networkPolicy": "networkAccess:none",
+    "dependencyPolicy": "dependencyInstallation:not_allowed;packageManagers:not_invoked",
+    "approvalConsumedByRuntime": false
+  },
+  "handoff": {
+    "status": "ready_for_review",
+    "mode": "runtime_invocation_evidence_handoff_no_execution",
+    "handoffArtifactCount": 2,
+    "runtimeImplementationAllowed": false,
+    "runtimeInvocationAllowed": false,
+    "operatorApprovalBound": true,
+    "operatorApprovalConsumed": false,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "harvestedCodeExecution": "not_allowed",
+    "aiExecution": "not_run",
+    "networkAccess": "none",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "auditRequirements": [
+    "approval_binding_digest",
+    "disabled_invocation_digest",
+    "adapter_package_identity",
+    "target_repository_revision",
+    "input_artifact_digests",
+    "output_artifact_digests",
+    "runtime_counters",
+    "non_authority_statements"
+  ],
+  "acceptedChecks": [
+    {
+      "code": "approval_binding_artifact_identity_and_digest_valid",
+      "status": "passed",
+      "target": "artifacts[role=operator_approval_binding]",
+      "message": "P42-T13 approval binding identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "disabled_invocation_artifact_identity_and_digest_valid",
+      "status": "passed",
+      "target": "artifacts[role=disabled_runtime_invocation]",
+      "message": "P42-T14 disabled invocation identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "linked_digest_set_valid",
+      "status": "passed",
+      "target": "artifacts",
+      "message": "Handoff links exactly the approval binding and disabled invocation artifacts."
+    },
+    {
+      "code": "approval_binding_status_valid",
+      "status": "passed",
+      "target": "artifacts[role=operator_approval_binding].requiredStatus",
+      "message": "Approval binding remains approval_bound_runtime_still_blocked."
+    },
+    {
+      "code": "disabled_invocation_status_valid",
+      "status": "passed",
+      "target": "artifacts[role=disabled_runtime_invocation].requiredStatus",
+      "message": "Disabled invocation remains blocked_no_execution."
+    },
+    {
+      "code": "approval_scope_summary_packaged",
+      "status": "passed",
+      "target": "approvalScopeSummary",
+      "message": "Approval scope summary is packaged as review evidence."
+    },
+    {
+      "code": "audit_requirements_packaged",
+      "status": "passed",
+      "target": "auditRequirements",
+      "message": "Audit requirements are packaged."
+    },
+    {
+      "code": "non_authority_statements_packaged",
+      "status": "passed",
+      "target": "nonAuthorityStatements",
+      "message": "Non-authority statements are packaged."
+    },
+    {
+      "code": "handoff_not_execution_permission",
+      "status": "passed",
+      "target": "contract.handoffIsExecutionPermission",
+      "message": "The handoff is not execution permission."
+    },
+    {
+      "code": "handoff_not_registry_authority",
+      "status": "passed",
+      "target": "contract.handoffIsRegistryAuthority",
+      "message": "The handoff has no registry authority."
+    },
+    {
+      "code": "approval_not_consumed_by_runtime",
+      "status": "passed",
+      "target": "handoff.operatorApprovalConsumed",
+      "message": "No runtime has consumed approval."
+    },
+    {
+      "code": "runtime_not_invoked",
+      "status": "passed",
+      "target": "handoff.runtimeInvoked",
+      "message": "No runtime is invoked."
+    },
+    {
+      "code": "handoff_preserves_no_runtime_side_effects",
+      "status": "passed",
+      "target": "handoff",
+      "message": "No adapter code loading, import, process spawning, dependency installation, network access, harvested-code execution, or AI execution occurs."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "code": "missing_approval_binding_artifact_rejected",
+      "status": "rejected",
+      "target": "artifacts[role=operator_approval_binding]",
+      "reason": "approval_binding_artifact_required"
+    },
+    {
+      "code": "missing_disabled_invocation_artifact_rejected",
+      "status": "rejected",
+      "target": "artifacts[role=disabled_runtime_invocation]",
+      "reason": "disabled_invocation_artifact_required"
+    },
+    {
+      "code": "approval_binding_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "artifacts[role=operator_approval_binding].digest",
+      "reason": "approval_binding_digest_must_match_p42_t13_fixture_bytes"
+    },
+    {
+      "code": "disabled_invocation_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "artifacts[role=disabled_runtime_invocation].digest",
+      "reason": "disabled_invocation_digest_must_match_p42_t14_fixture_bytes"
+    },
+    {
+      "code": "approval_binding_status_not_accepted_rejected",
+      "status": "rejected",
+      "target": "artifacts[role=operator_approval_binding].requiredStatus",
+      "reason": "approval_binding_status_must_remain_runtime_still_blocked"
+    },
+    {
+      "code": "disabled_invocation_status_not_blocked_rejected",
+      "status": "rejected",
+      "target": "artifacts[role=disabled_runtime_invocation].requiredStatus",
+      "reason": "disabled_invocation_status_must_remain_blocked_no_execution"
+    },
+    {
+      "code": "unscoped_approval_summary_rejected",
+      "status": "rejected",
+      "target": "approvalScopeSummary.scope",
+      "reason": "approval_scope_summary_must_remain_bounded"
+    },
+    {
+      "code": "handoff_execution_permission_rejected",
+      "status": "rejected",
+      "target": "contract.handoffIsExecutionPermission",
+      "reason": "handoff_must_not_grant_execution_permission"
+    },
+    {
+      "code": "handoff_registry_authority_rejected",
+      "status": "rejected",
+      "target": "contract.handoffIsRegistryAuthority",
+      "reason": "handoff_must_not_grant_registry_authority"
+    },
+    {
+      "code": "approval_consumption_rejected",
+      "status": "rejected",
+      "target": "handoff.operatorApprovalConsumed",
+      "reason": "handoff_must_not_consume_approval"
+    },
+    {
+      "code": "adapter_code_loading_rejected",
+      "status": "rejected",
+      "target": "handoff.adapterCodeLoaded",
+      "reason": "adapter_code_loading_must_remain_false"
+    },
+    {
+      "code": "adapter_import_rejected",
+      "status": "rejected",
+      "target": "handoff.adapterCodeImportAttempted",
+      "reason": "adapter_import_must_remain_false"
+    },
+    {
+      "code": "adapter_process_spawn_rejected",
+      "status": "rejected",
+      "target": "handoff.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_must_remain_false"
+    },
+    {
+      "code": "dependency_installation_rejected",
+      "status": "rejected",
+      "target": "handoff.dependencyInstallation",
+      "reason": "dependency_installation_not_allowed"
+    },
+    {
+      "code": "package_manager_invocation_rejected",
+      "status": "rejected",
+      "target": "handoff.packageManagers",
+      "reason": "package_managers_not_invoked"
+    },
+    {
+      "code": "network_access_rejected",
+      "status": "rejected",
+      "target": "handoff.networkAccess",
+      "reason": "network_access_must_remain_none"
+    },
+    {
+      "code": "runtime_invocation_rejected",
+      "status": "rejected",
+      "target": "handoff.runtimeInvoked",
+      "reason": "runtime_invocation_must_remain_false"
+    },
+    {
+      "code": "adapter_output_registry_truth_rejected",
+      "status": "rejected",
+      "target": "handoff.adapterOutputAccepted",
+      "reason": "adapter_output_must_not_be_registry_truth"
+    }
+  ],
+  "blockedChecks": [
+    {
+      "code": "adapter_code_loading_blocked",
+      "status": "blocked",
+      "target": "handoff.adapterCodeLoaded",
+      "reason": "adapter_code_loading_requires_future_runtime_task"
+    },
+    {
+      "code": "adapter_import_blocked",
+      "status": "blocked",
+      "target": "handoff.adapterCodeImportAttempted",
+      "reason": "adapter_import_requires_future_runtime_task"
+    },
+    {
+      "code": "adapter_process_spawn_blocked",
+      "status": "blocked",
+      "target": "handoff.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_requires_future_runtime_task"
+    },
+    {
+      "code": "real_runtime_invocation_blocked",
+      "status": "blocked",
+      "target": "handoff.runtimeInvoked",
+      "reason": "real_runtime_invocation_requires_future_runtime_task"
+    },
+    {
+      "code": "approval_consumption_blocked",
+      "status": "blocked",
+      "target": "handoff.operatorApprovalConsumed",
+      "reason": "approval_consumption_requires_future_runtime_task"
+    },
+    {
+      "code": "dependency_installation_blocked",
+      "status": "blocked",
+      "target": "handoff.dependencyInstallation",
+      "reason": "dependency_installation_requires_future_policy_task"
+    },
+    {
+      "code": "package_manager_invocation_blocked",
+      "status": "blocked",
+      "target": "handoff.packageManagers",
+      "reason": "package_manager_invocation_requires_future_policy_task"
+    },
+    {
+      "code": "network_access_blocked",
+      "status": "blocked",
+      "target": "handoff.networkAccess",
+      "reason": "network_access_requires_future_policy_task"
+    },
+    {
+      "code": "harvested_code_execution_blocked",
+      "status": "blocked",
+      "target": "handoff.harvestedCodeExecution",
+      "reason": "harvested_code_execution_is_out_of_scope"
+    },
+    {
+      "code": "ai_execution_blocked",
+      "status": "blocked",
+      "target": "handoff.aiExecution",
+      "reason": "adapter_sidecar_must_not_trigger_ai_execution"
+    },
+    {
+      "code": "package_acceptance_blocked",
+      "status": "blocked",
+      "target": "handoff.registryAuthority",
+      "reason": "package_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "relation_acceptance_blocked",
+      "status": "blocked",
+      "target": "handoff.registryAuthority",
+      "reason": "relation_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "baseline_seeding_blocked",
+      "status": "blocked",
+      "target": "handoff.registryAuthority",
+      "reason": "baseline_seeding_requires_separate_maintainer_review"
+    },
+    {
+      "code": "preview_only_removal_blocked",
+      "status": "blocked",
+      "target": "handoff.registryAuthority",
+      "reason": "preview_only_removal_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "adapter_output_truth_blocked",
+      "status": "blocked",
+      "target": "handoff.adapterOutputAccepted",
+      "reason": "adapter_output_truth_requires_specpm_maintainer_review"
+    }
+  ],
+  "warningChecks": [
+    {
+      "code": "handoff_review_only",
+      "status": "warning",
+      "target": "handoff.status",
+      "message": "The runtime invocation evidence handoff is review-only."
+    },
+    {
+      "code": "future_runtime_implementation_required",
+      "status": "warning",
+      "target": "handoff.runtimeImplemented",
+      "message": "A future runtime implementation task is still required before execution."
+    },
+    {
+      "code": "approval_not_consumed",
+      "status": "warning",
+      "target": "handoff.operatorApprovalConsumed",
+      "message": "No runtime has consumed approval."
+    }
+  ],
+  "summary": {
+    "acceptedCount": 13,
+    "rejectedCount": 18,
+    "blockedCount": 15,
+    "warningCount": 3,
+    "diagnosticCount": 2,
+    "handoffArtifactCount": 2,
+    "operatorApprovalBound": true,
+    "approvalConsumedByRuntime": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false
+  },
+  "executionBoundary": {
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "handoffIsExecutionPermission": false,
+    "handoffIsRegistryAuthority": false,
+    "approvalConsumedByRuntime": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "explicit_real_local_sandbox_runtime_invocation_evidence_handoff",
+      "message": "Runtime invocation evidence handoff packages P42-T13 and P42-T14 evidence without loading adapter code or spawning processes."
+    },
+    {
+      "severity": "warning",
+      "code": "handoff_is_not_execution_permission",
+      "message": "The handoff does not grant adapter execution authority, registry authority, approval consumption, or adapter output truth."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "handoff_is_not_execution_permission",
+    "handoff_is_not_registry_authority",
+    "handoff_does_not_consume_approval",
+    "approval_binding_is_not_execution_permission",
+    "disabled_invocation_is_not_execution_permission",
+    "does_not_load_third_party_adapter_code",
+    "does_not_import_adapter_code",
+    "does_not_execute_real_adapters",
+    "does_not_run_real_adapter_processes",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_use_network",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_handoff_as_execution_permission",
+    "does_not_grant_registry_authority"
+  ],
+  "followUp": {
+    "operatorApprovalBindingTask": "P42-T13",
+    "disabledRuntimeInvocationTask": "P42-T14",
+    "realLocalSandboxRunnerImplementationTask": "deferred_until_after_runtime_invocation_handoff_review",
+    "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_review"
+  }
+}
