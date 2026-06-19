@@ -1914,7 +1914,7 @@ Acceptance:
   network access, harvested-code execution, AI execution, package/relation
   acceptance, baseline seeding, registry publishing, `preview_only` removal,
   and adapter output truth.
-- [ ] `P42-T16` Add an explicit real local trusted adapter sandbox runtime
+- [x] `P42-T16` Add an explicit real local trusted adapter sandbox runtime
   implementation review packet that consumes the P42-T15 handoff as review
   evidence and enumerates the implementation prerequisites that must be checked
   before any real adapter runtime code is introduced.
@@ -1946,6 +1946,41 @@ Acceptance:
   `adapterCodeLoaded: false`, `adapterProcessSpawned: false`, and
   `adapterOutputAccepted: false`.
 - P42-T16 still blocks dependency installation, package-manager invocation,
+  network access, harvested-code execution, AI execution, package/relation
+  acceptance, baseline seeding, registry publishing, `preview_only` removal,
+  and adapter output truth.
+- [ ] `P42-T17` Add a disabled explicit real local trusted adapter sandbox
+  runtime implementation skeleton that consumes the P42-T16 review packet and
+  records the future runtime implementation surface while still refusing adapter
+  code loading, adapter imports, process spawning, runtime invocation, and
+  approval consumption.
+
+Motivation:
+
+- P42-T16 records the implementation prerequisites, but the project still needs
+  a disabled skeleton that names the future runtime surface without introducing
+  executable runtime behavior.
+- The skeleton should make implementation shape reviewable before any adapter
+  code can be loaded or invoked.
+
+Goal:
+
+- Define a disabled runtime implementation skeleton that references P42-T16 and
+  records the intended runtime surface while preserving no execution authority.
+
+Acceptance:
+
+- P42-T17 references P42-T16 with a pinned digest.
+- P42-T17 records disabled runtime surface fields for entrypoint isolation,
+  process launcher boundary, dependency policy, network policy, output writer,
+  audit writer, rollback handler, and approval consumption boundary.
+- P42-T17 keeps `implementationSkeletonIsExecutionPermission: false`,
+  `implementationSkeletonIsRegistryAuthority: false`,
+  `approvalConsumedByRuntime: false`, `runtimeImplemented: false`,
+  `runtimeInvoked: false`, `adapterCodeLoaded: false`,
+  `adapterCodeImportAttempted: false`, `adapterProcessSpawned: false`, and
+  `adapterOutputAccepted: false`.
+- P42-T17 still blocks dependency installation, package-manager invocation,
   network access, harvested-code execution, AI execution, package/relation
   acceptance, baseline seeding, registry publishing, `preview_only` removal,
   and adapter output truth.

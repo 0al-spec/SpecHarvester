@@ -112,3 +112,9 @@ network policy, and output truth explicit review subjects.
 - `swift build --target SpecHarvesterDocs`
 - `PYTHONPATH=src pytest --cov=src --cov-report=term-missing -q`
 - DocC static generation
+
+---
+
+Archived: 2026-06-19
+
+Verdict: PASS
