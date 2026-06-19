@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def assert_current_next_task(next_text: str) -> None:
     if (
+        "# Next Task: P42-T16 Explicit Real Local Trusted Adapter Sandbox Runtime "
+        "Implementation Review Packet"
+    ) in next_text:
+        assert_p42_t15_last_archived(next_text)
+        assert_p42_t15_recent(next_text)
+        assert_phase_42_t16_planned(next_text)
+        return
+
+    if (
         "# Next Task: P42-T15 Explicit Real Local Trusted Adapter Sandbox Runtime "
         "Invocation Evidence Handoff"
     ) in next_text:
@@ -5685,6 +5694,107 @@ def assert_p42_t14_recent(next_text: str) -> None:
     assert "networkAccess: none" in normalized
     assert "registryAuthority: false" in normalized
     assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_p42_t15_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T15 Explicit Real Local Trusted Adapter Sandbox Runtime "
+        "Invocation Evidence Handoff"
+    ) in next_text
+
+
+def assert_p42_t15_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P42-T15` added "
+        "`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationEvidenceHandoff`"
+    ) in normalized
+    assert (
+        "explicit-real-local-trusted-adapter-sandbox-runtime-invocation-evidence-"
+        "handoff.example.json"
+    ) in next_text
+    assert (
+        "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_EVIDENCE_HANDOFF.md"
+    ) in next_text
+    assert (
+        "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeInvocationEvidenceHandoff.md"
+        in next_text
+    )
+    assert (
+        "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding" in normalized
+    )
+    assert (
+        "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationReport"
+        in normalized
+    )
+    assert "pinned SHA-256 digests" in normalized
+    assert "approval binding evidence" in normalized
+    assert "disabled invocation evidence" in normalized
+    assert "linked artifact digests" in normalized
+    assert "approval scope summary" in normalized
+    assert "audit requirements" in normalized
+    assert "execution boundary" in normalized
+    assert "non-authority statements" in normalized
+    assert "handoffIsExecutionPermission: false" in normalized
+    assert "handoffIsRegistryAuthority: false" in normalized
+    assert "handoffConsumesApproval: false" in normalized
+    assert "operatorApprovalConsumed: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterCodeImportAttempted: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "runtimeInvoked: false" in normalized
+    assert "runtimeImplemented: false" in normalized
+    assert "networkAccess: none" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_phase_42_t16_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P42-T16 Explicit Real Local Trusted Adapter Sandbox Runtime "
+        "Implementation Review Packet"
+    ) in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert (
+        "`feature/P42-T16-explicit-real-local-trusted-adapter-sandbox-runtime-"
+        "implementation-review-packet`"
+    ) in next_text
+    assert "runtime implementation review packet" in normalized
+    assert "consumes the P42-T15 handoff as review evidence" in normalized
+    assert "implementation prerequisites" in normalized
+    assert "before any real adapter runtime code is introduced" in normalized
+    assert "separates implementation readiness from implementation itself" in normalized
+    assert "without granting execution permission or consuming approval" in normalized
+    assert "machine-readable runtime implementation review packet fixture" in normalized
+    assert "Reference P42-T15 with a pinned digest" in next_text
+    assert "adapter package identity" in normalized
+    assert "runtime entrypoint isolation" in normalized
+    assert "process spawning policy" in normalized
+    assert "dependency policy" in normalized
+    assert "network policy" in normalized
+    assert "output digest verification" in normalized
+    assert "audit records" in normalized
+    assert "rollback policy" in normalized
+    assert "approval consumption rules" in normalized
+    assert "no adapter code loading" in normalized
+    assert "no adapter import" in normalized
+    assert "no process spawning" in normalized
+    assert "no dependency installation" in normalized
+    assert "no package manager invocation" in normalized
+    assert "no network access" in normalized
+    assert "no harvested code execution" in normalized
+    assert "no AI execution" in normalized
+    assert "no package acceptance" in normalized
+    assert "no relation acceptance" in normalized
+    assert "no baseline seeding" in normalized
+    assert "no registry metadata publishing" in normalized
+    assert "no `preview_only` removal" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not implement real adapter runtime code" in normalized
+    assert "Do not treat P42-T15 as execution permission" in normalized
+    assert "Do not consume approval by a real runtime" in normalized
 
 
 def assert_phase_42_t15_planned(next_text: str) -> None:
