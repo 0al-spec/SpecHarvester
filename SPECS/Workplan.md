@@ -1818,7 +1818,7 @@ Acceptance:
   implementation review gate that consumes the P42-T11 evidence handoff,
   records runtime implementation prerequisites, and refuses real adapter
   execution until a separate operator-approved runtime task exists.
-- [ ] `P42-T13` Add an explicit real local trusted adapter sandbox operator
+- [x] `P42-T13` Add an explicit real local trusted adapter sandbox operator
   approval binding fixture that binds a future approval scope to P42-T12
   runtime prerequisites while still refusing adapter execution.
 
@@ -1849,3 +1849,37 @@ Acceptance:
   harvested-code execution, AI execution, package/relation acceptance, baseline
   seeding, registry metadata publishing, `preview_only` removal, and adapter
   output truth.
+- [ ] `P42-T14` Add a disabled explicit real local trusted adapter sandbox
+  runtime invocation skeleton that consumes the P42-T13 approval binding and
+  emits a no-execution invocation report before any real adapter runtime can be
+  implemented.
+
+Motivation:
+
+- P42-T13 binds an approval scope, but approval binding alone still must not
+  become execution permission.
+- The next safe layer is a disabled runtime invocation skeleton that proves how
+  a future runtime would validate the approval binding without loading adapter
+  code.
+- This keeps operator approval, runtime invocation, and adapter output evidence
+  as separate reviewable artifacts.
+
+Goal:
+
+- Define a no-execution runtime invocation report shape that consumes P42-T13
+  evidence and records why real adapter invocation remains blocked.
+
+Acceptance:
+
+- P42-T14 references P42-T13 with pinned digest.
+- P42-T14 validates approval scope identity, adapter identity, repository
+  revision, input artifact digests, output directory, runtime budgets, network
+  policy, dependency policy, and audit requirements.
+- P42-T14 records `runtimeInvocationAllowed: false`,
+  `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+  `adapterProcessSpawned: false`, `approvalConsumedByRuntime: false`, and
+  `registryAuthority: false`.
+- P42-T14 still blocks dependency installation, package-manager invocation,
+  network access, harvested-code execution, AI execution, package/relation
+  acceptance, baseline seeding, registry publishing, `preview_only` removal,
+  and adapter output truth.

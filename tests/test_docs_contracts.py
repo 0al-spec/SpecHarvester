@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def assert_current_next_task(next_text: str) -> None:
     if (
+        "# Next Task: P42-T14 Disabled Explicit Real Local Trusted Adapter Sandbox Runtime "
+        "Invocation Skeleton"
+    ) in next_text:
+        assert_p42_t13_last_archived(next_text)
+        assert_p42_t13_recent(next_text)
+        assert_phase_42_t14_planned(next_text)
+        return
+
+    if (
         "# Next Task: P42-T13 Explicit Real Local Trusted Adapter Sandbox Operator Approval "
         "Binding Fixture"
     ) in next_text:
@@ -5517,6 +5526,101 @@ def assert_p42_t12_recent(next_text: str) -> None:
     assert "runtimeImplemented: false" in normalized
     assert "registryAuthority: false" in normalized
     assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_p42_t13_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T13 Explicit Real Local Trusted Adapter Sandbox Operator "
+        "Approval Binding Fixture"
+    ) in next_text
+
+
+def assert_p42_t13_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P42-T13` added "
+        "`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding`"
+    ) in normalized
+    assert (
+        "explicit-real-local-trusted-adapter-sandbox-operator-approval-binding.example.json"
+        in next_text
+    )
+    assert (
+        "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md"
+        in next_text
+    )
+    assert "TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding.md" in next_text
+    assert (
+        "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate"
+        in normalized
+    )
+    assert "pinned SHA-256 digest" in normalized
+    assert "bounded future single local adapter run scope" in normalized
+    assert "adapter package identity" in normalized
+    assert "target repository revision" in normalized
+    assert "input artifact digests" in normalized
+    assert "output directory" in normalized
+    assert "runtime budgets" in normalized
+    assert "network policy" in normalized
+    assert "dependency policy" in normalized
+    assert "audit requirements" in normalized
+    assert "bindingIsExecutionPermission: false" in normalized
+    assert "bindingIsRegistryAuthority: false" in normalized
+    assert "bindingIsReusableApproval: false" in normalized
+    assert "approvalConsumedByRuntime: false" in normalized
+    assert "approvalReusable: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterCodeImportAttempted: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "runtimeInvoked: false" in normalized
+    assert "runtimeImplemented: false" in normalized
+    assert "networkAccess: none" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_phase_42_t14_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P42-T14 Disabled Explicit Real Local Trusted Adapter Sandbox Runtime "
+        "Invocation Skeleton"
+    ) in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert (
+        "`feature/P42-T14-disabled-explicit-real-local-trusted-adapter-sandbox-runtime-"
+        "invocation-skeleton`"
+    ) in next_text
+    assert "disabled explicit real local trusted adapter sandbox runtime invocation" in normalized
+    assert "consumes the P42-T13 approval binding" in normalized
+    assert "no-execution invocation report" in normalized
+    assert "real adapter runtime" in normalized
+    assert "without loading adapter code or spawning a process" in normalized
+    assert "approval scope identity" in normalized
+    assert "adapter package identity" in normalized
+    assert "target repository revision" in normalized
+    assert "input artifact digests" in normalized
+    assert "output directory" in normalized
+    assert "runtime budgets" in normalized
+    assert "network policy" in normalized
+    assert "dependency policy" in normalized
+    assert "audit requirements" in normalized
+    assert "no adapter code loading" in normalized
+    assert "no adapter import" in normalized
+    assert "no process spawning" in normalized
+    assert "no dependency installation" in normalized
+    assert "no package manager invocation" in normalized
+    assert "no network access" in normalized
+    assert "no harvested code execution" in normalized
+    assert "no AI execution" in normalized
+    assert "no package acceptance" in normalized
+    assert "no relation acceptance" in normalized
+    assert "no baseline seeding" in normalized
+    assert "no registry metadata publishing" in normalized
+    assert "no `preview_only` removal" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not treat P42-T13 as execution permission" in normalized
+    assert "Do not consume approval by a real runtime" in normalized
 
 
 def assert_phase_42_t13_planned(next_text: str) -> None:
