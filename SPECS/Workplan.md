@@ -1583,7 +1583,7 @@ Acceptance:
   harvest snapshots, and operator labels into a deterministic
   `SpecHarvesterRepositoryPluginApplicabilityReport` without loading or
   executing plugin code.
-- [ ] `P39-T2` Add a machine-readable static plugin evidence envelope fixture
+- [x] `P39-T2` Add a machine-readable static plugin evidence envelope fixture
   that enumerates available evidence kinds, paths, digests, source identity,
   and authority boundaries before applicability evaluation.
 - [ ] `P39-T3` Implement a deterministic static applicability evaluator helper
