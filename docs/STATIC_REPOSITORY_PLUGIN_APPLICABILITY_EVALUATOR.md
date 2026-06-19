@@ -1,6 +1,6 @@
 # Static Repository Plugin Applicability Evaluator
 
-Status: Phase 39 plan.
+Status: Phase 39 helper implemented; CLI planned.
 
 Phase 38 proved the repository plugin applicability contract with fixtures,
 autonomous batch sidecar recording, cross-ecosystem examples, and one real
@@ -32,6 +32,17 @@ It should answer that question from declared plugin metadata and bounded
 static artifacts, not from hidden ecosystem heuristics or executable adapter
 code.
 
+P39-T3 implements the deterministic helper as
+`spec_harvester.repository_plugin_applicability.evaluate_repository_plugin_applicability`.
+The helper accepts already-loaded
+`SpecHarvesterRepositoryPluginRegistry` and
+`SpecHarvesterRepositoryPluginStaticEvidenceEnvelope` JSON objects, compares
+declared `inputEvidenceKinds[]` with available `evidenceKinds[]`, and returns a
+`SpecHarvesterRepositoryPluginApplicabilityReport`.
+
+The helper does not read repository source files. It only reads metadata
+objects that the caller already provided.
+
 ## Inputs
 
 Allowed static inputs:
@@ -45,9 +56,8 @@ Allowed static inputs:
 - optional parser profile decisions;
 - operator labels or explicit source-manifest declarations.
 
-The evaluator should normalize those inputs into a future static evidence
-envelope. P39-T2 will define that machine-readable static evidence envelope.
-The P39-T2 fixture is documented in
+P39-T2 defines the machine-readable static evidence envelope. The fixture is
+documented in
 [`REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`](REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md).
 
 The envelope should record:
@@ -126,6 +136,17 @@ Initial deterministic rules:
 
 Missing input evidence must never silently select a plugin.
 
+P39-T3 implements this first deterministic rule set:
+
+- if all declared `inputEvidenceKinds[]` are available, emit `selected`;
+- if required input evidence is missing and `fallbackBehavior.decision` is
+  `fallback`, emit `fallback`;
+- if required input evidence is missing and fallback behavior is `skip`, emit
+  `blocked`;
+- if a plugin conflicts with a previously selected plugin, emit `rejected`;
+- preserve only safe relative evidence paths and SHA-256 digest-backed
+  references from the static evidence envelope.
+
 ## Precedence
 
 Autonomous batch should use this precedence:
@@ -178,6 +199,7 @@ The static evaluator must not:
 - install dependencies;
 - invoke package managers;
 - execute harvested code;
+- read repository source files;
 - run AI;
 - change parser profile behavior;
 - change repository profile scoring;

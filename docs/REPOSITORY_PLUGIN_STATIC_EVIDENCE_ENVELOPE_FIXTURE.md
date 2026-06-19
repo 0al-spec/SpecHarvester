@@ -4,7 +4,7 @@ Status: Phase 39 fixture contract.
 
 `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope` is the
 machine-readable fixture shape for declaring the bounded static evidence that
-a future repository plugin applicability evaluator may read.
+the deterministic repository plugin applicability helper may read.
 
 Fixture path:
 
@@ -43,7 +43,7 @@ The fixture references the P38
 tests/fixtures/repository_plugins/generic-registry.example.json
 ```
 
-It also declares that the next consumer is a future
+It also declares that the next consumer is
 `SpecHarvesterRepositoryPluginApplicabilityReport` with
 `apiVersion: spec-harvester.repository-plugin-applicability/v0` and
 `authority: producer_plugin_applicability_only`.
@@ -53,12 +53,12 @@ The shape is:
 ```text
 SpecHarvesterRepositoryPluginRegistry
   + SpecHarvesterRepositoryPluginStaticEvidenceEnvelope
-  -> future deterministic evaluator
+  -> deterministic evaluator helper
   -> SpecHarvesterRepositoryPluginApplicabilityReport
 ```
 
-P39-T2 defines the envelope only. P39-T3 owns evaluator helper logic. P39-T4
-owns `repository-plugin-applicability-detect`. P39-T5 owns opt-in
+P39-T2 defines the envelope only. P39-T3 implements evaluator helper logic.
+P39-T4 owns `repository-plugin-applicability-detect`. P39-T5 owns opt-in
 `autonomous-candidate-batch` integration. P39-T6 owns real multi-repository
 validation.
 
@@ -135,7 +135,8 @@ Review summaries should continue to say `appliedToDrafting: false`,
 
 The static evidence envelope fixture does not load third-party plugin code,
 execute plugins, run plugin code, clone or fetch repositories, install
-dependencies, execute harvested code, invoke package managers, run AI,
+dependencies, execute harvested code, read repository source files, invoke
+package managers, run AI,
 implement evaluator logic, add a CLI, change autonomous batch behavior, accept
 packages, accept relations, publish registry metadata, seed baselines, remove
 `preview_only`, treat plugin evidence as registry truth, or treat plugin

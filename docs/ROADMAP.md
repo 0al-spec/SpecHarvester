@@ -774,13 +774,13 @@ The run shows current repository profile selection choosing
 
 Phase 39 starts with
 [`STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`](STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md).
-It plans a deterministic static evaluator that derives
+P39-T3 adds the deterministic helper that derives
 `SpecHarvesterRepositoryPluginApplicabilityReport` from a static evidence
-envelope rather than hand-authored sidecars. The evaluator remains
-producer-side evidence only: it does not load plugins, execute plugins, run
-package managers, install dependencies, invoke AI, accept packages or
-relations, publish registry metadata, remove `preview_only`, or treat plugin
-decisions as registry truth.
+envelope rather than hand-authored sidecars. The helper remains producer-side
+evidence only: it does not load plugins, execute plugins, read repository
+source files, run package managers, install dependencies, invoke AI, accept
+packages or relations, publish registry metadata, remove `preview_only`, or
+treat plugin decisions as registry truth.
 
 P39-T2 adds
 [`REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`](REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md)
@@ -789,7 +789,7 @@ and
 The fixture records `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope`,
 safe relative evidence paths, SHA-256 digests, `evidenceKinds[]`, advisory
 signals, and `appliedToDrafting: false` / `registryAuthority: false` sidecar
-boundaries before evaluator logic exists.
+boundaries as the bounded input to the P39-T3 helper.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

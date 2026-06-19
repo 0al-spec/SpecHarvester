@@ -93,3 +93,8 @@ registry truth.
   instead of hand-authored sidecars.
 - `P39-T2`: record <doc:RepositoryPluginStaticEvidenceEnvelopeFixture> as the
   bounded evidence input for future applicability report derivation.
+- `P39-T3`: implement
+  `spec_harvester.repository_plugin_applicability.evaluate_repository_plugin_applicability`
+  as the deterministic helper that derives a report from the registry fixture
+  and static evidence envelope without reading repository source files,
+  executing plugins, invoking package managers, or running AI.
