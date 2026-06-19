@@ -548,6 +548,10 @@ Static applicability remains the default safe path. Adapter execution stays
 disabled until a future task adds explicit operator-controlled execution
 policy, manifest preflight, and safe evidence handoff rules.
 
+P40-T2 records the first machine-readable adapter manifest fixture in
+<doc:RepositoryPluginAdapterManifestFixture> and
+`tests/fixtures/repository_plugins/adapter-manifest.example.json`.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install

@@ -72,6 +72,10 @@ Published DocC site:
    Phase 40 language- and framework-agnostic adapter contract for future
    manifests, preflight, execution policy, sandbox expectations, and
    review-only adapter output evidence
+24. [`REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md`](REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md):
+   machine-readable `SpecHarvesterRepositoryPluginAdapterManifest` fixture
+   shape for declared adapter ids, evidence inputs, outputs, execution mode,
+   sandbox requirements, capability requests, and non-authority statements
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

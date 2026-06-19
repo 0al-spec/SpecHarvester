@@ -1,0 +1,327 @@
+{
+  "apiVersion": "spec-harvester.repository-plugin-adapter/v0",
+  "kind": "SpecHarvesterRepositoryPluginAdapterManifest",
+  "schemaVersion": 1,
+  "authority": "producer_plugin_adapter_manifest_only",
+  "contract": {
+    "purpose": "Declare future repository plugin adapter manifests for preflight and review without granting execution authority.",
+    "contractVersion": "0.1.0",
+    "inputAuthority": "static_local_evidence_only",
+    "outputAuthority": "producer_adapter_output_only",
+    "preflightAuthority": "producer_plugin_adapter_preflight_only",
+    "defaultExecution": "disabled"
+  },
+  "pathPolicy": {
+    "pathFormat": "posix_relative",
+    "parentSegmentsAllowed": false,
+    "absolutePathsAllowed": false,
+    "backslashAllowed": false,
+    "networkPathsAllowed": false
+  },
+  "declaredInputArtifacts": [
+    {
+      "kind": "repository_plugin_static_evidence_envelope",
+      "path": "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+      "digest": "sha256:f91dcf8b81a235e2024559c12ef9a01decb5ae3fc6e748187fb353ba011e5a57",
+      "authority": "producer_plugin_static_evidence_only",
+      "required": true
+    },
+    {
+      "kind": "repository_plugin_registry",
+      "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+      "digest": "sha256:6c0692de61fa97012c6a86e0283612ae3dc113f2a40b1bc33c741903dd710c74",
+      "authority": "producer_plugin_registry_only",
+      "required": true
+    }
+  ],
+  "supportedRoles": [
+    "parser_profile",
+    "repository_profile",
+    "evidence_producer",
+    "topology_helper",
+    "review_surface"
+  ],
+  "inputEvidenceKinds": [
+    "source_manifest",
+    "harvest_snapshot",
+    "workspace_inventory",
+    "public_interface_index",
+    "repository_profile_detection",
+    "repository_parsing_profile_decision",
+    "operator_label",
+    "static_evidence_envelope"
+  ],
+  "outputArtifactKinds": [
+    "adapter_parser_profile_summary",
+    "adapter_manifest_summary",
+    "adapter_topology_hint",
+    "adapter_review_panel_data",
+    "adapter_diagnostics"
+  ],
+  "adapters": [
+    {
+      "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+      "contractVersion": "0.1.0",
+      "adapterVersion": "0.1.0",
+      "roles": [
+        "parser_profile",
+        "review_surface"
+      ],
+      "title": "Generic Parser Profile Summary Adapter",
+      "summary": "Declares a future adapter that can summarize parser profile decisions from static evidence.",
+      "authority": "producer_adapter_manifest_only",
+      "inputEvidence": {
+        "requiredKinds": [
+          "static_evidence_envelope",
+          "repository_parsing_profile_decision"
+        ],
+        "optionalKinds": [
+          "operator_label"
+        ]
+      },
+      "outputs": [
+        {
+          "kind": "adapter_parser_profile_summary",
+          "role": "review_evidence",
+          "authority": "producer_adapter_output_only"
+        },
+        {
+          "kind": "adapter_review_panel_data",
+          "role": "review_surface",
+          "authority": "producer_adapter_output_only"
+        }
+      ],
+      "execution": {
+        "mode": "static_only",
+        "defaultEnabled": false,
+        "requiresOperatorOptIn": true,
+        "adapterCodeLoaded": false,
+        "runtimeImplemented": false
+      },
+      "sandboxRequirements": {
+        "readPathPolicy": "declared_evidence_paths_only",
+        "writePathPolicy": "none",
+        "networkAccess": "none",
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "processExecution": "not_allowed",
+        "environmentAccess": "none",
+        "timeoutMs": 0,
+        "maxOutputBytes": 0
+      },
+      "capabilityRequests": {
+        "filesystemRead": [
+          "declared_input_artifacts"
+        ],
+        "filesystemWrite": [],
+        "network": [],
+        "process": [],
+        "ai": []
+      },
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "adapter_manifest_declared",
+          "message": "Adapter manifest is declared for future preflight and does not grant execution authority."
+        }
+      ],
+      "nonAuthorityStatements": [
+        "does_not_execute_adapter",
+        "does_not_load_third_party_adapter_code",
+        "does_not_accept_packages",
+        "does_not_publish_registry_metadata",
+        "does_not_treat_adapter_output_as_registry_truth"
+      ]
+    },
+    {
+      "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+      "contractVersion": "0.1.0",
+      "adapterVersion": "0.1.0",
+      "roles": [
+        "evidence_producer"
+      ],
+      "title": "Generic Manifest Summary Adapter",
+      "summary": "Declares a future static adapter that can summarize allowlisted manifest metadata.",
+      "authority": "producer_adapter_manifest_only",
+      "inputEvidence": {
+        "requiredKinds": [
+          "static_evidence_envelope",
+          "harvest_snapshot"
+        ],
+        "optionalKinds": [
+          "workspace_inventory"
+        ]
+      },
+      "outputs": [
+        {
+          "kind": "adapter_manifest_summary",
+          "role": "review_evidence",
+          "authority": "producer_adapter_output_only"
+        },
+        {
+          "kind": "adapter_diagnostics",
+          "role": "diagnostics",
+          "authority": "producer_adapter_output_only"
+        }
+      ],
+      "execution": {
+        "mode": "static_only",
+        "defaultEnabled": false,
+        "requiresOperatorOptIn": true,
+        "adapterCodeLoaded": false,
+        "runtimeImplemented": false
+      },
+      "sandboxRequirements": {
+        "readPathPolicy": "declared_evidence_paths_only",
+        "writePathPolicy": "none",
+        "networkAccess": "none",
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "processExecution": "not_allowed",
+        "environmentAccess": "none",
+        "timeoutMs": 0,
+        "maxOutputBytes": 0
+      },
+      "capabilityRequests": {
+        "filesystemRead": [
+          "declared_input_artifacts"
+        ],
+        "filesystemWrite": [],
+        "network": [],
+        "process": [],
+        "ai": []
+      },
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "adapter_manifest_declared",
+          "message": "Manifest summary adapter is a declaration only and remains disabled by default."
+        }
+      ],
+      "nonAuthorityStatements": [
+        "does_not_execute_adapter",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_accept_packages",
+        "does_not_treat_adapter_output_as_registry_truth"
+      ]
+    },
+    {
+      "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+      "contractVersion": "0.1.0",
+      "adapterVersion": "0.1.0",
+      "roles": [
+        "topology_helper"
+      ],
+      "title": "Generic Package Topology Hint Adapter",
+      "summary": "Declares a future static adapter that can propose package topology hints from workspace evidence.",
+      "authority": "producer_adapter_manifest_only",
+      "inputEvidence": {
+        "requiredKinds": [
+          "static_evidence_envelope",
+          "workspace_inventory",
+          "repository_profile_detection"
+        ],
+        "optionalKinds": [
+          "public_interface_index"
+        ]
+      },
+      "outputs": [
+        {
+          "kind": "adapter_topology_hint",
+          "role": "review_evidence",
+          "authority": "producer_adapter_output_only"
+        },
+        {
+          "kind": "adapter_diagnostics",
+          "role": "diagnostics",
+          "authority": "producer_adapter_output_only"
+        }
+      ],
+      "execution": {
+        "mode": "static_only",
+        "defaultEnabled": false,
+        "requiresOperatorOptIn": true,
+        "adapterCodeLoaded": false,
+        "runtimeImplemented": false
+      },
+      "sandboxRequirements": {
+        "readPathPolicy": "declared_evidence_paths_only",
+        "writePathPolicy": "none",
+        "networkAccess": "none",
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "processExecution": "not_allowed",
+        "environmentAccess": "none",
+        "timeoutMs": 0,
+        "maxOutputBytes": 0
+      },
+      "capabilityRequests": {
+        "filesystemRead": [
+          "declared_input_artifacts"
+        ],
+        "filesystemWrite": [],
+        "network": [],
+        "process": [],
+        "ai": []
+      },
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "adapter_manifest_declared",
+          "message": "Topology hints are review evidence and not accepted relations."
+        }
+      ],
+      "nonAuthorityStatements": [
+        "does_not_execute_adapter",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_treat_adapter_output_as_registry_truth"
+      ]
+    }
+  ],
+  "sidecarBoundary": {
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterPreflight": "not_run",
+    "adapterExecution": "not_run"
+  },
+  "summary": {
+    "adapterCount": 3,
+    "roleCount": 5,
+    "declaredInputArtifactCount": 2,
+    "outputArtifactKindCount": 5,
+    "defaultEnabledAdapterCount": 0,
+    "runtimeImplementedAdapterCount": 0
+  },
+  "nonAuthorityStatements": [
+    "does_not_implement_adapter_preflight",
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "adapterPreflightTask": "P40-T3",
+    "adapterExecutionPolicyTask": "P40-T4",
+    "batchIntegrationTask": "P40-T5",
+    "crossEcosystemFixtureTask": "P40-T6",
+    "realValidationTask": "P40-T7"
+  }
+}
