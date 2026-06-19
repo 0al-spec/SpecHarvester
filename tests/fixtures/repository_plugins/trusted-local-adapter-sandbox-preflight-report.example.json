@@ -14,7 +14,7 @@
   },
   "sandboxContract": {
     "path": "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-contract.example.json",
-    "digest": "sha256:b74050500ebf630635f91f4290f3a8d3daac17953ad8fe6ef062bdc51165f950",
+    "digest": "sha256:cd0534fd18c3fad3b871fce3c52103a577f55c8a897d048ee0e9bcaf6f813faf",
     "kind": "SpecHarvesterTrustedLocalAdapterSandboxContract",
     "authority": "producer_trusted_local_adapter_sandbox_contract_only"
   },
