@@ -63,6 +63,7 @@ from spec_harvester.package_set_drafter import (
     PackageSetDraftOptions,
     draft_package_set,
 )
+from spec_harvester.producer_receipt import digest_record, sha256_file
 from spec_harvester.repository_profile_detection import (
     RepositoryIdentity,
     RepositoryProfileDetectionOptions,
@@ -88,6 +89,11 @@ AI_DRAFT_PROPOSAL_FILENAME = "package-set-ai-draft-proposal.json"
 AI_ENRICHMENT_REQUEST_FILENAME = "package-set-ai-enrichment-requests.json"
 AI_ENRICHMENT_PROPOSAL_FILENAME = "package-set-ai-enrichment-proposal.json"
 REPOSITORY_PROFILE_DETECTION_FILENAME = "repository-profile-detection.json"
+REPOSITORY_PLUGIN_APPLICABILITY_DIRNAME = "repository-plugin-applicability"
+REPOSITORY_PLUGIN_APPLICABILITY_FILENAME = "repository-plugin-applicability-report.json"
+REPOSITORY_PLUGIN_APPLICABILITY_API_VERSION = "spec-harvester.repository-plugin-applicability/v0"
+REPOSITORY_PLUGIN_APPLICABILITY_KIND = "SpecHarvesterRepositoryPluginApplicabilityReport"
+REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY = "producer_plugin_applicability_only"
 
 TRUST_BOUNDARY_NOTES = [
     "Autonomous candidate batch output is producer evidence only.",
@@ -126,6 +132,7 @@ class AutonomousCandidateBatchOptions:
     json_repair_max_attempts: int = DEFAULT_JSON_REPAIR_MAX_ATTEMPTS
     apply_ai_enrichment: bool = False
     repository_profile_selection: str = "none"
+    repository_plugin_applicability: Path | None = None
 
 
 class AutonomousCandidateBatch:
@@ -139,6 +146,7 @@ class AutonomousCandidateBatch:
     def run(self) -> dict[str, Any]:
         self.validate_options()
         self.out.mkdir(parents=True, exist_ok=True)
+        repository_plugin_applicability = self.repository_plugin_applicability_record()
         collection = self.collect()
         repositories = [self.repository_record(record) for record in collection["collected"]]
         status = batch_status(collection, repositories)
@@ -153,6 +161,7 @@ class AutonomousCandidateBatch:
             "collection": collection_record(collection, self.validation_report_path()),
             "ai": self.ai_mode_record(),
             "repositoryProfileSelection": self.repository_profile_selection_record(),
+            "repositoryPluginApplicability": repository_plugin_applicability,
             "summary": {
                 "collectedCount": collection["collectedCount"],
                 "skippedCount": collection["skippedCount"],
@@ -178,6 +187,9 @@ class AutonomousCandidateBatch:
                 "repositoryProfileSelectedCount": count_profile_decision(repositories, "selected"),
                 "repositoryProfileFallbackCount": count_profile_decision(repositories, "fallback"),
                 "repositoryProfileDisabledCount": count_profile_decision(repositories, "disabled"),
+                "repositoryPluginApplicabilitySidecarCount": (
+                    1 if repository_plugin_applicability.get("status") == "recorded" else 0
+                ),
             },
             "repositories": repositories,
             "skipped": collection["skipped"],
@@ -524,6 +536,59 @@ class AutonomousCandidateBatch:
     def repository_profile_selection(self) -> str:
         return self.options.repository_profile_selection.strip()
 
+    def repository_plugin_applicability_record(self) -> dict[str, Any]:
+        source = self.options.repository_plugin_applicability
+        if source is None:
+            return {
+                "status": "not_provided",
+                "reason": "operator_not_provided",
+                "appliedToDrafting": False,
+                "registryAuthority": False,
+            }
+
+        payload = read_json(source)
+        validate_repository_plugin_applicability(payload, source)
+        output_path = (
+            self.reports_root
+            / REPOSITORY_PLUGIN_APPLICABILITY_DIRNAME
+            / REPOSITORY_PLUGIN_APPLICABILITY_FILENAME
+        )
+        write_json(output_path, payload)
+        summary = mapping_value(payload.get("summary"))
+        return {
+            "status": "recorded",
+            "source": str(source),
+            "path": str(output_path),
+            "digest": digest_record(sha256_file(output_path)),
+            "apiVersion": payload["apiVersion"],
+            "kind": payload["kind"],
+            "schemaVersion": payload["schemaVersion"],
+            "authority": payload["authority"],
+            "mode": payload.get("mode"),
+            "repository": mapping_value(payload.get("repository")),
+            "registry": mapping_value(payload.get("registry")),
+            "summary": {
+                "selectedCount": int_value(summary.get("selectedCount")),
+                "rejectedCount": int_value(summary.get("rejectedCount")),
+                "fallbackCount": int_value(summary.get("fallbackCount")),
+                "blockedCount": int_value(summary.get("blockedCount")),
+                "diagnosticCount": int_value(summary.get("diagnosticCount")),
+            },
+            "diagnosticCodes": diagnostic_codes(payload),
+            "appliedToDrafting": False,
+            "registryAuthority": False,
+            "nonGoals": [
+                "plugin_execution",
+                "third_party_plugin_loading",
+                "parser_profile_behavior_change",
+                "repository_profile_scoring_change",
+                "specpm_acceptance",
+                "relation_acceptance",
+                "preview_only_removal",
+                "registry_publication",
+            ],
+        }
+
     def validation_report_path(self) -> Path:
         return self.reports_root / "batch-validation-report.json"
 
@@ -757,6 +822,37 @@ def artifact_record(path: str) -> dict[str, str]:
 
 def optional_record(value: Any) -> dict[str, Any] | None:
     return value if isinstance(value, dict) else None
+
+
+def validate_repository_plugin_applicability(payload: dict[str, Any], path: Path) -> None:
+    expected = {
+        "apiVersion": REPOSITORY_PLUGIN_APPLICABILITY_API_VERSION,
+        "kind": REPOSITORY_PLUGIN_APPLICABILITY_KIND,
+        "schemaVersion": 1,
+        "authority": REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY,
+    }
+    for key, value in expected.items():
+        if payload.get(key) != value:
+            raise ValueError(
+                f"repository plugin applicability report {path} has unsupported {key}: "
+                f"{payload.get(key)!r}"
+            )
+    summary = mapping_value(payload.get("summary"))
+    for key in (
+        "selectedCount",
+        "rejectedCount",
+        "fallbackCount",
+        "blockedCount",
+        "diagnosticCount",
+    ):
+        if type(summary.get(key)) is not int:
+            raise ValueError(
+                f"repository plugin applicability report {path} must include integer summary.{key}"
+            )
+    if not isinstance(payload.get("nonAuthorityStatements"), list):
+        raise ValueError(
+            f"repository plugin applicability report {path} must include nonAuthorityStatements"
+        )
 
 
 def count_status(repositories: list[dict[str, Any]], key: str, status: str) -> int:

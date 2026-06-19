@@ -338,6 +338,14 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     autonomous_candidate_batch.add_argument(
+        "--repository-plugin-applicability",
+        type=Path,
+        help=(
+            "Optional SpecHarvesterRepositoryPluginApplicabilityReport JSON to "
+            "copy into batch output as sidecar producer evidence."
+        ),
+    )
+    autonomous_candidate_batch.add_argument(
         "--role-profile",
         choices=tuple(PACKAGE_SET_ROLE_PROFILES),
         default=DEFAULT_AUTONOMOUS_ROLE_PROFILE,
@@ -1557,6 +1565,7 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 json_repair_max_attempts=args.json_repair_max_attempts,
                 apply_ai_enrichment=args.apply_ai_enrichment,
                 repository_profile_selection=args.repository_profile_selection,
+                repository_plugin_applicability=args.repository_plugin_applicability,
             )
         )
     except ValueError as exc:

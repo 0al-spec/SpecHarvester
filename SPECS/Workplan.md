@@ -1534,7 +1534,7 @@ Acceptance:
 - [x] `P38-T3` Add a plugin applicability report fixture that evaluates several
   generic plugins against static repository evidence and records selected,
   rejected, fallback, and blocked decisions without running plugin code.
-- [ ] `P38-T4` Connect plugin registry and applicability output to autonomous
+- [x] `P38-T4` Connect plugin registry and applicability output to autonomous
   candidate batch as sidecar producer evidence, preserving existing parser and
   repository profile behavior unless a high-confidence plugin decision is
   explicitly selected.

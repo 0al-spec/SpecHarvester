@@ -50,6 +50,24 @@ python3 -m spec_harvester autonomous-candidate-batch \
 `--repository-profile-selection` accepts `none`, `auto`, or an explicit profile
 id. The default is `none`.
 
+Attach repository plugin applicability sidecar evidence:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --repository-plugin-applicability reports/repository-plugin-applicability-report.json
+```
+
+`--repository-plugin-applicability` accepts a local
+`SpecHarvesterRepositoryPluginApplicabilityReport` JSON file. The batch
+validates the report identity, copies it to
+`reports/repository-plugin-applicability/repository-plugin-applicability-report.json`,
+and records a `repositoryPluginApplicability` sidecar summary with path, digest,
+authority, selected/rejected/fallback/blocked counts, and diagnostic codes.
+The sidecar records `appliedToDrafting: false` and `registryAuthority: false`.
+
 In `auto` mode, repository profile detection first uses
 `workspace-inventory.json` workspace and member manifest records. If workspace
 inventory has no manifest records, the batch falls back to already-collected
@@ -71,6 +89,7 @@ source manifest
   -> collect-batch
   -> workspace inventory
   -> optional repository profile detection evidence
+  -> optional repository plugin applicability sidecar evidence
   -> draft-package-set
   -> preflight-bundle-set
   -> optional local LM Studio AI draft/enrichment proposals
@@ -97,11 +116,24 @@ The report records `repositoryProfileSelection` and per-repository
 `repositoryProfileDetection` summaries. The JSON artifact is written under
 `reports/repository-profile-detections/<repository-id>/repository-profile-detection.json`.
 
+When `--repository-plugin-applicability` is provided, the report records
+`repositoryPluginApplicability` with the copied sidecar path, digest, authority,
+summary counts, and diagnostic codes. The copied JSON artifact is written under
+`reports/repository-plugin-applicability/repository-plugin-applicability-report.json`.
+
 Repository profile detection remains producer evidence only. The batch records
 `advisoryHintsAppliedToDrafting: false`; it does not apply hints to candidate
 drafting, accept packages, accept relations, remove `preview_only`, publish
 registry metadata, or treat plugin decisions, harvested manifest evidence, or
 profile hints as registry truth.
+
+Repository plugin applicability evidence remains sidecar producer evidence.
+It remains producer-side sidecar evidence
+only. The batch records `appliedToDrafting: false`; it does not execute
+plugins, load third-party plugin code, change parser profile behavior, change
+repository profile scoring, accept packages, accept relations, remove
+`preview_only`, publish registry metadata, or treat plugin decisions as
+registry truth.
 
 Generated package files remain `preview_only` producer evidence. SpecPM remains
 the validation, acceptance, relation, and registry authority.
