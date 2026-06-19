@@ -166,3 +166,6 @@ permission.
 - P42-T10 defines
   <doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton>.
 - P42-T11 adds this evidence handoff.
+- P42-T12 validates this handoff through
+  <doc:TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewGate>
+  before any future runtime implementation task.

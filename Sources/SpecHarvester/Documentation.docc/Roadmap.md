@@ -679,6 +679,15 @@ disabled runner skeleton as portable review evidence while preserving
 `handoffIsExecutionPermission: false`, `handoffIsOperatorApproval: false`,
 `handoffIsRegistryAuthority: false`, `adapterExecution: not_run`,
 `runtimeInvoked: false`, and `adapterOutputAccepted: false`.
+P42-T12 adds
+<doc:TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewGate>
+and the machine-readable
+`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate`
+fixture. It validates the P42-T11 handoff, records required runtime
+implementation prerequisites, and keeps `gateIsExecutionPermission: false`,
+`gateIsOperatorApproval: false`, `gateIsRegistryAuthority: false`,
+`runtimeImplementationAllowed: false`, `runtimeInvoked: false`, and
+`runtimeImplemented: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

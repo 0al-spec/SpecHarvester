@@ -1814,37 +1814,37 @@ Acceptance:
   evidence handoff fixture that packages the P42-T8 request, P42-T9 preflight,
   and P42-T10 disabled runner skeleton as review evidence while preserving no
   adapter execution, no registry authority, and no adapter output truth.
-- [ ] `P42-T12` Add an explicit real local trusted adapter sandbox runtime
+- [x] `P42-T12` Add an explicit real local trusted adapter sandbox runtime
   implementation review gate that consumes the P42-T11 evidence handoff,
   records runtime implementation prerequisites, and refuses real adapter
   execution until a separate operator-approved runtime task exists.
+- [ ] `P42-T13` Add an explicit real local trusted adapter sandbox operator
+  approval binding fixture that binds a future approval scope to P42-T12
+  runtime prerequisites while still refusing adapter execution.
 
 Motivation:
 
-- P42-T11 provides portable request/preflight/disabled-runner evidence, but a
-  future runtime implementation still needs an explicit review gate before any
-  adapter code can be loaded or any process can be spawned.
-- A runtime implementation gate should separate "the evidence handoff is
-  coherent" from "a local operator approved this runtime implementation to
-  execute one bounded adapter run".
-- Keeping the next layer as a review gate prevents P42 evidence artifacts from
-  becoming implicit execution permission.
+- P42-T12 records runtime implementation prerequisites, but it intentionally
+  does not provide operator approval.
+- A future real local run needs an explicit approval binding artifact before
+  any runtime implementation can be considered.
+- Separating approval binding from the review gate prevents prerequisite
+  validation from becoming implicit permission to execute adapters.
 
 Goal:
 
-- Define the machine-readable implementation review gate required before any
+- Define the machine-readable operator approval binding required before any
   future real local trusted adapter sandbox runtime task can execute adapters.
 
 Acceptance:
 
-- P42-T12 references P42-T11 with pinned digest.
-- P42-T12 validates that request/preflight/disabled-runner evidence handoff is
-  review-only and still not execution permission.
-- P42-T12 records runtime implementation prerequisites: explicit operator
-  approval, adapter package identity, process isolation, safe input allowlists,
-  sealed environment, dependency isolation, network-deny-by-default policy,
-  output digests, audit records, rollback policy, and review-only authority.
-- P42-T12 blocks adapter code loading, adapter imports, process spawning,
+- P42-T13 references P42-T12 with pinned digest.
+- P42-T13 records one bounded operator approval scope without granting execution
+  by itself.
+- P42-T13 binds approval to adapter package identity, target repository
+  revision, input artifact digests, output directory, runtime budgets, network
+  policy, dependency policy, and audit requirements.
+- P42-T13 still blocks adapter code loading, adapter imports, process spawning,
   dependency installation, package-manager invocation, network access,
   harvested-code execution, AI execution, package/relation acceptance, baseline
   seeding, registry metadata publishing, `preview_only` removal, and adapter

@@ -166,3 +166,6 @@ permission.
 - P42-T10 defines
   [`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md).
 - P42-T11 adds this evidence handoff.
+- P42-T12 validates this handoff through
+  [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_GATE.md)
+  before any future runtime implementation task.
