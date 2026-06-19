@@ -135,3 +135,7 @@ The readiness report states that it:
 - P42-T6 defines
   [`SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport`](TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md).
 - P42-T7 adds this readiness gate for explicit future real-run review.
+- P42-T8 defines
+  [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md)
+  as the request-only fixture that can reference verifier/readiness evidence
+  without granting execution permission.

@@ -935,6 +935,15 @@ verifier report and declares operator approval, sandbox runtime,
 filesystem/output, audit, and rollback/review requirements while still refusing
 adapter code loading, process spawning, dependency installation, package
 manager invocation, network access, and registry authority.
+P42-T8 adds
+[`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md)
+and the machine-readable
+`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest` fixture. The
+fixture records a future real-run review request, requires P42-T6 verifier and
+P42-T7 readiness evidence at review time, declares scoped approval plus
+runtime/output/audit policy, and still keeps `requestIsExecutionPermission:
+false`, `adapterExecution: not_run`, `runtimeInvoked: false`, and
+`registryAuthority: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

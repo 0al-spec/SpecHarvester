@@ -200,6 +200,9 @@ sandbox contract fixture
   -> sandbox preflight report
   -> disabled sandbox runner validation
   -> one explicitly approved synthetic adapter run
+  -> synthetic sandbox run verifier
+  -> real local sandbox run readiness gate
+  -> explicit real local sandbox run request fixture
   -> real local adapter run only after review
 ```
 
@@ -223,3 +226,9 @@ P42-T7 adds <doc:TrustedLocalAdapterRealLocalSandboxRunReadiness> as a
 readiness gate for explicit future real-run review prerequisites while still
 refusing adapter code loading, process spawning, dependency installation,
 package manager invocation, network access, and registry authority.
+P42-T8 adds <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture>
+as a request-only fixture for future real local sandbox run review. It requires
+P42-T6 verifier and P42-T7 readiness evidence, declares scoped approval plus
+runtime/output/audit policy, and still keeps `adapterExecution: not_run`,
+`runtimeInvoked: false`, `requestIsExecutionPermission: false`, and
+`registryAuthority: false`.
