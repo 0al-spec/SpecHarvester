@@ -14245,6 +14245,7 @@ def test_static_repository_plugin_applicability_evaluator_plan_is_documented() -
             "registryAuthority: false",
             "producer-side evidence",
             "not registry truth",
+            "evaluate_repository_plugin_applicability",
         ):
             assert required in text or required in normalized, (
                 f"Required term {required!r} not found in {path}"
@@ -14256,6 +14257,7 @@ def test_static_repository_plugin_applicability_evaluator_plan_is_documented() -
             "run package managers",
             "install dependencies",
             "execute harvested code",
+            "read repository source files",
             "invoke AI",
             "clone or fetch repositories",
             "accept packages",

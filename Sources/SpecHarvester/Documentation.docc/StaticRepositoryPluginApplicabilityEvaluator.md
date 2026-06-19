@@ -1,6 +1,6 @@
 # Static Repository Plugin Applicability Evaluator
 
-Status: Phase 39 plan.
+Status: Phase 39 helper implemented; CLI planned.
 
 P39-T1 defines a deterministic static evaluator that can derive
 `SpecHarvesterRepositoryPluginApplicabilityReport` from collected producer
@@ -43,6 +43,16 @@ The static evidence envelope uses source manifest metadata, `harvest.json`,
 public-interface indexes, and operator labels as bounded producer-side
 evidence. It is not registry truth and does not prove package acceptance.
 
+P39-T3 implements the deterministic helper as
+`spec_harvester.repository_plugin_applicability.evaluate_repository_plugin_applicability`.
+The helper accepts already-loaded registry and static evidence envelope JSON
+objects, compares declared `inputEvidenceKinds[]` with available
+`evidenceKinds[]`, and returns a
+`SpecHarvesterRepositoryPluginApplicabilityReport`.
+
+The helper does not read repository source files. It only reads metadata
+objects that the caller already provided.
+
 ## Decision Model
 
 For each declared plugin in the registry, the evaluator should emit exactly one
@@ -56,6 +66,17 @@ The output report remains
 Missing required input evidence must never silently select a plugin. Missing or
 unsafe inputs produce `blocked`, `fallback`, or `rejected` decisions with
 diagnostics.
+
+P39-T3 implements this first deterministic rule set:
+
+- if all declared `inputEvidenceKinds[]` are available, emit `selected`;
+- if required input evidence is missing and `fallbackBehavior.decision` is
+  `fallback`, emit `fallback`;
+- if required input evidence is missing and fallback behavior is `skip`, emit
+  `blocked`;
+- if a plugin conflicts with a previously selected plugin, emit `rejected`;
+- preserve only safe relative evidence paths and SHA-256 digest-backed
+  references from the static evidence envelope.
 
 Stable diagnostic codes include `plugin_selected`,
 `plugin_rejected_low_confidence`, `plugin_fallback`, and
@@ -90,7 +111,8 @@ consumes evaluator output.
 
 The static evaluator must not load third-party plugin code, execute plugins,
 run plugin code, clone or fetch repositories, install dependencies, invoke
-package managers, execute harvested code, run AI, change parser profile
+package managers, execute harvested code, read repository source files, run AI,
+change parser profile
 behavior, change repository profile scoring, accept packages, accept
 relations, publish registry metadata, remove `preview_only`, or treat plugin
 decisions as registry truth.
