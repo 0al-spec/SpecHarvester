@@ -197,6 +197,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t9_explicit_real_local_sandbox_request_preflight_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t3_trusted_local_adapter_sandbox_preflight_report_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t2_trusted_local_adapter_sandbox_contract_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t1_trusted_local_adapter_runtime_sandbox_plan.md` |
@@ -700,3 +701,4 @@
 | 2026-06-19 | P42-T8 | Archived Explicit Real Local Trusted Adapter Sandbox Run Request Fixture (PASS) |
 | 2026-06-19 | P42-T8 | Archived REVIEW_p42_t8_explicit_real_local_sandbox_run_request_fixture report |
 | 2026-06-19 | P42-T9 | Archived Explicit Real Local Trusted Adapter Sandbox Run Request Preflight Fixture (PASS) |
+| 2026-06-19 | P42-T9 | Archived REVIEW_p42_t9_explicit_real_local_sandbox_request_preflight_fixture report |
