@@ -111,6 +111,35 @@ If both modes are provided, the explicit `--repository-plugin-applicability`
 sidecar wins. This preserves operator control and prevents a generated report
 from silently overriding a reviewed sidecar.
 
+Attach repository plugin adapter manifest and preflight evidence while keeping
+candidate drafting generic:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --repository-plugin-adapter-manifest tests/fixtures/repository_plugins/adapter-manifest.example.json \
+  --repository-plugin-adapter-preflight tests/fixtures/repository_plugins/adapter-preflight-report.example.json
+```
+
+`--repository-plugin-adapter-manifest` and
+`--repository-plugin-adapter-preflight` must be provided together. The batch
+validates the artifact identities, verifies that the preflight
+`manifest.digest` matches the supplied manifest, copies both files under
+`reports/repository-plugin-adapter-evidence/`, and records
+`repositoryPluginAdapterEvidence` with copied paths, source paths, SHA-256
+digests, adapter counts, allowed/rejected/fallback/blocked counts, diagnostic
+codes, `appliedToDrafting: false`, `registryAuthority: false`, and
+`adapterExecution: not_run`.
+
+Adapter evidence remains explicit operator-supplied producer evidence. The
+batch does not auto-generate it, load adapters, execute adapters, install
+dependencies, invoke package managers, run AI, change static plugin
+applicability defaults, accept packages, accept relations, remove
+`preview_only`, publish registry metadata, or treat adapter output as registry
+truth.
+
 In `auto` mode, repository profile detection first uses
 `workspace-inventory.json` workspace and member manifest records. If workspace
 inventory has no manifest records, the batch falls back to already-collected
@@ -137,6 +166,7 @@ repository source manifest
   -> collect-batch with workspace inventory and public interface indexes
   -> optional repository profile detection evidence
   -> optional repository plugin applicability sidecar evidence
+  -> optional repository plugin adapter evidence sidecar
   -> draft-package-set using role profile autonomous_popular_mvp by default
   -> preflight-bundle-set
   -> optional local LM Studio package-set AI draft proposal
@@ -153,6 +183,8 @@ output/
   collected/<repository-id>/workspace-inventory.json
   reports/repository-profile-detections/<repository-id>/repository-profile-detection.json
   reports/repository-plugin-applicability/repository-plugin-applicability-report.json
+  reports/repository-plugin-adapter-evidence/adapter-manifest.json
+  reports/repository-plugin-adapter-evidence/adapter-preflight-report.json
   package-sets/<repository-id>/package-set-draft.json
   package-sets/<repository-id>/bundle-set-preflight.json
   package-sets/<repository-id>/ai/package-set-ai-draft-proposal.json
@@ -187,6 +219,12 @@ The report records:
   `--repository-plugin-applicability` sidecar is copied or when
   `--repository-plugin-registry` and
   `--repository-plugin-static-evidence-envelope` generate the sidecar;
+- repository plugin adapter evidence sidecar manifest/preflight paths, source
+  paths, SHA-256 digests, authority, adapter counts, allowed/rejected/fallback/
+  blocked counts, diagnostic codes, `appliedToDrafting: false`,
+  `registryAuthority: false`, and `adapterExecution: not_run` when both
+  `--repository-plugin-adapter-manifest` and
+  `--repository-plugin-adapter-preflight` are supplied;
 - processed, skipped, and failed repository counts;
 - per-repository harvest, workspace inventory, package-set draft, and preflight
   paths;
@@ -223,6 +261,17 @@ plugin code, read repository source files, change parser profile behavior,
 change repository profile scoring, accept packages, accept relations, remove
 `preview_only`, publish registry metadata, or treat plugin decisions as
 registry truth.
+
+Repository plugin adapter evidence is also sidecar producer evidence only.
+Even when `--repository-plugin-adapter-manifest` and
+`--repository-plugin-adapter-preflight` are supplied, the batch records
+`repositoryPluginAdapterEvidence` with `appliedToDrafting: false`,
+`registryAuthority: false`, and `adapterExecution: not_run`. It validates and
+copies the sidecars for review, but does not load adapter code, execute
+adapters, install dependencies, invoke package managers, execute harvested
+code, run AI, change static plugin applicability behavior, accept packages,
+accept relations, seed baselines, remove `preview_only`, publish registry
+metadata, or treat adapter output as registry truth.
 
 ## LM Studio Boundary
 

@@ -94,6 +94,34 @@ If both modes are provided, the explicit `--repository-plugin-applicability`
 sidecar wins. This preserves operator control and prevents a generated report
 from silently overriding a reviewed sidecar.
 
+Attach repository plugin adapter manifest and preflight evidence:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --repository-plugin-adapter-manifest tests/fixtures/repository_plugins/adapter-manifest.example.json \
+  --repository-plugin-adapter-preflight tests/fixtures/repository_plugins/adapter-preflight-report.example.json
+```
+
+`--repository-plugin-adapter-manifest` and
+`--repository-plugin-adapter-preflight` must be provided together. The batch
+validates the artifact identities, verifies that the preflight
+`manifest.digest` matches the supplied manifest, copies both files under
+`reports/repository-plugin-adapter-evidence/`, and records
+`repositoryPluginAdapterEvidence` with copied paths, source paths, SHA-256
+digests, adapter counts, allowed/rejected/fallback/blocked counts, diagnostic
+codes, `appliedToDrafting: false`, `registryAuthority: false`, and
+`adapterExecution: not_run`.
+
+Adapter evidence remains explicit operator-supplied producer evidence. The
+batch does not auto-generate it, load adapters, execute adapters, install
+dependencies, invoke package managers, run AI, change static plugin
+applicability defaults, accept packages, accept relations, remove
+`preview_only`, publish registry metadata, or treat adapter output as registry
+truth.
+
 In `auto` mode, repository profile detection first uses
 `workspace-inventory.json` workspace and member manifest records. If workspace
 inventory has no manifest records, the batch falls back to already-collected
@@ -116,6 +144,7 @@ source manifest
   -> workspace inventory
   -> optional repository profile detection evidence
   -> optional repository plugin applicability sidecar evidence
+  -> optional repository plugin adapter evidence sidecar
   -> draft-package-set
   -> preflight-bundle-set
   -> optional local LM Studio AI draft/enrichment proposals
@@ -152,6 +181,16 @@ sidecar, the report records the same `repositoryPluginApplicability` section
 with `sourceMode: auto_static_evaluator`, generated report path, digest,
 authority, selected/rejected/fallback/blocked counts, and diagnostic codes.
 
+When `--repository-plugin-adapter-manifest` and
+`--repository-plugin-adapter-preflight` are provided, the report records
+`repositoryPluginAdapterEvidence` with copied manifest/preflight paths, source
+paths, SHA-256 digests, authority, adapter counts, allowed/rejected/fallback/
+blocked counts, diagnostic codes, `appliedToDrafting: false`,
+`registryAuthority: false`, and `adapterExecution: not_run`. The copied JSON
+artifacts are written as
+`reports/repository-plugin-adapter-evidence/adapter-manifest.json` and
+`reports/repository-plugin-adapter-evidence/adapter-preflight-report.json`.
+
 Repository profile detection remains producer evidence only. The batch records
 `advisoryHintsAppliedToDrafting: false`; it does not apply hints to candidate
 drafting, accept packages, accept relations, remove `preview_only`, publish
@@ -165,6 +204,14 @@ plugins, load third-party plugin code, read repository source files, change
 parser profile behavior, change repository profile scoring, accept packages,
 accept relations, remove `preview_only`, publish registry metadata, or treat
 plugin decisions as registry truth.
+
+Repository plugin adapter evidence also remains sidecar producer evidence only.
+The batch records `appliedToDrafting: false`, `registryAuthority: false`, and
+`adapterExecution: not_run`; it does not load adapter code, execute adapters,
+install dependencies, invoke package managers, execute harvested code, run AI,
+change static plugin applicability behavior, accept packages, accept
+relations, seed baselines, remove `preview_only`, publish registry metadata, or
+treat adapter output as registry truth.
 
 Generated package files remain `preview_only` producer evidence. SpecPM remains
 the validation, acceptance, relation, and registry authority.

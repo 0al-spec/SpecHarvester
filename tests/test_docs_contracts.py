@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P40-T6 Repository Plugin Adapter Cross-Ecosystem Fixture Matrix" in next_text:
+        assert_p40_t5_last_archived(next_text)
+        assert_p40_t5_recent(next_text)
+        assert_phase_40_t6_planned(next_text)
+        return
+
     if "# Next Task: P40-T5 Adapter Evidence Batch Integration" in next_text:
         assert_p40_t4_last_archived(next_text)
         assert_p40_t4_recent(next_text)
@@ -4264,6 +4270,51 @@ def assert_phase_40_t5_planned(next_text: str) -> None:
     assert "Do not implement adapter loading or execution" in normalized
     assert "Do not auto-run adapters" in normalized
     assert "Do not change static plugin applicability defaults" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p40_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P40-T5 Adapter Evidence Batch Integration" in next_text
+
+
+def assert_p40_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P40-T5` connected adapter manifest and preflight output" in normalized
+    assert "docs/AUTONOMOUS_CANDIDATE_BATCH.md" in next_text
+    assert "AutonomousCandidateBatch.md" in next_text
+    assert "repositoryPluginAdapterEvidence" in normalized
+    assert "--repository-plugin-adapter-manifest" in normalized
+    assert "--repository-plugin-adapter-preflight" in normalized
+    assert "appliedToDrafting: false" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "review-only producer evidence" in normalized
+
+
+def assert_phase_40_t6_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P40-T6 Repository Plugin Adapter Cross-Ecosystem Fixture Matrix" in next_text
+    )
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P40-T6-repository-plugin-adapter-cross-ecosystem-fixture-matrix`" in next_text
+    assert "Phase 40. Repository Plugin Adapter Contract" in next_text
+    assert "manifest-backed single packages" in normalized
+    assert "workspaces" in normalized
+    assert "documentation-heavy repositories" in normalized
+    assert "nested package roots" in normalized
+    assert "ambiguous mixed layouts" in normalized
+    assert "without loading third-party adapter code" in normalized
+    assert "Do not implement adapter loading or execution" in normalized
+    assert "Do not auto-run adapters" in normalized
     assert "Do not clone or fetch repositories" in normalized
     assert "Do not install dependencies" in normalized
     assert "Do not invoke package managers" in normalized
@@ -15694,6 +15745,104 @@ def test_repository_plugin_adapter_execution_policy_is_documented() -> None:
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P40-T4` Define adapter execution policy" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_adapter_batch_integration_is_documented() -> None:
+    batch_doc = ROOT / "docs" / "AUTONOMOUS_CANDIDATE_BATCH.md"
+    batch_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "AutonomousCandidateBatch.md"
+    )
+    adapter_contract = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"
+    adapter_contract_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterContract.md"
+    )
+    preflight_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"
+    preflight_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterPreflightReportFixture.md"
+    )
+    execution_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md"
+    execution_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterExecutionPolicy.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (batch_doc, batch_docc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "repositoryPluginAdapterEvidence",
+            "--repository-plugin-adapter-manifest",
+            "--repository-plugin-adapter-preflight",
+            "adapter-manifest.example.json",
+            "adapter-preflight-report.example.json",
+            "reports/repository-plugin-adapter-evidence/",
+            "adapter-manifest.json",
+            "adapter-preflight-report.json",
+            "manifest.digest",
+            "SHA-256",
+            "adapter counts",
+            "allowed/rejected/fallback/blocked counts",
+            "diagnostic codes",
+            "appliedToDrafting: false",
+            "registryAuthority: false",
+            "adapterExecution: not_run",
+            "explicit operator-supplied producer evidence",
+            "does not auto-generate",
+            "does not load adapter code",
+            "execute adapters",
+            "install dependencies",
+            "invoke package managers",
+            "run AI",
+            "change static plugin applicability",
+            "treat adapter output as registry truth",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+
+    for path, required in (
+        (docs_index, "P40-T5 opt-in repository plugin adapter evidence integration"),
+        (docc_root, "docs/AUTONOMOUS_CANDIDATE_BATCH.md"),
+        (docc_root, "<doc:AutonomousCandidateBatch>"),
+        (capabilities, "repositoryPluginAdapterEvidence"),
+        (capabilities_docc, "repositoryPluginAdapterEvidence"),
+        (roadmap, "P40-T5 connects operator-supplied adapter manifest"),
+        (roadmap_docc, "P40-T5 connects operator-supplied adapter manifest"),
+        (adapter_contract, "repositoryPluginAdapterEvidence"),
+        (adapter_contract_docc, "repositoryPluginAdapterEvidence"),
+        (preflight_doc, "repositoryPluginAdapterEvidence"),
+        (preflight_docc, "repositoryPluginAdapterEvidence"),
+        (execution_doc, "repositoryPluginAdapterEvidence"),
+        (execution_docc, "repositoryPluginAdapterEvidence"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P40-T5` Connect adapter manifest and preflight output" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

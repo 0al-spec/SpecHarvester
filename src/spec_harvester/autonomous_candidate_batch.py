@@ -95,6 +95,17 @@ REPOSITORY_PLUGIN_APPLICABILITY_FILENAME = "repository-plugin-applicability-repo
 REPOSITORY_PLUGIN_APPLICABILITY_API_VERSION = "spec-harvester.repository-plugin-applicability/v0"
 REPOSITORY_PLUGIN_APPLICABILITY_KIND = "SpecHarvesterRepositoryPluginApplicabilityReport"
 REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY = "producer_plugin_applicability_only"
+REPOSITORY_PLUGIN_ADAPTER_EVIDENCE_DIRNAME = "repository-plugin-adapter-evidence"
+REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FILENAME = "adapter-manifest.json"
+REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_FILENAME = "adapter-preflight-report.json"
+REPOSITORY_PLUGIN_ADAPTER_MANIFEST_API_VERSION = "spec-harvester.repository-plugin-adapter/v0"
+REPOSITORY_PLUGIN_ADAPTER_MANIFEST_KIND = "SpecHarvesterRepositoryPluginAdapterManifest"
+REPOSITORY_PLUGIN_ADAPTER_MANIFEST_AUTHORITY = "producer_plugin_adapter_manifest_only"
+REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_API_VERSION = (
+    "spec-harvester.repository-plugin-adapter-preflight/v0"
+)
+REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_KIND = "SpecHarvesterRepositoryPluginAdapterPreflightReport"
+REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_AUTHORITY = "producer_plugin_adapter_preflight_only"
 
 TRUST_BOUNDARY_NOTES = [
     "Autonomous candidate batch output is producer evidence only.",
@@ -136,6 +147,8 @@ class AutonomousCandidateBatchOptions:
     repository_plugin_applicability: Path | None = None
     repository_plugin_registry: Path | None = None
     repository_plugin_static_evidence_envelope: Path | None = None
+    repository_plugin_adapter_manifest: Path | None = None
+    repository_plugin_adapter_preflight: Path | None = None
 
 
 class AutonomousCandidateBatch:
@@ -150,6 +163,7 @@ class AutonomousCandidateBatch:
         self.validate_options()
         self.out.mkdir(parents=True, exist_ok=True)
         repository_plugin_applicability = self.repository_plugin_applicability_record()
+        repository_plugin_adapter_evidence = self.repository_plugin_adapter_evidence_record()
         collection = self.collect()
         repositories = [self.repository_record(record) for record in collection["collected"]]
         status = batch_status(collection, repositories)
@@ -165,6 +179,7 @@ class AutonomousCandidateBatch:
             "ai": self.ai_mode_record(),
             "repositoryProfileSelection": self.repository_profile_selection_record(),
             "repositoryPluginApplicability": repository_plugin_applicability,
+            "repositoryPluginAdapterEvidence": repository_plugin_adapter_evidence,
             "summary": {
                 "collectedCount": collection["collectedCount"],
                 "skippedCount": collection["skippedCount"],
@@ -192,6 +207,9 @@ class AutonomousCandidateBatch:
                 "repositoryProfileDisabledCount": count_profile_decision(repositories, "disabled"),
                 "repositoryPluginApplicabilitySidecarCount": (
                     1 if repository_plugin_applicability.get("status") == "recorded" else 0
+                ),
+                "repositoryPluginAdapterEvidenceSidecarCount": (
+                    1 if repository_plugin_adapter_evidence.get("status") == "recorded" else 0
                 ),
             },
             "repositories": repositories,
@@ -232,6 +250,13 @@ class AutonomousCandidateBatch:
                     "--repository-plugin-registry and "
                     "--repository-plugin-static-evidence-envelope must be provided together"
                 )
+        has_adapter_manifest = self.options.repository_plugin_adapter_manifest is not None
+        has_adapter_preflight = self.options.repository_plugin_adapter_preflight is not None
+        if has_adapter_manifest != has_adapter_preflight:
+            raise ValueError(
+                "--repository-plugin-adapter-manifest and "
+                "--repository-plugin-adapter-preflight must be provided together"
+            )
 
     def collect(self) -> dict[str, Any]:
         return collect_batch_snapshots(
@@ -597,6 +622,45 @@ class AutonomousCandidateBatch:
             },
         )
 
+    def repository_plugin_adapter_evidence_record(self) -> dict[str, Any]:
+        manifest_source = self.options.repository_plugin_adapter_manifest
+        preflight_source = self.options.repository_plugin_adapter_preflight
+        if manifest_source is None and preflight_source is None:
+            return {
+                "status": "not_provided",
+                "reason": "operator_not_provided",
+                "appliedToDrafting": False,
+                "registryAuthority": False,
+                "adapterExecution": "not_run",
+            }
+        if manifest_source is None or preflight_source is None:
+            raise ValueError(
+                "--repository-plugin-adapter-manifest and "
+                "--repository-plugin-adapter-preflight must be provided together"
+            )
+
+        manifest = read_json(manifest_source)
+        preflight = read_json(preflight_source)
+        validate_repository_plugin_adapter_manifest(manifest, manifest_source)
+        validate_repository_plugin_adapter_preflight(
+            preflight,
+            preflight_source,
+            expected_manifest_digest=sha256_file(manifest_source),
+        )
+        output_root = self.reports_root / REPOSITORY_PLUGIN_ADAPTER_EVIDENCE_DIRNAME
+        manifest_output = output_root / REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FILENAME
+        preflight_output = output_root / REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_FILENAME
+        write_json(manifest_output, manifest)
+        write_json(preflight_output, preflight)
+        return repository_plugin_adapter_evidence_record_from_payload(
+            manifest=manifest,
+            preflight=preflight,
+            manifest_source=manifest_source,
+            preflight_source=preflight_source,
+            manifest_output=manifest_output,
+            preflight_output=preflight_output,
+        )
+
     def validation_report_path(self) -> Path:
         return self.reports_root / "batch-validation-report.json"
 
@@ -658,6 +722,82 @@ def repository_plugin_applicability_record_from_payload(
     if inputs is not None:
         record["inputs"] = inputs
     return record
+
+
+def repository_plugin_adapter_evidence_record_from_payload(
+    *,
+    manifest: dict[str, Any],
+    preflight: dict[str, Any],
+    manifest_source: Path,
+    preflight_source: Path,
+    manifest_output: Path,
+    preflight_output: Path,
+) -> dict[str, Any]:
+    manifest_summary = mapping_value(manifest.get("summary"))
+    preflight_summary = mapping_value(preflight.get("summary"))
+    return {
+        "status": "recorded",
+        "sourceMode": "explicit_sidecar",
+        "authority": REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_AUTHORITY,
+        "manifest": {
+            "source": str(manifest_source),
+            "sourceDigest": digest_record(sha256_file(manifest_source)),
+            "path": str(manifest_output),
+            "digest": digest_record(sha256_file(manifest_output)),
+            "apiVersion": manifest["apiVersion"],
+            "kind": manifest["kind"],
+            "schemaVersion": manifest["schemaVersion"],
+            "authority": manifest["authority"],
+            "adapterCount": int_value(manifest_summary.get("adapterCount")),
+        },
+        "preflight": {
+            "source": str(preflight_source),
+            "sourceDigest": digest_record(sha256_file(preflight_source)),
+            "path": str(preflight_output),
+            "digest": digest_record(sha256_file(preflight_output)),
+            "apiVersion": preflight["apiVersion"],
+            "kind": preflight["kind"],
+            "schemaVersion": preflight["schemaVersion"],
+            "authority": preflight["authority"],
+            "allowedCount": int_value(preflight_summary.get("allowedCount")),
+            "rejectedCount": int_value(preflight_summary.get("rejectedCount")),
+            "fallbackCount": int_value(preflight_summary.get("fallbackCount")),
+            "blockedCount": int_value(preflight_summary.get("blockedCount")),
+            "diagnosticCount": int_value(preflight_summary.get("diagnosticCount")),
+            "executedAdapterCount": int_value(preflight_summary.get("executedAdapterCount")),
+        },
+        "summary": {
+            "adapterCount": int_value(manifest_summary.get("adapterCount")),
+            "allowedCount": int_value(preflight_summary.get("allowedCount")),
+            "rejectedCount": int_value(preflight_summary.get("rejectedCount")),
+            "fallbackCount": int_value(preflight_summary.get("fallbackCount")),
+            "blockedCount": int_value(preflight_summary.get("blockedCount")),
+            "diagnosticCount": int_value(preflight_summary.get("diagnosticCount")),
+            "executedAdapterCount": int_value(preflight_summary.get("executedAdapterCount")),
+        },
+        "diagnosticCodes": diagnostic_codes(preflight),
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterExecution": "not_run",
+        "adapterOutputAccepted": False,
+        "nonGoals": [
+            "adapter_loading",
+            "adapter_execution",
+            "third_party_adapter_code_loading",
+            "repository_clone",
+            "network_discovery",
+            "dependency_installation",
+            "package_manager_invocation",
+            "harvested_code_execution",
+            "ai_execution",
+            "static_plugin_applicability_behavior_change",
+            "specpm_acceptance",
+            "relation_acceptance",
+            "baseline_seeding",
+            "preview_only_removal",
+            "registry_publication",
+        ],
+    }
 
 
 def inventory_path(collected: dict[str, Any]) -> Path:
@@ -911,6 +1051,147 @@ def validate_repository_plugin_applicability(payload: dict[str, Any], path: Path
         )
 
 
+def validate_repository_plugin_adapter_manifest(payload: dict[str, Any], path: Path) -> None:
+    expected = {
+        "apiVersion": REPOSITORY_PLUGIN_ADAPTER_MANIFEST_API_VERSION,
+        "kind": REPOSITORY_PLUGIN_ADAPTER_MANIFEST_KIND,
+        "schemaVersion": 1,
+        "authority": REPOSITORY_PLUGIN_ADAPTER_MANIFEST_AUTHORITY,
+    }
+    for key, value in expected.items():
+        if payload.get(key) != value:
+            raise ValueError(
+                f"repository plugin adapter manifest {path} has unsupported {key}: "
+                f"{payload.get(key)!r}"
+            )
+    adapters = payload.get("adapters")
+    if not isinstance(adapters, list):
+        raise ValueError(f"repository plugin adapter manifest {path} must include adapters")
+    summary = mapping_value(payload.get("summary"))
+    if type(summary.get("adapterCount")) is not int:
+        raise ValueError(
+            f"repository plugin adapter manifest {path} must include integer summary.adapterCount"
+        )
+    if summary["adapterCount"] != len(adapters):
+        raise ValueError(
+            f"repository plugin adapter manifest {path} summary.adapterCount must match adapters"
+        )
+    boundary = mapping_value(payload.get("sidecarBoundary"))
+    if boundary.get("appliedToDrafting") is not False:
+        raise ValueError(
+            f"repository plugin adapter manifest {path} must record appliedToDrafting false"
+        )
+    if boundary.get("registryAuthority") is not False:
+        raise ValueError(
+            f"repository plugin adapter manifest {path} must record registryAuthority false"
+        )
+    if boundary.get("adapterExecution") != "not_run":
+        raise ValueError(
+            f"repository plugin adapter manifest {path} must record adapterExecution not_run"
+        )
+    if not isinstance(payload.get("nonAuthorityStatements"), list):
+        raise ValueError(
+            f"repository plugin adapter manifest {path} must include nonAuthorityStatements"
+        )
+
+
+def validate_repository_plugin_adapter_preflight(
+    payload: dict[str, Any],
+    path: Path,
+    *,
+    expected_manifest_digest: str,
+) -> None:
+    expected = {
+        "apiVersion": REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_API_VERSION,
+        "kind": REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_KIND,
+        "schemaVersion": 1,
+        "authority": REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_AUTHORITY,
+    }
+    for key, value in expected.items():
+        if payload.get(key) != value:
+            raise ValueError(
+                f"repository plugin adapter preflight {path} has unsupported {key}: "
+                f"{payload.get(key)!r}"
+            )
+    manifest = mapping_value(payload.get("manifest"))
+    if manifest.get("kind") != REPOSITORY_PLUGIN_ADAPTER_MANIFEST_KIND:
+        raise ValueError(
+            f"repository plugin adapter preflight {path} has unsupported manifest.kind"
+        )
+    if manifest.get("authority") != REPOSITORY_PLUGIN_ADAPTER_MANIFEST_AUTHORITY:
+        raise ValueError(
+            f"repository plugin adapter preflight {path} has unsupported manifest.authority"
+        )
+    if manifest.get("digest") != f"sha256:{expected_manifest_digest}":
+        raise ValueError(
+            f"repository plugin adapter preflight {path} manifest.digest does not match manifest"
+        )
+
+    summary = mapping_value(payload.get("summary"))
+    for key in (
+        "allowedCount",
+        "rejectedCount",
+        "fallbackCount",
+        "blockedCount",
+        "diagnosticCount",
+        "executedAdapterCount",
+    ):
+        if type(summary.get(key)) is not int:
+            raise ValueError(
+                f"repository plugin adapter preflight {path} must include integer summary.{key}"
+            )
+    expected_counts = {
+        "allowedCount": len(list_value(payload.get("allowedAdapters"))),
+        "rejectedCount": len(list_value(payload.get("rejectedAdapters"))),
+        "fallbackCount": len(list_value(payload.get("fallbackAdapters"))),
+        "blockedCount": len(list_value(payload.get("blockedAdapters"))),
+        "diagnosticCount": len(list_value(payload.get("diagnostics"))),
+    }
+    for key, value in expected_counts.items():
+        if summary[key] != value:
+            raise ValueError(f"repository plugin adapter preflight {path} summary.{key} mismatch")
+    if summary["executedAdapterCount"] != 0:
+        raise ValueError(
+            f"repository plugin adapter preflight {path} must not record executed adapters"
+        )
+
+    execution = mapping_value(payload.get("adapterExecution"))
+    boundary = mapping_value(payload.get("sidecarBoundary"))
+    if execution.get("adapterCodeLoaded") is not False:
+        raise ValueError(
+            f"repository plugin adapter preflight {path} must record adapterCodeLoaded false"
+        )
+    if execution.get("adapterExecution") != "not_run":
+        raise ValueError(
+            f"repository plugin adapter preflight {path} must record adapterExecution not_run"
+        )
+    if execution.get("executedAdapterCount") != 0:
+        raise ValueError(
+            f"repository plugin adapter preflight {path} must record executedAdapterCount 0"
+        )
+    if boundary.get("appliedToDrafting") is not False:
+        raise ValueError(
+            f"repository plugin adapter preflight {path} must record appliedToDrafting false"
+        )
+    if boundary.get("registryAuthority") is not False:
+        raise ValueError(
+            f"repository plugin adapter preflight {path} must record registryAuthority false"
+        )
+    if boundary.get("adapterExecution") != "not_run":
+        raise ValueError(
+            f"repository plugin adapter preflight {path} "
+            "must record sidecar adapterExecution not_run"
+        )
+    if boundary.get("adapterOutputAccepted") is not False:
+        raise ValueError(
+            f"repository plugin adapter preflight {path} must record adapterOutputAccepted false"
+        )
+    if not isinstance(payload.get("nonAuthorityStatements"), list):
+        raise ValueError(
+            f"repository plugin adapter preflight {path} must include nonAuthorityStatements"
+        )
+
+
 def count_status(repositories: list[dict[str, Any]], key: str, status: str) -> int:
     return sum(
         1
@@ -977,6 +1258,10 @@ def safe_enriched_candidate_dir(package_id: str) -> str:
 
 def mapping_value(value: Any) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
+
+
+def list_value(value: Any) -> list[Any]:
+    return value if isinstance(value, list) else []
 
 
 def string_or_none(value: Any) -> str | None:

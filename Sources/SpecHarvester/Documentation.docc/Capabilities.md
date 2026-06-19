@@ -153,6 +153,15 @@ labels.
 `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope` fixture, including safe
 relative evidence paths, SHA-256 digests, `evidenceKinds[]`, advisory signals,
 and non-authority boundaries.
+<doc:RepositoryPluginAdapterContract> records the P40-T1 adapter contract.
+<doc:RepositoryPluginAdapterManifestFixture> records the P40-T2
+`SpecHarvesterRepositoryPluginAdapterManifest` fixture.
+<doc:RepositoryPluginAdapterPreflightReportFixture> and
+<doc:AutonomousCandidateBatch> record the P40-T5 opt-in batch sidecar path for
+adapter manifest/preflight evidence as `repositoryPluginAdapterEvidence` with
+copied paths, SHA-256 digests, allowed/rejected/fallback/blocked counts,
+`appliedToDrafting: false`, `registryAuthority: false`, and
+`adapterExecution: not_run`.
 
 ## Non-Goals
 
