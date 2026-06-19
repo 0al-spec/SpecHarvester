@@ -1,0 +1,315 @@
+{
+  "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-contract/v0",
+  "kind": "SpecHarvesterTrustedLocalAdapterSandboxContract",
+  "schemaVersion": 1,
+  "authority": "producer_trusted_local_adapter_sandbox_contract_only",
+  "contract": {
+    "purpose": "Record the trusted local adapter runtime sandbox boundary before any adapter process can run.",
+    "contractVersion": "0.1.0",
+    "sandboxContractAuthority": "producer_sandbox_contract_review_evidence_only",
+    "operatorApprovalAuthority": "local_operator_approval_required_before_runtime_only",
+    "adapterOutputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "defaultExecution": "disabled",
+    "sandboxContractIsExecutionPermission": false
+  },
+  "inputContractReferences": {
+    "runRequest": {
+      "path": "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json",
+      "digest": "sha256:a0d0ae4ccc5ffb256147e217b0efa74716d2ddda37cd7a6b640b0e7df78f0e54",
+      "kind": "SpecHarvesterTrustedLocalAdapterRunRequest",
+      "authority": "producer_trusted_local_adapter_run_request_only"
+    },
+    "runPreflightReport": {
+      "path": "tests/fixtures/repository_plugins/trusted-local-adapter-run-preflight-report.example.json",
+      "digest": "sha256:b94c9c6088179b2c41bee5879e2a6291904e0600bce948187973441bc1c68743",
+      "kind": "SpecHarvesterTrustedLocalAdapterRunPreflightReport",
+      "authority": "producer_trusted_local_adapter_run_preflight_only"
+    },
+    "realLocalReadinessValidation": {
+      "path": "tests/fixtures/repository_plugins/trusted_local_adapter_real_runs/p41-t6-real-local-trusted-adapter-readiness-validation.example.json",
+      "digest": "sha256:09d0d024089eef7a88137c63f329906be5bb0fe894aaef45fd58728abc754664",
+      "kind": "SpecHarvesterTrustedLocalAdapterRealLocalReadinessValidation",
+      "authority": "producer_trusted_local_adapter_readiness_validation_only"
+    }
+  },
+  "adapterPackageIdentity": {
+    "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+    "adapterKind": "repository_plugin_adapter",
+    "supportedRepositoryRoles": [
+      "generic.repository.v0",
+      "generic.single_package.v0",
+      "generic.package_set.v0"
+    ],
+    "packageSource": {
+      "type": "local_fixture_adapter_manifest",
+      "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+      "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40"
+    },
+    "pinnedRevisionOrDigestRequired": true,
+    "mutableRefAllowed": false,
+    "signatureOrDigestVerification": "digest_required_before_runtime",
+    "declaredEntrypoint": "adapters/generic/parser_profile_summary.py",
+    "declaredRequiredEvidence": [
+      "repository_plugin_static_evidence_envelope",
+      "repository_plugin_registry",
+      "trusted_local_adapter_run_request",
+      "trusted_local_adapter_run_preflight_report"
+    ],
+    "declaredOutputArtifactKinds": [
+      "trusted_local_adapter_output",
+      "trusted_local_adapter_diagnostics",
+      "trusted_local_adapter_audit_record"
+    ],
+    "nonAuthorityStatements": [
+      "adapter_identity_is_not_execution_permission",
+      "adapter_identity_is_not_registry_acceptance"
+    ]
+  },
+  "sandboxPolicyIdentity": {
+    "policyId": "spec_harvester.trusted_local_adapter.local_sandbox.v0",
+    "policyVersion": "0.1.0",
+    "sourceTask": "P42-T2",
+    "sourceDocument": "docs/TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md",
+    "policyAuthority": "producer_sandbox_policy_review_evidence_only",
+    "immutablePolicyRequiredBeforeRuntime": true,
+    "runtimeMustRecordPolicyDigest": true
+  },
+  "operatorApprovalRequirements": {
+    "requiredBeforeRuntime": true,
+    "providedByFixture": false,
+    "approvalScope": "single_adapter_single_repository_single_run",
+    "approvalMustBind": [
+      "adapterPackageIdentity.adapterId",
+      "adapterPackageIdentity.packageSource.digest",
+      "sandboxPolicyIdentity.policyId",
+      "sandboxPolicyIdentity.policyVersion",
+      "targetRepository.id",
+      "targetRepository.revision",
+      "declaredInputArtifacts[].digest",
+      "filesystemPolicy.writePolicy.allowedOutputDirectories",
+      "processPolicy.resourceBudgets",
+      "networkPolicy.networkAccess",
+      "dependencyPolicy.dependencyInstallation",
+      "outputVerification.requiredArtifactKinds"
+    ],
+    "approvalIsRegistryAcceptance": false,
+    "approvalIsReusableAcrossRepositories": false
+  },
+  "targetRepository": {
+    "id": "example-workspace",
+    "sourceManifestPath": "inputs/repositories.yml",
+    "sourceManifestEntryId": "example-workspace",
+    "revision": "0123456789abcdef0123456789abcdef01234567"
+  },
+  "declaredInputArtifacts": [
+    {
+      "kind": "trusted_local_adapter_run_request",
+      "path": "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json",
+      "digest": "sha256:a0d0ae4ccc5ffb256147e217b0efa74716d2ddda37cd7a6b640b0e7df78f0e54",
+      "authority": "producer_trusted_local_adapter_run_request_only",
+      "required": true
+    },
+    {
+      "kind": "trusted_local_adapter_run_preflight_report",
+      "path": "tests/fixtures/repository_plugins/trusted-local-adapter-run-preflight-report.example.json",
+      "digest": "sha256:b94c9c6088179b2c41bee5879e2a6291904e0600bce948187973441bc1c68743",
+      "authority": "producer_trusted_local_adapter_run_preflight_only",
+      "required": true
+    },
+    {
+      "kind": "adapter_manifest",
+      "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+      "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+      "authority": "producer_plugin_adapter_manifest_only",
+      "required": true
+    },
+    {
+      "kind": "adapter_preflight_report",
+      "path": "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+      "digest": "sha256:cc5ae90fa5e1df8715e858573048f2bd78f85e1e89023854533f21f6999ae7c1",
+      "authority": "producer_plugin_adapter_preflight_only",
+      "required": true
+    },
+    {
+      "kind": "repository_plugin_static_evidence_envelope",
+      "path": "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+      "digest": "sha256:f91dcf8b81a235e2024559c12ef9a01decb5ae3fc6e748187fb353ba011e5a57",
+      "authority": "producer_plugin_static_evidence_only",
+      "required": true
+    },
+    {
+      "kind": "repository_plugin_registry",
+      "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+      "digest": "sha256:6c0692de61fa97012c6a86e0283612ae3dc113f2a40b1bc33c741903dd710c74",
+      "authority": "producer_plugin_registry_only",
+      "required": true
+    }
+  ],
+  "processPolicy": {
+    "adapterProcessExecution": "not_allowed_in_contract_fixture",
+    "futureRuntimeRequiresSandboxPreflight": true,
+    "isolationMechanism": "local_process_sandbox_required_before_runtime",
+    "boundedProcessTreeRequired": true,
+    "noInheritedShellSession": true,
+    "noAmbientCredentials": true,
+    "uncontrolledChildProcessesAllowed": false,
+    "deterministicWorkingDirectoryRequired": true,
+    "resourceBudgets": {
+      "timeoutMs": 30000,
+      "cpuTimeMs": 10000,
+      "memoryBytes": 268435456,
+      "maxStdoutBytes": 65536,
+      "maxStderrBytes": 65536,
+      "currentMaxProcessCount": 0,
+      "futureRuntimeMaxProcessCount": 1
+    }
+  },
+  "filesystemPolicy": {
+    "pathFormat": "posix_relative",
+    "parentSegmentsAllowed": false,
+    "absolutePathsAllowed": false,
+    "backslashAllowed": false,
+    "networkPathsAllowed": false,
+    "readPolicy": {
+      "base": "repository_root",
+      "policy": "declared_artifact_paths_only",
+      "allowedPaths": [
+        "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json",
+        "tests/fixtures/repository_plugins/trusted-local-adapter-run-preflight-report.example.json",
+        "tests/fixtures/repository_plugins/trusted_local_adapter_real_runs/p41-t6-real-local-trusted-adapter-readiness-validation.example.json",
+        "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+        "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+        "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+        "tests/fixtures/repository_plugins/generic-registry.example.json"
+      ]
+    },
+    "writePolicy": {
+      "policy": "declared_output_directories_only",
+      "allowedOutputDirectories": [
+        "artifacts/trusted-local-adapter-sandbox/example-workspace"
+      ],
+      "freshRunDirectoryRequired": true,
+      "overwritePolicy": "replace_single_run_directory_only"
+    }
+  },
+  "environmentPolicy": {
+    "inheritEnvironment": false,
+    "allowedEnvironmentVariables": [],
+    "deniedEnvironmentPatterns": [
+      "*"
+    ],
+    "secretsAccess": "not_allowed",
+    "githubTokenAccess": "not_allowed",
+    "sshAgentAccess": "not_allowed",
+    "cloudCredentialAccess": "not_allowed",
+    "packageRegistryTokenAccess": "not_allowed",
+    "modelProviderTokenAccess": "not_allowed"
+  },
+  "dependencyPolicy": {
+    "dependencyInstallation": "not_allowed",
+    "useExistingRepositoryDependencies": "not_allowed",
+    "packageManagers": "not_invoked",
+    "packageManagerCommands": [],
+    "prebuiltAdapterEnvironmentRequiredForFutureRuntime": true
+  },
+  "networkPolicy": {
+    "networkAccess": "none",
+    "loopbackAllowed": false,
+    "dnsAllowed": false,
+    "remoteFetchAllowed": false,
+    "targetAllowlist": [],
+    "futureNetworkAccessRequiresSeparatePolicyTask": true
+  },
+  "outputVerification": {
+    "required": true,
+    "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "safeRelativePathsRequired": true,
+    "byteSizeRequired": true,
+    "sha256DigestRequired": true,
+    "producerRunIdRequired": true,
+    "adapterIdAndDigestRequired": true,
+    "sourceInputDigestsRequired": true,
+    "diagnosticsStatusRequired": true,
+    "requiredArtifactKinds": [
+      "trusted_local_adapter_output",
+      "trusted_local_adapter_diagnostics",
+      "trusted_local_adapter_audit_record"
+    ],
+    "outputIsRegistryTruth": false
+  },
+  "auditRecordRequirements": {
+    "required": true,
+    "replayable": true,
+    "requiredFields": [
+      "requestDigest",
+      "preflightDigest",
+      "operatorApprovalDigest",
+      "adapterPackageIdentity",
+      "sandboxPolicyIdentity",
+      "inputArtifactDigests",
+      "outputArtifactDigests",
+      "runtimeCounters",
+      "diagnostics",
+      "nonAuthorityStatements"
+    ],
+    "reviewerQuestionsAnswered": [
+      "what_was_approved",
+      "what_ran",
+      "what_was_read",
+      "what_was_written",
+      "why_output_remains_non_authoritative"
+    ]
+  },
+  "executionBoundary": {
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeImplemented": false,
+    "sandboxPreflightImplemented": false,
+    "sandboxContractIsExecutionPermission": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "trusted_local_adapter_sandbox_contract_fixture",
+      "message": "Sandbox contract records required runtime boundaries before any adapter process can run."
+    },
+    {
+      "severity": "info",
+      "code": "sandbox_contract_not_execution_permission",
+      "message": "This fixture is producer-side review evidence and does not grant permission to execute adapters."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "sandbox_contract_is_not_execution_permission",
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_run_adapter_processes",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_sandbox_contract_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "sandboxPlanTask": "P42-T1",
+    "sandboxPreflightReportTask": "P42-T3",
+    "disabledSandboxRunnerValidationTask": "P42-T4",
+    "syntheticApprovedAdapterRunTask": "P42-T5",
+    "realLocalAdapterRunTask": "deferred_until_after_review"
+  }
+}

@@ -197,4 +197,5 @@ no-runtime and non-authority guarantees.
 
 Phase 42 continues with <doc:TrustedLocalAdapterRuntimeSandboxPlan>, which
 defines the sandbox contract required before any future adapter process can
-run.
+run. P42-T2 adds <doc:TrustedLocalAdapterSandboxContractFixture> as the
+machine-readable sandbox contract fixture for that boundary.

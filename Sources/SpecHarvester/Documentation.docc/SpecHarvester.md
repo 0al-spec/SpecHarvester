@@ -197,6 +197,8 @@ the host.
 - <doc:TrustedLocalAdapterRunRequestFixture>
 - <doc:TrustedLocalAdapterRunPreflightReportFixture>
 - <doc:TrustedLocalAdapterRunnerSkeleton>
+- <doc:TrustedLocalAdapterRuntimeSandboxPlan>
+- <doc:TrustedLocalAdapterSandboxContractFixture>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

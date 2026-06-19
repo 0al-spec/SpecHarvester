@@ -181,6 +181,7 @@
 | P41-T5 | [P41-T5_Trusted_Local_Adapter_Run_Evidence_Handoff/](P41-T5_Trusted_Local_Adapter_Run_Evidence_Handoff/) | 2026-06-19 | PASS |
 | P41-T6 | [P41-T6_Real_Local_Trusted-Adapter_Readiness_Validation/](P41-T6_Real_Local_Trusted-Adapter_Readiness_Validation/) | 2026-06-19 | PASS |
 | P42-T1 | [P42-T1_Trusted_Local_Adapter_Runtime_Sandbox_Plan/](P42-T1_Trusted_Local_Adapter_Runtime_Sandbox_Plan/) | 2026-06-19 | PASS |
+| P42-T2 | [P42-T2_Trusted_Local_Adapter_Sandbox_Contract_Fixture/](P42-T2_Trusted_Local_Adapter_Sandbox_Contract_Fixture/) | 2026-06-19 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -193,6 +194,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t2_trusted_local_adapter_sandbox_contract_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t1_trusted_local_adapter_runtime_sandbox_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p41_t6_real_local_trusted_adapter_readiness_validation.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p41_t5_trusted_local_adapter_run_evidence_handoff.md` |
@@ -679,3 +681,5 @@
 | 2026-06-19 | P41-T6 | Archived REVIEW_p41_t6_real_local_trusted_adapter_readiness_validation report |
 | 2026-06-19 | P42-T1 | Archived Trusted Local Adapter Runtime Sandbox Plan (PASS) |
 | 2026-06-19 | P42-T1 | Archived REVIEW_p42_t1_trusted_local_adapter_runtime_sandbox_plan report |
+| 2026-06-19 | P42-T2 | Archived Trusted Local Adapter Sandbox Contract Fixture (PASS) |
+| 2026-06-19 | P42-T2 | Archived REVIEW_p42_t2_trusted_local_adapter_sandbox_contract_fixture report |

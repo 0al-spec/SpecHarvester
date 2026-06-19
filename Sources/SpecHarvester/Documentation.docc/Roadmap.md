@@ -612,6 +612,11 @@ process can run: explicit operator approval, adapter package identity, process
 isolation, filesystem allowlists, sealed environment, dependency isolation,
 network-deny-by-default policy, output digests, audit records, and review-only
 authority. It keeps `adapterExecution: not_run`.
+P42-T2 adds <doc:TrustedLocalAdapterSandboxContractFixture> and the
+machine-readable `SpecHarvesterTrustedLocalAdapterSandboxContract` fixture for
+adapter package identity, sandbox policy identity, operator approval
+requirements, filesystem/environment/network/dependency policy, output
+verification, audit requirements, and no-execution/non-authority statements.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

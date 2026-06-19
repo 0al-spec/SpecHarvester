@@ -201,4 +201,6 @@ without weakening their no-runtime and non-authority guarantees.
 Phase 42 continues with
 [`TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md`](TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md),
 which defines the sandbox contract required before any future adapter process
-can run.
+can run. P42-T2 adds
+[`SpecHarvesterTrustedLocalAdapterSandboxContract`](TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md)
+as the machine-readable sandbox contract fixture for that boundary.

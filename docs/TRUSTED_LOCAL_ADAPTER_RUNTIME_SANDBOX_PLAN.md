@@ -186,12 +186,12 @@ not:
 - treat adapter output, runner reports, sandbox plans, or AI output as registry
   truth.
 
-## First Follow-Up
+## Machine-Readable Contract Fixture
 
-The next task should add a machine-readable
-`SpecHarvesterTrustedLocalAdapterSandboxContract` fixture. That fixture should
-record the sandbox layers above before any task implements real adapter process
-execution.
+P42-T2 adds
+[`SpecHarvesterTrustedLocalAdapterSandboxContract`](TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md)
+as the first machine-readable sandbox contract fixture. It records the sandbox
+layers above before any task implements real adapter process execution.
 
 The implementation sequence should remain:
 
