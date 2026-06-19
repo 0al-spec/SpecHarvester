@@ -46,3 +46,11 @@ third-party plugin code, execute plugins, run plugin code, clone or fetch
 repositories, install dependencies, execute harvested code, invoke package
 managers, run AI, accept packages, accept relations, publish registry metadata,
 remove `preview_only`, or treat plugin decisions as registry truth.
+
+## Relationship to Real Runs
+
+P38-T6 records <doc:RepositoryPluginRealRunFastMCP> as a real repository run
+through the repository plugin evidence path, compared with current Phase 37
+repository profile behavior. Later runtime work may use the same fixture
+matrix as conformance input, but it must keep plugin execution and registry
+authority separate from these static examples.

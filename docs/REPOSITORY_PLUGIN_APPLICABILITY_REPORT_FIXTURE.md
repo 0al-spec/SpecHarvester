@@ -110,4 +110,6 @@ as registry truth.
 - `P38-T5` adds
   [`REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md)
   as static cross-ecosystem applicability examples.
-- `P38-T6` should run one real repository through the plugin evidence path.
+- `P38-T6` records
+  [`REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md`](REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md)
+  as a real FastMCP plugin evidence run through the same sidecar path.

@@ -1541,7 +1541,7 @@ Acceptance:
 - [x] `P38-T5` Add cross-ecosystem plugin subsystem fixtures that cover
   manifest-backed single packages, workspaces, documentation-heavy
   repositories, nested package roots, and ambiguous mixed layouts.
-- [ ] `P38-T6` Run one real repository through the plugin subsystem evidence
+- [x] `P38-T6` Run one real repository through the plugin subsystem evidence
   path and compare it with the current Phase 37 profile selection behavior.
 
 Motivation:

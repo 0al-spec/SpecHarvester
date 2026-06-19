@@ -86,4 +86,5 @@ registry truth.
   candidate batch as sidecar producer evidence.
 - `P38-T5`: add <doc:RepositoryPluginCrossEcosystemFixtures> as static
   cross-ecosystem applicability examples.
-- `P38-T6`: run one real repository through the plugin evidence path.
+- `P38-T6`: record <doc:RepositoryPluginRealRunFastMCP> as a real FastMCP
+  plugin evidence run through the same sidecar path.

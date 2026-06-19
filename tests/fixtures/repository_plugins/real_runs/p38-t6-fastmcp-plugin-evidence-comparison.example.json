@@ -1,0 +1,469 @@
+{
+  "apiVersion": "spec-harvester.repository-plugin-real-run/v0",
+  "kind": "SpecHarvesterRepositoryPluginRealRunComparison",
+  "schemaVersion": 1,
+  "task": "P38-T6",
+  "source": {
+    "repositoryId": "fastmcp",
+    "repositoryUrl": "https://github.com/jlowin/fastmcp",
+    "localCheckout": "/Users/egor/Development/GitHub/fastmcp",
+    "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2"
+  },
+  "run": {
+    "runRoot": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z",
+    "aiMode": "disabled",
+    "networkAccess": "not_required",
+    "repositoryAcquisition": "operator_managed_local_checkout"
+  },
+  "previousPhase37Baseline": {
+    "fixture": "tests/fixtures/repository_profile_real_runs/p37-t7-fastmcp-auto-selection-comparison.example.json",
+    "task": "P37-T7",
+    "repositoryProfileDetection": {
+      "mode": "auto",
+      "decision": "fallback",
+      "selectedProfileId": null,
+      "fallbackProfileId": "generic.repository.v0",
+      "confidence": "low",
+      "reasonCodes": [
+        "insufficient_high_confidence_profile_evidence"
+      ]
+    },
+    "followUp": "P37-T8"
+  },
+  "profileEvidenceRun": {
+    "repositoryId": "fastmcp.plugin-auto-root",
+    "target": {
+      "kind": "repository",
+      "path": "."
+    },
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch $RUN_ROOT/auto-inputs --out $RUN_ROOT/auto-output --skip-ai --repository-profile-selection auto",
+    "inputManifest": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/auto-inputs/repositories.yml",
+      "digest": "sha256:413726cb33e66b0426cbfc99503f21a46e1c711649e9a914fb120b0c6accd8d1"
+    },
+    "batchReport": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/auto-output/autonomous-candidate-batch-report.json",
+      "digest": "sha256:e6e2722c907b1468e005be43b7b8cb98c7bcac1e365d7fb81f2dd28768eff043",
+      "status": "passed"
+    },
+    "repositoryProfileDetection": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/auto-output/reports/repository-profile-detections/fastmcp.plugin-auto-root/repository-profile-detection.json",
+      "digest": "sha256:83987012cb0beb93d72bedbe9dad03806eff30fcb9eb29369370b243d9c644b2",
+      "mode": "auto",
+      "decision": "selected",
+      "selectedProfileId": "generic.single_package.v0",
+      "fallbackProfileId": "generic.repository.v0",
+      "confidence": "high",
+      "reasonCodes": [
+        "root_manifest_present"
+      ],
+      "diagnosticCodes": [
+        "repository_profile_selected"
+      ],
+      "candidateProfiles": [
+        {
+          "profileId": "generic.package_set.v0",
+          "confidence": "low",
+          "score": 0.35,
+          "reasonCodes": [
+            "missing_package_set_evidence"
+          ]
+        },
+        {
+          "profileId": "generic.single_package.v0",
+          "confidence": "high",
+          "score": 0.86,
+          "reasonCodes": [
+            "root_manifest_present"
+          ]
+        },
+        {
+          "profileId": "generic.documentation_site.v0",
+          "confidence": "low",
+          "score": 0.18,
+          "reasonCodes": [
+            "missing_documentation_site_evidence"
+          ]
+        }
+      ],
+      "advisoryHints": []
+    },
+    "harvest": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/auto-output/collected/fastmcp.plugin-auto-root/harvest.json",
+      "digest": "sha256:3b7949d90d239a9052cd4779e106ef072c9370b9a52ba9123bc972cabea8d232",
+      "summary": {
+        "targetKind": "repository",
+        "fileCount": 22,
+        "packageManifestCount": 1,
+        "licenseFileCount": 1,
+        "skippedFileCount": 0
+      },
+      "packageManifestPaths": [
+        "pyproject.toml"
+      ]
+    },
+    "workspaceInventory": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/auto-output/collected/fastmcp.plugin-auto-root/workspace-inventory.json",
+      "digest": "sha256:ec8facc32246b5f329fe59450e1c00374faf44faf7c0ccfdb454e35f82fc9ae5",
+      "summary": {
+        "packageCount": 0,
+        "packageManifestCount": 0,
+        "workspaceManifestCount": 0,
+        "diagnosticCount": 0
+      }
+    },
+    "publicInterface": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/auto-output/collected/fastmcp.plugin-auto-root/public-interface-index.json",
+      "digest": "sha256:e76236c67e0825c2630e4233766b71ff904544d581eedb4560645acd261c9c55",
+      "summary": {
+        "status": "complete",
+        "packageCount": 1,
+        "entrypointCount": 772,
+        "symbolCount": 9199,
+        "diagnosticCount": 0
+      }
+    },
+    "authorReadyDraft": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/auto-output/package-sets/fastmcp.plugin-auto-root/fastmcp.plugin_auto_root/author-ready-draft-quality-report.json",
+      "digest": "sha256:d8e60253088917b580142b4f9c43618301eab79317cccd07c1b838180f33e1c8",
+      "status": "author_ready_draft",
+      "hardGateStatus": "passed",
+      "actionItemCount": 3
+    },
+    "preflight": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/auto-output/package-sets/fastmcp.plugin-auto-root/bundle-set-preflight.json",
+      "digest": "sha256:0bac655f4c2f537853121995e91dff5237e46eb592f4a5125e06656579febde5",
+      "status": "passed",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "errorCount": 0,
+      "warningCount": 0
+    }
+  },
+  "pluginApplicabilityReport": {
+    "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/repository-plugin-applicability-report.json",
+    "digest": "sha256:9a60999fd552fe152af2b9253ddc9d19e2a62e9ddb271ffb8d9de75dc0b27bd9",
+    "apiVersion": "spec-harvester.repository-plugin-applicability/v0",
+    "kind": "SpecHarvesterRepositoryPluginApplicabilityReport",
+    "schemaVersion": 1,
+    "authority": "producer_plugin_applicability_only",
+    "mode": "auto",
+    "registry": {
+      "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+      "kind": "SpecHarvesterRepositoryPluginRegistry",
+      "authority": "producer_plugin_registry_only"
+    },
+    "repository": {
+      "id": "fastmcp.plugin-auto-root",
+      "sourceManifestPath": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/auto-inputs/repositories.yml",
+      "sourceManifestEntryId": "fastmcp.plugin-auto-root",
+      "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2"
+    },
+    "staticEvidence": {
+      "inputAuthority": "static_local_evidence_only",
+      "paths": [
+        "pyproject.toml",
+        "README.md",
+        "LICENSE",
+        "harvest.json",
+        "workspace-inventory.json",
+        "repository-profile-detection.json",
+        "public-interface-index.json"
+      ],
+      "evidenceKinds": [
+        "source_manifest",
+        "harvest_snapshot",
+        "workspace_inventory",
+        "repository_profile_detection",
+        "operator_label",
+        "manifest_summary",
+        "repository_parsing_profile_decision"
+      ],
+      "signals": [
+        "root_manifest",
+        "single_package_profile_selected",
+        "harvested_manifest_evidence",
+        "public_interface_index_present",
+        "workspace_inventory_empty"
+      ]
+    },
+    "summary": {
+      "selectedCount": 3,
+      "rejectedCount": 1,
+      "fallbackCount": 0,
+      "blockedCount": 1,
+      "diagnosticCount": 5
+    },
+    "selectedPlugins": [
+      {
+        "pluginId": "spec_harvester.generic.parser_profile.v0",
+        "role": "parser_profile",
+        "decision": "selected",
+        "decisionAuthority": "producer_plugin_applicability_only",
+        "pluginOutputAuthority": "producer_side_evidence_only",
+        "confidence": "medium",
+        "reasonCodes": [
+          "python_public_interface_index_present",
+          "operator_local_checkout_label"
+        ],
+        "evidencePaths": [
+          "README.md",
+          "pyproject.toml",
+          "public-interface-index.json"
+        ],
+        "outputArtifactKinds": [
+          "repository_parsing_profile_decision"
+        ]
+      },
+      {
+        "pluginId": "spec_harvester.generic.repository_profile.v0",
+        "role": "repository_profile",
+        "decision": "selected",
+        "decisionAuthority": "producer_plugin_applicability_only",
+        "pluginOutputAuthority": "producer_side_evidence_only",
+        "confidence": "high",
+        "reasonCodes": [
+          "root_manifest_present",
+          "single_package_profile_selected"
+        ],
+        "evidencePaths": [
+          "pyproject.toml",
+          "repository-profile-detection.json"
+        ],
+        "outputArtifactKinds": [
+          "repository_profile_detection"
+        ]
+      },
+      {
+        "pluginId": "spec_harvester.generic.manifest_summary.v0",
+        "role": "evidence_producer",
+        "decision": "selected",
+        "decisionAuthority": "producer_plugin_applicability_only",
+        "pluginOutputAuthority": "producer_side_evidence_only",
+        "confidence": "high",
+        "reasonCodes": [
+          "harvested_root_manifest_present",
+          "workspace_inventory_checked"
+        ],
+        "evidencePaths": [
+          "pyproject.toml",
+          "harvest.json",
+          "workspace-inventory.json"
+        ],
+        "outputArtifactKinds": [
+          "manifest_summary"
+        ]
+      }
+    ],
+    "rejectedPlugins": [
+      {
+        "pluginId": "spec_harvester.generic.package_topology.v0",
+        "role": "topology_helper",
+        "decision": "rejected",
+        "decisionAuthority": "producer_plugin_applicability_only",
+        "pluginOutputAuthority": "producer_side_evidence_only",
+        "confidence": "low",
+        "reasonCodes": [
+          "single_package_profile_selected",
+          "no_workspace_member_manifests"
+        ],
+        "evidencePaths": [
+          "repository-profile-detection.json",
+          "workspace-inventory.json"
+        ],
+        "outputArtifactKinds": [
+          "package_topology_hint"
+        ]
+      }
+    ],
+    "fallbackPlugins": [],
+    "blockedPlugins": [
+      {
+        "pluginId": "spec_harvester.generic.review_surface.v0",
+        "role": "review_surface",
+        "decision": "blocked",
+        "decisionAuthority": "producer_plugin_applicability_only",
+        "pluginOutputAuthority": "producer_side_evidence_only",
+        "confidence": "blocked",
+        "reasonCodes": [
+          "requires_package_topology_hint",
+          "review_panel_not_generated"
+        ],
+        "evidencePaths": [
+          "repository-profile-detection.json",
+          "public-interface-index.json"
+        ],
+        "outputArtifactKinds": [
+          "review_panel_data"
+        ]
+      }
+    ],
+    "diagnostics": [
+      {
+        "severity": "info",
+        "code": "plugin_selected",
+        "pluginId": "spec_harvester.generic.repository_profile.v0",
+        "message": "Repository profile plugin selected from root manifest and profile detection evidence.",
+        "evidencePaths": [
+          "pyproject.toml",
+          "repository-profile-detection.json"
+        ]
+      },
+      {
+        "severity": "info",
+        "code": "plugin_selected",
+        "pluginId": "spec_harvester.generic.parser_profile.v0",
+        "message": "Parser profile plugin is applicable as static public-interface review evidence.",
+        "evidencePaths": [
+          "README.md",
+          "public-interface-index.json"
+        ]
+      },
+      {
+        "severity": "info",
+        "code": "plugin_selected",
+        "pluginId": "spec_harvester.generic.manifest_summary.v0",
+        "message": "Manifest summary plugin is applicable from harvested root manifest evidence.",
+        "evidencePaths": [
+          "pyproject.toml",
+          "harvest.json"
+        ]
+      },
+      {
+        "severity": "info",
+        "code": "plugin_rejected_low_confidence",
+        "pluginId": "spec_harvester.generic.package_topology.v0",
+        "message": "Package topology helper rejected because the real run selected a single-package profile.",
+        "evidencePaths": [
+          "workspace-inventory.json",
+          "repository-profile-detection.json"
+        ]
+      },
+      {
+        "severity": "warning",
+        "code": "plugin_blocked_required_evidence_missing",
+        "pluginId": "spec_harvester.generic.review_surface.v0",
+        "message": "Review surface plugin blocked until package topology hint evidence exists.",
+        "evidencePaths": [
+          "repository-profile-detection.json"
+        ]
+      }
+    ],
+    "nonAuthorityStatements": [
+      "does_not_load_third_party_plugin_code",
+      "does_not_execute_plugins",
+      "does_not_run_plugin_code",
+      "does_not_clone_or_fetch_repositories",
+      "does_not_install_dependencies",
+      "does_not_execute_harvested_code",
+      "does_not_invoke_package_managers",
+      "does_not_run_ai",
+      "does_not_change_parser_profile_behavior",
+      "does_not_change_repository_profile_scoring",
+      "does_not_accept_packages",
+      "does_not_accept_relations",
+      "does_not_publish_registry_metadata",
+      "does_not_seed_baselines",
+      "does_not_remove_preview_only",
+      "does_not_treat_plugin_decisions_as_registry_truth",
+      "does_not_treat_ai_output_as_registry_truth"
+    ]
+  },
+  "sidecarBatchRun": {
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch $RUN_ROOT/sidecar-inputs --out $RUN_ROOT/sidecar-output --skip-ai --repository-profile-selection auto --repository-plugin-applicability $RUN_ROOT/repository-plugin-applicability-report.json",
+    "inputManifest": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/sidecar-inputs/repositories.yml",
+      "digest": "sha256:413726cb33e66b0426cbfc99503f21a46e1c711649e9a914fb120b0c6accd8d1"
+    },
+    "batchReport": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/sidecar-output/autonomous-candidate-batch-report.json",
+      "digest": "sha256:002244e90f7f24b4fcce2f25706560072cfc71e267988384581a1cc3cbb5b547",
+      "status": "passed"
+    },
+    "copiedApplicabilityReport": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/sidecar-output/reports/repository-plugin-applicability/repository-plugin-applicability-report.json",
+      "digest": "sha256:9a60999fd552fe152af2b9253ddc9d19e2a62e9ddb271ffb8d9de75dc0b27bd9"
+    },
+    "repositoryPluginApplicability": {
+      "status": "recorded",
+      "apiVersion": "spec-harvester.repository-plugin-applicability/v0",
+      "kind": "SpecHarvesterRepositoryPluginApplicabilityReport",
+      "schemaVersion": 1,
+      "authority": "producer_plugin_applicability_only",
+      "mode": "auto",
+      "summary": {
+        "selectedCount": 3,
+        "rejectedCount": 1,
+        "fallbackCount": 0,
+        "blockedCount": 1,
+        "diagnosticCount": 5
+      },
+      "diagnosticCodes": [
+        "plugin_blocked_required_evidence_missing",
+        "plugin_rejected_low_confidence",
+        "plugin_selected"
+      ],
+      "appliedToDrafting": false,
+      "registryAuthority": false
+    },
+    "repositoryProfileDetection": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/sidecar-output/reports/repository-profile-detections/fastmcp.plugin-auto-root/repository-profile-detection.json",
+      "digest": "sha256:83987012cb0beb93d72bedbe9dad03806eff30fcb9eb29369370b243d9c644b2",
+      "mode": "auto",
+      "decision": "selected",
+      "selectedProfileId": "generic.single_package.v0",
+      "confidence": "high",
+      "reasonCodes": [
+        "root_manifest_present"
+      ]
+    },
+    "preflight": {
+      "path": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z/sidecar-output/package-sets/fastmcp.plugin-auto-root/bundle-set-preflight.json",
+      "digest": "sha256:376d7bb45bdcb06a5ab108230d6326c8f6ffa593ce50f4a8cb0f5d48d5253893",
+      "status": "passed",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "errorCount": 0,
+      "warningCount": 0
+    }
+  },
+  "comparison": {
+    "profileSelectionImprovedSinceP37T7": true,
+    "currentProfileDecision": "selected",
+    "currentSelectedProfileId": "generic.single_package.v0",
+    "previousProfileDecision": "fallback",
+    "previousFallbackProfileId": "generic.repository.v0",
+    "pluginApplicabilitySidecarRecorded": true,
+    "pluginApplicabilityAppliedToDrafting": false,
+    "pluginApplicabilityRegistryAuthority": false,
+    "pluginEvidenceChangesProfileScoring": false,
+    "pluginEvidenceChangesParserBehavior": false,
+    "publicInterfaceEntrypointCount": 772,
+    "publicInterfaceSymbolCount": 9199,
+    "candidatePreflightStatus": "passed",
+    "authorReadyStatus": "author_ready_draft",
+    "verdict": "real_plugin_evidence_path_validated",
+    "recommendedFollowUp": "Phase 38 implementation can later add executable plugin adapters only behind the same static evidence and authority boundaries."
+  },
+  "trustBoundary": [
+    "This comparison is producer-side evidence only.",
+    "It is not SpecPM registry acceptance.",
+    "It is not upstream FastMCP endorsement.",
+    "It does not load third-party plugin code.",
+    "It does not execute plugins.",
+    "It does not run plugin code.",
+    "It does not clone or fetch repositories.",
+    "It does not install dependencies.",
+    "It does not execute harvested code.",
+    "It does not invoke package managers.",
+    "It does not run AI.",
+    "It does not change parser profile behavior.",
+    "It does not change repository profile scoring.",
+    "It does not accept packages.",
+    "It does not accept relations.",
+    "It does not publish registry metadata.",
+    "It does not remove preview_only.",
+    "It does not treat plugin decisions as registry truth.",
+    "It does not treat AI output as registry truth."
+  ]
+}

@@ -47,6 +47,7 @@ The canonical source files remain in the repository:
 - `docs/REPOSITORY_PLUGIN_REGISTRY_FIXTURE.md`
 - `docs/REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md`
 - `docs/REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md`
+- `docs/REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
 - `docs/BATCH_VALIDATION_REPORTS.md`
@@ -168,6 +169,7 @@ the host.
 - <doc:RepositoryPluginRegistryFixture>
 - <doc:RepositoryPluginApplicabilityReportFixture>
 - <doc:RepositoryPluginCrossEcosystemFixtures>
+- <doc:RepositoryPluginRealRunFastMCP>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
 - <doc:ProceduralStyleReport>

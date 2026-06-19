@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 38 Complete" in next_text:
+        assert_phase_38_complete(next_text)
+        return
+
     if "# Next Task: P38-T6 Real Repository Plugin Evidence Run" in next_text:
         assert_p38_t5_last_archived(next_text)
         assert_p38_t5_recent(next_text)
@@ -3536,7 +3540,7 @@ def assert_p38_t5_recent(next_text: str) -> None:
 def assert_phase_38_t6_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P38-T6 Real Repository Plugin Evidence Run" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
     assert "`feature/P38-T6-real-repository-plugin-evidence-run`" in next_text
     assert "Phase 38. Repository Plugin Subsystem" in next_text
     assert "one real repository through the repository plugin evidence path" in normalized
@@ -3556,6 +3560,44 @@ def assert_phase_38_t6_planned(next_text: str) -> None:
     assert "remove `preview_only`" in normalized
     assert "treat plugin decisions as registry truth" in normalized
     assert "Record the result as a static review artifact or fixture" in next_text
+
+
+def assert_phase_38_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 38 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "Phase 38. Repository Plugin Subsystem" in next_text
+    assert "**Last Archived:** P38-T6 Real Repository Plugin Evidence Run" in next_text
+    for required in (
+        "`P38-T1` documented the language- and framework-agnostic "
+        "repository plugin subsystem contract",
+        "`P38-T2` added the machine-readable `SpecHarvesterRepositoryPluginRegistry` fixture",
+        "`P38-T3` added the machine-readable "
+        "`SpecHarvesterRepositoryPluginApplicabilityReport` fixture",
+        "`P38-T4` connected applicability reports to `autonomous-candidate-batch`",
+        "`P38-T5` added cross-ecosystem static applicability fixtures",
+        "`P38-T6` recorded a real FastMCP plugin evidence run",
+    ):
+        assert required in normalized
+    assert "generic.single_package.v0" in next_text
+    assert "producer-side evidence contract" in normalized
+    assert "repositoryPluginApplicability" in next_text
+    assert "appliedToDrafting: false" in next_text
+    assert "registryAuthority: false" in next_text
+    assert "No Phase 38 task remains selected" in next_text
+    assert "next phase should be defined explicitly" in normalized
+    assert "does not load third-party plugin code" in normalized
+    assert "execute plugins" in normalized
+    assert "clone or fetch repositories" in normalized
+    assert "install dependencies" in normalized
+    assert "execute harvested code" in normalized
+    assert "invoke package managers" in normalized
+    assert "run AI" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -13729,6 +13771,259 @@ def test_repository_plugin_cross_ecosystem_fixtures_are_documented() -> None:
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P38-T5` Add cross-ecosystem plugin subsystem fixtures" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_real_run_fastmcp_fixture_and_docs() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "real_runs"
+        / "p38-t6-fastmcp-plugin-evidence-comparison.example.json"
+    )
+    registry_path = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "generic-registry.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginRealRunFastMCP.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    subsystem_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    subsystem_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    applicability_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md"
+    applicability_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginApplicabilityReportFixture.md"
+    )
+    cross_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md"
+    cross_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginCrossEcosystemFixtures.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry_plugins = {plugin["pluginId"]: plugin for plugin in registry["plugins"]}
+
+    assert payload["apiVersion"] == "spec-harvester.repository-plugin-real-run/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryPluginRealRunComparison"
+    assert payload["schemaVersion"] == 1
+    assert payload["task"] == "P38-T6"
+    assert payload["source"] == {
+        "repositoryId": "fastmcp",
+        "repositoryUrl": "https://github.com/jlowin/fastmcp",
+        "localCheckout": "/Users/egor/Development/GitHub/fastmcp",
+        "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+    }
+    assert payload["run"] == {
+        "runRoot": "/tmp/specharvester-p38-t6-fastmcp-20260619T005454Z",
+        "aiMode": "disabled",
+        "networkAccess": "not_required",
+        "repositoryAcquisition": "operator_managed_local_checkout",
+    }
+
+    baseline = payload["previousPhase37Baseline"]
+    assert baseline["fixture"] == (
+        "tests/fixtures/repository_profile_real_runs/"
+        "p37-t7-fastmcp-auto-selection-comparison.example.json"
+    )
+    assert baseline["repositoryProfileDetection"]["decision"] == "fallback"
+    assert baseline["repositoryProfileDetection"]["fallbackProfileId"] == "generic.repository.v0"
+    assert baseline["followUp"] == "P37-T8"
+
+    profile_run = payload["profileEvidenceRun"]
+    assert profile_run["repositoryId"] == "fastmcp.plugin-auto-root"
+    assert profile_run["target"] == {"kind": "repository", "path": "."}
+    assert "--repository-profile-selection auto" in profile_run["command"]
+    detection = profile_run["repositoryProfileDetection"]
+    assert detection["decision"] == "selected"
+    assert detection["selectedProfileId"] == "generic.single_package.v0"
+    assert detection["fallbackProfileId"] == "generic.repository.v0"
+    assert detection["confidence"] == "high"
+    assert detection["reasonCodes"] == ["root_manifest_present"]
+    assert profile_run["harvest"]["summary"]["packageManifestCount"] == 1
+    assert profile_run["harvest"]["packageManifestPaths"] == ["pyproject.toml"]
+    assert profile_run["workspaceInventory"]["summary"]["packageManifestCount"] == 0
+    assert profile_run["publicInterface"]["summary"]["entrypointCount"] == 772
+    assert profile_run["publicInterface"]["summary"]["symbolCount"] == 9199
+    assert profile_run["preflight"]["status"] == "passed"
+    assert profile_run["preflight"]["errorCount"] == 0
+    assert profile_run["authorReadyDraft"]["status"] == "author_ready_draft"
+
+    applicability = payload["pluginApplicabilityReport"]
+    assert applicability["apiVersion"] == "spec-harvester.repository-plugin-applicability/v0"
+    assert applicability["kind"] == "SpecHarvesterRepositoryPluginApplicabilityReport"
+    assert applicability["authority"] == "producer_plugin_applicability_only"
+    assert applicability["summary"] == {
+        "selectedCount": 3,
+        "rejectedCount": 1,
+        "fallbackCount": 0,
+        "blockedCount": 1,
+        "diagnosticCount": 5,
+    }
+
+    decision_sets = {
+        "selected": applicability["selectedPlugins"],
+        "rejected": applicability["rejectedPlugins"],
+        "fallback": applicability["fallbackPlugins"],
+        "blocked": applicability["blockedPlugins"],
+    }
+    assert {decision["pluginId"] for decision in decision_sets["selected"]} == {
+        "spec_harvester.generic.parser_profile.v0",
+        "spec_harvester.generic.repository_profile.v0",
+        "spec_harvester.generic.manifest_summary.v0",
+    }
+    assert {decision["pluginId"] for decision in decision_sets["rejected"]} == {
+        "spec_harvester.generic.package_topology.v0"
+    }
+    assert decision_sets["fallback"] == []
+    assert {decision["pluginId"] for decision in decision_sets["blocked"]} == {
+        "spec_harvester.generic.review_surface.v0"
+    }
+
+    static_paths = set(applicability["staticEvidence"]["paths"])
+    static_evidence_kinds = set(applicability["staticEvidence"]["evidenceKinds"])
+    for decision, records in decision_sets.items():
+        for record in records:
+            registry_plugin = registry_plugins[record["pluginId"]]
+            assert record["role"] == registry_plugin["role"]
+            assert record["decision"] == decision
+            assert record["decisionAuthority"] == applicability["authority"]
+            assert record["pluginOutputAuthority"] == registry_plugin["authority"]
+            assert set(record["evidencePaths"]).issubset(static_paths)
+            assert set(record["outputArtifactKinds"]).issubset(
+                set(registry_plugin["outputArtifactKinds"])
+            )
+            if decision == "selected":
+                assert set(registry_plugin["inputEvidenceKinds"]).issubset(static_evidence_kinds)
+
+    diagnostics = applicability["diagnostics"]
+    assert len(diagnostics) == applicability["summary"]["diagnosticCount"]
+    assert {diagnostic["code"] for diagnostic in diagnostics} == {
+        "plugin_selected",
+        "plugin_rejected_low_confidence",
+        "plugin_blocked_required_evidence_missing",
+    }
+    for diagnostic in diagnostics:
+        assert diagnostic["pluginId"] in registry_plugins
+        assert set(diagnostic["evidencePaths"]).issubset(static_paths)
+
+    sidecar_run = payload["sidecarBatchRun"]
+    assert "--repository-plugin-applicability" in sidecar_run["command"]
+    assert sidecar_run["batchReport"]["status"] == "passed"
+    sidecar = sidecar_run["repositoryPluginApplicability"]
+    assert sidecar["status"] == "recorded"
+    assert sidecar["summary"] == applicability["summary"]
+    assert sidecar["appliedToDrafting"] is False
+    assert sidecar["registryAuthority"] is False
+    assert sidecar_run["copiedApplicabilityReport"]["digest"] == applicability["digest"]
+    assert sidecar_run["preflight"]["status"] == "passed"
+
+    comparison = payload["comparison"]
+    assert comparison["profileSelectionImprovedSinceP37T7"] is True
+    assert comparison["currentProfileDecision"] == "selected"
+    assert comparison["currentSelectedProfileId"] == "generic.single_package.v0"
+    assert comparison["previousProfileDecision"] == "fallback"
+    assert comparison["pluginApplicabilitySidecarRecorded"] is True
+    assert comparison["pluginApplicabilityAppliedToDrafting"] is False
+    assert comparison["pluginApplicabilityRegistryAuthority"] is False
+    assert comparison["pluginEvidenceChangesProfileScoring"] is False
+    assert comparison["pluginEvidenceChangesParserBehavior"] is False
+    assert comparison["verdict"] == "real_plugin_evidence_path_validated"
+
+    for digest in collect_digest_values(payload):
+        assert digest.startswith("sha256:")
+        assert len(digest) == len("sha256:") + 64
+
+    for statement in (
+        "This comparison is producer-side evidence only.",
+        "It does not load third-party plugin code.",
+        "It does not execute plugins.",
+        "It does not clone or fetch repositories.",
+        "It does not install dependencies.",
+        "It does not execute harvested code.",
+        "It does not invoke package managers.",
+        "It does not run AI.",
+        "It does not change parser profile behavior.",
+        "It does not change repository profile scoring.",
+        "It does not accept packages.",
+        "It does not accept relations.",
+        "It does not publish registry metadata.",
+        "It does not remove preview_only.",
+        "It does not treat plugin decisions as registry truth.",
+    ):
+        assert statement in payload["trustBoundary"]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Real Run: FastMCP",
+            "SpecHarvesterRepositoryPluginRealRunComparison",
+            "p38-t6-fastmcp-plugin-evidence-comparison.example.json",
+            "3b8538e2422a1c43fdb69661c610de7985b785f2",
+            "--repository-profile-selection auto",
+            "--repository-plugin-applicability",
+            "generic.single_package.v0",
+            "repositoryPluginApplicability",
+            "appliedToDrafting: false",
+            "registryAuthority: false",
+            "772",
+            "9199",
+            "real_plugin_evidence_path_validated",
+            "producer-side evidence only",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+
+    for path, required in (
+        (docs_index, "REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md"),
+        (docc_root, "docs/REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md"),
+        (docc_root, "<doc:RepositoryPluginRealRunFastMCP>"),
+        (capabilities, "REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md"),
+        (capabilities_docc, "RepositoryPluginRealRunFastMCP"),
+        (roadmap, "REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md"),
+        (roadmap_docc, "RepositoryPluginRealRunFastMCP"),
+        (subsystem_doc, "REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md"),
+        (subsystem_docc, "RepositoryPluginRealRunFastMCP"),
+        (applicability_doc, "REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md"),
+        (applicability_docc, "RepositoryPluginRealRunFastMCP"),
+        (cross_doc, "REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md"),
+        (cross_docc, "RepositoryPluginRealRunFastMCP"),
+    ):
+        assert required in path.read_text(encoding="utf-8")
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P38-T6` Run one real repository through the plugin subsystem evidence" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

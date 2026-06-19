@@ -169,6 +169,7 @@
 | P38-T3 | [P38-T3_Repository_Plugin_Applicability_Report_Fixture/](P38-T3_Repository_Plugin_Applicability_Report_Fixture/) | 2026-06-19 | PASS |
 | P38-T4 | [P38-T4_Repository_Plugin_Batch_Integration/](P38-T4_Repository_Plugin_Batch_Integration/) | 2026-06-19 | PASS |
 | P38-T5 | [P38-T5_Repository_Plugin_Cross-Ecosystem_Fixtures/](P38-T5_Repository_Plugin_Cross-Ecosystem_Fixtures/) | 2026-06-19 | PASS |
+| P38-T6 | [P38-T6_Real_Repository_Plugin_Evidence_Run/](P38-T6_Real_Repository_Plugin_Evidence_Run/) | 2026-06-19 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -181,6 +182,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t6_real_repository_plugin_evidence_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t5_repository_plugin_cross_ecosystem_fixtures.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t4_repository_plugin_batch_integration.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t3_repository_plugin_applicability_report_fixture.md` |
@@ -325,6 +327,8 @@
 | 2026-06-19 | P38-T4 | Archived REVIEW_p38_t4_repository_plugin_batch_integration report |
 | 2026-06-19 | P38-T5 | Archived Repository Plugin Cross-Ecosystem Fixtures (PASS) |
 | 2026-06-19 | P38-T5 | Archived REVIEW_p38_t5_repository_plugin_cross_ecosystem_fixtures report |
+| 2026-06-19 | P38-T6 | Archived Real Repository Plugin Evidence Run (PASS) |
+| 2026-06-19 | P38-T6 | Archived REVIEW_p38_t6_real_repository_plugin_evidence_run report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |

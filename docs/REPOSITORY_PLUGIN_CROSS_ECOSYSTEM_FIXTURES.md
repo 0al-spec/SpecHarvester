@@ -78,9 +78,10 @@ remove `preview_only`, or treat plugin decisions as registry truth.
 
 ## Relationship to Later Tasks
 
-- `P38-T6` should run one real repository through the repository plugin
-  evidence path and compare the result with the Phase 37 repository profile
-  behavior.
+- `P38-T6` records
+  [`REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md`](REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md)
+  as a real repository run through the repository plugin evidence path,
+  compared with the current Phase 37 repository profile behavior.
 - Later runtime work may use the same fixture matrix as conformance input, but
   it must keep plugin execution and registry authority separate from these
   static examples.
