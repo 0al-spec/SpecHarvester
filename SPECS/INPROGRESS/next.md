@@ -1,6 +1,6 @@
 # Next Task: P41-T4 Disabled Trusted Local Adapter Runner Skeleton
 
-**Status:** Planned
+**Status:** In Progress
 **Branch:** `feature/P41-T4-disabled-trusted-local-adapter-runner-skeleton`
 **Phase:** Phase 41. Trusted Local Adapter Runtime Readiness
 **Last Archived:** P41-T3 Trusted Local Adapter Run Preflight Report Fixture
