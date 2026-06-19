@@ -1,6 +1,6 @@
 # Next Task: P40-T4 Adapter Execution Policy
 
-**Status:** Planned
+**Status:** In Progress
 **Branch:** `feature/P40-T4-adapter-execution-policy`
 **Phase:** Phase 40. Repository Plugin Adapter Contract
 **Last Archived:** P40-T3 Repository Plugin Adapter Preflight Report Fixture
@@ -121,4 +121,3 @@ Acceptance:
 - Dependency installation, package manager invocation, network discovery, and
   harvested code execution remain blocked by default.
 - Adapter output remains producer-side review evidence only.
-
