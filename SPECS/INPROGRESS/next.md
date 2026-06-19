@@ -1,56 +1,51 @@
-# Next Task: P40-T1 Repository Plugin Adapter Contract
+# Next Task: P40-T2 Repository Plugin Adapter Manifest Fixture
 
-**Status:** In Progress
-**Branch:** `feature/P40-T1-repository-plugin-adapter-contract`
+**Status:** Planned
+**Branch:** `feature/P40-T2-repository-plugin-adapter-manifest-fixture`
 **Phase:** Phase 40. Repository Plugin Adapter Contract
-**Last Archived:** P39-T6 Real Multi-Repository Static Evaluator Validation
+**Last Archived:** P40-T1 Repository Plugin Adapter Contract
 
 ## Recently Archived
 
-- `P39-T6` recorded real multi-repository static evaluator validation for
-  FastMCP, FastAPI, and xyflow local checkouts.
-- The durable fixture is
-  `tests/fixtures/repository_plugins/real_runs/p39-t6-multi-repository-static-evaluator-validation.example.json`.
-- All three local checkouts were available and clean:
-  - `fastmcp` -> `generic.single_package.v0`;
-  - `fastapi` -> `generic.single_package.v0`;
-  - `xyflow` -> `generic.package_set.v0`.
-- Each case exercised both `repository-plugin-applicability-detect` and
-  `autonomous-candidate-batch --repository-plugin-registry
-  --repository-plugin-static-evidence-envelope`.
-- Each generated sidecar recorded `sourceMode: auto_static_evaluator`,
-  `appliedToDrafting: false`, and `registryAuthority: false`.
-- The validation did not clone or fetch repositories, install dependencies,
-  invoke package managers, execute harvested code, invoke AI, change
-  parser/profile behavior, accept packages or relations, publish registry
-  metadata, remove `preview_only`, or treat plugin decisions as registry truth.
+- `P40-T1` documented the language- and framework-agnostic repository plugin
+  adapter contract.
+- The GitHub-facing contract is
+  `docs/REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md`.
+- The DocC mirror is
+  `Sources/SpecHarvester/Documentation.docc/RepositoryPluginAdapterContract.md`.
+- The contract defines adapter identity, manifest versioning, declared input
+  evidence, output artifact categories, execution modes, sandbox expectations,
+  diagnostics, adapter preflight, and review-only output evidence.
+- Static applicability remains the default safe path.
+- Adapter execution remains disabled until future explicit operator-controlled
+  execution policy exists.
+- Adapter output remains producer-side evidence and not registry truth.
 
 ## Task
 
-Document a language- and framework-agnostic repository plugin adapter contract.
+Add a machine-readable `SpecHarvesterRepositoryPluginAdapterManifest` fixture.
 
 ## Why This Is Next
 
-Phase 39 can now derive repository plugin applicability from static evidence.
-The next layer is the adapter boundary: future plugins must declare identity,
-inputs, outputs, execution mode, sandbox expectations, diagnostics, and
-authority limits before any runtime adapter path exists.
+P40-T1 documented the adapter boundary. The next step is a concrete fixture
+that downstream tests and future preflight policy can validate without loading
+adapter code.
 
 ## Scope
 
-- Define adapter identity, manifest versioning, roles, input evidence,
-  output artifacts, execution modes, sandbox expectations, diagnostics, and
-  non-authority statements.
-- Keep Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven,
-  Gradle, and other ecosystems as examples, not normative rules.
-- Keep static applicability evaluation as the default safe path.
-- Require explicit future operator opt-in before any non-static adapter
-  execution mode can be used.
+- Add a JSON fixture for `SpecHarvesterRepositoryPluginAdapterManifest`.
+- Include adapter ids, contract versions, supported roles, required and
+  optional evidence kinds, declared outputs, execution mode, sandbox
+  requirements, capability requests, and non-authority statements.
+- Keep the fixture language- and framework-agnostic.
+- Keep adapter execution disabled and review-only.
 
 ## Non-Goals
 
+- Do not implement adapter preflight.
 - Do not implement adapter loading or execution.
-- Do not load third-party adapter code.
+- Do not change static plugin applicability evaluation.
+- Do not change `autonomous-candidate-batch`.
 - Do not clone or fetch repositories.
 - Do not install dependencies.
 - Do not invoke package managers.
