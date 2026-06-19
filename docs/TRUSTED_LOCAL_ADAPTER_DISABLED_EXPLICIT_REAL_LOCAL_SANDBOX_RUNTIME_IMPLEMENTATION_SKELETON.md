@@ -217,3 +217,6 @@ registry truth, and does not treat the skeleton as execution permission.
 - P42-T16 defines
   [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_PACKET.md).
 - P42-T17 adds this disabled runtime implementation skeleton.
+- P42-T18 adds
+  [`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeletonVerifierReport`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_SKELETON_VERIFIER.md)
+  as a verifier over this disabled skeleton.

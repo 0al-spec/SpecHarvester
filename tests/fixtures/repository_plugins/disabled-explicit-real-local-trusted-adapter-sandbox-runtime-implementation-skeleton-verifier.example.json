@@ -1,0 +1,462 @@
+{
+  "apiVersion": "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton-verifier/v0",
+  "kind": "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeletonVerifierReport",
+  "schemaVersion": 1,
+  "authority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_skeleton_verifier_only",
+  "contract": {
+    "purpose": "Verify the P42-T17 disabled runtime implementation skeleton before any future runtime implementation can consume it as reviewed input.",
+    "contractVersion": "0.1.0",
+    "skeletonAuthority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_skeleton_only",
+    "verifierAuthority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_skeleton_verifier_only",
+    "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "defaultExecution": "disabled",
+    "verifierIsExecutionPermission": false,
+    "verifierIsRegistryAuthority": false,
+    "verifierConsumesApproval": false,
+    "verifierInvokesRuntime": false,
+    "verifierAcceptsAdapterOutput": false
+  },
+  "input": {
+    "disabledRuntimeImplementationSkeleton": {
+      "path": "tests/fixtures/repository_plugins/disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton.example.json",
+      "digest": "sha256:7bb311012bd30c61f270be01f81eedb2dc96773d4b3cdfc65467bfc115a50fdf",
+      "apiVersion": "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton/v0",
+      "kind": "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeleton",
+      "schemaVersion": 1,
+      "authority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_skeleton_only",
+      "requiredStatus": "disabled_no_runtime_implementation",
+      "requiredMode": "disabled_runtime_implementation_skeleton",
+      "digestVerified": true
+    }
+  },
+  "skeletonValidation": {
+    "skeletonDigestAgreement": true,
+    "skeletonIdentityAccepted": true,
+    "skeletonStatusAccepted": true,
+    "skeletonModeAccepted": true,
+    "skeletonContractAccepted": true,
+    "skeletonReviewPacketDigestAccepted": true,
+    "skeletonDisabledSurfaceAccepted": true,
+    "skeletonCheckCountsAccepted": true,
+    "skeletonExecutionBoundaryAccepted": true,
+    "skeletonNonAuthorityAccepted": true,
+    "skeletonIsExecutionPermission": false,
+    "skeletonIsRegistryAuthority": false,
+    "skeletonConsumesApproval": false,
+    "skeletonImplementsRuntime": false,
+    "skeletonRuntimeInvoked": false,
+    "skeletonAdapterOutputAccepted": false
+  },
+  "verifiedSkeleton": {
+    "reviewPacketDigest": "sha256:f29f3deaaf7b3f1ebe140eb2eef09aab1716d0524138d95997e51b9f1b03f2a5",
+    "disabledSurfaceCount": 8,
+    "acceptedCount": 13,
+    "rejectedCount": 18,
+    "blockedCount": 19,
+    "warningCount": 4,
+    "diagnosticCount": 2,
+    "operatorApprovalBound": true,
+    "approvalConsumedByRuntime": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false
+  },
+  "verifier": {
+    "status": "passed",
+    "mode": "disabled_runtime_implementation_skeleton_verifier_no_execution",
+    "skeletonArtifactCount": 1,
+    "verifiedSurfaceCount": 8,
+    "runtimeImplementationAllowed": false,
+    "runtimeInvocationAllowed": false,
+    "approvalConsumptionAllowed": false,
+    "operatorApprovalConsumed": false,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "harvestedCodeExecution": "not_allowed",
+    "aiExecution": "not_run",
+    "networkAccess": "none",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "acceptedChecks": [
+    {
+      "code": "skeleton_artifact_identity_and_digest_valid",
+      "status": "passed",
+      "target": "input.disabledRuntimeImplementationSkeleton",
+      "message": "P42-T17 skeleton identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "skeleton_status_disabled_no_runtime_implementation",
+      "status": "passed",
+      "target": "input.disabledRuntimeImplementationSkeleton.requiredStatus",
+      "message": "Skeleton status remains disabled_no_runtime_implementation."
+    },
+    {
+      "code": "skeleton_mode_disabled_no_execution",
+      "status": "passed",
+      "target": "input.disabledRuntimeImplementationSkeleton.requiredMode",
+      "message": "Skeleton mode remains disabled runtime implementation skeleton."
+    },
+    {
+      "code": "skeleton_contract_flags_verified",
+      "status": "passed",
+      "target": "skeletonValidation.skeletonContractAccepted",
+      "message": "Skeleton contract flags preserve no execution permission, no registry authority, no approval consumption, and no runtime implementation."
+    },
+    {
+      "code": "skeleton_review_packet_digest_verified",
+      "status": "passed",
+      "target": "verifiedSkeleton.reviewPacketDigest",
+      "message": "Linked P42-T16 review packet digest is verified."
+    },
+    {
+      "code": "disabled_runtime_surface_count_verified",
+      "status": "passed",
+      "target": "verifiedSkeleton.disabledSurfaceCount",
+      "message": "Disabled runtime surface count is verified."
+    },
+    {
+      "code": "skeleton_check_counts_verified",
+      "status": "passed",
+      "target": "verifiedSkeleton",
+      "message": "Accepted, rejected, blocked, warning, and diagnostic counts are verified."
+    },
+    {
+      "code": "skeleton_execution_boundary_verified",
+      "status": "passed",
+      "target": "skeletonValidation.skeletonExecutionBoundaryAccepted",
+      "message": "Skeleton execution boundary remains disabled."
+    },
+    {
+      "code": "skeleton_non_authority_verified",
+      "status": "passed",
+      "target": "skeletonValidation.skeletonNonAuthorityAccepted",
+      "message": "Skeleton non-authority statements remain present."
+    },
+    {
+      "code": "verifier_preserves_no_runtime_side_effects",
+      "status": "passed",
+      "target": "verifier",
+      "message": "Verifier does not load adapter code, import adapters, spawn processes, install dependencies, invoke package managers, use network access, execute harvested code, or run AI."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "code": "missing_skeleton_artifact_rejected",
+      "status": "rejected",
+      "target": "input.disabledRuntimeImplementationSkeleton",
+      "reason": "disabled_runtime_implementation_skeleton_required"
+    },
+    {
+      "code": "skeleton_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "input.disabledRuntimeImplementationSkeleton.digest",
+      "reason": "skeleton_digest_must_match_p42_t17_fixture_bytes"
+    },
+    {
+      "code": "skeleton_identity_mismatch_rejected",
+      "status": "rejected",
+      "target": "input.disabledRuntimeImplementationSkeleton.kind",
+      "reason": "skeleton_identity_must_match_p42_t17_contract"
+    },
+    {
+      "code": "skeleton_status_not_disabled_rejected",
+      "status": "rejected",
+      "target": "input.disabledRuntimeImplementationSkeleton.requiredStatus",
+      "reason": "skeleton_status_must_remain_disabled_no_runtime_implementation"
+    },
+    {
+      "code": "skeleton_mode_not_disabled_rejected",
+      "status": "rejected",
+      "target": "input.disabledRuntimeImplementationSkeleton.requiredMode",
+      "reason": "skeleton_mode_must_remain_disabled_no_execution"
+    },
+    {
+      "code": "review_packet_digest_drift_rejected",
+      "status": "rejected",
+      "target": "verifiedSkeleton.reviewPacketDigest",
+      "reason": "linked_p42_t16_review_packet_digest_must_remain_pinned"
+    },
+    {
+      "code": "disabled_surface_count_drift_rejected",
+      "status": "rejected",
+      "target": "verifiedSkeleton.disabledSurfaceCount",
+      "reason": "disabled_runtime_surface_count_must_remain_eight"
+    },
+    {
+      "code": "check_count_drift_rejected",
+      "status": "rejected",
+      "target": "verifiedSkeleton",
+      "reason": "skeleton_check_counts_must_match_p42_t17_contract"
+    },
+    {
+      "code": "verifier_execution_permission_rejected",
+      "status": "rejected",
+      "target": "contract.verifierIsExecutionPermission",
+      "reason": "verifier_must_not_grant_execution_permission"
+    },
+    {
+      "code": "verifier_registry_authority_rejected",
+      "status": "rejected",
+      "target": "contract.verifierIsRegistryAuthority",
+      "reason": "verifier_must_not_grant_registry_authority"
+    },
+    {
+      "code": "approval_consumption_rejected",
+      "status": "rejected",
+      "target": "verifier.operatorApprovalConsumed",
+      "reason": "verifier_must_not_consume_approval"
+    },
+    {
+      "code": "runtime_implementation_rejected",
+      "status": "rejected",
+      "target": "verifier.runtimeImplemented",
+      "reason": "verifier_must_not_implement_runtime"
+    },
+    {
+      "code": "runtime_invocation_rejected",
+      "status": "rejected",
+      "target": "verifier.runtimeInvoked",
+      "reason": "verifier_must_not_invoke_runtime"
+    },
+    {
+      "code": "adapter_code_loading_rejected",
+      "status": "rejected",
+      "target": "verifier.adapterCodeLoaded",
+      "reason": "verifier_must_not_load_adapter_code"
+    },
+    {
+      "code": "adapter_import_rejected",
+      "status": "rejected",
+      "target": "verifier.adapterCodeImportAttempted",
+      "reason": "verifier_must_not_import_adapter_code"
+    },
+    {
+      "code": "adapter_process_spawn_rejected",
+      "status": "rejected",
+      "target": "verifier.adapterProcessSpawned",
+      "reason": "verifier_must_not_spawn_adapter_processes"
+    },
+    {
+      "code": "network_access_rejected",
+      "status": "rejected",
+      "target": "verifier.networkAccess",
+      "reason": "verifier_must_not_use_network"
+    },
+    {
+      "code": "adapter_output_registry_truth_rejected",
+      "status": "rejected",
+      "target": "verifier.adapterOutputAccepted",
+      "reason": "verifier_must_not_treat_adapter_output_as_registry_truth"
+    }
+  ],
+  "blockedChecks": [
+    {
+      "code": "runtime_implementation_blocked",
+      "status": "blocked",
+      "target": "verifier.runtimeImplemented",
+      "reason": "runtime_implementation_requires_separate_task"
+    },
+    {
+      "code": "adapter_code_loading_blocked",
+      "status": "blocked",
+      "target": "verifier.adapterCodeLoaded",
+      "reason": "adapter_code_loading_requires_future_explicit_runtime_review"
+    },
+    {
+      "code": "adapter_import_blocked",
+      "status": "blocked",
+      "target": "verifier.adapterCodeImportAttempted",
+      "reason": "adapter_import_requires_future_explicit_runtime_review"
+    },
+    {
+      "code": "adapter_process_spawn_blocked",
+      "status": "blocked",
+      "target": "verifier.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_requires_future_explicit_runtime_review"
+    },
+    {
+      "code": "real_runtime_invocation_blocked",
+      "status": "blocked",
+      "target": "verifier.runtimeInvoked",
+      "reason": "real_runtime_invocation_requires_separate_approved_run"
+    },
+    {
+      "code": "approval_consumption_blocked",
+      "status": "blocked",
+      "target": "verifier.operatorApprovalConsumed",
+      "reason": "approval_consumption_requires_future_explicit_runtime"
+    },
+    {
+      "code": "dependency_installation_blocked",
+      "status": "blocked",
+      "target": "verifier.dependencyInstallation",
+      "reason": "dependency_installation_requires_future_policy"
+    },
+    {
+      "code": "package_manager_invocation_blocked",
+      "status": "blocked",
+      "target": "verifier.packageManagers",
+      "reason": "package_manager_invocation_requires_future_policy"
+    },
+    {
+      "code": "network_access_blocked",
+      "status": "blocked",
+      "target": "verifier.networkAccess",
+      "reason": "network_access_requires_future_policy"
+    },
+    {
+      "code": "harvested_code_execution_blocked",
+      "status": "blocked",
+      "target": "verifier.harvestedCodeExecution",
+      "reason": "harvested_code_execution_requires_separate_review"
+    },
+    {
+      "code": "ai_execution_blocked",
+      "status": "blocked",
+      "target": "verifier.aiExecution",
+      "reason": "ai_execution_requires_separate_operator_configuration"
+    },
+    {
+      "code": "package_acceptance_blocked",
+      "status": "blocked",
+      "target": "verifier.registryAuthority",
+      "reason": "package_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "relation_acceptance_blocked",
+      "status": "blocked",
+      "target": "verifier.registryAuthority",
+      "reason": "relation_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "baseline_seeding_blocked",
+      "status": "blocked",
+      "target": "verifier.registryAuthority",
+      "reason": "baseline_seeding_requires_separate_maintainer_review"
+    },
+    {
+      "code": "preview_only_removal_blocked",
+      "status": "blocked",
+      "target": "verifier.registryAuthority",
+      "reason": "preview_only_removal_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "adapter_output_truth_blocked",
+      "status": "blocked",
+      "target": "verifier.adapterOutputAccepted",
+      "reason": "adapter_output_truth_requires_specpm_maintainer_review"
+    }
+  ],
+  "warningChecks": [
+    {
+      "code": "verifier_review_only",
+      "status": "warning",
+      "target": "verifier.status",
+      "message": "The skeleton verifier is disabled and review-only."
+    },
+    {
+      "code": "future_runtime_implementation_required",
+      "status": "warning",
+      "target": "verifier.runtimeImplemented",
+      "message": "A future runtime implementation task is still required before execution."
+    },
+    {
+      "code": "approval_not_consumed",
+      "status": "warning",
+      "target": "verifier.operatorApprovalConsumed",
+      "message": "No runtime has consumed approval."
+    },
+    {
+      "code": "verified_skeleton_not_executable",
+      "status": "warning",
+      "target": "verifiedSkeleton",
+      "message": "The verified skeleton remains disabled and is not executable."
+    }
+  ],
+  "summary": {
+    "acceptedCount": 10,
+    "rejectedCount": 18,
+    "blockedCount": 16,
+    "warningCount": 4,
+    "diagnosticCount": 2,
+    "skeletonArtifactCount": 1,
+    "verifiedSurfaceCount": 8,
+    "operatorApprovalBound": true,
+    "approvalConsumedByRuntime": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false
+  },
+  "executionBoundary": {
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "verifierIsExecutionPermission": false,
+    "verifierIsRegistryAuthority": false,
+    "verifierConsumesApproval": false,
+    "verifierInvokesRuntime": false,
+    "verifierAcceptsAdapterOutput": false,
+    "approvalConsumedByRuntime": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "disabled_runtime_implementation_skeleton_verified",
+      "message": "P42-T17 disabled runtime implementation skeleton identity, digest, disabled surface, and no-execution boundary are verified."
+    },
+    {
+      "severity": "warning",
+      "code": "verifier_is_not_execution_permission",
+      "message": "The verifier does not grant adapter execution authority, registry authority, approval consumption, runtime invocation, or adapter output truth."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "verifier_is_not_execution_permission",
+    "verifier_is_not_registry_authority",
+    "verifier_does_not_consume_approval",
+    "verifier_does_not_invoke_runtime",
+    "verifier_does_not_accept_adapter_output",
+    "skeleton_is_not_execution_permission",
+    "skeleton_is_not_registry_authority",
+    "skeleton_does_not_consume_approval",
+    "skeleton_does_not_implement_runtime",
+    "does_not_load_third_party_adapter_code",
+    "does_not_import_adapter_code",
+    "does_not_execute_real_adapters",
+    "does_not_run_real_adapter_processes",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_use_network",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_verifier_as_execution_permission",
+    "does_not_grant_registry_authority"
+  ],
+  "followUp": {
+    "disabledRuntimeImplementationSkeletonTask": "P42-T17",
+    "realLocalSandboxRuntimeImplementationTask": "deferred_until_after_disabled_runtime_implementation_skeleton_verifier_review",
+    "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_implementation_and_operator_approval"
+  }
+}
