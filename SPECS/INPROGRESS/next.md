@@ -1,61 +1,58 @@
-# Next Task: P42-T7 Real Local Trusted Adapter Sandbox Run Readiness Gate
+# Next Task: P42-T8 Explicit Real Local Trusted Adapter Sandbox Run Request Fixture
 
 **Status:** Planned
-**Branch:** `feature/P42-T7-real-local-trusted-adapter-sandbox-run-readiness-gate`
+**Branch:** `feature/P42-T8-explicit-real-local-trusted-adapter-sandbox-run-request-fixture`
 **Phase:** Phase 42. Trusted Local Adapter Runtime Sandbox
-**Last Archived:** P42-T6 Synthetic Trusted Local Adapter Sandbox Run Verifier
+**Last Archived:** P42-T7 Real Local Trusted Adapter Sandbox Run Readiness Gate
 
 ## Recently Archived
 
-- `P42-T6` added
-  `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport`.
-- The verifier CLI is
-  `synthetic-trusted-local-adapter-sandbox-run-verifier`.
+- `P42-T7` added
+  `SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport`.
+- The readiness CLI is
+  `real-local-trusted-adapter-sandbox-run-readiness`.
 - GitHub docs are in
-  `docs/TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md`.
+  `docs/TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md`.
 - DocC docs are in
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterSyntheticSandboxRunVerifier.md`.
-- The verifier checks P42-T5 fixture identity, linked artifact digests,
-  operator approval binding, synthetic output byte sizes/digests, audit
-  references, and no-real-execution boundaries.
-- The verifier rejects unsafe paths, missing linked artifacts, digest mismatch,
-  output byte-size mismatch, bad approval binding, bad audit references, and
-  real-execution drift.
-- The verifier remains producer-side review evidence only and preserves
-  `adapterExecution: synthetic_fixture_only`,
-  `realAdapterProcessSpawned: false`,
-  `thirdPartyAdapterCodeLoaded: false`, `executedAdapterCount: 0`,
-  `dependencyInstallation: not_allowed`, `packageManagers: not_invoked`,
-  `networkAccess: none`,
-  `syntheticRunVerificationIsExecutionPermission: false`, and
-  `registryAuthority: false`.
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterRealLocalSandboxRunReadiness.md`.
+- The readiness gate checks P42-T6 verifier report identity, status,
+  authority, linked artifact/output/audit verification summaries, operator
+  approval binding, no-real-execution boundaries, and non-authority statements.
+- The readiness report declares explicit real-run review prerequisites for
+  operator approval, sandbox runtime, filesystem/output policy, audit policy,
+  and rollback/review boundaries.
+- The readiness gate remains producer-side review evidence only and preserves
+  `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+  `adapterProcessSpawned: false`, `executedAdapterCount: 0`,
+  `runtimeInvoked: false`, `readinessGateIsExecutionPermission: false`,
+  `readyForExecution: false`, `registryAuthority: false`, and
+  `adapterOutputAccepted: false`.
 
 ## Task
 
-Add a real local trusted adapter sandbox run readiness gate that validates the
-P42-T6 verifier report plus explicit real-run prerequisites before any future
-real adapter execution implementation.
+Add an explicit real local trusted adapter sandbox run request fixture that
+records a future real-run review request without enabling real adapter
+execution.
 
 ## Why This Is Next
 
-P42-T6 proves synthetic run evidence is internally consistent. Before a real
-local adapter process can be considered, SpecHarvester needs a separate
-readiness gate that checks runtime prerequisites, explicit operator approval
-requirements, sandbox availability, output/audit policy, and rollback boundary
-without loading adapter code or spawning a process.
+P42-T7 makes the readiness gate explicit. The next step is a machine-readable
+request fixture that binds a future real-run review request to the verifier and
+readiness evidence, scoped operator approval requirements, runtime policy,
+filesystem/output/audit declarations, and non-authority statements before any
+runner implementation exists.
 
 ## Scope
 
-- Add a machine-readable real-local sandbox readiness gate/report.
-- Validate the P42-T6 verifier report identity and authority.
-- Validate explicit real-run operator approval prerequisites.
-- Validate sandbox runtime availability requirements without invoking the
-  runtime.
-- Validate filesystem/output/audit policy readiness.
-- Validate no adapter code loading, no process spawning, no dependency
-  installation, no package manager invocation, and no network access during the
-  readiness gate.
-- Emit a machine-readable readiness report.
+- Add a machine-readable explicit real-run request fixture.
+- Reference the P42-T6 verifier report contract and P42-T7 readiness report
+  contract.
+- Declare scoped operator approval requirements for a future real run.
+- Declare sandbox runtime, filesystem, output, audit, rollback, and review
+  requirements.
+- Preserve no adapter code loading, no process spawning, no dependency
+  installation, no package manager invocation, no network access, no harvested
+  code execution, and no AI execution.
 - Link docs, DocC, roadmap/capabilities, and tests.
 
 ## Non-Goals
@@ -75,6 +72,7 @@ without loading adapter code or spawning a process.
 - Do not treat synthetic adapter output as registry truth.
 - Do not treat synthetic run verification as execution permission.
 - Do not treat readiness as execution permission.
+- Do not treat a request fixture as execution permission.
 
 ## Phase 42. Trusted Local Adapter Runtime Sandbox
 
@@ -105,29 +103,33 @@ without loading adapter code or spawning a process.
   checks P42-T5 fixture identity, linked artifact digests, approval binding,
   synthetic output byte sizes/digests, audit requirements, and no-real-execution
   boundaries without enabling real adapter execution.
-- [ ] `P42-T7` Add a real local trusted adapter sandbox run readiness gate that
+- [x] `P42-T7` Add a real local trusted adapter sandbox run readiness gate that
   checks the P42-T6 verifier report plus explicit real-run prerequisites,
   sandbox runtime availability, filesystem/output policy, audit requirements,
   and operator approval requirements while still refusing to load adapter code
   or spawn adapter processes.
+- [ ] `P42-T8` Add an explicit real local trusted adapter sandbox run request
+  fixture that records a future real-run review request, scoped operator
+  approval requirements, verifier/readiness references, runtime policy,
+  filesystem/output/audit declarations, and non-authority statements while
+  still refusing to load adapter code or spawn adapter processes.
 
 Motivation:
 
-- Real adapter execution requires a separate readiness gate after synthetic
-  evidence verification.
-- Readiness should make runtime prerequisites explicit before any process
-  execution implementation exists.
-- The gate should preserve least privilege and review-only authority.
+- Real-run readiness needs a concrete request artifact before any runner can
+  safely consume the approval boundary.
+- The request fixture should bind future execution review to verifier/readiness
+  evidence and prevent ambiguous, reusable, or registry-authoritative requests.
 
 Goal:
 
-- Provide a machine-checkable readiness report for future real local trusted
-  adapter sandbox runs without granting execution permission.
+- Provide a machine-readable explicit request fixture for future real local
+  trusted adapter sandbox run review without granting execution permission.
 
 Acceptance:
 
-- The readiness gate checks verifier report identity, real-run prerequisites,
-  sandbox runtime requirements, filesystem/output/audit policy, and
-  no-execution boundaries.
-- The readiness report is review-only and cannot be interpreted as runtime
+- The request fixture references verifier/readiness evidence contracts and
+  declares scoped approval, runtime, filesystem/output, audit, and review
+  requirements.
+- The request fixture is review-only and cannot be interpreted as runtime
   permission or registry authority.
