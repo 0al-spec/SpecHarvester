@@ -1,6 +1,6 @@
 # Static Repository Plugin Applicability Evaluator
 
-Status: Phase 39 helper implemented; CLI planned.
+Status: Phase 39 helper and CLI implemented; batch integration planned.
 
 P39-T1 defines a deterministic static evaluator that can derive
 `SpecHarvesterRepositoryPluginApplicabilityReport` from collected producer
@@ -53,6 +53,22 @@ objects, compares declared `inputEvidenceKinds[]` with available
 The helper does not read repository source files. It only reads metadata
 objects that the caller already provided.
 
+P39-T4 exposes the helper through
+`repository-plugin-applicability-detect`:
+
+```bash
+PYTHONPATH=src python -m spec_harvester repository-plugin-applicability-detect \
+  --registry tests/fixtures/repository_plugins/generic-registry.example.json \
+  --static-evidence-envelope tests/fixtures/repository_plugins/static-evidence-envelope.example.json \
+  --out /tmp/repository-plugin-applicability-report.json
+```
+
+The command writes the full
+`SpecHarvesterRepositoryPluginApplicabilityReport` JSON to `--out` and prints
+a compact JSON summary with selected, rejected, fallback, blocked, and
+diagnostic counts. It reads only the explicit registry and static evidence
+envelope files.
+
 ## Decision Model
 
 For each declared plugin in the registry, the evaluator should emit exactly one
@@ -84,10 +100,10 @@ Stable diagnostic codes include `plugin_selected`,
 
 ## Precedence
 
-Autonomous batch should use:
+Autonomous batch should use after P39-T5:
 
 1. explicit operator-supplied `--repository-plugin-applicability` sidecar;
-2. future opt-in static evaluator output;
+2. future opt-in static evaluator CLI output;
 3. documented generic fallback behavior.
 
 The explicit sidecar path from P38-T4 remains valid and takes precedence over
@@ -111,8 +127,8 @@ consumes evaluator output.
 
 The static evaluator must not load third-party plugin code, execute plugins,
 run plugin code, clone or fetch repositories, install dependencies, invoke
-package managers, execute harvested code, read repository source files, run AI,
-change parser profile
-behavior, change repository profile scoring, accept packages, accept
-relations, publish registry metadata, remove `preview_only`, or treat plugin
-decisions as registry truth.
+package managers, execute harvested code, read repository source files,
+auto-attach generated reports to autonomous batch output, run AI, change
+parser profile behavior, change repository profile scoring, accept packages,
+accept relations, publish registry metadata, remove `preview_only`, or treat
+plugin decisions as registry truth.
