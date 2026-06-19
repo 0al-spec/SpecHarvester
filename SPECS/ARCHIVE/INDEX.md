@@ -662,3 +662,5 @@
 | 2026-06-19 | P41-T1 | Archived REVIEW_p41_t1_adapter_runtime_readiness_plan report |
 | 2026-06-19 | P41-T2 | Archived Trusted Local Adapter Run Request Fixture (PASS) |
 | 2026-06-19 | P41-T2 | Archived REVIEW_p41_t2_trusted_local_adapter_run_request_fixture report |
+| 2026-06-19 | P41-T3 | Archived Trusted Local Adapter Run Preflight Report Fixture (PASS) |
+| 2026-06-19 | P41-T3 | Archived REVIEW_p41_t3_trusted_local_adapter_run_preflight_report_fixture report |

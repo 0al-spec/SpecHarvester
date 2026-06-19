@@ -106,6 +106,11 @@ Published DocC site:
    fixture for explicit operator opt-in, adapter manifest/preflight
    references, declared input artifacts, safe read allowlists, output policy,
    resource budgets, and non-authority statements
+32. [`TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_REPORT_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_REPORT_FIXTURE.md):
+   P41-T3 machine-readable
+   `SpecHarvesterTrustedLocalAdapterRunPreflightReport` fixture for request
+   identity, opt-in, digest, path, output, budget, policy, execution-boundary,
+   and non-authority checks before any future runner
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

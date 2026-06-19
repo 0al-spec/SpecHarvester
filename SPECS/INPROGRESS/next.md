@@ -1,70 +1,61 @@
-# Next Task: P41-T3 Trusted Local Adapter Run Preflight Report Fixture
+# Next Task: P41-T4 Disabled Trusted Local Adapter Runner Skeleton
 
 **Status:** Planned
-**Branch:** `feature/P41-T3-trusted-local-adapter-run-preflight-report-fixture`
+**Branch:** `feature/P41-T4-disabled-trusted-local-adapter-runner-skeleton`
 **Phase:** Phase 41. Trusted Local Adapter Runtime Readiness
-**Last Archived:** P41-T2 Trusted Local Adapter Run Request Fixture
+**Last Archived:** P41-T3 Trusted Local Adapter Run Preflight Report Fixture
 
 ## Recently Archived
 
-- `P41-T2` added the machine-readable
-  `SpecHarvesterTrustedLocalAdapterRunRequest`.
+- `P41-T3` added the machine-readable
+  `SpecHarvesterTrustedLocalAdapterRunPreflightReport`.
 - The fixture is
-  `tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json`.
+  `tests/fixtures/repository_plugins/trusted-local-adapter-run-preflight-report.example.json`.
 - The GitHub-facing documentation is
-  `docs/TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md`.
+  `docs/TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_REPORT_FIXTURE.md`.
 - The DocC mirror is
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterRunRequestFixture.md`.
-- The request records adapter manifest/preflight references, explicit operator
-  opt-in, declared input artifacts, safe relative read path allowlists, output
-  policy, resource budgets, environment policy, network policy, dependency
-  policy, package manager policy, process policy, and non-authority
-  statements.
-- The request keeps `requestIsExecutionPermission: false`,
-  `adapterExecution: not_run`, `adapterCodeLoaded: false`,
-  `appliedToDrafting: false`, and `registryAuthority: false`; trusted local
-  adapter artifacts remain producer-side review evidence.
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterRunPreflightReportFixture.md`.
+- The preflight report references
+  `SpecHarvesterTrustedLocalAdapterRunRequest`, records accepted, rejected,
+  blocked, and warning checks, and keeps
+  `preflightPassIsExecutionPermission: false`,
+  `adapterExecution: not_run`, `adapterCodeLoaded: false`, and
+  `registryAuthority: false`.
+- Trusted local adapter preflight artifacts remain producer-side review
+  evidence, not execution permission and not registry authority.
 
 ## Task
 
-Add a machine-readable
-`SpecHarvesterTrustedLocalAdapterRunPreflightReport` fixture that validates a
-`SpecHarvesterTrustedLocalAdapterRunRequest` before any future execution path
-and rejects unsafe paths, missing or mismatched digests, missing explicit
-operator opt-in, undeclared input artifacts, undeclared output paths, network
-access, dependency installation, package manager invocation, harvested code
-execution, AI execution, unbounded process execution, and unbounded outputs.
+Implement a disabled-by-default trusted local adapter runner skeleton that can
+validate a request and emit a no-execution report while proving it does not
+load third-party adapter code and does not run adapter processes.
 
 ## Why This Is Next
 
-P41-T2 defines the trusted local adapter run request shape. The next artifact
-must prove how that request is checked before any runner skeleton can consume
-it. The preflight report should make failure modes explicit and state that
-preflight pass is not execution permission.
+P41-T2 defines the request shape and P41-T3 defines the preflight report shape.
+The next step is a no-execution runner skeleton that consumes those contracts
+without enabling real adapter execution. This creates a practical local
+validation surface for future runtime work while preserving
+`adapterExecution: not_run` and `adapterCodeLoaded: false`.
 
 ## Scope
 
-- Add a versioned
-  `SpecHarvesterTrustedLocalAdapterRunPreflightReport` fixture.
-- Reference the P41-T2 run request fixture with a SHA-256 digest.
-- Validate request identity, schema version, authority, explicit operator
-  opt-in, adapter manifest/preflight references, declared input artifacts,
-  path policy, read allowlists, output policy, resource budgets, environment
-  policy, network policy, dependency policy, package manager policy, process
-  policy, execution boundary, and non-authority statements.
-- Record accepted, rejected, blocked, and warning checks.
-- Reject unsafe paths, missing or mismatched digests, undeclared input
-  artifacts, undeclared output paths, network access, dependency installation,
-  package manager invocation, harvested code execution, AI execution,
-  unbounded process execution, and unbounded output policy.
-- Document the fixture in GitHub docs and DocC.
-- Keep adapter execution disabled.
+- Add a disabled-by-default runner skeleton entry point or helper.
+- Validate `SpecHarvesterTrustedLocalAdapterRunRequest` identity and
+  `SpecHarvesterTrustedLocalAdapterRunPreflightReport` identity.
+- Emit a deterministic no-execution report.
+- Record that the runner does not load third-party adapter code and does not
+  run adapter processes.
+- Preserve `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+  `executedAdapterCount: 0`, `runtimeImplemented: false`,
+  `appliedToDrafting: false`, and `registryAuthority: false`.
+- Document the skeleton in GitHub docs and DocC.
+- Keep the output as producer-side review evidence only.
 
 ## Non-Goals
 
-- Do not implement adapter loading or execution.
+- Do not implement real adapter execution.
 - Do not run adapter processes.
-- Do not add a runner.
 - Do not clone or fetch repositories.
 - Do not install dependencies.
 - Do not invoke package managers.
@@ -87,7 +78,7 @@ preflight pass is not execution permission.
   safe relative read path allowlists, output directory policy, resource
   budgets, environment policy, network policy, dependency policy, package
   manager policy, and non-authority statements.
-- [ ] `P41-T3` Add a trusted local adapter run preflight report fixture that
+- [x] `P41-T3` Add a trusted local adapter run preflight report fixture that
   validates run requests before execution and rejects unsafe paths, missing
   digests, missing operator opt-in, network access, dependency installation,
   package manager invocation, harvested code execution, unbounded process
@@ -105,28 +96,23 @@ preflight pass is not execution permission.
 
 Motivation:
 
-- Future runner work needs a strict preflight report over P41-T2 requests
-  before any no-execution runner skeleton can be introduced.
-- The preflight fixture should make unsafe request shapes reviewable before
-  implementation logic exists.
+- Future runtime work needs a concrete local skeleton that consumes request and
+  preflight report artifacts before any real execution mode can be discussed.
+- The skeleton should make no-execution behavior testable and reviewable.
 
 Goal:
 
-- Define the machine-readable preflight report shape for trusted local adapter
-  run requests while proving that preflight pass is not execution permission
-  and adapter execution remains disabled.
+- Add a disabled no-execution runner skeleton that validates request/preflight
+  inputs and emits a report while preserving the no-runtime and no-authority
+  boundaries.
 
 Acceptance:
 
-- The fixture has versioned identity and stable authority labels.
-- The fixture references the P41-T2 request fixture with a SHA-256 digest.
-- The fixture records checks for identity, explicit operator opt-in, safe
-  paths, declared input artifacts, digests, output policy, resource budgets,
-  environment policy, network policy, dependency policy, package manager
-  policy, process policy, execution boundary, and non-authority statements.
-- Unsafe paths, missing or mismatched digests, undeclared input artifacts,
-  undeclared output paths, network access, dependency installation, package
-  manager invocation, harvested code execution, AI execution, unbounded process
-  execution, and unbounded outputs are rejected or blocked.
-- Docs and DocC explain that preflight pass is not execution permission, not
-  registry acceptance, and not adapter output truth.
+- The skeleton is disabled by default and does not run adapter processes.
+- The skeleton validates request and preflight identities.
+- The skeleton emits a deterministic no-execution report.
+- The report records `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+  `executedAdapterCount: 0`, `runtimeImplemented: false`,
+  `appliedToDrafting: false`, and `registryAuthority: false`.
+- Docs and DocC explain that the skeleton is not real adapter execution and
+  not registry acceptance.

@@ -1712,7 +1712,7 @@ Acceptance:
   safe relative read path allowlists, output directory policy, resource
   budgets, environment policy, network policy, dependency policy, package
   manager policy, and non-authority statements.
-- [ ] `P41-T3` Add a trusted local adapter run preflight report fixture that
+- [x] `P41-T3` Add a trusted local adapter run preflight report fixture that
   validates run requests before execution and rejects unsafe paths, missing
   digests, missing operator opt-in, network access, dependency installation,
   package manager invocation, harvested code execution, unbounded process
