@@ -183,3 +183,6 @@ execution permission.
 - P42-T13 defines
   <doc:TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding>.
 - P42-T14 adds this disabled runtime invocation skeleton.
+- P42-T15 adds
+  <doc:TrustedLocalAdapterExplicitRealLocalSandboxRuntimeInvocationEvidenceHandoff>
+  before any real runtime implementation review can consume these artifacts.

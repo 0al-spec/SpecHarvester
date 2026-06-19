@@ -209,6 +209,7 @@ sandbox contract fixture
   -> explicit real local sandbox runtime implementation review gate
   -> explicit real local sandbox operator approval binding
   -> disabled explicit real local sandbox runtime invocation skeleton
+  -> explicit real local sandbox runtime invocation evidence handoff
   -> real local adapter run only after review
 ```
 
@@ -281,3 +282,11 @@ validates the approval scope while keeping `runtimeInvocationAllowed: false`,
 `operatorApprovalConsumed: false`, `adapterCodeLoaded: false`,
 `adapterProcessSpawned: false`, `runtimeInvoked: false`, and
 `registryAuthority: false`.
+P42-T15 adds
+<doc:TrustedLocalAdapterExplicitRealLocalSandboxRuntimeInvocationEvidenceHandoff>
+as portable review evidence over P42-T13 and P42-T14 artifacts. It packages the
+approval binding, disabled invocation, linked digests, approval scope summary,
+audit requirements, execution boundary, and non-authority statements while
+keeping `handoffIsExecutionPermission: false`,
+`handoffIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`, and
+`runtimeInvoked: false`.

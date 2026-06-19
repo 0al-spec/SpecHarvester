@@ -183,3 +183,6 @@ execution permission.
 - P42-T13 defines
   [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md).
 - P42-T14 adds this disabled runtime invocation skeleton.
+- P42-T15 adds
+  [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationEvidenceHandoff`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_EVIDENCE_HANDOFF.md)
+  before any real runtime implementation review can consume these artifacts.

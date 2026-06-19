@@ -1883,7 +1883,7 @@ Acceptance:
   network access, harvested-code execution, AI execution, package/relation
   acceptance, baseline seeding, registry publishing, `preview_only` removal,
   and adapter output truth.
-- [ ] `P42-T15` Add an explicit real local trusted adapter sandbox runtime
+- [x] `P42-T15` Add an explicit real local trusted adapter sandbox runtime
   invocation evidence handoff that packages the P42-T13 approval binding and
   P42-T14 disabled invocation skeleton as portable review evidence before any
   real adapter runtime implementation.
@@ -1911,6 +1911,41 @@ Acceptance:
   `runtimeInvoked: false`, `adapterCodeLoaded: false`,
   `adapterProcessSpawned: false`, and `adapterOutputAccepted: false`.
 - P42-T15 still blocks dependency installation, package-manager invocation,
+  network access, harvested-code execution, AI execution, package/relation
+  acceptance, baseline seeding, registry publishing, `preview_only` removal,
+  and adapter output truth.
+- [ ] `P42-T16` Add an explicit real local trusted adapter sandbox runtime
+  implementation review packet that consumes the P42-T15 handoff as review
+  evidence and enumerates the implementation prerequisites that must be checked
+  before any real adapter runtime code is introduced.
+
+Motivation:
+
+- P42-T15 packages approval binding and disabled invocation evidence, but the
+  project still needs a review packet that separates implementation readiness
+  from implementation itself.
+- The packet should let reviewers audit the future runtime implementation
+  checklist without granting execution permission or consuming approval.
+
+Goal:
+
+- Define a runtime implementation review packet that references P42-T15 and
+  records the prerequisites for a future bounded real local adapter runtime
+  implementation.
+
+Acceptance:
+
+- P42-T16 references P42-T15 with a pinned digest.
+- P42-T16 records implementation prerequisites for adapter package identity,
+  runtime entrypoint isolation, process spawning policy, dependency policy,
+  network policy, output digest verification, audit records, rollback policy,
+  and approval consumption rules.
+- P42-T16 keeps `packetIsExecutionPermission: false`,
+  `packetIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
+  `runtimeImplemented: false`, `runtimeInvoked: false`,
+  `adapterCodeLoaded: false`, `adapterProcessSpawned: false`, and
+  `adapterOutputAccepted: false`.
+- P42-T16 still blocks dependency installation, package-manager invocation,
   network access, harvested-code execution, AI execution, package/relation
   acceptance, baseline seeding, registry publishing, `preview_only` removal,
   and adapter output truth.
