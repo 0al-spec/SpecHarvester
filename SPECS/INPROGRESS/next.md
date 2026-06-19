@@ -1,53 +1,55 @@
-# Next Task: P42-T5 Explicitly Approved Synthetic Trusted Local Adapter Sandbox Run Fixture
+# Next Task: P42-T6 Synthetic Trusted Local Adapter Sandbox Run Verifier
 
 **Status:** Planned
-**Branch:** `feature/P42-T5-explicitly-approved-synthetic-trusted-local-adapter-sandbox-run-fixture`
+**Branch:** `feature/P42-T6-synthetic-trusted-local-adapter-sandbox-run-verifier`
 **Phase:** Phase 42. Trusted Local Adapter Runtime Sandbox
-**Last Archived:** P42-T4 Disabled Trusted Local Adapter Sandbox Runner Validation
+**Last Archived:** P42-T5 Explicitly Approved Synthetic Trusted Local Adapter Sandbox Run Fixture
 
 ## Recently Archived
 
-- `P42-T4` added `trusted-local-adapter-sandbox-runner-validation`.
-- The validation emits
-  `SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport`.
+- `P42-T5` added
+  `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun`.
+- The fixture is in
+  `tests/fixtures/repository_plugins/synthetic-trusted-local-adapter-sandbox-run.example.json`.
 - GitHub docs are in
-  `docs/TRUSTED_LOCAL_ADAPTER_SANDBOX_RUNNER_VALIDATION.md`.
+  `docs/TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md`.
 - DocC docs are in
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterSandboxRunnerValidation.md`.
-- The CLI validates
-  `SpecHarvesterTrustedLocalAdapterSandboxContract` and
-  `SpecHarvesterTrustedLocalAdapterSandboxPreflightReport` identity and digest
-  linkage.
-- The validation remains producer-side review evidence only and preserves
-  `adapterExecution: not_run`, `adapterCodeLoaded: false`,
-  `adapterProcessSpawned: false`, `executedAdapterCount: 0`, and
-  `registryAuthority: false`.
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterSyntheticSandboxRunFixture.md`.
+- The fixture binds operator approval to one adapter id/digest, one repository
+  revision, one sandbox policy, one sandbox runner validation report, one output
+  root, and declared synthetic output candidate digests.
+- The fixture records synthetic output, diagnostics, and audit-record candidate
+  files with safe relative paths, byte sizes, SHA-256 digests, producer run id,
+  adapter id/digest, source input digests, and `outputIsRegistryTruth: false`.
+- The fixture remains producer-side review evidence only and preserves
+  `adapterExecution: synthetic_fixture_only`,
+  `realAdapterProcessSpawned: false`,
+  `thirdPartyAdapterCodeLoaded: false`, `executedAdapterCount: 0`,
+  `dependencyInstallation: not_allowed`, `packageManagers: not_invoked`,
+  `networkAccess: none`, and `registryAuthority: false`.
 
 ## Task
 
-Add an explicitly approved synthetic trusted local adapter sandbox run fixture
-that records the next approved-run boundary without running a real adapter
-process.
+Add a synthetic trusted local adapter sandbox run verifier that validates the
+P42-T5 fixture and linked output artifacts without enabling real adapter
+execution.
 
 ## Why This Is Next
 
-P42-T2 defined the sandbox contract, P42-T3 defined the sandbox preflight
-report, and P42-T4 added disabled runner validation. The next incremental step
-is a synthetic approved run fixture that proves what explicit operator approval,
-runner validation input, synthetic output candidates, output digests, audit
-records, and non-authority statements must look like before any real local
-adapter execution can be considered.
+P42-T5 records the approved synthetic run shape as data. The next step is a
+deterministic verifier that can check fixture identity, linked artifact digests,
+operator approval binding, synthetic output byte sizes/digests, audit
+requirements, and no-real-execution boundaries before any real local adapter run
+work is considered.
 
 ## Scope
 
-- Add a machine-readable synthetic approved sandbox run fixture.
-- Bind operator approval to one adapter, one repository, one sandbox policy,
-  one runner validation report, and one output directory.
-- Include synthetic adapter output candidate references with safe relative
-  paths, byte sizes, and SHA-256 digests.
-- Include replayable audit record requirements.
-- Preserve no real adapter process execution.
-- Preserve producer-side review-only authority.
+- Add synthetic sandbox run verifier logic and CLI surface.
+- Validate P42-T5 fixture identity and authority.
+- Validate safe relative paths, linked artifact SHA-256 digests, output byte
+  sizes/digests, and audit record references.
+- Validate operator approval binding and no-real-execution boundaries.
+- Emit a machine-readable verifier report.
 - Link docs, DocC, roadmap/capabilities, and tests.
 
 ## Non-Goals
@@ -65,7 +67,7 @@ adapter execution can be considered.
 - Do not publish registry metadata.
 - Do not remove `preview_only`.
 - Do not treat synthetic adapter output as registry truth.
-- Do not treat sandbox runner validation as execution permission.
+- Do not treat synthetic run verification as execution permission.
 
 ## Phase 42. Trusted Local Adapter Runtime Sandbox
 
@@ -88,27 +90,30 @@ adapter execution can be considered.
   checks sandbox contract and sandbox preflight report linkage while preserving
   no adapter code loading, no process spawning, no dependency installation, no
   network access, and no registry authority.
-- [ ] `P42-T5` Add an explicitly approved synthetic trusted local adapter
+- [x] `P42-T5` Add an explicitly approved synthetic trusted local adapter
   sandbox run fixture that records operator approval binding, sandbox runner
   validation input, synthetic adapter output candidates, output digests, audit
   records, and non-authority statements without running a real adapter process.
+- [ ] `P42-T6` Add a synthetic trusted local adapter sandbox run verifier that
+  checks P42-T5 fixture identity, linked artifact digests, approval binding,
+  synthetic output byte sizes/digests, audit requirements, and no-real-execution
+  boundaries without enabling real adapter execution.
 
 Motivation:
 
-- Future real adapter execution must have an approved-run artifact shape before
-  any real process can run.
-- The synthetic fixture should prove approval and output-audit shape without
-  adding execution capability.
+- Synthetic approved run fixtures need deterministic verification before they
+  can safely inform any future runtime work.
+- The verifier should prove approval/output/audit shape while preserving the
+  no-real-execution boundary.
 
 Goal:
 
-- Define the approved synthetic run boundary that sits between disabled runner
-  validation and any future real local adapter run.
+- Provide a machine-checkable producer-side review gate for synthetic trusted
+  local adapter sandbox run fixtures.
 
 Acceptance:
 
-- The fixture binds approval to specific contract/preflight/runner validation
-  artifacts.
-- The fixture records synthetic outputs with digests and audit records.
-- The fixture keeps real adapter execution disabled and remains review evidence
-  only.
+- The verifier checks fixture identity, linked digests, approval binding,
+  synthetic output digests, audit requirements, and no-real-execution fields.
+- The verifier emits a review-only report and cannot be interpreted as runtime
+  permission or registry authority.

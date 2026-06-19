@@ -24,6 +24,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P42-T6 Synthetic Trusted Local Adapter Sandbox Run Verifier" in (next_text):
+        assert_p42_t5_last_archived(next_text)
+        assert_p42_t5_recent(next_text)
+        assert_phase_42_t6_planned(next_text)
+        return
+
     if (
         "# Next Task: P42-T5 Explicitly Approved Synthetic Trusted Local Adapter "
         "Sandbox Run Fixture"
@@ -5002,6 +5008,48 @@ def assert_phase_42_t5_planned(next_text: str) -> None:
     assert "Do not implement real adapter execution" in normalized
     assert "Do not spawn real adapter processes" in normalized
     assert "Do not treat synthetic adapter output as registry truth" in normalized
+
+
+def assert_p42_t5_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T5 Explicitly Approved Synthetic Trusted Local Adapter "
+        "Sandbox Run Fixture"
+    ) in next_text
+
+
+def assert_p42_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P42-T5` added `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun`" in (normalized)
+    assert "synthetic-trusted-local-adapter-sandbox-run.example.json" in normalized
+    assert "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md" in next_text
+    assert "TrustedLocalAdapterSyntheticSandboxRunFixture.md" in next_text
+    assert "operator approval" in normalized
+    assert "synthetic output candidate" in normalized
+    assert "SHA-256 digests" in normalized
+    assert "outputIsRegistryTruth: false" in normalized
+    assert "adapterExecution: synthetic_fixture_only" in normalized
+    assert "realAdapterProcessSpawned: false" in normalized
+    assert "thirdPartyAdapterCodeLoaded: false" in normalized
+    assert "executedAdapterCount: 0" in normalized
+    assert "networkAccess: none" in normalized
+    assert "registryAuthority: false" in normalized
+
+
+def assert_phase_42_t6_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P42-T6 Synthetic Trusted Local Adapter Sandbox Run Verifier" in (next_text)
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P42-T6-synthetic-trusted-local-adapter-sandbox-run-verifier`" in next_text
+    assert "synthetic trusted local adapter sandbox run verifier" in normalized
+    assert "P42-T5 fixture identity" in normalized
+    assert "linked artifact digests" in normalized
+    assert "approval binding" in normalized
+    assert "synthetic output byte sizes/digests" in normalized
+    assert "audit requirements" in normalized
+    assert "no-real-execution boundaries" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not spawn real adapter processes" in normalized
+    assert "Do not treat synthetic run verification as execution permission" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
