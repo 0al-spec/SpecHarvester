@@ -1006,6 +1006,15 @@ evidence as portable review material while keeping
 `handoffIsExecutionPermission: false`, `handoffIsRegistryAuthority: false`,
 `approvalConsumedByRuntime: false`, `runtimeInvoked: false`, and
 `adapterOutputAccepted: false`.
+P42-T16 adds
+[`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_PACKET.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_PACKET.md)
+and the machine-readable
+`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket`
+fixture. It packages P42-T15 handoff evidence and implementation prerequisites
+as review material while keeping `packetIsExecutionPermission: false`,
+`packetIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
+`runtimeImplemented: false`, `runtimeInvoked: false`, and
+`adapterOutputAccepted: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

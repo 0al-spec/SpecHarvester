@@ -191,3 +191,6 @@ registry truth, and does not treat the handoff as execution permission.
 - P42-T14 defines
   [`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationReport`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_SKELETON.md).
 - P42-T15 adds this runtime invocation evidence handoff.
+- P42-T16 adds
+  [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_PACKET.md)
+  as the next review packet before any runtime implementation task.

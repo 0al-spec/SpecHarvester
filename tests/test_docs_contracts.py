@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def assert_current_next_task(next_text: str) -> None:
     if (
+        "# Next Task: P42-T17 Disabled Explicit Real Local Trusted Adapter Sandbox "
+        "Runtime Implementation Skeleton"
+    ) in next_text:
+        assert_p42_t16_last_archived(next_text)
+        assert_p42_t16_recent(next_text)
+        assert_phase_42_t17_planned(next_text)
+        return
+
+    if (
         "# Next Task: P42-T16 Explicit Real Local Trusted Adapter Sandbox Runtime "
         "Implementation Review Packet"
     ) in next_text:
@@ -5748,6 +5757,104 @@ def assert_p42_t15_recent(next_text: str) -> None:
     assert "networkAccess: none" in normalized
     assert "registryAuthority: false" in normalized
     assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_p42_t16_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T16 Explicit Real Local Trusted Adapter Sandbox Runtime "
+        "Implementation Review Packet"
+    ) in next_text
+
+
+def assert_p42_t16_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P42-T16` added "
+        "`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket`"
+    ) in normalized
+    assert (
+        "explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-"
+        "packet.example.json"
+    ) in next_text
+    assert (
+        "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_PACKET.md"
+    ) in next_text
+    assert (
+        "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket.md"
+        in next_text
+    )
+    assert (
+        "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationEvidenceHandoff"
+        in normalized
+    )
+    assert "pinned SHA-256 digest" in normalized
+    assert "implementation prerequisites" in normalized
+    assert "adapter package identity" in normalized
+    assert "runtime entrypoint isolation" in normalized
+    assert "process spawning policy" in normalized
+    assert "dependency policy" in normalized
+    assert "network policy" in normalized
+    assert "output digest verification" in normalized
+    assert "audit records" in normalized
+    assert "rollback policy" in normalized
+    assert "approval consumption rules" in normalized
+    assert "packetIsExecutionPermission: false" in normalized
+    assert "packetIsRegistryAuthority: false" in normalized
+    assert "packetConsumesApproval: false" in normalized
+    assert "packetImplementsRuntime: false" in normalized
+    assert "operatorApprovalConsumed: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterCodeImportAttempted: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "runtimeInvoked: false" in normalized
+    assert "runtimeImplemented: false" in normalized
+    assert "networkAccess: none" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_phase_42_t17_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P42-T17 Disabled Explicit Real Local Trusted Adapter Sandbox "
+        "Runtime Implementation Skeleton"
+    ) in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert (
+        "`feature/P42-T17-disabled-explicit-real-local-trusted-adapter-sandbox-runtime-"
+        "implementation-skeleton`"
+    ) in next_text
+    assert "disabled explicit real local trusted adapter sandbox runtime" in normalized
+    assert "consumes the P42-T16 review packet" in normalized
+    assert "future runtime implementation surface" in normalized
+    assert "without introducing executable runtime behavior" in normalized
+    assert "machine-readable disabled runtime implementation skeleton fixture" in normalized
+    assert "Reference P42-T16 with a pinned digest" in next_text
+    assert "entrypoint isolation" in normalized
+    assert "process launcher boundary" in normalized
+    assert "dependency policy" in normalized
+    assert "network policy" in normalized
+    assert "output writer" in normalized
+    assert "audit writer" in normalized
+    assert "rollback handler" in normalized
+    assert "approval consumption boundary" in normalized
+    assert "no adapter code loading" in normalized
+    assert "no adapter import" in normalized
+    assert "no process spawning" in normalized
+    assert "no dependency installation" in normalized
+    assert "no package manager invocation" in normalized
+    assert "no network access" in normalized
+    assert "no harvested code execution" in normalized
+    assert "no AI execution" in normalized
+    assert "no package acceptance" in normalized
+    assert "no relation acceptance" in normalized
+    assert "no baseline seeding" in normalized
+    assert "no registry metadata publishing" in normalized
+    assert "no `preview_only` removal" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not treat P42-T16 as execution permission" in normalized
+    assert "Do not consume approval by a real runtime" in normalized
 
 
 def assert_phase_42_t16_planned(next_text: str) -> None:
@@ -23659,6 +23766,512 @@ def test_explicit_real_local_sandbox_runtime_invocation_evidence_handoff_is_docu
         (
             roadmap_docc,
             "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeInvocationEvidenceHandoff",
+        ),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_explicit_real_local_sandbox_runtime_implementation_review_packet_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / (
+            "explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-"
+            "packet.example.json"
+        )
+    )
+    handoff_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / (
+            "explicit-real-local-trusted-adapter-sandbox-runtime-invocation-evidence-"
+            "handoff.example.json"
+        )
+    )
+    github_doc = (
+        ROOT
+        / "docs"
+        / (
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_"
+            "REVIEW_PACKET.md"
+        )
+    )
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket.md"
+    )
+    handoff_doc = (
+        ROOT
+        / "docs"
+        / (
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_"
+            "EVIDENCE_HANDOFF.md"
+        )
+    )
+    handoff_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeInvocationEvidenceHandoff.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    handoff_digest = "sha256:" + hashlib.sha256(handoff_fixture.read_bytes()).hexdigest()
+
+    assert payload["apiVersion"] == (
+        "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-"
+        "implementation-review-packet/v0"
+    )
+    assert (
+        payload["kind"]
+        == "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket"
+    )
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == (
+        "producer_explicit_real_local_trusted_adapter_sandbox_runtime_"
+        "implementation_review_packet_only"
+    )
+    assert payload["contract"] == {
+        "purpose": (
+            "Package the P42-T15 runtime invocation evidence handoff and implementation "
+            "prerequisites for review before any real runtime code is introduced."
+        ),
+        "contractVersion": "0.1.0",
+        "handoffAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_runtime_invocation_"
+            "evidence_handoff_only"
+        ),
+        "packetAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_runtime_"
+            "implementation_review_packet_only"
+        ),
+        "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+        "defaultExecution": "disabled",
+        "packetIsExecutionPermission": False,
+        "packetIsRegistryAuthority": False,
+        "packetConsumesApproval": False,
+        "packetImplementsRuntime": False,
+    }
+
+    handoff = payload["input"]["runtimeInvocationEvidenceHandoff"]
+    assert handoff == {
+        "path": (
+            "tests/fixtures/repository_plugins/"
+            "explicit-real-local-trusted-adapter-sandbox-runtime-invocation-evidence-"
+            "handoff.example.json"
+        ),
+        "digest": handoff_digest,
+        "apiVersion": (
+            "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-"
+            "invocation-evidence-handoff/v0"
+        ),
+        "kind": (
+            "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationEvidenceHandoff"
+        ),
+        "schemaVersion": 1,
+        "authority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_runtime_invocation_"
+            "evidence_handoff_only"
+        ),
+        "requiredStatus": "ready_for_review",
+        "requiredMode": "runtime_invocation_evidence_handoff_no_execution",
+        "digestVerified": True,
+    }
+    assert_safe_relative_path(handoff["path"])
+
+    assert payload["handoffValidation"] == {
+        "handoffDigestAgreement": True,
+        "handoffStatusAccepted": True,
+        "handoffModeAccepted": True,
+        "handoffReviewOnly": True,
+        "handoffIsExecutionPermission": False,
+        "handoffIsRegistryAuthority": False,
+        "handoffConsumesApproval": False,
+        "handoffRuntimeInvoked": False,
+        "handoffRuntimeImplemented": False,
+        "handoffAdapterOutputAccepted": False,
+    }
+
+    prerequisites = payload["implementationPrerequisites"]
+    assert set(prerequisites) == {
+        "adapterPackageIdentity",
+        "runtimeEntrypointIsolation",
+        "processSpawningPolicy",
+        "dependencyPolicy",
+        "networkPolicy",
+        "outputDigestVerification",
+        "auditRecords",
+        "rollbackPolicy",
+        "approvalConsumptionRules",
+    }
+    assert all(record["required"] is True for record in prerequisites.values())
+    assert all(record["providedByPacket"] is False for record in prerequisites.values())
+    assert prerequisites["processSpawningPolicy"]["processSpawnAllowedByPacket"] is False
+    assert prerequisites["processSpawningPolicy"]["maxProcessCount"] == 1
+    assert prerequisites["dependencyPolicy"]["dependencyInstallation"] == "not_allowed"
+    assert prerequisites["dependencyPolicy"]["packageManagers"] == "not_invoked"
+    assert prerequisites["networkPolicy"] == {
+        "required": True,
+        "providedByPacket": False,
+        "networkAccess": "none",
+        "dnsAllowed": False,
+        "remoteFetchAllowed": False,
+        "futurePolicyRequired": True,
+    }
+    assert prerequisites["approvalConsumptionRules"]["approvalReusable"] is False
+    assert prerequisites["approvalConsumptionRules"]["packetConsumesApproval"] is False
+    assert (
+        prerequisites["approvalConsumptionRules"][
+            "runtimeMayConsumeApprovalOnlyInFutureApprovedRun"
+        ]
+        is True
+    )
+
+    assert payload["packet"] == {
+        "status": "ready_for_implementation_review",
+        "mode": "runtime_implementation_review_packet_no_execution",
+        "handoffArtifactCount": 1,
+        "implementationPrerequisiteCount": 9,
+        "runtimeImplementationAllowed": False,
+        "runtimeInvocationAllowed": False,
+        "approvalConsumptionAllowed": False,
+        "operatorApprovalConsumed": False,
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "networkAccess": "none",
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+
+    expected_accepted = {
+        "handoff_artifact_identity_and_digest_valid",
+        "handoff_status_ready_for_review",
+        "handoff_mode_no_execution",
+        "handoff_review_only_semantics_valid",
+        "handoff_not_execution_permission",
+        "handoff_not_registry_authority",
+        "handoff_does_not_consume_approval",
+        "implementation_prerequisites_recorded",
+        "approval_consumption_rules_recorded",
+        "runtime_entrypoint_isolation_recorded",
+        "process_spawning_policy_recorded",
+        "output_audit_prerequisites_recorded",
+        "packet_preserves_no_runtime_side_effects",
+    }
+    expected_rejected = {
+        "missing_handoff_artifact_rejected",
+        "handoff_digest_mismatch_rejected",
+        "handoff_status_not_ready_rejected",
+        "handoff_mode_not_no_execution_rejected",
+        "unscoped_implementation_review_rejected",
+        "packet_execution_permission_rejected",
+        "packet_registry_authority_rejected",
+        "approval_consumption_rejected",
+        "runtime_implementation_rejected",
+        "runtime_invocation_rejected",
+        "adapter_code_loading_rejected",
+        "adapter_import_rejected",
+        "adapter_process_spawn_rejected",
+        "dependency_installation_rejected",
+        "package_manager_invocation_rejected",
+        "network_access_rejected",
+        "adapter_output_registry_truth_rejected",
+        "missing_rollback_policy_rejected",
+    }
+    expected_blocked = {
+        "runtime_implementation_blocked",
+        "adapter_code_loading_blocked",
+        "adapter_import_blocked",
+        "adapter_process_spawn_blocked",
+        "real_runtime_invocation_blocked",
+        "approval_consumption_blocked",
+        "dependency_installation_blocked",
+        "package_manager_invocation_blocked",
+        "network_access_blocked",
+        "harvested_code_execution_blocked",
+        "ai_execution_blocked",
+        "package_acceptance_blocked",
+        "relation_acceptance_blocked",
+        "baseline_seeding_blocked",
+        "preview_only_removal_blocked",
+        "adapter_output_truth_blocked",
+    }
+    expected_warnings = {
+        "packet_review_only",
+        "future_runtime_implementation_required",
+        "approval_not_consumed",
+        "implementation_prerequisites_not_satisfied_by_packet",
+    }
+    assert {check["code"] for check in payload["acceptedChecks"]} == expected_accepted
+    assert {check["code"] for check in payload["rejectedChecks"]} == expected_rejected
+    assert {check["code"] for check in payload["blockedChecks"]} == expected_blocked
+    assert {check["code"] for check in payload["warningChecks"]} == expected_warnings
+    assert payload["summary"] == {
+        "acceptedCount": len(expected_accepted),
+        "rejectedCount": len(expected_rejected),
+        "blockedCount": len(expected_blocked),
+        "warningCount": len(expected_warnings),
+        "diagnosticCount": 2,
+        "handoffArtifactCount": 1,
+        "implementationPrerequisiteCount": 9,
+        "operatorApprovalBound": True,
+        "approvalConsumedByRuntime": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+    }
+    assert payload["executionBoundary"] == {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "packetIsExecutionPermission": False,
+        "packetIsRegistryAuthority": False,
+        "approvalConsumedByRuntime": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert [diagnostic["severity"] for diagnostic in payload["diagnostics"]] == [
+        "info",
+        "warning",
+    ]
+    assert set(payload["nonAuthorityStatements"]) == {
+        "packet_is_not_execution_permission",
+        "packet_is_not_registry_authority",
+        "packet_does_not_consume_approval",
+        "packet_does_not_implement_runtime",
+        "handoff_is_not_execution_permission",
+        "handoff_is_not_registry_authority",
+        "handoff_does_not_consume_approval",
+        "does_not_load_third_party_adapter_code",
+        "does_not_import_adapter_code",
+        "does_not_execute_real_adapters",
+        "does_not_run_real_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_use_network",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_packet_as_execution_permission",
+        "does_not_grant_registry_authority",
+    }
+    assert payload["followUp"] == {
+        "runtimeInvocationEvidenceHandoffTask": "P42-T15",
+        "realLocalSandboxRuntimeImplementationTask": (
+            "deferred_until_after_runtime_implementation_packet_review"
+        ),
+        "realLocalSandboxRunTask": (
+            "deferred_until_after_explicit_runtime_implementation_and_operator_approval"
+        ),
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        required_title = (
+            "Trusted Local Adapter Explicit Real Local Sandbox Runtime Implementation Review Packet"
+        )
+        for required in (
+            required_title,
+            (
+                "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementation"
+                "ReviewPacket"
+            ),
+            (
+                "explicit-real-local-trusted-adapter-sandbox-runtime-implementation-"
+                "review-packet.example.json"
+            ),
+            (
+                "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-"
+                "implementation-review-packet/v0"
+            ),
+            (
+                "producer_explicit_real_local_trusted_adapter_sandbox_runtime_"
+                "implementation_review_packet_only"
+            ),
+            "defaultExecution: disabled",
+            "packetIsExecutionPermission: false",
+            "packetIsRegistryAuthority: false",
+            "packetConsumesApproval: false",
+            "packetImplementsRuntime: false",
+            handoff_digest,
+            "handoffDigestAgreement: true",
+            "handoffStatusAccepted: true",
+            "handoffModeAccepted: true",
+            "handoffReviewOnly: true",
+            "handoffIsExecutionPermission: false",
+            "handoffIsRegistryAuthority: false",
+            "handoffConsumesApproval: false",
+            "handoffRuntimeInvoked: false",
+            "handoffRuntimeImplemented: false",
+            "handoffAdapterOutputAccepted: false",
+            "adapter package identity",
+            "runtime entrypoint isolation",
+            "process spawning policy",
+            "dependency policy",
+            "network policy",
+            "output digest verification",
+            "audit records",
+            "rollback policy",
+            "approval consumption rules",
+            "runtimeImplementationAllowed: false",
+            "runtimeInvocationAllowed: false",
+            "approvalConsumptionAllowed: false",
+            "operatorApprovalConsumed: false",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterCodeImportAttempted: false",
+            "adapterProcessSpawned: false",
+            "runtimeInvoked: false",
+            "runtimeImplemented: false",
+            "registryAuthority: false",
+            "adapterOutputAccepted: false",
+            "packet review-only",
+            "future runtime implementation required",
+            "implementation prerequisites are not satisfied by the packet",
+            "handoff digest mismatch",
+            "packet execution permission",
+            "packet registry authority",
+            "runtime implementation",
+            "runtime invocation",
+            "adapter import",
+            "missing rollback policy",
+            "does not load third-party adapter code",
+            "does not import adapter code",
+            "does not run adapter processes",
+            "does not install dependencies",
+            "does not invoke package managers",
+            "does not execute harvested repository code",
+            "does not run AI",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "does not treat the packet as execution permission",
+            "P42-T15",
+            "P42-T16",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "packetIsExecutionPermission: true",
+            "packetIsRegistryAuthority: true",
+            "packetConsumesApproval: true",
+            "packetImplementsRuntime: true",
+            "operatorApprovalConsumed: true",
+            "adapterCodeLoaded: true",
+            "adapterCodeImportAttempted: true",
+            "adapterProcessSpawned: true",
+            "runtimeInvoked: true",
+            "runtimeImplemented: true",
+            "networkAccess: allowed",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (
+            handoff_doc,
+            (
+                "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_"
+                "REVIEW_PACKET.md"
+            ),
+        ),
+        (
+            handoff_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket",
+        ),
+        (
+            sandbox_plan,
+            (
+                "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_"
+                "REVIEW_PACKET.md"
+            ),
+        ),
+        (
+            sandbox_plan_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket",
+        ),
+        (
+            docs_index,
+            (
+                "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_"
+                "REVIEW_PACKET.md"
+            ),
+        ),
+        (
+            docc_root,
+            "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket",
+        ),
+        (
+            capabilities,
+            (
+                "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_"
+                "REVIEW_PACKET.md"
+            ),
+        ),
+        (
+            capabilities_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket",
+        ),
+        (
+            roadmap,
+            (
+                "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_"
+                "REVIEW_PACKET.md"
+            ),
+        ),
+        (
+            roadmap_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket",
         ),
     ):
         assert required in path.read_text(encoding="utf-8"), (
