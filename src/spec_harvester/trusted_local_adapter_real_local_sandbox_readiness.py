@@ -9,6 +9,7 @@ from spec_harvester.trusted_local_adapter_runner import (
     artifact_reference,
     digest_string,
     object_value,
+    path_reference_root,
     read_json_object,
     render_json,
 )
@@ -58,6 +59,7 @@ class RealLocalTrustedAdapterSandboxRunReadiness:
             "synthetic sandbox run verifier report",
         )
         verifier_digest = digest_string(self.options.verifier_report)
+        artifact_root = path_reference_root(self.options.verifier_report)
 
         check_verifier_identity(verifier)
         check_verifier_contract(verifier)
@@ -68,6 +70,7 @@ class RealLocalTrustedAdapterSandboxRunReadiness:
 
         verifier_ref = artifact_reference(
             path=self.options.verifier_report,
+            reference_root=artifact_root,
             digest=verifier_digest,
             api_version=SYNTHETIC_SANDBOX_RUN_VERIFIER_API_VERSION,
             kind=SYNTHETIC_SANDBOX_RUN_VERIFIER_KIND,
