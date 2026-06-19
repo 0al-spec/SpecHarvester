@@ -194,3 +194,7 @@ for future trusted local execution. It should build on
 <doc:RepositoryPluginAdapterExecutionPolicy>, and
 <doc:RepositoryPluginAdapterRealLocalValidation> without weakening their
 no-runtime and non-authority guarantees.
+
+Phase 42 continues with <doc:TrustedLocalAdapterRuntimeSandboxPlan>, which
+defines the sandbox contract required before any future adapter process can
+run.
