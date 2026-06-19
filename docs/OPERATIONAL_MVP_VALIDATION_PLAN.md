@@ -62,6 +62,13 @@ fixture captures per-repository draft status, static-only result, AI-enabled
 result, author-ready verdict, evidence precision notes, stop-policy outcome,
 and SpecPM handoff readiness without claiming that a real corpus has run.
 
+P43-T4 records the first real static-only baseline as
+[`OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md`](OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md)
+and the `SpecHarvesterOperationalMVPStaticOnlyBaseline` fixture. The baseline
+uses operator-provided pinned local xyflow, FastAPI, and Gin checkouts and
+records passed preflight, author-ready preview candidates, quality dimensions,
+SpecPM handoff readiness, and the remaining non-authority boundary.
+
 ## Corpus
 
 The corpus is operator-selected and pinned. SpecHarvester must not clone or
@@ -182,6 +189,7 @@ Operational MVP validation is producer-side evidence. It does not:
 - [`SPECS/Workplan.md`](../SPECS/Workplan.md)
 - [`OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md)
 - [`OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md)
+- [`OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md`](OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md)
 - [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_BAR.md`](AUTHOR_READY_DRAFT_QUALITY_BAR.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md)

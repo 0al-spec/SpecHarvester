@@ -763,7 +763,13 @@ machine-readable `SpecHarvesterOperationalMVPValidationReport` fixture. It
 records per-repository draft status, static-only result, AI-enabled result,
 author-ready verdict, evidence precision notes, stop-policy outcome, and SpecPM
 handoff readiness while keeping the example blocked before run instead of
-pretending a real corpus has executed.
+claiming real-corpus evidence.
+P43-T4 adds <doc:OperationalMVPStaticOnlyBaseline> and the machine-readable
+`SpecHarvesterOperationalMVPStaticOnlyBaseline` fixture. It records a real
+static-only run over operator-provided pinned local xyflow, FastAPI, and Gin
+checkouts, with passed preflight, author-ready preview candidates, quality
+dimensions, a partial public-interface-index caveat for xyflow, and no package
+acceptance or registry authority.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

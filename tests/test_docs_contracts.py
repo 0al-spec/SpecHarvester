@@ -38,6 +38,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P43-T5 Operational MVP AI-Enabled Comparison" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
+        assert "`P43-T5`" in next_text
+        assert "AI-enabled comparison" in next_text
+        assert "same pinned corpus" in next_text
+        assert "local OpenAI-compatible provider" in next_text
+        assert "proposal-only" in next_text
+        return
+
     if "# Next Task: P43-T4 Operational MVP Static-Only Quality Baseline" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
@@ -27874,6 +27884,321 @@ def test_operational_mvp_validation_report_fixture_is_documented() -> None:
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P43-T3` Add an operational MVP validation report fixture" in workplan_text
     assert "per-repository draft status" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_static_only_baseline_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t4-operational-mvp-static-only-baseline.example.json"
+    )
+    plan_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t2-operational-mvp-validation-plan.example.json"
+    )
+    report_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t3-operational-mvp-validation-report.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPStaticOnlyBaseline.md"
+    )
+    plan_doc = ROOT / "docs" / "OPERATIONAL_MVP_VALIDATION_PLAN.md"
+    plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPValidationPlan.md"
+    )
+    report_doc = ROOT / "docs" / "OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md"
+    report_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPValidationReportFixture.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.operational-mvp-static-only-baseline/v0"
+    assert payload["kind"] == "SpecHarvesterOperationalMVPStaticOnlyBaseline"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_operational_mvp_static_only_baseline_only"
+    assert payload["phase"] == "P43"
+    assert payload["task"] == "P43-T4"
+    assert payload["reportMode"] == "real_static_only_baseline"
+    assert payload["plan"] == {
+        "path": (
+            "tests/fixtures/operational_mvp_validation/"
+            "p43-t2-operational-mvp-validation-plan.example.json"
+        ),
+        "digest": "sha256:" + hashlib.sha256(plan_path.read_bytes()).hexdigest(),
+        "apiVersion": "spec-harvester.operational-mvp-validation-plan/v0",
+        "kind": "SpecHarvesterOperationalMVPValidationPlan",
+        "authority": "producer_operational_mvp_validation_plan_only",
+    }
+    assert payload["reportFixture"] == {
+        "path": (
+            "tests/fixtures/operational_mvp_validation/"
+            "p43-t3-operational-mvp-validation-report.example.json"
+        ),
+        "digest": "sha256:" + hashlib.sha256(report_fixture_path.read_bytes()).hexdigest(),
+        "apiVersion": "spec-harvester.operational-mvp-validation-report/v0",
+        "kind": "SpecHarvesterOperationalMVPValidationReport",
+        "authority": "producer_operational_mvp_validation_report_only",
+    }
+    assert payload["sourceRun"]["batchReport"]["digest"] == (
+        "sha256:735cc878bc3dc19325c269adf2f2e5e12798373527b37979a92ce6f950062499"
+    )
+    assert payload["sourceRun"]["aiMode"] == {
+        "mode": "disabled",
+        "model": None,
+        "provider": None,
+        "reason": "operator_disabled",
+    }
+    assert payload["sourceRun"]["repositoryProfileSelection"]["mode"] == "auto"
+    assert payload["sourceRun"]["repositoryProfileSelection"]["registryAuthority"] is False
+
+    assert payload["summary"] == {
+        "repositoryResultCount": 3,
+        "verifiedPinnedCheckoutCount": 3,
+        "staticOnlyResultCount": 3,
+        "staticOnlyPassedCount": 3,
+        "candidateCount": 6,
+        "candidatePreflightPassedCount": 6,
+        "relationCount": 3,
+        "aiEnabledResultCount": 3,
+        "authorReadyDraftCount": 3,
+        "needsQualityHardeningCount": 0,
+        "blockedCount": 0,
+        "specpmHandoffReadyCount": 3,
+        "realCorpusRunPerformed": True,
+        "staticOnlyRunPerformed": True,
+    }
+    expected_dimensions = [
+        "validity",
+        "repositorySpecificity",
+        "evidencePrecision",
+        "packageTopology",
+        "claimConservatism",
+        "authorActionability",
+        "SpecPMHandoffReadiness",
+    ]
+    assert payload["qualityDimensionIds"] == expected_dimensions
+    assert payload["sharedStopPolicy"] == {
+        "id": "shared_operational_mvp_stop_policy",
+        "compatibleWithPlan": True,
+        "observedStopConditions": [],
+        "observedCaveats": ["partial_public_interface_index"],
+    }
+
+    results = payload["repositoryResults"]
+    assert {result["repositoryId"] for result in results} == {"xyflow", "fastapi", "gin"}
+    ecosystems = {result["ecosystemFamily"] for result in results}
+    assert ecosystems == {"javascript_typescript", "python", "go"}
+    for result in results:
+        checkout = result["pinnedCheckout"]
+        assert checkout["verified"] is True
+        assert checkout["status"] == "clean"
+        assert checkout["dirtyStatus"] == ""
+        assert len(checkout["exactRevision"]) == 40
+        assert result["draftStatus"] == "author_ready_draft"
+        assert result["staticOnlyResult"]["runMode"] == "static_only"
+        assert result["staticOnlyResult"]["status"] == "passed"
+        assert result["staticOnlyResult"]["preflightStatus"] == "passed"
+        assert result["staticOnlyResult"]["candidateCount"] >= 1
+        assert result["staticOnlyResult"]["aiInvocation"] == "not_run"
+        assert result["staticOnlyResult"]["adapterExecution"] == "not_run"
+        assert result["staticOnlyResult"]["registryAuthority"] is False
+        assert result["aiEnabledResult"] == {
+            "runMode": "ai_enabled_proposal",
+            "status": "not_run",
+            "blockedBy": ["deferred_to_p43_t5"],
+            "aiOutputAuthority": "proposal_only",
+            "adapterExecution": "not_run",
+            "registryAuthority": False,
+        }
+        assert set(result["qualityDimensions"]) == set(expected_dimensions)
+        assert result["qualityDimensions"]["validity"] == "passed"
+        assert result["qualityDimensions"]["SpecPMHandoffReadiness"] == ("reviewable_handoff_ready")
+        assert result["authorReadyVerdict"] == "author_ready_draft"
+        assert result["stopPolicyOutcome"]["outcome"] == "author_ready_draft"
+        assert result["stopPolicyOutcome"]["stopConditions"] == []
+        assert result["specpmHandoffReadiness"]["ready"] is True
+        assert result["specpmHandoffReadiness"]["requiresAuthorReview"] is True
+        assert result["specpmHandoffReadiness"]["registryAuthority"] is False
+        for artifact in result["staticOnlyResult"]["artifacts"].values():
+            assert artifact["path"].startswith(
+                "/tmp/specharvester-p43-t4-operational-mvp-static-only-"
+            )
+            assert artifact["digest"].startswith("sha256:")
+
+    xyflow = {result["repositoryId"]: result for result in results}["xyflow"]
+    assert xyflow["repositoryUrl"] == "git@github.com:SoundBlaster/xyflow.git"
+    assert xyflow["planRepositoryUrl"] == "https://github.com/xyflow/xyflow"
+    assert xyflow["staticOnlyResult"]["candidateCount"] == 4
+    assert xyflow["staticOnlyResult"]["relationCount"] == 3
+    assert xyflow["staticOnlyResult"]["selectedProfileId"] == "generic.package_set.v0"
+    assert xyflow["staticOnlyResult"]["interfaceIndexStatus"] == "partial"
+    assert xyflow["qualityDimensions"]["evidencePrecision"] == (
+        "reviewable_with_partial_interface_index"
+    )
+    assert (
+        "operator_checkout_origin_is_soundblaster_fork_not_canonical_xyflow_upstream"
+        in (xyflow["evidencePrecisionNotes"])
+    )
+    assert xyflow["stopPolicyOutcome"]["caveats"] == ["partial_public_interface_index"]
+
+    fastapi = {result["repositoryId"]: result for result in results}["fastapi"]
+    assert fastapi["staticOnlyResult"]["candidateCount"] == 1
+    assert fastapi["staticOnlyResult"]["interfaceIndexStatus"] == "complete"
+    assert fastapi["qualityDimensions"]["evidencePrecision"] == (
+        "strong_static_public_interface_index"
+    )
+    assert fastapi["staticOnlyResult"]["interfaceIndexSummary"]["symbolCount"] == 6009
+
+    gin = {result["repositoryId"]: result for result in results}["gin"]
+    assert gin["staticOnlyResult"]["candidateCount"] == 1
+    assert gin["staticOnlyResult"]["interfaceIndexStatus"] == "complete"
+    assert gin["staticOnlyResult"]["interfaceIndexSummary"]["symbolCount"] == 456
+
+    assert payload["authorityBoundary"] == {
+        "producerSideEvidence": True,
+        "reportIsRegistryAuthority": False,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "publishesRegistryMetadata": False,
+        "seedsBaselines": False,
+        "removesPreviewOnly": False,
+        "aiOutputAcceptedAsRegistryTruth": False,
+        "adapterOutputAcceptedAsRegistryTruth": False,
+        "trustedLocalAdapterExecutionEnabled": False,
+        "realCorpusRunPerformed": True,
+        "staticOnlyRunPerformed": True,
+        "implicitRepositoryFetchAllowed": False,
+        "networkDiscoveryAllowed": False,
+        "dependencyInstallationAllowed": False,
+        "packageManagerInvocationAllowed": False,
+        "harvestedCodeExecutionAllowed": False,
+    }
+    for statement in (
+        "static_only_run_is_producer_side_evidence",
+        "generated_candidates_remain_preview_only",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_accept_mutable_repository_state",
+        "does_not_execute_harvested_code",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_enable_trusted_local_adapter_execution",
+        "does_not_run_adapter_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_ai_output_as_registry_truth",
+        "does_not_treat_adapter_output_as_registry_truth",
+    ):
+        assert statement in payload["nonAuthorityStatements"]
+    assert payload["followUp"] == {
+        "aiComparisonTask": "P43-T5",
+        "authorHandoffSummaryTask": "P43-T6",
+        "exitReportTask": "P43-T7",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Static-Only Baseline",
+            "P43-T4",
+            "p43-t4-operational-mvp-static-only-baseline.example.json",
+            "operator-provided pinned local corpus",
+            "autonomous-candidate-batch",
+            "--skip-ai",
+            "--repository-profile-selection auto",
+            "xyflow",
+            "FastAPI",
+            "Gin",
+            "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+            "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+            "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+            "sha256:735cc878bc3dc19325c269adf2f2e5e12798373527b37979a92ce6f950062499",
+            "partial_public_interface_index",
+            "SpecPM handoff-ready preview results",
+            "producer-side evidence",
+            "P43-T5",
+            "P43-T6",
+            "P43-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "clone or fetch repositories",
+            "accept mutable repository state",
+            "execute harvested code",
+            "install dependencies",
+            "invoke package managers",
+            "enable trusted local adapter execution",
+            "run adapter code",
+            "run AI",
+            "accept packages",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md"),
+        (capabilities, "OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md"),
+        (capabilities_docc, "OperationalMVPStaticOnlyBaseline"),
+        (roadmap, "OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md"),
+        (roadmap_docc, "OperationalMVPStaticOnlyBaseline"),
+        (plan_doc, "OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md"),
+        (plan_docc, "OperationalMVPStaticOnlyBaseline"),
+        (report_doc, "OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md"),
+        (report_docc, "OperationalMVPStaticOnlyBaseline"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P43-T4` Run the operational MVP validation" in workplan_text
+    assert "static-only quality baseline" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

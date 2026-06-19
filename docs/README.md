@@ -241,6 +241,10 @@ Published DocC site:
    `SpecHarvesterOperationalMVPValidationReport` fixture for per-repository
    draft status, static-only result, AI-enabled result, author-ready verdict,
    evidence precision notes, stop-policy outcome, and SpecPM handoff readiness
+56. [`OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md`](OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md):
+   P43-T4 real local static-only baseline over xyflow, FastAPI, and Gin pinned
+   checkouts, recording passed preflight, author-ready preview candidates,
+   quality dimensions, handoff readiness, and non-authority boundaries
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

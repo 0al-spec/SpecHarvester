@@ -86,6 +86,10 @@ Both result blocks preserve the boundary that P43-T3 defines the report shape
 only. P43-T4 owns static-only baseline results, and P43-T5 owns AI-enabled
 comparison results.
 
+P43-T4 records those static-only baseline results in
+[`OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md`](OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md)
+and the `SpecHarvesterOperationalMVPStaticOnlyBaseline` fixture.
+
 ## Quality Dimensions and Stop Policy
 
 The report uses the same quality dimension ids as P43-T2:
@@ -141,5 +145,6 @@ adapter output as registry truth.
 
 - [`OPERATIONAL_MVP_VALIDATION_PLAN.md`](OPERATIONAL_MVP_VALIDATION_PLAN.md)
 - [`OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md)
+- [`OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md`](OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md)
 - [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md)
