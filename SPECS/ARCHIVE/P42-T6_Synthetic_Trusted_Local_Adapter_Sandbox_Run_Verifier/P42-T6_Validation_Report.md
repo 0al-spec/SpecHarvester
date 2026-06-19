@@ -27,7 +27,7 @@ Passed.
 PYTHONPATH=src pytest tests/test_trusted_local_adapter_synthetic_sandbox_run_verifier.py -q
 ```
 
-Result: `9 passed`.
+Result: `10 passed`.
 
 ```bash
 PYTHONPATH=src pytest tests/test_docs_contracts.py::test_synthetic_trusted_local_adapter_sandbox_run_verifier_is_documented -q
@@ -39,7 +39,7 @@ Result: `1 passed`.
 PYTHONPATH=src pytest tests/test_trusted_local_adapter_synthetic_sandbox_run_verifier.py tests/test_docs_contracts.py::test_synthetic_trusted_local_adapter_sandbox_run_verifier_is_documented -q
 ```
 
-Result: `10 passed`.
+Result: `11 passed`.
 
 ```bash
 PYTHONPATH=src pytest tests/test_docs_contracts.py -q
@@ -51,7 +51,7 @@ Result: `133 passed`.
 PYTHONPATH=src pytest -q
 ```
 
-Result: `830 passed, 1 skipped`.
+Result: `831 passed, 1 skipped`.
 
 ```bash
 PYTHONPATH=src ruff check src tests
@@ -82,7 +82,7 @@ Result: passed.
 PYTHONPATH=src pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90 -q
 ```
 
-Result: `830 passed, 1 skipped`; total coverage `90.53%`.
+Result: `831 passed, 1 skipped`; total coverage `90.53%`.
 
 ```bash
 swift package --allow-writing-to-directory ./.docc-build \

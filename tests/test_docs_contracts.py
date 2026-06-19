@@ -31,9 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    if "# Next Task: P42-T7 Real Local Trusted Adapter Sandbox Run Readiness Gate" in (
-        next_text
-    ):
+    if "# Next Task: P42-T7 Real Local Trusted Adapter Sandbox Run Readiness Gate" in (next_text):
         assert_p42_t6_last_archived(next_text)
         assert_p42_t6_recent(next_text)
         assert_phase_42_t7_planned(next_text)
@@ -5104,10 +5102,7 @@ def assert_phase_42_t7_planned(next_text: str) -> None:
         next_text
     )
     assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
-    assert (
-        "`feature/P42-T7-real-local-trusted-adapter-sandbox-run-readiness-gate`"
-        in next_text
-    )
+    assert "`feature/P42-T7-real-local-trusted-adapter-sandbox-run-readiness-gate`" in next_text
     assert "real local trusted adapter sandbox run readiness gate" in normalized
     assert "P42-T6 verifier report identity" in normalized
     assert "explicit real-run prerequisites" in normalized
