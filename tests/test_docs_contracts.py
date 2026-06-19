@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P38-T5 Repository Plugin Cross-Ecosystem Fixtures" in next_text:
+        assert_p38_t4_last_archived(next_text)
+        assert_p38_t4_recent(next_text)
+        assert_phase_38_t5_planned(next_text)
+        return
+
     if "# Next Task: P38-T4 Repository Plugin Batch Integration" in next_text:
         assert_p38_t3_last_archived(next_text)
         assert_p38_t3_recent(next_text)
@@ -3409,6 +3415,71 @@ def assert_phase_38_t4_planned(next_text: str) -> None:
     assert "must not publish registry metadata" in normalized
     assert "must not remove `preview_only`" in normalized
     assert "must not treat plugin decisions as registry truth" in normalized
+
+
+def assert_p38_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P38-T4 Repository Plugin Batch Integration" in next_text
+
+
+def assert_p38_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P38-T4` connected `SpecHarvesterRepositoryPluginApplicabilityReport` sidecar evidence"
+        in normalized
+    )
+    assert "--repository-plugin-applicability" in next_text
+    assert (
+        "reports/repository-plugin-applicability/repository-plugin-applicability-report.json"
+        in next_text
+    )
+    assert "repositoryPluginApplicability" in next_text
+    assert "SHA-256 digest" in next_text
+    assert "selected/rejected/fallback/ blocked counts" in normalized
+    assert "appliedToDrafting: false" in next_text
+    assert "registryAuthority: false" in next_text
+    assert "status: not_provided" in next_text
+    assert "repositoryPluginApplicabilitySidecarCount: 0" in next_text
+    assert "validates sidecar identity" in normalized
+    assert "does not execute plugins" in normalized
+    assert "load third-party plugin code" in normalized
+    assert "change parser profile behavior" in normalized
+    assert "change repository profile scoring" in normalized
+    assert "run package managers" in normalized
+    assert "install dependencies" in normalized
+    assert "invoke AI" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_38_t5_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P38-T5 Repository Plugin Cross-Ecosystem Fixtures" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P38-T5-repository-plugin-cross-ecosystem-fixtures`" in next_text
+    assert "Phase 38. Repository Plugin Subsystem" in next_text
+    assert "manifest-backed single-package repositories" in normalized
+    assert "workspace or multi-package repositories" in normalized
+    assert "documentation-heavy repositories" in normalized
+    assert "nested package roots" in normalized
+    assert "ambiguous mixed layouts" in normalized
+    assert "language- and framework-agnostic" in normalized
+    assert "must not implement plugin execution" in normalized
+    assert "load third-party code" in normalized
+    assert "run package managers" in normalized
+    assert "install dependencies" in normalized
+    assert "clone or fetch repositories" in normalized
+    assert "execute harvested code" in normalized
+    assert "invoke AI" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+    assert "Add cross-ecosystem plugin applicability fixture examples" in next_text
+    assert "selected, rejected, fallback, and blocked decisions" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
