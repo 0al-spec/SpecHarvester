@@ -125,3 +125,7 @@ as registry truth.
   as the deterministic helper that derives a report from the registry fixture
   and static evidence envelope without reading repository source files,
   executing plugins, invoking package managers, or running AI.
+- `P39-T4` exposes the helper as
+  `repository-plugin-applicability-detect`, reading explicit `--registry` and
+  `--static-evidence-envelope` JSON files, writing the full report to `--out`,
+  and printing compact summary counts.

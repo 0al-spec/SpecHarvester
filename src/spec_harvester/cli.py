@@ -150,6 +150,10 @@ from spec_harvester.real_repo_quality_report import (
     build_quality_report,
     write_quality_report,
 )
+from spec_harvester.repository_plugin_applicability import (
+    evaluate_repository_plugin_applicability,
+    write_repository_plugin_applicability_report,
+)
 from spec_harvester.repository_profile_detection import (
     RepositoryIdentity,
     RepositoryProfileDetectionOptions,
@@ -985,6 +989,35 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional output path for repository-profile-detection.json.",
     )
     repository_profile_detect.set_defaults(func=run_repository_profile_detect)
+
+    repository_plugin_applicability_detect = subcommands.add_parser(
+        "repository-plugin-applicability-detect",
+        help=(
+            "Emit a producer-side repository plugin applicability report from "
+            "a registry and static evidence envelope."
+        ),
+    )
+    repository_plugin_applicability_detect.add_argument(
+        "--registry",
+        type=Path,
+        required=True,
+        help="Path to SpecHarvesterRepositoryPluginRegistry JSON.",
+    )
+    repository_plugin_applicability_detect.add_argument(
+        "--static-evidence-envelope",
+        type=Path,
+        required=True,
+        help="Path to SpecHarvesterRepositoryPluginStaticEvidenceEnvelope JSON.",
+    )
+    repository_plugin_applicability_detect.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output path for repository-plugin-applicability-report.json.",
+    )
+    repository_plugin_applicability_detect.set_defaults(
+        func=run_repository_plugin_applicability_detect
+    )
 
     governance = subcommands.add_parser(
         "governance-report",
@@ -1872,6 +1905,36 @@ def run_repository_profile_detect(args: argparse.Namespace) -> int:
     if args.output is not None:
         write_repository_profile_detection(args.output, payload)
     print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0
+
+
+def run_repository_plugin_applicability_detect(args: argparse.Namespace) -> int:
+    try:
+        registry = _read_json_object(args.registry, "plugin registry")
+        static_evidence = _read_json_object(
+            args.static_evidence_envelope,
+            "static evidence envelope",
+        )
+        payload = evaluate_repository_plugin_applicability(registry, static_evidence)
+        write_repository_plugin_applicability_report(args.out, payload)
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2, sort_keys=True))
+        return 2
+
+    print(
+        json.dumps(
+            {
+                "status": "ok",
+                "output": str(args.out),
+                "apiVersion": payload["apiVersion"],
+                "kind": payload["kind"],
+                "authority": payload["authority"],
+                "summary": payload["summary"],
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
     return 0
 
 

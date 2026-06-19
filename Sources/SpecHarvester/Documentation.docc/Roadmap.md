@@ -507,20 +507,22 @@ The run shows current repository profile selection choosing
 `appliedToDrafting: false` and `registryAuthority: false`.
 
 Phase 39 starts with <doc:StaticRepositoryPluginApplicabilityEvaluator>. It
-P39-T3 adds the deterministic helper that derives
+P39-T3 adds the deterministic helper and P39-T4 adds
+`repository-plugin-applicability-detect`, deriving
 `SpecHarvesterRepositoryPluginApplicabilityReport` from a static evidence
-envelope rather than hand-authored sidecars. The helper remains producer-side
-evidence only: it does not load plugins, execute plugins, read repository
-source files, run package managers, install dependencies, invoke AI, accept
-packages or relations, publish registry metadata, remove `preview_only`, or
-treat plugin decisions as registry truth.
+envelope rather than hand-authored sidecars. The helper and CLI remain
+producer-side evidence only: they do not load plugins, execute plugins, read
+repository source files, run package managers, install dependencies, invoke
+AI, auto-attach generated reports to autonomous batch output, accept packages
+or relations, publish registry metadata, remove `preview_only`, or treat
+plugin decisions as registry truth.
 
 P39-T2 adds <doc:RepositoryPluginStaticEvidenceEnvelopeFixture> and
 `tests/fixtures/repository_plugins/static-evidence-envelope.example.json`.
 The fixture records `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope`,
 safe relative evidence paths, SHA-256 digests, `evidenceKinds[]`, advisory
 signals, and `appliedToDrafting: false` / `registryAuthority: false` sidecar
-boundaries as the bounded input to the P39-T3 helper.
+boundaries as the bounded input to the P39-T3 helper and P39-T4 CLI.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

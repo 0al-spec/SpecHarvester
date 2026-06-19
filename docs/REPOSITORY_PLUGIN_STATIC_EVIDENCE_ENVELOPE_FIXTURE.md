@@ -58,9 +58,10 @@ SpecHarvesterRepositoryPluginRegistry
 ```
 
 P39-T2 defines the envelope only. P39-T3 implements evaluator helper logic.
-P39-T4 owns `repository-plugin-applicability-detect`. P39-T5 owns opt-in
-`autonomous-candidate-batch` integration. P39-T6 owns real multi-repository
-validation.
+P39-T4 exposes that helper as `repository-plugin-applicability-detect` with
+explicit `--registry`, `--static-evidence-envelope`, and `--out` inputs.
+P39-T5 owns opt-in `autonomous-candidate-batch` integration. P39-T6 owns real
+multi-repository validation.
 
 ## Evidence Kinds
 

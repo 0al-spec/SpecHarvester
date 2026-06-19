@@ -273,16 +273,20 @@ Phase 38 does not rewrite those mechanisms. It defines the common vocabulary
 that future tasks can use to register them, evaluate applicability, emit
 sidecar evidence, and review decisions consistently.
 
-Phase 39 starts the static evaluator layer in
+Phase 39 adds the static evaluator layer in
 [`STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`](STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md).
-That plan keeps the same registry/applicability vocabulary but moves from
-operator-authored sidecars toward deterministic derivation from a static
-evidence envelope.
+The helper and `repository-plugin-applicability-detect` CLI keep the same
+registry/applicability vocabulary but move from operator-authored sidecars
+toward deterministic derivation from a static evidence envelope.
 
 P39-T2 records the static evidence envelope fixture in
 [`REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`](REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md)
 and
 `tests/fixtures/repository_plugins/static-evidence-envelope.example.json`.
+
+P39-T4 exposes the derivation as an explicit CLI command. It reads only
+`--registry` and `--static-evidence-envelope` JSON files, writes the full
+report to `--out`, and does not change autonomous batch behavior.
 
 ## Trust Boundary
 

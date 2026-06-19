@@ -57,12 +57,13 @@ Published DocC site:
    real FastMCP plugin evidence comparison proving the applicability sidecar
    path on a pinned local checkout without plugin execution
 20. [`STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`](STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md):
-   Phase 39 plan for deriving repository plugin applicability reports from
-   bounded static evidence instead of hand-authored sidecars
+   Phase 39 helper and `repository-plugin-applicability-detect` CLI for
+   deriving repository plugin applicability reports from bounded static
+   evidence instead of hand-authored sidecars
 21. [`REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`](REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md):
    machine-readable
    `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope` fixture for static
-   evidence available to future plugin applicability evaluation
+   evidence available to plugin applicability evaluation
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
