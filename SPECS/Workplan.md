@@ -1810,40 +1810,42 @@ Acceptance:
   linkage while preserving no adapter code loading, no process spawning, no
   dependency installation, no network access, no registry authority, and no
   adapter output acceptance.
-- [ ] `P42-T11` Add an explicit real local trusted adapter sandbox runner
+- [x] `P42-T11` Add an explicit real local trusted adapter sandbox runner
   evidence handoff fixture that packages the P42-T8 request, P42-T9 preflight,
   and P42-T10 disabled runner skeleton as review evidence while preserving no
   adapter execution, no registry authority, and no adapter output truth.
+- [ ] `P42-T12` Add an explicit real local trusted adapter sandbox runtime
+  implementation review gate that consumes the P42-T11 evidence handoff,
+  records runtime implementation prerequisites, and refuses real adapter
+  execution until a separate operator-approved runtime task exists.
 
 Motivation:
 
-- Phase 41 proves the request, preflight, disabled runner report, batch handoff,
-  and real local readiness validation path. The next layer must define the
-  sandbox contract before any adapter process can run.
-- Real adapter execution needs more than operator opt-in: process isolation,
-  adapter package identity, dependency isolation, environment sealing,
-  filesystem allowlists, output verification, and replayable approval must be
-  documented first.
-- Planning the sandbox boundary keeps future ecosystem-specific adapters useful
-  for quality without turning SpecHarvester into an unbounded local execution
-  engine.
+- P42-T11 provides portable request/preflight/disabled-runner evidence, but a
+  future runtime implementation still needs an explicit review gate before any
+  adapter code can be loaded or any process can be spawned.
+- A runtime implementation gate should separate "the evidence handoff is
+  coherent" from "a local operator approved this runtime implementation to
+  execute one bounded adapter run".
+- Keeping the next layer as a review gate prevents P42 evidence artifacts from
+  becoming implicit execution permission.
 
 Goal:
 
-- Define the language- and framework-agnostic sandbox/runtime boundary that
-  future trusted local adapter execution must satisfy before implementation.
+- Define the machine-readable implementation review gate required before any
+  future real local trusted adapter sandbox runtime task can execute adapters.
 
 Acceptance:
 
-- The phase starts with documentation and machine-readable planning only.
-- Synthetic approved runs remain fixtures until the sandbox runner implementation
-  and real adapter execution gates are reviewed separately.
-- Synthetic approved run verification remains a producer-side review gate and
-  must not execute adapters.
-- No task may enable adapter execution by default.
-- Any future runtime must require explicit operator approval, bounded process
-  execution, safe input allowlists, sealed environment, dependency isolation,
-  network-deny-by-default policy, output digests, and review-only authority.
-- Runtime outputs remain producer-side evidence and never accept packages,
-  accept relations, seed baselines, publish registry metadata, remove
-  `preview_only`, or treat adapter output as registry truth.
+- P42-T12 references P42-T11 with pinned digest.
+- P42-T12 validates that request/preflight/disabled-runner evidence handoff is
+  review-only and still not execution permission.
+- P42-T12 records runtime implementation prerequisites: explicit operator
+  approval, adapter package identity, process isolation, safe input allowlists,
+  sealed environment, dependency isolation, network-deny-by-default policy,
+  output digests, audit records, rollback policy, and review-only authority.
+- P42-T12 blocks adapter code loading, adapter imports, process spawning,
+  dependency installation, package-manager invocation, network access,
+  harvested-code execution, AI execution, package/relation acceptance, baseline
+  seeding, registry metadata publishing, `preview_only` removal, and adapter
+  output truth.

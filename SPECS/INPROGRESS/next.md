@@ -1,65 +1,71 @@
-# Next Task: P42-T11 Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff
+# Next Task: P42-T12 Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Review Gate
 
-**Status:** In Progress
-**Branch:** `feature/P42-T11-explicit-real-local-trusted-adapter-sandbox-runner-evidence-handoff`
+**Status:** Planned
+**Branch:** `feature/P42-T12-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-gate`
 **Phase:** Phase 42. Trusted Local Adapter Runtime Sandbox
-**Last Archived:** P42-T10 Disabled Explicit Real Local Trusted Adapter Sandbox Runner Skeleton
+**Last Archived:** P42-T11 Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff
 
 ## Recently Archived
 
-- `P42-T10` added
-  `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport`.
-- The disabled runner skeleton fixture lives at
-  `tests/fixtures/repository_plugins/disabled-explicit-real-local-trusted-adapter-sandbox-runner.example.json`.
+- `P42-T11` added
+  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff`.
+- The handoff fixture lives at
+  `tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-runner-evidence-handoff.example.json`.
 - GitHub docs are in
-  `docs/TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md`.
+  `docs/TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_EVIDENCE_HANDOFF.md`.
 - DocC docs are in
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton.md`.
-- The skeleton references the P42-T8
-  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest` fixture and
-  the P42-T9
-  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport`
-  fixture with pinned SHA-256 digests.
-- The skeleton validates request/preflight digest agreement, preflight result
-  status, `preflight_passed_review_only` decision semantics, no-execution
-  boundaries, no consumed operator approval, disabled adapter execution,
-  disabled adapter code loading, disabled process spawning, disabled runtime
-  side effects, disabled registry authority, and disabled adapter output
-  acceptance.
-- The skeleton records accepted, rejected, blocked, and warning checks for
-  missing inputs, digest mismatch, non-review-only preflight decisions,
-  execution permission drift, operator approval consumption, network access,
-  dependency installation, package manager invocation, package/relation
-  acceptance, baseline seeding, `preview_only` removal, and adapter output as
-  registry truth.
-- The skeleton result remains review evidence only and preserves
-  `runnerIsExecutionPermission: false`, `runnerIsOperatorApproval: false`,
-  `runnerIsRegistryAuthority: false`, `adapterExecution: not_run`,
-  `adapterCodeLoaded: false`, `adapterCodeImportAttempted: false`,
-  `adapterProcessSpawned: false`, `executedAdapterCount: 0`,
-  `runtimeInvoked: false`, `runtimeImplemented: false`,
-  `registryAuthority: false`, and `adapterOutputAccepted: false`.
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterExplicitRealLocalSandboxRunnerEvidenceHandoff.md`.
+- The handoff packages the P42-T8
+  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest`, P42-T9
+  `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport`,
+  and P42-T10
+  `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport`
+  fixtures with pinned SHA-256 digests.
+- The handoff validates request/preflight/disabled-runner identity, digest
+  agreement, preflight result status, disabled runner status, review-only
+  artifact semantics, no execution permission, no operator approval, no
+  registry authority, and no adapter output truth.
+- The handoff keeps `handoffIsExecutionPermission: false`,
+  `handoffIsOperatorApproval: false`, `handoffIsRegistryAuthority: false`,
+  `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+  `adapterCodeImportAttempted: false`, `adapterProcessSpawned: false`,
+  `executedAdapterCount: 0`, `runtimeInvoked: false`,
+  `runtimeImplemented: false`, `registryAuthority: false`, and
+  `adapterOutputAccepted: false`.
 
 ## Task
 
-Add an explicit real local trusted adapter sandbox runner evidence handoff
-fixture that packages the P42-T8 request, P42-T9 preflight, and P42-T10
-disabled runner skeleton as review evidence without enabling real adapter
-execution.
+Add an explicit real local trusted adapter sandbox runtime implementation review
+gate that consumes the P42-T11 evidence handoff, records runtime implementation
+prerequisites, and refuses real adapter execution until a separate
+operator-approved runtime task exists.
 
 ## Why This Is Next
 
-P42-T10 proves the disabled consumer skeleton can validate request/preflight
-linkage. The next safe layer is a handoff artifact that can carry the request,
-preflight, and disabled skeleton report together for maintainer review without
-turning the skeleton into execution permission.
+P42-T11 packages request/preflight/disabled-runner evidence into a portable
+handoff. The next safe layer is not a runtime implementation yet; it is a gate
+that makes future runtime prerequisites machine-readable and keeps the evidence
+handoff from becoming implicit execution permission.
 
 ## Scope
 
-- Add a machine-readable runner evidence handoff fixture.
-- Reference P42-T8 request, P42-T9 preflight, and P42-T10 disabled runner
-  skeleton with pinned digests.
-- Validate artifact identity and digest agreement across the handoff set.
+- Add a machine-readable runtime implementation review gate fixture.
+- Reference the P42-T11 evidence handoff with a pinned digest.
+- Validate that the handoff remains review-only and cannot be treated as
+  execution permission, operator approval, registry authority, or adapter output
+  truth.
+- Record runtime implementation prerequisites:
+  - explicit operator approval;
+  - adapter package identity;
+  - process isolation;
+  - safe input allowlists;
+  - sealed environment;
+  - dependency isolation;
+  - network-deny-by-default policy;
+  - output digests;
+  - audit records;
+  - rollback policy;
+  - review-only authority.
 - Preserve no adapter code loading, no process spawning, no dependency
   installation, no package manager invocation, no network access, no harvested
   code execution, and no AI execution.
@@ -72,6 +78,7 @@ turning the skeleton into execution permission.
 
 - Do not implement real adapter execution.
 - Do not load third-party adapter code.
+- Do not import adapter code.
 - Do not spawn real adapter processes.
 - Do not install dependencies.
 - Do not invoke package managers.
@@ -82,81 +89,6 @@ turning the skeleton into execution permission.
 - Do not seed baselines.
 - Do not publish registry metadata.
 - Do not remove `preview_only`.
-- Do not treat request/preflight/disabled-runner artifacts as execution
-  permission.
+- Do not treat P42-T11 as execution permission.
+- Do not treat the review gate as operator approval.
 - Do not treat adapter output as registry truth.
-
-## Phase 42. Trusted Local Adapter Runtime Sandbox
-
-- [x] `P42-T1` Document the trusted local adapter runtime sandbox plan and add
-  the next-task scaffold for turning Phase 41 no-execution readiness into a
-  future explicitly approved sandboxed adapter runtime without enabling adapter
-  execution yet.
-- [x] `P42-T2` Add a machine-readable
-  `SpecHarvesterTrustedLocalAdapterSandboxContract` fixture that records
-  adapter package identity, sandbox policy identity, operator approval
-  requirements, filesystem/environment/network/dependency policy, output
-  verification, audit records, and non-authority statements before any runtime
-  implementation.
-- [x] `P42-T3` Add a trusted local adapter sandbox preflight report fixture that
-  validates `SpecHarvesterTrustedLocalAdapterSandboxContract` identity,
-  operator approval requirements, process/filesystem/environment/dependency/
-  network policy, output verification, audit requirements, and non-authority
-  boundaries before any sandbox runner implementation.
-- [x] `P42-T4` Add disabled trusted local adapter sandbox runner validation that
-  checks sandbox contract and sandbox preflight report linkage while preserving
-  no adapter code loading, no process spawning, no dependency installation, no
-  network access, and no registry authority.
-- [x] `P42-T5` Add an explicitly approved synthetic trusted local adapter
-  sandbox run fixture that records operator approval binding, sandbox runner
-  validation input, synthetic adapter output candidates, output digests, audit
-  records, and non-authority statements without running a real adapter process.
-- [x] `P42-T6` Add a synthetic trusted local adapter sandbox run verifier that
-  checks P42-T5 fixture identity, linked artifact digests, approval binding,
-  synthetic output byte sizes/digests, audit requirements, and no-real-execution
-  boundaries without enabling real adapter execution.
-- [x] `P42-T7` Add a real local trusted adapter sandbox run readiness gate that
-  checks the P42-T6 verifier report plus explicit real-run prerequisites,
-  sandbox runtime availability, filesystem/output policy, audit requirements,
-  and operator approval requirements while still refusing to load adapter code
-  or spawn adapter processes.
-- [x] `P42-T8` Add an explicit real local trusted adapter sandbox run request
-  fixture that records a future real-run review request, scoped operator
-  approval requirements, verifier/readiness references, runtime policy,
-  filesystem/output/audit declarations, and non-authority statements while
-  still refusing to load adapter code or spawn adapter processes.
-- [x] `P42-T9` Add an explicit real local trusted adapter sandbox run request
-  preflight fixture that validates the P42-T8 request identity, prerequisite
-  verifier/readiness evidence requirements, scoped approval binding, runtime
-  policy, filesystem/output/audit declarations, and non-authority statements
-  while still refusing to grant execution permission or spawn adapter
-  processes.
-- [x] `P42-T10` Add a disabled explicit real local trusted adapter sandbox
-  runner skeleton that validates the P42-T8 request and P42-T9 preflight
-  linkage while preserving no adapter code loading, no process spawning, no
-  dependency installation, no network access, no registry authority, and no
-  adapter output acceptance.
-- [ ] `P42-T11` Add an explicit real local trusted adapter sandbox runner
-  evidence handoff fixture that packages the P42-T8 request, P42-T9 preflight,
-  and P42-T10 disabled runner skeleton as review evidence while preserving no
-  adapter execution, no registry authority, and no adapter output truth.
-
-Motivation:
-
-- Request/preflight/disabled-runner artifacts need a portable handoff boundary
-  before any future runtime implementation can be reviewed.
-- The handoff should keep all linked artifacts review-only and make authority
-  boundaries machine-readable.
-
-Goal:
-
-- Provide the review evidence handoff boundary for the explicit real local
-  trusted adapter sandbox runner path.
-
-Acceptance:
-
-- The handoff fixture references P42-T8, P42-T9, and P42-T10 artifacts with
-  pinned digests.
-- The handoff fixture cannot be interpreted as execution permission, operator
-  approval, registry authority, package/relation acceptance, or adapter output
-  truth.

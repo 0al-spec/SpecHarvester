@@ -4,7 +4,7 @@
 
 P42-T11 Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff
 
-## Result
+## Verdict
 
 PASS
 
