@@ -93,6 +93,10 @@ Published DocC site:
    P40-T6 static fixture matrix for adapter manifest/preflight expectations
    across single-package, workspace, documentation-heavy, nested-root, and
    ambiguous mixed repository layouts
+29. [`REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`](REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md):
+   P40-T7 real local adapter-contract validation for FastMCP, FastAPI,
+   xyflow, and Gin pinned checkouts, proving adapter evidence remains
+   producer-side and `adapterExecution: not_run`
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

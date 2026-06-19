@@ -257,4 +257,5 @@ The batch path must record:
 - `P40-T6`: add
   [`REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md`](REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md)
   as the static cross-ecosystem adapter contract fixture matrix.
-- `P40-T7`: run real local adapter-contract validation.
+- `P40-T7`: record real local adapter-contract validation
+  ([`REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`](REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md)).

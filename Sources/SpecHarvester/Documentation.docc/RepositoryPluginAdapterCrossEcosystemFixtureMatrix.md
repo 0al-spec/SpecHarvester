@@ -65,5 +65,6 @@ Each case records `executedAdapterCount: 0`,
 
 P40-T5 connects operator-supplied adapter manifest/preflight sidecars to
 <doc:AutonomousCandidateBatch> as `repositoryPluginAdapterEvidence`. P40-T7
-should run real local adapter-contract validation over existing pinned
-checkouts while proving that adapters remain producer-side evidence only.
+records <doc:RepositoryPluginAdapterRealLocalValidation> over FastMCP,
+FastAPI, xyflow, and Gin pinned checkouts while proving that adapters remain
+producer-side evidence only.

@@ -1660,7 +1660,7 @@ Acceptance:
   manifest-backed single packages, workspaces, documentation-heavy
   repositories, nested package roots, and ambiguous mixed layouts without
   loading third-party adapter code.
-- [ ] `P40-T7` Run a real local adapter-contract validation over existing
+- [x] `P40-T7` Run a real local adapter-contract validation over existing
   pinned checkouts, comparing FastMCP, FastAPI, xyflow, and at least one
   additional ecosystem shape when available, while proving that adapters remain
   producer-side evidence only.

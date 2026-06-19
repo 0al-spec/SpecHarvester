@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 40 Complete" in next_text:
+        assert_p40_t7_last_archived(next_text)
+        assert_p40_t7_recent(next_text)
+        assert_phase_40_complete(next_text)
+        return
+
     if "# Next Task: P40-T7 Real Local Adapter-Contract Validation" in next_text:
         assert_p40_t6_last_archived(next_text)
         assert_p40_t6_recent(next_text)
@@ -4377,6 +4383,42 @@ def assert_phase_40_t7_planned(next_text: str) -> None:
     assert "Do not publish registry metadata" in normalized
     assert "Do not remove `preview_only`" in normalized
     assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p40_t7_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P40-T7 Real Local Adapter-Contract Validation" in next_text
+
+
+def assert_p40_t7_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P40-T7` recorded real local adapter-contract validation" in normalized
+    assert "p40-t7-real-local-adapter-contract-validation.example.json" in next_text
+    assert "FastMCP" in next_text
+    assert "FastAPI" in next_text
+    assert "xyflow" in next_text
+    assert "Gin" in next_text
+    assert "nested_package_roots" in normalized
+    assert "documentation_heavy_repository" in normalized
+    assert "workspace_or_multi_package" in normalized
+    assert "manifest_backed_single_package" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "producer-side evidence only" in normalized
+
+
+def assert_phase_40_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 40 Complete" in next_text
+    assert "**Status:** Complete" in next_text
+    assert "Phase 40. Repository Plugin Adapter Contract" in next_text
+    assert "language- and framework-agnostic adapter contract" in normalized
+    assert "adapter manifest fixture" in normalized
+    assert "adapter preflight report fixture" in normalized
+    assert "disabled-by-default execution policy" in normalized
+    assert "autonomous batch adapter evidence handoff" in normalized
+    assert "cross-ecosystem adapter fixture matrix" in normalized
+    assert "real local adapter-contract validation" in normalized
+    assert "Future adapter runtime work must preserve explicit opt-in" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -16165,6 +16207,322 @@ def test_repository_plugin_adapter_cross_ecosystem_fixture_matrix_is_documented(
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P40-T6` Record a cross-ecosystem adapter contract fixture matrix" in (workplan_text)
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_adapter_real_local_validation_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "adapter_real_runs"
+        / "p40-t7-real-local-adapter-contract-validation.example.json"
+    )
+    manifest = ROOT / "tests" / "fixtures" / "repository_plugins" / "adapter-manifest.example.json"
+    preflight = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "adapter-preflight-report.example.json"
+    )
+    matrix = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "adapter_cross_ecosystem"
+        / "adapter-fixture-matrix.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterRealLocalValidation.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    adapter_contract = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"
+    adapter_contract_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterContract.md"
+    )
+    matrix_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"
+    matrix_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterCrossEcosystemFixtureMatrix.md"
+    )
+    manifest_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"
+    manifest_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterManifestFixture.md"
+    )
+    preflight_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"
+    preflight_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterPreflightReportFixture.md"
+    )
+    execution_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md"
+    execution_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterExecutionPolicy.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.repository-plugin-adapter-real-local-validation/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterRepositoryPluginAdapterRealLocalValidation"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_plugin_adapter_real_validation_only"
+    assert payload["task"] == "P40-T7"
+    assert payload["sourceMode"] == "existing_pinned_local_checkouts_only"
+    assert payload["languagePolicy"] == "ecosystem_example_only"
+    assert payload["manifest"] == {
+        "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+        "digest": f"sha256:{hashlib.sha256(manifest.read_bytes()).hexdigest()}",
+        "kind": "SpecHarvesterRepositoryPluginAdapterManifest",
+        "authority": "producer_plugin_adapter_manifest_only",
+    }
+    assert payload["preflightTemplate"] == {
+        "path": "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+        "digest": f"sha256:{hashlib.sha256(preflight.read_bytes()).hexdigest()}",
+        "kind": "SpecHarvesterRepositoryPluginAdapterPreflightReport",
+        "authority": "producer_plugin_adapter_preflight_only",
+    }
+    assert payload["matrix"] == {
+        "path": (
+            "tests/fixtures/repository_plugins/adapter_cross_ecosystem/"
+            "adapter-fixture-matrix.example.json"
+        ),
+        "digest": f"sha256:{hashlib.sha256(matrix.read_bytes()).hexdigest()}",
+        "kind": "SpecHarvesterRepositoryPluginAdapterCrossEcosystemFixtureMatrix",
+        "authority": "producer_plugin_adapter_fixture_matrix_only",
+    }
+    assert payload["adapterExecution"] == {
+        "adapterCodeLoaded": False,
+        "adapterExecution": "not_run",
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "networkAccess": "none",
+        "harvestedCodeExecution": "not_allowed",
+        "processExecution": "not_allowed",
+        "ai": "not_run",
+    }
+
+    repositories = {record["repositoryId"]: record for record in payload["repositories"]}
+    assert set(repositories) == {"fastmcp", "fastapi", "xyflow", "gin"}
+    assert payload["summary"]["repositoryCount"] == len(repositories) == 4
+    assert payload["summary"]["matrixShapeCount"] == 4
+    assert {record["matchedMatrixShape"] for record in repositories.values()} == {
+        "nested_package_roots",
+        "documentation_heavy_repository",
+        "workspace_or_multi_package",
+        "manifest_backed_single_package",
+    }
+    assert repositories["fastmcp"]["localCheckout"]["revision"] == (
+        "3b8538e2422a1c43fdb69661c610de7985b785f2"
+    )
+    assert repositories["fastapi"]["localCheckout"]["revision"] == (
+        "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263"
+    )
+    assert repositories["xyflow"]["localCheckout"]["revision"] == (
+        "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd"
+    )
+    assert repositories["gin"]["localCheckout"]["revision"] == (
+        "5f4f9643258dc2a65e684b63f12c8d543c936c67"
+    )
+
+    total_allowed = 0
+    total_rejected = 0
+    total_fallback = 0
+    total_blocked = 0
+    total_diagnostics = 0
+    seen_diagnostics: set[str] = set()
+    for record in repositories.values():
+        local = record["localCheckout"]
+        assert local["absolutePathPersisted"] is False
+        assert local["pathHint"].startswith("../")
+        assert not local["pathHint"].startswith("/")
+        assert len(local["revision"]) == 40
+
+        static = record["staticEvidence"]
+        assert static["inputAuthority"] == "static_local_evidence_only"
+        for path in static["paths"]:
+            assert path
+            assert not path.startswith("/")
+            assert "\\" not in path
+            assert ".." not in Path(path).parts
+
+        decisions = record["decisions"]
+        preflight = record["expectedAdapterEvidence"]["preflight"]
+        assert preflight["allowedCount"] == len(decisions["allowedAdapters"])
+        assert preflight["rejectedCount"] == len(decisions["rejectedAdapters"])
+        assert preflight["fallbackCount"] == len(decisions["fallbackAdapters"])
+        assert preflight["blockedCount"] == len(decisions["blockedAdapters"])
+        assert preflight["diagnosticCount"] == len(record["diagnosticCodes"])
+        assert preflight["executedAdapterCount"] == 0
+        assert record["expectedAdapterEvidence"]["sidecarBoundary"] == {
+            "appliedToDrafting": False,
+            "registryAuthority": False,
+            "adapterExecution": "not_run",
+            "adapterOutputAccepted": False,
+        }
+        for adapter_ids in decisions.values():
+            for adapter_id in adapter_ids:
+                assert adapter_id.startswith("spec_harvester.adapters.")
+        total_allowed += preflight["allowedCount"]
+        total_rejected += preflight["rejectedCount"]
+        total_fallback += preflight["fallbackCount"]
+        total_blocked += preflight["blockedCount"]
+        total_diagnostics += preflight["diagnosticCount"]
+        seen_diagnostics.update(record["diagnosticCodes"])
+
+    assert payload["summary"]["allowedCount"] == total_allowed == 8
+    assert payload["summary"]["rejectedCount"] == total_rejected == 4
+    assert payload["summary"]["fallbackCount"] == total_fallback == 2
+    assert payload["summary"]["blockedCount"] == total_blocked == 5
+    assert payload["summary"]["diagnosticCount"] == total_diagnostics == 19
+    assert payload["summary"]["adapterCodeLoaded"] is False
+    assert payload["summary"]["adapterExecution"] == "not_run"
+    assert payload["summary"]["appliedToDrafting"] is False
+    assert payload["summary"]["registryAuthority"] is False
+    assert {
+        "adapter_allowed_static_manifest",
+        "adapter_allowed_static_parser_profile",
+        "adapter_allowed_static_topology",
+        "adapter_rejected_unsafe_or_ambiguous",
+        "adapter_fallback_conservative_static_summary",
+        "adapter_blocked_required_evidence_missing",
+        "adapter_blocked_runtime_required",
+    }.issubset(seen_diagnostics)
+    assert payload["sidecarBoundary"] == {
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterPreflight": "real_local_static_validation_only",
+        "adapterExecution": "not_run",
+        "adapterOutputAccepted": False,
+    }
+    for boundary in (
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_adapter_preflight_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth",
+    ):
+        assert boundary in payload["nonAuthorityStatements"]
+    assert payload["phaseCompletion"] == {
+        "phase": "Phase 40. Repository Plugin Adapter Contract",
+        "status": "complete",
+        "nextState": "Phase 40 Complete",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Adapter Real Local Validation",
+            "SpecHarvesterRepositoryPluginAdapterRealLocalValidation",
+            "p40-t7-real-local-adapter-contract-validation.example.json",
+            "FastMCP",
+            "FastAPI",
+            "xyflow",
+            "Gin",
+            "nested_package_roots",
+            "documentation_heavy_repository",
+            "workspace_or_multi_package",
+            "manifest_backed_single_package",
+            "adapter_allowed_static_manifest",
+            "adapter_allowed_static_parser_profile",
+            "adapter_allowed_static_topology",
+            "adapter_rejected_unsafe_or_ambiguous",
+            "adapter_fallback_conservative_static_summary",
+            "adapter_blocked_required_evidence_missing",
+            "adapter_blocked_runtime_required",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "executedAdapterCount: 0",
+            "registryAuthority: false",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary_text in (
+            "producer-side review evidence only",
+            "does not load third-party adapter code",
+            "execute adapters",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run AI",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat adapter output as registry truth",
+        ):
+            assert boundary_text in normalized, f"Boundary {boundary_text!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"),
+        (docc_root, "docs/REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"),
+        (docc_root, "RepositoryPluginAdapterRealLocalValidation"),
+        (capabilities, "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"),
+        (capabilities_docc, "RepositoryPluginAdapterRealLocalValidation"),
+        (roadmap, "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"),
+        (roadmap_docc, "RepositoryPluginAdapterRealLocalValidation"),
+        (adapter_contract, "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"),
+        (adapter_contract_docc, "RepositoryPluginAdapterRealLocalValidation"),
+        (matrix_doc, "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"),
+        (matrix_docc, "RepositoryPluginAdapterRealLocalValidation"),
+        (manifest_doc, "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"),
+        (manifest_docc, "RepositoryPluginAdapterRealLocalValidation"),
+        (preflight_doc, "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"),
+        (preflight_docc, "RepositoryPluginAdapterRealLocalValidation"),
+        (execution_doc, "REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md"),
+        (execution_docc, "RepositoryPluginAdapterRealLocalValidation"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P40-T7` Run a real local adapter-contract validation" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

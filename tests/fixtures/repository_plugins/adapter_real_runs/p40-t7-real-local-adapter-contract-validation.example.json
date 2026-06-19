@@ -1,0 +1,233 @@
+{
+  "apiVersion": "spec-harvester.repository-plugin-adapter-real-local-validation/v0",
+  "kind": "SpecHarvesterRepositoryPluginAdapterRealLocalValidation",
+  "schemaVersion": 1,
+  "authority": "producer_plugin_adapter_real_validation_only",
+  "task": "P40-T7",
+  "purpose": "Compare real pinned local checkout shapes with the P40-T6 adapter fixture matrix without loading or executing adapter code.",
+  "sourceMode": "existing_pinned_local_checkouts_only",
+  "languagePolicy": "ecosystem_example_only",
+  "manifest": {
+    "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+    "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+    "kind": "SpecHarvesterRepositoryPluginAdapterManifest",
+    "authority": "producer_plugin_adapter_manifest_only"
+  },
+  "preflightTemplate": {
+    "path": "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+    "digest": "sha256:cc5ae90fa5e1df8715e858573048f2bd78f85e1e89023854533f21f6999ae7c1",
+    "kind": "SpecHarvesterRepositoryPluginAdapterPreflightReport",
+    "authority": "producer_plugin_adapter_preflight_only"
+  },
+  "matrix": {
+    "path": "tests/fixtures/repository_plugins/adapter_cross_ecosystem/adapter-fixture-matrix.example.json",
+    "digest": "sha256:947a99d6ad8b7d14bbe157574e1f3c1f19a62437d744aa03375f776ff3149394",
+    "kind": "SpecHarvesterRepositoryPluginAdapterCrossEcosystemFixtureMatrix",
+    "authority": "producer_plugin_adapter_fixture_matrix_only"
+  },
+  "adapterExecution": {
+    "adapterCodeLoaded": false,
+    "adapterExecution": "not_run",
+    "executedAdapterCount": 0,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "networkAccess": "none",
+    "harvestedCodeExecution": "not_allowed",
+    "processExecution": "not_allowed",
+    "ai": "not_run"
+  },
+  "summary": {
+    "repositoryCount": 4,
+    "matrixShapeCount": 4,
+    "allowedCount": 8,
+    "rejectedCount": 4,
+    "fallbackCount": 2,
+    "blockedCount": 5,
+    "diagnosticCount": 19,
+    "executedAdapterCount": 0,
+    "runtimeImplementedAdapterCount": 0,
+    "adapterCodeLoaded": false,
+    "adapterExecution": "not_run",
+    "appliedToDrafting": false,
+    "registryAuthority": false
+  },
+  "repositories": [
+    {
+      "repositoryId": "fastmcp",
+      "displayName": "FastMCP",
+      "matchedMatrixCaseId": "adapter.nested_package_roots.v0",
+      "matchedMatrixShape": "nested_package_roots",
+      "localCheckout": {
+        "pathHint": "../fastmcp",
+        "absolutePathPersisted": false,
+        "origin": "https://github.com/PrefectHQ/fastmcp",
+        "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+        "branchStatus": "main...origin/main"
+      },
+      "staticEvidence": {
+        "inputAuthority": "static_local_evidence_only",
+        "paths": ["README.md", "pyproject.toml", "fastmcp_slim/pyproject.toml", "fastmcp_remote/pyproject.toml", "examples/smart_home/pyproject.toml"],
+        "evidenceKinds": ["local_checkout_revision", "repository_manifest", "nested_manifest", "repository_documentation", "static_evidence_envelope"],
+        "signals": ["root_manifest", "nested_package_roots", "example_package_roots"]
+      },
+      "decisions": {
+        "allowedAdapters": [
+          "spec_harvester.adapters.generic.manifest_summary.v0",
+          "spec_harvester.adapters.generic.package_topology_hint.v0"
+        ],
+        "rejectedAdapters": ["spec_harvester.adapters.example.unsafe_network.v0"],
+        "fallbackAdapters": ["spec_harvester.adapters.generic.parser_profile_summary.v0"],
+        "blockedAdapters": ["spec_harvester.adapters.example.runtime_project_probe.v0"]
+      },
+      "diagnosticCodes": [
+        "adapter_allowed_static_manifest",
+        "adapter_allowed_static_topology",
+        "adapter_fallback_conservative_static_summary",
+        "adapter_rejected_unsafe_or_ambiguous",
+        "adapter_blocked_runtime_required"
+      ],
+      "expectedAdapterEvidence": {
+        "preflight": {"allowedCount": 2, "rejectedCount": 1, "fallbackCount": 1, "blockedCount": 1, "diagnosticCount": 5, "executedAdapterCount": 0},
+        "sidecarBoundary": {"appliedToDrafting": false, "registryAuthority": false, "adapterExecution": "not_run", "adapterOutputAccepted": false}
+      }
+    },
+    {
+      "repositoryId": "fastapi",
+      "displayName": "FastAPI",
+      "matchedMatrixCaseId": "adapter.documentation_heavy.v0",
+      "matchedMatrixShape": "documentation_heavy_repository",
+      "localCheckout": {
+        "pathHint": "../fastapi",
+        "absolutePathPersisted": false,
+        "origin": "https://github.com/fastapi/fastapi",
+        "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "branchStatus": "master...origin/master"
+      },
+      "staticEvidence": {
+        "inputAuthority": "static_local_evidence_only",
+        "paths": ["README.md", "pyproject.toml", "docs/en/mkdocs.yml"],
+        "evidenceKinds": ["local_checkout_revision", "repository_manifest", "documentation_config", "repository_documentation", "static_evidence_envelope"],
+        "signals": ["root_manifest", "documentation_heavy_repository", "framework_documentation_surface"]
+      },
+      "decisions": {
+        "allowedAdapters": ["spec_harvester.adapters.generic.manifest_summary.v0"],
+        "rejectedAdapters": ["spec_harvester.adapters.example.unsafe_network.v0"],
+        "fallbackAdapters": ["spec_harvester.adapters.generic.parser_profile_summary.v0"],
+        "blockedAdapters": ["spec_harvester.adapters.generic.package_topology_hint.v0", "spec_harvester.adapters.example.runtime_docs_probe.v0"]
+      },
+      "diagnosticCodes": [
+        "adapter_allowed_static_manifest",
+        "adapter_fallback_conservative_static_summary",
+        "adapter_rejected_unsafe_or_ambiguous",
+        "adapter_blocked_required_evidence_missing",
+        "adapter_blocked_runtime_required"
+      ],
+      "expectedAdapterEvidence": {
+        "preflight": {"allowedCount": 1, "rejectedCount": 1, "fallbackCount": 1, "blockedCount": 2, "diagnosticCount": 5, "executedAdapterCount": 0},
+        "sidecarBoundary": {"appliedToDrafting": false, "registryAuthority": false, "adapterExecution": "not_run", "adapterOutputAccepted": false}
+      }
+    },
+    {
+      "repositoryId": "xyflow",
+      "displayName": "xyflow",
+      "matchedMatrixCaseId": "adapter.workspace_package_set.v0",
+      "matchedMatrixShape": "workspace_or_multi_package",
+      "localCheckout": {
+        "pathHint": "../xyflow",
+        "absolutePathPersisted": false,
+        "origin": "git@github.com:SoundBlaster/xyflow.git",
+        "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+        "branchStatus": "main...origin/main"
+      },
+      "staticEvidence": {
+        "inputAuthority": "static_local_evidence_only",
+        "paths": ["README.md", "package.json", "pnpm-workspace.yaml", "packages/react/package.json", "packages/svelte/package.json", "packages/system/package.json"],
+        "evidenceKinds": ["local_checkout_revision", "repository_manifest", "workspace_manifest", "member_package_manifest", "repository_documentation", "static_evidence_envelope"],
+        "signals": ["workspace_root", "member_packages", "package_set_shape"]
+      },
+      "decisions": {
+        "allowedAdapters": ["spec_harvester.adapters.generic.parser_profile_summary.v0", "spec_harvester.adapters.generic.manifest_summary.v0", "spec_harvester.adapters.generic.package_topology_hint.v0"],
+        "rejectedAdapters": ["spec_harvester.adapters.example.unsafe_network.v0"],
+        "fallbackAdapters": [],
+        "blockedAdapters": ["spec_harvester.adapters.example.package_manager_probe.v0"]
+      },
+      "diagnosticCodes": [
+        "adapter_allowed_static_parser_profile",
+        "adapter_allowed_static_manifest",
+        "adapter_allowed_static_topology",
+        "adapter_rejected_unsafe_or_ambiguous",
+        "adapter_blocked_runtime_required"
+      ],
+      "expectedAdapterEvidence": {
+        "preflight": {"allowedCount": 3, "rejectedCount": 1, "fallbackCount": 0, "blockedCount": 1, "diagnosticCount": 5, "executedAdapterCount": 0},
+        "sidecarBoundary": {"appliedToDrafting": false, "registryAuthority": false, "adapterExecution": "not_run", "adapterOutputAccepted": false}
+      }
+    },
+    {
+      "repositoryId": "gin",
+      "displayName": "Gin",
+      "matchedMatrixCaseId": "adapter.single_package.v0",
+      "matchedMatrixShape": "manifest_backed_single_package",
+      "localCheckout": {
+        "pathHint": "../gin",
+        "absolutePathPersisted": false,
+        "origin": "https://github.com/gin-gonic/gin.git",
+        "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+        "branchStatus": "master...origin/master"
+      },
+      "staticEvidence": {
+        "inputAuthority": "static_local_evidence_only",
+        "paths": ["README.md", "go.mod", "examples/README.md"],
+        "evidenceKinds": ["local_checkout_revision", "repository_manifest", "repository_documentation", "static_evidence_envelope"],
+        "signals": ["root_manifest", "single_package_shape", "example_documentation"]
+      },
+      "decisions": {
+        "allowedAdapters": ["spec_harvester.adapters.generic.parser_profile_summary.v0", "spec_harvester.adapters.generic.manifest_summary.v0"],
+        "rejectedAdapters": ["spec_harvester.adapters.example.unsafe_network.v0"],
+        "fallbackAdapters": [],
+        "blockedAdapters": ["spec_harvester.adapters.generic.package_topology_hint.v0"]
+      },
+      "diagnosticCodes": [
+        "adapter_allowed_static_parser_profile",
+        "adapter_allowed_static_manifest",
+        "adapter_rejected_unsafe_or_ambiguous",
+        "adapter_blocked_required_evidence_missing"
+      ],
+      "expectedAdapterEvidence": {
+        "preflight": {"allowedCount": 2, "rejectedCount": 1, "fallbackCount": 0, "blockedCount": 1, "diagnosticCount": 4, "executedAdapterCount": 0},
+        "sidecarBoundary": {"appliedToDrafting": false, "registryAuthority": false, "adapterExecution": "not_run", "adapterOutputAccepted": false}
+      }
+    }
+  ],
+  "sidecarBoundary": {
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterPreflight": "real_local_static_validation_only",
+    "adapterExecution": "not_run",
+    "adapterOutputAccepted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_adapter_preflight_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "phaseCompletion": {
+    "phase": "Phase 40. Repository Plugin Adapter Contract",
+    "status": "complete",
+    "nextState": "Phase 40 Complete"
+  }
+}
