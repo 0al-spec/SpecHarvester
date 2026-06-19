@@ -1647,7 +1647,7 @@ Acceptance:
   records allowed, rejected, fallback, and blocked adapter decisions, and
   refuses unsafe execution or missing required evidence before any adapter code
   can run.
-- [ ] `P40-T4` Define adapter execution policy for future local adapters:
+- [x] `P40-T4` Define adapter execution policy for future local adapters:
   default disabled execution, static-only mode, bounded local trusted mode,
   path allowlists, no dependency installation, no package manager invocation,
   no network discovery, no harvested code execution, and explicit operator

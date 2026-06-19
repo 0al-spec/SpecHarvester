@@ -133,16 +133,18 @@ discovery, or unbounded local tool execution.
 
 ## Execution Modes
 
-Adapter execution is disabled until a future policy explicitly enables it.
+P40-T4 defines the execution policy in
+<doc:RepositoryPluginAdapterExecutionPolicy>. Adapter execution is disabled
+until a future implementation explicitly enables it under that policy.
 
 | Mode | Meaning |
 | --- | --- |
-| `none` | No execution. Manifest and preflight only. |
+| `disabled` | No execution. Manifest and preflight only. |
 | `static_only` | Reads declared local evidence artifacts only. |
 | `trusted_local_tool` | Future bounded local adapter mode requiring explicit operator opt-in, sandbox policy, and path allowlists. |
 | `blocked` | Manifest or evidence is unsafe, ambiguous, or unsupported. |
 
-The default mode is `none` or `static_only` with `defaultEnabled: false`.
+The default mode is `disabled` or `static_only` with `defaultEnabled: false`.
 Non-static modes require an explicit future execution policy, an operator
 opt-in, and a passing preflight report.
 

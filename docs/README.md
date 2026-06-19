@@ -80,6 +80,10 @@ Published DocC site:
    machine-readable `SpecHarvesterRepositoryPluginAdapterPreflightReport`
    fixture shape for allowed, rejected, fallback, and blocked adapter
    preflight decisions before adapter code can run
+26. [`REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md`](REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md):
+   disabled-by-default repository plugin adapter execution policy with
+   `static_only`, future `trusted_local_tool`, path allowlist, operator
+   opt-in, and deny-by-default capability rules
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

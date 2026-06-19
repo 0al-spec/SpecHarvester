@@ -177,6 +177,7 @@
 | P40-T1 | [P40-T1_Repository_Plugin_Adapter_Contract/](P40-T1_Repository_Plugin_Adapter_Contract/) | 2026-06-19 | PASS |
 | P40-T2 | [P40-T2_Repository_Plugin_Adapter_Manifest_Fixture/](P40-T2_Repository_Plugin_Adapter_Manifest_Fixture/) | 2026-06-19 | PASS |
 | P40-T3 | [P40-T3_Repository_Plugin_Adapter_Preflight_Report_Fixture/](P40-T3_Repository_Plugin_Adapter_Preflight_Report_Fixture/) | 2026-06-19 | PASS |
+| P40-T4 | [P40-T4_Adapter_Execution_Policy/](P40-T4_Adapter_Execution_Policy/) | 2026-06-19 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -189,6 +190,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p40_t4_adapter_execution_policy.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p40_t3_repository_plugin_adapter_preflight_report_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p39_t2_static_plugin_evidence_envelope_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p39_t1_static_plugin_applicability_evaluator_plan.md` |
@@ -648,3 +650,5 @@
 | 2026-06-19 | P40-T2 | Archived REVIEW_p40_t2_repository_plugin_adapter_manifest_fixture report |
 | 2026-06-19 | P40-T3 | Archived Repository Plugin Adapter Preflight Report Fixture (PASS) |
 | 2026-06-19 | P40-T3 | Archived REVIEW_p40_t3_repository_plugin_adapter_preflight_report_fixture report |
+| 2026-06-19 | P40-T4 | Archived Adapter Execution Policy (PASS) |
+| 2026-06-19 | P40-T4 | Archived REVIEW_p40_t4_adapter_execution_policy report |

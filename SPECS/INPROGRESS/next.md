@@ -1,58 +1,59 @@
-# Next Task: P40-T4 Adapter Execution Policy
+# Next Task: P40-T5 Adapter Evidence Batch Integration
 
 **Status:** Planned
-**Branch:** `feature/P40-T4-adapter-execution-policy`
+**Branch:** `feature/P40-T5-adapter-evidence-batch-integration`
 **Phase:** Phase 40. Repository Plugin Adapter Contract
-**Last Archived:** P40-T3 Repository Plugin Adapter Preflight Report Fixture
+**Last Archived:** P40-T4 Adapter Execution Policy
 
 ## Recently Archived
 
-- `P40-T3` added the first machine-readable
-  `SpecHarvesterRepositoryPluginAdapterPreflightReport` fixture.
-- The fixture is
-  `tests/fixtures/repository_plugins/adapter-preflight-report.example.json`.
+- `P40-T4` documented the disabled-by-default repository plugin adapter
+  execution policy.
 - The GitHub-facing documentation is
-  `docs/REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md`.
+  `docs/REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md`.
 - The DocC mirror is
-  `Sources/SpecHarvester/Documentation.docc/RepositoryPluginAdapterPreflightReportFixture.md`.
-- The report validates the P40-T2 adapter manifest against static evidence
-  availability by safe relative paths and SHA-256 digests.
-- The report records allowed, rejected, fallback, and blocked adapter
-  decisions.
-- The report keeps `adapterCodeLoaded: false`, `adapterExecution: not_run`,
-  and `executedAdapterCount: 0`.
-- The report records `producer_plugin_adapter_preflight_only` authority,
-  `registryAuthority: false`, and producer-side review-only boundaries.
+  `Sources/SpecHarvester/Documentation.docc/RepositoryPluginAdapterExecutionPolicy.md`.
+- The policy defines `disabled`, `static_only`, `trusted_local_tool`, and
+  `blocked` execution modes.
+- `static_only` remains the only current safe mode.
+- Future `trusted_local_tool` requires explicit operator opt-in, path
+  allowlists, bounded resources, output digests, and denied ambient
+  capabilities.
+- The policy records deny-by-default rules: no dependency installation, no
+  package manager invocation, no network discovery, no harvested code
+  execution, no AI/model execution, and no registry write.
+- Adapter output remains producer-side review evidence only.
 
 ## Task
 
-Define adapter execution policy for future local adapters.
+Connect adapter manifest and preflight output to `autonomous-candidate-batch`
+as review-only producer evidence.
 
 ## Why This Is Next
 
-P40-T3 now records adapter preflight decisions before runtime. The next step is
-to define the future execution policy vocabulary and safety rules before any
-adapter loading path exists.
+P40-T2 defines adapter manifests, P40-T3 defines adapter preflight reports, and
+P40-T4 defines execution policy. The next step is to let batch output carry
+operator-supplied adapter evidence as sidecar review data while keeping the
+existing static evaluator path unchanged by default.
 
 ## Scope
 
-- Define default disabled execution for all repository plugin adapters.
-- Define static-only mode as the only currently safe mode.
-- Define future bounded local trusted mode as explicit policy, not
-  implementation.
-- Require path allowlists for every future non-static mode.
-- Require no dependency installation.
-- Require no package manager invocation.
-- Require no network discovery.
-- Require no harvested code execution.
-- Require explicit operator opt-in for every non-static mode.
-- Keep adapter output producer-side review evidence only.
+- Add an opt-in batch evidence path for adapter manifest and preflight output.
+- Keep the existing static evaluator path unchanged unless an operator
+  explicitly supplies adapter evidence.
+- Record adapter manifest path and digest in batch output.
+- Record adapter preflight path and digest in batch output.
+- Record selected, rejected, fallback, and blocked adapter counts.
+- Record `appliedToDrafting: false`.
+- Record `registryAuthority: false`.
+- Record diagnostics as review-only producer evidence.
+- Keep adapter output producer-side evidence only.
 
 ## Non-Goals
 
 - Do not implement adapter loading or execution.
-- Do not connect adapters to autonomous batch.
-- Do not change static plugin applicability evaluation.
+- Do not auto-run adapters.
+- Do not change static plugin applicability defaults.
 - Do not clone or fetch repositories.
 - Do not install dependencies.
 - Do not invoke package managers.
@@ -81,7 +82,7 @@ adapter loading path exists.
   records allowed, rejected, fallback, and blocked adapter decisions, and
   refuses unsafe execution or missing required evidence before any adapter code
   can run.
-- [ ] `P40-T4` Define adapter execution policy for future local adapters:
+- [x] `P40-T4` Define adapter execution policy for future local adapters:
   default disabled execution, static-only mode, bounded local trusted mode,
   path allowlists, no dependency installation, no package manager invocation,
   no network discovery, no harvested code execution, and explicit operator
@@ -101,24 +102,25 @@ adapter loading path exists.
 
 Motivation:
 
-- P40-T1 defined the adapter boundary, P40-T2 declared adapter manifests, and
-  P40-T3 added preflight decisions.
-- Before adapter evidence can participate in broader producer flows, the
-  execution policy must make disabled-by-default behavior explicit.
-- Future ecosystem-specific precision should improve review evidence without
-  granting adapters crawler, build, package-manager, AI, or registry authority.
+- Adapter manifests, preflight, and execution policy are now documented, but
+  batch output cannot yet carry adapter evidence in a structured way.
+- Operators need an explicit opt-in sidecar path before future real validation
+  can compare adapter evidence across repositories.
+- Batch integration must not imply adapter execution or registry authority.
 
 Goal:
 
-- Define the future adapter execution safety policy in a language- and
-  framework-agnostic way before any adapter runtime is implemented.
+- Let `autonomous-candidate-batch` attach operator-supplied adapter manifest
+  and preflight evidence as review-only producer evidence without changing the
+  default static evaluator behavior.
 
 Acceptance:
 
-- The policy keeps adapter execution disabled by default.
-- Static-only mode remains the current safe path.
-- Every future non-static mode requires explicit operator opt-in.
-- Dependency installation, package manager invocation, network discovery, and
-  harvested code execution remain blocked by default.
-- Adapter output remains producer-side review evidence only.
+- Existing batch behavior remains unchanged without adapter evidence inputs.
+- Adapter evidence inputs are opt-in and digest-recorded.
+- Batch output records manifest/preflight paths, digests, counts, diagnostics,
+  and non-authority boundaries.
+- Adapter evidence remains `appliedToDrafting: false` and
+  `registryAuthority: false`.
+- The task does not execute adapters or treat adapter output as registry truth.
 

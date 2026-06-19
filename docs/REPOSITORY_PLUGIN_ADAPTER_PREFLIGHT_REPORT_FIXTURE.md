@@ -114,10 +114,10 @@ adapter output as registry truth.
 
 ## Relationship to Later Tasks
 
-- `P40-T4` defines adapter execution policy.
+- `P40-T4` defines
+  [adapter execution policy](REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md).
 - `P40-T5` connects adapter manifest and preflight output to
   `autonomous-candidate-batch` as review-only producer evidence.
 - `P40-T6` records a cross-ecosystem adapter contract fixture matrix.
 - `P40-T7` records real local adapter-contract validation over existing pinned
   checkouts.
-

@@ -202,6 +202,8 @@ P40-T2 records the first adapter manifest fixture in
 P40-T3 records the first adapter preflight report fixture in
 <doc:RepositoryPluginAdapterPreflightReportFixture> and
 `tests/fixtures/repository_plugins/adapter-preflight-report.example.json`.
+P40-T4 records the disabled-by-default adapter execution policy in
+<doc:RepositoryPluginAdapterExecutionPolicy>.
 
 ## Trust Boundary
 
