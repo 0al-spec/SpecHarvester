@@ -191,6 +191,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p41_t5_trusted_local_adapter_run_evidence_handoff.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p40_t4_adapter_execution_policy.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p40_t3_repository_plugin_adapter_preflight_report_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p39_t2_static_plugin_evidence_envelope_fixture.md` |
@@ -669,3 +670,4 @@
 | 2026-06-19 | P41-T4 | Archived Disabled Trusted Local Adapter Runner Skeleton (PASS) |
 | 2026-06-19 | P41-T4 | Archived REVIEW_p41_t4_disabled_trusted_local_adapter_runner_skeleton report |
 | 2026-06-19 | P41-T5 | Archived Trusted Local Adapter Run Evidence Handoff (PASS) |
+| 2026-06-19 | P41-T5 | Archived REVIEW_p41_t5_trusted_local_adapter_run_evidence_handoff report |
