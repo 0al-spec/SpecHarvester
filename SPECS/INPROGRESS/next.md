@@ -1,6 +1,6 @@
 # Next Task: P40-T5 Adapter Evidence Batch Integration
 
-**Status:** Planned
+**Status:** In Progress
 **Branch:** `feature/P40-T5-adapter-evidence-batch-integration`
 **Phase:** Phase 40. Repository Plugin Adapter Contract
 **Last Archived:** P40-T4 Adapter Execution Policy
@@ -123,4 +123,3 @@ Acceptance:
 - Adapter evidence remains `appliedToDrafting: false` and
   `registryAuthority: false`.
 - The task does not execute adapters or treat adapter output as registry truth.
-
