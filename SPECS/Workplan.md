@@ -1759,3 +1759,39 @@ Acceptance:
 - Adapter runtime artifacts remain producer-side review evidence and never
   accept packages, accept relations, seed baselines, publish registry metadata,
   remove `preview_only`, or treat adapter output as registry truth.
+
+## Phase 42. Trusted Local Adapter Runtime Sandbox
+
+- [ ] `P42-T1` Document the trusted local adapter runtime sandbox plan and add
+  the next-task scaffold for turning Phase 41 no-execution readiness into a
+  future explicitly approved sandboxed adapter runtime without enabling adapter
+  execution yet.
+
+Motivation:
+
+- Phase 41 proves the request, preflight, disabled runner report, batch handoff,
+  and real local readiness validation path. The next layer must define the
+  sandbox contract before any adapter process can run.
+- Real adapter execution needs more than operator opt-in: process isolation,
+  adapter package identity, dependency isolation, environment sealing,
+  filesystem allowlists, output verification, and replayable approval must be
+  documented first.
+- Planning the sandbox boundary keeps future ecosystem-specific adapters useful
+  for quality without turning SpecHarvester into an unbounded local execution
+  engine.
+
+Goal:
+
+- Define the language- and framework-agnostic sandbox/runtime boundary that
+  future trusted local adapter execution must satisfy before implementation.
+
+Acceptance:
+
+- The phase starts with documentation and machine-readable planning only.
+- No task may enable adapter execution by default.
+- Any future runtime must require explicit operator approval, bounded process
+  execution, safe input allowlists, sealed environment, dependency isolation,
+  network-deny-by-default policy, output digests, and review-only authority.
+- Runtime outputs remain producer-side evidence and never accept packages,
+  accept relations, seed baselines, publish registry metadata, remove
+  `preview_only`, or treat adapter output as registry truth.
