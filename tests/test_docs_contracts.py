@@ -3389,7 +3389,7 @@ def assert_p38_t3_recent(next_text: str) -> None:
 def assert_phase_38_t4_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P38-T4 Repository Plugin Batch Integration" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Planned" in next_text
     assert "`feature/P38-T4-repository-plugin-batch-integration`" in next_text
     assert "Phase 38. Repository Plugin Subsystem" in next_text
     assert "autonomous candidate batch" in normalized
@@ -6682,6 +6682,13 @@ def test_autonomous_candidate_batch_docs_cover_local_lm_studio_boundary() -> Non
             "--skip-ai",
             "--apply-ai-enrichment",
             "--repository-profile-selection auto",
+            "--repository-plugin-applicability",
+            "SpecHarvesterRepositoryPluginApplicabilityReport",
+            "repositoryPluginApplicability",
+            "reports/repository-plugin-applicability/repository-plugin-applicability-report.json",
+            "appliedToDrafting: false",
+            "registryAuthority: false",
+            "sidecar producer evidence",
             "workspace-inventory.json",
             "harvest.json",
             "harvested manifest evidence",

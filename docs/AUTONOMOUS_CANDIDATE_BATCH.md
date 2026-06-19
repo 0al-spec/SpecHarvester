@@ -66,6 +66,25 @@ python3 -m spec_harvester autonomous-candidate-batch \
 `--repository-profile-selection` accepts `none`, `auto`, or an explicit
 profile id. The default is `none`.
 
+Attach repository plugin applicability sidecar evidence while keeping candidate
+drafting generic:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --repository-plugin-applicability reports/repository-plugin-applicability-report.json
+```
+
+`--repository-plugin-applicability` accepts a local
+`SpecHarvesterRepositoryPluginApplicabilityReport` JSON file. The batch
+validates the report identity, copies it to
+`reports/repository-plugin-applicability/repository-plugin-applicability-report.json`,
+and records a `repositoryPluginApplicability` sidecar summary with path, digest,
+authority, selected/rejected/fallback/blocked counts, and diagnostic codes.
+The sidecar records `appliedToDrafting: false` and `registryAuthority: false`.
+
 In `auto` mode, repository profile detection first uses
 `workspace-inventory.json` workspace and member manifest records. If workspace
 inventory has no manifest records, the batch falls back to already-collected
@@ -106,6 +125,7 @@ output/
   collected/<repository-id>/harvest.json
   collected/<repository-id>/workspace-inventory.json
   reports/repository-profile-detections/<repository-id>/repository-profile-detection.json
+  reports/repository-plugin-applicability/repository-plugin-applicability-report.json
   package-sets/<repository-id>/package-set-draft.json
   package-sets/<repository-id>/bundle-set-preflight.json
   package-sets/<repository-id>/ai/package-set-ai-draft-proposal.json
@@ -135,6 +155,9 @@ The report records:
 
 - collection status and validation report path;
 - repository profile selection mode and authority;
+- repository plugin applicability sidecar path, digest, authority, summary
+  counts, and diagnostic codes when `--repository-plugin-applicability` is
+  provided;
 - processed, skipped, and failed repository counts;
 - per-repository harvest, workspace inventory, package-set draft, and preflight
   paths;
@@ -159,6 +182,14 @@ existing generic drafting path. Detection output does not accept packages,
 accept relations, remove `preview_only`, publish registry metadata, or treat
 plugin decisions, harvested manifest evidence, or profile hints as registry
 truth.
+
+Repository plugin applicability evidence is sidecar producer evidence.
+It is producer-side sidecar evidence
+only. Even when `--repository-plugin-applicability` records selected plugins,
+the batch records `appliedToDrafting: false`; it does not execute plugins, load
+third-party plugin code, change parser profile behavior, change repository
+profile scoring, accept packages, accept relations, remove `preview_only`,
+publish registry metadata, or treat plugin decisions as registry truth.
 
 ## LM Studio Boundary
 

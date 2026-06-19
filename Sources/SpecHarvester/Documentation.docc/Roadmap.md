@@ -484,10 +484,15 @@ fixture in <doc:RepositoryPluginApplicabilityReportFixture> and
 It records selected, rejected, fallback, and blocked plugin decisions from
 static evidence without running plugin code.
 
-Follow-ups after the applicability fixture:
+P38-T4 connects registry/applicability output to <doc:AutonomousCandidateBatch>
+as `repositoryPluginApplicability` sidecar producer evidence. The batch copies
+the applicability report to
+`reports/repository-plugin-applicability/repository-plugin-applicability-report.json`
+and records path, digest, authority, summary counts, and diagnostic codes while
+keeping `appliedToDrafting: false` and `registryAuthority: false`.
 
-- `P38-T4`: connect registry and applicability output to autonomous candidate
-  batch as sidecar producer evidence;
+Follow-ups after the batch sidecar integration:
+
 - `P38-T5`: add cross-ecosystem plugin subsystem fixtures;
 - `P38-T6`: run one real repository through the plugin subsystem evidence path
   and compare it with the Phase 37 profile selection behavior.

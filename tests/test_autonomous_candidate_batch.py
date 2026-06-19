@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -7,6 +8,10 @@ from spec_harvester.autonomous_candidate_batch import (
     AUTONOMOUS_CANDIDATE_BATCH_API_VERSION,
     AUTONOMOUS_CANDIDATE_BATCH_KIND,
     AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME,
+    REPOSITORY_PLUGIN_APPLICABILITY_API_VERSION,
+    REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY,
+    REPOSITORY_PLUGIN_APPLICABILITY_FILENAME,
+    REPOSITORY_PLUGIN_APPLICABILITY_KIND,
     REPOSITORY_PROFILE_DETECTION_FILENAME,
     AutonomousCandidateBatch,
     AutonomousCandidateBatchOptions,
@@ -37,8 +42,15 @@ def test_autonomous_candidate_batch_runs_offline_preview_pipeline(
     assert report["repositoryProfileSelection"]["mode"] == "none"
     assert report["repositoryProfileSelection"]["authority"] == "producer_profile_selection_only"
     assert report["repositoryProfileSelection"]["advisoryHintsAppliedToDrafting"] is False
+    assert report["repositoryPluginApplicability"] == {
+        "status": "not_provided",
+        "reason": "operator_not_provided",
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+    }
     assert report["summary"]["processedCount"] == 1
     assert report["summary"]["passedPreflightCount"] == 1
+    assert report["summary"]["repositoryPluginApplicabilitySidecarCount"] == 0
     assert report["summary"]["repositoryProfileDetectionCount"] == 1
     assert report["summary"]["repositoryProfileDisabledCount"] == 1
     assert report["summary"]["repositoryProfileSelectedCount"] == 0
@@ -113,6 +125,96 @@ def test_autonomous_candidate_batch_records_auto_repository_profile_selection(
     assert {"hint": "package_set_root", "path": "."} in [
         {"hint": item["hint"], "path": item["path"]} for item in payload["advisoryDownstreamHints"]
     ]
+
+
+def test_autonomous_candidate_batch_records_repository_plugin_applicability_sidecar(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    applicability = write_repository_plugin_applicability_report(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_plugin_applicability=applicability,
+        )
+    )
+
+    sidecar = report["repositoryPluginApplicability"]
+    sidecar_path = Path(sidecar["path"])
+
+    assert report["status"] == "passed"
+    assert report["summary"]["repositoryPluginApplicabilitySidecarCount"] == 1
+    assert sidecar["status"] == "recorded"
+    assert sidecar["source"] == str(applicability)
+    assert sidecar_path == (
+        output
+        / "reports"
+        / "repository-plugin-applicability"
+        / REPOSITORY_PLUGIN_APPLICABILITY_FILENAME
+    )
+    assert sidecar_path.is_file()
+    assert sidecar["digest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(sidecar_path.read_bytes()).hexdigest(),
+    }
+    assert sidecar["apiVersion"] == REPOSITORY_PLUGIN_APPLICABILITY_API_VERSION
+    assert sidecar["kind"] == REPOSITORY_PLUGIN_APPLICABILITY_KIND
+    assert sidecar["schemaVersion"] == 1
+    assert sidecar["authority"] == REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY
+    assert sidecar["summary"] == {
+        "selectedCount": 1,
+        "rejectedCount": 1,
+        "fallbackCount": 1,
+        "blockedCount": 2,
+        "diagnosticCount": 5,
+    }
+    assert sidecar["diagnosticCodes"] == [
+        "plugin_blocked_required_evidence_missing",
+        "plugin_fallback",
+        "plugin_rejected_low_confidence",
+        "plugin_selected",
+    ]
+    assert sidecar["appliedToDrafting"] is False
+    assert sidecar["registryAuthority"] is False
+    assert "plugin_execution" in sidecar["nonGoals"]
+    assert "registry_publication" in sidecar["nonGoals"]
+    assert report["repositories"][0]["packageSetDraft"]["candidateCount"] == 3
+    assert report["repositories"][0]["repositoryProfileDetection"]["decision"] == "disabled"
+
+    copied = json.loads(sidecar_path.read_text(encoding="utf-8"))
+    assert copied["kind"] == REPOSITORY_PLUGIN_APPLICABILITY_KIND
+    assert copied["summary"]["selectedCount"] == 1
+
+
+def test_autonomous_candidate_batch_rejects_invalid_repository_plugin_applicability(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    applicability = write_repository_plugin_applicability_report(tmp_path)
+    payload = json.loads(applicability.read_text(encoding="utf-8"))
+    payload["kind"] = "WrongKind"
+    applicability.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                skip_ai=True,
+                repository_plugin_applicability=applicability,
+            )
+        )
+    except ValueError as exc:
+        assert "unsupported kind" in str(exc)
+    else:
+        raise AssertionError("expected invalid repository plugin applicability report to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
 
 
 def test_autonomous_candidate_batch_uses_harvested_manifest_evidence_when_inventory_empty(
@@ -601,6 +703,174 @@ repositories:
         encoding="utf-8",
     )
     return inputs
+
+
+def write_repository_plugin_applicability_report(tmp_path: Path) -> Path:
+    report = tmp_path / "repository-plugin-applicability-report.json"
+    report.write_text(
+        json.dumps(
+            {
+                "apiVersion": REPOSITORY_PLUGIN_APPLICABILITY_API_VERSION,
+                "kind": REPOSITORY_PLUGIN_APPLICABILITY_KIND,
+                "schemaVersion": 1,
+                "authority": REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY,
+                "mode": "auto",
+                "registry": {
+                    "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+                    "kind": "SpecHarvesterRepositoryPluginRegistry",
+                    "authority": "producer_plugin_registry_only",
+                },
+                "repository": {
+                    "id": "demo",
+                    "sourceManifestPath": "inputs/repositories.yml",
+                    "sourceManifestEntryId": "demo",
+                    "revision": "0123456789abcdef0123456789abcdef01234567",
+                },
+                "staticEvidence": {
+                    "inputAuthority": "static_local_evidence_only",
+                    "paths": [
+                        "package.json",
+                        "packages/data/package.json",
+                        "packages/ui/package.json",
+                    ],
+                    "evidenceKinds": [
+                        "source_manifest",
+                        "harvest_snapshot",
+                        "workspace_inventory",
+                        "repository_profile_detection",
+                        "operator_label",
+                    ],
+                    "signals": ["workspace_manifest", "member_manifest"],
+                },
+                "summary": {
+                    "selectedCount": 1,
+                    "rejectedCount": 1,
+                    "fallbackCount": 1,
+                    "blockedCount": 2,
+                    "diagnosticCount": 5,
+                },
+                "selectedPlugins": [
+                    {
+                        "pluginId": "spec_harvester.generic.repository_profile.v0",
+                        "role": "repository_profile",
+                        "decision": "selected",
+                        "decisionAuthority": REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY,
+                        "pluginOutputAuthority": "producer_side_evidence_only",
+                        "confidence": "high",
+                        "reasonCodes": ["workspace_manifest_present"],
+                        "evidencePaths": ["package.json"],
+                        "outputArtifactKinds": ["repository_profile_detection"],
+                    },
+                ],
+                "rejectedPlugins": [
+                    {
+                        "pluginId": "spec_harvester.generic.review_surface.v0",
+                        "role": "review_surface",
+                        "decision": "rejected",
+                        "decisionAuthority": REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY,
+                        "pluginOutputAuthority": "producer_side_evidence_only",
+                        "confidence": "low",
+                        "reasonCodes": ["missing_review_panel_evidence"],
+                        "evidencePaths": [],
+                        "outputArtifactKinds": ["review_panel_data"],
+                    }
+                ],
+                "fallbackPlugins": [
+                    {
+                        "pluginId": "spec_harvester.generic.parser_profile.v0",
+                        "role": "parser_profile",
+                        "decision": "fallback",
+                        "decisionAuthority": REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY,
+                        "pluginOutputAuthority": "producer_side_evidence_only",
+                        "confidence": "medium",
+                        "reasonCodes": ["conservative_default_path_classification"],
+                        "evidencePaths": ["package.json"],
+                        "outputArtifactKinds": ["repository_parsing_profile_decision"],
+                    }
+                ],
+                "blockedPlugins": [
+                    {
+                        "pluginId": "spec_harvester.generic.manifest_summary.v0",
+                        "role": "evidence_producer",
+                        "decision": "blocked",
+                        "decisionAuthority": REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY,
+                        "pluginOutputAuthority": "producer_side_evidence_only",
+                        "confidence": "blocked",
+                        "reasonCodes": ["required_manifest_digest_missing"],
+                        "evidencePaths": ["package.json"],
+                        "outputArtifactKinds": ["manifest_summary"],
+                    },
+                    {
+                        "pluginId": "spec_harvester.generic.package_topology.v0",
+                        "role": "topology_helper",
+                        "decision": "blocked",
+                        "decisionAuthority": REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY,
+                        "pluginOutputAuthority": "producer_side_evidence_only",
+                        "confidence": "blocked",
+                        "reasonCodes": ["requires_manifest_summary_evidence"],
+                        "evidencePaths": [
+                            "packages/data/package.json",
+                            "packages/ui/package.json",
+                        ],
+                        "outputArtifactKinds": ["package_topology_hint"],
+                    },
+                ],
+                "diagnostics": [
+                    {
+                        "severity": "info",
+                        "code": "plugin_selected",
+                        "pluginId": "spec_harvester.generic.repository_profile.v0",
+                        "message": "Repository profile selected.",
+                        "evidencePaths": ["package.json"],
+                    },
+                    {
+                        "severity": "error",
+                        "code": "plugin_blocked_required_evidence_missing",
+                        "pluginId": "spec_harvester.generic.package_topology.v0",
+                        "message": "Topology helper blocked.",
+                        "evidencePaths": ["packages/data/package.json"],
+                    },
+                    {
+                        "severity": "info",
+                        "code": "plugin_fallback",
+                        "pluginId": "spec_harvester.generic.parser_profile.v0",
+                        "message": "Parser profile fell back.",
+                        "evidencePaths": ["package.json"],
+                    },
+                    {
+                        "severity": "warning",
+                        "code": "plugin_rejected_low_confidence",
+                        "pluginId": "spec_harvester.generic.review_surface.v0",
+                        "message": "Review surface rejected.",
+                        "evidencePaths": [],
+                    },
+                    {
+                        "severity": "error",
+                        "code": "plugin_blocked_required_evidence_missing",
+                        "pluginId": "spec_harvester.generic.manifest_summary.v0",
+                        "message": "Manifest summary blocked.",
+                        "evidencePaths": ["package.json"],
+                    },
+                ],
+                "nonAuthorityStatements": [
+                    "does_not_load_third_party_plugin_code",
+                    "does_not_execute_plugins",
+                    "does_not_change_parser_profile_behavior",
+                    "does_not_change_repository_profile_scoring",
+                    "does_not_accept_packages",
+                    "does_not_accept_relations",
+                    "does_not_publish_registry_metadata",
+                    "does_not_remove_preview_only",
+                    "does_not_treat_plugin_decisions_as_registry_truth",
+                ],
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return report
 
 
 def write_workspace_checkout(path: Path) -> Path:
