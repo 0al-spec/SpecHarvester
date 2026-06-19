@@ -708,3 +708,4 @@
 | 2026-06-19 | P42-T10 | Archived REVIEW_p42_t10_disabled_explicit_real_local_sandbox_runner_skeleton report |
 | 2026-06-19 | P42-T11 | Archived Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff (PASS) |
 | 2026-06-19 | P42-T11 | Archived REVIEW_p42_t11_explicit_real_local_sandbox_runner_evidence_handoff report |
+| 2026-06-19 | P42-T12 | Archived Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Review Gate (PASS) |

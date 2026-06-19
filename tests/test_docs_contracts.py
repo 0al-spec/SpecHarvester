@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def assert_current_next_task(next_text: str) -> None:
     if (
+        "# Next Task: P42-T13 Explicit Real Local Trusted Adapter Sandbox Operator Approval "
+        "Binding Fixture"
+    ) in next_text:
+        assert_p42_t12_last_archived(next_text)
+        assert_p42_t12_recent(next_text)
+        assert_phase_42_t13_planned(next_text)
+        return
+
+    if (
         "# Next Task: P42-T12 Explicit Real Local Trusted Adapter Sandbox Runtime "
         "Implementation Review Gate"
     ) in next_text:
@@ -5446,6 +5455,110 @@ def assert_p42_t11_recent(next_text: str) -> None:
     assert "runtimeImplemented: false" in normalized
     assert "registryAuthority: false" in normalized
     assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_p42_t12_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T12 Explicit Real Local Trusted Adapter Sandbox Runtime "
+        "Implementation Review Gate"
+    ) in next_text
+
+
+def assert_p42_t12_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P42-T12` added "
+        "`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate`"
+    ) in normalized
+    assert (
+        "explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-"
+        "gate.example.json"
+    ) in next_text
+    assert (
+        "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_GATE.md"
+        in next_text
+    )
+    assert (
+        "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewGate.md"
+        in next_text
+    )
+    assert (
+        "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff"
+        in normalized
+    )
+    assert "pinned SHA-256 digest" in normalized
+    assert "handoff status `ready_for_review`" in normalized
+    assert "handoff review-only semantics" in normalized
+    assert "no handoff execution permission" in normalized
+    assert "no handoff operator approval" in normalized
+    assert "no handoff registry authority" in normalized
+    assert "no adapter output truth" in normalized
+    assert "no runtime side effects" in normalized
+    assert "runtime implementation prerequisites" in normalized
+    assert "explicit operator approval" in normalized
+    assert "adapter package identity" in normalized
+    assert "process isolation" in normalized
+    assert "safe input allowlists" in normalized
+    assert "sealed environment" in normalized
+    assert "dependency isolation" in normalized
+    assert "network-deny-by-default policy" in normalized
+    assert "output digests" in normalized
+    assert "audit records" in normalized
+    assert "rollback policy" in normalized
+    assert "review-only authority" in normalized
+    assert "gateIsExecutionPermission: false" in normalized
+    assert "gateIsOperatorApproval: false" in normalized
+    assert "gateIsRegistryAuthority: false" in normalized
+    assert "runtimeImplementationAllowed: false" in normalized
+    assert "runtimeInvocationAllowed: false" in normalized
+    assert "operatorApprovalConsumed: false" in normalized
+    assert "operatorApprovalProvided: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterCodeImportAttempted: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "runtimeInvoked: false" in normalized
+    assert "runtimeImplemented: false" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_phase_42_t13_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P42-T13 Explicit Real Local Trusted Adapter Sandbox Operator Approval "
+        "Binding Fixture"
+    ) in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert (
+        "`feature/P42-T13-explicit-real-local-trusted-adapter-sandbox-operator-approval-"
+        "binding-fixture`"
+    ) in next_text
+    assert "operator approval binding fixture" in normalized
+    assert "binds a future approval scope to P42-T12 runtime prerequisites" in normalized
+    assert "still refusing adapter execution" in normalized
+    assert "adapter package identity" in normalized
+    assert "target repository revision" in normalized
+    assert "input artifact digests" in normalized
+    assert "output directory" in normalized
+    assert "runtime budgets" in normalized
+    assert "network policy" in normalized
+    assert "dependency policy" in normalized
+    assert "audit requirements" in normalized
+    assert "no adapter code loading" in normalized
+    assert "no process spawning" in normalized
+    assert "no dependency installation" in normalized
+    assert "no package manager invocation" in normalized
+    assert "no network access" in normalized
+    assert "no harvested code execution" in normalized
+    assert "no AI execution" in normalized
+    assert "no package acceptance" in normalized
+    assert "no relation acceptance" in normalized
+    assert "no baseline seeding" in normalized
+    assert "no registry metadata publishing" in normalized
+    assert "no `preview_only` removal" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not treat P42-T12 as execution permission" in normalized
 
 
 def assert_phase_42_t12_planned(next_text: str) -> None:
