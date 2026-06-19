@@ -2019,3 +2019,62 @@ Acceptance:
   network access, harvested-code execution, AI execution, package/relation
   acceptance, baseline seeding, registry publishing, `preview_only` removal,
   and adapter output truth.
+
+## Phase 43. Operational MVP Validation
+
+- [ ] `P43-T1` Document the operational MVP validation plan and add the
+  next-task scaffold for proving SpecHarvester on a small pinned real-repository
+  corpus before adding new execution features.
+- [ ] `P43-T2` Add a machine-readable
+  `SpecHarvesterOperationalMVPValidationPlan` fixture that records the selected
+  corpus, pinned local checkout requirements, run modes, quality dimensions,
+  stop policy, and non-authority boundaries.
+- [ ] `P43-T3` Add an operational MVP validation report fixture that records
+  per-repository draft status, static-only result, AI-enabled result,
+  author-ready verdict, evidence precision notes, and SpecPM handoff readiness
+  without accepting packages or publishing registry metadata.
+- [ ] `P43-T4` Run the operational MVP validation over an operator-provided
+  pinned local corpus and record the static-only quality baseline for at least
+  three repositories from different ecosystems.
+- [ ] `P43-T5` Run the AI-enabled comparison over the same pinned corpus when
+  a local OpenAI-compatible provider is available, recording deltas and warning
+  when AI output stays proposal-only.
+- [ ] `P43-T6` Add author handoff summaries for operational MVP runs so a
+  package author can see what is valid, what is reviewable, what needs manual
+  correction, and what should not be promoted.
+- [ ] `P43-T7` Record an operational MVP exit report that decides whether the
+  current pipeline is good enough for bounded autonomous popular-library
+  scraping, needs quality hardening first, or needs a future explicitly
+  approved adapter execution phase.
+
+Motivation:
+
+- Phases 37 through 42 built profile selection, plugin applicability, adapter
+  contracts, and a no-execution trusted local adapter sandbox boundary.
+- The next product question is not whether more safety artifacts can be added,
+  but whether the current pipeline already gives authors a strong valid starter
+  SpecPackage or package-set for real popular repositories.
+- Operational validation should make this answer measurable before the project
+  starts broader autonomous scraping or enables any real adapter execution.
+
+Goal:
+
+- Prove the operational MVP on a bounded, pinned, multi-ecosystem corpus by
+  comparing static-only and AI-enabled results, measuring author-ready quality,
+  and identifying the smallest quality gaps that block useful SpecPM handoff.
+
+Acceptance:
+
+- The phase uses pinned local checkouts or explicitly documented missing
+  checkout blockers; it must not clone or fetch repositories implicitly.
+- Validation reports must record repository revision, run mode, generated
+  artifacts, quality dimensions, warnings/errors, author action items, and
+  SpecPM handoff readiness.
+- AI-enabled runs remain proposal-only and never become registry authority,
+  package acceptance, relation acceptance, baseline seeding, public registry
+  publication, or `preview_only` removal.
+- Trusted local adapter execution remains disabled unless a later phase adds a
+  separate explicit runtime implementation task with operator approval.
+- The phase must produce an exit decision: proceed to bounded autonomous
+  scraping, perform targeted quality hardening, or defer until adapter execution
+  exists.

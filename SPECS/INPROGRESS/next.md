@@ -1,53 +1,41 @@
-# Next Task: Phase 42 Complete
+# Next Task: P43-T1 Operational MVP Validation Plan
 
-**Status:** Complete
-**Branch:** `feature/P42-T18-disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton-verifier`
-**Phase:** Phase 42. Trusted Local Adapter Runtime Sandbox
-**Last Archived:** P42-T18 Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Skeleton Verifier
+**Status:** Selected
+**Branch:** `feature/P43-T1-operational-mvp-validation-plan`
+**Phase:** Phase 43. Operational MVP Validation
+**Task:** `P43-T1` Document the operational MVP validation plan and add the
+next-task scaffold for proving SpecHarvester on a small pinned real-repository
+corpus before adding new execution features.
 
-## Recently Archived
+## Motivation
 
-- `P42-T18` added
-  `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeletonVerifierReport`.
-- The verifier fixture lives at
-  `tests/fixtures/repository_plugins/disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton-verifier.example.json`.
-- GitHub docs are in
-  `docs/TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_SKELETON_VERIFIER.md`.
-- DocC docs are in
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeletonVerifier.md`.
-- The verifier references the P42-T17
-  `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeleton`
-  fixture with a pinned SHA-256 digest.
-- The verifier checks P42-T17 identity, schema version, authority, linked P42-T16
-  review packet digest, disabled runtime surface count, accepted/rejected/
-  blocked/warning check counts, execution boundary fields, diagnostics, and
-  non-authority statements.
-- The verifier keeps `verifierIsExecutionPermission: false`,
-  `verifierIsRegistryAuthority: false`, `verifierConsumesApproval: false`,
-  `verifierInvokesRuntime: false`, `verifierAcceptsAdapterOutput: false`,
-  `operatorApprovalConsumed: false`, `adapterExecution: not_run`,
-  `adapterCodeLoaded: false`, `adapterCodeImportAttempted: false`,
-  `adapterProcessSpawned: false`, `runtimeInvoked: false`,
-  `runtimeImplemented: false`, `networkAccess: none`, `registryAuthority: false`,
-  and `adapterOutputAccepted: false`.
+- Phases 37 through 42 built the profile/plugin/adapter safety boundary, but the
+  next product question is whether the current pipeline is already useful as an
+  author-ready starter package generator.
+- Operational validation should measure real repository output quality before
+  starting broader autonomous scraping or enabling real adapter execution.
+- The validation phase needs a written plan before adding machine-readable
+  fixtures, commands, or real corpus run artifacts.
 
-## Task
+## Goal
 
-Phase 42 is complete in the current workplan.
-
-## Why This Is Next
-
-No additional Phase 42 tasks are currently listed in `SPECS/Workplan.md`.
+Document the operational MVP validation loop: corpus requirements, run modes,
+quality dimensions, stop policy, evidence boundaries, and follow-up tasks.
 
 ## Scope
 
-- Keep this pointer until a new workplan task is added or the next phase is
-  selected.
-- Preserve the completed Phase 42 trusted local adapter runtime sandbox chain as
-  review-only evidence.
+- Add the Phase 43 plan to GitHub docs and DocC.
+- Define a bounded pinned local corpus strategy for JS/TS, Python, Go, and at
+  least one additional ecosystem when available.
+- Define static-only and AI-enabled run modes.
+- Define author-ready quality dimensions and SpecPM handoff readiness signals.
+- Preserve the no-execution and non-authority boundaries established in P40-P42.
+- Advance `SPECS/INPROGRESS/next.md` to `P43-T2` during archive.
 
 ## Non-Goals
 
-- Do not invent a new task without updating `SPECS/Workplan.md`.
-- Do not implement real adapter execution from the completed review-only
-  fixtures.
+- Do not run the real corpus in P43-T1.
+- Do not enable trusted local adapter execution.
+- Do not clone or fetch repositories implicitly.
+- Do not publish registry metadata, accept packages, accept relations, seed
+  baselines, remove `preview_only`, or treat AI output as registry truth.
