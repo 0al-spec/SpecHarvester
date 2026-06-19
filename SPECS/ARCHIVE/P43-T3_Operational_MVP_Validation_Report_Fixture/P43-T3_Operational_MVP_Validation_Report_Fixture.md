@@ -92,3 +92,7 @@ The fixture should include:
 - `swift package dump-package`.
 - `swift build --target SpecHarvesterDocs`.
 - `git diff --check`.
+
+---
+**Archived:** 2026-06-20
+**Verdict:** PASS

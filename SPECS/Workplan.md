@@ -2029,7 +2029,7 @@ Acceptance:
   `SpecHarvesterOperationalMVPValidationPlan` fixture that records the selected
   corpus, pinned local checkout requirements, run modes, quality dimensions,
   stop policy, and non-authority boundaries.
-- [ ] `P43-T3` Add an operational MVP validation report fixture that records
+- [x] `P43-T3` Add an operational MVP validation report fixture that records
   per-repository draft status, static-only result, AI-enabled result,
   author-ready verdict, evidence precision notes, and SpecPM handoff readiness
   without accepting packages or publishing registry metadata.
