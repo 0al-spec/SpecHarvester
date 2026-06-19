@@ -301,6 +301,9 @@ runtime exists.
 P40-T2 records the first adapter manifest fixture in
 [`REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md`](REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md)
 and `tests/fixtures/repository_plugins/adapter-manifest.example.json`.
+P40-T3 records the first adapter preflight report fixture in
+[`REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md`](REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md)
+and `tests/fixtures/repository_plugins/adapter-preflight-report.example.json`.
 
 ## Trust Boundary
 

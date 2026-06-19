@@ -52,6 +52,7 @@ The canonical source files remain in the repository:
 - `docs/REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`
 - `docs/REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md`
 - `docs/REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md`
+- `docs/REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
 - `docs/BATCH_VALIDATION_REPORTS.md`
@@ -179,6 +180,7 @@ the host.
 - <doc:RepositoryPluginMultiRepositoryStaticEvaluatorValidation>
 - <doc:RepositoryPluginAdapterContract>
 - <doc:RepositoryPluginAdapterManifestFixture>
+- <doc:RepositoryPluginAdapterPreflightReportFixture>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
 - <doc:ProceduralStyleReport>

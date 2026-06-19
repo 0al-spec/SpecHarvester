@@ -76,6 +76,10 @@ Published DocC site:
    machine-readable `SpecHarvesterRepositoryPluginAdapterManifest` fixture
    shape for declared adapter ids, evidence inputs, outputs, execution mode,
    sandbox requirements, capability requests, and non-authority statements
+25. [`REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md`](REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md):
+   machine-readable `SpecHarvesterRepositoryPluginAdapterPreflightReport`
+   fixture shape for allowed, rejected, fallback, and blocked adapter
+   preflight decisions before adapter code can run
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

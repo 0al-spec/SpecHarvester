@@ -551,6 +551,11 @@ policy, manifest preflight, and safe evidence handoff rules.
 P40-T2 records the first machine-readable adapter manifest fixture in
 <doc:RepositoryPluginAdapterManifestFixture> and
 `tests/fixtures/repository_plugins/adapter-manifest.example.json`.
+P40-T3 records the first adapter preflight report fixture in
+<doc:RepositoryPluginAdapterPreflightReportFixture> and
+`tests/fixtures/repository_plugins/adapter-preflight-report.example.json`,
+covering allowed, rejected, fallback, and blocked adapter decisions without
+loading or executing adapter code.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
