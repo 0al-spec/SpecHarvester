@@ -1794,11 +1794,17 @@ Acceptance:
   sandbox runtime availability, filesystem/output policy, audit requirements,
   and operator approval requirements while still refusing to load adapter code
   or spawn adapter processes.
-- [ ] `P42-T8` Add an explicit real local trusted adapter sandbox run request
+- [x] `P42-T8` Add an explicit real local trusted adapter sandbox run request
   fixture that records a future real-run review request, scoped operator
   approval requirements, verifier/readiness references, runtime policy,
   filesystem/output/audit declarations, and non-authority statements while
   still refusing to load adapter code or spawn adapter processes.
+- [ ] `P42-T9` Add an explicit real local trusted adapter sandbox run request
+  preflight fixture that validates the P42-T8 request identity, prerequisite
+  verifier/readiness evidence requirements, scoped approval binding, runtime
+  policy, filesystem/output/audit declarations, and non-authority statements
+  while still refusing to grant execution permission or spawn adapter
+  processes.
 
 Motivation:
 
