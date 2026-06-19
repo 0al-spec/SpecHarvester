@@ -27,7 +27,7 @@
     },
     "realLocalReadinessValidation": {
       "path": "tests/fixtures/repository_plugins/trusted_local_adapter_real_runs/p41-t6-real-local-trusted-adapter-readiness-validation.example.json",
-      "digest": "sha256:83fc50ddea9b6343c6743b9ce65cc67b519f4f1bce5fd02179be19f6491900fa",
+      "digest": "sha256:09d0d024089eef7a88137c63f329906be5bb0fe894aaef45fd58728abc754664",
       "kind": "SpecHarvesterTrustedLocalAdapterRealLocalReadinessValidation",
       "authority": "producer_trusted_local_adapter_readiness_validation_only"
     }
@@ -176,6 +176,7 @@
       "allowedPaths": [
         "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json",
         "tests/fixtures/repository_plugins/trusted-local-adapter-run-preflight-report.example.json",
+        "tests/fixtures/repository_plugins/trusted_local_adapter_real_runs/p41-t6-real-local-trusted-adapter-readiness-validation.example.json",
         "tests/fixtures/repository_plugins/adapter-manifest.example.json",
         "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
         "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",

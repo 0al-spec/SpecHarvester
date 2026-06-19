@@ -17678,6 +17678,9 @@ def test_trusted_local_adapter_sandbox_contract_fixture_is_documented() -> None:
     assert filesystem["backslashAllowed"] is False
     assert filesystem["networkPathsAllowed"] is False
     assert filesystem["readPolicy"]["policy"] == "declared_artifact_paths_only"
+    allowed_paths = set(filesystem["readPolicy"]["allowedPaths"])
+    assert {reference["path"] for reference in references.values()} <= allowed_paths
+    assert {item["path"] for item in declared_inputs} <= allowed_paths
     assert filesystem["writePolicy"]["policy"] == "declared_output_directories_only"
 
     environment = payload["environmentPolicy"]
