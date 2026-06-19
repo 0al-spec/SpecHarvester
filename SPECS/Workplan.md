@@ -2025,7 +2025,7 @@ Acceptance:
 - [x] `P43-T1` Document the operational MVP validation plan and add the
   next-task scaffold for proving SpecHarvester on a small pinned real-repository
   corpus before adding new execution features.
-- [ ] `P43-T2` Add a machine-readable
+- [x] `P43-T2` Add a machine-readable
   `SpecHarvesterOperationalMVPValidationPlan` fixture that records the selected
   corpus, pinned local checkout requirements, run modes, quality dimensions,
   stop policy, and non-authority boundaries.
