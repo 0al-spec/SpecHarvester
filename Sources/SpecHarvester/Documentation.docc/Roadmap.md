@@ -770,6 +770,11 @@ static-only run over operator-provided pinned local xyflow, FastAPI, and Gin
 checkouts, with passed preflight, author-ready preview candidates, quality
 dimensions, a partial public-interface-index caveat for xyflow, and no package
 acceptance or registry authority.
+P43-T5 adds <doc:OperationalMVPAIEnabledComparison> and the machine-readable
+`SpecHarvesterOperationalMVPAIEnabledComparison` fixture. It records that the
+local OpenAI-compatible provider was unavailable, keeps the same pinned corpus
+as P43-T4, preserves the static-only handoff baseline, and warns that no
+proposal-only AI deltas were measured.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

@@ -1,0 +1,382 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
+  "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_ai_comparison_only",
+  "phase": "P43",
+  "task": "P43-T5",
+  "createdAt": "2026-06-20T00:00:00Z",
+  "reportMode": "provider_unavailable_comparison",
+  "plan": {
+    "path": "tests/fixtures/operational_mvp_validation/p43-t2-operational-mvp-validation-plan.example.json",
+    "digest": "sha256:a035b03fb66ba6bf56fc09dc8301ce611f144aa9e8dc342b82a8f9fbc052b772",
+    "apiVersion": "spec-harvester.operational-mvp-validation-plan/v0",
+    "kind": "SpecHarvesterOperationalMVPValidationPlan",
+    "authority": "producer_operational_mvp_validation_plan_only"
+  },
+  "reportFixture": {
+    "path": "tests/fixtures/operational_mvp_validation/p43-t3-operational-mvp-validation-report.example.json",
+    "digest": "sha256:2b8b995fe6c74f882a6eace92210c2d95ec93322e0ace0b8a282cbda24c766f5",
+    "apiVersion": "spec-harvester.operational-mvp-validation-report/v0",
+    "kind": "SpecHarvesterOperationalMVPValidationReport",
+    "authority": "producer_operational_mvp_validation_report_only"
+  },
+  "staticOnlyBaseline": {
+    "path": "tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json",
+    "digest": "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
+    "apiVersion": "spec-harvester.operational-mvp-static-only-baseline/v0",
+    "kind": "SpecHarvesterOperationalMVPStaticOnlyBaseline",
+    "authority": "producer_operational_mvp_static_only_baseline_only",
+    "summary": {
+      "repositoryResultCount": 3,
+      "verifiedPinnedCheckoutCount": 3,
+      "staticOnlyResultCount": 3,
+      "staticOnlyPassedCount": 3,
+      "candidateCount": 6,
+      "candidatePreflightPassedCount": 6,
+      "relationCount": 3,
+      "aiEnabledResultCount": 3,
+      "authorReadyDraftCount": 3,
+      "needsQualityHardeningCount": 0,
+      "blockedCount": 0,
+      "specpmHandoffReadyCount": 3,
+      "realCorpusRunPerformed": true,
+      "staticOnlyRunPerformed": true
+    }
+  },
+  "providerProbe": {
+    "providerPolicy": "local_openai_compatible_optional",
+    "baseUrl": "http://127.0.0.1:1234",
+    "modelsEndpoint": "http://127.0.0.1:1234/v1/models",
+    "command": "curl --silent --show-error --max-time 2 http://127.0.0.1:1234/v1/models",
+    "status": "provider_unavailable",
+    "exitCode": 7,
+    "error": "curl: (7) Failed to connect to 127.0.0.1 port 1234 after 0 ms: Couldn't connect to server",
+    "modelListRetrieved": false,
+    "requestedModel": null,
+    "aiRunAllowed": false
+  },
+  "summary": {
+    "repositoryComparisonCount": 3,
+    "samePinnedCorpusAsStaticBaseline": true,
+    "staticOnlyBaselineReadyCount": 3,
+    "providerAvailable": false,
+    "aiEnabledRunPerformed": false,
+    "aiProposalArtifactCount": 0,
+    "aiComparisonPassedCount": 0,
+    "aiComparisonProviderUnavailableCount": 3,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "specpmHandoffChangedByAI": false
+  },
+  "qualityDimensionIds": [
+    "validity",
+    "repositorySpecificity",
+    "evidencePrecision",
+    "packageTopology",
+    "claimConservatism",
+    "authorActionability",
+    "SpecPMHandoffReadiness"
+  ],
+  "repositoryComparisons": [
+    {
+      "repositoryId": "xyflow",
+      "repositoryUrl": "git@github.com:SoundBlaster/xyflow.git",
+      "ecosystemFamily": "javascript_typescript",
+      "expectedPackageFamilyShape": "package_set_monorepo",
+      "pinnedCheckout": {
+        "localCheckoutPath": "/Users/egor/Development/GitHub/xyflow",
+        "exactRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+        "verified": true,
+        "status": "clean",
+        "dirtyStatus": ""
+      },
+      "staticOnlyBaseline": {
+        "status": "passed",
+        "authorReadyVerdict": "author_ready_draft",
+        "candidateCount": 4,
+        "relationCount": 3,
+        "qualityDimensions": {
+          "validity": "passed",
+          "repositorySpecificity": "reviewable",
+          "evidencePrecision": "reviewable_with_partial_interface_index",
+          "packageTopology": "reviewable_package_set_monorepo",
+          "claimConservatism": "reviewable",
+          "authorActionability": "strong_action_items_present",
+          "SpecPMHandoffReadiness": "reviewable_handoff_ready"
+        },
+        "specpmHandoffReadiness": {
+          "ready": true,
+          "reason": "static_only_preview_candidates_available_for_author_review",
+          "candidateCount": 4,
+          "relationCount": 3,
+          "requiresAuthorReview": true,
+          "registryAuthority": false
+        },
+        "caveats": [
+          "partial_public_interface_index"
+        ]
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "provider_unavailable",
+        "skippedReason": "local_openai_compatible_provider_unavailable",
+        "providerBaseUrl": "http://127.0.0.1:1234",
+        "requestedModel": null,
+        "modelSelectionStatus": "not_attempted_provider_unavailable",
+        "proposalArtifactCount": 0,
+        "aiOutputAuthority": "proposal_only",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "delta": {
+        "status": "not_evaluated_provider_unavailable",
+        "candidateCountDelta": null,
+        "relationCountDelta": null,
+        "qualityDimensionDeltas": {
+          "validity": "not_evaluated_provider_unavailable",
+          "repositorySpecificity": "not_evaluated_provider_unavailable",
+          "evidencePrecision": "not_evaluated_provider_unavailable",
+          "packageTopology": "not_evaluated_provider_unavailable",
+          "claimConservatism": "not_evaluated_provider_unavailable",
+          "authorActionability": "not_evaluated_provider_unavailable",
+          "SpecPMHandoffReadiness": "not_evaluated_provider_unavailable"
+        },
+        "handoffReadinessDelta": "unchanged_static_only_baseline_retained"
+      },
+      "warning": {
+        "code": "ai_provider_unavailable_static_baseline_retained",
+        "message": "AI-enabled proposal comparison did not run because the local OpenAI-compatible provider was unavailable; static-only baseline remains the only generated evidence."
+      },
+      "stopPolicyOutcome": {
+        "outcome": "provider_unavailable",
+        "stopConditions": [
+          "local_openai_compatible_provider_unavailable"
+        ],
+        "staticOnlyOutcomePreserved": "author_ready_draft"
+      },
+      "specpmHandoffImpact": {
+        "staticOnlyHandoffReady": true,
+        "aiImprovementAvailable": false,
+        "reason": "no_ai_proposal_available_provider_unavailable",
+        "requiresAuthorReview": true,
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "fastapi",
+      "repositoryUrl": "https://github.com/fastapi/fastapi",
+      "ecosystemFamily": "python",
+      "expectedPackageFamilyShape": "framework_library_package",
+      "pinnedCheckout": {
+        "localCheckoutPath": "/Users/egor/Development/GitHub/fastapi",
+        "exactRevision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "verified": true,
+        "status": "clean",
+        "dirtyStatus": ""
+      },
+      "staticOnlyBaseline": {
+        "status": "passed",
+        "authorReadyVerdict": "author_ready_draft",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "qualityDimensions": {
+          "validity": "passed",
+          "repositorySpecificity": "reviewable",
+          "evidencePrecision": "strong_static_public_interface_index",
+          "packageTopology": "reviewable_single_package",
+          "claimConservatism": "reviewable",
+          "authorActionability": "strong_action_items_present",
+          "SpecPMHandoffReadiness": "reviewable_handoff_ready"
+        },
+        "specpmHandoffReadiness": {
+          "ready": true,
+          "reason": "static_only_preview_candidates_available_for_author_review",
+          "candidateCount": 1,
+          "relationCount": 0,
+          "requiresAuthorReview": true,
+          "registryAuthority": false
+        },
+        "caveats": []
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "provider_unavailable",
+        "skippedReason": "local_openai_compatible_provider_unavailable",
+        "providerBaseUrl": "http://127.0.0.1:1234",
+        "requestedModel": null,
+        "modelSelectionStatus": "not_attempted_provider_unavailable",
+        "proposalArtifactCount": 0,
+        "aiOutputAuthority": "proposal_only",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "delta": {
+        "status": "not_evaluated_provider_unavailable",
+        "candidateCountDelta": null,
+        "relationCountDelta": null,
+        "qualityDimensionDeltas": {
+          "validity": "not_evaluated_provider_unavailable",
+          "repositorySpecificity": "not_evaluated_provider_unavailable",
+          "evidencePrecision": "not_evaluated_provider_unavailable",
+          "packageTopology": "not_evaluated_provider_unavailable",
+          "claimConservatism": "not_evaluated_provider_unavailable",
+          "authorActionability": "not_evaluated_provider_unavailable",
+          "SpecPMHandoffReadiness": "not_evaluated_provider_unavailable"
+        },
+        "handoffReadinessDelta": "unchanged_static_only_baseline_retained"
+      },
+      "warning": {
+        "code": "ai_provider_unavailable_static_baseline_retained",
+        "message": "AI-enabled proposal comparison did not run because the local OpenAI-compatible provider was unavailable; static-only baseline remains the only generated evidence."
+      },
+      "stopPolicyOutcome": {
+        "outcome": "provider_unavailable",
+        "stopConditions": [
+          "local_openai_compatible_provider_unavailable"
+        ],
+        "staticOnlyOutcomePreserved": "author_ready_draft"
+      },
+      "specpmHandoffImpact": {
+        "staticOnlyHandoffReady": true,
+        "aiImprovementAvailable": false,
+        "reason": "no_ai_proposal_available_provider_unavailable",
+        "requiresAuthorReview": true,
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "gin",
+      "repositoryUrl": "https://github.com/gin-gonic/gin.git",
+      "ecosystemFamily": "go",
+      "expectedPackageFamilyShape": "single_package_framework",
+      "pinnedCheckout": {
+        "localCheckoutPath": "/Users/egor/Development/GitHub/gin",
+        "exactRevision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+        "verified": true,
+        "status": "clean",
+        "dirtyStatus": ""
+      },
+      "staticOnlyBaseline": {
+        "status": "passed",
+        "authorReadyVerdict": "author_ready_draft",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "qualityDimensions": {
+          "validity": "passed",
+          "repositorySpecificity": "reviewable",
+          "evidencePrecision": "strong_static_public_interface_index",
+          "packageTopology": "reviewable_single_package",
+          "claimConservatism": "reviewable",
+          "authorActionability": "strong_action_items_present",
+          "SpecPMHandoffReadiness": "reviewable_handoff_ready"
+        },
+        "specpmHandoffReadiness": {
+          "ready": true,
+          "reason": "static_only_preview_candidates_available_for_author_review",
+          "candidateCount": 1,
+          "relationCount": 0,
+          "requiresAuthorReview": true,
+          "registryAuthority": false
+        },
+        "caveats": []
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "provider_unavailable",
+        "skippedReason": "local_openai_compatible_provider_unavailable",
+        "providerBaseUrl": "http://127.0.0.1:1234",
+        "requestedModel": null,
+        "modelSelectionStatus": "not_attempted_provider_unavailable",
+        "proposalArtifactCount": 0,
+        "aiOutputAuthority": "proposal_only",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "delta": {
+        "status": "not_evaluated_provider_unavailable",
+        "candidateCountDelta": null,
+        "relationCountDelta": null,
+        "qualityDimensionDeltas": {
+          "validity": "not_evaluated_provider_unavailable",
+          "repositorySpecificity": "not_evaluated_provider_unavailable",
+          "evidencePrecision": "not_evaluated_provider_unavailable",
+          "packageTopology": "not_evaluated_provider_unavailable",
+          "claimConservatism": "not_evaluated_provider_unavailable",
+          "authorActionability": "not_evaluated_provider_unavailable",
+          "SpecPMHandoffReadiness": "not_evaluated_provider_unavailable"
+        },
+        "handoffReadinessDelta": "unchanged_static_only_baseline_retained"
+      },
+      "warning": {
+        "code": "ai_provider_unavailable_static_baseline_retained",
+        "message": "AI-enabled proposal comparison did not run because the local OpenAI-compatible provider was unavailable; static-only baseline remains the only generated evidence."
+      },
+      "stopPolicyOutcome": {
+        "outcome": "provider_unavailable",
+        "stopConditions": [
+          "local_openai_compatible_provider_unavailable"
+        ],
+        "staticOnlyOutcomePreserved": "author_ready_draft"
+      },
+      "specpmHandoffImpact": {
+        "staticOnlyHandoffReady": true,
+        "aiImprovementAvailable": false,
+        "reason": "no_ai_proposal_available_provider_unavailable",
+        "requiresAuthorReview": true,
+        "registryAuthority": false
+      }
+    }
+  ],
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "comparisonIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "providerAvailable": false,
+    "aiInvocationPerformed": false,
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "ai_comparison_is_producer_side_evidence",
+    "provider_unavailable_does_not_change_static_baseline",
+    "does_not_call_hosted_ai_services",
+    "does_not_persist_raw_prompts",
+    "does_not_persist_raw_provider_responses",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_accept_mutable_repository_state",
+    "does_not_execute_harvested_code",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_run_adapter_code",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ],
+  "followUp": {
+    "authorHandoffSummaryTask": "P43-T6",
+    "exitReportTask": "P43-T7"
+  }
+}

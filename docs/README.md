@@ -245,6 +245,10 @@ Published DocC site:
    P43-T4 real local static-only baseline over xyflow, FastAPI, and Gin pinned
    checkouts, recording passed preflight, author-ready preview candidates,
    quality dimensions, handoff readiness, and non-authority boundaries
+57. [`OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md`](OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md):
+   P43-T5 AI-enabled comparison gate over the same pinned corpus, recording
+   local provider unavailability, unchanged static-only handoff readiness,
+   proposal-only warnings, and non-authority boundaries
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

@@ -55,6 +55,12 @@ operator-provided pinned local xyflow, FastAPI, and Gin checkouts and records
 passed preflight, author-ready preview candidates, quality dimensions, SpecPM
 handoff readiness, and the remaining non-authority boundary.
 
+P43-T5 records the AI-enabled comparison gate as
+<doc:OperationalMVPAIEnabledComparison> and the
+`SpecHarvesterOperationalMVPAIEnabledComparison` fixture. The comparison uses
+the same pinned corpus and records provider-unavailable state when no local
+OpenAI-compatible provider is running.
+
 ## Corpus
 
 The corpus is operator-selected and pinned. SpecHarvester must not clone or
@@ -137,6 +143,7 @@ enable trusted local adapter execution.
 - <doc:OperationalMVPValidationPlanFixture>
 - <doc:OperationalMVPValidationReportFixture>
 - <doc:OperationalMVPStaticOnlyBaseline>
+- <doc:OperationalMVPAIEnabledComparison>
 - <doc:AutonomousCandidateBatch>
 - <doc:AuthorReadyDraftQualityBar>
 - <doc:AuthorReadyDraftQualityReport>
