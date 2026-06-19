@@ -1,0 +1,533 @@
+{
+  "apiVersion": "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton/v0",
+  "kind": "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeleton",
+  "schemaVersion": 1,
+  "authority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_skeleton_only",
+  "contract": {
+    "purpose": "Record the future explicit real local adapter runtime implementation surface as a disabled skeleton without loading adapter code, spawning processes, or consuming approval.",
+    "contractVersion": "0.1.0",
+    "reviewPacketAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_review_packet_only",
+    "skeletonAuthority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_skeleton_only",
+    "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "defaultExecution": "disabled",
+    "implementationSkeletonIsExecutionPermission": false,
+    "implementationSkeletonIsRegistryAuthority": false,
+    "implementationSkeletonConsumesApproval": false,
+    "implementationSkeletonImplementsRuntime": false
+  },
+  "input": {
+    "runtimeImplementationReviewPacket": {
+      "path": "tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-packet.example.json",
+      "digest": "sha256:f29f3deaaf7b3f1ebe140eb2eef09aab1716d0524138d95997e51b9f1b03f2a5",
+      "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-packet/v0",
+      "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket",
+      "schemaVersion": 1,
+      "authority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_review_packet_only",
+      "requiredStatus": "ready_for_implementation_review",
+      "requiredMode": "runtime_implementation_review_packet_no_execution",
+      "digestVerified": true
+    }
+  },
+  "packetValidation": {
+    "reviewPacketDigestAgreement": true,
+    "reviewPacketStatusAccepted": true,
+    "reviewPacketModeAccepted": true,
+    "reviewPacketReviewOnly": true,
+    "reviewPacketIsExecutionPermission": false,
+    "reviewPacketIsRegistryAuthority": false,
+    "reviewPacketConsumesApproval": false,
+    "reviewPacketImplementsRuntime": false,
+    "reviewPacketRuntimeInvoked": false,
+    "reviewPacketRuntimeImplemented": false,
+    "reviewPacketAdapterOutputAccepted": false
+  },
+  "disabledRuntimeSurface": {
+    "entrypointIsolation": {
+      "status": "declared_disabled",
+      "adapterEntrypointLoaded": false,
+      "adapterModuleImported": false,
+      "entrypointDigestRequired": true,
+      "argumentAllowlistRequired": true,
+      "environmentAllowlistRequired": true,
+      "noAmbientCredentials": true
+    },
+    "processLauncherBoundary": {
+      "status": "declared_disabled",
+      "processSpawnAllowed": false,
+      "processSpawned": false,
+      "maxProcessCount": 0,
+      "boundedProcessTreeRequired": true,
+      "stdoutStderrLimitsRequired": true
+    },
+    "dependencyPolicy": {
+      "status": "declared_disabled",
+      "dependencyInstallation": "not_allowed",
+      "packageManagers": "not_invoked",
+      "futurePolicyRequired": true
+    },
+    "networkPolicy": {
+      "status": "declared_disabled",
+      "networkAccess": "none",
+      "dnsAllowed": false,
+      "remoteFetchAllowed": false,
+      "futurePolicyRequired": true
+    },
+    "outputWriter": {
+      "status": "declared_disabled",
+      "writesOutput": false,
+      "outputDigestRequired": true,
+      "outputDirectoryMustBeFresh": true,
+      "adapterOutputAccepted": false
+    },
+    "auditWriter": {
+      "status": "declared_disabled",
+      "writesAudit": false,
+      "auditRecordRequired": true,
+      "runtimeCountersRequired": true
+    },
+    "rollbackHandler": {
+      "status": "declared_disabled",
+      "rollbackExecuted": false,
+      "freshOutputDirectoryRequired": true,
+      "noInPlaceMutationRequired": true,
+      "failedRunCleanupRequired": true
+    },
+    "approvalConsumptionBoundary": {
+      "status": "declared_disabled",
+      "approvalConsumptionAllowed": false,
+      "approvalConsumedByRuntime": false,
+      "approvalReusable": false,
+      "futureApprovedRunRequired": true
+    }
+  },
+  "skeleton": {
+    "status": "disabled_no_runtime_implementation",
+    "mode": "disabled_runtime_implementation_skeleton",
+    "reviewPacketArtifactCount": 1,
+    "disabledSurfaceCount": 8,
+    "runtimeImplementationAllowed": false,
+    "runtimeInvocationAllowed": false,
+    "approvalConsumptionAllowed": false,
+    "operatorApprovalConsumed": false,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "harvestedCodeExecution": "not_allowed",
+    "aiExecution": "not_run",
+    "networkAccess": "none",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "acceptedChecks": [
+    {
+      "code": "review_packet_artifact_identity_and_digest_valid",
+      "status": "passed",
+      "target": "input.runtimeImplementationReviewPacket",
+      "message": "P42-T16 review packet identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "review_packet_status_ready_for_implementation_review",
+      "status": "passed",
+      "target": "input.runtimeImplementationReviewPacket.requiredStatus",
+      "message": "Review packet status is ready_for_implementation_review."
+    },
+    {
+      "code": "review_packet_mode_no_execution",
+      "status": "passed",
+      "target": "input.runtimeImplementationReviewPacket.requiredMode",
+      "message": "Review packet mode remains no-execution."
+    },
+    {
+      "code": "review_packet_review_only_semantics_valid",
+      "status": "passed",
+      "target": "packetValidation.reviewPacketReviewOnly",
+      "message": "Review packet remains review-only evidence."
+    },
+    {
+      "code": "review_packet_not_execution_permission",
+      "status": "passed",
+      "target": "packetValidation.reviewPacketIsExecutionPermission",
+      "message": "Review packet does not grant execution permission."
+    },
+    {
+      "code": "review_packet_not_registry_authority",
+      "status": "passed",
+      "target": "packetValidation.reviewPacketIsRegistryAuthority",
+      "message": "Review packet does not grant registry authority."
+    },
+    {
+      "code": "review_packet_does_not_consume_approval",
+      "status": "passed",
+      "target": "packetValidation.reviewPacketConsumesApproval",
+      "message": "Review packet does not consume approval."
+    },
+    {
+      "code": "disabled_runtime_surface_recorded",
+      "status": "passed",
+      "target": "disabledRuntimeSurface",
+      "message": "Disabled runtime surface fields are recorded."
+    },
+    {
+      "code": "entrypoint_isolation_boundary_recorded",
+      "status": "passed",
+      "target": "disabledRuntimeSurface.entrypointIsolation",
+      "message": "Entrypoint isolation boundary is recorded while adapter loading remains blocked."
+    },
+    {
+      "code": "process_launcher_boundary_recorded",
+      "status": "passed",
+      "target": "disabledRuntimeSurface.processLauncherBoundary",
+      "message": "Process launcher boundary is recorded while spawning remains blocked."
+    },
+    {
+      "code": "output_audit_boundaries_recorded",
+      "status": "passed",
+      "target": "disabledRuntimeSurface.outputWriter",
+      "message": "Output and audit writer boundaries are recorded while writes remain disabled."
+    },
+    {
+      "code": "approval_consumption_boundary_recorded",
+      "status": "passed",
+      "target": "disabledRuntimeSurface.approvalConsumptionBoundary",
+      "message": "Approval consumption boundary is recorded while consumption remains blocked."
+    },
+    {
+      "code": "skeleton_preserves_no_runtime_side_effects",
+      "status": "passed",
+      "target": "skeleton",
+      "message": "No adapter code loading, import, process spawning, dependency installation, network access, harvested-code execution, or AI execution occurs."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "code": "missing_review_packet_artifact_rejected",
+      "status": "rejected",
+      "target": "input.runtimeImplementationReviewPacket",
+      "reason": "runtime_implementation_review_packet_required"
+    },
+    {
+      "code": "review_packet_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "input.runtimeImplementationReviewPacket.digest",
+      "reason": "review_packet_digest_must_match_p42_t16_fixture_bytes"
+    },
+    {
+      "code": "review_packet_status_not_ready_rejected",
+      "status": "rejected",
+      "target": "input.runtimeImplementationReviewPacket.requiredStatus",
+      "reason": "review_packet_status_must_remain_ready_for_implementation_review"
+    },
+    {
+      "code": "review_packet_mode_not_no_execution_rejected",
+      "status": "rejected",
+      "target": "input.runtimeImplementationReviewPacket.requiredMode",
+      "reason": "review_packet_mode_must_remain_no_execution"
+    },
+    {
+      "code": "unscoped_disabled_runtime_surface_rejected",
+      "status": "rejected",
+      "target": "disabledRuntimeSurface",
+      "reason": "disabled_runtime_surface_must_record_bounded_fields"
+    },
+    {
+      "code": "skeleton_execution_permission_rejected",
+      "status": "rejected",
+      "target": "contract.implementationSkeletonIsExecutionPermission",
+      "reason": "skeleton_must_not_grant_execution_permission"
+    },
+    {
+      "code": "skeleton_registry_authority_rejected",
+      "status": "rejected",
+      "target": "contract.implementationSkeletonIsRegistryAuthority",
+      "reason": "skeleton_must_not_grant_registry_authority"
+    },
+    {
+      "code": "approval_consumption_rejected",
+      "status": "rejected",
+      "target": "skeleton.operatorApprovalConsumed",
+      "reason": "skeleton_must_not_consume_approval"
+    },
+    {
+      "code": "runtime_implementation_rejected",
+      "status": "rejected",
+      "target": "skeleton.runtimeImplemented",
+      "reason": "skeleton_must_not_implement_runtime"
+    },
+    {
+      "code": "runtime_invocation_rejected",
+      "status": "rejected",
+      "target": "skeleton.runtimeInvoked",
+      "reason": "runtime_invocation_must_remain_false"
+    },
+    {
+      "code": "adapter_code_loading_rejected",
+      "status": "rejected",
+      "target": "skeleton.adapterCodeLoaded",
+      "reason": "adapter_code_loading_must_remain_false"
+    },
+    {
+      "code": "adapter_import_rejected",
+      "status": "rejected",
+      "target": "skeleton.adapterCodeImportAttempted",
+      "reason": "adapter_import_must_remain_false"
+    },
+    {
+      "code": "adapter_process_spawn_rejected",
+      "status": "rejected",
+      "target": "skeleton.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_must_remain_false"
+    },
+    {
+      "code": "dependency_installation_rejected",
+      "status": "rejected",
+      "target": "skeleton.dependencyInstallation",
+      "reason": "dependency_installation_not_allowed"
+    },
+    {
+      "code": "package_manager_invocation_rejected",
+      "status": "rejected",
+      "target": "skeleton.packageManagers",
+      "reason": "package_managers_not_invoked"
+    },
+    {
+      "code": "network_access_rejected",
+      "status": "rejected",
+      "target": "skeleton.networkAccess",
+      "reason": "network_access_must_remain_none"
+    },
+    {
+      "code": "adapter_output_registry_truth_rejected",
+      "status": "rejected",
+      "target": "skeleton.adapterOutputAccepted",
+      "reason": "adapter_output_must_not_be_registry_truth"
+    },
+    {
+      "code": "missing_rollback_handler_rejected",
+      "status": "rejected",
+      "target": "disabledRuntimeSurface.rollbackHandler",
+      "reason": "rollback_handler_required_before_runtime_implementation"
+    }
+  ],
+  "blockedChecks": [
+    {
+      "code": "runtime_implementation_blocked",
+      "status": "blocked",
+      "target": "skeleton.runtimeImplemented",
+      "reason": "runtime_implementation_requires_future_task"
+    },
+    {
+      "code": "adapter_code_loading_blocked",
+      "status": "blocked",
+      "target": "skeleton.adapterCodeLoaded",
+      "reason": "adapter_code_loading_requires_future_runtime_task"
+    },
+    {
+      "code": "adapter_import_blocked",
+      "status": "blocked",
+      "target": "skeleton.adapterCodeImportAttempted",
+      "reason": "adapter_import_requires_future_runtime_task"
+    },
+    {
+      "code": "adapter_process_spawn_blocked",
+      "status": "blocked",
+      "target": "skeleton.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_requires_future_runtime_task"
+    },
+    {
+      "code": "real_runtime_invocation_blocked",
+      "status": "blocked",
+      "target": "skeleton.runtimeInvoked",
+      "reason": "real_runtime_invocation_requires_future_runtime_task"
+    },
+    {
+      "code": "approval_consumption_blocked",
+      "status": "blocked",
+      "target": "skeleton.operatorApprovalConsumed",
+      "reason": "approval_consumption_requires_future_runtime_task"
+    },
+    {
+      "code": "dependency_installation_blocked",
+      "status": "blocked",
+      "target": "skeleton.dependencyInstallation",
+      "reason": "dependency_installation_requires_future_policy_task"
+    },
+    {
+      "code": "package_manager_invocation_blocked",
+      "status": "blocked",
+      "target": "skeleton.packageManagers",
+      "reason": "package_manager_invocation_requires_future_policy_task"
+    },
+    {
+      "code": "network_access_blocked",
+      "status": "blocked",
+      "target": "skeleton.networkAccess",
+      "reason": "network_access_requires_future_policy_task"
+    },
+    {
+      "code": "output_writer_execution_blocked",
+      "status": "blocked",
+      "target": "disabledRuntimeSurface.outputWriter.writesOutput",
+      "reason": "output_writer_execution_requires_future_runtime_task"
+    },
+    {
+      "code": "audit_writer_execution_blocked",
+      "status": "blocked",
+      "target": "disabledRuntimeSurface.auditWriter.writesAudit",
+      "reason": "audit_writer_execution_requires_future_runtime_task"
+    },
+    {
+      "code": "rollback_handler_execution_blocked",
+      "status": "blocked",
+      "target": "disabledRuntimeSurface.rollbackHandler.rollbackExecuted",
+      "reason": "rollback_handler_execution_requires_future_runtime_task"
+    },
+    {
+      "code": "harvested_code_execution_blocked",
+      "status": "blocked",
+      "target": "skeleton.harvestedCodeExecution",
+      "reason": "harvested_code_execution_is_out_of_scope"
+    },
+    {
+      "code": "ai_execution_blocked",
+      "status": "blocked",
+      "target": "skeleton.aiExecution",
+      "reason": "adapter_sidecar_must_not_trigger_ai_execution"
+    },
+    {
+      "code": "package_acceptance_blocked",
+      "status": "blocked",
+      "target": "skeleton.registryAuthority",
+      "reason": "package_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "relation_acceptance_blocked",
+      "status": "blocked",
+      "target": "skeleton.registryAuthority",
+      "reason": "relation_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "baseline_seeding_blocked",
+      "status": "blocked",
+      "target": "skeleton.registryAuthority",
+      "reason": "baseline_seeding_requires_separate_maintainer_review"
+    },
+    {
+      "code": "preview_only_removal_blocked",
+      "status": "blocked",
+      "target": "skeleton.registryAuthority",
+      "reason": "preview_only_removal_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "adapter_output_truth_blocked",
+      "status": "blocked",
+      "target": "skeleton.adapterOutputAccepted",
+      "reason": "adapter_output_truth_requires_specpm_maintainer_review"
+    }
+  ],
+  "warningChecks": [
+    {
+      "code": "skeleton_review_only",
+      "status": "warning",
+      "target": "skeleton.status",
+      "message": "The runtime implementation skeleton is disabled and review-only."
+    },
+    {
+      "code": "future_runtime_implementation_required",
+      "status": "warning",
+      "target": "skeleton.runtimeImplemented",
+      "message": "A future runtime implementation task is still required before execution."
+    },
+    {
+      "code": "approval_not_consumed",
+      "status": "warning",
+      "target": "skeleton.operatorApprovalConsumed",
+      "message": "No runtime has consumed approval."
+    },
+    {
+      "code": "disabled_surface_not_executable",
+      "status": "warning",
+      "target": "disabledRuntimeSurface",
+      "message": "The disabled runtime surface names future implementation fields but none are executable."
+    }
+  ],
+  "summary": {
+    "acceptedCount": 13,
+    "rejectedCount": 18,
+    "blockedCount": 19,
+    "warningCount": 4,
+    "diagnosticCount": 2,
+    "reviewPacketArtifactCount": 1,
+    "disabledSurfaceCount": 8,
+    "operatorApprovalBound": true,
+    "approvalConsumedByRuntime": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false
+  },
+  "executionBoundary": {
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "implementationSkeletonIsExecutionPermission": false,
+    "implementationSkeletonIsRegistryAuthority": false,
+    "approvalConsumedByRuntime": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "disabled_explicit_real_local_sandbox_runtime_implementation_skeleton",
+      "message": "Disabled runtime implementation skeleton records future runtime surface fields without loading adapter code or spawning processes."
+    },
+    {
+      "severity": "warning",
+      "code": "skeleton_is_not_execution_permission",
+      "message": "The skeleton does not grant adapter execution authority, registry authority, approval consumption, runtime implementation, or adapter output truth."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "skeleton_is_not_execution_permission",
+    "skeleton_is_not_registry_authority",
+    "skeleton_does_not_consume_approval",
+    "skeleton_does_not_implement_runtime",
+    "review_packet_is_not_execution_permission",
+    "review_packet_is_not_registry_authority",
+    "review_packet_does_not_consume_approval",
+    "does_not_load_third_party_adapter_code",
+    "does_not_import_adapter_code",
+    "does_not_execute_real_adapters",
+    "does_not_run_real_adapter_processes",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_use_network",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_skeleton_as_execution_permission",
+    "does_not_grant_registry_authority"
+  ],
+  "followUp": {
+    "runtimeImplementationReviewPacketTask": "P42-T16",
+    "disabledRuntimeImplementationSkeletonVerifierTask": "deferred_until_after_disabled_runtime_implementation_skeleton_review",
+    "realLocalSandboxRuntimeImplementationTask": "deferred_until_after_disabled_runtime_implementation_skeleton_verifier",
+    "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_implementation_and_operator_approval"
+  }
+}

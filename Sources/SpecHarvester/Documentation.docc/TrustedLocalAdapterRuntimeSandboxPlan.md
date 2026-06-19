@@ -296,3 +296,13 @@ as a review packet over the P42-T15 handoff. It records implementation
 prerequisites while keeping `packetIsExecutionPermission: false`,
 `packetIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
 `runtimeImplemented: false`, and `runtimeInvoked: false`.
+P42-T17 adds
+<doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton>
+as a disabled implementation skeleton over the P42-T16 review packet. It
+records the future runtime surface while keeping
+`implementationSkeletonIsExecutionPermission: false`,
+`implementationSkeletonIsRegistryAuthority: false`,
+`implementationSkeletonConsumesApproval: false`, `runtimeImplemented: false`,
+`runtimeInvoked: false`, `adapterCodeLoaded: false`,
+`adapterCodeImportAttempted: false`, `adapterProcessSpawned: false`, and
+`adapterOutputAccepted: false`.

@@ -24280,6 +24280,515 @@ def test_explicit_real_local_sandbox_runtime_implementation_review_packet_is_doc
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
+def test_disabled_explicit_real_local_sandbox_runtime_implementation_skeleton_is_documented() -> (
+    None
+):
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / (
+            "disabled-explicit-real-local-trusted-adapter-sandbox-runtime-"
+            "implementation-skeleton.example.json"
+        )
+    )
+    review_packet_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / (
+            "explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-"
+            "packet.example.json"
+        )
+    )
+    github_doc = (
+        ROOT
+        / "docs"
+        / (
+            "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_"
+            "IMPLEMENTATION_SKELETON.md"
+        )
+    )
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton.md"
+    )
+    review_packet_doc = (
+        ROOT
+        / "docs"
+        / (
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_"
+            "REVIEW_PACKET.md"
+        )
+    )
+    review_packet_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    review_packet_digest = (
+        "sha256:" + hashlib.sha256(review_packet_fixture.read_bytes()).hexdigest()
+    )
+
+    assert payload["apiVersion"] == (
+        "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runtime-"
+        "implementation-skeleton/v0"
+    )
+    assert (
+        payload["kind"] == "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntime"
+        "ImplementationSkeleton"
+    )
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == (
+        "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_"
+        "implementation_skeleton_only"
+    )
+    assert payload["contract"] == {
+        "purpose": (
+            "Record the future explicit real local adapter runtime implementation surface "
+            "as a disabled skeleton without loading adapter code, spawning processes, or "
+            "consuming approval."
+        ),
+        "contractVersion": "0.1.0",
+        "reviewPacketAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_runtime_"
+            "implementation_review_packet_only"
+        ),
+        "skeletonAuthority": (
+            "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_"
+            "implementation_skeleton_only"
+        ),
+        "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+        "defaultExecution": "disabled",
+        "implementationSkeletonIsExecutionPermission": False,
+        "implementationSkeletonIsRegistryAuthority": False,
+        "implementationSkeletonConsumesApproval": False,
+        "implementationSkeletonImplementsRuntime": False,
+    }
+
+    review_packet = payload["input"]["runtimeImplementationReviewPacket"]
+    assert review_packet == {
+        "path": (
+            "tests/fixtures/repository_plugins/"
+            "explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-"
+            "packet.example.json"
+        ),
+        "digest": review_packet_digest,
+        "apiVersion": (
+            "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-"
+            "implementation-review-packet/v0"
+        ),
+        "kind": (
+            "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket"
+        ),
+        "schemaVersion": 1,
+        "authority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_runtime_"
+            "implementation_review_packet_only"
+        ),
+        "requiredStatus": "ready_for_implementation_review",
+        "requiredMode": "runtime_implementation_review_packet_no_execution",
+        "digestVerified": True,
+    }
+    assert_safe_relative_path(review_packet["path"])
+
+    assert payload["packetValidation"] == {
+        "reviewPacketDigestAgreement": True,
+        "reviewPacketStatusAccepted": True,
+        "reviewPacketModeAccepted": True,
+        "reviewPacketReviewOnly": True,
+        "reviewPacketIsExecutionPermission": False,
+        "reviewPacketIsRegistryAuthority": False,
+        "reviewPacketConsumesApproval": False,
+        "reviewPacketImplementsRuntime": False,
+        "reviewPacketRuntimeInvoked": False,
+        "reviewPacketRuntimeImplemented": False,
+        "reviewPacketAdapterOutputAccepted": False,
+    }
+
+    surface = payload["disabledRuntimeSurface"]
+    assert set(surface) == {
+        "entrypointIsolation",
+        "processLauncherBoundary",
+        "dependencyPolicy",
+        "networkPolicy",
+        "outputWriter",
+        "auditWriter",
+        "rollbackHandler",
+        "approvalConsumptionBoundary",
+    }
+    assert all(record["status"] == "declared_disabled" for record in surface.values())
+    assert surface["entrypointIsolation"]["adapterEntrypointLoaded"] is False
+    assert surface["entrypointIsolation"]["adapterModuleImported"] is False
+    assert surface["processLauncherBoundary"]["processSpawnAllowed"] is False
+    assert surface["processLauncherBoundary"]["processSpawned"] is False
+    assert surface["processLauncherBoundary"]["maxProcessCount"] == 0
+    assert surface["dependencyPolicy"]["dependencyInstallation"] == "not_allowed"
+    assert surface["dependencyPolicy"]["packageManagers"] == "not_invoked"
+    assert surface["networkPolicy"]["networkAccess"] == "none"
+    assert surface["networkPolicy"]["dnsAllowed"] is False
+    assert surface["outputWriter"]["writesOutput"] is False
+    assert surface["auditWriter"]["writesAudit"] is False
+    assert surface["rollbackHandler"]["rollbackExecuted"] is False
+    assert surface["approvalConsumptionBoundary"]["approvalConsumptionAllowed"] is False
+    assert surface["approvalConsumptionBoundary"]["approvalConsumedByRuntime"] is False
+
+    assert payload["skeleton"] == {
+        "status": "disabled_no_runtime_implementation",
+        "mode": "disabled_runtime_implementation_skeleton",
+        "reviewPacketArtifactCount": 1,
+        "disabledSurfaceCount": 8,
+        "runtimeImplementationAllowed": False,
+        "runtimeInvocationAllowed": False,
+        "approvalConsumptionAllowed": False,
+        "operatorApprovalConsumed": False,
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "networkAccess": "none",
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+
+    expected_accepted = {
+        "review_packet_artifact_identity_and_digest_valid",
+        "review_packet_status_ready_for_implementation_review",
+        "review_packet_mode_no_execution",
+        "review_packet_review_only_semantics_valid",
+        "review_packet_not_execution_permission",
+        "review_packet_not_registry_authority",
+        "review_packet_does_not_consume_approval",
+        "disabled_runtime_surface_recorded",
+        "entrypoint_isolation_boundary_recorded",
+        "process_launcher_boundary_recorded",
+        "output_audit_boundaries_recorded",
+        "approval_consumption_boundary_recorded",
+        "skeleton_preserves_no_runtime_side_effects",
+    }
+    expected_rejected = {
+        "missing_review_packet_artifact_rejected",
+        "review_packet_digest_mismatch_rejected",
+        "review_packet_status_not_ready_rejected",
+        "review_packet_mode_not_no_execution_rejected",
+        "unscoped_disabled_runtime_surface_rejected",
+        "skeleton_execution_permission_rejected",
+        "skeleton_registry_authority_rejected",
+        "approval_consumption_rejected",
+        "runtime_implementation_rejected",
+        "runtime_invocation_rejected",
+        "adapter_code_loading_rejected",
+        "adapter_import_rejected",
+        "adapter_process_spawn_rejected",
+        "dependency_installation_rejected",
+        "package_manager_invocation_rejected",
+        "network_access_rejected",
+        "adapter_output_registry_truth_rejected",
+        "missing_rollback_handler_rejected",
+    }
+    expected_blocked = {
+        "runtime_implementation_blocked",
+        "adapter_code_loading_blocked",
+        "adapter_import_blocked",
+        "adapter_process_spawn_blocked",
+        "real_runtime_invocation_blocked",
+        "approval_consumption_blocked",
+        "dependency_installation_blocked",
+        "package_manager_invocation_blocked",
+        "network_access_blocked",
+        "output_writer_execution_blocked",
+        "audit_writer_execution_blocked",
+        "rollback_handler_execution_blocked",
+        "harvested_code_execution_blocked",
+        "ai_execution_blocked",
+        "package_acceptance_blocked",
+        "relation_acceptance_blocked",
+        "baseline_seeding_blocked",
+        "preview_only_removal_blocked",
+        "adapter_output_truth_blocked",
+    }
+    expected_warnings = {
+        "skeleton_review_only",
+        "future_runtime_implementation_required",
+        "approval_not_consumed",
+        "disabled_surface_not_executable",
+    }
+    assert {check["code"] for check in payload["acceptedChecks"]} == expected_accepted
+    assert {check["code"] for check in payload["rejectedChecks"]} == expected_rejected
+    assert {check["code"] for check in payload["blockedChecks"]} == expected_blocked
+    assert {check["code"] for check in payload["warningChecks"]} == expected_warnings
+    assert payload["summary"] == {
+        "acceptedCount": len(expected_accepted),
+        "rejectedCount": len(expected_rejected),
+        "blockedCount": len(expected_blocked),
+        "warningCount": len(expected_warnings),
+        "diagnosticCount": 2,
+        "reviewPacketArtifactCount": 1,
+        "disabledSurfaceCount": 8,
+        "operatorApprovalBound": True,
+        "approvalConsumedByRuntime": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+    }
+    assert payload["executionBoundary"] == {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "implementationSkeletonIsExecutionPermission": False,
+        "implementationSkeletonIsRegistryAuthority": False,
+        "approvalConsumedByRuntime": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert [diagnostic["severity"] for diagnostic in payload["diagnostics"]] == [
+        "info",
+        "warning",
+    ]
+    assert set(payload["nonAuthorityStatements"]) == {
+        "skeleton_is_not_execution_permission",
+        "skeleton_is_not_registry_authority",
+        "skeleton_does_not_consume_approval",
+        "skeleton_does_not_implement_runtime",
+        "review_packet_is_not_execution_permission",
+        "review_packet_is_not_registry_authority",
+        "review_packet_does_not_consume_approval",
+        "does_not_load_third_party_adapter_code",
+        "does_not_import_adapter_code",
+        "does_not_execute_real_adapters",
+        "does_not_run_real_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_use_network",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_skeleton_as_execution_permission",
+        "does_not_grant_registry_authority",
+    }
+    assert payload["followUp"] == {
+        "runtimeImplementationReviewPacketTask": "P42-T16",
+        "disabledRuntimeImplementationSkeletonVerifierTask": (
+            "deferred_until_after_disabled_runtime_implementation_skeleton_review"
+        ),
+        "realLocalSandboxRuntimeImplementationTask": (
+            "deferred_until_after_disabled_runtime_implementation_skeleton_verifier"
+        ),
+        "realLocalSandboxRunTask": (
+            "deferred_until_after_explicit_runtime_implementation_and_operator_approval"
+        ),
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            (
+                "Trusted Local Adapter Disabled Explicit Real Local Sandbox Runtime "
+                "Implementation Skeleton"
+            ),
+            (
+                "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntime"
+                "ImplementationSkeleton"
+            ),
+            "disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton.example.json",
+            "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton/v0",
+            (
+                "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runtime_"
+                "implementation_skeleton_only"
+            ),
+            "defaultExecution: disabled",
+            "implementationSkeletonIsExecutionPermission: false",
+            "implementationSkeletonIsRegistryAuthority: false",
+            "implementationSkeletonConsumesApproval: false",
+            "implementationSkeletonImplementsRuntime: false",
+            review_packet_digest,
+            "reviewPacketDigestAgreement: true",
+            "reviewPacketStatusAccepted: true",
+            "reviewPacketModeAccepted: true",
+            "reviewPacketReviewOnly: true",
+            "reviewPacketIsExecutionPermission: false",
+            "reviewPacketIsRegistryAuthority: false",
+            "reviewPacketConsumesApproval: false",
+            "reviewPacketImplementsRuntime: false",
+            "reviewPacketRuntimeInvoked: false",
+            "reviewPacketRuntimeImplemented: false",
+            "reviewPacketAdapterOutputAccepted: false",
+            "entrypoint isolation",
+            "process launcher boundary",
+            "dependency policy",
+            "network policy",
+            "output writer",
+            "audit writer",
+            "rollback handler",
+            "approval consumption boundary",
+            "status: disabled_no_runtime_implementation",
+            "mode: disabled_runtime_implementation_skeleton",
+            "runtimeImplementationAllowed: false",
+            "runtimeInvocationAllowed: false",
+            "approvalConsumptionAllowed: false",
+            "operatorApprovalConsumed: false",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterCodeImportAttempted: false",
+            "adapterProcessSpawned: false",
+            "runtimeInvoked: false",
+            "runtimeImplemented: false",
+            "registryAuthority: false",
+            "adapterOutputAccepted: false",
+            "skeleton review-only",
+            "future runtime implementation required",
+            "disabled surface is not executable",
+            "review packet digest mismatch",
+            "skeleton execution permission",
+            "skeleton registry authority",
+            "runtime implementation",
+            "runtime invocation",
+            "adapter import",
+            "missing rollback handler",
+            "output writer execution",
+            "audit writer execution",
+            "rollback handler execution",
+            "does not load third-party adapter code",
+            "does not import adapter code",
+            "does not run adapter processes",
+            "does not install dependencies",
+            "does not invoke package managers",
+            "does not execute harvested repository code",
+            "does not run AI",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "does not treat the skeleton as execution permission",
+            "P42-T16",
+            "P42-T17",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "implementationSkeletonIsExecutionPermission: true",
+            "implementationSkeletonIsRegistryAuthority: true",
+            "implementationSkeletonConsumesApproval: true",
+            "implementationSkeletonImplementsRuntime: true",
+            "operatorApprovalConsumed: true",
+            "adapterCodeLoaded: true",
+            "adapterCodeImportAttempted: true",
+            "adapterProcessSpawned: true",
+            "runtimeInvoked: true",
+            "runtimeImplemented: true",
+            "networkAccess: allowed",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (
+            review_packet_doc,
+            (
+                "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_"
+                "IMPLEMENTATION_SKELETON.md"
+            ),
+        ),
+        (
+            review_packet_docc,
+            "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton",
+        ),
+        (
+            sandbox_plan,
+            (
+                "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_"
+                "IMPLEMENTATION_SKELETON.md"
+            ),
+        ),
+        (
+            sandbox_plan_docc,
+            "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton",
+        ),
+        (
+            docs_index,
+            (
+                "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_"
+                "IMPLEMENTATION_SKELETON.md"
+            ),
+        ),
+        (
+            docc_root,
+            "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton",
+        ),
+        (
+            capabilities,
+            (
+                "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_"
+                "IMPLEMENTATION_SKELETON.md"
+            ),
+        ),
+        (
+            capabilities_docc,
+            "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton",
+        ),
+        (
+            roadmap,
+            (
+                "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_"
+                "IMPLEMENTATION_SKELETON.md"
+            ),
+        ),
+        (
+            roadmap_docc,
+            "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton",
+        ),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_trusted_local_adapter_run_request_fixture_is_documented() -> None:
     fixture = (
         ROOT
