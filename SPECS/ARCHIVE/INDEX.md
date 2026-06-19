@@ -180,6 +180,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t4_repository_plugin_batch_integration.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t3_repository_plugin_applicability_report_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t2_repository_plugin_registry_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t1_repository_plugin_subsystem_contract.md` |
@@ -319,6 +320,7 @@
 | 2026-06-19 | P38-T3 | Archived Repository Plugin Applicability Report Fixture (PASS) |
 | 2026-06-19 | P38-T3 | Archived REVIEW_p38_t3_repository_plugin_applicability_report_fixture report |
 | 2026-06-19 | P38-T4 | Archived Repository Plugin Batch Integration (PASS) |
+| 2026-06-19 | P38-T4 | Archived REVIEW_p38_t4_repository_plugin_batch_integration report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
