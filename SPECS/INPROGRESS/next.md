@@ -1,6 +1,6 @@
 # Next Task: P41-T6 Real Local Trusted-Adapter Readiness Validation
 
-**Status:** Planned
+**Status:** In Progress
 **Branch:** `feature/P41-T6-real-local-trusted-adapter-readiness-validation`
 **Phase:** Phase 41. Trusted Local Adapter Runtime Readiness
 **Last Archived:** P41-T5 Trusted Local Adapter Run Evidence Handoff
