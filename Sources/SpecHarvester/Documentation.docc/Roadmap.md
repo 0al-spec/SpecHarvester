@@ -670,6 +670,15 @@ fixture. It validates P42-T8 request and P42-T9 preflight identity/digest
 linkage while preserving `adapterExecution: not_run`, `adapterCodeLoaded:
 false`, `adapterProcessSpawned: false`, `runtimeInvoked: false`,
 `runnerIsExecutionPermission: false`, and `registryAuthority: false`.
+P42-T11 adds
+<doc:TrustedLocalAdapterExplicitRealLocalSandboxRunnerEvidenceHandoff> and the
+machine-readable
+`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff`
+fixture. It packages the P42-T8 request, P42-T9 preflight, and P42-T10
+disabled runner skeleton as portable review evidence while preserving
+`handoffIsExecutionPermission: false`, `handoffIsOperatorApproval: false`,
+`handoffIsRegistryAuthority: false`, `adapterExecution: not_run`,
+`runtimeInvoked: false`, and `adapterOutputAccepted: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

@@ -198,6 +198,7 @@
 | Folder | Description |
 |--------|-------------|
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t10_disabled_explicit_real_local_sandbox_runner_skeleton.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t11_explicit_real_local_sandbox_runner_evidence_handoff.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t9_explicit_real_local_sandbox_request_preflight_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t3_trusted_local_adapter_sandbox_preflight_report_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t2_trusted_local_adapter_sandbox_contract_fixture.md` |
@@ -705,3 +706,5 @@
 | 2026-06-19 | P42-T9 | Archived REVIEW_p42_t9_explicit_real_local_sandbox_request_preflight_fixture report |
 | 2026-06-19 | P42-T10 | Archived Disabled Explicit Real Local Trusted Adapter Sandbox Runner Skeleton (PASS) |
 | 2026-06-19 | P42-T10 | Archived REVIEW_p42_t10_disabled_explicit_real_local_sandbox_runner_skeleton report |
+| 2026-06-19 | P42-T11 | Archived Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff (PASS) |
+| 2026-06-19 | P42-T11 | Archived REVIEW_p42_t11_explicit_real_local_sandbox_runner_evidence_handoff report |

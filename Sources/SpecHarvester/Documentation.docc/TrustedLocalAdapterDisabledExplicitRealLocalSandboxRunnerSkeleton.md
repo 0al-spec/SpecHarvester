@@ -158,3 +158,5 @@ permission.
 - P42-T9 defines
   <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture>.
 - P42-T10 adds this disabled runner skeleton.
+- P42-T11 packages this skeleton with the request and preflight artifacts in
+  <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunnerEvidenceHandoff>.
