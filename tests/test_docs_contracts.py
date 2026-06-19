@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 38 Complete" in next_text:
+        assert_phase_38_complete(next_text)
+        return
+
     if "# Next Task: P38-T6 Real Repository Plugin Evidence Run" in next_text:
         assert_p38_t5_last_archived(next_text)
         assert_p38_t5_recent(next_text)
@@ -3556,6 +3560,44 @@ def assert_phase_38_t6_planned(next_text: str) -> None:
     assert "remove `preview_only`" in normalized
     assert "treat plugin decisions as registry truth" in normalized
     assert "Record the result as a static review artifact or fixture" in next_text
+
+
+def assert_phase_38_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 38 Complete" in next_text
+    assert "**Status:** Phase Complete" in next_text
+    assert "Phase 38. Repository Plugin Subsystem" in next_text
+    assert "**Last Archived:** P38-T6 Real Repository Plugin Evidence Run" in next_text
+    for required in (
+        "`P38-T1` documented the language- and framework-agnostic "
+        "repository plugin subsystem contract",
+        "`P38-T2` added the machine-readable `SpecHarvesterRepositoryPluginRegistry` fixture",
+        "`P38-T3` added the machine-readable "
+        "`SpecHarvesterRepositoryPluginApplicabilityReport` fixture",
+        "`P38-T4` connected applicability reports to `autonomous-candidate-batch`",
+        "`P38-T5` added cross-ecosystem static applicability fixtures",
+        "`P38-T6` recorded a real FastMCP plugin evidence run",
+    ):
+        assert required in normalized
+    assert "generic.single_package.v0" in next_text
+    assert "producer-side evidence contract" in normalized
+    assert "repositoryPluginApplicability" in next_text
+    assert "appliedToDrafting: false" in next_text
+    assert "registryAuthority: false" in next_text
+    assert "No Phase 38 task remains selected" in next_text
+    assert "next phase should be defined explicitly" in normalized
+    assert "does not load third-party plugin code" in normalized
+    assert "execute plugins" in normalized
+    assert "clone or fetch repositories" in normalized
+    assert "install dependencies" in normalized
+    assert "execute harvested code" in normalized
+    assert "invoke package managers" in normalized
+    assert "run AI" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
