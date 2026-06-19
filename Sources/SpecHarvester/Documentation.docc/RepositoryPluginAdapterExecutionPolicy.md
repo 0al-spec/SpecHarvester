@@ -153,7 +153,8 @@ evidence after digest recording, validation, and explicit operator selection.
 - P40-T5 connects manifest and preflight output to
   `autonomous-candidate-batch` as `repositoryPluginAdapterEvidence`
   review-only producer evidence through explicit operator-supplied sidecars.
-- P40-T6 should record cross-ecosystem adapter contract fixtures.
+- P40-T6 records <doc:RepositoryPluginAdapterCrossEcosystemFixtureMatrix> as
+  cross-ecosystem adapter contract fixtures.
 - P40-T7 should record real local adapter-contract validation over existing
   pinned checkouts.
 

@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P40-T7 Real Local Adapter-Contract Validation" in next_text:
+        assert_p40_t6_last_archived(next_text)
+        assert_p40_t6_recent(next_text)
+        assert_phase_40_t7_planned(next_text)
+        return
+
     if "# Next Task: P40-T6 Repository Plugin Adapter Cross-Ecosystem Fixture Matrix" in next_text:
         assert_p40_t5_last_archived(next_text)
         assert_p40_t5_recent(next_text)
@@ -4313,6 +4319,53 @@ def assert_phase_40_t6_planned(next_text: str) -> None:
     assert "nested package roots" in normalized
     assert "ambiguous mixed layouts" in normalized
     assert "without loading third-party adapter code" in normalized
+    assert "Do not implement adapter loading or execution" in normalized
+    assert "Do not auto-run adapters" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p40_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P40-T6 Repository Plugin Adapter Cross-Ecosystem Fixture Matrix" in (
+        next_text
+    )
+
+
+def assert_p40_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P40-T6` recorded a static cross-ecosystem adapter fixture matrix" in normalized
+    assert "docs/REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md" in next_text
+    assert "RepositoryPluginAdapterCrossEcosystemFixtureMatrix.md" in next_text
+    assert "adapter-fixture-matrix.example.json" in next_text
+    assert "manifest_backed_single_package" in normalized
+    assert "workspace_or_multi_package" in normalized
+    assert "documentation_heavy_repository" in normalized
+    assert "nested_package_roots" in normalized
+    assert "ambiguous_mixed_layout" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "producer-side review evidence only" in normalized
+
+
+def assert_phase_40_t7_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P40-T7 Real Local Adapter-Contract Validation" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P40-T7-real-local-adapter-contract-validation`" in next_text
+    assert "Phase 40. Repository Plugin Adapter Contract" in next_text
+    assert "existing pinned checkouts" in normalized
+    assert "FastMCP" in normalized
+    assert "FastAPI" in normalized
+    assert "xyflow" in normalized
+    assert "at least one additional ecosystem shape" in normalized
+    assert "producer-side evidence only" in normalized
     assert "Do not implement adapter loading or execution" in normalized
     assert "Do not auto-run adapters" in normalized
     assert "Do not clone or fetch repositories" in normalized
@@ -15843,6 +15896,275 @@ def test_repository_plugin_adapter_batch_integration_is_documented() -> None:
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P40-T5` Connect adapter manifest and preflight output" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_adapter_cross_ecosystem_fixture_matrix_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "adapter_cross_ecosystem"
+        / "adapter-fixture-matrix.example.json"
+    )
+    manifest = ROOT / "tests" / "fixtures" / "repository_plugins" / "adapter-manifest.example.json"
+    preflight = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "adapter-preflight-report.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterCrossEcosystemFixtureMatrix.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    adapter_contract = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"
+    adapter_contract_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterContract.md"
+    )
+    manifest_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"
+    manifest_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterManifestFixture.md"
+    )
+    preflight_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"
+    preflight_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterPreflightReportFixture.md"
+    )
+    execution_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md"
+    execution_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterExecutionPolicy.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.repository-plugin-adapter-fixture-matrix/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryPluginAdapterCrossEcosystemFixtureMatrix"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_plugin_adapter_fixture_matrix_only"
+    assert payload["task"] == "P40-T6"
+    assert payload["languagePolicy"] == "ecosystem_example_only"
+    assert payload["manifest"] == {
+        "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+        "digest": f"sha256:{hashlib.sha256(manifest.read_bytes()).hexdigest()}",
+        "kind": "SpecHarvesterRepositoryPluginAdapterManifest",
+        "authority": "producer_plugin_adapter_manifest_only",
+    }
+    assert payload["preflightTemplate"] == {
+        "path": "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+        "digest": f"sha256:{hashlib.sha256(preflight.read_bytes()).hexdigest()}",
+        "kind": "SpecHarvesterRepositoryPluginAdapterPreflightReport",
+        "authority": "producer_plugin_adapter_preflight_only",
+    }
+
+    cases = payload["cases"]
+    assert payload["summary"]["caseCount"] == len(cases) == 5
+    assert payload["summary"]["shapeCount"] == 5
+    assert payload["summary"]["adapterExecution"] == "not_run"
+    assert payload["summary"]["adapterCodeLoaded"] is False
+    assert payload["summary"]["appliedToDrafting"] is False
+    assert payload["summary"]["registryAuthority"] is False
+
+    expected_shapes = {
+        "manifest_backed_single_package",
+        "workspace_or_multi_package",
+        "documentation_heavy_repository",
+        "nested_package_roots",
+        "ambiguous_mixed_layout",
+    }
+    seen_shapes: set[str] = set()
+    seen_decisions: set[str] = set()
+    seen_diagnostics: set[str] = set()
+
+    required_non_authority = {
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+    }
+    assert required_non_authority.issubset(set(payload["nonAuthorityStatements"]))
+
+    for case in cases:
+        seen_shapes.add(case["shape"])
+        assert case["languagePolicy"] == "ecosystem_example_only"
+        assert case["staticEvidence"]["inputAuthority"] == "static_local_evidence_only"
+        for path in case["staticEvidence"]["paths"]:
+            assert path
+            assert not path.startswith("/")
+            assert "\\" not in path
+            assert ".." not in Path(path).parts
+
+        expected = case["expectedAdapterEvidence"]
+        assert expected["manifest"]["path"] == payload["manifest"]["path"]
+        assert expected["manifest"]["digest"] == payload["manifest"]["digest"]
+        assert expected["manifest"]["adapterCount"] == 3
+        boundary = expected["sidecarBoundary"]
+        assert boundary == {
+            "appliedToDrafting": False,
+            "registryAuthority": False,
+            "adapterExecution": "not_run",
+            "adapterOutputAccepted": False,
+        }
+
+        decisions = {
+            "allowed": case["allowedAdapters"],
+            "rejected": case["rejectedAdapters"],
+            "fallback": case["fallbackAdapters"],
+            "blocked": case["blockedAdapters"],
+        }
+        summary = case["summary"]
+        assert summary["allowedCount"] == len(decisions["allowed"])
+        assert summary["rejectedCount"] == len(decisions["rejected"])
+        assert summary["fallbackCount"] == len(decisions["fallback"])
+        assert summary["blockedCount"] == len(decisions["blocked"])
+        assert summary["diagnosticCount"] == len(case["diagnostics"])
+        assert summary["executedAdapterCount"] == 0
+        assert summary["runtimeImplementedAdapterCount"] == 0
+        assert expected["preflight"]["allowedCount"] == summary["allowedCount"]
+        assert expected["preflight"]["rejectedCount"] == summary["rejectedCount"]
+        assert expected["preflight"]["fallbackCount"] == summary["fallbackCount"]
+        assert expected["preflight"]["blockedCount"] == summary["blockedCount"]
+        assert expected["preflight"]["diagnosticCount"] == summary["diagnosticCount"]
+        assert expected["preflight"]["executedAdapterCount"] == 0
+
+        for decision, records in decisions.items():
+            if records:
+                seen_decisions.add(decision)
+            for record in records:
+                assert record["decision"] == decision
+                assert record["execution"] == "not_run"
+                assert isinstance(record["adapterId"], str)
+                assert record["adapterId"].startswith("spec_harvester.adapters.")
+                assert record["authority"] in {
+                    "producer_adapter_manifest_only",
+                    "producer_adapter_preflight_example_only",
+                    "none",
+                }
+                for path in record.get("evidencePaths", []):
+                    assert path in case["staticEvidence"]["paths"]
+
+        for diagnostic in case["diagnostics"]:
+            assert diagnostic["adapterId"].startswith("spec_harvester.adapters.")
+            seen_diagnostics.add(diagnostic["code"])
+
+        assert required_non_authority.issubset(set(case["nonAuthorityStatements"]))
+
+    assert seen_shapes == expected_shapes
+    assert seen_decisions == {"allowed", "rejected", "fallback", "blocked"}
+    assert {
+        "adapter_allowed_static_manifest",
+        "adapter_allowed_static_parser_profile",
+        "adapter_allowed_static_topology",
+        "adapter_rejected_unsafe_or_ambiguous",
+        "adapter_fallback_conservative_static_summary",
+        "adapter_blocked_required_evidence_missing",
+        "adapter_blocked_runtime_required",
+    }.issubset(seen_diagnostics)
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Adapter Cross-Ecosystem Fixture Matrix",
+            "SpecHarvesterRepositoryPluginAdapterCrossEcosystemFixtureMatrix",
+            "tests/fixtures/repository_plugins/adapter_cross_ecosystem/adapter-fixture-matrix.example.json",
+            "manifest_backed_single_package",
+            "workspace_or_multi_package",
+            "documentation_heavy_repository",
+            "nested_package_roots",
+            "ambiguous_mixed_layout",
+            "allowedAdapters[]",
+            "rejectedAdapters[]",
+            "fallbackAdapters[]",
+            "blockedAdapters[]",
+            "adapter_allowed_static_manifest",
+            "adapter_allowed_static_parser_profile",
+            "adapter_allowed_static_topology",
+            "adapter_rejected_unsafe_or_ambiguous",
+            "adapter_fallback_conservative_static_summary",
+            "adapter_blocked_required_evidence_missing",
+            "adapter_blocked_runtime_required",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "registryAuthority: false",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary_text in (
+            "static producer-side review evidence",
+            "does not load third-party adapter code",
+            "execute adapters",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run AI",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat adapter output as registry truth",
+        ):
+            assert boundary_text in normalized, f"Boundary {boundary_text!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"),
+        (docc_root, "docs/REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"),
+        (docc_root, "RepositoryPluginAdapterCrossEcosystemFixtureMatrix"),
+        (capabilities, "REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"),
+        (capabilities_docc, "RepositoryPluginAdapterCrossEcosystemFixtureMatrix"),
+        (roadmap, "REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"),
+        (roadmap_docc, "RepositoryPluginAdapterCrossEcosystemFixtureMatrix"),
+        (adapter_contract, "REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"),
+        (adapter_contract_docc, "RepositoryPluginAdapterCrossEcosystemFixtureMatrix"),
+        (manifest_doc, "REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"),
+        (manifest_docc, "RepositoryPluginAdapterCrossEcosystemFixtureMatrix"),
+        (preflight_doc, "REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"),
+        (preflight_docc, "RepositoryPluginAdapterCrossEcosystemFixtureMatrix"),
+        (execution_doc, "REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md"),
+        (execution_docc, "RepositoryPluginAdapterCrossEcosystemFixtureMatrix"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P40-T6` Record a cross-ecosystem adapter contract fixture matrix" in (workplan_text)
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
