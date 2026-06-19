@@ -13162,6 +13162,7 @@ def test_repository_plugin_applicability_report_fixture_is_documented() -> None:
             "source_manifest",
             "harvest_snapshot",
             "workspace_inventory",
+            "repository_profile_detection",
             "operator_label",
         ],
         "signals": [
@@ -13172,10 +13173,10 @@ def test_repository_plugin_applicability_report_fixture_is_documented() -> None:
         ],
     }
     assert payload["summary"] == {
-        "selectedCount": 2,
+        "selectedCount": 1,
         "rejectedCount": 1,
         "fallbackCount": 1,
-        "blockedCount": 1,
+        "blockedCount": 2,
         "diagnosticCount": 5,
     }
 
@@ -13183,18 +13184,18 @@ def test_repository_plugin_applicability_report_fixture_is_documented() -> None:
     rejected = {decision["pluginId"]: decision for decision in payload["rejectedPlugins"]}
     fallback = {decision["pluginId"]: decision for decision in payload["fallbackPlugins"]}
     blocked = {decision["pluginId"]: decision for decision in payload["blockedPlugins"]}
-    assert set(selected) == {
-        "spec_harvester.generic.repository_profile.v0",
-        "spec_harvester.generic.package_topology.v0",
-    }
+    assert set(selected) == {"spec_harvester.generic.repository_profile.v0"}
     assert set(rejected) == {"spec_harvester.generic.review_surface.v0"}
     assert set(fallback) == {"spec_harvester.generic.parser_profile.v0"}
-    assert set(blocked) == {"spec_harvester.generic.manifest_summary.v0"}
+    assert set(blocked) == {
+        "spec_harvester.generic.manifest_summary.v0",
+        "spec_harvester.generic.package_topology.v0",
+    }
     assert selected["spec_harvester.generic.repository_profile.v0"]["confidence"] == "high"
-    assert selected["spec_harvester.generic.package_topology.v0"]["confidence"] == "medium"
     assert rejected["spec_harvester.generic.review_surface.v0"]["confidence"] == "low"
     assert fallback["spec_harvester.generic.parser_profile.v0"]["decision"] == "fallback"
     assert blocked["spec_harvester.generic.manifest_summary.v0"]["confidence"] == "blocked"
+    assert blocked["spec_harvester.generic.package_topology.v0"]["confidence"] == "blocked"
 
     decisions = [
         *payload["selectedPlugins"],
@@ -13203,6 +13204,7 @@ def test_repository_plugin_applicability_report_fixture_is_documented() -> None:
         *payload["blockedPlugins"],
     ]
     static_paths = set(payload["staticEvidence"]["paths"])
+    static_evidence_kinds = set(payload["staticEvidence"]["evidenceKinds"])
     for decision in decisions:
         registry_plugin = registry_plugins[decision["pluginId"]]
         assert decision["role"] == registry_plugin["role"]
@@ -13217,6 +13219,8 @@ def test_repository_plugin_applicability_report_fixture_is_documented() -> None:
         assert set(decision["outputArtifactKinds"]).issubset(
             set(registry_plugin["outputArtifactKinds"])
         )
+        if decision["decision"] == "selected":
+            assert set(registry_plugin["inputEvidenceKinds"]).issubset(static_evidence_kinds)
 
     assert selected["spec_harvester.generic.repository_profile.v0"]["reasonCodes"] == [
         "workspace_manifest_present",
@@ -13229,6 +13233,10 @@ def test_repository_plugin_applicability_report_fixture_is_documented() -> None:
     assert blocked["spec_harvester.generic.manifest_summary.v0"]["reasonCodes"] == [
         "required_manifest_digest_missing",
         "requires_explicit_recollection",
+    ]
+    assert blocked["spec_harvester.generic.package_topology.v0"]["reasonCodes"] == [
+        "required_manifest_summary_missing",
+        "requires_manifest_summary_evidence",
     ]
 
     diagnostics = payload["diagnostics"]

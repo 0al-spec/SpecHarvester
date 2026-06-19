@@ -27,6 +27,7 @@
       "source_manifest",
       "harvest_snapshot",
       "workspace_inventory",
+      "repository_profile_detection",
       "operator_label"
     ],
     "signals": [
@@ -37,10 +38,10 @@
     ]
   },
   "summary": {
-    "selectedCount": 2,
+    "selectedCount": 1,
     "rejectedCount": 1,
     "fallbackCount": 1,
-    "blockedCount": 1,
+    "blockedCount": 2,
     "diagnosticCount": 5
   },
   "selectedPlugins": [
@@ -62,26 +63,6 @@
       ],
       "outputArtifactKinds": [
         "repository_profile_detection"
-      ]
-    },
-    {
-      "pluginId": "spec_harvester.generic.package_topology.v0",
-      "role": "topology_helper",
-      "decision": "selected",
-      "decisionAuthority": "producer_plugin_applicability_only",
-      "pluginOutputAuthority": "producer_side_evidence_only",
-      "confidence": "medium",
-      "reasonCodes": [
-        "workspace_root_present",
-        "member_package_candidates_present"
-      ],
-      "evidencePaths": [
-        "package.json",
-        "packages/core/package.json",
-        "packages/ui/package.json"
-      ],
-      "outputArtifactKinds": [
-        "package_topology_hint"
       ]
     }
   ],
@@ -141,6 +122,26 @@
       "outputArtifactKinds": [
         "manifest_summary"
       ]
+    },
+    {
+      "pluginId": "spec_harvester.generic.package_topology.v0",
+      "role": "topology_helper",
+      "decision": "blocked",
+      "decisionAuthority": "producer_plugin_applicability_only",
+      "pluginOutputAuthority": "producer_side_evidence_only",
+      "confidence": "blocked",
+      "reasonCodes": [
+        "required_manifest_summary_missing",
+        "requires_manifest_summary_evidence"
+      ],
+      "evidencePaths": [
+        "package.json",
+        "packages/core/package.json",
+        "packages/ui/package.json"
+      ],
+      "outputArtifactKinds": [
+        "package_topology_hint"
+      ]
     }
   ],
   "diagnostics": [
@@ -156,10 +157,10 @@
       ]
     },
     {
-      "severity": "info",
-      "code": "plugin_selected",
+      "severity": "error",
+      "code": "plugin_blocked_required_evidence_missing",
       "pluginId": "spec_harvester.generic.package_topology.v0",
-      "message": "Topology helper selected as medium-confidence review evidence.",
+      "message": "Topology helper blocked because required manifest_summary evidence is unavailable.",
       "evidencePaths": [
         "package.json",
         "packages/core/package.json",

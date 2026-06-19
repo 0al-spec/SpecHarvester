@@ -76,6 +76,9 @@ Each plugin decision includes:
 
 The P38-T3 fixture intentionally includes selected, rejected, fallback, and
 blocked decisions so later code can test all four result categories.
+`spec_harvester.generic.package_topology.v0` is blocked in this fixture because
+its declared `manifest_summary` input evidence is unavailable; applicability
+reports must not select plugins when required declared inputs are missing.
 
 ## Diagnostics
 
