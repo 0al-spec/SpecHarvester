@@ -5479,13 +5479,9 @@ def assert_p42_t12_recent(next_text: str) -> None:
         in next_text
     )
     assert (
-        "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewGate.md"
-        in next_text
+        "TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewGate.md" in next_text
     )
-    assert (
-        "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff"
-        in normalized
-    )
+    assert "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff" in normalized
     assert "pinned SHA-256 digest" in normalized
     assert "handoff status `ready_for_review`" in normalized
     assert "handoff review-only semantics" in normalized
