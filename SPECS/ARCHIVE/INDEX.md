@@ -190,6 +190,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p40_t4_adapter_execution_policy.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p40_t3_repository_plugin_adapter_preflight_report_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p39_t2_static_plugin_evidence_envelope_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p39_t1_static_plugin_applicability_evaluator_plan.md` |
@@ -650,3 +651,4 @@
 | 2026-06-19 | P40-T3 | Archived Repository Plugin Adapter Preflight Report Fixture (PASS) |
 | 2026-06-19 | P40-T3 | Archived REVIEW_p40_t3_repository_plugin_adapter_preflight_report_fixture report |
 | 2026-06-19 | P40-T4 | Archived Adapter Execution Policy (PASS) |
+| 2026-06-19 | P40-T4 | Archived REVIEW_p40_t4_adapter_execution_policy report |
