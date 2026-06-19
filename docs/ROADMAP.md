@@ -1036,6 +1036,15 @@ non-authority statements while keeping `verifierIsExecutionPermission: false`,
 `verifierIsRegistryAuthority: false`, `verifierConsumesApproval: false`,
 `verifierInvokesRuntime: false`, and `adapterOutputAccepted: false`.
 
+Phase 43 starts with
+[`OPERATIONAL_MVP_VALIDATION_PLAN.md`](OPERATIONAL_MVP_VALIDATION_PLAN.md).
+P43-T1 returns the work from safety plumbing to product validation: prove on a
+bounded pinned multi-ecosystem corpus whether SpecHarvester currently produces
+valid, repository-specific starter packages that authors can reasonably edit.
+The phase compares static-only and AI-enabled results, records author-ready
+quality dimensions, and ends with an exit decision before broader autonomous
+scraping or any real adapter execution work.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install

@@ -62,6 +62,7 @@ The canonical source files remain in the repository:
 - `docs/TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md`
 - `docs/TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md`
 - `docs/TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md`
+- `docs/OPERATIONAL_MVP_VALIDATION_PLAN.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -215,6 +216,7 @@ the host.
 - <doc:TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket>
 - <doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton>
 - <doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeletonVerifier>
+- <doc:OperationalMVPValidationPlan>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

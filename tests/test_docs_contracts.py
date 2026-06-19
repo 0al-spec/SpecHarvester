@@ -38,6 +38,26 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P43-T2 Operational MVP Validation Plan Fixture" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
+        assert "`P43-T2`" in next_text
+        assert "SpecHarvesterOperationalMVPValidationPlan" in next_text
+        assert "pinned local checkout" in next_text
+        assert "static-only" in next_text
+        assert "AI-enabled" in next_text
+        assert "producer-side evidence" in next_text
+        return
+
+    if "# Next Task: P43-T1 Operational MVP Validation Plan" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
+        assert "`P43-T1`" in next_text
+        assert "small pinned real-repository" in next_text
+        assert "static-only and AI-enabled run modes" in next_text
+        assert "Preserve the no-execution and non-authority boundaries" in next_text
+        return
+
     if "# Next Task: Phase 42 Complete" in next_text:
         assert_p42_t18_last_archived(next_text)
         assert_p42_t18_recent(next_text)
@@ -27199,6 +27219,104 @@ def test_repository_profile_detection_fixture_is_documented() -> None:
         assert "does not clone/fetch repositories" in normalized
         assert "publish registry metadata" in normalized
         assert "does not treat plugin decisions as registry truth" in normalized
+
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_validation_plan_is_documented() -> None:
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_VALIDATION_PLAN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPValidationPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Validation Plan",
+            "Phase 43",
+            "valid starter package",
+            "pinned local repository checkout",
+            "bounded evidence",
+            "optional proposal-only AI improvement",
+            "author-ready quality report",
+            "reviewable SpecPM handoff decision",
+            "JavaScript/TypeScript",
+            "Python",
+            "Go",
+            "xyflow",
+            "FastAPI",
+            "FastMCP",
+            "gin",
+            "Static-only",
+            "AI-enabled",
+            "validity",
+            "repositorySpecificity",
+            "evidencePrecision",
+            "packageTopology",
+            "claimConservatism",
+            "authorActionability",
+            "SpecPMHandoffReadiness",
+            "ready_for_bounded_autonomous_scraping",
+            "needs_quality_hardening",
+            "blocked_until_adapter_execution",
+            "P43-T1",
+            "P43-T2",
+            "P43-T3",
+            "P43-T4",
+            "P43-T5",
+            "P43-T6",
+            "P43-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "must not clone or fetch repositories implicitly",
+            "does not accept packages",
+            "accept relations",
+            "seed baselines",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "enable trusted local adapter execution",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_VALIDATION_PLAN.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_VALIDATION_PLAN.md"),
+        (docc_root, "<doc:OperationalMVPValidationPlan>"),
+        (capabilities, "OPERATIONAL_MVP_VALIDATION_PLAN.md"),
+        (capabilities_docc, "OperationalMVPValidationPlan"),
+        (roadmap, "OPERATIONAL_MVP_VALIDATION_PLAN.md"),
+        (roadmap_docc, "OperationalMVPValidationPlan"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "## Phase 43. Operational MVP Validation" in workplan_text
+    assert "`P43-T1` Document the operational MVP validation plan" in workplan_text
+    assert "`P43-T7` Record an operational MVP exit report" in workplan_text
+    assert "bounded, pinned, multi-ecosystem corpus" in workplan_text
+    assert "AI-enabled runs remain proposal-only" in workplan_text
 
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
