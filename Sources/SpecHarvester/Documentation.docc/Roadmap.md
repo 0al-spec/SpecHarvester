@@ -592,8 +592,14 @@ P41-T4 adds <doc:TrustedLocalAdapterRunnerSkeleton>, the
 `trusted-local-adapter-runner-skeleton` CLI, and the machine-readable
 `SpecHarvesterTrustedLocalAdapterRunReport` no-execution report. The phase
 prepares a future trusted local adapter runtime without enabling execution yet.
-It defines follow-up tasks for explicit review-only batch evidence handoff and
-real local readiness validation over FastMCP, FastAPI, xyflow, and Gin.
+P41-T5 connects the runner report to <doc:AutonomousCandidateBatch> through
+`--trusted-local-adapter-run-report`, copying it as
+`trustedLocalAdapterRunEvidence` with source/copied SHA-256 digests,
+`adapterExecution: not_run`, `adapterCodeLoaded: false`,
+`adapterProcessSpawned: false`, `executedAdapterCount: 0`,
+`appliedToDrafting: false`, and `registryAuthority: false`. The remaining
+follow-up is real local readiness validation over FastMCP, FastAPI, xyflow, and
+Gin.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

@@ -94,6 +94,22 @@ The report accepts only the disabled no-execution path:
 Any mismatch is an error. The CLI prints `status: error`, returns exit code `2`,
 and does not write a pass-like report.
 
+## Batch Evidence Handoff
+
+P41-T5 connects the runner report to `autonomous-candidate-batch` through the
+explicit `--trusted-local-adapter-run-report` input. The batch validates the
+report identity and no-execution boundary, copies the report to
+`reports/trusted-local-adapter-run-evidence/trusted-local-adapter-run-report.json`,
+and records it as `trustedLocalAdapterRunEvidence`.
+
+This handoff is review-only producer evidence. It keeps
+`adapterExecution: not_run`, `adapterCodeLoaded: false`,
+`adapterProcessSpawned: false`, `executedAdapterCount: 0`,
+`appliedToDrafting: false`, and `registryAuthority: false`. It does not run
+adapters, load adapter code, change candidate drafting, accept packages,
+accept relations, publish registry metadata, remove `preview_only`, or treat
+the runner report as adapter output truth.
+
 ## Non-Authority Statements
 
 The runner report states that it:
@@ -120,7 +136,7 @@ The runner report states that it:
 - P41-T3 defines
   <doc:TrustedLocalAdapterRunPreflightReportFixture>.
 - P41-T4 adds this disabled no-execution runner skeleton.
-- P41-T5 will connect trusted local adapter run reports to
+- P41-T5 connects trusted local adapter run reports to
   `autonomous-candidate-batch` as review-only producer evidence.
 - P41-T6 will run real local readiness validation over pinned checkouts while
   proving no adapter process, package manager, dependency installer, network

@@ -22,12 +22,21 @@ from spec_harvester.autonomous_candidate_batch import (
     REPOSITORY_PLUGIN_APPLICABILITY_FILENAME,
     REPOSITORY_PLUGIN_APPLICABILITY_KIND,
     REPOSITORY_PROFILE_DETECTION_FILENAME,
+    TRUSTED_LOCAL_ADAPTER_RUN_EVIDENCE_DIRNAME,
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_FILENAME,
     AutonomousCandidateBatch,
     AutonomousCandidateBatchOptions,
     ai_proposal_record,
     run_autonomous_candidate_batch,
 )
 from spec_harvester.cli import main
+from spec_harvester.trusted_local_adapter_runner import (
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_API_VERSION,
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_AUTHORITY,
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_KIND,
+    TrustedLocalAdapterRunOptions,
+    build_trusted_local_adapter_run_report,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_PLUGIN_FIXTURES = ROOT / "tests" / "fixtures" / "repository_plugins"
@@ -38,6 +47,12 @@ STATIC_REPOSITORY_PLUGIN_EVIDENCE_ENVELOPE = (
 REPOSITORY_PLUGIN_ADAPTER_MANIFEST = REPOSITORY_PLUGIN_FIXTURES / "adapter-manifest.example.json"
 REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT = (
     REPOSITORY_PLUGIN_FIXTURES / "adapter-preflight-report.example.json"
+)
+TRUSTED_LOCAL_ADAPTER_RUN_REQUEST = (
+    REPOSITORY_PLUGIN_FIXTURES / "trusted-local-adapter-run-request.example.json"
+)
+TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT = (
+    REPOSITORY_PLUGIN_FIXTURES / "trusted-local-adapter-run-preflight-report.example.json"
 )
 
 
@@ -75,10 +90,18 @@ def test_autonomous_candidate_batch_runs_offline_preview_pipeline(
         "registryAuthority": False,
         "adapterExecution": "not_run",
     }
+    assert report["trustedLocalAdapterRunEvidence"] == {
+        "status": "not_provided",
+        "reason": "operator_not_provided",
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterExecution": "not_run",
+    }
     assert report["summary"]["processedCount"] == 1
     assert report["summary"]["passedPreflightCount"] == 1
     assert report["summary"]["repositoryPluginApplicabilitySidecarCount"] == 0
     assert report["summary"]["repositoryPluginAdapterEvidenceSidecarCount"] == 0
+    assert report["summary"]["trustedLocalAdapterRunEvidenceSidecarCount"] == 0
     assert report["summary"]["repositoryProfileDetectionCount"] == 1
     assert report["summary"]["repositoryProfileDisabledCount"] == 1
     assert report["summary"]["repositoryProfileSelectedCount"] == 0
@@ -319,6 +342,94 @@ def test_autonomous_candidate_batch_records_repository_plugin_adapter_evidence_s
     assert report["repositories"][0]["packageSetDraft"]["candidateCount"] == 3
 
 
+def test_autonomous_candidate_batch_records_trusted_local_adapter_run_evidence_sidecar(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    run_report = write_trusted_local_adapter_run_report_fixture(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            trusted_local_adapter_run_report=run_report,
+        )
+    )
+
+    sidecar = report["trustedLocalAdapterRunEvidence"]
+    sidecar_path = Path(sidecar["path"])
+
+    assert report["status"] == "passed"
+    assert report["summary"]["trustedLocalAdapterRunEvidenceSidecarCount"] == 1
+    assert sidecar["status"] == "recorded"
+    assert sidecar["source"] == str(run_report)
+    assert sidecar["sourceMode"] == "explicit_sidecar"
+    assert sidecar["sourceDigest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(run_report.read_bytes()).hexdigest(),
+    }
+    assert sidecar_path == (
+        output
+        / "reports"
+        / TRUSTED_LOCAL_ADAPTER_RUN_EVIDENCE_DIRNAME
+        / TRUSTED_LOCAL_ADAPTER_RUN_REPORT_FILENAME
+    )
+    assert sidecar_path.is_file()
+    assert sidecar["digest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(sidecar_path.read_bytes()).hexdigest(),
+    }
+    assert sidecar["apiVersion"] == TRUSTED_LOCAL_ADAPTER_RUN_REPORT_API_VERSION
+    assert sidecar["kind"] == TRUSTED_LOCAL_ADAPTER_RUN_REPORT_KIND
+    assert sidecar["schemaVersion"] == 1
+    assert sidecar["authority"] == TRUSTED_LOCAL_ADAPTER_RUN_REPORT_AUTHORITY
+    assert sidecar["runStatus"] == "no_execution_report_emitted"
+    assert sidecar["runner"]["mode"] == "disabled_no_execution_skeleton"
+    assert sidecar["runner"]["enabled"] is False
+    assert sidecar["runner"]["runtimeImplemented"] is False
+    assert sidecar["runner"]["adapterExecution"] == "not_run"
+    assert sidecar["runner"]["adapterCodeLoaded"] is False
+    assert sidecar["runner"]["adapterProcessSpawned"] is False
+    assert sidecar["runner"]["executedAdapterCount"] == 0
+    assert sidecar["runner"]["dependencyInstallation"] == "not_allowed"
+    assert sidecar["runner"]["packageManagers"] == "not_invoked"
+    assert sidecar["runner"]["harvestedCodeExecution"] == "not_allowed"
+    assert sidecar["runner"]["aiExecution"] == "not_run"
+    assert sidecar["runner"]["networkAccess"] == "none"
+    assert sidecar["executionBoundary"]["appliedToDrafting"] is False
+    assert sidecar["executionBoundary"]["registryAuthority"] is False
+    assert sidecar["executionBoundary"]["runnerReportIsExecutionPermission"] is False
+    assert sidecar["executionBoundary"]["adapterOutputAccepted"] is False
+    assert sidecar["summary"]["executedAdapterCount"] == 0
+    assert sidecar["summary"]["runtimeImplementedAdapterCount"] == 0
+    assert sidecar["validation"]["status"] == "passed"
+    assert sidecar["validation"]["errorCount"] == 0
+    assert sidecar["diagnosticCodes"] == [
+        "runner_skeleton_is_not_execution_permission",
+        "trusted_local_adapter_runner_skeleton",
+    ]
+    assert sidecar["appliedToDrafting"] is False
+    assert sidecar["registryAuthority"] is False
+    assert sidecar["adapterExecution"] == "not_run"
+    assert sidecar["adapterCodeLoaded"] is False
+    assert sidecar["adapterProcessSpawned"] is False
+    assert sidecar["executedAdapterCount"] == 0
+    assert sidecar["adapterOutputAccepted"] is False
+    assert "runner_report_is_not_execution_permission" in sidecar["nonAuthorityStatements"]
+    assert "does_not_change_autonomous_batch_behavior" in sidecar["nonAuthorityStatements"]
+    assert "adapter_execution" in sidecar["nonGoals"]
+    assert "registry_publication" in sidecar["nonGoals"]
+
+    copied = json.loads(sidecar_path.read_text(encoding="utf-8"))
+    assert copied["kind"] == TRUSTED_LOCAL_ADAPTER_RUN_REPORT_KIND
+    assert copied["executionBoundary"]["registryAuthority"] is False
+    assert report["repositoryPluginApplicability"]["status"] == "not_provided"
+    assert report["repositoryPluginAdapterEvidence"]["status"] == "not_provided"
+    assert report["repositories"][0]["packageSetDraft"]["candidateCount"] == 3
+
+
 def test_autonomous_candidate_batch_auto_generates_repository_plugin_applicability(
     tmp_path: Path,
 ) -> None:
@@ -538,6 +649,61 @@ def test_autonomous_candidate_batch_rejects_mismatched_repository_plugin_adapter
         assert "manifest.digest does not match manifest" in str(exc)
     else:
         raise AssertionError("expected mismatched repository plugin adapter preflight to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
+
+
+def test_autonomous_candidate_batch_rejects_authority_bearing_trusted_run_report(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    run_report = write_trusted_local_adapter_run_report_fixture(tmp_path)
+    payload = json.loads(run_report.read_text(encoding="utf-8"))
+    payload["authority"] = "registry_authority"
+    run_report.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                skip_ai=True,
+                trusted_local_adapter_run_report=run_report,
+            )
+        )
+    except ValueError as exc:
+        assert "trusted local adapter run report" in str(exc)
+        assert "unsupported authority" in str(exc)
+    else:
+        raise AssertionError("expected authority-bearing trusted run report to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
+
+
+def test_autonomous_candidate_batch_rejects_executing_trusted_run_report_boundary(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    run_report = write_trusted_local_adapter_run_report_fixture(tmp_path)
+    payload = json.loads(run_report.read_text(encoding="utf-8"))
+    payload["executionBoundary"]["adapterExecution"] = "run"
+    run_report.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                skip_ai=True,
+                trusted_local_adapter_run_report=run_report,
+            )
+        )
+    except ValueError as exc:
+        assert "executionBoundary.adapterExecution" in str(exc)
+    else:
+        raise AssertionError("expected executing trusted run report boundary to fail")
 
     assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
 
@@ -1063,6 +1229,54 @@ def test_autonomous_candidate_batch_cli_records_repository_plugin_adapter_eviden
     assert sidecar["appliedToDrafting"] is False
     assert sidecar["registryAuthority"] is False
     assert sidecar["adapterExecution"] == "not_run"
+
+
+def test_autonomous_candidate_batch_cli_records_trusted_local_adapter_run_evidence(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    run_report = write_trusted_local_adapter_run_report_fixture(tmp_path)
+    output = tmp_path / "output"
+
+    exit_code = main(
+        [
+            "autonomous-candidate-batch",
+            str(inputs),
+            "--out",
+            str(output),
+            "--skip-ai",
+            "--trusted-local-adapter-run-report",
+            str(run_report),
+        ]
+    )
+
+    assert exit_code == 0
+    printed = json.loads(capsys.readouterr().out)
+    sidecar = printed["trustedLocalAdapterRunEvidence"]
+    assert printed["status"] == "passed"
+    assert printed["summary"]["trustedLocalAdapterRunEvidenceSidecarCount"] == 1
+    assert sidecar["status"] == "recorded"
+    assert sidecar["kind"] == TRUSTED_LOCAL_ADAPTER_RUN_REPORT_KIND
+    assert sidecar["runStatus"] == "no_execution_report_emitted"
+    assert sidecar["adapterExecution"] == "not_run"
+    assert sidecar["adapterCodeLoaded"] is False
+    assert sidecar["adapterProcessSpawned"] is False
+    assert sidecar["executedAdapterCount"] == 0
+    assert sidecar["appliedToDrafting"] is False
+    assert sidecar["registryAuthority"] is False
+
+
+def write_trusted_local_adapter_run_report_fixture(tmp_path: Path) -> Path:
+    payload = build_trusted_local_adapter_run_report(
+        TrustedLocalAdapterRunOptions(
+            request=TRUSTED_LOCAL_ADAPTER_RUN_REQUEST,
+            preflight=TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT,
+        )
+    )
+    path = tmp_path / "trusted-local-adapter-run-report.json"
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
 
 
 def write_source_manifest(tmp_path: Path) -> Path:
