@@ -179,6 +179,10 @@ Phase 39 starts the static evaluator layer in
 registry/applicability vocabulary but moves from operator-authored sidecars
 toward deterministic derivation from a static evidence envelope.
 
+P39-T2 records the static evidence envelope fixture in
+<doc:RepositoryPluginStaticEvidenceEnvelopeFixture> and
+`tests/fixtures/repository_plugins/static-evidence-envelope.example.json`.
+
 ## Trust Boundary
 
 Repository plugins are producer-side evidence producers and applicability

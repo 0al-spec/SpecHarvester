@@ -147,3 +147,7 @@ The registry fixture states that it does not:
   candidate batch as sidecar producer evidence.
 - `P38-T5` should add cross-ecosystem plugin subsystem fixtures.
 - `P38-T6` should run one real repository through the plugin evidence path.
+- `P39-T2` adds
+  [`REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`](REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md)
+  as the static evidence envelope consumed by future applicability
+  evaluation.

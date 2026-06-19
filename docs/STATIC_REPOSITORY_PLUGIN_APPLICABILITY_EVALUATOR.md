@@ -47,6 +47,8 @@ Allowed static inputs:
 
 The evaluator should normalize those inputs into a future static evidence
 envelope. P39-T2 will define that machine-readable static evidence envelope.
+The P39-T2 fixture is documented in
+[`REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`](REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md).
 
 The envelope should record:
 

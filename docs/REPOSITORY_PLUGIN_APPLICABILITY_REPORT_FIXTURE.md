@@ -117,3 +117,6 @@ as registry truth.
   [`STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`](STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md)
   as the plan for deriving applicability reports from a static evidence
   envelope instead of hand-authored sidecars.
+- `P39-T2` records
+  [`REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`](REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md)
+  as the bounded evidence input for future applicability report derivation.
