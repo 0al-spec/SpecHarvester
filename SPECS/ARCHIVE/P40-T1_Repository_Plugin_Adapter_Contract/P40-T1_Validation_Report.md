@@ -22,6 +22,8 @@ Implemented artifacts:
   - Result: `1 passed`
 - `PYTHONPATH=src pytest -q`
   - Result: `783 passed, 1 skipped`
+- `PYTHONPATH=src pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90 -q`
+  - Result: `783 passed, 1 skipped`, total coverage `91.12%`
 - `PYTHONPATH=src ruff check src tests`
   - Result: passed
 - `PYTHONPATH=src ruff format --check src tests`
