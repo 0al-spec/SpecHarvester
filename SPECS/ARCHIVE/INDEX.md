@@ -725,3 +725,4 @@
 | 2026-06-19 | P42-T16 | Archived Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Review Packet (PASS) |
 | 2026-06-19 | P42-T16 | Archived REVIEW_p42_t16_runtime_implementation_review_packet report |
 | 2026-06-19 | P42-T17 | Archived Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Skeleton (PASS) |
+| 2026-06-19 | P42-T17 | Archived REVIEW_p42_t17_disabled_runtime_implementation_skeleton report |
