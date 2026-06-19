@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P40-T1 Repository Plugin Adapter Contract" in next_text:
+        assert_p39_t6_last_archived(next_text)
+        assert_p39_t6_recent(next_text)
+        assert_phase_40_t1_planned(next_text)
+        return
+
     if "# Next Task: Phase 39 Complete" in next_text:
         assert_p39_t6_last_archived(next_text)
         assert_p39_t6_recent(next_text)
@@ -4001,6 +4007,39 @@ def assert_phase_39_complete(next_text: str) -> None:
     )
     assert "repository plugin adapter contract" in normalized
     assert "without loading third-party code by default" in normalized
+
+
+def assert_phase_40_t1_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    normalized_lower = normalized.lower()
+    assert "# Next Task: P40-T1 Repository Plugin Adapter Contract" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P40-T1-repository-plugin-adapter-contract`" in next_text
+    assert "Phase 40. Repository Plugin Adapter Contract" in next_text
+    assert "language- and framework-agnostic repository plugin adapter contract" in normalized
+    assert "adapter identity" in normalized
+    assert "manifest versioning" in normalized
+    assert "input evidence" in normalized
+    assert "output artifacts" in normalized
+    assert "execution modes" in normalized
+    assert "sandbox expectations" in normalized
+    assert "diagnostics" in normalized
+    assert "authority limits" in normalized
+    assert "Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven" in (normalized)
+    assert "static applicability evaluation" in normalized_lower
+    assert "default safe path" in normalized_lower
+    assert "future operator opt-in" in normalized
+    assert "Do not implement adapter loading or execution" in normalized
+    assert "Do not load third-party adapter code" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
