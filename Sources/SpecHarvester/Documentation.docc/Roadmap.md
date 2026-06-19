@@ -539,14 +539,14 @@ The run covers FastMCP, FastAPI, and xyflow local checkouts, exercises both
 sidecars remain `sourceMode: auto_static_evaluator`,
 `appliedToDrafting: false`, and `registryAuthority: false`.
 
-Phase 40 starts with `P40-T1`, a repository plugin adapter contract. The phase
-turns the static plugin selection work into a language- and framework-agnostic
-boundary for future adapter implementations: adapter identity, versioned
-manifests, declared input evidence, output artifacts, execution modes, sandbox
-expectations, diagnostics, and authority limits. Static applicability remains
-the default safe path. Adapter execution stays disabled until a future task
-adds explicit operator-controlled execution policy, manifest preflight, and
-safe evidence handoff rules.
+Phase 40 starts with `P40-T1`, <doc:RepositoryPluginAdapterContract>. The
+phase turns the static plugin selection work into a language- and
+framework-agnostic boundary for future adapter implementations: adapter
+identity, versioned manifests, declared input evidence, output artifacts,
+execution modes, sandbox expectations, diagnostics, and authority limits.
+Static applicability remains the default safe path. Adapter execution stays
+disabled until a future task adds explicit operator-controlled execution
+policy, manifest preflight, and safe evidence handoff rules.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
