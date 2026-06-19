@@ -427,6 +427,8 @@ def verified_output_candidates(
         payload.get("syntheticOutputCandidates"),
         "synthetic output candidates",
     )
+    if len(candidates) != len(EXPECTED_OUTPUT_ROLES):
+        raise ValueError("Synthetic output candidate count is invalid")
     outputs_by_role = {
         object_value(candidate, "synthetic output candidate").get("role"): object_value(
             candidate, "synthetic output candidate"

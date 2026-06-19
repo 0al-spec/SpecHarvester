@@ -171,6 +171,24 @@ def test_synthetic_trusted_local_adapter_sandbox_run_verifier_rejects_output_siz
     assert result == 2
 
 
+def test_synthetic_trusted_local_adapter_sandbox_run_verifier_rejects_duplicate_output_roles(
+    tmp_path: Path,
+) -> None:
+    fixture = read_json(SYNTHETIC_RUN)
+    fixture["syntheticOutputCandidates"].append(fixture["syntheticOutputCandidates"][0])
+    bad_fixture = write_json(tmp_path / "fixture.json", fixture)
+
+    result = main(
+        [
+            "synthetic-trusted-local-adapter-sandbox-run-verifier",
+            "--fixture",
+            str(bad_fixture),
+        ]
+    )
+
+    assert result == 2
+
+
 def test_synthetic_trusted_local_adapter_sandbox_run_verifier_rejects_audit_digest_mismatch(
     tmp_path: Path,
 ) -> None:
