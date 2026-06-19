@@ -634,3 +634,4 @@
 | 2026-06-19 | P39-T4 | Archived Repository Plugin Applicability Detect CLI (PASS) |
 | 2026-06-19 | P39-T4 | Archived REVIEW_p39_t4_repository_plugin_applicability_detect_cli report |
 | 2026-06-19 | P39-T5 | Archived Repository Plugin Applicability Batch Integration (PASS) |
+| 2026-06-19 | P39-T5 | Archived REVIEW_p39_t5_repository_plugin_applicability_batch_integration report |
