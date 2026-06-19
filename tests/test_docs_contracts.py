@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P40-T2 Repository Plugin Adapter Manifest Fixture" in next_text:
+        assert_p40_t1_last_archived(next_text)
+        assert_p40_t1_recent(next_text)
+        assert_phase_40_t2_planned(next_text)
+        return
+
     if "# Next Task: P40-T1 Repository Plugin Adapter Contract" in next_text:
         assert_p39_t6_last_archived(next_text)
         assert_p39_t6_recent(next_text)
@@ -4013,7 +4019,7 @@ def assert_phase_40_t1_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     normalized_lower = normalized.lower()
     assert "# Next Task: P40-T1 Repository Plugin Adapter Contract" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
     assert "`feature/P40-T1-repository-plugin-adapter-contract`" in next_text
     assert "Phase 40. Repository Plugin Adapter Contract" in next_text
     assert "language- and framework-agnostic repository plugin adapter contract" in normalized
@@ -4031,6 +4037,59 @@ def assert_phase_40_t1_planned(next_text: str) -> None:
     assert "future operator opt-in" in normalized
     assert "Do not implement adapter loading or execution" in normalized
     assert "Do not load third-party adapter code" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p40_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P40-T1 Repository Plugin Adapter Contract" in next_text
+
+
+def assert_p40_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P40-T1` documented the language- and framework-agnostic" in normalized
+    assert "docs/REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md" in next_text
+    assert "RepositoryPluginAdapterContract.md" in next_text
+    assert "adapter identity" in normalized
+    assert "manifest versioning" in normalized
+    assert "declared input evidence" in normalized
+    assert "output artifact categories" in normalized
+    assert "execution modes" in normalized
+    assert "sandbox expectations" in normalized
+    assert "adapter preflight" in normalized
+    assert "Static applicability remains the default safe path" in normalized
+    assert "Adapter execution remains disabled" in normalized
+    assert "Adapter output remains producer-side evidence" in normalized
+
+
+def assert_phase_40_t2_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P40-T2 Repository Plugin Adapter Manifest Fixture" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P40-T2-repository-plugin-adapter-manifest-fixture`" in next_text
+    assert "Phase 40. Repository Plugin Adapter Contract" in next_text
+    assert "SpecHarvesterRepositoryPluginAdapterManifest" in next_text
+    assert "adapter ids" in normalized
+    assert "contract versions" in normalized
+    assert "supported roles" in normalized
+    assert "required and optional evidence kinds" in normalized
+    assert "declared outputs" in normalized
+    assert "execution mode" in normalized
+    assert "sandbox requirements" in normalized
+    assert "capability requests" in normalized
+    assert "non-authority statements" in normalized
+    assert "language- and framework-agnostic" in normalized
+    assert "Do not implement adapter preflight" in normalized
+    assert "Do not implement adapter loading or execution" in normalized
+    assert "Do not change static plugin applicability evaluation" in normalized
+    assert "Do not change `autonomous-candidate-batch`" in normalized
     assert "Do not clone or fetch repositories" in normalized
     assert "Do not install dependencies" in normalized
     assert "Do not invoke package managers" in normalized
@@ -14661,6 +14720,150 @@ def test_repository_plugin_multi_repository_static_evaluator_validation_docs() -
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P39-T6` Run a real multi-repository static evaluator validation" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_adapter_contract_is_documented() -> None:
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    subsystem_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    subsystem_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Adapter Contract",
+            "P40-T1",
+            "language- and framework-agnostic",
+            "Python",
+            "JavaScript",
+            "FastAPI",
+            "FastMCP",
+            "npm",
+            "Cargo",
+            "Go",
+            "SwiftPM",
+            "Maven",
+            "Gradle",
+            "SpecHarvesterRepositoryPluginAdapterManifest",
+            "spec-harvester.repository-plugin-adapter/v0",
+            "producer_plugin_adapter_manifest_only",
+            "SpecHarvesterRepositoryPluginAdapterPreflightReport",
+            "producer_plugin_adapter_preflight_only",
+            "producer_adapter_output_only",
+            "adapterId",
+            "contractVersion",
+            "adapterVersion",
+            "roles",
+            "inputEvidence",
+            "outputs",
+            "execution",
+            "static applicability",
+            "default safe path",
+            "adapter manifest preflight",
+            "disabled-by-default adapter execution policy",
+            "review-only adapter output evidence",
+            "safe relative paths",
+            "SHA-256 digests",
+            "authority labels",
+            "absolute paths",
+            "parent segments",
+            "backslashes",
+            "network paths",
+            "none",
+            "static_only",
+            "trusted_local_tool",
+            "blocked",
+            "defaultEnabled: false",
+            "requiresOperatorOptIn",
+            "read path allowlists",
+            "write path allowlists",
+            "timeout limits",
+            "maximum output sizes",
+            "environment variable policy",
+            "network policy",
+            "dependency policy",
+            "package manager policy",
+            "process execution policy",
+            "allowedAdapters[]",
+            "rejectedAdapters[]",
+            "fallbackAdapters[]",
+            "blockedAdapters[]",
+            "diagnostics[]",
+            "P40-T2",
+            "P40-T3",
+            "P40-T4",
+            "P40-T5",
+            "P40-T6",
+            "P40-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "does not implement adapter manifests",
+            "adapter preflight",
+            "adapter loading",
+            "adapter execution",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "perform network discovery",
+            "run AI",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat adapter output as registry truth",
+            "treat AI output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"),
+        (docc_root, "docs/REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"),
+        (docc_root, "<doc:RepositoryPluginAdapterContract>"),
+        (capabilities, "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"),
+        (capabilities_docc, "RepositoryPluginAdapterContract"),
+        (roadmap, "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"),
+        (roadmap_docc, "RepositoryPluginAdapterContract"),
+        (subsystem_doc, "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"),
+        (subsystem_docc, "RepositoryPluginAdapterContract"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "## Phase 40. Repository Plugin Adapter Contract" in workplan_text
+    assert "`P40-T1` Document a language- and framework-agnostic repository plugin" in workplan_text
+    assert "`P40-T2` Add a machine-readable" in workplan_text
+    assert "`P40-T7` Run a real local adapter-contract validation" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

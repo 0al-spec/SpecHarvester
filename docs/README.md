@@ -68,6 +68,10 @@ Published DocC site:
 22. [`REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md`](REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md):
    Phase 39 real multi-repository validation for FastMCP, FastAPI, and xyflow
    through the standalone static evaluator and batch auto-sidecar path
+23. [`REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md`](REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md):
+   Phase 40 language- and framework-agnostic adapter contract for future
+   manifests, preflight, execution policy, sandbox expectations, and
+   review-only adapter output evidence
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

@@ -191,6 +191,11 @@ P39-T4 exposes the derivation as an explicit CLI command. It reads only
 `--registry` and `--static-evidence-envelope` JSON files, writes the full
 report to `--out`, and does not change autonomous batch behavior.
 
+Phase 40 starts the future adapter boundary in
+<doc:RepositoryPluginAdapterContract>. That contract defines adapter manifests,
+preflight, execution modes, sandbox expectations, diagnostics, and review-only
+output evidence before any adapter runtime exists.
+
 ## Trust Boundary
 
 Repository plugins are producer-side evidence producers and applicability

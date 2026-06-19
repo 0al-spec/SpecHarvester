@@ -1631,7 +1631,7 @@ Acceptance:
 
 ## Phase 40. Repository Plugin Adapter Contract
 
-- [ ] `P40-T1` Document a language- and framework-agnostic repository plugin
+- [x] `P40-T1` Document a language- and framework-agnostic repository plugin
   adapter contract. The contract must define adapter identity, versioned
   manifests, declared input evidence, output artifacts, execution modes,
   sandbox expectations, diagnostics, and authority boundaries without making

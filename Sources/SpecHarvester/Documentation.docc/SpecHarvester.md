@@ -50,6 +50,7 @@ The canonical source files remain in the repository:
 - `docs/REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md`
 - `docs/STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`
 - `docs/REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`
+- `docs/REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
 - `docs/BATCH_VALIDATION_REPORTS.md`
@@ -175,6 +176,7 @@ the host.
 - <doc:StaticRepositoryPluginApplicabilityEvaluator>
 - <doc:RepositoryPluginStaticEvidenceEnvelopeFixture>
 - <doc:RepositoryPluginMultiRepositoryStaticEvaluatorValidation>
+- <doc:RepositoryPluginAdapterContract>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
 - <doc:ProceduralStyleReport>
