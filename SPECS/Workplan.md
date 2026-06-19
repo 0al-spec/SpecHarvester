@@ -2042,7 +2042,7 @@ Acceptance:
 - [x] `P43-T6` Add author handoff summaries for operational MVP runs so a
   package author can see what is valid, what is reviewable, what needs manual
   correction, and what should not be promoted.
-- [ ] `P43-T7` Record an operational MVP exit report that decides whether the
+- [x] `P43-T7` Record an operational MVP exit report that decides whether the
   current pipeline is good enough for bounded autonomous popular-library
   scraping, needs quality hardening first, or needs a future explicitly
   approved adapter execution phase.
