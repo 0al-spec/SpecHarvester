@@ -845,7 +845,7 @@ def validate_repository_plugin_applicability(payload: dict[str, Any], path: Path
         "blockedCount",
         "diagnosticCount",
     ):
-        if not isinstance(summary.get(key), int):
+        if type(summary.get(key)) is not int:
             raise ValueError(
                 f"repository plugin applicability report {path} must include integer summary.{key}"
             )

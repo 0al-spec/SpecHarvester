@@ -217,6 +217,33 @@ def test_autonomous_candidate_batch_rejects_invalid_repository_plugin_applicabil
     assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
 
 
+def test_autonomous_candidate_batch_rejects_boolean_repository_plugin_applicability_counts(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    applicability = write_repository_plugin_applicability_report(tmp_path)
+    payload = json.loads(applicability.read_text(encoding="utf-8"))
+    payload["summary"]["selectedCount"] = True
+    applicability.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                skip_ai=True,
+                repository_plugin_applicability=applicability,
+            )
+        )
+    except ValueError as exc:
+        assert "integer summary.selectedCount" in str(exc)
+    else:
+        raise AssertionError("expected boolean repository plugin applicability count to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
+
+
 def test_autonomous_candidate_batch_uses_harvested_manifest_evidence_when_inventory_empty(
     tmp_path: Path,
 ) -> None:
