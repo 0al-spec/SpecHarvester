@@ -161,6 +161,9 @@ P38-T3 records the first fixture in
 [`REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md`](REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md)
 and
 `tests/fixtures/repository_plugins/generic-applicability-report.example.json`.
+P38-T5 adds cross-ecosystem examples in
+[`REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md)
+and `tests/fixtures/repository_plugins/cross_ecosystem/`.
 
 The selection report shape is
 `SpecHarvesterRepositoryPluginApplicabilityReport`.

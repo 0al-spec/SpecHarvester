@@ -1,0 +1,215 @@
+{
+  "apiVersion": "spec-harvester.repository-plugin-applicability/v0",
+  "kind": "SpecHarvesterRepositoryPluginApplicabilityReport",
+  "schemaVersion": 1,
+  "authority": "producer_plugin_applicability_only",
+  "mode": "auto",
+  "fixtureProfile": {
+    "shape": "workspace_or_multi_package",
+    "languagePolicy": "ecosystem_example_only"
+  },
+  "registry": {
+    "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+    "kind": "SpecHarvesterRepositoryPluginRegistry",
+    "authority": "producer_plugin_registry_only"
+  },
+  "repository": {
+    "id": "cross-workspace",
+    "sourceManifestPath": "inputs/repositories.yml",
+    "sourceManifestEntryId": "cross-workspace",
+    "revision": "2222222222222222222222222222222222222222"
+  },
+  "staticEvidence": {
+    "inputAuthority": "static_local_evidence_only",
+    "paths": [
+      "workspace.manifest",
+      "packages/core/manifest.json",
+      "packages/ui/manifest.json",
+      "reports/topology-hint.json"
+    ],
+    "evidenceKinds": [
+      "source_manifest",
+      "harvest_snapshot",
+      "workspace_inventory",
+      "operator_label",
+      "repository_profile_detection",
+      "repository_parsing_profile_decision",
+      "manifest_summary",
+      "package_topology_hint"
+    ],
+    "signals": [
+      "workspace_manifest",
+      "member_manifest",
+      "package_set_relation_candidate"
+    ]
+  },
+  "summary": {
+    "selectedCount": 4,
+    "rejectedCount": 0,
+    "fallbackCount": 1,
+    "blockedCount": 0,
+    "diagnosticCount": 5
+  },
+  "selectedPlugins": [
+    {
+      "pluginId": "spec_harvester.generic.repository_profile.v0",
+      "role": "repository_profile",
+      "decision": "selected",
+      "decisionAuthority": "producer_plugin_applicability_only",
+      "pluginOutputAuthority": "producer_side_evidence_only",
+      "confidence": "high",
+      "reasonCodes": [
+        "workspace_manifest_present",
+        "multiple_member_manifests_present"
+      ],
+      "evidencePaths": [
+        "workspace.manifest",
+        "packages/core/manifest.json",
+        "packages/ui/manifest.json"
+      ],
+      "outputArtifactKinds": [
+        "repository_profile_detection"
+      ]
+    },
+    {
+      "pluginId": "spec_harvester.generic.manifest_summary.v0",
+      "role": "evidence_producer",
+      "decision": "selected",
+      "decisionAuthority": "producer_plugin_applicability_only",
+      "pluginOutputAuthority": "producer_side_evidence_only",
+      "confidence": "high",
+      "reasonCodes": [
+        "member_manifest_metadata_present"
+      ],
+      "evidencePaths": [
+        "packages/core/manifest.json",
+        "packages/ui/manifest.json"
+      ],
+      "outputArtifactKinds": [
+        "manifest_summary"
+      ]
+    },
+    {
+      "pluginId": "spec_harvester.generic.package_topology.v0",
+      "role": "topology_helper",
+      "decision": "selected",
+      "decisionAuthority": "producer_plugin_applicability_only",
+      "pluginOutputAuthority": "producer_side_evidence_only",
+      "confidence": "high",
+      "reasonCodes": [
+        "workspace_root_present",
+        "member_package_candidates_present"
+      ],
+      "evidencePaths": [
+        "workspace.manifest",
+        "packages/core/manifest.json",
+        "packages/ui/manifest.json"
+      ],
+      "outputArtifactKinds": [
+        "package_topology_hint"
+      ]
+    },
+    {
+      "pluginId": "spec_harvester.generic.review_surface.v0",
+      "role": "review_surface",
+      "decision": "selected",
+      "decisionAuthority": "producer_plugin_applicability_only",
+      "pluginOutputAuthority": "producer_side_evidence_only",
+      "confidence": "medium",
+      "reasonCodes": [
+        "topology_hint_available",
+        "review_artifact_present"
+      ],
+      "evidencePaths": [
+        "reports/topology-hint.json"
+      ],
+      "outputArtifactKinds": [
+        "review_panel_data"
+      ]
+    }
+  ],
+  "rejectedPlugins": [],
+  "fallbackPlugins": [
+    {
+      "pluginId": "spec_harvester.generic.parser_profile.v0",
+      "role": "parser_profile",
+      "decision": "fallback",
+      "decisionAuthority": "producer_plugin_applicability_only",
+      "pluginOutputAuthority": "producer_side_evidence_only",
+      "confidence": "medium",
+      "reasonCodes": [
+        "no_specific_parser_profile_selected",
+        "conservative_workspace_path_classification"
+      ],
+      "evidencePaths": [
+        "workspace.manifest"
+      ],
+      "outputArtifactKinds": [
+        "repository_parsing_profile_decision"
+      ]
+    }
+  ],
+  "blockedPlugins": [],
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "plugin_selected",
+      "pluginId": "spec_harvester.generic.repository_profile.v0",
+      "message": "Repository profile selected from workspace and member manifests.",
+      "evidencePaths": [
+        "workspace.manifest"
+      ]
+    },
+    {
+      "severity": "info",
+      "code": "plugin_selected",
+      "pluginId": "spec_harvester.generic.manifest_summary.v0",
+      "message": "Manifest summary selected for member manifests.",
+      "evidencePaths": [
+        "packages/core/manifest.json"
+      ]
+    },
+    {
+      "severity": "info",
+      "code": "plugin_selected",
+      "pluginId": "spec_harvester.generic.package_topology.v0",
+      "message": "Topology helper selected as package-set review evidence.",
+      "evidencePaths": [
+        "workspace.manifest"
+      ]
+    },
+    {
+      "severity": "info",
+      "code": "plugin_selected",
+      "pluginId": "spec_harvester.generic.review_surface.v0",
+      "message": "Review surface selected from existing topology evidence.",
+      "evidencePaths": [
+        "reports/topology-hint.json"
+      ]
+    },
+    {
+      "severity": "info",
+      "code": "plugin_fallback",
+      "pluginId": "spec_harvester.generic.parser_profile.v0",
+      "message": "Parser profile fell back to conservative workspace path classification.",
+      "evidencePaths": [
+        "workspace.manifest"
+      ]
+    }
+  ],
+  "nonAuthorityStatements": [
+    "does_not_load_third_party_plugin_code",
+    "does_not_execute_plugins",
+    "does_not_run_plugin_code",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_execute_harvested_code",
+    "does_not_invoke_package_managers",
+    "does_not_run_ai",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_plugin_decisions_as_registry_truth"
+  ]
+}

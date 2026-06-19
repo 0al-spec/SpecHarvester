@@ -33,7 +33,7 @@ local repository checkout
 | Bounded corpus runs | Important multi-ecosystem repository/package-family targets selected with explicit importance signals and exclusion rules, recorded in a machine-readable corpus plan, explainable selection report, and dry-run readiness gate, then operator-selected local checkout batches with deterministic and optional live local-model paths. | <doc:CorpusSelectionPolicy>, <doc:SpecHarvesterCorpusPlan>, <doc:MultiEcosystemSeedCorpusPlan>, <doc:ExplainableCorpusSelectionReport>, <doc:SelectedCorpusDryRunReadiness>, <doc:AutonomousCandidateBatch> |
 | Repository parsing profile hook | Opt-in path classification for language/framework parser profiles, with `python.web_framework.v0` validated on FastAPI to separate public interface evidence from semantic usage/documentation evidence. | <doc:RepositoryParsingPluginContract>, <doc:FastAPIParserProfileRerun> |
 | Repository profile detection evidence | Opt-in `repository-profile-detect` command and `autonomous-candidate-batch --repository-profile-selection` sidecar artifacts that emit `SpecHarvesterRepositoryProfileDetection` from static evidence before parser path classification, plus a generic discovery hint vocabulary, cross-ecosystem fixture coverage, real FastMCP comparison evidence, and harvested-manifest fallback evidence when workspace inventory is empty. | <doc:RepositoryProfileSelectionContract>, <doc:RepositoryProfileDiscoveryHints>, <doc:RepositoryProfileCrossEcosystemFixtures>, <doc:RepositoryProfileRealRunFastMCP>, <doc:AutonomousCandidateBatch>, <doc:RepositoryParsingPluginContract> |
-| Repository plugin subsystem contract | Planned language- and framework-agnostic plugin subsystem contract plus machine-readable `SpecHarvesterRepositoryPluginRegistry` and `SpecHarvesterRepositoryPluginApplicabilityReport` fixtures. Autonomous candidate batch can copy applicability reports as `repositoryPluginApplicability` sidecar producer evidence without executing plugins or changing parser/profile behavior. | <doc:RepositoryPluginSubsystemContract>, <doc:RepositoryPluginRegistryFixture>, <doc:RepositoryPluginApplicabilityReportFixture>, <doc:AutonomousCandidateBatch>, <doc:RepositoryParsingPluginContract>, <doc:RepositoryProfileSelectionContract> |
+| Repository plugin subsystem contract | Planned language- and framework-agnostic plugin subsystem contract plus machine-readable `SpecHarvesterRepositoryPluginRegistry` and `SpecHarvesterRepositoryPluginApplicabilityReport` fixtures. Autonomous candidate batch can copy applicability reports as `repositoryPluginApplicability` sidecar producer evidence, and cross-ecosystem fixtures cover single-package, workspace, documentation-heavy, nested, and ambiguous repository shapes without executing plugins or changing parser/profile behavior. | <doc:RepositoryPluginSubsystemContract>, <doc:RepositoryPluginRegistryFixture>, <doc:RepositoryPluginApplicabilityReportFixture>, <doc:RepositoryPluginCrossEcosystemFixtures>, <doc:AutonomousCandidateBatch>, <doc:RepositoryParsingPluginContract>, <doc:RepositoryProfileSelectionContract> |
 | Optional CodeGraph input boundary | Pre-existing CodeGraph artifact normalization and offline pinned interface compatibility checks. | <doc:CodeGraphSourceGraphAdapter>, <doc:CodeGraphCompatibilityGuard> |
 
 ## Product Boundary
@@ -126,6 +126,9 @@ evidence.
 <doc:AutonomousCandidateBatch> can copy that report as
 `repositoryPluginApplicability` sidecar producer evidence with
 `appliedToDrafting: false` and `registryAuthority: false`.
+<doc:RepositoryPluginCrossEcosystemFixtures> records static applicability
+examples for manifest-backed single-package, workspace, documentation-heavy,
+nested package root, and ambiguous mixed repository shapes.
 
 ## Non-Goals
 

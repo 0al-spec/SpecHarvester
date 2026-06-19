@@ -1,77 +1,70 @@
-# Next Task: P38-T5 Repository Plugin Cross-Ecosystem Fixtures
+# Next Task: P38-T6 Real Repository Plugin Evidence Run
 
 **Status:** Planned
-**Branch:** `feature/P38-T5-repository-plugin-cross-ecosystem-fixtures`
+**Branch:** `feature/P38-T6-real-repository-plugin-evidence-run`
 **Phase:** Phase 38. Repository Plugin Subsystem
-**Last Archived:** P38-T4 Repository Plugin Batch Integration
+**Last Archived:** P38-T5 Repository Plugin Cross-Ecosystem Fixtures
 
 ## Recently Archived
 
-- `P38-T4` connected `SpecHarvesterRepositoryPluginApplicabilityReport`
-  sidecar evidence to `autonomous-candidate-batch`.
-- The batch now accepts `--repository-plugin-applicability` and copies the
-  provided report to
-  `reports/repository-plugin-applicability/repository-plugin-applicability-report.json`.
-- The autonomous batch report records `repositoryPluginApplicability` with
-  path, SHA-256 digest, `apiVersion`, `kind`, `schemaVersion`, `authority`,
-  mode, repository metadata, registry metadata, selected/rejected/fallback/
-  blocked counts, diagnostic codes, `appliedToDrafting: false`, and
-  `registryAuthority: false`.
-- Default batch behavior remains explicit and unchanged: when no applicability
-  sidecar is provided, the report records `status: not_provided` and
-  `repositoryPluginApplicabilitySidecarCount: 0`.
-- The integration validates sidecar identity before copying it.
-- P38-T4 preserved the producer-only boundary: it does not execute plugins,
-  load third-party plugin code, change parser profile behavior, change
-  repository profile scoring, run package managers, install dependencies,
-  invoke AI, accept packages, accept relations, publish registry metadata, seed
-  baselines, remove `preview_only`, or treat plugin decisions as registry
-  truth.
+- `P38-T5` added cross-ecosystem static
+  `SpecHarvesterRepositoryPluginApplicabilityReport` fixtures under
+  `tests/fixtures/repository_plugins/cross_ecosystem/`.
+- The fixture matrix covers manifest-backed single-package, workspace or
+  multi-package, documentation-heavy, nested package root, and ambiguous mixed
+  repository shapes.
+- Regression coverage verifies fixture identity, summary counts, decision
+  sets, diagnostics, non-authority statements, docs links, DocC links, and that
+  every selected plugin has all required declared `inputEvidenceKinds[]`
+  available in `staticEvidence.evidenceKinds[]`.
+- The matrix covers `selectedPlugins[]`, `rejectedPlugins[]`,
+  `fallbackPlugins[]`, `blockedPlugins[]`, `plugin_selected`,
+  `plugin_fallback`, `plugin_rejected_low_confidence`, and
+  `plugin_blocked_required_evidence_missing`.
+- The fixtures remain static producer-side review evidence. They do not load
+  third-party plugin code, execute plugins, run plugin code, clone or fetch
+  repositories, install dependencies, execute harvested code, invoke package
+  managers, run AI, accept packages, accept relations, publish registry
+  metadata, remove `preview_only`, or treat plugin decisions as registry truth.
 
 ## Current Task
 
-`P38-T5` should add cross-ecosystem repository plugin subsystem fixtures that
-exercise the registry/applicability/report shapes beyond the generic workspace
-example.
+`P38-T6` should run one real repository through the repository plugin evidence
+path and compare the result with the current Phase 37 repository profile
+selection behavior.
 
-The fixtures should stay language- and framework-agnostic in contract terms
-while covering varied repository shapes:
-
-- manifest-backed single-package repositories;
-- workspace or multi-package repositories;
-- documentation-heavy repositories;
-- nested package roots;
-- ambiguous mixed layouts.
+The run should use an already-available local checkout or an explicitly
+operator-provided local checkout. It should record producer-side evidence only
+and should not turn plugin decisions into registry authority.
 
 ## Motivation
 
-P38-T2 through P38-T4 define the plugin registry, applicability report, and
-batch sidecar integration. The next risk is overfitting those contracts to the
-single generic workspace fixture. P38-T5 should prove the subsystem can describe
-different repository shapes without making JavaScript, Python, FastAPI,
-FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle, or any other ecosystem
-normative.
+P38-T2 through P38-T5 define the plugin registry, applicability report,
+autonomous batch sidecar integration, and static cross-ecosystem fixtures. The
+next risk is that the fixture matrix looks good but the path has not been
+checked against a real repository shape. P38-T6 should produce one practical
+comparison artifact without adding runtime plugin execution.
 
 ## Non-Goals
 
-P38-T5 must not implement plugin execution, load third-party code, run
-package managers, install dependencies, clone or fetch repositories, execute
+P38-T6 must not implement plugin execution, load third-party code, clone or
+fetch repositories, run package managers, install dependencies, execute
 harvested code, invoke AI, accept packages, accept relations, publish registry
 metadata, remove `preview_only`, or treat plugin decisions as registry truth.
 
 ## Planned Deliverables
 
-- Add cross-ecosystem plugin applicability fixture examples.
-- Cover selected, rejected, fallback, and blocked decisions across varied
-  repository shapes.
-- Document the fixture matrix in GitHub docs and DocC.
-- Add regression coverage that keeps fixture identity, authority, and
-  non-authority boundaries stable.
+- Run one local real repository through the repository plugin evidence path.
+- Compare repository plugin applicability evidence with Phase 37 repository
+  profile selection behavior.
+- Record the result as a static review artifact or fixture.
+- Document the run in GitHub docs and DocC.
+- Add regression coverage for artifact identity, boundary, and documentation.
 - Archive the task through Flow.
 
 ## Boundary
 
-Cross-ecosystem fixtures are static producer-side review evidence. They are
-not plugin execution, runtime plugin loading, package acceptance, relation
+The real-repository run is local, static producer-side evidence. It is not
+plugin execution, runtime plugin loading, package acceptance, relation
 acceptance, registry publication, accepted package truth, or permission to
 remove `preview_only`.

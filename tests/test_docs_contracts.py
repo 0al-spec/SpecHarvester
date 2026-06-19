@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P38-T6 Real Repository Plugin Evidence Run" in next_text:
+        assert_p38_t5_last_archived(next_text)
+        assert_p38_t5_recent(next_text)
+        assert_phase_38_t6_planned(next_text)
+        return
+
     if "# Next Task: P38-T5 Repository Plugin Cross-Ecosystem Fixtures" in next_text:
         assert_p38_t4_last_archived(next_text)
         assert_p38_t4_recent(next_text)
@@ -3457,7 +3463,7 @@ def assert_p38_t4_recent(next_text: str) -> None:
 def assert_phase_38_t5_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P38-T5 Repository Plugin Cross-Ecosystem Fixtures" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** In Progress" in next_text or "**Status:** Planned" in next_text
     assert "`feature/P38-T5-repository-plugin-cross-ecosystem-fixtures`" in next_text
     assert "Phase 38. Repository Plugin Subsystem" in next_text
     assert "manifest-backed single-package repositories" in normalized
@@ -3480,6 +3486,76 @@ def assert_phase_38_t5_planned(next_text: str) -> None:
     assert "treat plugin decisions as registry truth" in normalized
     assert "Add cross-ecosystem plugin applicability fixture examples" in next_text
     assert "selected, rejected, fallback, and blocked decisions" in normalized
+
+
+def assert_p38_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P38-T5 Repository Plugin Cross-Ecosystem Fixtures" in next_text
+
+
+def assert_p38_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P38-T5` added cross-ecosystem static "
+        "`SpecHarvesterRepositoryPluginApplicabilityReport` fixtures" in normalized
+    )
+    assert "tests/fixtures/repository_plugins/cross_ecosystem/" in next_text
+    assert "manifest-backed single-package" in normalized
+    assert "workspace or multi-package" in normalized
+    assert "documentation-heavy" in normalized
+    assert "nested package root" in normalized
+    assert "ambiguous mixed" in normalized
+    assert "fixture identity" in normalized
+    assert "summary counts" in normalized
+    assert "decision sets" in normalized
+    assert "inputEvidenceKinds" in next_text
+    assert "staticEvidence.evidenceKinds" in next_text
+    assert "selectedPlugins" in next_text
+    assert "rejectedPlugins" in next_text
+    assert "fallbackPlugins" in next_text
+    assert "blockedPlugins" in next_text
+    assert "plugin_selected" in next_text
+    assert "plugin_fallback" in next_text
+    assert "plugin_rejected_low_confidence" in next_text
+    assert "plugin_blocked_required_evidence_missing" in next_text
+    assert "static producer-side review evidence" in normalized
+    assert "do not load third-party plugin code" in normalized
+    assert "execute plugins" in normalized
+    assert "run plugin code" in normalized
+    assert "clone or fetch repositories" in normalized
+    assert "install dependencies" in normalized
+    assert "execute harvested code" in normalized
+    assert "invoke package managers" in normalized
+    assert "run AI" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_38_t6_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P38-T6 Real Repository Plugin Evidence Run" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P38-T6-real-repository-plugin-evidence-run`" in next_text
+    assert "Phase 38. Repository Plugin Subsystem" in next_text
+    assert "one real repository through the repository plugin evidence path" in normalized
+    assert "Phase 37 repository profile selection behavior" in normalized
+    assert "already-available local checkout" in normalized
+    assert "producer-side evidence only" in normalized
+    assert "must not implement plugin execution" in normalized
+    assert "load third-party code" in normalized
+    assert "clone or fetch repositories" in normalized
+    assert "run package managers" in normalized
+    assert "install dependencies" in normalized
+    assert "execute harvested code" in normalized
+    assert "invoke AI" in normalized
+    assert "accept packages" in normalized
+    assert "accept relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+    assert "Record the result as a static review artifact or fixture" in next_text
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -13447,6 +13523,212 @@ def test_repository_plugin_applicability_report_fixture_is_documented() -> None:
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P38-T3` Add a plugin applicability report fixture" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_cross_ecosystem_fixtures_are_documented() -> None:
+    fixture_dir = ROOT / "tests" / "fixtures" / "repository_plugins" / "cross_ecosystem"
+    registry_path = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "generic-registry.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginCrossEcosystemFixtures.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    applicability_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md"
+    applicability_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginApplicabilityReportFixture.md"
+    )
+    subsystem_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    subsystem_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry_plugins = {plugin["pluginId"]: plugin for plugin in registry["plugins"]}
+    fixtures = sorted(fixture_dir.glob("*.json"))
+    assert [path.name for path in fixtures] == [
+        "ambiguous-mixed-layout-applicability.example.json",
+        "documentation-heavy-applicability.example.json",
+        "nested-package-roots-applicability.example.json",
+        "single-package-applicability.example.json",
+        "workspace-package-set-applicability.example.json",
+    ]
+
+    expected_shapes = {
+        "ambiguous_mixed_layout",
+        "documentation_heavy_repository",
+        "manifest_backed_single_package",
+        "nested_package_roots",
+        "workspace_or_multi_package",
+    }
+    seen_shapes: set[str] = set()
+    seen_decisions: set[str] = set()
+    seen_diagnostics: set[str] = set()
+
+    for fixture in fixtures:
+        payload = json.loads(fixture.read_text(encoding="utf-8"))
+        assert payload["apiVersion"] == "spec-harvester.repository-plugin-applicability/v0"
+        assert payload["kind"] == "SpecHarvesterRepositoryPluginApplicabilityReport"
+        assert payload["schemaVersion"] == 1
+        assert payload["authority"] == "producer_plugin_applicability_only"
+        assert payload["registry"] == {
+            "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+            "kind": "SpecHarvesterRepositoryPluginRegistry",
+            "authority": "producer_plugin_registry_only",
+        }
+        assert payload["fixtureProfile"]["languagePolicy"] == "ecosystem_example_only"
+        seen_shapes.add(payload["fixtureProfile"]["shape"])
+
+        decision_sets = {
+            "selected": payload["selectedPlugins"],
+            "rejected": payload["rejectedPlugins"],
+            "fallback": payload["fallbackPlugins"],
+            "blocked": payload["blockedPlugins"],
+        }
+        summary = payload["summary"]
+        assert summary["selectedCount"] == len(decision_sets["selected"])
+        assert summary["rejectedCount"] == len(decision_sets["rejected"])
+        assert summary["fallbackCount"] == len(decision_sets["fallback"])
+        assert summary["blockedCount"] == len(decision_sets["blocked"])
+        assert summary["diagnosticCount"] == len(payload["diagnostics"])
+
+        static_paths = set(payload["staticEvidence"]["paths"])
+        static_evidence_kinds = set(payload["staticEvidence"]["evidenceKinds"])
+        for decision, records in decision_sets.items():
+            if records:
+                seen_decisions.add(decision)
+            for record in records:
+                registry_plugin = registry_plugins[record["pluginId"]]
+                assert record["role"] == registry_plugin["role"]
+                assert record["decision"] == decision
+                assert record["decisionAuthority"] == payload["authority"]
+                assert record["pluginOutputAuthority"] == registry_plugin["authority"]
+                assert set(record["evidencePaths"]).issubset(static_paths)
+                assert set(record["outputArtifactKinds"]).issubset(
+                    set(registry_plugin["outputArtifactKinds"])
+                )
+                if decision == "selected":
+                    assert set(registry_plugin["inputEvidenceKinds"]).issubset(
+                        static_evidence_kinds
+                    )
+
+        for diagnostic in payload["diagnostics"]:
+            seen_diagnostics.add(diagnostic["code"])
+            assert diagnostic["pluginId"] in registry_plugins
+            assert set(diagnostic["evidencePaths"]).issubset(static_paths)
+
+        for statement in (
+            "does_not_load_third_party_plugin_code",
+            "does_not_execute_plugins",
+            "does_not_clone_or_fetch_repositories",
+            "does_not_install_dependencies",
+            "does_not_execute_harvested_code",
+            "does_not_invoke_package_managers",
+            "does_not_run_ai",
+            "does_not_accept_packages",
+            "does_not_accept_relations",
+            "does_not_publish_registry_metadata",
+            "does_not_remove_preview_only",
+            "does_not_treat_plugin_decisions_as_registry_truth",
+        ):
+            assert statement in payload["nonAuthorityStatements"]
+
+    assert seen_shapes == expected_shapes
+    assert seen_decisions == {"selected", "rejected", "fallback", "blocked"}
+    assert {
+        "plugin_selected",
+        "plugin_fallback",
+        "plugin_rejected_low_confidence",
+        "plugin_blocked_required_evidence_missing",
+    }.issubset(seen_diagnostics)
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Cross-Ecosystem Fixtures",
+            "SpecHarvesterRepositoryPluginApplicabilityReport",
+            "tests/fixtures/repository_plugins/cross_ecosystem/",
+            "single-package-applicability.example.json",
+            "workspace-package-set-applicability.example.json",
+            "documentation-heavy-applicability.example.json",
+            "nested-package-roots-applicability.example.json",
+            "ambiguous-mixed-layout-applicability.example.json",
+            "manifest_backed_single_package",
+            "workspace_or_multi_package",
+            "documentation_heavy_repository",
+            "nested_package_roots",
+            "ambiguous_mixed_layout",
+            "inputEvidenceKinds",
+            "staticEvidence.evidenceKinds",
+            "selectedPlugins",
+            "rejectedPlugins",
+            "fallbackPlugins",
+            "blockedPlugins",
+            "plugin_selected",
+            "plugin_fallback",
+            "plugin_rejected_low_confidence",
+            "plugin_blocked_required_evidence_missing",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "static producer-side review evidence",
+            "do not load third-party plugin code",
+            "execute plugins",
+            "clone or fetch repositories",
+            "install dependencies",
+            "execute harvested code",
+            "invoke package managers",
+            "run AI",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat plugin decisions as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md"),
+        (docc_root, "RepositoryPluginCrossEcosystemFixtures"),
+        (capabilities, "REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md"),
+        (capabilities_docc, "RepositoryPluginCrossEcosystemFixtures"),
+        (roadmap, "REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md"),
+        (roadmap_docc, "RepositoryPluginCrossEcosystemFixtures"),
+        (applicability_doc, "REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md"),
+        (applicability_docc, "RepositoryPluginCrossEcosystemFixtures"),
+        (subsystem_doc, "REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md"),
+        (subsystem_docc, "RepositoryPluginCrossEcosystemFixtures"),
+    ):
+        assert required in path.read_text(encoding="utf-8")
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P38-T5` Add cross-ecosystem plugin subsystem fixtures" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

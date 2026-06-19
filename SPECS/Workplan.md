@@ -1538,7 +1538,7 @@ Acceptance:
   candidate batch as sidecar producer evidence, preserving existing parser and
   repository profile behavior unless a high-confidence plugin decision is
   explicitly selected.
-- [ ] `P38-T5` Add cross-ecosystem plugin subsystem fixtures that cover
+- [x] `P38-T5` Add cross-ecosystem plugin subsystem fixtures that cover
   manifest-backed single packages, workspaces, documentation-heavy
   repositories, nested package roots, and ambiguous mixed layouts.
 - [ ] `P38-T6` Run one real repository through the plugin subsystem evidence

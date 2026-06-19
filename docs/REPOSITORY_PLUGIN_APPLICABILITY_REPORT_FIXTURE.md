@@ -107,5 +107,7 @@ as registry truth.
 
 - `P38-T4` should connect plugin registry and applicability output to
   autonomous candidate batch as sidecar producer evidence.
-- `P38-T5` should add cross-ecosystem plugin subsystem fixtures.
+- `P38-T5` adds
+  [`REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md)
+  as static cross-ecosystem applicability examples.
 - `P38-T6` should run one real repository through the plugin evidence path.
