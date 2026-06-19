@@ -653,3 +653,4 @@
 | 2026-06-19 | P40-T4 | Archived Adapter Execution Policy (PASS) |
 | 2026-06-19 | P40-T4 | Archived REVIEW_p40_t4_adapter_execution_policy report |
 | 2026-06-19 | P40-T5 | Archived Adapter Evidence Batch Integration (PASS) |
+| 2026-06-19 | P40-T5 | Archived REVIEW_p40_t5_adapter_evidence_batch_integration report |
