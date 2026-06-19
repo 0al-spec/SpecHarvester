@@ -185,7 +185,7 @@
         "status": "available",
         "pathHint": "../xyflow",
         "absolutePathPersisted": false,
-        "origin": "git@github.com:SoundBlaster/xyflow.git",
+        "origin": "https://github.com/xyflow/xyflow",
         "expectedRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
         "observedRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
         "worktreeChangeCount": 0
