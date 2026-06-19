@@ -206,6 +206,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t3_operational_mvp_validation_report_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t2_operational_mvp_validation_plan_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t1_operational_mvp_validation_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t10_disabled_explicit_real_local_sandbox_runner_skeleton.md` |
@@ -327,6 +328,7 @@
 |------|---------|--------|
 | 2026-06-19 | P43-T2 | Archived REVIEW_p43_t2_operational_mvp_validation_plan_fixture report |
 | 2026-06-19 | P43-T2 | Archived Operational MVP Validation Plan Fixture (PASS) |
+| 2026-06-20 | P43-T3 | Archived REVIEW_p43_t3_operational_mvp_validation_report_fixture report |
 | 2026-06-20 | P43-T3 | Archived Operational MVP Validation Report Fixture (PASS) |
 | 2026-06-19 | P43-T1 | Archived REVIEW_p43_t1_operational_mvp_validation_plan report |
 | 2026-06-19 | P43-T1 | Archived Operational MVP Validation Plan (PASS) |
