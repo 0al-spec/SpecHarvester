@@ -146,3 +146,6 @@ treat preflight as execution permission.
 - P42-T8 defines
   <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture>.
 - P42-T9 adds this request preflight fixture.
+- P42-T10 defines
+  <doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton> as
+  the disabled request/preflight consumer skeleton.

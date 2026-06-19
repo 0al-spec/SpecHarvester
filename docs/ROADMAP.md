@@ -953,6 +953,14 @@ verifier/readiness requirements, approval scope, runtime/output/audit policy,
 rejected unsafe shapes, blocked execution drift, and keeps
 `preflightPassIsExecutionPermission: false`, `runtimeInvoked: false`, and
 `registryAuthority: false`.
+P42-T10 adds
+[`TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md)
+and the machine-readable
+`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport`
+fixture. It validates P42-T8 request and P42-T9 preflight identity/digest
+linkage while preserving `adapterExecution: not_run`, `adapterCodeLoaded:
+false`, `adapterProcessSpawned: false`, `runtimeInvoked: false`,
+`runnerIsExecutionPermission: false`, and `registryAuthority: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

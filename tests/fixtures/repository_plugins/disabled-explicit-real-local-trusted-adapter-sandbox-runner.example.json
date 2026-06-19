@@ -1,0 +1,416 @@
+{
+  "apiVersion": "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runner/v0",
+  "kind": "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport",
+  "schemaVersion": 1,
+  "authority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runner_only",
+  "contract": {
+    "purpose": "Validate explicit real local trusted adapter sandbox request/preflight linkage through a disabled runner skeleton without granting execution authority.",
+    "contractVersion": "0.1.0",
+    "requestAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only",
+    "preflightAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_preflight_only",
+    "runnerAuthority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runner_only",
+    "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "defaultExecution": "disabled",
+    "runnerIsExecutionPermission": false,
+    "runnerIsOperatorApproval": false,
+    "runnerIsRegistryAuthority": false
+  },
+  "inputs": {
+    "request": {
+      "path": "tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-run-request.example.json",
+      "digest": "sha256:a48dae0107ced92e8266ca788ff49e15246651503fd49a550e983aa9f9f33cd3",
+      "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request/v0",
+      "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest",
+      "schemaVersion": 1,
+      "authority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only",
+      "digestVerified": true
+    },
+    "preflight": {
+      "path": "tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-run-request-preflight.example.json",
+      "digest": "sha256:402145bb2e068de9bffa698b682014c6688829d1edb8debb7ac08949639f4e1c",
+      "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request-preflight/v0",
+      "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport",
+      "schemaVersion": 1,
+      "authority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_preflight_only",
+      "requiredResultStatus": "passed",
+      "requiredDecision": "preflight_passed_review_only",
+      "digestVerified": true
+    }
+  },
+  "linkageValidation": {
+    "requestDigestAgreement": true,
+    "preflightReferencesRequest": true,
+    "preflightRequestDigest": "sha256:a48dae0107ced92e8266ca788ff49e15246651503fd49a550e983aa9f9f33cd3",
+    "requestIdentityMatchesPreflightValidatedRequest": true,
+    "preflightResultStatusAccepted": true,
+    "preflightDecisionAccepted": true,
+    "requestExecutionPermissionGranted": false,
+    "preflightExecutionPermissionGranted": false,
+    "runnerExecutionPermissionGranted": false,
+    "operatorApprovalConsumed": false,
+    "operatorApprovalProvidedByRunner": false
+  },
+  "runner": {
+    "status": "disabled_review_only",
+    "mode": "linkage_validation_only_no_execution",
+    "command": "disabled-explicit-real-local-trusted-adapter-sandbox-runner",
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "harvestedCodeExecution": "not_allowed",
+    "aiExecution": "not_run",
+    "networkAccess": "none",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "acceptedChecks": [
+    {
+      "code": "request_identity_and_digest_valid",
+      "status": "passed",
+      "target": "inputs.request",
+      "message": "P42-T8 request identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "preflight_identity_and_digest_valid",
+      "status": "passed",
+      "target": "inputs.preflight",
+      "message": "P42-T9 preflight identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "preflight_points_to_request_digest",
+      "status": "passed",
+      "target": "linkageValidation.preflightRequestDigest",
+      "message": "Preflight references the same request digest consumed by the disabled runner skeleton."
+    },
+    {
+      "code": "preflight_result_passed_review_only",
+      "status": "passed",
+      "target": "inputs.preflight",
+      "message": "Preflight result is passed with decision preflight_passed_review_only."
+    },
+    {
+      "code": "request_preflight_no_execution_permission",
+      "status": "passed",
+      "target": "linkageValidation",
+      "message": "Neither request nor preflight grants execution permission."
+    },
+    {
+      "code": "operator_approval_not_consumed_by_runner",
+      "status": "passed",
+      "target": "linkageValidation",
+      "message": "The disabled runner skeleton does not consume or provide operator approval."
+    },
+    {
+      "code": "adapter_execution_disabled",
+      "status": "passed",
+      "target": "runner.adapterExecution",
+      "message": "Adapter execution remains not_run."
+    },
+    {
+      "code": "adapter_code_loading_disabled",
+      "status": "passed",
+      "target": "runner.adapterCodeLoaded",
+      "message": "No third-party adapter code is loaded or imported."
+    },
+    {
+      "code": "process_spawn_disabled",
+      "status": "passed",
+      "target": "runner.adapterProcessSpawned",
+      "message": "No adapter process is spawned."
+    },
+    {
+      "code": "runtime_side_effects_disabled",
+      "status": "passed",
+      "target": "runner",
+      "message": "No dependency installation, package manager invocation, network access, harvested-code execution, or AI execution occurs."
+    },
+    {
+      "code": "registry_authority_disabled",
+      "status": "passed",
+      "target": "runner.registryAuthority",
+      "message": "The disabled runner skeleton has no registry authority."
+    },
+    {
+      "code": "adapter_output_acceptance_disabled",
+      "status": "passed",
+      "target": "runner.adapterOutputAccepted",
+      "message": "No adapter output is accepted as registry truth."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "code": "missing_request_input_rejected",
+      "status": "rejected",
+      "target": "inputs.request",
+      "reason": "request_input_required"
+    },
+    {
+      "code": "missing_preflight_input_rejected",
+      "status": "rejected",
+      "target": "inputs.preflight",
+      "reason": "preflight_input_required"
+    },
+    {
+      "code": "request_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "inputs.request.digest",
+      "reason": "request_digest_must_match_p42_t8_fixture_bytes"
+    },
+    {
+      "code": "preflight_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "inputs.preflight.digest",
+      "reason": "preflight_digest_must_match_p42_t9_fixture_bytes"
+    },
+    {
+      "code": "preflight_request_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "linkageValidation.preflightRequestDigest",
+      "reason": "preflight_must_reference_same_request_digest"
+    },
+    {
+      "code": "preflight_status_not_passed_rejected",
+      "status": "rejected",
+      "target": "inputs.preflight.requiredResultStatus",
+      "reason": "preflight_status_must_be_passed"
+    },
+    {
+      "code": "preflight_decision_not_review_only_rejected",
+      "status": "rejected",
+      "target": "inputs.preflight.requiredDecision",
+      "reason": "preflight_decision_must_be_review_only"
+    },
+    {
+      "code": "request_execution_permission_rejected",
+      "status": "rejected",
+      "target": "linkageValidation.requestExecutionPermissionGranted",
+      "reason": "request_must_not_grant_execution_permission"
+    },
+    {
+      "code": "preflight_execution_permission_rejected",
+      "status": "rejected",
+      "target": "linkageValidation.preflightExecutionPermissionGranted",
+      "reason": "preflight_must_not_grant_execution_permission"
+    },
+    {
+      "code": "runner_execution_permission_rejected",
+      "status": "rejected",
+      "target": "linkageValidation.runnerExecutionPermissionGranted",
+      "reason": "runner_skeleton_must_not_grant_execution_permission"
+    },
+    {
+      "code": "operator_approval_consumed_rejected",
+      "status": "rejected",
+      "target": "linkageValidation.operatorApprovalConsumed",
+      "reason": "disabled_runner_must_not_consume_operator_approval"
+    },
+    {
+      "code": "network_access_rejected",
+      "status": "rejected",
+      "target": "runner.networkAccess",
+      "reason": "network_access_must_remain_none"
+    },
+    {
+      "code": "dependency_installation_rejected",
+      "status": "rejected",
+      "target": "runner.dependencyInstallation",
+      "reason": "dependency_installation_not_allowed"
+    },
+    {
+      "code": "package_manager_invocation_rejected",
+      "status": "rejected",
+      "target": "runner.packageManagers",
+      "reason": "package_managers_not_invoked"
+    },
+    {
+      "code": "registry_authority_rejected",
+      "status": "rejected",
+      "target": "runner.registryAuthority",
+      "reason": "runner_skeleton_has_no_registry_authority"
+    },
+    {
+      "code": "adapter_output_registry_truth_rejected",
+      "status": "rejected",
+      "target": "runner.adapterOutputAccepted",
+      "reason": "adapter_output_is_not_registry_truth"
+    }
+  ],
+  "blockedChecks": [
+    {
+      "code": "adapter_code_loading_blocked",
+      "status": "blocked",
+      "target": "runner.adapterCodeLoaded",
+      "reason": "adapter_code_loading_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "adapter_import_blocked",
+      "status": "blocked",
+      "target": "runner.adapterCodeImportAttempted",
+      "reason": "adapter_import_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "adapter_process_spawn_blocked",
+      "status": "blocked",
+      "target": "runner.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "real_runtime_invocation_blocked",
+      "status": "blocked",
+      "target": "runner.runtimeInvoked",
+      "reason": "runtime_invocation_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "dependency_installation_blocked",
+      "status": "blocked",
+      "target": "runner.dependencyInstallation",
+      "reason": "dependency_installation_not_allowed"
+    },
+    {
+      "code": "network_access_blocked",
+      "status": "blocked",
+      "target": "runner.networkAccess",
+      "reason": "network_access_not_allowed"
+    },
+    {
+      "code": "harvested_code_execution_blocked",
+      "status": "blocked",
+      "target": "runner.harvestedCodeExecution",
+      "reason": "harvested_code_execution_not_allowed"
+    },
+    {
+      "code": "ai_execution_blocked",
+      "status": "blocked",
+      "target": "runner.aiExecution",
+      "reason": "ai_execution_not_run"
+    },
+    {
+      "code": "package_acceptance_blocked",
+      "status": "blocked",
+      "target": "runner.registryAuthority",
+      "reason": "package_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "relation_acceptance_blocked",
+      "status": "blocked",
+      "target": "runner.registryAuthority",
+      "reason": "relation_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "baseline_seeding_blocked",
+      "status": "blocked",
+      "target": "runner.registryAuthority",
+      "reason": "baseline_seeding_not_allowed"
+    },
+    {
+      "code": "preview_only_removal_blocked",
+      "status": "blocked",
+      "target": "runner.registryAuthority",
+      "reason": "preview_only_removal_not_allowed"
+    },
+    {
+      "code": "adapter_output_truth_blocked",
+      "status": "blocked",
+      "target": "runner.adapterOutputAccepted",
+      "reason": "adapter_output_truth_requires_maintainer_review"
+    }
+  ],
+  "warningChecks": [
+    {
+      "code": "runner_disabled_review_only",
+      "status": "warning",
+      "target": "runner.status",
+      "message": "The runner skeleton validates linkage only and cannot execute adapters."
+    },
+    {
+      "code": "future_runtime_not_implemented",
+      "status": "warning",
+      "target": "followUp",
+      "message": "A future reviewed task must implement any real runtime separately."
+    },
+    {
+      "code": "operator_approval_not_consumed",
+      "status": "warning",
+      "target": "linkageValidation.operatorApprovalConsumed",
+      "message": "The request declares future approval requirements, but this disabled skeleton does not consume approval."
+    }
+  ],
+  "summary": {
+    "acceptedCount": 12,
+    "rejectedCount": 16,
+    "blockedCount": 13,
+    "warningCount": 3,
+    "diagnosticCount": 2,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false
+  },
+  "executionBoundary": {
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "requestIsExecutionPermission": false,
+    "preflightPassIsExecutionPermission": false,
+    "runnerIsExecutionPermission": false,
+    "runnerIsOperatorApproval": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "disabled_explicit_real_local_sandbox_runner_skeleton",
+      "message": "Disabled runner skeleton validates P42-T8 request and P42-T9 preflight linkage without loading adapter code or spawning processes."
+    },
+    {
+      "severity": "warning",
+      "code": "runner_skeleton_is_not_execution_permission",
+      "message": "The disabled runner skeleton does not grant adapter execution authority, operator approval, registry authority, or adapter output truth."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "disabled_runner_is_not_execution_permission",
+    "disabled_runner_is_not_operator_approval",
+    "disabled_runner_is_not_registry_authority",
+    "request_fixture_is_not_execution_permission",
+    "preflight_pass_is_not_execution_permission",
+    "preflight_pass_is_not_operator_approval",
+    "does_not_load_third_party_adapter_code",
+    "does_not_import_adapter_code",
+    "does_not_execute_real_adapters",
+    "does_not_run_real_adapter_processes",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_use_network",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_request_as_execution_permission",
+    "does_not_treat_preflight_as_execution_permission",
+    "does_not_treat_disabled_runner_as_execution_permission",
+    "does_not_grant_registry_authority"
+  ],
+  "followUp": {
+    "explicitRealLocalSandboxRunRequestTask": "P42-T8",
+    "explicitRealLocalSandboxRunRequestPreflightTask": "P42-T9",
+    "realLocalSandboxRunnerImplementationTask": "deferred_until_after_disabled_runner_review",
+    "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_review"
+  }
+}
