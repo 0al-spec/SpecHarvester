@@ -1595,7 +1595,7 @@ Acceptance:
 - [x] `P39-T5` Integrate static evaluator output into
   `autonomous-candidate-batch` as an opt-in auto sidecar path while preserving
   explicit sidecar input behavior and keeping `appliedToDrafting: false`.
-- [ ] `P39-T6` Run a real multi-repository static evaluator validation over
+- [x] `P39-T6` Run a real multi-repository static evaluator validation over
   existing local checkouts, comparing FastMCP, FastAPI, and xyflow style
   repository shapes without cloning, installing dependencies, running package
   managers, executing harvested code, or invoking AI.

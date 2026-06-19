@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 39 Complete" in next_text:
+        assert_p39_t6_last_archived(next_text)
+        assert_p39_t6_recent(next_text)
+        assert_phase_39_complete(next_text)
+        return
+
     if "# Next Task: P39-T6 Real Multi-Repository Static Evaluator Validation" in next_text:
         assert_p39_t5_last_archived(next_text)
         assert_p39_t5_recent(next_text)
@@ -3946,6 +3952,55 @@ def assert_phase_39_t6_planned(next_text: str) -> None:
     assert "must not publish registry metadata" in normalized
     assert "must not remove `preview_only`" in normalized
     assert "must not treat plugin decisions as registry truth" in normalized
+
+
+def assert_p39_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P39-T6 Real Multi-Repository Static Evaluator Validation" in (
+        next_text
+    )
+
+
+def assert_p39_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P39-T6` recorded real multi-repository static evaluator validation" in (normalized)
+    assert "p39-t6-multi-repository-static-evaluator-validation.example.json" in next_text
+    assert "FastMCP" in next_text
+    assert "FastAPI" in next_text
+    assert "xyflow" in next_text
+    assert "generic.single_package.v0" in next_text
+    assert "generic.package_set.v0" in next_text
+    assert "repository-plugin-applicability-detect" in next_text
+    assert "--repository-plugin-registry" in next_text
+    assert "--repository-plugin-static-evidence-envelope" in next_text
+    assert "sourceMode: auto_static_evaluator" in next_text
+    assert "appliedToDrafting: false" in next_text
+    assert "registryAuthority: false" in next_text
+    assert "did not clone or fetch repositories" in normalized
+    assert "install dependencies" in normalized
+    assert "invoke package managers" in normalized
+    assert "execute harvested code" in normalized
+    assert "invoke AI" in normalized
+    assert "change parser/profile behavior" in normalized
+    assert "accept packages or relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_39_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 39 Complete" in next_text
+    assert "**Status:** Complete" in next_text
+    assert "Phase 39. Static Repository Plugin Applicability Evaluator" in next_text
+    assert "static evidence envelope fixture" in normalized
+    assert "deterministic static applicability evaluator helper" in normalized
+    assert "`repository-plugin-applicability-detect` CLI" in next_text
+    assert "opt-in autonomous batch auto-sidecar path" in normalized
+    assert "real multi-repository validation fixture over FastMCP, FastAPI, and xyflow" in (
+        normalized
+    )
+    assert "repository plugin adapter contract" in normalized
+    assert "without loading third-party code by default" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
