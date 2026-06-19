@@ -227,6 +227,10 @@ Published DocC site:
    identity, digest, disabled surface, check counts, execution boundary, and
    non-authority statements while preserving no runtime invocation, no approval
    consumption, and no registry authority
+53. [`OPERATIONAL_MVP_VALIDATION_PLAN.md`](OPERATIONAL_MVP_VALIDATION_PLAN.md):
+   Phase 43 operational validation plan for proving SpecHarvester on a bounded
+   pinned multi-ecosystem corpus before broader autonomous scraping or real
+   adapter execution
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

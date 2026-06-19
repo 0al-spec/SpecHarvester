@@ -1,53 +1,55 @@
-# Next Task: Phase 42 Complete
+# Next Task: P43-T2 Operational MVP Validation Plan Fixture
 
-**Status:** Complete
-**Branch:** `feature/P42-T18-disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton-verifier`
-**Phase:** Phase 42. Trusted Local Adapter Runtime Sandbox
-**Last Archived:** P42-T18 Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Skeleton Verifier
+**Status:** Selected
+**Branch:** `feature/P43-T2-operational-mvp-validation-plan-fixture`
+**Phase:** Phase 43. Operational MVP Validation
+**Task:** `P43-T2` Add a machine-readable
+`SpecHarvesterOperationalMVPValidationPlan` fixture that records selected
+corpus requirements, pinned local checkout policy, run modes, quality
+dimensions, stop policy, and non-authority boundaries.
 
-## Recently Archived
+## Motivation
 
-- `P42-T18` added
-  `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeletonVerifierReport`.
-- The verifier fixture lives at
-  `tests/fixtures/repository_plugins/disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-skeleton-verifier.example.json`.
-- GitHub docs are in
-  `docs/TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_SKELETON_VERIFIER.md`.
-- DocC docs are in
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeletonVerifier.md`.
-- The verifier references the P42-T17
-  `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeleton`
-  fixture with a pinned SHA-256 digest.
-- The verifier checks P42-T17 identity, schema version, authority, linked P42-T16
-  review packet digest, disabled runtime surface count, accepted/rejected/
-  blocked/warning check counts, execution boundary fields, diagnostics, and
-  non-authority statements.
-- The verifier keeps `verifierIsExecutionPermission: false`,
-  `verifierIsRegistryAuthority: false`, `verifierConsumesApproval: false`,
-  `verifierInvokesRuntime: false`, `verifierAcceptsAdapterOutput: false`,
-  `operatorApprovalConsumed: false`, `adapterExecution: not_run`,
-  `adapterCodeLoaded: false`, `adapterCodeImportAttempted: false`,
-  `adapterProcessSpawned: false`, `runtimeInvoked: false`,
-  `runtimeImplemented: false`, `networkAccess: none`, `registryAuthority: false`,
-  and `adapterOutputAccepted: false`.
+- P43-T1 documented the operational MVP validation plan, but the next step needs
+  a stable machine-readable contract that later tasks can validate and consume.
+- The validation loop must keep pinned local checkout inputs explicit rather
+  than silently cloning, fetching, or treating a mutable repository state as
+  trusted evidence.
+- Static-only and AI-enabled runs need the same declared quality dimensions and
+  stop policy so comparison results are reviewable instead of anecdotal.
 
-## Task
+## Goal
 
-Phase 42 is complete in the current workplan.
-
-## Why This Is Next
-
-No additional Phase 42 tasks are currently listed in `SPECS/Workplan.md`.
+Add a versioned fixture for `SpecHarvesterOperationalMVPValidationPlan` that can
+act as producer-side evidence for the operational MVP validation phase without
+accepting packages, publishing registry metadata, or granting AI or adapter
+output authority.
 
 ## Scope
 
-- Keep this pointer until a new workplan task is added or the next phase is
-  selected.
-- Preserve the completed Phase 42 trusted local adapter runtime sandbox chain as
-  review-only evidence.
+- Add a fixture under the existing test fixture layout for
+  `SpecHarvesterOperationalMVPValidationPlan`.
+- Include corpus item fields for repository URL, local checkout path placeholder,
+  exact revision placeholder, ecosystem family, expected package-family shape,
+  allowed run modes, and stop conditions.
+- Include run mode declarations for static-only and AI-enabled validation.
+- Include quality dimensions for validity, repository specificity, evidence
+  precision, package topology, claim conservatism, author actionability, and
+  SpecPM handoff readiness.
+- State that the fixture is producer-side evidence and does not create registry
+  authority.
+- Add docs-contract regression coverage for the fixture shape and boundaries.
+- Keep the fixture synthetic or placeholder-based; do not run a real corpus in
+  P43-T2.
 
 ## Non-Goals
 
-- Do not invent a new task without updating `SPECS/Workplan.md`.
-- Do not implement real adapter execution from the completed review-only
-  fixtures.
+- Do not run the real corpus in P43-T2.
+- Do not enable trusted local adapter execution.
+- Do not clone or fetch repositories implicitly.
+- Do not publish registry metadata, accept packages, accept relations, seed
+  baselines, remove `preview_only`, or treat AI output as registry truth.
+
+## Recently Archived
+
+- `P43-T1` Operational MVP Validation Plan was archived with PASS verdict.
