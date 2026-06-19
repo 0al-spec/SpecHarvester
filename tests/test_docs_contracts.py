@@ -17,6 +17,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P42-T2 Trusted Local Adapter Sandbox Contract Fixture" in next_text:
+        assert_p42_t1_last_archived(next_text)
+        assert_p42_t1_recent(next_text)
+        assert_phase_42_t2_planned(next_text)
+        return
+
+    if "# Next Task: P42-T1 Trusted Local Adapter Runtime Sandbox Plan" in next_text:
+        assert_p41_t6_last_archived(next_text)
+        assert_p41_t6_recent(next_text)
+        assert_phase_42_t1_planned(next_text)
+        return
+
     if "# Next Task: Phase 41 Complete" in next_text:
         assert_p41_t6_last_archived(next_text)
         assert_p41_t6_recent(next_text)
@@ -4775,6 +4787,72 @@ def assert_phase_41_complete(next_text: str) -> None:
     assert "operator approval" in normalized
     assert "adapterExecution: not_run" in normalized
     assert "registryAuthority: false" in normalized
+
+
+def assert_phase_42_t1_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P42-T1 Trusted Local Adapter Runtime Sandbox Plan" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P42-T1-trusted-local-adapter-runtime-sandbox-plan`" in next_text
+    assert "Phase 42. Trusted Local Adapter Runtime Sandbox" in next_text
+    assert "sandbox/runtime boundary" in normalized
+    assert "explicit operator approval" in normalized
+    assert "adapter package identity" in normalized
+    assert "process isolation" in normalized
+    assert "filesystem allowlists" in normalized
+    assert "environment sealing" in normalized
+    assert "dependency isolation" in normalized
+    assert "network-deny-by-default policy" in normalized
+    assert "output digests" in normalized
+    assert "audit records" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not load third-party adapter code" in normalized
+    assert "Do not spawn adapter processes" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not allow network discovery" in normalized
+    assert "Do not execute harvested repository code" in normalized
+    assert "Do not run AI because of adapter execution" in normalized
+    assert "Do not treat adapter output, runner reports, or sandbox plans as registry truth" in (
+        normalized
+    )
+    assert "SpecHarvesterTrustedLocalAdapterSandboxContract" in normalized
+
+
+def assert_p42_t1_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P42-T1 Trusted Local Adapter Runtime Sandbox Plan" in next_text
+
+
+def assert_p42_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P42-T1` documented the trusted local adapter runtime sandbox plan" in normalized
+    assert "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md" in next_text
+    assert "TrustedLocalAdapterRuntimeSandboxPlan.md" in next_text
+    assert "explicit operator approval" in normalized
+    assert "adapter package identity" in normalized
+    assert "process isolation" in normalized
+    assert "sealed environment" in normalized
+    assert "network-deny-by-default" in normalized
+    assert "output digests" in normalized
+    assert "adapterExecution: not_run" in normalized
+
+
+def assert_phase_42_t2_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P42-T2 Trusted Local Adapter Sandbox Contract Fixture" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P42-T2-trusted-local-adapter-sandbox-contract-fixture`" in next_text
+    assert "SpecHarvesterTrustedLocalAdapterSandboxContract" in normalized
+    assert "adapter package identity" in normalized
+    assert "sandbox policy identity" in normalized
+    assert "operator approval requirements" in normalized
+    assert "filesystem/environment/network/dependency policy" in normalized
+    assert "output verification" in normalized
+    assert "audit records" in normalized
+    assert "before any runtime implementation" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not spawn adapter processes" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -17312,6 +17390,132 @@ def test_trusted_local_adapter_real_local_readiness_validation_fixture_and_docs(
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
         )
+
+
+def test_trusted_local_adapter_runtime_sandbox_plan_is_documented() -> None:
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    readiness_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"
+    readiness_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeReadiness.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Runtime Sandbox Plan",
+            "P42-T1 sandbox planning contract",
+            "does not enable adapter execution",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "registryAuthority: false",
+            "explicit local operator approval",
+            "adapter package identity",
+            "adapter version, revision, or digest",
+            "target repository id and checkout revision",
+            "declared input artifact paths and digests",
+            "declared output directories",
+            "runtime budgets",
+            "expected output artifact kinds",
+            "Approval is not registry acceptance",
+            "pinned revision or content digest",
+            "signature or digest verification status",
+            "declared entrypoint",
+            "bounded process tree",
+            "timeout and CPU budgets",
+            "memory budgets",
+            "no ambient credentials",
+            "stdout/stderr size limits",
+            "pathFormat: posix_relative",
+            "parentSegmentsAllowed: false",
+            "absolutePathsAllowed: false",
+            "backslashAllowed: false",
+            "networkPathsAllowed: false",
+            "do not inherit host environment variables",
+            "deny secrets by default",
+            "dependencyInstallation: not_allowed",
+            "packageManagers: not_invoked",
+            "networkAccess: none",
+            "dnsAllowed: false",
+            "remoteFetchAllowed: false",
+            "SHA-256 digest",
+            "producer run id",
+            "adapter id and digest",
+            "replayable audit record",
+            "request digest",
+            "preflight digest",
+            "operator approval digest",
+            "sandbox policy identity",
+            "producer-side review evidence",
+            "does not",
+            "accept packages",
+            "accept relations",
+            "seed baselines",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "replace SpecPM validation",
+            "replace maintainer review",
+            "SpecHarvesterTrustedLocalAdapterSandboxContract",
+            "sandbox contract fixture",
+            "sandbox preflight report",
+            "disabled sandbox runner validation",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "adapterExecution: run",
+            "adapterExecution: enabled",
+            "networkAccess: allowed",
+            "dependencyInstallation: allowed",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (readiness_doc, "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"),
+        (readiness_docc, "TrustedLocalAdapterRuntimeSandboxPlan"),
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"),
+        (docc_root, "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"),
+        (capabilities, "Trusted local adapter runtime sandbox"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"),
+        (capabilities_docc, "Trusted local adapter runtime sandbox"),
+        (capabilities_docc, "TrustedLocalAdapterRuntimeSandboxPlan"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"),
+        (roadmap_docc, "TrustedLocalAdapterRuntimeSandboxPlan"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "## Phase 42. Trusted Local Adapter Runtime Sandbox" in workplan_text
+    assert "`P42-T1` Document the trusted local adapter runtime sandbox plan" in workplan_text
+    assert "`P42-T2` Add a machine-readable" in workplan_text
+    assert "SpecHarvesterTrustedLocalAdapterSandboxContract" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
 def test_trusted_local_adapter_run_request_fixture_is_documented() -> None:

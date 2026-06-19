@@ -197,3 +197,8 @@ for future trusted local execution. It should build on
 and
 [`REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`](REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md)
 without weakening their no-runtime and non-authority guarantees.
+
+Phase 42 continues with
+[`TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md`](TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md),
+which defines the sandbox contract required before any future adapter process
+can run.

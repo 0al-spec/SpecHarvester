@@ -120,6 +120,11 @@ Published DocC site:
    P41-T6 real local readiness validation over FastMCP, FastAPI, xyflow, and
    Gin pinned checkouts, proving the trusted local adapter handoff remains
    explicit review evidence with `adapterExecution: not_run`
+35. [`TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md`](TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md):
+   P42-T1 sandbox plan for future trusted local adapter runtime execution,
+   requiring explicit operator approval, adapter package identity, process
+   isolation, sealed environment, network-deny-by-default policy, output
+   digests, and review-only authority before any adapter process can run
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

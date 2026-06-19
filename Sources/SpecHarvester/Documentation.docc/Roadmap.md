@@ -606,6 +606,13 @@ proves the batch handoff remains explicit review evidence with
 installation, no package manager invocation, no network discovery, no harvested
 code execution, and no AI execution caused by the adapter sidecar.
 
+Phase 42 starts with <doc:TrustedLocalAdapterRuntimeSandboxPlan>. P42-T1
+defines the sandbox boundary required before any future trusted local adapter
+process can run: explicit operator approval, adapter package identity, process
+isolation, filesystem allowlists, sealed environment, dependency isolation,
+network-deny-by-default policy, output digests, audit records, and review-only
+authority. It keeps `adapterExecution: not_run`.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install
