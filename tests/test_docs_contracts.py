@@ -38,6 +38,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 42 Complete" in next_text:
+        assert_p42_t18_last_archived(next_text)
+        assert_p42_t18_recent(next_text)
+        assert_phase_42_complete(next_text)
+        return
+
     if (
         "# Next Task: P42-T18 Disabled Explicit Real Local Trusted Adapter Sandbox "
         "Runtime Implementation Skeleton Verifier"
@@ -5960,6 +5966,69 @@ def assert_phase_42_t18_planned(next_text: str) -> None:
     assert "Do not implement real adapter execution" in normalized
     assert "Do not treat P42-T17 as execution permission" in normalized
     assert "Do not consume approval by a real runtime" in normalized
+
+
+def assert_p42_t18_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T18 Disabled Explicit Real Local Trusted Adapter Sandbox "
+        "Runtime Implementation Skeleton Verifier"
+    ) in next_text
+
+
+def assert_p42_t18_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P42-T18` added "
+        "`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntime"
+        "ImplementationSkeletonVerifierReport`"
+    ) in normalized
+    assert (
+        "disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-"
+        "skeleton-verifier.example.json"
+    ) in next_text
+    assert (
+        "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_"
+        "IMPLEMENTATION_SKELETON_VERIFIER.md"
+    ) in next_text
+    assert (
+        "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementation"
+        "SkeletonVerifier.md"
+    ) in next_text
+    assert (
+        "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationSkeleton"
+    ) in normalized
+    assert "pinned SHA-256 digest" in normalized
+    assert "P42-T17 identity" in normalized
+    assert "schema version" in normalized
+    assert "linked P42-T16 review packet digest" in normalized
+    assert "disabled runtime surface count" in normalized
+    assert "execution boundary fields" in normalized
+    assert "non-authority statements" in normalized
+    assert "verifierIsExecutionPermission: false" in normalized
+    assert "verifierIsRegistryAuthority: false" in normalized
+    assert "verifierConsumesApproval: false" in normalized
+    assert "verifierInvokesRuntime: false" in normalized
+    assert "verifierAcceptsAdapterOutput: false" in normalized
+    assert "operatorApprovalConsumed: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterCodeImportAttempted: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "runtimeInvoked: false" in normalized
+    assert "runtimeImplemented: false" in normalized
+    assert "networkAccess: none" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_phase_42_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 42 Complete" in next_text
+    assert "**Status:** Complete" in next_text
+    assert "Phase 42 is complete in the current workplan" in normalized
+    assert "No additional Phase 42 tasks are currently listed" in normalized
+    assert "Do not invent a new task without updating `SPECS/Workplan.md`" in normalized
+    assert "Do not implement real adapter execution from the completed review-only" in normalized
 
 
 def assert_phase_42_t16_planned(next_text: str) -> None:
