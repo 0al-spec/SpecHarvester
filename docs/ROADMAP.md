@@ -866,11 +866,13 @@ and the machine-readable
 `SpecHarvesterTrustedLocalAdapterRunRequest` fixture. P41-T3 adds
 [`TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_REPORT_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_REPORT_FIXTURE.md)
 and the machine-readable
-`SpecHarvesterTrustedLocalAdapterRunPreflightReport` fixture. The phase
+`SpecHarvesterTrustedLocalAdapterRunPreflightReport` fixture. P41-T4 adds
+[`TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md`](TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md),
+the `trusted-local-adapter-runner-skeleton` CLI, and the machine-readable
+`SpecHarvesterTrustedLocalAdapterRunReport` no-execution report. The phase
 prepares a future trusted local adapter runtime without enabling execution yet.
-It defines follow-up tasks for a disabled no-execution runner skeleton,
-explicit review-only batch evidence handoff, and real local readiness
-validation over FastMCP, FastAPI, xyflow, and Gin.
+It defines follow-up tasks for explicit review-only batch evidence handoff and
+real local readiness validation over FastMCP, FastAPI, xyflow, and Gin.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

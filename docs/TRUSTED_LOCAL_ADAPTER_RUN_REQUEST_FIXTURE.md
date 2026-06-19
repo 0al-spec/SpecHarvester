@@ -18,7 +18,7 @@ The request is not permission to run by itself. It is input to a future
 trusted local adapter run preflight.
 
 ```text
-run request -> future run preflight -> future disabled runner skeleton
+run request -> run preflight -> disabled runner skeleton
 ```
 
 The P41-T2 fixture does not implement preflight, does not implement a runner,
@@ -159,3 +159,9 @@ P41-T3 records
 [`SpecHarvesterTrustedLocalAdapterRunPreflightReport`](TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_REPORT_FIXTURE.md)
 as the first review-only preflight fixture over this request shape. Passing
 preflight is not execution permission.
+
+P41-T4 records
+[`SpecHarvesterTrustedLocalAdapterRunReport`](TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md)
+as a deterministic no-execution runner report. The runner skeleton validates
+this request and its preflight report but still does not load adapter code or
+run adapter processes.

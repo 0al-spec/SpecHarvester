@@ -111,6 +111,11 @@ Published DocC site:
    `SpecHarvesterTrustedLocalAdapterRunPreflightReport` fixture for request
    identity, opt-in, digest, path, output, budget, policy, execution-boundary,
    and non-authority checks before any future runner
+33. [`TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md`](TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md):
+   P41-T4 disabled `trusted-local-adapter-runner-skeleton` CLI and
+   `SpecHarvesterTrustedLocalAdapterRunReport` no-execution report for
+   validating request/preflight linkage without loading adapter code or
+   running adapter processes
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

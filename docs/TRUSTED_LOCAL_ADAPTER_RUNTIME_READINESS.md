@@ -30,7 +30,7 @@ preflight, runner, evidence handoff, and real validation sequence.
 | `P41-T1` | Document this readiness plan and add the next-task scaffold. |
 | `P41-T2` | Add [`SpecHarvesterTrustedLocalAdapterRunRequest`](TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md) as a machine-readable request fixture. |
 | `P41-T3` | Add [`SpecHarvesterTrustedLocalAdapterRunPreflightReport`](TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_REPORT_FIXTURE.md) as a machine-readable preflight report fixture that rejects unsafe requests before execution. |
-| `P41-T4` | Add a disabled-by-default runner skeleton that validates requests and emits a no-execution report. |
+| `P41-T4` | Add [`SpecHarvesterTrustedLocalAdapterRunReport`](TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md) through a disabled-by-default runner skeleton that validates request/preflight linkage and emits a no-execution report. |
 | `P41-T5` | Connect trusted local adapter run reports to `autonomous-candidate-batch` as review-only producer evidence. |
 | `P41-T6` | Validate the readiness path against FastMCP, FastAPI, xyflow, and Gin pinned local checkouts without executing adapters. |
 
@@ -88,9 +88,33 @@ rejected, blocked, and warning checks, and keeps
 
 ## Runner Boundary
 
-The first runner task must stay disabled-by-default. It may validate a request
-and emit a no-execution report. It must not load third-party adapter code or
-launch adapter processes until a later task explicitly introduces that mode.
+The first runner task stays disabled-by-default. P41-T4 adds
+[`trusted-local-adapter-runner-skeleton`](TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md),
+which validates a request and preflight report, verifies the request digest
+recorded by preflight, and emits a deterministic no-execution report. It does
+not load third-party adapter code or launch adapter processes.
+
+The runner report keeps:
+
+```text
+adapterExecution: not_run
+adapterCodeLoaded: false
+adapterCodeImportAttempted: false
+adapterProcessSpawned: false
+executedAdapterCount: 0
+runtimeImplemented: false
+runnerReportIsExecutionPermission: false
+appliedToDrafting: false
+registryAuthority: false
+```
+
+The skeleton returns `status: error` for request identity failure, preflight
+identity failure, non-passing preflight status, request digest mismatch, or a
+preflight request reference that does not point at the supplied request
+artifact.
+
+Any runner in this phase must not load third-party adapter code or launch
+adapter processes until a later task explicitly introduces that mode.
 
 Any future execution mode must preserve:
 
