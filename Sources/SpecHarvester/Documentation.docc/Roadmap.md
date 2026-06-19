@@ -529,6 +529,16 @@ signals, and `appliedToDrafting: false` / `registryAuthority: false` sidecar
 boundaries as the bounded input to the P39-T3 helper, P39-T4 CLI, and P39-T5
 batch opt-in path.
 
+P39-T6 records a real multi-repository validation in
+<doc:RepositoryPluginMultiRepositoryStaticEvaluatorValidation> and
+`tests/fixtures/repository_plugins/real_runs/p39-t6-multi-repository-static-evaluator-validation.example.json`.
+The run covers FastMCP, FastAPI, and xyflow local checkouts, exercises both
+`repository-plugin-applicability-detect` and
+`autonomous-candidate-batch --repository-plugin-registry
+--repository-plugin-static-evidence-envelope`, and confirms that generated
+sidecars remain `sourceMode: auto_static_evaluator`,
+`appliedToDrafting: false`, and `registryAuthority: false`.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins must not clone or fetch repositories, install dependencies, execute

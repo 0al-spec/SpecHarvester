@@ -173,6 +173,7 @@
 | P39-T1 | [P39-T1_Static_Repository_Plugin_Applicability_Evaluator_Plan/](P39-T1_Static_Repository_Plugin_Applicability_Evaluator_Plan/) | 2026-06-19 | PASS |
 | P39-T2 | [P39-T2_Static_Plugin_Evidence_Envelope_Fixture/](P39-T2_Static_Plugin_Evidence_Envelope_Fixture/) | 2026-06-19 | PASS |
 | P39-T5 | [P39-T5_Repository_Plugin_Applicability_Batch_Integration/](P39-T5_Repository_Plugin_Applicability_Batch_Integration/) | 2026-06-19 | PASS |
+| P39-T6 | [P39-T6_Real_Multi-Repository_Static_Evaluator_Validation/](P39-T6_Real_Multi-Repository_Static_Evaluator_Validation/) | 2026-06-19 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -635,3 +636,5 @@
 | 2026-06-19 | P39-T4 | Archived REVIEW_p39_t4_repository_plugin_applicability_detect_cli report |
 | 2026-06-19 | P39-T5 | Archived Repository Plugin Applicability Batch Integration (PASS) |
 | 2026-06-19 | P39-T5 | Archived REVIEW_p39_t5_repository_plugin_applicability_batch_integration report |
+| 2026-06-19 | P39-T6 | Archived Real Multi-Repository Static Evaluator Validation (PASS) |
+| 2026-06-19 | P39-T6 | Archived REVIEW_p39_t6_real_multi_repository_static_evaluator_validation report |

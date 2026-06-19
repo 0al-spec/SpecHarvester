@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 39 Complete" in next_text:
+        assert_p39_t6_last_archived(next_text)
+        assert_p39_t6_recent(next_text)
+        assert_phase_39_complete(next_text)
+        return
+
     if "# Next Task: P39-T6 Real Multi-Repository Static Evaluator Validation" in next_text:
         assert_p39_t5_last_archived(next_text)
         assert_p39_t5_recent(next_text)
@@ -3946,6 +3952,55 @@ def assert_phase_39_t6_planned(next_text: str) -> None:
     assert "must not publish registry metadata" in normalized
     assert "must not remove `preview_only`" in normalized
     assert "must not treat plugin decisions as registry truth" in normalized
+
+
+def assert_p39_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P39-T6 Real Multi-Repository Static Evaluator Validation" in (
+        next_text
+    )
+
+
+def assert_p39_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P39-T6` recorded real multi-repository static evaluator validation" in (normalized)
+    assert "p39-t6-multi-repository-static-evaluator-validation.example.json" in next_text
+    assert "FastMCP" in next_text
+    assert "FastAPI" in next_text
+    assert "xyflow" in next_text
+    assert "generic.single_package.v0" in next_text
+    assert "generic.package_set.v0" in next_text
+    assert "repository-plugin-applicability-detect" in next_text
+    assert "--repository-plugin-registry" in next_text
+    assert "--repository-plugin-static-evidence-envelope" in next_text
+    assert "sourceMode: auto_static_evaluator" in next_text
+    assert "appliedToDrafting: false" in next_text
+    assert "registryAuthority: false" in next_text
+    assert "did not clone or fetch repositories" in normalized
+    assert "install dependencies" in normalized
+    assert "invoke package managers" in normalized
+    assert "execute harvested code" in normalized
+    assert "invoke AI" in normalized
+    assert "change parser/profile behavior" in normalized
+    assert "accept packages or relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_39_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 39 Complete" in next_text
+    assert "**Status:** Complete" in next_text
+    assert "Phase 39. Static Repository Plugin Applicability Evaluator" in next_text
+    assert "static evidence envelope fixture" in normalized
+    assert "deterministic static applicability evaluator helper" in normalized
+    assert "`repository-plugin-applicability-detect` CLI" in next_text
+    assert "opt-in autonomous batch auto-sidecar path" in normalized
+    assert "real multi-repository validation fixture over FastMCP, FastAPI, and xyflow" in (
+        normalized
+    )
+    assert "repository plugin adapter contract" in normalized
+    assert "without loading third-party code by default" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -14375,6 +14430,198 @@ def test_repository_plugin_real_run_fastmcp_fixture_and_docs() -> None:
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P38-T6` Run one real repository through the plugin subsystem evidence" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_multi_repository_static_evaluator_validation_docs() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "real_runs"
+        / "p39-t6-multi-repository-static-evaluator-validation.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginMultiRepositoryStaticEvaluatorValidation.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    subsystem_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    subsystem_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.repository-plugin-real-run/v0"
+    assert payload["kind"] == (
+        "SpecHarvesterRepositoryPluginMultiRepositoryStaticEvaluatorValidation"
+    )
+    assert payload["schemaVersion"] == 1
+    assert payload["task"] == "P39-T6"
+    assert payload["summary"] == {
+        "caseCount": 3,
+        "availableCount": 3,
+        "passedCount": 3,
+        "notAvailableCount": 0,
+        "failedCount": 0,
+    }
+    assert payload["verdict"] == "passed"
+    assert payload["run"]["repositoryAcquisition"] == "operator_managed_local_checkouts"
+    assert payload["run"]["networkAccess"] == "not_required"
+    assert payload["run"]["aiMode"] == "disabled"
+
+    cases = {case["repositoryId"]: case for case in payload["cases"]}
+    assert set(cases) == {"fastmcp", "fastapi", "xyflow"}
+    assert cases["fastmcp"]["source"]["shape"] == "documentation_heavy_python_single_package"
+    assert cases["fastapi"]["source"]["shape"] == "python_web_framework_single_package"
+    assert cases["xyflow"]["source"]["shape"] == "javascript_typescript_workspace_package_set"
+    assert cases["fastmcp"]["source"]["revision"] == ("3b8538e2422a1c43fdb69661c610de7985b785f2")
+    assert cases["fastapi"]["source"]["revision"] == ("9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263")
+    assert cases["xyflow"]["source"]["revision"] == ("a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd")
+
+    assert (
+        cases["fastmcp"]["baselineBatch"]["repositoryProfileDetection"]["selectedProfileId"]
+        == "generic.single_package.v0"
+    )
+    assert (
+        cases["fastapi"]["baselineBatch"]["repositoryProfileDetection"]["selectedProfileId"]
+        == "generic.single_package.v0"
+    )
+    assert (
+        cases["xyflow"]["baselineBatch"]["repositoryProfileDetection"]["selectedProfileId"]
+        == "generic.package_set.v0"
+    )
+    assert cases["xyflow"]["baselineBatch"]["workspaceInventory"]["summary"]["packageCount"] == 11
+    assert (
+        cases["xyflow"]["baselineBatch"]["workspaceInventory"]["summary"]["packageManifestCount"]
+        == 11
+    )
+    assert (
+        cases["fastmcp"]["baselineBatch"]["workspaceInventory"]["summary"]["packageManifestCount"]
+        == 0
+    )
+    assert (
+        cases["fastapi"]["baselineBatch"]["workspaceInventory"]["summary"]["packageManifestCount"]
+        == 0
+    )
+
+    for case in cases.values():
+        assert case["status"] == "passed"
+        assert case["source"]["available"] is True
+        assert case["source"]["dirtyStatus"] == ""
+        assert (
+            case["baselineBatch"]["status"] == "passed"
+            if "status" in case["baselineBatch"]
+            else True
+        )
+        assert case["baselineBatch"]["preflight"]["status"] == "passed"
+        assert case["standaloneEvaluator"]["returncode"] == 0
+        assert case["batchAutoSidecar"]["returncode"] == 0
+        assert case["batchAutoSidecar"]["status"] == "passed"
+        standalone_summary = case["standaloneEvaluator"]["summary"]
+        sidecar = case["batchAutoSidecar"]["repositoryPluginApplicability"]
+        assert standalone_summary == {
+            "selectedCount": 4,
+            "rejectedCount": 0,
+            "fallbackCount": 0,
+            "blockedCount": 1,
+            "diagnosticCount": 5,
+        }
+        assert sidecar["summary"] == standalone_summary
+        assert sidecar["status"] == "recorded"
+        assert sidecar["sourceMode"] == "auto_static_evaluator"
+        assert sidecar["appliedToDrafting"] is False
+        assert sidecar["registryAuthority"] is False
+        assert case["staticEvidenceEnvelope"]["summary"]["evidenceCount"] >= 7
+        assert "repository-plugin-applicability-detect" in case["standaloneEvaluator"]["command"]
+        assert "--repository-plugin-registry" in case["batchAutoSidecar"]["command"]
+        assert "--repository-plugin-static-evidence-envelope" in case["batchAutoSidecar"]["command"]
+        assert case["verdict"] == "real_static_evaluator_path_validated"
+
+    for digest in collect_digest_values(payload):
+        assert digest.startswith("sha256:")
+        assert len(digest) == len("sha256:") + 64
+
+    assert payload["boundary"]["authority"] == "producer_plugin_applicability_only"
+    assert payload["boundary"]["appliedToDrafting"] is False
+    assert payload["boundary"]["registryAuthority"] is False
+    for boundary in (
+        "repository_clone",
+        "network_fetch",
+        "dependency_installation",
+        "package_manager_invocation",
+        "harvested_code_execution",
+        "ai_invocation",
+        "parser_profile_behavior_change",
+        "repository_profile_scoring_change",
+        "package_acceptance",
+        "relation_acceptance",
+        "registry_publication",
+        "preview_only_removal",
+        "plugin_decisions_as_registry_truth",
+    ):
+        assert boundary in payload["boundary"]["nonGoals"]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Multi-Repository Static Evaluator Validation",
+            "SpecHarvesterRepositoryPluginMultiRepositoryStaticEvaluatorValidation",
+            "p39-t6-multi-repository-static-evaluator-validation.example.json",
+            "FastMCP",
+            "FastAPI",
+            "xyflow",
+            "repository-plugin-applicability-detect",
+            "--repository-plugin-registry",
+            "--repository-plugin-static-evidence-envelope",
+            "generic.single_package.v0",
+            "generic.package_set.v0",
+            "sourceMode: auto_static_evaluator",
+            "appliedToDrafting: false",
+            "registryAuthority: false",
+            "producer-side evidence only",
+            "passed",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+
+    for path, required in (
+        (docs_index, "REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md"),
+        (docc_root, "<doc:RepositoryPluginMultiRepositoryStaticEvaluatorValidation>"),
+        (capabilities, "REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md"),
+        (capabilities_docc, "RepositoryPluginMultiRepositoryStaticEvaluatorValidation"),
+        (roadmap, "REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md"),
+        (roadmap_docc, "RepositoryPluginMultiRepositoryStaticEvaluatorValidation"),
+        (subsystem_doc, "REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md"),
+        (subsystem_docc, "RepositoryPluginMultiRepositoryStaticEvaluatorValidation"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P39-T6` Run a real multi-repository static evaluator validation" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

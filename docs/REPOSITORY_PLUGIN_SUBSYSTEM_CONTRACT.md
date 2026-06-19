@@ -168,6 +168,10 @@ P38-T6 records a real FastMCP comparison in
 [`REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md`](REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md)
 and
 `tests/fixtures/repository_plugins/real_runs/p38-t6-fastmcp-plugin-evidence-comparison.example.json`.
+P39-T6 records a real multi-repository static evaluator validation in
+[`REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md`](REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md)
+and
+`tests/fixtures/repository_plugins/real_runs/p39-t6-multi-repository-static-evaluator-validation.example.json`.
 
 The selection report shape is
 `SpecHarvesterRepositoryPluginApplicabilityReport`.
