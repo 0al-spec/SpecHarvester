@@ -2039,7 +2039,7 @@ Acceptance:
 - [x] `P43-T5` Run the AI-enabled comparison over the same pinned corpus when
   a local OpenAI-compatible provider is available, recording deltas and warning
   when AI output stays proposal-only.
-- [ ] `P43-T6` Add author handoff summaries for operational MVP runs so a
+- [x] `P43-T6` Add author handoff summaries for operational MVP runs so a
   package author can see what is valid, what is reviewable, what needs manual
   correction, and what should not be promoted.
 - [ ] `P43-T7` Record an operational MVP exit report that decides whether the
