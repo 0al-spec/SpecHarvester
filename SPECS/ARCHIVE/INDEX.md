@@ -193,6 +193,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t1_trusted_local_adapter_runtime_sandbox_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p41_t6_real_local_trusted_adapter_readiness_validation.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p41_t5_trusted_local_adapter_run_evidence_handoff.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p40_t4_adapter_execution_policy.md` |
@@ -677,3 +678,4 @@
 | 2026-06-19 | P41-T6 | Archived Real Local Trusted-Adapter Readiness Validation (PASS) |
 | 2026-06-19 | P41-T6 | Archived REVIEW_p41_t6_real_local_trusted_adapter_readiness_validation report |
 | 2026-06-19 | P42-T1 | Archived Trusted Local Adapter Runtime Sandbox Plan (PASS) |
+| 2026-06-19 | P42-T1 | Archived REVIEW_p42_t1_trusted_local_adapter_runtime_sandbox_plan report |
