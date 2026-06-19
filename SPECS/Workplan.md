@@ -1574,3 +1574,57 @@ Acceptance:
   plugin decisions as registry truth.
 - Parser profiles and repository profiles can be represented as plugin roles
   without rewriting existing behavior in the initial contract task.
+
+## Phase 39. Static Repository Plugin Applicability Evaluator
+
+- [x] `P39-T1` Document the static repository plugin applicability evaluator
+  plan. The plan must describe how SpecHarvester can turn the P38 registry,
+  collected evidence, repository profile detection, workspace inventory,
+  harvest snapshots, and operator labels into a deterministic
+  `SpecHarvesterRepositoryPluginApplicabilityReport` without loading or
+  executing plugin code.
+- [ ] `P39-T2` Add a machine-readable static plugin evidence envelope fixture
+  that enumerates available evidence kinds, paths, digests, source identity,
+  and authority boundaries before applicability evaluation.
+- [ ] `P39-T3` Implement a deterministic static applicability evaluator helper
+  that reads the plugin registry plus evidence envelope and emits selected,
+  rejected, fallback, and blocked plugin decisions.
+- [ ] `P39-T4` Add a `repository-plugin-applicability-detect` CLI/report
+  surface for the static evaluator, including JSON output and regression
+  tests.
+- [ ] `P39-T5` Integrate static evaluator output into
+  `autonomous-candidate-batch` as an opt-in auto sidecar path while preserving
+  explicit sidecar input behavior and keeping `appliedToDrafting: false`.
+- [ ] `P39-T6` Run a real multi-repository static evaluator validation over
+  existing local checkouts, comparing FastMCP, FastAPI, and xyflow style
+  repository shapes without cloning, installing dependencies, running package
+  managers, executing harvested code, or invoking AI.
+
+Motivation:
+
+- Phase 38 proved the plugin applicability contract with fixtures and one real
+  sidecar run. The next layer should remove hand-authored applicability
+  sidecars by deriving them deterministically from collected static evidence.
+- The evaluator should answer "which plugin role applies here?" from declared
+  registry inputs and evidence availability, not from hidden ecosystem
+  heuristics or executable plugin code.
+
+Goal:
+
+- Provide a deterministic, auditable static evaluator that produces
+  `SpecHarvesterRepositoryPluginApplicabilityReport` artifacts from existing
+  producer evidence and can later support runtime adapters without weakening
+  trust boundaries.
+
+Acceptance:
+
+- Evaluation reads declared plugin metadata and collected static evidence only.
+- Missing required input evidence produces `blocked`, `fallback`, or
+  `rejected` decisions instead of silent selection.
+- The evaluator never loads third-party plugin code, executes plugins, clones
+  repositories, installs dependencies, invokes package managers, executes
+  harvested code, runs AI, accepts packages or relations, publishes registry
+  metadata, removes `preview_only`, or treats plugin decisions as registry
+  truth.
+- The existing explicit sidecar path remains valid and takes precedence over
+  auto-generated applicability evidence when an operator supplies one.

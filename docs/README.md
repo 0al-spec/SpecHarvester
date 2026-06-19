@@ -56,6 +56,9 @@ Published DocC site:
 19. [`REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md`](REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md):
    real FastMCP plugin evidence comparison proving the applicability sidecar
    path on a pinned local checkout without plugin execution
+20. [`STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`](STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md):
+   Phase 39 plan for deriving repository plugin applicability reports from
+   bounded static evidence instead of hand-authored sidecars
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
