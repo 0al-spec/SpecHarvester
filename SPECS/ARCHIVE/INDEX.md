@@ -181,6 +181,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t5_repository_plugin_cross_ecosystem_fixtures.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t4_repository_plugin_batch_integration.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t3_repository_plugin_applicability_report_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t2_repository_plugin_registry_fixture.md` |
@@ -323,6 +324,7 @@
 | 2026-06-19 | P38-T4 | Archived Repository Plugin Batch Integration (PASS) |
 | 2026-06-19 | P38-T4 | Archived REVIEW_p38_t4_repository_plugin_batch_integration report |
 | 2026-06-19 | P38-T5 | Archived Repository Plugin Cross-Ecosystem Fixtures (PASS) |
+| 2026-06-19 | P38-T5 | Archived REVIEW_p38_t5_repository_plugin_cross_ecosystem_fixtures report |
 | 2026-06-14 | P35-T2 | Archived REVIEW_p35_t2_corpus_plan report |
 | 2026-06-14 | P35-T2 | Archived SpecHarvesterCorpusPlan (PASS) |
 | 2026-06-14 | P35-T1 | Archived REVIEW_p35_t1_corpus_selection_policy report |
