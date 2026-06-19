@@ -1642,7 +1642,7 @@ Acceptance:
   ids, contract versions, supported roles, required and optional evidence
   kinds, declared outputs, execution mode, sandbox requirements, capability
   requests, and non-authority statements.
-- [ ] `P40-T3` Add a repository plugin adapter preflight report fixture that
+- [x] `P40-T3` Add a repository plugin adapter preflight report fixture that
   validates one or more adapter manifests against a static evidence envelope,
   records allowed, rejected, fallback, and blocked adapter decisions, and
   refuses unsafe execution or missing required evidence before any adapter code
