@@ -842,6 +842,13 @@ allowed/rejected/fallback/blocked counts, diagnostics, `appliedToDrafting:
 false`, `registryAuthority: false`, and `adapterExecution: not_run` while
 preserving the existing static evaluator path unless an operator explicitly
 supplies adapter evidence.
+P40-T6 records
+[`REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md`](REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md)
+and
+`tests/fixtures/repository_plugins/adapter_cross_ecosystem/adapter-fixture-matrix.example.json`
+as static adapter manifest/preflight expectations across manifest-backed
+single packages, workspaces, documentation-heavy repositories, nested package
+roots, and ambiguous mixed layouts without loading third-party adapter code.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

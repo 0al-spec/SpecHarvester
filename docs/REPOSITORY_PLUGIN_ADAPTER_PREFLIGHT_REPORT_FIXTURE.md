@@ -121,6 +121,8 @@ adapter output as registry truth.
   review-only producer evidence through explicit
   `--repository-plugin-adapter-manifest` and
   `--repository-plugin-adapter-preflight` inputs.
-- `P40-T6` records a cross-ecosystem adapter contract fixture matrix.
+- `P40-T6` records
+  [`REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md`](REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md)
+  as a cross-ecosystem adapter contract fixture matrix.
 - `P40-T7` records real local adapter-contract validation over existing pinned
   checkouts.

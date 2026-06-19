@@ -254,5 +254,7 @@ The batch path must record:
 - `P40-T3`: add adapter preflight report fixture.
 - `P40-T4`: define adapter execution policy.
 - `P40-T5`: connect adapter evidence to autonomous candidate batch.
-- `P40-T6`: add cross-ecosystem adapter contract fixture matrix.
+- `P40-T6`: add
+  [`REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md`](REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md)
+  as the static cross-ecosystem adapter contract fixture matrix.
 - `P40-T7`: run real local adapter-contract validation.

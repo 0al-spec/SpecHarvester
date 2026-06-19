@@ -89,6 +89,10 @@ Published DocC site:
    `--repository-plugin-adapter-manifest` and
    `--repository-plugin-adapter-preflight`, preserving review-only producer
    authority and `adapterExecution: not_run`
+28. [`REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md`](REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md):
+   P40-T6 static fixture matrix for adapter manifest/preflight expectations
+   across single-package, workspace, documentation-heavy, nested-root, and
+   ambiguous mixed repository layouts
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

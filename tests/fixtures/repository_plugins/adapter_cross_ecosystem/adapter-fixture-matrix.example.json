@@ -1,0 +1,980 @@
+{
+  "apiVersion": "spec-harvester.repository-plugin-adapter-fixture-matrix/v0",
+  "kind": "SpecHarvesterRepositoryPluginAdapterCrossEcosystemFixtureMatrix",
+  "schemaVersion": 1,
+  "authority": "producer_plugin_adapter_fixture_matrix_only",
+  "task": "P40-T6",
+  "purpose": "Record static cross-ecosystem repository plugin adapter contract scenarios without loading or executing adapter code.",
+  "languagePolicy": "ecosystem_example_only",
+  "manifest": {
+    "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+    "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+    "kind": "SpecHarvesterRepositoryPluginAdapterManifest",
+    "authority": "producer_plugin_adapter_manifest_only"
+  },
+  "preflightTemplate": {
+    "path": "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+    "digest": "sha256:cc5ae90fa5e1df8715e858573048f2bd78f85e1e89023854533f21f6999ae7c1",
+    "kind": "SpecHarvesterRepositoryPluginAdapterPreflightReport",
+    "authority": "producer_plugin_adapter_preflight_only"
+  },
+  "summary": {
+    "caseCount": 5,
+    "shapeCount": 5,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false
+  },
+  "cases": [
+    {
+      "caseId": "adapter.single_package.v0",
+      "shape": "manifest_backed_single_package",
+      "title": "Manifest-backed single package",
+      "languagePolicy": "ecosystem_example_only",
+      "repository": {
+        "id": "adapter-cross-single-package",
+        "sourceManifestPath": "inputs/repositories.yml",
+        "sourceManifestEntryId": "adapter-cross-single-package",
+        "revision": "1111111111111111111111111111111111111111"
+      },
+      "staticEvidence": {
+        "inputAuthority": "static_local_evidence_only",
+        "paths": [
+          "manifest.json",
+          "src/public-api.example",
+          "README.md"
+        ],
+        "evidenceKinds": [
+          "source_manifest",
+          "harvest_snapshot",
+          "workspace_inventory",
+          "repository_parsing_profile_decision",
+          "operator_label",
+          "static_evidence_envelope"
+        ],
+        "signals": [
+          "root_manifest",
+          "single_package_shape",
+          "public_interface_path"
+        ]
+      },
+      "expectedAdapterEvidence": {
+        "manifest": {
+          "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+          "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+          "adapterCount": 3
+        },
+        "preflight": {
+          "allowedCount": 2,
+          "rejectedCount": 1,
+          "fallbackCount": 0,
+          "blockedCount": 1,
+          "diagnosticCount": 4,
+          "executedAdapterCount": 0
+        },
+        "sidecarBoundary": {
+          "appliedToDrafting": false,
+          "registryAuthority": false,
+          "adapterExecution": "not_run",
+          "adapterOutputAccepted": false
+        }
+      },
+      "allowedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "decision": "allowed",
+          "manifestDeclared": true,
+          "reason": "single_package_parser_profile_static_evidence_available",
+          "requiredEvidenceKinds": [
+            "static_evidence_envelope",
+            "repository_parsing_profile_decision"
+          ],
+          "evidencePaths": [
+            "manifest.json",
+            "src/public-api.example"
+          ],
+          "outputKinds": [
+            "adapter_parser_profile_summary",
+            "adapter_review_panel_data"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        },
+        {
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "decision": "allowed",
+          "manifestDeclared": true,
+          "reason": "root_manifest_static_evidence_available",
+          "requiredEvidenceKinds": [
+            "static_evidence_envelope",
+            "harvest_snapshot"
+          ],
+          "evidencePaths": [
+            "manifest.json"
+          ],
+          "outputKinds": [
+            "adapter_manifest_summary",
+            "adapter_diagnostics"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        }
+      ],
+      "rejectedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.example.unsafe_network.v0",
+          "decision": "rejected",
+          "manifestDeclared": false,
+          "reason": "unsafe_capability_request",
+          "policyViolations": [
+            "networkAccess_not_none",
+            "processExecution_not_allowed"
+          ],
+          "execution": "not_run",
+          "authority": "none"
+        }
+      ],
+      "fallbackAdapters": [],
+      "blockedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "decision": "blocked",
+          "manifestDeclared": true,
+          "reason": "workspace_topology_evidence_absent",
+          "missingRequiredEvidenceKinds": [
+            "workspace_inventory",
+            "repository_profile_detection"
+          ],
+          "evidencePaths": [
+            "manifest.json"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "adapter_allowed_static_manifest",
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "message": "Single-package root manifest allows static manifest summary evidence."
+        },
+        {
+          "severity": "info",
+          "code": "adapter_allowed_static_parser_profile",
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "message": "Parser profile summary remains static review evidence."
+        },
+        {
+          "severity": "warning",
+          "code": "adapter_rejected_unsafe_or_ambiguous",
+          "adapterId": "spec_harvester.adapters.example.unsafe_network.v0",
+          "message": "Unsafe adapter capability requests are rejected before execution."
+        },
+        {
+          "severity": "error",
+          "code": "adapter_blocked_required_evidence_missing",
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "message": "Topology adapter is blocked because required workspace evidence is absent."
+        }
+      ],
+      "summary": {
+        "allowedCount": 2,
+        "rejectedCount": 1,
+        "fallbackCount": 0,
+        "blockedCount": 1,
+        "diagnosticCount": 4,
+        "executedAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0
+      },
+      "nonAuthorityStatements": [
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth"
+      ]
+    },
+    {
+      "caseId": "adapter.workspace_package_set.v0",
+      "shape": "workspace_or_multi_package",
+      "title": "Workspace package set",
+      "languagePolicy": "ecosystem_example_only",
+      "repository": {
+        "id": "adapter-cross-workspace",
+        "sourceManifestPath": "inputs/repositories.yml",
+        "sourceManifestEntryId": "adapter-cross-workspace",
+        "revision": "2222222222222222222222222222222222222222"
+      },
+      "staticEvidence": {
+        "inputAuthority": "static_local_evidence_only",
+        "paths": [
+          "workspace.manifest",
+          "packages/core/manifest.json",
+          "packages/ui/manifest.json",
+          "reports/repository-profile-detection.json",
+          "reports/public-interface-index.json"
+        ],
+        "evidenceKinds": [
+          "source_manifest",
+          "harvest_snapshot",
+          "workspace_inventory",
+          "public_interface_index",
+          "repository_profile_detection",
+          "repository_parsing_profile_decision",
+          "operator_label",
+          "static_evidence_envelope"
+        ],
+        "signals": [
+          "workspace_manifest",
+          "member_manifest",
+          "package_set_relation_candidate"
+        ]
+      },
+      "expectedAdapterEvidence": {
+        "manifest": {
+          "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+          "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+          "adapterCount": 3
+        },
+        "preflight": {
+          "allowedCount": 3,
+          "rejectedCount": 0,
+          "fallbackCount": 1,
+          "blockedCount": 0,
+          "diagnosticCount": 4,
+          "executedAdapterCount": 0
+        },
+        "sidecarBoundary": {
+          "appliedToDrafting": false,
+          "registryAuthority": false,
+          "adapterExecution": "not_run",
+          "adapterOutputAccepted": false
+        }
+      },
+      "allowedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "decision": "allowed",
+          "manifestDeclared": true,
+          "reason": "parser_profile_static_evidence_available",
+          "requiredEvidenceKinds": [
+            "static_evidence_envelope",
+            "repository_parsing_profile_decision"
+          ],
+          "evidencePaths": [
+            "workspace.manifest"
+          ],
+          "outputKinds": [
+            "adapter_parser_profile_summary",
+            "adapter_review_panel_data"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        },
+        {
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "decision": "allowed",
+          "manifestDeclared": true,
+          "reason": "member_manifest_static_evidence_available",
+          "requiredEvidenceKinds": [
+            "static_evidence_envelope",
+            "harvest_snapshot"
+          ],
+          "evidencePaths": [
+            "packages/core/manifest.json",
+            "packages/ui/manifest.json"
+          ],
+          "outputKinds": [
+            "adapter_manifest_summary",
+            "adapter_diagnostics"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        },
+        {
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "decision": "allowed",
+          "manifestDeclared": true,
+          "reason": "workspace_and_profile_evidence_available",
+          "requiredEvidenceKinds": [
+            "static_evidence_envelope",
+            "workspace_inventory",
+            "repository_profile_detection"
+          ],
+          "evidencePaths": [
+            "workspace.manifest",
+            "packages/core/manifest.json",
+            "packages/ui/manifest.json",
+            "reports/repository-profile-detection.json"
+          ],
+          "outputKinds": [
+            "adapter_topology_hint",
+            "adapter_diagnostics"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        }
+      ],
+      "rejectedAdapters": [],
+      "fallbackAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.example.optional_documentation_summary.v0",
+          "decision": "fallback",
+          "manifestDeclared": false,
+          "reason": "optional_documentation_usage_index_absent",
+          "missingOptionalEvidenceKinds": [
+            "documentation_usage_index"
+          ],
+          "evidencePaths": [
+            "workspace.manifest"
+          ],
+          "fallbackOutputKinds": [
+            "adapter_diagnostics"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_preflight_example_only"
+        }
+      ],
+      "blockedAdapters": [],
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "adapter_allowed_static_parser_profile",
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "message": "Workspace parser profile evidence is available."
+        },
+        {
+          "severity": "info",
+          "code": "adapter_allowed_static_manifest",
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "message": "Member manifests allow static manifest summary evidence."
+        },
+        {
+          "severity": "info",
+          "code": "adapter_allowed_static_topology",
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "message": "Workspace topology evidence is available."
+        },
+        {
+          "severity": "warning",
+          "code": "adapter_fallback_conservative_static_summary",
+          "adapterId": "spec_harvester.adapters.example.optional_documentation_summary.v0",
+          "message": "Optional documentation summary remains fallback-only."
+        }
+      ],
+      "summary": {
+        "allowedCount": 3,
+        "rejectedCount": 0,
+        "fallbackCount": 1,
+        "blockedCount": 0,
+        "diagnosticCount": 4,
+        "executedAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0
+      },
+      "nonAuthorityStatements": [
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth"
+      ]
+    },
+    {
+      "caseId": "adapter.documentation_heavy.v0",
+      "shape": "documentation_heavy_repository",
+      "title": "Documentation-heavy repository",
+      "languagePolicy": "ecosystem_example_only",
+      "repository": {
+        "id": "adapter-cross-documentation-heavy",
+        "sourceManifestPath": "inputs/repositories.yml",
+        "sourceManifestEntryId": "adapter-cross-documentation-heavy",
+        "revision": "3333333333333333333333333333333333333333"
+      },
+      "staticEvidence": {
+        "inputAuthority": "static_local_evidence_only",
+        "paths": [
+          "README.md",
+          "docs/reference.md",
+          "examples/example.manifest"
+        ],
+        "evidenceKinds": [
+          "source_manifest",
+          "harvest_snapshot",
+          "operator_label",
+          "static_evidence_envelope"
+        ],
+        "signals": [
+          "documentation_path",
+          "example_manifest",
+          "manifest_metadata_absent"
+        ]
+      },
+      "expectedAdapterEvidence": {
+        "manifest": {
+          "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+          "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+          "adapterCount": 3
+        },
+        "preflight": {
+          "allowedCount": 1,
+          "rejectedCount": 1,
+          "fallbackCount": 1,
+          "blockedCount": 2,
+          "diagnosticCount": 5,
+          "executedAdapterCount": 0
+        },
+        "sidecarBoundary": {
+          "appliedToDrafting": false,
+          "registryAuthority": false,
+          "adapterExecution": "not_run",
+          "adapterOutputAccepted": false
+        }
+      },
+      "allowedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "decision": "allowed",
+          "manifestDeclared": true,
+          "reason": "documentation_paths_are_static_review_evidence",
+          "requiredEvidenceKinds": [
+            "static_evidence_envelope",
+            "repository_parsing_profile_decision"
+          ],
+          "evidencePaths": [
+            "README.md",
+            "docs/reference.md"
+          ],
+          "outputKinds": [
+            "adapter_parser_profile_summary",
+            "adapter_review_panel_data"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        }
+      ],
+      "rejectedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.example.unsafe_network.v0",
+          "decision": "rejected",
+          "manifestDeclared": false,
+          "reason": "documentation_fetching_not_allowed",
+          "policyViolations": [
+            "networkAccess_not_none"
+          ],
+          "execution": "not_run",
+          "authority": "none"
+        }
+      ],
+      "fallbackAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "decision": "fallback",
+          "manifestDeclared": true,
+          "reason": "root_manifest_absent_use_static_diagnostics_only",
+          "missingOptionalEvidenceKinds": [
+            "workspace_inventory"
+          ],
+          "evidencePaths": [
+            "examples/example.manifest"
+          ],
+          "fallbackOutputKinds": [
+            "adapter_diagnostics"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        }
+      ],
+      "blockedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "decision": "blocked",
+          "manifestDeclared": true,
+          "reason": "workspace_inventory_missing",
+          "missingRequiredEvidenceKinds": [
+            "workspace_inventory",
+            "repository_profile_detection"
+          ],
+          "evidencePaths": [
+            "README.md"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        },
+        {
+          "adapterId": "spec_harvester.adapters.example.generated_docs_parser.v0",
+          "decision": "blocked",
+          "manifestDeclared": false,
+          "reason": "would_require_package_manager_or_docs_build",
+          "policyViolations": [
+            "packageManagers_not_invoked",
+            "processExecution_not_allowed"
+          ],
+          "execution": "not_run",
+          "authority": "none"
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "adapter_allowed_static_parser_profile",
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "message": "Documentation paths can be summarized as static review evidence."
+        },
+        {
+          "severity": "warning",
+          "code": "adapter_fallback_conservative_static_summary",
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "message": "Manifest summary falls back because root manifest metadata is absent."
+        },
+        {
+          "severity": "warning",
+          "code": "adapter_rejected_unsafe_or_ambiguous",
+          "adapterId": "spec_harvester.adapters.example.unsafe_network.v0",
+          "message": "Fetching documentation from the network is not allowed."
+        },
+        {
+          "severity": "error",
+          "code": "adapter_blocked_required_evidence_missing",
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "message": "Topology adapter is blocked because workspace evidence is missing."
+        },
+        {
+          "severity": "error",
+          "code": "adapter_blocked_runtime_required",
+          "adapterId": "spec_harvester.adapters.example.generated_docs_parser.v0",
+          "message": "Generated documentation parsing would require package manager or process execution."
+        }
+      ],
+      "summary": {
+        "allowedCount": 1,
+        "rejectedCount": 1,
+        "fallbackCount": 1,
+        "blockedCount": 2,
+        "diagnosticCount": 5,
+        "executedAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0
+      },
+      "nonAuthorityStatements": [
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth"
+      ]
+    },
+    {
+      "caseId": "adapter.nested_package_roots.v0",
+      "shape": "nested_package_roots",
+      "title": "Nested package roots",
+      "languagePolicy": "ecosystem_example_only",
+      "repository": {
+        "id": "adapter-cross-nested-roots",
+        "sourceManifestPath": "inputs/repositories.yml",
+        "sourceManifestEntryId": "adapter-cross-nested-roots",
+        "revision": "4444444444444444444444444444444444444444"
+      },
+      "staticEvidence": {
+        "inputAuthority": "static_local_evidence_only",
+        "paths": [
+          "platform/root.manifest",
+          "platform/modules/core/manifest.json",
+          "platform/modules/extensions/manifest.json",
+          "reports/repository-profile-detection.json"
+        ],
+        "evidenceKinds": [
+          "source_manifest",
+          "harvest_snapshot",
+          "workspace_inventory",
+          "repository_profile_detection",
+          "operator_label",
+          "static_evidence_envelope"
+        ],
+        "signals": [
+          "nested_workspace_root",
+          "member_manifest",
+          "path_shape"
+        ]
+      },
+      "expectedAdapterEvidence": {
+        "manifest": {
+          "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+          "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+          "adapterCount": 3
+        },
+        "preflight": {
+          "allowedCount": 2,
+          "rejectedCount": 0,
+          "fallbackCount": 1,
+          "blockedCount": 1,
+          "diagnosticCount": 4,
+          "executedAdapterCount": 0
+        },
+        "sidecarBoundary": {
+          "appliedToDrafting": false,
+          "registryAuthority": false,
+          "adapterExecution": "not_run",
+          "adapterOutputAccepted": false
+        }
+      },
+      "allowedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "decision": "allowed",
+          "manifestDeclared": true,
+          "reason": "nested_member_manifest_metadata_available",
+          "requiredEvidenceKinds": [
+            "static_evidence_envelope",
+            "harvest_snapshot"
+          ],
+          "evidencePaths": [
+            "platform/modules/core/manifest.json",
+            "platform/modules/extensions/manifest.json"
+          ],
+          "outputKinds": [
+            "adapter_manifest_summary",
+            "adapter_diagnostics"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        },
+        {
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "decision": "allowed",
+          "manifestDeclared": true,
+          "reason": "nested_workspace_profile_evidence_available",
+          "requiredEvidenceKinds": [
+            "static_evidence_envelope",
+            "workspace_inventory",
+            "repository_profile_detection"
+          ],
+          "evidencePaths": [
+            "platform/root.manifest",
+            "platform/modules/core/manifest.json",
+            "platform/modules/extensions/manifest.json",
+            "reports/repository-profile-detection.json"
+          ],
+          "outputKinds": [
+            "adapter_topology_hint",
+            "adapter_diagnostics"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        }
+      ],
+      "rejectedAdapters": [],
+      "fallbackAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "decision": "fallback",
+          "manifestDeclared": true,
+          "reason": "parser_profile_decision_absent_use_path_shape_only",
+          "missingOptionalEvidenceKinds": [
+            "repository_parsing_profile_decision"
+          ],
+          "evidencePaths": [
+            "platform/root.manifest"
+          ],
+          "fallbackOutputKinds": [
+            "adapter_diagnostics"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        }
+      ],
+      "blockedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.example.symlink_resolver.v0",
+          "decision": "blocked",
+          "manifestDeclared": false,
+          "reason": "would_require_filesystem_escape_resolution",
+          "policyViolations": [
+            "readPathPolicy_not_declared_evidence_paths_only"
+          ],
+          "execution": "not_run",
+          "authority": "none"
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "info",
+          "code": "adapter_allowed_static_manifest",
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "message": "Nested member manifests allow static manifest summary evidence."
+        },
+        {
+          "severity": "info",
+          "code": "adapter_allowed_static_topology",
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "message": "Nested root topology evidence is available."
+        },
+        {
+          "severity": "warning",
+          "code": "adapter_fallback_conservative_static_summary",
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "message": "Parser profile falls back when parser profile decision evidence is absent."
+        },
+        {
+          "severity": "error",
+          "code": "adapter_blocked_required_evidence_missing",
+          "adapterId": "spec_harvester.adapters.example.symlink_resolver.v0",
+          "message": "Path escape resolution is blocked before adapter execution."
+        }
+      ],
+      "summary": {
+        "allowedCount": 2,
+        "rejectedCount": 0,
+        "fallbackCount": 1,
+        "blockedCount": 1,
+        "diagnosticCount": 4,
+        "executedAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0
+      },
+      "nonAuthorityStatements": [
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth"
+      ]
+    },
+    {
+      "caseId": "adapter.ambiguous_mixed_layout.v0",
+      "shape": "ambiguous_mixed_layout",
+      "title": "Ambiguous mixed layout",
+      "languagePolicy": "ecosystem_example_only",
+      "repository": {
+        "id": "adapter-cross-ambiguous-mixed",
+        "sourceManifestPath": "inputs/repositories.yml",
+        "sourceManifestEntryId": "adapter-cross-ambiguous-mixed",
+        "revision": "5555555555555555555555555555555555555555"
+      },
+      "staticEvidence": {
+        "inputAuthority": "static_local_evidence_only",
+        "paths": [
+          "service/manifest.json",
+          "examples/manifest.json",
+          "docs/manifest.json",
+          "README.md"
+        ],
+        "evidenceKinds": [
+          "source_manifest",
+          "harvest_snapshot",
+          "workspace_inventory",
+          "operator_label",
+          "static_evidence_envelope"
+        ],
+        "signals": [
+          "mixed_manifest_roles",
+          "example_manifest",
+          "documentation_manifest",
+          "ambiguous_root"
+        ]
+      },
+      "expectedAdapterEvidence": {
+        "manifest": {
+          "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+          "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+          "adapterCount": 3
+        },
+        "preflight": {
+          "allowedCount": 0,
+          "rejectedCount": 2,
+          "fallbackCount": 1,
+          "blockedCount": 2,
+          "diagnosticCount": 5,
+          "executedAdapterCount": 0
+        },
+        "sidecarBoundary": {
+          "appliedToDrafting": false,
+          "registryAuthority": false,
+          "adapterExecution": "not_run",
+          "adapterOutputAccepted": false
+        }
+      },
+      "allowedAdapters": [],
+      "rejectedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "decision": "rejected",
+          "manifestDeclared": true,
+          "reason": "ambiguous_root_prevents_parser_profile_summary",
+          "policyViolations": [
+            "ambiguous_root_requires_human_review"
+          ],
+          "evidencePaths": [
+            "service/manifest.json",
+            "examples/manifest.json",
+            "docs/manifest.json"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        },
+        {
+          "adapterId": "spec_harvester.adapters.example.unsafe_network.v0",
+          "decision": "rejected",
+          "manifestDeclared": false,
+          "reason": "unsafe_capability_request",
+          "policyViolations": [
+            "networkAccess_not_none",
+            "adapter_code_loading_not_permitted"
+          ],
+          "execution": "not_run",
+          "authority": "none"
+        }
+      ],
+      "fallbackAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "decision": "fallback",
+          "manifestDeclared": true,
+          "reason": "conflicting_manifest_roles_require_conservative_diagnostics",
+          "missingOptionalEvidenceKinds": [
+            "repository_profile_detection"
+          ],
+          "evidencePaths": [
+            "service/manifest.json",
+            "examples/manifest.json",
+            "docs/manifest.json"
+          ],
+          "fallbackOutputKinds": [
+            "adapter_diagnostics"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        }
+      ],
+      "blockedAdapters": [
+        {
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "decision": "blocked",
+          "manifestDeclared": true,
+          "reason": "relation_topology_requires_unambiguous_root",
+          "missingRequiredEvidenceKinds": [
+            "repository_profile_detection"
+          ],
+          "evidencePaths": [
+            "service/manifest.json",
+            "examples/manifest.json",
+            "docs/manifest.json"
+          ],
+          "execution": "not_run",
+          "authority": "producer_adapter_manifest_only"
+        },
+        {
+          "adapterId": "spec_harvester.adapters.example.runtime_discovery.v0",
+          "decision": "blocked",
+          "manifestDeclared": false,
+          "reason": "would_require_package_manager_or_code_execution",
+          "policyViolations": [
+            "packageManagers_not_invoked",
+            "harvestedCodeExecution_not_allowed"
+          ],
+          "execution": "not_run",
+          "authority": "none"
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "warning",
+          "code": "adapter_rejected_unsafe_or_ambiguous",
+          "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+          "message": "Parser profile adapter is rejected because root intent is ambiguous."
+        },
+        {
+          "severity": "warning",
+          "code": "adapter_rejected_unsafe_or_ambiguous",
+          "adapterId": "spec_harvester.adapters.example.unsafe_network.v0",
+          "message": "Unsafe adapter capability request is rejected before execution."
+        },
+        {
+          "severity": "warning",
+          "code": "adapter_fallback_conservative_static_summary",
+          "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+          "message": "Manifest summary falls back to diagnostics when manifest roles conflict."
+        },
+        {
+          "severity": "error",
+          "code": "adapter_blocked_required_evidence_missing",
+          "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+          "message": "Topology adapter is blocked until an unambiguous repository profile exists."
+        },
+        {
+          "severity": "error",
+          "code": "adapter_blocked_runtime_required",
+          "adapterId": "spec_harvester.adapters.example.runtime_discovery.v0",
+          "message": "Runtime discovery is blocked by the adapter execution policy."
+        }
+      ],
+      "summary": {
+        "allowedCount": 0,
+        "rejectedCount": 2,
+        "fallbackCount": 1,
+        "blockedCount": 2,
+        "diagnosticCount": 5,
+        "executedAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0
+      },
+      "nonAuthorityStatements": [
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth"
+      ]
+    }
+  ],
+  "nonAuthorityStatements": [
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ],
+  "followUp": {
+    "realValidationTask": "P40-T7"
+  }
+}

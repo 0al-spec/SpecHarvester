@@ -207,5 +207,6 @@ and `adapterExecution: not_run`.
 - `P40-T3`: add adapter preflight report fixture.
 - `P40-T4`: define adapter execution policy.
 - `P40-T5`: connect adapter evidence to autonomous candidate batch.
-- `P40-T6`: add cross-ecosystem adapter contract fixture matrix.
+- `P40-T6`: add <doc:RepositoryPluginAdapterCrossEcosystemFixtureMatrix> as
+  the static cross-ecosystem adapter contract fixture matrix.
 - `P40-T7`: run real local adapter-contract validation.
