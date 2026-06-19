@@ -32,7 +32,7 @@ preflight, runner, evidence handoff, and real validation sequence.
 | `P41-T3` | Add <doc:TrustedLocalAdapterRunPreflightReportFixture> as a machine-readable preflight report fixture that rejects unsafe requests before execution. |
 | `P41-T4` | Add <doc:TrustedLocalAdapterRunnerSkeleton> as a disabled-by-default runner skeleton that validates request/preflight linkage and emits a no-execution report. |
 | `P41-T5` | Connect trusted local adapter run reports to `autonomous-candidate-batch` as review-only producer evidence through `--trusted-local-adapter-run-report`. |
-| `P41-T6` | Validate the readiness path against FastMCP, FastAPI, xyflow, and Gin pinned local checkouts without executing adapters. |
+| `P41-T6` | Record <doc:TrustedLocalAdapterRealLocalReadinessValidation> against FastMCP, FastAPI, xyflow, and Gin pinned local checkouts without executing adapters. |
 
 ## Required Request Boundary
 
@@ -136,6 +136,28 @@ processes, install dependencies, invoke package managers, execute harvested
 code, run AI, change static plugin applicability behavior, accept packages,
 accept relations, seed baselines, remove `preview_only`, publish registry
 metadata, or treat a runner report as adapter output truth.
+
+## Real Local Readiness Validation
+
+P41-T6 records <doc:TrustedLocalAdapterRealLocalReadinessValidation> and
+`tests/fixtures/repository_plugins/trusted_local_adapter_real_runs/p41-t6-real-local-trusted-adapter-readiness-validation.example.json`.
+The run used existing pinned local checkouts for FastMCP, FastAPI, xyflow, and
+Gin, generated a disabled runner skeleton report, and attached it to
+`autonomous-candidate-batch --skip-ai --trusted-local-adapter-run-report`.
+
+The batch passed for all four repository shapes:
+
+- FastMCP: nested package roots;
+- FastAPI: documentation-heavy repository;
+- xyflow: workspace/package-set repository;
+- Gin: manifest-backed single package.
+
+The validation keeps `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+`adapterProcessSpawned: false`, `executedAdapterCount: 0`,
+`dependencyInstallation: not_allowed`, `packageManagers: not_invoked`,
+`networkAccess: none`, `harvestedCodeExecution: not_allowed`,
+`aiExecution: not_run`, `appliedToDrafting: false`, and
+`registryAuthority: false`.
 
 Any future execution mode must preserve:
 

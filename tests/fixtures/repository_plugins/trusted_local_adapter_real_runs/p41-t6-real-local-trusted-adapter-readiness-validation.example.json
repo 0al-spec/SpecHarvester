@@ -1,0 +1,279 @@
+{
+  "apiVersion": "spec-harvester.trusted-local-adapter-real-local-readiness-validation/v0",
+  "kind": "SpecHarvesterTrustedLocalAdapterRealLocalReadinessValidation",
+  "schemaVersion": 1,
+  "authority": "producer_trusted_local_adapter_real_validation_only",
+  "task": "P41-T6",
+  "purpose": "Validate the trusted local adapter readiness path over representative pinned local checkouts without enabling adapter execution.",
+  "sourceMode": "existing_pinned_local_checkouts_only",
+  "runMode": "disabled_runner_skeleton_batch_handoff",
+  "runDate": "2026-06-19",
+  "sourceManifest": {
+    "path": "local-temp/p41-t6/repositories.yml",
+    "digest": "sha256:0d459c60d3b8abf6af9853d2769f38be64cde4eddfb7bf0d4da2816fc62b14e4",
+    "persistedInRepository": false,
+    "absoluteCheckoutPathsPersisted": false,
+    "canonicalPathNote": "The real run used canonical lowercase local git roots on macOS to avoid case-insensitive worktree root ambiguity."
+  },
+  "contractReferences": {
+    "adapterContractValidation": {
+      "path": "tests/fixtures/repository_plugins/adapter_real_runs/p40-t7-real-local-adapter-contract-validation.example.json",
+      "digest": "sha256:c1e57b2703ce5858f5b09b1f5e82b936833cf9cad982693673321e80731ea3fe",
+      "kind": "SpecHarvesterRepositoryPluginAdapterRealLocalValidation",
+      "authority": "producer_plugin_adapter_real_validation_only"
+    },
+    "trustedRunRequest": {
+      "path": "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json",
+      "digest": "sha256:a0d0ae4ccc5ffb256147e217b0efa74716d2ddda37cd7a6b640b0e7df78f0e54",
+      "kind": "SpecHarvesterTrustedLocalAdapterRunRequest",
+      "authority": "producer_trusted_local_adapter_run_request_only"
+    },
+    "trustedRunPreflight": {
+      "path": "tests/fixtures/repository_plugins/trusted-local-adapter-run-preflight-report.example.json",
+      "digest": "sha256:b94c9c6088179b2c41bee5879e2a6291904e0600bce948187973441bc1c68743",
+      "kind": "SpecHarvesterTrustedLocalAdapterRunPreflightReport",
+      "authority": "producer_trusted_local_adapter_run_preflight_only"
+    }
+  },
+  "trustedLocalAdapterRunReport": {
+    "kind": "SpecHarvesterTrustedLocalAdapterRunReport",
+    "authority": "producer_trusted_local_adapter_run_report_only",
+    "runId": "trusted-local-adapter-run-c11d8a918fd5193c",
+    "runStatus": "no_execution_report_emitted",
+    "sourceDigest": "sha256:190387ea8c73836a14f6cdd78c369c39d57249849cd9fac643be802e9dd42c5a",
+    "copiedDigest": "sha256:190387ea8c73836a14f6cdd78c369c39d57249849cd9fac643be802e9dd42c5a",
+    "sourceMode": "explicit_sidecar",
+    "runner": {
+      "mode": "disabled_no_execution_skeleton",
+      "enabled": false,
+      "runtimeImplemented": false,
+      "adapterExecution": "not_run",
+      "adapterCodeLoaded": false,
+      "adapterCodeImportAttempted": false,
+      "adapterProcessSpawned": false,
+      "executedAdapterCount": 0,
+      "dependencyInstallation": "not_allowed",
+      "packageManagers": "not_invoked",
+      "networkAccess": "none",
+      "harvestedCodeExecution": "not_allowed",
+      "aiExecution": "not_run"
+    },
+    "executionBoundary": {
+      "requestIsExecutionPermission": false,
+      "preflightPassIsExecutionPermission": false,
+      "runnerReportIsExecutionPermission": false,
+      "appliedToDrafting": false,
+      "registryAuthority": false,
+      "adapterOutputAccepted": false
+    }
+  },
+  "batchEvidenceHandoff": {
+    "command": "autonomous-candidate-batch --skip-ai --trusted-local-adapter-run-report",
+    "status": "passed",
+    "trustedLocalAdapterRunEvidenceStatus": "recorded",
+    "trustedLocalAdapterRunEvidenceSidecarCount": 1,
+    "sourceMode": "explicit_sidecar",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "repositoryPluginApplicabilityStatus": "not_provided",
+    "repositoryPluginAdapterEvidenceStatus": "not_provided",
+    "staticEvaluatorPathChanged": false
+  },
+  "summary": {
+    "repositoryCount": 4,
+    "availableCheckoutCount": 4,
+    "skippedCheckoutCount": 0,
+    "processedCount": 4,
+    "passedPreflightCount": 4,
+    "failedRepositoryCount": 0,
+    "trustedLocalAdapterRunEvidenceSidecarCount": 1,
+    "candidateCount": 7,
+    "relationCount": 3,
+    "adapterProcessSpawnedCount": 0,
+    "adapterCodeLoadedCount": 0,
+    "executedAdapterCount": 0,
+    "dependencyInstallationCount": 0,
+    "packageManagerInvocationCount": 0,
+    "networkDiscoveryCount": 0,
+    "harvestedCodeExecutionCount": 0,
+    "aiExecutionCount": 0,
+    "appliedToDraftingCount": 0,
+    "registryAuthorityCount": 0
+  },
+  "repositories": [
+    {
+      "repositoryId": "fastmcp",
+      "displayName": "FastMCP",
+      "shape": "nested_package_roots",
+      "checkout": {
+        "status": "available",
+        "pathHint": "../fastmcp",
+        "absolutePathPersisted": false,
+        "origin": "https://github.com/PrefectHQ/fastmcp",
+        "expectedRevision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+        "observedRevision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+        "worktreeChangeCount": 0
+      },
+      "batchResult": {
+        "status": "passed",
+        "preflightStatus": "passed",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "authorReadyDecision": "stop_for_author_review",
+        "aiDraftStatus": "skipped",
+        "aiSkippedReason": "ai_disabled_by_operator"
+      },
+      "executionBoundary": {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": false,
+        "adapterProcessSpawned": false,
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "networkAccess": "none",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "appliedToDrafting": false,
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "fastapi",
+      "displayName": "FastAPI",
+      "shape": "documentation_heavy_repository",
+      "checkout": {
+        "status": "available",
+        "pathHint": "../fastapi",
+        "absolutePathPersisted": false,
+        "origin": "https://github.com/fastapi/fastapi",
+        "expectedRevision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "observedRevision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "worktreeChangeCount": 0
+      },
+      "batchResult": {
+        "status": "passed",
+        "preflightStatus": "passed",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "authorReadyDecision": "stop_for_author_review",
+        "aiDraftStatus": "skipped",
+        "aiSkippedReason": "ai_disabled_by_operator"
+      },
+      "executionBoundary": {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": false,
+        "adapterProcessSpawned": false,
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "networkAccess": "none",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "appliedToDrafting": false,
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "xyflow",
+      "displayName": "xyflow",
+      "shape": "workspace_or_multi_package",
+      "checkout": {
+        "status": "available",
+        "pathHint": "../xyflow",
+        "absolutePathPersisted": false,
+        "origin": "git@github.com:SoundBlaster/xyflow.git",
+        "expectedRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+        "observedRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+        "worktreeChangeCount": 0
+      },
+      "batchResult": {
+        "status": "passed",
+        "preflightStatus": "passed",
+        "candidateCount": 4,
+        "relationCount": 3,
+        "authorReadyDecision": "stop_for_author_review",
+        "aiDraftStatus": "skipped",
+        "aiSkippedReason": "ai_disabled_by_operator"
+      },
+      "executionBoundary": {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": false,
+        "adapterProcessSpawned": false,
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "networkAccess": "none",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "appliedToDrafting": false,
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "gin",
+      "displayName": "Gin",
+      "shape": "manifest_backed_single_package",
+      "checkout": {
+        "status": "available",
+        "pathHint": "../gin",
+        "absolutePathPersisted": false,
+        "origin": "https://github.com/gin-gonic/gin.git",
+        "expectedRevision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+        "observedRevision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+        "worktreeChangeCount": 0
+      },
+      "batchResult": {
+        "status": "passed",
+        "preflightStatus": "passed",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "authorReadyDecision": "stop_for_author_review",
+        "aiDraftStatus": "skipped",
+        "aiSkippedReason": "ai_disabled_by_operator"
+      },
+      "executionBoundary": {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": false,
+        "adapterProcessSpawned": false,
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "networkAccess": "none",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "appliedToDrafting": false,
+        "registryAuthority": false
+      }
+    }
+  ],
+  "skipped": [],
+  "nonAuthorityStatements": [
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_run_adapter_processes",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_adapter_preflight_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_runner_reports_as_registry_truth"
+  ],
+  "remainingRuntimeGap": {
+    "realAdapterExecutionImplemented": false,
+    "futureWorkRequired": "A later phase must define sandboxed process execution, adapter package distribution, dependency isolation, output verification, and operator approval before any adapter can run."
+  }
+}
