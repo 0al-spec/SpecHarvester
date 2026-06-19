@@ -121,7 +121,8 @@ treat AI output as registry truth.
 
 - `P40-T3` adds
   <doc:RepositoryPluginAdapterPreflightReportFixture>.
-- `P40-T4` defines adapter execution policy.
+- `P40-T4` defines
+  <doc:RepositoryPluginAdapterExecutionPolicy>.
 - `P40-T5` connects adapter evidence to autonomous candidate batch.
 - `P40-T6` records cross-ecosystem adapter contract fixtures.
 - `P40-T7` records real local adapter-contract validation.

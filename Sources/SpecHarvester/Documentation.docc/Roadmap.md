@@ -556,6 +556,12 @@ P40-T3 records the first adapter preflight report fixture in
 `tests/fixtures/repository_plugins/adapter-preflight-report.example.json`,
 covering allowed, rejected, fallback, and blocked adapter decisions without
 loading or executing adapter code.
+P40-T4 records the adapter execution policy in
+<doc:RepositoryPluginAdapterExecutionPolicy>: execution is disabled by
+default, `static_only` remains the only current safe mode, and future
+`trusted_local_tool` requires explicit operator opt-in, path allowlists,
+bounded resources, no dependency installation, no package manager invocation,
+no network discovery, and no harvested code execution.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
