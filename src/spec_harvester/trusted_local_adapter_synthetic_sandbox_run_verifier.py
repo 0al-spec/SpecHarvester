@@ -11,6 +11,7 @@ from spec_harvester.trusted_local_adapter_runner import (
     digest_string,
     object_value,
     path_reference,
+    path_reference_root,
     read_json_object,
     render_json,
 )
@@ -84,19 +85,30 @@ class SyntheticTrustedLocalAdapterSandboxRunVerifier:
             "synthetic trusted local adapter sandbox run fixture",
         )
         fixture_digest = digest_string(self.options.fixture)
+        artifact_root = path_reference_root(self.options.fixture)
 
         check_fixture_identity(fixture)
         check_fixture_contract(fixture)
-        linked_artifacts = verified_linked_artifacts(fixture)
+        linked_artifacts = verified_linked_artifacts(fixture, reference_root=artifact_root)
         approval = verified_operator_approval(fixture, linked_artifacts)
-        output_root = verified_output_root(fixture, approval)
-        output_candidates = verified_output_candidates(fixture, approval, linked_artifacts)
-        audit_record = verified_audit_record(fixture, output_candidates)
+        output_root = verified_output_root(fixture, approval, reference_root=artifact_root)
+        output_candidates = verified_output_candidates(
+            fixture,
+            approval,
+            linked_artifacts,
+            reference_root=artifact_root,
+        )
+        audit_record = verified_audit_record(
+            fixture,
+            output_candidates,
+            reference_root=artifact_root,
+        )
         check_execution_boundary(fixture)
         check_non_authority_statements(fixture)
 
         fixture_ref = artifact_reference(
             path=self.options.fixture,
+            reference_root=artifact_root,
             digest=fixture_digest,
             api_version=SYNTHETIC_SANDBOX_RUN_API_VERSION,
             kind=SYNTHETIC_SANDBOX_RUN_KIND,
@@ -276,7 +288,11 @@ def check_fixture_contract(payload: dict[str, Any]) -> None:
         raise ValueError("Synthetic output must not be registry truth")
 
 
-def verified_linked_artifacts(payload: dict[str, Any]) -> list[dict[str, Any]]:
+def verified_linked_artifacts(
+    payload: dict[str, Any],
+    *,
+    reference_root: Path,
+) -> list[dict[str, Any]]:
     linked = object_value(payload.get("linkedArtifacts"), "linked artifacts")
     if set(linked) != set(EXPECTED_LINKED_ARTIFACTS):
         raise ValueError("Synthetic sandbox run linkedArtifacts set is invalid")
@@ -301,7 +317,7 @@ def verified_linked_artifacts(payload: dict[str, Any]) -> list[dict[str, Any]]:
         verified.append(
             {
                 "role": name,
-                "path": path_reference(path),
+                "path": path_reference(path, reference_root=reference_root),
                 "digest": digest,
                 "kind": expected["kind"],
                 "authority": expected["authority"],
@@ -358,6 +374,23 @@ def verified_operator_approval(
     output_root = object_value(payload.get("syntheticOutputRoot"), "synthetic output root")
     if binding.get("declaredOutputRoot") != output_root.get("path"):
         raise ValueError("Operator approval declaredOutputRoot must match synthetic output root")
+    candidates = list_value(
+        payload.get("syntheticOutputCandidates"),
+        "synthetic output candidates",
+    )
+    approved_output_digests = object_value(
+        binding.get("syntheticOutputCandidateDigests"),
+        "operator approval syntheticOutputCandidateDigests",
+    )
+    candidate_digests = {
+        object_value(candidate, "synthetic output candidate").get("role"): object_value(
+            candidate,
+            "synthetic output candidate",
+        ).get("digest")
+        for candidate in candidates
+    }
+    if approved_output_digests != candidate_digests:
+        raise ValueError("Operator approval synthetic output digests must match candidates")
     required = list_value(approval.get("approvalMustBind"), "operator approval approvalMustBind")
     for field in (
         "adapterId",
@@ -390,11 +423,17 @@ def verified_operator_approval(
             "sandboxPolicyVersion": binding["sandboxPolicyVersion"],
             "sandboxRunnerValidationDigest": binding["sandboxRunnerValidationDigest"],
             "declaredOutputRoot": binding["declaredOutputRoot"],
+            "syntheticOutputCandidateDigests": approved_output_digests,
         },
     }
 
 
-def verified_output_root(payload: dict[str, Any], approval: dict[str, Any]) -> dict[str, Any]:
+def verified_output_root(
+    payload: dict[str, Any],
+    approval: dict[str, Any],
+    *,
+    reference_root: Path,
+) -> dict[str, Any]:
     output_root = object_value(payload.get("syntheticOutputRoot"), "synthetic output root")
     path = resolve_safe_path(output_root.get("path"), "synthetic output root path")
     if output_root.get("path") != approval["approvalBinding"]["declaredOutputRoot"]:
@@ -412,7 +451,7 @@ def verified_output_root(payload: dict[str, Any], approval: dict[str, Any]) -> d
     if not path.is_dir():
         raise ValueError("Synthetic output root path must exist as a directory")
     return {
-        "path": path_reference(path),
+        "path": path_reference(path, reference_root=reference_root),
         **expected_flags,
         "safeRelativePathVerified": True,
     }
@@ -422,6 +461,8 @@ def verified_output_candidates(
     payload: dict[str, Any],
     approval: dict[str, Any],
     linked_artifacts: list[dict[str, Any]],
+    *,
+    reference_root: Path,
 ) -> list[dict[str, Any]]:
     candidates = list_value(
         payload.get("syntheticOutputCandidates"),
@@ -439,10 +480,13 @@ def verified_output_candidates(
         raise ValueError("Synthetic output candidate roles are invalid")
     linked_digests = {item["digest"] for item in linked_artifacts}
     binding = approval["approvalBinding"]
+    output_root = resolve_safe_path(binding["declaredOutputRoot"], "approved output root")
     verified = []
     for role, expected_kind in EXPECTED_OUTPUT_ROLES.items():
         output = outputs_by_role[role]
         path = resolve_safe_path(output.get("path"), f"{role} output path")
+        if not is_relative_to(path, output_root):
+            raise ValueError(f"{role} output path must be inside approved output root")
         output_bytes = path.read_bytes()
         digest = f"sha256:{hashlib.sha256(output_bytes).hexdigest()}"
         output_payload = read_json_object(path, f"{role} output artifact")
@@ -475,7 +519,7 @@ def verified_output_candidates(
         verified.append(
             {
                 "role": role,
-                "path": path_reference(path),
+                "path": path_reference(path, reference_root=reference_root),
                 "byteSize": len(output_bytes),
                 "digest": digest,
                 "kind": expected_kind,
@@ -521,6 +565,8 @@ def check_output_runtime_boundary(payload: dict[str, Any], role: str) -> None:
 def verified_audit_record(
     payload: dict[str, Any],
     output_candidates: list[dict[str, Any]],
+    *,
+    reference_root: Path,
 ) -> dict[str, Any]:
     audit = object_value(payload.get("auditRecord"), "audit record")
     if audit.get("required") is not True:
@@ -569,7 +615,7 @@ def verified_audit_record(
     return {
         "required": True,
         "replayable": True,
-        "path": path_reference(path),
+        "path": path_reference(path, reference_root=reference_root),
         "digest": digest,
         "digestVerified": True,
         "requiredFieldCount": len(required_fields),
@@ -633,6 +679,14 @@ def resolve_safe_path(value: Any, label: str) -> Path:
     if not path.exists():
         raise ValueError(f"{label} does not exist: {value}")
     return path
+
+
+def is_relative_to(path: Path, parent: Path) -> bool:
+    try:
+        path.resolve(strict=False).relative_to(parent.resolve(strict=False))
+    except ValueError:
+        return False
+    return True
 
 
 def assert_safe_relative_path(value: str, label: str) -> None:

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -15,6 +16,7 @@ from spec_harvester.trusted_local_adapter_synthetic_sandbox_run_verifier import 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures" / "repository_plugins"
 SYNTHETIC_RUN = FIXTURES / "synthetic-trusted-local-adapter-sandbox-run.example.json"
+OUTSIDE_OUTPUT = FIXTURES / "outside-trusted-local-adapter-output.example.json"
 
 
 def test_synthetic_trusted_local_adapter_sandbox_run_verifier_passes_fixture() -> None:
@@ -171,11 +173,55 @@ def test_synthetic_trusted_local_adapter_sandbox_run_verifier_rejects_output_siz
     assert result == 2
 
 
+def test_synthetic_trusted_local_adapter_sandbox_run_verifier_rejects_unapproved_output_digest(
+    tmp_path: Path,
+) -> None:
+    fixture = read_json(SYNTHETIC_RUN)
+    fixture["operatorApproval"]["approvalBinding"]["syntheticOutputCandidateDigests"][
+        "trusted_local_adapter_output"
+    ] = "sha256:" + ("0" * 64)
+    bad_fixture = write_json(tmp_path / "fixture.json", fixture)
+
+    result = main(
+        [
+            "synthetic-trusted-local-adapter-sandbox-run-verifier",
+            "--fixture",
+            str(bad_fixture),
+        ]
+    )
+
+    assert result == 2
+
+
 def test_synthetic_trusted_local_adapter_sandbox_run_verifier_rejects_duplicate_output_roles(
     tmp_path: Path,
 ) -> None:
     fixture = read_json(SYNTHETIC_RUN)
     fixture["syntheticOutputCandidates"].append(fixture["syntheticOutputCandidates"][0])
+    bad_fixture = write_json(tmp_path / "fixture.json", fixture)
+
+    result = main(
+        [
+            "synthetic-trusted-local-adapter-sandbox-run-verifier",
+            "--fixture",
+            str(bad_fixture),
+        ]
+    )
+
+    assert result == 2
+
+
+def test_synthetic_trusted_local_adapter_sandbox_run_verifier_rejects_output_outside_root(
+    tmp_path: Path,
+) -> None:
+    fixture = read_json(SYNTHETIC_RUN)
+    digest = "sha256:" + hashlib.sha256(OUTSIDE_OUTPUT.read_bytes()).hexdigest()
+    fixture["syntheticOutputCandidates"][0]["path"] = str(OUTSIDE_OUTPUT.relative_to(ROOT))
+    fixture["syntheticOutputCandidates"][0]["byteSize"] = len(OUTSIDE_OUTPUT.read_bytes())
+    fixture["syntheticOutputCandidates"][0]["digest"] = digest
+    fixture["operatorApproval"]["approvalBinding"]["syntheticOutputCandidateDigests"][
+        "trusted_local_adapter_output"
+    ] = digest
     bad_fixture = write_json(tmp_path / "fixture.json", fixture)
 
     result = main(
