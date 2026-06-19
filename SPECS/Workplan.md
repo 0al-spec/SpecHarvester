@@ -1766,7 +1766,7 @@ Acceptance:
   the next-task scaffold for turning Phase 41 no-execution readiness into a
   future explicitly approved sandboxed adapter runtime without enabling adapter
   execution yet.
-- [ ] `P42-T2` Add a machine-readable
+- [x] `P42-T2` Add a machine-readable
   `SpecHarvesterTrustedLocalAdapterSandboxContract` fixture that records
   adapter package identity, sandbox policy identity, operator approval
   requirements, filesystem/environment/network/dependency policy, output
