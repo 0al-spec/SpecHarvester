@@ -643,3 +643,4 @@
 | 2026-06-19 | P40-T1 | Archived Repository Plugin Adapter Contract (PASS) |
 | 2026-06-19 | P40-T1 | Archived REVIEW_p40_t1_repository_plugin_adapter_contract report |
 | 2026-06-19 | P40-T2 | Archived Repository Plugin Adapter Manifest Fixture (PASS) |
+| 2026-06-19 | P40-T2 | Archived REVIEW_p40_t2_repository_plugin_adapter_manifest_fixture report |
