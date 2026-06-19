@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P39-T4 Repository Plugin Applicability Detect CLI" in next_text:
+        assert_p39_t3_last_archived(next_text)
+        assert_p39_t3_recent(next_text)
+        assert_phase_39_t4_planned(next_text)
+        return
+
     if "# Next Task: P39-T3 Deterministic Static Applicability Evaluator Helper" in next_text:
         assert_p39_t2_last_archived(next_text)
         assert_p39_t2_recent(next_text)
@@ -3742,6 +3748,69 @@ def assert_phase_39_t3_planned(next_text: str) -> None:
     assert "must not clone or fetch repositories" in normalized
     assert "must not install dependencies" in normalized
     assert "must not invoke package managers" in normalized
+    assert "must not run AI" in normalized
+    assert "must not accept packages or relations" in normalized
+    assert "must not publish registry metadata" in normalized
+    assert "must not remove `preview_only`" in normalized
+    assert "must not treat plugin decisions as registry truth" in normalized
+
+
+def assert_p39_t3_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P39-T3 Deterministic Static Applicability Evaluator Helper" in next_text
+    )
+
+
+def assert_p39_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P39-T3` implemented "
+        "`spec_harvester.repository_plugin_applicability.evaluate_repository_plugin_applicability`"
+        in normalized
+    )
+    assert "SpecHarvesterRepositoryPluginRegistry" in next_text
+    assert "SpecHarvesterRepositoryPluginStaticEvidenceEnvelope" in next_text
+    assert "inputEvidenceKinds[]" in next_text
+    assert "evidenceKinds[]" in next_text
+    assert "SpecHarvesterRepositoryPluginApplicabilityReport" in next_text
+    assert "producer_plugin_applicability_only" in next_text
+    assert "selected/rejected/fallback/blocked decision arrays" in normalized
+    assert "safe relative evidence paths" in normalized
+    assert "SHA-256 digest validation" in next_text
+    assert "does not load plugins" in normalized
+    assert "execute plugins" in normalized
+    assert "read repository source files" in normalized
+    assert "clone or fetch repositories" in normalized
+    assert "install dependencies" in normalized
+    assert "invoke package managers" in normalized
+    assert "execute harvested code" in normalized
+    assert "run AI" in normalized
+    assert "accept packages or relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_39_t4_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P39-T4 Repository Plugin Applicability Detect CLI" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P39-T4-repository-plugin-applicability-detect-cli`" in next_text
+    assert "Phase 39. Static Repository Plugin Applicability Evaluator" in next_text
+    assert "repository-plugin-applicability-detect" in next_text
+    assert "SpecHarvesterRepositoryPluginApplicabilityReport" in next_text
+    assert "--registry" in next_text
+    assert "--static-evidence-envelope" in next_text
+    assert "--out" in next_text
+    assert "selected/rejected/fallback/blocked counts" in normalized
+    assert "must not change `autonomous-candidate-batch`" in normalized
+    assert "must not auto-attach" in normalized
+    assert "must not load third-party plugin code" in normalized
+    assert "must not execute plugins" in normalized
+    assert "must not clone or fetch repositories" in normalized
+    assert "must not install dependencies" in normalized
+    assert "must not invoke package managers" in normalized
+    assert "must not execute harvested code" in normalized
     assert "must not run AI" in normalized
     assert "must not accept packages or relations" in normalized
     assert "must not publish registry metadata" in normalized

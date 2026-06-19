@@ -628,3 +628,4 @@
 | 2026-06-19 | P39-T1 | Archived REVIEW_p39_t1_static_plugin_applicability_evaluator_plan report |
 | 2026-06-19 | P39-T2 | Archived Static Plugin Evidence Envelope Fixture (PASS) |
 | 2026-06-19 | P39-T2 | Archived REVIEW_p39_t2_static_plugin_evidence_envelope_fixture report |
+| 2026-06-19 | P39-T3 | Archived Deterministic Static Applicability Evaluator Helper (PASS) |

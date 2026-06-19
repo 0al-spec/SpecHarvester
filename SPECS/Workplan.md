@@ -1586,7 +1586,7 @@ Acceptance:
 - [x] `P39-T2` Add a machine-readable static plugin evidence envelope fixture
   that enumerates available evidence kinds, paths, digests, source identity,
   and authority boundaries before applicability evaluation.
-- [ ] `P39-T3` Implement a deterministic static applicability evaluator helper
+- [x] `P39-T3` Implement a deterministic static applicability evaluator helper
   that reads the plugin registry plus evidence envelope and emits selected,
   rejected, fallback, and blocked plugin decisions.
 - [ ] `P39-T4` Add a `repository-plugin-applicability-detect` CLI/report
