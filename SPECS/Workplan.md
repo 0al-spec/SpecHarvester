@@ -1577,7 +1577,7 @@ Acceptance:
 
 ## Phase 39. Static Repository Plugin Applicability Evaluator
 
-- [ ] `P39-T1` Document the static repository plugin applicability evaluator
+- [x] `P39-T1` Document the static repository plugin applicability evaluator
   plan. The plan must describe how SpecHarvester can turn the P38 registry,
   collected evidence, repository profile detection, workspace inventory,
   harvest snapshots, and operator labels into a deterministic
