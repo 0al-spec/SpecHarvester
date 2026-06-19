@@ -1628,3 +1628,75 @@ Acceptance:
   truth.
 - The existing explicit sidecar path remains valid and takes precedence over
   auto-generated applicability evidence when an operator supplies one.
+
+## Phase 40. Repository Plugin Adapter Contract
+
+- [ ] `P40-T1` Document a language- and framework-agnostic repository plugin
+  adapter contract. The contract must define adapter identity, versioned
+  manifests, declared input evidence, output artifacts, execution modes,
+  sandbox expectations, diagnostics, and authority boundaries without making
+  Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven,
+  Gradle, or any other ecosystem normative.
+- [ ] `P40-T2` Add a machine-readable
+  `SpecHarvesterRepositoryPluginAdapterManifest` fixture that records adapter
+  ids, contract versions, supported roles, required and optional evidence
+  kinds, declared outputs, execution mode, sandbox requirements, capability
+  requests, and non-authority statements.
+- [ ] `P40-T3` Add a repository plugin adapter preflight report fixture that
+  validates one or more adapter manifests against a static evidence envelope,
+  records allowed, rejected, fallback, and blocked adapter decisions, and
+  refuses unsafe execution or missing required evidence before any adapter code
+  can run.
+- [ ] `P40-T4` Define adapter execution policy for future local adapters:
+  default disabled execution, static-only mode, bounded local trusted mode,
+  path allowlists, no dependency installation, no package manager invocation,
+  no network discovery, no harvested code execution, and explicit operator
+  opt-in for every non-static mode.
+- [ ] `P40-T5` Connect adapter manifest and preflight output to
+  `autonomous-candidate-batch` as review-only producer evidence while keeping
+  the existing static evaluator path unchanged unless an operator explicitly
+  supplies adapter evidence.
+- [ ] `P40-T6` Record a cross-ecosystem adapter contract fixture matrix for
+  manifest-backed single packages, workspaces, documentation-heavy
+  repositories, nested package roots, and ambiguous mixed layouts without
+  loading third-party adapter code.
+- [ ] `P40-T7` Run a real local adapter-contract validation over existing
+  pinned checkouts, comparing FastMCP, FastAPI, xyflow, and at least one
+  additional ecosystem shape when available, while proving that adapters remain
+  producer-side evidence only.
+
+Motivation:
+
+- Phase 39 can now derive plugin applicability reports from static evidence,
+  but the next layer needs a contract for future adapter implementations
+  before any plugin runtime exists.
+- The adapter layer must let ecosystem-specific analyzers declare what they
+  need and what they emit without letting those analyzers silently decide
+  package claims, relation acceptance, registry publication, or public
+  metadata.
+- Planning the adapter boundary before implementation keeps broad popular
+  library scraping bounded: plugin precision can improve evidence quality
+  without turning SpecHarvester into a crawler that collects every framework
+  signal in the world.
+
+Goal:
+
+- Define the repository plugin adapter boundary that future language,
+  framework, package-manager, documentation, or public-interface analyzers must
+  satisfy before they can participate in the candidate pipeline.
+
+Acceptance:
+
+- The phase keeps adapter contracts language- and framework-agnostic.
+- Static applicability evaluation remains the default safe path; adapter
+  execution is disabled unless a future task adds explicit operator-controlled
+  execution policy.
+- Adapter manifests and preflight reports are machine-readable producer
+  evidence and never accept packages, accept relations, seed baselines, remove
+  `preview_only`, publish registry metadata, or treat adapter output as
+  registry truth.
+- Adapter inputs must be declared evidence artifacts with safe relative paths,
+  digests, and authority labels.
+- Unsafe modes such as dependency installation, package manager invocation,
+  network discovery, harvested code execution, and unbounded local tool
+  execution are rejected or blocked by default.

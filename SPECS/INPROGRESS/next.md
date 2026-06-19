@@ -1,8 +1,8 @@
-# Next Task: Phase 39 Complete
+# Next Task: P40-T1 Repository Plugin Adapter Contract
 
-**Status:** Complete
-**Branch:** `main`
-**Phase:** Phase 39. Static Repository Plugin Applicability Evaluator
+**Status:** Planned
+**Branch:** `feature/P40-T1-repository-plugin-adapter-contract`
+**Phase:** Phase 40. Repository Plugin Adapter Contract
 **Last Archived:** P39-T6 Real Multi-Repository Static Evaluator Validation
 
 ## Recently Archived
@@ -25,20 +25,38 @@
   parser/profile behavior, accept packages or relations, publish registry
   metadata, remove `preview_only`, or treat plugin decisions as registry truth.
 
-## Phase 39 Outcome
+## Task
 
-Phase 39 is complete. SpecHarvester now has:
+Document a language- and framework-agnostic repository plugin adapter contract.
 
-- a static evidence envelope fixture;
-- a deterministic static applicability evaluator helper;
-- a `repository-plugin-applicability-detect` CLI;
-- an opt-in autonomous batch auto-sidecar path;
-- a real multi-repository validation fixture over FastMCP, FastAPI, and xyflow.
+## Why This Is Next
 
-## Suggested Next Planning Area
+Phase 39 can now derive repository plugin applicability from static evidence.
+The next layer is the adapter boundary: future plugins must declare identity,
+inputs, outputs, execution mode, sandbox expectations, diagnostics, and
+authority limits before any runtime adapter path exists.
 
-The next phase should be selected explicitly. A natural follow-up is a
-language- and framework-agnostic repository plugin adapter contract that
-defines how future plugins declare applicability, inputs, outputs, execution
-mode, sandbox expectations, and review-only authority without loading
-third-party code by default.
+## Scope
+
+- Define adapter identity, manifest versioning, roles, input evidence,
+  output artifacts, execution modes, sandbox expectations, diagnostics, and
+  non-authority statements.
+- Keep Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven,
+  Gradle, and other ecosystems as examples, not normative rules.
+- Keep static applicability evaluation as the default safe path.
+- Require explicit future operator opt-in before any non-static adapter
+  execution mode can be used.
+
+## Non-Goals
+
+- Do not implement adapter loading or execution.
+- Do not load third-party adapter code.
+- Do not clone or fetch repositories.
+- Do not install dependencies.
+- Do not invoke package managers.
+- Do not execute harvested code.
+- Do not run AI.
+- Do not accept packages or relations.
+- Do not publish registry metadata.
+- Do not remove `preview_only`.
+- Do not treat adapter output as registry truth.
