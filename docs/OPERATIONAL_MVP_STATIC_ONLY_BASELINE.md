@@ -116,7 +116,10 @@ maintainer review and acceptance.
   over the same pinned corpus with local LM Studio `openai/gpt-oss-20b`;
   AI draft/enrichment sidecars are proposal-only and do not change static
   handoff truth.
-- `P43-T6`: add author handoff summaries.
+- `P43-T6`: recorded
+  [`OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md`](OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md)
+  as author-facing valid, reviewable, needs-manual-correction, and
+  do-not-promote summaries.
 - `P43-T7`: record the operational MVP exit decision.
 
 ## References
@@ -125,5 +128,6 @@ maintainer review and acceptance.
 - [`OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md)
 - [`OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md)
 - [`OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md`](OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md)
+- [`OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md`](OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md)
 - [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md)

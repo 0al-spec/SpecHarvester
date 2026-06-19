@@ -38,6 +38,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P43-T7 Operational MVP Exit Report" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
+        assert "`P43-T7`" in next_text
+        assert "operational MVP exit report" in next_text
+        assert "bounded autonomous popular-library scraping" in next_text
+        assert "needs quality hardening" in next_text
+        assert "explicitly approved adapter execution phase" in next_text
+        return
+
     if "# Next Task: P43-T6 Operational MVP Author Handoff Summaries" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
@@ -28660,6 +28670,293 @@ def test_operational_mvp_ai_enabled_comparison_is_documented() -> None:
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P43-T5` Run the AI-enabled comparison" in workplan_text
     assert "AI output stays proposal-only" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_author_handoff_summaries_are_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t6-operational-mvp-author-handoff-summaries.example.json"
+    )
+    baseline_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t4-operational-mvp-static-only-baseline.example.json"
+    )
+    ai_comparison_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t5-operational-mvp-ai-enabled-comparison.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPAuthorHandoffSummaries.md"
+    )
+    plan_doc = ROOT / "docs" / "OPERATIONAL_MVP_VALIDATION_PLAN.md"
+    plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPValidationPlan.md"
+    )
+    baseline_doc = ROOT / "docs" / "OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md"
+    baseline_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPStaticOnlyBaseline.md"
+    )
+    ai_doc = ROOT / "docs" / "OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md"
+    ai_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPAIEnabledComparison.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+    ai_comparison = json.loads(ai_comparison_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.operational-mvp-author-handoff/v0"
+    assert payload["kind"] == "SpecHarvesterOperationalMVPAuthorHandoffSummaries"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_operational_mvp_author_handoff_only"
+    assert payload["phase"] == "P43"
+    assert payload["task"] == "P43-T6"
+    assert payload["sourceArtifacts"] == {
+        "staticOnlyBaseline": {
+            "path": (
+                "tests/fixtures/operational_mvp_validation/"
+                "p43-t4-operational-mvp-static-only-baseline.example.json"
+            ),
+            "digest": "sha256:" + hashlib.sha256(baseline_path.read_bytes()).hexdigest(),
+            "apiVersion": baseline["apiVersion"],
+            "kind": baseline["kind"],
+            "authority": baseline["authority"],
+        },
+        "aiEnabledComparison": {
+            "path": (
+                "tests/fixtures/operational_mvp_validation/"
+                "p43-t5-operational-mvp-ai-enabled-comparison.example.json"
+            ),
+            "digest": "sha256:" + hashlib.sha256(ai_comparison_path.read_bytes()).hexdigest(),
+            "apiVersion": ai_comparison["apiVersion"],
+            "kind": ai_comparison["kind"],
+            "authority": ai_comparison["authority"],
+        },
+    }
+    assert payload["summary"] == {
+        "repositoryHandoffCount": 3,
+        "readyForAuthorReviewCount": 3,
+        "staticOnlyHandoffReadyCount": 3,
+        "aiImprovementAvailableCount": 0,
+        "providerUnavailableCount": 3,
+        "needsManualCorrectionRepositoryCount": 1,
+        "doNotPromoteRepositoryCount": 3,
+        "registryAuthority": False,
+    }
+    assert payload["authorCategories"] == [
+        "valid",
+        "reviewable",
+        "needsManualCorrection",
+        "doNotPromote",
+    ]
+
+    baseline_by_id = {result["repositoryId"]: result for result in baseline["repositoryResults"]}
+    ai_by_id = {
+        comparison["repositoryId"]: comparison
+        for comparison in ai_comparison["repositoryComparisons"]
+    }
+    summaries = {summary["repositoryId"]: summary for summary in payload["handoffSummaries"]}
+    assert set(summaries) == {"xyflow", "fastapi", "gin"} == set(baseline_by_id)
+    for repository_id, summary in summaries.items():
+        baseline_result = baseline_by_id[repository_id]
+        ai_result = ai_by_id[repository_id]
+        assert summary["handoffVerdict"] == "ready_for_author_review"
+        assert summary["pinnedCheckout"] == baseline_result["pinnedCheckout"]
+        assert summary["staticOnlyEvidence"]["status"] == "passed"
+        assert summary["staticOnlyEvidence"]["authorReadyVerdict"] == "author_ready_draft"
+        assert (
+            summary["staticOnlyEvidence"]["qualityDimensions"]
+            == (baseline_result["qualityDimensions"])
+        )
+        assert (
+            summary["staticOnlyEvidence"]["specpmHandoffReadiness"]
+            == (baseline_result["specpmHandoffReadiness"])
+        )
+        assert summary["aiComparisonEvidence"] == {
+            "status": "provider_unavailable",
+            "aiImprovementAvailable": False,
+            "warningCode": ai_result["warning"]["code"],
+            "deltaStatus": ai_result["delta"]["status"],
+        }
+        assert summary["authorActionCounts"]["validCount"] == 3
+        assert summary["authorActionCounts"]["reviewableCount"] == 3
+        assert summary["authorActionCounts"]["doNotPromoteCount"] == 3
+        assert summary["nonAuthority"] == {
+            "requiresAuthorReview": True,
+            "registryAuthority": False,
+            "acceptsPackages": False,
+            "acceptsRelations": False,
+            "publishesRegistryMetadata": False,
+        }
+        assert {item["id"] for item in summary["authorSummary"]["valid"]} == {
+            "static_preflight_passed",
+            "author_ready_preview_available",
+            "specpm_handoff_ready_preview",
+        }
+        assert {item["id"] for item in summary["authorSummary"]["reviewable"]} == {
+            "review_package_identity_and_summary",
+            "review_capabilities_intents_constraints_evidence",
+            "run_specpm_validation_before_submission",
+        }
+        assert {item["id"] for item in summary["authorSummary"]["doNotPromote"]} == {
+            "do_not_promote_preview_without_maintainer_acceptance",
+            "do_not_promote_ai_delta",
+            "do_not_promote_adapter_output",
+        }
+
+    assert summaries["xyflow"]["authorActionCounts"]["needsManualCorrectionCount"] == 1
+    assert {
+        item["id"] for item in summaries["xyflow"]["authorSummary"]["needsManualCorrection"]
+    } == {"resolve_or_accept_partial_public_interface_index"}
+    assert summaries["fastapi"]["authorActionCounts"]["needsManualCorrectionCount"] == 0
+    assert summaries["gin"]["authorActionCounts"]["needsManualCorrectionCount"] == 0
+
+    assert payload["authorityBoundary"] == {
+        "producerSideEvidence": True,
+        "handoffIsRegistryAuthority": False,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "publishesRegistryMetadata": False,
+        "seedsBaselines": False,
+        "removesPreviewOnly": False,
+        "runsAI": False,
+        "aiOutputAcceptedAsRegistryTruth": False,
+        "adapterOutputAcceptedAsRegistryTruth": False,
+        "trustedLocalAdapterExecutionEnabled": False,
+        "implicitRepositoryFetchAllowed": False,
+        "networkDiscoveryAllowed": False,
+        "dependencyInstallationAllowed": False,
+        "packageManagerInvocationAllowed": False,
+        "harvestedCodeExecutionAllowed": False,
+    }
+    for statement in (
+        "author_handoff_is_producer_side_review_evidence",
+        "ready_for_author_review_is_not_registry_acceptance",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_run_ai",
+        "does_not_enable_trusted_local_adapter_execution",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_treat_ai_output_as_registry_truth",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_handoff_output_as_registry_truth",
+    ):
+        assert statement in payload["nonAuthorityStatements"]
+    assert payload["followUp"] == {"exitReportTask": "P43-T7"}
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Author Handoff Summaries",
+            "P43-T6",
+            "SpecHarvesterOperationalMVPAuthorHandoffSummaries",
+            "spec-harvester.operational-mvp-author-handoff/v0",
+            "producer_operational_mvp_author_handoff_only",
+            "p43-t6-operational-mvp-author-handoff-summaries.example.json",
+            "p43-t4-operational-mvp-static-only-baseline.example.json",
+            "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
+            "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+            "sha256:c9934bae637aff8d748e431476d297dc58f81583ab7fdb8fc00db1141889e049",
+            "valid",
+            "reviewable",
+            "needsManualCorrection",
+            "doNotPromote",
+            "ready_for_author_review",
+            "xyflow",
+            "fastapi",
+            "gin",
+            "resolve_or_accept_partial_public_interface_index",
+            "provider_unavailable",
+            "ai_provider_unavailable_static_baseline_retained",
+            "not_evaluated_provider_unavailable",
+            "P43-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "run AI",
+            "enable trusted local adapter execution",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat handoff output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md"),
+        (docc_root, "<doc:OperationalMVPAuthorHandoffSummaries>"),
+        (capabilities, "OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md"),
+        (capabilities_docc, "OperationalMVPAuthorHandoffSummaries"),
+        (roadmap, "OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md"),
+        (roadmap_docc, "OperationalMVPAuthorHandoffSummaries"),
+        (plan_doc, "OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md"),
+        (plan_docc, "OperationalMVPAuthorHandoffSummaries"),
+        (baseline_doc, "OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md"),
+        (baseline_docc, "OperationalMVPAuthorHandoffSummaries"),
+        (ai_doc, "OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md"),
+        (ai_docc, "OperationalMVPAuthorHandoffSummaries"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P43-T6` Add author handoff summaries" in workplan_text
+    assert "what is valid, what is reviewable" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

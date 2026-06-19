@@ -114,8 +114,8 @@ AI sidecars do not change static handoff truth or SpecPM acceptance state.
 
 ## Follow-Up
 
-- `P43-T6`: add author handoff summaries based on the static-only baseline and
-  live proposal-only AI comparison state.
+- `P43-T6`: recorded <doc:OperationalMVPAuthorHandoffSummaries> based on the
+  static-only baseline and live proposal-only AI comparison state.
 - `P43-T7`: record the operational MVP exit decision.
 
 ## References
@@ -124,6 +124,7 @@ AI sidecars do not change static handoff truth or SpecPM acceptance state.
 - <doc:OperationalMVPValidationPlanFixture>
 - <doc:OperationalMVPValidationReportFixture>
 - <doc:OperationalMVPStaticOnlyBaseline>
+- <doc:OperationalMVPAuthorHandoffSummaries>
 - <doc:AutonomousCandidateBatch>
 - <doc:PackageSetAIDraftProposal>
 - <doc:PackageSetAIEnrichment>

@@ -1,0 +1,418 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-author-handoff/v0",
+  "kind": "SpecHarvesterOperationalMVPAuthorHandoffSummaries",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_author_handoff_only",
+  "phase": "P43",
+  "task": "P43-T6",
+  "createdAt": "2026-06-20T00:00:00Z",
+  "sourceArtifacts": {
+    "staticOnlyBaseline": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json",
+      "digest": "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
+      "apiVersion": "spec-harvester.operational-mvp-static-only-baseline/v0",
+      "kind": "SpecHarvesterOperationalMVPStaticOnlyBaseline",
+      "authority": "producer_operational_mvp_static_only_baseline_only"
+    },
+    "aiEnabledComparison": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+      "digest": "sha256:c9934bae637aff8d748e431476d297dc58f81583ab7fdb8fc00db1141889e049",
+      "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
+      "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
+      "authority": "producer_operational_mvp_ai_comparison_only"
+    }
+  },
+  "summary": {
+    "repositoryHandoffCount": 3,
+    "readyForAuthorReviewCount": 3,
+    "staticOnlyHandoffReadyCount": 3,
+    "aiImprovementAvailableCount": 0,
+    "providerUnavailableCount": 3,
+    "needsManualCorrectionRepositoryCount": 1,
+    "doNotPromoteRepositoryCount": 3,
+    "registryAuthority": false
+  },
+  "authorCategories": [
+    "valid",
+    "reviewable",
+    "needsManualCorrection",
+    "doNotPromote"
+  ],
+  "handoffSummaries": [
+    {
+      "repositoryId": "xyflow",
+      "repositoryUrl": "git@github.com:SoundBlaster/xyflow.git",
+      "ecosystemFamily": "javascript_typescript",
+      "expectedPackageFamilyShape": "package_set_monorepo",
+      "pinnedCheckout": {
+        "localCheckoutPath": "/Users/egor/Development/GitHub/xyflow",
+        "exactRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+        "verified": true,
+        "status": "clean",
+        "dirtyStatus": ""
+      },
+      "handoffVerdict": "ready_for_author_review",
+      "staticOnlyEvidence": {
+        "status": "passed",
+        "candidateCount": 4,
+        "relationCount": 3,
+        "authorReadyVerdict": "author_ready_draft",
+        "qualityDimensions": {
+          "validity": "passed",
+          "repositorySpecificity": "reviewable",
+          "evidencePrecision": "reviewable_with_partial_interface_index",
+          "packageTopology": "reviewable_package_set_monorepo",
+          "claimConservatism": "reviewable",
+          "authorActionability": "strong_action_items_present",
+          "SpecPMHandoffReadiness": "reviewable_handoff_ready"
+        },
+        "specpmHandoffReadiness": {
+          "ready": true,
+          "reason": "static_only_preview_candidates_available_for_author_review",
+          "candidateCount": 4,
+          "relationCount": 3,
+          "requiresAuthorReview": true,
+          "registryAuthority": false
+        }
+      },
+      "aiComparisonEvidence": {
+        "status": "provider_unavailable",
+        "aiImprovementAvailable": false,
+        "warningCode": "ai_provider_unavailable_static_baseline_retained",
+        "deltaStatus": "not_evaluated_provider_unavailable"
+      },
+      "authorSummary": {
+        "valid": [
+          {
+            "id": "static_preflight_passed",
+            "summary": "Static-only bundle-set preflight passed for generated preview candidates.",
+            "source": "P43-T4 static-only baseline"
+          },
+          {
+            "id": "author_ready_preview_available",
+            "summary": "Preview candidate output is ready for package author review.",
+            "source": "P43-T4 authorReadyVerdict"
+          },
+          {
+            "id": "specpm_handoff_ready_preview",
+            "summary": "SpecPM handoff readiness is true, with registry authority still false.",
+            "source": "P43-T4 specpmHandoffReadiness"
+          }
+        ],
+        "reviewable": [
+          {
+            "id": "review_package_identity_and_summary",
+            "summary": "Confirm package id, name, summary, license, keywords, and version before submission.",
+            "source": "author-ready quality report action item"
+          },
+          {
+            "id": "review_capabilities_intents_constraints_evidence",
+            "summary": "Confirm capabilities, intents, constraints, and evidence support.",
+            "source": "author-ready quality report action item"
+          },
+          {
+            "id": "run_specpm_validation_before_submission",
+            "summary": "Run downstream SpecPM validation before requesting public index acceptance.",
+            "source": "author-ready quality report action item"
+          }
+        ],
+        "needsManualCorrection": [
+          {
+            "id": "resolve_or_accept_partial_public_interface_index",
+            "summary": "Inspect xyflow partial public-interface index diagnostics before relying on generated interface evidence.",
+            "source": "P43-T4 evidencePrecision caveat"
+          }
+        ],
+        "doNotPromote": [
+          {
+            "id": "do_not_promote_preview_without_maintainer_acceptance",
+            "summary": "Do not promote preview candidates to registry truth without explicit SpecPM maintainer review.",
+            "source": "non-authority boundary"
+          },
+          {
+            "id": "do_not_promote_ai_delta",
+            "summary": "Do not promote AI deltas because no AI proposal was available in P43-T5.",
+            "source": "P43-T5 provider_unavailable comparison"
+          },
+          {
+            "id": "do_not_promote_adapter_output",
+            "summary": "Do not promote adapter output because adapter execution was not run or enabled.",
+            "source": "Phase 43 no-adapter boundary"
+          }
+        ]
+      },
+      "authorActionCounts": {
+        "validCount": 3,
+        "reviewableCount": 3,
+        "needsManualCorrectionCount": 1,
+        "doNotPromoteCount": 3
+      },
+      "nonAuthority": {
+        "requiresAuthorReview": true,
+        "registryAuthority": false,
+        "acceptsPackages": false,
+        "acceptsRelations": false,
+        "publishesRegistryMetadata": false
+      }
+    },
+    {
+      "repositoryId": "fastapi",
+      "repositoryUrl": "https://github.com/fastapi/fastapi",
+      "ecosystemFamily": "python",
+      "expectedPackageFamilyShape": "framework_library_package",
+      "pinnedCheckout": {
+        "localCheckoutPath": "/Users/egor/Development/GitHub/fastapi",
+        "exactRevision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "verified": true,
+        "status": "clean",
+        "dirtyStatus": ""
+      },
+      "handoffVerdict": "ready_for_author_review",
+      "staticOnlyEvidence": {
+        "status": "passed",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "authorReadyVerdict": "author_ready_draft",
+        "qualityDimensions": {
+          "validity": "passed",
+          "repositorySpecificity": "reviewable",
+          "evidencePrecision": "strong_static_public_interface_index",
+          "packageTopology": "reviewable_single_package",
+          "claimConservatism": "reviewable",
+          "authorActionability": "strong_action_items_present",
+          "SpecPMHandoffReadiness": "reviewable_handoff_ready"
+        },
+        "specpmHandoffReadiness": {
+          "ready": true,
+          "reason": "static_only_preview_candidates_available_for_author_review",
+          "candidateCount": 1,
+          "relationCount": 0,
+          "requiresAuthorReview": true,
+          "registryAuthority": false
+        }
+      },
+      "aiComparisonEvidence": {
+        "status": "provider_unavailable",
+        "aiImprovementAvailable": false,
+        "warningCode": "ai_provider_unavailable_static_baseline_retained",
+        "deltaStatus": "not_evaluated_provider_unavailable"
+      },
+      "authorSummary": {
+        "valid": [
+          {
+            "id": "static_preflight_passed",
+            "summary": "Static-only bundle-set preflight passed for generated preview candidates.",
+            "source": "P43-T4 static-only baseline"
+          },
+          {
+            "id": "author_ready_preview_available",
+            "summary": "Preview candidate output is ready for package author review.",
+            "source": "P43-T4 authorReadyVerdict"
+          },
+          {
+            "id": "specpm_handoff_ready_preview",
+            "summary": "SpecPM handoff readiness is true, with registry authority still false.",
+            "source": "P43-T4 specpmHandoffReadiness"
+          }
+        ],
+        "reviewable": [
+          {
+            "id": "review_package_identity_and_summary",
+            "summary": "Confirm package id, name, summary, license, keywords, and version before submission.",
+            "source": "author-ready quality report action item"
+          },
+          {
+            "id": "review_capabilities_intents_constraints_evidence",
+            "summary": "Confirm capabilities, intents, constraints, and evidence support.",
+            "source": "author-ready quality report action item"
+          },
+          {
+            "id": "run_specpm_validation_before_submission",
+            "summary": "Run downstream SpecPM validation before requesting public index acceptance.",
+            "source": "author-ready quality report action item"
+          }
+        ],
+        "needsManualCorrection": [],
+        "doNotPromote": [
+          {
+            "id": "do_not_promote_preview_without_maintainer_acceptance",
+            "summary": "Do not promote preview candidates to registry truth without explicit SpecPM maintainer review.",
+            "source": "non-authority boundary"
+          },
+          {
+            "id": "do_not_promote_ai_delta",
+            "summary": "Do not promote AI deltas because no AI proposal was available in P43-T5.",
+            "source": "P43-T5 provider_unavailable comparison"
+          },
+          {
+            "id": "do_not_promote_adapter_output",
+            "summary": "Do not promote adapter output because adapter execution was not run or enabled.",
+            "source": "Phase 43 no-adapter boundary"
+          }
+        ]
+      },
+      "authorActionCounts": {
+        "validCount": 3,
+        "reviewableCount": 3,
+        "needsManualCorrectionCount": 0,
+        "doNotPromoteCount": 3
+      },
+      "nonAuthority": {
+        "requiresAuthorReview": true,
+        "registryAuthority": false,
+        "acceptsPackages": false,
+        "acceptsRelations": false,
+        "publishesRegistryMetadata": false
+      }
+    },
+    {
+      "repositoryId": "gin",
+      "repositoryUrl": "https://github.com/gin-gonic/gin.git",
+      "ecosystemFamily": "go",
+      "expectedPackageFamilyShape": "single_package_framework",
+      "pinnedCheckout": {
+        "localCheckoutPath": "/Users/egor/Development/GitHub/gin",
+        "exactRevision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+        "verified": true,
+        "status": "clean",
+        "dirtyStatus": ""
+      },
+      "handoffVerdict": "ready_for_author_review",
+      "staticOnlyEvidence": {
+        "status": "passed",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "authorReadyVerdict": "author_ready_draft",
+        "qualityDimensions": {
+          "validity": "passed",
+          "repositorySpecificity": "reviewable",
+          "evidencePrecision": "strong_static_public_interface_index",
+          "packageTopology": "reviewable_single_package",
+          "claimConservatism": "reviewable",
+          "authorActionability": "strong_action_items_present",
+          "SpecPMHandoffReadiness": "reviewable_handoff_ready"
+        },
+        "specpmHandoffReadiness": {
+          "ready": true,
+          "reason": "static_only_preview_candidates_available_for_author_review",
+          "candidateCount": 1,
+          "relationCount": 0,
+          "requiresAuthorReview": true,
+          "registryAuthority": false
+        }
+      },
+      "aiComparisonEvidence": {
+        "status": "provider_unavailable",
+        "aiImprovementAvailable": false,
+        "warningCode": "ai_provider_unavailable_static_baseline_retained",
+        "deltaStatus": "not_evaluated_provider_unavailable"
+      },
+      "authorSummary": {
+        "valid": [
+          {
+            "id": "static_preflight_passed",
+            "summary": "Static-only bundle-set preflight passed for generated preview candidates.",
+            "source": "P43-T4 static-only baseline"
+          },
+          {
+            "id": "author_ready_preview_available",
+            "summary": "Preview candidate output is ready for package author review.",
+            "source": "P43-T4 authorReadyVerdict"
+          },
+          {
+            "id": "specpm_handoff_ready_preview",
+            "summary": "SpecPM handoff readiness is true, with registry authority still false.",
+            "source": "P43-T4 specpmHandoffReadiness"
+          }
+        ],
+        "reviewable": [
+          {
+            "id": "review_package_identity_and_summary",
+            "summary": "Confirm package id, name, summary, license, keywords, and version before submission.",
+            "source": "author-ready quality report action item"
+          },
+          {
+            "id": "review_capabilities_intents_constraints_evidence",
+            "summary": "Confirm capabilities, intents, constraints, and evidence support.",
+            "source": "author-ready quality report action item"
+          },
+          {
+            "id": "run_specpm_validation_before_submission",
+            "summary": "Run downstream SpecPM validation before requesting public index acceptance.",
+            "source": "author-ready quality report action item"
+          }
+        ],
+        "needsManualCorrection": [],
+        "doNotPromote": [
+          {
+            "id": "do_not_promote_preview_without_maintainer_acceptance",
+            "summary": "Do not promote preview candidates to registry truth without explicit SpecPM maintainer review.",
+            "source": "non-authority boundary"
+          },
+          {
+            "id": "do_not_promote_ai_delta",
+            "summary": "Do not promote AI deltas because no AI proposal was available in P43-T5.",
+            "source": "P43-T5 provider_unavailable comparison"
+          },
+          {
+            "id": "do_not_promote_adapter_output",
+            "summary": "Do not promote adapter output because adapter execution was not run or enabled.",
+            "source": "Phase 43 no-adapter boundary"
+          }
+        ]
+      },
+      "authorActionCounts": {
+        "validCount": 3,
+        "reviewableCount": 3,
+        "needsManualCorrectionCount": 0,
+        "doNotPromoteCount": 3
+      },
+      "nonAuthority": {
+        "requiresAuthorReview": true,
+        "registryAuthority": false,
+        "acceptsPackages": false,
+        "acceptsRelations": false,
+        "publishesRegistryMetadata": false
+      }
+    }
+  ],
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "handoffIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "runsAI": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "author_handoff_is_producer_side_review_evidence",
+    "ready_for_author_review_is_not_registry_acceptance",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_run_ai",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_handoff_output_as_registry_truth"
+  ],
+  "followUp": {
+    "exitReportTask": "P43-T7"
+  }
+}
