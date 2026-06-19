@@ -154,3 +154,7 @@ P41-T2 only defines the request shape. The next tasks are:
 - `P41-T4`: disabled-by-default no-execution runner skeleton;
 - `P41-T5`: review-only batch evidence handoff;
 - `P41-T6`: real local readiness validation.
+
+P41-T3 records <doc:TrustedLocalAdapterRunPreflightReportFixture> as the first
+review-only preflight fixture over this request shape. Passing preflight is not
+execution permission.

@@ -1,0 +1,311 @@
+{
+  "apiVersion": "spec-harvester.trusted-local-adapter-run-preflight/v0",
+  "kind": "SpecHarvesterTrustedLocalAdapterRunPreflightReport",
+  "schemaVersion": 1,
+  "authority": "producer_trusted_local_adapter_run_preflight_only",
+  "contract": {
+    "purpose": "Validate a trusted local adapter run request before any future adapter execution path without granting execution authority.",
+    "contractVersion": "0.1.0",
+    "requestAuthority": "producer_trusted_local_adapter_run_request_only",
+    "preflightAuthority": "producer_trusted_local_adapter_run_preflight_only",
+    "outputAuthority": "producer_adapter_output_only",
+    "defaultExecution": "disabled",
+    "preflightPassIsExecutionPermission": false
+  },
+  "request": {
+    "path": "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json",
+    "digest": "sha256:a0d0ae4ccc5ffb256147e217b0efa74716d2ddda37cd7a6b640b0e7df78f0e54",
+    "kind": "SpecHarvesterTrustedLocalAdapterRunRequest",
+    "authority": "producer_trusted_local_adapter_run_request_only"
+  },
+  "result": {
+    "status": "passed",
+    "decision": "preflight_passed_review_only",
+    "preflightPassIsExecutionPermission": false,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "executedAdapterCount": 0,
+    "runtimeImplemented": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "validatedRequest": {
+    "apiVersion": "spec-harvester.trusted-local-adapter-run-request/v0",
+    "kind": "SpecHarvesterTrustedLocalAdapterRunRequest",
+    "schemaVersion": 1,
+    "authority": "producer_trusted_local_adapter_run_request_only",
+    "operatorOptIn": "provided",
+    "requestIsExecutionPermission": false,
+    "adapterExecution": "not_run"
+  },
+  "pathPolicy": {
+    "pathFormat": "posix_relative",
+    "parentSegmentsAllowed": false,
+    "absolutePathsAllowed": false,
+    "backslashAllowed": false,
+    "networkPathsAllowed": false
+  },
+  "acceptedChecks": [
+    {
+      "code": "request_identity_valid",
+      "status": "passed",
+      "target": "request",
+      "message": "Request apiVersion, kind, schemaVersion, and authority match the trusted local adapter run request contract."
+    },
+    {
+      "code": "explicit_operator_opt_in_present",
+      "status": "passed",
+      "target": "operatorOptIn",
+      "message": "Explicit operator opt-in is required, provided, and scoped to trusted local adapter run preflight."
+    },
+    {
+      "code": "adapter_contract_references_digest_pinned",
+      "status": "passed",
+      "target": "adapterContractReferences",
+      "message": "Adapter manifest and adapter preflight report references are digest-pinned."
+    },
+    {
+      "code": "declared_input_artifacts_digest_pinned",
+      "status": "passed",
+      "target": "declaredInputArtifacts",
+      "message": "All declared input artifacts use safe relative paths and sha256 digests."
+    },
+    {
+      "code": "read_allowlist_declared_artifact_paths_only",
+      "status": "passed",
+      "target": "readAllowlist",
+      "message": "Read access is limited to declared artifact paths."
+    },
+    {
+      "code": "output_policy_bounded_and_declared",
+      "status": "passed",
+      "target": "outputPolicy",
+      "message": "Outputs are limited to declared directories and bounded maxBytes values."
+    },
+    {
+      "code": "resource_budgets_bounded",
+      "status": "passed",
+      "target": "resourceBudgets",
+      "message": "Timeout, output size, output file, diagnostics, and process count budgets are bounded."
+    },
+    {
+      "code": "environment_policy_denies_inheritance",
+      "status": "passed",
+      "target": "environmentPolicy",
+      "message": "Environment inheritance and secrets access are denied."
+    },
+    {
+      "code": "network_dependency_process_ai_denied",
+      "status": "passed",
+      "target": "networkPolicy,dependencyPolicy,processPolicy",
+      "message": "Network access, dependency installation, package managers, harvested code execution, adapter process execution, and AI execution are denied."
+    },
+    {
+      "code": "execution_boundary_review_only",
+      "status": "passed",
+      "target": "executionBoundary",
+      "message": "Request remains no-execution review evidence with no registry authority."
+    },
+    {
+      "code": "non_authority_statements_present",
+      "status": "passed",
+      "target": "nonAuthorityStatements",
+      "message": "Request includes non-authority statements for execution, registry, acceptance, baseline, and preview boundaries."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "code": "unsafe_parent_path_rejected",
+      "status": "rejected",
+      "target": "pathPolicy",
+      "examplePath": "../outside-repository/adapter.json",
+      "reason": "parent_segments_not_allowed"
+    },
+    {
+      "code": "unsafe_absolute_path_rejected",
+      "status": "rejected",
+      "target": "pathPolicy",
+      "examplePath": "/tmp/adapter.json",
+      "reason": "absolute_paths_not_allowed"
+    },
+    {
+      "code": "unsafe_backslash_path_rejected",
+      "status": "rejected",
+      "target": "pathPolicy",
+      "examplePath": "tests\\fixtures\\adapter.json",
+      "reason": "backslash_paths_not_allowed"
+    },
+    {
+      "code": "unsafe_network_path_rejected",
+      "status": "rejected",
+      "target": "pathPolicy",
+      "examplePath": "https://example.invalid/adapter.json",
+      "reason": "network_paths_not_allowed"
+    },
+    {
+      "code": "missing_operator_opt_in_rejected",
+      "status": "rejected",
+      "target": "operatorOptIn",
+      "reason": "explicit_operator_opt_in_required"
+    },
+    {
+      "code": "missing_digest_rejected",
+      "status": "rejected",
+      "target": "declaredInputArtifacts[]",
+      "reason": "sha256_digest_required"
+    },
+    {
+      "code": "digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "declaredInputArtifacts[]",
+      "reason": "declared_digest_must_match_artifact_bytes"
+    },
+    {
+      "code": "undeclared_input_artifact_rejected",
+      "status": "rejected",
+      "target": "readAllowlist",
+      "reason": "read_path_not_declared_as_input_artifact"
+    },
+    {
+      "code": "undeclared_output_path_rejected",
+      "status": "rejected",
+      "target": "outputPolicy",
+      "reason": "output_path_not_declared"
+    },
+    {
+      "code": "network_access_rejected",
+      "status": "rejected",
+      "target": "networkPolicy",
+      "reason": "network_access_must_be_none"
+    },
+    {
+      "code": "dependency_installation_rejected",
+      "status": "rejected",
+      "target": "dependencyPolicy",
+      "reason": "dependency_installation_not_allowed"
+    },
+    {
+      "code": "package_manager_invocation_rejected",
+      "status": "rejected",
+      "target": "dependencyPolicy",
+      "reason": "package_managers_not_invoked"
+    },
+    {
+      "code": "harvested_code_execution_rejected",
+      "status": "rejected",
+      "target": "processPolicy",
+      "reason": "harvested_code_execution_not_allowed"
+    },
+    {
+      "code": "ai_execution_rejected",
+      "status": "rejected",
+      "target": "processPolicy",
+      "reason": "ai_execution_not_run"
+    },
+    {
+      "code": "unbounded_process_execution_rejected",
+      "status": "rejected",
+      "target": "resourceBudgets",
+      "reason": "max_process_count_must_be_zero_for_fixture"
+    },
+    {
+      "code": "unbounded_outputs_rejected",
+      "status": "rejected",
+      "target": "outputPolicy",
+      "reason": "output_count_and_output_bytes_must_be_bounded"
+    }
+  ],
+  "blockedChecks": [
+    {
+      "code": "adapter_execution_requested_blocked",
+      "status": "blocked",
+      "target": "executionBoundary",
+      "reason": "adapter_execution_not_enabled_in_phase_41_fixture"
+    },
+    {
+      "code": "third_party_adapter_code_loading_blocked",
+      "status": "blocked",
+      "target": "executionBoundary",
+      "reason": "adapter_code_loading_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "registry_authority_requested_blocked",
+      "status": "blocked",
+      "target": "executionBoundary",
+      "reason": "trusted_local_adapter_preflight_has_no_registry_authority"
+    }
+  ],
+  "warningChecks": [
+    {
+      "code": "preflight_is_review_evidence_only",
+      "status": "warning",
+      "target": "result",
+      "message": "Passing preflight is review evidence only and is not execution permission."
+    },
+    {
+      "code": "runner_not_implemented",
+      "status": "warning",
+      "target": "followUp",
+      "message": "P41-T4 must add a disabled no-execution runner skeleton before any runner can consume this report."
+    }
+  ],
+  "summary": {
+    "acceptedCount": 11,
+    "rejectedCount": 16,
+    "blockedCount": 3,
+    "warningCount": 2,
+    "diagnosticCount": 2,
+    "executedAdapterCount": 0,
+    "runtimeImplementedAdapterCount": 0
+  },
+  "executionBoundary": {
+    "adapterCodeLoaded": false,
+    "adapterExecution": "not_run",
+    "executedAdapterCount": 0,
+    "runtimeImplemented": false,
+    "requestIsExecutionPermission": false,
+    "preflightPassIsExecutionPermission": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "trusted_local_adapter_run_preflight_fixture",
+      "message": "Preflight report fixture validates the P41-T2 request shape without running adapter code."
+    },
+    {
+      "severity": "info",
+      "code": "preflight_pass_is_not_execution_permission",
+      "message": "Passing preflight does not grant adapter execution authority or registry authority."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "preflight_pass_is_not_execution_permission",
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_run_adapter_processes",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_adapter_preflight_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "disabledRunnerSkeletonTask": "P41-T4",
+    "batchEvidenceHandoffTask": "P41-T5",
+    "realLocalReadinessValidationTask": "P41-T6"
+  }
+}

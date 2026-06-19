@@ -29,7 +29,7 @@ preflight, runner, evidence handoff, and real validation sequence.
 | --- | --- |
 | `P41-T1` | Document this readiness plan and add the next-task scaffold. |
 | `P41-T2` | Add <doc:TrustedLocalAdapterRunRequestFixture> as a machine-readable request fixture. |
-| `P41-T3` | Add a trusted local adapter run preflight report fixture that rejects unsafe requests before execution. |
+| `P41-T3` | Add <doc:TrustedLocalAdapterRunPreflightReportFixture> as a machine-readable preflight report fixture that rejects unsafe requests before execution. |
 | `P41-T4` | Add a disabled-by-default runner skeleton that validates requests and emits a no-execution report. |
 | `P41-T5` | Connect trusted local adapter run reports to `autonomous-candidate-batch` as review-only producer evidence. |
 | `P41-T6` | Validate the readiness path against FastMCP, FastAPI, xyflow, and Gin pinned local checkouts without executing adapters. |
@@ -79,6 +79,12 @@ Trusted local adapter run preflight should reject or block:
 
 Preflight pass is not registry acceptance. It only says a future local adapter
 request is internally consistent enough for an explicitly trusted local run.
+
+P41-T3 records the first trusted local adapter run preflight report fixture at
+`tests/fixtures/repository_plugins/trusted-local-adapter-run-preflight-report.example.json`.
+It references the P41-T2 run request with a SHA-256 digest, records accepted,
+rejected, blocked, and warning checks, and keeps
+`preflightPassIsExecutionPermission: false`.
 
 ## Runner Boundary
 

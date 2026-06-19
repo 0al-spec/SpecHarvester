@@ -58,6 +58,7 @@ The canonical source files remain in the repository:
 - `docs/REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`
 - `docs/TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md`
 - `docs/TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md`
+- `docs/TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_REPORT_FIXTURE.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -191,6 +192,7 @@ the host.
 - <doc:RepositoryPluginAdapterRealLocalValidation>
 - <doc:TrustedLocalAdapterRuntimeReadiness>
 - <doc:TrustedLocalAdapterRunRequestFixture>
+- <doc:TrustedLocalAdapterRunPreflightReportFixture>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
