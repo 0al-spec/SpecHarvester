@@ -1,167 +1,167 @@
 {
-  "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-runner-validation/v0",
-  "authority": "producer_trusted_local_adapter_sandbox_runner_validation_only",
-  "contract": {
-    "contractVersion": "0.1.0",
-    "defaultExecution": "disabled",
-    "purpose": "Validate trusted local adapter sandbox contract and preflight artifacts through a disabled no-execution runner validation.",
-    "runnerAuthority": "producer_trusted_local_adapter_sandbox_runner_validation_only",
-    "runnerValidationIsExecutionPermission": false,
-    "sandboxContractAuthority": "producer_trusted_local_adapter_sandbox_contract_only",
-    "sandboxPreflightAuthority": "producer_trusted_local_adapter_sandbox_preflight_only"
-  },
-  "diagnostics": [
-    {
-      "code": "trusted_local_adapter_sandbox_runner_validation",
-      "message": "Disabled sandbox runner validation linked contract and preflight artifacts without loading adapter code or running adapter processes.",
-      "severity": "info"
+    "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-runner-validation/v0",
+    "authority": "producer_trusted_local_adapter_sandbox_runner_validation_only",
+    "contract": {
+        "contractVersion": "0.1.0",
+        "defaultExecution": "disabled",
+        "purpose": "Validate trusted local adapter sandbox contract and preflight artifacts through a disabled no-execution runner validation.",
+        "runnerAuthority": "producer_trusted_local_adapter_sandbox_runner_validation_only",
+        "runnerValidationIsExecutionPermission": false,
+        "sandboxContractAuthority": "producer_trusted_local_adapter_sandbox_contract_only",
+        "sandboxPreflightAuthority": "producer_trusted_local_adapter_sandbox_preflight_only"
     },
-    {
-      "code": "sandbox_runner_validation_is_not_execution_permission",
-      "message": "This report is producer-side review evidence only and does not grant execution authority or registry authority.",
-      "severity": "warning"
-    }
-  ],
-  "executionBoundary": {
-    "adapterCodeLoaded": false,
-    "adapterExecution": "not_run",
-    "adapterOutputAccepted": false,
-    "adapterProcessSpawned": false,
-    "appliedToDrafting": false,
-    "executedAdapterCount": 0,
-    "operatorApprovalProvided": false,
-    "registryAuthority": false,
-    "runnerValidationIsExecutionPermission": false,
-    "runtimeImplemented": false,
-    "sandboxContractIsExecutionPermission": false,
-    "sandboxPreflightIsExecutionPermission": false,
-    "sandboxRunnerImplemented": false
-  },
-  "followUp": {
-    "realLocalAdapterRunTask": "deferred_until_after_review",
-    "sandboxContractTask": "P42-T2",
-    "sandboxPlanTask": "P42-T1",
-    "sandboxPreflightReportTask": "P42-T3",
-    "syntheticApprovedAdapterRunTask": "P42-T5"
-  },
-  "kind": "SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport",
-  "nonAuthorityStatements": [
-    "sandbox_runner_validation_is_not_execution_permission",
-    "sandbox_contract_is_not_execution_permission",
-    "sandbox_preflight_is_not_execution_permission",
-    "does_not_load_third_party_adapter_code",
-    "does_not_execute_adapters",
-    "does_not_run_adapter_processes",
-    "does_not_clone_or_fetch_repositories",
-    "does_not_install_dependencies",
-    "does_not_invoke_package_managers",
-    "does_not_execute_harvested_code",
-    "does_not_run_ai",
-    "does_not_change_static_plugin_applicability_evaluation",
-    "does_not_change_autonomous_batch_behavior",
-    "does_not_accept_packages",
-    "does_not_accept_relations",
-    "does_not_seed_baselines",
-    "does_not_publish_registry_metadata",
-    "does_not_remove_preview_only",
-    "does_not_treat_adapter_output_as_registry_truth",
-    "does_not_treat_sandbox_contract_as_registry_truth",
-    "does_not_treat_sandbox_preflight_as_registry_truth",
-    "does_not_treat_ai_output_as_registry_truth"
-  ],
-  "runner": {
-    "adapterCodeImportAttempted": false,
-    "adapterCodeLoaded": false,
-    "adapterExecution": "not_run",
-    "adapterProcessSpawned": false,
-    "aiExecution": "not_run",
-    "dependencyInstallation": "not_allowed",
-    "enabled": false,
-    "executedAdapterCount": 0,
-    "harvestedCodeExecution": "not_allowed",
-    "mode": "disabled_no_execution_sandbox_runner_validation",
-    "networkAccess": "none",
-    "packageManagers": "not_invoked",
-    "registryAuthority": false,
-    "runtimeImplemented": false,
-    "sandboxRunnerImplemented": false
-  },
-  "sandboxContract": {
-    "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-contract/v0",
-    "authority": "producer_trusted_local_adapter_sandbox_contract_only",
-    "digest": "sha256:b74050500ebf630635f91f4290f3a8d3daac17953ad8fe6ef062bdc51165f950",
-    "kind": "SpecHarvesterTrustedLocalAdapterSandboxContract",
-    "path": "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-contract.example.json",
-    "schemaVersion": 1
-  },
-  "sandboxPreflight": {
-    "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-preflight/v0",
-    "authority": "producer_trusted_local_adapter_sandbox_preflight_only",
-    "contractDigestVerified": true,
-    "digest": "sha256:1ae3ed25814cb5a99fbacbfd07ed4ca8fa89c18fa919263a328b168d2575c8f5",
-    "kind": "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport",
-    "path": "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-preflight-report.example.json",
-    "preflightPassIsExecutionPermission": false,
-    "schemaVersion": 1,
-    "status": "passed"
-  },
-  "schemaVersion": 1,
-  "status": "no_execution_validation_report_emitted",
-  "summary": {
-    "acceptedCount": 7,
-    "errorCount": 0,
-    "executedAdapterCount": 0,
-    "runtimeImplementedAdapterCount": 0,
-    "warningCount": 1
-  },
-  "validation": {
-    "acceptedChecks": [
-      {
-        "code": "sandbox_contract_identity_valid",
-        "message": "Sandbox contract identity matches the P42-T2 contract.",
-        "status": "passed",
-        "target": "sandboxContract"
-      },
-      {
-        "code": "sandbox_contract_boundary_no_execution",
-        "message": "Sandbox contract records no execution permission and no registry authority.",
-        "status": "passed",
-        "target": "sandboxContract.executionBoundary"
-      },
-      {
-        "code": "sandbox_preflight_identity_valid",
-        "message": "Sandbox preflight identity matches the P42-T3 contract.",
-        "status": "passed",
-        "target": "sandboxPreflight"
-      },
-      {
-        "code": "sandbox_preflight_status_passed_review_only",
-        "message": "Sandbox preflight passed but explicitly remains review evidence only.",
-        "status": "passed",
-        "target": "sandboxPreflight.result"
-      },
-      {
-        "code": "sandbox_preflight_contract_digest_matches",
-        "message": "Sandbox preflight contract digest matches the supplied contract bytes.",
-        "status": "passed",
-        "target": "sandboxPreflight.sandboxContract"
-      },
-      {
-        "code": "sandbox_runner_validation_disabled_no_execution",
-        "message": "Runner validation did not load adapter code or spawn adapter processes.",
-        "status": "passed",
-        "target": "runner"
-      },
-      {
-        "code": "non_authority_boundary_preserved",
-        "message": "Runner validation is not execution permission and has no registry authority.",
-        "status": "passed",
-        "target": "executionBoundary"
-      }
+    "diagnostics": [
+        {
+            "code": "trusted_local_adapter_sandbox_runner_validation",
+            "message": "Disabled sandbox runner validation linked contract and preflight artifacts without loading adapter code or running adapter processes.",
+            "severity": "info"
+        },
+        {
+            "code": "sandbox_runner_validation_is_not_execution_permission",
+            "message": "This report is producer-side review evidence only and does not grant execution authority or registry authority.",
+            "severity": "warning"
+        }
     ],
-    "errorCount": 0,
-    "status": "passed",
-    "warningCount": 1
-  },
-  "validationId": "trusted-local-adapter-sandbox-runner-validation-ccad71bf04a52c13"
+    "executionBoundary": {
+        "adapterCodeLoaded": false,
+        "adapterExecution": "not_run",
+        "adapterOutputAccepted": false,
+        "adapterProcessSpawned": false,
+        "appliedToDrafting": false,
+        "executedAdapterCount": 0,
+        "operatorApprovalProvided": false,
+        "registryAuthority": false,
+        "runnerValidationIsExecutionPermission": false,
+        "runtimeImplemented": false,
+        "sandboxContractIsExecutionPermission": false,
+        "sandboxPreflightIsExecutionPermission": false,
+        "sandboxRunnerImplemented": false
+    },
+    "followUp": {
+        "realLocalAdapterRunTask": "deferred_until_after_review",
+        "sandboxContractTask": "P42-T2",
+        "sandboxPlanTask": "P42-T1",
+        "sandboxPreflightReportTask": "P42-T3",
+        "syntheticApprovedAdapterRunTask": "P42-T5"
+    },
+    "kind": "SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport",
+    "nonAuthorityStatements": [
+        "sandbox_runner_validation_is_not_execution_permission",
+        "sandbox_contract_is_not_execution_permission",
+        "sandbox_preflight_is_not_execution_permission",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_run_adapter_processes",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_change_static_plugin_applicability_evaluation",
+        "does_not_change_autonomous_batch_behavior",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_sandbox_contract_as_registry_truth",
+        "does_not_treat_sandbox_preflight_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth"
+    ],
+    "runner": {
+        "adapterCodeImportAttempted": false,
+        "adapterCodeLoaded": false,
+        "adapterExecution": "not_run",
+        "adapterProcessSpawned": false,
+        "aiExecution": "not_run",
+        "dependencyInstallation": "not_allowed",
+        "enabled": false,
+        "executedAdapterCount": 0,
+        "harvestedCodeExecution": "not_allowed",
+        "mode": "disabled_no_execution_sandbox_runner_validation",
+        "networkAccess": "none",
+        "packageManagers": "not_invoked",
+        "registryAuthority": false,
+        "runtimeImplemented": false,
+        "sandboxRunnerImplemented": false
+    },
+    "sandboxContract": {
+        "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-contract/v0",
+        "authority": "producer_trusted_local_adapter_sandbox_contract_only",
+        "digest": "sha256:cd0534fd18c3fad3b871fce3c52103a577f55c8a897d048ee0e9bcaf6f813faf",
+        "kind": "SpecHarvesterTrustedLocalAdapterSandboxContract",
+        "path": "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-contract.example.json",
+        "schemaVersion": 1
+    },
+    "sandboxPreflight": {
+        "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-preflight/v0",
+        "authority": "producer_trusted_local_adapter_sandbox_preflight_only",
+        "contractDigestVerified": true,
+        "digest": "sha256:97a1297d3d6e821d1860fc4b6a9455d007a6f0258a473c8fe954693ea44d727c",
+        "kind": "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport",
+        "path": "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-preflight-report.example.json",
+        "preflightPassIsExecutionPermission": false,
+        "schemaVersion": 1,
+        "status": "passed"
+    },
+    "schemaVersion": 1,
+    "status": "no_execution_validation_report_emitted",
+    "summary": {
+        "acceptedCount": 7,
+        "errorCount": 0,
+        "executedAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0,
+        "warningCount": 1
+    },
+    "validation": {
+        "acceptedChecks": [
+            {
+                "code": "sandbox_contract_identity_valid",
+                "message": "Sandbox contract identity matches the P42-T2 contract.",
+                "status": "passed",
+                "target": "sandboxContract"
+            },
+            {
+                "code": "sandbox_contract_boundary_no_execution",
+                "message": "Sandbox contract records no execution permission and no registry authority.",
+                "status": "passed",
+                "target": "sandboxContract.executionBoundary"
+            },
+            {
+                "code": "sandbox_preflight_identity_valid",
+                "message": "Sandbox preflight identity matches the P42-T3 contract.",
+                "status": "passed",
+                "target": "sandboxPreflight"
+            },
+            {
+                "code": "sandbox_preflight_status_passed_review_only",
+                "message": "Sandbox preflight passed but explicitly remains review evidence only.",
+                "status": "passed",
+                "target": "sandboxPreflight.result"
+            },
+            {
+                "code": "sandbox_preflight_contract_digest_matches",
+                "message": "Sandbox preflight contract digest matches the supplied contract bytes.",
+                "status": "passed",
+                "target": "sandboxPreflight.sandboxContract"
+            },
+            {
+                "code": "sandbox_runner_validation_disabled_no_execution",
+                "message": "Runner validation did not load adapter code or spawn adapter processes.",
+                "status": "passed",
+                "target": "runner"
+            },
+            {
+                "code": "non_authority_boundary_preserved",
+                "message": "Runner validation is not execution permission and has no registry authority.",
+                "status": "passed",
+                "target": "executionBoundary"
+            }
+        ],
+        "errorCount": 0,
+        "status": "passed",
+        "warningCount": 1
+    },
+    "validationId": "trusted-local-adapter-sandbox-runner-validation-b72122acabd7cb0d"
 }

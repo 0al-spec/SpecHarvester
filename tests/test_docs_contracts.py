@@ -18629,6 +18629,29 @@ def test_synthetic_trusted_local_adapter_sandbox_run_fixture_is_documented() -> 
         "diagnostics",
         "nonAuthorityStatements",
     }
+    audit_record = json.loads((ROOT / payload["auditRecord"]["path"]).read_text(encoding="utf-8"))
+    assert set(payload["auditRecord"]["requiredFields"]) <= set(audit_record)
+    assert (
+        audit_record["sandboxRunnerValidationDigest"] == linked["sandboxRunnerValidation"]["digest"]
+    )
+    assert set(audit_record["inputArtifactDigests"]) == {
+        linked["sandboxContract"]["digest"],
+        linked["sandboxPreflight"]["digest"],
+        linked["sandboxRunnerValidation"]["digest"],
+    }
+    assert (
+        audit_record["syntheticOutputCandidateDigests"]["trusted_local_adapter_output"]
+        == outputs["trusted_local_adapter_output"]["digest"]
+    )
+    assert (
+        audit_record["syntheticOutputCandidateDigests"]["trusted_local_adapter_diagnostics"]
+        == outputs["trusted_local_adapter_diagnostics"]["digest"]
+    )
+    assert (
+        audit_record["syntheticOutputCandidateDigests"]["trusted_local_adapter_audit_record"]
+        == "external_envelope_digest_required"
+    )
+    assert audit_record["diagnostics"]["status"] == "clean"
 
     assert payload["executionBoundary"] == {
         "adapterExecution": "synthetic_fixture_only",
