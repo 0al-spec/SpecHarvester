@@ -104,3 +104,7 @@ P42-T13 operator approval binding
 - `swift build --target SpecHarvesterDocs`
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`
 - DocC static generation
+
+---
+**Archived:** 2026-06-19
+**Verdict:** PASS

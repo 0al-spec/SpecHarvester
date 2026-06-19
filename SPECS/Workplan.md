@@ -1849,7 +1849,7 @@ Acceptance:
   harvested-code execution, AI execution, package/relation acceptance, baseline
   seeding, registry metadata publishing, `preview_only` removal, and adapter
   output truth.
-- [ ] `P42-T14` Add a disabled explicit real local trusted adapter sandbox
+- [x] `P42-T14` Add a disabled explicit real local trusted adapter sandbox
   runtime invocation skeleton that consumes the P42-T13 approval binding and
   emits a no-execution invocation report before any real adapter runtime can be
   implemented.
@@ -1880,6 +1880,37 @@ Acceptance:
   `adapterProcessSpawned: false`, `approvalConsumedByRuntime: false`, and
   `registryAuthority: false`.
 - P42-T14 still blocks dependency installation, package-manager invocation,
+  network access, harvested-code execution, AI execution, package/relation
+  acceptance, baseline seeding, registry publishing, `preview_only` removal,
+  and adapter output truth.
+- [ ] `P42-T15` Add an explicit real local trusted adapter sandbox runtime
+  invocation evidence handoff that packages the P42-T13 approval binding and
+  P42-T14 disabled invocation skeleton as portable review evidence before any
+  real adapter runtime implementation.
+
+Motivation:
+
+- P42-T14 validates approval binding through a disabled invocation skeleton, but
+  reviewers need a portable handoff that packages the approval and disabled
+  invocation evidence together.
+- The handoff should make the next real runtime implementation review explicit
+  without turning disabled invocation evidence into execution permission.
+
+Goal:
+
+- Define a runtime invocation evidence handoff that carries P42-T13/P42-T14
+  artifacts as review evidence and preserves no execution authority.
+
+Acceptance:
+
+- P42-T15 references P42-T13 and P42-T14 with pinned digests.
+- P42-T15 records approval binding evidence, disabled invocation evidence,
+  audit requirements, and non-authority statements.
+- P42-T15 keeps `handoffIsExecutionPermission: false`,
+  `handoffIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
+  `runtimeInvoked: false`, `adapterCodeLoaded: false`,
+  `adapterProcessSpawned: false`, and `adapterOutputAccepted: false`.
+- P42-T15 still blocks dependency installation, package-manager invocation,
   network access, harvested-code execution, AI execution, package/relation
   acceptance, baseline seeding, registry publishing, `preview_only` removal,
   and adapter output truth.
