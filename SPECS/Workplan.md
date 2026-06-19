@@ -1781,10 +1781,14 @@ Acceptance:
   checks sandbox contract and sandbox preflight report linkage while preserving
   no adapter code loading, no process spawning, no dependency installation, no
   network access, and no registry authority.
-- [ ] `P42-T5` Add an explicitly approved synthetic trusted local adapter
+- [x] `P42-T5` Add an explicitly approved synthetic trusted local adapter
   sandbox run fixture that records operator approval binding, sandbox runner
   validation input, synthetic adapter output candidates, output digests, audit
   records, and non-authority statements without running a real adapter process.
+- [ ] `P42-T6` Add a synthetic trusted local adapter sandbox run verifier that
+  checks P42-T5 fixture identity, linked artifact digests, approval binding,
+  synthetic output byte sizes/digests, audit requirements, and no-real-execution
+  boundaries without enabling real adapter execution.
 
 Motivation:
 
@@ -1809,6 +1813,8 @@ Acceptance:
 - The phase starts with documentation and machine-readable planning only.
 - Synthetic approved runs remain fixtures until the sandbox runner implementation
   and real adapter execution gates are reviewed separately.
+- Synthetic approved run verification remains a producer-side review gate and
+  must not execute adapters.
 - No task may enable adapter execution by default.
 - Any future runtime must require explicit operator approval, bounded process
   execution, safe input allowlists, sealed environment, dependency isolation,

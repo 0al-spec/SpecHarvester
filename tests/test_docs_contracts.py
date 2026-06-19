@@ -24,6 +24,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P42-T6 Synthetic Trusted Local Adapter Sandbox Run Verifier" in (next_text):
+        assert_p42_t5_last_archived(next_text)
+        assert_p42_t5_recent(next_text)
+        assert_phase_42_t6_planned(next_text)
+        return
+
     if (
         "# Next Task: P42-T5 Explicitly Approved Synthetic Trusted Local Adapter "
         "Sandbox Run Fixture"
@@ -5002,6 +5008,48 @@ def assert_phase_42_t5_planned(next_text: str) -> None:
     assert "Do not implement real adapter execution" in normalized
     assert "Do not spawn real adapter processes" in normalized
     assert "Do not treat synthetic adapter output as registry truth" in normalized
+
+
+def assert_p42_t5_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T5 Explicitly Approved Synthetic Trusted Local Adapter "
+        "Sandbox Run Fixture"
+    ) in next_text
+
+
+def assert_p42_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P42-T5` added `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun`" in (normalized)
+    assert "synthetic-trusted-local-adapter-sandbox-run.example.json" in normalized
+    assert "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md" in next_text
+    assert "TrustedLocalAdapterSyntheticSandboxRunFixture.md" in next_text
+    assert "operator approval" in normalized
+    assert "synthetic output candidate" in normalized
+    assert "SHA-256 digests" in normalized
+    assert "outputIsRegistryTruth: false" in normalized
+    assert "adapterExecution: synthetic_fixture_only" in normalized
+    assert "realAdapterProcessSpawned: false" in normalized
+    assert "thirdPartyAdapterCodeLoaded: false" in normalized
+    assert "executedAdapterCount: 0" in normalized
+    assert "networkAccess: none" in normalized
+    assert "registryAuthority: false" in normalized
+
+
+def assert_phase_42_t6_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P42-T6 Synthetic Trusted Local Adapter Sandbox Run Verifier" in (next_text)
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P42-T6-synthetic-trusted-local-adapter-sandbox-run-verifier`" in next_text
+    assert "synthetic trusted local adapter sandbox run verifier" in normalized
+    assert "P42-T5 fixture identity" in normalized
+    assert "linked artifact digests" in normalized
+    assert "approval binding" in normalized
+    assert "synthetic output byte sizes/digests" in normalized
+    assert "audit requirements" in normalized
+    assert "no-real-execution boundaries" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not spawn real adapter processes" in normalized
+    assert "Do not treat synthetic run verification as execution permission" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -18405,6 +18453,306 @@ def test_trusted_local_adapter_sandbox_runner_validation_is_documented() -> None
             f"Reference {required!r} not found in {path}"
         )
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_synthetic_trusted_local_adapter_sandbox_run_fixture_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "synthetic-trusted-local-adapter-sandbox-run.example.json"
+    )
+    sandbox_contract = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-sandbox-contract.example.json"
+    )
+    sandbox_preflight = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-sandbox-preflight-report.example.json"
+    )
+    runner_validation = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-sandbox-runner-validation-report.example.json"
+    )
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterSyntheticSandboxRunFixture.md"
+    )
+    runner_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_SANDBOX_RUNNER_VALIDATION.md"
+    runner_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterSandboxRunnerValidation.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    expected_runner_validation = build_trusted_local_adapter_sandbox_runner_validation_report(
+        TrustedLocalAdapterSandboxRunnerValidationOptions(
+            contract=sandbox_contract,
+            preflight=sandbox_preflight,
+        )
+    )
+    assert json.loads(runner_validation.read_text(encoding="utf-8")) == (expected_runner_validation)
+
+    assert payload["apiVersion"] == (
+        "spec-harvester.synthetic-trusted-local-adapter-sandbox-run/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_synthetic_trusted_local_adapter_sandbox_run_only"
+    assert payload["contract"]["syntheticRunIsRealExecutionPermission"] is False
+    assert payload["contract"]["syntheticOutputIsRegistryTruth"] is False
+
+    linked = payload["linkedArtifacts"]
+    expected_linked = {
+        "sandboxContract": (
+            sandbox_contract,
+            "SpecHarvesterTrustedLocalAdapterSandboxContract",
+            "producer_trusted_local_adapter_sandbox_contract_only",
+        ),
+        "sandboxPreflight": (
+            sandbox_preflight,
+            "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport",
+            "producer_trusted_local_adapter_sandbox_preflight_only",
+        ),
+        "sandboxRunnerValidation": (
+            runner_validation,
+            "SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport",
+            "producer_trusted_local_adapter_sandbox_runner_validation_only",
+        ),
+    }
+    assert set(linked) == set(expected_linked)
+    for key, (path, kind, authority) in expected_linked.items():
+        ref = linked[key]
+        assert ref["kind"] == kind
+        assert ref["authority"] == authority
+        assert ref["digest"] == "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+        assert ref["required"] is True
+        assert_safe_relative_path(ref["path"])
+
+    approval = payload["operatorApproval"]
+    assert approval["status"] == "synthetic_approval_fixture_provided"
+    assert approval["approvalProvidedByFixture"] is True
+    assert approval["approvedForRealAdapterExecution"] is False
+    assert approval["approvalIsExecutionPermission"] is False
+    assert approval["approvalIsRegistryAcceptance"] is False
+    assert approval["approvalIsReusableAcrossRepositories"] is False
+    binding = approval["approvalBinding"]
+    assert binding["adapterId"] == "spec_harvester.adapters.generic.parser_profile_summary.v0"
+    assert binding["targetRepositoryId"] == "example-workspace"
+    assert binding["targetRepositoryRevision"] == "0123456789abcdef0123456789abcdef01234567"
+    assert binding["sandboxPolicyId"] == "spec_harvester.trusted_local_adapter.local_sandbox.v0"
+    assert binding["sandboxPolicyVersion"] == "0.1.0"
+    assert binding["sandboxRunnerValidationDigest"] == linked["sandboxRunnerValidation"]["digest"]
+    assert binding["declaredOutputRoot"] == (
+        "tests/fixtures/repository_plugins/synthetic_sandbox_run"
+    )
+
+    assert payload["syntheticOutputRoot"] == {
+        "path": "tests/fixtures/repository_plugins/synthetic_sandbox_run",
+        "pathFormat": "posix_relative",
+        "parentSegmentsAllowed": False,
+        "absolutePathsAllowed": False,
+        "backslashAllowed": False,
+        "networkPathsAllowed": False,
+    }
+
+    outputs = {output["role"]: output for output in payload["syntheticOutputCandidates"]}
+    assert set(outputs) == {
+        "trusted_local_adapter_output",
+        "trusted_local_adapter_diagnostics",
+        "trusted_local_adapter_audit_record",
+    }
+    for output in outputs.values():
+        output_path = ROOT / output["path"]
+        assert output_path.exists()
+        output_bytes = output_path.read_bytes()
+        assert output["byteSize"] == len(output_bytes)
+        assert output["digest"] == "sha256:" + hashlib.sha256(output_bytes).hexdigest()
+        assert output["authority"] == "producer_adapter_output_candidate_evidence_only"
+        assert output["producerRunId"] == ("synthetic-trusted-local-adapter-sandbox-run-example")
+        assert output["adapterId"] == binding["adapterId"]
+        assert output["adapterDigest"] == binding["adapterDigest"]
+        assert output["diagnosticsStatus"] == "clean"
+        assert output["outputIsRegistryTruth"] is False
+        assert linked["sandboxContract"]["digest"] in output["sourceInputDigests"]
+        assert linked["sandboxPreflight"]["digest"] in output["sourceInputDigests"]
+        assert linked["sandboxRunnerValidation"]["digest"] in output["sourceInputDigests"]
+        assert_safe_relative_path(output["path"])
+
+    assert payload["auditRecord"]["required"] is True
+    assert payload["auditRecord"]["replayable"] is True
+    assert (
+        payload["auditRecord"]["digest"] == outputs["trusted_local_adapter_audit_record"]["digest"]
+    )
+    assert set(payload["auditRecord"]["requiredFields"]) == {
+        "operatorApproval",
+        "adapterPackageIdentity",
+        "sandboxPolicyIdentity",
+        "sandboxRunnerValidationDigest",
+        "inputArtifactDigests",
+        "syntheticOutputCandidateDigests",
+        "runtimeCounters",
+        "diagnostics",
+        "nonAuthorityStatements",
+    }
+    audit_record = json.loads((ROOT / payload["auditRecord"]["path"]).read_text(encoding="utf-8"))
+    assert set(payload["auditRecord"]["requiredFields"]) <= set(audit_record)
+    assert (
+        audit_record["sandboxRunnerValidationDigest"] == linked["sandboxRunnerValidation"]["digest"]
+    )
+    assert set(audit_record["inputArtifactDigests"]) == {
+        linked["sandboxContract"]["digest"],
+        linked["sandboxPreflight"]["digest"],
+        linked["sandboxRunnerValidation"]["digest"],
+    }
+    assert (
+        audit_record["syntheticOutputCandidateDigests"]["trusted_local_adapter_output"]
+        == outputs["trusted_local_adapter_output"]["digest"]
+    )
+    assert (
+        audit_record["syntheticOutputCandidateDigests"]["trusted_local_adapter_diagnostics"]
+        == outputs["trusted_local_adapter_diagnostics"]["digest"]
+    )
+    assert (
+        audit_record["syntheticOutputCandidateDigests"]["trusted_local_adapter_audit_record"]
+        == "external_envelope_digest_required"
+    )
+    assert audit_record["diagnostics"]["status"] == "clean"
+
+    assert payload["executionBoundary"] == {
+        "adapterExecution": "synthetic_fixture_only",
+        "realAdapterProcessSpawned": False,
+        "thirdPartyAdapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+        "networkAccess": "none",
+        "operatorApprovalIsReusable": False,
+        "syntheticRunIsRealExecutionPermission": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert {
+        "synthetic_sandbox_run_is_not_real_execution_permission",
+        "synthetic_adapter_output_is_not_registry_truth",
+        "operator_approval_fixture_is_not_reusable",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_real_adapters",
+        "does_not_run_real_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_sandbox_runner_validation_as_execution_permission",
+    }.issubset(set(payload["nonAuthorityStatements"]))
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Synthetic Sandbox Run Fixture",
+            "SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun",
+            "synthetic-trusted-local-adapter-sandbox-run.example.json",
+            "spec-harvester.synthetic-trusted-local-adapter-sandbox-run/v0",
+            "producer_synthetic_trusted_local_adapter_sandbox_run_only",
+            "producer-side review evidence only",
+            "without running a real adapter process",
+            "SpecHarvesterTrustedLocalAdapterSandboxContract",
+            "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport",
+            "SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport",
+            "approvalProvidedByFixture: true",
+            "approvedForRealAdapterExecution: false",
+            "approvalIsExecutionPermission: false",
+            "outputIsRegistryTruth: false",
+            "adapterExecution: synthetic_fixture_only",
+            "realAdapterProcessSpawned: false",
+            "thirdPartyAdapterCodeLoaded: false",
+            "executedAdapterCount: 0",
+            "dependencyInstallation: not_allowed",
+            "packageManagers: not_invoked",
+            "networkAccess: none",
+            "registryAuthority: false",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat synthetic adapter output as registry truth",
+            "does not treat sandbox runner validation as execution permission",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "realAdapterProcessSpawned: true",
+            "networkAccess: allowed",
+            "dependencyInstallation: allowed",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (runner_doc, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md"),
+        (runner_docc, "TrustedLocalAdapterSyntheticSandboxRunFixture"),
+        (sandbox_plan, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md"),
+        (sandbox_plan_docc, "TrustedLocalAdapterSyntheticSandboxRunFixture"),
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md"),
+        (docc_root, "TrustedLocalAdapterSyntheticSandboxRunFixture"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md"),
+        (capabilities_docc, "TrustedLocalAdapterSyntheticSandboxRunFixture"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md"),
+        (roadmap_docc, "TrustedLocalAdapterSyntheticSandboxRunFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def assert_safe_relative_path(path: str) -> None:
+    assert path
+    assert ".." not in path.split("/")
+    assert not path.startswith("/")
+    assert "\\" not in path
+    assert "://" not in path
 
 
 def test_trusted_local_adapter_run_request_fixture_is_documented() -> None:

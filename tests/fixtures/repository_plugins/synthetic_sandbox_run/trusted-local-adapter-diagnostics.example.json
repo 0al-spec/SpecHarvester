@@ -1,0 +1,23 @@
+{
+  "apiVersion": "spec-harvester.trusted-local-adapter-diagnostics/v0",
+  "kind": "SpecHarvesterTrustedLocalAdapterDiagnostics",
+  "schemaVersion": 1,
+  "authority": "producer_adapter_output_candidate_evidence_only",
+  "producerRunId": "synthetic-trusted-local-adapter-sandbox-run-example",
+  "status": "clean",
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "synthetic_fixture_only",
+      "message": "Synthetic diagnostics fixture records output shape without running a real adapter process."
+    }
+  ],
+  "runtimeCounters": {
+    "realAdapterProcessSpawned": false,
+    "thirdPartyAdapterCodeLoaded": false,
+    "executedAdapterCount": 0,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "networkAccess": "none"
+  }
+}

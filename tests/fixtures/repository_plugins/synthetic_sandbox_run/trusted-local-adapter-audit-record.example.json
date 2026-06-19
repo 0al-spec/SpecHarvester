@@ -1,0 +1,57 @@
+{
+    "apiVersion": "spec-harvester.trusted-local-adapter-audit-record/v0",
+    "kind": "SpecHarvesterTrustedLocalAdapterAuditRecord",
+    "schemaVersion": 1,
+    "authority": "producer_adapter_output_candidate_evidence_only",
+    "producerRunId": "synthetic-trusted-local-adapter-sandbox-run-example",
+    "operatorApproval": {
+        "status": "synthetic_approval_fixture_provided",
+        "approvalProvidedByFixture": true,
+        "approvedForRealAdapterExecution": false,
+        "approvalIsExecutionPermission": false,
+        "approvalIsRegistryAcceptance": false
+    },
+    "adapterPackageIdentity": {
+        "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+        "adapterDigest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40"
+    },
+    "sandboxPolicyIdentity": {
+        "policyId": "spec_harvester.trusted_local_adapter.local_sandbox.v0",
+        "policyVersion": "0.1.0",
+        "policyAuthority": "producer_sandbox_policy_review_evidence_only"
+    },
+    "sandboxRunnerValidationDigest": "sha256:a6eed05300f4d7af8273064571fc66585fb6a7fcddb872513891f725e4f09a63",
+    "inputArtifactDigests": [
+        "sha256:cd0534fd18c3fad3b871fce3c52103a577f55c8a897d048ee0e9bcaf6f813faf",
+        "sha256:97a1297d3d6e821d1860fc4b6a9455d007a6f0258a473c8fe954693ea44d727c",
+        "sha256:a6eed05300f4d7af8273064571fc66585fb6a7fcddb872513891f725e4f09a63"
+    ],
+    "syntheticOutputCandidateDigests": {
+        "trusted_local_adapter_output": "sha256:7356572f0dff750fde1830539bcf383897cb7f2649b2caefebc4a1f3a24ec45d",
+        "trusted_local_adapter_diagnostics": "sha256:4608679df2a6c42769944ba408fd1c9027702edd2a4c5faedfc978e221415214",
+        "trusted_local_adapter_audit_record": "external_envelope_digest_required"
+    },
+    "diagnostics": {
+        "status": "clean",
+        "digest": "sha256:4608679df2a6c42769944ba408fd1c9027702edd2a4c5faedfc978e221415214"
+    },
+    "reviewerQuestionsAnswered": [
+        "what_was_approved",
+        "what_was_read",
+        "what_was_written",
+        "why_output_remains_non_authoritative"
+    ],
+    "runtimeCounters": {
+        "realAdapterProcessSpawned": false,
+        "thirdPartyAdapterCodeLoaded": false,
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "networkAccess": "none"
+    },
+    "nonAuthorityStatements": [
+        "audit_record_is_not_execution_permission",
+        "audit_record_is_not_registry_acceptance",
+        "synthetic_adapter_output_is_not_registry_truth"
+    ]
+}

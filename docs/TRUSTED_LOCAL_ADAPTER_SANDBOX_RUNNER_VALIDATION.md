@@ -131,5 +131,7 @@ The sandbox runner validation report states that it:
 - P42-T3 defines
   [`SpecHarvesterTrustedLocalAdapterSandboxPreflightReport`](TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md).
 - P42-T4 adds this disabled no-execution sandbox runner validation.
-- P42-T5 should add an explicitly approved synthetic adapter run fixture only
-  after the disabled validation boundary is stable.
+- P42-T5 adds
+  [`SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun`](TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md)
+  as an explicitly approved synthetic adapter run fixture only after the
+  disabled validation boundary is stable.

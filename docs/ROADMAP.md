@@ -914,6 +914,12 @@ no-execution validation command that checks sandbox contract/preflight linkage
 and emits `SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport`
 without loading adapter code, spawning processes, installing dependencies,
 using network access, running AI, or granting registry authority.
+P42-T5 adds
+[`TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md)
+and the machine-readable `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun`
+fixture for explicitly approved synthetic run binding, synthetic output
+candidates, output digests, audit records, and review-only non-authority
+statements before any real adapter process execution.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
