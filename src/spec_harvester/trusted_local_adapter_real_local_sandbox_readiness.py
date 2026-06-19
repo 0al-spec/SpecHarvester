@@ -315,7 +315,19 @@ def check_operator_approval(payload: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("Verifier approval must not be registry acceptance")
     if approval.get("approvalIsReusableAcrossRepositories") is not False:
         raise ValueError("Verifier approval must not be reusable")
-    return object_value(approval.get("approvalBinding"), "verifier approvalBinding")
+    binding = object_value(approval.get("approvalBinding"), "verifier approvalBinding")
+    required = {
+        "adapterId",
+        "adapterDigest",
+        "targetRepositoryId",
+        "targetRepositoryRevision",
+        "sandboxPolicyId",
+        "sandboxPolicyVersion",
+    }
+    missing = required.difference(binding)
+    if missing:
+        raise ValueError(f"Verifier approvalBinding missing {sorted(missing)}")
+    return binding
 
 
 def check_verifier_execution_boundary(payload: dict[str, Any]) -> None:

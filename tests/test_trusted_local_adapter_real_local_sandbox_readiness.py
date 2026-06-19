@@ -217,6 +217,24 @@ def test_real_local_trusted_adapter_sandbox_readiness_rejects_approval_permissio
     assert result == 2
 
 
+def test_real_local_trusted_adapter_sandbox_readiness_rejects_bad_approval_binding(
+    tmp_path: Path,
+) -> None:
+    verifier = verifier_payload()
+    del verifier["operatorApproval"]["approvalBinding"]["adapterDigest"]
+    bad_verifier = write_json(tmp_path / "verifier.json", verifier)
+
+    result = main(
+        [
+            "real-local-trusted-adapter-sandbox-run-readiness",
+            "--verifier-report",
+            str(bad_verifier),
+        ]
+    )
+
+    assert result == 2
+
+
 def test_real_local_trusted_adapter_sandbox_readiness_rejects_output_truth_drift(
     tmp_path: Path,
 ) -> None:
