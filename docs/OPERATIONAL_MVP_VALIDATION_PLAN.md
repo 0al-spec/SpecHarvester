@@ -82,6 +82,11 @@ and the `SpecHarvesterOperationalMVPAuthorHandoffSummaries` fixture. The
 handoff shows authors what is valid, reviewable, needs manual correction, and
 must not be promoted.
 
+P43-T7 records the exit decision as
+[`OPERATIONAL_MVP_EXIT_REPORT.md`](OPERATIONAL_MVP_EXIT_REPORT.md) and the
+`SpecHarvesterOperationalMVPExitReport` fixture. The report selects
+`needs_quality_hardening` before broader autonomous popular-library scraping.
+
 ## Corpus
 
 The corpus is operator-selected and pinned. SpecHarvester must not clone or
@@ -205,6 +210,7 @@ Operational MVP validation is producer-side evidence. It does not:
 - [`OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md`](OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md)
 - [`OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md`](OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md)
 - [`OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md`](OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md)
+- [`OPERATIONAL_MVP_EXIT_REPORT.md`](OPERATIONAL_MVP_EXIT_REPORT.md)
 - [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_BAR.md`](AUTHOR_READY_DRAFT_QUALITY_BAR.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md)
