@@ -10,6 +10,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P39-T2 Static Plugin Evidence Envelope Fixture" in next_text:
+        assert_p39_t1_last_archived(next_text)
+        assert_p39_t1_recent(next_text)
+        assert_phase_39_t2_planned(next_text)
+        return
+
+    if "# Next Task: P39-T1 Static Repository Plugin Applicability Evaluator Plan" in next_text:
+        assert_phase_39_t1_planned(next_text)
+        return
+
     if "# Next Task: Phase 38 Complete" in next_text:
         assert_phase_38_complete(next_text)
         return
@@ -3598,6 +3608,86 @@ def assert_phase_38_complete(next_text: str) -> None:
     assert "publish registry metadata" in normalized
     assert "remove `preview_only`" in normalized
     assert "treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_39_t1_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P39-T1 Static Repository Plugin Applicability Evaluator Plan" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P39-T1-static-plugin-applicability-evaluator-plan`" in next_text
+    assert "Phase 39. Static Repository Plugin Applicability Evaluator" in next_text
+    assert "deterministic" in normalized
+    assert "static" in normalized
+    assert "SpecHarvesterRepositoryPluginApplicabilityReport" in next_text
+    for required in (
+        "harvest.json",
+        "workspace-inventory.json",
+        "repository-profile-detection.json",
+        "public-interface indexes",
+        "operator labels",
+    ):
+        assert required in next_text
+    for boundary in (
+        "load third-party plugin code",
+        "execute plugins",
+        "clone or fetch repositories",
+        "install dependencies",
+        "invoke package managers",
+        "execute harvested code",
+        "run AI",
+        "accept packages or relations",
+        "publish registry metadata",
+        "remove `preview_only`",
+        "treat plugin decisions as registry truth",
+    ):
+        assert boundary in normalized
+
+
+def assert_p39_t1_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P39-T1 Static Repository Plugin Applicability Evaluator Plan"
+        in next_text
+    )
+
+
+def assert_p39_t1_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P39-T1` documented the static repository plugin applicability evaluator plan"
+        in normalized
+    )
+    assert "STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md" in next_text
+    assert "SpecHarvesterRepositoryPluginApplicabilityReport" in next_text
+    assert "static evidence envelope" in normalized
+    assert "selected/rejected/fallback/blocked decisions" in normalized
+    assert "repository-plugin-applicability-detect" in next_text
+    assert "--repository-plugin-applicability" in next_text
+    assert "appliedToDrafting: false" in next_text
+    assert "registryAuthority: false" in next_text
+    assert "producer-side evidence" in normalized
+    assert "not registry truth" in normalized
+
+
+def assert_phase_39_t2_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P39-T2 Static Plugin Evidence Envelope Fixture" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P39-T2-static-plugin-evidence-envelope-fixture`" in next_text
+    assert "Phase 39. Static Repository Plugin Applicability Evaluator" in next_text
+    assert "machine-readable static plugin evidence envelope fixture" in normalized
+    assert "SpecHarvesterRepositoryPluginRegistry" in next_text
+    assert "SpecHarvesterRepositoryPluginApplicabilityReport" in next_text
+    assert "source manifest metadata" in normalized
+    assert "harvest.json" in next_text
+    assert "workspace-inventory.json" in next_text
+    assert "repository-profile-detection.json" in next_text
+    assert "public-interface indexes" in next_text
+    assert "operator labels" in next_text
+    assert "must not implement evaluator logic" in normalized
+    assert "must not add a CLI" in normalized
+    assert "must not execute plugins" in normalized
+    assert "must not run AI" in normalized
+    assert "must not accept packages or relations" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -14024,6 +14114,119 @@ def test_repository_plugin_real_run_fastmcp_fixture_and_docs() -> None:
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P38-T6` Run one real repository through the plugin subsystem evidence" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_static_repository_plugin_applicability_evaluator_plan_is_documented() -> None:
+    github_doc = ROOT / "docs" / "STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "StaticRepositoryPluginApplicabilityEvaluator.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    subsystem_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    subsystem_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    applicability_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_APPLICABILITY_REPORT_FIXTURE.md"
+    applicability_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginApplicabilityReportFixture.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Static Repository Plugin Applicability Evaluator",
+            "SpecHarvesterRepositoryPluginApplicabilityReport",
+            "SpecHarvesterRepositoryPluginRegistry",
+            "static evidence envelope",
+            "source manifest metadata",
+            "harvest.json",
+            "workspace-inventory.json",
+            "repository-profile-detection.json",
+            "public-interface indexes",
+            "operator labels",
+            "selectedPlugins[]",
+            "rejectedPlugins[]",
+            "fallbackPlugins[]",
+            "blockedPlugins[]",
+            "plugin_selected",
+            "plugin_rejected_low_confidence",
+            "plugin_fallback",
+            "plugin_blocked_required_evidence_missing",
+            "P39-T2",
+            "P39-T3",
+            "P39-T4",
+            "P39-T5",
+            "P39-T6",
+            "repository-plugin-applicability-detect",
+            "--repository-plugin-applicability",
+            "appliedToDrafting: false",
+            "registryAuthority: false",
+            "producer-side evidence",
+            "not registry truth",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "not a plugin runtime",
+            "does not load third-party plugin code",
+            "execute plugins",
+            "run package managers",
+            "install dependencies",
+            "execute harvested code",
+            "invoke AI",
+            "clone or fetch repositories",
+            "accept packages",
+            "accept relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "treat plugin decisions as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md"),
+        (docc_root, "docs/STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md"),
+        (docc_root, "<doc:StaticRepositoryPluginApplicabilityEvaluator>"),
+        (capabilities, "STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md"),
+        (capabilities_docc, "StaticRepositoryPluginApplicabilityEvaluator"),
+        (roadmap, "STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md"),
+        (roadmap_docc, "StaticRepositoryPluginApplicabilityEvaluator"),
+        (subsystem_doc, "STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md"),
+        (subsystem_docc, "StaticRepositoryPluginApplicabilityEvaluator"),
+        (applicability_doc, "STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md"),
+        (applicability_docc, "StaticRepositoryPluginApplicabilityEvaluator"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "## Phase 39. Static Repository Plugin Applicability Evaluator" in workplan_text
+    assert "`P39-T1` Document the static repository plugin applicability evaluator" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

@@ -88,3 +88,6 @@ registry truth.
   cross-ecosystem applicability examples.
 - `P38-T6`: record <doc:RepositoryPluginRealRunFastMCP> as a real FastMCP
   plugin evidence run through the same sidecar path.
+- `P39-T1`: record <doc:StaticRepositoryPluginApplicabilityEvaluator> as the
+  plan for deriving applicability reports from a static evidence envelope
+  instead of hand-authored sidecars.

@@ -772,6 +772,16 @@ The run shows current repository profile selection choosing
 `repositoryPluginApplicability` as sidecar evidence with
 `appliedToDrafting: false` and `registryAuthority: false`.
 
+Phase 39 starts with
+[`STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`](STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md).
+It plans a deterministic static evaluator that derives
+`SpecHarvesterRepositoryPluginApplicabilityReport` from a static evidence
+envelope rather than hand-authored sidecars. The evaluator remains
+producer-side evidence only: it does not load plugins, execute plugins, run
+package managers, install dependencies, invoke AI, accept packages or
+relations, publish registry metadata, remove `preview_only`, or treat plugin
+decisions as registry truth.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins must not clone or fetch repositories, install dependencies, execute
