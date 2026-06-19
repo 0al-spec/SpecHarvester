@@ -10,6 +10,7 @@ from spec_harvester.trusted_local_adapter_runner import (
     digest_string,
     object_value,
     path_reference_candidates,
+    path_reference_root,
     read_json_object,
     render_json,
 )
@@ -80,6 +81,7 @@ class TrustedLocalAdapterSandboxRunnerValidation:
         )
         contract_digest = digest_string(self.options.contract)
         preflight_digest = digest_string(self.options.preflight)
+        artifact_root = path_reference_root(self.options.contract, self.options.preflight)
 
         check_contract_identity(contract)
         check_contract_boundary(contract)
@@ -89,10 +91,12 @@ class TrustedLocalAdapterSandboxRunnerValidation:
             preflight,
             contract_path=self.options.contract,
             contract_digest=contract_digest,
+            reference_root=artifact_root,
         )
 
         contract_ref = artifact_reference(
             path=self.options.contract,
+            reference_root=artifact_root,
             digest=contract_digest,
             api_version=TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_API_VERSION,
             kind=TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_KIND,
@@ -101,6 +105,7 @@ class TrustedLocalAdapterSandboxRunnerValidation:
         )
         preflight_ref = artifact_reference(
             path=self.options.preflight,
+            reference_root=artifact_root,
             digest=preflight_digest,
             api_version=TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_API_VERSION,
             kind=TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_KIND,
@@ -280,6 +285,10 @@ def check_contract_boundary(payload: dict[str, Any]) -> None:
         raise ValueError("Sandbox contract executionBoundary adapterCodeLoaded must be false")
     if boundary.get("adapterProcessSpawned") is not False:
         raise ValueError("Sandbox contract executionBoundary adapterProcessSpawned must be false")
+    if type(boundary.get("executedAdapterCount")) is not int:
+        raise ValueError("Sandbox contract executionBoundary executedAdapterCount must be integer")
+    if boundary.get("executedAdapterCount") != 0:
+        raise ValueError("Sandbox contract executionBoundary executedAdapterCount must be 0")
     if boundary.get("registryAuthority") is not False:
         raise ValueError("Sandbox contract executionBoundary registryAuthority must be false")
     if boundary.get("sandboxContractIsExecutionPermission") is not False:
@@ -341,6 +350,7 @@ def check_preflight_contract_reference(
     *,
     contract_path: Path,
     contract_digest: str,
+    reference_root: Path,
 ) -> None:
     reference = object_value(payload.get("sandboxContract"), "sandbox preflight contract reference")
     if reference.get("kind") != TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_KIND:
@@ -351,7 +361,10 @@ def check_preflight_contract_reference(
         )
     if reference.get("digest") != contract_digest:
         raise ValueError("Sandbox preflight contract digest does not match contract artifact bytes")
-    if str(reference.get("path") or "") not in path_reference_candidates(contract_path):
+    if str(reference.get("path") or "") not in path_reference_candidates(
+        contract_path,
+        reference_root=reference_root,
+    ):
         raise ValueError("Sandbox preflight contract path does not reference supplied contract")
 
 

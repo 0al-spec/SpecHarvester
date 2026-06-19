@@ -172,6 +172,27 @@ def test_trusted_local_adapter_sandbox_runner_rejects_bad_preflight_identity(
     assert result == 2
 
 
+def test_trusted_local_adapter_sandbox_runner_rejects_executed_contract_boundary(
+    tmp_path: Path,
+) -> None:
+    contract = read_json(CONTRACT)
+    contract["executionBoundary"]["executedAdapterCount"] = 1
+    bad_contract = tmp_path / "contract.json"
+    write_json(bad_contract, contract)
+
+    result = main(
+        [
+            "trusted-local-adapter-sandbox-runner-validation",
+            "--contract",
+            str(bad_contract),
+            "--preflight",
+            str(PREFLIGHT),
+        ]
+    )
+
+    assert result == 2
+
+
 def test_trusted_local_adapter_sandbox_runner_rejects_contract_digest_mismatch(
     tmp_path: Path,
 ) -> None:
