@@ -1,57 +1,56 @@
-# Next Task: P40-T6 Repository Plugin Adapter Cross-Ecosystem Fixture Matrix
+# Next Task: P40-T7 Real Local Adapter-Contract Validation
 
-**Status:** In Progress
-**Branch:** `feature/P40-T6-repository-plugin-adapter-cross-ecosystem-fixture-matrix`
+**Status:** Planned
+**Branch:** `feature/P40-T7-real-local-adapter-contract-validation`
 **Phase:** Phase 40. Repository Plugin Adapter Contract
-**Last Archived:** P40-T5 Adapter Evidence Batch Integration
+**Last Archived:** P40-T6 Repository Plugin Adapter Cross-Ecosystem Fixture Matrix
 
 ## Recently Archived
 
-- `P40-T5` connected adapter manifest and preflight output to
-  `autonomous-candidate-batch` as review-only producer evidence.
-- The GitHub-facing batch documentation is
-  `docs/AUTONOMOUS_CANDIDATE_BATCH.md`.
+- `P40-T6` recorded a static cross-ecosystem adapter fixture matrix.
+- The GitHub-facing documentation is
+  `docs/REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md`.
 - The DocC mirror is
-  `Sources/SpecHarvester/Documentation.docc/AutonomousCandidateBatch.md`.
-- The batch now accepts explicit `--repository-plugin-adapter-manifest` and
-  `--repository-plugin-adapter-preflight` inputs.
-- Batch output records `repositoryPluginAdapterEvidence` with source paths,
-  copied paths, SHA-256 digests, adapter counts,
-  allowed/rejected/fallback/blocked counts, diagnostic codes,
-  `appliedToDrafting: false`, `registryAuthority: false`, and
-  `adapterExecution: not_run`.
-- The existing static evaluator path remains unchanged unless an operator
-  explicitly supplies adapter evidence.
-- Adapter evidence remains producer-side review-only evidence and does not
-  execute adapters or become registry truth.
+  `Sources/SpecHarvester/Documentation.docc/RepositoryPluginAdapterCrossEcosystemFixtureMatrix.md`.
+- The machine-readable fixture is
+  `tests/fixtures/repository_plugins/adapter_cross_ecosystem/adapter-fixture-matrix.example.json`.
+- The matrix covers:
+  - `manifest_backed_single_package`;
+  - `workspace_or_multi_package`;
+  - `documentation_heavy_repository`;
+  - `nested_package_roots`;
+  - `ambiguous_mixed_layout`.
+- Every case records `adapterExecution: not_run`,
+  `adapterCodeLoaded: false`, `appliedToDrafting: false`, and
+  `registryAuthority: false`.
+- The matrix remains producer-side review evidence only and does not load or
+  execute third-party adapter code.
 
 ## Task
 
-Record a cross-ecosystem adapter contract fixture matrix for manifest-backed
-single packages, workspaces, documentation-heavy repositories, nested package
-roots, and ambiguous mixed layouts without loading third-party adapter code.
+Run a real local adapter-contract validation over existing pinned checkouts,
+comparing FastMCP, FastAPI, xyflow, and at least one additional ecosystem shape
+when available, while proving that adapters remain producer-side evidence only.
 
 ## Why This Is Next
 
-P40-T5 gives batch runs a safe sidecar surface for adapter manifest and
-preflight evidence. The next gap is fixture breadth: before any real adapter
-runtime exists, the contract should demonstrate how the same manifest/preflight
-shape handles multiple repository layouts without becoming language- or
-framework-specific.
+P40-T6 proves the adapter contract against static matrix fixtures. The next
+step is to compare those expectations with real local repository evidence that
+already exists in the operator workspace, without turning adapters into a
+runtime execution path.
 
 ## Scope
 
-- Add a fixture matrix for adapter contract scenarios across repository shapes.
-- Cover manifest-backed single packages.
-- Cover workspace/package-set repositories.
-- Cover documentation-heavy repositories.
-- Cover nested package roots.
-- Cover ambiguous mixed layouts.
-- Record expected adapter manifest/preflight evidence for each case.
-- Record expected allowed, rejected, fallback, and blocked adapter decisions.
-- Keep all fixtures language- and framework-agnostic.
-- Keep all fixture decisions producer-side review evidence only.
-- Prove that no third-party adapter code is loaded or executed.
+- Use existing pinned local checkouts only.
+- Compare FastMCP, FastAPI, xyflow, and at least one additional ecosystem shape
+  when available.
+- Record adapter manifest/preflight evidence for each real checkout.
+- Compare real evidence shape against the P40-T6 fixture matrix categories.
+- Record allowed, rejected, fallback, and blocked adapter decisions.
+- Prove `adapterExecution: not_run`.
+- Prove `adapterCodeLoaded: false`.
+- Prove adapter output remains producer-side evidence only.
+- Document the validation result in GitHub docs and DocC.
 
 ## Non-Goals
 
@@ -95,7 +94,7 @@ framework-specific.
   `autonomous-candidate-batch` as review-only producer evidence while keeping
   the existing static evaluator path unchanged unless an operator explicitly
   supplies adapter evidence.
-- [ ] `P40-T6` Record a cross-ecosystem adapter contract fixture matrix for
+- [x] `P40-T6` Record a cross-ecosystem adapter contract fixture matrix for
   manifest-backed single packages, workspaces, documentation-heavy
   repositories, nested package roots, and ambiguous mixed layouts without
   loading third-party adapter code.
@@ -106,27 +105,27 @@ framework-specific.
 
 Motivation:
 
-- Adapter manifest, preflight, execution policy, and batch sidecar plumbing now
-  exist, but fixture coverage is still single-scenario.
-- Operators need to see how the adapter contract behaves across common
-  repository shapes before trusting it as a generic subsystem.
-- A matrix catches schema and policy assumptions without introducing runtime
-  adapter loading.
+- Fixture coverage is useful, but real local evidence can expose assumptions
+  that fixture-only validation misses.
+- The validation should compare real repository shapes to the static matrix
+  without adding an adapter runtime.
+- The next task should prove the adapter contract can guide future work while
+  keeping all output producer-side and review-only.
 
 Goal:
 
-- Provide a reviewable, machine-readable fixture matrix proving the adapter
-  contract can describe several repository shapes while remaining static,
-  language-neutral, and producer-side only.
+- Produce a documented real-checkout validation run that maps FastMCP,
+  FastAPI, xyflow, and one additional available ecosystem shape to adapter
+  contract categories while preserving the no-runtime boundary.
 
 Acceptance:
 
-- Fixture matrix covers single-package, workspace, documentation-heavy, nested
-  root, and ambiguous mixed layouts.
-- Each case records expected adapter manifest/preflight evidence.
-- Each case records allowed, rejected, fallback, and blocked decisions.
-- Each case records no adapter loading, no adapter execution, no package
+- Validation uses existing pinned local checkouts only.
+- Validation records FastMCP, FastAPI, xyflow, and one additional available
+  ecosystem shape.
+- Validation records adapter decisions and diagnostics for each case.
+- Validation records no adapter loading, no adapter execution, no package
   manager invocation, no dependency installation, no AI, no registry authority,
   and no accepted package/relation authority.
-- Documentation and DocC explain how the matrix fits after P40-T5 and before
-  P40-T7.
+- Documentation and DocC explain how the real run follows P40-T6 and keeps
+  adapter evidence producer-side only.

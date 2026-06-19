@@ -1656,7 +1656,7 @@ Acceptance:
   `autonomous-candidate-batch` as review-only producer evidence while keeping
   the existing static evaluator path unchanged unless an operator explicitly
   supplies adapter evidence.
-- [ ] `P40-T6` Record a cross-ecosystem adapter contract fixture matrix for
+- [x] `P40-T6` Record a cross-ecosystem adapter contract fixture matrix for
   manifest-backed single packages, workspaces, documentation-heavy
   repositories, nested package roots, and ambiguous mixed layouts without
   loading third-party adapter code.
