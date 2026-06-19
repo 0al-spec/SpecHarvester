@@ -19597,6 +19597,414 @@ def test_explicit_real_local_trusted_adapter_sandbox_run_request_fixture_is_docu
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
+def test_explicit_real_local_sandbox_run_request_preflight_fixture_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "explicit-real-local-trusted-adapter-sandbox-run-request-preflight.example.json"
+    )
+    request_fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "explicit-real-local-trusted-adapter-sandbox-run-request.example.json"
+    )
+    github_doc = (
+        ROOT
+        / "docs"
+        / "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md"
+    )
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture.md"
+    )
+    request_doc = (
+        ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_FIXTURE.md"
+    )
+    request_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestFixture.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    request_digest = "sha256:" + hashlib.sha256(request_fixture.read_bytes()).hexdigest()
+
+    assert (
+        payload["apiVersion"]
+        == "spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request-preflight/v0"
+    )
+    assert (
+        payload["kind"]
+        == "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport"
+    )
+    assert payload["schemaVersion"] == 1
+    assert (
+        payload["authority"]
+        == "producer_explicit_real_local_trusted_adapter_sandbox_run_request_preflight_only"
+    )
+    assert payload["contract"] == {
+        "purpose": (
+            "Validate an explicit real local trusted adapter sandbox run request before any future "
+            "adapter execution path without granting execution authority."
+        ),
+        "contractVersion": "0.1.0",
+        "requestAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only"
+        ),
+        "preflightAuthority": (
+            "producer_explicit_real_local_trusted_adapter_sandbox_run_request_preflight_only"
+        ),
+        "verifierAuthority": SYNTHETIC_SANDBOX_RUN_VERIFIER_AUTHORITY,
+        "readinessAuthority": REAL_LOCAL_SANDBOX_READINESS_AUTHORITY,
+        "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+        "defaultExecution": "disabled",
+        "preflightPassIsExecutionPermission": False,
+        "preflightPassIsOperatorApproval": False,
+        "preflightPassIsRegistryAuthority": False,
+    }
+
+    assert payload["request"] == {
+        "path": (
+            "tests/fixtures/repository_plugins/"
+            "explicit-real-local-trusted-adapter-sandbox-run-request.example.json"
+        ),
+        "digest": request_digest,
+        "apiVersion": ("spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request/v0"),
+        "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest",
+        "schemaVersion": 1,
+        "authority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only",
+        "digestVerified": True,
+    }
+    assert_safe_relative_path(payload["request"]["path"])
+
+    assert payload["result"] == {
+        "status": "passed",
+        "decision": "preflight_passed_review_only",
+        "preflightPassIsExecutionPermission": False,
+        "preflightPassIsOperatorApproval": False,
+        "preflightPassIsRegistryAuthority": False,
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert payload["validatedRequest"] == {
+        "apiVersion": ("spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request/v0"),
+        "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest",
+        "schemaVersion": 1,
+        "authority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only",
+        "requestId": "explicit-real-local-trusted-adapter-sandbox-run-request-example",
+        "verifierReportRequired": True,
+        "readinessReportRequired": True,
+        "approvalRequiredBeforeExecution": True,
+        "requestIsExecutionPermission": False,
+        "requestIsOperatorApproval": False,
+        "requestIsRegistryAuthority": False,
+        "adapterExecution": "not_run",
+        "readyForExecution": False,
+    }
+    assert payload["pathPolicy"] == {
+        "pathFormat": "posix_relative",
+        "parentSegmentsAllowed": False,
+        "absolutePathsAllowed": False,
+        "backslashAllowed": False,
+        "networkPathsAllowed": False,
+    }
+
+    expected_accepted = {
+        "request_identity_valid",
+        "verifier_report_requirement_present",
+        "readiness_report_requirement_present",
+        "operator_approval_scope_declared",
+        "request_does_not_self_approve_execution",
+        "adapter_package_identity_digest_pinned",
+        "target_repository_identity_pinned",
+        "sandbox_policy_identity_present",
+        "runtime_policy_declared_not_invoked",
+        "filesystem_output_policy_safe_relative",
+        "audit_policy_replayable",
+        "rollback_review_boundary_present",
+        "execution_boundary_review_only",
+        "non_authority_statements_present",
+    }
+    expected_rejected = {
+        "unsafe_parent_path_rejected",
+        "unsafe_absolute_path_rejected",
+        "unsafe_backslash_path_rejected",
+        "unsafe_network_path_rejected",
+        "missing_request_digest_rejected",
+        "request_digest_mismatch_rejected",
+        "missing_verifier_requirement_rejected",
+        "missing_readiness_requirement_rejected",
+        "verifier_status_not_passed_rejected",
+        "readiness_status_not_ready_rejected",
+        "missing_review_time_digest_rejected",
+        "reusable_approval_rejected",
+        "approval_provided_by_request_fixture_rejected",
+        "mutable_adapter_ref_rejected",
+        "network_access_rejected",
+        "dependency_installation_rejected",
+        "package_manager_invocation_rejected",
+        "missing_output_digest_requirement_rejected",
+        "adapter_output_registry_truth_rejected",
+        "missing_audit_requirement_rejected",
+    }
+    expected_blocked = {
+        "preflight_pass_execution_permission_blocked",
+        "request_execution_permission_blocked",
+        "operator_approval_by_preflight_blocked",
+        "adapter_code_loading_blocked",
+        "adapter_process_spawn_blocked",
+        "harvested_code_execution_blocked",
+        "ai_execution_blocked",
+        "registry_authority_requested_blocked",
+        "adapter_output_acceptance_blocked",
+    }
+    expected_warnings = {
+        "preflight_is_review_evidence_only",
+        "runtime_not_implemented",
+        "operator_approval_not_provided_by_fixture",
+    }
+
+    assert {check["code"] for check in payload["acceptedChecks"]} == expected_accepted
+    assert {check["code"] for check in payload["rejectedChecks"]} == expected_rejected
+    assert {check["code"] for check in payload["blockedChecks"]} == expected_blocked
+    assert {check["code"] for check in payload["warningChecks"]} == expected_warnings
+    for check in payload["acceptedChecks"]:
+        assert check["status"] == "passed"
+    for check in payload["rejectedChecks"]:
+        assert check["status"] == "rejected"
+    for check in payload["blockedChecks"]:
+        assert check["status"] == "blocked"
+    for check in payload["warningChecks"]:
+        assert check["status"] == "warning"
+
+    rejected_by_code = {check["code"]: check for check in payload["rejectedChecks"]}
+    assert rejected_by_code["unsafe_parent_path_rejected"]["examplePath"].startswith("../")
+    assert rejected_by_code["unsafe_absolute_path_rejected"]["examplePath"].startswith("/")
+    assert "\\" in rejected_by_code["unsafe_backslash_path_rejected"]["examplePath"]
+    assert "://" in rejected_by_code["unsafe_network_path_rejected"]["examplePath"]
+
+    assert payload["summary"] == {
+        "acceptedCount": len(expected_accepted),
+        "rejectedCount": len(expected_rejected),
+        "blockedCount": len(expected_blocked),
+        "warningCount": len(expected_warnings),
+        "diagnosticCount": 2,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplementedAdapterCount": 0,
+    }
+    assert payload["executionBoundary"] == {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeInvoked": False,
+        "runtimeImplemented": False,
+        "requestIsExecutionPermission": False,
+        "preflightPassIsExecutionPermission": False,
+        "preflightPassIsOperatorApproval": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert payload["diagnostics"] == [
+        {
+            "severity": "info",
+            "code": "explicit_real_local_sandbox_run_request_preflight_fixture",
+            "message": (
+                "Preflight fixture validates the P42-T8 request shape without loading adapter "
+                "code or spawning processes."
+            ),
+        },
+        {
+            "severity": "warning",
+            "code": "preflight_pass_is_not_execution_permission",
+            "message": (
+                "Passing preflight does not grant adapter execution authority, operator "
+                "approval, registry authority, or adapter output truth."
+            ),
+        },
+    ]
+
+    required_non_authority = {
+        "preflight_pass_is_not_execution_permission",
+        "preflight_pass_is_not_operator_approval",
+        "request_fixture_is_not_execution_permission",
+        "request_fixture_is_not_operator_approval",
+        "synthetic_run_verifier_is_not_execution_permission",
+        "readiness_gate_is_not_execution_permission",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_real_adapters",
+        "does_not_run_real_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_use_network",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_synthetic_adapter_output_as_registry_truth",
+        "does_not_treat_request_as_execution_permission",
+        "does_not_treat_preflight_as_execution_permission",
+        "does_not_grant_registry_authority",
+    }
+    assert required_non_authority == set(payload["nonAuthorityStatements"])
+    assert payload["followUp"] == {
+        "explicitRealLocalSandboxRunRequestTask": "P42-T8",
+        "realLocalSandboxRunnerImplementationTask": (
+            "deferred_until_after_request_preflight_review"
+        ),
+        "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_review",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Explicit Real Local Sandbox Run Request Preflight Fixture",
+            "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport",
+            "explicit-real-local-trusted-adapter-sandbox-run-request-preflight.example.json",
+            "spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request-preflight/v0",
+            "producer_explicit_real_local_trusted_adapter_sandbox_run_request_preflight_only",
+            "defaultExecution: disabled",
+            "preflightPassIsExecutionPermission: false",
+            "preflightPassIsOperatorApproval: false",
+            "preflightPassIsRegistryAuthority: false",
+            "explicit-real-local-trusted-adapter-sandbox-run-request.example.json",
+            request_digest,
+            "requestIsExecutionPermission: false",
+            "requestIsOperatorApproval: false",
+            "requestIsRegistryAuthority: false",
+            "adapterExecution: not_run",
+            "readyForExecution: false",
+            "SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport",
+            "SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport",
+            "scoped operator approval binding",
+            "no request self-approval",
+            "runtime policy declared but not invoked",
+            "POSIX relative filesystem/output policy",
+            "replayable audit policy",
+            "unsafe parent paths",
+            "absolute paths",
+            "backslash paths",
+            "network paths",
+            "adapter code loading",
+            "adapter process spawning",
+            "harvested-code execution",
+            "AI execution",
+            "adapterCodeLoaded: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "runtimeInvoked: false",
+            "runtimeImplemented: false",
+            "registryAuthority: false",
+            "adapterOutputAccepted: false",
+            "does not load third-party adapter code",
+            "does not run adapter processes",
+            "does not install dependencies",
+            "does not invoke package managers",
+            "does not execute harvested repository code",
+            "does not run AI",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "does not treat preflight as execution permission",
+            "P42-T6",
+            "P42-T7",
+            "P42-T8",
+            "P42-T9",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "preflightPassIsExecutionPermission: true",
+            "preflightPassIsOperatorApproval: true",
+            "preflightPassIsRegistryAuthority: true",
+            "adapterCodeLoaded: true",
+            "adapterProcessSpawned: true",
+            "runtimeInvoked: true",
+            "readyForExecution: true",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (
+            request_doc,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md",
+        ),
+        (request_docc, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture"),
+        (
+            sandbox_plan,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md",
+        ),
+        (
+            sandbox_plan_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture",
+        ),
+        (
+            docs_index,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md",
+        ),
+        (docc_root, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture"),
+        (
+            capabilities,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md",
+        ),
+        (
+            capabilities_docc,
+            "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture",
+        ),
+        (
+            roadmap,
+            "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md",
+        ),
+        (roadmap_docc, "TrustedLocalAdapterExplicitRealLocalSandboxRunRequestPreflightFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_trusted_local_adapter_run_request_fixture_is_documented() -> None:
     fixture = (
         ROOT

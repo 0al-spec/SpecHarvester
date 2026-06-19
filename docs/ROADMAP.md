@@ -944,6 +944,15 @@ P42-T7 readiness evidence at review time, declares scoped approval plus
 runtime/output/audit policy, and still keeps `requestIsExecutionPermission:
 false`, `adapterExecution: not_run`, `runtimeInvoked: false`, and
 `registryAuthority: false`.
+P42-T9 adds
+[`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md)
+and the machine-readable
+`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport`
+fixture. It validates the P42-T8 request identity/digest,
+verifier/readiness requirements, approval scope, runtime/output/audit policy,
+rejected unsafe shapes, blocked execution drift, and keeps
+`preflightPassIsExecutionPermission: false`, `runtimeInvoked: false`, and
+`registryAuthority: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
