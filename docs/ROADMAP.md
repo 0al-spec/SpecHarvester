@@ -877,9 +877,16 @@ P41-T5 connects the runner report to
 `trustedLocalAdapterRunEvidence` with source/copied SHA-256 digests,
 `adapterExecution: not_run`, `adapterCodeLoaded: false`,
 `adapterProcessSpawned: false`, `executedAdapterCount: 0`,
-`appliedToDrafting: false`, and `registryAuthority: false`. The remaining
-follow-up is real local readiness validation over FastMCP, FastAPI, xyflow, and
-Gin.
+`appliedToDrafting: false`, and `registryAuthority: false`.
+P41-T6 records
+[`TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md`](TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md)
+and
+`tests/fixtures/repository_plugins/trusted_local_adapter_real_runs/p41-t6-real-local-trusted-adapter-readiness-validation.example.json`
+as a real local readiness run over FastMCP, FastAPI, xyflow, and Gin. The run
+proves the batch handoff remains explicit review evidence with
+`adapterProcessSpawned: false`, `executedAdapterCount: 0`, no dependency
+installation, no package manager invocation, no network discovery, no harvested
+code execution, and no AI execution caused by the adapter sidecar.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

@@ -116,6 +116,10 @@ Published DocC site:
    `SpecHarvesterTrustedLocalAdapterRunReport` no-execution report for
    validating request/preflight linkage without loading adapter code or
    running adapter processes
+34. [`TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md`](TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md):
+   P41-T6 real local readiness validation over FastMCP, FastAPI, xyflow, and
+   Gin pinned checkouts, proving the trusted local adapter handoff remains
+   explicit review evidence with `adapterExecution: not_run`
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

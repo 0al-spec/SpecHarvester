@@ -1723,7 +1723,7 @@ Acceptance:
 - [x] `P41-T5` Connect trusted local adapter run reports to
   `autonomous-candidate-batch` as explicit review-only producer evidence while
   preserving the default static evaluator and existing adapter sidecar paths.
-- [ ] `P41-T6` Run a real local trusted-adapter readiness validation over
+- [x] `P41-T6` Run a real local trusted-adapter readiness validation over
   existing pinned checkouts, comparing FastMCP, FastAPI, xyflow, and Gin while
   proving no adapter process, package manager, dependency installer, network
   discovery, harvested code, or AI execution occurred.

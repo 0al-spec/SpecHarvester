@@ -17,6 +17,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: Phase 41 Complete" in next_text:
+        assert_p41_t6_last_archived(next_text)
+        assert_p41_t6_recent(next_text)
+        assert_phase_41_complete(next_text)
+        return
+
     if "# Next Task: P41-T6 Real Local Trusted-Adapter Readiness Validation" in next_text:
         assert_p41_t5_last_archived(next_text)
         assert_p41_t5_recent(next_text)
@@ -4712,7 +4718,7 @@ def assert_p41_t5_recent(next_text: str) -> None:
 def assert_phase_41_t6_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P41-T6 Real Local Trusted-Adapter Readiness Validation" in next_text
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
     assert "`feature/P41-T6-real-local-trusted-adapter-readiness-validation`" in next_text
     assert "Phase 41. Trusted Local Adapter Runtime Readiness" in next_text
     assert "FastMCP, FastAPI, xyflow, and Gin" in normalized
@@ -4729,6 +4735,46 @@ def assert_phase_41_t6_planned(next_text: str) -> None:
     assert "Do not clone or fetch repositories" in normalized
     assert "Do not remove `preview_only`" in normalized
     assert "Do not treat adapter output or runner reports as registry truth" in normalized
+
+
+def assert_p41_t6_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P41-T6 Real Local Trusted-Adapter Readiness Validation" in (
+        next_text
+    )
+
+
+def assert_p41_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P41-T6` recorded real local trusted-adapter readiness validation" in normalized
+    assert "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md" in next_text
+    assert "TrustedLocalAdapterRealLocalReadinessValidation.md" in next_text
+    assert "FastMCP, FastAPI, xyflow, and Gin" in normalized
+    assert "trustedLocalAdapterRunEvidence" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "executedAdapterCount: 0" in normalized
+    assert "registryAuthority: false" in normalized
+
+
+def assert_phase_41_complete(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: Phase 41 Complete" in next_text
+    assert "**Status:** Complete" in next_text
+    assert "Phase 41. Trusted Local Adapter Runtime Readiness" in next_text
+    assert "explicit operator opt-in" in normalized
+    assert "trusted local adapter run request" in normalized
+    assert "trusted local adapter run preflight" in normalized
+    assert "disabled no-execution runner skeleton" in normalized
+    assert "review-only batch evidence handoff" in normalized
+    assert "real local readiness validation" in normalized
+    assert "Future runtime work must preserve sandboxed process execution" in normalized
+    assert "adapter package distribution" in normalized
+    assert "dependency isolation" in normalized
+    assert "output verification" in normalized
+    assert "operator approval" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "registryAuthority: false" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -16974,6 +17020,298 @@ def test_trusted_local_adapter_runtime_readiness_plan_is_documented() -> None:
     assert "`P41-T5` Connect trusted local adapter run reports" in workplan_text
     assert "`P41-T6` Run a real local trusted-adapter readiness validation" in (workplan_text)
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_trusted_local_adapter_real_local_readiness_validation_fixture_and_docs() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted_local_adapter_real_runs"
+        / "p41-t6-real-local-trusted-adapter-readiness-validation.example.json"
+    )
+    p40_real_validation = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "adapter_real_runs"
+        / "p40-t7-real-local-adapter-contract-validation.example.json"
+    )
+    request = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-run-request.example.json"
+    )
+    preflight = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-run-preflight-report.example.json"
+    )
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRealLocalReadinessValidation.md"
+    )
+    readiness_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"
+    readiness_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeReadiness.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == (
+        "spec-harvester.trusted-local-adapter-real-local-readiness-validation/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterTrustedLocalAdapterRealLocalReadinessValidation"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_trusted_local_adapter_real_validation_only"
+    assert payload["task"] == "P41-T6"
+    assert payload["sourceMode"] == "existing_pinned_local_checkouts_only"
+    assert payload["runMode"] == "disabled_runner_skeleton_batch_handoff"
+    assert payload["sourceManifest"]["persistedInRepository"] is False
+    assert payload["sourceManifest"]["absoluteCheckoutPathsPersisted"] is False
+    assert payload["sourceManifest"]["digest"].startswith("sha256:")
+    assert len(payload["sourceManifest"]["digest"]) == len("sha256:") + 64
+
+    assert payload["contractReferences"]["adapterContractValidation"] == {
+        "path": (
+            "tests/fixtures/repository_plugins/adapter_real_runs/"
+            "p40-t7-real-local-adapter-contract-validation.example.json"
+        ),
+        "digest": f"sha256:{hashlib.sha256(p40_real_validation.read_bytes()).hexdigest()}",
+        "kind": "SpecHarvesterRepositoryPluginAdapterRealLocalValidation",
+        "authority": "producer_plugin_adapter_real_validation_only",
+    }
+    assert payload["contractReferences"]["trustedRunRequest"] == {
+        "path": "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json",
+        "digest": f"sha256:{hashlib.sha256(request.read_bytes()).hexdigest()}",
+        "kind": "SpecHarvesterTrustedLocalAdapterRunRequest",
+        "authority": "producer_trusted_local_adapter_run_request_only",
+    }
+    assert payload["contractReferences"]["trustedRunPreflight"] == {
+        "path": (
+            "tests/fixtures/repository_plugins/"
+            "trusted-local-adapter-run-preflight-report.example.json"
+        ),
+        "digest": f"sha256:{hashlib.sha256(preflight.read_bytes()).hexdigest()}",
+        "kind": "SpecHarvesterTrustedLocalAdapterRunPreflightReport",
+        "authority": "producer_trusted_local_adapter_run_preflight_only",
+    }
+
+    run_report = payload["trustedLocalAdapterRunReport"]
+    assert run_report["kind"] == "SpecHarvesterTrustedLocalAdapterRunReport"
+    assert run_report["authority"] == "producer_trusted_local_adapter_run_report_only"
+    assert run_report["runStatus"] == "no_execution_report_emitted"
+    assert run_report["sourceDigest"] == run_report["copiedDigest"]
+    assert run_report["sourceDigest"].startswith("sha256:")
+    assert len(run_report["sourceDigest"]) == len("sha256:") + 64
+    assert run_report["runner"] == {
+        "mode": "disabled_no_execution_skeleton",
+        "enabled": False,
+        "runtimeImplemented": False,
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterCodeImportAttempted": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "networkAccess": "none",
+        "harvestedCodeExecution": "not_allowed",
+        "aiExecution": "not_run",
+    }
+    assert run_report["executionBoundary"] == {
+        "requestIsExecutionPermission": False,
+        "preflightPassIsExecutionPermission": False,
+        "runnerReportIsExecutionPermission": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+
+    handoff = payload["batchEvidenceHandoff"]
+    assert handoff["status"] == "passed"
+    assert handoff["trustedLocalAdapterRunEvidenceStatus"] == "recorded"
+    assert handoff["trustedLocalAdapterRunEvidenceSidecarCount"] == 1
+    assert handoff["sourceMode"] == "explicit_sidecar"
+    assert handoff["staticEvaluatorPathChanged"] is False
+    for key in (
+        "appliedToDrafting",
+        "registryAuthority",
+        "adapterCodeLoaded",
+        "adapterProcessSpawned",
+    ):
+        assert handoff[key] is False
+    assert handoff["adapterExecution"] == "not_run"
+    assert handoff["executedAdapterCount"] == 0
+    assert handoff["repositoryPluginApplicabilityStatus"] == "not_provided"
+    assert handoff["repositoryPluginAdapterEvidenceStatus"] == "not_provided"
+
+    summary = payload["summary"]
+    assert summary["repositoryCount"] == 4
+    assert summary["availableCheckoutCount"] == 4
+    assert summary["skippedCheckoutCount"] == 0
+    assert summary["processedCount"] == 4
+    assert summary["passedPreflightCount"] == 4
+    assert summary["trustedLocalAdapterRunEvidenceSidecarCount"] == 1
+    assert summary["candidateCount"] == 7
+    assert summary["relationCount"] == 3
+    for counter in (
+        "adapterProcessSpawnedCount",
+        "adapterCodeLoadedCount",
+        "executedAdapterCount",
+        "dependencyInstallationCount",
+        "packageManagerInvocationCount",
+        "networkDiscoveryCount",
+        "harvestedCodeExecutionCount",
+        "aiExecutionCount",
+        "appliedToDraftingCount",
+        "registryAuthorityCount",
+    ):
+        assert summary[counter] == 0
+
+    repositories = {record["repositoryId"]: record for record in payload["repositories"]}
+    assert set(repositories) == {"fastmcp", "fastapi", "xyflow", "gin"}
+    assert {record["shape"] for record in repositories.values()} == {
+        "nested_package_roots",
+        "documentation_heavy_repository",
+        "workspace_or_multi_package",
+        "manifest_backed_single_package",
+    }
+    expected_revisions = {
+        "fastmcp": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+        "fastapi": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "xyflow": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+        "gin": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+    }
+    total_candidates = 0
+    total_relations = 0
+    for repository_id, record in repositories.items():
+        checkout = record["checkout"]
+        assert checkout["status"] == "available"
+        assert checkout["absolutePathPersisted"] is False
+        assert checkout["pathHint"].startswith("../")
+        assert not checkout["pathHint"].startswith("/")
+        assert checkout["expectedRevision"] == expected_revisions[repository_id]
+        assert checkout["observedRevision"] == expected_revisions[repository_id]
+        assert checkout["worktreeChangeCount"] == 0
+
+        batch = record["batchResult"]
+        assert batch["status"] == "passed"
+        assert batch["preflightStatus"] == "passed"
+        assert batch["authorReadyDecision"] == "stop_for_author_review"
+        assert batch["aiDraftStatus"] == "skipped"
+        assert batch["aiSkippedReason"] == "ai_disabled_by_operator"
+        total_candidates += batch["candidateCount"]
+        total_relations += batch["relationCount"]
+
+        boundary = record["executionBoundary"]
+        assert boundary["adapterExecution"] == "not_run"
+        assert boundary["adapterCodeLoaded"] is False
+        assert boundary["adapterProcessSpawned"] is False
+        assert boundary["executedAdapterCount"] == 0
+        assert boundary["dependencyInstallation"] == "not_allowed"
+        assert boundary["packageManagers"] == "not_invoked"
+        assert boundary["networkAccess"] == "none"
+        assert boundary["harvestedCodeExecution"] == "not_allowed"
+        assert boundary["aiExecution"] == "not_run"
+        assert boundary["appliedToDrafting"] is False
+        assert boundary["registryAuthority"] is False
+
+    assert total_candidates == summary["candidateCount"] == 7
+    assert total_relations == summary["relationCount"] == 3
+    assert payload["skipped"] == []
+    for statement in (
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_run_adapter_processes",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_change_static_plugin_applicability_evaluation",
+        "does_not_change_autonomous_batch_behavior",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_adapter_preflight_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth",
+        "does_not_treat_runner_reports_as_registry_truth",
+    ):
+        assert statement in payload["nonAuthorityStatements"]
+    assert payload["remainingRuntimeGap"]["realAdapterExecutionImplemented"] is False
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Real Local Readiness Validation",
+            "SpecHarvesterTrustedLocalAdapterRunReport",
+            "p41-t6-real-local-trusted-adapter-readiness-validation.example.json",
+            "FastMCP",
+            "FastAPI",
+            "xyflow",
+            "Gin",
+            "nested_package_roots",
+            "documentation_heavy_repository",
+            "workspace_or_multi_package",
+            "manifest_backed_single_package",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "dependencyInstallation: not_allowed",
+            "packageManagers: not_invoked",
+            "networkAccess: none",
+            "harvestedCodeExecution: not_allowed",
+            "aiExecution: not_run",
+            "appliedToDrafting: false",
+            "registryAuthority: false",
+            "producer-side readiness evidence only",
+            "Remaining Runtime Gap",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+
+    for path, required in (
+        (readiness_doc, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md"),
+        (readiness_docc, "TrustedLocalAdapterRealLocalReadinessValidation"),
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md"),
+        (docc_root, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md"),
+        (capabilities_docc, "TrustedLocalAdapterRealLocalReadinessValidation"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_READINESS_VALIDATION.md"),
+        (roadmap_docc, "TrustedLocalAdapterRealLocalReadinessValidation"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
 
 
 def test_trusted_local_adapter_run_request_fixture_is_documented() -> None:
