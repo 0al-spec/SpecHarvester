@@ -756,9 +756,15 @@ applicability report to
 and records path, digest, authority, summary counts, and diagnostic codes while
 keeping `appliedToDrafting: false` and `registryAuthority: false`.
 
-Follow-ups after the batch sidecar integration:
+P38-T5 adds a cross-ecosystem static fixture matrix in
+[`REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md)
+and `tests/fixtures/repository_plugins/cross_ecosystem/`. The matrix covers
+manifest-backed single-package, workspace, documentation-heavy, nested package
+root, and ambiguous mixed repository shapes while keeping plugin applicability
+producer-side and language/framework agnostic.
 
-- `P38-T5`: add cross-ecosystem plugin subsystem fixtures;
+Follow-up after the cross-ecosystem fixture matrix:
+
 - `P38-T6`: run one real repository through the plugin subsystem evidence
   path and compare it with the Phase 37 profile selection behavior.
 

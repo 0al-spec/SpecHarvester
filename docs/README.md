@@ -49,6 +49,10 @@ Published DocC site:
    machine-readable `SpecHarvesterRepositoryPluginApplicabilityReport` fixture
    shape for selected, rejected, fallback, and blocked plugin decisions from
    static evidence
+18. [`REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md):
+   cross-ecosystem repository plugin applicability fixture matrix for single
+   package, workspace, documentation-heavy, nested, and ambiguous repository
+   shapes
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
