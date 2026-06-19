@@ -154,6 +154,13 @@ records the P40-T1 adapter contract for future manifest, preflight, execution
 policy, sandbox, and review-only output evidence layers.
 [`REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md`](REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md)
 records the P40-T2 `SpecHarvesterRepositoryPluginAdapterManifest` fixture.
+[`REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md`](REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md)
+and
+[`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md)
+record the P40-T5 opt-in batch sidecar path for adapter manifest/preflight
+evidence as `repositoryPluginAdapterEvidence` with copied paths, SHA-256
+digests, allowed/rejected/fallback/blocked counts, `appliedToDrafting: false`,
+`registryAuthority: false`, and `adapterExecution: not_run`.
 [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md) records
 the first practical profile run. The profile keeps documentation, tutorials,
 examples, and tests available as semantic usage

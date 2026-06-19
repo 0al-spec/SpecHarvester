@@ -84,6 +84,11 @@ Published DocC site:
    disabled-by-default repository plugin adapter execution policy with
    `static_only`, future `trusted_local_tool`, path allowlist, operator
    opt-in, and deny-by-default capability rules
+27. [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md):
+   P40-T5 opt-in repository plugin adapter evidence integration through
+   `--repository-plugin-adapter-manifest` and
+   `--repository-plugin-adapter-preflight`, preserving review-only producer
+   authority and `adapterExecution: not_run`
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

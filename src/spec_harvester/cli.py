@@ -369,6 +369,24 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     autonomous_candidate_batch.add_argument(
+        "--repository-plugin-adapter-manifest",
+        type=Path,
+        help=(
+            "Optional SpecHarvesterRepositoryPluginAdapterManifest JSON used with "
+            "--repository-plugin-adapter-preflight to copy adapter evidence into "
+            "batch output as review-only producer evidence."
+        ),
+    )
+    autonomous_candidate_batch.add_argument(
+        "--repository-plugin-adapter-preflight",
+        type=Path,
+        help=(
+            "Optional SpecHarvesterRepositoryPluginAdapterPreflightReport JSON used with "
+            "--repository-plugin-adapter-manifest to copy adapter evidence into batch output "
+            "without loading or executing adapters."
+        ),
+    )
+    autonomous_candidate_batch.add_argument(
         "--role-profile",
         choices=tuple(PACKAGE_SET_ROLE_PROFILES),
         default=DEFAULT_AUTONOMOUS_ROLE_PROFILE,
@@ -1622,6 +1640,8 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 repository_plugin_static_evidence_envelope=(
                     args.repository_plugin_static_evidence_envelope
                 ),
+                repository_plugin_adapter_manifest=args.repository_plugin_adapter_manifest,
+                repository_plugin_adapter_preflight=args.repository_plugin_adapter_preflight,
             )
         )
     except ValueError as exc:

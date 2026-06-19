@@ -189,14 +189,17 @@ review.
 
 ## Autonomous Batch Boundary
 
-P40-T5 may connect adapter manifest and preflight output to
-`autonomous-candidate-batch` as sidecar producer evidence. That integration
-must preserve existing behavior unless an operator explicitly supplies adapter
-evidence.
+P40-T5 connects adapter manifest and preflight output to
+`autonomous-candidate-batch` as sidecar producer evidence through
+`--repository-plugin-adapter-manifest` and
+`--repository-plugin-adapter-preflight`. That integration preserves existing
+behavior unless an operator explicitly supplies adapter evidence. The batch
+report field is `repositoryPluginAdapterEvidence`.
 
-The batch path must record adapter manifest path and digest, preflight path and
-digest, selected/blocked adapter counts, `appliedToDrafting`,
-`registryAuthority: false`, and diagnostics.
+The batch path records adapter manifest path and digest, preflight path and
+digest, selected/rejected/fallback/blocked adapter counts, diagnostic counts
+and diagnostic codes, `appliedToDrafting: false`, `registryAuthority: false`,
+and `adapterExecution: not_run`.
 
 ## Planned Follow-Ups
 

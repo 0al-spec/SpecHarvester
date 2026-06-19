@@ -1,53 +1,57 @@
-# Next Task: P40-T5 Adapter Evidence Batch Integration
+# Next Task: P40-T6 Repository Plugin Adapter Cross-Ecosystem Fixture Matrix
 
 **Status:** Planned
-**Branch:** `feature/P40-T5-adapter-evidence-batch-integration`
+**Branch:** `feature/P40-T6-repository-plugin-adapter-cross-ecosystem-fixture-matrix`
 **Phase:** Phase 40. Repository Plugin Adapter Contract
-**Last Archived:** P40-T4 Adapter Execution Policy
+**Last Archived:** P40-T5 Adapter Evidence Batch Integration
 
 ## Recently Archived
 
-- `P40-T4` documented the disabled-by-default repository plugin adapter
-  execution policy.
-- The GitHub-facing documentation is
-  `docs/REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md`.
+- `P40-T5` connected adapter manifest and preflight output to
+  `autonomous-candidate-batch` as review-only producer evidence.
+- The GitHub-facing batch documentation is
+  `docs/AUTONOMOUS_CANDIDATE_BATCH.md`.
 - The DocC mirror is
-  `Sources/SpecHarvester/Documentation.docc/RepositoryPluginAdapterExecutionPolicy.md`.
-- The policy defines `disabled`, `static_only`, `trusted_local_tool`, and
-  `blocked` execution modes.
-- `static_only` remains the only current safe mode.
-- Future `trusted_local_tool` requires explicit operator opt-in, path
-  allowlists, bounded resources, output digests, and denied ambient
-  capabilities.
-- The policy records deny-by-default rules: no dependency installation, no
-  package manager invocation, no network discovery, no harvested code
-  execution, no AI/model execution, and no registry write.
-- Adapter output remains producer-side review evidence only.
+  `Sources/SpecHarvester/Documentation.docc/AutonomousCandidateBatch.md`.
+- The batch now accepts explicit `--repository-plugin-adapter-manifest` and
+  `--repository-plugin-adapter-preflight` inputs.
+- Batch output records `repositoryPluginAdapterEvidence` with source paths,
+  copied paths, SHA-256 digests, adapter counts,
+  allowed/rejected/fallback/blocked counts, diagnostic codes,
+  `appliedToDrafting: false`, `registryAuthority: false`, and
+  `adapterExecution: not_run`.
+- The existing static evaluator path remains unchanged unless an operator
+  explicitly supplies adapter evidence.
+- Adapter evidence remains producer-side review-only evidence and does not
+  execute adapters or become registry truth.
 
 ## Task
 
-Connect adapter manifest and preflight output to `autonomous-candidate-batch`
-as review-only producer evidence.
+Record a cross-ecosystem adapter contract fixture matrix for manifest-backed
+single packages, workspaces, documentation-heavy repositories, nested package
+roots, and ambiguous mixed layouts without loading third-party adapter code.
 
 ## Why This Is Next
 
-P40-T2 defines adapter manifests, P40-T3 defines adapter preflight reports, and
-P40-T4 defines execution policy. The next step is to let batch output carry
-operator-supplied adapter evidence as sidecar review data while keeping the
-existing static evaluator path unchanged by default.
+P40-T5 gives batch runs a safe sidecar surface for adapter manifest and
+preflight evidence. The next gap is fixture breadth: before any real adapter
+runtime exists, the contract should demonstrate how the same manifest/preflight
+shape handles multiple repository layouts without becoming language- or
+framework-specific.
 
 ## Scope
 
-- Add an opt-in batch evidence path for adapter manifest and preflight output.
-- Keep the existing static evaluator path unchanged unless an operator
-  explicitly supplies adapter evidence.
-- Record adapter manifest path and digest in batch output.
-- Record adapter preflight path and digest in batch output.
-- Record selected, rejected, fallback, and blocked adapter counts.
-- Record `appliedToDrafting: false`.
-- Record `registryAuthority: false`.
-- Record diagnostics as review-only producer evidence.
-- Keep adapter output producer-side evidence only.
+- Add a fixture matrix for adapter contract scenarios across repository shapes.
+- Cover manifest-backed single packages.
+- Cover workspace/package-set repositories.
+- Cover documentation-heavy repositories.
+- Cover nested package roots.
+- Cover ambiguous mixed layouts.
+- Record expected adapter manifest/preflight evidence for each case.
+- Record expected allowed, rejected, fallback, and blocked adapter decisions.
+- Keep all fixtures language- and framework-agnostic.
+- Keep all fixture decisions producer-side review evidence only.
+- Prove that no third-party adapter code is loaded or executed.
 
 ## Non-Goals
 
@@ -87,7 +91,7 @@ existing static evaluator path unchanged by default.
   path allowlists, no dependency installation, no package manager invocation,
   no network discovery, no harvested code execution, and explicit operator
   opt-in for every non-static mode.
-- [ ] `P40-T5` Connect adapter manifest and preflight output to
+- [x] `P40-T5` Connect adapter manifest and preflight output to
   `autonomous-candidate-batch` as review-only producer evidence while keeping
   the existing static evaluator path unchanged unless an operator explicitly
   supplies adapter evidence.
@@ -102,25 +106,27 @@ existing static evaluator path unchanged by default.
 
 Motivation:
 
-- Adapter manifests, preflight, and execution policy are now documented, but
-  batch output cannot yet carry adapter evidence in a structured way.
-- Operators need an explicit opt-in sidecar path before future real validation
-  can compare adapter evidence across repositories.
-- Batch integration must not imply adapter execution or registry authority.
+- Adapter manifest, preflight, execution policy, and batch sidecar plumbing now
+  exist, but fixture coverage is still single-scenario.
+- Operators need to see how the adapter contract behaves across common
+  repository shapes before trusting it as a generic subsystem.
+- A matrix catches schema and policy assumptions without introducing runtime
+  adapter loading.
 
 Goal:
 
-- Let `autonomous-candidate-batch` attach operator-supplied adapter manifest
-  and preflight evidence as review-only producer evidence without changing the
-  default static evaluator behavior.
+- Provide a reviewable, machine-readable fixture matrix proving the adapter
+  contract can describe several repository shapes while remaining static,
+  language-neutral, and producer-side only.
 
 Acceptance:
 
-- Existing batch behavior remains unchanged without adapter evidence inputs.
-- Adapter evidence inputs are opt-in and digest-recorded.
-- Batch output records manifest/preflight paths, digests, counts, diagnostics,
-  and non-authority boundaries.
-- Adapter evidence remains `appliedToDrafting: false` and
-  `registryAuthority: false`.
-- The task does not execute adapters or treat adapter output as registry truth.
-
+- Fixture matrix covers single-package, workspace, documentation-heavy, nested
+  root, and ambiguous mixed layouts.
+- Each case records expected adapter manifest/preflight evidence.
+- Each case records allowed, rejected, fallback, and blocked decisions.
+- Each case records no adapter loading, no adapter execution, no package
+  manager invocation, no dependency installation, no AI, no registry authority,
+  and no accepted package/relation authority.
+- Documentation and DocC explain how the matrix fits after P40-T5 and before
+  P40-T7.

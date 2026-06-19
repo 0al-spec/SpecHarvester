@@ -833,6 +833,15 @@ execution is disabled by default, `static_only` remains the only current safe
 mode, and future `trusted_local_tool` requires explicit operator opt-in, path
 allowlists, bounded resources, no dependency installation, no package manager
 invocation, no network discovery, and no harvested code execution.
+P40-T5 connects operator-supplied adapter manifest and preflight evidence to
+[`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md) through
+`--repository-plugin-adapter-manifest` and
+`--repository-plugin-adapter-preflight`. The batch records
+`repositoryPluginAdapterEvidence` with copied paths, SHA-256 digests,
+allowed/rejected/fallback/blocked counts, diagnostics, `appliedToDrafting:
+false`, `registryAuthority: false`, and `adapterExecution: not_run` while
+preserving the existing static evaluator path unless an operator explicitly
+supplies adapter evidence.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

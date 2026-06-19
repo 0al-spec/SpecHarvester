@@ -8,6 +8,15 @@ from spec_harvester.autonomous_candidate_batch import (
     AUTONOMOUS_CANDIDATE_BATCH_API_VERSION,
     AUTONOMOUS_CANDIDATE_BATCH_KIND,
     AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME,
+    REPOSITORY_PLUGIN_ADAPTER_EVIDENCE_DIRNAME,
+    REPOSITORY_PLUGIN_ADAPTER_MANIFEST_API_VERSION,
+    REPOSITORY_PLUGIN_ADAPTER_MANIFEST_AUTHORITY,
+    REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FILENAME,
+    REPOSITORY_PLUGIN_ADAPTER_MANIFEST_KIND,
+    REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_API_VERSION,
+    REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_AUTHORITY,
+    REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_FILENAME,
+    REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_KIND,
     REPOSITORY_PLUGIN_APPLICABILITY_API_VERSION,
     REPOSITORY_PLUGIN_APPLICABILITY_AUTHORITY,
     REPOSITORY_PLUGIN_APPLICABILITY_FILENAME,
@@ -25,6 +34,10 @@ REPOSITORY_PLUGIN_FIXTURES = ROOT / "tests" / "fixtures" / "repository_plugins"
 GENERIC_REPOSITORY_PLUGIN_REGISTRY = REPOSITORY_PLUGIN_FIXTURES / "generic-registry.example.json"
 STATIC_REPOSITORY_PLUGIN_EVIDENCE_ENVELOPE = (
     REPOSITORY_PLUGIN_FIXTURES / "static-evidence-envelope.example.json"
+)
+REPOSITORY_PLUGIN_ADAPTER_MANIFEST = REPOSITORY_PLUGIN_FIXTURES / "adapter-manifest.example.json"
+REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT = (
+    REPOSITORY_PLUGIN_FIXTURES / "adapter-preflight-report.example.json"
 )
 
 
@@ -55,9 +68,17 @@ def test_autonomous_candidate_batch_runs_offline_preview_pipeline(
         "appliedToDrafting": False,
         "registryAuthority": False,
     }
+    assert report["repositoryPluginAdapterEvidence"] == {
+        "status": "not_provided",
+        "reason": "operator_not_provided",
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterExecution": "not_run",
+    }
     assert report["summary"]["processedCount"] == 1
     assert report["summary"]["passedPreflightCount"] == 1
     assert report["summary"]["repositoryPluginApplicabilitySidecarCount"] == 0
+    assert report["summary"]["repositoryPluginAdapterEvidenceSidecarCount"] == 0
     assert report["summary"]["repositoryProfileDetectionCount"] == 1
     assert report["summary"]["repositoryProfileDisabledCount"] == 1
     assert report["summary"]["repositoryProfileSelectedCount"] == 0
@@ -198,6 +219,106 @@ def test_autonomous_candidate_batch_records_repository_plugin_applicability_side
     assert copied["summary"]["selectedCount"] == 1
 
 
+def test_autonomous_candidate_batch_records_repository_plugin_adapter_evidence_sidecar(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_plugin_adapter_manifest=REPOSITORY_PLUGIN_ADAPTER_MANIFEST,
+            repository_plugin_adapter_preflight=REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT,
+        )
+    )
+
+    sidecar = report["repositoryPluginAdapterEvidence"]
+    manifest_path = Path(sidecar["manifest"]["path"])
+    preflight_path = Path(sidecar["preflight"]["path"])
+
+    assert report["status"] == "passed"
+    assert report["summary"]["repositoryPluginAdapterEvidenceSidecarCount"] == 1
+    assert sidecar["status"] == "recorded"
+    assert sidecar["sourceMode"] == "explicit_sidecar"
+    assert sidecar["authority"] == REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_AUTHORITY
+    assert manifest_path == (
+        output
+        / "reports"
+        / REPOSITORY_PLUGIN_ADAPTER_EVIDENCE_DIRNAME
+        / REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FILENAME
+    )
+    assert preflight_path == (
+        output
+        / "reports"
+        / REPOSITORY_PLUGIN_ADAPTER_EVIDENCE_DIRNAME
+        / REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_FILENAME
+    )
+    assert manifest_path.is_file()
+    assert preflight_path.is_file()
+    assert sidecar["manifest"]["source"] == str(REPOSITORY_PLUGIN_ADAPTER_MANIFEST)
+    assert sidecar["manifest"]["sourceDigest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(REPOSITORY_PLUGIN_ADAPTER_MANIFEST.read_bytes()).hexdigest(),
+    }
+    assert sidecar["manifest"]["digest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+    }
+    assert sidecar["manifest"]["apiVersion"] == REPOSITORY_PLUGIN_ADAPTER_MANIFEST_API_VERSION
+    assert sidecar["manifest"]["kind"] == REPOSITORY_PLUGIN_ADAPTER_MANIFEST_KIND
+    assert sidecar["manifest"]["schemaVersion"] == 1
+    assert sidecar["manifest"]["authority"] == REPOSITORY_PLUGIN_ADAPTER_MANIFEST_AUTHORITY
+    assert sidecar["manifest"]["adapterCount"] == 3
+    assert sidecar["preflight"]["source"] == str(REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT)
+    assert sidecar["preflight"]["sourceDigest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT.read_bytes()).hexdigest(),
+    }
+    assert sidecar["preflight"]["digest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(preflight_path.read_bytes()).hexdigest(),
+    }
+    assert sidecar["preflight"]["apiVersion"] == REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_API_VERSION
+    assert sidecar["preflight"]["kind"] == REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_KIND
+    assert sidecar["preflight"]["schemaVersion"] == 1
+    assert sidecar["preflight"]["authority"] == REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_AUTHORITY
+    assert sidecar["preflight"]["allowedCount"] == 3
+    assert sidecar["preflight"]["rejectedCount"] == 1
+    assert sidecar["preflight"]["fallbackCount"] == 1
+    assert sidecar["preflight"]["blockedCount"] == 1
+    assert sidecar["preflight"]["diagnosticCount"] == 2
+    assert sidecar["preflight"]["executedAdapterCount"] == 0
+    assert sidecar["summary"] == {
+        "adapterCount": 3,
+        "allowedCount": 3,
+        "rejectedCount": 1,
+        "fallbackCount": 1,
+        "blockedCount": 1,
+        "diagnosticCount": 2,
+        "executedAdapterCount": 0,
+    }
+    assert sidecar["diagnosticCodes"] == [
+        "adapter_manifest_preflight_fixture",
+        "decision_categories_recorded",
+    ]
+    assert sidecar["appliedToDrafting"] is False
+    assert sidecar["registryAuthority"] is False
+    assert sidecar["adapterExecution"] == "not_run"
+    assert sidecar["adapterOutputAccepted"] is False
+    assert "adapter_execution" in sidecar["nonGoals"]
+    assert "registry_publication" in sidecar["nonGoals"]
+
+    copied_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    copied_preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+    assert copied_manifest["kind"] == REPOSITORY_PLUGIN_ADAPTER_MANIFEST_KIND
+    assert copied_preflight["kind"] == REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_KIND
+    assert copied_preflight["summary"]["executedAdapterCount"] == 0
+    assert report["repositories"][0]["packageSetDraft"]["candidateCount"] == 3
+
+
 def test_autonomous_candidate_batch_auto_generates_repository_plugin_applicability(
     tmp_path: Path,
 ) -> None:
@@ -308,6 +429,30 @@ def test_autonomous_candidate_batch_rejects_partial_auto_repository_plugin_input
     assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
 
 
+def test_autonomous_candidate_batch_rejects_partial_repository_plugin_adapter_inputs(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                skip_ai=True,
+                repository_plugin_adapter_manifest=REPOSITORY_PLUGIN_ADAPTER_MANIFEST,
+            )
+        )
+    except ValueError as exc:
+        assert "--repository-plugin-adapter-manifest" in str(exc)
+        assert "--repository-plugin-adapter-preflight" in str(exc)
+    else:
+        raise AssertionError("expected partial repository plugin adapter inputs to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
+
+
 def test_autonomous_candidate_batch_rejects_invalid_auto_repository_plugin_inputs(
     tmp_path: Path,
 ) -> None:
@@ -362,6 +507,37 @@ def test_autonomous_candidate_batch_rejects_invalid_repository_plugin_applicabil
         assert "unsupported kind" in str(exc)
     else:
         raise AssertionError("expected invalid repository plugin applicability report to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
+
+
+def test_autonomous_candidate_batch_rejects_mismatched_repository_plugin_adapter_preflight(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    invalid_preflight = tmp_path / "adapter-preflight-report.json"
+    payload = json.loads(REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT.read_text(encoding="utf-8"))
+    payload["manifest"]["digest"] = "sha256:0" * 32
+    invalid_preflight.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                skip_ai=True,
+                repository_plugin_adapter_manifest=REPOSITORY_PLUGIN_ADAPTER_MANIFEST,
+                repository_plugin_adapter_preflight=invalid_preflight,
+            )
+        )
+    except ValueError as exc:
+        assert "manifest.digest does not match manifest" in str(exc)
+    else:
+        raise AssertionError("expected mismatched repository plugin adapter preflight to fail")
 
     assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
 
@@ -853,6 +1029,40 @@ def test_autonomous_candidate_batch_cli_auto_generates_repository_plugin_applica
     assert sidecar["sourceMode"] == "auto_static_evaluator"
     assert sidecar["summary"]["selectedCount"] == 3
     assert sidecar["summary"]["blockedCount"] == 2
+
+
+def test_autonomous_candidate_batch_cli_records_repository_plugin_adapter_evidence(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    exit_code = main(
+        [
+            "autonomous-candidate-batch",
+            str(inputs),
+            "--out",
+            str(output),
+            "--skip-ai",
+            "--repository-plugin-adapter-manifest",
+            str(REPOSITORY_PLUGIN_ADAPTER_MANIFEST),
+            "--repository-plugin-adapter-preflight",
+            str(REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT),
+        ]
+    )
+
+    assert exit_code == 0
+    printed = json.loads(capsys.readouterr().out)
+    sidecar = printed["repositoryPluginAdapterEvidence"]
+    assert printed["status"] == "passed"
+    assert printed["summary"]["repositoryPluginAdapterEvidenceSidecarCount"] == 1
+    assert sidecar["status"] == "recorded"
+    assert sidecar["summary"]["allowedCount"] == 3
+    assert sidecar["summary"]["blockedCount"] == 1
+    assert sidecar["appliedToDrafting"] is False
+    assert sidecar["registryAuthority"] is False
+    assert sidecar["adapterExecution"] == "not_run"
 
 
 def write_source_manifest(tmp_path: Path) -> Path:

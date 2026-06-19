@@ -54,6 +54,7 @@ The canonical source files remain in the repository:
 - `docs/REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md`
 - `docs/REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md`
 - `docs/REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md`
+- `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
 - `docs/BATCH_VALIDATION_REPORTS.md`
@@ -104,7 +105,6 @@ The canonical source files remain in the repository:
 - `docs/PACKAGE_SET_AI_DRAFT_PROPOSAL.md`
 - `docs/PACKAGE_SET_AI_ENRICHMENT.md`
 - `docs/AI_ENRICHMENT_CANDIDATE_PATCH.md`
-- `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/AUTONOMOUS_CANDIDATE_INTAKE_POLICY.md`
 - `docs/AUTONOMOUS_CANDIDATE_TECH_DEBT_PLAN.md`
 - `docs/BOUNDED_CORPUS_EXPANSION_PLAN.md`
@@ -183,6 +183,7 @@ the host.
 - <doc:RepositoryPluginAdapterManifestFixture>
 - <doc:RepositoryPluginAdapterPreflightReportFixture>
 - <doc:RepositoryPluginAdapterExecutionPolicy>
+- <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
 - <doc:ProceduralStyleReport>

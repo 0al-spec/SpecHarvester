@@ -117,7 +117,10 @@ adapter output as registry truth.
 - `P40-T4` defines
   <doc:RepositoryPluginAdapterExecutionPolicy>.
 - `P40-T5` connects adapter manifest and preflight output to
-  `autonomous-candidate-batch` as review-only producer evidence.
+  `autonomous-candidate-batch` as `repositoryPluginAdapterEvidence`
+  review-only producer evidence through explicit
+  `--repository-plugin-adapter-manifest` and
+  `--repository-plugin-adapter-preflight` inputs.
 - `P40-T6` records a cross-ecosystem adapter contract fixture matrix.
 - `P40-T7` records real local adapter-contract validation over existing pinned
   checkouts.
