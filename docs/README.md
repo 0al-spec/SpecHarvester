@@ -188,6 +188,12 @@ Published DocC site:
    fixture for validating the P42-T11 handoff, recording runtime implementation
    prerequisites, and keeping real adapter execution blocked until a separate
    operator-approved runtime task exists
+47. [`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_OPERATOR_APPROVAL_BINDING.md):
+   P42-T13
+   `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding`
+   fixture for binding one future local adapter run approval scope to P42-T12
+   runtime prerequisites while still preserving no execution permission, no
+   registry authority, and no adapter output truth
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

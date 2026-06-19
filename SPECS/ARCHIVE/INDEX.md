@@ -185,6 +185,7 @@
 | P42-T3 | [P42-T3_Trusted_Local_Adapter_Sandbox_Preflight_Report_Fixture/](P42-T3_Trusted_Local_Adapter_Sandbox_Preflight_Report_Fixture/) | 2026-06-19 | PASS |
 | P42-T4 | [P42-T4_Disabled_Trusted_Local_Adapter_Sandbox_Runner_Validation/](P42-T4_Disabled_Trusted_Local_Adapter_Sandbox_Runner_Validation/) | 2026-06-19 | PASS |
 | P42-T5 | [P42-T5_Explicitly_Approved_Synthetic_Trusted_Local_Adapter_Sandbox_Run_Fixture/](P42-T5_Explicitly_Approved_Synthetic_Trusted_Local_Adapter_Sandbox_Run_Fixture/) | 2026-06-19 | PASS |
+| P42-T13 | [P42-T13_Explicit_Real_Local_Trusted_Adapter_Sandbox_Operator_Approval_Binding_Fixture/](P42-T13_Explicit_Real_Local_Trusted_Adapter_Sandbox_Operator_Approval_Binding_Fixture/) | 2026-06-19 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -711,3 +712,5 @@
 | 2026-06-19 | P42-T11 | Archived REVIEW_p42_t11_explicit_real_local_sandbox_runner_evidence_handoff report |
 | 2026-06-19 | P42-T12 | Archived Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Review Gate (PASS) |
 | 2026-06-19 | P42-T12 | Archived REVIEW_p42_t12_runtime_implementation_review_gate report |
+| 2026-06-19 | P42-T13 | Archived Explicit Real Local Trusted Adapter Sandbox Operator Approval Binding Fixture (PASS) |
+| 2026-06-19 | P42-T13 | Archived REVIEW_p42_t13_operator_approval_binding report |

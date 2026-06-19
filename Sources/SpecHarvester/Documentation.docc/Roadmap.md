@@ -688,6 +688,15 @@ implementation prerequisites, and keeps `gateIsExecutionPermission: false`,
 `gateIsOperatorApproval: false`, `gateIsRegistryAuthority: false`,
 `runtimeImplementationAllowed: false`, `runtimeInvoked: false`, and
 `runtimeImplemented: false`.
+P42-T13 adds
+<doc:TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding> and the
+machine-readable
+`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxOperatorApprovalBinding`
+fixture. It binds one future local adapter run approval scope to the P42-T12
+review gate while keeping `bindingIsExecutionPermission: false`,
+`bindingIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
+`adapterExecution: not_run`, `runtimeInvoked: false`, and
+`adapterOutputAccepted: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

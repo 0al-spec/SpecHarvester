@@ -209,6 +209,7 @@ the host.
 - <doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton>
 - <doc:TrustedLocalAdapterExplicitRealLocalSandboxRunnerEvidenceHandoff>
 - <doc:TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewGate>
+- <doc:TrustedLocalAdapterExplicitRealLocalSandboxOperatorApprovalBinding>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
