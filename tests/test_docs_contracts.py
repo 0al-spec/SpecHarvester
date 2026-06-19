@@ -5409,16 +5409,14 @@ def assert_p42_t11_last_archived(next_text: str) -> None:
 def assert_p42_t11_recent(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert (
-        "`P42-T11` added "
-        "`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff`"
+        "`P42-T11` added `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff`"
     ) in normalized
     assert (
         "explicit-real-local-trusted-adapter-sandbox-runner-evidence-handoff.example.json"
         in next_text
     )
     assert (
-        "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_EVIDENCE_HANDOFF.md"
-        in next_text
+        "TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_EVIDENCE_HANDOFF.md" in next_text
     )
     assert "TrustedLocalAdapterExplicitRealLocalSandboxRunnerEvidenceHandoff.md" in next_text
     assert "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest" in normalized
