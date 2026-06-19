@@ -113,6 +113,9 @@ P38-T5 adds cross-ecosystem examples in
 P38-T6 records a real FastMCP comparison in
 <doc:RepositoryPluginRealRunFastMCP> and
 `tests/fixtures/repository_plugins/real_runs/p38-t6-fastmcp-plugin-evidence-comparison.example.json`.
+P39-T6 records a real multi-repository static evaluator validation in
+<doc:RepositoryPluginMultiRepositoryStaticEvaluatorValidation> and
+`tests/fixtures/repository_plugins/real_runs/p39-t6-multi-repository-static-evaluator-validation.example.json`.
 
 The selection report shape is
 `SpecHarvesterRepositoryPluginApplicabilityReport`:

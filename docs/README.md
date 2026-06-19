@@ -65,6 +65,9 @@ Published DocC site:
    machine-readable
    `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope` fixture for static
    evidence available to plugin applicability evaluation
+22. [`REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md`](REPOSITORY_PLUGIN_MULTI_REPOSITORY_STATIC_EVALUATOR_VALIDATION.md):
+   Phase 39 real multi-repository validation for FastMCP, FastAPI, and xyflow
+   through the standalone static evaluator and batch auto-sidecar path
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

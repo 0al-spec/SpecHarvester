@@ -1,0 +1,465 @@
+{
+  "apiVersion": "spec-harvester.repository-plugin-real-run/v0",
+  "kind": "SpecHarvesterRepositoryPluginMultiRepositoryStaticEvaluatorValidation",
+  "schemaVersion": 1,
+  "task": "P39-T6",
+  "createdAt": "2026-06-19T00:00:00Z",
+  "run": {
+    "runRoot": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z",
+    "aiMode": "disabled",
+    "networkAccess": "not_required",
+    "repositoryAcquisition": "operator_managed_local_checkouts",
+    "registry": {
+      "path": "tests/fixtures/repository_plugins/generic-registry.example.json",
+      "digest": "sha256:6c0692de61fa97012c6a86e0283612ae3dc113f2a40b1bc33c741903dd710c74"
+    }
+  },
+  "summary": {
+    "caseCount": 3,
+    "availableCount": 3,
+    "passedCount": 3,
+    "notAvailableCount": 0,
+    "failedCount": 0
+  },
+  "cases": [
+    {
+      "repositoryId": "fastmcp",
+      "status": "passed",
+      "source": {
+        "repositoryId": "fastmcp",
+        "repositoryUrl": "https://github.com/jlowin/fastmcp",
+        "localCheckout": "/Users/egor/Development/GitHub/fastmcp",
+        "available": true,
+        "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+        "dirtyStatus": "",
+        "shape": "documentation_heavy_python_single_package",
+        "expectedProfileFamily": "single_package_python"
+      },
+      "baselineBatch": {
+        "command": "python -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/inputs --out /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/baseline-output --skip-ai --repository-profile-selection auto",
+        "status": "passed",
+        "report": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/baseline-output/autonomous-candidate-batch-report.json",
+          "digest": "sha256:5e48bf159554b4798762f3bbdbe41c65cd2f768e59b18c21983760163e0da0c4"
+        },
+        "repositoryProfileDetection": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/baseline-output/reports/repository-profile-detections/fastmcp/repository-profile-detection.json",
+          "digest": "sha256:7f78b170860c59fade83f6dc697aad5fd102b338148b4adaddb46a41cdd3ac20",
+          "decision": "selected",
+          "selectedProfileId": "generic.single_package.v0",
+          "fallbackProfileId": "generic.repository.v0",
+          "confidence": "high",
+          "reasonCodes": [
+            "root_manifest_present"
+          ]
+        },
+        "harvest": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/baseline-output/collected/fastmcp/harvest.json",
+          "digest": "sha256:3b7949d90d239a9052cd4779e106ef072c9370b9a52ba9123bc972cabea8d232",
+          "summary": {
+            "fileCount": 22,
+            "licenseFileCount": 1,
+            "packageManifestCount": 1,
+            "skippedFileCount": 0,
+            "targetKind": "repository"
+          }
+        },
+        "workspaceInventory": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/baseline-output/collected/fastmcp/workspace-inventory.json",
+          "digest": "sha256:6bad06477da4138faec895b4a5ff2ed820e3e47f13fb45ee8c7964f1478b3353",
+          "summary": {
+            "diagnosticCount": 0,
+            "packageCount": 0,
+            "packageManifestCount": 0,
+            "workspaceManifestCount": 0
+          }
+        },
+        "publicInterface": null,
+        "preflight": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/baseline-output/package-sets/fastmcp/bundle-set-preflight.json",
+          "digest": "sha256:c96af3085631d692000a226b7347b7fa080eb2d2bd883e6aaca3b42662078bdf",
+          "status": "passed",
+          "summary": {
+            "candidateCount": 1,
+            "candidatePreflightPassedCount": 1,
+            "diagnosticCount": 0,
+            "errorCount": 0,
+            "relationCount": 0,
+            "warningCount": 0
+          }
+        }
+      },
+      "staticEvidenceEnvelope": {
+        "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/evidence/static-evidence-envelope.json",
+        "digest": "sha256:6dc6c81971ee80fe86667464007b93fc3a80625e991ac8a2fb327c66ec78896e",
+        "evidenceKinds": [
+          "source_manifest",
+          "harvest_snapshot",
+          "workspace_inventory",
+          "repository_profile_detection",
+          "manifest_summary",
+          "repository_parsing_profile_decision",
+          "operator_label"
+        ],
+        "summary": {
+          "evidenceCount": 7,
+          "evidenceKindCount": 7,
+          "advisorySignalCount": 4,
+          "safePathCount": 7,
+          "missingRequiredDigestCount": 0
+        }
+      },
+      "standaloneEvaluator": {
+        "command": "python -m spec_harvester repository-plugin-applicability-detect --registry /Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/repository_plugins/generic-registry.example.json --static-evidence-envelope /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/evidence/static-evidence-envelope.json --out /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/detect/repository-plugin-applicability-report.json",
+        "returncode": 0,
+        "report": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/detect/repository-plugin-applicability-report.json",
+          "digest": "sha256:349f63c61b229076e7b49e80d4d3cfa3e8e6eb82c7f7bfaabdd853ad40ffddd4"
+        },
+        "summary": {
+          "selectedCount": 4,
+          "rejectedCount": 0,
+          "fallbackCount": 0,
+          "blockedCount": 1,
+          "diagnosticCount": 5
+        },
+        "diagnosticCodes": [
+          "plugin_blocked_required_evidence_missing",
+          "plugin_selected"
+        ]
+      },
+      "batchAutoSidecar": {
+        "command": "python -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/inputs --out /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/auto-output --skip-ai --repository-profile-selection auto --repository-plugin-registry /Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/repository_plugins/generic-registry.example.json --repository-plugin-static-evidence-envelope /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/evidence/static-evidence-envelope.json",
+        "returncode": 0,
+        "batchReport": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/auto-output/autonomous-candidate-batch-report.json",
+          "digest": "sha256:c7c69fd6d911ae18158f35898c6bc842d823928646145002acbb1d171c1fb8ed"
+        },
+        "status": "passed",
+        "repositoryPluginApplicability": {
+          "status": "recorded",
+          "sourceMode": "auto_static_evaluator",
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastmcp/auto-output/reports/repository-plugin-applicability/repository-plugin-applicability-report.json",
+          "digest": {
+            "algorithm": "sha256",
+            "value": "105fc84e944e139608daf3219607f92572a15e6b506d5086abb7d0c56c3ed55e"
+          },
+          "summary": {
+            "blockedCount": 1,
+            "diagnosticCount": 5,
+            "fallbackCount": 0,
+            "rejectedCount": 0,
+            "selectedCount": 4
+          },
+          "diagnosticCodes": [
+            "plugin_blocked_required_evidence_missing",
+            "plugin_selected"
+          ],
+          "appliedToDrafting": false,
+          "registryAuthority": false
+        }
+      },
+      "verdict": "real_static_evaluator_path_validated"
+    },
+    {
+      "repositoryId": "fastapi",
+      "status": "passed",
+      "source": {
+        "repositoryId": "fastapi",
+        "repositoryUrl": "https://github.com/fastapi/fastapi",
+        "localCheckout": "/Users/egor/Development/GitHub/fastapi",
+        "available": true,
+        "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "dirtyStatus": "",
+        "shape": "python_web_framework_single_package",
+        "expectedProfileFamily": "single_package_python"
+      },
+      "baselineBatch": {
+        "command": "python -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/inputs --out /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/baseline-output --skip-ai --repository-profile-selection auto",
+        "status": "passed",
+        "report": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/baseline-output/autonomous-candidate-batch-report.json",
+          "digest": "sha256:9bdd158ad25c9e266cb25b823f154312cd9bda1a05a6589309ccef4498c49fb4"
+        },
+        "repositoryProfileDetection": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/baseline-output/reports/repository-profile-detections/fastapi/repository-profile-detection.json",
+          "digest": "sha256:21b10174952df36058feba0f94041ccddd02666965bd46b1cbcbd27e26205d82",
+          "decision": "selected",
+          "selectedProfileId": "generic.single_package.v0",
+          "fallbackProfileId": "generic.repository.v0",
+          "confidence": "high",
+          "reasonCodes": [
+            "root_manifest_present"
+          ]
+        },
+        "harvest": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/baseline-output/collected/fastapi/harvest.json",
+          "digest": "sha256:2566b6e1b7a2aceed6a9118728cf36fe1ce59a1832422a49d70f528182826c40",
+          "summary": {
+            "fileCount": 27,
+            "licenseFileCount": 1,
+            "packageManifestCount": 1,
+            "skippedFileCount": 0,
+            "targetKind": "repository"
+          }
+        },
+        "workspaceInventory": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/baseline-output/collected/fastapi/workspace-inventory.json",
+          "digest": "sha256:137d72f27d32a8bdf2e8fe06220baec1390ab65f76eec3712ce7e9e4c11830b3",
+          "summary": {
+            "diagnosticCount": 0,
+            "packageCount": 0,
+            "packageManifestCount": 0,
+            "workspaceManifestCount": 0
+          }
+        },
+        "publicInterface": null,
+        "preflight": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/baseline-output/package-sets/fastapi/bundle-set-preflight.json",
+          "digest": "sha256:6df3af9e69df25d2843c75d4249765cb8b9373ad64462334fc39b98544793d1b",
+          "status": "passed",
+          "summary": {
+            "candidateCount": 1,
+            "candidatePreflightPassedCount": 1,
+            "diagnosticCount": 0,
+            "errorCount": 0,
+            "relationCount": 0,
+            "warningCount": 0
+          }
+        }
+      },
+      "staticEvidenceEnvelope": {
+        "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/evidence/static-evidence-envelope.json",
+        "digest": "sha256:a1689f4685cee410376de58a60f9b7889470d3a39308d8e82435f80a31bda26c",
+        "evidenceKinds": [
+          "source_manifest",
+          "harvest_snapshot",
+          "workspace_inventory",
+          "repository_profile_detection",
+          "manifest_summary",
+          "repository_parsing_profile_decision",
+          "operator_label"
+        ],
+        "summary": {
+          "evidenceCount": 7,
+          "evidenceKindCount": 7,
+          "advisorySignalCount": 4,
+          "safePathCount": 7,
+          "missingRequiredDigestCount": 0
+        }
+      },
+      "standaloneEvaluator": {
+        "command": "python -m spec_harvester repository-plugin-applicability-detect --registry /Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/repository_plugins/generic-registry.example.json --static-evidence-envelope /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/evidence/static-evidence-envelope.json --out /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/detect/repository-plugin-applicability-report.json",
+        "returncode": 0,
+        "report": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/detect/repository-plugin-applicability-report.json",
+          "digest": "sha256:39f152b686ee6c7e3eec580ad1044567606ed85607c1f83fe87f9ed64baed15f"
+        },
+        "summary": {
+          "selectedCount": 4,
+          "rejectedCount": 0,
+          "fallbackCount": 0,
+          "blockedCount": 1,
+          "diagnosticCount": 5
+        },
+        "diagnosticCodes": [
+          "plugin_blocked_required_evidence_missing",
+          "plugin_selected"
+        ]
+      },
+      "batchAutoSidecar": {
+        "command": "python -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/inputs --out /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/auto-output --skip-ai --repository-profile-selection auto --repository-plugin-registry /Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/repository_plugins/generic-registry.example.json --repository-plugin-static-evidence-envelope /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/evidence/static-evidence-envelope.json",
+        "returncode": 0,
+        "batchReport": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/auto-output/autonomous-candidate-batch-report.json",
+          "digest": "sha256:2c43f383502519b1ae24df292c50cc4c9617929bdebb269cdb9a102f02a1dadb"
+        },
+        "status": "passed",
+        "repositoryPluginApplicability": {
+          "status": "recorded",
+          "sourceMode": "auto_static_evaluator",
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/fastapi/auto-output/reports/repository-plugin-applicability/repository-plugin-applicability-report.json",
+          "digest": {
+            "algorithm": "sha256",
+            "value": "e2b84b65a6aec375532bfcf5f4dd81b9d77b88b7fe64e1fc8faca55fa7219431"
+          },
+          "summary": {
+            "blockedCount": 1,
+            "diagnosticCount": 5,
+            "fallbackCount": 0,
+            "rejectedCount": 0,
+            "selectedCount": 4
+          },
+          "diagnosticCodes": [
+            "plugin_blocked_required_evidence_missing",
+            "plugin_selected"
+          ],
+          "appliedToDrafting": false,
+          "registryAuthority": false
+        }
+      },
+      "verdict": "real_static_evaluator_path_validated"
+    },
+    {
+      "repositoryId": "xyflow",
+      "status": "passed",
+      "source": {
+        "repositoryId": "xyflow",
+        "repositoryUrl": "https://github.com/xyflow/xyflow",
+        "localCheckout": "/Users/egor/Development/GitHub/xyflow",
+        "available": true,
+        "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+        "dirtyStatus": "",
+        "shape": "javascript_typescript_workspace_package_set",
+        "expectedProfileFamily": "workspace_package_set"
+      },
+      "baselineBatch": {
+        "command": "python -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/inputs --out /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/baseline-output --skip-ai --repository-profile-selection auto",
+        "status": "passed",
+        "report": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/baseline-output/autonomous-candidate-batch-report.json",
+          "digest": "sha256:dab1778867b3e3cfb3aed8bca0c080f3e341052cf8f4ff1722b80233f1d5073e"
+        },
+        "repositoryProfileDetection": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/baseline-output/reports/repository-profile-detections/xyflow/repository-profile-detection.json",
+          "digest": "sha256:8c754f2642857030f4dd837fb699e504e2658932d27acc4e1fd82ff5e9ecdd48",
+          "decision": "selected",
+          "selectedProfileId": "generic.package_set.v0",
+          "fallbackProfileId": "generic.repository.v0",
+          "confidence": "high",
+          "reasonCodes": [
+            "workspace_manifest_present",
+            "multiple_member_manifests_present"
+          ]
+        },
+        "harvest": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/baseline-output/collected/xyflow/harvest.json",
+          "digest": "sha256:4dc73b51204d2a22e038235f98612772ea949c8bd646d1c6cb496c1d84aab547",
+          "summary": {
+            "fileCount": 19,
+            "licenseFileCount": 1,
+            "packageManifestCount": 5,
+            "skippedFileCount": 0,
+            "targetKind": "repository"
+          }
+        },
+        "workspaceInventory": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/baseline-output/collected/xyflow/workspace-inventory.json",
+          "digest": "sha256:7398acb4e437acfdb53263cfad7b707fbb3a6f2c588829dfc658c7959c22a4c8",
+          "summary": {
+            "diagnosticCount": 0,
+            "packageCount": 11,
+            "packageManifestCount": 11,
+            "workspaceManifestCount": 1
+          }
+        },
+        "publicInterface": null,
+        "preflight": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/baseline-output/package-sets/xyflow/bundle-set-preflight.json",
+          "digest": "sha256:4cdebf22e70eb1bee61d7a1f43c2af6dd9fac692d950d7592bb5009f294d78fc",
+          "status": "passed",
+          "summary": {
+            "candidateCount": 4,
+            "candidatePreflightPassedCount": 4,
+            "diagnosticCount": 0,
+            "errorCount": 0,
+            "relationCount": 3,
+            "warningCount": 0
+          }
+        }
+      },
+      "staticEvidenceEnvelope": {
+        "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/evidence/static-evidence-envelope.json",
+        "digest": "sha256:917d74098caf90523bd46828f4b238d80f370f2feda4a833d502b8b85b6ad118",
+        "evidenceKinds": [
+          "source_manifest",
+          "harvest_snapshot",
+          "workspace_inventory",
+          "repository_profile_detection",
+          "manifest_summary",
+          "repository_parsing_profile_decision",
+          "operator_label"
+        ],
+        "summary": {
+          "evidenceCount": 7,
+          "evidenceKindCount": 7,
+          "advisorySignalCount": 4,
+          "safePathCount": 7,
+          "missingRequiredDigestCount": 0
+        }
+      },
+      "standaloneEvaluator": {
+        "command": "python -m spec_harvester repository-plugin-applicability-detect --registry /Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/repository_plugins/generic-registry.example.json --static-evidence-envelope /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/evidence/static-evidence-envelope.json --out /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/detect/repository-plugin-applicability-report.json",
+        "returncode": 0,
+        "report": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/detect/repository-plugin-applicability-report.json",
+          "digest": "sha256:b831e0792469156985203beeb2b08028ff9b286874d6e254310ae292ed52df2d"
+        },
+        "summary": {
+          "selectedCount": 4,
+          "rejectedCount": 0,
+          "fallbackCount": 0,
+          "blockedCount": 1,
+          "diagnosticCount": 5
+        },
+        "diagnosticCodes": [
+          "plugin_blocked_required_evidence_missing",
+          "plugin_selected"
+        ]
+      },
+      "batchAutoSidecar": {
+        "command": "python -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/inputs --out /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/auto-output --skip-ai --repository-profile-selection auto --repository-plugin-registry /Users/egor/Development/GitHub/0AL/SpecHarvester/tests/fixtures/repository_plugins/generic-registry.example.json --repository-plugin-static-evidence-envelope /tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/evidence/static-evidence-envelope.json",
+        "returncode": 0,
+        "batchReport": {
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/auto-output/autonomous-candidate-batch-report.json",
+          "digest": "sha256:7e87b456f3ca09f66833e67b0b79a8cf43c1a945280ddf456bae1f6eb774d9ce"
+        },
+        "status": "passed",
+        "repositoryPluginApplicability": {
+          "status": "recorded",
+          "sourceMode": "auto_static_evaluator",
+          "path": "/tmp/specharvester-p39-t6-static-evaluator-20260619T000000Z/xyflow/auto-output/reports/repository-plugin-applicability/repository-plugin-applicability-report.json",
+          "digest": {
+            "algorithm": "sha256",
+            "value": "4d8a8bef89692e2025c91fdc4e52c4f72adb6c3e8b041f37a097c9bf90084e20"
+          },
+          "summary": {
+            "blockedCount": 1,
+            "diagnosticCount": 5,
+            "fallbackCount": 0,
+            "rejectedCount": 0,
+            "selectedCount": 4
+          },
+          "diagnosticCodes": [
+            "plugin_blocked_required_evidence_missing",
+            "plugin_selected"
+          ],
+          "appliedToDrafting": false,
+          "registryAuthority": false
+        }
+      },
+      "verdict": "real_static_evaluator_path_validated"
+    }
+  ],
+  "boundary": {
+    "authority": "producer_plugin_applicability_only",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "nonGoals": [
+      "repository_clone",
+      "network_fetch",
+      "dependency_installation",
+      "package_manager_invocation",
+      "harvested_code_execution",
+      "ai_invocation",
+      "parser_profile_behavior_change",
+      "repository_profile_scoring_change",
+      "package_acceptance",
+      "relation_acceptance",
+      "registry_publication",
+      "preview_only_removal",
+      "plugin_decisions_as_registry_truth"
+    ]
+  },
+  "verdict": "passed"
+}

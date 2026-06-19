@@ -174,6 +174,7 @@ the host.
 - <doc:RepositoryPluginRealRunFastMCP>
 - <doc:StaticRepositoryPluginApplicabilityEvaluator>
 - <doc:RepositoryPluginStaticEvidenceEnvelopeFixture>
+- <doc:RepositoryPluginMultiRepositoryStaticEvaluatorValidation>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
 - <doc:ProceduralStyleReport>
