@@ -1,49 +1,53 @@
-# Next Task: Phase 38 Complete
+# Next Task: P39-T1 Static Repository Plugin Applicability Evaluator Plan
 
-**Status:** Phase Complete
-**Phase:** Phase 38. Repository Plugin Subsystem
+**Status:** Planned
+**Branch:** `feature/P39-T1-static-plugin-applicability-evaluator-plan`
+**Phase:** Phase 39. Static Repository Plugin Applicability Evaluator
 **Last Archived:** P38-T6 Real Repository Plugin Evidence Run
 
 ## Recently Archived
 
-- `P38-T1` documented the language- and framework-agnostic repository plugin
-  subsystem contract.
-- `P38-T2` added the machine-readable
-  `SpecHarvesterRepositoryPluginRegistry` fixture.
-- `P38-T3` added the machine-readable
-  `SpecHarvesterRepositoryPluginApplicabilityReport` fixture for selected,
-  rejected, fallback, and blocked decisions.
-- `P38-T4` connected applicability reports to `autonomous-candidate-batch` as
-  `repositoryPluginApplicability` sidecar evidence with
-  `appliedToDrafting: false` and `registryAuthority: false`.
-- `P38-T5` added cross-ecosystem static applicability fixtures for
-  single-package, workspace, documentation-heavy, nested, and ambiguous
-  repository shapes.
 - `P38-T6` recorded a real FastMCP plugin evidence run in
   `tests/fixtures/repository_plugins/real_runs/p38-t6-fastmcp-plugin-evidence-comparison.example.json`.
+- Phase 38 is complete: repository plugin applicability is now described as a
+  producer-side evidence contract, represented by registry/applicability
+  fixtures, attached to autonomous batch output as a sidecar, covered by
+  cross-ecosystem static examples, and validated on a pinned local FastMCP
+  checkout.
 
-## Phase Result
+## Current Task
 
-Phase 38 is complete. Repository plugin applicability is now described as a
-producer-side evidence contract, represented by registry/applicability
-fixtures, attached to autonomous batch output as a sidecar, covered by
-cross-ecosystem static examples, and validated on a pinned local FastMCP
-checkout.
+`P39-T1` should document the static repository plugin applicability evaluator
+plan.
 
-The real FastMCP run shows current repository profile selection choosing
-`generic.single_package.v0`, while plugin applicability remains review
-evidence and does not change drafting, parser behavior, profile scoring, or
-registry authority.
+The plan should describe how SpecHarvester can turn declared plugin registry
+metadata plus collected static evidence into a deterministic
+`SpecHarvesterRepositoryPluginApplicabilityReport`, without runtime plugin
+loading or plugin execution.
 
-## Boundary
+## Motivation
 
-Phase 38 does not load third-party plugin code, execute plugins, run plugin
-code, clone or fetch repositories, install dependencies, execute harvested
-code, invoke package managers, run AI, accept packages, accept relations,
-publish registry metadata, remove `preview_only`, or treat plugin decisions as
-registry truth.
+P38 proved the shape of plugin applicability reports, but P38-T6 still used an
+operator-authored sidecar. The next step is to make applicability derivation
+deterministic from static artifacts such as `harvest.json`,
+`workspace-inventory.json`, `repository-profile-detection.json`,
+public-interface indexes, and operator labels.
 
-## Next Planning Note
+## Non-Goals
 
-No Phase 38 task remains selected. The next phase should be defined explicitly
-before starting another Flow branch.
+P39-T1 must not implement the evaluator, add a CLI, change autonomous batch
+behavior, load third-party plugin code, execute plugins, clone or fetch
+repositories, install dependencies, invoke package managers, execute harvested
+code, run AI, accept packages or relations, publish registry metadata, remove
+`preview_only`, or treat plugin decisions as registry truth.
+
+## Planned Deliverables
+
+- Add a GitHub-facing plan for the static repository plugin applicability
+  evaluator.
+- Add a DocC mirror.
+- Update capabilities, roadmap, and plugin subsystem docs to point to the new
+  plan.
+- Add regression coverage for the plan, next task state, and non-authority
+  boundaries.
+- Archive the task through Flow.
