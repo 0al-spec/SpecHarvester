@@ -274,6 +274,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t3_corpus_baseline_gap_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t4_single_package_candidate_fallback.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p29_t5_lm_studio_json_repair_retry.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p41_t4_disabled_trusted_local_adapter_runner_skeleton.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p19_t1_static_spec_renderer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p18_t1_swift_public_api_analyzer.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p16_t8_multilanguage_duplicate_code_detector.md` |
@@ -664,3 +665,5 @@
 | 2026-06-19 | P41-T2 | Archived REVIEW_p41_t2_trusted_local_adapter_run_request_fixture report |
 | 2026-06-19 | P41-T3 | Archived Trusted Local Adapter Run Preflight Report Fixture (PASS) |
 | 2026-06-19 | P41-T3 | Archived REVIEW_p41_t3_trusted_local_adapter_run_preflight_report_fixture report |
+| 2026-06-19 | P41-T4 | Archived Disabled Trusted Local Adapter Runner Skeleton (PASS) |
+| 2026-06-19 | P41-T4 | Archived REVIEW_p41_t4_disabled_trusted_local_adapter_runner_skeleton report |

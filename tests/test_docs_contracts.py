@@ -5,11 +5,24 @@ import json
 from pathlib import Path
 
 from spec_harvester.source_manifest import read_repository_source_manifests
+from spec_harvester.trusted_local_adapter_runner import (
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_API_VERSION,
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_AUTHORITY,
+    TRUSTED_LOCAL_ADAPTER_RUN_REPORT_KIND,
+    TrustedLocalAdapterRunOptions,
+    build_trusted_local_adapter_run_report,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P41-T5 Trusted Local Adapter Run Evidence Handoff" in next_text:
+        assert_p41_t4_last_archived(next_text)
+        assert_p41_t4_recent(next_text)
+        assert_phase_41_t5_planned(next_text)
+        return
+
     if "# Next Task: P41-T4 Disabled Trusted Local Adapter Runner Skeleton" in next_text:
         assert_p41_t3_last_archived(next_text)
         assert_p41_t3_recent(next_text)
@@ -4613,6 +4626,50 @@ def assert_phase_41_t4_planned(next_text: str) -> None:
     assert "Do not implement real adapter execution" in normalized
     assert "Do not run adapter processes" in normalized
     assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p41_t4_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P41-T4 Disabled Trusted Local Adapter Runner Skeleton" in next_text
+
+
+def assert_p41_t4_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P41-T4` added the disabled" in normalized
+    assert "trusted-local-adapter-runner-skeleton" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterRunReport" in normalized
+    assert "TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md" in next_text
+    assert "TrustedLocalAdapterRunnerSkeleton.md" in next_text
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "runnerReportIsExecutionPermission: false" in normalized
+    assert "producer-side review evidence" in normalized
+
+
+def assert_phase_41_t5_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P41-T5 Trusted Local Adapter Run Evidence Handoff" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P41-T5-trusted-local-adapter-run-evidence-handoff`" in next_text
+    assert "Phase 41. Trusted Local Adapter Runtime Readiness" in next_text
+    assert "Connect trusted local adapter run reports" in normalized
+    assert "autonomous-candidate-batch" in normalized
+    assert "review-only producer evidence" in normalized
+    assert "default static evaluator" in normalized
+    assert "existing adapter sidecar paths" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterRunReport" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not run adapter processes" in normalized
     assert "Do not install dependencies" in normalized
     assert "Do not invoke package managers" in normalized
     assert "Do not execute harvested code" in normalized
@@ -17532,6 +17589,245 @@ def test_trusted_local_adapter_run_preflight_report_fixture_is_documented() -> N
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P41-T3` Add a trusted local adapter run preflight report fixture" in (workplan_text)
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_trusted_local_adapter_runner_skeleton_is_documented() -> None:
+    request = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-run-request.example.json"
+    )
+    preflight = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-run-preflight-report.example.json"
+    )
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRunnerSkeleton.md"
+    )
+    request_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md"
+    request_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRunRequestFixture.md"
+    )
+    preflight_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_REPORT_FIXTURE.md"
+    preflight_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRunPreflightReportFixture.md"
+    )
+    readiness_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"
+    readiness_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeReadiness.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    report = build_trusted_local_adapter_run_report(
+        TrustedLocalAdapterRunOptions(request=request, preflight=preflight)
+    )
+
+    assert report["apiVersion"] == TRUSTED_LOCAL_ADAPTER_RUN_REPORT_API_VERSION
+    assert report["kind"] == TRUSTED_LOCAL_ADAPTER_RUN_REPORT_KIND
+    assert report["schemaVersion"] == 1
+    assert report["authority"] == TRUSTED_LOCAL_ADAPTER_RUN_REPORT_AUTHORITY
+    assert report["status"] == "no_execution_report_emitted"
+    assert report["request"] == {
+        "path": "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json",
+        "digest": f"sha256:{hashlib.sha256(request.read_bytes()).hexdigest()}",
+        "apiVersion": "spec-harvester.trusted-local-adapter-run-request/v0",
+        "kind": "SpecHarvesterTrustedLocalAdapterRunRequest",
+        "schemaVersion": 1,
+        "authority": "producer_trusted_local_adapter_run_request_only",
+    }
+    assert report["preflight"] == {
+        "path": (
+            "tests/fixtures/repository_plugins/"
+            "trusted-local-adapter-run-preflight-report.example.json"
+        ),
+        "digest": f"sha256:{hashlib.sha256(preflight.read_bytes()).hexdigest()}",
+        "apiVersion": "spec-harvester.trusted-local-adapter-run-preflight/v0",
+        "kind": "SpecHarvesterTrustedLocalAdapterRunPreflightReport",
+        "schemaVersion": 1,
+        "authority": "producer_trusted_local_adapter_run_preflight_only",
+        "status": "passed",
+        "requestDigestVerified": True,
+        "preflightPassIsExecutionPermission": False,
+    }
+    assert report["contract"]["runnerReportIsExecutionPermission"] is False
+    assert report["runner"]["mode"] == "disabled_no_execution_skeleton"
+    assert report["runner"]["enabled"] is False
+    assert report["runner"]["adapterExecution"] == "not_run"
+    assert report["runner"]["adapterCodeLoaded"] is False
+    assert report["runner"]["adapterCodeImportAttempted"] is False
+    assert report["runner"]["adapterProcessSpawned"] is False
+    assert report["runner"]["executedAdapterCount"] == 0
+    assert report["runner"]["dependencyInstallation"] == "not_allowed"
+    assert report["runner"]["packageManagers"] == "not_invoked"
+    assert report["runner"]["harvestedCodeExecution"] == "not_allowed"
+    assert report["runner"]["aiExecution"] == "not_run"
+    assert report["runner"]["networkAccess"] == "none"
+    assert report["executionBoundary"] == {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "executedAdapterCount": 0,
+        "runtimeImplemented": False,
+        "requestIsExecutionPermission": False,
+        "preflightPassIsExecutionPermission": False,
+        "runnerReportIsExecutionPermission": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    checks = {record["code"]: record for record in report["validation"]["acceptedChecks"]}
+    assert set(checks) == {
+        "request_identity_valid",
+        "request_boundary_no_execution",
+        "preflight_identity_valid",
+        "preflight_status_passed_review_only",
+        "preflight_request_digest_matches",
+        "runner_disabled_no_execution",
+        "non_authority_boundary_preserved",
+    }
+    assert all(record["status"] == "passed" for record in checks.values())
+    assert report["summary"] == {
+        "acceptedCount": len(report["validation"]["acceptedChecks"]),
+        "errorCount": 0,
+        "warningCount": 1,
+        "executedAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0,
+    }
+    required_non_authority = {
+        "runner_report_is_not_execution_permission",
+        "preflight_pass_is_not_execution_permission",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_run_adapter_processes",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_adapter_preflight_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth",
+    }
+    assert required_non_authority.issubset(set(report["nonAuthorityStatements"]))
+    assert report["followUp"] == {
+        "batchEvidenceHandoffTask": "P41-T5",
+        "realLocalReadinessValidationTask": "P41-T6",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Runner Skeleton",
+            "SpecHarvesterTrustedLocalAdapterRunReport",
+            "trusted-local-adapter-runner-skeleton",
+            "SpecHarvesterTrustedLocalAdapterRunRequest",
+            "SpecHarvesterTrustedLocalAdapterRunPreflightReport",
+            "spec-harvester.trusted-local-adapter-run/v0",
+            "producer_trusted_local_adapter_run_report_only",
+            "disabled by default",
+            "no execution mode",
+            "deterministic no-execution report",
+            "request digest",
+            "request identity failure",
+            "preflight identity failure",
+            "non-passing preflight status",
+            "mismatched request digest",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterCodeImportAttempted: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "runtimeImplemented: false",
+            "requestIsExecutionPermission: false",
+            "preflightPassIsExecutionPermission: false",
+            "runnerReportIsExecutionPermission: false",
+            "appliedToDrafting: false",
+            "registryAuthority: false",
+            "dependencyInstallation: not_allowed",
+            "packageManagers: not_invoked",
+            "harvestedCodeExecution: not_allowed",
+            "aiExecution: not_run",
+            "networkAccess: none",
+            "status: error",
+            "exit code `2`",
+            "does not load third-party adapter code",
+            "does not run adapter processes",
+            "does not clone or fetch repositories",
+            "does not install dependencies",
+            "does not invoke package managers",
+            "does not execute harvested code",
+            "does not run AI",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "P41-T5",
+            "P41-T6",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+
+    for path, required in (
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md"),
+        (docc_root, "docs/TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md"),
+        (docc_root, "TrustedLocalAdapterRunnerSkeleton"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md"),
+        (capabilities_docc, "TrustedLocalAdapterRunnerSkeleton"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md"),
+        (roadmap_docc, "TrustedLocalAdapterRunnerSkeleton"),
+        (readiness_doc, "TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md"),
+        (readiness_docc, "TrustedLocalAdapterRunnerSkeleton"),
+        (request_doc, "TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md"),
+        (request_docc, "TrustedLocalAdapterRunnerSkeleton"),
+        (preflight_doc, "TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md"),
+        (preflight_docc, "TrustedLocalAdapterRunnerSkeleton"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P41-T4` Implement a disabled-by-default trusted local adapter runner" in (
+        workplan_text
+    )
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

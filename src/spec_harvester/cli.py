@@ -178,6 +178,11 @@ from spec_harvester.static_spec_renderer import (
     render_static_package_set_site,
     render_static_spec_site,
 )
+from spec_harvester.trusted_local_adapter_runner import (
+    TrustedLocalAdapterRunOptions,
+    build_trusted_local_adapter_run_report,
+    write_trusted_local_adapter_run_report,
+)
 from spec_harvester.xyflow_package_set_smoke import (
     XyflowPackageSetSmokeOptions,
     run_xyflow_package_set_smoke,
@@ -1055,6 +1060,32 @@ def build_parser() -> argparse.ArgumentParser:
     repository_plugin_applicability_detect.set_defaults(
         func=run_repository_plugin_applicability_detect
     )
+
+    trusted_local_adapter_run = subcommands.add_parser(
+        "trusted-local-adapter-runner-skeleton",
+        help=(
+            "Validate trusted local adapter request/preflight artifacts and emit "
+            "a disabled no-execution runner report."
+        ),
+    )
+    trusted_local_adapter_run.add_argument(
+        "--request",
+        type=Path,
+        required=True,
+        help="Path to SpecHarvesterTrustedLocalAdapterRunRequest JSON.",
+    )
+    trusted_local_adapter_run.add_argument(
+        "--preflight",
+        type=Path,
+        required=True,
+        help="Path to SpecHarvesterTrustedLocalAdapterRunPreflightReport JSON.",
+    )
+    trusted_local_adapter_run.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path where SpecHarvesterTrustedLocalAdapterRunReport JSON is written.",
+    )
+    trusted_local_adapter_run.set_defaults(func=run_trusted_local_adapter_runner_skeleton)
 
     governance = subcommands.add_parser(
         "governance-report",
@@ -1978,6 +2009,23 @@ def run_repository_plugin_applicability_detect(args: argparse.Namespace) -> int:
             sort_keys=True,
         )
     )
+    return 0
+
+
+def run_trusted_local_adapter_runner_skeleton(args: argparse.Namespace) -> int:
+    try:
+        payload = build_trusted_local_adapter_run_report(
+            TrustedLocalAdapterRunOptions(
+                request=args.request,
+                preflight=args.preflight,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2, sort_keys=True))
+        return 2
+    if args.output is not None:
+        write_trusted_local_adapter_run_report(args.output, payload)
+    print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
 
 

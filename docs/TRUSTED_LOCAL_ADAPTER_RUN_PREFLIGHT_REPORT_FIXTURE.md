@@ -16,12 +16,14 @@ Preflight is a review gate before any future runner. Passing preflight is not
 execution permission, not registry acceptance, and not adapter output truth.
 
 ```text
-run request -> preflight report -> future disabled no-execution runner skeleton
+run request -> preflight report -> disabled no-execution runner skeleton
 ```
 
-The P41-T3 fixture does not implement a preflight CLI, does not implement a
-runner, does not load third-party adapter code, and does not run adapter
-processes.
+The P41-T3 fixture does not implement a preflight CLI, does not load
+third-party adapter code, and does not run adapter processes. P41-T4 consumes
+this fixture through
+[`trusted-local-adapter-runner-skeleton`](TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md)
+without enabling real adapter execution.
 
 ## Identity
 
@@ -114,8 +116,8 @@ The fixture includes warning checks for review-only semantics.
 Warnings document review semantics:
 
 - preflight pass is review evidence only;
-- P41-T4 must add a disabled no-execution runner skeleton before any runner can
-  consume this report.
+- P41-T4 adds a disabled no-execution runner skeleton that can consume this
+  report without treating it as execution permission.
 
 ## Non-Authority Statements
 
@@ -137,8 +139,9 @@ The report states that it:
 
 ## Follow-Up
 
-P41-T3 only defines the preflight report shape. The next tasks are:
+P41-T3 only defines the preflight report shape. Related and next tasks are:
 
-- `P41-T4`: disabled-by-default no-execution runner skeleton;
+- `P41-T4`: disabled-by-default no-execution runner skeleton and
+  `SpecHarvesterTrustedLocalAdapterRunReport`;
 - `P41-T5`: review-only batch evidence handoff;
 - `P41-T6`: real local readiness validation.

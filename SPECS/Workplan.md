@@ -1717,7 +1717,7 @@ Acceptance:
   digests, missing operator opt-in, network access, dependency installation,
   package manager invocation, harvested code execution, unbounded process
   execution, and undeclared outputs.
-- [ ] `P41-T4` Implement a disabled-by-default trusted local adapter runner
+- [x] `P41-T4` Implement a disabled-by-default trusted local adapter runner
   skeleton that can validate a request and emit a no-execution report without
   loading third-party adapter code or running adapter processes.
 - [ ] `P41-T5` Connect trusted local adapter run reports to
