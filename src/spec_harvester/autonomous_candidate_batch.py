@@ -64,6 +64,7 @@ from spec_harvester.package_set_drafter import (
     draft_package_set,
 )
 from spec_harvester.producer_receipt import digest_record, sha256_file
+from spec_harvester.repository_plugin_applicability import evaluate_repository_plugin_applicability
 from spec_harvester.repository_profile_detection import (
     RepositoryIdentity,
     RepositoryProfileDetectionOptions,
@@ -133,6 +134,8 @@ class AutonomousCandidateBatchOptions:
     apply_ai_enrichment: bool = False
     repository_profile_selection: str = "none"
     repository_plugin_applicability: Path | None = None
+    repository_plugin_registry: Path | None = None
+    repository_plugin_static_evidence_envelope: Path | None = None
 
 
 class AutonomousCandidateBatch:
@@ -219,6 +222,16 @@ class AutonomousCandidateBatch:
             raise ValueError("--json-repair-max-attempts must be zero or greater")
         if not self.repository_profile_selection():
             raise ValueError("--repository-profile-selection must be non-empty")
+        if self.options.repository_plugin_applicability is None:
+            has_registry = self.options.repository_plugin_registry is not None
+            has_static_evidence = (
+                self.options.repository_plugin_static_evidence_envelope is not None
+            )
+            if has_registry != has_static_evidence:
+                raise ValueError(
+                    "--repository-plugin-registry and "
+                    "--repository-plugin-static-evidence-envelope must be provided together"
+                )
 
     def collect(self) -> dict[str, Any]:
         return collect_batch_snapshots(
@@ -538,7 +551,24 @@ class AutonomousCandidateBatch:
 
     def repository_plugin_applicability_record(self) -> dict[str, Any]:
         source = self.options.repository_plugin_applicability
-        if source is None:
+        registry_source = self.options.repository_plugin_registry
+        static_evidence_source = self.options.repository_plugin_static_evidence_envelope
+        output_path = (
+            self.reports_root
+            / REPOSITORY_PLUGIN_APPLICABILITY_DIRNAME
+            / REPOSITORY_PLUGIN_APPLICABILITY_FILENAME
+        )
+        if source is not None:
+            payload = read_json(source)
+            validate_repository_plugin_applicability(payload, source)
+            write_json(output_path, payload)
+            return repository_plugin_applicability_record_from_payload(
+                payload=payload,
+                source=str(source),
+                source_mode="explicit_sidecar",
+                output_path=output_path,
+            )
+        if registry_source is None and static_evidence_source is None:
             return {
                 "status": "not_provided",
                 "reason": "operator_not_provided",
@@ -546,48 +576,26 @@ class AutonomousCandidateBatch:
                 "registryAuthority": False,
             }
 
-        payload = read_json(source)
-        validate_repository_plugin_applicability(payload, source)
-        output_path = (
-            self.reports_root
-            / REPOSITORY_PLUGIN_APPLICABILITY_DIRNAME
-            / REPOSITORY_PLUGIN_APPLICABILITY_FILENAME
-        )
+        if registry_source is None or static_evidence_source is None:
+            raise ValueError(
+                "--repository-plugin-registry and "
+                "--repository-plugin-static-evidence-envelope must be provided together"
+            )
+        registry = read_json(registry_source)
+        static_evidence = read_json(static_evidence_source)
+        payload = evaluate_repository_plugin_applicability(registry, static_evidence)
+        validate_repository_plugin_applicability(payload, output_path)
         write_json(output_path, payload)
-        summary = mapping_value(payload.get("summary"))
-        return {
-            "status": "recorded",
-            "source": str(source),
-            "path": str(output_path),
-            "digest": digest_record(sha256_file(output_path)),
-            "apiVersion": payload["apiVersion"],
-            "kind": payload["kind"],
-            "schemaVersion": payload["schemaVersion"],
-            "authority": payload["authority"],
-            "mode": payload.get("mode"),
-            "repository": mapping_value(payload.get("repository")),
-            "registry": mapping_value(payload.get("registry")),
-            "summary": {
-                "selectedCount": int_value(summary.get("selectedCount")),
-                "rejectedCount": int_value(summary.get("rejectedCount")),
-                "fallbackCount": int_value(summary.get("fallbackCount")),
-                "blockedCount": int_value(summary.get("blockedCount")),
-                "diagnosticCount": int_value(summary.get("diagnosticCount")),
+        return repository_plugin_applicability_record_from_payload(
+            payload=payload,
+            source="auto_static_evaluator",
+            source_mode="auto_static_evaluator",
+            output_path=output_path,
+            inputs={
+                "registry": str(registry_source),
+                "staticEvidenceEnvelope": str(static_evidence_source),
             },
-            "diagnosticCodes": diagnostic_codes(payload),
-            "appliedToDrafting": False,
-            "registryAuthority": False,
-            "nonGoals": [
-                "plugin_execution",
-                "third_party_plugin_loading",
-                "parser_profile_behavior_change",
-                "repository_profile_scoring_change",
-                "specpm_acceptance",
-                "relation_acceptance",
-                "preview_only_removal",
-                "registry_publication",
-            ],
-        }
+        )
 
     def validation_report_path(self) -> Path:
         return self.reports_root / "batch-validation-report.json"
@@ -602,6 +610,54 @@ def run_autonomous_candidate_batch(options: AutonomousCandidateBatchOptions) -> 
 
 def write_autonomous_candidate_batch_report(path: Path, report: dict[str, Any]) -> None:
     write_json(path, report)
+
+
+def repository_plugin_applicability_record_from_payload(
+    *,
+    payload: dict[str, Any],
+    source: str,
+    source_mode: str,
+    output_path: Path,
+    inputs: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    summary = mapping_value(payload.get("summary"))
+    record: dict[str, Any] = {
+        "status": "recorded",
+        "source": source,
+        "sourceMode": source_mode,
+        "path": str(output_path),
+        "digest": digest_record(sha256_file(output_path)),
+        "apiVersion": payload["apiVersion"],
+        "kind": payload["kind"],
+        "schemaVersion": payload["schemaVersion"],
+        "authority": payload["authority"],
+        "mode": payload.get("mode"),
+        "repository": mapping_value(payload.get("repository")),
+        "registry": mapping_value(payload.get("registry")),
+        "summary": {
+            "selectedCount": int_value(summary.get("selectedCount")),
+            "rejectedCount": int_value(summary.get("rejectedCount")),
+            "fallbackCount": int_value(summary.get("fallbackCount")),
+            "blockedCount": int_value(summary.get("blockedCount")),
+            "diagnosticCount": int_value(summary.get("diagnosticCount")),
+        },
+        "diagnosticCodes": diagnostic_codes(payload),
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "nonGoals": [
+            "plugin_execution",
+            "third_party_plugin_loading",
+            "parser_profile_behavior_change",
+            "repository_profile_scoring_change",
+            "specpm_acceptance",
+            "relation_acceptance",
+            "preview_only_removal",
+            "registry_publication",
+        ],
+    }
+    if inputs is not None:
+        record["inputs"] = inputs
+    return record
 
 
 def inventory_path(collected: dict[str, Any]) -> Path:

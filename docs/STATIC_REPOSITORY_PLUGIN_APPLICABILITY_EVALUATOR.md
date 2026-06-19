@@ -165,15 +165,19 @@ P39-T3 implements this first deterministic rule set:
 
 ## Precedence
 
-Autonomous batch should use this precedence after P39-T5:
+Autonomous batch uses this precedence after P39-T5:
 
 1. Explicit operator-supplied `--repository-plugin-applicability` sidecar.
-2. Future opt-in static evaluator CLI output.
+2. Opt-in static evaluator output generated from
+   `--repository-plugin-registry` and
+   `--repository-plugin-static-evidence-envelope`.
 3. Documented generic fallback behavior.
 
 The explicit sidecar path from P38-T4 remains valid and takes precedence over
 auto-generated applicability evidence. That preserves operator control and
-keeps generated evidence reviewable.
+keeps generated evidence reviewable. Generated batch sidecars record
+`sourceMode: auto_static_evaluator`, `appliedToDrafting: false`, and
+`registryAuthority: false`.
 
 ## Diagnostics
 
@@ -200,8 +204,9 @@ Diagnostics should include:
 - `P39-T3`: implement the deterministic evaluator helper.
 - `P39-T4`: expose the evaluator through
   `repository-plugin-applicability-detect`.
-- `P39-T5`: integrate evaluator output into `autonomous-candidate-batch` as an
-  opt-in auto sidecar path.
+- `P39-T5`: integrate evaluator output into `autonomous-candidate-batch` through
+  explicit `--repository-plugin-registry` and
+  `--repository-plugin-static-evidence-envelope` opt-in inputs.
 - `P39-T6`: run real multi-repository validation over existing local checkouts.
 
 ## Boundary
@@ -216,7 +221,8 @@ The static evaluator must not:
 - invoke package managers;
 - execute harvested code;
 - read repository source files;
-- auto-attach generated reports to autonomous batch output;
+- auto-attach generated reports to autonomous batch output without explicit
+  operator opt-in;
 - run AI;
 - change parser profile behavior;
 - change repository profile scoring;

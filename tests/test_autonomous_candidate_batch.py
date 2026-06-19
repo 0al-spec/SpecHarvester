@@ -20,6 +20,13 @@ from spec_harvester.autonomous_candidate_batch import (
 )
 from spec_harvester.cli import main
 
+ROOT = Path(__file__).resolve().parents[1]
+REPOSITORY_PLUGIN_FIXTURES = ROOT / "tests" / "fixtures" / "repository_plugins"
+GENERIC_REPOSITORY_PLUGIN_REGISTRY = REPOSITORY_PLUGIN_FIXTURES / "generic-registry.example.json"
+STATIC_REPOSITORY_PLUGIN_EVIDENCE_ENVELOPE = (
+    REPOSITORY_PLUGIN_FIXTURES / "static-evidence-envelope.example.json"
+)
+
 
 def test_autonomous_candidate_batch_runs_offline_preview_pipeline(
     tmp_path: Path,
@@ -150,6 +157,7 @@ def test_autonomous_candidate_batch_records_repository_plugin_applicability_side
     assert report["summary"]["repositoryPluginApplicabilitySidecarCount"] == 1
     assert sidecar["status"] == "recorded"
     assert sidecar["source"] == str(applicability)
+    assert sidecar["sourceMode"] == "explicit_sidecar"
     assert sidecar_path == (
         output
         / "reports"
@@ -188,6 +196,147 @@ def test_autonomous_candidate_batch_records_repository_plugin_applicability_side
     copied = json.loads(sidecar_path.read_text(encoding="utf-8"))
     assert copied["kind"] == REPOSITORY_PLUGIN_APPLICABILITY_KIND
     assert copied["summary"]["selectedCount"] == 1
+
+
+def test_autonomous_candidate_batch_auto_generates_repository_plugin_applicability(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_plugin_registry=GENERIC_REPOSITORY_PLUGIN_REGISTRY,
+            repository_plugin_static_evidence_envelope=(STATIC_REPOSITORY_PLUGIN_EVIDENCE_ENVELOPE),
+        )
+    )
+
+    sidecar = report["repositoryPluginApplicability"]
+    sidecar_path = Path(sidecar["path"])
+
+    assert report["status"] == "passed"
+    assert report["summary"]["repositoryPluginApplicabilitySidecarCount"] == 1
+    assert sidecar["status"] == "recorded"
+    assert sidecar["source"] == "auto_static_evaluator"
+    assert sidecar["sourceMode"] == "auto_static_evaluator"
+    assert sidecar["inputs"] == {
+        "registry": str(GENERIC_REPOSITORY_PLUGIN_REGISTRY),
+        "staticEvidenceEnvelope": str(STATIC_REPOSITORY_PLUGIN_EVIDENCE_ENVELOPE),
+    }
+    assert sidecar["summary"] == {
+        "selectedCount": 3,
+        "rejectedCount": 0,
+        "fallbackCount": 0,
+        "blockedCount": 2,
+        "diagnosticCount": 5,
+    }
+    assert sidecar["diagnosticCodes"] == [
+        "plugin_blocked_required_evidence_missing",
+        "plugin_selected",
+    ]
+    assert sidecar["appliedToDrafting"] is False
+    assert sidecar["registryAuthority"] is False
+    assert sidecar_path.is_file()
+
+    generated = json.loads(sidecar_path.read_text(encoding="utf-8"))
+    assert generated["kind"] == REPOSITORY_PLUGIN_APPLICABILITY_KIND
+    assert generated["summary"]["selectedCount"] == 3
+    assert generated["sidecarBoundary"] == {
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "evaluatorExecution": "deterministic_static_metadata_only",
+    }
+
+
+def test_autonomous_candidate_batch_prefers_explicit_repository_plugin_applicability(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    applicability = write_repository_plugin_applicability_report(tmp_path)
+    output = tmp_path / "output"
+
+    report = run_autonomous_candidate_batch(
+        AutonomousCandidateBatchOptions(
+            inputs=inputs,
+            out=output,
+            skip_ai=True,
+            repository_plugin_applicability=applicability,
+            repository_plugin_registry=GENERIC_REPOSITORY_PLUGIN_REGISTRY,
+            repository_plugin_static_evidence_envelope=(STATIC_REPOSITORY_PLUGIN_EVIDENCE_ENVELOPE),
+        )
+    )
+
+    sidecar = report["repositoryPluginApplicability"]
+
+    assert report["status"] == "passed"
+    assert sidecar["source"] == str(applicability)
+    assert sidecar["sourceMode"] == "explicit_sidecar"
+    assert "inputs" not in sidecar
+    assert sidecar["summary"] == {
+        "selectedCount": 1,
+        "rejectedCount": 1,
+        "fallbackCount": 1,
+        "blockedCount": 2,
+        "diagnosticCount": 5,
+    }
+
+
+def test_autonomous_candidate_batch_rejects_partial_auto_repository_plugin_inputs(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                skip_ai=True,
+                repository_plugin_registry=GENERIC_REPOSITORY_PLUGIN_REGISTRY,
+            )
+        )
+    except ValueError as exc:
+        assert "--repository-plugin-registry" in str(exc)
+        assert "--repository-plugin-static-evidence-envelope" in str(exc)
+    else:
+        raise AssertionError("expected partial repository plugin auto inputs to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
+
+
+def test_autonomous_candidate_batch_rejects_invalid_auto_repository_plugin_inputs(
+    tmp_path: Path,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    invalid_evidence = tmp_path / "static-evidence-envelope.json"
+    payload = json.loads(STATIC_REPOSITORY_PLUGIN_EVIDENCE_ENVELOPE.read_text(encoding="utf-8"))
+    payload["evidence"][0]["path"] = "../unsafe.json"
+    invalid_evidence.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    output = tmp_path / "output"
+
+    try:
+        run_autonomous_candidate_batch(
+            AutonomousCandidateBatchOptions(
+                inputs=inputs,
+                out=output,
+                skip_ai=True,
+                repository_plugin_registry=GENERIC_REPOSITORY_PLUGIN_REGISTRY,
+                repository_plugin_static_evidence_envelope=invalid_evidence,
+            )
+        )
+    except ValueError as exc:
+        assert "unsafe static evidence path" in str(exc)
+    else:
+        raise AssertionError("expected invalid static evidence envelope to fail")
+
+    assert not (output / AUTONOMOUS_CANDIDATE_BATCH_REPORT_FILENAME).exists()
 
 
 def test_autonomous_candidate_batch_rejects_invalid_repository_plugin_applicability(
@@ -673,6 +822,37 @@ def test_autonomous_candidate_batch_cli_writes_report(
     assert printed["repositories"][0]["repositoryProfileDetection"]["selectedProfileId"] == (
         "generic.package_set.v0"
     )
+
+
+def test_autonomous_candidate_batch_cli_auto_generates_repository_plugin_applicability(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    inputs = write_source_manifest(tmp_path)
+    output = tmp_path / "output"
+
+    exit_code = main(
+        [
+            "autonomous-candidate-batch",
+            str(inputs),
+            "--out",
+            str(output),
+            "--skip-ai",
+            "--repository-plugin-registry",
+            str(GENERIC_REPOSITORY_PLUGIN_REGISTRY),
+            "--repository-plugin-static-evidence-envelope",
+            str(STATIC_REPOSITORY_PLUGIN_EVIDENCE_ENVELOPE),
+        ]
+    )
+
+    assert exit_code == 0
+    printed = json.loads(capsys.readouterr().out)
+    sidecar = printed["repositoryPluginApplicability"]
+    assert printed["status"] == "passed"
+    assert sidecar["status"] == "recorded"
+    assert sidecar["sourceMode"] == "auto_static_evaluator"
+    assert sidecar["summary"]["selectedCount"] == 3
+    assert sidecar["summary"]["blockedCount"] == 2
 
 
 def write_source_manifest(tmp_path: Path) -> Path:
