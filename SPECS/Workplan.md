@@ -2036,7 +2036,7 @@ Acceptance:
 - [x] `P43-T4` Run the operational MVP validation over an operator-provided
   pinned local corpus and record the static-only quality baseline for at least
   three repositories from different ecosystems.
-- [ ] `P43-T5` Run the AI-enabled comparison over the same pinned corpus when
+- [x] `P43-T5` Run the AI-enabled comparison over the same pinned corpus when
   a local OpenAI-compatible provider is available, recording deltas and warning
   when AI output stays proposal-only.
 - [ ] `P43-T6` Add author handoff summaries for operational MVP runs so a
