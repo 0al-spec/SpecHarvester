@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P40-T4 Adapter Execution Policy" in next_text:
+        assert_p40_t3_last_archived(next_text)
+        assert_p40_t3_recent(next_text)
+        assert_phase_40_t4_planned(next_text)
+        return
+
     if "# Next Task: P40-T3 Repository Plugin Adapter Preflight Report Fixture" in next_text:
         assert_p40_t2_last_archived(next_text)
         assert_p40_t2_recent(next_text)
@@ -4140,7 +4146,7 @@ def assert_p40_t2_recent(next_text: str) -> None:
 def assert_phase_40_t3_planned(next_text: str) -> None:
     normalized = " ".join(next_text.split())
     assert "# Next Task: P40-T3 Repository Plugin Adapter Preflight Report Fixture" in (next_text)
-    assert "**Status:** Planned" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
     assert "`feature/P40-T3-repository-plugin-adapter-preflight-report-fixture`" in (next_text)
     assert "Phase 40. Repository Plugin Adapter Contract" in next_text
     assert "SpecHarvesterRepositoryPluginAdapterPreflightReport" in next_text
@@ -4154,6 +4160,56 @@ def assert_phase_40_t3_planned(next_text: str) -> None:
     assert "Do not implement adapter loading or execution" in normalized
     assert "Do not change static plugin applicability evaluation" in normalized
     assert "Do not change `autonomous-candidate-batch`" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not install dependencies" in normalized
+    assert "Do not invoke package managers" in normalized
+    assert "Do not execute harvested code" in normalized
+    assert "Do not run AI" in normalized
+    assert "Do not accept packages or relations" in normalized
+    assert "Do not publish registry metadata" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p40_t3_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P40-T3 Repository Plugin Adapter Preflight Report Fixture" in next_text
+    )
+
+
+def assert_p40_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P40-T3` added the first machine-readable" in normalized
+    assert "SpecHarvesterRepositoryPluginAdapterPreflightReport" in next_text
+    assert "tests/fixtures/repository_plugins/adapter-preflight-report.example.json" in next_text
+    assert "docs/REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md" in next_text
+    assert "RepositoryPluginAdapterPreflightReportFixture.md" in next_text
+    assert "allowed, rejected, fallback, and blocked adapter decisions" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "executedAdapterCount: 0" in normalized
+    assert "producer_plugin_adapter_preflight_only" in normalized
+    assert "registryAuthority: false" in normalized
+
+
+def assert_phase_40_t4_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P40-T4 Adapter Execution Policy" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P40-T4-adapter-execution-policy`" in next_text
+    assert "Phase 40. Repository Plugin Adapter Contract" in next_text
+    assert "default disabled execution" in normalized
+    assert "static-only mode" in normalized
+    assert "bounded local trusted mode" in normalized
+    assert "path allowlists" in normalized
+    assert "no dependency installation" in normalized
+    assert "no package manager invocation" in normalized
+    assert "no network discovery" in normalized
+    assert "no harvested code execution" in normalized
+    assert "explicit operator opt-in" in normalized
+    assert "non-static mode" in normalized
+    assert "Do not implement adapter loading or execution" in normalized
+    assert "Do not connect adapters to autonomous batch" in normalized
     assert "Do not clone or fetch repositories" in normalized
     assert "Do not install dependencies" in normalized
     assert "Do not invoke package managers" in normalized
@@ -15202,6 +15258,237 @@ def test_repository_plugin_adapter_manifest_fixture_is_documented() -> None:
 
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P40-T2` Add a machine-readable" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_repository_plugin_adapter_preflight_report_fixture_is_documented() -> None:
+    fixture = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "adapter-preflight-report.example.json"
+    )
+    manifest = ROOT / "tests" / "fixtures" / "repository_plugins" / "adapter-manifest.example.json"
+    static_evidence = (
+        ROOT / "tests" / "fixtures" / "repository_plugins" / "static-evidence-envelope.example.json"
+    )
+    github_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterPreflightReportFixture.md"
+    )
+    adapter_contract = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_CONTRACT.md"
+    adapter_contract_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterContract.md"
+    )
+    manifest_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_ADAPTER_MANIFEST_FIXTURE.md"
+    manifest_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginAdapterManifestFixture.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    subsystem_doc = ROOT / "docs" / "REPOSITORY_PLUGIN_SUBSYSTEM_CONTRACT.md"
+    subsystem_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RepositoryPluginSubsystemContract.md"
+    )
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    manifest_payload = json.loads(manifest.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.repository-plugin-adapter-preflight/v0"
+    assert payload["kind"] == "SpecHarvesterRepositoryPluginAdapterPreflightReport"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_plugin_adapter_preflight_only"
+    assert payload["inputAuthority"] == "static_local_evidence_only"
+    assert payload["manifest"] == {
+        "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+        "digest": "sha256:" + hashlib.sha256(manifest.read_bytes()).hexdigest(),
+        "kind": "SpecHarvesterRepositoryPluginAdapterManifest",
+        "authority": "producer_plugin_adapter_manifest_only",
+    }
+    assert payload["staticEvidenceEnvelope"] == {
+        "path": "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+        "digest": "sha256:" + hashlib.sha256(static_evidence.read_bytes()).hexdigest(),
+        "kind": "SpecHarvesterRepositoryPluginStaticEvidenceEnvelope",
+        "authority": "producer_plugin_static_evidence_only",
+    }
+    assert payload["pathPolicy"] == {
+        "pathFormat": "posix_relative",
+        "parentSegmentsAllowed": False,
+        "absolutePathsAllowed": False,
+        "backslashAllowed": False,
+        "networkPathsAllowed": False,
+    }
+    for record in (payload["manifest"], payload["staticEvidenceEnvelope"]):
+        path = record["path"]
+        assert path
+        assert not path.startswith("/")
+        assert "\\" not in path
+        assert "://" not in path
+        assert ".." not in path.split("/")
+        assert record["digest"].startswith("sha256:")
+        assert len(record["digest"]) == len("sha256:") + 64
+
+    assert payload["evaluationMode"] == "fixture_static_preflight_only"
+    assert payload["adapterExecution"] == {
+        "adapterCodeLoaded": False,
+        "adapterExecution": "not_run",
+        "executedAdapterCount": 0,
+        "dependencyInstallation": "not_allowed",
+        "packageManagers": "not_invoked",
+        "networkAccess": "none",
+        "harvestedCodeExecution": "not_allowed",
+        "processExecution": "not_allowed",
+        "ai": "not_run",
+    }
+    assert payload["evidenceAvailability"]["missingRequiredKinds"] == []
+    assert payload["evidenceAvailability"]["missingRequiredDigestCount"] == 0
+    assert "static_evidence_envelope" in payload["evidenceAvailability"]["availableKinds"]
+
+    allowed_ids = {record["adapterId"] for record in payload["allowedAdapters"]}
+    manifest_ids = {record["adapterId"] for record in manifest_payload["adapters"]}
+    assert allowed_ids == manifest_ids
+    for record in payload["allowedAdapters"]:
+        assert record["decision"] == "allowed"
+        assert record["manifestDeclared"] is True
+        assert record["requiredEvidenceKinds"]
+        assert set(record["requiredEvidenceKinds"]).issubset(set(record["availableEvidenceKinds"]))
+        assert record["execution"] == "not_run"
+        assert record["authority"] == "producer_adapter_manifest_only"
+
+    assert payload["rejectedAdapters"][0]["decision"] == "rejected"
+    assert payload["rejectedAdapters"][0]["execution"] == "not_run"
+    assert "network" in payload["rejectedAdapters"][0]["rejectedCapabilities"]
+    assert "process" in payload["rejectedAdapters"][0]["rejectedCapabilities"]
+    assert payload["fallbackAdapters"][0]["decision"] == "fallback"
+    assert payload["fallbackAdapters"][0]["execution"] == "not_run"
+    assert payload["blockedAdapters"][0]["decision"] == "blocked"
+    assert payload["blockedAdapters"][0]["missingRequiredEvidenceKinds"]
+    assert payload["blockedAdapters"][0]["execution"] == "not_run"
+
+    assert payload["summary"] == {
+        "allowedCount": 3,
+        "rejectedCount": 1,
+        "fallbackCount": 1,
+        "blockedCount": 1,
+        "diagnosticCount": 2,
+        "executedAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0,
+    }
+    assert payload["summary"]["allowedCount"] == len(payload["allowedAdapters"])
+    assert payload["summary"]["rejectedCount"] == len(payload["rejectedAdapters"])
+    assert payload["summary"]["fallbackCount"] == len(payload["fallbackAdapters"])
+    assert payload["summary"]["blockedCount"] == len(payload["blockedAdapters"])
+    assert payload["sidecarBoundary"] == {
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterPreflight": "fixture_static_only",
+        "adapterExecution": "not_run",
+        "adapterOutputAccepted": False,
+    }
+    assert payload["followUp"] == {
+        "adapterExecutionPolicyTask": "P40-T4",
+        "batchIntegrationTask": "P40-T5",
+        "crossEcosystemFixtureTask": "P40-T6",
+        "realValidationTask": "P40-T7",
+    }
+    for boundary in (
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_change_static_plugin_applicability_evaluation",
+        "does_not_change_autonomous_batch_behavior",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_seed_baselines",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_adapter_preflight_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth",
+    ):
+        assert boundary in payload["nonAuthorityStatements"]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Repository Plugin Adapter Preflight Report Fixture",
+            "SpecHarvesterRepositoryPluginAdapterPreflightReport",
+            "tests/fixtures/repository_plugins/adapter-preflight-report.example.json",
+            "spec-harvester.repository-plugin-adapter-preflight/v0",
+            "producer_plugin_adapter_preflight_only",
+            "static_local_evidence_only",
+            "allowedAdapters[]",
+            "rejectedAdapters[]",
+            "fallbackAdapters[]",
+            "blockedAdapters[]",
+            "diagnostics[]",
+            "spec_harvester.adapters.generic.parser_profile_summary.v0",
+            "spec_harvester.adapters.generic.manifest_summary.v0",
+            "spec_harvester.adapters.generic.package_topology_hint.v0",
+            "adapterCodeLoaded",
+            "adapterExecution",
+            "executedAdapterCount",
+            "dependencyInstallation",
+            "packageManagers",
+            "networkAccess",
+            "harvestedCodeExecution",
+            "processExecution",
+            "P40-T4",
+            "P40-T5",
+            "P40-T6",
+            "P40-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+
+    for path, required in (
+        (docs_index, "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"),
+        (docc_root, "docs/REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"),
+        (docc_root, "<doc:RepositoryPluginAdapterPreflightReportFixture>"),
+        (capabilities, "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"),
+        (capabilities_docc, "RepositoryPluginAdapterPreflightReportFixture"),
+        (roadmap, "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"),
+        (roadmap_docc, "RepositoryPluginAdapterPreflightReportFixture"),
+        (subsystem_doc, "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"),
+        (subsystem_docc, "RepositoryPluginAdapterPreflightReportFixture"),
+        (adapter_contract, "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"),
+        (adapter_contract_docc, "RepositoryPluginAdapterPreflightReportFixture"),
+        (manifest_doc, "REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md"),
+        (manifest_docc, "RepositoryPluginAdapterPreflightReportFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P40-T3` Add a repository plugin adapter preflight report fixture" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

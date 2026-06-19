@@ -199,6 +199,9 @@ output evidence before any adapter runtime exists.
 P40-T2 records the first adapter manifest fixture in
 <doc:RepositoryPluginAdapterManifestFixture> and
 `tests/fixtures/repository_plugins/adapter-manifest.example.json`.
+P40-T3 records the first adapter preflight report fixture in
+<doc:RepositoryPluginAdapterPreflightReportFixture> and
+`tests/fixtures/repository_plugins/adapter-preflight-report.example.json`.
 
 ## Trust Boundary
 

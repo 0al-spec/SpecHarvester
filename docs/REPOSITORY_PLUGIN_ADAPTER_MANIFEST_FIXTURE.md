@@ -164,7 +164,8 @@ treat AI output as registry truth.
 
 ## Relationship to Later Tasks
 
-- `P40-T3` adds `SpecHarvesterRepositoryPluginAdapterPreflightReport`.
+- `P40-T3` adds
+  [`SpecHarvesterRepositoryPluginAdapterPreflightReport`](REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md).
 - `P40-T4` defines adapter execution policy.
 - `P40-T5` connects adapter evidence to autonomous candidate batch.
 - `P40-T6` records cross-ecosystem adapter contract fixtures.

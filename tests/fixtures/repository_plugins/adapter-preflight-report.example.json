@@ -1,0 +1,239 @@
+{
+  "apiVersion": "spec-harvester.repository-plugin-adapter-preflight/v0",
+  "kind": "SpecHarvesterRepositoryPluginAdapterPreflightReport",
+  "schemaVersion": 1,
+  "authority": "producer_plugin_adapter_preflight_only",
+  "inputAuthority": "static_local_evidence_only",
+  "manifest": {
+    "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+    "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+    "kind": "SpecHarvesterRepositoryPluginAdapterManifest",
+    "authority": "producer_plugin_adapter_manifest_only"
+  },
+  "staticEvidenceEnvelope": {
+    "path": "tests/fixtures/repository_plugins/static-evidence-envelope.example.json",
+    "digest": "sha256:f91dcf8b81a235e2024559c12ef9a01decb5ae3fc6e748187fb353ba011e5a57",
+    "kind": "SpecHarvesterRepositoryPluginStaticEvidenceEnvelope",
+    "authority": "producer_plugin_static_evidence_only"
+  },
+  "repository": {
+    "id": "example-workspace",
+    "sourceManifestPath": "inputs/repositories.yml",
+    "sourceManifestEntryId": "example-workspace",
+    "revision": "0123456789abcdef0123456789abcdef01234567"
+  },
+  "pathPolicy": {
+    "pathFormat": "posix_relative",
+    "parentSegmentsAllowed": false,
+    "absolutePathsAllowed": false,
+    "backslashAllowed": false,
+    "networkPathsAllowed": false
+  },
+  "evaluationMode": "fixture_static_preflight_only",
+  "adapterExecution": {
+    "adapterCodeLoaded": false,
+    "adapterExecution": "not_run",
+    "executedAdapterCount": 0,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "networkAccess": "none",
+    "harvestedCodeExecution": "not_allowed",
+    "processExecution": "not_allowed",
+    "ai": "not_run"
+  },
+  "evidenceAvailability": {
+    "availableKinds": [
+      "source_manifest",
+      "harvest_snapshot",
+      "workspace_inventory",
+      "public_interface_index",
+      "repository_profile_detection",
+      "repository_parsing_profile_decision",
+      "operator_label",
+      "static_evidence_envelope"
+    ],
+    "missingRequiredKinds": [],
+    "safePathCount": 7,
+    "missingRequiredDigestCount": 0
+  },
+  "allowedAdapters": [
+    {
+      "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+      "decision": "allowed",
+      "manifestDeclared": true,
+      "reason": "required_static_evidence_available_and_static_only_execution_declared",
+      "requiredEvidenceKinds": [
+        "static_evidence_envelope",
+        "repository_parsing_profile_decision"
+      ],
+      "optionalEvidenceKinds": [
+        "operator_label"
+      ],
+      "availableEvidenceKinds": [
+        "static_evidence_envelope",
+        "repository_parsing_profile_decision",
+        "operator_label"
+      ],
+      "outputKinds": [
+        "adapter_parser_profile_summary",
+        "adapter_review_panel_data"
+      ],
+      "execution": "not_run",
+      "authority": "producer_adapter_manifest_only"
+    },
+    {
+      "adapterId": "spec_harvester.adapters.generic.manifest_summary.v0",
+      "decision": "allowed",
+      "manifestDeclared": true,
+      "reason": "required_static_evidence_available_and_static_only_execution_declared",
+      "requiredEvidenceKinds": [
+        "static_evidence_envelope",
+        "harvest_snapshot"
+      ],
+      "optionalEvidenceKinds": [
+        "workspace_inventory"
+      ],
+      "availableEvidenceKinds": [
+        "static_evidence_envelope",
+        "harvest_snapshot",
+        "workspace_inventory"
+      ],
+      "outputKinds": [
+        "adapter_manifest_summary",
+        "adapter_diagnostics"
+      ],
+      "execution": "not_run",
+      "authority": "producer_adapter_manifest_only"
+    },
+    {
+      "adapterId": "spec_harvester.adapters.generic.package_topology_hint.v0",
+      "decision": "allowed",
+      "manifestDeclared": true,
+      "reason": "required_static_evidence_available_and_static_only_execution_declared",
+      "requiredEvidenceKinds": [
+        "static_evidence_envelope",
+        "workspace_inventory",
+        "repository_profile_detection"
+      ],
+      "optionalEvidenceKinds": [
+        "public_interface_index"
+      ],
+      "availableEvidenceKinds": [
+        "static_evidence_envelope",
+        "workspace_inventory",
+        "repository_profile_detection",
+        "public_interface_index"
+      ],
+      "outputKinds": [
+        "adapter_topology_hint",
+        "adapter_diagnostics"
+      ],
+      "execution": "not_run",
+      "authority": "producer_adapter_manifest_only"
+    }
+  ],
+  "rejectedAdapters": [
+    {
+      "adapterId": "spec_harvester.adapters.example.unsafe_network.v0",
+      "decision": "rejected",
+      "manifestDeclared": false,
+      "reason": "adapter_not_declared_or_unsafe_capability_request",
+      "rejectedCapabilities": [
+        "network",
+        "process"
+      ],
+      "policyViolations": [
+        "networkAccess_not_none",
+        "processExecution_not_allowed",
+        "adapter_code_loading_not_permitted"
+      ],
+      "execution": "not_run",
+      "authority": "none"
+    }
+  ],
+  "fallbackAdapters": [
+    {
+      "adapterId": "spec_harvester.adapters.example.optional_documentation_summary.v0",
+      "decision": "fallback",
+      "manifestDeclared": false,
+      "reason": "optional_evidence_unavailable_use_static_summary_only",
+      "missingOptionalEvidenceKinds": [
+        "documentation_usage_index"
+      ],
+      "fallbackOutputKinds": [
+        "adapter_diagnostics"
+      ],
+      "execution": "not_run",
+      "authority": "producer_adapter_preflight_example_only"
+    }
+  ],
+  "blockedAdapters": [
+    {
+      "adapterId": "spec_harvester.adapters.example.missing_required_evidence.v0",
+      "decision": "blocked",
+      "manifestDeclared": false,
+      "reason": "missing_required_evidence_before_adapter_execution",
+      "missingRequiredEvidenceKinds": [
+        "unavailable_required_index"
+      ],
+      "policyViolations": [
+        "required_evidence_missing"
+      ],
+      "execution": "not_run",
+      "authority": "producer_adapter_preflight_example_only"
+    }
+  ],
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "adapter_manifest_preflight_fixture",
+      "message": "Fixture validates declared P40-T2 static-only adapter manifests against P39 static evidence availability without executing adapter code."
+    },
+    {
+      "severity": "info",
+      "code": "decision_categories_recorded",
+      "message": "Allowed, rejected, fallback, and blocked adapter decision categories are represented for downstream review tooling."
+    }
+  ],
+  "summary": {
+    "allowedCount": 3,
+    "rejectedCount": 1,
+    "fallbackCount": 1,
+    "blockedCount": 1,
+    "diagnosticCount": 2,
+    "executedAdapterCount": 0,
+    "runtimeImplementedAdapterCount": 0
+  },
+  "sidecarBoundary": {
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterPreflight": "fixture_static_only",
+    "adapterExecution": "not_run",
+    "adapterOutputAccepted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_adapters",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_adapter_preflight_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "adapterExecutionPolicyTask": "P40-T4",
+    "batchIntegrationTask": "P40-T5",
+    "crossEcosystemFixtureTask": "P40-T6",
+    "realValidationTask": "P40-T7"
+  }
+}

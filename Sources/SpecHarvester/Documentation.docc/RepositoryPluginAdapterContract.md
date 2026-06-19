@@ -158,9 +158,9 @@ The default sandbox decision for undeclared or unsafe capabilities is
 
 ## Adapter Preflight
 
-P40-T3 should add `SpecHarvesterRepositoryPluginAdapterPreflightReport`.
-It should validate adapter manifests against static evidence before any future
-runtime path.
+P40-T3 adds the first
+<doc:RepositoryPluginAdapterPreflightReportFixture> fixture. It validates
+adapter manifests against static evidence before any future runtime path.
 
 Preflight decisions should include `allowedAdapters[]`, `rejectedAdapters[]`,
 `fallbackAdapters[]`, `blockedAdapters[]`, and `diagnostics[]`.
@@ -168,6 +168,11 @@ Preflight decisions should include `allowedAdapters[]`, `rejectedAdapters[]`,
 Preflight must block missing required evidence, unsafe paths, unsupported
 execution modes, undeclared capabilities, unknown output roles, ambiguous
 authority, and any manifest that claims registry authority.
+
+The P40-T3 fixture records the three P40-T2 generic static adapters as
+`allowedAdapters[]` and includes explicit rejected, fallback, and blocked
+decision examples while keeping `adapterCodeLoaded: false`,
+`adapterExecution: not_run`, and `executedAdapterCount: 0`.
 
 ## Output Artifact Categories
 
