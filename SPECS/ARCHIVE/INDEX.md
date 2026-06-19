@@ -204,6 +204,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t1_operational_mvp_validation_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t10_disabled_explicit_real_local_sandbox_runner_skeleton.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t11_explicit_real_local_sandbox_runner_evidence_handoff.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t12_runtime_implementation_review_gate.md` |
@@ -321,6 +322,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-19 | P43-T1 | Archived REVIEW_p43_t1_operational_mvp_validation_plan report |
 | 2026-06-19 | P43-T1 | Archived Operational MVP Validation Plan (PASS) |
 | 2026-06-14 | P35-T3 | Archived REVIEW_p35_t3_source_classifier_plan report |
 | 2026-06-14 | P35-T3 | Archived Candidate Source Classifier Plan (PASS) |
