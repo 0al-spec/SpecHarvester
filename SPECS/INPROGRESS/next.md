@@ -1,56 +1,68 @@
-# Next Task: P41-T5 Trusted Local Adapter Run Evidence Handoff
+# Next Task: P41-T6 Real Local Trusted-Adapter Readiness Validation
 
-**Status:** In Progress
-**Branch:** `feature/P41-T5-trusted-local-adapter-run-evidence-handoff`
+**Status:** Planned
+**Branch:** `feature/P41-T6-real-local-trusted-adapter-readiness-validation`
 **Phase:** Phase 41. Trusted Local Adapter Runtime Readiness
-**Last Archived:** P41-T4 Disabled Trusted Local Adapter Runner Skeleton
+**Last Archived:** P41-T5 Trusted Local Adapter Run Evidence Handoff
 
 ## Recently Archived
 
-- `P41-T4` added the disabled `trusted-local-adapter-runner-skeleton` CLI.
-- The runner emits `SpecHarvesterTrustedLocalAdapterRunReport` as
-  producer-side review evidence.
-- The GitHub-facing documentation is
-  `docs/TRUSTED_LOCAL_ADAPTER_RUNNER_SKELETON.md`.
-- The DocC mirror is
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterRunnerSkeleton.md`.
-- The skeleton validates `SpecHarvesterTrustedLocalAdapterRunRequest` and
-  `SpecHarvesterTrustedLocalAdapterRunPreflightReport`, verifies request
-  digest linkage, and keeps `adapterExecution: not_run`,
+- `P41-T5` added `autonomous-candidate-batch
+  --trusted-local-adapter-run-report`.
+- Batch output can now copy a
+  `SpecHarvesterTrustedLocalAdapterRunReport` to
+  `reports/trusted-local-adapter-run-evidence/trusted-local-adapter-run-report.json`.
+- Batch reports now include `trustedLocalAdapterRunEvidence` and
+  `trustedLocalAdapterRunEvidenceSidecarCount`.
+- The sidecar records source/copied SHA-256 digests, report identity,
+  diagnostic codes, runner status, and no-execution boundary fields.
+- The handoff keeps `adapterExecution: not_run`,
   `adapterCodeLoaded: false`, `adapterProcessSpawned: false`,
-  `executedAdapterCount: 0`, `runnerReportIsExecutionPermission: false`,
-  `appliedToDrafting: false`, and `registryAuthority: false`.
-- Trusted local adapter run reports remain producer-side review evidence, not
-  execution permission, not adapter output truth, and not registry authority.
+  `executedAdapterCount: 0`, `appliedToDrafting: false`, and
+  `registryAuthority: false`.
+- Invalid authority-bearing or execution-bearing trusted run reports are
+  rejected before batch output is emitted.
+- The batch still preserves the default static evaluator path and existing
+  repository plugin sidecar paths.
 
 ## Task
 
-Connect trusted local adapter run reports to `autonomous-candidate-batch` as
-explicit review-only producer evidence while preserving the default static
-evaluator and existing adapter sidecar paths.
+Run a real local trusted-adapter readiness validation over existing pinned
+checkouts, comparing FastMCP, FastAPI, xyflow, and Gin while proving that no
+adapter process, package manager, dependency installer, network discovery,
+harvested code, or AI execution occurred.
 
 ## Why This Is Next
 
-P41-T2 defines the run request, P41-T3 defines the run preflight report, and
-P41-T4 defines the disabled no-execution runner report. The next step is to
-make that report attachable to autonomous batch output as sidecar evidence
-without changing drafting behavior or treating the report as adapter output.
+P41-T2 through P41-T5 define the request, preflight, disabled runner report, and
+batch evidence handoff. The remaining readiness question is practical: can the
+full no-execution evidence path be run over representative real repositories
+without accidentally enabling adapter execution or weakening the static default
+path?
 
 ## Scope
 
-- Add an opt-in `autonomous-candidate-batch` input for
-  `SpecHarvesterTrustedLocalAdapterRunReport`.
-- Copy the trusted local adapter run report into batch output as explicit
-  review-only producer evidence.
-- Preserve the default static evaluator path when no run report is supplied.
-- Preserve existing `repositoryPluginApplicability` and
-  `repositoryPluginAdapterEvidence` sidecar behavior.
-- Record copied path, SHA-256 digest, report identity, no-execution boundary,
-  and non-authority statements in the batch report.
-- Keep `adapterExecution: not_run`, `adapterCodeLoaded: false`,
-  `adapterProcessSpawned: false`, `executedAdapterCount: 0`,
-  `appliedToDrafting: false`, and `registryAuthority: false`.
-- Document the batch evidence handoff in GitHub docs and DocC.
+- Use existing pinned local checkouts for FastMCP, FastAPI, xyflow, and Gin when
+  available.
+- Build or reuse trusted local adapter run request/preflight/report artifacts
+  for each repository shape.
+- Attach trusted local adapter run reports to `autonomous-candidate-batch`
+  output through `--trusted-local-adapter-run-report`.
+- Compare readiness output across documentation-heavy, Python web framework,
+  JavaScript/TypeScript package-set, and Go single-package shapes.
+- Record a durable real-run validation fixture and GitHub/DocC documentation.
+- Prove all relevant boundaries remain no-execution:
+  - `adapterExecution: not_run`
+  - `adapterCodeLoaded: false`
+  - `adapterProcessSpawned: false`
+  - `executedAdapterCount: 0`
+  - no dependency installation
+  - no package manager invocation
+  - no network discovery
+  - no harvested code execution
+  - no AI execution because of the adapter sidecar
+  - `appliedToDrafting: false`
+  - `registryAuthority: false`
 
 ## Non-Goals
 
@@ -61,13 +73,12 @@ without changing drafting behavior or treating the report as adapter output.
 - Do not install dependencies.
 - Do not invoke package managers.
 - Do not execute harvested code.
-- Do not run AI because of this sidecar.
+- Do not run AI because of this validation.
 - Do not accept packages or relations.
 - Do not seed baselines.
 - Do not publish registry metadata.
 - Do not remove `preview_only`.
-- Do not treat adapter output as registry truth.
-- Do not replace static plugin applicability evaluation.
+- Do not treat adapter output or runner reports as registry truth.
 
 ## Phase 41. Trusted Local Adapter Runtime Readiness
 
@@ -88,7 +99,7 @@ without changing drafting behavior or treating the report as adapter output.
 - [x] `P41-T4` Implement a disabled-by-default trusted local adapter runner
   skeleton that can validate a request and emit a no-execution report without
   loading third-party adapter code or running adapter processes.
-- [ ] `P41-T5` Connect trusted local adapter run reports to
+- [x] `P41-T5` Connect trusted local adapter run reports to
   `autonomous-candidate-batch` as explicit review-only producer evidence while
   preserving the default static evaluator and existing adapter sidecar paths.
 - [ ] `P41-T6` Run a real local trusted-adapter readiness validation over
@@ -98,27 +109,22 @@ without changing drafting behavior or treating the report as adapter output.
 
 Motivation:
 
-- Future trusted local adapter reports need a visible producer evidence handoff
-  path before any real execution mode is considered.
-- Operators should be able to attach no-execution runner evidence to batch
-  output without changing candidate drafting or registry authority.
+- The contracts are now wired together, but the end-to-end no-execution path
+  needs real repository evidence before any future runtime work.
+- Representative repository shapes should prove the sidecar remains review
+  evidence and does not alter autonomous drafting.
 
 Goal:
 
-- Add an opt-in batch sidecar path for trusted local adapter run reports while
-  preserving no-execution and non-authority boundaries.
+- Produce durable validation evidence that the trusted local adapter readiness
+  path works over real pinned checkouts without executing adapters.
 
 Acceptance:
 
-- Batch output can include a copied trusted local adapter run report only when
-  the operator supplies one explicitly.
-- The copied report has a SHA-256 digest and validated identity in the batch
-  report.
-- Existing default static evaluator and adapter evidence sidecar paths still
-  work without trusted local adapter run evidence.
-- The sidecar records `adapterExecution: not_run`,
-  `adapterCodeLoaded: false`, `adapterProcessSpawned: false`,
-  `executedAdapterCount: 0`, `appliedToDrafting: false`, and
-  `registryAuthority: false`.
-- Docs and DocC explain that trusted local adapter run evidence is review-only
-  producer evidence, not adapter output truth and not registry acceptance.
+- A real-run validation fixture covers FastMCP, FastAPI, xyflow, and Gin, or
+  explicitly records missing local checkouts as skipped with reasons.
+- Every recorded run preserves no-execution and non-authority fields.
+- Batch output records trusted local adapter run evidence only through explicit
+  operator input.
+- Existing static evaluator and adapter sidecar paths remain unchanged.
+- Docs and DocC explain the practical validation and remaining runtime gap.

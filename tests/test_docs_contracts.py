@@ -17,6 +17,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P41-T6 Real Local Trusted-Adapter Readiness Validation" in next_text:
+        assert_p41_t5_last_archived(next_text)
+        assert_p41_t5_recent(next_text)
+        assert_phase_41_t6_planned(next_text)
+        return
+
     if "# Next Task: P41-T5 Trusted Local Adapter Run Evidence Handoff" in next_text:
         assert_p41_t4_last_archived(next_text)
         assert_p41_t4_recent(next_text)
@@ -4678,6 +4684,51 @@ def assert_phase_41_t5_planned(next_text: str) -> None:
     assert "Do not publish registry metadata" in normalized
     assert "Do not remove `preview_only`" in normalized
     assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p41_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P41-T5 Trusted Local Adapter Run Evidence Handoff" in next_text
+
+
+def assert_p41_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P41-T5` added `autonomous-candidate-batch" in normalized
+    assert "--trusted-local-adapter-run-report" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterRunReport" in normalized
+    assert "trusted-local-adapter-run-evidence" in normalized
+    assert "trustedLocalAdapterRunEvidence" in normalized
+    assert "trustedLocalAdapterRunEvidenceSidecarCount" in normalized
+    assert "source/copied SHA-256 digests" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "executedAdapterCount: 0" in normalized
+    assert "appliedToDrafting: false" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "Invalid authority-bearing or execution-bearing" in normalized
+    assert "default static evaluator path" in normalized
+
+
+def assert_phase_41_t6_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P41-T6 Real Local Trusted-Adapter Readiness Validation" in next_text
+    assert "**Status:** Planned" in next_text
+    assert "`feature/P41-T6-real-local-trusted-adapter-readiness-validation`" in next_text
+    assert "Phase 41. Trusted Local Adapter Runtime Readiness" in next_text
+    assert "FastMCP, FastAPI, xyflow, and Gin" in normalized
+    assert "no adapter process" in normalized
+    assert "package manager" in normalized
+    assert "dependency installer" in normalized
+    assert "network discovery" in normalized
+    assert "harvested code" in normalized
+    assert "AI execution" in normalized
+    assert "existing pinned local checkouts" in normalized
+    assert "durable real-run validation fixture" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not load third-party adapter code" in normalized
+    assert "Do not clone or fetch repositories" in normalized
+    assert "Do not remove `preview_only`" in normalized
+    assert "Do not treat adapter output or runner reports as registry truth" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
