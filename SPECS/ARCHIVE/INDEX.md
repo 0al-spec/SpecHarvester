@@ -199,6 +199,7 @@
 |--------|-------------|
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t10_disabled_explicit_real_local_sandbox_runner_skeleton.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t11_explicit_real_local_sandbox_runner_evidence_handoff.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t12_runtime_implementation_review_gate.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t9_explicit_real_local_sandbox_request_preflight_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t3_trusted_local_adapter_sandbox_preflight_report_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p42_t2_trusted_local_adapter_sandbox_contract_fixture.md` |
@@ -709,3 +710,4 @@
 | 2026-06-19 | P42-T11 | Archived Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff (PASS) |
 | 2026-06-19 | P42-T11 | Archived REVIEW_p42_t11_explicit_real_local_sandbox_runner_evidence_handoff report |
 | 2026-06-19 | P42-T12 | Archived Explicit Real Local Trusted Adapter Sandbox Runtime Implementation Review Gate (PASS) |
+| 2026-06-19 | P42-T12 | Archived REVIEW_p42_t12_runtime_implementation_review_gate report |
