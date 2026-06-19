@@ -1700,3 +1700,62 @@ Acceptance:
 - Unsafe modes such as dependency installation, package manager invocation,
   network discovery, harvested code execution, and unbounded local tool
   execution are rejected or blocked by default.
+
+## Phase 41. Trusted Local Adapter Runtime Readiness
+
+- [ ] `P41-T1` Document the trusted local adapter runtime readiness plan and
+  add the next-task scaffold for turning Phase 40 adapter contracts into a
+  future opt-in runtime without enabling adapter execution yet.
+- [ ] `P41-T2` Add a machine-readable
+  `SpecHarvesterTrustedLocalAdapterRunRequest` fixture that records operator
+  opt-in, adapter manifest/preflight references, declared input artifacts,
+  safe relative read path allowlists, output directory policy, resource
+  budgets, environment policy, network policy, dependency policy, package
+  manager policy, and non-authority statements.
+- [ ] `P41-T3` Add a trusted local adapter run preflight report fixture that
+  validates run requests before execution and rejects unsafe paths, missing
+  digests, missing operator opt-in, network access, dependency installation,
+  package manager invocation, harvested code execution, unbounded process
+  execution, and undeclared outputs.
+- [ ] `P41-T4` Implement a disabled-by-default trusted local adapter runner
+  skeleton that can validate a request and emit a no-execution report without
+  loading third-party adapter code or running adapter processes.
+- [ ] `P41-T5` Connect trusted local adapter run reports to
+  `autonomous-candidate-batch` as explicit review-only producer evidence while
+  preserving the default static evaluator and existing adapter sidecar paths.
+- [ ] `P41-T6` Run a real local trusted-adapter readiness validation over
+  existing pinned checkouts, comparing FastMCP, FastAPI, xyflow, and Gin while
+  proving no adapter process, package manager, dependency installer, network
+  discovery, harvested code, or AI execution occurred.
+
+Motivation:
+
+- Phase 40 defines adapter manifests, preflight evidence, disabled execution
+  policy, batch evidence handoff, fixture matrix coverage, and real local
+  validation. The next layer should prepare for a future trusted local adapter
+  runtime without weakening those boundaries.
+- The runtime readiness phase must specify operator opt-in, path allowlists,
+  resource budgets, environment restrictions, output digest requirements, and
+  review-only authority before any adapter process can be launched.
+- This keeps ecosystem-specific plugin precision possible while preventing
+  hidden adapter execution from becoming a source of package claims, relation
+  acceptance, registry publication, or `preview_only` removal.
+
+Goal:
+
+- Prepare the contract, request, preflight, no-execution skeleton, and evidence
+  handoff needed for future trusted local adapter execution while keeping the
+  initial implementation disabled-by-default and non-authoritative.
+
+Acceptance:
+
+- Trusted local adapter work remains language- and framework-agnostic.
+- No task may enable default adapter execution.
+- Every request must require explicit operator opt-in and safe relative path
+  allowlists before any future process launch.
+- Missing digests, unsafe paths, network access, dependency installation,
+  package manager invocation, harvested code execution, AI execution, and
+  unbounded local tools are rejected or blocked before execution.
+- Adapter runtime artifacts remain producer-side review evidence and never
+  accept packages, accept relations, seed baselines, publish registry metadata,
+  remove `preview_only`, or treat adapter output as registry truth.
