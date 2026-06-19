@@ -632,6 +632,12 @@ machine-readable `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun` fixture
 for explicitly approved synthetic run binding, synthetic output candidates,
 output digests, audit records, and review-only non-authority statements before
 any real adapter process execution.
+P42-T6 adds <doc:TrustedLocalAdapterSyntheticSandboxRunVerifier> and
+`synthetic-trusted-local-adapter-sandbox-run-verifier`, a deterministic
+producer-side gate that checks fixture identity, linked artifact digests,
+operator approval binding, synthetic output byte sizes/digests, audit
+references, and no-real-execution boundaries without granting execution
+permission or registry authority.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

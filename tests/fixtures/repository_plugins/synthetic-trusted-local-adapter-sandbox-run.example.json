@@ -51,7 +51,12 @@
             "sandboxPolicyId": "spec_harvester.trusted_local_adapter.local_sandbox.v0",
             "sandboxPolicyVersion": "0.1.0",
             "sandboxRunnerValidationDigest": "sha256:a6eed05300f4d7af8273064571fc66585fb6a7fcddb872513891f725e4f09a63",
-            "declaredOutputRoot": "tests/fixtures/repository_plugins/synthetic_sandbox_run"
+            "declaredOutputRoot": "tests/fixtures/repository_plugins/synthetic_sandbox_run",
+            "syntheticOutputCandidateDigests": {
+                "trusted_local_adapter_output": "sha256:7356572f0dff750fde1830539bcf383897cb7f2649b2caefebc4a1f3a24ec45d",
+                "trusted_local_adapter_diagnostics": "sha256:4608679df2a6c42769944ba408fd1c9027702edd2a4c5faedfc978e221415214",
+                "trusted_local_adapter_audit_record": "sha256:94c6b47f5b62e77ae2a238d025a511e15284dd9dc4f6bef936e057558bbeb9d3"
+            }
         },
         "approvalMustBind": [
             "adapterId",

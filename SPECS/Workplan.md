@@ -1785,10 +1785,15 @@ Acceptance:
   sandbox run fixture that records operator approval binding, sandbox runner
   validation input, synthetic adapter output candidates, output digests, audit
   records, and non-authority statements without running a real adapter process.
-- [ ] `P42-T6` Add a synthetic trusted local adapter sandbox run verifier that
+- [x] `P42-T6` Add a synthetic trusted local adapter sandbox run verifier that
   checks P42-T5 fixture identity, linked artifact digests, approval binding,
   synthetic output byte sizes/digests, audit requirements, and no-real-execution
   boundaries without enabling real adapter execution.
+- [ ] `P42-T7` Add a real local trusted adapter sandbox run readiness gate that
+  checks the P42-T6 verifier report plus explicit real-run prerequisites,
+  sandbox runtime availability, filesystem/output policy, audit requirements,
+  and operator approval requirements while still refusing to load adapter code
+  or spawn adapter processes.
 
 Motivation:
 

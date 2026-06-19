@@ -20,12 +20,20 @@ sandbox contract
   -> sandbox preflight
   -> disabled sandbox runner validation
   -> explicitly approved synthetic sandbox run fixture
+  -> synthetic sandbox run verifier
   -> real local adapter run only after review
 ```
 
 It is producer-side review evidence only. It is not real adapter execution, not
 operator approval for arbitrary runs, not registry acceptance, and not adapter
 output truth.
+
+P42-T6 adds <doc:TrustedLocalAdapterSyntheticSandboxRunVerifier> as the
+deterministic verifier for this fixture. That verifier checks linked artifact
+digests, approval binding, synthetic output byte sizes/digests, audit
+references, and no-real-execution boundaries. Verification remains
+producer-side review evidence only and does not grant real execution
+permission.
 
 ## Identity
 
@@ -143,3 +151,4 @@ The fixture states that it:
 - P42-T3 defines <doc:TrustedLocalAdapterSandboxPreflightReportFixture>.
 - P42-T4 defines <doc:TrustedLocalAdapterSandboxRunnerValidation>.
 - P42-T5 adds this explicitly approved synthetic sandbox run fixture.
+- P42-T6 adds <doc:TrustedLocalAdapterSyntheticSandboxRunVerifier>.

@@ -19,11 +19,24 @@ from spec_harvester.trusted_local_adapter_sandbox_runner import (
     TrustedLocalAdapterSandboxRunnerValidationOptions,
     build_trusted_local_adapter_sandbox_runner_validation_report,
 )
+from spec_harvester.trusted_local_adapter_synthetic_sandbox_run_verifier import (
+    SYNTHETIC_SANDBOX_RUN_VERIFIER_API_VERSION,
+    SYNTHETIC_SANDBOX_RUN_VERIFIER_AUTHORITY,
+    SYNTHETIC_SANDBOX_RUN_VERIFIER_KIND,
+    SyntheticTrustedLocalAdapterSandboxRunVerifierOptions,
+    build_synthetic_trusted_local_adapter_sandbox_run_verifier_report,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P42-T7 Real Local Trusted Adapter Sandbox Run Readiness Gate" in (next_text):
+        assert_p42_t6_last_archived(next_text)
+        assert_p42_t6_recent(next_text)
+        assert_phase_42_t7_planned(next_text)
+        return
+
     if "# Next Task: P42-T6 Synthetic Trusted Local Adapter Sandbox Run Verifier" in (next_text):
         assert_p42_t5_last_archived(next_text)
         assert_p42_t5_recent(next_text)
@@ -5050,6 +5063,56 @@ def assert_phase_42_t6_planned(next_text: str) -> None:
     assert "Do not implement real adapter execution" in normalized
     assert "Do not spawn real adapter processes" in normalized
     assert "Do not treat synthetic run verification as execution permission" in normalized
+
+
+def assert_p42_t6_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T6 Synthetic Trusted Local Adapter Sandbox Run Verifier"
+    ) in next_text
+
+
+def assert_p42_t6_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P42-T6` added `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport`" in (
+        normalized
+    )
+    assert "synthetic-trusted-local-adapter-sandbox-run-verifier" in normalized
+    assert "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md" in next_text
+    assert "TrustedLocalAdapterSyntheticSandboxRunVerifier.md" in next_text
+    assert "P42-T5 fixture identity" in normalized
+    assert "linked artifact digests" in normalized
+    assert "operator approval binding" in normalized
+    assert "synthetic output byte sizes/digests" in normalized
+    assert "audit references" in normalized
+    assert "no-real-execution boundaries" in normalized
+    assert "unsafe paths" in normalized
+    assert "output byte-size mismatch" in normalized
+    assert "real-execution drift" in normalized
+    assert "adapterExecution: synthetic_fixture_only" in normalized
+    assert "realAdapterProcessSpawned: false" in normalized
+    assert "thirdPartyAdapterCodeLoaded: false" in normalized
+    assert "executedAdapterCount: 0" in normalized
+    assert "syntheticRunVerificationIsExecutionPermission: false" in normalized
+    assert "registryAuthority: false" in normalized
+
+
+def assert_phase_42_t7_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P42-T7 Real Local Trusted Adapter Sandbox Run Readiness Gate" in (
+        next_text
+    )
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P42-T7-real-local-trusted-adapter-sandbox-run-readiness-gate`" in next_text
+    assert "real local trusted adapter sandbox run readiness gate" in normalized
+    assert "P42-T6 verifier report identity" in normalized
+    assert "explicit real-run prerequisites" in normalized
+    assert "sandbox runtime availability" in normalized
+    assert "filesystem/output/audit policy" in normalized
+    assert "operator approval requirements" in normalized
+    assert "refusing to load adapter code" in normalized
+    assert "spawn adapter processes" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not treat readiness as execution permission" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -18740,6 +18803,151 @@ def test_synthetic_trusted_local_adapter_sandbox_run_fixture_is_documented() -> 
         (capabilities_docc, "TrustedLocalAdapterSyntheticSandboxRunFixture"),
         (roadmap, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md"),
         (roadmap_docc, "TrustedLocalAdapterSyntheticSandboxRunFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_synthetic_trusted_local_adapter_sandbox_run_verifier_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "synthetic-trusted-local-adapter-sandbox-run.example.json"
+    )
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterSyntheticSandboxRunVerifier.md"
+    )
+    fixture_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md"
+    fixture_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterSyntheticSandboxRunFixture.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    report = build_synthetic_trusted_local_adapter_sandbox_run_verifier_report(
+        SyntheticTrustedLocalAdapterSandboxRunVerifierOptions(fixture=fixture)
+    )
+
+    assert report["apiVersion"] == SYNTHETIC_SANDBOX_RUN_VERIFIER_API_VERSION
+    assert report["kind"] == SYNTHETIC_SANDBOX_RUN_VERIFIER_KIND
+    assert report["schemaVersion"] == 1
+    assert report["status"] == "passed"
+    assert report["authority"] == SYNTHETIC_SANDBOX_RUN_VERIFIER_AUTHORITY
+    assert report["fixture"]["digestVerified"] is True
+    assert {item["role"] for item in report["linkedArtifacts"]} == {
+        "sandboxContract",
+        "sandboxPreflight",
+        "sandboxRunnerValidation",
+    }
+    assert all(item["digestVerified"] is True for item in report["linkedArtifacts"])
+    assert report["operatorApproval"]["bindingVerified"] is True
+    assert report["operatorApproval"]["approvedForRealAdapterExecution"] is False
+    assert report["operatorApproval"]["approvalIsExecutionPermission"] is False
+    assert report["operatorApproval"]["approvalIsRegistryAcceptance"] is False
+    assert report["operatorApproval"]["approvalIsReusableAcrossRepositories"] is False
+    assert all(item["byteSizeVerified"] is True for item in report["syntheticOutputCandidates"])
+    assert all(item["digestVerified"] is True for item in report["syntheticOutputCandidates"])
+    assert report["auditRecord"]["digestVerified"] is True
+    assert report["executionBoundary"]["adapterExecution"] == "synthetic_fixture_only"
+    assert report["executionBoundary"]["realAdapterProcessSpawned"] is False
+    assert report["executionBoundary"]["thirdPartyAdapterCodeLoaded"] is False
+    assert report["executionBoundary"]["executedAdapterCount"] == 0
+    assert report["executionBoundary"]["dependencyInstallation"] == "not_allowed"
+    assert report["executionBoundary"]["packageManagers"] == "not_invoked"
+    assert report["executionBoundary"]["networkAccess"] == "none"
+    assert report["executionBoundary"]["syntheticRunVerificationIsExecutionPermission"] is False
+    assert report["executionBoundary"]["registryAuthority"] is False
+    assert report["executionBoundary"]["adapterOutputAccepted"] is False
+    assert {
+        "synthetic_sandbox_run_verifier_is_not_execution_permission",
+        "does_not_execute_real_adapters",
+        "does_not_run_real_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_treat_synthetic_run_verification_as_execution_permission",
+        "does_not_accept_packages",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+    }.issubset(set(report["nonAuthorityStatements"]))
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Synthetic Sandbox Run Verifier",
+            "SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport",
+            "synthetic-trusted-local-adapter-sandbox-run-verifier",
+            "spec-harvester.synthetic-trusted-local-adapter-sandbox-run-verifier/v0",
+            "producer_synthetic_trusted_local_adapter_sandbox_run_verifier_only",
+            "producer-side review evidence only",
+            "without running a real adapter process",
+            "linked artifact digests",
+            "approval binding",
+            "synthetic output byte sizes/digests",
+            "audit references",
+            "realAdapterProcessSpawned: false",
+            "thirdPartyAdapterCodeLoaded: false",
+            "executedAdapterCount: 0",
+            "dependencyInstallation: not_allowed",
+            "packageManagers: not_invoked",
+            "networkAccess: none",
+            "syntheticRunVerificationIsExecutionPermission: false",
+            "registryAuthority: false",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "does not treat synthetic run verification as execution permission",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "realAdapterProcessSpawned: true",
+            "networkAccess: allowed",
+            "dependencyInstallation: allowed",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (fixture_doc, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md"),
+        (fixture_docc, "TrustedLocalAdapterSyntheticSandboxRunVerifier"),
+        (sandbox_plan, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md"),
+        (sandbox_plan_docc, "TrustedLocalAdapterSyntheticSandboxRunVerifier"),
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md"),
+        (docc_root, "TrustedLocalAdapterSyntheticSandboxRunVerifier"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md"),
+        (capabilities_docc, "TrustedLocalAdapterSyntheticSandboxRunVerifier"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md"),
+        (roadmap_docc, "TrustedLocalAdapterSyntheticSandboxRunVerifier"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
