@@ -1385,10 +1385,7 @@ def validate_trusted_local_adapter_run_report(payload: dict[str, Any], path: Pat
         "networkAccess": "none",
     }
     for key, value in expected_runner.items():
-        if runner.get(key) != value:
-            raise ValueError(
-                f"trusted local adapter run report {path} must record runner.{key} {value!r}"
-            )
+        require_trusted_run_exact_value(runner, path, f"runner.{key}", value)
     if runner.get("mode") != "disabled_no_execution_skeleton":
         raise ValueError(
             f"trusted local adapter run report {path} must record disabled runner mode"
@@ -1418,14 +1415,16 @@ def validate_trusted_local_adapter_run_report(payload: dict[str, Any], path: Pat
         "adapterOutputAccepted": False,
     }
     for key, value in expected_boundary.items():
-        if boundary.get(key) != value:
-            raise ValueError(
-                f"trusted local adapter run report {path} must record "
-                f"executionBoundary.{key} {value!r}"
-            )
+        require_trusted_run_exact_value(boundary, path, f"executionBoundary.{key}", value)
 
     summary = mapping_value(payload.get("summary"))
-    for key in ("acceptedCount", "errorCount", "warningCount", "executedAdapterCount"):
+    for key in (
+        "acceptedCount",
+        "errorCount",
+        "warningCount",
+        "executedAdapterCount",
+        "runtimeImplementedAdapterCount",
+    ):
         if type(summary.get(key)) is not int:
             raise ValueError(
                 f"trusted local adapter run report {path} must include integer summary.{key}"
@@ -1455,6 +1454,21 @@ def validate_trusted_local_adapter_run_report(payload: dict[str, Any], path: Pat
         raise ValueError(
             f"trusted local adapter run report {path} is missing nonAuthorityStatements: "
             f"{', '.join(missing)}"
+        )
+
+
+def require_trusted_run_exact_value(
+    payload: dict[str, Any],
+    path: Path,
+    field: str,
+    expected: str | int | bool,
+) -> None:
+    value = payload.get(field.rsplit(".", maxsplit=1)[-1])
+    if type(expected) is int and type(value) is not int:
+        raise ValueError(f"trusted local adapter run report {path} must include integer {field}")
+    if value != expected:
+        raise ValueError(
+            f"trusted local adapter run report {path} must record {field} {expected!r}"
         )
 
 
