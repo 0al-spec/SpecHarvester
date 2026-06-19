@@ -194,6 +194,12 @@ Published DocC site:
    fixture for binding one future local adapter run approval scope to P42-T12
    runtime prerequisites while still preserving no execution permission, no
    registry authority, and no adapter output truth
+48. [`TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_SKELETON.md`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_SKELETON.md):
+   P42-T14
+   `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationReport`
+   fixture for validating the P42-T13 approval binding through a disabled
+   invocation skeleton while preserving no runtime invocation, no approval
+   consumption, no registry authority, and no adapter output truth
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

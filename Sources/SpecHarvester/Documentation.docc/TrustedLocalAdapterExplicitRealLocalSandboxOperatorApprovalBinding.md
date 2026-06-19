@@ -169,3 +169,6 @@ permission.
 - P42-T12 defines
   <doc:TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewGate>.
 - P42-T13 adds this operator approval binding fixture.
+- P42-T14 adds
+  <doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeInvocationSkeleton>
+  before any real runtime invocation can consume approval.

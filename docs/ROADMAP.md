@@ -988,6 +988,15 @@ review gate while keeping `bindingIsExecutionPermission: false`,
 `bindingIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
 `adapterExecution: not_run`, `runtimeInvoked: false`, and
 `adapterOutputAccepted: false`.
+P42-T14 adds
+[`TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_SKELETON.md`](TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_INVOCATION_SKELETON.md)
+and the machine-readable
+`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationReport`
+fixture. It validates the P42-T13 approval binding through a disabled
+invocation skeleton while keeping `runtimeInvocationAllowed: false`,
+`operatorApprovalConsumed: false`, `adapterCodeLoaded: false`,
+`adapterProcessSpawned: false`, `runtimeInvoked: false`, and
+`registryAuthority: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
