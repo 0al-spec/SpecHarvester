@@ -849,6 +849,14 @@ and
 as static adapter manifest/preflight expectations across manifest-backed
 single packages, workspaces, documentation-heavy repositories, nested package
 roots, and ambiguous mixed layouts without loading third-party adapter code.
+P40-T7 records
+[`REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`](REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md)
+and
+`tests/fixtures/repository_plugins/adapter_real_runs/p40-t7-real-local-adapter-contract-validation.example.json`
+as real local validation over FastMCP, FastAPI, xyflow, and Gin pinned
+checkouts. The run maps real repository evidence to P40-T6 matrix categories
+while preserving `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+`appliedToDrafting: false`, and `registryAuthority: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

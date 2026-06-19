@@ -55,6 +55,7 @@ The canonical source files remain in the repository:
 - `docs/REPOSITORY_PLUGIN_ADAPTER_PREFLIGHT_REPORT_FIXTURE.md`
 - `docs/REPOSITORY_PLUGIN_ADAPTER_EXECUTION_POLICY.md`
 - `docs/REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md`
+- `docs/REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -185,6 +186,7 @@ the host.
 - <doc:RepositoryPluginAdapterPreflightReportFixture>
 - <doc:RepositoryPluginAdapterExecutionPolicy>
 - <doc:RepositoryPluginAdapterCrossEcosystemFixtureMatrix>
+- <doc:RepositoryPluginAdapterRealLocalValidation>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

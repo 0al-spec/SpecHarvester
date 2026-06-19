@@ -156,7 +156,8 @@ evidence after digest recording, validation, and explicit operator selection.
 - P40-T6 records
   [`REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md`](REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md)
   as cross-ecosystem adapter contract fixtures.
-- P40-T7 should record real local adapter-contract validation over existing
-  pinned checkouts.
+- P40-T7 records real local adapter-contract validation over existing pinned
+  checkouts in
+  [`REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`](REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md).
 
 P40-T4 intentionally does not enable adapter runtime.

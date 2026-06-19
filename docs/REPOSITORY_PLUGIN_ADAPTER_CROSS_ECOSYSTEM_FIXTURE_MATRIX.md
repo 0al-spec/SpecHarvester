@@ -94,5 +94,7 @@ Each case records `executedAdapterCount: 0`,
   `autonomous-candidate-batch` as `repositoryPluginAdapterEvidence`.
 - P40-T6 records this fixture matrix so future work has cross-shape static
   expectations.
-- P40-T7 should run real local adapter-contract validation over existing pinned
-  checkouts while proving that adapters remain producer-side evidence only.
+- P40-T7 records
+  [`REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`](REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md)
+  over FastMCP, FastAPI, xyflow, and Gin pinned checkouts while proving that
+  adapters remain producer-side evidence only.

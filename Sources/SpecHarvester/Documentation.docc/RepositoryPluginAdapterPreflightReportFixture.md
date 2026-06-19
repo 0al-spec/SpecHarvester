@@ -124,4 +124,4 @@ adapter output as registry truth.
 - `P40-T6` records <doc:RepositoryPluginAdapterCrossEcosystemFixtureMatrix>
   as a cross-ecosystem adapter contract fixture matrix.
 - `P40-T7` records real local adapter-contract validation over existing pinned
-  checkouts.
+  checkouts in <doc:RepositoryPluginAdapterRealLocalValidation>.

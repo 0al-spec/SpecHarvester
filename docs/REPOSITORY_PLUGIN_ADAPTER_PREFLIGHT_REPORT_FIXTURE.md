@@ -125,4 +125,5 @@ adapter output as registry truth.
   [`REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md`](REPOSITORY_PLUGIN_ADAPTER_CROSS_ECOSYSTEM_FIXTURE_MATRIX.md)
   as a cross-ecosystem adapter contract fixture matrix.
 - `P40-T7` records real local adapter-contract validation over existing pinned
-  checkouts.
+  checkouts in
+  [`REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md`](REPOSITORY_PLUGIN_ADAPTER_REAL_LOCAL_VALIDATION.md).

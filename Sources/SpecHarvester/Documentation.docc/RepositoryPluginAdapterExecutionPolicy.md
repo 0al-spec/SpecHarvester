@@ -155,7 +155,7 @@ evidence after digest recording, validation, and explicit operator selection.
   review-only producer evidence through explicit operator-supplied sidecars.
 - P40-T6 records <doc:RepositoryPluginAdapterCrossEcosystemFixtureMatrix> as
   cross-ecosystem adapter contract fixtures.
-- P40-T7 should record real local adapter-contract validation over existing
-  pinned checkouts.
+- P40-T7 records real local adapter-contract validation over existing pinned
+  checkouts in <doc:RepositoryPluginAdapterRealLocalValidation>.
 
 P40-T4 intentionally does not enable adapter runtime.
