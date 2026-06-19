@@ -92,6 +92,25 @@ def test_disabled_trusted_local_adapter_runner_is_deterministic() -> None:
     )
 
 
+def test_disabled_trusted_local_adapter_runner_paths_do_not_depend_on_cwd(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+
+    report = build_trusted_local_adapter_run_report(
+        TrustedLocalAdapterRunOptions(request=REQUEST, preflight=PREFLIGHT)
+    )
+
+    assert report["request"]["path"] == (
+        "tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json"
+    )
+    assert report["preflight"]["path"] == (
+        "tests/fixtures/repository_plugins/trusted-local-adapter-run-preflight-report.example.json"
+    )
+    assert report["preflight"]["requestDigestVerified"] is True
+
+
 def test_trusted_local_adapter_runner_cli_writes_report(tmp_path: Path, capsys) -> None:
     output = tmp_path / "trusted-local-adapter-run-report.json"
 

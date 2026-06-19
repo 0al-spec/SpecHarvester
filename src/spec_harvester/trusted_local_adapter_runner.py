@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -56,6 +57,7 @@ class TrustedLocalAdapterRunnerSkeleton:
         )
         request_digest = digest_string(self.options.request)
         preflight_digest = digest_string(self.options.preflight)
+        artifact_root = path_reference_root(self.options.request, self.options.preflight)
 
         check_request_identity(request)
         check_preflight_identity(preflight)
@@ -64,10 +66,12 @@ class TrustedLocalAdapterRunnerSkeleton:
             preflight,
             request_path=self.options.request,
             request_digest=request_digest,
+            reference_root=artifact_root,
         )
 
         request_ref = artifact_reference(
             path=self.options.request,
+            reference_root=artifact_root,
             digest=request_digest,
             api_version=TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_API_VERSION,
             kind=TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_KIND,
@@ -76,6 +80,7 @@ class TrustedLocalAdapterRunnerSkeleton:
         )
         preflight_ref = artifact_reference(
             path=self.options.preflight,
+            reference_root=artifact_root,
             digest=preflight_digest,
             api_version=TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_API_VERSION,
             kind=TRUSTED_LOCAL_ADAPTER_RUN_PREFLIGHT_KIND,
@@ -274,6 +279,7 @@ def check_preflight_request_reference(
     *,
     request_path: Path,
     request_digest: str,
+    reference_root: Path,
 ) -> None:
     reference = object_value(payload.get("request"), "preflight request reference")
     if reference.get("kind") != TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_KIND:
@@ -282,13 +288,18 @@ def check_preflight_request_reference(
         raise ValueError(f"Preflight request authority mismatch: {reference.get('authority')!r}")
     if reference.get("digest") != request_digest:
         raise ValueError("Preflight request digest does not match request artifact bytes")
-    if not request_path_matches(str(reference.get("path") or ""), request_path):
+    if not request_path_matches(
+        str(reference.get("path") or ""),
+        request_path,
+        reference_root=reference_root,
+    ):
         raise ValueError("Preflight request path does not reference the supplied request artifact")
 
 
 def artifact_reference(
     *,
     path: Path,
+    reference_root: Path,
     digest: str,
     api_version: str,
     kind: str,
@@ -296,7 +307,7 @@ def artifact_reference(
     authority: str,
 ) -> dict[str, Any]:
     return {
-        "path": path_reference(path),
+        "path": path_reference(path, reference_root=reference_root),
         "digest": digest,
         "apiVersion": api_version,
         "kind": kind,
@@ -305,25 +316,36 @@ def artifact_reference(
     }
 
 
-def request_path_matches(expected: str, path: Path) -> bool:
-    return expected in path_reference_candidates(path)
+def request_path_matches(expected: str, path: Path, *, reference_root: Path) -> bool:
+    return expected in path_reference_candidates(path, reference_root=reference_root)
 
 
-def path_reference(path: Path) -> str:
+def path_reference(path: Path, *, reference_root: Path) -> str:
     try:
-        return path.resolve(strict=False).relative_to(Path.cwd().resolve(strict=False)).as_posix()
+        return (
+            path.resolve(strict=False).relative_to(reference_root.resolve(strict=False)).as_posix()
+        )
     except ValueError:
         return path.as_posix()
 
 
-def path_reference_candidates(path: Path) -> set[str]:
+def path_reference_candidates(path: Path, *, reference_root: Path) -> set[str]:
     candidates = {path.as_posix(), str(path)}
-    candidates.add(path_reference(path))
+    candidates.add(path_reference(path, reference_root=reference_root))
     try:
         candidates.add(path.resolve(strict=False).as_posix())
     except OSError:
         pass
     return {candidate for candidate in candidates if candidate}
+
+
+def path_reference_root(*paths: Path) -> Path:
+    resolved_paths = [path.resolve(strict=False) for path in paths]
+    for path in resolved_paths:
+        for parent in (path.parent, *path.parents):
+            if (parent / "pyproject.toml").exists() or (parent / ".git").exists():
+                return parent
+    return Path(os.path.commonpath([str(path.parent) for path in resolved_paths]))
 
 
 def run_id(request_ref: dict[str, Any], preflight_ref: dict[str, Any]) -> str:
