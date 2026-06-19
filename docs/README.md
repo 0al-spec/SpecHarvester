@@ -182,6 +182,12 @@ Published DocC site:
    disabled-runner evidence as portable review-only handoff material while
    preserving no adapter execution, no registry authority, and no adapter output
    truth
+46. [`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_GATE.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_GATE.md):
+   P42-T12
+   `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate`
+   fixture for validating the P42-T11 handoff, recording runtime implementation
+   prerequisites, and keeping real adapter execution blocked until a separate
+   operator-approved runtime task exists
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

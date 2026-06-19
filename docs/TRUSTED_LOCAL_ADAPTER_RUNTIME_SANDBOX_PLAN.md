@@ -206,6 +206,8 @@ sandbox contract fixture
   -> explicit real local sandbox run request preflight fixture
   -> disabled explicit real local sandbox runner skeleton
   -> explicit real local sandbox runner evidence handoff
+  -> explicit real local sandbox runtime implementation review gate
+  -> explicit real local sandbox operator approval binding
   -> real local adapter run only after review
 ```
 
@@ -262,3 +264,10 @@ P42-T10 disabled runner skeleton. It keeps `handoffIsExecutionPermission:
 false`, `handoffIsOperatorApproval: false`, `handoffIsRegistryAuthority:
 false`, `adapterExecution: not_run`, `runtimeInvoked: false`, and
 `adapterOutputAccepted: false`.
+P42-T12 adds
+[`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewGate`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_GATE.md)
+as a review gate over the P42-T11 handoff. It records runtime implementation
+prerequisites while keeping `gateIsExecutionPermission: false`,
+`gateIsOperatorApproval: false`, `gateIsRegistryAuthority: false`,
+`runtimeImplementationAllowed: false`, `runtimeInvoked: false`, and
+`runtimeImplemented: false`.
