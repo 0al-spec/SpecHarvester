@@ -210,6 +210,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t7_operational_mvp_exit_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t6_operational_mvp_author_handoff_summaries.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t5_operational_mvp_ai_enabled_comparison.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t4_operational_mvp_static_only_quality_baseline.md` |
@@ -333,6 +334,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P43-T7 | Archived REVIEW_p43_t7_operational_mvp_exit_report report |
 | 2026-06-20 | P43-T7 | Archived Operational MVP Exit Report (PASS) |
 | 2026-06-20 | P43-T6 | Archived REVIEW_p43_t6_operational_mvp_author_handoff_summaries report |
 | 2026-06-20 | P43-T6 | Archived Operational MVP Author Handoff Summaries (PASS) |
