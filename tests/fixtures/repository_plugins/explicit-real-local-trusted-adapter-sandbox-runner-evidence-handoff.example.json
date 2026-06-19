@@ -1,0 +1,422 @@
+{
+  "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runner-evidence-handoff/v0",
+  "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff",
+  "schemaVersion": 1,
+  "authority": "producer_explicit_real_local_trusted_adapter_sandbox_runner_evidence_handoff_only",
+  "contract": {
+    "purpose": "Package explicit real local trusted adapter sandbox request, preflight, and disabled runner skeleton artifacts as portable review evidence without granting execution authority.",
+    "contractVersion": "0.1.0",
+    "requestAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only",
+    "preflightAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_preflight_only",
+    "disabledRunnerAuthority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runner_only",
+    "handoffAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_runner_evidence_handoff_only",
+    "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "defaultExecution": "disabled",
+    "handoffIsExecutionPermission": false,
+    "handoffIsOperatorApproval": false,
+    "handoffIsRegistryAuthority": false
+  },
+  "artifacts": {
+    "request": {
+      "role": "request",
+      "path": "tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-run-request.example.json",
+      "digest": "sha256:a48dae0107ced92e8266ca788ff49e15246651503fd49a550e983aa9f9f33cd3",
+      "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request/v0",
+      "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest",
+      "schemaVersion": 1,
+      "authority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_only",
+      "digestVerified": true
+    },
+    "preflight": {
+      "role": "request_preflight",
+      "path": "tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-run-request-preflight.example.json",
+      "digest": "sha256:402145bb2e068de9bffa698b682014c6688829d1edb8debb7ac08949639f4e1c",
+      "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-run-request-preflight/v0",
+      "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport",
+      "schemaVersion": 1,
+      "authority": "producer_explicit_real_local_trusted_adapter_sandbox_run_request_preflight_only",
+      "requiredResultStatus": "passed",
+      "requiredDecision": "preflight_passed_review_only",
+      "digestVerified": true
+    },
+    "disabledRunner": {
+      "role": "disabled_runner_skeleton",
+      "path": "tests/fixtures/repository_plugins/disabled-explicit-real-local-trusted-adapter-sandbox-runner.example.json",
+      "digest": "sha256:f88f68f66b833d5f362d2301574dc4b8a4e9de9478cde6d2cffa938e9756e25a",
+      "apiVersion": "spec-harvester.disabled-explicit-real-local-trusted-adapter-sandbox-runner/v0",
+      "kind": "SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport",
+      "schemaVersion": 1,
+      "authority": "producer_disabled_explicit_real_local_trusted_adapter_sandbox_runner_only",
+      "requiredRunnerStatus": "disabled_review_only",
+      "digestVerified": true
+    }
+  },
+  "linkageValidation": {
+    "requestDigestAgreement": true,
+    "preflightReferencesRequest": true,
+    "preflightRequestDigest": "sha256:a48dae0107ced92e8266ca788ff49e15246651503fd49a550e983aa9f9f33cd3",
+    "disabledRunnerReferencesRequest": true,
+    "disabledRunnerRequestDigest": "sha256:a48dae0107ced92e8266ca788ff49e15246651503fd49a550e983aa9f9f33cd3",
+    "disabledRunnerReferencesPreflight": true,
+    "disabledRunnerPreflightDigest": "sha256:402145bb2e068de9bffa698b682014c6688829d1edb8debb7ac08949639f4e1c",
+    "allDigestsVerified": true,
+    "preflightResultStatusAccepted": true,
+    "preflightDecisionAccepted": true,
+    "disabledRunnerStatusAccepted": true,
+    "artifactSetIsExecutionPermission": false,
+    "artifactSetIsOperatorApproval": false,
+    "artifactSetIsRegistryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "handoff": {
+    "status": "ready_for_review",
+    "mode": "review_evidence_only_no_execution",
+    "artifactCount": 3,
+    "portable": true,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "harvestedCodeExecution": "not_allowed",
+    "aiExecution": "not_run",
+    "networkAccess": "none",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "acceptedChecks": [
+    {
+      "code": "request_artifact_identity_and_digest_valid",
+      "status": "passed",
+      "target": "artifacts.request",
+      "message": "P42-T8 request identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "preflight_artifact_identity_and_digest_valid",
+      "status": "passed",
+      "target": "artifacts.preflight",
+      "message": "P42-T9 preflight identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "disabled_runner_artifact_identity_and_digest_valid",
+      "status": "passed",
+      "target": "artifacts.disabledRunner",
+      "message": "P42-T10 disabled runner skeleton identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "request_preflight_linkage_valid",
+      "status": "passed",
+      "target": "linkageValidation.preflightRequestDigest",
+      "message": "Preflight references the same request digest carried by the handoff."
+    },
+    {
+      "code": "preflight_disabled_runner_linkage_valid",
+      "status": "passed",
+      "target": "linkageValidation.disabledRunnerPreflightDigest",
+      "message": "Disabled runner skeleton references the same request/preflight digests carried by the handoff."
+    },
+    {
+      "code": "artifact_set_review_only",
+      "status": "passed",
+      "target": "linkageValidation",
+      "message": "The request, preflight, and disabled runner artifacts remain review evidence only."
+    },
+    {
+      "code": "handoff_does_not_grant_execution_permission",
+      "status": "passed",
+      "target": "contract.handoffIsExecutionPermission",
+      "message": "The handoff cannot be interpreted as adapter execution permission."
+    },
+    {
+      "code": "handoff_does_not_provide_operator_approval",
+      "status": "passed",
+      "target": "contract.handoffIsOperatorApproval",
+      "message": "The handoff cannot be interpreted as operator approval."
+    },
+    {
+      "code": "handoff_does_not_grant_registry_authority",
+      "status": "passed",
+      "target": "contract.handoffIsRegistryAuthority",
+      "message": "The handoff cannot be interpreted as registry authority."
+    },
+    {
+      "code": "handoff_preserves_no_runtime_side_effects",
+      "status": "passed",
+      "target": "handoff",
+      "message": "No adapter code loading, process spawning, dependency installation, network access, harvested-code execution, or AI execution occurs."
+    },
+    {
+      "code": "handoff_preserves_no_adapter_output_truth",
+      "status": "passed",
+      "target": "handoff.adapterOutputAccepted",
+      "message": "No adapter output is accepted as registry truth."
+    },
+    {
+      "code": "non_authority_statements_present",
+      "status": "passed",
+      "target": "nonAuthorityStatements",
+      "message": "The handoff explicitly records non-authority statements for execution, approval, registry, and output boundaries."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "code": "missing_request_artifact_rejected",
+      "status": "rejected",
+      "target": "artifacts.request",
+      "reason": "request_artifact_required"
+    },
+    {
+      "code": "missing_preflight_artifact_rejected",
+      "status": "rejected",
+      "target": "artifacts.preflight",
+      "reason": "preflight_artifact_required"
+    },
+    {
+      "code": "missing_disabled_runner_artifact_rejected",
+      "status": "rejected",
+      "target": "artifacts.disabledRunner",
+      "reason": "disabled_runner_artifact_required"
+    },
+    {
+      "code": "request_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "artifacts.request.digest",
+      "reason": "request_digest_must_match_p42_t8_fixture_bytes"
+    },
+    {
+      "code": "preflight_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "artifacts.preflight.digest",
+      "reason": "preflight_digest_must_match_p42_t9_fixture_bytes"
+    },
+    {
+      "code": "disabled_runner_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "artifacts.disabledRunner.digest",
+      "reason": "disabled_runner_digest_must_match_p42_t10_fixture_bytes"
+    },
+    {
+      "code": "preflight_request_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "linkageValidation.preflightRequestDigest",
+      "reason": "preflight_must_reference_same_request_digest"
+    },
+    {
+      "code": "disabled_runner_request_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "linkageValidation.disabledRunnerRequestDigest",
+      "reason": "disabled_runner_must_reference_same_request_digest"
+    },
+    {
+      "code": "disabled_runner_preflight_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "linkageValidation.disabledRunnerPreflightDigest",
+      "reason": "disabled_runner_must_reference_same_preflight_digest"
+    },
+    {
+      "code": "handoff_execution_permission_rejected",
+      "status": "rejected",
+      "target": "contract.handoffIsExecutionPermission",
+      "reason": "handoff_must_not_grant_execution_permission"
+    },
+    {
+      "code": "operator_approval_in_handoff_rejected",
+      "status": "rejected",
+      "target": "contract.handoffIsOperatorApproval",
+      "reason": "handoff_must_not_provide_operator_approval"
+    },
+    {
+      "code": "registry_authority_rejected",
+      "status": "rejected",
+      "target": "contract.handoffIsRegistryAuthority",
+      "reason": "handoff_must_not_grant_registry_authority"
+    },
+    {
+      "code": "network_access_rejected",
+      "status": "rejected",
+      "target": "handoff.networkAccess",
+      "reason": "network_access_must_remain_none"
+    },
+    {
+      "code": "dependency_installation_rejected",
+      "status": "rejected",
+      "target": "handoff.dependencyInstallation",
+      "reason": "dependency_installation_not_allowed"
+    },
+    {
+      "code": "adapter_output_registry_truth_rejected",
+      "status": "rejected",
+      "target": "handoff.adapterOutputAccepted",
+      "reason": "adapter_output_is_not_registry_truth"
+    }
+  ],
+  "blockedChecks": [
+    {
+      "code": "adapter_code_loading_blocked",
+      "status": "blocked",
+      "target": "handoff.adapterCodeLoaded",
+      "reason": "adapter_code_loading_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "adapter_import_blocked",
+      "status": "blocked",
+      "target": "handoff.adapterCodeImportAttempted",
+      "reason": "adapter_import_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "adapter_process_spawn_blocked",
+      "status": "blocked",
+      "target": "handoff.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "real_runtime_invocation_blocked",
+      "status": "blocked",
+      "target": "handoff.runtimeInvoked",
+      "reason": "runtime_invocation_requires_future_explicit_runtime_task"
+    },
+    {
+      "code": "dependency_installation_blocked",
+      "status": "blocked",
+      "target": "handoff.dependencyInstallation",
+      "reason": "dependency_installation_requires_future_policy_task"
+    },
+    {
+      "code": "package_manager_invocation_blocked",
+      "status": "blocked",
+      "target": "handoff.packageManagers",
+      "reason": "package_manager_invocation_requires_future_policy_task"
+    },
+    {
+      "code": "network_access_blocked",
+      "status": "blocked",
+      "target": "handoff.networkAccess",
+      "reason": "network_access_requires_future_policy_task"
+    },
+    {
+      "code": "harvested_code_execution_blocked",
+      "status": "blocked",
+      "target": "handoff.harvestedCodeExecution",
+      "reason": "harvested_code_execution_is_out_of_scope"
+    },
+    {
+      "code": "ai_execution_blocked",
+      "status": "blocked",
+      "target": "handoff.aiExecution",
+      "reason": "adapter_sidecar_must_not_trigger_ai_execution"
+    },
+    {
+      "code": "package_acceptance_blocked",
+      "status": "blocked",
+      "target": "handoff.registryAuthority",
+      "reason": "package_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "relation_acceptance_blocked",
+      "status": "blocked",
+      "target": "handoff.registryAuthority",
+      "reason": "relation_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "preview_only_removal_blocked",
+      "status": "blocked",
+      "target": "handoff.registryAuthority",
+      "reason": "preview_only_removal_requires_specpm_maintainer_review"
+    }
+  ],
+  "warningChecks": [
+    {
+      "code": "handoff_is_review_evidence_only",
+      "status": "warning",
+      "target": "handoff.status",
+      "message": "The evidence handoff is ready for review only."
+    },
+    {
+      "code": "future_runtime_not_implemented",
+      "status": "warning",
+      "target": "handoff.runtimeImplemented",
+      "message": "The real local adapter sandbox runtime is still not implemented."
+    },
+    {
+      "code": "operator_approval_not_included",
+      "status": "warning",
+      "target": "contract.handoffIsOperatorApproval",
+      "message": "The handoff does not include or replace operator approval."
+    }
+  ],
+  "summary": {
+    "acceptedCount": 12,
+    "rejectedCount": 15,
+    "blockedCount": 12,
+    "warningCount": 3,
+    "diagnosticCount": 2,
+    "artifactCount": 3,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false
+  },
+  "executionBoundary": {
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "handoffIsExecutionPermission": false,
+    "handoffIsOperatorApproval": false,
+    "handoffIsRegistryAuthority": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "explicit_real_local_sandbox_runner_evidence_handoff",
+      "message": "Evidence handoff packages P42-T8 request, P42-T9 preflight, and P42-T10 disabled runner skeleton artifacts without loading adapter code or spawning processes."
+    },
+    {
+      "severity": "warning",
+      "code": "handoff_is_not_execution_permission",
+      "message": "The evidence handoff does not grant adapter execution authority, operator approval, registry authority, or adapter output truth."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "handoff_is_not_execution_permission",
+    "handoff_is_not_operator_approval",
+    "handoff_is_not_registry_authority",
+    "request_fixture_is_not_execution_permission",
+    "preflight_pass_is_not_execution_permission",
+    "disabled_runner_is_not_execution_permission",
+    "does_not_load_third_party_adapter_code",
+    "does_not_import_adapter_code",
+    "does_not_execute_real_adapters",
+    "does_not_run_real_adapter_processes",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_use_network",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_handoff_as_execution_permission",
+    "does_not_grant_registry_authority"
+  ],
+  "followUp": {
+    "explicitRealLocalSandboxRunRequestTask": "P42-T8",
+    "explicitRealLocalSandboxRunRequestPreflightTask": "P42-T9",
+    "disabledExplicitRealLocalSandboxRunnerSkeletonTask": "P42-T10",
+    "realLocalSandboxRunnerImplementationTask": "deferred_until_after_handoff_review",
+    "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_review"
+  }
+}

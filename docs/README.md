@@ -175,6 +175,13 @@ Published DocC site:
    fixture for P42-T8/P42-T9 request/preflight linkage validation while
    preserving disabled execution, no adapter code loading, no process spawning,
    no network access, no registry authority, and no adapter output acceptance
+45. [`TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_EVIDENCE_HANDOFF.md`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_EVIDENCE_HANDOFF.md):
+   P42-T11
+   `SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff`
+   fixture for packaging P42-T8/P42-T9/P42-T10 request, preflight, and
+   disabled-runner evidence as portable review-only handoff material while
+   preserving no adapter execution, no registry authority, and no adapter output
+   truth
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

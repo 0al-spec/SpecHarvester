@@ -158,3 +158,5 @@ permission.
 - P42-T9 defines
   [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUN_REQUEST_PREFLIGHT_FIXTURE.md).
 - P42-T10 adds this disabled runner skeleton.
+- P42-T11 packages this skeleton with the request and preflight artifacts in
+  [`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_EVIDENCE_HANDOFF.md).

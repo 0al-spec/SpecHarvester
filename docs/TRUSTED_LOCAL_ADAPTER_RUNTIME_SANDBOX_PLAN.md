@@ -205,6 +205,7 @@ sandbox contract fixture
   -> explicit real local sandbox run request fixture
   -> explicit real local sandbox run request preflight fixture
   -> disabled explicit real local sandbox runner skeleton
+  -> explicit real local sandbox runner evidence handoff
   -> real local adapter run only after review
 ```
 
@@ -254,3 +255,10 @@ preflight identity/digest linkage while preserving `adapterExecution: not_run`,
 `adapterCodeLoaded: false`, `adapterProcessSpawned: false`,
 `runtimeInvoked: false`, `runnerIsExecutionPermission: false`, and
 `registryAuthority: false`.
+P42-T11 adds
+[`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunnerEvidenceHandoff`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_EVIDENCE_HANDOFF.md)
+as a portable review-only handoff for the P42-T8 request, P42-T9 preflight, and
+P42-T10 disabled runner skeleton. It keeps `handoffIsExecutionPermission:
+false`, `handoffIsOperatorApproval: false`, `handoffIsRegistryAuthority:
+false`, `adapterExecution: not_run`, `runtimeInvoked: false`, and
+`adapterOutputAccepted: false`.
