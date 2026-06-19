@@ -659,3 +659,4 @@
 | 2026-06-19 | P40-T7 | Archived Real Local Adapter-Contract Validation (PASS) |
 | 2026-06-19 | P40-T7 | Archived REVIEW_p40_t7_real_local_adapter_contract_validation report |
 | 2026-06-19 | P41-T1 | Archived Adapter Runtime Readiness Plan (PASS) |
+| 2026-06-19 | P41-T1 | Archived REVIEW_p41_t1_adapter_runtime_readiness_plan report |
