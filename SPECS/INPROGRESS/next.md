@@ -1,49 +1,62 @@
-# Next Task: P41-T2 Trusted Local Adapter Run Request Fixture
+# Next Task: P41-T3 Trusted Local Adapter Run Preflight Report Fixture
 
-**Status:** In Progress
-**Branch:** `feature/P41-T2-trusted-local-adapter-run-request-fixture`
+**Status:** Planned
+**Branch:** `feature/P41-T3-trusted-local-adapter-run-preflight-report-fixture`
 **Phase:** Phase 41. Trusted Local Adapter Runtime Readiness
-**Last Archived:** P41-T1 Adapter Runtime Readiness Plan
+**Last Archived:** P41-T2 Trusted Local Adapter Run Request Fixture
 
 ## Recently Archived
 
-- `P41-T1` documented trusted local adapter runtime readiness.
+- `P41-T2` added the machine-readable
+  `SpecHarvesterTrustedLocalAdapterRunRequest`.
+- The fixture is
+  `tests/fixtures/repository_plugins/trusted-local-adapter-run-request.example.json`.
 - The GitHub-facing documentation is
-  `docs/TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md`.
+  `docs/TRUSTED_LOCAL_ADAPTER_RUN_REQUEST_FIXTURE.md`.
 - The DocC mirror is
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterRuntimeReadiness.md`.
-- The plan defines the path for `SpecHarvesterTrustedLocalAdapterRunRequest`,
-  trusted local adapter run preflight, disabled no-execution runner skeleton,
-  review-only batch evidence handoff, and real local readiness validation.
-- adapter execution remains disabled; trusted local adapter artifacts remain
-  producer-side review evidence and have no registry authority.
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterRunRequestFixture.md`.
+- The request records adapter manifest/preflight references, explicit operator
+  opt-in, declared input artifacts, safe relative read path allowlists, output
+  policy, resource budgets, environment policy, network policy, dependency
+  policy, package manager policy, process policy, and non-authority
+  statements.
+- The request keeps `requestIsExecutionPermission: false`,
+  `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+  `appliedToDrafting: false`, and `registryAuthority: false`; trusted local
+  adapter artifacts remain producer-side review evidence.
 
 ## Task
 
-Add a machine-readable `SpecHarvesterTrustedLocalAdapterRunRequest` fixture
-that records operator opt-in, adapter manifest/preflight references, declared
-input artifacts, safe relative read path allowlists, output directory policy,
-resource budgets, environment policy, network policy, dependency policy,
-package manager policy, and non-authority statements.
+Add a machine-readable
+`SpecHarvesterTrustedLocalAdapterRunPreflightReport` fixture that validates a
+`SpecHarvesterTrustedLocalAdapterRunRequest` before any future execution path
+and rejects unsafe paths, missing or mismatched digests, missing explicit
+operator opt-in, undeclared input artifacts, undeclared output paths, network
+access, dependency installation, package manager invocation, harvested code
+execution, AI execution, unbounded process execution, and unbounded outputs.
 
 ## Why This Is Next
 
-P41-T1 defines the safe readiness path. The first concrete artifact should be
-the request contract, because preflight, runner skeletons, and batch evidence
-handoff need a stable request shape before they can validate or consume
-anything.
+P41-T2 defines the trusted local adapter run request shape. The next artifact
+must prove how that request is checked before any runner skeleton can consume
+it. The preflight report should make failure modes explicit and state that
+preflight pass is not execution permission.
 
 ## Scope
 
-- Add a versioned `SpecHarvesterTrustedLocalAdapterRunRequest` fixture.
-- Reference the Phase 40 adapter manifest and adapter preflight fixtures.
-- Require explicit operator opt-in.
-- Record declared input artifacts with safe relative paths and SHA-256 digests.
-- Record safe relative read path allowlists.
-- Record output directory policy, timeout budgets, maximum output sizes,
-  environment policy, network policy, dependency policy, package manager
-  policy, and process execution policy.
-- Record non-authority statements.
+- Add a versioned
+  `SpecHarvesterTrustedLocalAdapterRunPreflightReport` fixture.
+- Reference the P41-T2 run request fixture with a SHA-256 digest.
+- Validate request identity, schema version, authority, explicit operator
+  opt-in, adapter manifest/preflight references, declared input artifacts,
+  path policy, read allowlists, output policy, resource budgets, environment
+  policy, network policy, dependency policy, package manager policy, process
+  policy, execution boundary, and non-authority statements.
+- Record accepted, rejected, blocked, and warning checks.
+- Reject unsafe paths, missing or mismatched digests, undeclared input
+  artifacts, undeclared output paths, network access, dependency installation,
+  package manager invocation, harvested code execution, AI execution,
+  unbounded process execution, and unbounded output policy.
 - Document the fixture in GitHub docs and DocC.
 - Keep adapter execution disabled.
 
@@ -51,7 +64,6 @@ anything.
 
 - Do not implement adapter loading or execution.
 - Do not run adapter processes.
-- Do not implement preflight logic yet.
 - Do not add a runner.
 - Do not clone or fetch repositories.
 - Do not install dependencies.
@@ -69,7 +81,7 @@ anything.
 - [x] `P41-T1` Document the trusted local adapter runtime readiness plan and
   add the next-task scaffold for turning Phase 40 adapter contracts into a
   future opt-in runtime without enabling adapter execution yet.
-- [ ] `P41-T2` Add a machine-readable
+- [x] `P41-T2` Add a machine-readable
   `SpecHarvesterTrustedLocalAdapterRunRequest` fixture that records operator
   opt-in, adapter manifest/preflight references, declared input artifacts,
   safe relative read path allowlists, output directory policy, resource
@@ -93,22 +105,28 @@ anything.
 
 Motivation:
 
-- The trusted local adapter request is the root input for future preflight and
-  no-execution runner work.
-- The request contract must require opt-in, path limits, budgets, and
-  non-authority output before any future execution mode exists.
+- Future runner work needs a strict preflight report over P41-T2 requests
+  before any no-execution runner skeleton can be introduced.
+- The preflight fixture should make unsafe request shapes reviewable before
+  implementation logic exists.
 
 Goal:
 
-- Define the machine-readable request shape for future trusted local adapter
-  execution while keeping execution disabled and non-authoritative.
+- Define the machine-readable preflight report shape for trusted local adapter
+  run requests while proving that preflight pass is not execution permission
+  and adapter execution remains disabled.
 
 Acceptance:
 
 - The fixture has versioned identity and stable authority labels.
-- The fixture records explicit operator opt-in.
-- The fixture records safe relative paths, SHA-256 digests, path allowlists,
-  budgets, environment policy, network policy, dependency policy, package
-  manager policy, process execution policy, and non-authority statements.
-- Docs and DocC explain that the request is not permission to execute by
-  itself and is not registry acceptance.
+- The fixture references the P41-T2 request fixture with a SHA-256 digest.
+- The fixture records checks for identity, explicit operator opt-in, safe
+  paths, declared input artifacts, digests, output policy, resource budgets,
+  environment policy, network policy, dependency policy, package manager
+  policy, process policy, execution boundary, and non-authority statements.
+- Unsafe paths, missing or mismatched digests, undeclared input artifacts,
+  undeclared output paths, network access, dependency installation, package
+  manager invocation, harvested code execution, AI execution, unbounded process
+  execution, and unbounded outputs are rejected or blocked.
+- Docs and DocC explain that preflight pass is not execution permission, not
+  registry acceptance, and not adapter output truth.

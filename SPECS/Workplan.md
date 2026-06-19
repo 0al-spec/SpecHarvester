@@ -1706,7 +1706,7 @@ Acceptance:
 - [x] `P41-T1` Document the trusted local adapter runtime readiness plan and
   add the next-task scaffold for turning Phase 40 adapter contracts into a
   future opt-in runtime without enabling adapter execution yet.
-- [ ] `P41-T2` Add a machine-readable
+- [x] `P41-T2` Add a machine-readable
   `SpecHarvesterTrustedLocalAdapterRunRequest` fixture that records operator
   opt-in, adapter manifest/preflight references, declared input artifacts,
   safe relative read path allowlists, output directory policy, resource
