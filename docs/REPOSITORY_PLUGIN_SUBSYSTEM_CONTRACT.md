@@ -164,6 +164,10 @@ and
 P38-T5 adds cross-ecosystem examples in
 [`REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md`](REPOSITORY_PLUGIN_CROSS_ECOSYSTEM_FIXTURES.md)
 and `tests/fixtures/repository_plugins/cross_ecosystem/`.
+P38-T6 records a real FastMCP comparison in
+[`REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md`](REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md)
+and
+`tests/fixtures/repository_plugins/real_runs/p38-t6-fastmcp-plugin-evidence-comparison.example.json`.
 
 The selection report shape is
 `SpecHarvesterRepositoryPluginApplicabilityReport`.

@@ -53,6 +53,9 @@ Published DocC site:
    cross-ecosystem repository plugin applicability fixture matrix for single
    package, workspace, documentation-heavy, nested, and ambiguous repository
    shapes
+19. [`REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md`](REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md):
+   real FastMCP plugin evidence comparison proving the applicability sidecar
+   path on a pinned local checkout without plugin execution
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

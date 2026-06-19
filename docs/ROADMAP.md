@@ -763,10 +763,14 @@ manifest-backed single-package, workspace, documentation-heavy, nested package
 root, and ambiguous mixed repository shapes while keeping plugin applicability
 producer-side and language/framework agnostic.
 
-Follow-up after the cross-ecosystem fixture matrix:
-
-- `P38-T6`: run one real repository through the plugin subsystem evidence
-  path and compare it with the Phase 37 profile selection behavior.
+P38-T6 records a real FastMCP plugin evidence comparison in
+[`REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md`](REPOSITORY_PLUGIN_REAL_RUN_FASTMCP.md)
+and
+`tests/fixtures/repository_plugins/real_runs/p38-t6-fastmcp-plugin-evidence-comparison.example.json`.
+The run shows current repository profile selection choosing
+`generic.single_package.v0` and autonomous batch recording
+`repositoryPluginApplicability` as sidecar evidence with
+`appliedToDrafting: false` and `registryAuthority: false`.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
