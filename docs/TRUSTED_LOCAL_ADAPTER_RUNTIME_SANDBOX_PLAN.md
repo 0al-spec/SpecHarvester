@@ -296,3 +296,9 @@ audit requirements, execution boundary, and non-authority statements while
 keeping `handoffIsExecutionPermission: false`,
 `handoffIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`, and
 `runtimeInvoked: false`.
+P42-T16 adds
+[`SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket`](TRUSTED_LOCAL_ADAPTER_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_IMPLEMENTATION_REVIEW_PACKET.md)
+as a review packet over the P42-T15 handoff. It records implementation
+prerequisites while keeping `packetIsExecutionPermission: false`,
+`packetIsRegistryAuthority: false`, `approvalConsumedByRuntime: false`,
+`runtimeImplemented: false`, and `runtimeInvoked: false`.

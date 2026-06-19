@@ -1,0 +1,559 @@
+{
+  "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-implementation-review-packet/v0",
+  "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket",
+  "schemaVersion": 1,
+  "authority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_review_packet_only",
+  "contract": {
+    "purpose": "Package the P42-T15 runtime invocation evidence handoff and implementation prerequisites for review before any real runtime code is introduced.",
+    "contractVersion": "0.1.0",
+    "handoffAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_invocation_evidence_handoff_only",
+    "packetAuthority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_implementation_review_packet_only",
+    "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "defaultExecution": "disabled",
+    "packetIsExecutionPermission": false,
+    "packetIsRegistryAuthority": false,
+    "packetConsumesApproval": false,
+    "packetImplementsRuntime": false
+  },
+  "input": {
+    "runtimeInvocationEvidenceHandoff": {
+      "path": "tests/fixtures/repository_plugins/explicit-real-local-trusted-adapter-sandbox-runtime-invocation-evidence-handoff.example.json",
+      "digest": "sha256:087f3bb04a05966202ec8e89c1eaa02c1cc7740633a1b1d7578097b6660f9457",
+      "apiVersion": "spec-harvester.explicit-real-local-trusted-adapter-sandbox-runtime-invocation-evidence-handoff/v0",
+      "kind": "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeInvocationEvidenceHandoff",
+      "schemaVersion": 1,
+      "authority": "producer_explicit_real_local_trusted_adapter_sandbox_runtime_invocation_evidence_handoff_only",
+      "requiredStatus": "ready_for_review",
+      "requiredMode": "runtime_invocation_evidence_handoff_no_execution",
+      "digestVerified": true
+    }
+  },
+  "handoffValidation": {
+    "handoffDigestAgreement": true,
+    "handoffStatusAccepted": true,
+    "handoffModeAccepted": true,
+    "handoffReviewOnly": true,
+    "handoffIsExecutionPermission": false,
+    "handoffIsRegistryAuthority": false,
+    "handoffConsumesApproval": false,
+    "handoffRuntimeInvoked": false,
+    "handoffRuntimeImplemented": false,
+    "handoffAdapterOutputAccepted": false
+  },
+  "implementationPrerequisites": {
+    "adapterPackageIdentity": {
+      "required": true,
+      "providedByPacket": false,
+      "requiredFields": [
+        "adapter_id",
+        "adapter_version",
+        "adapter_revision_or_digest",
+        "entrypoint",
+        "signature_or_digest_verification"
+      ]
+    },
+    "runtimeEntrypointIsolation": {
+      "required": true,
+      "providedByPacket": false,
+      "requiredFields": [
+        "entrypoint_path_or_module",
+        "entrypoint_digest",
+        "argument_allowlist",
+        "environment_allowlist",
+        "working_directory_policy",
+        "no_ambient_credentials"
+      ]
+    },
+    "processSpawningPolicy": {
+      "required": true,
+      "providedByPacket": false,
+      "processSpawnAllowedByPacket": false,
+      "maxProcessCount": 1,
+      "requiredFields": [
+        "bounded_process_tree",
+        "timeout_budget",
+        "cpu_budget",
+        "memory_budget",
+        "stdout_stderr_limits"
+      ]
+    },
+    "dependencyPolicy": {
+      "required": true,
+      "providedByPacket": false,
+      "dependencyInstallation": "not_allowed",
+      "packageManagers": "not_invoked",
+      "futurePolicyRequired": true
+    },
+    "networkPolicy": {
+      "required": true,
+      "providedByPacket": false,
+      "networkAccess": "none",
+      "dnsAllowed": false,
+      "remoteFetchAllowed": false,
+      "futurePolicyRequired": true
+    },
+    "outputDigestVerification": {
+      "required": true,
+      "providedByPacket": false,
+      "requiredForEveryOutput": [
+        "path",
+        "kind",
+        "byte_size",
+        "sha256_digest",
+        "source_input_digests",
+        "producer_run_id"
+      ]
+    },
+    "auditRecords": {
+      "required": true,
+      "providedByPacket": false,
+      "requiredFields": [
+        "runtime_invocation_evidence_handoff_digest",
+        "operator_approval_digest",
+        "adapter_package_identity",
+        "target_repository_revision",
+        "input_artifact_digests",
+        "output_artifact_digests",
+        "runtime_counters",
+        "non_authority_statements"
+      ]
+    },
+    "rollbackPolicy": {
+      "required": true,
+      "providedByPacket": false,
+      "requiredFields": [
+        "fresh_output_directory",
+        "no_in_place_mutation",
+        "failed_run_cleanup",
+        "replay_record"
+      ]
+    },
+    "approvalConsumptionRules": {
+      "required": true,
+      "providedByPacket": false,
+      "approvalReusable": false,
+      "packetConsumesApproval": false,
+      "runtimeMayConsumeApprovalOnlyInFutureApprovedRun": true,
+      "mustBindTo": [
+        "adapter_package_identity",
+        "target_repository_revision",
+        "input_artifact_digests",
+        "output_directory",
+        "runtime_budgets",
+        "network_policy",
+        "dependency_policy"
+      ]
+    }
+  },
+  "packet": {
+    "status": "ready_for_implementation_review",
+    "mode": "runtime_implementation_review_packet_no_execution",
+    "handoffArtifactCount": 1,
+    "implementationPrerequisiteCount": 9,
+    "runtimeImplementationAllowed": false,
+    "runtimeInvocationAllowed": false,
+    "approvalConsumptionAllowed": false,
+    "operatorApprovalConsumed": false,
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "harvestedCodeExecution": "not_allowed",
+    "aiExecution": "not_run",
+    "networkAccess": "none",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "acceptedChecks": [
+    {
+      "code": "handoff_artifact_identity_and_digest_valid",
+      "status": "passed",
+      "target": "input.runtimeInvocationEvidenceHandoff",
+      "message": "P42-T15 handoff identity and SHA-256 digest are pinned and verified."
+    },
+    {
+      "code": "handoff_status_ready_for_review",
+      "status": "passed",
+      "target": "input.runtimeInvocationEvidenceHandoff.requiredStatus",
+      "message": "Handoff status is ready_for_review."
+    },
+    {
+      "code": "handoff_mode_no_execution",
+      "status": "passed",
+      "target": "input.runtimeInvocationEvidenceHandoff.requiredMode",
+      "message": "Handoff mode remains no-execution."
+    },
+    {
+      "code": "handoff_review_only_semantics_valid",
+      "status": "passed",
+      "target": "handoffValidation.handoffReviewOnly",
+      "message": "Handoff remains review-only evidence."
+    },
+    {
+      "code": "handoff_not_execution_permission",
+      "status": "passed",
+      "target": "handoffValidation.handoffIsExecutionPermission",
+      "message": "Handoff does not grant execution permission."
+    },
+    {
+      "code": "handoff_not_registry_authority",
+      "status": "passed",
+      "target": "handoffValidation.handoffIsRegistryAuthority",
+      "message": "Handoff does not grant registry authority."
+    },
+    {
+      "code": "handoff_does_not_consume_approval",
+      "status": "passed",
+      "target": "handoffValidation.handoffConsumesApproval",
+      "message": "Handoff does not consume approval."
+    },
+    {
+      "code": "implementation_prerequisites_recorded",
+      "status": "passed",
+      "target": "implementationPrerequisites",
+      "message": "Implementation prerequisites are recorded."
+    },
+    {
+      "code": "approval_consumption_rules_recorded",
+      "status": "passed",
+      "target": "implementationPrerequisites.approvalConsumptionRules",
+      "message": "Approval consumption rules are recorded but not exercised."
+    },
+    {
+      "code": "runtime_entrypoint_isolation_recorded",
+      "status": "passed",
+      "target": "implementationPrerequisites.runtimeEntrypointIsolation",
+      "message": "Runtime entrypoint isolation requirements are recorded."
+    },
+    {
+      "code": "process_spawning_policy_recorded",
+      "status": "passed",
+      "target": "implementationPrerequisites.processSpawningPolicy",
+      "message": "Process spawning policy is recorded while spawning remains blocked."
+    },
+    {
+      "code": "output_audit_prerequisites_recorded",
+      "status": "passed",
+      "target": "implementationPrerequisites.auditRecords",
+      "message": "Output digest and audit prerequisites are recorded."
+    },
+    {
+      "code": "packet_preserves_no_runtime_side_effects",
+      "status": "passed",
+      "target": "packet",
+      "message": "No adapter code loading, import, process spawning, dependency installation, network access, harvested-code execution, or AI execution occurs."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "code": "missing_handoff_artifact_rejected",
+      "status": "rejected",
+      "target": "input.runtimeInvocationEvidenceHandoff",
+      "reason": "runtime_invocation_evidence_handoff_required"
+    },
+    {
+      "code": "handoff_digest_mismatch_rejected",
+      "status": "rejected",
+      "target": "input.runtimeInvocationEvidenceHandoff.digest",
+      "reason": "handoff_digest_must_match_p42_t15_fixture_bytes"
+    },
+    {
+      "code": "handoff_status_not_ready_rejected",
+      "status": "rejected",
+      "target": "input.runtimeInvocationEvidenceHandoff.requiredStatus",
+      "reason": "handoff_status_must_remain_ready_for_review"
+    },
+    {
+      "code": "handoff_mode_not_no_execution_rejected",
+      "status": "rejected",
+      "target": "input.runtimeInvocationEvidenceHandoff.requiredMode",
+      "reason": "handoff_mode_must_remain_no_execution"
+    },
+    {
+      "code": "unscoped_implementation_review_rejected",
+      "status": "rejected",
+      "target": "implementationPrerequisites",
+      "reason": "implementation_review_packet_must_record_bounded_prerequisites"
+    },
+    {
+      "code": "packet_execution_permission_rejected",
+      "status": "rejected",
+      "target": "contract.packetIsExecutionPermission",
+      "reason": "packet_must_not_grant_execution_permission"
+    },
+    {
+      "code": "packet_registry_authority_rejected",
+      "status": "rejected",
+      "target": "contract.packetIsRegistryAuthority",
+      "reason": "packet_must_not_grant_registry_authority"
+    },
+    {
+      "code": "approval_consumption_rejected",
+      "status": "rejected",
+      "target": "packet.operatorApprovalConsumed",
+      "reason": "packet_must_not_consume_approval"
+    },
+    {
+      "code": "runtime_implementation_rejected",
+      "status": "rejected",
+      "target": "packet.runtimeImplemented",
+      "reason": "packet_must_not_implement_runtime"
+    },
+    {
+      "code": "runtime_invocation_rejected",
+      "status": "rejected",
+      "target": "packet.runtimeInvoked",
+      "reason": "runtime_invocation_must_remain_false"
+    },
+    {
+      "code": "adapter_code_loading_rejected",
+      "status": "rejected",
+      "target": "packet.adapterCodeLoaded",
+      "reason": "adapter_code_loading_must_remain_false"
+    },
+    {
+      "code": "adapter_import_rejected",
+      "status": "rejected",
+      "target": "packet.adapterCodeImportAttempted",
+      "reason": "adapter_import_must_remain_false"
+    },
+    {
+      "code": "adapter_process_spawn_rejected",
+      "status": "rejected",
+      "target": "packet.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_must_remain_false"
+    },
+    {
+      "code": "dependency_installation_rejected",
+      "status": "rejected",
+      "target": "packet.dependencyInstallation",
+      "reason": "dependency_installation_not_allowed"
+    },
+    {
+      "code": "package_manager_invocation_rejected",
+      "status": "rejected",
+      "target": "packet.packageManagers",
+      "reason": "package_managers_not_invoked"
+    },
+    {
+      "code": "network_access_rejected",
+      "status": "rejected",
+      "target": "packet.networkAccess",
+      "reason": "network_access_must_remain_none"
+    },
+    {
+      "code": "adapter_output_registry_truth_rejected",
+      "status": "rejected",
+      "target": "packet.adapterOutputAccepted",
+      "reason": "adapter_output_must_not_be_registry_truth"
+    },
+    {
+      "code": "missing_rollback_policy_rejected",
+      "status": "rejected",
+      "target": "implementationPrerequisites.rollbackPolicy",
+      "reason": "rollback_policy_required_before_runtime_implementation"
+    }
+  ],
+  "blockedChecks": [
+    {
+      "code": "runtime_implementation_blocked",
+      "status": "blocked",
+      "target": "packet.runtimeImplemented",
+      "reason": "runtime_implementation_requires_future_task"
+    },
+    {
+      "code": "adapter_code_loading_blocked",
+      "status": "blocked",
+      "target": "packet.adapterCodeLoaded",
+      "reason": "adapter_code_loading_requires_future_runtime_task"
+    },
+    {
+      "code": "adapter_import_blocked",
+      "status": "blocked",
+      "target": "packet.adapterCodeImportAttempted",
+      "reason": "adapter_import_requires_future_runtime_task"
+    },
+    {
+      "code": "adapter_process_spawn_blocked",
+      "status": "blocked",
+      "target": "packet.adapterProcessSpawned",
+      "reason": "adapter_process_spawn_requires_future_runtime_task"
+    },
+    {
+      "code": "real_runtime_invocation_blocked",
+      "status": "blocked",
+      "target": "packet.runtimeInvoked",
+      "reason": "real_runtime_invocation_requires_future_runtime_task"
+    },
+    {
+      "code": "approval_consumption_blocked",
+      "status": "blocked",
+      "target": "packet.operatorApprovalConsumed",
+      "reason": "approval_consumption_requires_future_runtime_task"
+    },
+    {
+      "code": "dependency_installation_blocked",
+      "status": "blocked",
+      "target": "packet.dependencyInstallation",
+      "reason": "dependency_installation_requires_future_policy_task"
+    },
+    {
+      "code": "package_manager_invocation_blocked",
+      "status": "blocked",
+      "target": "packet.packageManagers",
+      "reason": "package_manager_invocation_requires_future_policy_task"
+    },
+    {
+      "code": "network_access_blocked",
+      "status": "blocked",
+      "target": "packet.networkAccess",
+      "reason": "network_access_requires_future_policy_task"
+    },
+    {
+      "code": "harvested_code_execution_blocked",
+      "status": "blocked",
+      "target": "packet.harvestedCodeExecution",
+      "reason": "harvested_code_execution_is_out_of_scope"
+    },
+    {
+      "code": "ai_execution_blocked",
+      "status": "blocked",
+      "target": "packet.aiExecution",
+      "reason": "adapter_sidecar_must_not_trigger_ai_execution"
+    },
+    {
+      "code": "package_acceptance_blocked",
+      "status": "blocked",
+      "target": "packet.registryAuthority",
+      "reason": "package_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "relation_acceptance_blocked",
+      "status": "blocked",
+      "target": "packet.registryAuthority",
+      "reason": "relation_acceptance_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "baseline_seeding_blocked",
+      "status": "blocked",
+      "target": "packet.registryAuthority",
+      "reason": "baseline_seeding_requires_separate_maintainer_review"
+    },
+    {
+      "code": "preview_only_removal_blocked",
+      "status": "blocked",
+      "target": "packet.registryAuthority",
+      "reason": "preview_only_removal_requires_specpm_maintainer_review"
+    },
+    {
+      "code": "adapter_output_truth_blocked",
+      "status": "blocked",
+      "target": "packet.adapterOutputAccepted",
+      "reason": "adapter_output_truth_requires_specpm_maintainer_review"
+    }
+  ],
+  "warningChecks": [
+    {
+      "code": "packet_review_only",
+      "status": "warning",
+      "target": "packet.status",
+      "message": "The runtime implementation review packet is review-only."
+    },
+    {
+      "code": "future_runtime_implementation_required",
+      "status": "warning",
+      "target": "packet.runtimeImplemented",
+      "message": "A future runtime implementation task is still required before execution."
+    },
+    {
+      "code": "approval_not_consumed",
+      "status": "warning",
+      "target": "packet.operatorApprovalConsumed",
+      "message": "No runtime has consumed approval."
+    },
+    {
+      "code": "implementation_prerequisites_not_satisfied_by_packet",
+      "status": "warning",
+      "target": "implementationPrerequisites",
+      "message": "The packet records prerequisites but does not satisfy them."
+    }
+  ],
+  "summary": {
+    "acceptedCount": 13,
+    "rejectedCount": 18,
+    "blockedCount": 16,
+    "warningCount": 4,
+    "diagnosticCount": 2,
+    "handoffArtifactCount": 1,
+    "implementationPrerequisiteCount": 9,
+    "operatorApprovalBound": true,
+    "approvalConsumedByRuntime": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false
+  },
+  "executionBoundary": {
+    "adapterExecution": "not_run",
+    "adapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "adapterProcessSpawned": false,
+    "executedAdapterCount": 0,
+    "runtimeInvoked": false,
+    "runtimeImplemented": false,
+    "packetIsExecutionPermission": false,
+    "packetIsRegistryAuthority": false,
+    "approvalConsumedByRuntime": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "explicit_real_local_sandbox_runtime_implementation_review_packet",
+      "message": "Runtime implementation review packet records future implementation prerequisites without loading adapter code or spawning processes."
+    },
+    {
+      "severity": "warning",
+      "code": "packet_is_not_execution_permission",
+      "message": "The packet does not grant adapter execution authority, registry authority, approval consumption, runtime implementation, or adapter output truth."
+    }
+  ],
+  "nonAuthorityStatements": [
+    "packet_is_not_execution_permission",
+    "packet_is_not_registry_authority",
+    "packet_does_not_consume_approval",
+    "packet_does_not_implement_runtime",
+    "handoff_is_not_execution_permission",
+    "handoff_is_not_registry_authority",
+    "handoff_does_not_consume_approval",
+    "does_not_load_third_party_adapter_code",
+    "does_not_import_adapter_code",
+    "does_not_execute_real_adapters",
+    "does_not_run_real_adapter_processes",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_use_network",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_packet_as_execution_permission",
+    "does_not_grant_registry_authority"
+  ],
+  "followUp": {
+    "runtimeInvocationEvidenceHandoffTask": "P42-T15",
+    "realLocalSandboxRuntimeImplementationTask": "deferred_until_after_runtime_implementation_packet_review",
+    "realLocalSandboxRunTask": "deferred_until_after_explicit_runtime_implementation_and_operator_approval"
+  }
+}

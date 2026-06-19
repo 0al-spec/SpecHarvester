@@ -191,3 +191,6 @@ registry truth, and does not treat the handoff as execution permission.
 - P42-T14 defines
   <doc:TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeInvocationSkeleton>.
 - P42-T15 adds this runtime invocation evidence handoff.
+- P42-T16 adds
+  <doc:TrustedLocalAdapterExplicitRealLocalSandboxRuntimeImplementationReviewPacket>
+  as the next review packet before any runtime implementation task.
