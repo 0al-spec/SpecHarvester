@@ -100,14 +100,18 @@ Stable diagnostic codes include `plugin_selected`,
 
 ## Precedence
 
-Autonomous batch should use after P39-T5:
+Autonomous batch uses after P39-T5:
 
 1. explicit operator-supplied `--repository-plugin-applicability` sidecar;
-2. future opt-in static evaluator CLI output;
+2. opt-in static evaluator output generated from
+   `--repository-plugin-registry` and
+   `--repository-plugin-static-evidence-envelope`;
 3. documented generic fallback behavior.
 
 The explicit sidecar path from P38-T4 remains valid and takes precedence over
-auto-generated applicability evidence.
+auto-generated applicability evidence. Generated batch sidecars record
+`sourceMode: auto_static_evaluator`, `appliedToDrafting: false`, and
+`registryAuthority: false`.
 
 Sidecar metadata must keep `appliedToDrafting: false` and
 `registryAuthority: false` until a later task explicitly changes how drafting
@@ -119,8 +123,9 @@ consumes evaluator output.
 - `P39-T3`: implement the deterministic evaluator helper.
 - `P39-T4`: expose the evaluator through
   `repository-plugin-applicability-detect`.
-- `P39-T5`: integrate evaluator output into `autonomous-candidate-batch` as an
-  opt-in auto sidecar path.
+- `P39-T5`: integrate evaluator output into `autonomous-candidate-batch` through
+  explicit `--repository-plugin-registry` and
+  `--repository-plugin-static-evidence-envelope` opt-in inputs.
 - `P39-T6`: run real multi-repository validation over existing local checkouts.
 
 ## Boundary
@@ -128,7 +133,8 @@ consumes evaluator output.
 The static evaluator must not load third-party plugin code, execute plugins,
 run plugin code, clone or fetch repositories, install dependencies, invoke
 package managers, execute harvested code, read repository source files,
-auto-attach generated reports to autonomous batch output, run AI, change
+auto-attach generated reports to autonomous batch output without explicit
+operator opt-in, run AI, change
 parser profile behavior, change repository profile scoring, accept packages,
 accept relations, publish registry metadata, remove `preview_only`, or treat
 plugin decisions as registry truth.

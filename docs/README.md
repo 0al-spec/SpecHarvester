@@ -57,9 +57,10 @@ Published DocC site:
    real FastMCP plugin evidence comparison proving the applicability sidecar
    path on a pinned local checkout without plugin execution
 20. [`STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`](STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md):
-   Phase 39 helper and `repository-plugin-applicability-detect` CLI for
-   deriving repository plugin applicability reports from bounded static
-   evidence instead of hand-authored sidecars
+   Phase 39 helper, `repository-plugin-applicability-detect` CLI, and
+   `autonomous-candidate-batch` opt-in integration for deriving repository
+   plugin applicability reports from bounded static evidence instead of
+   hand-authored sidecars
 21. [`REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md`](REPOSITORY_PLUGIN_STATIC_EVIDENCE_ENVELOPE_FIXTURE.md):
    machine-readable
    `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope` fixture for static

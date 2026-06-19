@@ -350,6 +350,25 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     autonomous_candidate_batch.add_argument(
+        "--repository-plugin-registry",
+        type=Path,
+        help=(
+            "Optional SpecHarvesterRepositoryPluginRegistry JSON used with "
+            "--repository-plugin-static-evidence-envelope to auto-generate "
+            "repository plugin applicability sidecar evidence. Ignored when "
+            "--repository-plugin-applicability is provided."
+        ),
+    )
+    autonomous_candidate_batch.add_argument(
+        "--repository-plugin-static-evidence-envelope",
+        type=Path,
+        help=(
+            "Optional SpecHarvesterRepositoryPluginStaticEvidenceEnvelope JSON "
+            "used with --repository-plugin-registry to auto-generate repository "
+            "plugin applicability sidecar evidence."
+        ),
+    )
+    autonomous_candidate_batch.add_argument(
         "--role-profile",
         choices=tuple(PACKAGE_SET_ROLE_PROFILES),
         default=DEFAULT_AUTONOMOUS_ROLE_PROFILE,
@@ -1599,6 +1618,10 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 apply_ai_enrichment=args.apply_ai_enrichment,
                 repository_profile_selection=args.repository_profile_selection,
                 repository_plugin_applicability=args.repository_plugin_applicability,
+                repository_plugin_registry=args.repository_plugin_registry,
+                repository_plugin_static_evidence_envelope=(
+                    args.repository_plugin_static_evidence_envelope
+                ),
             )
         )
     except ValueError as exc:

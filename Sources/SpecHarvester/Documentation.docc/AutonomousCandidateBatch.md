@@ -68,6 +68,32 @@ and records a `repositoryPluginApplicability` sidecar summary with path, digest,
 authority, selected/rejected/fallback/blocked counts, and diagnostic codes.
 The sidecar records `appliedToDrafting: false` and `registryAuthority: false`.
 
+Generate repository plugin applicability sidecar evidence from the deterministic
+static evaluator:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --repository-plugin-registry tests/fixtures/repository_plugins/generic-registry.example.json \
+  --repository-plugin-static-evidence-envelope tests/fixtures/repository_plugins/static-evidence-envelope.example.json
+```
+
+`--repository-plugin-registry` and
+`--repository-plugin-static-evidence-envelope` must be provided together. When
+both are present and no explicit `--repository-plugin-applicability` sidecar is
+provided, the batch evaluates the registry against the static evidence envelope
+and writes
+`reports/repository-plugin-applicability/repository-plugin-applicability-report.json`.
+The generated report remains sidecar producer evidence with
+`sourceMode: auto_static_evaluator`, `appliedToDrafting: false`, and
+`registryAuthority: false`.
+
+If both modes are provided, the explicit `--repository-plugin-applicability`
+sidecar wins. This preserves operator control and prevents a generated report
+from silently overriding a reviewed sidecar.
+
 In `auto` mode, repository profile detection first uses
 `workspace-inventory.json` workspace and member manifest records. If workspace
 inventory has no manifest records, the batch falls back to already-collected
@@ -120,6 +146,11 @@ When `--repository-plugin-applicability` is provided, the report records
 `repositoryPluginApplicability` with the copied sidecar path, digest, authority,
 summary counts, and diagnostic codes. The copied JSON artifact is written under
 `reports/repository-plugin-applicability/repository-plugin-applicability-report.json`.
+When `--repository-plugin-registry` and
+`--repository-plugin-static-evidence-envelope` are provided without an explicit
+sidecar, the report records the same `repositoryPluginApplicability` section
+with `sourceMode: auto_static_evaluator`, generated report path, digest,
+authority, selected/rejected/fallback/blocked counts, and diagnostic codes.
 
 Repository profile detection remains producer evidence only. The batch records
 `advisoryHintsAppliedToDrafting: false`; it does not apply hints to candidate
@@ -130,10 +161,10 @@ profile hints as registry truth.
 Repository plugin applicability evidence remains sidecar producer evidence.
 It remains producer-side sidecar evidence
 only. The batch records `appliedToDrafting: false`; it does not execute
-plugins, load third-party plugin code, change parser profile behavior, change
-repository profile scoring, accept packages, accept relations, remove
-`preview_only`, publish registry metadata, or treat plugin decisions as
-registry truth.
+plugins, load third-party plugin code, read repository source files, change
+parser profile behavior, change repository profile scoring, accept packages,
+accept relations, remove `preview_only`, publish registry metadata, or treat
+plugin decisions as registry truth.
 
 Generated package files remain `preview_only` producer evidence. SpecPM remains
 the validation, acceptance, relation, and registry authority.

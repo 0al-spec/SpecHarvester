@@ -85,6 +85,32 @@ and records a `repositoryPluginApplicability` sidecar summary with path, digest,
 authority, selected/rejected/fallback/blocked counts, and diagnostic codes.
 The sidecar records `appliedToDrafting: false` and `registryAuthority: false`.
 
+Generate repository plugin applicability sidecar evidence from the deterministic
+static evaluator while keeping candidate drafting generic:
+
+```bash
+python3 -m spec_harvester autonomous-candidate-batch \
+  inputs/popular-libraries \
+  --out .smoke/autonomous-popular-batch \
+  --skip-ai \
+  --repository-plugin-registry tests/fixtures/repository_plugins/generic-registry.example.json \
+  --repository-plugin-static-evidence-envelope tests/fixtures/repository_plugins/static-evidence-envelope.example.json
+```
+
+`--repository-plugin-registry` and
+`--repository-plugin-static-evidence-envelope` must be provided together. When
+both are present and no explicit `--repository-plugin-applicability` sidecar is
+provided, the batch evaluates the registry against the static evidence envelope
+and writes
+`reports/repository-plugin-applicability/repository-plugin-applicability-report.json`.
+The generated report is still sidecar producer evidence with
+`sourceMode: auto_static_evaluator`, `appliedToDrafting: false`, and
+`registryAuthority: false`.
+
+If both modes are provided, the explicit `--repository-plugin-applicability`
+sidecar wins. This preserves operator control and prevents a generated report
+from silently overriding a reviewed sidecar.
+
 In `auto` mode, repository profile detection first uses
 `workspace-inventory.json` workspace and member manifest records. If workspace
 inventory has no manifest records, the batch falls back to already-collected
@@ -110,6 +136,7 @@ For each selected repository, the runner orchestrates:
 repository source manifest
   -> collect-batch with workspace inventory and public interface indexes
   -> optional repository profile detection evidence
+  -> optional repository plugin applicability sidecar evidence
   -> draft-package-set using role profile autonomous_popular_mvp by default
   -> preflight-bundle-set
   -> optional local LM Studio package-set AI draft proposal
@@ -156,8 +183,10 @@ The report records:
 - collection status and validation report path;
 - repository profile selection mode and authority;
 - repository plugin applicability sidecar path, digest, authority, summary
-  counts, and diagnostic codes when `--repository-plugin-applicability` is
-  provided;
+  counts, diagnostic codes, and source mode when an explicit
+  `--repository-plugin-applicability` sidecar is copied or when
+  `--repository-plugin-registry` and
+  `--repository-plugin-static-evidence-envelope` generate the sidecar;
 - processed, skipped, and failed repository counts;
 - per-repository harvest, workspace inventory, package-set draft, and preflight
   paths;
@@ -186,10 +215,14 @@ truth.
 Repository plugin applicability evidence is sidecar producer evidence.
 It is producer-side sidecar evidence
 only. Even when `--repository-plugin-applicability` records selected plugins,
-the batch records `appliedToDrafting: false`; it does not execute plugins, load
-third-party plugin code, change parser profile behavior, change repository
-profile scoring, accept packages, accept relations, remove `preview_only`,
-publish registry metadata, or treat plugin decisions as registry truth.
+or when the static evaluator auto-generates selected plugin decisions from
+`--repository-plugin-registry` and
+`--repository-plugin-static-evidence-envelope`, the batch records
+`appliedToDrafting: false`; it does not execute plugins, load third-party
+plugin code, read repository source files, change parser profile behavior,
+change repository profile scoring, accept packages, accept relations, remove
+`preview_only`, publish registry metadata, or treat plugin decisions as
+registry truth.
 
 ## LM Studio Boundary
 
