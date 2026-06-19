@@ -719,3 +719,4 @@
 | 2026-06-19 | P42-T14 | Archived Disabled Explicit Real Local Trusted Adapter Sandbox Runtime Invocation Skeleton (PASS) |
 | 2026-06-19 | P42-T14 | Archived REVIEW_p42_t14_disabled_runtime_invocation_skeleton report |
 | 2026-06-19 | P42-T15 | Archived Explicit Real Local Trusted Adapter Sandbox Runtime Invocation Evidence Handoff (PASS) |
+| 2026-06-19 | P42-T15 | Archived REVIEW_p42_t15_runtime_invocation_evidence_handoff report |
