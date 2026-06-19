@@ -638,6 +638,13 @@ producer-side gate that checks fixture identity, linked artifact digests,
 operator approval binding, synthetic output byte sizes/digests, audit
 references, and no-real-execution boundaries without granting execution
 permission or registry authority.
+P42-T7 adds <doc:TrustedLocalAdapterRealLocalSandboxRunReadiness> and
+`real-local-trusted-adapter-sandbox-run-readiness`, a review-only readiness
+gate for explicit future real-run prerequisites. It checks the P42-T6 verifier
+report and declares operator approval, sandbox runtime, filesystem/output,
+audit, and rollback/review requirements while still refusing adapter code
+loading, process spawning, dependency installation, package manager invocation,
+network access, and registry authority.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

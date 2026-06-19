@@ -219,3 +219,7 @@ P42-T6 adds <doc:TrustedLocalAdapterSyntheticSandboxRunVerifier> as a
 deterministic verifier for fixture identity, linked artifact digests, approval
 binding, synthetic output byte sizes/digests, audit references, and
 no-real-execution boundaries without enabling real adapter execution.
+P42-T7 adds <doc:TrustedLocalAdapterRealLocalSandboxRunReadiness> as a
+readiness gate for explicit future real-run review prerequisites while still
+refusing adapter code loading, process spawning, dependency installation,
+package manager invocation, network access, and registry authority.

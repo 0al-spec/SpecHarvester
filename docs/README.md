@@ -152,6 +152,11 @@ Published DocC site:
    `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport` CLI
    gate for linked artifact digests, approval binding, output byte
    sizes/digests, audit references, and no-real-execution boundaries
+41. [`TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md`](TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md):
+   P42-T7
+   `SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport` CLI gate
+   for future real local sandbox run review prerequisites while preserving no
+   adapter execution
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

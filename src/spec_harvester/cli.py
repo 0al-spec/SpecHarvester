@@ -178,6 +178,11 @@ from spec_harvester.static_spec_renderer import (
     render_static_package_set_site,
     render_static_spec_site,
 )
+from spec_harvester.trusted_local_adapter_real_local_sandbox_readiness import (
+    RealLocalTrustedAdapterSandboxRunReadinessOptions,
+    build_real_local_trusted_adapter_sandbox_run_readiness_report,
+    write_real_local_trusted_adapter_sandbox_run_readiness_report,
+)
 from spec_harvester.trusted_local_adapter_runner import (
     TrustedLocalAdapterRunOptions,
     build_trusted_local_adapter_run_report,
@@ -1162,6 +1167,32 @@ def build_parser() -> argparse.ArgumentParser:
         func=run_synthetic_trusted_local_adapter_sandbox_run_verifier
     )
 
+    real_local_sandbox_readiness = subcommands.add_parser(
+        "real-local-trusted-adapter-sandbox-run-readiness",
+        help=(
+            "Validate real local trusted adapter sandbox run readiness from a "
+            "synthetic sandbox run verifier report without enabling execution."
+        ),
+    )
+    real_local_sandbox_readiness.add_argument(
+        "--verifier-report",
+        type=Path,
+        required=True,
+        help=("Path to SpecHarvesterSyntheticTrustedLocalAdapterSandboxRunVerifierReport JSON."),
+    )
+    real_local_sandbox_readiness.add_argument(
+        "--output",
+        type=Path,
+        help=(
+            "Optional path where "
+            "SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport JSON "
+            "is written."
+        ),
+    )
+    real_local_sandbox_readiness.set_defaults(
+        func=run_real_local_trusted_adapter_sandbox_run_readiness
+    )
+
     governance = subcommands.add_parser(
         "governance-report",
         help="Build duplicate intent and capability claim report from candidate/accepted metadata.",
@@ -2134,6 +2165,20 @@ def run_synthetic_trusted_local_adapter_sandbox_run_verifier(
         return 2
     if args.output is not None:
         write_synthetic_trusted_local_adapter_sandbox_run_verifier_report(args.output, payload)
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0
+
+
+def run_real_local_trusted_adapter_sandbox_run_readiness(args: argparse.Namespace) -> int:
+    try:
+        payload = build_real_local_trusted_adapter_sandbox_run_readiness_report(
+            RealLocalTrustedAdapterSandboxRunReadinessOptions(verifier_report=args.verifier_report)
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2, sort_keys=True))
+        return 2
+    if args.output is not None:
+        write_real_local_trusted_adapter_sandbox_run_readiness_report(args.output, payload)
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
 

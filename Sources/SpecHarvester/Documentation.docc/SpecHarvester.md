@@ -203,6 +203,7 @@ the host.
 - <doc:TrustedLocalAdapterSandboxRunnerValidation>
 - <doc:TrustedLocalAdapterSyntheticSandboxRunFixture>
 - <doc:TrustedLocalAdapterSyntheticSandboxRunVerifier>
+- <doc:TrustedLocalAdapterRealLocalSandboxRunReadiness>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

@@ -5,6 +5,13 @@ import json
 from pathlib import Path
 
 from spec_harvester.source_manifest import read_repository_source_manifests
+from spec_harvester.trusted_local_adapter_real_local_sandbox_readiness import (
+    REAL_LOCAL_SANDBOX_READINESS_API_VERSION,
+    REAL_LOCAL_SANDBOX_READINESS_AUTHORITY,
+    REAL_LOCAL_SANDBOX_READINESS_KIND,
+    RealLocalTrustedAdapterSandboxRunReadinessOptions,
+    build_real_local_trusted_adapter_sandbox_run_readiness_report,
+)
 from spec_harvester.trusted_local_adapter_runner import (
     TRUSTED_LOCAL_ADAPTER_RUN_REPORT_API_VERSION,
     TRUSTED_LOCAL_ADAPTER_RUN_REPORT_AUTHORITY,
@@ -18948,6 +18955,164 @@ def test_synthetic_trusted_local_adapter_sandbox_run_verifier_is_documented() ->
         (capabilities_docc, "TrustedLocalAdapterSyntheticSandboxRunVerifier"),
         (roadmap, "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md"),
         (roadmap_docc, "TrustedLocalAdapterSyntheticSandboxRunVerifier"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_real_local_trusted_adapter_sandbox_run_readiness_gate_is_documented(
+    tmp_path: Path,
+) -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "synthetic-trusted-local-adapter-sandbox-run.example.json"
+    )
+    verifier_payload = build_synthetic_trusted_local_adapter_sandbox_run_verifier_report(
+        SyntheticTrustedLocalAdapterSandboxRunVerifierOptions(fixture=fixture)
+    )
+    verifier_report = tmp_path / "synthetic-sandbox-run-verifier-report.json"
+    verifier_report.write_text(
+        json.dumps(verifier_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRealLocalSandboxRunReadiness.md"
+    )
+    verifier_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_VERIFIER.md"
+    verifier_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterSyntheticSandboxRunVerifier.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    report = build_real_local_trusted_adapter_sandbox_run_readiness_report(
+        RealLocalTrustedAdapterSandboxRunReadinessOptions(verifier_report=verifier_report)
+    )
+
+    assert report["apiVersion"] == REAL_LOCAL_SANDBOX_READINESS_API_VERSION
+    assert report["kind"] == REAL_LOCAL_SANDBOX_READINESS_KIND
+    assert report["schemaVersion"] == 1
+    assert report["status"] == "ready_for_explicit_real_run_review"
+    assert report["authority"] == REAL_LOCAL_SANDBOX_READINESS_AUTHORITY
+    assert report["verifierReport"]["digestVerified"] is True
+    assert report["verifierReport"]["verifierIsExecutionPermission"] is False
+    assert report["readinessDecision"]["readyForExplicitReview"] is True
+    assert report["readinessDecision"]["readyForExecution"] is False
+    assert report["readinessDecision"]["readinessIsExecutionPermission"] is False
+    assert report["realRunPrerequisites"]["operatorApproval"]["status"] == (
+        "explicit_real_run_approval_required"
+    )
+    assert (
+        report["realRunPrerequisites"]["operatorApproval"]["approvalProvidedByReadinessGate"]
+        is False
+    )
+    assert (
+        report["realRunPrerequisites"]["sandboxRuntime"]["runtimeInvocationAllowedByReadinessGate"]
+        is False
+    )
+    assert report["readinessGate"]["adapterExecution"] == "not_run"
+    assert report["readinessGate"]["adapterCodeLoaded"] is False
+    assert report["readinessGate"]["adapterProcessSpawned"] is False
+    assert report["readinessGate"]["executedAdapterCount"] == 0
+    assert report["readinessGate"]["dependencyInstallation"] == "not_allowed"
+    assert report["readinessGate"]["packageManagers"] == "not_invoked"
+    assert report["readinessGate"]["networkAccess"] == "none"
+    assert report["executionBoundary"]["adapterExecution"] == "not_run"
+    assert report["executionBoundary"]["runtimeInvoked"] is False
+    assert report["executionBoundary"]["readinessGateIsExecutionPermission"] is False
+    assert report["executionBoundary"]["registryAuthority"] is False
+    assert report["executionBoundary"]["adapterOutputAccepted"] is False
+    assert {
+        "real_local_sandbox_readiness_is_not_execution_permission",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_real_adapters",
+        "does_not_run_real_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_treat_readiness_as_execution_permission",
+        "does_not_publish_registry_metadata",
+        "does_not_grant_registry_authority",
+    }.issubset(set(report["nonAuthorityStatements"]))
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Real Local Sandbox Run Readiness",
+            "SpecHarvesterRealLocalTrustedAdapterSandboxRunReadinessReport",
+            "real-local-trusted-adapter-sandbox-run-readiness",
+            "spec-harvester.real-local-trusted-adapter-sandbox-run-readiness/v0",
+            "producer_real_local_trusted_adapter_sandbox_run_readiness_only",
+            "ready_for_explicit_real_run_review",
+            "producer-side review evidence only",
+            "not execution permission",
+            "explicit real-run operator approval is required",
+            "sandbox runtime requirements are declared but not invoked",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "runtimeInvoked: false",
+            "readinessGateIsExecutionPermission: false",
+            "syntheticRunVerificationIsExecutionPermission: false",
+            "registryAuthority: false",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat readiness as execution permission",
+            "does not grant registry authority",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "adapterProcessSpawned: true",
+            "networkAccess: allowed",
+            "dependencyInstallation: allowed",
+            "readyForExecution: true",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (verifier_doc, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md"),
+        (verifier_docc, "TrustedLocalAdapterRealLocalSandboxRunReadiness"),
+        (sandbox_plan, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md"),
+        (sandbox_plan_docc, "TrustedLocalAdapterRealLocalSandboxRunReadiness"),
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md"),
+        (docc_root, "TrustedLocalAdapterRealLocalSandboxRunReadiness"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md"),
+        (capabilities_docc, "TrustedLocalAdapterRealLocalSandboxRunReadiness"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_REAL_LOCAL_SANDBOX_RUN_READINESS.md"),
+        (roadmap_docc, "TrustedLocalAdapterRealLocalSandboxRunReadiness"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
