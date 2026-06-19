@@ -17,6 +17,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P42-T4 Disabled Trusted Local Adapter Sandbox Runner Validation" in (
+        next_text
+    ):
+        assert_p42_t3_last_archived(next_text)
+        assert_p42_t3_recent(next_text)
+        assert_phase_42_t4_planned(next_text)
+        return
+
     if "# Next Task: P42-T3 Trusted Local Adapter Sandbox Preflight Report Fixture" in next_text:
         assert_p42_t2_last_archived(next_text)
         assert_p42_t2_recent(next_text)
@@ -4893,6 +4901,45 @@ def assert_phase_42_t3_planned(next_text: str) -> None:
     assert "Do not implement real adapter execution" in normalized
     assert "Do not spawn adapter processes" in normalized
     assert "Do not treat sandbox preflight as registry truth" in normalized
+
+
+def assert_p42_t3_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T3 Trusted Local Adapter Sandbox Preflight Report Fixture"
+        in next_text
+    )
+
+
+def assert_p42_t3_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P42-T3` added the machine-readable" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport" in normalized
+    assert "TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md" in next_text
+    assert "TrustedLocalAdapterSandboxPreflightReportFixture.md" in next_text
+    assert "trusted-local-adapter-sandbox-preflight-report.example.json" in normalized
+    assert "sandbox_preflight_passed_review_only" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "registryAuthority: false" in normalized
+
+
+def assert_phase_42_t4_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P42-T4 Disabled Trusted Local Adapter Sandbox Runner Validation" in (
+        next_text
+    )
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P42-T4-disabled-trusted-local-adapter-sandbox-runner-validation`" in (
+        next_text
+    )
+    assert "disabled trusted local adapter sandbox runner validation" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterSandboxContract" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport" in normalized
+    assert "contract/preflight linkage" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "Do not load third-party adapter code" in normalized
+    assert "Do not spawn adapter processes" in normalized
+    assert "Do not treat sandbox runner validation as registry truth" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -17823,6 +17870,290 @@ def test_trusted_local_adapter_sandbox_contract_fixture_is_documented() -> None:
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P42-T2` Add a machine-readable" in workplan_text
     assert "`P42-T3` Add a trusted local adapter sandbox preflight report fixture" in (
+        workplan_text
+    )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_trusted_local_adapter_sandbox_preflight_report_fixture_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-sandbox-preflight-report.example.json"
+    )
+    sandbox_contract = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-sandbox-contract.example.json"
+    )
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterSandboxPreflightReportFixture.md"
+    )
+    contract_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md"
+    contract_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterSandboxContractFixture.md"
+    )
+    sandbox_plan = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.trusted-local-adapter-sandbox-preflight/v0"
+    assert payload["kind"] == "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_trusted_local_adapter_sandbox_preflight_only"
+    assert payload["contract"] == {
+        "purpose": (
+            "Validate a trusted local adapter sandbox contract before any sandbox runner "
+            "implementation without granting execution authority."
+        ),
+        "contractVersion": "0.1.0",
+        "sandboxContractAuthority": "producer_trusted_local_adapter_sandbox_contract_only",
+        "sandboxPreflightAuthority": "producer_trusted_local_adapter_sandbox_preflight_only",
+        "outputAuthority": "producer_adapter_output_candidate_evidence_only",
+        "defaultExecution": "disabled",
+        "preflightPassIsExecutionPermission": False,
+    }
+
+    contract_ref = payload["sandboxContract"]
+    sandbox_contract_path = (
+        "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-contract.example.json"
+    )
+    assert contract_ref == {
+        "path": sandbox_contract_path,
+        "digest": "sha256:" + hashlib.sha256(sandbox_contract.read_bytes()).hexdigest(),
+        "kind": "SpecHarvesterTrustedLocalAdapterSandboxContract",
+        "authority": "producer_trusted_local_adapter_sandbox_contract_only",
+    }
+    assert ".." not in contract_ref["path"]
+    assert not contract_ref["path"].startswith("/")
+    assert "\\" not in contract_ref["path"]
+
+    assert payload["result"] == {
+        "status": "passed",
+        "decision": "sandbox_preflight_passed_review_only",
+        "preflightPassIsExecutionPermission": False,
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeImplemented": False,
+        "sandboxRunnerImplemented": False,
+        "operatorApprovalProvided": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert payload["validatedSandboxContract"] == {
+        "apiVersion": "spec-harvester.trusted-local-adapter-sandbox-contract/v0",
+        "kind": "SpecHarvesterTrustedLocalAdapterSandboxContract",
+        "schemaVersion": 1,
+        "authority": "producer_trusted_local_adapter_sandbox_contract_only",
+        "sandboxPolicyId": "spec_harvester.trusted_local_adapter.local_sandbox.v0",
+        "operatorApprovalRequiredBeforeRuntime": True,
+        "operatorApprovalProvidedByFixture": False,
+        "sandboxContractIsExecutionPermission": False,
+        "adapterExecution": "not_run",
+        "registryAuthority": False,
+    }
+    assert payload["pathPolicy"] == {
+        "pathFormat": "posix_relative",
+        "parentSegmentsAllowed": False,
+        "absolutePathsAllowed": False,
+        "backslashAllowed": False,
+        "networkPathsAllowed": False,
+    }
+
+    accepted = {check["code"]: check for check in payload["acceptedChecks"]}
+    assert set(accepted) == {
+        "sandbox_contract_identity_valid",
+        "sandbox_contract_digest_verified",
+        "adapter_package_identity_digest_pinned",
+        "sandbox_policy_identity_present",
+        "operator_approval_requirements_present",
+        "process_policy_bounded_and_no_execution",
+        "filesystem_policy_safe_relative_declared_only",
+        "environment_policy_sealed",
+        "dependency_policy_denies_installation",
+        "network_policy_denies_remote_access",
+        "output_verification_requirements_present",
+        "audit_requirements_replayable",
+        "execution_boundary_review_only",
+        "non_authority_statements_present",
+    }
+    assert all(check["status"] == "passed" for check in accepted.values())
+
+    rejected = {check["code"]: check for check in payload["rejectedChecks"]}
+    assert set(rejected) == {
+        "unsafe_parent_path_rejected",
+        "unsafe_absolute_path_rejected",
+        "unsafe_backslash_path_rejected",
+        "unsafe_network_path_rejected",
+        "missing_sandbox_contract_digest_rejected",
+        "sandbox_contract_digest_mismatch_rejected",
+        "mutable_adapter_ref_rejected",
+        "missing_operator_approval_requirement_rejected",
+        "approval_provided_by_contract_fixture_rejected",
+        "adapter_process_execution_allowed_rejected",
+        "unbounded_process_tree_rejected",
+        "environment_inheritance_rejected",
+        "secrets_access_rejected",
+        "dependency_installation_rejected",
+        "package_manager_invocation_rejected",
+        "network_access_rejected",
+        "missing_output_digest_requirement_rejected",
+        "missing_audit_requirement_rejected",
+        "registry_authority_rejected",
+        "adapter_output_registry_truth_rejected",
+    }
+    assert all(check["status"] == "rejected" for check in rejected.values())
+
+    blocked = {check["code"]: check for check in payload["blockedChecks"]}
+    assert set(blocked) == {
+        "sandbox_runner_execution_blocked",
+        "third_party_adapter_code_loading_blocked",
+        "adapter_process_spawn_blocked",
+        "synthetic_approved_adapter_run_blocked",
+        "real_local_adapter_run_blocked",
+        "registry_authority_requested_blocked",
+    }
+    assert all(check["status"] == "blocked" for check in blocked.values())
+
+    assert payload["summary"] == {
+        "acceptedCount": 14,
+        "rejectedCount": 20,
+        "blockedCount": 6,
+        "warningCount": 2,
+        "diagnosticCount": 2,
+        "executedAdapterCount": 0,
+        "runtimeImplementedAdapterCount": 0,
+    }
+    assert payload["executionBoundary"] == {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeImplemented": False,
+        "sandboxRunnerImplemented": False,
+        "sandboxPreflightIsExecutionPermission": False,
+        "operatorApprovalProvided": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert {
+        "sandbox_preflight_is_not_execution_permission",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_run_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_sandbox_contract_as_registry_truth",
+        "does_not_treat_sandbox_preflight_as_registry_truth",
+    }.issubset(set(payload["nonAuthorityStatements"]))
+    assert payload["followUp"]["disabledSandboxRunnerValidationTask"] == "P42-T4"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Sandbox Preflight Report Fixture",
+            "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport",
+            "trusted-local-adapter-sandbox-preflight-report.example.json",
+            "spec-harvester.trusted-local-adapter-sandbox-preflight/v0",
+            "producer_trusted_local_adapter_sandbox_preflight_only",
+            "not execution permission",
+            "producer-side review evidence",
+            "SpecHarvesterTrustedLocalAdapterSandboxContract",
+            "sandbox contract identity",
+            "digest linkage",
+            "operator approval requirements",
+            "accepted checks",
+            "unsafe shapes",
+            "Blocked Runtime Checks",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "sandboxPreflightIsExecutionPermission: false",
+            "operatorApprovalProvided: false",
+            "registryAuthority: false",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "does not treat sandbox contract as registry truth",
+            "does not treat sandbox preflight as registry truth",
+            "P42-T4",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "adapterExecution: run",
+            "adapterExecution: enabled",
+            "networkAccess: allowed",
+            "dependencyInstallation: allowed",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (contract_doc, "TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md"),
+        (contract_docc, "TrustedLocalAdapterSandboxPreflightReportFixture"),
+        (sandbox_plan, "TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md"),
+        (sandbox_plan_docc, "TrustedLocalAdapterSandboxPreflightReportFixture"),
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md"),
+        (docc_root, "TrustedLocalAdapterSandboxPreflightReportFixture"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md"),
+        (capabilities_docc, "TrustedLocalAdapterSandboxPreflightReportFixture"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md"),
+        (roadmap_docc, "TrustedLocalAdapterSandboxPreflightReportFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P42-T3` Add a trusted local adapter sandbox preflight report fixture" in (
+        workplan_text
+    )
+    assert "`P42-T4` Add disabled trusted local adapter sandbox runner validation" in (
         workplan_text
     )
     assert_current_next_task(next_task.read_text(encoding="utf-8"))

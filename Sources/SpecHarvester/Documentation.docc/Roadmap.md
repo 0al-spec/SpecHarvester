@@ -617,6 +617,10 @@ machine-readable `SpecHarvesterTrustedLocalAdapterSandboxContract` fixture for
 adapter package identity, sandbox policy identity, operator approval
 requirements, filesystem/environment/network/dependency policy, output
 verification, audit requirements, and no-execution/non-authority statements.
+P42-T3 adds <doc:TrustedLocalAdapterSandboxPreflightReportFixture> and the
+machine-readable `SpecHarvesterTrustedLocalAdapterSandboxPreflightReport`
+fixture for sandbox contract identity/digest linkage, accepted/rejected/blocked
+checks, no-execution state, and review-only non-authority statements.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

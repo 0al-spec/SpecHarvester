@@ -1777,6 +1777,10 @@ Acceptance:
   operator approval requirements, process/filesystem/environment/dependency/
   network policy, output verification, audit requirements, and non-authority
   boundaries before any sandbox runner implementation.
+- [ ] `P42-T4` Add disabled trusted local adapter sandbox runner validation that
+  checks sandbox contract and sandbox preflight report linkage while preserving
+  no adapter code loading, no process spawning, no dependency installation, no
+  network access, and no registry authority.
 
 Motivation:
 

@@ -131,6 +131,11 @@ Published DocC site:
    package identity, sandbox policy identity, operator approval requirements,
    filesystem/environment/network/dependency policy, output verification,
    audit requirements, and no-execution/non-authority statements
+37. [`TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md):
+   P42-T3 machine-readable
+   `SpecHarvesterTrustedLocalAdapterSandboxPreflightReport` fixture for
+   sandbox contract identity/digest linkage, accepted/rejected/blocked checks,
+   no-execution state, and review-only non-authority statements
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
