@@ -184,6 +184,7 @@
 
 | Folder | Description |
 |--------|-------------|
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p39_t2_static_plugin_evidence_envelope_fixture.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p39_t1_static_plugin_applicability_evaluator_plan.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t6_real_repository_plugin_evidence_run.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p38_t5_repository_plugin_cross_ecosystem_fixtures.md` |
@@ -626,3 +627,4 @@
 | 2026-06-19 | P39-T1 | Archived Static Repository Plugin Applicability Evaluator Plan (PASS) |
 | 2026-06-19 | P39-T1 | Archived REVIEW_p39_t1_static_plugin_applicability_evaluator_plan report |
 | 2026-06-19 | P39-T2 | Archived Static Plugin Evidence Envelope Fixture (PASS) |
+| 2026-06-19 | P39-T2 | Archived REVIEW_p39_t2_static_plugin_evidence_envelope_fixture report |
