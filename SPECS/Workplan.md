@@ -1805,11 +1805,15 @@ Acceptance:
   policy, filesystem/output/audit declarations, and non-authority statements
   while still refusing to grant execution permission or spawn adapter
   processes.
-- [ ] `P42-T10` Add a disabled explicit real local trusted adapter sandbox
+- [x] `P42-T10` Add a disabled explicit real local trusted adapter sandbox
   runner skeleton that validates the P42-T8 request and P42-T9 preflight
   linkage while preserving no adapter code loading, no process spawning, no
   dependency installation, no network access, no registry authority, and no
   adapter output acceptance.
+- [ ] `P42-T11` Add an explicit real local trusted adapter sandbox runner
+  evidence handoff fixture that packages the P42-T8 request, P42-T9 preflight,
+  and P42-T10 disabled runner skeleton as review evidence while preserving no
+  adapter execution, no registry authority, and no adapter output truth.
 
 Motivation:
 

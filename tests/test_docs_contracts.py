@@ -39,6 +39,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def assert_current_next_task(next_text: str) -> None:
     if (
+        "# Next Task: P42-T11 Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff"
+    ) in next_text:
+        assert_p42_t10_last_archived(next_text)
+        assert_p42_t10_recent(next_text)
+        assert_phase_42_t11_planned(next_text)
+        return
+
+    if (
         "# Next Task: P42-T10 Disabled Explicit Real Local Trusted Adapter Sandbox Runner Skeleton"
     ) in next_text:
         assert_p42_t9_last_archived(next_text)
@@ -5325,6 +5333,93 @@ def assert_phase_42_t10_planned(next_text: str) -> None:
     assert "Do not implement real adapter execution" in normalized
     assert "Do not treat preflight pass as execution permission" in normalized
     assert "Do not treat the disabled runner skeleton as execution permission" in normalized
+
+
+def assert_p42_t10_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T10 Disabled Explicit Real Local Trusted Adapter Sandbox Runner "
+        "Skeleton"
+    ) in next_text
+
+
+def assert_p42_t10_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P42-T10` added `SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRunnerReport`"
+    ) in normalized
+    assert "disabled-explicit-real-local-trusted-adapter-sandbox-runner.example.json" in next_text
+    assert (
+        "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNNER_SKELETON.md" in next_text
+    )
+    assert "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRunnerSkeleton.md" in next_text
+    assert "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequest" in normalized
+    assert "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRunRequestPreflightReport" in (
+        normalized
+    )
+    assert "pinned SHA-256 digests" in normalized
+    assert "request/preflight digest agreement" in normalized
+    assert "preflight_passed_review_only" in normalized
+    assert "no-execution boundaries" in normalized
+    assert "no consumed operator approval" in normalized
+    assert "disabled adapter execution" in normalized
+    assert "disabled adapter code loading" in normalized
+    assert "disabled process spawning" in normalized
+    assert "disabled runtime side effects" in normalized
+    assert "disabled registry authority" in normalized
+    assert "disabled adapter output acceptance" in normalized
+    assert "accepted, rejected, blocked, and warning checks" in normalized
+    assert "missing inputs" in normalized
+    assert "digest mismatch" in normalized
+    assert "non-review-only preflight decisions" in normalized
+    assert "execution permission drift" in normalized
+    assert "operator approval consumption" in normalized
+    assert "package/relation acceptance" in normalized
+    assert "baseline seeding" in normalized
+    assert "`preview_only` removal" in normalized
+    assert "runnerIsExecutionPermission: false" in normalized
+    assert "runnerIsOperatorApproval: false" in normalized
+    assert "runnerIsRegistryAuthority: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterCodeImportAttempted: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "executedAdapterCount: 0" in normalized
+    assert "runtimeInvoked: false" in normalized
+    assert "runtimeImplemented: false" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_phase_42_t11_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P42-T11 Explicit Real Local Trusted Adapter Sandbox Runner Evidence Handoff"
+    ) in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert (
+        "`feature/P42-T11-explicit-real-local-trusted-adapter-sandbox-runner-evidence-handoff`"
+        in next_text
+    )
+    assert "explicit real local trusted adapter sandbox runner evidence handoff fixture" in (
+        normalized
+    )
+    assert "P42-T8 request, P42-T9 preflight, and P42-T10 disabled runner skeleton" in (normalized)
+    assert "review evidence without enabling real adapter execution" in normalized
+    assert "artifact identity and digest agreement" in normalized
+    assert "no adapter code loading" in normalized
+    assert "no process spawning" in normalized
+    assert "no dependency installation" in normalized
+    assert "no package manager invocation" in normalized
+    assert "no network access" in normalized
+    assert "no harvested code execution" in normalized
+    assert "no AI execution" in normalized
+    assert "no package acceptance" in normalized
+    assert "no relation acceptance" in normalized
+    assert "no baseline seeding" in normalized
+    assert "no registry metadata publishing" in normalized
+    assert "no `preview_only` removal" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not treat adapter output as registry truth" in normalized
 
 
 def assert_phase_42_t8_planned(next_text: str) -> None:
