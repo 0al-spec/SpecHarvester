@@ -1592,7 +1592,7 @@ Acceptance:
 - [x] `P39-T4` Add a `repository-plugin-applicability-detect` CLI/report
   surface for the static evaluator, including JSON output and regression
   tests.
-- [ ] `P39-T5` Integrate static evaluator output into
+- [x] `P39-T5` Integrate static evaluator output into
   `autonomous-candidate-batch` as an opt-in auto sidecar path while preserving
   explicit sidecar input behavior and keeping `appliedToDrafting: false`.
 - [ ] `P39-T6` Run a real multi-repository static evaluator validation over

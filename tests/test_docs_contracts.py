@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P39-T6 Real Multi-Repository Static Evaluator Validation" in next_text:
+        assert_p39_t5_last_archived(next_text)
+        assert_p39_t5_recent(next_text)
+        assert_phase_39_t6_planned(next_text)
+        return
+
     if "# Next Task: P39-T5 Repository Plugin Applicability Batch Integration" in next_text:
         assert_p39_t4_last_archived(next_text)
         assert_p39_t4_recent(next_text)
@@ -3875,6 +3881,67 @@ def assert_phase_39_t5_planned(next_text: str) -> None:
     assert "must not invoke package managers" in normalized
     assert "must not execute harvested code" in normalized
     assert "must not run AI" in normalized
+    assert "must not accept packages or relations" in normalized
+    assert "must not publish registry metadata" in normalized
+    assert "must not remove `preview_only`" in normalized
+    assert "must not treat plugin decisions as registry truth" in normalized
+
+
+def assert_p39_t5_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P39-T5 Repository Plugin Applicability Batch Integration" in (
+        next_text
+    )
+
+
+def assert_p39_t5_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P39-T5` connected the deterministic repository plugin applicability" in normalized
+    assert "--repository-plugin-registry" in next_text
+    assert "--repository-plugin-static-evidence-envelope" in next_text
+    assert "--repository-plugin-applicability" in next_text
+    assert "highest-precedence input" in normalized
+    assert "sourceMode: explicit_sidecar" in next_text
+    assert "sourceMode: auto_static_evaluator" in next_text
+    assert "appliedToDrafting: false" in next_text
+    assert "registryAuthority: false" in next_text
+    assert "default non-generation" in normalized
+    assert "opt-in generation" in normalized
+    assert "explicit sidecar precedence" in normalized
+    assert "partial auto-input rejection" in normalized
+    assert "invalid static evidence rejection" in normalized
+    assert "does not make plugin applicability automatic by default" in normalized
+    assert "does not override explicit sidecars" in normalized
+    assert "does not load or execute plugins" in normalized
+    assert "does not read repository source files" in normalized
+    assert "clone or fetch repositories" in normalized
+    assert "install dependencies" in normalized
+    assert "invoke package managers" in normalized
+    assert "execute harvested code" in normalized
+    assert "run AI" in normalized
+    assert "accept packages or relations" in normalized
+    assert "publish registry metadata" in normalized
+    assert "remove `preview_only`" in normalized
+    assert "treat plugin decisions as registry truth" in normalized
+
+
+def assert_phase_39_t6_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P39-T6 Real Multi-Repository Static Evaluator Validation" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P39-T6-real-multi-repository-static-evaluator-validation`" in next_text
+    assert "Phase 39. Static Repository Plugin Applicability Evaluator" in next_text
+    assert "FastMCP" in next_text
+    assert "FastAPI" in next_text
+    assert "xyflow" in next_text
+    assert "repository-plugin-applicability-detect" in next_text
+    assert "`autonomous-candidate-batch` opt-in sidecar generation" in normalized
+    assert "machine-readable real-run comparison fixture" in normalized
+    assert "must not clone or fetch repositories" in normalized
+    assert "must not install dependencies" in normalized
+    assert "must not run package managers" in normalized
+    assert "must not execute harvested code" in normalized
+    assert "must not invoke AI" in normalized
+    assert "must not change parser/profile behavior" in normalized
     assert "must not accept packages or relations" in normalized
     assert "must not publish registry metadata" in normalized
     assert "must not remove `preview_only`" in normalized
