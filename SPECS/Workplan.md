@@ -1589,7 +1589,7 @@ Acceptance:
 - [x] `P39-T3` Implement a deterministic static applicability evaluator helper
   that reads the plugin registry plus evidence envelope and emits selected,
   rejected, fallback, and blocked plugin decisions.
-- [ ] `P39-T4` Add a `repository-plugin-applicability-detect` CLI/report
+- [x] `P39-T4` Add a `repository-plugin-applicability-detect` CLI/report
   surface for the static evaluator, including JSON output and regression
   tests.
 - [ ] `P39-T5` Integrate static evaluator output into

@@ -1,64 +1,62 @@
-# Next Task: P39-T4 Repository Plugin Applicability Detect CLI
+# Next Task: P39-T5 Repository Plugin Applicability Batch Integration
 
-**Status:** In Progress
-**Branch:** `feature/P39-T4-repository-plugin-applicability-detect-cli`
+**Status:** Planned
+**Branch:** `feature/P39-T5-repository-plugin-applicability-batch-integration`
 **Phase:** Phase 39. Static Repository Plugin Applicability Evaluator
-**Last Archived:** P39-T3 Deterministic Static Applicability Evaluator Helper
+**Last Archived:** P39-T4 Repository Plugin Applicability Detect CLI
 
 ## Recently Archived
 
-- `P39-T3` implemented
+- `P39-T4` added `repository-plugin-applicability-detect`.
+- The command reads explicit `--registry` and
+  `--static-evidence-envelope` JSON files, writes the full
+  `SpecHarvesterRepositoryPluginApplicabilityReport` to `--out`, and prints a
+  compact JSON summary with selected/rejected/fallback/blocked/diagnostic
+  counts.
+- CLI regression tests cover success, invalid registry identity, unsafe static
+  evidence paths, and missing evidence fallback behavior.
+- The command does not change `autonomous-candidate-batch`, does not
+  auto-attach generated reports, does not load or execute plugins, does not
+  read repository source files, does not clone or fetch repositories, does not
+  install dependencies, does not invoke package managers, does not execute
+  harvested code, does not run AI, does not accept packages or relations, does
+  not publish registry metadata, does not remove `preview_only`, and does not
+  treat plugin decisions as registry truth.
+- `P39-T3` implemented the deterministic helper:
   `spec_harvester.repository_plugin_applicability.evaluate_repository_plugin_applicability`.
-  The helper reads already-loaded
-  `SpecHarvesterRepositoryPluginRegistry` and
-  `SpecHarvesterRepositoryPluginStaticEvidenceEnvelope` JSON objects, compares
-  declared `inputEvidenceKinds[]` with available `evidenceKinds[]`, and emits
-  `SpecHarvesterRepositoryPluginApplicabilityReport`.
-- The helper preserves `producer_plugin_applicability_only` authority,
-  selected/rejected/fallback/blocked decision arrays, stable diagnostics, safe
-  relative evidence paths, SHA-256 digest validation, and non-authority
-  statements.
-- The helper does not load plugins, execute plugins, read repository source
-  files, clone or fetch repositories, install dependencies, invoke package
-  managers, execute harvested code, run AI, accept packages or relations,
-  publish registry metadata, remove `preview_only`, or treat plugin decisions
-  as registry truth.
-- `P39-T2` added the machine-readable static plugin evidence envelope fixture
-  in
-  `tests/fixtures/repository_plugins/static-evidence-envelope.example.json`.
-- `P39-T1` documented the static repository plugin applicability evaluator
-  plan in `STATIC_REPOSITORY_PLUGIN_APPLICABILITY_EVALUATOR.md`.
 
 ## Current Task
 
-`P39-T4` should expose the P39-T3 helper through a deterministic
-`repository-plugin-applicability-detect` CLI/report surface.
+`P39-T5` should integrate static evaluator output into
+`autonomous-candidate-batch` as an opt-in auto sidecar path.
 
 ## Motivation
 
-P39-T3 made applicability evaluation testable as a helper, but operators and
-CI still need a stable command that can read a registry JSON file plus static
-evidence envelope JSON file and write a reviewable
-`repository-plugin-applicability-report.json` artifact.
+Operators can now generate a plugin applicability report through a standalone
+CLI. The next step is to let autonomous batch create and record that report
+when the operator explicitly opts in, while preserving the existing explicit
+`--repository-plugin-applicability` sidecar as the highest-precedence input.
 
 ## Non-Goals
 
-P39-T4 must not change `autonomous-candidate-batch`, must not auto-attach the
-generated report to candidate output, must not load third-party plugin code,
-must not execute plugins, must not clone or fetch repositories, must not
-install dependencies, must not invoke package managers, must not execute
-harvested code, must not run AI, must not accept packages or relations, must
-not publish registry metadata, must not remove `preview_only`, and must not
-treat plugin decisions as registry truth.
+P39-T5 must not make plugin applicability automatic by default, must not
+override explicit `--repository-plugin-applicability`, must not load
+third-party plugin code, must not execute plugins, must not clone or fetch
+repositories, must not install dependencies, must not invoke package managers,
+must not execute harvested code, must not run AI, must not accept packages or
+relations, must not publish registry metadata, must not remove `preview_only`,
+and must not treat plugin decisions as registry truth.
 
 ## Planned Deliverables
 
-- Add a `repository-plugin-applicability-detect` CLI command.
-- Accept explicit `--registry` and `--static-evidence-envelope` inputs.
-- Write `SpecHarvesterRepositoryPluginApplicabilityReport` JSON to `--out`.
-- Print a compact summary for selected/rejected/fallback/blocked counts.
-- Add CLI regression tests for success, bad input identity, unsafe paths, and
-  missing evidence behavior.
-- Update GitHub docs and DocC docs to document the command.
-- Keep autonomous batch integration deferred to P39-T5.
+- Add explicit opt-in autonomous batch inputs for registry plus static evidence
+  envelope based applicability detection.
+- Preserve explicit `--repository-plugin-applicability` precedence over any
+  auto-generated report.
+- Store auto-generated applicability output as sidecar producer evidence with
+  `appliedToDrafting: false` and `registryAuthority: false`.
+- Add regression tests for opt-in success, explicit sidecar precedence,
+  non-default behavior, and invalid auto-detection inputs.
+- Update GitHub docs and DocC docs.
+- Keep real multi-repository validation deferred to P39-T6.
 - Archive the task through Flow.
