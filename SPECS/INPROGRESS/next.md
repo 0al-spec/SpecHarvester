@@ -1,58 +1,56 @@
-# Next Task: P42-T3 Trusted Local Adapter Sandbox Preflight Report Fixture
+# Next Task: P42-T4 Disabled Trusted Local Adapter Sandbox Runner Validation
 
 **Status:** Planned
-**Branch:** `feature/P42-T3-trusted-local-adapter-sandbox-preflight-report-fixture`
+**Branch:** `feature/P42-T4-disabled-trusted-local-adapter-sandbox-runner-validation`
 **Phase:** Phase 42. Trusted Local Adapter Runtime Sandbox
-**Last Archived:** P42-T2 Trusted Local Adapter Sandbox Contract Fixture
+**Last Archived:** P42-T3 Trusted Local Adapter Sandbox Preflight Report Fixture
 
 ## Recently Archived
 
-- `P42-T2` added the machine-readable
-  `SpecHarvesterTrustedLocalAdapterSandboxContract` fixture.
+- `P42-T3` added the machine-readable
+  `SpecHarvesterTrustedLocalAdapterSandboxPreflightReport` fixture.
 - GitHub docs are in
-  `docs/TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md`.
+  `docs/TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md`.
 - DocC docs are in
-  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterSandboxContractFixture.md`.
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterSandboxPreflightReportFixture.md`.
 - The fixture is in
-  `tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-contract.example.json`.
-- The fixture records adapter package identity, sandbox policy identity,
-  operator approval requirements, process/filesystem/environment/dependency/
-  network policy, output verification, audit requirements, diagnostics, and
-  non-authority statements.
+  `tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-preflight-report.example.json`.
+- The fixture validates `SpecHarvesterTrustedLocalAdapterSandboxContract`
+  identity and digest linkage, records
+  `sandbox_preflight_passed_review_only`, accepted/rejected/blocked checks,
+  no-execution state, and review-only non-authority statements.
 - The current state remains `adapterExecution: not_run`,
   `adapterCodeLoaded: false`, `adapterProcessSpawned: false`,
   `executedAdapterCount: 0`, and `registryAuthority: false`.
 
 ## Task
 
-Add a machine-readable
-`SpecHarvesterTrustedLocalAdapterSandboxPreflightReport` fixture that validates
-the `SpecHarvesterTrustedLocalAdapterSandboxContract` before any sandbox runner
-implementation.
+Add disabled trusted local adapter sandbox runner validation that checks
+`SpecHarvesterTrustedLocalAdapterSandboxContract` and
+`SpecHarvesterTrustedLocalAdapterSandboxPreflightReport` linkage while
+preserving no-execution behavior.
 
 ## Why This Is Next
 
-P42-T2 makes the sandbox contract machine-readable. The next step is to define
-the preflight report shape that validates the contract identity, approval
-requirements, isolation policies, output verification, audit requirements, and
-non-authority boundaries before any future runner can consume it.
+P42-T2 and P42-T3 define the sandbox contract and preflight report. The next
+step is a disabled validation surface that proves future runner inputs can be
+linked and checked without loading adapter code, spawning processes, installing
+dependencies, invoking package managers, enabling network access, or granting
+registry authority.
 
 ## Scope
 
-- Add a JSON fixture for
-  `SpecHarvesterTrustedLocalAdapterSandboxPreflightReport`.
-- Validate sandbox contract identity and digest linkage.
-- Record accepted, rejected, and blocked checks for operator approval
-  requirements, process policy, filesystem policy, environment policy,
-  dependency policy, network-deny-by-default policy, output verification, audit
-  requirements, and non-authority boundaries.
-- Link the fixture from GitHub docs, DocC, roadmap/capabilities, and tests.
-- Preserve the no-execution boundary.
+- Add disabled trusted local adapter sandbox runner validation.
+- Validate contract/preflight linkage and digest compatibility.
+- Emit or document a no-execution validation report shape.
+- Preserve `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+  `adapterProcessSpawned: false`, `executedAdapterCount: 0`, and
+  `registryAuthority: false`.
+- Link docs, DocC, roadmap/capabilities, and tests.
 
 ## Non-Goals
 
 - Do not implement real adapter execution.
-- Do not implement a sandbox runner.
 - Do not load third-party adapter code.
 - Do not spawn adapter processes.
 - Do not install dependencies.
@@ -64,7 +62,7 @@ non-authority boundaries before any future runner can consume it.
 - Do not seed baselines.
 - Do not publish registry metadata.
 - Do not remove `preview_only`.
-- Do not treat sandbox preflight as registry truth.
+- Do not treat sandbox runner validation as registry truth.
 - Do not treat adapter output as registry truth.
 
 ## Phase 42. Trusted Local Adapter Runtime Sandbox
@@ -79,29 +77,32 @@ non-authority boundaries before any future runner can consume it.
   requirements, filesystem/environment/network/dependency policy, output
   verification, audit records, and non-authority statements before any runtime
   implementation.
-- [ ] `P42-T3` Add a trusted local adapter sandbox preflight report fixture that
+- [x] `P42-T3` Add a trusted local adapter sandbox preflight report fixture that
   validates `SpecHarvesterTrustedLocalAdapterSandboxContract` identity,
   operator approval requirements, process/filesystem/environment/dependency/
   network policy, output verification, audit requirements, and non-authority
   boundaries before any sandbox runner implementation.
+- [ ] `P42-T4` Add disabled trusted local adapter sandbox runner validation that
+  checks sandbox contract and sandbox preflight report linkage while preserving
+  no adapter code loading, no process spawning, no dependency installation, no
+  network access, and no registry authority.
 
 Motivation:
 
-- The sandbox contract should have a review-only preflight report before any
-  sandbox runner implementation exists.
-- Future runtime work needs a stable way to reject unsafe contract shapes before
-  adapter code can be loaded or process execution can be considered.
+- Future runner work needs a deterministic no-execution validation step before
+  any real adapter process can run.
+- The validation surface should prove contract/preflight linkage while keeping
+  all runtime authority disabled.
 
 Goal:
 
-- Make the P42 sandbox contract preflight boundary machine-readable without
-  enabling adapter execution.
+- Validate the sandbox runner input boundary without enabling adapter
+  execution.
 
 Acceptance:
 
-- The fixture validates sandbox contract identity, digest linkage, policy
-  fields, approval requirements, output verification, audit requirements, and
-  non-authority statements.
-- The fixture keeps `adapterExecution: not_run` and cannot be interpreted as
+- The validation checks contract/preflight identity and digest linkage.
+- The validation keeps `adapterExecution: not_run` and cannot be interpreted as
   runtime permission.
-- Docs and tests prove the fixture remains producer-side review evidence only.
+- Docs and tests prove the validation remains producer-side review evidence
+  only.
