@@ -24,6 +24,7 @@ no-execution/non-authority boundary.
 - Rejected authority-bearing trusted run reports.
 - Rejected trusted run reports whose execution boundary attempts to record
   adapter execution.
+- Rejected boolean values in trusted run numeric count fields.
 - Added CLI coverage for `--trusted-local-adapter-run-report`.
 - Updated GitHub docs and DocC mirrors for the handoff boundary.
 
@@ -31,9 +32,10 @@ no-execution/non-authority boundary.
 
 | Command | Result |
 | --- | --- |
-| `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py -q` | PASS, `31 passed` |
-| `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py tests/test_trusted_local_adapter_runner.py -q` | PASS, `37 passed` |
+| `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py -q` | PASS, `32 passed` |
+| `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py tests/test_trusted_local_adapter_runner.py -q` | PASS, `38 passed` |
 | `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py tests/test_trusted_local_adapter_runner.py tests/test_docs_contracts.py -q` | PASS, `163 passed` |
+| `PYTHONPATH=src pytest tests/test_autonomous_candidate_batch.py tests/test_docs_contracts.py -q` | PASS, `158 passed` after boolean-count hardening and next-task helper update |
 | `PYTHONPATH=src pytest tests/test_docs_contracts.py -q` | PASS, `126 passed` |
 | `PYTHONPATH=src pytest -q` | PASS, `807 passed, 1 skipped` |
 | `PYTHONPATH=src pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90 -q` | PASS, `807 passed, 1 skipped`, total coverage `90.88%` |
