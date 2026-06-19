@@ -1,54 +1,58 @@
-# Next Task: P41-T1 Adapter Runtime Readiness Plan
+# Next Task: P41-T2 Trusted Local Adapter Run Request Fixture
 
-**Status:** In Progress
-**Branch:** `feature/P41-T1-adapter-runtime-readiness-plan`
+**Status:** Planned
+**Branch:** `feature/P41-T2-trusted-local-adapter-run-request-fixture`
 **Phase:** Phase 41. Trusted Local Adapter Runtime Readiness
-**Last Archived:** P40-T7 Real Local Adapter-Contract Validation
+**Last Archived:** P41-T1 Adapter Runtime Readiness Plan
 
 ## Recently Archived
 
-- `P40-T7` recorded real local adapter-contract validation over existing
-  pinned local checkouts.
-- The machine-readable fixture is
-  `tests/fixtures/repository_plugins/adapter_real_runs/p40-t7-real-local-adapter-contract-validation.example.json`.
-- The validation covers FastMCP as `nested_package_roots`, FastAPI as
-  `documentation_heavy_repository`, xyflow as `workspace_or_multi_package`,
-  and Gin as `manifest_backed_single_package`.
-- Every case records `adapterExecution: not_run`,
-  `adapterCodeLoaded: false`, `appliedToDrafting: false`, and
-  `registryAuthority: false`.
-- The validation remains producer-side evidence only and does not load or
-  execute third-party adapter code.
+- `P41-T1` documented trusted local adapter runtime readiness.
+- The GitHub-facing documentation is
+  `docs/TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md`.
+- The DocC mirror is
+  `Sources/SpecHarvester/Documentation.docc/TrustedLocalAdapterRuntimeReadiness.md`.
+- The plan defines the path for `SpecHarvesterTrustedLocalAdapterRunRequest`,
+  trusted local adapter run preflight, disabled no-execution runner skeleton,
+  review-only batch evidence handoff, and real local readiness validation.
+- adapter execution remains disabled; trusted local adapter artifacts remain
+  producer-side review evidence and have no registry authority.
 
 ## Task
 
-Document the trusted local adapter runtime readiness plan and add the
-next-task scaffold for turning Phase 40 adapter contracts into a future opt-in
-runtime without enabling adapter execution yet.
+Add a machine-readable `SpecHarvesterTrustedLocalAdapterRunRequest` fixture
+that records operator opt-in, adapter manifest/preflight references, declared
+input artifacts, safe relative read path allowlists, output directory policy,
+resource budgets, environment policy, network policy, dependency policy,
+package manager policy, and non-authority statements.
 
 ## Why This Is Next
 
-Phase 40 is complete. It defines the adapter contract and proves the no-runtime
-boundary with fixtures and real local checkouts. The next step is to plan the
-safe transition toward a future trusted local adapter runtime before creating
-any run request, preflight report, or runner skeleton.
+P41-T1 defines the safe readiness path. The first concrete artifact should be
+the request contract, because preflight, runner skeletons, and batch evidence
+handoff need a stable request shape before they can validate or consume
+anything.
 
 ## Scope
 
-- Add Phase 41 to `SPECS/Workplan.md`.
-- Define P41 tasks for trusted local adapter run request, preflight, disabled
-  no-execution skeleton, batch evidence handoff, and real local readiness
-  validation.
-- Document motivation, goal, acceptance criteria, and non-authority boundaries.
+- Add a versioned `SpecHarvesterTrustedLocalAdapterRunRequest` fixture.
+- Reference the Phase 40 adapter manifest and adapter preflight fixtures.
+- Require explicit operator opt-in.
+- Record declared input artifacts with safe relative paths and SHA-256 digests.
+- Record safe relative read path allowlists.
+- Record output directory policy, timeout budgets, maximum output sizes,
+  environment policy, network policy, dependency policy, package manager
+  policy, and process execution policy.
+- Record non-authority statements.
+- Document the fixture in GitHub docs and DocC.
 - Keep adapter execution disabled.
-- Select P41-T2 as the next task after archive.
-- Update regression docs tests for the new planning state.
 
 ## Non-Goals
 
 - Do not implement adapter loading or execution.
-- Do not add a runner in this task.
-- Do not create trusted local adapter run request fixtures in this task.
+- Do not run adapter processes.
+- Do not implement preflight logic yet.
+- Do not add a runner.
 - Do not clone or fetch repositories.
 - Do not install dependencies.
 - Do not invoke package managers.
@@ -62,7 +66,7 @@ any run request, preflight report, or runner skeleton.
 
 ## Phase 41. Trusted Local Adapter Runtime Readiness
 
-- [ ] `P41-T1` Document the trusted local adapter runtime readiness plan and
+- [x] `P41-T1` Document the trusted local adapter runtime readiness plan and
   add the next-task scaffold for turning Phase 40 adapter contracts into a
   future opt-in runtime without enabling adapter execution yet.
 - [ ] `P41-T2` Add a machine-readable
@@ -89,24 +93,22 @@ any run request, preflight report, or runner skeleton.
 
 Motivation:
 
-- Future adapter runtime work needs a safe request/preflight boundary before
-  any adapter process can be launched.
-- Operator opt-in, path allowlists, resource budgets, and no-authority output
-  handling should be documented before implementation starts.
-- The next phase should improve ecosystem-specific precision without turning
-  SpecHarvester into a hidden execution runtime.
+- The trusted local adapter request is the root input for future preflight and
+  no-execution runner work.
+- The request contract must require opt-in, path limits, budgets, and
+  non-authority output before any future execution mode exists.
 
 Goal:
 
-- Establish Phase 41 as the readiness path from Phase 40 contracts toward a
-  future trusted local adapter runtime while preserving disabled-by-default
-  execution and review-only producer evidence.
+- Define the machine-readable request shape for future trusted local adapter
+  execution while keeping execution disabled and non-authoritative.
 
 Acceptance:
 
-- Phase 41 is present in Workplan.
-- P41-T1 has a PRD, validation, archive, and review artifact.
-- P41-T2 is selected as the next task after archive.
-- No adapter loading or execution is implemented.
-- Docs/tests capture the same no-runtime and non-authority boundaries as
-  Phase 40.
+- The fixture has versioned identity and stable authority labels.
+- The fixture records explicit operator opt-in.
+- The fixture records safe relative paths, SHA-256 digests, path allowlists,
+  budgets, environment policy, network policy, dependency policy, package
+  manager policy, process execution policy, and non-authority statements.
+- Docs and DocC explain that the request is not permission to execute by
+  itself and is not registry acceptance.
