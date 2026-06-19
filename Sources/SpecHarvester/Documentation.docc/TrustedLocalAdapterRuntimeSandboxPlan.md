@@ -206,3 +206,8 @@ sandbox contract fixture
 P42-T3 adds <doc:TrustedLocalAdapterSandboxPreflightReportFixture> as the
 review-only sandbox preflight report fixture. This ordering keeps the future
 runtime incremental and auditable.
+P42-T4 adds <doc:TrustedLocalAdapterSandboxRunnerValidation> as disabled
+no-execution validation over the sandbox contract and preflight report while
+preserving `adapterExecution: not_run`, `adapterCodeLoaded: false`,
+`adapterProcessSpawned: false`, `executedAdapterCount: 0`, and
+`registryAuthority: false`.

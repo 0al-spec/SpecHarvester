@@ -161,7 +161,8 @@ The fixture records explicit non-authority statements:
 
 ## Follow-Up
 
-P42-T3 only defines the sandbox preflight report fixture. The next task is
-`P42-T4`, disabled trusted local adapter sandbox runner validation. That task
-should validate the sandbox contract and preflight report linkage while still
-keeping adapter execution disabled.
+P42-T3 only defines the sandbox preflight report fixture. P42-T4 adds
+<doc:TrustedLocalAdapterSandboxRunnerValidation> as disabled sandbox runner
+validation that checks the sandbox contract and preflight report linkage while
+still keeping adapter execution disabled. The next runtime-adjacent step is an
+explicitly approved synthetic adapter run fixture, not a real adapter process.

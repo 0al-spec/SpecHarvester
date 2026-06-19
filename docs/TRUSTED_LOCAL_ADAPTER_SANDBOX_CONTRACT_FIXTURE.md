@@ -206,3 +206,12 @@ P42-T3 adds
 [`SpecHarvesterTrustedLocalAdapterSandboxPreflightReport`](TRUSTED_LOCAL_ADAPTER_SANDBOX_PREFLIGHT_REPORT_FIXTURE.md)
 as the review-only preflight fixture over this contract shape. Passing sandbox
 preflight is not execution permission and does not implement a runner.
+
+## Sandbox Runner Validation
+
+P42-T4 adds
+[`SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport`](TRUSTED_LOCAL_ADAPTER_SANDBOX_RUNNER_VALIDATION.md)
+as disabled no-execution validation over this contract and the sandbox
+preflight report. It checks identity and digest linkage without loading adapter
+code, spawning adapter processes, installing dependencies, using network
+access, running AI, or granting registry authority.
