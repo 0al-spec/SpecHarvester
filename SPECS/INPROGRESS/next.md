@@ -1,6 +1,6 @@
 # Next Task: P41-T5 Trusted Local Adapter Run Evidence Handoff
 
-**Status:** Planned
+**Status:** In Progress
 **Branch:** `feature/P41-T5-trusted-local-adapter-run-evidence-handoff`
 **Phase:** Phase 41. Trusted Local Adapter Runtime Readiness
 **Last Archived:** P41-T4 Disabled Trusted Local Adapter Runner Skeleton
