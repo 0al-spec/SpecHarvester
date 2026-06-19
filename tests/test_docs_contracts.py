@@ -17,6 +17,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P42-T3 Trusted Local Adapter Sandbox Preflight Report Fixture" in next_text:
+        assert_p42_t2_last_archived(next_text)
+        assert_p42_t2_recent(next_text)
+        assert_phase_42_t3_planned(next_text)
+        return
+
     if "# Next Task: P42-T2 Trusted Local Adapter Sandbox Contract Fixture" in next_text:
         assert_p42_t1_last_archived(next_text)
         assert_p42_t1_recent(next_text)
@@ -4853,6 +4859,40 @@ def assert_phase_42_t2_planned(next_text: str) -> None:
     assert "Do not implement real adapter execution" in normalized
     assert "Do not spawn adapter processes" in normalized
     assert "Do not treat adapter output as registry truth" in normalized
+
+
+def assert_p42_t2_last_archived(next_text: str) -> None:
+    assert "**Last Archived:** P42-T2 Trusted Local Adapter Sandbox Contract Fixture" in next_text
+
+
+def assert_p42_t2_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "`P42-T2` added the machine-readable" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterSandboxContract" in normalized
+    assert "TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md" in next_text
+    assert "TrustedLocalAdapterSandboxContractFixture.md" in next_text
+    assert "trusted-local-adapter-sandbox-contract.example.json" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "registryAuthority: false" in normalized
+
+
+def assert_phase_42_t3_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert "# Next Task: P42-T3 Trusted Local Adapter Sandbox Preflight Report Fixture" in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert "`feature/P42-T3-trusted-local-adapter-sandbox-preflight-report-fixture`" in next_text
+    assert "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport" in normalized
+    assert "SpecHarvesterTrustedLocalAdapterSandboxContract" in normalized
+    assert "sandbox contract identity" in normalized
+    assert "operator approval requirements" in normalized
+    assert "filesystem/environment/network/dependency policy" in normalized
+    assert "output verification" in normalized
+    assert "audit requirements" in normalized
+    assert "before any sandbox runner implementation" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not spawn adapter processes" in normalized
+    assert "Do not treat sandbox preflight as registry truth" in normalized
 
 
 def test_repository_profile_real_run_fastmcp_fixture_and_docs() -> None:
@@ -17515,6 +17555,273 @@ def test_trusted_local_adapter_runtime_sandbox_plan_is_documented() -> None:
     assert "`P42-T1` Document the trusted local adapter runtime sandbox plan" in workplan_text
     assert "`P42-T2` Add a machine-readable" in workplan_text
     assert "SpecHarvesterTrustedLocalAdapterSandboxContract" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_trusted_local_adapter_sandbox_contract_fixture_is_documented() -> None:
+    fixture = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "repository_plugins"
+        / "trusted-local-adapter-sandbox-contract.example.json"
+    )
+    github_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterSandboxContractFixture.md"
+    )
+    sandbox_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_SANDBOX_PLAN.md"
+    sandbox_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeSandboxPlan.md"
+    )
+    readiness_doc = ROOT / "docs" / "TRUSTED_LOCAL_ADAPTER_RUNTIME_READINESS.md"
+    readiness_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TrustedLocalAdapterRuntimeReadiness.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.trusted-local-adapter-sandbox-contract/v0"
+    assert payload["kind"] == "SpecHarvesterTrustedLocalAdapterSandboxContract"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_trusted_local_adapter_sandbox_contract_only"
+    assert payload["contract"]["sandboxContractIsExecutionPermission"] is False
+    assert payload["contract"]["defaultExecution"] == "disabled"
+
+    references = payload["inputContractReferences"]
+    for reference in references.values():
+        path = ROOT / reference["path"]
+        digest = "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+        assert reference["digest"] == digest
+        assert reference["path"].startswith("tests/fixtures/repository_plugins/")
+        assert ".." not in reference["path"]
+        assert not reference["path"].startswith("/")
+        assert "\\" not in reference["path"]
+
+    declared_inputs = payload["declaredInputArtifacts"]
+    assert {item["kind"] for item in declared_inputs} == {
+        "trusted_local_adapter_run_request",
+        "trusted_local_adapter_run_preflight_report",
+        "adapter_manifest",
+        "adapter_preflight_report",
+        "repository_plugin_static_evidence_envelope",
+        "repository_plugin_registry",
+    }
+    for item in declared_inputs:
+        path = ROOT / item["path"]
+        digest = "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+        assert item["digest"] == digest
+        assert item["required"] is True
+        assert ".." not in item["path"]
+        assert not item["path"].startswith("/")
+        assert "\\" not in item["path"]
+
+    adapter_identity = payload["adapterPackageIdentity"]
+    assert (
+        adapter_identity["adapterId"] == "spec_harvester.adapters.generic.parser_profile_summary.v0"
+    )
+    assert adapter_identity["pinnedRevisionOrDigestRequired"] is True
+    assert adapter_identity["mutableRefAllowed"] is False
+    assert adapter_identity["signatureOrDigestVerification"] == "digest_required_before_runtime"
+    assert adapter_identity["packageSource"]["digest"] == (
+        "sha256:"
+        + hashlib.sha256(
+            (ROOT / adapter_identity["packageSource"]["path"]).read_bytes()
+        ).hexdigest()
+    )
+
+    sandbox_policy = payload["sandboxPolicyIdentity"]
+    assert sandbox_policy["policyId"] == "spec_harvester.trusted_local_adapter.local_sandbox.v0"
+    assert sandbox_policy["sourceTask"] == "P42-T2"
+    assert sandbox_policy["runtimeMustRecordPolicyDigest"] is True
+
+    approval = payload["operatorApprovalRequirements"]
+    assert approval["requiredBeforeRuntime"] is True
+    assert approval["providedByFixture"] is False
+    assert approval["approvalScope"] == "single_adapter_single_repository_single_run"
+    assert approval["approvalIsRegistryAcceptance"] is False
+    assert "adapterPackageIdentity.packageSource.digest" in approval["approvalMustBind"]
+
+    process = payload["processPolicy"]
+    assert process["adapterProcessExecution"] == "not_allowed_in_contract_fixture"
+    assert process["futureRuntimeRequiresSandboxPreflight"] is True
+    assert process["noAmbientCredentials"] is True
+    assert process["resourceBudgets"]["currentMaxProcessCount"] == 0
+    assert process["resourceBudgets"]["futureRuntimeMaxProcessCount"] == 1
+
+    filesystem = payload["filesystemPolicy"]
+    assert filesystem["pathFormat"] == "posix_relative"
+    assert filesystem["parentSegmentsAllowed"] is False
+    assert filesystem["absolutePathsAllowed"] is False
+    assert filesystem["backslashAllowed"] is False
+    assert filesystem["networkPathsAllowed"] is False
+    assert filesystem["readPolicy"]["policy"] == "declared_artifact_paths_only"
+    assert filesystem["writePolicy"]["policy"] == "declared_output_directories_only"
+
+    environment = payload["environmentPolicy"]
+    assert environment["inheritEnvironment"] is False
+    assert environment["allowedEnvironmentVariables"] == []
+    assert environment["secretsAccess"] == "not_allowed"
+    assert environment["modelProviderTokenAccess"] == "not_allowed"
+
+    dependency = payload["dependencyPolicy"]
+    assert dependency["dependencyInstallation"] == "not_allowed"
+    assert dependency["packageManagers"] == "not_invoked"
+    assert dependency["packageManagerCommands"] == []
+
+    network = payload["networkPolicy"]
+    assert network["networkAccess"] == "none"
+    assert network["dnsAllowed"] is False
+    assert network["remoteFetchAllowed"] is False
+    assert network["targetAllowlist"] == []
+
+    output = payload["outputVerification"]
+    assert output["required"] is True
+    assert output["sha256DigestRequired"] is True
+    assert output["producerRunIdRequired"] is True
+    assert output["adapterIdAndDigestRequired"] is True
+    assert output["sourceInputDigestsRequired"] is True
+    assert output["outputIsRegistryTruth"] is False
+
+    audit = payload["auditRecordRequirements"]
+    assert audit["required"] is True
+    assert audit["replayable"] is True
+    for field in (
+        "requestDigest",
+        "preflightDigest",
+        "operatorApprovalDigest",
+        "adapterPackageIdentity",
+        "sandboxPolicyIdentity",
+        "inputArtifactDigests",
+        "outputArtifactDigests",
+        "runtimeCounters",
+        "diagnostics",
+        "nonAuthorityStatements",
+    ):
+        assert field in audit["requiredFields"]
+
+    assert payload["executionBoundary"] == {
+        "adapterExecution": "not_run",
+        "adapterCodeLoaded": False,
+        "adapterProcessSpawned": False,
+        "executedAdapterCount": 0,
+        "runtimeImplemented": False,
+        "sandboxPreflightImplemented": False,
+        "sandboxContractIsExecutionPermission": False,
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAccepted": False,
+    }
+    assert {
+        "sandbox_contract_is_not_execution_permission",
+        "does_not_load_third_party_adapter_code",
+        "does_not_execute_adapters",
+        "does_not_run_adapter_processes",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_run_ai",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_remove_preview_only",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_sandbox_contract_as_registry_truth",
+    }.issubset(set(payload["nonAuthorityStatements"]))
+    assert payload["followUp"]["sandboxPreflightReportTask"] == "P42-T3"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Trusted Local Adapter Sandbox Contract Fixture",
+            "SpecHarvesterTrustedLocalAdapterSandboxContract",
+            "trusted-local-adapter-sandbox-contract.example.json",
+            "spec-harvester.trusted-local-adapter-sandbox-contract/v0",
+            "producer_trusted_local_adapter_sandbox_contract_only",
+            "not execution permission",
+            "producer-side review evidence",
+            "SpecHarvesterTrustedLocalAdapterRunRequest",
+            "SpecHarvesterTrustedLocalAdapterRunPreflightReport",
+            "SpecHarvesterTrustedLocalAdapterRealLocalReadinessValidation",
+            "adapter package identity",
+            "sandbox policy identity",
+            "operator approval requirements",
+            "pathFormat: posix_relative",
+            "inheritEnvironment: false",
+            "dependencyInstallation: not_allowed",
+            "packageManagers: not_invoked",
+            "networkAccess: none",
+            "dnsAllowed: false",
+            "remoteFetchAllowed: false",
+            "SHA-256 digest",
+            "replayable audit record",
+            "adapterExecution: not_run",
+            "adapterCodeLoaded: false",
+            "adapterProcessSpawned: false",
+            "executedAdapterCount: 0",
+            "registryAuthority: false",
+            "does not accept packages or relations",
+            "does not publish registry metadata",
+            "does not remove `preview_only`",
+            "does not treat adapter output as registry truth",
+            "does not treat sandbox contract as registry truth",
+            "P42-T3",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for forbidden in (
+            "adapterExecution: run",
+            "adapterExecution: enabled",
+            "networkAccess: allowed",
+            "dependencyInstallation: allowed",
+        ):
+            assert forbidden not in text
+
+    for path, required in (
+        (sandbox_doc, "TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md"),
+        (sandbox_docc, "TrustedLocalAdapterSandboxContractFixture"),
+        (readiness_doc, "TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md"),
+        (readiness_docc, "TrustedLocalAdapterSandboxContractFixture"),
+        (docs_index, "TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md"),
+        (docc_root, "TrustedLocalAdapterSandboxContractFixture"),
+        (capabilities, "TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md"),
+        (capabilities_docc, "TrustedLocalAdapterSandboxContractFixture"),
+        (roadmap, "TRUSTED_LOCAL_ADAPTER_SANDBOX_CONTRACT_FIXTURE.md"),
+        (roadmap_docc, "TrustedLocalAdapterSandboxContractFixture"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P42-T2` Add a machine-readable" in workplan_text
+    assert "`P42-T3` Add a trusted local adapter sandbox preflight report fixture" in (
+        workplan_text
+    )
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

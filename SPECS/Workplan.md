@@ -1772,6 +1772,11 @@ Acceptance:
   requirements, filesystem/environment/network/dependency policy, output
   verification, audit records, and non-authority statements before any runtime
   implementation.
+- [ ] `P42-T3` Add a trusted local adapter sandbox preflight report fixture that
+  validates `SpecHarvesterTrustedLocalAdapterSandboxContract` identity,
+  operator approval requirements, process/filesystem/environment/dependency/
+  network policy, output verification, audit requirements, and non-authority
+  boundaries before any sandbox runner implementation.
 
 Motivation:
 
