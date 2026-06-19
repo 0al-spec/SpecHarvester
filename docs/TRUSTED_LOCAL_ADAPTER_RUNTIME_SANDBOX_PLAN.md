@@ -213,3 +213,8 @@ as disabled no-execution validation over the sandbox contract and preflight
 report while preserving `adapterExecution: not_run`,
 `adapterCodeLoaded: false`, `adapterProcessSpawned: false`,
 `executedAdapterCount: 0`, and `registryAuthority: false`.
+P42-T5 adds
+[`SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun`](TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md)
+as an explicitly approved synthetic run fixture. It records approval binding,
+synthetic output candidates, output digests, audit records, and review-only
+non-authority statements without running a real adapter process.

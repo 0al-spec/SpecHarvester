@@ -1,0 +1,26 @@
+{
+  "apiVersion": "spec-harvester.trusted-local-adapter-audit-record/v0",
+  "kind": "SpecHarvesterTrustedLocalAdapterAuditRecord",
+  "schemaVersion": 1,
+  "authority": "producer_adapter_output_candidate_evidence_only",
+  "producerRunId": "synthetic-trusted-local-adapter-sandbox-run-example",
+  "reviewerQuestionsAnswered": [
+    "what_was_approved",
+    "what_was_read",
+    "what_was_written",
+    "why_output_remains_non_authoritative"
+  ],
+  "runtimeCounters": {
+    "realAdapterProcessSpawned": false,
+    "thirdPartyAdapterCodeLoaded": false,
+    "executedAdapterCount": 0,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "networkAccess": "none"
+  },
+  "nonAuthorityStatements": [
+    "audit_record_is_not_execution_permission",
+    "audit_record_is_not_registry_acceptance",
+    "synthetic_adapter_output_is_not_registry_truth"
+  ]
+}

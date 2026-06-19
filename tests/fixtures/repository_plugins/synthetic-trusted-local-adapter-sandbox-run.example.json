@@ -1,0 +1,247 @@
+{
+  "apiVersion": "spec-harvester.synthetic-trusted-local-adapter-sandbox-run/v0",
+  "kind": "SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun",
+  "schemaVersion": 1,
+  "authority": "producer_synthetic_trusted_local_adapter_sandbox_run_only",
+  "contract": {
+    "purpose": "Record the explicitly approved synthetic trusted local adapter sandbox run boundary without running a real adapter process.",
+    "contractVersion": "0.1.0",
+    "defaultExecution": "synthetic_fixture_only",
+    "syntheticRunAuthority": "producer_synthetic_trusted_local_adapter_sandbox_run_only",
+    "adapterOutputAuthority": "producer_adapter_output_candidate_evidence_only",
+    "syntheticRunIsRealExecutionPermission": false,
+    "syntheticOutputIsRegistryTruth": false
+  },
+  "linkedArtifacts": {
+    "sandboxContract": {
+      "path": "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-contract.example.json",
+      "digest": "sha256:b74050500ebf630635f91f4290f3a8d3daac17953ad8fe6ef062bdc51165f950",
+      "kind": "SpecHarvesterTrustedLocalAdapterSandboxContract",
+      "authority": "producer_trusted_local_adapter_sandbox_contract_only",
+      "required": true
+    },
+    "sandboxPreflight": {
+      "path": "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-preflight-report.example.json",
+      "digest": "sha256:1ae3ed25814cb5a99fbacbfd07ed4ca8fa89c18fa919263a328b168d2575c8f5",
+      "kind": "SpecHarvesterTrustedLocalAdapterSandboxPreflightReport",
+      "authority": "producer_trusted_local_adapter_sandbox_preflight_only",
+      "required": true
+    },
+    "sandboxRunnerValidation": {
+      "path": "tests/fixtures/repository_plugins/trusted-local-adapter-sandbox-runner-validation-report.example.json",
+      "digest": "sha256:3d8623f0270e435aea903ce941a6efdc97d5623bf9baee42510d3c4e7222b4e7",
+      "kind": "SpecHarvesterTrustedLocalAdapterSandboxRunnerValidationReport",
+      "authority": "producer_trusted_local_adapter_sandbox_runner_validation_only",
+      "required": true
+    }
+  },
+  "operatorApproval": {
+    "status": "synthetic_approval_fixture_provided",
+    "approvalMode": "single_adapter_single_repository_single_synthetic_run",
+    "approvalProvidedByFixture": true,
+    "approvedForRealAdapterExecution": false,
+    "approvalIsExecutionPermission": false,
+    "approvalIsRegistryAcceptance": false,
+    "approvalIsReusableAcrossRepositories": false,
+    "approvalBinding": {
+      "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+      "adapterDigest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+      "targetRepositoryId": "example-workspace",
+      "targetRepositoryRevision": "0123456789abcdef0123456789abcdef01234567",
+      "sandboxPolicyId": "spec_harvester.trusted_local_adapter.local_sandbox.v0",
+      "sandboxPolicyVersion": "0.1.0",
+      "sandboxRunnerValidationDigest": "sha256:3d8623f0270e435aea903ce941a6efdc97d5623bf9baee42510d3c4e7222b4e7",
+      "declaredOutputRoot": "tests/fixtures/repository_plugins/synthetic_sandbox_run"
+    },
+    "approvalMustBind": [
+      "adapterId",
+      "adapterDigest",
+      "targetRepositoryId",
+      "targetRepositoryRevision",
+      "sandboxPolicyId",
+      "sandboxPolicyVersion",
+      "sandboxRunnerValidationDigest",
+      "declaredOutputRoot",
+      "syntheticOutputCandidates[].digest"
+    ]
+  },
+  "adapterPackageIdentity": {
+    "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+    "adapterKind": "repository_plugin_adapter",
+    "packageSource": {
+      "type": "local_fixture_adapter_manifest",
+      "path": "tests/fixtures/repository_plugins/adapter-manifest.example.json",
+      "digest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40"
+    },
+    "pinnedRevisionOrDigestRequired": true,
+    "mutableRefAllowed": false
+  },
+  "targetRepository": {
+    "id": "example-workspace",
+    "sourceManifestPath": "inputs/repositories.yml",
+    "sourceManifestEntryId": "example-workspace",
+    "revision": "0123456789abcdef0123456789abcdef01234567"
+  },
+  "sandboxPolicyIdentity": {
+    "policyId": "spec_harvester.trusted_local_adapter.local_sandbox.v0",
+    "policyVersion": "0.1.0",
+    "policyAuthority": "producer_sandbox_policy_review_evidence_only"
+  },
+  "syntheticOutputRoot": {
+    "path": "tests/fixtures/repository_plugins/synthetic_sandbox_run",
+    "pathFormat": "posix_relative",
+    "parentSegmentsAllowed": false,
+    "absolutePathsAllowed": false,
+    "backslashAllowed": false,
+    "networkPathsAllowed": false
+  },
+  "syntheticOutputCandidates": [
+    {
+      "role": "trusted_local_adapter_output",
+      "path": "tests/fixtures/repository_plugins/synthetic_sandbox_run/trusted-local-adapter-output.example.json",
+      "byteSize": 977,
+      "digest": "sha256:7356572f0dff750fde1830539bcf383897cb7f2649b2caefebc4a1f3a24ec45d",
+      "kind": "SpecHarvesterTrustedLocalAdapterOutputCandidate",
+      "authority": "producer_adapter_output_candidate_evidence_only",
+      "producerRunId": "synthetic-trusted-local-adapter-sandbox-run-example",
+      "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+      "adapterDigest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+      "sourceInputDigests": [
+        "sha256:b74050500ebf630635f91f4290f3a8d3daac17953ad8fe6ef062bdc51165f950",
+        "sha256:1ae3ed25814cb5a99fbacbfd07ed4ca8fa89c18fa919263a328b168d2575c8f5",
+        "sha256:3d8623f0270e435aea903ce941a6efdc97d5623bf9baee42510d3c4e7222b4e7"
+      ],
+      "diagnosticsStatus": "clean",
+      "outputIsRegistryTruth": false
+    },
+    {
+      "role": "trusted_local_adapter_diagnostics",
+      "path": "tests/fixtures/repository_plugins/synthetic_sandbox_run/trusted-local-adapter-diagnostics.example.json",
+      "byteSize": 778,
+      "digest": "sha256:4608679df2a6c42769944ba408fd1c9027702edd2a4c5faedfc978e221415214",
+      "kind": "SpecHarvesterTrustedLocalAdapterDiagnostics",
+      "authority": "producer_adapter_output_candidate_evidence_only",
+      "producerRunId": "synthetic-trusted-local-adapter-sandbox-run-example",
+      "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+      "adapterDigest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+      "sourceInputDigests": [
+        "sha256:b74050500ebf630635f91f4290f3a8d3daac17953ad8fe6ef062bdc51165f950",
+        "sha256:1ae3ed25814cb5a99fbacbfd07ed4ca8fa89c18fa919263a328b168d2575c8f5",
+        "sha256:3d8623f0270e435aea903ce941a6efdc97d5623bf9baee42510d3c4e7222b4e7"
+      ],
+      "diagnosticsStatus": "clean",
+      "outputIsRegistryTruth": false
+    },
+    {
+      "role": "trusted_local_adapter_audit_record",
+      "path": "tests/fixtures/repository_plugins/synthetic_sandbox_run/trusted-local-adapter-audit-record.example.json",
+      "byteSize": 880,
+      "digest": "sha256:454e5ae436baf5705d4ee5dc27deae3ae595f069475c88934b96b81cc35d1de5",
+      "kind": "SpecHarvesterTrustedLocalAdapterAuditRecord",
+      "authority": "producer_adapter_output_candidate_evidence_only",
+      "producerRunId": "synthetic-trusted-local-adapter-sandbox-run-example",
+      "adapterId": "spec_harvester.adapters.generic.parser_profile_summary.v0",
+      "adapterDigest": "sha256:b75a68cb45558741f862c7e58a7c23ca436f95340061cf651b3e29491a3e6d40",
+      "sourceInputDigests": [
+        "sha256:b74050500ebf630635f91f4290f3a8d3daac17953ad8fe6ef062bdc51165f950",
+        "sha256:1ae3ed25814cb5a99fbacbfd07ed4ca8fa89c18fa919263a328b168d2575c8f5",
+        "sha256:3d8623f0270e435aea903ce941a6efdc97d5623bf9baee42510d3c4e7222b4e7"
+      ],
+      "diagnosticsStatus": "clean",
+      "outputIsRegistryTruth": false
+    }
+  ],
+  "auditRecord": {
+    "required": true,
+    "replayable": true,
+    "path": "tests/fixtures/repository_plugins/synthetic_sandbox_run/trusted-local-adapter-audit-record.example.json",
+    "digest": "sha256:454e5ae436baf5705d4ee5dc27deae3ae595f069475c88934b96b81cc35d1de5",
+    "requiredFields": [
+      "operatorApproval",
+      "adapterPackageIdentity",
+      "sandboxPolicyIdentity",
+      "sandboxRunnerValidationDigest",
+      "inputArtifactDigests",
+      "syntheticOutputCandidateDigests",
+      "runtimeCounters",
+      "diagnostics",
+      "nonAuthorityStatements"
+    ],
+    "reviewerQuestionsAnswered": [
+      "what_was_approved",
+      "what_was_read",
+      "what_was_written",
+      "why_output_remains_non_authoritative"
+    ]
+  },
+  "executionBoundary": {
+    "adapterExecution": "synthetic_fixture_only",
+    "realAdapterProcessSpawned": false,
+    "thirdPartyAdapterCodeLoaded": false,
+    "adapterCodeImportAttempted": false,
+    "executedAdapterCount": 0,
+    "dependencyInstallation": "not_allowed",
+    "packageManagers": "not_invoked",
+    "harvestedCodeExecution": "not_allowed",
+    "aiExecution": "not_run",
+    "networkAccess": "none",
+    "operatorApprovalIsReusable": false,
+    "syntheticRunIsRealExecutionPermission": false,
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAccepted": false
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "code": "synthetic_trusted_local_adapter_sandbox_run_fixture",
+      "message": "Synthetic approved sandbox run fixture records approval, output, digest, and audit shape without running a real adapter process."
+    },
+    {
+      "severity": "warning",
+      "code": "synthetic_run_is_not_registry_truth",
+      "message": "Synthetic adapter output remains producer-side review evidence and is not accepted package, relation, baseline, or registry truth."
+    }
+  ],
+  "summary": {
+    "linkedArtifactCount": 3,
+    "syntheticOutputCandidateCount": 3,
+    "realAdapterProcessSpawned": false,
+    "thirdPartyAdapterCodeLoaded": false,
+    "executedAdapterCount": 0,
+    "warningCount": 1,
+    "diagnosticCount": 2
+  },
+  "nonAuthorityStatements": [
+    "synthetic_sandbox_run_is_not_real_execution_permission",
+    "synthetic_adapter_output_is_not_registry_truth",
+    "operator_approval_fixture_is_not_reusable",
+    "does_not_load_third_party_adapter_code",
+    "does_not_execute_real_adapters",
+    "does_not_run_real_adapter_processes",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_run_ai",
+    "does_not_change_static_plugin_applicability_evaluation",
+    "does_not_change_autonomous_batch_behavior",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_seed_baselines",
+    "does_not_publish_registry_metadata",
+    "does_not_remove_preview_only",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_sandbox_contract_as_registry_truth",
+    "does_not_treat_sandbox_preflight_as_registry_truth",
+    "does_not_treat_sandbox_runner_validation_as_execution_permission",
+    "does_not_treat_ai_output_as_registry_truth"
+  ],
+  "followUp": {
+    "sandboxPlanTask": "P42-T1",
+    "sandboxContractTask": "P42-T2",
+    "sandboxPreflightReportTask": "P42-T3",
+    "disabledSandboxRunnerValidationTask": "P42-T4",
+    "realLocalAdapterRunTask": "deferred_until_after_review"
+  }
+}

@@ -201,6 +201,7 @@ the host.
 - <doc:TrustedLocalAdapterSandboxContractFixture>
 - <doc:TrustedLocalAdapterSandboxPreflightReportFixture>
 - <doc:TrustedLocalAdapterSandboxRunnerValidation>
+- <doc:TrustedLocalAdapterSyntheticSandboxRunFixture>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

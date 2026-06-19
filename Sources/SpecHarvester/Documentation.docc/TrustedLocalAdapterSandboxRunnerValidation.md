@@ -128,5 +128,6 @@ The sandbox runner validation report states that it:
 - P42-T2 defines <doc:TrustedLocalAdapterSandboxContractFixture>.
 - P42-T3 defines <doc:TrustedLocalAdapterSandboxPreflightReportFixture>.
 - P42-T4 adds this disabled no-execution sandbox runner validation.
-- P42-T5 should add an explicitly approved synthetic adapter run fixture only
-  after the disabled validation boundary is stable.
+- P42-T5 adds <doc:TrustedLocalAdapterSyntheticSandboxRunFixture> as an
+  explicitly approved synthetic adapter run fixture only after the disabled
+  validation boundary is stable.

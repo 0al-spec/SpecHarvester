@@ -142,6 +142,11 @@ Published DocC site:
    sandbox contract/preflight identity and digest linkage before any adapter
    code loading, process spawning, dependency installation, network access, AI,
    or registry authority
+39. [`TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md`](TRUSTED_LOCAL_ADAPTER_SYNTHETIC_SANDBOX_RUN_FIXTURE.md):
+   P42-T5 machine-readable
+   `SpecHarvesterSyntheticTrustedLocalAdapterSandboxRun` fixture for
+   explicitly approved synthetic run binding, synthetic output candidates,
+   output digests, audit records, and review-only non-authority statements
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
