@@ -631,3 +631,4 @@
 | 2026-06-19 | P39-T3 | Archived Deterministic Static Applicability Evaluator Helper (PASS) |
 | 2026-06-19 | P39-T3 | Archived REVIEW_p39_t3_deterministic_static_applicability_evaluator_helper report |
 | 2026-06-19 | P39-T4 | Archived Repository Plugin Applicability Detect CLI (PASS) |
+| 2026-06-19 | P39-T4 | Archived REVIEW_p39_t4_repository_plugin_applicability_detect_cli report |
