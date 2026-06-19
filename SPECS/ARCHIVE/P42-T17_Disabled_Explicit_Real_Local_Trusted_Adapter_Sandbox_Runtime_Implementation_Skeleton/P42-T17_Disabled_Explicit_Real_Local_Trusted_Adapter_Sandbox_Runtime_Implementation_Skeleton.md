@@ -99,6 +99,11 @@ trusted local adapters.
 - Do not consume approval by a real runtime.
 - Do not treat adapter output as registry truth.
 
+---
+
+Archived: 2026-06-19
+Verdict: PASS
+
 ## Validation Plan
 
 - `PYTHONPATH=src pytest tests/test_docs_contracts.py::test_disabled_explicit_real_local_sandbox_runtime_implementation_skeleton_is_documented -q`

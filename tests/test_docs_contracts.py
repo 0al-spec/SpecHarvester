@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def assert_current_next_task(next_text: str) -> None:
     if (
+        "# Next Task: P42-T18 Disabled Explicit Real Local Trusted Adapter Sandbox "
+        "Runtime Implementation Skeleton Verifier"
+    ) in next_text:
+        assert_p42_t17_last_archived(next_text)
+        assert_p42_t17_recent(next_text)
+        assert_phase_42_t18_planned(next_text)
+        return
+
+    if (
         "# Next Task: P42-T17 Disabled Explicit Real Local Trusted Adapter Sandbox "
         "Runtime Implementation Skeleton"
     ) in next_text:
@@ -5854,6 +5863,102 @@ def assert_phase_42_t17_planned(next_text: str) -> None:
     assert "no `preview_only` removal" in normalized
     assert "Do not implement real adapter execution" in normalized
     assert "Do not treat P42-T16 as execution permission" in normalized
+    assert "Do not consume approval by a real runtime" in normalized
+
+
+def assert_p42_t17_last_archived(next_text: str) -> None:
+    assert (
+        "**Last Archived:** P42-T17 Disabled Explicit Real Local Trusted Adapter Sandbox "
+        "Runtime Implementation Skeleton"
+    ) in next_text
+
+
+def assert_p42_t17_recent(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "`P42-T17` added "
+        "`SpecHarvesterDisabledExplicitRealLocalTrustedAdapterSandboxRuntime"
+        "ImplementationSkeleton`"
+    ) in normalized
+    assert (
+        "disabled-explicit-real-local-trusted-adapter-sandbox-runtime-implementation-"
+        "skeleton.example.json"
+    ) in next_text
+    assert (
+        "TRUSTED_LOCAL_ADAPTER_DISABLED_EXPLICIT_REAL_LOCAL_SANDBOX_RUNTIME_"
+        "IMPLEMENTATION_SKELETON.md"
+    ) in next_text
+    assert (
+        "TrustedLocalAdapterDisabledExplicitRealLocalSandboxRuntimeImplementationSkeleton.md"
+        in next_text
+    )
+    assert (
+        "SpecHarvesterExplicitRealLocalTrustedAdapterSandboxRuntimeImplementationReviewPacket"
+        in normalized
+    )
+    assert "pinned SHA-256 digest" in normalized
+    assert "disabled runtime surface fields" in normalized
+    assert "entrypoint isolation" in normalized
+    assert "process launcher boundary" in normalized
+    assert "dependency policy" in normalized
+    assert "network policy" in normalized
+    assert "output writer" in normalized
+    assert "audit writer" in normalized
+    assert "rollback handler" in normalized
+    assert "approval consumption boundary" in normalized
+    assert "implementationSkeletonIsExecutionPermission: false" in normalized
+    assert "implementationSkeletonIsRegistryAuthority: false" in normalized
+    assert "implementationSkeletonConsumesApproval: false" in normalized
+    assert "implementationSkeletonImplementsRuntime: false" in normalized
+    assert "operatorApprovalConsumed: false" in normalized
+    assert "adapterExecution: not_run" in normalized
+    assert "adapterCodeLoaded: false" in normalized
+    assert "adapterCodeImportAttempted: false" in normalized
+    assert "adapterProcessSpawned: false" in normalized
+    assert "runtimeInvoked: false" in normalized
+    assert "runtimeImplemented: false" in normalized
+    assert "networkAccess: none" in normalized
+    assert "registryAuthority: false" in normalized
+    assert "adapterOutputAccepted: false" in normalized
+
+
+def assert_phase_42_t18_planned(next_text: str) -> None:
+    normalized = " ".join(next_text.split())
+    assert (
+        "# Next Task: P42-T18 Disabled Explicit Real Local Trusted Adapter Sandbox "
+        "Runtime Implementation Skeleton Verifier"
+    ) in next_text
+    assert "**Status:** Planned" in next_text or "**Status:** In Progress" in next_text
+    assert (
+        "`feature/P42-T18-disabled-explicit-real-local-trusted-adapter-sandbox-runtime-"
+        "implementation-skeleton-verifier`"
+    ) in next_text
+    assert "disabled explicit real local trusted adapter sandbox runtime" in normalized
+    assert "skeleton verifier" in normalized
+    assert "consumes the P42-T17 skeleton fixture" in normalized
+    assert "deterministic verifier" in normalized
+    assert "machine-readable disabled runtime implementation skeleton verifier" in normalized
+    assert "Reference P42-T17 with a pinned digest" in next_text
+    assert "P42-T17 identity" in normalized
+    assert "schema version" in normalized
+    assert "linked P42-T16 review packet digest" in normalized
+    assert "disabled runtime surface count" in normalized
+    assert "execution boundary fields" in normalized
+    assert "no adapter code loading" in normalized
+    assert "no adapter import" in normalized
+    assert "no process spawning" in normalized
+    assert "no dependency installation" in normalized
+    assert "no package manager invocation" in normalized
+    assert "no network access" in normalized
+    assert "no harvested code execution" in normalized
+    assert "no AI execution" in normalized
+    assert "no package acceptance" in normalized
+    assert "no relation acceptance" in normalized
+    assert "no baseline seeding" in normalized
+    assert "no registry metadata publishing" in normalized
+    assert "no `preview_only` removal" in normalized
+    assert "Do not implement real adapter execution" in normalized
+    assert "Do not treat P42-T17 as execution permission" in normalized
     assert "Do not consume approval by a real runtime" in normalized
 
 
