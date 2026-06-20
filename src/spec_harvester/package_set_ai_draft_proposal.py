@@ -435,6 +435,7 @@ def proposal_from_model_output(
             subject_count=len(selected_members),
             inventory_by_id=inventory_by_id,
             package_set=package_set,
+            excluded_package_ids={item["packageId"] for item in excluded_packages},
             validation_guard=validation_guard,
         ),
         "evidenceGaps": string_list(model_output.get("evidenceGaps")),
@@ -669,6 +670,7 @@ def package_set_ai_draft_stop_policy_summary(
     subject_count: int,
     inventory_by_id: dict[str, dict[str, Any]],
     package_set: dict[str, Any],
+    excluded_package_ids: set[str],
     validation_guard: dict[str, Any],
 ) -> dict[str, Any]:
     summary = stop_policy_summary_from_diagnostics(
@@ -685,6 +687,7 @@ def package_set_ai_draft_stop_policy_summary(
         subject_count=subject_count,
         inventory_by_id=inventory_by_id,
         package_set=package_set,
+        excluded_package_ids=excluded_package_ids,
         validation_guard=validation_guard,
     )
     if zero_subject_policy["status"] == "accepted_non_blocking":
@@ -708,9 +711,11 @@ def zero_subject_policy_record(
     subject_count: int,
     inventory_by_id: dict[str, dict[str, Any]],
     package_set: dict[str, Any],
+    excluded_package_ids: set[str],
     validation_guard: dict[str, Any],
 ) -> dict[str, Any]:
     inventory_package_ids = sorted(inventory_by_id)
+    excluded_inventory_package_ids = sorted(set(inventory_package_ids) & excluded_package_ids)
     record = {
         "status": "not_applicable",
         "reason": "proposal_subjects_present",
@@ -723,6 +728,10 @@ def zero_subject_policy_record(
     record["status"] = "requires_regeneration"
     if len(inventory_by_id) != 1:
         record["reason"] = "package_set_requires_selected_members"
+        return record
+    if excluded_inventory_package_ids:
+        record["reason"] = "single_package_subject_excluded"
+        record["excludedPackageIds"] = excluded_inventory_package_ids
         return record
     if source_status == "failed" or error_count:
         record["reason"] = "single_package_proposal_has_diagnostics"

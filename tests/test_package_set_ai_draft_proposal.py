@@ -599,6 +599,49 @@ def test_package_set_ai_draft_accepts_source_backed_zero_subject_single_package_
     }
 
 
+def test_package_set_ai_draft_rejects_zero_subject_when_single_package_is_excluded(
+    tmp_path: Path,
+) -> None:
+    inventory = write_single_package_inventory(tmp_path)
+    model_output = write_single_package_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["selectedMembers"] = []
+    payload["excludedPackages"] = [
+        {
+            "packageId": "demo.core",
+            "category": "out_of_scope",
+            "reason": "Contradictory model-side exclusion of the only inventory package.",
+            "evidencePaths": ["workspace-inventory.json"],
+            "confidence": "medium",
+        }
+    ]
+    payload["relations"] = []
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    stop_policy = report["stopPolicySummary"]
+    assert report["status"] == "completed"
+    assert report["summary"]["selectedMemberCount"] == 0
+    assert report["summary"]["excludedPackageCount"] == 1
+    assert [item["packageId"] for item in report["excludedPackages"]] == ["demo.core"]
+    assert stop_policy["decision"] == "continue_generation"
+    assert stop_policy["reason"] == "no_proposal_subjects"
+    assert stop_policy["zeroSubjectPolicy"] == {
+        "status": "requires_regeneration",
+        "reason": "single_package_subject_excluded",
+        "inventoryPackageCount": 1,
+        "inventoryPackageIds": ["demo.core"],
+        "packageSetId": "demo.workspace",
+        "excludedPackageIds": ["demo.core"],
+    }
+
+
 def test_package_set_ai_draft_keeps_no_proposal_subjects_for_multi_package_zero_subjects(
     tmp_path: Path,
 ) -> None:
