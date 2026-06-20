@@ -1,0 +1,242 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-quality-hardened-rerun/v0",
+  "kind": "SpecHarvesterOperationalMVPQualityHardenedRerun",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_quality_hardened_rerun_only",
+  "phase": "P44",
+  "task": "P44-T4",
+  "createdAt": "2026-06-20T00:00:00Z",
+  "runRoot": "/tmp/specharvester-p44-t4-quality-hardened-rerun-20260620T000000Z",
+  "sourceArtifacts": {
+    "staticOnlyBaseline": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json",
+      "digest": "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
+      "apiVersion": "spec-harvester.operational-mvp-static-only-baseline/v0",
+      "kind": "SpecHarvesterOperationalMVPStaticOnlyBaseline",
+      "authority": "producer_operational_mvp_static_only_baseline_only"
+    },
+    "aiEnabledComparison": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+      "digest": "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
+      "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
+      "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
+      "authority": "producer_operational_mvp_ai_comparison_only"
+    },
+    "authorHandoffSummaries": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t6-operational-mvp-author-handoff-summaries.example.json",
+      "digest": "sha256:53daf55c0afd5721d773cb3e0126dd2467f0cbfe247d0f429844845085fba6bd",
+      "apiVersion": "spec-harvester.operational-mvp-author-handoff/v0",
+      "kind": "SpecHarvesterOperationalMVPAuthorHandoffSummaries",
+      "authority": "producer_operational_mvp_author_handoff_only"
+    },
+    "warningTriage": {
+      "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t1-operational-mvp-warning-triage.example.json",
+      "digest": "sha256:2214b4cb7ea13d7d132e93861d070df66ba24f9797c0c4f9086e883bd2396afe",
+      "apiVersion": "spec-harvester.operational-mvp-warning-triage/v0",
+      "kind": "SpecHarvesterOperationalMVPWarningTriage",
+      "authority": "producer_operational_mvp_warning_triage_only"
+    },
+    "aiProposalQualityReview": {
+      "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t2-operational-mvp-ai-proposal-quality-review.example.json",
+      "digest": "sha256:0a8b7ffd20c523c24c5d76468b3027d98abcf6b6118d0e99af92e3a0e30f8276",
+      "apiVersion": "spec-harvester.operational-mvp-ai-proposal-quality-review/v0",
+      "kind": "SpecHarvesterOperationalMVPAIProposalQualityReview",
+      "authority": "producer_operational_mvp_ai_proposal_quality_review_only"
+    },
+    "xyflowCaveatResolution": {
+      "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t3-operational-mvp-xyflow-caveat-resolution.example.json",
+      "digest": "sha256:53013e74c22fab4712869bf64f9801765b95334abeaf7e55873f7f170c31ac28",
+      "apiVersion": "spec-harvester.operational-mvp-xyflow-caveat-resolution/v0",
+      "kind": "SpecHarvesterOperationalMVPXyflowCaveatResolution",
+      "authority": "producer_operational_mvp_xyflow_caveat_resolution_only"
+    }
+  },
+  "rerunInputs": {
+    "path": "/tmp/specharvester-p44-t4-quality-hardened-rerun-20260620T000000Z/inputs/p44-t4-corpus.yml",
+    "digest": "sha256:1747978378334938afc50269f03ac67c78a0bcb654984d6a85487638326574c2",
+    "samePinnedCorpusAsP43": true,
+    "repositoryCount": 3
+  },
+  "staticOnlyRerun": {
+    "command": "PYTHONPATH=src uv run python -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p44-t4-quality-hardened-rerun-20260620T000000Z/inputs --out /tmp/specharvester-p44-t4-quality-hardened-rerun-20260620T000000Z/output-static --skip-ai --repository-profile-selection auto",
+    "batchReport": {
+      "path": "/tmp/specharvester-p44-t4-quality-hardened-rerun-20260620T000000Z/output-static/autonomous-candidate-batch-report.json",
+      "digest": "sha256:0c31feb9ebd421d1d9f428b249375a28a89664052b425e4c42ba3e2e274ea8f8",
+      "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+      "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+      "authority": "producer_preview_evidence_only",
+      "status": "passed"
+    },
+    "summary": {
+      "processedCount": 3,
+      "failedRepositoryCount": 0,
+      "passedPreflightCount": 3,
+      "candidateCount": 6,
+      "relationCount": 3,
+      "aiDraftProposalCount": 0,
+      "aiEnrichmentProposalCount": 0,
+      "matchesP43StaticBaseline": true
+    }
+  },
+  "aiEnabledRerun": {
+    "providerProbe": {
+      "command": "curl --silent --show-error --max-time 5 http://127.0.0.1:1234/v1/models",
+      "status": "provider_available",
+      "provider": "lm_studio",
+      "model": "openai/gpt-oss-20b"
+    },
+    "command": "PYTHONPATH=src uv run python -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p44-t4-quality-hardened-rerun-20260620T000000Z/inputs --out /tmp/specharvester-p44-t4-quality-hardened-rerun-20260620T000000Z/output-ai --repository-profile-selection auto --lm-studio-base-url http://127.0.0.1:1234 --lm-studio-model openai/gpt-oss-20b --json-repair-max-attempts 1",
+    "batchReport": {
+      "path": "/tmp/specharvester-p44-t4-quality-hardened-rerun-20260620T000000Z/output-ai/autonomous-candidate-batch-report.json",
+      "digest": "sha256:50a50f53c938689292da28269ce4f8d79205f6ea40b4c6ce5afe0c690f5f5a9c",
+      "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+      "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+      "authority": "producer_preview_evidence_only",
+      "status": "passed"
+    },
+    "summary": {
+      "processedCount": 3,
+      "failedRepositoryCount": 0,
+      "passedPreflightCount": 3,
+      "aiDraftProposalCount": 3,
+      "aiEnrichmentProposalCount": 3,
+      "aiProposalArtifactCount": 6,
+      "aiEnrichmentProposalMemberCount": 6,
+      "aiEnrichedPreviewAppliedCount": 0,
+      "providerTotalTokens": 81003,
+      "rawPromptPersisted": false,
+      "rawResponsePersisted": false,
+      "chainOfThoughtPersisted": false,
+      "aiOutputAcceptedAsRegistryTruth": false
+    }
+  },
+  "repositoryComparisons": [
+    {
+      "repositoryId": "xyflow",
+      "staticOnlyStatus": "passed",
+      "aiEnabledStatus": "passed",
+      "candidateCount": 4,
+      "relationCount": 3,
+      "interfaceIndexStatus": "partial",
+      "interfaceDiagnosticCount": 29,
+      "aiDraftWarningCodes": [
+        "package_set_id_missing"
+      ],
+      "p43AiDraftWarningCodes": [
+        "package_set_id_missing"
+      ],
+      "warningComparison": "unchanged_warning_code",
+      "aiEnrichmentProposalCount": 4,
+      "providerTotalTokens": 48794,
+      "manualCorrectionCaveats": [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch"
+      ],
+      "p44HardeningEffect": "caveats_accepted_for_bounded_rerun_but_still_registry_blockers"
+    },
+    {
+      "repositoryId": "fastapi",
+      "staticOnlyStatus": "passed",
+      "aiEnabledStatus": "passed",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "interfaceIndexStatus": "complete",
+      "interfaceDiagnosticCount": 0,
+      "aiDraftWarningCodes": [
+        "package_set_id_missing"
+      ],
+      "p43AiDraftWarningCodes": [
+        "package_set_id_missing"
+      ],
+      "warningComparison": "unchanged_warning_code",
+      "aiEnrichmentProposalCount": 1,
+      "providerTotalTokens": 16540,
+      "manualCorrectionCaveats": [],
+      "p44HardeningEffect": "proposal_quality_review_confirms_useful_author_review_suggestion"
+    },
+    {
+      "repositoryId": "gin",
+      "staticOnlyStatus": "passed",
+      "aiEnabledStatus": "passed",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "interfaceIndexStatus": "complete",
+      "interfaceDiagnosticCount": 0,
+      "aiDraftWarningCodes": [
+        "excluded_package_unknown"
+      ],
+      "p43AiDraftWarningCodes": [
+        "package_set_id_missing"
+      ],
+      "warningComparison": "changed_warning_code_not_resolved",
+      "aiEnrichmentProposalCount": 1,
+      "providerTotalTokens": 15669,
+      "manualCorrectionCaveats": [],
+      "p44HardeningEffect": "warning_ambiguity_reduced_but_ai_draft_shape_still_not_clean"
+    }
+  ],
+  "comparisonSummary": {
+    "samePinnedCorpusAsP43": true,
+    "staticOnlyMatchesP43Baseline": true,
+    "aiEnabledRunPassed": true,
+    "aiProposalArtifactCount": 6,
+    "aiEnrichmentProposalMemberCount": 6,
+    "p43AiDraftWarningCount": 3,
+    "p44AiDraftWarningCount": 3,
+    "unchangedWarningCodeCount": 2,
+    "changedWarningCodeCount": 1,
+    "resolvedWarningCount": 0,
+    "newWarningCodeCount": 1,
+    "providerTotalTokens": 81003,
+    "xyflowManualCorrectionStillVisible": true,
+    "readyForP44T5Decision": true,
+    "qualityHardeningOutcome": "rerun_passed_but_warning_ambiguity_not_fully_resolved"
+  },
+  "runtimeNotes": [
+    "Homebrew Python 3.10 process startup hung during P44-T4 local command probing.",
+    "P44-T4 CLI runs used uv run python with the project environment on Python 3.12.",
+    "The rerun did not clone or fetch repositories; it used operator-provided pinned local checkouts."
+  ],
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "qualityHardenedRerunIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "aiEnrichedPreviewApplied": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "chainOfThoughtPersisted": false,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "quality_hardened_rerun_is_producer_side_review_evidence",
+    "quality_hardened_rerun_is_not_registry_acceptance",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_apply_ai_enrichment",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_persist_raw_prompts",
+    "does_not_persist_raw_responses",
+    "does_not_persist_chain_of_thought",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_quality_hardened_rerun_output_as_registry_truth"
+  ]
+}

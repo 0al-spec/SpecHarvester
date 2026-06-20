@@ -800,6 +800,10 @@ P44-T3 adds <doc:OperationalMVPXyflowCaveatResolution> and the
 machine-readable `SpecHarvesterOperationalMVPXyflowCaveatResolution` fixture.
 It accepts xyflow partial interface and fork-origin caveats for the bounded P44
 rerun while keeping both as registry-promotion blockers.
+P44-T4 adds <doc:OperationalMVPQualityHardenedRerun> and the machine-readable
+`SpecHarvesterOperationalMVPQualityHardenedRerun` fixture. It records that the
+quality-hardened static-only and AI-enabled reruns passed, while AI draft
+warning ambiguity remains not fully resolved.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
