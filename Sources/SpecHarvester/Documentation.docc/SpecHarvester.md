@@ -72,6 +72,7 @@ The canonical source files remain in the repository:
 - `docs/OPERATIONAL_MVP_WARNING_TRIAGE.md`
 - `docs/OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md`
 - `docs/OPERATIONAL_MVP_XYFLOW_CAVEAT_RESOLUTION.md`
+- `docs/OPERATIONAL_MVP_QUALITY_HARDENED_RERUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -235,6 +236,7 @@ the host.
 - <doc:OperationalMVPWarningTriage>
 - <doc:OperationalMVPAIProposalQualityReview>
 - <doc:OperationalMVPXyflowCaveatResolution>
+- <doc:OperationalMVPQualityHardenedRerun>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

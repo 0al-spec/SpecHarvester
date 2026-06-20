@@ -29853,6 +29853,113 @@ def test_operational_mvp_xyflow_caveat_resolution_is_documented() -> None:
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
+def test_operational_mvp_quality_hardened_rerun_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p44-t4-operational-mvp-quality-hardened-rerun.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_QUALITY_HARDENED_RERUN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPQualityHardenedRerun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.operational-mvp-quality-hardened-rerun/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterOperationalMVPQualityHardenedRerun"
+    assert payload["authority"] == "producer_operational_mvp_quality_hardened_rerun_only"
+    assert payload["phase"] == "P44"
+    assert payload["task"] == "P44-T4"
+    assert payload["rerunInputs"]["samePinnedCorpusAsP43"] is True
+    assert payload["staticOnlyRerun"]["summary"]["matchesP43StaticBaseline"] is True
+    assert payload["aiEnabledRerun"]["summary"]["aiProposalArtifactCount"] == 6
+    assert payload["aiEnabledRerun"]["summary"]["providerTotalTokens"] == 81003
+    assert payload["aiEnabledRerun"]["summary"]["rawPromptPersisted"] is False
+    assert payload["aiEnabledRerun"]["summary"]["rawResponsePersisted"] is False
+    assert payload["aiEnabledRerun"]["summary"]["chainOfThoughtPersisted"] is False
+    comparisons = {item["repositoryId"]: item for item in payload["repositoryComparisons"]}
+    assert comparisons["xyflow"]["aiDraftWarningCodes"] == ["package_set_id_missing"]
+    assert comparisons["fastapi"]["aiDraftWarningCodes"] == ["package_set_id_missing"]
+    assert comparisons["gin"]["aiDraftWarningCodes"] == ["excluded_package_unknown"]
+    assert comparisons["gin"]["warningComparison"] == "changed_warning_code_not_resolved"
+    assert payload["comparisonSummary"]["resolvedWarningCount"] == 0
+    assert payload["comparisonSummary"]["qualityHardeningOutcome"] == (
+        "rerun_passed_but_warning_ambiguity_not_fully_resolved"
+    )
+    assert payload["authorityBoundary"]["qualityHardenedRerunIsRegistryAuthority"] is False
+    assert "does_not_treat_quality_hardened_rerun_output_as_registry_truth" in payload[
+        "nonAuthorityStatements"
+    ]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Quality-Hardened Rerun",
+            "P44-T4",
+            "SpecHarvesterOperationalMVPQualityHardenedRerun",
+            "spec-harvester.operational-mvp-quality-hardened-rerun/v0",
+            "producer_operational_mvp_quality_hardened_rerun_only",
+            "p44-t4-operational-mvp-quality-hardened-rerun.example.json",
+            "rerun_passed_but_warning_ambiguity_not_fully_resolved",
+            "package_set_id_missing",
+            "excluded_package_unknown",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "enable trusted local adapter execution",
+            "apply AI enrichment",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw responses",
+            "persist chain-of-thought",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat quality-hardened rerun output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_QUALITY_HARDENED_RERUN.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_QUALITY_HARDENED_RERUN.md"),
+        (docc_root, "<doc:OperationalMVPQualityHardenedRerun>"),
+        (capabilities, "OPERATIONAL_MVP_QUALITY_HARDENED_RERUN.md"),
+        (capabilities_docc, "OperationalMVPQualityHardenedRerun"),
+        (roadmap, "OPERATIONAL_MVP_QUALITY_HARDENED_RERUN.md"),
+        (roadmap_docc, "OperationalMVPQualityHardenedRerun"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_python_web_framework_parser_profile_fixture_is_documented() -> None:
     fixture_path = (
         ROOT
