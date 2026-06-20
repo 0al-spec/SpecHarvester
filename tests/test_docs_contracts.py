@@ -38,6 +38,24 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P45-T8 Targeted-Hardening Readiness Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 45. Operational MVP AI Draft Shape Hardening" in next_text
+        assert "`P45-T8`" in next_text
+        assert (
+            "`P45-T7` Operational MVP Corpus Rerun After Targeted AI Draft Policy Fixes"
+            in next_text
+        )
+        assert "Phase 46" in next_text
+        assert "bounded popular-library" in normalized
+        assert "selected_member_role_unknown" in normalized
+        assert "no_proposal_subjects" in normalized
+        assert "model_evidence_path_unsupported" in normalized
+        assert "proposal-only" in normalized
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if (
         "# Next Task: P45-T7 Operational MVP Corpus Rerun After Targeted AI Draft Policy Fixes"
         in next_text
@@ -30369,6 +30387,147 @@ def test_operational_mvp_post_fix_readiness_decision_is_documented() -> None:
         (capabilities_docc, "OperationalMVPPostFixReadinessDecision"),
         (roadmap, "OPERATIONAL_MVP_POST_FIX_READINESS_DECISION.md"),
         (roadmap_docc, "OperationalMVPPostFixReadinessDecision"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_targeted_ai_draft_policy_rerun_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p45-t7-operational-mvp-targeted-ai-draft-policy-rerun.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_TARGETED_AI_DRAFT_POLICY_RERUN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPTargetedAIDraftPolicyRerun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.operational-mvp-targeted-ai-draft-policy-rerun/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterOperationalMVPTargetedAIDraftPolicyRerun"
+    assert payload["authority"] == ("producer_operational_mvp_targeted_ai_draft_policy_rerun_only")
+    assert payload["phase"] == "P45"
+    assert payload["task"] == "P45-T7"
+    for source in payload["sourceArtifacts"].values():
+        source_path = ROOT / source["path"]
+        assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+        if source_path.suffix == ".json":
+            source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+            assert source["apiVersion"] == source_payload["apiVersion"]
+            assert source["kind"] == source_payload["kind"]
+            assert source["authority"] == source_payload["authority"]
+    assert payload["rerunInputs"]["samePinnedCorpusAsP45T3"] is True
+    assert payload["rerunInputs"]["repositoryCount"] == 3
+    assert payload["staticOnlyRerun"]["summary"]["candidateCount"] == 6
+    assert payload["staticOnlyRerun"]["summary"]["relationCount"] == 3
+    ai_summary = payload["aiEnabledRerun"]["summary"]
+    assert ai_summary["processedCount"] == 3
+    assert ai_summary["failedRepositoryCount"] == 0
+    assert ai_summary["aiProposalArtifactCount"] == 6
+    assert ai_summary["aiEnrichmentProposalMemberCount"] == 6
+    assert ai_summary["aiDraftWarningRepositoryCount"] == 1
+    assert ai_summary["aiDraftWarningDiagnosticCount"] == 1
+    assert ai_summary["aiDraftBlockingRepositoryCount"] == 0
+    assert ai_summary["aiDraftProviderTotalTokens"] == 19179
+    assert ai_summary["aiEnrichmentProviderTotalTokens"] == 81140
+    assert ai_summary["aiEnrichmentWarningRepositoryCount"] == 1
+    assert ai_summary["aiEnrichmentWarningDiagnosticCount"] == 2
+
+    comparisons = {item["repositoryId"]: item for item in payload["repositoryComparisons"]}
+    assert comparisons["xyflow"]["p45T3AiDraftWarningCodes"] == ["selected_member_role_unknown"]
+    assert comparisons["xyflow"]["p45T7AiDraftWarningCodes"] == []
+    assert comparisons["xyflow"]["p45T7AiDraftStopPolicyDecision"] == ("stop_for_author_review")
+    assert comparisons["fastapi"]["p45T7AiDraftWarningCodes"] == ["ai_json_repair_needed"]
+    assert comparisons["fastapi"]["p45T7AiDraftStopPolicyReason"] == (
+        "single_package_no_proposal_subjects_non_blocking"
+    )
+    assert comparisons["gin"]["p45T7AiDraftWarningCodes"] == []
+    assert comparisons["gin"]["aiEnrichmentWarningCodes"] == ["model_evidence_path_unsupported"]
+    summary = payload["comparisonSummary"]
+    assert summary["xyflowSelectedMemberRoleWarningResolved"] is True
+    assert summary["xyflowRelationTargetBlockerResolved"] is True
+    assert summary["singlePackageNoProposalSubjectsResolved"] is True
+    assert summary["aiDraftBlockingRepositoryCount"] == 0
+    assert summary["aiDraftStopPolicyResolvedRepositoryCount"] == 3
+    assert summary["postTargetedPolicyOutcome"] == (
+        "ai_draft_blockers_resolved_with_ai_enrichment_warning_remaining"
+    )
+    assert summary["readyForP45T8Decision"] is True
+    assert summary["phase46ReadinessDecisionDeferredTo"] == "P45-T8"
+    assert payload["authorityBoundary"]["targetedRerunIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesBoundedPopularLibraryScraping"] is False
+    assert payload["authorityBoundary"]["rawPromptPersisted"] is False
+    assert "does_not_make_phase46_readiness_decision" in payload["nonAuthorityStatements"]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Targeted AI Draft Policy Rerun",
+            "P45-T7",
+            "SpecHarvesterOperationalMVPTargetedAIDraftPolicyRerun",
+            "spec-harvester.operational-mvp-targeted-ai-draft-policy-rerun/v0",
+            "producer_operational_mvp_targeted_ai_draft_policy_rerun_only",
+            "p45-t7-operational-mvp-targeted-ai-draft-policy-rerun.example.json",
+            "selected_member_role_unknown",
+            "no_proposal_subjects",
+            "ai_json_repair_needed",
+            "model_evidence_path_unsupported",
+            "proposal-only",
+            "P45-T8",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "broaden the corpus",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "enable trusted local adapter execution",
+            "apply AI enrichment",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw responses",
+            "persist chain-of-thought",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "make the Phase 46 readiness decision",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_TARGETED_AI_DRAFT_POLICY_RERUN.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_TARGETED_AI_DRAFT_POLICY_RERUN.md"),
+        (docc_root, "<doc:OperationalMVPTargetedAIDraftPolicyRerun>"),
+        (capabilities, "OPERATIONAL_MVP_TARGETED_AI_DRAFT_POLICY_RERUN.md"),
+        (capabilities_docc, "OperationalMVPTargetedAIDraftPolicyRerun"),
+        (roadmap, "OPERATIONAL_MVP_TARGETED_AI_DRAFT_POLICY_RERUN.md"),
+        (roadmap_docc, "OperationalMVPTargetedAIDraftPolicyRerun"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

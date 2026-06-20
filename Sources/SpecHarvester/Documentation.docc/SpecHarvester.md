@@ -76,6 +76,7 @@ The canonical source files remain in the repository:
 - `docs/OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md`
 - `docs/OPERATIONAL_MVP_AI_DRAFT_SHAPE_RERUN.md`
 - `docs/OPERATIONAL_MVP_POST_FIX_READINESS_DECISION.md`
+- `docs/OPERATIONAL_MVP_TARGETED_AI_DRAFT_POLICY_RERUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -243,6 +244,7 @@ the host.
 - <doc:OperationalMVPPostHardeningReadinessDecision>
 - <doc:OperationalMVPAIDraftShapeRerun>
 - <doc:OperationalMVPPostFixReadinessDecision>
+- <doc:OperationalMVPTargetedAIDraftPolicyRerun>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
