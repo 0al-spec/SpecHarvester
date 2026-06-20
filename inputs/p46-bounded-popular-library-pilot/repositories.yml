@@ -1,0 +1,43 @@
+# P46-T1 bounded popular-library pilot manifest.
+# This file is data only. Checkout paths are operator-local examples relative
+# to this inputs directory. It requires operator-managed pinned local checkouts
+# and must not clone, fetch, install dependencies, invoke package managers,
+# execute harvested code, run adapters, accept packages, or publish registry
+# metadata.
+repositories:
+  - id: flask
+    repository: https://github.com/pallets/flask
+    revision: 954f5684e4841aad84a8eec7ace7b81a0d3f6831
+    checkout: ../../../flask
+    packageId: flask.core
+    labels: [python, pypi, web_framework, single_package, p46_bounded_pilot]
+  - id: gin
+    repository: https://github.com/gin-gonic/gin
+    revision: 5f4f9643258dc2a65e684b63f12c8d543c936c67
+    checkout: ../../../gin
+    packageId: gin.core
+    labels: [go, web_framework, single_package, p46_bounded_pilot, carry_forward_triage]
+  - id: xyflow
+    repository: https://github.com/xyflow/xyflow
+    revision: a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd
+    checkout: ../../../xyflow
+    packageId: xyflow.workspace
+    labels: [javascript, typescript, npm, package_set, p46_bounded_pilot, fork_origin_caveat]
+  - id: cupertino
+    repository: https://github.com/mihaelamj/cupertino
+    revision: 65dcae238d30cfbd0d9d15ae10f7b8c67575c19b
+    checkout: ../../../cupertino
+    packageId: cupertino.core
+    labels: [swift, spm, ui_library, single_package, p46_bounded_pilot]
+  - id: navigation-split-view
+    repository: https://github.com/SoundBlaster/NavigationSplitView
+    revision: 2c88df50b8f587560b91f6027e9ea275aee17060
+    checkout: ../../../NavigationSplitView
+    packageId: navigation_split_view.core
+    labels: [swift, spm, ui_library, single_package, p46_bounded_pilot]
+  - id: docc2context
+    repository: https://github.com/SoundBlaster/docc2context
+    revision: a2babcc4910c87bbd1b65f9a4221097f5ae4b753
+    checkout: ../../../docc2context
+    packageId: docc2context.core
+    labels: [swift, cli, documentation, single_package, p46_bounded_pilot]

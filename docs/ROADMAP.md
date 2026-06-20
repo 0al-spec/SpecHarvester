@@ -1140,6 +1140,12 @@ and the machine-readable
 `ready_for_phase46_bounded_popular_library_pilot` while carrying Gin
 `model_evidence_path_unsupported` into Phase 46 triage and keeping all AI output
 proposal-only.
+P46-T1 adds
+[`BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md`](BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md)
+and the machine-readable `SpecHarvesterBoundedPopularLibraryPilotManifest`
+fixture for `inputs/p46-bounded-popular-library-pilot/repositories.yml`. It
+pins the first post-hardening bounded pilot manifest and keeps P46-T2
+static-only-first.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
