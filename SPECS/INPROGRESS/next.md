@@ -1,43 +1,46 @@
-# Next Task: P46-T4 Bounded Popular-Library Pilot Output Triage
+# Next Task: P46-T5 Bounded Popular-Library Pilot Author Handoff Summaries
 
 **Status:** Selected
-**Branch:** `feature/P46-T4-bounded-popular-library-pilot-output-triage`
+**Branch:** `feature/P46-T5-bounded-popular-library-pilot-author-handoff-summaries`
 **Phase:** Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening
-**Task:** `P46-T4`
-**Depends On:** `P46-T3` Bounded Popular-Library Pilot AI-Enabled Run
+**Task:** `P46-T5`
+**Depends On:** `P46-T4` Bounded Popular-Library Pilot Output Triage
 
 ## Goal
 
-Triage the bounded pilot candidate layer and AI proposal sidecars, classifying
-valid, reviewable, noisy, unsupported, evidence-gap, and do-not-promote outputs
-per repository and per package-set member.
+Produce author-facing handoff summaries for the bounded pilot outputs,
+separating reviewable static evidence from noisy, unsupported, evidence-gap,
+and do-not-promote AI sidecars.
 
 ## Context
 
-P46-T2 static-only gate passed: six repositories processed, nine preview
-candidates, three relation proposals, zero preflight warnings, zero AI
-proposals, zero adapter sidecars, and no registry authority.
+P46-T4 classified all six repositories. Static candidate evidence is
+reviewable for Flask, Gin, xyflow, Cupertino, NavigationSplitView, and
+docc2context. The handoff must keep do-not-promote AI sidecars separate from
+reviewable static evidence:
 
-P46-T3 AI-enabled batch ended `failed`: six repositories processed, two failed
-repositories, four AI draft proposals, six AI enrichment proposals, and
-110,186 AI enrichment provider tokens. Gin and docc2context AI draft outputs
-failed with `ai_json_repair_exhausted` and
-`package_set_subject_metadata_missing`. xyflow AI enrichment retained
-`model_evidence_path_unsupported`.
+- `gin.aiDraft`
+- `docc2context.aiDraft`
+
+The handoff must also keep xyflow evidence gaps and unsupported enrichment
+visible:
+
+- `partial_public_interface_index`
+- `operator_checkout_origin_fork_mismatch`
+- `model_evidence_path_unsupported`
 
 ## Expected Deliverables
 
-- A triage fixture/report classifying static candidates, relation proposals,
-  AI draft sidecars, AI enrichment sidecars, warnings, blockers, and
-  do-not-promote outputs.
-- Per-repository and per-member classification for Flask, Gin, xyflow,
-  Cupertino, NavigationSplitView, and docc2context.
-- Documentation explaining what is valid/reviewable, what is noisy, what is
-  unsupported, what has an evidence gap, and what must not be promoted.
-- Docs-contract coverage for triage identity, P46-T2/P46-T3 source artifact
-  linkage, blocker classifications, no-authority boundaries, and current
-  next-task pointer.
-- Validation report and archive artifacts for P46-T4.
+- Author-facing handoff fixture/report for the bounded pilot.
+- Per-repository summary of reviewable static candidates, relation proposals,
+  noisy AI sidecars, unsupported AI sidecars, evidence gaps, and
+  do-not-promote sidecars.
+- Documentation explaining what an author can review now, what must be
+  regenerated or manually corrected, and what must not be promoted.
+- Docs-contract coverage for handoff identity, P46-T4 source artifact linkage,
+  repository summaries, sidecar separation, no-authority boundaries, and
+  current next-task pointer.
+- Validation report and archive artifacts for P46-T5.
 
 ## Boundaries
 
@@ -54,17 +57,18 @@ failed with `ai_json_repair_exhausted` and
   chain-of-thought.
 - Do not treat AI output as registry truth.
 - Do not treat static output as registry truth.
+- Do not treat handoff output as registry truth.
 - Do not treat adapter output as registry truth.
 
 ## Recently Archived
 
+- `P46-T4` Bounded Popular-Library Pilot Output Triage: PASS on 2026-06-20.
 - `P46-T3` Bounded Popular-Library Pilot AI-Enabled Run: PASS as evidence
   capture on 2026-06-20.
 - `P46-T2` Bounded Popular-Library Pilot Static-Only Run: PASS on 2026-06-20.
-- `P46-T1` Bounded Popular-Library Pilot Manifest: PASS on 2026-06-20.
 
 ## Validation Expectations
 
 - Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
-- Run focused docs-contract tests for P46-T4 triage and current next task.
+- Run focused docs-contract tests for P46-T5 handoff and current next task.
 - Run formatting/lint/whitespace checks scaled to touched files.
