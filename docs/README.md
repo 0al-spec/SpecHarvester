@@ -257,6 +257,9 @@ Published DocC site:
    P43-T7 exit report selecting `needs_quality_hardening` before broader
    autonomous popular-library scraping while preserving the no-authority
    boundary
+60. [`OPERATIONAL_MVP_WARNING_TRIAGE.md`](OPERATIONAL_MVP_WARNING_TRIAGE.md):
+   P44-T1 warning triage for the P43-T5 `package_set_id_missing` AI draft
+   diagnostics
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

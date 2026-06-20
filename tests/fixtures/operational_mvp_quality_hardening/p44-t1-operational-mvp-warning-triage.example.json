@@ -1,0 +1,243 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-warning-triage/v0",
+  "kind": "SpecHarvesterOperationalMVPWarningTriage",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_warning_triage_only",
+  "phase": "P44",
+  "task": "P44-T1",
+  "createdAt": "2026-06-20T00:00:00Z",
+  "sourceArtifacts": {
+    "aiEnabledComparison": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+      "digest": "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
+      "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
+      "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
+      "authority": "producer_operational_mvp_ai_comparison_only"
+    },
+    "exitReport": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t7-operational-mvp-exit-report.example.json",
+      "digest": "sha256:28d1dc5d3d8ad24d1050e4a7fbb170a00ffa20043c80fbe2bb8a33c375bf78d7",
+      "apiVersion": "spec-harvester.operational-mvp-exit-report/v0",
+      "kind": "SpecHarvesterOperationalMVPExitReport",
+      "authority": "producer_operational_mvp_exit_report_only"
+    }
+  },
+  "triageScope": {
+    "diagnosticCode": "package_set_id_missing",
+    "sourceTask": "P43-T5",
+    "sourceRunMode": "ai_enabled_proposal",
+    "repositoryCount": 3,
+    "warningCount": 3,
+    "samePinnedCorpusAsStaticBaseline": true,
+    "providerAvailable": true,
+    "aiEnabledRunPerformed": true,
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "chainOfThoughtPersisted": false,
+    "aiOutputAuthority": "proposal_only"
+  },
+  "causeCategories": [
+    "missing_draft_context",
+    "package_set_identity_drift",
+    "ai_proposal_shape",
+    "expected_producer_side_boundary"
+  ],
+  "summary": {
+    "triagedRepositoryCount": 3,
+    "primaryAiProposalShapeCount": 3,
+    "primaryMissingDraftContextCount": 0,
+    "primaryPackageSetIdentityDriftCount": 0,
+    "primaryExpectedProducerSideBoundaryCount": 0,
+    "requiresGeneratorChangeCount": 3,
+    "requiresManualCorrectionCount": 1,
+    "proposalQualityReviewRequiredCount": 3,
+    "safeToUseEnrichmentForAuthorReviewCount": 3,
+    "readyForBoundedAutonomousScraping": false,
+    "registryAuthority": false
+  },
+  "repositoryWarningTriage": [
+    {
+      "repositoryId": "xyflow",
+      "ecosystemFamily": "javascript_typescript",
+      "expectedPackageFamilyShape": "package_set_monorepo",
+      "sourceWarning": {
+        "status": "completed_with_draft_warnings",
+        "warningCode": "ai_draft_warning_enrichment_completed",
+        "diagnosticCodes": [
+          "package_set_id_missing"
+        ],
+        "aiDraftProposalStatus": "warning",
+        "aiEnrichmentStatus": "completed",
+        "aiEnrichmentProposalCount": 4,
+        "aiEnrichedPreviewApplied": false
+      },
+      "classification": {
+        "primaryCause": "ai_proposal_shape",
+        "missingDraftContext": false,
+        "packageSetIdentityDrift": false,
+        "aiProposalShape": true,
+        "expectedProducerSideBoundary": false,
+        "confidence": "high",
+        "rationale": "The static-only baseline preserved a package-set monorepo shape with four candidates and three relations, but the AI draft proposal layer did not provide the package-set identity expected by the proposal schema. AI enrichment completed cleanly, so the warning is isolated to draft proposal shape rather than source checkout identity drift."
+      },
+      "manualCorrectionContext": [
+        "partial_public_interface_index",
+        "review_operator_checkout_origin_fork_mismatch"
+      ],
+      "followUpGuidance": [
+        {
+          "targetTask": "P44-T2",
+          "action": "review_ai_enrichment_quality",
+          "reason": "Four xyflow enrichment proposals are available for author review but remain proposal-only."
+        },
+        {
+          "targetTask": "P44-T3",
+          "action": "resolve_or_accept_partial_public_interface_index",
+          "reason": "The xyflow public-interface and fork-origin caveats are manual-correction context, not the primary cause of package_set_id_missing."
+        },
+        {
+          "targetTask": "P44-T4",
+          "action": "rerun_after_generator_shape_fix",
+          "reason": "A rerun should prove the AI draft proposal includes the package-set identity or records a more precise diagnostic."
+        }
+      ]
+    },
+    {
+      "repositoryId": "fastapi",
+      "ecosystemFamily": "python",
+      "expectedPackageFamilyShape": "framework_library_package",
+      "sourceWarning": {
+        "status": "completed_with_draft_warnings",
+        "warningCode": "ai_draft_warning_enrichment_completed",
+        "diagnosticCodes": [
+          "package_set_id_missing"
+        ],
+        "aiDraftProposalStatus": "warning",
+        "aiEnrichmentStatus": "completed",
+        "aiEnrichmentProposalCount": 1,
+        "aiEnrichedPreviewApplied": false
+      },
+      "classification": {
+        "primaryCause": "ai_proposal_shape",
+        "missingDraftContext": false,
+        "packageSetIdentityDrift": false,
+        "aiProposalShape": true,
+        "expectedProducerSideBoundary": false,
+        "confidence": "high",
+        "rationale": "The static-only baseline produced one FastAPI candidate without package-set topology drift. The warning appears in the AI draft proposal layer while enrichment completed, which points to a draft proposal identity-field shape issue rather than missing repository evidence."
+      },
+      "manualCorrectionContext": [],
+      "followUpGuidance": [
+        {
+          "targetTask": "P44-T2",
+          "action": "review_ai_enrichment_quality",
+          "reason": "One FastAPI enrichment proposal is available for author review but remains proposal-only."
+        },
+        {
+          "targetTask": "P44-T4",
+          "action": "rerun_after_generator_shape_fix",
+          "reason": "A rerun should prove the warning is removed or replaced by a repository-specific diagnostic."
+        }
+      ]
+    },
+    {
+      "repositoryId": "gin",
+      "ecosystemFamily": "go",
+      "expectedPackageFamilyShape": "single_package_framework",
+      "sourceWarning": {
+        "status": "completed_with_draft_warnings",
+        "warningCode": "ai_draft_warning_enrichment_completed",
+        "diagnosticCodes": [
+          "package_set_id_missing"
+        ],
+        "aiDraftProposalStatus": "warning",
+        "aiEnrichmentStatus": "completed",
+        "aiEnrichmentProposalCount": 1,
+        "aiEnrichedPreviewApplied": false
+      },
+      "classification": {
+        "primaryCause": "ai_proposal_shape",
+        "missingDraftContext": false,
+        "packageSetIdentityDrift": false,
+        "aiProposalShape": true,
+        "expectedProducerSideBoundary": false,
+        "confidence": "high",
+        "rationale": "The static-only baseline produced one Gin candidate and no package-set relation topology. The same package_set_id_missing draft warning appears while enrichment completed, indicating a shared AI draft proposal shape problem rather than Go-specific source evidence drift."
+      },
+      "manualCorrectionContext": [],
+      "followUpGuidance": [
+        {
+          "targetTask": "P44-T2",
+          "action": "review_ai_enrichment_quality",
+          "reason": "One Gin enrichment proposal is available for author review but remains proposal-only."
+        },
+        {
+          "targetTask": "P44-T4",
+          "action": "rerun_after_generator_shape_fix",
+          "reason": "A rerun should prove the warning is removed or replaced by a repository-specific diagnostic."
+        }
+      ]
+    }
+  ],
+  "phase44FollowUp": [
+    {
+      "task": "P44-T2",
+      "status": "required",
+      "summary": "Review proposal-only AI enrichment quality before treating AI sidecars as a broader scraping quality baseline."
+    },
+    {
+      "task": "P44-T3",
+      "status": "required",
+      "summary": "Resolve or explicitly accept xyflow public-interface and fork-origin manual-correction caveats."
+    },
+    {
+      "task": "P44-T4",
+      "status": "required",
+      "summary": "Rerun the bounded operational MVP corpus after targeted warning and caveat hardening."
+    },
+    {
+      "task": "P44-T5",
+      "status": "required",
+      "summary": "Record the post-hardening readiness decision before bounded popular-library scraping."
+    }
+  ],
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "warningTriageIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "runsAI": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "warning_triage_is_producer_side_review_evidence",
+    "warning_triage_is_not_registry_acceptance",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_run_ai",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_persist_raw_prompts",
+    "does_not_persist_raw_provider_responses",
+    "does_not_persist_chain_of_thought",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_warning_triage_output_as_registry_truth"
+  ]
+}
