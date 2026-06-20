@@ -287,6 +287,9 @@ Published DocC site:
 70. [`BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md`](BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md):
    P46-T2 real local static-only pilot result over the bounded manifest,
    including candidate/relation counts and no-AI/no-adapter boundaries
+71. [`BOUNDED_POPULAR_LIBRARY_PILOT_AI_ENABLED_RUN.md`](BOUNDED_POPULAR_LIBRARY_PILOT_AI_ENABLED_RUN.md):
+   P46-T3 real local LM Studio AI-enabled pilot result, proposal-only
+   warnings/blockers, and comparison to the P46-T2 static-only baseline
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

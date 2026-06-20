@@ -837,6 +837,12 @@ machine-readable `SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun`
 fixture for the real static-only gate: six repositories processed, nine
 preview candidates, three relation proposals, zero AI proposals, zero adapter
 sidecars, and no registry authority.
+P46-T3 records <doc:BoundedPopularLibraryPilotAIEnabledRun> and the
+machine-readable `SpecHarvesterBoundedPopularLibraryPilotAIEnabledRun` fixture
+for the local LM Studio comparison. The AI-enabled batch processed six
+repositories but ended `failed` because Gin and docc2context AI draft outputs
+exhausted JSON repair with `package_set_subject_metadata_missing`; all AI
+sidecars remain proposal-only and P46-T4 owns triage.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

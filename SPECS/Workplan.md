@@ -2193,7 +2193,7 @@ Acceptance:
 - [x] `P46-T2` Run the pilot in static-only mode first, recording deterministic
   candidate, relation, preflight, warning, and quality-gate evidence without AI
   or adapter execution.
-- [ ] `P46-T3` Run the same pinned pilot with the local OpenAI-compatible
+- [x] `P46-T3` Run the same pinned pilot with the local OpenAI-compatible
   provider only after the static-only gate passes, preserving proposal-only AI
   output and no raw prompt/response/chain-of-thought persistence.
 - [ ] `P46-T4` Triage the pilot candidate layer and AI proposal sidecars,

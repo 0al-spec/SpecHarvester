@@ -1,0 +1,484 @@
+{
+  "apiVersion": "spec-harvester.bounded-popular-library-pilot-ai-enabled-run/v0",
+  "kind": "SpecHarvesterBoundedPopularLibraryPilotAIEnabledRun",
+  "authority": "producer_ai_proposal_evidence_only",
+  "phase": "P46",
+  "task": "P46-T3",
+  "run": {
+    "id": "p46-t3-bounded-popular-library-ai-enabled-20260620T202117Z",
+    "mode": "ai_enabled",
+    "root": "/tmp/specharvester-p46-t3-bounded-popular-library-ai-enabled-20260620T202117Z",
+    "status": "failed",
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch inputs/p46-bounded-popular-library-pilot --out /tmp/specharvester-p46-t3-bounded-popular-library-ai-enabled-20260620T202117Z/output --repository-profile-selection auto --lm-studio-base-url http://127.0.0.1:1234 --lm-studio-model openai/gpt-oss-20b --json-repair-max-attempts 1"
+  },
+  "sourceManifest": {
+    "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "digest": "sha256:b00a59837c64477819e01d5f97845ab8379cbe909ae464d2f1faee37e65c2f61",
+    "entryCount": 6
+  },
+  "sourceArtifacts": {
+    "p46StaticOnlyBaseline": {
+      "path": "tests/fixtures/bounded_popular_library_pilot_static_only_run/p46-t2-bounded-popular-library-pilot-static-only-run.example.json",
+      "digest": "sha256:ae0ee01cb92b3969eafee77027a364e6fb0b8e4b050db39122edb4aeea8fff3c",
+      "apiVersion": "spec-harvester.bounded-popular-library-pilot-static-only-run/v0",
+      "kind": "SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun",
+      "authority": "producer_static_preview_evidence_only"
+    }
+  },
+  "batchReport": {
+    "path": "/tmp/specharvester-p46-t3-bounded-popular-library-ai-enabled-20260620T202117Z/output/autonomous-candidate-batch-report.json",
+    "digest": "sha256:fddb8c06ee36c6df005beb6a9c790038ef61ec0b27d939929a27ecb6c45b4f51",
+    "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+    "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+    "authority": "producer_preview_evidence_only"
+  },
+  "provider": {
+    "baseUrl": "http://127.0.0.1:1234",
+    "chainOfThoughtPersisted": false,
+    "execution": "operator_opt_in_local",
+    "jsonRepairMaxAttempts": 1,
+    "mode": "local_lm_studio",
+    "model": "openai/gpt-oss-20b",
+    "provider": "lm_studio",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false
+  },
+  "summary": {
+    "aiDraftProposalCount": 4,
+    "aiEnrichedPreviewAppliedCount": 0,
+    "aiEnrichedPreviewFailedCount": 0,
+    "aiEnrichedPreviewSkippedCount": 0,
+    "aiEnrichmentProposalCount": 6,
+    "collectedCount": 6,
+    "failedRepositoryCount": 2,
+    "passedPreflightCount": 6,
+    "processedCount": 6,
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "repositoryPluginApplicabilitySidecarCount": 0,
+    "repositoryProfileDetectionCount": 6,
+    "repositoryProfileDisabledCount": 0,
+    "repositoryProfileFallbackCount": 2,
+    "repositoryProfileSelectedCount": 4,
+    "skippedCount": 0,
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    "aiDraftFailedRepositoryCount": 2,
+    "aiDraftWarningRepositoryCount": 3,
+    "aiDraftCompletedRepositoryCount": 1,
+    "aiEnrichmentWarningRepositoryCount": 2,
+    "aiEnrichmentCompletedRepositoryCount": 4,
+    "aiEnrichmentProviderPromptTokens": 106542,
+    "aiEnrichmentProviderCompletionTokens": 3644,
+    "aiEnrichmentProviderTotalTokens": 110186,
+    "diagnosticCodeCounts": {
+      "excluded_package_also_selected": 1,
+      "selected_member_role_unknown": 3,
+      "refined_summary_missing": 1,
+      "ai_json_repair_exhausted": 2,
+      "ai_json_repair_needed": 2,
+      "package_set_subject_metadata_missing": 2,
+      "model_evidence_path_unsupported": 1
+    }
+  },
+  "staticBaselineComparison": {
+    "p46T2Status": "passed",
+    "p46T2ProcessedCount": 6,
+    "p46T2FailedRepositoryCount": 0,
+    "p46T2CandidateCount": 9,
+    "p46T2RelationCount": 3,
+    "p46T2PreflightWarningCount": 0,
+    "p46T3ProcessedCount": 6,
+    "p46T3FailedRepositoryCount": 2,
+    "staticCandidateLayerChanged": false,
+    "staticRelationLayerChanged": false,
+    "aiProposalLayerHasBlockers": true
+  },
+  "repositories": [
+    {
+      "id": "flask",
+      "status": "passed",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "selectedMemberCount": 1,
+        "relationCount": 1,
+        "warningCount": 2,
+        "errorCount": 0,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "stopStatus": "needs_regeneration",
+        "stopDecision": "continue_generation",
+        "zeroSubjectPolicy": {
+          "inventoryPackageCount": 1,
+          "inventoryPackageIds": [
+            "flask.core"
+          ],
+          "packageSetId": "flask.workspace",
+          "reason": "proposal_subjects_present",
+          "status": "not_applicable"
+        }
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "refined_summary_missing"
+        ],
+        "proposalCount": 1,
+        "warningCount": 1,
+        "errorCount": 0,
+        "providerPromptTokens": 7942,
+        "providerCompletionTokens": 301,
+        "providerTotalTokens": 8243,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "stopStatus": "needs_regeneration",
+        "stopDecision": "continue_generation"
+      },
+      "aiEnrichedPreview": {
+        "reason": "operator_disabled",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "gin",
+      "status": "failed",
+      "aiDraft": {
+        "status": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "selectedMemberCount": 0,
+        "relationCount": 0,
+        "warningCount": 2,
+        "errorCount": 1,
+        "jsonRepair": {
+          "attemptCount": 1,
+          "needed": true,
+          "status": "exhausted"
+        },
+        "stopStatus": "blocked",
+        "stopDecision": "blocked_until_inputs_change",
+        "zeroSubjectPolicy": {
+          "inventoryPackageCount": 1,
+          "inventoryPackageIds": [
+            "gin.core"
+          ],
+          "packageSetId": "gin.workspace",
+          "reason": "single_package_proposal_has_diagnostics",
+          "status": "requires_regeneration"
+        }
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "proposalCount": 1,
+        "warningCount": 0,
+        "errorCount": 0,
+        "providerPromptTokens": 15227,
+        "providerCompletionTokens": 397,
+        "providerTotalTokens": 15624,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "stopStatus": "author_ready_draft",
+        "stopDecision": "stop_for_author_review"
+      },
+      "aiEnrichedPreview": {
+        "reason": "operator_disabled",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "xyflow",
+      "status": "passed",
+      "aiDraft": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "selectedMemberCount": 3,
+        "relationCount": 3,
+        "warningCount": 0,
+        "errorCount": 0,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "stopStatus": "author_ready_draft",
+        "stopDecision": "stop_for_author_review",
+        "zeroSubjectPolicy": {
+          "inventoryPackageCount": 11,
+          "inventoryPackageIds": [
+            "xyflow.astro_examples",
+            "xyflow.eslint_config",
+            "xyflow.playwright",
+            "xyflow.react",
+            "xyflow.react_examples",
+            "xyflow.rollup_config",
+            "xyflow.svelte",
+            "xyflow.svelte_examples",
+            "xyflow.system",
+            "xyflow.tsconfig",
+            "xyflow.workspace"
+          ],
+          "packageSetId": "xyflow.workspace",
+          "reason": "proposal_subjects_present",
+          "status": "not_applicable"
+        }
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "model_evidence_path_unsupported"
+        ],
+        "proposalCount": 4,
+        "warningCount": 1,
+        "errorCount": 0,
+        "providerPromptTokens": 46897,
+        "providerCompletionTokens": 1451,
+        "providerTotalTokens": 48348,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "stopStatus": "needs_regeneration",
+        "stopDecision": "continue_generation"
+      },
+      "aiEnrichedPreview": {
+        "reason": "operator_disabled",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "cupertino",
+      "status": "passed",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "selected_member_role_unknown"
+        ],
+        "selectedMemberCount": 1,
+        "relationCount": 1,
+        "warningCount": 1,
+        "errorCount": 0,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "stopStatus": "needs_regeneration",
+        "stopDecision": "continue_generation",
+        "zeroSubjectPolicy": {
+          "inventoryPackageCount": 1,
+          "inventoryPackageIds": [
+            "cupertino.core"
+          ],
+          "packageSetId": "cupertino.workspace",
+          "reason": "proposal_subjects_present",
+          "status": "not_applicable"
+        }
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "proposalCount": 1,
+        "warningCount": 0,
+        "errorCount": 0,
+        "providerPromptTokens": 14325,
+        "providerCompletionTokens": 412,
+        "providerTotalTokens": 14737,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "stopStatus": "author_ready_draft",
+        "stopDecision": "stop_for_author_review"
+      },
+      "aiEnrichedPreview": {
+        "reason": "operator_disabled",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "navigation-split-view",
+      "status": "passed",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "selected_member_role_unknown"
+        ],
+        "selectedMemberCount": 1,
+        "relationCount": 1,
+        "warningCount": 1,
+        "errorCount": 0,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "stopStatus": "needs_regeneration",
+        "stopDecision": "continue_generation",
+        "zeroSubjectPolicy": {
+          "inventoryPackageCount": 1,
+          "inventoryPackageIds": [
+            "navigation_split_view.core"
+          ],
+          "packageSetId": "navigation_split_view.workspace",
+          "reason": "proposal_subjects_present",
+          "status": "not_applicable"
+        }
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "proposalCount": 1,
+        "warningCount": 0,
+        "errorCount": 0,
+        "providerPromptTokens": 11112,
+        "providerCompletionTokens": 525,
+        "providerTotalTokens": 11637,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "stopStatus": "author_ready_draft",
+        "stopDecision": "stop_for_author_review"
+      },
+      "aiEnrichedPreview": {
+        "reason": "operator_disabled",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "docc2context",
+      "status": "failed",
+      "aiDraft": {
+        "status": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "selectedMemberCount": 0,
+        "relationCount": 0,
+        "warningCount": 2,
+        "errorCount": 1,
+        "jsonRepair": {
+          "attemptCount": 1,
+          "needed": true,
+          "status": "exhausted"
+        },
+        "stopStatus": "blocked",
+        "stopDecision": "blocked_until_inputs_change",
+        "zeroSubjectPolicy": {
+          "inventoryPackageCount": 1,
+          "inventoryPackageIds": [
+            "docc2context.core"
+          ],
+          "packageSetId": "docc2context.workspace",
+          "reason": "single_package_proposal_has_diagnostics",
+          "status": "requires_regeneration"
+        }
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "proposalCount": 1,
+        "warningCount": 0,
+        "errorCount": 0,
+        "providerPromptTokens": 11039,
+        "providerCompletionTokens": 558,
+        "providerTotalTokens": 11597,
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "stopStatus": "author_ready_draft",
+        "stopDecision": "stop_for_author_review"
+      },
+      "aiEnrichedPreview": {
+        "reason": "operator_disabled",
+        "status": "skipped"
+      }
+    }
+  ],
+  "qualityGate": {
+    "aiEnabledGate": "blocked_for_triage",
+    "blockers": [
+      {
+        "repositoryId": "gin",
+        "layer": "aiDraft",
+        "codes": [
+          "ai_json_repair_exhausted",
+          "package_set_subject_metadata_missing"
+        ]
+      },
+      {
+        "repositoryId": "docc2context",
+        "layer": "aiDraft",
+        "codes": [
+          "ai_json_repair_exhausted",
+          "package_set_subject_metadata_missing"
+        ]
+      }
+    ],
+    "reviewableWarnings": [
+      "selected_member_role_unknown",
+      "excluded_package_also_selected",
+      "refined_summary_missing",
+      "model_evidence_path_unsupported"
+    ],
+    "nextTriageTask": "P46-T4"
+  },
+  "privacyBoundary": {
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "authorityBoundary": {
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false
+  },
+  "adapterBoundary": {
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    "adapterExecution": "not_run",
+    "appliedToDrafting": false,
+    "registryAuthority": false
+  },
+  "nextTask": "P46-T4"
+}
