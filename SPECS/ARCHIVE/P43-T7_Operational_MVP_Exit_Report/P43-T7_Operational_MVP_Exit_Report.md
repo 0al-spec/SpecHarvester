@@ -7,11 +7,11 @@ Planned.
 ## Motivation
 
 P43-T4 shows the static-only pipeline can produce handoff-ready preview
-candidates for xyflow, FastAPI, and Gin. P43-T5 shows the local
-OpenAI-compatible provider was unavailable, so the optional AI-enabled
-comparison was not measured. P43-T6 translates that state into author-facing
-handoff summaries with explicit valid, reviewable, manual-correction, and
-do-not-promote categories.
+candidates for xyflow, FastAPI, and Gin. P43-T5 shows live local LM Studio
+AI draft/enrichment sidecars are available, but remain proposal-only and still
+carry draft warnings. P43-T6 translates that state into author-facing handoff
+summaries with explicit valid, reviewable, manual-correction, and do-not-promote
+categories.
 
 Phase 43 needs a final exit report before broader autonomous popular-library
 scraping or any future real adapter execution work. The report must state
@@ -25,10 +25,11 @@ decision and explains the rejected alternatives using P43-T4, P43-T5, and
 P43-T6 evidence.
 
 The expected decision is `needs_quality_hardening`: static-only output is
-useful and author-reviewable, but the AI-enabled comparison was unavailable and
-xyflow still has a visible manual-correction caveat. That is not an adapter
-execution blocker, but it is also not strong enough evidence to expand directly
-to broader autonomous popular-library scraping.
+useful and author-reviewable, but the live AI-enabled comparison still has
+draft warnings, AI sidecars remain proposal-only, and xyflow still has a
+visible manual-correction caveat. That is not an adapter execution blocker, but
+it is also not strong enough evidence to expand directly to broader autonomous
+popular-library scraping.
 
 ## Deliverables
 
@@ -40,7 +41,7 @@ to broader autonomous popular-library scraping.
   - `needs_quality_hardening`
   - `ready_for_bounded_autonomous_scraping`
   - `blocked_until_adapter_execution`
-- Evidence summary covering static-only readiness, provider-unavailable AI
+- Evidence summary covering static-only readiness, live proposal-only AI
   comparison, author handoff readiness, xyflow manual correction, and
   non-authority boundaries.
 - GitHub documentation and DocC mirror for the exit report.

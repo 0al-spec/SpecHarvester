@@ -16,14 +16,14 @@
     },
     "aiEnabledComparison": {
       "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
-      "digest": "sha256:c9934bae637aff8d748e431476d297dc58f81583ab7fdb8fc00db1141889e049",
+      "digest": "sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d",
       "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
       "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
       "authority": "producer_operational_mvp_ai_comparison_only"
     },
     "authorHandoffSummaries": {
       "path": "tests/fixtures/operational_mvp_validation/p43-t6-operational-mvp-author-handoff-summaries.example.json",
-      "digest": "sha256:0cf13f0a4349cefa5f0d5268d7c88d4d519ecfaf944e689005ae3db1a1f2bd96",
+      "digest": "sha256:7e1ccf38f662529777344f3b82c886572538a55190093ca70170c0a6ee349ca9",
       "apiVersion": "spec-harvester.operational-mvp-author-handoff/v0",
       "kind": "SpecHarvesterOperationalMVPAuthorHandoffSummaries",
       "authority": "producer_operational_mvp_author_handoff_only"
@@ -34,7 +34,7 @@
     "readyForBoundedAutonomousScraping": false,
     "needsQualityHardening": true,
     "blockedUntilAdapterExecution": false,
-    "rationale": "Static-only output is useful and ready for author review across the pinned corpus, but the AI-enabled comparison was not measured and xyflow still has a manual-correction caveat. The next step is targeted quality hardening before broader autonomous popular-library scraping."
+    "rationale": "Static-only output is useful and ready for author review across the pinned corpus, and the live AI-enabled comparison produced proposal-only enrichment evidence, but AI draft warnings remain and xyflow still has a manual-correction caveat. The next step is targeted quality hardening before broader autonomous popular-library scraping."
   },
   "decisionInputs": {
     "staticOnlyBaseline": {
@@ -46,15 +46,19 @@
       "realCorpusRunPerformed": true
     },
     "aiEnabledComparison": {
-      "providerAvailable": false,
-      "aiEnabledRunPerformed": false,
-      "aiProposalArtifactCount": 0,
-      "providerUnavailableCount": 3,
+      "providerAvailable": true,
+      "aiEnabledRunPerformed": true,
+      "aiProposalArtifactCount": 6,
+      "aiEnrichmentProposalMemberCount": 6,
+      "aiComparisonWarningCount": 3,
+      "providerUnavailableCount": 0,
+      "aiEnrichedPreviewAppliedCount": 0,
       "specpmHandoffChangedByAI": false
     },
     "authorHandoffSummaries": {
       "repositoryHandoffCount": 3,
       "readyForAuthorReviewCount": 3,
+      "aiImprovementAvailableCount": 3,
       "needsManualCorrectionRepositoryCount": 1,
       "doNotPromoteRepositoryCount": 3,
       "registryAuthority": false
@@ -67,9 +71,9 @@
       "summary": "P43-T4 produced three static-only repository results, six preview candidates, three relation proposals, and three handoff-ready author-ready draft verdicts."
     },
     {
-      "id": "ai_enabled_comparison_not_measured",
+      "id": "ai_enabled_comparison_has_reviewable_warnings",
       "blocksDecision": "ready_for_bounded_autonomous_scraping",
-      "summary": "P43-T5 recorded provider_unavailable for the optional local OpenAI-compatible provider, so no AI proposal deltas were measured."
+      "summary": "P43-T5 ran local LM Studio and produced six proposal artifacts, but each repository retained an AI draft warning and AI enrichment sidecars were not applied as registry truth."
     },
     {
       "id": "manual_correction_caveat_remains_visible",
@@ -85,9 +89,9 @@
   "rejectedAlternatives": [
     {
       "id": "ready_for_bounded_autonomous_scraping",
-      "reason": "Rejected because the AI-enabled comparison was provider-unavailable and one repository still has a manual-correction caveat. Broader scraping should wait for targeted quality hardening and a bounded batch gate.",
+      "reason": "Rejected because the live AI-enabled comparison still has draft warnings, AI sidecars remain proposal-only and unapplied, and one repository still has a manual-correction caveat. Broader scraping should wait for targeted quality hardening and a bounded batch gate.",
       "wouldRequire": [
-        "successful_ai_enabled_comparison_or_explicit_static_only_acceptance",
+        "ai_draft_warning_triage",
         "manual_correction_burn_down",
         "operator_defined_popular_library_batch_limits"
       ]
@@ -107,8 +111,8 @@
       "summary": "Resolve or explicitly accept the xyflow partial public-interface-index caveat before using it as a broader scraping quality baseline."
     },
     {
-      "id": "rerun_ai_enabled_comparison_when_provider_available",
-      "summary": "Repeat the P43-T5 comparison when a local OpenAI-compatible provider is available, preserving proposal-only AI authority."
+      "id": "triage_ai_draft_warnings_and_proposal_quality",
+      "summary": "Triage P43-T5 package_set_id_missing draft warnings and review proposal-only AI enrichment quality before using it as a broader scraping quality baseline."
     },
     {
       "id": "define_bounded_popular_library_batch_gate",

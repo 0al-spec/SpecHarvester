@@ -29092,9 +29092,10 @@ def test_operational_mvp_exit_report_is_documented() -> None:
         "blockedUntilAdapterExecution": False,
         "rationale": (
             "Static-only output is useful and ready for author review across the pinned "
-            "corpus, but the AI-enabled comparison was not measured and xyflow still "
-            "has a manual-correction caveat. The next step is targeted quality "
-            "hardening before broader autonomous popular-library scraping."
+            "corpus, and the live AI-enabled comparison produced proposal-only "
+            "enrichment evidence, but AI draft warnings remain and xyflow still has a "
+            "manual-correction caveat. The next step is targeted quality hardening "
+            "before broader autonomous popular-library scraping."
         ),
     }
     assert payload["decisionInputs"] == {
@@ -29110,14 +29111,22 @@ def test_operational_mvp_exit_report_is_documented() -> None:
             "providerAvailable": ai_comparison["summary"]["providerAvailable"],
             "aiEnabledRunPerformed": ai_comparison["summary"]["aiEnabledRunPerformed"],
             "aiProposalArtifactCount": ai_comparison["summary"]["aiProposalArtifactCount"],
+            "aiEnrichmentProposalMemberCount": ai_comparison["summary"][
+                "aiEnrichmentProposalMemberCount"
+            ],
+            "aiComparisonWarningCount": ai_comparison["summary"]["aiComparisonWarningCount"],
             "providerUnavailableCount": ai_comparison["summary"][
                 "aiComparisonProviderUnavailableCount"
+            ],
+            "aiEnrichedPreviewAppliedCount": ai_comparison["summary"][
+                "aiEnrichedPreviewAppliedCount"
             ],
             "specpmHandoffChangedByAI": ai_comparison["summary"]["specpmHandoffChangedByAI"],
         },
         "authorHandoffSummaries": {
             "repositoryHandoffCount": handoff["summary"]["repositoryHandoffCount"],
             "readyForAuthorReviewCount": handoff["summary"]["readyForAuthorReviewCount"],
+            "aiImprovementAvailableCount": handoff["summary"]["aiImprovementAvailableCount"],
             "needsManualCorrectionRepositoryCount": handoff["summary"][
                 "needsManualCorrectionRepositoryCount"
             ],
@@ -29128,7 +29137,7 @@ def test_operational_mvp_exit_report_is_documented() -> None:
     evidence = {item["id"]: item for item in payload["decisionEvidence"]}
     assert set(evidence) == {
         "static_only_pipeline_is_author_reviewable",
-        "ai_enabled_comparison_not_measured",
+        "ai_enabled_comparison_has_reviewable_warnings",
         "manual_correction_caveat_remains_visible",
         "adapter_execution_not_required_for_current_exit",
     }
@@ -29137,7 +29146,7 @@ def test_operational_mvp_exit_report_is_documented() -> None:
         == "needs_quality_hardening"
     )
     assert (
-        evidence["ai_enabled_comparison_not_measured"]["blocksDecision"]
+        evidence["ai_enabled_comparison_has_reviewable_warnings"]["blocksDecision"]
         == "ready_for_bounded_autonomous_scraping"
     )
     assert (
@@ -29154,11 +29163,11 @@ def test_operational_mvp_exit_report_is_documented() -> None:
         "ready_for_bounded_autonomous_scraping",
         "blocked_until_adapter_execution",
     }
-    assert "provider-unavailable" in rejected["ready_for_bounded_autonomous_scraping"]["reason"]
+    assert "draft warnings" in rejected["ready_for_bounded_autonomous_scraping"]["reason"]
     assert "does not require" in rejected["blocked_until_adapter_execution"]["reason"]
     assert [item["id"] for item in payload["qualityHardeningPlan"]] == [
         "burn_down_xyflow_partial_public_interface_index",
-        "rerun_ai_enabled_comparison_when_provider_available",
+        "triage_ai_draft_warnings_and_proposal_quality",
         "define_bounded_popular_library_batch_gate",
     ]
 
@@ -29220,17 +29229,18 @@ def test_operational_mvp_exit_report_is_documented() -> None:
             "p43-t4-operational-mvp-static-only-baseline.example.json",
             "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
             "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
-            "sha256:c9934bae637aff8d748e431476d297dc58f81583ab7fdb8fc00db1141889e049",
+            "sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d",
             "p43-t6-operational-mvp-author-handoff-summaries.example.json",
-            "sha256:0cf13f0a4349cefa5f0d5268d7c88d4d519ecfaf944e689005ae3db1a1f2bd96",
+            "sha256:7e1ccf38f662529777344f3b82c886572538a55190093ca70170c0a6ee349ca9",
             "needs_quality_hardening",
             "ready_for_bounded_autonomous_scraping",
             "blocked_until_adapter_execution",
-            "provider_unavailable",
+            "completed_with_draft_warnings",
+            "ai_draft_warning_enrichment_completed",
             "resolve_or_accept_partial_public_interface_index",
             "doNotPromote",
             "burn_down_xyflow_partial_public_interface_index",
-            "rerun_ai_enabled_comparison_when_provider_available",
+            "triage_ai_draft_warnings_and_proposal_quality",
             "define_bounded_popular_library_batch_gate",
             "Phase 43 is complete",
         ):

@@ -22,8 +22,8 @@
 
 - The selected `needs_quality_hardening` decision is consistent with the
   evidence: P43-T4/P43-T6 prove the static-only author handoff loop is useful,
-  but P43-T5 did not measure AI deltas and xyflow still has a manual-correction
-  caveat.
+  but P43-T5 still has live AI draft warnings, AI sidecars are proposal-only
+  and unapplied, and xyflow still has a manual-correction caveat.
 - The report correctly rejects `blocked_until_adapter_execution` because the
   current evidence does not require trusted local adapter execution.
 - The exit report remains producer-side review evidence. It does not approve

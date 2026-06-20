@@ -7,7 +7,8 @@ Status: PASS
 ## Scope
 
 P43-T7 records the Phase 43 exit decision using P43-T4 static-only baseline
-evidence, P43-T5 AI comparison evidence, and P43-T6 author handoff evidence.
+evidence, P43-T5 live proposal-only AI comparison evidence, and P43-T6 author
+handoff evidence.
 
 Selected decision:
 
@@ -16,10 +17,11 @@ needs_quality_hardening
 ```
 
 The report rejects immediate `ready_for_bounded_autonomous_scraping` because
-the optional AI-enabled comparison was provider-unavailable and xyflow retains
-a manual-correction caveat. It rejects `blocked_until_adapter_execution`
-because useful author-reviewable static-only handoff material exists and the
-current Phase 43 result does not require trusted local adapter execution.
+the live AI-enabled comparison still has draft warnings, AI sidecars remain
+proposal-only and unapplied, and xyflow retains a manual-correction caveat. It
+rejects `blocked_until_adapter_execution` because useful author-reviewable
+static-only handoff material exists and the current Phase 43 result does not
+require trusted local adapter execution.
 
 ## Artifacts
 
@@ -36,20 +38,20 @@ current Phase 43 result does not require trusted local adapter execution.
 - Fixture kind: `SpecHarvesterOperationalMVPExitReport`
 - Fixture authority: `producer_operational_mvp_exit_report_only`
 - Fixture digest:
-  `sha256:efbf5ba8952d118738cb56bc921a6ca352d8020124e31fc24ffd2f779ac72c83`
+  `sha256:8630da1e0ad387e37d2133441bfba39de1328868ed53fcaffbf509ce74f5e384`
 - Source static baseline digest:
   `sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab`
 - Source AI comparison digest:
-  `sha256:c9934bae637aff8d748e431476d297dc58f81583ab7fdb8fc00db1141889e049`
+  `sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d`
 - Source author handoff digest:
-  `sha256:0cf13f0a4349cefa5f0d5268d7c88d4d519ecfaf944e689005ae3db1a1f2bd96`
+  `sha256:7e1ccf38f662529777344f3b82c886572538a55190093ca70170c0a6ee349ca9`
 
 ## Decision Evidence
 
 - Static-only author-reviewable output exists for 3 repositories.
 - Static-only preflight passed for 6 preview candidates.
-- P43-T5 recorded `provider_unavailable`, so AI proposal deltas were not
-  measured.
+- P43-T5 recorded live local LM Studio proposal-only AI evidence with
+  `completed_with_draft_warnings`.
 - P43-T6 kept xyflow's `resolve_or_accept_partial_public_interface_index`
   manual-correction item visible.
 - Adapter execution remains disabled and is not required for the current exit
