@@ -92,5 +92,5 @@ The fixture should include:
 - `git diff --check`.
 
 ---
-**Archived:** 2026-06-20
+**Archived:** 2026-06-19
 **Verdict:** PASS
