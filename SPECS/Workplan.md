@@ -2139,7 +2139,7 @@ Acceptance:
 - [x] `P45-T2` Add a deterministic AI draft proposal validation guard that
   reports missing package-set subject identity and unknown excluded-package
   references before provider output is accepted as proposal evidence.
-- [ ] `P45-T3` Re-run the bounded operational MVP corpus after the AI draft
+- [x] `P45-T3` Re-run the bounded operational MVP corpus after the AI draft
   shape fix and compare warning counts, proposal counts, and proposal-only
   boundaries against P44-T4.
 - [ ] `P45-T4` Record the post-fix readiness decision for bounded
