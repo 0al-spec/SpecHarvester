@@ -2142,7 +2142,7 @@ Acceptance:
 - [x] `P45-T3` Re-run the bounded operational MVP corpus after the AI draft
   shape fix and compare warning counts, proposal counts, and proposal-only
   boundaries against P44-T4.
-- [ ] `P45-T4` Record the post-fix readiness decision for bounded
+- [x] `P45-T4` Record the post-fix readiness decision for bounded
   popular-library scraping.
 
 Motivation:

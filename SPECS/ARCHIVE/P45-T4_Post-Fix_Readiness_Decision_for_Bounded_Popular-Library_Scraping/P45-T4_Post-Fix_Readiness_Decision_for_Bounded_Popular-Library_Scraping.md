@@ -1,10 +1,11 @@
 # P45-T4 Post-Fix Readiness Decision for Bounded Popular-Library Scraping
 
-**Status:** Planned
+**Status:** Archived PASS
 **Phase:** Phase 45. Operational MVP AI Draft Shape Hardening
 **Task:** `P45-T4`
 **Branch:** `feature/P45-T4-post-fix-readiness-decision`
 **Depends On:** `P45-T3` Operational MVP Corpus Rerun After AI Draft Shape Fix
+**Archived:** 2026-06-20
 
 ## Problem
 
