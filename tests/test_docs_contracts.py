@@ -28607,7 +28607,7 @@ def test_operational_mvp_ai_enabled_comparison_is_documented() -> None:
             "lm_studio",
             "openai/gpt-oss-20b",
             "p43-t4-operational-mvp-static-only-baseline.example.json",
-            "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
+            "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
             "sha256:3a677f471c18bdbabd7c80d6edcbb5af4ec80ec36ff7d325a483c87f672a8016",
             "same pinned corpus",
             "aiEnabledRunPerformed: true",

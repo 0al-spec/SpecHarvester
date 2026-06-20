@@ -53,7 +53,7 @@ The comparison references the P43-T4 static-only baseline fixture:
 
 ```text
 tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json
-sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab
+sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0
 ```
 
 The same pinned corpus is preserved:
