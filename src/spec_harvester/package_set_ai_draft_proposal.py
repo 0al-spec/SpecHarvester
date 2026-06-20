@@ -23,7 +23,11 @@ from spec_harvester.model_json_repair import (
 )
 from spec_harvester.package_set_drafter import read_inventory
 from spec_harvester.producer_receipt import digest_record, sha256_file
-from spec_harvester.producer_reports import stop_policy_summary_from_diagnostics
+from spec_harvester.producer_reports import (
+    AUTHOR_READY_STATUS_READY,
+    AUTHOR_READY_STOP_DECISION_STOP,
+    stop_policy_summary_from_diagnostics,
+)
 
 PACKAGE_SET_AI_DRAFT_API_VERSION = "spec-harvester.package-set-ai-draft/v0"
 PACKAGE_SET_AI_DRAFT_KIND = "SpecHarvesterPackageSetAIDraftProposal"
@@ -421,11 +425,14 @@ def proposal_from_model_output(
             "errorCount": error_count,
             "warningCount": warning_count,
         },
-        "stopPolicySummary": stop_policy_summary_from_diagnostics(
+        "stopPolicySummary": package_set_ai_draft_stop_policy_summary(
             source_status=status,
             error_count=error_count,
             warning_count=warning_count,
             subject_count=len(selected_members),
+            inventory_by_id=inventory_by_id,
+            package_set=package_set,
+            validation_guard=validation_guard,
         ),
         "evidenceGaps": string_list(model_output.get("evidenceGaps")),
         "overallConfidence": confidence_value(model_output.get("overallConfidence")),
@@ -648,6 +655,81 @@ def normalize_selected_member_role(model_role: str) -> tuple[str, bool]:
     if alias is not None:
         return alias, True
     return "member_package", False
+
+
+def package_set_ai_draft_stop_policy_summary(
+    *,
+    source_status: str,
+    error_count: int,
+    warning_count: int,
+    subject_count: int,
+    inventory_by_id: dict[str, dict[str, Any]],
+    package_set: dict[str, Any],
+    validation_guard: dict[str, Any],
+) -> dict[str, Any]:
+    summary = stop_policy_summary_from_diagnostics(
+        source_status=source_status,
+        error_count=error_count,
+        warning_count=warning_count,
+        subject_count=subject_count,
+    )
+    zero_subject_policy = zero_subject_policy_record(
+        source_status=source_status,
+        error_count=error_count,
+        warning_count=warning_count,
+        subject_count=subject_count,
+        inventory_by_id=inventory_by_id,
+        package_set=package_set,
+        validation_guard=validation_guard,
+    )
+    if zero_subject_policy["status"] == "accepted_non_blocking":
+        summary["status"] = AUTHOR_READY_STATUS_READY
+        summary["decision"] = AUTHOR_READY_STOP_DECISION_STOP
+        summary["reason"] = "single_package_no_proposal_subjects_non_blocking"
+        summary["summary"] = (
+            "Diagnostic-clean single-package inventory already supplies the proposal "
+            "subject; no additional package-set members are required."
+        )
+    summary["zeroSubjectPolicy"] = zero_subject_policy
+    return summary
+
+
+def zero_subject_policy_record(
+    *,
+    source_status: str,
+    error_count: int,
+    warning_count: int,
+    subject_count: int,
+    inventory_by_id: dict[str, dict[str, Any]],
+    package_set: dict[str, Any],
+    validation_guard: dict[str, Any],
+) -> dict[str, Any]:
+    inventory_package_ids = sorted(inventory_by_id)
+    record = {
+        "status": "not_applicable",
+        "reason": "proposal_subjects_present",
+        "inventoryPackageCount": len(inventory_package_ids),
+        "inventoryPackageIds": inventory_package_ids,
+        "packageSetId": string_value(package_set.get("packageId")),
+    }
+    if subject_count > 0:
+        return record
+    record["status"] = "requires_regeneration"
+    if len(inventory_by_id) != 1:
+        record["reason"] = "package_set_requires_selected_members"
+        return record
+    if source_status != "completed" or error_count or warning_count:
+        record["reason"] = "single_package_proposal_has_diagnostics"
+        return record
+    if validation_guard.get("status") != "passed":
+        record["reason"] = "single_package_validation_guard_not_passed"
+        return record
+    if not record["packageSetId"]:
+        record["reason"] = "single_package_package_set_identity_missing"
+        return record
+    record["status"] = "accepted_non_blocking"
+    record["reason"] = "single_package_inventory_subject_stable"
+    return record
 
 
 def excluded_package_proposals(

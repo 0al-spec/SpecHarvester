@@ -109,3 +109,17 @@ Proposal outputs include `stopPolicySummary` with `stop_for_author_review`,
 `continue_generation`, or `blocked_until_inputs_change`. This is a model-loop
 signal only; generated package bundles still need author-ready quality reports
 and downstream validation.
+
+## Single-Package Zero-Subject Policy
+
+`no_proposal_subjects` remains a regeneration reason for package sets that need
+selected members. A diagnostic-clean zero-subject proposal is non-blocking only
+when deterministic inventory contains exactly one package, the validation guard
+passes, diagnostics are clean, and package-set identity is stable. In that case
+`stopPolicySummary.decision` is `stop_for_author_review`, `reason` is
+`single_package_no_proposal_subjects_non_blocking`, and
+`zeroSubjectPolicy.status` is `accepted_non_blocking`.
+
+For multi-package inventories, warning/failed proposals, or missing identity,
+zero-subject output still reports `no_proposal_subjects` with
+`zeroSubjectPolicy.status: requires_regeneration`.

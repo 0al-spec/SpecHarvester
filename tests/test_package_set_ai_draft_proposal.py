@@ -406,6 +406,96 @@ def test_package_set_ai_draft_ignores_unknown_exclusion_for_single_package_inven
     assert "excluded_package_unknown" not in {item["code"] for item in report["diagnostics"]}
 
 
+def test_package_set_ai_draft_accepts_clean_zero_subject_single_package_policy(
+    tmp_path: Path,
+) -> None:
+    inventory = write_single_package_inventory(tmp_path)
+    model_output = write_single_package_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["selectedMembers"] = []
+    payload["relations"] = []
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    stop_policy = report["stopPolicySummary"]
+    assert report["status"] == "completed"
+    assert report["summary"]["selectedMemberCount"] == 0
+    assert stop_policy["subjectCount"] == 0
+    assert stop_policy["status"] == "author_ready_draft"
+    assert stop_policy["decision"] == "stop_for_author_review"
+    assert stop_policy["reason"] == "single_package_no_proposal_subjects_non_blocking"
+    assert stop_policy["zeroSubjectPolicy"] == {
+        "status": "accepted_non_blocking",
+        "reason": "single_package_inventory_subject_stable",
+        "inventoryPackageCount": 1,
+        "inventoryPackageIds": ["demo.core"],
+        "packageSetId": "demo.workspace",
+    }
+
+
+def test_package_set_ai_draft_keeps_no_proposal_subjects_for_multi_package_zero_subjects(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["selectedMembers"] = []
+    payload["relations"] = []
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    stop_policy = report["stopPolicySummary"]
+    assert report["status"] == "completed"
+    assert stop_policy["decision"] == "continue_generation"
+    assert stop_policy["reason"] == "no_proposal_subjects"
+    assert stop_policy["zeroSubjectPolicy"]["status"] == "requires_regeneration"
+    assert stop_policy["zeroSubjectPolicy"]["reason"] == "package_set_requires_selected_members"
+    assert stop_policy["zeroSubjectPolicy"]["inventoryPackageCount"] == 4
+
+
+def test_package_set_ai_draft_requires_regeneration_for_warning_zero_subject_single_package(
+    tmp_path: Path,
+) -> None:
+    inventory = write_single_package_inventory(tmp_path)
+    model_output = write_single_package_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["packageSet"]["evidencePaths"] = ["private/notes.md"]
+    payload["selectedMembers"] = []
+    payload["relations"] = []
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    stop_policy = report["stopPolicySummary"]
+    assert report["status"] == "warning"
+    assert stop_policy["decision"] == "continue_generation"
+    assert stop_policy["reason"] == "no_proposal_subjects"
+    assert stop_policy["zeroSubjectPolicy"] == {
+        "status": "requires_regeneration",
+        "reason": "single_package_proposal_has_diagnostics",
+        "inventoryPackageCount": 1,
+        "inventoryPackageIds": ["demo.core"],
+        "packageSetId": "demo.workspace",
+    }
+
+
 def test_package_set_ai_draft_cli_writes_request_and_proposal(
     tmp_path: Path,
     capsys,

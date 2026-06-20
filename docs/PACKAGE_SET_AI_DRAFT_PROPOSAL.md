@@ -159,6 +159,28 @@ Proposal outputs include `stopPolicySummary` with `stop_for_author_review`,
 signal only; generated package bundles still need author-ready quality reports
 and downstream validation.
 
+## Single-Package Zero-Subject Policy
+
+`no_proposal_subjects` remains blocking for package sets that need selected
+members. A diagnostic-clean zero-subject draft is accepted as non-blocking only
+when all of these are true:
+
+- deterministic inventory contains exactly one package;
+- `validationGuard.status` is `passed`;
+- the proposal has no error or warning diagnostics;
+- the package-set identity is stable after request-backed normalization.
+
+In that bounded case, `stopPolicySummary.decision` is
+`stop_for_author_review`, `reason` is
+`single_package_no_proposal_subjects_non_blocking`, and
+`zeroSubjectPolicy.status` is `accepted_non_blocking`. This means additional
+model iteration is not required for a single-package repository because the
+deterministic inventory already supplies the only package subject.
+
+For multi-package inventories, warning/failed proposals, or missing identity,
+zero-subject output still reports `no_proposal_subjects` and
+`zeroSubjectPolicy.status: requires_regeneration`.
+
 ## Role Taxonomy
 
 The model may propose generic roles:
