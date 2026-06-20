@@ -55,6 +55,13 @@ requirements, pinned local checkout policy, `static_only` and
 `ai_enabled_proposal` run modes, quality dimensions, shared stop policy, and the
 non-authority boundary before any real corpus run starts.
 
+P43-T3 records the companion report shape as
+[`OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md)
+and the `SpecHarvesterOperationalMVPValidationReport` fixture. The report
+fixture captures per-repository draft status, static-only result, AI-enabled
+result, author-ready verdict, evidence precision notes, stop-policy outcome,
+and SpecPM handoff readiness without claiming that a real corpus has run.
+
 ## Corpus
 
 The corpus is operator-selected and pinned. SpecHarvester must not clone or
@@ -174,6 +181,7 @@ Operational MVP validation is producer-side evidence. It does not:
 
 - [`SPECS/Workplan.md`](../SPECS/Workplan.md)
 - [`OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md)
+- [`OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md)
 - [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_BAR.md`](AUTHOR_READY_DRAFT_QUALITY_BAR.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md)

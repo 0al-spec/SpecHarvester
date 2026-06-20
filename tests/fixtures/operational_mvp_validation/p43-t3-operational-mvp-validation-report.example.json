@@ -1,0 +1,323 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-validation-report/v0",
+  "kind": "SpecHarvesterOperationalMVPValidationReport",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_validation_report_only",
+  "phase": "P43",
+  "task": "P43-T3",
+  "reportMode": "synthetic_fixture_shape_only",
+  "plan": {
+    "path": "tests/fixtures/operational_mvp_validation/p43-t2-operational-mvp-validation-plan.example.json",
+    "digest": "sha256:a035b03fb66ba6bf56fc09dc8301ce611f144aa9e8dc342b82a8f9fbc052b772",
+    "apiVersion": "spec-harvester.operational-mvp-validation-plan/v0",
+    "kind": "SpecHarvesterOperationalMVPValidationPlan",
+    "authority": "producer_operational_mvp_validation_plan_only"
+  },
+  "summary": {
+    "repositoryResultCount": 4,
+    "staticOnlyResultCount": 4,
+    "aiEnabledResultCount": 4,
+    "authorReadyDraftCount": 0,
+    "needsQualityHardeningCount": 0,
+    "blockedCount": 4,
+    "specpmHandoffReadyCount": 0,
+    "realCorpusRunPerformed": false
+  },
+  "qualityDimensionIds": [
+    "validity",
+    "repositorySpecificity",
+    "evidencePrecision",
+    "packageTopology",
+    "claimConservatism",
+    "authorActionability",
+    "SpecPMHandoffReadiness"
+  ],
+  "sharedStopPolicy": {
+    "id": "shared_operational_mvp_stop_policy",
+    "compatibleWithPlan": true,
+    "observedStopConditions": [
+      "missing_pinned_local_checkout",
+      "unverified_exact_revision"
+    ]
+  },
+  "repositoryResults": [
+    {
+      "repositoryId": "xyflow",
+      "repositoryUrl": "https://github.com/xyflow/xyflow",
+      "ecosystemFamily": "javascript_typescript",
+      "expectedPackageFamilyShape": "package_set_monorepo",
+      "pinnedCheckout": {
+        "localCheckoutPath": "<operator-provided-local-checkout>/xyflow",
+        "exactRevision": "<40-hex-commit-sha>",
+        "verified": false,
+        "status": "missing_operator_provided_checkout"
+      },
+      "draftStatus": "blocked_before_generation",
+      "staticOnlyResult": {
+        "runMode": "static_only",
+        "status": "not_run",
+        "blockedBy": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ],
+        "adapterExecution": "not_run",
+        "aiInvocation": "not_run",
+        "registryAuthority": false
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "not_run",
+        "blockedBy": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ],
+        "aiOutputAuthority": "proposal_only",
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "qualityDimensions": {
+        "validity": "not_evaluated",
+        "repositorySpecificity": "not_evaluated",
+        "evidencePrecision": "not_evaluated",
+        "packageTopology": "not_evaluated",
+        "claimConservatism": "not_evaluated",
+        "authorActionability": "not_evaluated",
+        "SpecPMHandoffReadiness": "not_evaluated"
+      },
+      "authorReadyVerdict": "blocked",
+      "evidencePrecisionNotes": [
+        "fixture_shape_only_no_public_interface_evidence_collected"
+      ],
+      "stopPolicyOutcome": {
+        "outcome": "blocked",
+        "stopConditions": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ]
+      },
+      "specpmHandoffReadiness": {
+        "ready": false,
+        "reason": "no_generated_candidate_available",
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "fastapi_or_fastmcp",
+      "repositoryUrl": "https://github.com/fastapi/fastapi",
+      "ecosystemFamily": "python",
+      "expectedPackageFamilyShape": "framework_library_package",
+      "pinnedCheckout": {
+        "localCheckoutPath": "<operator-provided-local-checkout>/fastapi-or-fastmcp",
+        "exactRevision": "<40-hex-commit-sha>",
+        "verified": false,
+        "status": "missing_operator_provided_checkout"
+      },
+      "draftStatus": "blocked_before_generation",
+      "staticOnlyResult": {
+        "runMode": "static_only",
+        "status": "not_run",
+        "blockedBy": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ],
+        "adapterExecution": "not_run",
+        "aiInvocation": "not_run",
+        "registryAuthority": false
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "not_run",
+        "blockedBy": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ],
+        "aiOutputAuthority": "proposal_only",
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "qualityDimensions": {
+        "validity": "not_evaluated",
+        "repositorySpecificity": "not_evaluated",
+        "evidencePrecision": "not_evaluated",
+        "packageTopology": "not_evaluated",
+        "claimConservatism": "not_evaluated",
+        "authorActionability": "not_evaluated",
+        "SpecPMHandoffReadiness": "not_evaluated"
+      },
+      "authorReadyVerdict": "blocked",
+      "evidencePrecisionNotes": [
+        "fixture_shape_only_no_public_interface_evidence_collected"
+      ],
+      "stopPolicyOutcome": {
+        "outcome": "blocked",
+        "stopConditions": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ]
+      },
+      "specpmHandoffReadiness": {
+        "ready": false,
+        "reason": "no_generated_candidate_available",
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "gin",
+      "repositoryUrl": "https://github.com/gin-gonic/gin",
+      "ecosystemFamily": "go",
+      "expectedPackageFamilyShape": "single_package_framework",
+      "pinnedCheckout": {
+        "localCheckoutPath": "<operator-provided-local-checkout>/gin",
+        "exactRevision": "<40-hex-commit-sha>",
+        "verified": false,
+        "status": "missing_operator_provided_checkout"
+      },
+      "draftStatus": "blocked_before_generation",
+      "staticOnlyResult": {
+        "runMode": "static_only",
+        "status": "not_run",
+        "blockedBy": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ],
+        "adapterExecution": "not_run",
+        "aiInvocation": "not_run",
+        "registryAuthority": false
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "not_run",
+        "blockedBy": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ],
+        "aiOutputAuthority": "proposal_only",
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "qualityDimensions": {
+        "validity": "not_evaluated",
+        "repositorySpecificity": "not_evaluated",
+        "evidencePrecision": "not_evaluated",
+        "packageTopology": "not_evaluated",
+        "claimConservatism": "not_evaluated",
+        "authorActionability": "not_evaluated",
+        "SpecPMHandoffReadiness": "not_evaluated"
+      },
+      "authorReadyVerdict": "blocked",
+      "evidencePrecisionNotes": [
+        "fixture_shape_only_no_public_interface_evidence_collected"
+      ],
+      "stopPolicyOutcome": {
+        "outcome": "blocked",
+        "stopConditions": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ]
+      },
+      "specpmHandoffReadiness": {
+        "ready": false,
+        "reason": "no_generated_candidate_available",
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "additional_ecosystem_placeholder",
+      "repositoryUrl": "https://example.invalid/operator-selected-repository",
+      "ecosystemFamily": "additional_operator_selected",
+      "expectedPackageFamilyShape": "one_more_repository_shape",
+      "pinnedCheckout": {
+        "localCheckoutPath": "<operator-provided-local-checkout>/additional-ecosystem",
+        "exactRevision": "<40-hex-commit-sha>",
+        "verified": false,
+        "status": "missing_operator_provided_checkout"
+      },
+      "draftStatus": "blocked_before_generation",
+      "staticOnlyResult": {
+        "runMode": "static_only",
+        "status": "not_run",
+        "blockedBy": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ],
+        "adapterExecution": "not_run",
+        "aiInvocation": "not_run",
+        "registryAuthority": false
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "not_run",
+        "blockedBy": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ],
+        "aiOutputAuthority": "proposal_only",
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "qualityDimensions": {
+        "validity": "not_evaluated",
+        "repositorySpecificity": "not_evaluated",
+        "evidencePrecision": "not_evaluated",
+        "packageTopology": "not_evaluated",
+        "claimConservatism": "not_evaluated",
+        "authorActionability": "not_evaluated",
+        "SpecPMHandoffReadiness": "not_evaluated"
+      },
+      "authorReadyVerdict": "blocked",
+      "evidencePrecisionNotes": [
+        "fixture_shape_only_no_public_interface_evidence_collected"
+      ],
+      "stopPolicyOutcome": {
+        "outcome": "blocked",
+        "stopConditions": [
+          "missing_pinned_local_checkout",
+          "unverified_exact_revision"
+        ]
+      },
+      "specpmHandoffReadiness": {
+        "ready": false,
+        "reason": "no_generated_candidate_available",
+        "registryAuthority": false
+      }
+    }
+  ],
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "reportIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "realCorpusRunPerformed": false,
+    "implicitRepositoryFetchAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_run_real_corpus",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_accept_mutable_repository_state",
+    "does_not_execute_harvested_code",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_run_adapter_code",
+    "does_not_run_ai",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ],
+  "followUp": {
+    "staticBaselineTask": "P43-T4",
+    "aiComparisonTask": "P43-T5",
+    "authorHandoffSummaryTask": "P43-T6",
+    "exitReportTask": "P43-T7"
+  }
+}

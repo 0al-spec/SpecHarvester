@@ -236,6 +236,11 @@ Published DocC site:
    `SpecHarvesterOperationalMVPValidationPlan` fixture for selected corpus
    requirements, pinned local checkout policy, run modes, quality dimensions,
    stop policy, and non-authority boundaries
+55. [`OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_REPORT_FIXTURE.md):
+   machine-readable
+   `SpecHarvesterOperationalMVPValidationReport` fixture for per-repository
+   draft status, static-only result, AI-enabled result, author-ready verdict,
+   evidence precision notes, stop-policy outcome, and SpecPM handoff readiness
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
