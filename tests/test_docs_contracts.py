@@ -38,6 +38,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P45-T2 AI Draft Proposal Validation Guard" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 45. Operational MVP AI Draft Shape Hardening" in next_text
+        assert "`P45-T2`" in next_text
+        assert "`P45-T1` AI Draft Proposal Subject Identity Fix" in next_text
+        assert "deterministic AI draft proposal validation guard" in normalized
+        assert "missing package-set subject identity" in normalized
+        assert "unknown excluded-package references" in normalized
+        assert "Do not treat AI output as registry truth" in next_text
+        assert "Do not add new Workplan tasks" in next_text
+        return
+
     if "# Next Task: P45-T1 AI Draft Proposal Subject Identity Fix" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 45. Operational MVP AI Draft Shape Hardening" in next_text

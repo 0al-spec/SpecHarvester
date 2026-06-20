@@ -2,7 +2,7 @@
 
 ## Status
 
-Planned for Phase 45.
+Archived as PASS on 2026-06-20.
 
 ## Motivation
 
