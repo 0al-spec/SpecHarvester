@@ -851,6 +851,11 @@ P46-T5 records <doc:BoundedPopularLibraryPilotAuthorHandoff> and the
 machine-readable `SpecHarvesterBoundedPopularLibraryPilotAuthorHandoff`
 fixture, giving authors per-repository review guidance while keeping
 do-not-promote sidecars separate from reviewable static evidence.
+P46-T6 records <doc:BoundedPopularLibraryPilotExitDecision> and the
+machine-readable `SpecHarvesterBoundedPopularLibraryPilotExitDecision`
+fixture, selecting a targeted quality pass before larger curated corpus
+expansion because static evidence is reviewable but AI sidecar quality still
+blocks scale.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

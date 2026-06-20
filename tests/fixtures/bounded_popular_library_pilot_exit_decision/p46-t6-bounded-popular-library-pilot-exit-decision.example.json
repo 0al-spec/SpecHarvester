@@ -1,0 +1,178 @@
+{
+  "apiVersion": "spec-harvester.bounded-popular-library-pilot-exit-decision/v0",
+  "kind": "SpecHarvesterBoundedPopularLibraryPilotExitDecision",
+  "authority": "producer_exit_decision_evidence_only",
+  "phase": "P46",
+  "task": "P46-T6",
+  "sourceArtifacts": {
+    "p46AuthorHandoff": {
+      "path": "tests/fixtures/bounded_popular_library_pilot_author_handoff/p46-t5-bounded-popular-library-pilot-author-handoff-summaries.example.json",
+      "digest": "sha256:3d2251984fbedd589993a6825666b2cee97505c0559667ece6ae15ac805e072b",
+      "apiVersion": "spec-harvester.bounded-popular-library-pilot-author-handoff/v0",
+      "kind": "SpecHarvesterBoundedPopularLibraryPilotAuthorHandoff",
+      "authority": "producer_author_handoff_evidence_only"
+    }
+  },
+  "decision": {
+    "selected": "run_targeted_quality_pass_before_larger_curated_corpus",
+    "selectedReason": "static_pilot_reviewable_but_ai_sidecar_quality_blocks_larger_corpus",
+    "readyForLargerCuratedCorpus": false,
+    "needsTargetedQualityPass": true,
+    "stoppedOnDocumentedBlocker": false,
+    "registryAuthority": false
+  },
+  "evidenceSummary": {
+    "repositoryCount": 6,
+    "reviewableStaticMemberCount": 9,
+    "relationProposalCount": 3,
+    "reviewableRepositoryCount": 6,
+    "doNotPromoteAISidecarCount": 2,
+    "unsupportedAISidecarCount": 1,
+    "noisyAISidecarCount": 4,
+    "evidenceGapRepositoryCount": 1,
+    "staticPilotSupportsBoundedMechanics": true,
+    "aiProposalQualityBlocksExpansion": true
+  },
+  "selectedPath": {
+    "id": "run_targeted_quality_pass_before_larger_curated_corpus",
+    "rationale": [
+      "static_output_is_reviewable_for_all_six_repositories",
+      "gin_and_docc2context_ai_drafts_are_do_not_promote",
+      "xyflow_has_evidence_gap_and_unsupported_enrichment_caveats",
+      "larger_corpus_requires_targeted_quality_pass_first"
+    ],
+    "requiredFollowUpSignals": [
+      "repair_ai_draft_identity_for_gin_and_docc2context",
+      "resolve_or_accept_xyflow_evidence_gap_caveats",
+      "rerun_bounded_ai_enabled_pilot_after_targeted_fixes"
+    ]
+  },
+  "rejectedAlternatives": [
+    {
+      "id": "proceed_to_larger_curated_corpus",
+      "rejectedBecause": [
+        "gin.aiDraft_is_do_not_promote",
+        "docc2context.aiDraft_is_do_not_promote",
+        "xyflow.aiEnrichment_has_model_evidence_path_unsupported",
+        "xyflow_static_output_has_unresolved_evidence_gaps"
+      ],
+      "conditionToReconsider": "targeted_quality_pass_clears_or_explicitly_accepts_remaining_blockers"
+    },
+    {
+      "id": "stop_on_documented_blocker",
+      "rejectedBecause": [
+        "static_candidate_layer_is_reviewable_for_all_six_repositories",
+        "remaining_blockers_are_targeted_and_repairable",
+        "bounded_pilot_mechanics_are_validated_enough_for_quality_follow_up"
+      ],
+      "conditionToReconsider": "targeted_quality_pass_fails_to_clear_repairable_blockers"
+    }
+  ],
+  "repositoryExitTreatment": [
+    {
+      "id": "flask",
+      "reviewableStatic": ["flask.core"],
+      "blockingSidecars": [],
+      "followUp": "author_review_noisy_ai_sidecars_before_any_ai_use"
+    },
+    {
+      "id": "gin",
+      "reviewableStatic": ["gin.core"],
+      "blockingSidecars": ["gin.aiDraft"],
+      "followUp": "regenerate_ai_draft_before_larger_corpus_expansion"
+    },
+    {
+      "id": "xyflow",
+      "reviewableStatic": [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace"
+      ],
+      "relationProposals": [
+        "xyflow.workspace.contains.xyflow.react",
+        "xyflow.workspace.contains.xyflow.svelte",
+        "xyflow.workspace.contains.xyflow.system"
+      ],
+      "blockingSidecars": ["xyflow.aiEnrichment"],
+      "caveats": [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch",
+        "model_evidence_path_unsupported"
+      ],
+      "followUp": "resolve_or_explicitly_accept_caveats_before_larger_corpus_expansion"
+    },
+    {
+      "id": "cupertino",
+      "reviewableStatic": ["cupertino.core"],
+      "blockingSidecars": [],
+      "followUp": "author_review_noisy_ai_draft_before_any_ai_use"
+    },
+    {
+      "id": "navigation-split-view",
+      "reviewableStatic": ["navigation_split_view.core"],
+      "blockingSidecars": [],
+      "followUp": "author_review_noisy_ai_draft_before_any_ai_use"
+    },
+    {
+      "id": "docc2context",
+      "reviewableStatic": ["docc2context.core"],
+      "blockingSidecars": ["docc2context.aiDraft"],
+      "followUp": "regenerate_ai_draft_before_larger_corpus_expansion"
+    }
+  ],
+  "largerCorpusGate": {
+    "approvedNow": false,
+    "recommendedNextWork": "targeted_quality_pass",
+    "requiredBeforeApproval": [
+      "clear_do_not_promote_ai_drafts",
+      "triage_unsupported_xyflow_enrichment",
+      "document_xyflow_evidence_gap_disposition",
+      "rerun_small_bounded_pilot_before_expanding"
+    ]
+  },
+  "phaseExitState": {
+    "phase46Complete": true,
+    "readyForPhase47QualityFollowUp": true,
+    "largerCuratedCorpusApproved": false,
+    "targetedQualityPassRequired": true,
+    "stoppedOnDocumentedBlocker": false
+  },
+  "authorityBoundary": {
+    "exitDecisionIsRegistryAuthority": false,
+    "approvesLargerCuratedCorpus": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "handoffOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "rerunsPilot": false,
+    "runsAI": false,
+    "runsAdapters": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_treat_exit_decision_output_as_registry_truth",
+    "does_not_treat_handoff_output_as_registry_truth",
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_approve_larger_curated_corpus"
+  ],
+  "nextState": {
+    "nextTaskPointer": "Phase 46 Complete",
+    "recommendedFollowUp": "Phase 47 Targeted Pilot Quality Follow-Up Planning"
+  }
+}

@@ -296,6 +296,9 @@ Published DocC site:
 73. [`BOUNDED_POPULAR_LIBRARY_PILOT_AUTHOR_HANDOFF.md`](BOUNDED_POPULAR_LIBRARY_PILOT_AUTHOR_HANDOFF.md):
    P46-T5 author-facing handoff summaries separating reviewable static
    evidence from noisy, unsupported, evidence-gap, and do-not-promote sidecars
+74. [`BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md`](BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md):
+   P46-T6 exit decision selecting a targeted quality pass before any larger
+   curated corpus expansion
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
