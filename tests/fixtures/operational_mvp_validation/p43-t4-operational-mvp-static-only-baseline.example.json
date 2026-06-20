@@ -5,7 +5,7 @@
   "authority": "producer_operational_mvp_static_only_baseline_only",
   "phase": "P43",
   "task": "P43-T4",
-  "createdAt": "2026-06-20T00:00:00Z",
+  "createdAt": "2026-06-19T22:03:01Z",
   "reportMode": "real_static_only_baseline",
   "plan": {
     "path": "tests/fixtures/operational_mvp_validation/p43-t2-operational-mvp-validation-plan.example.json",
