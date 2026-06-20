@@ -29977,6 +29977,118 @@ def test_operational_mvp_quality_hardened_rerun_is_documented() -> None:
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
+def test_operational_mvp_post_hardening_readiness_decision_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p44-t5-operational-mvp-post-hardening-readiness-decision.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPPostHardeningReadinessDecision.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.operational-mvp-post-hardening-readiness-decision/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterOperationalMVPPostHardeningReadinessDecision"
+    assert (
+        payload["authority"]
+        == "producer_operational_mvp_post_hardening_readiness_decision_only"
+    )
+    assert payload["phase"] == "P44"
+    assert payload["task"] == "P44-T5"
+    assert payload["decision"]["selected"] == "needs_another_quality_pass"
+    assert payload["decision"]["readyForBoundedPopularLibraryScraping"] is False
+    assert payload["decision"]["needsAnotherQualityPass"] is True
+    assert payload["decision"]["blockedUntilAdapterExecution"] is False
+    assert payload["decisionInputs"]["qualityHardenedRerun"]["resolvedWarningCount"] == 0
+    assert payload["recommendedNextPhase"]["id"] == "P45"
+    assert payload["recommendedNextPhase"]["recommendedFirstTask"] == "P45-T1"
+    assert payload["exitState"] == {
+        "phase44Complete": True,
+        "readyForP45": True,
+        "readyForBoundedPopularLibraryScraping": False,
+        "needsAnotherQualityPass": True,
+        "blockedUntilAdapterExecution": False,
+    }
+    assert payload["authorityBoundary"]["readinessDecisionIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesBoundedPopularLibraryScraping"] is False
+    assert "does_not_treat_readiness_output_as_registry_truth" in payload[
+        "nonAuthorityStatements"
+    ]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Post-Hardening Readiness Decision",
+            "P44-T5",
+            "SpecHarvesterOperationalMVPPostHardeningReadinessDecision",
+            "spec-harvester.operational-mvp-post-hardening-readiness-decision/v0",
+            "producer_operational_mvp_post_hardening_readiness_decision_only",
+            "p44-t5-operational-mvp-post-hardening-readiness-decision.example.json",
+            "needs_another_quality_pass",
+            "ready_for_bounded_popular_library_scraping",
+            "blocked_until_adapter_execution",
+            "package_set_id_missing",
+            "excluded_package_unknown",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "run AI",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "enable trusted local adapter execution",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "approve bounded popular-library scraping",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat readiness output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md"),
+        (docc_root, "<doc:OperationalMVPPostHardeningReadinessDecision>"),
+        (capabilities, "OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md"),
+        (capabilities_docc, "OperationalMVPPostHardeningReadinessDecision"),
+        (roadmap, "OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md"),
+        (roadmap_docc, "OperationalMVPPostHardeningReadinessDecision"),
+        (workplan, "Phase 45. Operational MVP AI Draft Shape Hardening"),
+        (workplan, "`P45-T1` Fix AI draft proposal subject identity"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_python_web_framework_parser_profile_fixture_is_documented() -> None:
     fixture_path = (
         ROOT

@@ -267,6 +267,8 @@ Published DocC site:
    P44-T3 xyflow partial interface and fork-origin caveat resolution
 63. [`OPERATIONAL_MVP_QUALITY_HARDENED_RERUN.md`](OPERATIONAL_MVP_QUALITY_HARDENED_RERUN.md):
    P44-T4 static-only and AI-enabled quality-hardened rerun comparison
+64. [`OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md`](OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md):
+   P44-T5 post-hardening readiness decision selecting another quality pass
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
