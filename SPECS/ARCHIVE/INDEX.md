@@ -346,6 +346,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P45-T7 | Archived REVIEW_p45_t7_operational_mvp_targeted_ai_draft_policy_rerun report |
 | 2026-06-20 | P45-T7 | Archived Operational MVP Corpus Rerun After Targeted AI Draft Policy Fixes (PASS) |
 | 2026-06-20 | P45-T6 | Archived REVIEW_p45_t6_single_package_no_proposal_subjects_policy report |
 | 2026-06-20 | P45-T6 | Archived Single-Package no_proposal_subjects Policy (PASS) |
