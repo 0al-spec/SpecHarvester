@@ -280,6 +280,8 @@ def model_request_record(options: PackageSetAIDraftProposalOptions) -> dict[str,
     inventory_path = options.inventory.resolve()
     inventory = read_inventory(inventory_path)
     packages = package_records(inventory)
+    if not packages:
+        packages = source_package_fallback_records(inventory)
     workspace_id = workspace_package_id(packages)
     evidence = evidence_records(inventory_path, inventory, options.source_checkout)
     evidence_paths = [item["path"] for item in evidence]
@@ -828,8 +830,16 @@ def relation_proposals(
                 )
             )
             continue
-        source = string_value(item.get("sourcePackageId")) or package_set_id
-        target = string_value(item.get("targetPackageId"))
+        source = (
+            first_string_value(
+                item, ("sourcePackageId", "source", "sourcePackage", "fromPackageId")
+            )
+            or package_set_id
+        )
+        target = first_string_value(
+            item,
+            ("targetPackageId", "target", "targetPackage", "toPackageId", "packageId"),
+        )
         relation_type = string_value(item.get("type")) or "contains"
         if relation_type != "contains":
             diagnostics.append(
@@ -1051,6 +1061,26 @@ def package_records(inventory: dict[str, Any]) -> list[dict[str, Any]]:
     return [item for item in packages if isinstance(item, dict)]
 
 
+def source_package_fallback_records(inventory: dict[str, Any]) -> list[dict[str, Any]]:
+    source = mapping_value(inventory.get("source"))
+    package_id = string_value(source.get("packageId"))
+    if not package_id:
+        return []
+    target = mapping_value(source.get("target"))
+    return [
+        {
+            "proposedSpecpmPackageId": package_id,
+            "role": "member_package",
+            "ecosystem": "",
+            "name": package_id,
+            "version": "",
+            "sourceTargetPath": string_value(target.get("path")) or ".",
+            "manifestPath": "",
+            "packageManager": "",
+        }
+    ]
+
+
 def workspace_manifest_paths(inventory: dict[str, Any]) -> list[str]:
     records = []
     for item in list_value(inventory.get("workspaceManifests")):
@@ -1181,6 +1211,14 @@ def list_value(value: Any) -> list[Any]:
 
 def string_value(value: Any) -> str:
     return value if isinstance(value, str) else ""
+
+
+def first_string_value(payload: dict[str, Any], keys: tuple[str, ...]) -> str:
+    for key in keys:
+        value = string_value(payload.get(key))
+        if value:
+            return value
+    return ""
 
 
 def string_list(value: Any) -> list[str]:

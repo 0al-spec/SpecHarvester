@@ -103,7 +103,9 @@ The model returns one JSON object:
 `packageId`, `sourceTargetPath`, and relation endpoints must come from the
 supplied inventory. `evidencePaths` must refer to supplied compact evidence.
 Unsupported evidence paths produce `model_evidence_path_unsupported`
-diagnostics. Relations fail closed when the target is not selected.
+diagnostics. Relations fail closed when the target is not selected. Common
+relation endpoint aliases such as `source` and `target` are normalized to
+`sourcePackageId` and `targetPackageId` before validation.
 
 When model output omits `packageSet.packageId`, SpecHarvester uses the
 deterministic request package-set id instead of recording a warning. For
@@ -111,6 +113,11 @@ single-package inventories, unknown `excludedPackages` entries are treated as
 model-side noise and ignored when the deterministic package identity is stable.
 Unknown exclusions for multi-package inventories still produce
 `excluded_package_unknown` diagnostics.
+
+When workspace inventory contains no package manifest records but the source
+manifest declares a stable `packageId`, the AI draft request carries that
+source-backed package identity as one fallback package. This keeps
+single-package repositories reviewable without inventing registry acceptance.
 
 Before normalizing proposal evidence, SpecHarvester records a deterministic
 `validationGuard` summary with `status`, `diagnosticCount`, `errorCount`,
@@ -165,7 +172,8 @@ and downstream validation.
 members. A diagnostic-clean zero-subject draft is accepted as non-blocking only
 when all of these are true:
 
-- deterministic inventory contains exactly one package;
+- deterministic inventory contains exactly one package, including the
+  source-backed package identity fallback when no package manifests were found;
 - `validationGuard.status` is `passed`;
 - the proposal has no error or warning diagnostics;
 - the package-set identity is stable after request-backed normalization.

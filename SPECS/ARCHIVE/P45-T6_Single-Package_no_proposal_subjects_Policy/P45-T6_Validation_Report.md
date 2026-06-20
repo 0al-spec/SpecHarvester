@@ -34,3 +34,26 @@ warning/failed single-package output continue to report `no_proposal_subjects`.
 - AI sidecars remain proposal-only and do not accept packages, accept
   relations, publish registry metadata, or persist raw prompts, raw responses,
   secrets, or chain-of-thought.
+
+## Post-Archive Follow-Up Addendum
+
+A preliminary P45-T7 live rerun exposed two bounded input-shape gaps in the
+P45-T6 policy surface:
+
+- FastAPI and Gin had source manifests with stable package ids, but their
+  generated workspace inventories contained no package manifest records. The AI
+  draft request now carries a source-backed package identity fallback so the
+  single-package zero-subject policy can evaluate the deterministic package id.
+- Xyflow model output can use common relation endpoint aliases such as
+  `source` and `target`; relation proposal normalization now maps those aliases
+  to `sourcePackageId` and `targetPackageId` before validation.
+
+Additional validation after the follow-up:
+
+| Command | Result |
+| --- | --- |
+| `PYTHONPATH=src python -m pytest tests/test_package_set_ai_draft_proposal.py -q` | PASS, 24 passed |
+| `PYTHONPATH=src python -m pytest tests/test_docs_contracts.py::test_docc_and_github_docs_cover_author_ready_draft_quality_bar -q` | PASS |
+| `ruff check src/spec_harvester/package_set_ai_draft_proposal.py tests/test_package_set_ai_draft_proposal.py tests/test_docs_contracts.py` | PASS |
+| `ruff format --check src/spec_harvester/package_set_ai_draft_proposal.py tests/test_package_set_ai_draft_proposal.py tests/test_docs_contracts.py` | PASS |
+| `git diff --check` | PASS |

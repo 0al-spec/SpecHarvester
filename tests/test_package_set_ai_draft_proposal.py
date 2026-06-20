@@ -44,6 +44,33 @@ def test_package_set_ai_draft_request_contains_compact_topology(
     assert "Use only packageIds" in " ".join(request["constraints"])
 
 
+def test_package_set_ai_draft_request_uses_source_package_fallback_when_inventory_is_empty(
+    tmp_path: Path,
+) -> None:
+    inventory = write_source_backed_empty_package_inventory(tmp_path)
+
+    request = model_request_record(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+        )
+    )
+
+    assert request["packageSet"]["id"] == "demo.workspace"
+    assert request["packageSet"]["packageInventoryCount"] == 1
+    assert request["packages"] == [
+        {
+            "ecosystem": "",
+            "inventoryRole": "member_package",
+            "manifestPath": "",
+            "name": "demo.workspace",
+            "packageId": "demo.workspace",
+            "packageManager": "",
+            "sourceTargetPath": ".",
+            "version": "",
+        }
+    ]
+
+
 def test_package_set_ai_draft_wraps_external_model_output(
     tmp_path: Path,
 ) -> None:
@@ -350,6 +377,32 @@ def test_package_set_ai_draft_fails_unsupported_relation_type(
     assert {item["targetPackageId"] for item in report["relations"]} == {"demo.cli"}
 
 
+def test_package_set_ai_draft_accepts_common_relation_endpoint_aliases(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    relation = payload["relations"][0]
+    relation["source"] = relation.pop("sourcePackageId")
+    relation["target"] = relation.pop("targetPackageId")
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "completed"
+    assert "relation_target_not_selected" not in {item["code"] for item in report["diagnostics"]}
+    assert {item["targetPackageId"] for item in report["relations"]} == {
+        "demo.cli",
+        "demo.core",
+    }
+
+
 def test_package_set_ai_draft_keeps_unknown_exclusion_warning_for_package_sets(
     tmp_path: Path,
 ) -> None:
@@ -435,6 +488,38 @@ def test_package_set_ai_draft_accepts_clean_zero_subject_single_package_policy(
         "reason": "single_package_inventory_subject_stable",
         "inventoryPackageCount": 1,
         "inventoryPackageIds": ["demo.core"],
+        "packageSetId": "demo.workspace",
+    }
+
+
+def test_package_set_ai_draft_accepts_source_backed_zero_subject_single_package_policy(
+    tmp_path: Path,
+) -> None:
+    inventory = write_source_backed_empty_package_inventory(tmp_path)
+    model_output = write_single_package_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["packageSet"]["packageId"] = "demo.workspace"
+    payload["selectedMembers"] = []
+    payload["relations"] = []
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    stop_policy = report["stopPolicySummary"]
+    assert report["status"] == "completed"
+    assert report["inputs"][1]["packageCount"] == 1
+    assert stop_policy["decision"] == "stop_for_author_review"
+    assert stop_policy["reason"] == "single_package_no_proposal_subjects_non_blocking"
+    assert stop_policy["zeroSubjectPolicy"] == {
+        "status": "accepted_non_blocking",
+        "reason": "single_package_inventory_subject_stable",
+        "inventoryPackageCount": 1,
+        "inventoryPackageIds": ["demo.workspace"],
         "packageSetId": "demo.workspace",
     }
 
@@ -710,6 +795,39 @@ def write_single_package_inventory(tmp_path: Path) -> Path:
         "authority": "producer_observed_review_evidence",
     }
     path = tmp_path / "single-workspace-inventory.json"
+    path.write_text(json.dumps(inventory, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
+
+
+def write_source_backed_empty_package_inventory(tmp_path: Path) -> Path:
+    inventory = {
+        "apiVersion": "spec-harvester.workspace-inventory/v0",
+        "kind": "SpecHarvesterWorkspaceInventory",
+        "schemaVersion": 1,
+        "source": {
+            "repository": "https://github.com/example/demo",
+            "exactRevision": "abc123",
+            "revisionAuthority": "source_manifest_revision",
+            "declaredRef": None,
+            "packageId": "demo.workspace",
+            "target": {
+                "kind": "repository",
+                "path": ".",
+                "label": "demo",
+            },
+        },
+        "workspaceManifests": [],
+        "packages": [],
+        "summary": {
+            "workspaceManifestCount": 0,
+            "packageManifestCount": 0,
+            "packageCount": 0,
+            "diagnosticCount": 0,
+        },
+        "diagnostics": [],
+        "authority": "producer_observed_review_evidence",
+    }
+    path = tmp_path / "source-backed-empty-workspace-inventory.json"
     path.write_text(json.dumps(inventory, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return path
 
