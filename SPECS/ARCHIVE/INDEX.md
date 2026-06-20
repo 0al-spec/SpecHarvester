@@ -338,6 +338,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P44-T4 | Archived REVIEW_p44_t4_operational_mvp_quality_hardened_rerun report |
 | 2026-06-20 | P44-T4 | Archived Operational MVP Quality-Hardened Rerun (PASS) |
 | 2026-06-20 | P44-T3 | Archived REVIEW_p44_t3_operational_mvp_xyflow_caveat_resolution report |
 | 2026-06-20 | P44-T3 | Archived Operational MVP Xyflow Interface Caveat Resolution (PASS) |
