@@ -2136,7 +2136,7 @@ Acceptance:
   package-set repositories no longer produce `package_set_id_missing` or
   `excluded_package_unknown` warnings when the deterministic package-set draft
   already has stable candidate identity.
-- [ ] `P45-T2` Add a deterministic AI draft proposal validation guard that
+- [x] `P45-T2` Add a deterministic AI draft proposal validation guard that
   reports missing package-set subject identity and unknown excluded-package
   references before provider output is accepted as proposal evidence.
 - [ ] `P45-T3` Re-run the bounded operational MVP corpus after the AI draft

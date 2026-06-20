@@ -38,6 +38,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P45-T3 Operational MVP Corpus Rerun After AI Draft Shape Fix" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 45. Operational MVP AI Draft Shape Hardening" in next_text
+        assert "`P45-T3`" in next_text
+        assert "`P45-T2` AI Draft Proposal Validation Guard" in next_text
+        assert "bounded operational MVP corpus" in normalized
+        assert "warning counts" in normalized
+        assert "proposal counts" in normalized
+        assert "proposal-only boundaries" in normalized
+        assert "Do not treat AI output as registry truth" in next_text
+        assert "Do not add new Workplan tasks" in next_text
+        return
+
     if "# Next Task: P45-T2 AI Draft Proposal Validation Guard" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -8026,6 +8040,8 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
         assert "deterministic request package-set id" in normalized
         assert "single-package inventories" in normalized
         assert "excluded_package_unknown" in normalized
+        assert "validationGuard" in normalized
+        assert "package_set_subject_identity_missing" in normalized
 
     roadmap_text = roadmap.read_text(encoding="utf-8")
     roadmap_docc_text = roadmap_docc.read_text(encoding="utf-8")

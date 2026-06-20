@@ -11,6 +11,7 @@ from spec_harvester.package_set_ai_draft_proposal import (
     PackageSetAIDraftProposalOptions,
     build_package_set_ai_draft_proposal,
     model_request_record,
+    proposal_from_model_output,
 )
 
 
@@ -62,6 +63,14 @@ def test_package_set_ai_draft_wraps_external_model_output(
     assert report["authority"] == "proposal_only_not_registry_acceptance"
     assert report["stopPolicySummary"]["decision"] == "stop_for_author_review"
     assert report["stopPolicySummary"]["subjectCount"] == 2
+    assert report["validationGuard"] == {
+        "authority": "producer_deterministic_pre_normalization_validation",
+        "status": "passed",
+        "diagnosticCount": 0,
+        "errorCount": 0,
+        "warningCount": 0,
+        "diagnostics": [],
+    }
     assert report["packageSet"]["packageId"] == "demo.workspace"
     assert report["provider"]["execution"] == "not_run_by_spec_harvester"
     assert report["summary"] == {
@@ -170,6 +179,8 @@ def test_package_set_ai_draft_infers_missing_package_set_id_without_warning(
 
     assert report["status"] == "completed"
     assert report["packageSet"]["packageId"] == "demo.workspace"
+    assert report["validationGuard"]["status"] == "passed"
+    assert report["validationGuard"]["diagnosticCount"] == 0
     assert "package_set_id_missing" not in {item["code"] for item in report["diagnostics"]}
 
 
@@ -194,6 +205,37 @@ def test_package_set_ai_draft_warns_when_package_set_object_is_missing(
     assert "package_set_subject_metadata_missing" in {
         item["code"] for item in report["diagnostics"]
     }
+
+
+def test_package_set_ai_draft_fails_when_subject_identity_is_unrecoverable(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    request = model_request_record(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+        )
+    )
+    request["packageSet"]["id"] = ""
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    del payload["packageSet"]["packageId"]
+    payload["relations"] = []
+
+    report = proposal_from_model_output(
+        request=request,
+        model_output=payload,
+        provider={"kind": "test_provider", "execution": "unit_test"},
+        provider_receipt={"execution": "unit_test"},
+    )
+
+    codes = {item["code"] for item in report["diagnostics"]}
+    guard_codes = {item["code"] for item in report["validationGuard"]["diagnostics"]}
+    assert report["status"] == "failed"
+    assert report["validationGuard"]["status"] == "failed"
+    assert report["validationGuard"]["errorCount"] == 1
+    assert "package_set_subject_identity_missing" in codes
+    assert "package_set_subject_identity_missing" in guard_codes
 
 
 def test_package_set_ai_draft_normalizes_selected_member_path_to_inventory(
@@ -283,7 +325,13 @@ def test_package_set_ai_draft_keeps_unknown_exclusion_warning_for_package_sets(
     )
 
     assert report["status"] == "warning"
+    assert report["validationGuard"]["status"] == "warning"
+    assert report["validationGuard"]["diagnosticCount"] == 1
+    assert report["validationGuard"]["warningCount"] == 1
     assert "excluded_package_unknown" in {item["code"] for item in report["diagnostics"]}
+    assert "excluded_package_unknown" in {
+        item["code"] for item in report["validationGuard"]["diagnostics"]
+    }
 
 
 def test_package_set_ai_draft_ignores_unknown_exclusion_for_single_package_inventory(
@@ -303,6 +351,8 @@ def test_package_set_ai_draft_ignores_unknown_exclusion_for_single_package_inven
     assert report["packageSet"]["packageId"] == "demo.workspace"
     assert [item["packageId"] for item in report["selectedMembers"]] == ["demo.core"]
     assert report["excludedPackages"] == []
+    assert report["validationGuard"]["status"] == "passed"
+    assert report["validationGuard"]["diagnosticCount"] == 0
     assert "excluded_package_unknown" not in {item["code"] for item in report["diagnostics"]}
 
 

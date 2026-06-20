@@ -48,6 +48,16 @@ model-side noise when deterministic package identity is stable. Unknown
 exclusions for multi-package inventories still produce
 `excluded_package_unknown` diagnostics.
 
+Before normalizing proposal evidence, SpecHarvester records a deterministic
+`validationGuard` summary with `status`, `diagnosticCount`, `errorCount`,
+`warningCount`, and guard diagnostics. The guard reports
+`package_set_subject_identity_missing` only when both the model output and the
+deterministic request omit package-set identity. It also reports
+`excluded_package_unknown` for multi-package inventories before those unknown
+exclusions can become proposal evidence. Request-backed missing
+`packageSet.packageId` and single-package inventories with model-side unknown
+exclusions remain clean guard passes.
+
 ## Bounded JSON Repair
 
 Live local provider output is parsed as one JSON object. If the initial LM
