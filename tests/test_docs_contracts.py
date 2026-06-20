@@ -38,6 +38,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P45-T4 Post-Fix Readiness Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 45. Operational MVP AI Draft Shape Hardening" in next_text
+        assert "`P45-T4`" in next_text
+        assert "`P45-T3` Operational MVP Corpus Rerun After AI Draft Shape Fix" in next_text
+        assert "bounded popular-library scraping" in normalized
+        assert "selected_member_role_unknown" in normalized
+        assert "no_proposal_subjects" in normalized
+        assert "Do not treat AI output as registry truth" in next_text
+        assert "Do not add new Workplan tasks" in next_text
+        return
+
     if "# Next Task: P45-T3 Operational MVP Corpus Rerun After AI Draft Shape Fix" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -30014,6 +30027,135 @@ def test_operational_mvp_quality_hardened_rerun_is_documented() -> None:
         (capabilities_docc, "OperationalMVPQualityHardenedRerun"),
         (roadmap, "OPERATIONAL_MVP_QUALITY_HARDENED_RERUN.md"),
         (roadmap_docc, "OperationalMVPQualityHardenedRerun"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_ai_draft_shape_rerun_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p45-t3-operational-mvp-ai-draft-shape-rerun.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_AI_DRAFT_SHAPE_RERUN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPAIDraftShapeRerun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.operational-mvp-ai-draft-shape-rerun/v0"
+    assert payload["kind"] == "SpecHarvesterOperationalMVPAIDraftShapeRerun"
+    assert payload["authority"] == "producer_operational_mvp_ai_draft_shape_rerun_only"
+    assert payload["phase"] == "P45"
+    assert payload["task"] == "P45-T3"
+    for source in payload["sourceArtifacts"].values():
+        source_path = ROOT / source["path"]
+        assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+        if source_path.suffix == ".json":
+            source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+            assert source["apiVersion"] == source_payload["apiVersion"]
+            assert source["kind"] == source_payload["kind"]
+            assert source["authority"] == source_payload["authority"]
+    assert payload["rerunInputs"]["samePinnedCorpusAsP44T4"] is True
+    assert payload["rerunInputs"]["repositoryCount"] == 3
+    assert payload["staticOnlyRerun"]["summary"]["matchesP44StaticBaseline"] is True
+    assert payload["staticOnlyRerun"]["summary"]["candidateCount"] == 6
+    assert payload["staticOnlyRerun"]["summary"]["relationCount"] == 3
+    assert payload["aiEnabledRerun"]["summary"]["aiProposalArtifactCount"] == 6
+    assert payload["aiEnabledRerun"]["summary"]["aiEnrichmentProposalMemberCount"] == 6
+    assert payload["aiEnabledRerun"]["summary"]["aiDraftWarningRepositoryCount"] == 1
+    assert payload["aiEnabledRerun"]["summary"]["aiDraftWarningDiagnosticCount"] == 3
+    assert payload["aiEnabledRerun"]["summary"]["aiDraftProviderTotalTokens"] == 17837
+    assert payload["aiEnabledRerun"]["summary"]["aiEnrichmentProviderTotalTokens"] == 80994
+    comparisons = {item["repositoryId"]: item for item in payload["repositoryComparisons"]}
+    assert comparisons["xyflow"]["p44AiDraftWarningCodes"] == ["package_set_id_missing"]
+    assert comparisons["xyflow"]["p45AiDraftWarningCodes"] == ["selected_member_role_unknown"]
+    assert comparisons["xyflow"]["warningComparison"] == "changed_warning_code_not_resolved"
+    assert comparisons["xyflow"]["aiDraftValidationGuardStatus"] == "passed"
+    assert comparisons["fastapi"]["p45AiDraftWarningCodes"] == []
+    assert comparisons["fastapi"]["warningComparison"] == "resolved"
+    assert comparisons["fastapi"]["aiDraftStopPolicyReason"] == "no_proposal_subjects"
+    assert comparisons["gin"]["p45AiDraftWarningCodes"] == []
+    assert comparisons["gin"]["warningComparison"] == "resolved"
+    assert comparisons["gin"]["aiDraftStopPolicyReason"] == "no_proposal_subjects"
+    assert payload["comparisonSummary"]["identityWarningResolvedRepositoryCount"] == 3
+    assert payload["comparisonSummary"]["resolvedWarningRepositoryCount"] == 2
+    assert payload["comparisonSummary"]["changedWarningRepositoryCount"] == 1
+    assert payload["comparisonSummary"]["postFixOutcome"] == (
+        "identity_warnings_resolved_but_ai_draft_layer_not_fully_clean"
+    )
+    assert payload["authorityBoundary"]["postFixRerunIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["rawPromptPersisted"] is False
+    assert (
+        "does_not_treat_post_fix_rerun_output_as_registry_truth"
+        in payload["nonAuthorityStatements"]
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP AI Draft Shape Rerun",
+            "P45-T3",
+            "SpecHarvesterOperationalMVPAIDraftShapeRerun",
+            "spec-harvester.operational-mvp-ai-draft-shape-rerun/v0",
+            "producer_operational_mvp_ai_draft_shape_rerun_only",
+            "p45-t3-operational-mvp-ai-draft-shape-rerun.example.json",
+            "selected_member_role_unknown",
+            "no_proposal_subjects",
+            "identity warning resolved",
+            "proposal-only",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "enable trusted local adapter execution",
+            "apply AI enrichment",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw responses",
+            "persist chain-of-thought",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat post-fix rerun output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_AI_DRAFT_SHAPE_RERUN.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_AI_DRAFT_SHAPE_RERUN.md"),
+        (docc_root, "<doc:OperationalMVPAIDraftShapeRerun>"),
+        (capabilities, "OPERATIONAL_MVP_AI_DRAFT_SHAPE_RERUN.md"),
+        (capabilities_docc, "OperationalMVPAIDraftShapeRerun"),
+        (roadmap, "OPERATIONAL_MVP_AI_DRAFT_SHAPE_RERUN.md"),
+        (roadmap_docc, "OperationalMVPAIDraftShapeRerun"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

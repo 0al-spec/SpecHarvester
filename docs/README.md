@@ -269,6 +269,8 @@ Published DocC site:
    P44-T4 static-only and AI-enabled quality-hardened rerun comparison
 64. [`OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md`](OPERATIONAL_MVP_POST_HARDENING_READINESS_DECISION.md):
    P44-T5 post-hardening readiness decision selecting another quality pass
+65. [`OPERATIONAL_MVP_AI_DRAFT_SHAPE_RERUN.md`](OPERATIONAL_MVP_AI_DRAFT_SHAPE_RERUN.md):
+   P45-T3 post-fix bounded corpus rerun after AI draft shape hardening
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

@@ -808,6 +808,11 @@ P44-T5 adds <doc:OperationalMVPPostHardeningReadinessDecision> and the
 machine-readable `SpecHarvesterOperationalMVPPostHardeningReadinessDecision`
 fixture. It selects `needs_another_quality_pass` before bounded
 popular-library scraping.
+P45-T3 adds <doc:OperationalMVPAIDraftShapeRerun> and the machine-readable
+`SpecHarvesterOperationalMVPAIDraftShapeRerun` fixture. It records the post-fix
+bounded corpus rerun after P45-T1/P45-T2 AI draft shape hardening, resolving the
+old identity warning class while keeping the remaining xyflow role-taxonomy
+warning and proposal-only boundaries explicit for P45-T4.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
