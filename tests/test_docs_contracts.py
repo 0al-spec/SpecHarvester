@@ -30810,7 +30810,7 @@ def test_bounded_popular_library_pilot_manifest_records_p46_t1_contract() -> Non
         "entryCount": 6,
         "maximumRepositoryCount": 6,
         "allEntriesPinnedByRevision": True,
-        "allCheckoutsAbsolute": True,
+        "allCheckoutsAbsolute": False,
         "requiresExistingCheckouts": True,
         "usesNetworkDiscovery": False,
     }

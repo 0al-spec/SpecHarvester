@@ -28,7 +28,7 @@ triage context from P45-T8.
 Manifest digest:
 
 ```text
-sha256:fe5786e7b905bef12bbda53ff1f3fe01a03dcd2051826bdca599e46e99f01f26
+sha256:b00a59837c64477819e01d5f97845ab8379cbe909ae464d2f1faee37e65c2f61
 ```
 
 Selected pinned repositories:
