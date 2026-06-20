@@ -847,6 +847,10 @@ P46-T4 records <doc:BoundedPopularLibraryPilotOutputTriage> and the
 machine-readable `SpecHarvesterBoundedPopularLibraryPilotOutputTriage` fixture,
 classifying reviewable static evidence, noisy AI sidecars, unsupported
 enrichment, evidence gaps, and do-not-promote AI drafts before author handoff.
+P46-T5 records <doc:BoundedPopularLibraryPilotAuthorHandoff> and the
+machine-readable `SpecHarvesterBoundedPopularLibraryPilotAuthorHandoff`
+fixture, giving authors per-repository review guidance while keeping
+do-not-promote sidecars separate from reviewable static evidence.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

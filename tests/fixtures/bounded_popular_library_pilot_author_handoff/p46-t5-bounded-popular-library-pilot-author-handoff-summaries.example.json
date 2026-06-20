@@ -1,0 +1,134 @@
+{
+  "apiVersion": "spec-harvester.bounded-popular-library-pilot-author-handoff/v0",
+  "kind": "SpecHarvesterBoundedPopularLibraryPilotAuthorHandoff",
+  "authority": "producer_author_handoff_evidence_only",
+  "phase": "P46",
+  "task": "P46-T5",
+  "sourceArtifacts": {
+    "p46OutputTriage": {
+      "path": "tests/fixtures/bounded_popular_library_pilot_output_triage/p46-t4-bounded-popular-library-pilot-output-triage.example.json",
+      "digest": "sha256:c347d7948bb4eac0243c56facfe47c3ba66e7c86cdad961918d423f597bc9b3e",
+      "apiVersion": "spec-harvester.bounded-popular-library-pilot-output-triage/v0",
+      "kind": "SpecHarvesterBoundedPopularLibraryPilotOutputTriage",
+      "authority": "producer_triage_evidence_only"
+    }
+  },
+  "summary": {
+    "repositoryCount": 6,
+    "reviewableStaticMemberCount": 9,
+    "relationProposalCount": 3,
+    "reviewableRepositoryCount": 6,
+    "doNotPromoteAISidecarCount": 2,
+    "unsupportedAISidecarCount": 1,
+    "noisyAISidecarCount": 4,
+    "evidenceGapRepositoryCount": 1,
+    "registryAuthority": false
+  },
+  "repositories": [
+    {
+      "id": "flask",
+      "authorSummary": "Review the static Flask candidate. Treat AI draft and enrichment as noisy advisory material only.",
+      "reviewNow": ["flask.core"],
+      "relationProposals": [],
+      "manualCorrection": ["review Flask AI sidecar role and summary warnings before use"],
+      "doNotPromote": [],
+      "noisySidecars": ["flask.aiDraft", "flask.aiEnrichment"],
+      "caveats": ["excluded_package_also_selected", "selected_member_role_unknown", "refined_summary_missing"]
+    },
+    {
+      "id": "gin",
+      "authorSummary": "Review the static Gin candidate. Exclude the failed AI draft from handoff until regenerated.",
+      "reviewNow": ["gin.core"],
+      "relationProposals": [],
+      "manualCorrection": ["AI enrichment may be reviewed only after draft identity is corrected"],
+      "doNotPromote": ["gin.aiDraft"],
+      "noisySidecars": [],
+      "carryForwardWarnings": [
+        {
+          "code": "model_evidence_path_unsupported",
+          "sourceTask": "P45-T8",
+          "sourceLayer": "ai_enrichment",
+          "observedInP46T3": false,
+          "registryPromotionBlockerUntilTriaged": true
+        }
+      ],
+      "caveats": ["ai_json_repair_exhausted", "package_set_subject_metadata_missing"]
+    },
+    {
+      "id": "xyflow",
+      "authorSummary": "Review the xyflow static package-set and contains relations with evidence-gap caveats visible.",
+      "reviewNow": ["xyflow.react", "xyflow.svelte", "xyflow.system", "xyflow.workspace"],
+      "relationProposals": [
+        "xyflow.workspace.contains.xyflow.react",
+        "xyflow.workspace.contains.xyflow.svelte",
+        "xyflow.workspace.contains.xyflow.system"
+      ],
+      "manualCorrection": ["review partial public interface index and fork-origin caveat"],
+      "doNotPromote": ["xyflow.aiEnrichment"],
+      "noisySidecars": [],
+      "caveats": ["partial_public_interface_index", "operator_checkout_origin_fork_mismatch", "model_evidence_path_unsupported"]
+    },
+    {
+      "id": "cupertino",
+      "authorSummary": "Review the static Cupertino candidate. Treat AI draft role output as noisy advisory material.",
+      "reviewNow": ["cupertino.core"],
+      "relationProposals": [],
+      "manualCorrection": ["review selected_member_role_unknown before using AI draft"],
+      "doNotPromote": [],
+      "noisySidecars": ["cupertino.aiDraft"],
+      "caveats": ["selected_member_role_unknown"]
+    },
+    {
+      "id": "navigation-split-view",
+      "authorSummary": "Review the static NavigationSplitView candidate. Treat AI draft role output as noisy advisory material.",
+      "reviewNow": ["navigation_split_view.core"],
+      "relationProposals": [],
+      "manualCorrection": ["review selected_member_role_unknown before using AI draft"],
+      "doNotPromote": [],
+      "noisySidecars": ["navigation-split-view.aiDraft"],
+      "caveats": ["selected_member_role_unknown"]
+    },
+    {
+      "id": "docc2context",
+      "authorSummary": "Review the static docc2context candidate. Exclude the failed AI draft from handoff until regenerated.",
+      "reviewNow": ["docc2context.core"],
+      "relationProposals": [],
+      "manualCorrection": ["AI enrichment may be reviewed only after draft identity is corrected"],
+      "doNotPromote": ["docc2context.aiDraft"],
+      "noisySidecars": [],
+      "caveats": ["ai_json_repair_exhausted", "package_set_subject_metadata_missing"]
+    }
+  ],
+  "handoffRules": {
+    "includeReviewableStaticCandidates": true,
+    "includeRelationProposalsAsReviewEvidence": true,
+    "separateNoisyAISidecars": true,
+    "excludeDoNotPromoteAISidecars": true,
+    "keepEvidenceGapsVisible": true,
+    "requiresSpecPMMaintainerReview": true
+  },
+  "authorityBoundary": {
+    "handoffIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "rerunsPilot": false,
+    "runsAI": false,
+    "runsAdapters": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nextTask": "P46-T6"
+}

@@ -293,6 +293,9 @@ Published DocC site:
 72. [`BOUNDED_POPULAR_LIBRARY_PILOT_OUTPUT_TRIAGE.md`](BOUNDED_POPULAR_LIBRARY_PILOT_OUTPUT_TRIAGE.md):
    P46-T4 triage classifications for reviewable static output, noisy AI
    sidecars, unsupported evidence, evidence gaps, and do-not-promote outputs
+73. [`BOUNDED_POPULAR_LIBRARY_PILOT_AUTHOR_HANDOFF.md`](BOUNDED_POPULAR_LIBRARY_PILOT_AUTHOR_HANDOFF.md):
+   P46-T5 author-facing handoff summaries separating reviewable static
+   evidence from noisy, unsupported, evidence-gap, and do-not-promote sidecars
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

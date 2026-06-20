@@ -2199,7 +2199,7 @@ Acceptance:
 - [x] `P46-T4` Triage the pilot candidate layer and AI proposal sidecars,
   classifying valid, reviewable, noisy, unsupported, evidence-gap, and
   do-not-promote outputs per repository and per package-set member.
-- [ ] `P46-T5` Produce author-facing handoff summaries for pilot outputs,
+- [x] `P46-T5` Produce author-facing handoff summaries for pilot outputs,
   separating reviewable package evidence from unresolved warnings, caveats, and
   registry-promotion blockers.
 - [ ] `P46-T6` Record the pilot exit decision: proceed to a larger curated
