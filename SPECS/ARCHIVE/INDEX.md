@@ -348,6 +348,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P46-T1 | Archived REVIEW_p46_t1_bounded_popular_library_pilot_manifest report |
 | 2026-06-20 | P46-T1 | Archived Bounded Popular-Library Pilot Manifest (PASS) |
 | 2026-06-20 | P45-T8 | Archived REVIEW_p45_t8_targeted_hardening_readiness_decision report |
 | 2026-06-20 | P45-T8 | Archived Targeted-Hardening Readiness Decision (PASS) |
