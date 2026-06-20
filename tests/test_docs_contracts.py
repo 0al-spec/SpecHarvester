@@ -38,6 +38,24 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P46-T5 Bounded Popular-Library Pilot Author Handoff Summaries" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening" in (
+            next_text
+        )
+        assert "`P46-T5`" in next_text
+        assert "`P46-T4` Bounded Popular-Library Pilot Output Triage" in next_text
+        assert "reviewable static evidence" in normalized
+        assert "do-not-promote AI sidecars" in normalized
+        assert "Gin" in next_text
+        assert "docc2context" in next_text
+        assert "xyflow" in next_text
+        assert "author-facing handoff summaries" in normalized
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P46-T4 Bounded Popular-Library Pilot Output Triage" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -31479,6 +31497,227 @@ def test_bounded_popular_library_pilot_ai_enabled_run_records_p46_t3_result() ->
         (capabilities_docc, "BoundedPopularLibraryPilotAIEnabledRun"),
         (roadmap, "BOUNDED_POPULAR_LIBRARY_PILOT_AI_ENABLED_RUN.md"),
         (roadmap_docc, "BoundedPopularLibraryPilotAIEnabledRun"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_bounded_popular_library_pilot_output_triage_records_p46_t4_classifications() -> None:
+    static_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_popular_library_pilot_static_only_run"
+        / "p46-t2-bounded-popular-library-pilot-static-only-run.example.json"
+    )
+    ai_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_popular_library_pilot_ai_enabled_run"
+        / "p46-t3-bounded-popular-library-pilot-ai-enabled-run.example.json"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_popular_library_pilot_output_triage"
+        / "p46-t4-bounded-popular-library-pilot-output-triage.example.json"
+    )
+    github_doc = ROOT / "docs" / "BOUNDED_POPULAR_LIBRARY_PILOT_OUTPUT_TRIAGE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "BoundedPopularLibraryPilotOutputTriage.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.bounded-popular-library-pilot-output-triage/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterBoundedPopularLibraryPilotOutputTriage"
+    assert payload["authority"] == "producer_triage_evidence_only"
+    assert payload["phase"] == "P46"
+    assert payload["task"] == "P46-T4"
+
+    static_artifact = payload["sourceArtifacts"]["p46StaticOnlyRun"]
+    ai_artifact = payload["sourceArtifacts"]["p46AIEnabledRun"]
+    assert ROOT / static_artifact["path"] == static_fixture_path
+    assert ROOT / ai_artifact["path"] == ai_fixture_path
+    assert static_artifact["digest"] == (
+        "sha256:" + hashlib.sha256(static_fixture_path.read_bytes()).hexdigest()
+    )
+    assert ai_artifact["digest"] == (
+        "sha256:" + hashlib.sha256(ai_fixture_path.read_bytes()).hexdigest()
+    )
+    assert static_artifact["authority"] == "producer_static_preview_evidence_only"
+    assert ai_artifact["authority"] == "producer_ai_proposal_evidence_only"
+
+    assert payload["classificationVocabulary"] == [
+        "valid",
+        "reviewable",
+        "noisy",
+        "unsupported",
+        "evidence_gap",
+        "do_not_promote",
+    ]
+    assert payload["summary"] == {
+        "repositoryCount": 6,
+        "staticReviewableRepositoryCount": 6,
+        "staticCandidateCount": 9,
+        "staticRelationCount": 3,
+        "aiDraftCompletedRepositoryCount": 1,
+        "aiDraftWarningRepositoryCount": 3,
+        "aiDraftDoNotPromoteRepositoryCount": 2,
+        "aiEnrichmentCompletedRepositoryCount": 4,
+        "aiEnrichmentWarningRepositoryCount": 2,
+        "validOutputCount": 1,
+        "reviewableOutputCount": 6,
+        "noisyOutputCount": 3,
+        "unsupportedOutputCount": 1,
+        "evidenceGapOutputCount": 2,
+        "doNotPromoteOutputCount": 2,
+        "registryPromotionBlockerCount": 5,
+        "carryForwardBlockerCount": 1,
+    }
+
+    repositories = {repository["id"]: repository for repository in payload["repositories"]}
+    assert repositories["flask"]["aiDraftLayer"]["classification"] == "noisy"
+    assert repositories["gin"]["aiDraftLayer"]["classification"] == "do_not_promote"
+    assert repositories["gin"]["aiDraftLayer"]["codes"] == [
+        "ai_json_repair_exhausted",
+        "package_set_subject_metadata_missing",
+    ]
+    assert repositories["gin"]["carryForwardWarnings"] == [
+        {
+            "code": "model_evidence_path_unsupported",
+            "sourceTask": "P45-T8",
+            "sourceLayer": "ai_enrichment",
+            "observedInP46T3": False,
+            "registryPromotionBlockerUntilTriaged": True,
+        }
+    ]
+    assert repositories["xyflow"]["staticCandidateLayer"]["classification"] == "evidence_gap"
+    assert repositories["xyflow"]["aiDraftLayer"]["classification"] == "valid"
+    assert repositories["xyflow"]["aiEnrichmentLayer"]["classification"] == "unsupported"
+    assert repositories["cupertino"]["aiDraftLayer"]["classification"] == "noisy"
+    assert repositories["navigation-split-view"]["aiDraftLayer"]["classification"] == "noisy"
+    assert repositories["docc2context"]["aiDraftLayer"]["classification"] == "do_not_promote"
+    for repository in repositories.values():
+        assert repository["staticCandidateLayer"]["classification"] in (
+            "reviewable",
+            "evidence_gap",
+        )
+        assert repository["handoffClass"]
+        assert repository["nextAction"]
+
+    assert payload["memberTriage"]["reviewableStaticMembers"] == [
+        "flask.core",
+        "gin.core",
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace",
+        "cupertino.core",
+        "navigation_split_view.core",
+        "docc2context.core",
+    ]
+    assert payload["memberTriage"]["doNotPromoteAISidecars"] == [
+        "gin.aiDraft",
+        "docc2context.aiDraft",
+    ]
+    assert payload["memberTriage"]["unsupportedAISidecars"] == ["xyflow.aiEnrichment"]
+    assert "flask.aiDraft" in payload["memberTriage"]["noisyAISidecars"]
+    assert payload["carryForwardTriage"]["registryPromotionBlockers"] == [
+        {
+            "repositoryId": "gin",
+            "code": "model_evidence_path_unsupported",
+            "sourceTask": "P45-T8",
+            "sourceLayer": "ai_enrichment",
+            "observedInP46T3": False,
+            "mustRemainVisibleForP46T5": True,
+            "registryPromotionBlockerUntilTriaged": True,
+        }
+    ]
+    assert payload["authorityBoundary"]["triageIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["staticOutputAcceptedAsRegistryTruth"] is False
+    assert payload["executionBoundary"]["rerunsPilot"] is False
+    assert payload["executionBoundary"]["runsAI"] is False
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["rawPromptPersisted"] is False
+    assert payload["nextTask"] == "P46-T5"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Bounded Popular-Library Pilot Output Triage",
+            "P46-T4",
+            "SpecHarvesterBoundedPopularLibraryPilotOutputTriage",
+            "spec-harvester.bounded-popular-library-pilot-output-triage/v0",
+            "producer_triage_evidence_only",
+            "valid, reviewable, noisy, unsupported, evidence-gap, and do-not-promote",
+            "flask.core",
+            "gin.core",
+            "xyflow.react",
+            "navigation_split_view.core",
+            "docc2context.core",
+            "gin.aiDraft",
+            "docc2context.aiDraft",
+            "model_evidence_path_unsupported",
+            "partial_public_interface_index",
+            "operator_checkout_origin_fork_mismatch",
+            "P46-T5",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "rerun the pilot",
+            "run AI",
+            "run adapters",
+            "enable trusted local adapter execution",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+            "AI output as registry truth",
+            "static output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "BOUNDED_POPULAR_LIBRARY_PILOT_OUTPUT_TRIAGE.md"),
+        (docc_root, "docs/BOUNDED_POPULAR_LIBRARY_PILOT_OUTPUT_TRIAGE.md"),
+        (docc_root, "<doc:BoundedPopularLibraryPilotOutputTriage>"),
+        (capabilities, "BOUNDED_POPULAR_LIBRARY_PILOT_OUTPUT_TRIAGE.md"),
+        (capabilities_docc, "BoundedPopularLibraryPilotOutputTriage"),
+        (roadmap, "BOUNDED_POPULAR_LIBRARY_PILOT_OUTPUT_TRIAGE.md"),
+        (roadmap_docc, "BoundedPopularLibraryPilotOutputTriage"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

@@ -2196,7 +2196,7 @@ Acceptance:
 - [x] `P46-T3` Run the same pinned pilot with the local OpenAI-compatible
   provider only after the static-only gate passes, preserving proposal-only AI
   output and no raw prompt/response/chain-of-thought persistence.
-- [ ] `P46-T4` Triage the pilot candidate layer and AI proposal sidecars,
+- [x] `P46-T4` Triage the pilot candidate layer and AI proposal sidecars,
   classifying valid, reviewable, noisy, unsupported, evidence-gap, and
   do-not-promote outputs per repository and per package-set member.
 - [ ] `P46-T5` Produce author-facing handoff summaries for pilot outputs,

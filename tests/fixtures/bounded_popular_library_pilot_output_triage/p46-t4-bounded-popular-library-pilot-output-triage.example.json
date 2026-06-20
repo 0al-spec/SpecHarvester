@@ -1,0 +1,260 @@
+{
+  "apiVersion": "spec-harvester.bounded-popular-library-pilot-output-triage/v0",
+  "kind": "SpecHarvesterBoundedPopularLibraryPilotOutputTriage",
+  "authority": "producer_triage_evidence_only",
+  "phase": "P46",
+  "task": "P46-T4",
+  "sourceArtifacts": {
+    "p46StaticOnlyRun": {
+      "path": "tests/fixtures/bounded_popular_library_pilot_static_only_run/p46-t2-bounded-popular-library-pilot-static-only-run.example.json",
+      "digest": "sha256:ae0ee01cb92b3969eafee77027a364e6fb0b8e4b050db39122edb4aeea8fff3c",
+      "apiVersion": "spec-harvester.bounded-popular-library-pilot-static-only-run/v0",
+      "kind": "SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun",
+      "authority": "producer_static_preview_evidence_only"
+    },
+    "p46AIEnabledRun": {
+      "path": "tests/fixtures/bounded_popular_library_pilot_ai_enabled_run/p46-t3-bounded-popular-library-pilot-ai-enabled-run.example.json",
+      "digest": "sha256:f5cec622d4aea52190c8444d6ec5f2d42baa202bc342bf7cdc60e11dc6e9545e",
+      "apiVersion": "spec-harvester.bounded-popular-library-pilot-ai-enabled-run/v0",
+      "kind": "SpecHarvesterBoundedPopularLibraryPilotAIEnabledRun",
+      "authority": "producer_ai_proposal_evidence_only"
+    }
+  },
+  "summary": {
+    "repositoryCount": 6,
+    "staticReviewableRepositoryCount": 6,
+    "staticCandidateCount": 9,
+    "staticRelationCount": 3,
+    "aiDraftCompletedRepositoryCount": 1,
+    "aiDraftWarningRepositoryCount": 3,
+    "aiDraftDoNotPromoteRepositoryCount": 2,
+    "aiEnrichmentCompletedRepositoryCount": 4,
+    "aiEnrichmentWarningRepositoryCount": 2,
+    "validOutputCount": 1,
+    "reviewableOutputCount": 6,
+    "noisyOutputCount": 3,
+    "unsupportedOutputCount": 1,
+    "evidenceGapOutputCount": 2,
+    "doNotPromoteOutputCount": 2,
+    "registryPromotionBlockerCount": 5,
+    "carryForwardBlockerCount": 1
+  },
+  "classificationVocabulary": [
+    "valid",
+    "reviewable",
+    "noisy",
+    "unsupported",
+    "evidence_gap",
+    "do_not_promote"
+  ],
+  "repositories": [
+    {
+      "id": "flask",
+      "staticCandidateLayer": {
+        "classification": "reviewable",
+        "candidateIds": ["flask.core"],
+        "relationIds": [],
+        "promotionBlocker": false
+      },
+      "aiDraftLayer": {
+        "classification": "noisy",
+        "promotionBlocker": true,
+        "codes": ["excluded_package_also_selected", "selected_member_role_unknown"]
+      },
+      "aiEnrichmentLayer": {
+        "classification": "noisy",
+        "promotionBlocker": true,
+        "codes": ["refined_summary_missing"]
+      },
+      "handoffClass": "reviewable_static_with_noisy_ai",
+      "nextAction": "author_review_static_candidate_before_ai_use"
+    },
+    {
+      "id": "gin",
+      "staticCandidateLayer": {
+        "classification": "reviewable",
+        "candidateIds": ["gin.core"],
+        "relationIds": [],
+        "promotionBlocker": false
+      },
+      "aiDraftLayer": {
+        "classification": "do_not_promote",
+        "promotionBlocker": true,
+        "codes": ["ai_json_repair_exhausted", "package_set_subject_metadata_missing"]
+      },
+      "aiEnrichmentLayer": {
+        "classification": "reviewable",
+        "promotionBlocker": false,
+        "codes": []
+      },
+      "carryForwardWarnings": [
+        {
+          "code": "model_evidence_path_unsupported",
+          "sourceTask": "P45-T8",
+          "sourceLayer": "ai_enrichment",
+          "observedInP46T3": false,
+          "registryPromotionBlockerUntilTriaged": true
+        }
+      ],
+      "handoffClass": "reviewable_static_ai_draft_blocked",
+      "nextAction": "exclude_ai_draft_from_handoff_until_regenerated"
+    },
+    {
+      "id": "xyflow",
+      "staticCandidateLayer": {
+        "classification": "evidence_gap",
+        "candidateIds": [
+          "xyflow.react",
+          "xyflow.svelte",
+          "xyflow.system",
+          "xyflow.workspace"
+        ],
+        "relationIds": [
+          "xyflow.workspace.contains.xyflow.react",
+          "xyflow.workspace.contains.xyflow.svelte",
+          "xyflow.workspace.contains.xyflow.system"
+        ],
+        "promotionBlocker": true,
+        "codes": ["partial_public_interface_index", "operator_checkout_origin_fork_mismatch"]
+      },
+      "aiDraftLayer": {
+        "classification": "valid",
+        "promotionBlocker": false,
+        "codes": []
+      },
+      "aiEnrichmentLayer": {
+        "classification": "unsupported",
+        "promotionBlocker": true,
+        "codes": ["model_evidence_path_unsupported"]
+      },
+      "handoffClass": "reviewable_package_set_with_evidence_gaps",
+      "nextAction": "keep_caveats_visible_in_author_handoff"
+    },
+    {
+      "id": "cupertino",
+      "staticCandidateLayer": {
+        "classification": "reviewable",
+        "candidateIds": ["cupertino.core"],
+        "relationIds": [],
+        "promotionBlocker": false
+      },
+      "aiDraftLayer": {
+        "classification": "noisy",
+        "promotionBlocker": true,
+        "codes": ["selected_member_role_unknown"]
+      },
+      "aiEnrichmentLayer": {
+        "classification": "reviewable",
+        "promotionBlocker": false,
+        "codes": []
+      },
+      "handoffClass": "reviewable_static_with_noisy_ai",
+      "nextAction": "author_review_static_candidate_before_ai_use"
+    },
+    {
+      "id": "navigation-split-view",
+      "staticCandidateLayer": {
+        "classification": "reviewable",
+        "candidateIds": ["navigation_split_view.core"],
+        "relationIds": [],
+        "promotionBlocker": false
+      },
+      "aiDraftLayer": {
+        "classification": "noisy",
+        "promotionBlocker": true,
+        "codes": ["selected_member_role_unknown"]
+      },
+      "aiEnrichmentLayer": {
+        "classification": "reviewable",
+        "promotionBlocker": false,
+        "codes": []
+      },
+      "handoffClass": "reviewable_static_with_noisy_ai",
+      "nextAction": "author_review_static_candidate_before_ai_use"
+    },
+    {
+      "id": "docc2context",
+      "staticCandidateLayer": {
+        "classification": "reviewable",
+        "candidateIds": ["docc2context.core"],
+        "relationIds": [],
+        "promotionBlocker": false
+      },
+      "aiDraftLayer": {
+        "classification": "do_not_promote",
+        "promotionBlocker": true,
+        "codes": ["ai_json_repair_exhausted", "package_set_subject_metadata_missing"]
+      },
+      "aiEnrichmentLayer": {
+        "classification": "reviewable",
+        "promotionBlocker": false,
+        "codes": []
+      },
+      "handoffClass": "reviewable_static_ai_draft_blocked",
+      "nextAction": "exclude_ai_draft_from_handoff_until_regenerated"
+    }
+  ],
+  "memberTriage": {
+    "reviewableStaticMembers": [
+      "flask.core",
+      "gin.core",
+      "xyflow.react",
+      "xyflow.svelte",
+      "xyflow.system",
+      "xyflow.workspace",
+      "cupertino.core",
+      "navigation_split_view.core",
+      "docc2context.core"
+    ],
+    "doNotPromoteAISidecars": [
+      "gin.aiDraft",
+      "docc2context.aiDraft"
+    ],
+    "unsupportedAISidecars": [
+      "xyflow.aiEnrichment"
+    ],
+    "noisyAISidecars": [
+      "flask.aiDraft",
+      "flask.aiEnrichment",
+      "cupertino.aiDraft",
+      "navigation-split-view.aiDraft"
+    ]
+  },
+  "carryForwardTriage": {
+    "registryPromotionBlockers": [
+      {
+        "repositoryId": "gin",
+        "code": "model_evidence_path_unsupported",
+        "sourceTask": "P45-T8",
+        "sourceLayer": "ai_enrichment",
+        "observedInP46T3": false,
+        "mustRemainVisibleForP46T5": true,
+        "registryPromotionBlockerUntilTriaged": true
+      }
+    ]
+  },
+  "authorityBoundary": {
+    "triageIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "rerunsPilot": false,
+    "runsAI": false,
+    "runsAdapters": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nextTask": "P46-T5"
+}
