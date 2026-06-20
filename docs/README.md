@@ -263,6 +263,8 @@ Published DocC site:
 61. [`OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md`](OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md):
    P44-T2 proposal-only AI enrichment quality review for xyflow, FastAPI, and
    Gin
+62. [`OPERATIONAL_MVP_XYFLOW_CAVEAT_RESOLUTION.md`](OPERATIONAL_MVP_XYFLOW_CAVEAT_RESOLUTION.md):
+   P44-T3 xyflow partial interface and fork-origin caveat resolution
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

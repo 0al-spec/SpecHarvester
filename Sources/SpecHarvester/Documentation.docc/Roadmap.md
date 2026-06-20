@@ -796,6 +796,10 @@ machine-readable `SpecHarvesterOperationalMVPAIProposalQualityReview` fixture.
 It reviews 6 proposal-only enrichment members, keeps 5 as useful author-review
 suggestions, marks `xyflow.workspace` noisy/do-not-promote, and records no
 unsupported claims or evidence gaps.
+P44-T3 adds <doc:OperationalMVPXyflowCaveatResolution> and the
+machine-readable `SpecHarvesterOperationalMVPXyflowCaveatResolution` fixture.
+It accepts xyflow partial interface and fork-origin caveats for the bounded P44
+rerun while keeping both as registry-promotion blockers.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
