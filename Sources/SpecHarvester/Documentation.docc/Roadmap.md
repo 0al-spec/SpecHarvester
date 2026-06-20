@@ -843,6 +843,10 @@ for the local LM Studio comparison. The AI-enabled batch processed six
 repositories but ended `failed` because Gin and docc2context AI draft outputs
 exhausted JSON repair with `package_set_subject_metadata_missing`; all AI
 sidecars remain proposal-only and P46-T4 owns triage.
+P46-T4 records <doc:BoundedPopularLibraryPilotOutputTriage> and the
+machine-readable `SpecHarvesterBoundedPopularLibraryPilotOutputTriage` fixture,
+classifying reviewable static evidence, noisy AI sidecars, unsupported
+enrichment, evidence gaps, and do-not-promote AI drafts before author handoff.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
