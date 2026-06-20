@@ -2165,3 +2165,60 @@ Acceptance:
   persistence, no package or relation acceptance, no registry publication, no
   baseline seeding, no `preview_only` removal, and no trusted local adapter
   execution.
+- P45-T4 must explicitly decide whether Phase 46 can start. If warning
+  ambiguity remains, Phase 46 stays blocked and the next work must be another
+  targeted hardening pass.
+
+## Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening
+
+- [ ] `P46-T1` Define the first post-hardening bounded popular-library pilot
+  manifest from existing corpus-selection policy, with pinned local checkout
+  requirements, ecosystem coverage, exclusion rules, and stop conditions.
+- [ ] `P46-T2` Run the pilot in static-only mode first, recording deterministic
+  candidate, relation, preflight, warning, and quality-gate evidence without AI
+  or adapter execution.
+- [ ] `P46-T3` Run the same pinned pilot with the local OpenAI-compatible
+  provider only after the static-only gate passes, preserving proposal-only AI
+  output and no raw prompt/response/chain-of-thought persistence.
+- [ ] `P46-T4` Triage the pilot candidate layer and AI proposal sidecars,
+  classifying valid, reviewable, noisy, unsupported, evidence-gap, and
+  do-not-promote outputs per repository and per package-set member.
+- [ ] `P46-T5` Produce author-facing handoff summaries for pilot outputs,
+  separating reviewable package evidence from unresolved warnings, caveats, and
+  registry-promotion blockers.
+- [ ] `P46-T6` Record the pilot exit decision: proceed to a larger curated
+  corpus, run another targeted quality pass, or stop on a documented blocker.
+
+Motivation:
+
+- P44-T5 blocked bounded popular-library scraping until AI draft warning
+  ambiguity is resolved.
+- P45 targets that ambiguity on the small operational MVP corpus. If P45-T4
+  reports readiness, the next risk is scale: preserving the same no-execution,
+  proposal-only, and evidence-digest boundaries on a wider but still bounded
+  popular-library pilot.
+- Earlier limited popular-library work proved the mechanics, but the post-P45
+  pilot must reuse the hardened operational MVP warning and readiness gates
+  rather than treating prior dry-run success as current approval.
+
+Goal:
+
+- Exercise the hardened pipeline on a small, curated, multi-ecosystem
+  popular-library pilot while keeping every generated package preview-only and
+  producing a clear proceed, harden, or stop decision.
+
+Acceptance:
+
+- Phase 46 cannot start unless P45-T4 selects readiness for bounded
+  popular-library scraping.
+- The pilot corpus must be explicitly bounded, pinned, local-first, and
+  reproducible; missing or unverified checkouts block the run.
+- Static-only evidence must be recorded before any AI-enabled pilot run.
+- AI-enabled evidence must remain proposal-only and must not persist raw
+  prompts, raw provider responses, secrets, or chain-of-thought.
+- The phase must not accept packages or relations, publish registry metadata,
+  seed baselines, remove `preview_only`, enable trusted local adapter execution,
+  execute harvested code, install dependencies, invoke package managers, or
+  treat AI/adapter output as registry truth.
+- The phase must end with an explicit exit decision before any larger curated
+  corpus or autonomous expansion is attempted.
