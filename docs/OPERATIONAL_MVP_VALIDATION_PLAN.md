@@ -40,6 +40,21 @@ The target is not a 100% final specification. The target is a strong valid
 starter package with clear evidence, quality dimensions, and author action
 items.
 
+## Machine-Readable Plan
+
+P43-T2 records this plan as
+[`OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md)
+and the `SpecHarvesterOperationalMVPValidationPlan` fixture at:
+
+```text
+tests/fixtures/operational_mvp_validation/p43-t2-operational-mvp-validation-plan.example.json
+```
+
+The fixture is producer-side evidence only. It captures selected corpus
+requirements, pinned local checkout policy, `static_only` and
+`ai_enabled_proposal` run modes, quality dimensions, shared stop policy, and the
+non-authority boundary before any real corpus run starts.
+
 ## Corpus
 
 The corpus is operator-selected and pinned. SpecHarvester must not clone or
@@ -158,6 +173,7 @@ Operational MVP validation is producer-side evidence. It does not:
 ## References
 
 - [`SPECS/Workplan.md`](../SPECS/Workplan.md)
+- [`OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md`](OPERATIONAL_MVP_VALIDATION_PLAN_FIXTURE.md)
 - [`AUTONOMOUS_CANDIDATE_BATCH.md`](AUTONOMOUS_CANDIDATE_BATCH.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_BAR.md`](AUTHOR_READY_DRAFT_QUALITY_BAR.md)
 - [`AUTHOR_READY_DRAFT_QUALITY_REPORT.md`](AUTHOR_READY_DRAFT_QUALITY_REPORT.md)
