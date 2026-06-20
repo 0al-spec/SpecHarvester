@@ -96,11 +96,13 @@ This handoff is producer-side review evidence only. It does not:
 
 ## Follow-Up
 
-- `P43-T7`: record the operational MVP exit decision.
+- `P43-T7`: recorded <doc:OperationalMVPExitReport>, selecting
+  `needs_quality_hardening` before broader autonomous popular-library scraping.
 
 ## References
 
 - <doc:OperationalMVPValidationPlan>
 - <doc:OperationalMVPStaticOnlyBaseline>
 - <doc:OperationalMVPAIEnabledComparison>
+- <doc:OperationalMVPExitReport>
 - <doc:AuthorReadyDraftQualityReport>

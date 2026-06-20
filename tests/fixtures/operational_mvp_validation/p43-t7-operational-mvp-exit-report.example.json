@@ -1,0 +1,169 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-exit-report/v0",
+  "kind": "SpecHarvesterOperationalMVPExitReport",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_exit_report_only",
+  "phase": "P43",
+  "task": "P43-T7",
+  "createdAt": "2026-06-20T00:00:00Z",
+  "sourceArtifacts": {
+    "staticOnlyBaseline": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json",
+      "digest": "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
+      "apiVersion": "spec-harvester.operational-mvp-static-only-baseline/v0",
+      "kind": "SpecHarvesterOperationalMVPStaticOnlyBaseline",
+      "authority": "producer_operational_mvp_static_only_baseline_only"
+    },
+    "aiEnabledComparison": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+      "digest": "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
+      "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
+      "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
+      "authority": "producer_operational_mvp_ai_comparison_only"
+    },
+    "authorHandoffSummaries": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t6-operational-mvp-author-handoff-summaries.example.json",
+      "digest": "sha256:53daf55c0afd5721d773cb3e0126dd2467f0cbfe247d0f429844845085fba6bd",
+      "apiVersion": "spec-harvester.operational-mvp-author-handoff/v0",
+      "kind": "SpecHarvesterOperationalMVPAuthorHandoffSummaries",
+      "authority": "producer_operational_mvp_author_handoff_only"
+    }
+  },
+  "decision": {
+    "selected": "needs_quality_hardening",
+    "readyForBoundedAutonomousScraping": false,
+    "needsQualityHardening": true,
+    "blockedUntilAdapterExecution": false,
+    "rationale": "Static-only output is useful and ready for author review across the pinned corpus, and the live AI-enabled comparison produced proposal-only enrichment evidence, but AI draft warnings remain and xyflow still has manual-correction caveats. The next step is targeted quality hardening before broader autonomous popular-library scraping."
+  },
+  "decisionInputs": {
+    "staticOnlyBaseline": {
+      "repositoryResultCount": 3,
+      "staticOnlyPassedCount": 3,
+      "candidatePreflightPassedCount": 6,
+      "authorReadyDraftCount": 3,
+      "specpmHandoffReadyCount": 3,
+      "realCorpusRunPerformed": true
+    },
+    "aiEnabledComparison": {
+      "providerAvailable": true,
+      "aiEnabledRunPerformed": true,
+      "aiProposalArtifactCount": 6,
+      "aiEnrichmentProposalMemberCount": 6,
+      "aiComparisonWarningCount": 3,
+      "providerUnavailableCount": 0,
+      "aiEnrichedPreviewAppliedCount": 0,
+      "specpmHandoffChangedByAI": false
+    },
+    "authorHandoffSummaries": {
+      "repositoryHandoffCount": 3,
+      "readyForAuthorReviewCount": 3,
+      "aiImprovementAvailableCount": 3,
+      "needsManualCorrectionRepositoryCount": 1,
+      "doNotPromoteRepositoryCount": 3,
+      "registryAuthority": false
+    }
+  },
+  "decisionEvidence": [
+    {
+      "id": "static_only_pipeline_is_author_reviewable",
+      "supportsDecision": "needs_quality_hardening",
+      "summary": "P43-T4 produced three static-only repository results, six preview candidates, three relation proposals, and three handoff-ready author-ready draft verdicts."
+    },
+    {
+      "id": "ai_enabled_comparison_has_reviewable_warnings",
+      "blocksDecision": "ready_for_bounded_autonomous_scraping",
+      "summary": "P43-T5 ran local LM Studio and produced six proposal artifacts, but each repository retained an AI draft warning and AI enrichment sidecars were not applied as registry truth."
+    },
+    {
+      "id": "manual_correction_caveat_remains_visible",
+      "blocksDecision": "ready_for_bounded_autonomous_scraping",
+      "summary": "P43-T6 keeps xyflow's partial public-interface-index and fork-origin caveats as manual-correction items."
+    },
+    {
+      "id": "adapter_execution_not_required_for_current_exit",
+      "rejectsDecision": "blocked_until_adapter_execution",
+      "summary": "The current evidence shows useful static-only author handoff material without requiring trusted local adapter execution, which remains disabled."
+    }
+  ],
+  "rejectedAlternatives": [
+    {
+      "id": "ready_for_bounded_autonomous_scraping",
+      "reason": "Rejected because the live AI-enabled comparison still has draft warnings, AI sidecars remain proposal-only and unapplied, and one repository still has manual-correction caveats. Broader scraping should wait for targeted quality hardening and a bounded batch gate.",
+      "wouldRequire": [
+        "ai_draft_warning_triage",
+        "manual_correction_burn_down",
+        "operator_defined_popular_library_batch_limits"
+      ]
+    },
+    {
+      "id": "blocked_until_adapter_execution",
+      "reason": "Rejected because P43-T4/P43-T6 produced author-reviewable static-only handoff material. The current Phase 43 result does not require running trusted local adapters.",
+      "wouldRequire": [
+        "evidence_gap_that_static_analysis_cannot_represent",
+        "operator_approved_adapter_execution_phase"
+      ]
+    }
+  ],
+  "qualityHardeningPlan": [
+    {
+      "id": "burn_down_xyflow_partial_public_interface_index",
+      "summary": "Resolve or explicitly accept the xyflow partial public-interface-index caveat before using it as a broader scraping quality baseline."
+    },
+    {
+      "id": "review_xyflow_fork_origin_caveat",
+      "summary": "Confirm whether SoundBlaster/xyflow fork evidence is acceptable for canonical xyflow package review before using it as a broader scraping quality baseline."
+    },
+    {
+      "id": "triage_ai_draft_warnings_and_proposal_quality",
+      "summary": "Triage P43-T5 package_set_id_missing draft warnings and review proposal-only AI enrichment quality before using it as a broader scraping quality baseline."
+    },
+    {
+      "id": "define_bounded_popular_library_batch_gate",
+      "summary": "Define the next curated popular-library batch limits, stop conditions, and author-handoff acceptance criteria before expansion."
+    }
+  ],
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "exitReportIsRegistryAuthority": false,
+    "approvesBroaderAutonomousScraping": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "runsAI": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "requiresAdapterExecution": false,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "exit_report_is_producer_side_review_evidence",
+    "needs_quality_hardening_is_not_registry_acceptance",
+    "does_not_approve_broader_autonomous_scraping",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_run_ai",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_exit_report_output_as_registry_truth"
+  ],
+  "followUp": {
+    "phase43Complete": true,
+    "recommendedNextPhase": "quality_hardening_before_bounded_popular_library_scraping"
+  }
+}

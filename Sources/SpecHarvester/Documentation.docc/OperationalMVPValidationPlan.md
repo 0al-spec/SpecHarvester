@@ -67,6 +67,10 @@ P43-T6 records author handoff summaries as
 authors what is valid, reviewable, needs manual correction, and must not be
 promoted.
 
+P43-T7 records the exit decision as <doc:OperationalMVPExitReport> and the
+`SpecHarvesterOperationalMVPExitReport` fixture. The report selects
+`needs_quality_hardening` before broader autonomous popular-library scraping.
+
 ## Corpus
 
 The corpus is operator-selected and pinned. SpecHarvester must not clone or
@@ -151,6 +155,7 @@ enable trusted local adapter execution.
 - <doc:OperationalMVPStaticOnlyBaseline>
 - <doc:OperationalMVPAIEnabledComparison>
 - <doc:OperationalMVPAuthorHandoffSummaries>
+- <doc:OperationalMVPExitReport>
 - <doc:AutonomousCandidateBatch>
 - <doc:AuthorReadyDraftQualityBar>
 - <doc:AuthorReadyDraftQualityReport>

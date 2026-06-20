@@ -780,6 +780,11 @@ machine-readable `SpecHarvesterOperationalMVPAuthorHandoffSummaries` fixture.
 It translates the static-only baseline and live proposal-only AI comparison
 into author-facing valid, reviewable, needs-manual-correction, and
 do-not-promote summaries while preserving producer-side review authority only.
+P43-T7 adds <doc:OperationalMVPExitReport> and the machine-readable
+`SpecHarvesterOperationalMVPExitReport` fixture. It selects
+`needs_quality_hardening`, rejects immediate broader autonomous popular-library
+scraping, rejects an adapter-execution blocker, and closes Phase 43 with no
+registry authority.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

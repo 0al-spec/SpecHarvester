@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-05-29
+Updated: 2026-06-20
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -2042,7 +2042,7 @@ Acceptance:
 - [x] `P43-T6` Add author handoff summaries for operational MVP runs so a
   package author can see what is valid, what is reviewable, what needs manual
   correction, and what should not be promoted.
-- [ ] `P43-T7` Record an operational MVP exit report that decides whether the
+- [x] `P43-T7` Record an operational MVP exit report that decides whether the
   current pipeline is good enough for bounded autonomous popular-library
   scraping, needs quality hardening first, or needs a future explicitly
   approved adapter execution phase.
@@ -2078,3 +2078,54 @@ Acceptance:
 - The phase must produce an exit decision: proceed to bounded autonomous
   scraping, perform targeted quality hardening, or defer until adapter execution
   exists.
+
+## Phase 44. Operational MVP Quality Hardening
+
+- [ ] `P44-T1` Triage the P43-T5 `package_set_id_missing` draft warnings and
+  record whether each warning is caused by missing draft context, package-set
+  identity drift, AI proposal shape, or an expected producer-side boundary.
+- [ ] `P44-T2` Review the P43-T5 proposal-only AI enrichment artifacts for
+  xyflow, FastAPI, and Gin, classifying useful suggestions, noisy suggestions,
+  unsupported claims, evidence gaps, and do-not-promote output.
+- [ ] `P44-T3` Resolve or explicitly accept the xyflow partial
+  `PublicInterfaceIndex` caveat from P43-T4/P43-T6 so package-set handoff can
+  distinguish real interface gaps from acceptable parser coverage limits.
+- [ ] `P44-T4` Re-run the bounded operational MVP corpus after the targeted
+  hardening work and compare static-only and AI-enabled proposal output against
+  the P43 baseline.
+- [ ] `P44-T5` Record a post-hardening readiness decision that decides whether
+  SpecHarvester can proceed to bounded popular-library scraping, needs another
+  quality pass, or must defer until a separately approved adapter execution
+  phase exists.
+
+Motivation:
+
+- P43-T7 selected `needs_quality_hardening` rather than approving broader
+  autonomous popular-library scraping.
+- The live LM Studio run proved that AI-enabled proposal generation works, but
+  all three repositories still reported `package_set_id_missing` draft warnings
+  and AI sidecars remained proposal-only and unapplied.
+- The static-only baseline is useful for author review, but xyflow still has a
+  visible manual-correction caveat around partial public-interface evidence.
+
+Goal:
+
+- Turn the P43 exit report into bounded, measurable quality work that reduces
+  warning ambiguity and proves whether the operational MVP is ready for a wider
+  curated corpus without weakening no-execution and non-authority boundaries.
+
+Acceptance:
+
+- The phase uses the same pinned corpus lineage unless a task explicitly records
+  a replacement fixture or documented blocker.
+- Warning triage must preserve evidence paths, digests, provider/model
+  metadata, and proposal-only status for AI output.
+- AI proposal review must not persist raw prompts, raw provider responses,
+  secrets, or chain-of-thought.
+- Hardening work must not clone or fetch repositories implicitly, install
+  dependencies, invoke package managers, execute harvested code, enable trusted
+  local adapter execution, accept packages or relations, publish registry
+  metadata, seed baselines, remove `preview_only`, or treat AI output as
+  registry truth.
+- The phase must end with a readiness decision before bounded
+  popular-library scraping is attempted.

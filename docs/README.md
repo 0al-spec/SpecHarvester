@@ -253,6 +253,10 @@ Published DocC site:
    P43-T6 author-facing handoff summaries over the operational MVP corpus,
    showing what is valid, reviewable, needs manual correction, and must not be
    promoted
+59. [`OPERATIONAL_MVP_EXIT_REPORT.md`](OPERATIONAL_MVP_EXIT_REPORT.md):
+   P43-T7 exit report selecting `needs_quality_hardening` before broader
+   autonomous popular-library scraping while preserving the no-authority
+   boundary
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

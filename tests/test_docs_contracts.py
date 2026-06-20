@@ -38,6 +38,28 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P44-T1 Operational MVP Warning Triage" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
+        assert "`P44-T1`" in next_text
+        assert "`P43-T7` Operational MVP Exit Report" in next_text
+        assert "package_set_id_missing" in next_text
+        assert "xyflow, FastAPI, and Gin" in next_text
+        assert "proposal-only AI enrichment" in next_text
+        assert "bounded popular-library scraping" in next_text
+        assert "Do not treat AI output" in next_text
+        return
+
+    if "# Next Task: Phase 43 Complete" in next_text:
+        assert "**Status:** Complete" in next_text
+        assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
+        assert "`P43-T7`" in next_text
+        assert "Operational MVP Exit Report" in next_text
+        assert "needs_quality_hardening" in next_text
+        assert "quality hardening before bounded popular-library scraping" in next_text
+        assert "Phase 43 is complete" in next_text
+        return
+
     if "# Next Task: P43-T7 Operational MVP Exit Report" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
@@ -28968,6 +28990,317 @@ def test_operational_mvp_author_handoff_summaries_are_documented() -> None:
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P43-T6` Add author handoff summaries" in workplan_text
     assert "what is valid, what is reviewable" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_exit_report_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t7-operational-mvp-exit-report.example.json"
+    )
+    baseline_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t4-operational-mvp-static-only-baseline.example.json"
+    )
+    ai_comparison_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t5-operational-mvp-ai-enabled-comparison.example.json"
+    )
+    handoff_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t6-operational-mvp-author-handoff-summaries.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_EXIT_REPORT.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "OperationalMVPExitReport.md"
+    )
+    plan_doc = ROOT / "docs" / "OPERATIONAL_MVP_VALIDATION_PLAN.md"
+    plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPValidationPlan.md"
+    )
+    handoff_doc = ROOT / "docs" / "OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md"
+    handoff_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPAuthorHandoffSummaries.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+    ai_comparison = json.loads(ai_comparison_path.read_text(encoding="utf-8"))
+    handoff = json.loads(handoff_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.operational-mvp-exit-report/v0"
+    assert payload["kind"] == "SpecHarvesterOperationalMVPExitReport"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_operational_mvp_exit_report_only"
+    assert payload["phase"] == "P43"
+    assert payload["task"] == "P43-T7"
+    assert payload["sourceArtifacts"] == {
+        "staticOnlyBaseline": {
+            "path": (
+                "tests/fixtures/operational_mvp_validation/"
+                "p43-t4-operational-mvp-static-only-baseline.example.json"
+            ),
+            "digest": "sha256:" + hashlib.sha256(baseline_path.read_bytes()).hexdigest(),
+            "apiVersion": baseline["apiVersion"],
+            "kind": baseline["kind"],
+            "authority": baseline["authority"],
+        },
+        "aiEnabledComparison": {
+            "path": (
+                "tests/fixtures/operational_mvp_validation/"
+                "p43-t5-operational-mvp-ai-enabled-comparison.example.json"
+            ),
+            "digest": "sha256:" + hashlib.sha256(ai_comparison_path.read_bytes()).hexdigest(),
+            "apiVersion": ai_comparison["apiVersion"],
+            "kind": ai_comparison["kind"],
+            "authority": ai_comparison["authority"],
+        },
+        "authorHandoffSummaries": {
+            "path": (
+                "tests/fixtures/operational_mvp_validation/"
+                "p43-t6-operational-mvp-author-handoff-summaries.example.json"
+            ),
+            "digest": "sha256:" + hashlib.sha256(handoff_path.read_bytes()).hexdigest(),
+            "apiVersion": handoff["apiVersion"],
+            "kind": handoff["kind"],
+            "authority": handoff["authority"],
+        },
+    }
+
+    assert payload["decision"] == {
+        "selected": "needs_quality_hardening",
+        "readyForBoundedAutonomousScraping": False,
+        "needsQualityHardening": True,
+        "blockedUntilAdapterExecution": False,
+        "rationale": (
+            "Static-only output is useful and ready for author review across the pinned "
+            "corpus, and the live AI-enabled comparison produced proposal-only "
+            "enrichment evidence, but AI draft warnings remain and xyflow still has "
+            "manual-correction caveats. The next step is targeted quality hardening "
+            "before broader autonomous popular-library scraping."
+        ),
+    }
+    assert payload["decisionInputs"] == {
+        "staticOnlyBaseline": {
+            "repositoryResultCount": baseline["summary"]["repositoryResultCount"],
+            "staticOnlyPassedCount": baseline["summary"]["staticOnlyPassedCount"],
+            "candidatePreflightPassedCount": baseline["summary"]["candidatePreflightPassedCount"],
+            "authorReadyDraftCount": baseline["summary"]["authorReadyDraftCount"],
+            "specpmHandoffReadyCount": baseline["summary"]["specpmHandoffReadyCount"],
+            "realCorpusRunPerformed": baseline["summary"]["realCorpusRunPerformed"],
+        },
+        "aiEnabledComparison": {
+            "providerAvailable": ai_comparison["summary"]["providerAvailable"],
+            "aiEnabledRunPerformed": ai_comparison["summary"]["aiEnabledRunPerformed"],
+            "aiProposalArtifactCount": ai_comparison["summary"]["aiProposalArtifactCount"],
+            "aiEnrichmentProposalMemberCount": ai_comparison["summary"][
+                "aiEnrichmentProposalMemberCount"
+            ],
+            "aiComparisonWarningCount": ai_comparison["summary"]["aiComparisonWarningCount"],
+            "providerUnavailableCount": ai_comparison["summary"][
+                "aiComparisonProviderUnavailableCount"
+            ],
+            "aiEnrichedPreviewAppliedCount": ai_comparison["summary"][
+                "aiEnrichedPreviewAppliedCount"
+            ],
+            "specpmHandoffChangedByAI": ai_comparison["summary"]["specpmHandoffChangedByAI"],
+        },
+        "authorHandoffSummaries": {
+            "repositoryHandoffCount": handoff["summary"]["repositoryHandoffCount"],
+            "readyForAuthorReviewCount": handoff["summary"]["readyForAuthorReviewCount"],
+            "aiImprovementAvailableCount": handoff["summary"]["aiImprovementAvailableCount"],
+            "needsManualCorrectionRepositoryCount": handoff["summary"][
+                "needsManualCorrectionRepositoryCount"
+            ],
+            "doNotPromoteRepositoryCount": handoff["summary"]["doNotPromoteRepositoryCount"],
+            "registryAuthority": handoff["summary"]["registryAuthority"],
+        },
+    }
+    evidence = {item["id"]: item for item in payload["decisionEvidence"]}
+    assert set(evidence) == {
+        "static_only_pipeline_is_author_reviewable",
+        "ai_enabled_comparison_has_reviewable_warnings",
+        "manual_correction_caveat_remains_visible",
+        "adapter_execution_not_required_for_current_exit",
+    }
+    assert (
+        evidence["static_only_pipeline_is_author_reviewable"]["supportsDecision"]
+        == "needs_quality_hardening"
+    )
+    assert (
+        evidence["ai_enabled_comparison_has_reviewable_warnings"]["blocksDecision"]
+        == "ready_for_bounded_autonomous_scraping"
+    )
+    assert (
+        evidence["manual_correction_caveat_remains_visible"]["blocksDecision"]
+        == "ready_for_bounded_autonomous_scraping"
+    )
+    assert (
+        evidence["adapter_execution_not_required_for_current_exit"]["rejectsDecision"]
+        == "blocked_until_adapter_execution"
+    )
+
+    rejected = {item["id"]: item for item in payload["rejectedAlternatives"]}
+    assert set(rejected) == {
+        "ready_for_bounded_autonomous_scraping",
+        "blocked_until_adapter_execution",
+    }
+    assert "draft warnings" in rejected["ready_for_bounded_autonomous_scraping"]["reason"]
+    assert "does not require" in rejected["blocked_until_adapter_execution"]["reason"]
+    assert [item["id"] for item in payload["qualityHardeningPlan"]] == [
+        "burn_down_xyflow_partial_public_interface_index",
+        "review_xyflow_fork_origin_caveat",
+        "triage_ai_draft_warnings_and_proposal_quality",
+        "define_bounded_popular_library_batch_gate",
+    ]
+
+    assert payload["authorityBoundary"] == {
+        "producerSideEvidence": True,
+        "exitReportIsRegistryAuthority": False,
+        "approvesBroaderAutonomousScraping": False,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "publishesRegistryMetadata": False,
+        "seedsBaselines": False,
+        "removesPreviewOnly": False,
+        "runsAI": False,
+        "aiOutputAcceptedAsRegistryTruth": False,
+        "adapterOutputAcceptedAsRegistryTruth": False,
+        "trustedLocalAdapterExecutionEnabled": False,
+        "requiresAdapterExecution": False,
+        "implicitRepositoryFetchAllowed": False,
+        "networkDiscoveryAllowed": False,
+        "dependencyInstallationAllowed": False,
+        "packageManagerInvocationAllowed": False,
+        "harvestedCodeExecutionAllowed": False,
+    }
+    for statement in (
+        "exit_report_is_producer_side_review_evidence",
+        "needs_quality_hardening_is_not_registry_acceptance",
+        "does_not_approve_broader_autonomous_scraping",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_run_ai",
+        "does_not_enable_trusted_local_adapter_execution",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_treat_ai_output_as_registry_truth",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_exit_report_output_as_registry_truth",
+    ):
+        assert statement in payload["nonAuthorityStatements"]
+    assert payload["followUp"] == {
+        "phase43Complete": True,
+        "recommendedNextPhase": "quality_hardening_before_bounded_popular_library_scraping",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Exit Report",
+            "P43-T7",
+            "SpecHarvesterOperationalMVPExitReport",
+            "spec-harvester.operational-mvp-exit-report/v0",
+            "producer_operational_mvp_exit_report_only",
+            "p43-t7-operational-mvp-exit-report.example.json",
+            "p43-t4-operational-mvp-static-only-baseline.example.json",
+            "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
+            "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+            "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
+            "p43-t6-operational-mvp-author-handoff-summaries.example.json",
+            "sha256:53daf55c0afd5721d773cb3e0126dd2467f0cbfe247d0f429844845085fba6bd",
+            "needs_quality_hardening",
+            "ready_for_bounded_autonomous_scraping",
+            "blocked_until_adapter_execution",
+            "completed_with_draft_warnings",
+            "ai_draft_warning_enrichment_completed",
+            "resolve_or_accept_partial_public_interface_index",
+            "review_operator_checkout_origin_fork_mismatch",
+            "review_xyflow_fork_origin_caveat",
+            "SoundBlaster/xyflow fork",
+            "doNotPromote",
+            "burn_down_xyflow_partial_public_interface_index",
+            "triage_ai_draft_warnings_and_proposal_quality",
+            "define_bounded_popular_library_batch_gate",
+            "Phase 43 is complete",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "approve broader autonomous scraping",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "run AI",
+            "enable trusted local adapter execution",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat exit-report output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_EXIT_REPORT.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_EXIT_REPORT.md"),
+        (docc_root, "<doc:OperationalMVPExitReport>"),
+        (capabilities, "OPERATIONAL_MVP_EXIT_REPORT.md"),
+        (capabilities_docc, "OperationalMVPExitReport"),
+        (roadmap, "OPERATIONAL_MVP_EXIT_REPORT.md"),
+        (roadmap_docc, "OperationalMVPExitReport"),
+        (plan_doc, "OPERATIONAL_MVP_EXIT_REPORT.md"),
+        (plan_docc, "OperationalMVPExitReport"),
+        (handoff_doc, "OPERATIONAL_MVP_EXIT_REPORT.md"),
+        (handoff_docc, "OperationalMVPExitReport"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P43-T7` Record an operational MVP exit report" in workplan_text
+    assert "bounded autonomous popular-library" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
