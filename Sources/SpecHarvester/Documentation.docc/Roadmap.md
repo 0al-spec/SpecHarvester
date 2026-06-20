@@ -804,6 +804,10 @@ P44-T4 adds <doc:OperationalMVPQualityHardenedRerun> and the machine-readable
 `SpecHarvesterOperationalMVPQualityHardenedRerun` fixture. It records that the
 quality-hardened static-only and AI-enabled reruns passed, while AI draft
 warning ambiguity remains not fully resolved.
+P44-T5 adds <doc:OperationalMVPPostHardeningReadinessDecision> and the
+machine-readable `SpecHarvesterOperationalMVPPostHardeningReadinessDecision`
+fixture. It selects `needs_another_quality_pass` before bounded
+popular-library scraping.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

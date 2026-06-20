@@ -2093,7 +2093,7 @@ Acceptance:
 - [x] `P44-T4` Re-run the bounded operational MVP corpus after the targeted
   hardening work and compare static-only and AI-enabled proposal output against
   the P43 baseline.
-- [ ] `P44-T5` Record a post-hardening readiness decision that decides whether
+- [x] `P44-T5` Record a post-hardening readiness decision that decides whether
   SpecHarvester can proceed to bounded popular-library scraping, needs another
   quality pass, or must defer until a separately approved adapter execution
   phase exists.
@@ -2129,3 +2129,39 @@ Acceptance:
   registry truth.
 - The phase must end with a readiness decision before bounded
   popular-library scraping is attempted.
+
+## Phase 45. Operational MVP AI Draft Shape Hardening
+
+- [ ] `P45-T1` Fix AI draft proposal subject identity so single-package and
+  package-set repositories no longer produce `package_set_id_missing` or
+  `excluded_package_unknown` warnings when the deterministic package-set draft
+  already has stable candidate identity.
+- [ ] `P45-T2` Add a deterministic AI draft proposal validation guard that
+  reports missing package-set subject identity and unknown excluded-package
+  references before provider output is accepted as proposal evidence.
+- [ ] `P45-T3` Re-run the bounded operational MVP corpus after the AI draft
+  shape fix and compare warning counts, proposal counts, and proposal-only
+  boundaries against P44-T4.
+- [ ] `P45-T4` Record the post-fix readiness decision for bounded
+  popular-library scraping.
+
+Motivation:
+
+- P44-T5 selected `needs_another_quality_pass` because P44-T4 passed but
+  resolved zero AI draft warnings.
+- xyflow and FastAPI still report `package_set_id_missing`, while Gin changed
+  to `excluded_package_unknown`.
+- The next quality pass should target AI draft proposal shape, not adapter
+  execution or broader corpus expansion.
+
+Goal:
+
+- Make the bounded corpus AI draft layer clean enough that a later readiness
+  gate can evaluate broader autonomous scraping without warning ambiguity.
+
+Acceptance:
+
+- The phase must preserve proposal-only AI output, no raw prompt/response/CoT
+  persistence, no package or relation acceptance, no registry publication, no
+  baseline seeding, no `preview_only` removal, and no trusted local adapter
+  execution.
