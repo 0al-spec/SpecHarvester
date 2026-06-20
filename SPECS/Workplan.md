@@ -2132,7 +2132,7 @@ Acceptance:
 
 ## Phase 45. Operational MVP AI Draft Shape Hardening
 
-- [ ] `P45-T1` Fix AI draft proposal subject identity so single-package and
+- [x] `P45-T1` Fix AI draft proposal subject identity so single-package and
   package-set repositories no longer produce `package_set_id_missing` or
   `excluded_package_unknown` warnings when the deterministic package-set draft
   already has stable candidate identity.

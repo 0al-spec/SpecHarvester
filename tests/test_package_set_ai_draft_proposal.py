@@ -152,6 +152,50 @@ def test_package_set_ai_draft_fails_package_set_id_mismatch(
     assert "package_set_id_mismatch" in {item["code"] for item in report["diagnostics"]}
 
 
+def test_package_set_ai_draft_infers_missing_package_set_id_without_warning(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    del payload["packageSet"]["packageId"]
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "completed"
+    assert report["packageSet"]["packageId"] == "demo.workspace"
+    assert "package_set_id_missing" not in {item["code"] for item in report["diagnostics"]}
+
+
+def test_package_set_ai_draft_warns_when_package_set_object_is_missing(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    del payload["packageSet"]
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "warning"
+    assert report["packageSet"]["packageId"] == "demo.workspace"
+    assert "package_set_subject_metadata_missing" in {
+        item["code"] for item in report["diagnostics"]
+    }
+
+
 def test_package_set_ai_draft_normalizes_selected_member_path_to_inventory(
     tmp_path: Path,
 ) -> None:
@@ -212,6 +256,54 @@ def test_package_set_ai_draft_fails_unsupported_relation_type(
     assert report["status"] == "failed"
     assert "relation_type_unsupported" in {item["code"] for item in report["diagnostics"]}
     assert {item["targetPackageId"] for item in report["relations"]} == {"demo.cli"}
+
+
+def test_package_set_ai_draft_keeps_unknown_exclusion_warning_for_package_sets(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["excludedPackages"].append(
+        {
+            "packageId": "demo.docs",
+            "category": "out_of_scope",
+            "reason": "Documentation site.",
+            "evidencePaths": ["workspace-inventory.json"],
+            "confidence": "low",
+        }
+    )
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "warning"
+    assert "excluded_package_unknown" in {item["code"] for item in report["diagnostics"]}
+
+
+def test_package_set_ai_draft_ignores_unknown_exclusion_for_single_package_inventory(
+    tmp_path: Path,
+) -> None:
+    inventory = write_single_package_inventory(tmp_path)
+    model_output = write_single_package_model_output(tmp_path)
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "completed"
+    assert report["packageSet"]["packageId"] == "demo.workspace"
+    assert [item["packageId"] for item in report["selectedMembers"]] == ["demo.core"]
+    assert report["excludedPackages"] == []
+    assert "excluded_package_unknown" not in {item["code"] for item in report["diagnostics"]}
 
 
 def test_package_set_ai_draft_cli_writes_request_and_proposal(
@@ -403,6 +495,35 @@ def write_inventory(tmp_path: Path) -> Path:
     return path
 
 
+def write_single_package_inventory(tmp_path: Path) -> Path:
+    inventory = {
+        "apiVersion": "spec-harvester.workspace-inventory/v0",
+        "kind": "SpecHarvesterWorkspaceInventory",
+        "schemaVersion": 1,
+        "source": {
+            "repository": "https://github.com/example/demo",
+            "exactRevision": "abc123",
+            "revisionAuthority": "source_manifest_revision",
+            "declaredRef": None,
+        },
+        "workspaceManifests": [],
+        "packages": [
+            package_record(".", "demo.core", "member_package", "demo"),
+        ],
+        "summary": {
+            "workspaceManifestCount": 0,
+            "packageManifestCount": 1,
+            "packageCount": 1,
+            "diagnosticCount": 0,
+        },
+        "diagnostics": [],
+        "authority": "producer_observed_review_evidence",
+    }
+    path = tmp_path / "single-workspace-inventory.json"
+    path.write_text(json.dumps(inventory, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
+
+
 def package_record(
     source_target_path: str,
     package_id: str,
@@ -499,5 +620,40 @@ def write_model_output(tmp_path: Path) -> Path:
         "overallConfidence": "high",
     }
     path = tmp_path / "model-output.json"
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
+
+
+def write_single_package_model_output(tmp_path: Path) -> Path:
+    payload = {
+        "packageSet": {
+            "summary": "Demo single-package repository.",
+            "evidencePaths": ["workspace-inventory.json"],
+            "confidence": "high",
+        },
+        "selectedMembers": [
+            {
+                "packageId": "demo.core",
+                "role": "primary_package",
+                "sourceTargetPath": ".",
+                "reason": "Stable deterministic single-package candidate.",
+                "evidencePaths": ["workspace-inventory.json", "package.json"],
+                "confidence": "high",
+            }
+        ],
+        "excludedPackages": [
+            {
+                "packageId": "demo.docs",
+                "category": "out_of_scope",
+                "reason": "Model-side documentation exclusion not present in inventory.",
+                "evidencePaths": ["workspace-inventory.json"],
+                "confidence": "low",
+            }
+        ],
+        "relations": [],
+        "evidenceGaps": [],
+        "overallConfidence": "high",
+    }
+    path = tmp_path / "single-model-output.json"
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return path

@@ -41,6 +41,13 @@ SpecHarvester normalizes this output and emits diagnostics. Unsupported
 evidence paths produce `model_evidence_path_unsupported`; relations fail closed
 when they target packages that were not selected.
 
+If model output omits `packageSet.packageId`, SpecHarvester uses the
+deterministic request package-set id instead of recording a warning. For
+single-package inventories, unknown `excludedPackages` entries are ignored as
+model-side noise when deterministic package identity is stable. Unknown
+exclusions for multi-package inventories still produce
+`excluded_package_unknown` diagnostics.
+
 ## Bounded JSON Repair
 
 Live local provider output is parsed as one JSON object. If the initial LM

@@ -390,11 +390,25 @@ def package_set_proposal(
     allowed_paths: set[str],
     diagnostics: list[dict[str, Any]],
 ) -> dict[str, Any]:
-    output = mapping_value(model_output.get("packageSet"))
+    output_value = model_output.get("packageSet")
+    output = mapping_value(output_value)
     fallback = mapping_value(request.get("packageSet"))
     request_package_id = string_value(fallback.get("id"))
     output_package_id = string_value(output.get("packageId"))
     package_id = request_package_id or output_package_id
+    if not isinstance(output_value, dict):
+        diagnostics.append(
+            diagnostic(
+                "warning",
+                "package_set_subject_metadata_missing",
+                "Model output omits the top-level packageSet metadata object.",
+                package_id,
+                {
+                    "modelField": "packageSet",
+                    "requestField": "packageSet.id",
+                },
+            )
+        )
     evidence_paths = supported_paths(
         string_list(output.get("evidencePaths")),
         allowed_paths,
@@ -404,16 +418,7 @@ def package_set_proposal(
     )
     if not evidence_paths and "workspace-inventory.json" in allowed_paths:
         evidence_paths = ["workspace-inventory.json"]
-    if not output_package_id:
-        diagnostics.append(
-            diagnostic(
-                "warning",
-                "package_set_id_missing",
-                "Model output did not include packageSet.packageId; using request package-set id.",
-                package_id,
-            )
-        )
-    elif request_package_id and output_package_id != request_package_id:
+    if output_package_id and request_package_id and output_package_id != request_package_id:
         diagnostics.append(
             diagnostic(
                 "error",
@@ -516,6 +521,7 @@ def excluded_package_proposals(
 ) -> list[dict[str, Any]]:
     records = []
     seen: set[str] = set()
+    single_package_inventory = len(inventory_by_id) == 1
     for index, item in enumerate(list_value(model_output.get("excludedPackages"))):
         if not isinstance(item, dict):
             diagnostics.append(
@@ -530,6 +536,8 @@ def excluded_package_proposals(
             continue
         package_id = string_value(item.get("packageId"))
         if not package_id or package_id not in inventory_by_id:
+            if single_package_inventory:
+                continue
             diagnostics.append(
                 diagnostic(
                     "warning",
