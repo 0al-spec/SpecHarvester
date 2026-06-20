@@ -1,0 +1,330 @@
+{
+  "apiVersion": "spec-harvester.bounded-popular-library-pilot-manifest/v0",
+  "kind": "SpecHarvesterBoundedPopularLibraryPilotManifest",
+  "schemaVersion": 1,
+  "authority": "producer_bounded_pilot_manifest_only",
+  "phase": "P46",
+  "task": "P46-T1",
+  "createdAt": "2026-06-20T17:20:00Z",
+  "sourceArtifacts": {
+    "p45TargetedHardeningReadinessDecision": {
+      "path": "tests/fixtures/operational_mvp_quality_hardening/p45-t8-targeted-hardening-readiness-decision.example.json",
+      "digest": "sha256:ed71514953115f55a80ec6032238f91f0936227b239a7cf6142a19a19f91c247",
+      "apiVersion": "spec-harvester.targeted-hardening-readiness-decision/v0",
+      "kind": "SpecHarvesterTargetedHardeningReadinessDecision",
+      "authority": "producer_targeted_hardening_readiness_decision_only"
+    }
+  },
+  "sourceManifest": {
+    "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "digest": "sha256:fe5786e7b905bef12bbda53ff1f3fe01a03dcd2051826bdca599e46e99f01f26",
+    "entryCount": 6,
+    "maximumRepositoryCount": 6,
+    "allEntriesPinnedByRevision": true,
+    "allCheckoutsAbsolute": true,
+    "requiresExistingCheckouts": true,
+    "usesNetworkDiscovery": false
+  },
+  "pilotScope": {
+    "id": "p46-bounded-popular-library-pilot",
+    "sourcePolicyBasis": [
+      "docs/CORPUS_SELECTION_POLICY.md",
+      "docs/SPECHARVESTER_CORPUS_PLAN.md",
+      "inputs/limited-popular-libraries/repositories.yml",
+      "P45-T8"
+    ],
+    "selectedRepositoryCount": 6,
+    "ecosystemCoverage": [
+      "go",
+      "javascript",
+      "python",
+      "swift",
+      "typescript"
+    ],
+    "packageShapes": [
+      "package_set",
+      "single_package"
+    ],
+    "firstRunTask": "P46-T2",
+    "firstRunMode": "static_only"
+  },
+  "repositories": [
+    {
+      "id": "flask",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "checkout": "/Users/egor/Development/GitHub/flask",
+      "checkoutHead": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "checkoutOrigin": "https://github.com/pallets/flask.git",
+      "checkoutVerified": true,
+      "packageId": "flask.core",
+      "expectedPackageShape": "python_web_framework_single_package",
+      "labels": [
+        "p46_bounded_pilot",
+        "pypi",
+        "python",
+        "single_package",
+        "web_framework"
+      ],
+      "selectionRationale": "Retains the P30 Python web-framework popular-library seed as a post-hardening single-package control.",
+      "exclusionRules": [
+        {
+          "pattern": "examples/*",
+          "reason": "example_package",
+          "decision": "include_as_evidence_only"
+        },
+        {
+          "pattern": "tests/*",
+          "reason": "test_fixture",
+          "decision": "exclude_as_candidate"
+        }
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "static_only_preflight_failed",
+        "license_evidence_missing"
+      ]
+    },
+    {
+      "id": "gin",
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "checkout": "/Users/egor/Development/GitHub/gin",
+      "checkoutHead": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "checkoutOrigin": "https://github.com/gin-gonic/gin.git",
+      "checkoutVerified": true,
+      "packageId": "gin.core",
+      "expectedPackageShape": "go_web_framework_single_package",
+      "labels": [
+        "carry_forward_triage",
+        "go",
+        "p46_bounded_pilot",
+        "single_package",
+        "web_framework"
+      ],
+      "selectionRationale": "Carries the P45 Gin single-package warning history into the bounded pilot so P46-T4/P46-T5 can triage model_evidence_path_unsupported.",
+      "carryForwardWarnings": [
+        {
+          "code": "model_evidence_path_unsupported",
+          "sourceTask": "P45-T8",
+          "nonBlockingForPilotStart": true,
+          "registryPromotionBlockerUntilTriaged": true
+        }
+      ],
+      "exclusionRules": [
+        {
+          "pattern": "examples/*",
+          "reason": "example_package",
+          "decision": "include_as_evidence_only"
+        }
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "static_only_preflight_failed",
+        "carry_forward_warning_not_reported"
+      ]
+    },
+    {
+      "id": "xyflow",
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "checkout": "/Users/egor/Development/GitHub/xyflow",
+      "checkoutHead": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "checkoutOrigin": "git@github.com:SoundBlaster/xyflow.git",
+      "checkoutVerified": true,
+      "packageId": "xyflow.workspace",
+      "expectedPackageShape": "javascript_typescript_package_set",
+      "labels": [
+        "fork_origin_caveat",
+        "javascript",
+        "npm",
+        "p46_bounded_pilot",
+        "package_set",
+        "typescript"
+      ],
+      "selectionRationale": "Retains the P45 package-set control after selected-member role hardening.",
+      "caveats": [
+        "operator_checkout_origin_fork_mismatch"
+      ],
+      "exclusionRules": [
+        {
+          "pattern": "examples/*",
+          "reason": "example_package",
+          "decision": "include_as_evidence_only"
+        },
+        {
+          "pattern": "tests/*",
+          "reason": "test_fixture",
+          "decision": "exclude_as_candidate"
+        }
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "package_set_topology_ambiguous",
+        "static_only_preflight_failed"
+      ]
+    },
+    {
+      "id": "cupertino",
+      "repository": "https://github.com/mihaelamj/cupertino",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "checkout": "/Users/egor/Development/GitHub/cupertino",
+      "checkoutHead": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "checkoutOrigin": "git@github.com:mihaelamj/cupertino.git",
+      "checkoutVerified": true,
+      "packageId": "cupertino.core",
+      "expectedPackageShape": "swift_spm_ui_single_package",
+      "labels": [
+        "p46_bounded_pilot",
+        "single_package",
+        "spm",
+        "swift",
+        "ui_library"
+      ],
+      "selectionRationale": "Keeps a SwiftPM UI library from the previous limited popular-library corpus for ecosystem coverage.",
+      "exclusionRules": [
+        {
+          "pattern": "Examples/*",
+          "reason": "example_package",
+          "decision": "include_as_evidence_only"
+        }
+      ],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "swift_package_manifest_missing",
+        "static_only_preflight_failed"
+      ]
+    },
+    {
+      "id": "navigation-split-view",
+      "repository": "https://github.com/SoundBlaster/NavigationSplitView",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "checkout": "/Users/egor/Development/GitHub/NavigationSplitView",
+      "checkoutHead": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "checkoutOrigin": "git@github.com:SoundBlaster/NavigationSplitView.git",
+      "checkoutVerified": true,
+      "packageId": "navigation_split_view.core",
+      "expectedPackageShape": "swift_spm_ui_single_package",
+      "labels": [
+        "p46_bounded_pilot",
+        "single_package",
+        "spm",
+        "swift",
+        "ui_library"
+      ],
+      "selectionRationale": "Retains a Swift single-package UI control with known package-id normalization history.",
+      "knownReviewSignals": [
+        "package_id_hint_normalization"
+      ],
+      "exclusionRules": [],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "swift_package_manifest_missing",
+        "static_only_preflight_failed"
+      ]
+    },
+    {
+      "id": "docc2context",
+      "repository": "https://github.com/SoundBlaster/docc2context",
+      "revision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "checkout": "/Users/egor/Development/GitHub/docc2context",
+      "checkoutHead": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "checkoutOrigin": "git@github.com:SoundBlaster/docc2context.git",
+      "checkoutVerified": true,
+      "packageId": "docc2context.core",
+      "expectedPackageShape": "swift_cli_documentation_single_package",
+      "labels": [
+        "cli",
+        "documentation",
+        "p46_bounded_pilot",
+        "single_package",
+        "swift"
+      ],
+      "selectionRationale": "Retains a Swift CLI/documentation package shape to keep the pilot from being only web frameworks.",
+      "exclusionRules": [],
+      "stopConditions": [
+        "missing_pinned_local_checkout",
+        "source_revision_mismatch",
+        "swift_package_manifest_missing",
+        "static_only_preflight_failed"
+      ]
+    }
+  ],
+  "gateSequence": [
+    {
+      "task": "P46-T2",
+      "mode": "static_only",
+      "requiredBefore": "P46-T3"
+    },
+    {
+      "task": "P46-T3",
+      "mode": "ai_enabled",
+      "requiresStaticOnlyGatePassed": true
+    },
+    {
+      "task": "P46-T4",
+      "mode": "candidate_and_sidecar_triage"
+    },
+    {
+      "task": "P46-T5",
+      "mode": "author_handoff_summaries"
+    },
+    {
+      "task": "P46-T6",
+      "mode": "pilot_exit_decision"
+    }
+  ],
+  "localOnlyPolicy": {
+    "requiresExistingCheckouts": true,
+    "cloneAllowed": false,
+    "fetchAllowed": false,
+    "dependencyInstallAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false,
+    "trustedLocalAdapterExecutionAllowed": false,
+    "networkDiscoveryAllowed": false
+  },
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "manifestIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "runsPilot": false,
+    "runsAI": false,
+    "runsTrustedLocalAdapterExecution": false,
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "chainOfThoughtPersisted": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "nonAuthorityStatements": [
+    "manifest_is_producer_side_review_evidence",
+    "does_not_run_pilot",
+    "does_not_run_ai",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_persist_raw_prompts",
+    "does_not_persist_raw_provider_responses",
+    "does_not_persist_chain_of_thought",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ],
+  "nextTask": "P46-T2"
+}

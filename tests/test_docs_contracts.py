@@ -38,6 +38,27 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P46-T2 Bounded Popular-Library Pilot Static-Only Run" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening" in (
+            next_text
+        )
+        assert "`P46-T2`" in next_text
+        assert "`P46-T1` Bounded Popular-Library Pilot Manifest" in next_text
+        assert "static-only" in normalized
+        assert "inputs/p46-bounded-popular-library-pilot/repositories.yml" in next_text
+        assert "Flask" in next_text
+        assert "Gin" in next_text
+        assert "xyflow" in next_text
+        assert "Cupertino" in next_text
+        assert "NavigationSplitView" in next_text
+        assert "docc2context" in next_text
+        assert "model_evidence_path_unsupported" in normalized
+        assert "Do not run AI" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P46-T1 Bounded Popular-Library Pilot Manifest" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -30733,6 +30754,191 @@ def test_operational_mvp_targeted_hardening_readiness_decision_is_documented() -
         (capabilities_docc, "OperationalMVPTargetedHardeningReadinessDecision"),
         (roadmap, "OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md"),
         (roadmap_docc, "OperationalMVPTargetedHardeningReadinessDecision"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_bounded_popular_library_pilot_manifest_records_p46_t1_contract() -> None:
+    manifest_path = ROOT / "inputs" / "p46-bounded-popular-library-pilot" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_popular_library_pilot_manifest"
+        / "p46-t1-bounded-popular-library-pilot-manifest.example.json"
+    )
+    github_doc = ROOT / "docs" / "BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "BoundedPopularLibraryPilotManifest.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == ("spec-harvester.bounded-popular-library-pilot-manifest/v0")
+    assert payload["kind"] == "SpecHarvesterBoundedPopularLibraryPilotManifest"
+    assert payload["authority"] == "producer_bounded_pilot_manifest_only"
+    assert payload["phase"] == "P46"
+    assert payload["task"] == "P46-T1"
+    readiness = payload["sourceArtifacts"]["p45TargetedHardeningReadinessDecision"]
+    readiness_path = ROOT / readiness["path"]
+    readiness_payload = json.loads(readiness_path.read_text(encoding="utf-8"))
+    assert (
+        readiness["digest"] == "sha256:" + hashlib.sha256(readiness_path.read_bytes()).hexdigest()
+    )
+    assert readiness["apiVersion"] == readiness_payload["apiVersion"]
+    assert readiness["kind"] == readiness_payload["kind"]
+    assert readiness["authority"] == readiness_payload["authority"]
+
+    assert payload["sourceManifest"] == {
+        "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+        "digest": "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+        "entryCount": 6,
+        "maximumRepositoryCount": 6,
+        "allEntriesPinnedByRevision": True,
+        "allCheckoutsAbsolute": True,
+        "requiresExistingCheckouts": True,
+        "usesNetworkDiscovery": False,
+    }
+    assert payload["pilotScope"]["selectedRepositoryCount"] == 6
+    assert payload["pilotScope"]["firstRunTask"] == "P46-T2"
+    assert payload["pilotScope"]["firstRunMode"] == "static_only"
+    assert payload["pilotScope"]["ecosystemCoverage"] == [
+        "go",
+        "javascript",
+        "python",
+        "swift",
+        "typescript",
+    ]
+    assert payload["pilotScope"]["packageShapes"] == ["package_set", "single_package"]
+
+    records = read_repository_source_manifests(
+        ROOT / "inputs" / "p46-bounded-popular-library-pilot"
+    )
+    expected_ids = [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert [record["id"] for record in records] == expected_ids
+    fixture_by_id = {repository["id"]: repository for repository in payload["repositories"]}
+    assert set(fixture_by_id) == set(expected_ids)
+    for index, record in enumerate(records):
+        fixture = fixture_by_id[record["id"]]
+        assert record["sourceManifest"] == {"path": "repositories.yml", "entryIndex": index}
+        assert record["repository"] == fixture["repository"]
+        assert record["revision"] == fixture["revision"]
+        assert record["ref"] is None
+        assert record["checkout"] == fixture["checkout"]
+        assert record["packageId"] == fixture["packageId"]
+        assert record["labels"] == fixture["labels"]
+        assert fixture["checkoutVerified"] is True
+        assert fixture["checkoutHead"] == fixture["revision"]
+        assert fixture["expectedPackageShape"]
+        assert fixture["selectionRationale"]
+        assert "missing_pinned_local_checkout" in fixture["stopConditions"]
+        assert "source_revision_mismatch" in fixture["stopConditions"]
+
+    assert fixture_by_id["gin"]["carryForwardWarnings"] == [
+        {
+            "code": "model_evidence_path_unsupported",
+            "sourceTask": "P45-T8",
+            "nonBlockingForPilotStart": True,
+            "registryPromotionBlockerUntilTriaged": True,
+        }
+    ]
+    assert "operator_checkout_origin_fork_mismatch" in fixture_by_id["xyflow"]["caveats"]
+    assert payload["localOnlyPolicy"] == {
+        "requiresExistingCheckouts": True,
+        "cloneAllowed": False,
+        "fetchAllowed": False,
+        "dependencyInstallAllowed": False,
+        "packageManagerInvocationAllowed": False,
+        "harvestedCodeExecutionAllowed": False,
+        "trustedLocalAdapterExecutionAllowed": False,
+        "networkDiscoveryAllowed": False,
+    }
+    assert payload["authorityBoundary"]["manifestIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["runsPilot"] is False
+    assert payload["authorityBoundary"]["runsAI"] is False
+    assert payload["authorityBoundary"]["runsTrustedLocalAdapterExecution"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["rawPromptPersisted"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["nextTask"] == "P46-T2"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Bounded Popular-Library Pilot Manifest",
+            "P46-T1",
+            "SpecHarvesterBoundedPopularLibraryPilotManifest",
+            "spec-harvester.bounded-popular-library-pilot-manifest/v0",
+            "producer_bounded_pilot_manifest_only",
+            "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+            "p46-t1-bounded-popular-library-pilot-manifest.example.json",
+            "exactly six pinned local checkouts",
+            "Flask",
+            "Gin",
+            "xyflow",
+            "Cupertino",
+            "NavigationSplitView",
+            "docc2context",
+            "model_evidence_path_unsupported",
+            "P46-T2",
+            "P46-T3",
+            "static-only",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "run the pilot",
+            "run AI",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "enable trusted local adapter execution",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+            "AI output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md"),
+        (docc_root, "docs/BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md"),
+        (docc_root, "<doc:BoundedPopularLibraryPilotManifest>"),
+        (capabilities, "BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md"),
+        (capabilities_docc, "BoundedPopularLibraryPilotManifest"),
+        (roadmap, "BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md"),
+        (roadmap_docc, "BoundedPopularLibraryPilotManifest"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

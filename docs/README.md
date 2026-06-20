@@ -281,6 +281,9 @@ Published DocC site:
 68. [`OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md`](OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md):
    P45-T8 readiness decision selecting Phase 46 bounded popular-library pilot
    start while carrying Gin `model_evidence_path_unsupported` into triage
+69. [`BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md`](BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md):
+   P46-T1 manifest for the first post-hardening bounded popular-library pilot
+   with pinned local checkouts and static-only-first gates
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
