@@ -29896,6 +29896,13 @@ def test_operational_mvp_quality_hardened_rerun_is_documented() -> None:
     assert payload["authority"] == "producer_operational_mvp_quality_hardened_rerun_only"
     assert payload["phase"] == "P44"
     assert payload["task"] == "P44-T4"
+    for source in payload["sourceArtifacts"].values():
+        source_path = ROOT / source["path"]
+        source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+        assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert source["apiVersion"] == source_payload["apiVersion"]
+        assert source["kind"] == source_payload["kind"]
+        assert source["authority"] == source_payload["authority"]
     assert payload["rerunInputs"]["samePinnedCorpusAsP43"] is True
     assert payload["staticOnlyRerun"]["summary"]["matchesP43StaticBaseline"] is True
     assert payload["aiEnabledRerun"]["summary"]["aiProposalArtifactCount"] == 6

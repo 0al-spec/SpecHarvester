@@ -18,7 +18,7 @@
     "aiEnabledComparison": {
       "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
       "digest": "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
-      "apiVersion": "spec-harvester.operational-mvp-ai-enabled-comparison/v0",
+      "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
       "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
       "authority": "producer_operational_mvp_ai_comparison_only"
     },
@@ -38,14 +38,14 @@
     },
     "aiProposalQualityReview": {
       "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t2-operational-mvp-ai-proposal-quality-review.example.json",
-      "digest": "sha256:43cc8a4214eba3bebf22bdaa8f2569c06d21d8b64e78c675f3053f87b944100b",
+      "digest": "sha256:0a8b7ffd20c523c24c5d76468b3027d98abcf6b6118d0e99af92e3a0e30f8276",
       "apiVersion": "spec-harvester.operational-mvp-ai-proposal-quality-review/v0",
       "kind": "SpecHarvesterOperationalMVPAIProposalQualityReview",
       "authority": "producer_operational_mvp_ai_proposal_quality_review_only"
     },
     "xyflowCaveatResolution": {
       "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t3-operational-mvp-xyflow-caveat-resolution.example.json",
-      "digest": "sha256:80387a0b7c798c3da2876143cf98bdc102baf3597c5dee74f752eaa0e18cf4c5",
+      "digest": "sha256:53013e74c22fab4712869bf64f9801765b95334abeaf7e55873f7f170c31ac28",
       "apiVersion": "spec-harvester.operational-mvp-xyflow-caveat-resolution/v0",
       "kind": "SpecHarvesterOperationalMVPXyflowCaveatResolution",
       "authority": "producer_operational_mvp_xyflow_caveat_resolution_only"
