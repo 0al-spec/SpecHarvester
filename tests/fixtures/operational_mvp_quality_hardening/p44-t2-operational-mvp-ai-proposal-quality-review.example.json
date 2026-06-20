@@ -1,0 +1,185 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-ai-proposal-quality-review/v0",
+  "kind": "SpecHarvesterOperationalMVPAIProposalQualityReview",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_ai_proposal_quality_review_only",
+  "phase": "P44",
+  "task": "P44-T2",
+  "createdAt": "2026-06-20T00:00:00Z",
+  "sourceArtifacts": {
+    "aiEnabledComparison": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+      "digest": "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
+      "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
+      "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
+      "authority": "producer_operational_mvp_ai_comparison_only"
+    },
+    "warningTriage": {
+      "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t1-operational-mvp-warning-triage.example.json",
+      "digest": "sha256:2214b4cb7ea13d7d132e93861d070df66ba24f9797c0c4f9086e883bd2396afe",
+      "apiVersion": "spec-harvester.operational-mvp-warning-triage/v0",
+      "kind": "SpecHarvesterOperationalMVPWarningTriage",
+      "authority": "producer_operational_mvp_warning_triage_only"
+    }
+  },
+  "reviewScope": {
+    "sourceTask": "P43-T5",
+    "triageTask": "P44-T1",
+    "reviewedArtifactType": "package_set_ai_enrichment_proposal",
+    "repositoryCount": 3,
+    "proposalMemberCount": 6,
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "chainOfThoughtPersisted": false,
+    "aiOutputAuthority": "proposal_only"
+  },
+  "summary": {
+    "reviewedRepositoryCount": 3,
+    "reviewedProposalMemberCount": 6,
+    "usefulSuggestionCount": 5,
+    "noisySuggestionCount": 1,
+    "unsupportedClaimCount": 0,
+    "evidenceGapCount": 0,
+    "doNotPromoteCount": 1,
+    "authorReviewRequiredCount": 6,
+    "readyForAutomaticPromotionCount": 0,
+    "registryAuthority": false
+  },
+  "repositoryReviews": [
+    {
+      "repositoryId": "xyflow",
+      "proposalArtifact": {
+        "path": "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/output/package-sets/xyflow/ai/package-set-ai-enrichment-proposal.json",
+        "digest": "sha256:82eaa831a3a45bd9eb173b24477d7843f8ad9a6741288bcb87224c20ca699aa0",
+        "status": "completed",
+        "proposalCount": 4,
+        "diagnosticCount": 0
+      },
+      "qualityClassification": {
+        "usefulSuggestions": [
+          "xyflow.react",
+          "xyflow.svelte",
+          "xyflow.system"
+        ],
+        "noisySuggestions": [
+          "xyflow.workspace"
+        ],
+        "unsupportedClaims": [],
+        "evidenceGaps": [],
+        "doNotPromote": [
+          "xyflow.workspace"
+        ],
+        "rationale": "React, Svelte, and system member proposals add concrete capability/interface summaries with evidence paths. The workspace-level proposal is generic and overlaps member proposals, so it should remain author-review context rather than promotable enrichment."
+      },
+      "followUpGuidance": [
+        "review_member_level_enrichment_before_workspace_summary",
+        "keep_workspace_summary_do_not_promote_until_author_review",
+        "carry_manual_correction_context_to_P44_T3"
+      ]
+    },
+    {
+      "repositoryId": "fastapi",
+      "proposalArtifact": {
+        "path": "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/output/package-sets/fastapi/ai/package-set-ai-enrichment-proposal.json",
+        "digest": "sha256:0ae82e1480d2042871ce2e591f4c3569d53b48dcc34937c4682ff64381458601",
+        "status": "completed",
+        "proposalCount": 1,
+        "diagnosticCount": 0
+      },
+      "qualityClassification": {
+        "usefulSuggestions": [
+          "fastapi.core"
+        ],
+        "noisySuggestions": [],
+        "unsupportedClaims": [],
+        "evidenceGaps": [],
+        "doNotPromote": [],
+        "rationale": "The FastAPI proposal adds focused routing, middleware, request/response, and OpenAPI capability summaries tied to evidence paths, with no proposal diagnostics or evidence gaps."
+      },
+      "followUpGuidance": [
+        "keep_as_author_reviewable_proposal",
+        "verify_claim_wording_during_post_hardening_rerun"
+      ]
+    },
+    {
+      "repositoryId": "gin",
+      "proposalArtifact": {
+        "path": "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/output/package-sets/gin/ai/package-set-ai-enrichment-proposal.json",
+        "digest": "sha256:bfd0d96773073f7562476e98001cf56ca9dad7d6212467106c28605269c62c15",
+        "status": "completed",
+        "proposalCount": 1,
+        "diagnosticCount": 0
+      },
+      "qualityClassification": {
+        "usefulSuggestions": [
+          "gin.core"
+        ],
+        "noisySuggestions": [],
+        "unsupportedClaims": [],
+        "evidenceGaps": [],
+        "doNotPromote": [],
+        "rationale": "The Gin proposal adds focused routing, middleware, context, rendering, and JSON validation summaries tied to evidence paths, with no proposal diagnostics or evidence gaps."
+      },
+      "followUpGuidance": [
+        "keep_as_author_reviewable_proposal",
+        "verify_claim_wording_during_post_hardening_rerun"
+      ]
+    }
+  ],
+  "phase44FollowUp": [
+    {
+      "task": "P44-T3",
+      "status": "required",
+      "summary": "Resolve or explicitly accept xyflow public-interface and fork-origin caveats before a rerun."
+    },
+    {
+      "task": "P44-T4",
+      "status": "required",
+      "summary": "Rerun the bounded corpus after warning and caveat hardening, then compare proposal quality against this review."
+    },
+    {
+      "task": "P44-T5",
+      "status": "required",
+      "summary": "Use the post-rerun evidence to decide whether bounded popular-library scraping can start."
+    }
+  ],
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "proposalQualityReviewIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "runsAI": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "proposal_quality_review_is_producer_side_review_evidence",
+    "proposal_quality_review_is_not_registry_acceptance",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_run_ai",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_persist_raw_prompts",
+    "does_not_persist_raw_provider_responses",
+    "does_not_persist_chain_of_thought",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_proposal_quality_review_output_as_registry_truth"
+  ]
+}

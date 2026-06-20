@@ -1091,6 +1091,13 @@ the machine-readable `SpecHarvesterOperationalMVPWarningTriage` fixture. It
 triages the P43-T5 `package_set_id_missing` AI draft warnings for xyflow,
 FastAPI, and Gin as AI proposal shape issues, keeps enrichment proposal-only,
 and records follow-up guidance for P44-T2 through P44-T5.
+P44-T2 adds
+[`OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md`](OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md)
+and the machine-readable
+`SpecHarvesterOperationalMVPAIProposalQualityReview` fixture. It reviews 6
+proposal-only enrichment members, keeps 5 as useful author-review suggestions,
+marks `xyflow.workspace` noisy/do-not-promote, and records no unsupported claims
+or evidence gaps.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
