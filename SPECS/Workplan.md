@@ -2093,7 +2093,7 @@ Acceptance:
 - [x] `P44-T4` Re-run the bounded operational MVP corpus after the targeted
   hardening work and compare static-only and AI-enabled proposal output against
   the P43 baseline.
-- [ ] `P44-T5` Record a post-hardening readiness decision that decides whether
+- [x] `P44-T5` Record a post-hardening readiness decision that decides whether
   SpecHarvester can proceed to bounded popular-library scraping, needs another
   quality pass, or must defer until a separately approved adapter execution
   phase exists.
