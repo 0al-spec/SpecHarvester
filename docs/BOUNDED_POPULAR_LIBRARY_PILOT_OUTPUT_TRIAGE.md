@@ -80,6 +80,11 @@ xyflow has static evidence gaps:
 xyflow AI enrichment is unsupported for registry promotion because it carries
 `model_evidence_path_unsupported`.
 
+Gin also carries forward the P45-T8 AI enrichment blocker
+`model_evidence_path_unsupported`. It was not observed again in P46-T3, but it
+must remain visible for P46-T5 and remains a registry-promotion blocker until
+triaged.
+
 Flask, Cupertino, and NavigationSplitView AI draft sidecars are noisy because
 of `selected_member_role_unknown`; Flask also carries
 `excluded_package_also_selected` and `refined_summary_missing`.

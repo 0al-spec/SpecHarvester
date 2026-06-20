@@ -31590,7 +31590,8 @@ def test_bounded_popular_library_pilot_output_triage_records_p46_t4_classificati
         "unsupportedOutputCount": 1,
         "evidenceGapOutputCount": 2,
         "doNotPromoteOutputCount": 2,
-        "registryPromotionBlockerCount": 4,
+        "registryPromotionBlockerCount": 5,
+        "carryForwardBlockerCount": 1,
     }
 
     repositories = {repository["id"]: repository for repository in payload["repositories"]}
@@ -31599,6 +31600,15 @@ def test_bounded_popular_library_pilot_output_triage_records_p46_t4_classificati
     assert repositories["gin"]["aiDraftLayer"]["codes"] == [
         "ai_json_repair_exhausted",
         "package_set_subject_metadata_missing",
+    ]
+    assert repositories["gin"]["carryForwardWarnings"] == [
+        {
+            "code": "model_evidence_path_unsupported",
+            "sourceTask": "P45-T8",
+            "sourceLayer": "ai_enrichment",
+            "observedInP46T3": False,
+            "registryPromotionBlockerUntilTriaged": True,
+        }
     ]
     assert repositories["xyflow"]["staticCandidateLayer"]["classification"] == "evidence_gap"
     assert repositories["xyflow"]["aiDraftLayer"]["classification"] == "valid"
@@ -31631,6 +31641,17 @@ def test_bounded_popular_library_pilot_output_triage_records_p46_t4_classificati
     ]
     assert payload["memberTriage"]["unsupportedAISidecars"] == ["xyflow.aiEnrichment"]
     assert "flask.aiDraft" in payload["memberTriage"]["noisyAISidecars"]
+    assert payload["carryForwardTriage"]["registryPromotionBlockers"] == [
+        {
+            "repositoryId": "gin",
+            "code": "model_evidence_path_unsupported",
+            "sourceTask": "P45-T8",
+            "sourceLayer": "ai_enrichment",
+            "observedInP46T3": False,
+            "mustRemainVisibleForP46T5": True,
+            "registryPromotionBlockerUntilTriaged": True,
+        }
+    ]
     assert payload["authorityBoundary"]["triageIsRegistryAuthority"] is False
     assert payload["authorityBoundary"]["acceptsPackages"] is False
     assert payload["authorityBoundary"]["acceptsRelations"] is False

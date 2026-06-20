@@ -7,14 +7,14 @@
   "sourceArtifacts": {
     "p46StaticOnlyRun": {
       "path": "tests/fixtures/bounded_popular_library_pilot_static_only_run/p46-t2-bounded-popular-library-pilot-static-only-run.example.json",
-      "digest": "sha256:46871b0e109ecb6f559b98715eae7a6fef9d1a634c00a2d821c95395ecdc51fa",
+      "digest": "sha256:ae0ee01cb92b3969eafee77027a364e6fb0b8e4b050db39122edb4aeea8fff3c",
       "apiVersion": "spec-harvester.bounded-popular-library-pilot-static-only-run/v0",
       "kind": "SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun",
       "authority": "producer_static_preview_evidence_only"
     },
     "p46AIEnabledRun": {
       "path": "tests/fixtures/bounded_popular_library_pilot_ai_enabled_run/p46-t3-bounded-popular-library-pilot-ai-enabled-run.example.json",
-      "digest": "sha256:80a47aec9da8e36fb1c2d1db6c829dd0c8731047b47a1d6f413670133568578f",
+      "digest": "sha256:f5cec622d4aea52190c8444d6ec5f2d42baa202bc342bf7cdc60e11dc6e9545e",
       "apiVersion": "spec-harvester.bounded-popular-library-pilot-ai-enabled-run/v0",
       "kind": "SpecHarvesterBoundedPopularLibraryPilotAIEnabledRun",
       "authority": "producer_ai_proposal_evidence_only"
@@ -36,7 +36,8 @@
     "unsupportedOutputCount": 1,
     "evidenceGapOutputCount": 2,
     "doNotPromoteOutputCount": 2,
-    "registryPromotionBlockerCount": 4
+    "registryPromotionBlockerCount": 5,
+    "carryForwardBlockerCount": 1
   },
   "classificationVocabulary": [
     "valid",
@@ -86,6 +87,15 @@
         "promotionBlocker": false,
         "codes": []
       },
+      "carryForwardWarnings": [
+        {
+          "code": "model_evidence_path_unsupported",
+          "sourceTask": "P45-T8",
+          "sourceLayer": "ai_enrichment",
+          "observedInP46T3": false,
+          "registryPromotionBlockerUntilTriaged": true
+        }
+      ],
       "handoffClass": "reviewable_static_ai_draft_blocked",
       "nextAction": "exclude_ai_draft_from_handoff_until_regenerated"
     },
@@ -208,6 +218,19 @@
       "flask.aiEnrichment",
       "cupertino.aiDraft",
       "navigation-split-view.aiDraft"
+    ]
+  },
+  "carryForwardTriage": {
+    "registryPromotionBlockers": [
+      {
+        "repositoryId": "gin",
+        "code": "model_evidence_path_unsupported",
+        "sourceTask": "P45-T8",
+        "sourceLayer": "ai_enrichment",
+        "observedInP46T3": false,
+        "mustRemainVisibleForP46T5": true,
+        "registryPromotionBlockerUntilTriaged": true
+      }
     ]
   },
   "authorityBoundary": {
