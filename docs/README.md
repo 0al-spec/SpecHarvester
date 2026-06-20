@@ -249,6 +249,10 @@ Published DocC site:
    P43-T5 AI-enabled comparison gate over the same pinned corpus, recording
    local provider unavailability, unchanged static-only handoff readiness,
    proposal-only warnings, and non-authority boundaries
+58. [`OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md`](OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md):
+   P43-T6 author-facing handoff summaries over the operational MVP corpus,
+   showing what is valid, reviewable, needs manual correction, and must not be
+   promoted
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

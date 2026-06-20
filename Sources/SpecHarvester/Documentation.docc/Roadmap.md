@@ -775,6 +775,11 @@ P43-T5 adds <doc:OperationalMVPAIEnabledComparison> and the machine-readable
 local LM Studio `openai/gpt-oss-20b` run over the same pinned corpus as P43-T4,
 preserves the static-only handoff baseline, and keeps AI draft/enrichment
 sidecars proposal-only.
+P43-T6 adds <doc:OperationalMVPAuthorHandoffSummaries> and the
+machine-readable `SpecHarvesterOperationalMVPAuthorHandoffSummaries` fixture.
+It translates the static-only baseline and live proposal-only AI comparison
+into author-facing valid, reviewable, needs-manual-correction, and
+do-not-promote summaries while preserving producer-side review authority only.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

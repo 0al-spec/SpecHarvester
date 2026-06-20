@@ -61,6 +61,12 @@ P43-T5 records the AI-enabled comparison gate as
 the same pinned corpus and records live local LM Studio proposal-only AI draft
 and enrichment sidecars without accepting AI output as registry truth.
 
+P43-T6 records author handoff summaries as
+<doc:OperationalMVPAuthorHandoffSummaries> and the
+`SpecHarvesterOperationalMVPAuthorHandoffSummaries` fixture. The handoff shows
+authors what is valid, reviewable, needs manual correction, and must not be
+promoted.
+
 ## Corpus
 
 The corpus is operator-selected and pinned. SpecHarvester must not clone or
@@ -144,6 +150,7 @@ enable trusted local adapter execution.
 - <doc:OperationalMVPValidationReportFixture>
 - <doc:OperationalMVPStaticOnlyBaseline>
 - <doc:OperationalMVPAIEnabledComparison>
+- <doc:OperationalMVPAuthorHandoffSummaries>
 - <doc:AutonomousCandidateBatch>
 - <doc:AuthorReadyDraftQualityBar>
 - <doc:AuthorReadyDraftQualityReport>
