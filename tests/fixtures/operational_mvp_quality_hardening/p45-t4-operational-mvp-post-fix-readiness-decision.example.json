@@ -1,0 +1,230 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-post-fix-readiness-decision/v0",
+  "kind": "SpecHarvesterOperationalMVPPostFixReadinessDecision",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_post_fix_readiness_decision_only",
+  "phase": "P45",
+  "task": "P45-T4",
+  "createdAt": "2026-06-20T14:07:08Z",
+  "sourceArtifacts": {
+    "postHardeningReadinessDecision": {
+      "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t5-operational-mvp-post-hardening-readiness-decision.example.json",
+      "digest": "sha256:ee6b839577abd122cd73ae2fb1f7ad19b45035525c676ddd482a9035a0e5244e",
+      "apiVersion": "spec-harvester.operational-mvp-post-hardening-readiness-decision/v0",
+      "kind": "SpecHarvesterOperationalMVPPostHardeningReadinessDecision",
+      "authority": "producer_operational_mvp_post_hardening_readiness_decision_only"
+    },
+    "aiDraftShapeRerun": {
+      "path": "tests/fixtures/operational_mvp_quality_hardening/p45-t3-operational-mvp-ai-draft-shape-rerun.example.json",
+      "digest": "sha256:d5c9b4976553895665aaa58f2da8bf85e1083d1412e82d1c64fe5d2f7e84e15d",
+      "apiVersion": "spec-harvester.operational-mvp-ai-draft-shape-rerun/v0",
+      "kind": "SpecHarvesterOperationalMVPAIDraftShapeRerun",
+      "authority": "producer_operational_mvp_ai_draft_shape_rerun_only"
+    }
+  },
+  "decision": {
+    "selected": "needs_targeted_ai_draft_quality_pass_before_bounded_popular_library_scraping",
+    "readyForBoundedPopularLibraryScraping": false,
+    "needsTargetedAIDraftQualityPass": true,
+    "blockedUntilAdapterExecution": false,
+    "approvesBoundedPopularLibraryScraping": false,
+    "rationale": "P45-T3 resolves the old package_set_id_missing and excluded_package_unknown identity-warning class across xyflow, FastAPI, and Gin, but the AI draft layer is not fully clean. xyflow now reports selected_member_role_unknown diagnostics, and FastAPI/Gin complete without diagnostics but with no_proposal_subjects. Bounded popular-library scraping should wait until those remaining AI draft quality signals are resolved or explicitly accepted as non-blocking."
+  },
+  "decisionInputs": {
+    "p44ReadinessDecision": {
+      "selected": "needs_another_quality_pass",
+      "readyForBoundedPopularLibraryScraping": false,
+      "needsAnotherQualityPass": true,
+      "blockedUntilAdapterExecution": false
+    },
+    "p45AiDraftShapeRerun": {
+      "samePinnedCorpusAsP44T4": true,
+      "samePinnedCorpusAsP43": true,
+      "staticOnlyMatchesP44Baseline": true,
+      "aiEnabledRunPassed": true,
+      "processedRepositoryCount": 3,
+      "failedRepositoryCount": 0,
+      "staticCandidateCount": 6,
+      "staticRelationCount": 3,
+      "aiDraftProposalCount": 3,
+      "aiProposalArtifactCount": 6,
+      "aiEnrichmentProposalMemberCount": 6,
+      "oldIdentityWarningClassResolved": true,
+      "p44AiDraftWarningRepositoryCount": 3,
+      "p45AiDraftWarningRepositoryCount": 1,
+      "p44AiDraftWarningDiagnosticCount": 3,
+      "p45AiDraftWarningDiagnosticCount": 3,
+      "identityWarningResolvedRepositoryCount": 3,
+      "resolvedWarningRepositoryCount": 2,
+      "changedWarningRepositoryCount": 1,
+      "postFixOutcome": "identity_warnings_resolved_but_ai_draft_layer_not_fully_clean",
+      "rawPromptPersisted": false,
+      "rawResponsePersisted": false,
+      "chainOfThoughtPersisted": false,
+      "aiOutputAcceptedAsRegistryTruth": false
+    }
+  },
+  "repositoryFindings": [
+    {
+      "repositoryId": "xyflow",
+      "p44AiDraftWarningCodes": [
+        "package_set_id_missing"
+      ],
+      "p45AiDraftWarningCodes": [
+        "selected_member_role_unknown"
+      ],
+      "p44AiDraftWarningDiagnosticCount": 1,
+      "p45AiDraftWarningDiagnosticCount": 3,
+      "warningComparison": "changed_warning_code_not_resolved",
+      "aiDraftStatus": "warning",
+      "aiDraftStopPolicyReason": "review_or_regeneration_needed_before_author_handoff",
+      "readinessImpact": "blocks_readiness_without_explicit_non_blocking_role_taxonomy_policy"
+    },
+    {
+      "repositoryId": "fastapi",
+      "p44AiDraftWarningCodes": [
+        "package_set_id_missing"
+      ],
+      "p45AiDraftWarningCodes": [],
+      "p44AiDraftWarningDiagnosticCount": 1,
+      "p45AiDraftWarningDiagnosticCount": 0,
+      "warningComparison": "resolved",
+      "aiDraftStatus": "completed",
+      "aiDraftStopPolicyReason": "no_proposal_subjects",
+      "readinessImpact": "requires_explicit_no_proposal_subjects_policy_before_expansion"
+    },
+    {
+      "repositoryId": "gin",
+      "p44AiDraftWarningCodes": [
+        "excluded_package_unknown"
+      ],
+      "p45AiDraftWarningCodes": [],
+      "p44AiDraftWarningDiagnosticCount": 1,
+      "p45AiDraftWarningDiagnosticCount": 0,
+      "warningComparison": "resolved",
+      "aiDraftStatus": "completed",
+      "aiDraftStopPolicyReason": "no_proposal_subjects",
+      "readinessImpact": "requires_explicit_no_proposal_subjects_policy_before_expansion"
+    }
+  ],
+  "decisionEvidence": [
+    {
+      "id": "p45_fix_resolved_old_identity_warning_class",
+      "supportsDecision": "improved_but_not_ready",
+      "summary": "P45-T3 removed package_set_id_missing and excluded_package_unknown AI draft warnings from the bounded corpus."
+    },
+    {
+      "id": "xyflow_role_taxonomy_warning_remains",
+      "blocksDecision": "ready_for_bounded_popular_library_scraping",
+      "summary": "xyflow still has warning-level selected_member_role_unknown diagnostics after the shape fix."
+    },
+    {
+      "id": "single_package_no_proposal_subjects_requires_policy",
+      "blocksDecision": "ready_for_bounded_popular_library_scraping",
+      "summary": "FastAPI and Gin are diagnostic-clean, but no_proposal_subjects remains the AI draft stop-policy reason."
+    },
+    {
+      "id": "adapter_execution_not_required",
+      "rejectsDecision": "blocked_until_adapter_execution",
+      "summary": "The remaining blocker is AI draft quality policy, not trusted local adapter execution."
+    },
+    {
+      "id": "ai_output_stayed_proposal_only",
+      "supportsDecision": "safe_to_record_review_evidence",
+      "summary": "P45-T3 kept draft and enrichment sidecars proposal-only and did not apply AI output to registry truth."
+    }
+  ],
+  "rejectedAlternatives": [
+    {
+      "id": "ready_for_bounded_popular_library_scraping",
+      "reason": "Rejected because the post-fix corpus is improved but still not clean enough: xyflow reports selected_member_role_unknown and FastAPI/Gin still require an explicit no_proposal_subjects policy before expansion.",
+      "wouldRequire": [
+        "zero_blocking_ai_draft_warning_diagnostics_on_bounded_corpus",
+        "selected_member_role_unknown_resolved_or_explicitly_non_blocking",
+        "no_proposal_subjects_resolved_or_explicitly_non_blocking_for_single_package_repositories",
+        "proposal_only_ai_authority_boundary_preserved"
+      ]
+    },
+    {
+      "id": "blocked_until_adapter_execution",
+      "reason": "Rejected because P45-T3 produced enough static and AI proposal evidence to identify the remaining blocker without executing adapters.",
+      "wouldRequire": [
+        "evidence_gap_unrepresentable_by_static_or_ai_proposal_evidence",
+        "operator_approved_trusted_local_adapter_execution_phase"
+      ]
+    },
+    {
+      "id": "proceed_after_identity_fix_only",
+      "reason": "Rejected because resolving the old identity warning class is necessary but not sufficient for broader scraping readiness.",
+      "wouldRequire": [
+        "remaining_xyflow_role_taxonomy_warning_accepted_as_non_blocking",
+        "single_package_no_proposal_subjects_accepted_as_non_blocking"
+      ]
+    }
+  ],
+  "recommendedNextCondition": {
+    "id": "resolve_or_explicitly_accept_remaining_ai_draft_quality_signals",
+    "workplanTaskCreated": false,
+    "reason": "The user explicitly requested that no new Workplan tasks be added. This fixture records the readiness condition without inserting a new task.",
+    "requiredBeforeApproval": [
+      "resolve selected_member_role_unknown for xyflow or document it as non-blocking for bounded popular-library scraping",
+      "resolve no_proposal_subjects for FastAPI/Gin or document it as non-blocking for single-package repositories",
+      "preserve proposal-only AI output and no registry truth mutation",
+      "preserve no raw prompt, raw provider response, or chain-of-thought persistence"
+    ]
+  },
+  "exitState": {
+    "phase45ReadinessDecisionComplete": true,
+    "readyForBoundedPopularLibraryScraping": false,
+    "needsTargetedAIDraftQualityPass": true,
+    "blockedUntilAdapterExecution": false,
+    "boundedPopularLibraryScrapingApproved": false,
+    "noNewWorkplanTaskAdded": true
+  },
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "readinessDecisionIsRegistryAuthority": false,
+    "approvesBoundedPopularLibraryScraping": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "runsAI": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "readinessOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "requiresAdapterExecution": false,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false,
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "readiness_decision_is_producer_side_review_evidence",
+    "does_not_approve_bounded_popular_library_scraping",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_run_ai",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_readiness_output_as_registry_truth",
+    "does_not_persist_raw_prompts",
+    "does_not_persist_raw_provider_responses",
+    "does_not_persist_chain_of_thought",
+    "does_not_add_workplan_tasks"
+  ]
+}
