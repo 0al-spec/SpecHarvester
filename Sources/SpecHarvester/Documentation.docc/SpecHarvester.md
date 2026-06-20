@@ -80,6 +80,7 @@ The canonical source files remain in the repository:
 - `docs/OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md`
 - `docs/BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md`
 - `docs/BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md`
+- `docs/BOUNDED_POPULAR_LIBRARY_PILOT_AI_ENABLED_RUN.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -251,6 +252,7 @@ the host.
 - <doc:OperationalMVPTargetedHardeningReadinessDecision>
 - <doc:BoundedPopularLibraryPilotManifest>
 - <doc:BoundedPopularLibraryPilotStaticOnlyRun>
+- <doc:BoundedPopularLibraryPilotAIEnabledRun>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
