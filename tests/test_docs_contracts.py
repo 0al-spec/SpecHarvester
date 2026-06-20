@@ -38,6 +38,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P44-T3 Operational MVP Xyflow Interface Caveat Resolution" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
+        assert "`P44-T3`" in next_text
+        assert "`P44-T2` Operational MVP AI Proposal Quality Review" in next_text
+        assert "partial `PublicInterfaceIndex`" in next_text
+        assert "fork-origin caveat" in next_text
+        assert "Do not treat caveat-resolution output as registry truth" in next_text
+        return
+
     if "# Next Task: P44-T2 Operational MVP AI Proposal Quality Review" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
