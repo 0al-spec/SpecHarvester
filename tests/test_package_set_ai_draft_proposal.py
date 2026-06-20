@@ -429,6 +429,55 @@ def test_package_set_ai_draft_accepts_nested_relation_endpoint_aliases(
     }
 
 
+def test_package_set_ai_draft_accepts_relation_target_from_relation_id(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    relation = payload["relations"][0]
+    relation["id"] = "demo.workspace.contains.demo.cli"
+    relation.pop("targetPackageId")
+    payload["relations"] = [relation]
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "completed"
+    assert "relation_target_not_selected" not in {item["code"] for item in report["diagnostics"]}
+    assert {item["targetPackageId"] for item in report["relations"]} == {"demo.cli"}
+
+
+def test_package_set_ai_draft_accepts_single_item_relation_target_list(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    relation = payload["relations"][0]
+    relation["targetPackageIds"] = [relation.pop("targetPackageId")]
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "completed"
+    assert "relation_target_not_selected" not in {item["code"] for item in report["diagnostics"]}
+    assert {item["targetPackageId"] for item in report["relations"]} == {
+        "demo.cli",
+        "demo.core",
+    }
+
+
 def test_package_set_ai_draft_keeps_unknown_exclusion_warning_for_package_sets(
     tmp_path: Path,
 ) -> None:

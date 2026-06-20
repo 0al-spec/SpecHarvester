@@ -43,7 +43,9 @@ when they target packages that were not selected. Common relation endpoint
 aliases such as `source`, `target`, `sourcePackage`, and `targetPackage` are
 normalized to `sourcePackageId` and `targetPackageId` before validation.
 Endpoint aliases may be direct package-id strings or nested objects with
-`packageId` or `id`.
+`packageId` or `id`. A missing target can be recovered only when a single
+selected member package id is unambiguously present in the relation id or in a
+single-item target list.
 
 Selected-member role labels are normalized before they become proposal
 evidence. Canonical role strings are preserved, while narrow aliases from

@@ -8114,6 +8114,8 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
         assert "sourcePackage" in normalized
         assert "targetPackage" in normalized
         assert "targetPackageId" in normalized
+        assert "relation id" in normalized
+        assert "single-item target list" in normalized
         assert "ai_json_repair_needed" in normalized
         assert "jsonRepairStatus: repaired" in normalized
         assert "validationGuard" in normalized

@@ -53,12 +53,16 @@ P45-T6 policy surface:
   changing the single-package proposal subject. Nested endpoint aliases now
   resolve `packageId` or `id`, and successful repair is non-blocking for the
   single-package zero-subject policy when no other diagnostics are present.
+- A third P45-T7 live rerun showed xyflow can omit explicit relation target
+  fields while keeping an unambiguous selected member package id in the relation
+  id. Relation target recovery now also accepts an unambiguous selected member
+  id in the relation id or a single-item target list.
 
 Additional validation after the follow-up:
 
 | Command | Result |
 | --- | --- |
-| `PYTHONPATH=src python -m pytest tests/test_package_set_ai_draft_proposal.py -q` | PASS, 26 passed |
+| `PYTHONPATH=src python -m pytest tests/test_package_set_ai_draft_proposal.py -q` | PASS, 28 passed |
 | `PYTHONPATH=src python -m pytest tests/test_docs_contracts.py::test_docc_and_github_docs_cover_author_ready_draft_quality_bar -q` | PASS |
 | `ruff check src/spec_harvester/package_set_ai_draft_proposal.py tests/test_package_set_ai_draft_proposal.py tests/test_docs_contracts.py` | PASS |
 | `ruff format --check src/spec_harvester/package_set_ai_draft_proposal.py tests/test_package_set_ai_draft_proposal.py tests/test_docs_contracts.py` | PASS |

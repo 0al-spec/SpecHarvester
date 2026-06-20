@@ -107,7 +107,9 @@ diagnostics. Relations fail closed when the target is not selected. Common
 relation endpoint aliases such as `source`, `target`, `sourcePackage`, and
 `targetPackage` are normalized to `sourcePackageId` and `targetPackageId`
 before validation. Endpoint aliases may be direct package-id strings or nested
-objects with `packageId` or `id`.
+objects with `packageId` or `id`. A missing target can be recovered only when a
+single selected member package id is unambiguously present in the relation id or
+in a single-item target list.
 
 When model output omits `packageSet.packageId`, SpecHarvester uses the
 deterministic request package-set id instead of recording a warning. For

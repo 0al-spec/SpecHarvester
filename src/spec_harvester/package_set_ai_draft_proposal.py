@@ -855,8 +855,18 @@ def relation_proposals(
         )
         target = first_endpoint_package_id(
             item,
-            ("targetPackageId", "target", "targetPackage", "toPackageId", "packageId"),
+            (
+                "targetPackageId",
+                "target",
+                "targetPackage",
+                "toPackageId",
+                "targetPackageIds",
+                "targetIds",
+                "packageId",
+            ),
         )
+        if not target:
+            target = relation_target_from_relation_id(string_value(item.get("id")), selected_ids)
         relation_type = string_value(item.get("type")) or "contains"
         if relation_type != "contains":
             diagnostics.append(
@@ -1250,10 +1260,21 @@ def endpoint_package_id(value: Any) -> str:
     direct_value = string_value(value)
     if direct_value:
         return direct_value
+    if isinstance(value, list) and len(value) == 1:
+        return endpoint_package_id(value[0])
     record = mapping_value(value)
     if not record:
         return ""
     return first_string_value(record, ("packageId", "id"))
+
+
+def relation_target_from_relation_id(relation_id: str, selected_ids: set[str]) -> str:
+    if not relation_id:
+        return ""
+    matches = [package_id for package_id in selected_ids if package_id in relation_id]
+    if len(matches) == 1:
+        return matches[0]
+    return ""
 
 
 def string_list(value: Any) -> list[str]:
