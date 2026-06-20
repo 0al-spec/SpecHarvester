@@ -1,0 +1,254 @@
+{
+  "apiVersion": "spec-harvester.targeted-hardening-readiness-decision/v0",
+  "kind": "SpecHarvesterTargetedHardeningReadinessDecision",
+  "schemaVersion": 1,
+  "authority": "producer_targeted_hardening_readiness_decision_only",
+  "phase": "P45",
+  "task": "P45-T8",
+  "createdAt": "2026-06-20T17:11:00Z",
+  "sourceArtifacts": {
+    "p45TargetedAIDraftPolicyRerun": {
+      "path": "tests/fixtures/operational_mvp_quality_hardening/p45-t7-operational-mvp-targeted-ai-draft-policy-rerun.example.json",
+      "digest": "sha256:0e0d4cf620c46bf25884f103f903ff7fb1cc7e55c1a4cbb74b9a5a3f9cb1a294",
+      "apiVersion": "spec-harvester.operational-mvp-targeted-ai-draft-policy-rerun/v0",
+      "kind": "SpecHarvesterOperationalMVPTargetedAIDraftPolicyRerun",
+      "authority": "producer_operational_mvp_targeted_ai_draft_policy_rerun_only"
+    }
+  },
+  "decision": {
+    "selected": "ready_for_phase46_bounded_popular_library_pilot",
+    "readyForPhase46": true,
+    "readyForBoundedPopularLibraryPilot": true,
+    "approvesBoundedPopularLibraryPilotStart": true,
+    "approvesUnboundedPopularLibraryScraping": false,
+    "needsAnotherTargetedAIDraftHardeningPass": false,
+    "blockedUntilAdapterExecution": false,
+    "rationale": "P45-T7 shows that the bounded operational MVP corpus no longer has blocking AI draft quality ambiguity. xyflow no longer reports selected_member_role_unknown, FastAPI single-package no_proposal_subjects is explicitly non-blocking after successful repair and guard validation, and Gin no_proposal_subjects is resolved. The remaining Gin model_evidence_path_unsupported diagnostics are AI enrichment warning evidence, not AI draft selection blockers, so they must be carried into Phase 46 triage without blocking the bounded pilot start."
+  },
+  "decisionInputs": {
+    "p45TargetedAIDraftPolicyRerun": {
+      "samePinnedCorpusAsP45T3": true,
+      "staticOnlyMatchesP45T3Baseline": true,
+      "aiEnabledRunPassed": true,
+      "processedRepositoryCount": 3,
+      "failedRepositoryCount": 0,
+      "aiProposalArtifactCount": 6,
+      "aiEnrichmentProposalMemberCount": 6,
+      "xyflowSelectedMemberRoleWarningResolved": true,
+      "xyflowRelationTargetBlockerResolved": true,
+      "singlePackageNoProposalSubjectsResolved": true,
+      "aiDraftStopPolicyResolvedRepositoryCount": 3,
+      "aiDraftBlockingRepositoryCount": 0,
+      "aiDraftWarningRepositoryCount": 1,
+      "aiDraftWarningDiagnosticCount": 1,
+      "newNonBlockingRepairWarningRepositoryCount": 1,
+      "aiDraftProviderTotalTokens": 19179,
+      "aiEnrichmentProviderTotalTokens": 81140,
+      "aiEnrichmentWarningRepositoryCount": 1,
+      "aiEnrichmentWarningDiagnosticCount": 2,
+      "postTargetedPolicyOutcome": "ai_draft_blockers_resolved_with_ai_enrichment_warning_remaining",
+      "rawPromptPersisted": false,
+      "rawResponsePersisted": false,
+      "chainOfThoughtPersisted": false,
+      "aiOutputAcceptedAsRegistryTruth": false
+    }
+  },
+  "repositoryReadiness": [
+    {
+      "repositoryId": "xyflow",
+      "previousBlockingSignal": "selected_member_role_unknown",
+      "p45T7AiDraftWarningCodes": [],
+      "p45T7AiDraftStopPolicyReason": "remaining_work_is_author_reviewable",
+      "p45T7AiDraftStopPolicyDecision": "stop_for_author_review",
+      "readinessImpact": "no_longer_blocks_phase46_bounded_pilot"
+    },
+    {
+      "repositoryId": "fastapi",
+      "previousBlockingSignal": "no_proposal_subjects",
+      "p45T7AiDraftWarningCodes": [
+        "ai_json_repair_needed"
+      ],
+      "p45T7AiDraftStopPolicyReason": "single_package_no_proposal_subjects_non_blocking",
+      "p45T7AiDraftStopPolicyDecision": "stop_for_author_review",
+      "readinessImpact": "non_blocking_single_package_zero_subject_policy",
+      "readinessCondition": "successful_json_repair_warning_is_non_blocking_when_ai_draft_validation_guard_passes"
+    },
+    {
+      "repositoryId": "gin",
+      "previousBlockingSignal": "no_proposal_subjects",
+      "p45T7AiDraftWarningCodes": [],
+      "p45T7AiDraftStopPolicyReason": "remaining_work_is_author_reviewable",
+      "p45T7AiDraftStopPolicyDecision": "stop_for_author_review",
+      "aiEnrichmentWarningCodes": [
+        "model_evidence_path_unsupported"
+      ],
+      "aiEnrichmentWarningDiagnosticCount": 2,
+      "readinessImpact": "non_blocking_for_phase46_bounded_pilot_but_blocks_registry_promotion_until_triaged"
+    }
+  ],
+  "remainingWarningTreatment": {
+    "status": "carry_forward_non_blocking_for_phase46_pilot",
+    "warnings": [
+      {
+        "repositoryId": "gin",
+        "code": "model_evidence_path_unsupported",
+        "layer": "ai_enrichment",
+        "diagnosticCount": 2,
+        "nonBlockingForPhase46Pilot": true,
+        "registryPromotionBlockerUntilTriaged": true,
+        "carryForwardToTasks": [
+          "P46-T4",
+          "P46-T5"
+        ],
+        "rationale": "The warning is attached to AI enrichment evidence paths after the AI draft selection layer completed. It does not invalidate the pilot start decision, but Phase 46 triage and author handoff must keep it visible before any promotion decision."
+      }
+    ]
+  },
+  "decisionEvidence": [
+    {
+      "id": "selected_member_role_unknown_resolved",
+      "supportsDecision": "ready_for_phase46_bounded_popular_library_pilot",
+      "summary": "xyflow no longer reports selected_member_role_unknown, and relation target handling no longer blocks author-review stop policy."
+    },
+    {
+      "id": "single_package_no_proposal_subjects_non_blocking",
+      "supportsDecision": "ready_for_phase46_bounded_popular_library_pilot",
+      "summary": "FastAPI and Gin no longer require another AI draft hardening pass for single-package zero-subject handling."
+    },
+    {
+      "id": "gin_enrichment_warning_carried_forward",
+      "supportsDecision": "bounded_pilot_with_warning_triage",
+      "summary": "Gin model_evidence_path_unsupported remains visible as non-blocking pilot triage input and a registry-promotion blocker until reviewed."
+    },
+    {
+      "id": "adapter_execution_not_required",
+      "rejectsDecision": "blocked_until_adapter_execution",
+      "summary": "The readiness decision is based on static and proposal-only AI evidence, not trusted local adapter execution."
+    },
+    {
+      "id": "proposal_only_authority_preserved",
+      "supportsDecision": "safe_to_start_bounded_pilot",
+      "summary": "P45-T7 did not persist raw prompts, raw responses, or chain-of-thought and did not mutate registry truth."
+    }
+  ],
+  "rejectedAlternatives": [
+    {
+      "id": "needs_another_targeted_ai_draft_hardening_pass",
+      "reason": "Rejected because P45-T7 resolved the blocking AI draft signals that P45-T4 required P45-T5 and P45-T6 to address.",
+      "wouldRequire": [
+        "remaining_blocking_ai_draft_warning_diagnostics",
+        "unresolved_selected_member_role_unknown",
+        "unresolved_blocking_no_proposal_subjects"
+      ]
+    },
+    {
+      "id": "blocked_until_adapter_execution",
+      "reason": "Rejected because the decision concerns AI draft readiness for a bounded pilot, not adapter runtime correctness.",
+      "wouldRequire": [
+        "evidence_gap_unrepresentable_by_static_or_ai_proposal_evidence",
+        "operator_approved_trusted_local_adapter_execution_phase"
+      ]
+    },
+    {
+      "id": "approve_unbounded_popular_library_scraping",
+      "reason": "Rejected because P45-T8 only approves the next bounded Phase 46 pilot. Wider scraping remains outside this decision.",
+      "wouldRequire": [
+        "completed_phase46_pilot_exit_decision",
+        "explicit_larger_corpus_approval"
+      ]
+    },
+    {
+      "id": "start_phase46_without_warning_carry_forward",
+      "reason": "Rejected because Gin model_evidence_path_unsupported must stay visible in Phase 46 triage and author handoff.",
+      "wouldRequire": [
+        "gin_ai_enrichment_warning_resolved",
+        "or_explicit_author_review_acceptance"
+      ]
+    }
+  ],
+  "phase46StartConditions": {
+    "firstTask": "P46-T1",
+    "allowedScope": "bounded_pinned_local_popular_library_pilot_manifest_only",
+    "mustDefine": [
+      "pinned local checkout requirements",
+      "multi-ecosystem coverage",
+      "repository exclusion rules",
+      "pilot stop conditions",
+      "static-only gate before AI-enabled pilot",
+      "proposal-only AI output boundary",
+      "no raw prompt, raw provider response, or chain-of-thought persistence",
+      "carry-forward triage for model_evidence_path_unsupported"
+    ],
+    "mustNotDo": [
+      "accept packages or relations",
+      "publish registry metadata",
+      "seed baselines",
+      "remove preview_only",
+      "enable trusted local adapter execution",
+      "execute harvested code",
+      "install dependencies",
+      "invoke package managers",
+      "treat AI output as registry truth",
+      "treat adapter output as registry truth"
+    ]
+  },
+  "exitState": {
+    "phase45Complete": true,
+    "targetedHardeningReadinessDecisionComplete": true,
+    "readyForPhase46": true,
+    "readyForBoundedPopularLibraryPilot": true,
+    "boundedPopularLibraryPilotApproved": true,
+    "needsAnotherTargetedAIDraftHardeningPass": false,
+    "blockedUntilAdapterExecution": false,
+    "phase46FirstTask": "P46-T1"
+  },
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "readinessDecisionIsRegistryAuthority": false,
+    "approvesBoundedPopularLibraryPilotStart": true,
+    "approvesUnboundedPopularLibraryScraping": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "runsAI": false,
+    "rerunsCorpus": false,
+    "runsTrustedLocalAdapterExecution": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "requiresAdapterExecution": false,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "readinessOutputAcceptedAsRegistryTruth": false,
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "readiness_decision_is_producer_side_review_evidence",
+    "does_not_approve_unbounded_popular_library_scraping",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_run_ai",
+    "does_not_rerun_corpus",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_readiness_output_as_registry_truth",
+    "does_not_persist_raw_prompts",
+    "does_not_persist_raw_provider_responses",
+    "does_not_persist_chain_of_thought"
+  ]
+}

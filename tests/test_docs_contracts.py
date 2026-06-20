@@ -38,6 +38,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P46-T1 Bounded Popular-Library Pilot Manifest" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening" in (
+            next_text
+        )
+        assert "`P46-T1`" in next_text
+        assert "`P45-T8` Targeted-Hardening Readiness Decision" in next_text
+        assert "bounded popular-library pilot" in normalized
+        assert "pinned local checkout requirements" in normalized
+        assert "multi-ecosystem coverage" in normalized
+        assert "exclusion rules" in normalized
+        assert "stop conditions" in normalized
+        assert "static-only" in normalized
+        assert "proposal-only" in normalized
+        assert "model_evidence_path_unsupported" in normalized
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P45-T8 Targeted-Hardening Readiness Decision" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -30528,6 +30547,192 @@ def test_operational_mvp_targeted_ai_draft_policy_rerun_is_documented() -> None:
         (capabilities_docc, "OperationalMVPTargetedAIDraftPolicyRerun"),
         (roadmap, "OPERATIONAL_MVP_TARGETED_AI_DRAFT_POLICY_RERUN.md"),
         (roadmap_docc, "OperationalMVPTargetedAIDraftPolicyRerun"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_targeted_hardening_readiness_decision_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p45-t8-targeted-hardening-readiness-decision.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPTargetedHardeningReadinessDecision.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.targeted-hardening-readiness-decision/v0"
+    assert payload["kind"] == "SpecHarvesterTargetedHardeningReadinessDecision"
+    assert payload["authority"] == "producer_targeted_hardening_readiness_decision_only"
+    assert payload["phase"] == "P45"
+    assert payload["task"] == "P45-T8"
+    for source in payload["sourceArtifacts"].values():
+        source_path = ROOT / source["path"]
+        source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+        assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert source["apiVersion"] == source_payload["apiVersion"]
+        assert source["kind"] == source_payload["kind"]
+        assert source["authority"] == source_payload["authority"]
+
+    decision = payload["decision"]
+    assert decision["selected"] == "ready_for_phase46_bounded_popular_library_pilot"
+    assert decision["readyForPhase46"] is True
+    assert decision["readyForBoundedPopularLibraryPilot"] is True
+    assert decision["approvesBoundedPopularLibraryPilotStart"] is True
+    assert decision["approvesUnboundedPopularLibraryScraping"] is False
+    assert decision["needsAnotherTargetedAIDraftHardeningPass"] is False
+    assert decision["blockedUntilAdapterExecution"] is False
+
+    rerun = payload["decisionInputs"]["p45TargetedAIDraftPolicyRerun"]
+    assert rerun["samePinnedCorpusAsP45T3"] is True
+    assert rerun["staticOnlyMatchesP45T3Baseline"] is True
+    assert rerun["aiEnabledRunPassed"] is True
+    assert rerun["processedRepositoryCount"] == 3
+    assert rerun["failedRepositoryCount"] == 0
+    assert rerun["aiProposalArtifactCount"] == 6
+    assert rerun["aiEnrichmentProposalMemberCount"] == 6
+    assert rerun["xyflowSelectedMemberRoleWarningResolved"] is True
+    assert rerun["singlePackageNoProposalSubjectsResolved"] is True
+    assert rerun["aiDraftBlockingRepositoryCount"] == 0
+    assert rerun["newNonBlockingRepairWarningRepositoryCount"] == 1
+    assert rerun["aiEnrichmentWarningRepositoryCount"] == 1
+    assert rerun["aiEnrichmentWarningDiagnosticCount"] == 2
+    assert rerun["postTargetedPolicyOutcome"] == (
+        "ai_draft_blockers_resolved_with_ai_enrichment_warning_remaining"
+    )
+    assert rerun["rawPromptPersisted"] is False
+    assert rerun["rawResponsePersisted"] is False
+    assert rerun["chainOfThoughtPersisted"] is False
+    assert rerun["aiOutputAcceptedAsRegistryTruth"] is False
+
+    readiness = {item["repositoryId"]: item for item in payload["repositoryReadiness"]}
+    assert readiness["xyflow"]["previousBlockingSignal"] == "selected_member_role_unknown"
+    assert readiness["xyflow"]["readinessImpact"] == "no_longer_blocks_phase46_bounded_pilot"
+    assert readiness["fastapi"]["previousBlockingSignal"] == "no_proposal_subjects"
+    assert readiness["fastapi"]["p45T7AiDraftWarningCodes"] == ["ai_json_repair_needed"]
+    assert readiness["fastapi"]["p45T7AiDraftStopPolicyReason"] == (
+        "single_package_no_proposal_subjects_non_blocking"
+    )
+    assert readiness["gin"]["previousBlockingSignal"] == "no_proposal_subjects"
+    assert readiness["gin"]["aiEnrichmentWarningCodes"] == ["model_evidence_path_unsupported"]
+    assert readiness["gin"]["aiEnrichmentWarningDiagnosticCount"] == 2
+
+    warning = payload["remainingWarningTreatment"]["warnings"][0]
+    assert warning["repositoryId"] == "gin"
+    assert warning["code"] == "model_evidence_path_unsupported"
+    assert warning["layer"] == "ai_enrichment"
+    assert warning["nonBlockingForPhase46Pilot"] is True
+    assert warning["registryPromotionBlockerUntilTriaged"] is True
+    assert warning["carryForwardToTasks"] == ["P46-T4", "P46-T5"]
+
+    rejected = {item["id"] for item in payload["rejectedAlternatives"]}
+    assert "needs_another_targeted_ai_draft_hardening_pass" in rejected
+    assert "blocked_until_adapter_execution" in rejected
+    assert "approve_unbounded_popular_library_scraping" in rejected
+    assert "start_phase46_without_warning_carry_forward" in rejected
+    assert payload["phase46StartConditions"]["firstTask"] == "P46-T1"
+    assert payload["phase46StartConditions"]["allowedScope"] == (
+        "bounded_pinned_local_popular_library_pilot_manifest_only"
+    )
+    assert payload["exitState"] == {
+        "phase45Complete": True,
+        "targetedHardeningReadinessDecisionComplete": True,
+        "readyForPhase46": True,
+        "readyForBoundedPopularLibraryPilot": True,
+        "boundedPopularLibraryPilotApproved": True,
+        "needsAnotherTargetedAIDraftHardeningPass": False,
+        "blockedUntilAdapterExecution": False,
+        "phase46FirstTask": "P46-T1",
+    }
+    assert payload["authorityBoundary"]["readinessDecisionIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesBoundedPopularLibraryPilotStart"] is True
+    assert payload["authorityBoundary"]["approvesUnboundedPopularLibraryScraping"] is False
+    assert payload["authorityBoundary"]["runsAI"] is False
+    assert payload["authorityBoundary"]["rerunsCorpus"] is False
+    assert payload["authorityBoundary"]["runsTrustedLocalAdapterExecution"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["rawPromptPersisted"] is False
+    assert "does_not_treat_readiness_output_as_registry_truth" in payload["nonAuthorityStatements"]
+    assert (
+        "does_not_approve_unbounded_popular_library_scraping" in (payload["nonAuthorityStatements"])
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Targeted-Hardening Readiness Decision",
+            "P45-T8",
+            "SpecHarvesterTargetedHardeningReadinessDecision",
+            "spec-harvester.targeted-hardening-readiness-decision/v0",
+            "producer_targeted_hardening_readiness_decision_only",
+            "p45-t8-targeted-hardening-readiness-decision.example.json",
+            "ready_for_phase46_bounded_popular_library_pilot",
+            "needs_another_targeted_ai_draft_hardening_pass",
+            "blocked_until_adapter_execution",
+            "approve_unbounded_popular_library_scraping",
+            "selected_member_role_unknown",
+            "no_proposal_subjects",
+            "ai_json_repair_needed",
+            "model_evidence_path_unsupported",
+            "P46-T1",
+            "P46-T4",
+            "P46-T5",
+            "proposal-only",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "run AI",
+            "rerun the corpus",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "enable trusted local adapter execution",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "approve unbounded popular-library scraping",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat readiness output as registry truth",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md"),
+        (docc_root, "<doc:OperationalMVPTargetedHardeningReadinessDecision>"),
+        (capabilities, "OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md"),
+        (capabilities_docc, "OperationalMVPTargetedHardeningReadinessDecision"),
+        (roadmap, "OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md"),
+        (roadmap_docc, "OperationalMVPTargetedHardeningReadinessDecision"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
