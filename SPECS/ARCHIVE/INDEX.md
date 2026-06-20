@@ -345,6 +345,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P45-T6 | Archived REVIEW_p45_t6_single_package_no_proposal_subjects_policy report |
 | 2026-06-20 | P45-T6 | Archived Single-Package no_proposal_subjects Policy (PASS) |
 | 2026-06-20 | P45-T5 | Archived REVIEW_p45_t5_selected_member_role_taxonomy_hardening report |
 | 2026-06-20 | P45-T5 | Archived Selected-Member Role Taxonomy Hardening (PASS) |
