@@ -28318,9 +28318,7 @@ def test_operational_mvp_ai_enabled_comparison_is_documented() -> None:
         "summary": baseline["summary"],
     }
     assert payload["sourceRun"] == {
-        "runRoot": (
-            "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z"
-        ),
+        "runRoot": ("/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z"),
         "command": (
             "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch "
             "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/"
