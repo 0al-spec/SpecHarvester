@@ -38,6 +38,42 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P47-T1 Targeted Pilot Quality Follow-Up Plan" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 47. Targeted Pilot Quality Follow-Up" in next_text
+        assert "`P47-T1`" in next_text
+        assert "`P46-T6` Bounded Popular-Library Pilot Exit Decision" in next_text
+        assert "run_targeted_quality_pass_before_larger_curated_corpus" in next_text
+        assert "larger curated corpus is not approved yet" in normalized
+        assert "Gin" in next_text
+        assert "docc2context" in next_text
+        assert "xyflow" in next_text
+        assert "do-not-promote AI sidecars" in normalized
+        assert "bounded rerun gate" in normalized
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
+    if "# Next Task: Phase 46 Complete" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Complete" in next_text
+        assert "**Phase:** Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening" in (
+            next_text
+        )
+        assert "`P46-T6`" in next_text
+        assert "Bounded Popular-Library Pilot Exit Decision" in next_text
+        assert "run_targeted_quality_pass_before_larger_curated_corpus" in next_text
+        assert "targeted quality pass" in normalized
+        assert "larger curated corpus" in normalized
+        assert "do-not-promote AI sidecars" in normalized
+        assert "Gin" in next_text
+        assert "docc2context" in next_text
+        assert "xyflow" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P46-T6 Bounded Popular-Library Pilot Exit Decision" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -31966,6 +32002,265 @@ def test_bounded_popular_library_pilot_author_handoff_records_p46_t5_summaries()
         (capabilities_docc, "BoundedPopularLibraryPilotAuthorHandoff"),
         (roadmap, "BOUNDED_POPULAR_LIBRARY_PILOT_AUTHOR_HANDOFF.md"),
         (roadmap_docc, "BoundedPopularLibraryPilotAuthorHandoff"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_bounded_popular_library_pilot_exit_decision_records_p46_t6_result() -> None:
+    handoff_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_popular_library_pilot_author_handoff"
+        / "p46-t5-bounded-popular-library-pilot-author-handoff-summaries.example.json"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_popular_library_pilot_exit_decision"
+        / "p46-t6-bounded-popular-library-pilot-exit-decision.example.json"
+    )
+    github_doc = ROOT / "docs" / "BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "BoundedPopularLibraryPilotExitDecision.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.bounded-popular-library-pilot-exit-decision/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterBoundedPopularLibraryPilotExitDecision"
+    assert payload["authority"] == "producer_exit_decision_evidence_only"
+    assert payload["phase"] == "P46"
+    assert payload["task"] == "P46-T6"
+
+    handoff_artifact = payload["sourceArtifacts"]["p46AuthorHandoff"]
+    handoff_payload = json.loads(handoff_fixture_path.read_text(encoding="utf-8"))
+    assert ROOT / handoff_artifact["path"] == handoff_fixture_path
+    assert handoff_artifact["digest"] == (
+        "sha256:" + hashlib.sha256(handoff_fixture_path.read_bytes()).hexdigest()
+    )
+    assert handoff_artifact["apiVersion"] == handoff_payload["apiVersion"]
+    assert handoff_artifact["kind"] == handoff_payload["kind"]
+    assert handoff_artifact["authority"] == handoff_payload["authority"]
+
+    assert payload["decision"] == {
+        "selected": "run_targeted_quality_pass_before_larger_curated_corpus",
+        "selectedReason": "static_pilot_reviewable_but_ai_sidecar_quality_blocks_larger_corpus",
+        "readyForLargerCuratedCorpus": False,
+        "needsTargetedQualityPass": True,
+        "stoppedOnDocumentedBlocker": False,
+        "registryAuthority": False,
+    }
+    assert payload["evidenceSummary"] == {
+        "repositoryCount": 6,
+        "reviewableStaticMemberCount": 9,
+        "relationProposalCount": 3,
+        "reviewableRepositoryCount": 6,
+        "doNotPromoteAISidecarCount": 2,
+        "unsupportedAISidecarCount": 1,
+        "noisyAISidecarCount": 4,
+        "evidenceGapRepositoryCount": 1,
+        "staticPilotSupportsBoundedMechanics": True,
+        "aiProposalQualityBlocksExpansion": True,
+    }
+    assert payload["selectedPath"]["id"] == (
+        "run_targeted_quality_pass_before_larger_curated_corpus"
+    )
+    assert payload["selectedPath"]["rationale"] == [
+        "static_output_is_reviewable_for_all_six_repositories",
+        "gin_and_docc2context_ai_drafts_are_do_not_promote",
+        "xyflow_has_evidence_gap_and_unsupported_enrichment_caveats",
+        "larger_corpus_requires_targeted_quality_pass_first",
+    ]
+    assert payload["selectedPath"]["requiredFollowUpSignals"] == [
+        "repair_ai_draft_identity_for_gin_and_docc2context",
+        "resolve_or_accept_xyflow_evidence_gap_caveats",
+        "rerun_bounded_ai_enabled_pilot_after_targeted_fixes",
+    ]
+
+    rejected = {alternative["id"]: alternative for alternative in payload["rejectedAlternatives"]}
+    assert set(rejected) == {
+        "proceed_to_larger_curated_corpus",
+        "stop_on_documented_blocker",
+    }
+    assert (
+        "gin.aiDraft_is_do_not_promote"
+        in (rejected["proceed_to_larger_curated_corpus"]["rejectedBecause"])
+    )
+    assert (
+        "docc2context.aiDraft_is_do_not_promote"
+        in (rejected["proceed_to_larger_curated_corpus"]["rejectedBecause"])
+    )
+    assert (
+        "static_candidate_layer_is_reviewable_for_all_six_repositories"
+        in (rejected["stop_on_documented_blocker"]["rejectedBecause"])
+    )
+
+    repositories = {
+        repository["id"]: repository for repository in payload["repositoryExitTreatment"]
+    }
+    assert list(repositories) == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert repositories["flask"]["reviewableStatic"] == ["flask.core"]
+    assert repositories["gin"]["blockingSidecars"] == ["gin.aiDraft"]
+    assert repositories["xyflow"]["reviewableStatic"] == [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace",
+    ]
+    assert repositories["xyflow"]["relationProposals"] == [
+        "xyflow.workspace.contains.xyflow.react",
+        "xyflow.workspace.contains.xyflow.svelte",
+        "xyflow.workspace.contains.xyflow.system",
+    ]
+    assert repositories["xyflow"]["blockingSidecars"] == ["xyflow.aiEnrichment"]
+    assert repositories["xyflow"]["caveats"] == [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch",
+        "model_evidence_path_unsupported",
+    ]
+    assert repositories["navigation-split-view"]["reviewableStatic"] == [
+        "navigation_split_view.core"
+    ]
+    assert repositories["docc2context"]["blockingSidecars"] == ["docc2context.aiDraft"]
+
+    assert payload["largerCorpusGate"] == {
+        "approvedNow": False,
+        "recommendedNextWork": "targeted_quality_pass",
+        "requiredBeforeApproval": [
+            "clear_do_not_promote_ai_drafts",
+            "triage_unsupported_xyflow_enrichment",
+            "document_xyflow_evidence_gap_disposition",
+            "rerun_small_bounded_pilot_before_expanding",
+        ],
+    }
+    assert payload["phaseExitState"] == {
+        "phase46Complete": True,
+        "readyForPhase47QualityFollowUp": True,
+        "largerCuratedCorpusApproved": False,
+        "targetedQualityPassRequired": True,
+        "stoppedOnDocumentedBlocker": False,
+    }
+    assert payload["authorityBoundary"]["exitDecisionIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesLargerCuratedCorpus"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
+    assert payload["authorityBoundary"]["seedsBaselines"] is False
+    assert payload["authorityBoundary"]["removesPreviewOnly"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["staticOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["handoffOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["adapterOutputAcceptedAsRegistryTruth"] is False
+    assert payload["executionBoundary"]["rerunsPilot"] is False
+    assert payload["executionBoundary"]["runsAI"] is False
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["installsDependencies"] is False
+    assert payload["executionBoundary"]["invokesPackageManagers"] is False
+    assert payload["executionBoundary"]["executesHarvestedCode"] is False
+    assert payload["executionBoundary"]["rawPromptPersisted"] is False
+    assert payload["executionBoundary"]["rawProviderResponsePersisted"] is False
+    assert payload["executionBoundary"]["chainOfThoughtPersisted"] is False
+    assert (
+        "does_not_treat_exit_decision_output_as_registry_truth"
+        in (payload["nonAuthorityStatements"])
+    )
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P47-T1",
+        "recommendedFollowUp": "Phase 47 Targeted Pilot Quality Follow-Up Planning",
+        "largerCuratedCorpusStillBlocked": True,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Bounded Popular-Library Pilot Exit Decision",
+            "P46-T6",
+            "SpecHarvesterBoundedPopularLibraryPilotExitDecision",
+            "spec-harvester.bounded-popular-library-pilot-exit-decision/v0",
+            "producer_exit_decision_evidence_only",
+            "p46-t6-bounded-popular-library-pilot-exit-decision.example.json",
+            "run_targeted_quality_pass_before_larger_curated_corpus",
+            "static_pilot_reviewable_but_ai_sidecar_quality_blocks_larger_corpus",
+            "proceed_to_larger_curated_corpus",
+            "stop_on_documented_blocker",
+            "targeted_quality_pass",
+            "flask.core",
+            "gin.core",
+            "xyflow.react",
+            "navigation_split_view.core",
+            "docc2context.core",
+            "gin.aiDraft",
+            "docc2context.aiDraft",
+            "xyflow.aiEnrichment",
+            "partial_public_interface_index",
+            "operator_checkout_origin_fork_mismatch",
+            "model_evidence_path_unsupported",
+            "Phase 47 Targeted Pilot Quality Follow-Up Planning",
+            "P47-T1",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "rerun the pilot",
+            "run AI",
+            "run adapters",
+            "enable trusted local adapter execution",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+            "exit-decision output as registry truth",
+            "handoff output as registry truth",
+            "static output as registry truth",
+            "AI output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md"),
+        (docc_root, "docs/BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md"),
+        (docc_root, "<doc:BoundedPopularLibraryPilotExitDecision>"),
+        (capabilities, "BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md"),
+        (capabilities_docc, "BoundedPopularLibraryPilotExitDecision"),
+        (roadmap, "BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md"),
+        (roadmap_docc, "BoundedPopularLibraryPilotExitDecision"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

@@ -216,6 +216,7 @@
 | P46-T3 | [P46-T3_Bounded_Popular-Library_Pilot_AI-Enabled_Run/](P46-T3_Bounded_Popular-Library_Pilot_AI-Enabled_Run/) | 2026-06-20 | PASS |
 | P46-T4 | [P46-T4_Bounded_Popular-Library_Pilot_Output_Triage/](P46-T4_Bounded_Popular-Library_Pilot_Output_Triage/) | 2026-06-20 | PASS |
 | P46-T5 | [P46-T5_Bounded_Popular-Library_Pilot_Author_Handoff_Summaries/](P46-T5_Bounded_Popular-Library_Pilot_Author_Handoff_Summaries/) | 2026-06-20 | PASS |
+| P46-T6 | [P46-T6_Bounded_Popular-Library_Pilot_Exit_Decision/](P46-T6_Bounded_Popular-Library_Pilot_Exit_Decision/) | 2026-06-20 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -352,6 +353,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P46-T6 | Archived REVIEW_p46_t6_bounded_popular_library_pilot_exit_decision report |
+| 2026-06-20 | P46-T6 | Archived Bounded Popular-Library Pilot Exit Decision (PASS) |
 | 2026-06-20 | P46-T5 | Archived REVIEW_p46_t5_bounded_popular_library_pilot_author_handoff_summaries report |
 | 2026-06-20 | P46-T5 | Archived Bounded Popular-Library Pilot Author Handoff Summaries (PASS) |
 | 2026-06-20 | P46-T4 | Archived REVIEW_p46_t4_bounded_popular_library_pilot_output_triage report |
