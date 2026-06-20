@@ -1,5 +1,6 @@
 {
   "apiVersion": "spec-harvester.bounded-popular-library-pilot-static-only-run/v0",
+  "schemaVersion": 1,
   "kind": "SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun",
   "authority": "producer_static_preview_evidence_only",
   "phase": "P46",
@@ -15,7 +16,7 @@
   "sourceArtifacts": {
     "p46PilotManifest": {
       "path": "tests/fixtures/bounded_popular_library_pilot_manifest/p46-t1-bounded-popular-library-pilot-manifest.example.json",
-      "digest": "sha256:b9ebbe49aff93f549df91c8db5ed44e6440b8814312cd13164132d4bf330393e",
+      "digest": "sha256:6b4c804648c94db071d716ba63d6750df773c8fb64e49a917c69f4f6942649fe",
       "apiVersion": "spec-harvester.bounded-popular-library-pilot-manifest/v0",
       "kind": "SpecHarvesterBoundedPopularLibraryPilotManifest",
       "authority": "producer_bounded_pilot_manifest_only"
@@ -23,7 +24,7 @@
   },
   "sourceManifest": {
     "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
-    "digest": "sha256:fe5786e7b905bef12bbda53ff1f3fe01a03dcd2051826bdca599e46e99f01f26",
+    "digest": "sha256:b00a59837c64477819e01d5f97845ab8379cbe909ae464d2f1faee37e65c2f61",
     "entryCount": 6,
     "requiresExistingCheckouts": true,
     "cloneAllowed": false,
@@ -545,5 +546,15 @@
     "removesPreviewOnly": false,
     "requiresSpecPMMaintainerReview": true
   },
+  "nonAuthorityStatements": [
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only"
+  ],
   "nextTask": "P46-T3"
 }

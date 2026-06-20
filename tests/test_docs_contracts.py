@@ -31003,6 +31003,7 @@ def test_bounded_popular_library_pilot_static_only_run_records_p46_t2_gate() -> 
     assert payload["apiVersion"] == (
         "spec-harvester.bounded-popular-library-pilot-static-only-run/v0"
     )
+    assert payload["schemaVersion"] == 1
     assert payload["kind"] == "SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun"
     assert payload["authority"] == "producer_static_preview_evidence_only"
     assert payload["phase"] == "P46"
@@ -31134,6 +31135,16 @@ def test_bounded_popular_library_pilot_static_only_run_records_p46_t2_gate() -> 
     assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
     assert payload["authorityBoundary"]["seedsBaselines"] is False
     assert payload["authorityBoundary"]["removesPreviewOnly"] is False
+    assert payload["nonAuthorityStatements"] == [
+        "does_not_treat_static_output_as_registry_truth",
+        "does_not_treat_ai_output_as_registry_truth",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+    ]
     assert payload["nextTask"] == "P46-T3"
 
     for path in (github_doc, docc_doc):
