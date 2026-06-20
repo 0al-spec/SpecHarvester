@@ -102,5 +102,6 @@ adapter output as registry truth.
 
 ## Follow-Up
 
-Phase 46 is complete. The recommended follow-up is Phase 47 Targeted Pilot
-Quality Follow-Up Planning before any larger curated corpus approval.
+Phase 46 is complete. The selected next task is P47-T1 Targeted Pilot Quality
+Follow-Up Plan under Phase 47 Targeted Pilot Quality Follow-Up Planning before
+any larger curated corpus approval.

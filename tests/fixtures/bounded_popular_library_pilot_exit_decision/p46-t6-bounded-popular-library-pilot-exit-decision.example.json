@@ -7,7 +7,7 @@
   "sourceArtifacts": {
     "p46AuthorHandoff": {
       "path": "tests/fixtures/bounded_popular_library_pilot_author_handoff/p46-t5-bounded-popular-library-pilot-author-handoff-summaries.example.json",
-      "digest": "sha256:3d2251984fbedd589993a6825666b2cee97505c0559667ece6ae15ac805e072b",
+      "digest": "sha256:0d4ec19843f9cb8a9269bdcf21d28c8e340f356e20754a6a7184e01ae3047a17",
       "apiVersion": "spec-harvester.bounded-popular-library-pilot-author-handoff/v0",
       "kind": "SpecHarvesterBoundedPopularLibraryPilotAuthorHandoff",
       "authority": "producer_author_handoff_evidence_only"
@@ -172,7 +172,8 @@
     "does_not_approve_larger_curated_corpus"
   ],
   "nextState": {
-    "nextTaskPointer": "Phase 46 Complete",
-    "recommendedFollowUp": "Phase 47 Targeted Pilot Quality Follow-Up Planning"
+    "nextTaskPointer": "P47-T1",
+    "recommendedFollowUp": "Phase 47 Targeted Pilot Quality Follow-Up Planning",
+    "largerCuratedCorpusStillBlocked": true
   }
 }

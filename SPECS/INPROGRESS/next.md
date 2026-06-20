@@ -1,17 +1,23 @@
-# Next Task: Phase 46 Complete
+# Next Task: P47-T1 Targeted Pilot Quality Follow-Up Plan
 
-**Status:** Complete
-**Phase:** Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening
+**Status:** Selected
+**Branch:** `feature/P47-T1-targeted-pilot-quality-follow-up-plan`
+**Phase:** Phase 47. Targeted Pilot Quality Follow-Up
+**Task:** `P47-T1`
 **Last Archived:** `P46-T6` Bounded Popular-Library Pilot Exit Decision
+**Depends On:** `P46-T6` Bounded Popular-Library Pilot Exit Decision
 
-## Result
+## Goal
+
+Plan the targeted pilot quality follow-up selected by P46-T6 before any larger
+curated corpus expansion.
+
+## Context
 
 Phase 46 is complete. P46-T6 selected
-`run_targeted_quality_pass_before_larger_curated_corpus`.
-
-The bounded pilot produced reviewable static evidence across all six pilot
-repositories, but a larger curated corpus is not approved yet. The recommended
-follow-up is a targeted quality pass before any broader corpus expansion.
+`run_targeted_quality_pass_before_larger_curated_corpus`: the bounded pilot
+produced reviewable static evidence across all six pilot repositories, but a
+larger curated corpus is not approved yet.
 
 ## Carry-Forward Signals
 
@@ -26,8 +32,18 @@ Keep xyflow caveats visible:
 - `operator_checkout_origin_fork_mismatch`
 - `model_evidence_path_unsupported`
 
-These signals mean the next work should be Phase 47 Targeted Pilot Quality
-Follow-Up Planning, not immediate larger curated corpus execution.
+These signals mean the next work is Phase 47 Targeted Pilot Quality Follow-Up
+Planning, not immediate larger curated corpus execution.
+
+## Expected Deliverables
+
+- Phase 47 targeted quality follow-up plan.
+- Explicit repair or disposition path for Gin and docc2context AI draft
+  blockers.
+- Explicit disposition path for xyflow evidence-gap and unsupported enrichment
+  caveats.
+- bounded rerun gate before any larger curated corpus approval.
+- Validation report and archive artifacts for P47-T1.
 
 ## Completed Phase 46 Tasks
 
@@ -59,8 +75,8 @@ Follow-Up Planning, not immediate larger curated corpus execution.
 - Do not treat exit-decision output as registry truth.
 - Do not treat adapter output as registry truth.
 
-## Recommended Follow-Up
+## Validation Expectations
 
-Plan Phase 47 as a targeted quality pass that clears or explicitly accepts the
-remaining Gin, docc2context, and xyflow signals before larger curated corpus
-approval.
+- Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
+- Run focused docs-contract tests for P47-T1 plan and current next task.
+- Run formatting/lint/whitespace checks scaled to touched files.

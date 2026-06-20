@@ -2238,3 +2238,36 @@ Acceptance:
   treat AI/adapter output as registry truth.
 - The phase must end with an explicit exit decision before any larger curated
   corpus or autonomous expansion is attempted.
+
+## Phase 47. Targeted Pilot Quality Follow-Up
+
+- [ ] `P47-T1` Plan the targeted pilot quality follow-up after the P46 exit
+  decision, covering Gin and docc2context AI draft regeneration, xyflow
+  evidence-gap disposition, and the bounded rerun gate before any larger
+  curated corpus approval.
+
+Motivation:
+
+- P46-T6 selected
+  `run_targeted_quality_pass_before_larger_curated_corpus`. The static pilot
+  produced reviewable evidence, but larger corpus expansion remains blocked by
+  do-not-promote AI sidecars and unresolved xyflow caveats.
+
+Goal:
+
+- Convert the P46 exit decision into a concrete targeted quality plan that
+  clears or explicitly accepts the remaining blockers before any broader corpus
+  expansion.
+
+Acceptance:
+
+- Phase 47 starts from the P46-T6 exit decision and does not rerun the pilot in
+  the planning task.
+- Gin and docc2context AI draft blockers remain visible until regenerated or
+  explicitly accepted as non-blocking.
+- xyflow `partial_public_interface_index`,
+  `operator_checkout_origin_fork_mismatch`, and
+  `model_evidence_path_unsupported` remain visible until resolved or explicitly
+  accepted.
+- The phase must not approve a larger curated corpus until the targeted quality
+  pass has been planned, executed, and reviewed.

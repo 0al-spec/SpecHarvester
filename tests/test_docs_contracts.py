@@ -38,6 +38,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P47-T1 Targeted Pilot Quality Follow-Up Plan" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 47. Targeted Pilot Quality Follow-Up" in next_text
+        assert "`P47-T1`" in next_text
+        assert "`P46-T6` Bounded Popular-Library Pilot Exit Decision" in next_text
+        assert "run_targeted_quality_pass_before_larger_curated_corpus" in next_text
+        assert "larger curated corpus is not approved yet" in normalized
+        assert "Gin" in next_text
+        assert "docc2context" in next_text
+        assert "xyflow" in next_text
+        assert "do-not-promote AI sidecars" in normalized
+        assert "bounded rerun gate" in normalized
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: Phase 46 Complete" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Complete" in next_text
@@ -32175,8 +32192,9 @@ def test_bounded_popular_library_pilot_exit_decision_records_p46_t6_result() -> 
         in (payload["nonAuthorityStatements"])
     )
     assert payload["nextState"] == {
-        "nextTaskPointer": "Phase 46 Complete",
+        "nextTaskPointer": "P47-T1",
         "recommendedFollowUp": "Phase 47 Targeted Pilot Quality Follow-Up Planning",
+        "largerCuratedCorpusStillBlocked": True,
     }
 
     for path in (github_doc, docc_doc):
@@ -32206,6 +32224,7 @@ def test_bounded_popular_library_pilot_exit_decision_records_p46_t6_result() -> 
             "operator_checkout_origin_fork_mismatch",
             "model_evidence_path_unsupported",
             "Phase 47 Targeted Pilot Quality Follow-Up Planning",
+            "P47-T1",
         ):
             assert required in text or required in normalized, (
                 f"Required term {required!r} not found in {path}"
