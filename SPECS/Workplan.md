@@ -2033,7 +2033,7 @@ Acceptance:
   per-repository draft status, static-only result, AI-enabled result,
   author-ready verdict, evidence precision notes, and SpecPM handoff readiness
   without accepting packages or publishing registry metadata.
-- [ ] `P43-T4` Run the operational MVP validation over an operator-provided
+- [x] `P43-T4` Run the operational MVP validation over an operator-provided
   pinned local corpus and record the static-only quality baseline for at least
   three repositories from different ecosystems.
 - [ ] `P43-T5` Run the AI-enabled comparison over the same pinned corpus when

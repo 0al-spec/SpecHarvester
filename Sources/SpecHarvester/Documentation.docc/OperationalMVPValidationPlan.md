@@ -48,6 +48,13 @@ captures per-repository draft status, static-only result, AI-enabled result,
 author-ready verdict, evidence precision notes, stop-policy outcome, and SpecPM
 handoff readiness without claiming that a real corpus has run.
 
+P43-T4 records the first real static-only baseline as
+<doc:OperationalMVPStaticOnlyBaseline> and the
+`SpecHarvesterOperationalMVPStaticOnlyBaseline` fixture. The baseline uses
+operator-provided pinned local xyflow, FastAPI, and Gin checkouts and records
+passed preflight, author-ready preview candidates, quality dimensions, SpecPM
+handoff readiness, and the remaining non-authority boundary.
+
 ## Corpus
 
 The corpus is operator-selected and pinned. SpecHarvester must not clone or
@@ -129,6 +136,7 @@ enable trusted local adapter execution.
 - `docs/OPERATIONAL_MVP_VALIDATION_PLAN.md`
 - <doc:OperationalMVPValidationPlanFixture>
 - <doc:OperationalMVPValidationReportFixture>
+- <doc:OperationalMVPStaticOnlyBaseline>
 - <doc:AutonomousCandidateBatch>
 - <doc:AuthorReadyDraftQualityBar>
 - <doc:AuthorReadyDraftQualityReport>

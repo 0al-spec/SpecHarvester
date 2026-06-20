@@ -1,62 +1,64 @@
-# Next Task: P43-T4 Operational MVP Static-Only Quality Baseline
+# Next Task: P43-T5 Operational MVP AI-Enabled Comparison
 
 **Status:** Selected
-**Branch:** `feature/P43-T4-operational-mvp-static-only-quality-baseline`
+**Branch:** `feature/P43-T5-operational-mvp-ai-enabled-comparison`
 **Phase:** Phase 43. Operational MVP Validation
-**Task:** `P43-T4` Run the operational MVP validation over an operator-provided
-pinned local corpus and record the static-only quality baseline for at least
-three repositories from different ecosystems without accepting packages or
-publishing registry metadata.
+**Task:** `P43-T5` Run the AI-enabled comparison over the same pinned corpus
+when a local OpenAI-compatible provider is available, recording deltas and
+warning when AI output stays proposal-only.
 
 ## Motivation
 
-- P43-T2 and P43-T3 define the plan and report fixture contracts, but the
-  product question needs static-only evidence from real pinned local checkouts.
-- The task requires an operator-provided pinned local corpus; SpecHarvester must
-  not discover it by fetching or cloning repositories.
-- The baseline should cover at least three repositories from different ecosystems.
-- Record the baseline without accepting packages or publishing registry metadata.
-- Static-only baseline results should establish what the current deterministic
-  pipeline can produce before any AI-enabled comparison.
-- The run must preserve the operator-provided pinned checkout boundary and must
-  not silently clone, fetch, install dependencies, invoke package managers, or
-  execute harvested code.
+- P43-T4 records the static-only quality baseline over the operator-provided
+  pinned local corpus.
+- The AI-enabled comparison should use the same pinned corpus so deltas are
+  attributable to proposal-only AI assistance rather than corpus drift.
+- AI output must remain proposal-only and must not become registry truth,
+  package acceptance, relation acceptance, or baseline seeding.
+- If no local OpenAI-compatible provider is available, the task should record a
+  clear skipped or unavailable comparison instead of silently changing provider
+  policy.
 
 ## Goal
 
-Run the operational MVP validation over at least three operator-provided pinned
-local repository checkouts from different ecosystems and record a static-only
-quality baseline that uses the P43-T3 report shape while keeping all output
-producer-side evidence.
+Run or explicitly gate the AI-enabled operational MVP comparison over the same
+xyflow, FastAPI, and Gin pinned local corpus used by P43-T4, then record
+per-repository deltas against the static-only baseline while preserving the
+proposal-only and non-authority boundary.
 
 ## Scope
 
-- Identify at least three available operator-provided pinned local checkouts
-  from different ecosystems.
-- Record repository URL, local checkout path, exact revision, ecosystem family,
-  expected package-family shape, and static-only run status.
-- Run only deterministic/static SpecHarvester paths that do not require AI,
-  adapter execution, dependency installation, package-manager invocation,
-  network discovery, or harvested-code execution.
-- Record per-repository quality dimensions, evidence precision notes,
-  author-ready verdict, stop-policy outcome, and SpecPM handoff readiness.
-- Add docs-contract regression coverage for the static-only baseline artifact
-  and boundaries.
+- Reuse the P43-T4 pinned corpus and static-only baseline artifact.
+- Detect whether a local OpenAI-compatible provider is available for the
+  configured comparison.
+- When available, run AI-enabled proposal mode without accepting packages,
+  publishing registry metadata, seeding baselines, removing `preview_only`, or
+  treating AI output as registry truth.
+- When unavailable, record provider-unavailable evidence and keep comparison
+  output explicit rather than pretending that AI ran.
+- Record per-repository deltas, warnings, proposal-only authority, stop-policy
+  outcomes, and SpecPM handoff implications.
+- Add docs-contract regression coverage for the comparison artifact and
+  boundaries.
 
 ## Non-Goals
 
-- Do not run AI in P43-T4.
 - Do not enable trusted local adapter execution.
-- Do not clone or fetch repositories implicitly.
+- Do not run adapter code.
+- Do not clone or fetch repositories.
 - Do not install dependencies or invoke package managers.
-- Do not publish registry metadata, accept packages, accept relations, seed
-  baselines, remove `preview_only`, or treat generated output as registry
-  truth.
+- Do not execute harvested repository code.
+- Do not publish registry metadata.
+- Do not accept packages or relations.
+- Do not seed baselines.
+- Do not remove `preview_only`.
+- Do not treat AI output as registry truth.
 
 ## Recently Archived
 
+- `P43-T4` Operational MVP Static-Only Quality Baseline was archived with PASS
+  verdict.
 - `P43-T3` Operational MVP Validation Report Fixture was archived with PASS
   verdict.
 - `P43-T2` Operational MVP Validation Plan Fixture was archived with PASS
   verdict.
-- `P43-T1` Operational MVP Validation Plan was archived with PASS verdict.

@@ -1,0 +1,451 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-static-only-baseline/v0",
+  "kind": "SpecHarvesterOperationalMVPStaticOnlyBaseline",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_static_only_baseline_only",
+  "phase": "P43",
+  "task": "P43-T4",
+  "createdAt": "2026-06-19T22:03:01Z",
+  "reportMode": "real_static_only_baseline",
+  "plan": {
+    "path": "tests/fixtures/operational_mvp_validation/p43-t2-operational-mvp-validation-plan.example.json",
+    "digest": "sha256:a035b03fb66ba6bf56fc09dc8301ce611f144aa9e8dc342b82a8f9fbc052b772",
+    "apiVersion": "spec-harvester.operational-mvp-validation-plan/v0",
+    "kind": "SpecHarvesterOperationalMVPValidationPlan",
+    "authority": "producer_operational_mvp_validation_plan_only"
+  },
+  "reportFixture": {
+    "path": "tests/fixtures/operational_mvp_validation/p43-t3-operational-mvp-validation-report.example.json",
+    "digest": "sha256:2b8b995fe6c74f882a6eace92210c2d95ec93322e0ace0b8a282cbda24c766f5",
+    "apiVersion": "spec-harvester.operational-mvp-validation-report/v0",
+    "kind": "SpecHarvesterOperationalMVPValidationReport",
+    "authority": "producer_operational_mvp_validation_report_only"
+  },
+  "sourceRun": {
+    "runRoot": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z",
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/inputs --out /tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output --skip-ai --repository-profile-selection auto",
+    "inputManifest": {
+      "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/inputs/p43-t4-corpus.yml",
+      "digest": "sha256:f83b92e94bf766f7b308f77633c4980a60a7dfffa0bd400d7e8faacdf10663de"
+    },
+    "batchReport": {
+      "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/autonomous-candidate-batch-report.json",
+      "digest": "sha256:735cc878bc3dc19325c269adf2f2e5e12798373527b37979a92ce6f950062499",
+      "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+      "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+      "authority": "producer_preview_evidence_only",
+      "status": "passed"
+    },
+    "aiMode": {
+      "mode": "disabled",
+      "model": null,
+      "provider": null,
+      "reason": "operator_disabled"
+    },
+    "repositoryProfileSelection": {
+      "advisoryHintsAppliedToDrafting": false,
+      "artifact": "repository-profile-detection.json",
+      "authority": "producer_profile_selection_only",
+      "defaultMode": "none",
+      "execution": "static_collected_evidence_only",
+      "mode": "auto",
+      "registryAuthority": false
+    }
+  },
+  "summary": {
+    "repositoryResultCount": 3,
+    "verifiedPinnedCheckoutCount": 3,
+    "staticOnlyResultCount": 3,
+    "staticOnlyPassedCount": 3,
+    "candidateCount": 6,
+    "candidatePreflightPassedCount": 6,
+    "relationCount": 3,
+    "aiEnabledResultCount": 3,
+    "authorReadyDraftCount": 3,
+    "needsQualityHardeningCount": 0,
+    "blockedCount": 0,
+    "specpmHandoffReadyCount": 3,
+    "realCorpusRunPerformed": true,
+    "staticOnlyRunPerformed": true
+  },
+  "qualityDimensionIds": [
+    "validity",
+    "repositorySpecificity",
+    "evidencePrecision",
+    "packageTopology",
+    "claimConservatism",
+    "authorActionability",
+    "SpecPMHandoffReadiness"
+  ],
+  "sharedStopPolicy": {
+    "id": "shared_operational_mvp_stop_policy",
+    "compatibleWithPlan": true,
+    "observedStopConditions": [],
+    "observedCaveats": [
+      "partial_public_interface_index"
+    ]
+  },
+  "repositoryResults": [
+    {
+      "repositoryId": "xyflow",
+      "repositoryUrl": "git@github.com:SoundBlaster/xyflow.git",
+      "planRepositoryUrl": "https://github.com/xyflow/xyflow",
+      "observedRepositoryUrl": "git@github.com:SoundBlaster/xyflow.git",
+      "ecosystemFamily": "javascript_typescript",
+      "expectedPackageFamilyShape": "package_set_monorepo",
+      "pinnedCheckout": {
+        "localCheckoutPath": "/Users/egor/Development/GitHub/xyflow",
+        "exactRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+        "verified": true,
+        "status": "clean",
+        "dirtyStatus": ""
+      },
+      "draftStatus": "author_ready_draft",
+      "staticOnlyResult": {
+        "runMode": "static_only",
+        "status": "passed",
+        "batchStatus": "passed",
+        "preflightStatus": "passed",
+        "candidateCount": 4,
+        "candidatePreflightPassedCount": 4,
+        "relationCount": 3,
+        "skippedDraftCount": 7,
+        "repositoryProfileDecision": "selected",
+        "selectedProfileId": "generic.package_set.v0",
+        "interfaceIndexStatus": "partial",
+        "interfaceIndexSummary": {
+          "diagnosticCount": 29,
+          "entrypointCount": 2,
+          "packageCount": 11,
+          "status": "partial",
+          "symbolCount": 1
+        },
+        "workspaceInventorySummary": {
+          "diagnosticCount": 0,
+          "packageCount": 11,
+          "packageManifestCount": 11,
+          "workspaceManifestCount": 1
+        },
+        "artifacts": {
+          "harvest": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/collected/xyflow/harvest.json",
+            "digest": "sha256:8ab68e16807ea0ee119e203fb14a04e84244fa519e3c0b81d69c10352392445c"
+          },
+          "workspaceInventory": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/collected/xyflow/workspace-inventory.json",
+            "digest": "sha256:5a1a2c801cb43c1e8d6ad6b63e49f9fdfb294cfc8909db9c5dbd53446bcf0913"
+          },
+          "publicInterfaceIndex": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/collected/xyflow/public-interface-index.json",
+            "digest": "sha256:f8d33bbf35616f365a4b571fd4749d830f1bd7a18b3e0f3aea30fb2266f515d5"
+          },
+          "repositoryProfileDetection": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/reports/repository-profile-detections/xyflow/repository-profile-detection.json",
+            "digest": "sha256:26b75343067c9ab6f1150d7b1d5367878e0375131887b5cdb27be013b070569c"
+          },
+          "bundleSetPreflight": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/package-sets/xyflow/bundle-set-preflight.json",
+            "digest": "sha256:2decdf54f72ea5ddf65e5e2728dcf2a039313a01bc61d8504e891c8661a0e2c8"
+          }
+        },
+        "adapterExecution": "not_run",
+        "aiInvocation": "not_run",
+        "registryAuthority": false
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "not_run",
+        "blockedBy": [
+          "deferred_to_p43_t5"
+        ],
+        "aiOutputAuthority": "proposal_only",
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "qualityDimensions": {
+        "validity": "passed",
+        "repositorySpecificity": "reviewable",
+        "evidencePrecision": "reviewable_with_partial_interface_index",
+        "packageTopology": "reviewable_package_set_monorepo",
+        "claimConservatism": "reviewable",
+        "authorActionability": "strong_action_items_present",
+        "SpecPMHandoffReadiness": "reviewable_handoff_ready"
+      },
+      "authorReadyVerdict": "author_ready_draft",
+      "evidencePrecisionNotes": [
+        "public_interface_index_status_partial",
+        "js_ts_analyzer_recorded_29_diagnostics",
+        "workspace_inventory_found_11_package_manifests_and_1_workspace_manifest",
+        "operator_checkout_origin_is_soundblaster_fork_not_canonical_xyflow_upstream"
+      ],
+      "stopPolicyOutcome": {
+        "outcome": "author_ready_draft",
+        "stopConditions": [],
+        "caveats": [
+          "partial_public_interface_index"
+        ]
+      },
+      "specpmHandoffReadiness": {
+        "ready": true,
+        "reason": "static_only_preview_candidates_available_for_author_review",
+        "candidateCount": 4,
+        "relationCount": 3,
+        "requiresAuthorReview": true,
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "fastapi",
+      "repositoryUrl": "https://github.com/fastapi/fastapi",
+      "planRepositoryUrl": "https://github.com/fastapi/fastapi",
+      "observedRepositoryUrl": "https://github.com/fastapi/fastapi",
+      "ecosystemFamily": "python",
+      "expectedPackageFamilyShape": "framework_library_package",
+      "pinnedCheckout": {
+        "localCheckoutPath": "/Users/egor/Development/GitHub/fastapi",
+        "exactRevision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+        "verified": true,
+        "status": "clean",
+        "dirtyStatus": ""
+      },
+      "draftStatus": "author_ready_draft",
+      "staticOnlyResult": {
+        "runMode": "static_only",
+        "status": "passed",
+        "batchStatus": "passed",
+        "preflightStatus": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "skippedDraftCount": 0,
+        "repositoryProfileDecision": "selected",
+        "selectedProfileId": "generic.single_package.v0",
+        "interfaceIndexStatus": "complete",
+        "interfaceIndexSummary": {
+          "diagnosticCount": 0,
+          "entrypointCount": 1121,
+          "packageCount": 1,
+          "status": "complete",
+          "symbolCount": 6009
+        },
+        "workspaceInventorySummary": {
+          "diagnosticCount": 0,
+          "packageCount": 0,
+          "packageManifestCount": 0,
+          "workspaceManifestCount": 0
+        },
+        "artifacts": {
+          "harvest": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/collected/fastapi/harvest.json",
+            "digest": "sha256:2566b6e1b7a2aceed6a9118728cf36fe1ce59a1832422a49d70f528182826c40"
+          },
+          "workspaceInventory": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/collected/fastapi/workspace-inventory.json",
+            "digest": "sha256:c505df62949fa1f14102c463d104642834efee24c66a937af956fb4f62f16e8d"
+          },
+          "publicInterfaceIndex": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/collected/fastapi/public-interface-index.json",
+            "digest": "sha256:2a81080b0429595208e07504839476495b8a138e560247d203d8f3a820a98c55"
+          },
+          "repositoryProfileDetection": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/reports/repository-profile-detections/fastapi/repository-profile-detection.json",
+            "digest": "sha256:10cf2e03ea488f0459762cff8caa0390b26f99e3f194f7ed11f8b69b013ef45f"
+          },
+          "bundleSetPreflight": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/package-sets/fastapi/bundle-set-preflight.json",
+            "digest": "sha256:9a60170cef908a4a882550e5b912eebee538528f77b2db96647650439515499f"
+          }
+        },
+        "adapterExecution": "not_run",
+        "aiInvocation": "not_run",
+        "registryAuthority": false
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "not_run",
+        "blockedBy": [
+          "deferred_to_p43_t5"
+        ],
+        "aiOutputAuthority": "proposal_only",
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "qualityDimensions": {
+        "validity": "passed",
+        "repositorySpecificity": "reviewable",
+        "evidencePrecision": "strong_static_public_interface_index",
+        "packageTopology": "reviewable_single_package",
+        "claimConservatism": "reviewable",
+        "authorActionability": "strong_action_items_present",
+        "SpecPMHandoffReadiness": "reviewable_handoff_ready"
+      },
+      "authorReadyVerdict": "author_ready_draft",
+      "evidencePrecisionNotes": [
+        "public_interface_index_status_complete",
+        "python_analyzer_recorded_1121_entrypoints_and_6009_symbols",
+        "single_package_fallback_drafted_one_candidate"
+      ],
+      "stopPolicyOutcome": {
+        "outcome": "author_ready_draft",
+        "stopConditions": [],
+        "caveats": []
+      },
+      "specpmHandoffReadiness": {
+        "ready": true,
+        "reason": "static_only_preview_candidates_available_for_author_review",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "requiresAuthorReview": true,
+        "registryAuthority": false
+      }
+    },
+    {
+      "repositoryId": "gin",
+      "repositoryUrl": "https://github.com/gin-gonic/gin.git",
+      "planRepositoryUrl": "https://github.com/gin-gonic/gin",
+      "observedRepositoryUrl": "https://github.com/gin-gonic/gin.git",
+      "ecosystemFamily": "go",
+      "expectedPackageFamilyShape": "single_package_framework",
+      "pinnedCheckout": {
+        "localCheckoutPath": "/Users/egor/Development/GitHub/gin",
+        "exactRevision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+        "verified": true,
+        "status": "clean",
+        "dirtyStatus": ""
+      },
+      "draftStatus": "author_ready_draft",
+      "staticOnlyResult": {
+        "runMode": "static_only",
+        "status": "passed",
+        "batchStatus": "passed",
+        "preflightStatus": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "skippedDraftCount": 0,
+        "repositoryProfileDecision": "selected",
+        "selectedProfileId": "generic.single_package.v0",
+        "interfaceIndexStatus": "complete",
+        "interfaceIndexSummary": {
+          "diagnosticCount": 0,
+          "entrypointCount": 56,
+          "packageCount": 5,
+          "status": "complete",
+          "symbolCount": 456
+        },
+        "workspaceInventorySummary": {
+          "diagnosticCount": 0,
+          "packageCount": 0,
+          "packageManifestCount": 0,
+          "workspaceManifestCount": 0
+        },
+        "artifacts": {
+          "harvest": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/collected/gin/harvest.json",
+            "digest": "sha256:78012a196c448ecc8d48f92e0879b1b51d8a21c3808d7810a5dd65b4b799af1e"
+          },
+          "workspaceInventory": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/collected/gin/workspace-inventory.json",
+            "digest": "sha256:02559ff4f7e620e9543340ca22384aa89b263f4ca6f6aa40e65296c00d93ae5e"
+          },
+          "publicInterfaceIndex": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/collected/gin/public-interface-index.json",
+            "digest": "sha256:ccf41aa93d930c1b6fc9c948132227ec0263096b9e8a5fa50ca346041215f793"
+          },
+          "repositoryProfileDetection": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/reports/repository-profile-detections/gin/repository-profile-detection.json",
+            "digest": "sha256:f1acb129e6e51db9bd773db99080755ff8860a2d5b5ea48077d3f21c3f883dfb"
+          },
+          "bundleSetPreflight": {
+            "path": "/tmp/specharvester-p43-t4-operational-mvp-static-only-20260620T000000Z/output/package-sets/gin/bundle-set-preflight.json",
+            "digest": "sha256:789c0dffbaa64e062f7852fa7546bb4762d2235a41c2932038bb89d0cdb81584"
+          }
+        },
+        "adapterExecution": "not_run",
+        "aiInvocation": "not_run",
+        "registryAuthority": false
+      },
+      "aiEnabledResult": {
+        "runMode": "ai_enabled_proposal",
+        "status": "not_run",
+        "blockedBy": [
+          "deferred_to_p43_t5"
+        ],
+        "aiOutputAuthority": "proposal_only",
+        "adapterExecution": "not_run",
+        "registryAuthority": false
+      },
+      "qualityDimensions": {
+        "validity": "passed",
+        "repositorySpecificity": "reviewable",
+        "evidencePrecision": "strong_static_public_interface_index",
+        "packageTopology": "reviewable_single_package",
+        "claimConservatism": "reviewable",
+        "authorActionability": "strong_action_items_present",
+        "SpecPMHandoffReadiness": "reviewable_handoff_ready"
+      },
+      "authorReadyVerdict": "author_ready_draft",
+      "evidencePrecisionNotes": [
+        "public_interface_index_status_complete",
+        "go_analyzer_recorded_56_entrypoints_and_456_symbols",
+        "single_package_fallback_drafted_one_candidate"
+      ],
+      "stopPolicyOutcome": {
+        "outcome": "author_ready_draft",
+        "stopConditions": [],
+        "caveats": []
+      },
+      "specpmHandoffReadiness": {
+        "ready": true,
+        "reason": "static_only_preview_candidates_available_for_author_review",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "requiresAuthorReview": true,
+        "registryAuthority": false
+      }
+    }
+  ],
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "reportIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "realCorpusRunPerformed": true,
+    "staticOnlyRunPerformed": true,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "static_only_run_is_producer_side_evidence",
+    "generated_candidates_remain_preview_only",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_accept_mutable_repository_state",
+    "does_not_execute_harvested_code",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_run_adapter_code",
+    "does_not_run_ai",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ],
+  "followUp": {
+    "aiComparisonTask": "P43-T5",
+    "authorHandoffSummaryTask": "P43-T6",
+    "exitReportTask": "P43-T7"
+  }
+}
