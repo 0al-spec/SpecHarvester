@@ -343,6 +343,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P45-T4 | Archived REVIEW_p45_t4_post_fix_readiness_decision report |
 | 2026-06-20 | P45-T4 | Archived Post-Fix Readiness Decision for Bounded Popular-Library Scraping (PASS) |
 | 2026-06-20 | P45-T3 | Archived REVIEW_p45_t3_operational_mvp_ai_draft_shape_rerun report |
 | 2026-06-20 | P45-T3 | Archived Operational MVP Corpus Rerun After AI Draft Shape Fix (PASS) |
