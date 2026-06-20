@@ -23,7 +23,11 @@ from spec_harvester.model_json_repair import (
 )
 from spec_harvester.package_set_drafter import read_inventory
 from spec_harvester.producer_receipt import digest_record, sha256_file
-from spec_harvester.producer_reports import stop_policy_summary_from_diagnostics
+from spec_harvester.producer_reports import (
+    AUTHOR_READY_STATUS_READY,
+    AUTHOR_READY_STOP_DECISION_STOP,
+    stop_policy_summary_from_diagnostics,
+)
 
 PACKAGE_SET_AI_DRAFT_API_VERSION = "spec-harvester.package-set-ai-draft/v0"
 PACKAGE_SET_AI_DRAFT_KIND = "SpecHarvesterPackageSetAIDraftProposal"
@@ -276,6 +280,8 @@ def model_request_record(options: PackageSetAIDraftProposalOptions) -> dict[str,
     inventory_path = options.inventory.resolve()
     inventory = read_inventory(inventory_path)
     packages = package_records(inventory)
+    if not packages:
+        packages = source_package_fallback_records(inventory)
     workspace_id = workspace_package_id(packages)
     evidence = evidence_records(inventory_path, inventory, options.source_checkout)
     evidence_paths = [item["path"] for item in evidence]
@@ -421,11 +427,16 @@ def proposal_from_model_output(
             "errorCount": error_count,
             "warningCount": warning_count,
         },
-        "stopPolicySummary": stop_policy_summary_from_diagnostics(
+        "stopPolicySummary": package_set_ai_draft_stop_policy_summary(
             source_status=status,
             error_count=error_count,
             warning_count=warning_count,
+            diagnostics=diagnostics,
             subject_count=len(selected_members),
+            inventory_by_id=inventory_by_id,
+            package_set=package_set,
+            excluded_package_ids={item["packageId"] for item in excluded_packages},
+            validation_guard=validation_guard,
         ),
         "evidenceGaps": string_list(model_output.get("evidenceGaps")),
         "overallConfidence": confidence_value(model_output.get("overallConfidence")),
@@ -650,6 +661,105 @@ def normalize_selected_member_role(model_role: str) -> tuple[str, bool]:
     return "member_package", False
 
 
+def package_set_ai_draft_stop_policy_summary(
+    *,
+    source_status: str,
+    error_count: int,
+    warning_count: int,
+    diagnostics: list[dict[str, Any]],
+    subject_count: int,
+    inventory_by_id: dict[str, dict[str, Any]],
+    package_set: dict[str, Any],
+    excluded_package_ids: set[str],
+    validation_guard: dict[str, Any],
+) -> dict[str, Any]:
+    summary = stop_policy_summary_from_diagnostics(
+        source_status=source_status,
+        error_count=error_count,
+        warning_count=warning_count,
+        subject_count=subject_count,
+    )
+    zero_subject_policy = zero_subject_policy_record(
+        source_status=source_status,
+        error_count=error_count,
+        warning_count=warning_count,
+        diagnostics=diagnostics,
+        subject_count=subject_count,
+        inventory_by_id=inventory_by_id,
+        package_set=package_set,
+        excluded_package_ids=excluded_package_ids,
+        validation_guard=validation_guard,
+    )
+    if zero_subject_policy["status"] == "accepted_non_blocking":
+        summary["status"] = AUTHOR_READY_STATUS_READY
+        summary["decision"] = AUTHOR_READY_STOP_DECISION_STOP
+        summary["reason"] = "single_package_no_proposal_subjects_non_blocking"
+        summary["summary"] = (
+            "Diagnostic-clean single-package inventory already supplies the proposal "
+            "subject; no additional package-set members are required."
+        )
+    summary["zeroSubjectPolicy"] = zero_subject_policy
+    return summary
+
+
+def zero_subject_policy_record(
+    *,
+    source_status: str,
+    error_count: int,
+    warning_count: int,
+    diagnostics: list[dict[str, Any]],
+    subject_count: int,
+    inventory_by_id: dict[str, dict[str, Any]],
+    package_set: dict[str, Any],
+    excluded_package_ids: set[str],
+    validation_guard: dict[str, Any],
+) -> dict[str, Any]:
+    inventory_package_ids = sorted(inventory_by_id)
+    excluded_inventory_package_ids = sorted(set(inventory_package_ids) & excluded_package_ids)
+    record = {
+        "status": "not_applicable",
+        "reason": "proposal_subjects_present",
+        "inventoryPackageCount": len(inventory_package_ids),
+        "inventoryPackageIds": inventory_package_ids,
+        "packageSetId": string_value(package_set.get("packageId")),
+    }
+    if subject_count > 0:
+        return record
+    record["status"] = "requires_regeneration"
+    if len(inventory_by_id) != 1:
+        record["reason"] = "package_set_requires_selected_members"
+        return record
+    if excluded_inventory_package_ids:
+        record["reason"] = "single_package_subject_excluded"
+        record["excludedPackageIds"] = excluded_inventory_package_ids
+        return record
+    if source_status == "failed" or error_count:
+        record["reason"] = "single_package_proposal_has_diagnostics"
+        return record
+    if warning_count and not has_only_successful_repair_warning(diagnostics):
+        record["reason"] = "single_package_proposal_has_diagnostics"
+        return record
+    if validation_guard.get("status") != "passed":
+        record["reason"] = "single_package_validation_guard_not_passed"
+        return record
+    if not record["packageSetId"]:
+        record["reason"] = "single_package_package_set_identity_missing"
+        return record
+    record["status"] = "accepted_non_blocking"
+    record["reason"] = "single_package_inventory_subject_stable"
+    return record
+
+
+def has_only_successful_repair_warning(diagnostics: list[dict[str, Any]]) -> bool:
+    warning_diagnostics = [item for item in diagnostics if item.get("severity") == "warning"]
+    if not warning_diagnostics:
+        return False
+    return all(
+        item.get("code") == "ai_json_repair_needed" and item.get("jsonRepairStatus") == "repaired"
+        for item in warning_diagnostics
+    )
+
+
 def excluded_package_proposals(
     model_output: dict[str, Any],
     inventory_by_id: dict[str, dict[str, Any]],
@@ -746,8 +856,26 @@ def relation_proposals(
                 )
             )
             continue
-        source = string_value(item.get("sourcePackageId")) or package_set_id
-        target = string_value(item.get("targetPackageId"))
+        source = (
+            first_endpoint_package_id(
+                item, ("sourcePackageId", "source", "sourcePackage", "fromPackageId")
+            )
+            or package_set_id
+        )
+        target = first_endpoint_package_id(
+            item,
+            (
+                "targetPackageId",
+                "target",
+                "targetPackage",
+                "toPackageId",
+                "targetPackageIds",
+                "targetIds",
+                "packageId",
+            ),
+        )
+        if not target:
+            target = relation_target_from_relation_id(string_value(item.get("id")), selected_ids)
         relation_type = string_value(item.get("type")) or "contains"
         if relation_type != "contains":
             diagnostics.append(
@@ -969,6 +1097,26 @@ def package_records(inventory: dict[str, Any]) -> list[dict[str, Any]]:
     return [item for item in packages if isinstance(item, dict)]
 
 
+def source_package_fallback_records(inventory: dict[str, Any]) -> list[dict[str, Any]]:
+    source = mapping_value(inventory.get("source"))
+    package_id = string_value(source.get("packageId"))
+    if not package_id:
+        return []
+    target = mapping_value(source.get("target"))
+    return [
+        {
+            "proposedSpecpmPackageId": package_id,
+            "role": "member_package",
+            "ecosystem": "",
+            "name": package_id,
+            "version": "",
+            "sourceTargetPath": string_value(target.get("path")) or ".",
+            "manifestPath": "",
+            "packageManager": "",
+        }
+    ]
+
+
 def workspace_manifest_paths(inventory: dict[str, Any]) -> list[str]:
     records = []
     for item in list_value(inventory.get("workspaceManifests")):
@@ -1099,6 +1247,43 @@ def list_value(value: Any) -> list[Any]:
 
 def string_value(value: Any) -> str:
     return value if isinstance(value, str) else ""
+
+
+def first_string_value(payload: dict[str, Any], keys: tuple[str, ...]) -> str:
+    for key in keys:
+        value = string_value(payload.get(key))
+        if value:
+            return value
+    return ""
+
+
+def first_endpoint_package_id(payload: dict[str, Any], keys: tuple[str, ...]) -> str:
+    for key in keys:
+        value = endpoint_package_id(payload.get(key))
+        if value:
+            return value
+    return ""
+
+
+def endpoint_package_id(value: Any) -> str:
+    direct_value = string_value(value)
+    if direct_value:
+        return direct_value
+    if isinstance(value, list) and len(value) == 1:
+        return endpoint_package_id(value[0])
+    record = mapping_value(value)
+    if not record:
+        return ""
+    return first_string_value(record, ("packageId", "id"))
+
+
+def relation_target_from_relation_id(relation_id: str, selected_ids: set[str]) -> str:
+    if not relation_id:
+        return ""
+    matches = [package_id for package_id in selected_ids if package_id in relation_id]
+    if len(matches) == 1:
+        return matches[0]
+    return ""
 
 
 def string_list(value: Any) -> list[str]:

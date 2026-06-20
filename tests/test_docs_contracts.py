@@ -38,6 +38,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if (
+        "# Next Task: P45-T7 Operational MVP Corpus Rerun After Targeted AI Draft Policy Fixes"
+        in next_text
+    ):
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 45. Operational MVP AI Draft Shape Hardening" in next_text
+        assert "`P45-T7`" in next_text
+        assert "`P45-T6` Single-Package no_proposal_subjects Policy" in next_text
+        assert "xyflow" in normalized
+        assert "FastAPI" in next_text
+        assert "Gin" in next_text
+        assert "selected_member_role_unknown" in normalized
+        assert "no_proposal_subjects" in normalized
+        assert "proposal-only" in normalized
+        assert "chain-of-thought" in normalized
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P45-T6 Single-Package no_proposal_subjects Policy" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -8090,8 +8109,20 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
         assert "deterministic request package-set id" in normalized
         assert "single-package inventories" in normalized
         assert "excluded_package_unknown" in normalized
+        assert "source-backed package identity" in normalized
+        assert "relation endpoint aliases" in normalized
+        assert "sourcePackage" in normalized
+        assert "targetPackage" in normalized
+        assert "targetPackageId" in normalized
+        assert "relation id" in normalized
+        assert "single-item target list" in normalized
+        assert "ai_json_repair_needed" in normalized
+        assert "jsonRepairStatus: repaired" in normalized
         assert "validationGuard" in normalized
         assert "package_set_subject_identity_missing" in normalized
+        assert "zeroSubjectPolicy" in normalized
+        assert "single_package_no_proposal_subjects_non_blocking" in normalized
+        assert "accepted_non_blocking" in normalized
 
     roadmap_text = roadmap.read_text(encoding="utf-8")
     roadmap_docc_text = roadmap_docc.read_text(encoding="utf-8")

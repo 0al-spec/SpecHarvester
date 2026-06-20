@@ -103,7 +103,13 @@ The model returns one JSON object:
 `packageId`, `sourceTargetPath`, and relation endpoints must come from the
 supplied inventory. `evidencePaths` must refer to supplied compact evidence.
 Unsupported evidence paths produce `model_evidence_path_unsupported`
-diagnostics. Relations fail closed when the target is not selected.
+diagnostics. Relations fail closed when the target is not selected. Common
+relation endpoint aliases such as `source`, `target`, `sourcePackage`, and
+`targetPackage` are normalized to `sourcePackageId` and `targetPackageId`
+before validation. Endpoint aliases may be direct package-id strings or nested
+objects with `packageId` or `id`. A missing target can be recovered only when a
+single selected member package id is unambiguously present in the relation id or
+in a single-item target list.
 
 When model output omits `packageSet.packageId`, SpecHarvester uses the
 deterministic request package-set id instead of recording a warning. For
@@ -111,6 +117,11 @@ single-package inventories, unknown `excludedPackages` entries are treated as
 model-side noise and ignored when the deterministic package identity is stable.
 Unknown exclusions for multi-package inventories still produce
 `excluded_package_unknown` diagnostics.
+
+When workspace inventory contains no package manifest records but the source
+manifest declares a stable `packageId`, the AI draft request carries that
+source-backed package identity as one fallback package. This keeps
+single-package repositories reviewable without inventing registry acceptance.
 
 Before normalizing proposal evidence, SpecHarvester records a deterministic
 `validationGuard` summary with `status`, `diagnosticCount`, `errorCount`,
@@ -158,6 +169,31 @@ Proposal outputs include `stopPolicySummary` with `stop_for_author_review`,
 `continue_generation`, or `blocked_until_inputs_change`. This is a model-loop
 signal only; generated package bundles still need author-ready quality reports
 and downstream validation.
+
+## Single-Package Zero-Subject Policy
+
+`no_proposal_subjects` remains blocking for package sets that need selected
+members. A diagnostic-clean zero-subject draft is accepted as non-blocking only
+when all of these are true:
+
+- deterministic inventory contains exactly one package, including the
+  source-backed package identity fallback when no package manifests were found;
+- `validationGuard.status` is `passed`;
+- the proposal has no blocking diagnostics; a warning-level
+  `ai_json_repair_needed` diagnostic is non-blocking only when bounded JSON
+  repair succeeded with `jsonRepairStatus: repaired`;
+- the package-set identity is stable after request-backed normalization.
+
+In that bounded case, `stopPolicySummary.decision` is
+`stop_for_author_review`, `reason` is
+`single_package_no_proposal_subjects_non_blocking`, and
+`zeroSubjectPolicy.status` is `accepted_non_blocking`. This means additional
+model iteration is not required for a single-package repository because the
+deterministic inventory already supplies the only package subject.
+
+For multi-package inventories, warning/failed proposals, or missing identity,
+zero-subject output still reports `no_proposal_subjects` and
+`zeroSubjectPolicy.status: requires_regeneration`.
 
 ## Role Taxonomy
 

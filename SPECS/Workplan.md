@@ -2148,7 +2148,7 @@ Acceptance:
   blocker by tightening the selected-member role taxonomy, normalization, and
   validation/reporting contract so known package-set member roles do not remain
   ambiguous after provider output is normalized.
-- [ ] `P45-T6` Define and implement the single-package
+- [x] `P45-T6` Define and implement the single-package
   `no_proposal_subjects` policy for FastAPI/Gin-style repositories, deciding
   when a diagnostic-clean zero-subject AI draft is acceptable, when it should
   be warning-level, and what evidence must be visible before broader scraping.
