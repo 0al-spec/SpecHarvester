@@ -8004,10 +8004,15 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
 
     assert "AUTHOR_READY_DRAFT_QUALITY_BAR.md" in docs_index.read_text(encoding="utf-8")
     assert "<doc:AuthorReadyDraftQualityBar>" in docc_root.read_text(encoding="utf-8")
-    assert "AUTHOR_READY_DRAFT_QUALITY_BAR.md" in package_set_ai_draft.read_text(encoding="utf-8")
-    assert "<doc:AuthorReadyDraftQualityBar>" in package_set_ai_draft_docc.read_text(
-        encoding="utf-8"
-    )
+    package_set_ai_draft_text = package_set_ai_draft.read_text(encoding="utf-8")
+    package_set_ai_draft_docc_text = package_set_ai_draft_docc.read_text(encoding="utf-8")
+    assert "AUTHOR_READY_DRAFT_QUALITY_BAR.md" in package_set_ai_draft_text
+    assert "<doc:AuthorReadyDraftQualityBar>" in package_set_ai_draft_docc_text
+    for text in (package_set_ai_draft_text, package_set_ai_draft_docc_text):
+        normalized = " ".join(text.split())
+        assert "deterministic request package-set id" in normalized
+        assert "single-package inventories" in normalized
+        assert "excluded_package_unknown" in normalized
 
     roadmap_text = roadmap.read_text(encoding="utf-8")
     roadmap_docc_text = roadmap_docc.read_text(encoding="utf-8")
