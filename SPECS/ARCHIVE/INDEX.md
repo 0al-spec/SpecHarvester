@@ -347,6 +347,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P45-T8 | Archived REVIEW_p45_t8_targeted_hardening_readiness_decision report |
 | 2026-06-20 | P45-T8 | Archived Targeted-Hardening Readiness Decision (PASS) |
 | 2026-06-20 | P45-T7 | Archived REVIEW_p45_t7_operational_mvp_targeted_ai_draft_policy_rerun report |
 | 2026-06-20 | P45-T7 | Archived Operational MVP Corpus Rerun After Targeted AI Draft Policy Fixes (PASS) |
