@@ -31819,6 +31819,7 @@ def test_bounded_popular_library_pilot_author_handoff_records_p46_t5_summaries()
     ]
     assert repositories["flask"]["reviewNow"] == ["flask.core"]
     assert repositories["flask"]["doNotPromote"] == []
+    assert repositories["flask"]["noisySidecars"] == ["flask.aiDraft", "flask.aiEnrichment"]
     assert repositories["flask"]["caveats"] == [
         "excluded_package_also_selected",
         "selected_member_role_unknown",
@@ -31826,6 +31827,16 @@ def test_bounded_popular_library_pilot_author_handoff_records_p46_t5_summaries()
     ]
     assert repositories["gin"]["reviewNow"] == ["gin.core"]
     assert repositories["gin"]["doNotPromote"] == ["gin.aiDraft"]
+    assert repositories["gin"]["noisySidecars"] == []
+    assert repositories["gin"]["carryForwardWarnings"] == [
+        {
+            "code": "model_evidence_path_unsupported",
+            "sourceTask": "P45-T8",
+            "sourceLayer": "ai_enrichment",
+            "observedInP46T3": False,
+            "registryPromotionBlockerUntilTriaged": True,
+        }
+    ]
     assert repositories["gin"]["caveats"] == [
         "ai_json_repair_exhausted",
         "package_set_subject_metadata_missing",
@@ -31842,6 +31853,7 @@ def test_bounded_popular_library_pilot_author_handoff_records_p46_t5_summaries()
         "xyflow.workspace.contains.xyflow.system",
     ]
     assert repositories["xyflow"]["doNotPromote"] == ["xyflow.aiEnrichment"]
+    assert repositories["xyflow"]["noisySidecars"] == []
     assert repositories["xyflow"]["caveats"] == [
         "partial_public_interface_index",
         "operator_checkout_origin_fork_mismatch",
@@ -31849,12 +31861,17 @@ def test_bounded_popular_library_pilot_author_handoff_records_p46_t5_summaries()
     ]
     assert repositories["cupertino"]["reviewNow"] == ["cupertino.core"]
     assert repositories["cupertino"]["doNotPromote"] == []
+    assert repositories["cupertino"]["noisySidecars"] == ["cupertino.aiDraft"]
     assert repositories["cupertino"]["caveats"] == ["selected_member_role_unknown"]
     assert repositories["navigation-split-view"]["reviewNow"] == ["navigation_split_view.core"]
     assert repositories["navigation-split-view"]["doNotPromote"] == []
+    assert repositories["navigation-split-view"]["noisySidecars"] == [
+        "navigation-split-view.aiDraft"
+    ]
     assert repositories["navigation-split-view"]["caveats"] == ["selected_member_role_unknown"]
     assert repositories["docc2context"]["reviewNow"] == ["docc2context.core"]
     assert repositories["docc2context"]["doNotPromote"] == ["docc2context.aiDraft"]
+    assert repositories["docc2context"]["noisySidecars"] == []
     assert repositories["docc2context"]["caveats"] == [
         "ai_json_repair_exhausted",
         "package_set_subject_metadata_missing",

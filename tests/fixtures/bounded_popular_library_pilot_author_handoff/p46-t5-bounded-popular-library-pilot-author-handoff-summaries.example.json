@@ -7,7 +7,7 @@
   "sourceArtifacts": {
     "p46OutputTriage": {
       "path": "tests/fixtures/bounded_popular_library_pilot_output_triage/p46-t4-bounded-popular-library-pilot-output-triage.example.json",
-      "digest": "sha256:79d47e702eccba0e524cf115157e7d2839f007d401d5b096a24813da03b6915c",
+      "digest": "sha256:c347d7948bb4eac0243c56facfe47c3ba66e7c86cdad961918d423f597bc9b3e",
       "apiVersion": "spec-harvester.bounded-popular-library-pilot-output-triage/v0",
       "kind": "SpecHarvesterBoundedPopularLibraryPilotOutputTriage",
       "authority": "producer_triage_evidence_only"
@@ -32,6 +32,7 @@
       "relationProposals": [],
       "manualCorrection": ["review Flask AI sidecar role and summary warnings before use"],
       "doNotPromote": [],
+      "noisySidecars": ["flask.aiDraft", "flask.aiEnrichment"],
       "caveats": ["excluded_package_also_selected", "selected_member_role_unknown", "refined_summary_missing"]
     },
     {
@@ -41,6 +42,16 @@
       "relationProposals": [],
       "manualCorrection": ["AI enrichment may be reviewed only after draft identity is corrected"],
       "doNotPromote": ["gin.aiDraft"],
+      "noisySidecars": [],
+      "carryForwardWarnings": [
+        {
+          "code": "model_evidence_path_unsupported",
+          "sourceTask": "P45-T8",
+          "sourceLayer": "ai_enrichment",
+          "observedInP46T3": false,
+          "registryPromotionBlockerUntilTriaged": true
+        }
+      ],
       "caveats": ["ai_json_repair_exhausted", "package_set_subject_metadata_missing"]
     },
     {
@@ -54,6 +65,7 @@
       ],
       "manualCorrection": ["review partial public interface index and fork-origin caveat"],
       "doNotPromote": ["xyflow.aiEnrichment"],
+      "noisySidecars": [],
       "caveats": ["partial_public_interface_index", "operator_checkout_origin_fork_mismatch", "model_evidence_path_unsupported"]
     },
     {
@@ -63,6 +75,7 @@
       "relationProposals": [],
       "manualCorrection": ["review selected_member_role_unknown before using AI draft"],
       "doNotPromote": [],
+      "noisySidecars": ["cupertino.aiDraft"],
       "caveats": ["selected_member_role_unknown"]
     },
     {
@@ -72,6 +85,7 @@
       "relationProposals": [],
       "manualCorrection": ["review selected_member_role_unknown before using AI draft"],
       "doNotPromote": [],
+      "noisySidecars": ["navigation-split-view.aiDraft"],
       "caveats": ["selected_member_role_unknown"]
     },
     {
@@ -81,6 +95,7 @@
       "relationProposals": [],
       "manualCorrection": ["AI enrichment may be reviewed only after draft identity is corrected"],
       "doNotPromote": ["docc2context.aiDraft"],
+      "noisySidecars": [],
       "caveats": ["ai_json_repair_exhausted", "package_set_subject_metadata_missing"]
     }
   ],

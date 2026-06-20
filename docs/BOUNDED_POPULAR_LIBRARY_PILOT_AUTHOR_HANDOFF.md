@@ -34,14 +34,14 @@ authority: producer_author_handoff_evidence_only
 
 ## Author Summaries
 
-| Repository | Review now | Do not promote | Caveats |
-| --- | --- | --- | --- |
-| Flask | `flask.core` | none | `excluded_package_also_selected`, `selected_member_role_unknown`, `refined_summary_missing` |
-| Gin | `gin.core` | `gin.aiDraft` | `ai_json_repair_exhausted`, `package_set_subject_metadata_missing` |
-| xyflow | `xyflow.react`, `xyflow.svelte`, `xyflow.system`, `xyflow.workspace` | `xyflow.aiEnrichment` | `partial_public_interface_index`, `operator_checkout_origin_fork_mismatch`, `model_evidence_path_unsupported` |
-| Cupertino | `cupertino.core` | none | `selected_member_role_unknown` |
-| NavigationSplitView | `navigation_split_view.core` | none | `selected_member_role_unknown` |
-| docc2context | `docc2context.core` | `docc2context.aiDraft` | `ai_json_repair_exhausted`, `package_set_subject_metadata_missing` |
+| Repository | Review now | Do not promote | Noisy sidecars | Caveats |
+| --- | --- | --- | --- | --- |
+| Flask | `flask.core` | none | `flask.aiDraft`, `flask.aiEnrichment` | `excluded_package_also_selected`, `selected_member_role_unknown`, `refined_summary_missing` |
+| Gin | `gin.core` | `gin.aiDraft` | none | `ai_json_repair_exhausted`, `package_set_subject_metadata_missing`, carry-forward `model_evidence_path_unsupported` |
+| xyflow | `xyflow.react`, `xyflow.svelte`, `xyflow.system`, `xyflow.workspace` | `xyflow.aiEnrichment` | none | `partial_public_interface_index`, `operator_checkout_origin_fork_mismatch`, `model_evidence_path_unsupported` |
+| Cupertino | `cupertino.core` | none | `cupertino.aiDraft` | `selected_member_role_unknown` |
+| NavigationSplitView | `navigation_split_view.core` | none | `navigation-split-view.aiDraft` | `selected_member_role_unknown` |
+| docc2context | `docc2context.core` | `docc2context.aiDraft` | none | `ai_json_repair_exhausted`, `package_set_subject_metadata_missing` |
 
 The reviewable relation proposals are:
 
