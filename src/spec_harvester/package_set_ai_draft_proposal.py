@@ -390,11 +390,25 @@ def package_set_proposal(
     allowed_paths: set[str],
     diagnostics: list[dict[str, Any]],
 ) -> dict[str, Any]:
-    output = mapping_value(model_output.get("packageSet"))
+    output_value = model_output.get("packageSet")
+    output = mapping_value(output_value)
     fallback = mapping_value(request.get("packageSet"))
     request_package_id = string_value(fallback.get("id"))
     output_package_id = string_value(output.get("packageId"))
     package_id = request_package_id or output_package_id
+    if not isinstance(output_value, dict):
+        diagnostics.append(
+            diagnostic(
+                "warning",
+                "package_set_subject_metadata_missing",
+                "Model output omits the top-level packageSet metadata object.",
+                package_id,
+                {
+                    "modelField": "packageSet",
+                    "requestField": "packageSet.id",
+                },
+            )
+        )
     evidence_paths = supported_paths(
         string_list(output.get("evidencePaths")),
         allowed_paths,

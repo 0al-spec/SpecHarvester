@@ -173,6 +173,29 @@ def test_package_set_ai_draft_infers_missing_package_set_id_without_warning(
     assert "package_set_id_missing" not in {item["code"] for item in report["diagnostics"]}
 
 
+def test_package_set_ai_draft_warns_when_package_set_object_is_missing(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    del payload["packageSet"]
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "warning"
+    assert report["packageSet"]["packageId"] == "demo.workspace"
+    assert "package_set_subject_metadata_missing" in {
+        item["code"] for item in report["diagnostics"]
+    }
+
+
 def test_package_set_ai_draft_normalizes_selected_member_path_to_inventory(
     tmp_path: Path,
 ) -> None:
