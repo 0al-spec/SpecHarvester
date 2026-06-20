@@ -818,6 +818,11 @@ machine-readable `SpecHarvesterOperationalMVPPostFixReadinessDecision` fixture.
 It keeps bounded popular-library scraping unapproved until the remaining AI
 draft quality signals, `selected_member_role_unknown` and `no_proposal_subjects`,
 are resolved or explicitly accepted as non-blocking.
+P45-T7 adds <doc:OperationalMVPTargetedAIDraftPolicyRerun> and the
+machine-readable `SpecHarvesterOperationalMVPTargetedAIDraftPolicyRerun`
+fixture. It records that the P45-T5/P45-T6 targeted rerun resolves the AI draft
+blockers while preserving the remaining Gin AI enrichment warning for P45-T8
+readiness review.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

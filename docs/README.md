@@ -275,6 +275,9 @@ Published DocC site:
    P45-T4 readiness decision keeping bounded popular-library scraping
    unapproved until remaining AI draft quality signals are resolved or accepted
    as non-blocking
+67. [`OPERATIONAL_MVP_TARGETED_AI_DRAFT_POLICY_RERUN.md`](OPERATIONAL_MVP_TARGETED_AI_DRAFT_POLICY_RERUN.md):
+   P45-T7 targeted rerun after P45-T5/P45-T6 showing AI draft blockers
+   resolved while preserving proposal-only boundaries for P45-T8
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
