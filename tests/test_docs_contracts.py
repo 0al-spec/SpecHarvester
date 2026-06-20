@@ -38,6 +38,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P44-T2 Operational MVP AI Proposal Quality Review" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
+        assert "`P44-T2`" in next_text
+        assert "`P44-T1` Operational MVP Warning Triage" in next_text
+        assert "proposal-only AI enrichment" in next_text
+        assert "xyflow, FastAPI, and Gin" in next_text
+        assert "do-not-promote" in next_text
+        assert "Do not treat AI output" in next_text
+        return
+
     if "# Next Task: P44-T1 Operational MVP Warning Triage" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
@@ -29301,6 +29312,243 @@ def test_operational_mvp_exit_report_is_documented() -> None:
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P43-T7` Record an operational MVP exit report" in workplan_text
     assert "bounded autonomous popular-library" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_warning_triage_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p44-t1-operational-mvp-warning-triage.example.json"
+    )
+    ai_comparison_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t5-operational-mvp-ai-enabled-comparison.example.json"
+    )
+    exit_report_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t7-operational-mvp-exit-report.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_WARNING_TRIAGE.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "OperationalMVPWarningTriage.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    ai_comparison = json.loads(ai_comparison_path.read_text(encoding="utf-8"))
+    exit_report = json.loads(exit_report_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.operational-mvp-warning-triage/v0"
+    assert payload["kind"] == "SpecHarvesterOperationalMVPWarningTriage"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_operational_mvp_warning_triage_only"
+    assert payload["phase"] == "P44"
+    assert payload["task"] == "P44-T1"
+    assert payload["sourceArtifacts"] == {
+        "aiEnabledComparison": {
+            "path": (
+                "tests/fixtures/operational_mvp_validation/"
+                "p43-t5-operational-mvp-ai-enabled-comparison.example.json"
+            ),
+            "digest": "sha256:" + hashlib.sha256(ai_comparison_path.read_bytes()).hexdigest(),
+            "apiVersion": ai_comparison["apiVersion"],
+            "kind": ai_comparison["kind"],
+            "authority": ai_comparison["authority"],
+        },
+        "exitReport": {
+            "path": (
+                "tests/fixtures/operational_mvp_validation/"
+                "p43-t7-operational-mvp-exit-report.example.json"
+            ),
+            "digest": "sha256:" + hashlib.sha256(exit_report_path.read_bytes()).hexdigest(),
+            "apiVersion": exit_report["apiVersion"],
+            "kind": exit_report["kind"],
+            "authority": exit_report["authority"],
+        },
+    }
+    assert payload["triageScope"] == {
+        "diagnosticCode": "package_set_id_missing",
+        "sourceTask": "P43-T5",
+        "sourceRunMode": "ai_enabled_proposal",
+        "repositoryCount": 3,
+        "warningCount": 3,
+        "samePinnedCorpusAsStaticBaseline": True,
+        "providerAvailable": True,
+        "aiEnabledRunPerformed": True,
+        "rawPromptPersisted": False,
+        "rawResponsePersisted": False,
+        "chainOfThoughtPersisted": False,
+        "aiOutputAuthority": "proposal_only",
+    }
+    assert payload["causeCategories"] == [
+        "missing_draft_context",
+        "package_set_identity_drift",
+        "ai_proposal_shape",
+        "expected_producer_side_boundary",
+    ]
+    assert payload["summary"] == {
+        "triagedRepositoryCount": 3,
+        "primaryAiProposalShapeCount": 3,
+        "primaryMissingDraftContextCount": 0,
+        "primaryPackageSetIdentityDriftCount": 0,
+        "primaryExpectedProducerSideBoundaryCount": 0,
+        "requiresGeneratorChangeCount": 3,
+        "requiresManualCorrectionCount": 1,
+        "proposalQualityReviewRequiredCount": 3,
+        "safeToUseEnrichmentForAuthorReviewCount": 3,
+        "readyForBoundedAutonomousScraping": False,
+        "registryAuthority": False,
+    }
+
+    triage = {item["repositoryId"]: item for item in payload["repositoryWarningTriage"]}
+    assert set(triage) == {"xyflow", "fastapi", "gin"}
+    assert triage["xyflow"]["expectedPackageFamilyShape"] == "package_set_monorepo"
+    assert triage["fastapi"]["expectedPackageFamilyShape"] == "framework_library_package"
+    assert triage["gin"]["expectedPackageFamilyShape"] == "single_package_framework"
+    for item in triage.values():
+        assert item["sourceWarning"]["diagnosticCodes"] == ["package_set_id_missing"]
+        assert item["sourceWarning"]["aiDraftProposalStatus"] == "warning"
+        assert item["sourceWarning"]["aiEnrichmentStatus"] == "completed"
+        assert item["sourceWarning"]["aiEnrichedPreviewApplied"] is False
+        assert item["classification"]["primaryCause"] == "ai_proposal_shape"
+        assert item["classification"]["missingDraftContext"] is False
+        assert item["classification"]["packageSetIdentityDrift"] is False
+        assert item["classification"]["aiProposalShape"] is True
+        assert item["classification"]["expectedProducerSideBoundary"] is False
+        assert item["classification"]["confidence"] == "high"
+    assert triage["xyflow"]["manualCorrectionContext"] == [
+        "partial_public_interface_index",
+        "review_operator_checkout_origin_fork_mismatch",
+    ]
+    assert triage["fastapi"]["manualCorrectionContext"] == []
+    assert triage["gin"]["manualCorrectionContext"] == []
+    assert [item["task"] for item in payload["phase44FollowUp"]] == [
+        "P44-T2",
+        "P44-T3",
+        "P44-T4",
+        "P44-T5",
+    ]
+
+    assert payload["authorityBoundary"] == {
+        "producerSideEvidence": True,
+        "warningTriageIsRegistryAuthority": False,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "publishesRegistryMetadata": False,
+        "seedsBaselines": False,
+        "removesPreviewOnly": False,
+        "runsAI": False,
+        "aiOutputAcceptedAsRegistryTruth": False,
+        "adapterOutputAcceptedAsRegistryTruth": False,
+        "trustedLocalAdapterExecutionEnabled": False,
+        "implicitRepositoryFetchAllowed": False,
+        "networkDiscoveryAllowed": False,
+        "dependencyInstallationAllowed": False,
+        "packageManagerInvocationAllowed": False,
+        "harvestedCodeExecutionAllowed": False,
+    }
+    for statement in (
+        "warning_triage_is_producer_side_review_evidence",
+        "warning_triage_is_not_registry_acceptance",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_run_ai",
+        "does_not_enable_trusted_local_adapter_execution",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_execute_harvested_code",
+        "does_not_persist_raw_prompts",
+        "does_not_persist_raw_provider_responses",
+        "does_not_persist_chain_of_thought",
+        "does_not_treat_ai_output_as_registry_truth",
+        "does_not_treat_adapter_output_as_registry_truth",
+        "does_not_treat_warning_triage_output_as_registry_truth",
+    ):
+        assert statement in payload["nonAuthorityStatements"]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Warning Triage",
+            "P44-T1",
+            "SpecHarvesterOperationalMVPWarningTriage",
+            "spec-harvester.operational-mvp-warning-triage/v0",
+            "producer_operational_mvp_warning_triage_only",
+            "p44-t1-operational-mvp-warning-triage.example.json",
+            "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+            "sha256:" + hashlib.sha256(ai_comparison_path.read_bytes()).hexdigest(),
+            "p43-t7-operational-mvp-exit-report.example.json",
+            "sha256:" + hashlib.sha256(exit_report_path.read_bytes()).hexdigest(),
+            "package_set_id_missing",
+            "xyflow",
+            "FastAPI",
+            "Gin",
+            "ai_proposal_shape",
+            "proposal-only",
+            "P44-T2",
+            "P44-T3",
+            "P44-T4",
+            "P44-T5",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run AI",
+            "enable trusted local adapter execution",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat warning triage output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_WARNING_TRIAGE.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_WARNING_TRIAGE.md"),
+        (docc_root, "<doc:OperationalMVPWarningTriage>"),
+        (capabilities, "OPERATIONAL_MVP_WARNING_TRIAGE.md"),
+        (capabilities_docc, "OperationalMVPWarningTriage"),
+        (roadmap, "OPERATIONAL_MVP_WARNING_TRIAGE.md"),
+        (roadmap_docc, "OperationalMVPWarningTriage"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P44-T1` Triage the P43-T5 `package_set_id_missing`" in workplan_text
+    assert "Phase 44. Operational MVP Quality Hardening" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

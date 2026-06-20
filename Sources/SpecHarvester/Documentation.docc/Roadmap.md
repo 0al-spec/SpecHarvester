@@ -786,6 +786,12 @@ P43-T7 adds <doc:OperationalMVPExitReport> and the machine-readable
 scraping, rejects an adapter-execution blocker, and closes Phase 43 with no
 registry authority.
 
+P44-T1 adds <doc:OperationalMVPWarningTriage> and the machine-readable
+`SpecHarvesterOperationalMVPWarningTriage` fixture. It triages the P43-T5
+`package_set_id_missing` AI draft warnings for xyflow, FastAPI, and Gin as AI
+proposal shape issues, keeps enrichment proposal-only, and records follow-up
+guidance for P44-T2 through P44-T5.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install

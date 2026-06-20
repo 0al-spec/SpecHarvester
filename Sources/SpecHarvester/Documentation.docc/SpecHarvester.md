@@ -69,6 +69,7 @@ The canonical source files remain in the repository:
 - `docs/OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md`
 - `docs/OPERATIONAL_MVP_AUTHOR_HANDOFF_SUMMARIES.md`
 - `docs/OPERATIONAL_MVP_EXIT_REPORT.md`
+- `docs/OPERATIONAL_MVP_WARNING_TRIAGE.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -229,6 +230,7 @@ the host.
 - <doc:OperationalMVPAIEnabledComparison>
 - <doc:OperationalMVPAuthorHandoffSummaries>
 - <doc:OperationalMVPExitReport>
+- <doc:OperationalMVPWarningTriage>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
