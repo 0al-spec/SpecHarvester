@@ -2241,7 +2241,7 @@ Acceptance:
 
 ## Phase 47. Targeted Pilot Quality Follow-Up
 
-- [ ] `P47-T1` Plan the targeted pilot quality follow-up after the P46 exit
+- [x] `P47-T1` Plan the targeted pilot quality follow-up after the P46 exit
   decision, covering Gin and docc2context AI draft regeneration, xyflow
   evidence-gap disposition, and the bounded rerun gate before any larger
   curated corpus approval.
