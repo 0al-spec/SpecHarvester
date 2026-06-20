@@ -260,6 +260,9 @@ Published DocC site:
 60. [`OPERATIONAL_MVP_WARNING_TRIAGE.md`](OPERATIONAL_MVP_WARNING_TRIAGE.md):
    P44-T1 warning triage for the P43-T5 `package_set_id_missing` AI draft
    diagnostics
+61. [`OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md`](OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md):
+   P44-T2 proposal-only AI enrichment quality review for xyflow, FastAPI, and
+   Gin
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

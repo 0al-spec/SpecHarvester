@@ -38,6 +38,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P44-T3 Operational MVP Xyflow Interface Caveat Resolution" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
+        assert "`P44-T3`" in next_text
+        assert "`P44-T2` Operational MVP AI Proposal Quality Review" in next_text
+        assert "partial `PublicInterfaceIndex`" in next_text
+        assert "fork-origin caveat" in next_text
+        assert "Do not treat caveat-resolution output as registry truth" in next_text
+        return
+
     if "# Next Task: P44-T2 Operational MVP AI Proposal Quality Review" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
@@ -29549,6 +29559,179 @@ def test_operational_mvp_warning_triage_is_documented() -> None:
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P44-T1` Triage the P43-T5 `package_set_id_missing`" in workplan_text
     assert "Phase 44. Operational MVP Quality Hardening" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_ai_proposal_quality_review_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p44-t2-operational-mvp-ai-proposal-quality-review.example.json"
+    )
+    ai_comparison_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t5-operational-mvp-ai-enabled-comparison.example.json"
+    )
+    warning_triage_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p44-t1-operational-mvp-warning-triage.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPAIProposalQualityReview.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    ai_comparison = json.loads(ai_comparison_path.read_text(encoding="utf-8"))
+    warning_triage = json.loads(warning_triage_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == ("spec-harvester.operational-mvp-ai-proposal-quality-review/v0")
+    assert payload["kind"] == "SpecHarvesterOperationalMVPAIProposalQualityReview"
+    assert payload["authority"] == "producer_operational_mvp_ai_proposal_quality_review_only"
+    assert payload["phase"] == "P44"
+    assert payload["task"] == "P44-T2"
+    assert payload["sourceArtifacts"] == {
+        "aiEnabledComparison": {
+            "path": (
+                "tests/fixtures/operational_mvp_validation/"
+                "p43-t5-operational-mvp-ai-enabled-comparison.example.json"
+            ),
+            "digest": "sha256:" + hashlib.sha256(ai_comparison_path.read_bytes()).hexdigest(),
+            "apiVersion": ai_comparison["apiVersion"],
+            "kind": ai_comparison["kind"],
+            "authority": ai_comparison["authority"],
+        },
+        "warningTriage": {
+            "path": (
+                "tests/fixtures/operational_mvp_quality_hardening/"
+                "p44-t1-operational-mvp-warning-triage.example.json"
+            ),
+            "digest": "sha256:" + hashlib.sha256(warning_triage_path.read_bytes()).hexdigest(),
+            "apiVersion": warning_triage["apiVersion"],
+            "kind": warning_triage["kind"],
+            "authority": warning_triage["authority"],
+        },
+    }
+    assert payload["summary"] == {
+        "reviewedRepositoryCount": 3,
+        "reviewedProposalMemberCount": 6,
+        "usefulSuggestionCount": 5,
+        "noisySuggestionCount": 1,
+        "unsupportedClaimCount": 0,
+        "evidenceGapCount": 0,
+        "doNotPromoteCount": 1,
+        "authorReviewRequiredCount": 6,
+        "readyForAutomaticPromotionCount": 0,
+        "registryAuthority": False,
+    }
+    reviews = {item["repositoryId"]: item for item in payload["repositoryReviews"]}
+    assert set(reviews) == {"xyflow", "fastapi", "gin"}
+    assert reviews["xyflow"]["qualityClassification"]["usefulSuggestions"] == [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+    ]
+    assert reviews["xyflow"]["qualityClassification"]["noisySuggestions"] == ["xyflow.workspace"]
+    assert reviews["xyflow"]["qualityClassification"]["doNotPromote"] == ["xyflow.workspace"]
+    assert reviews["fastapi"]["qualityClassification"]["usefulSuggestions"] == ["fastapi.core"]
+    assert reviews["gin"]["qualityClassification"]["usefulSuggestions"] == ["gin.core"]
+    for item in reviews.values():
+        proposal_path_text = item["proposalArtifact"]["path"]
+        assert not proposal_path_text.startswith("/tmp/")
+        proposal_path = ROOT / proposal_path_text
+        assert proposal_path.is_file()
+        assert item["proposalArtifact"]["digest"] == (
+            "sha256:" + hashlib.sha256(proposal_path.read_bytes()).hexdigest()
+        )
+        assert item["proposalArtifact"]["status"] == "completed"
+        assert item["proposalArtifact"]["diagnosticCount"] == 0
+        assert item["qualityClassification"]["unsupportedClaims"] == []
+        assert item["qualityClassification"]["evidenceGaps"] == []
+    assert [item["task"] for item in payload["phase44FollowUp"]] == [
+        "P44-T3",
+        "P44-T4",
+        "P44-T5",
+    ]
+    assert payload["authorityBoundary"]["runsAI"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["proposalQualityReviewIsRegistryAuthority"] is False
+    assert (
+        "does_not_treat_proposal_quality_review_output_as_registry_truth"
+        in payload["nonAuthorityStatements"]
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP AI Proposal Quality Review",
+            "P44-T2",
+            "SpecHarvesterOperationalMVPAIProposalQualityReview",
+            "spec-harvester.operational-mvp-ai-proposal-quality-review/v0",
+            "producer_operational_mvp_ai_proposal_quality_review_only",
+            "p44-t2-operational-mvp-ai-proposal-quality-review.example.json",
+            "p44-t2-reviewed-ai-proposals",
+            "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+            "p44-t1-operational-mvp-warning-triage.example.json",
+            "xyflow.workspace",
+            "do-not-promote",
+            "5 useful",
+            "0 unsupported claims",
+            "0 evidence gaps",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run AI",
+            "enable trusted local adapter execution",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat proposal-quality review output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md"),
+        (docc_root, "<doc:OperationalMVPAIProposalQualityReview>"),
+        (capabilities, "OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md"),
+        (capabilities_docc, "OperationalMVPAIProposalQualityReview"),
+        (roadmap, "OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md"),
+        (roadmap_docc, "OperationalMVPAIProposalQualityReview"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

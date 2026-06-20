@@ -2084,7 +2084,7 @@ Acceptance:
 - [x] `P44-T1` Triage the P43-T5 `package_set_id_missing` draft warnings and
   record whether each warning is caused by missing draft context, package-set
   identity drift, AI proposal shape, or an expected producer-side boundary.
-- [ ] `P44-T2` Review the P43-T5 proposal-only AI enrichment artifacts for
+- [x] `P44-T2` Review the P43-T5 proposal-only AI enrichment artifacts for
   xyflow, FastAPI, and Gin, classifying useful suggestions, noisy suggestions,
   unsupported claims, evidence gaps, and do-not-promote output.
 - [ ] `P44-T3` Resolve or explicitly accept the xyflow partial
