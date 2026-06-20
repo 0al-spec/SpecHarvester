@@ -30022,6 +30022,13 @@ def test_operational_mvp_post_hardening_readiness_decision_is_documented() -> No
     assert payload["authority"] == "producer_operational_mvp_post_hardening_readiness_decision_only"
     assert payload["phase"] == "P44"
     assert payload["task"] == "P44-T5"
+    for source in payload["sourceArtifacts"].values():
+        source_path = ROOT / source["path"]
+        source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+        assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert source["apiVersion"] == source_payload["apiVersion"]
+        assert source["kind"] == source_payload["kind"]
+        assert source["authority"] == source_payload["authority"]
     assert payload["decision"]["selected"] == "needs_another_quality_pass"
     assert payload["decision"]["readyForBoundedPopularLibraryScraping"] is False
     assert payload["decision"]["needsAnotherQualityPass"] is True

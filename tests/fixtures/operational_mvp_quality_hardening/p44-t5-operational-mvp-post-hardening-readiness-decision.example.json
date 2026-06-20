@@ -23,21 +23,21 @@
     },
     "aiProposalQualityReview": {
       "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t2-operational-mvp-ai-proposal-quality-review.example.json",
-      "digest": "sha256:43cc8a4214eba3bebf22bdaa8f2569c06d21d8b64e78c675f3053f87b944100b",
+      "digest": "sha256:0a8b7ffd20c523c24c5d76468b3027d98abcf6b6118d0e99af92e3a0e30f8276",
       "apiVersion": "spec-harvester.operational-mvp-ai-proposal-quality-review/v0",
       "kind": "SpecHarvesterOperationalMVPAIProposalQualityReview",
       "authority": "producer_operational_mvp_ai_proposal_quality_review_only"
     },
     "xyflowCaveatResolution": {
       "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t3-operational-mvp-xyflow-caveat-resolution.example.json",
-      "digest": "sha256:80387a0b7c798c3da2876143cf98bdc102baf3597c5dee74f752eaa0e18cf4c5",
+      "digest": "sha256:53013e74c22fab4712869bf64f9801765b95334abeaf7e55873f7f170c31ac28",
       "apiVersion": "spec-harvester.operational-mvp-xyflow-caveat-resolution/v0",
       "kind": "SpecHarvesterOperationalMVPXyflowCaveatResolution",
       "authority": "producer_operational_mvp_xyflow_caveat_resolution_only"
     },
     "qualityHardenedRerun": {
       "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t4-operational-mvp-quality-hardened-rerun.example.json",
-      "digest": "sha256:10fc7adb1e9692a07d615ca317d908fa7b11094e68acf86beee9d8b239e4ef87",
+      "digest": "sha256:f2ef9b1a3711f75f8792cbf39bbea29e11040df3633dc740ec4d5c436b472c2a",
       "apiVersion": "spec-harvester.operational-mvp-quality-hardened-rerun/v0",
       "kind": "SpecHarvesterOperationalMVPQualityHardenedRerun",
       "authority": "producer_operational_mvp_quality_hardened_rerun_only"
