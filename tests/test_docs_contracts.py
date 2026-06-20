@@ -8026,6 +8026,8 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
         assert "deterministic request package-set id" in normalized
         assert "single-package inventories" in normalized
         assert "excluded_package_unknown" in normalized
+        assert "validationGuard" in normalized
+        assert "package_set_subject_identity_missing" in normalized
 
     roadmap_text = roadmap.read_text(encoding="utf-8")
     roadmap_docc_text = roadmap_docc.read_text(encoding="utf-8")

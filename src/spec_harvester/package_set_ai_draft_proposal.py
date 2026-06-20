@@ -317,13 +317,20 @@ def proposal_from_model_output(
         for item in list_value(request.get("packages"))
         if isinstance(item, dict) and isinstance(item.get("packageId"), str)
     }
+    validation_guard = model_output_validation_guard(model_output, request, inventory_by_id)
+    diagnostics.extend(validation_guard["diagnostics"])
     package_set = package_set_proposal(model_output, request, allowed_paths, diagnostics)
     selected_members = selected_member_proposals(
         model_output, inventory_by_id, allowed_paths, diagnostics
     )
     selected_ids = {member["packageId"] for member in selected_members}
     excluded_packages = excluded_package_proposals(
-        model_output, inventory_by_id, selected_ids, allowed_paths, diagnostics
+        model_output,
+        inventory_by_id,
+        selected_ids,
+        allowed_paths,
+        diagnostics,
+        report_unknown_exclusions=False,
     )
     relations = relation_proposals(
         model_output,
@@ -347,6 +354,7 @@ def proposal_from_model_output(
         "relations": relations,
         "provider": provider,
         "providerReceipt": provider_receipt,
+        "validationGuard": validation_guard,
         "inputs": input_records(request),
         "diagnostics": diagnostics,
         "summary": {
@@ -381,6 +389,63 @@ def proposal_from_model_output(
             "package_manager_execution",
             "model_authored_file_mutation",
         ],
+    }
+
+
+def model_output_validation_guard(
+    model_output: dict[str, Any],
+    request: dict[str, Any],
+    inventory_by_id: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    diagnostics: list[dict[str, Any]] = []
+    output_package_set = mapping_value(model_output.get("packageSet"))
+    request_package_set = mapping_value(request.get("packageSet"))
+    request_package_id = string_value(request_package_set.get("id"))
+    output_package_id = string_value(output_package_set.get("packageId"))
+
+    if not request_package_id and not output_package_id:
+        diagnostics.append(
+            diagnostic(
+                "error",
+                "package_set_subject_identity_missing",
+                (
+                    "Model output and deterministic request context both omit "
+                    "the package-set subject identity."
+                ),
+                "packageSet",
+                {
+                    "modelField": "packageSet.packageId",
+                    "requestField": "packageSet.id",
+                },
+            )
+        )
+
+    if len(inventory_by_id) > 1:
+        for index, item in enumerate(list_value(model_output.get("excludedPackages"))):
+            if not isinstance(item, dict):
+                continue
+            package_id = string_value(item.get("packageId"))
+            if not package_id or package_id not in inventory_by_id:
+                diagnostics.append(
+                    diagnostic(
+                        "warning",
+                        "excluded_package_unknown",
+                        ("Excluded package packageId is not present in workspace inventory."),
+                        package_id,
+                        {"index": index},
+                    )
+                )
+
+    error_count = sum(1 for item in diagnostics if item["severity"] == "error")
+    warning_count = sum(1 for item in diagnostics if item["severity"] == "warning")
+    status = "failed" if error_count else ("warning" if warning_count else "passed")
+    return {
+        "authority": "producer_deterministic_pre_normalization_validation",
+        "status": status,
+        "diagnosticCount": len(diagnostics),
+        "errorCount": error_count,
+        "warningCount": warning_count,
+        "diagnostics": diagnostics,
     }
 
 
@@ -518,6 +583,8 @@ def excluded_package_proposals(
     selected_ids: set[str],
     allowed_paths: set[str],
     diagnostics: list[dict[str, Any]],
+    *,
+    report_unknown_exclusions: bool = True,
 ) -> list[dict[str, Any]]:
     records = []
     seen: set[str] = set()
@@ -537,6 +604,8 @@ def excluded_package_proposals(
         package_id = string_value(item.get("packageId"))
         if not package_id or package_id not in inventory_by_id:
             if single_package_inventory:
+                continue
+            if not report_unknown_exclusions:
                 continue
             diagnostics.append(
                 diagnostic(
