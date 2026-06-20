@@ -1,42 +1,52 @@
-# Next Task: Phase 43 Complete
+# Next Task: P44-T1 Operational MVP Warning Triage
 
-**Status:** Complete
-**Branch:** `feature/P43-T7-operational-mvp-exit-report`
-**Phase:** Phase 43. Operational MVP Validation
-**Last Archived:** `P43-T7` Operational MVP Exit Report
+**Status:** Selected
+**Branch:** `feature/P44-T1-operational-mvp-warning-triage`
+**Phase:** Phase 44. Operational MVP Quality Hardening
+**Task:** `P44-T1`
+**Depends On:** `P43-T7` Operational MVP Exit Report
 
-## Result
+## Goal
 
-Phase 43 is complete.
+Triage the P43-T5 `package_set_id_missing` draft warnings for xyflow, FastAPI,
+and Gin, then record whether each warning is caused by missing draft context,
+package-set identity drift, AI proposal shape, or an expected producer-side
+boundary.
 
-The operational MVP exit report selected:
+## Context
 
-```text
-needs_quality_hardening
-```
+Phase 43 closed with `needs_quality_hardening`. The live LM Studio run proved
+that proposal-only AI enrichment works over the pinned operational MVP corpus,
+but all three repositories still reported `package_set_id_missing` draft
+warnings. Before broader bounded popular-library scraping, the warning cause
+needs to be explicit and reviewable.
 
-This records quality hardening before bounded popular-library scraping as the
-recommended next direction. The phase did not approve broader autonomous
-scraping, did not accept packages or relations, did not publish registry
-metadata, and did not enable trusted local adapter execution.
+## Expected Deliverables
 
-## Evidence
+- A durable P44-T1 warning triage artifact or documentation page that references
+  the P43-T5 AI-enabled comparison and P43-T7 exit report.
+- Per-repository classification for xyflow, FastAPI, and Gin.
+- Clear follow-up guidance for warnings that require generator changes,
+  proposal-quality review, package-set identity repair, or no code change.
+- Updated docs/test coverage sufficient for the repository docs contract.
 
-- `P43-T4` Operational MVP Static-Only Quality Baseline was archived with PASS
-  verdict and recorded handoff-ready static-only preview output for xyflow,
-  FastAPI, and Gin.
-- `P43-T5` Operational MVP AI-Enabled Comparison was archived with PASS verdict
-  and recorded live local LM Studio proposal-only AI comparison evidence.
-- `P43-T6` Operational MVP Author Handoff Summaries was archived with PASS
-  verdict and recorded author-facing valid, reviewable, manual-correction, and
-  do-not-promote guidance.
-- `P43-T7` Operational MVP Exit Report was archived with PASS verdict and
-  selected `needs_quality_hardening`.
+## Boundaries
 
-## Recently Archived
+- Do not clone or fetch repositories.
+- Do not install dependencies or invoke package managers.
+- Do not execute harvested code.
+- Do not call hosted AI services.
+- Do not persist raw prompts, raw provider responses, secrets, or
+  chain-of-thought.
+- Do not enable trusted local adapter execution or run adapter code.
+- Do not accept packages or relations.
+- Do not publish registry metadata, seed baselines, or remove `preview_only`.
+- Do not treat AI output, adapter output, or warning triage output as registry
+  truth.
 
-- `P43-T7` Operational MVP Exit Report was archived with PASS verdict.
-- `P43-T6` Operational MVP Author Handoff Summaries was archived with PASS
-  verdict.
-- `P43-T5` Operational MVP AI-Enabled Comparison was archived with PASS
-  verdict.
+## Validation Expectations
+
+- Validate any new machine-readable artifact with `python3 -m json.tool`.
+- Run the focused docs-contract test that covers the new P44-T1 artifact and
+  current next-task state.
+- Run formatting/lint/test gates scaled to the implementation surface.
