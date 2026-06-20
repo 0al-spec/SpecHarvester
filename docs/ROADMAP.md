@@ -1120,6 +1120,13 @@ fixture. It records the post-fix bounded corpus rerun after P45-T1/P45-T2 AI
 draft shape hardening, resolving the old identity warning class while keeping
 the remaining xyflow role-taxonomy warning and proposal-only boundaries
 explicit for P45-T4.
+P45-T4 adds
+[`OPERATIONAL_MVP_POST_FIX_READINESS_DECISION.md`](OPERATIONAL_MVP_POST_FIX_READINESS_DECISION.md)
+and the machine-readable
+`SpecHarvesterOperationalMVPPostFixReadinessDecision` fixture. It keeps bounded
+popular-library scraping unapproved until the remaining AI draft quality
+signals, `selected_member_role_unknown` and `no_proposal_subjects`, are
+resolved or explicitly accepted as non-blocking.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

@@ -38,6 +38,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: None Selected" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** No task selected" in next_text
+        assert "No unfinished Workplan task is present in this branch" in normalized
+        assert "Do not add new Workplan tasks" in next_text
+        return
+
     if "# Next Task: P45-T4 Post-Fix Readiness Decision" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -30156,6 +30163,151 @@ def test_operational_mvp_ai_draft_shape_rerun_is_documented() -> None:
         (capabilities_docc, "OperationalMVPAIDraftShapeRerun"),
         (roadmap, "OPERATIONAL_MVP_AI_DRAFT_SHAPE_RERUN.md"),
         (roadmap_docc, "OperationalMVPAIDraftShapeRerun"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_post_fix_readiness_decision_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p45-t4-operational-mvp-post-fix-readiness-decision.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_POST_FIX_READINESS_DECISION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPPostFixReadinessDecision.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.operational-mvp-post-fix-readiness-decision/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterOperationalMVPPostFixReadinessDecision"
+    assert payload["authority"] == "producer_operational_mvp_post_fix_readiness_decision_only"
+    assert payload["phase"] == "P45"
+    assert payload["task"] == "P45-T4"
+    for source in payload["sourceArtifacts"].values():
+        source_path = ROOT / source["path"]
+        source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+        assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert source["apiVersion"] == source_payload["apiVersion"]
+        assert source["kind"] == source_payload["kind"]
+        assert source["authority"] == source_payload["authority"]
+    assert payload["decision"]["selected"] == (
+        "needs_targeted_ai_draft_quality_pass_before_bounded_popular_library_scraping"
+    )
+    assert payload["decision"]["readyForBoundedPopularLibraryScraping"] is False
+    assert payload["decision"]["needsTargetedAIDraftQualityPass"] is True
+    assert payload["decision"]["blockedUntilAdapterExecution"] is False
+    assert payload["decisionInputs"]["p44ReadinessDecision"]["selected"] == (
+        "needs_another_quality_pass"
+    )
+    rerun = payload["decisionInputs"]["p45AiDraftShapeRerun"]
+    assert rerun["samePinnedCorpusAsP44T4"] is True
+    assert rerun["staticOnlyMatchesP44Baseline"] is True
+    assert rerun["aiEnabledRunPassed"] is True
+    assert rerun["oldIdentityWarningClassResolved"] is True
+    assert rerun["p44AiDraftWarningRepositoryCount"] == 3
+    assert rerun["p45AiDraftWarningRepositoryCount"] == 1
+    assert rerun["p44AiDraftWarningDiagnosticCount"] == 3
+    assert rerun["p45AiDraftWarningDiagnosticCount"] == 3
+    assert rerun["postFixOutcome"] == (
+        "identity_warnings_resolved_but_ai_draft_layer_not_fully_clean"
+    )
+    findings = {item["repositoryId"]: item for item in payload["repositoryFindings"]}
+    assert findings["xyflow"]["p45AiDraftWarningCodes"] == ["selected_member_role_unknown"]
+    assert findings["xyflow"]["warningComparison"] == "changed_warning_code_not_resolved"
+    assert findings["fastapi"]["aiDraftStopPolicyReason"] == "no_proposal_subjects"
+    assert findings["gin"]["aiDraftStopPolicyReason"] == "no_proposal_subjects"
+    rejected = {item["id"] for item in payload["rejectedAlternatives"]}
+    assert "ready_for_bounded_popular_library_scraping" in rejected
+    assert "blocked_until_adapter_execution" in rejected
+    assert "proceed_after_identity_fix_only" in rejected
+    assert payload["recommendedNextCondition"]["workplanTaskCreated"] is False
+    assert payload["exitState"] == {
+        "phase45ReadinessDecisionComplete": True,
+        "readyForBoundedPopularLibraryScraping": False,
+        "needsTargetedAIDraftQualityPass": True,
+        "blockedUntilAdapterExecution": False,
+        "boundedPopularLibraryScrapingApproved": False,
+        "noNewWorkplanTaskAdded": True,
+    }
+    assert payload["authorityBoundary"]["readinessDecisionIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesBoundedPopularLibraryScraping"] is False
+    assert payload["authorityBoundary"]["runsAI"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["rawPromptPersisted"] is False
+    assert "does_not_treat_readiness_output_as_registry_truth" in payload["nonAuthorityStatements"]
+    assert "does_not_add_workplan_tasks" in payload["nonAuthorityStatements"]
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Post-Fix Readiness Decision",
+            "P45-T4",
+            "SpecHarvesterOperationalMVPPostFixReadinessDecision",
+            "spec-harvester.operational-mvp-post-fix-readiness-decision/v0",
+            "producer_operational_mvp_post_fix_readiness_decision_only",
+            "p45-t4-operational-mvp-post-fix-readiness-decision.example.json",
+            "needs_targeted_ai_draft_quality_pass_before_bounded_popular_library_scraping",
+            "ready_for_bounded_popular_library_scraping",
+            "blocked_until_adapter_execution",
+            "selected_member_role_unknown",
+            "no_proposal_subjects",
+            "proposal-only",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "run AI",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "enable trusted local adapter execution",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "approve bounded popular-library scraping",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat readiness output as registry truth",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+            "does not add Workplan tasks",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_POST_FIX_READINESS_DECISION.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_POST_FIX_READINESS_DECISION.md"),
+        (docc_root, "<doc:OperationalMVPPostFixReadinessDecision>"),
+        (capabilities, "OPERATIONAL_MVP_POST_FIX_READINESS_DECISION.md"),
+        (capabilities_docc, "OperationalMVPPostFixReadinessDecision"),
+        (roadmap, "OPERATIONAL_MVP_POST_FIX_READINESS_DECISION.md"),
+        (roadmap_docc, "OperationalMVPPostFixReadinessDecision"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
