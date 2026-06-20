@@ -71,6 +71,7 @@ The canonical source files remain in the repository:
 - `docs/OPERATIONAL_MVP_EXIT_REPORT.md`
 - `docs/OPERATIONAL_MVP_WARNING_TRIAGE.md`
 - `docs/OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md`
+- `docs/OPERATIONAL_MVP_XYFLOW_CAVEAT_RESOLUTION.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -233,6 +234,7 @@ the host.
 - <doc:OperationalMVPExitReport>
 - <doc:OperationalMVPWarningTriage>
 - <doc:OperationalMVPAIProposalQualityReview>
+- <doc:OperationalMVPXyflowCaveatResolution>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

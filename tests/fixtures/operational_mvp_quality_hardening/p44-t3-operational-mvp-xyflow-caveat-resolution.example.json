@@ -1,0 +1,115 @@
+{
+  "apiVersion": "spec-harvester.operational-mvp-xyflow-caveat-resolution/v0",
+  "kind": "SpecHarvesterOperationalMVPXyflowCaveatResolution",
+  "schemaVersion": 1,
+  "authority": "producer_operational_mvp_xyflow_caveat_resolution_only",
+  "phase": "P44",
+  "task": "P44-T3",
+  "createdAt": "2026-06-20T00:00:00Z",
+  "sourceArtifacts": {
+    "staticOnlyBaseline": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json",
+      "digest": "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
+      "apiVersion": "spec-harvester.operational-mvp-static-only-baseline/v0",
+      "kind": "SpecHarvesterOperationalMVPStaticOnlyBaseline",
+      "authority": "producer_operational_mvp_static_only_baseline_only"
+    },
+    "authorHandoffSummaries": {
+      "path": "tests/fixtures/operational_mvp_validation/p43-t6-operational-mvp-author-handoff-summaries.example.json",
+      "digest": "sha256:53daf55c0afd5721d773cb3e0126dd2467f0cbfe247d0f429844845085fba6bd",
+      "apiVersion": "spec-harvester.operational-mvp-author-handoff/v0",
+      "kind": "SpecHarvesterOperationalMVPAuthorHandoffSummaries",
+      "authority": "producer_operational_mvp_author_handoff_only"
+    },
+    "aiProposalQualityReview": {
+      "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t2-operational-mvp-ai-proposal-quality-review.example.json",
+      "digest": "sha256:0a8b7ffd20c523c24c5d76468b3027d98abcf6b6118d0e99af92e3a0e30f8276",
+      "apiVersion": "spec-harvester.operational-mvp-ai-proposal-quality-review/v0",
+      "kind": "SpecHarvesterOperationalMVPAIProposalQualityReview",
+      "authority": "producer_operational_mvp_ai_proposal_quality_review_only"
+    }
+  },
+  "repositoryId": "xyflow",
+  "pinnedCheckout": {
+    "planRepositoryUrl": "https://github.com/xyflow/xyflow",
+    "observedRepositoryUrl": "git@github.com:SoundBlaster/xyflow.git",
+    "exactRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+    "verified": true,
+    "status": "clean"
+  },
+  "decisions": [
+    {
+      "id": "partial_public_interface_index",
+      "sourceCaveat": "resolve_or_accept_partial_public_interface_index",
+      "decision": "accepted_for_bounded_p44_rerun",
+      "blocksP44Rerun": false,
+      "blocksRegistryPromotion": true,
+      "rationale": "P43-T4 static-only preflight passed for four preview candidates and three relation proposals while recording interfaceIndexStatus partial with 29 diagnostics. For P44, this is an acceptable parser coverage limit if it remains visible to authors and is not treated as complete public-index evidence."
+    },
+    {
+      "id": "operator_checkout_origin_fork_mismatch",
+      "sourceCaveat": "review_operator_checkout_origin_fork_mismatch",
+      "decision": "accepted_as_operator_provided_review_input",
+      "blocksP44Rerun": false,
+      "blocksRegistryPromotion": true,
+      "rationale": "The SoundBlaster/xyflow checkout was pinned, verified, and clean, so it can remain the bounded P44 evidence input. It is not canonical upstream acceptance and must be revalidated against maintainer-approved source before registry promotion."
+    }
+  ],
+  "summary": {
+    "caveatCount": 2,
+    "acceptedForP44RerunCount": 2,
+    "blocksP44RerunCount": 0,
+    "blocksRegistryPromotionCount": 2,
+    "manualCorrectionStillVisibleCount": 2,
+    "readyForP44Rerun": true,
+    "registryAuthority": false
+  },
+  "phase44FollowUp": [
+    {
+      "task": "P44-T4",
+      "status": "ready",
+      "summary": "Rerun the bounded corpus with xyflow caveats accepted for review-scoped P44 evidence."
+    },
+    {
+      "task": "P44-T5",
+      "status": "required",
+      "summary": "Do not treat accepted caveats as registry promotion; readiness decision must keep them visible."
+    }
+  ],
+  "authorityBoundary": {
+    "producerSideEvidence": true,
+    "caveatResolutionIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "runsAI": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false,
+    "trustedLocalAdapterExecutionEnabled": false,
+    "implicitRepositoryFetchAllowed": false,
+    "networkDiscoveryAllowed": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerInvocationAllowed": false,
+    "harvestedCodeExecutionAllowed": false
+  },
+  "nonAuthorityStatements": [
+    "caveat_resolution_is_producer_side_review_evidence",
+    "caveat_resolution_is_not_registry_acceptance",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_run_ai",
+    "does_not_enable_trusted_local_adapter_execution",
+    "does_not_clone_or_fetch_repositories",
+    "does_not_install_dependencies",
+    "does_not_invoke_package_managers",
+    "does_not_execute_harvested_code",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_treat_caveat_resolution_output_as_registry_truth"
+  ]
+}

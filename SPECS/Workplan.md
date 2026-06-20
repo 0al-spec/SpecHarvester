@@ -2087,7 +2087,7 @@ Acceptance:
 - [x] `P44-T2` Review the P43-T5 proposal-only AI enrichment artifacts for
   xyflow, FastAPI, and Gin, classifying useful suggestions, noisy suggestions,
   unsupported claims, evidence gaps, and do-not-promote output.
-- [ ] `P44-T3` Resolve or explicitly accept the xyflow partial
+- [x] `P44-T3` Resolve or explicitly accept the xyflow partial
   `PublicInterfaceIndex` caveat from P43-T4/P43-T6 so package-set handoff can
   distinguish real interface gaps from acceptable parser coverage limits.
 - [ ] `P44-T4` Re-run the bounded operational MVP corpus after the targeted

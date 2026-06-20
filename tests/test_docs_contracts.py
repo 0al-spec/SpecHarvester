@@ -38,6 +38,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P44-T4 Operational MVP Quality-Hardened Rerun" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
+        assert "`P44-T4`" in next_text
+        assert "`P44-T3` Operational MVP Xyflow Interface Caveat Resolution" in next_text
+        assert "bounded operational MVP corpus" in next_text
+        assert "static-only and AI-enabled proposal output" in next_text
+        assert "P43 baseline" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P44-T3 Operational MVP Xyflow Interface Caveat Resolution" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
@@ -29728,6 +29739,113 @@ def test_operational_mvp_ai_proposal_quality_review_is_documented() -> None:
         (capabilities_docc, "OperationalMVPAIProposalQualityReview"),
         (roadmap, "OPERATIONAL_MVP_AI_PROPOSAL_QUALITY_REVIEW.md"),
         (roadmap_docc, "OperationalMVPAIProposalQualityReview"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_xyflow_caveat_resolution_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_quality_hardening"
+        / "p44-t3-operational-mvp-xyflow-caveat-resolution.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_XYFLOW_CAVEAT_RESOLUTION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPXyflowCaveatResolution.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == ("spec-harvester.operational-mvp-xyflow-caveat-resolution/v0")
+    assert payload["kind"] == "SpecHarvesterOperationalMVPXyflowCaveatResolution"
+    assert payload["authority"] == "producer_operational_mvp_xyflow_caveat_resolution_only"
+    assert payload["phase"] == "P44"
+    assert payload["task"] == "P44-T3"
+    assert payload["repositoryId"] == "xyflow"
+    decisions = {item["id"]: item for item in payload["decisions"]}
+    assert decisions["partial_public_interface_index"]["decision"] == (
+        "accepted_for_bounded_p44_rerun"
+    )
+    assert decisions["operator_checkout_origin_fork_mismatch"]["decision"] == (
+        "accepted_as_operator_provided_review_input"
+    )
+    for decision in decisions.values():
+        assert decision["blocksP44Rerun"] is False
+        assert decision["blocksRegistryPromotion"] is True
+    assert payload["summary"] == {
+        "caveatCount": 2,
+        "acceptedForP44RerunCount": 2,
+        "blocksP44RerunCount": 0,
+        "blocksRegistryPromotionCount": 2,
+        "manualCorrectionStillVisibleCount": 2,
+        "readyForP44Rerun": True,
+        "registryAuthority": False,
+    }
+    assert payload["authorityBoundary"]["caveatResolutionIsRegistryAuthority"] is False
+    assert (
+        "does_not_treat_caveat_resolution_output_as_registry_truth"
+        in payload["nonAuthorityStatements"]
+    )
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP Xyflow Caveat Resolution",
+            "P44-T3",
+            "SpecHarvesterOperationalMVPXyflowCaveatResolution",
+            "spec-harvester.operational-mvp-xyflow-caveat-resolution/v0",
+            "producer_operational_mvp_xyflow_caveat_resolution_only",
+            "p44-t3-operational-mvp-xyflow-caveat-resolution.example.json",
+            "partial_public_interface_index",
+            "operator_checkout_origin_fork_mismatch",
+            "registry-promotion blockers",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run AI",
+            "enable trusted local adapter execution",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+            "treat caveat-resolution output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_XYFLOW_CAVEAT_RESOLUTION.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_XYFLOW_CAVEAT_RESOLUTION.md"),
+        (docc_root, "<doc:OperationalMVPXyflowCaveatResolution>"),
+        (capabilities, "OPERATIONAL_MVP_XYFLOW_CAVEAT_RESOLUTION.md"),
+        (capabilities_docc, "OperationalMVPXyflowCaveatResolution"),
+        (roadmap, "OPERATIONAL_MVP_XYFLOW_CAVEAT_RESOLUTION.md"),
+        (roadmap_docc, "OperationalMVPXyflowCaveatResolution"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
