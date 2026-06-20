@@ -38,6 +38,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P45-T5 Selected-Member Role Taxonomy Hardening" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 45. Operational MVP AI Draft Shape Hardening" in next_text
+        assert "`P45-T5`" in next_text
+        assert "`P45-T4` Post-Fix Readiness Decision" in next_text
+        assert "selected_member_role_unknown" in normalized
+        assert "no_proposal_subjects" in normalized
+        assert "P45-T6 will own" in next_text
+        assert "P45-T7 will rerun" in next_text
+        assert "P45-T8 will record" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: None Selected" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** No task selected" in next_text

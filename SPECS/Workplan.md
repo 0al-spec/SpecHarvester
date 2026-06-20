@@ -2144,6 +2144,22 @@ Acceptance:
   boundaries against P44-T4.
 - [x] `P45-T4` Record the post-fix readiness decision for bounded
   popular-library scraping.
+- [ ] `P45-T5` Resolve the xyflow `selected_member_role_unknown` AI draft
+  blocker by tightening the selected-member role taxonomy, normalization, and
+  validation/reporting contract so known package-set member roles do not remain
+  ambiguous after provider output is normalized.
+- [ ] `P45-T6` Define and implement the single-package
+  `no_proposal_subjects` policy for FastAPI/Gin-style repositories, deciding
+  when a diagnostic-clean zero-subject AI draft is acceptable, when it should
+  be warning-level, and what evidence must be visible before broader scraping.
+- [ ] `P45-T7` Re-run the bounded operational MVP corpus after P45-T5/P45-T6,
+  comparing warning codes, diagnostic counts, stop-policy reasons,
+  proposal-only boundaries, and raw prompt/response/chain-of-thought
+  non-persistence against P45-T3.
+- [ ] `P45-T8` Record the final targeted-hardening readiness decision for
+  Phase 46, explicitly approving bounded popular-library pilot start only if
+  `selected_member_role_unknown` and `no_proposal_subjects` are resolved or
+  documented as non-blocking.
 
 Motivation:
 
@@ -2165,7 +2181,7 @@ Acceptance:
   persistence, no package or relation acceptance, no registry publication, no
   baseline seeding, no `preview_only` removal, and no trusted local adapter
   execution.
-- P45-T4 must explicitly decide whether Phase 46 can start. If warning
+- P45-T8 must explicitly decide whether Phase 46 can start. If warning
   ambiguity remains, Phase 46 stays blocked and the next work must be another
   targeted hardening pass.
 
@@ -2193,7 +2209,7 @@ Motivation:
 
 - P44-T5 blocked bounded popular-library scraping until AI draft warning
   ambiguity is resolved.
-- P45 targets that ambiguity on the small operational MVP corpus. If P45-T4
+- P45 targets that ambiguity on the small operational MVP corpus. If P45-T8
   reports readiness, the next risk is scale: preserving the same no-execution,
   proposal-only, and evidence-digest boundaries on a wider but still bounded
   popular-library pilot.
@@ -2209,7 +2225,7 @@ Goal:
 
 Acceptance:
 
-- Phase 46 cannot start unless P45-T4 selects readiness for bounded
+- Phase 46 cannot start unless P45-T8 selects readiness for bounded
   popular-library scraping.
 - The pilot corpus must be explicitly bounded, pinned, local-first, and
   reproducible; missing or unverified checkouts block the run.
