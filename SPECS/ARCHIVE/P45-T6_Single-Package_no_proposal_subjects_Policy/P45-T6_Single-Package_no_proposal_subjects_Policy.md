@@ -1,10 +1,11 @@
 # P45-T6 Single-Package no_proposal_subjects Policy
 
-Status: Planned
+Status: Archived PASS
 Phase: Phase 45. Operational MVP AI Draft Shape Hardening
 Task: P45-T6
 Branch: `feature/P45-T6-single-package-no-proposal-subjects-policy`
 Depends on: P45-T5 Selected-Member Role Taxonomy Hardening
+Archived: 2026-06-20
 
 ## Problem
 

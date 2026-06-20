@@ -38,6 +38,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if (
+        "# Next Task: P45-T7 Operational MVP Corpus Rerun After Targeted AI Draft Policy Fixes"
+        in next_text
+    ):
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 45. Operational MVP AI Draft Shape Hardening" in next_text
+        assert "`P45-T7`" in next_text
+        assert "`P45-T6` Single-Package no_proposal_subjects Policy" in next_text
+        assert "xyflow" in normalized
+        assert "FastAPI" in next_text
+        assert "Gin" in next_text
+        assert "selected_member_role_unknown" in normalized
+        assert "no_proposal_subjects" in normalized
+        assert "proposal-only" in normalized
+        assert "chain-of-thought" in normalized
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P45-T6 Single-Package no_proposal_subjects Policy" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text

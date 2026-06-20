@@ -208,6 +208,7 @@
 | P45-T3 | [P45-T3_Operational_MVP_Corpus_Rerun_After_AI_Draft_Shape_Fix/](P45-T3_Operational_MVP_Corpus_Rerun_After_AI_Draft_Shape_Fix/) | 2026-06-20 | PASS |
 | P45-T4 | [P45-T4_Post-Fix_Readiness_Decision_for_Bounded_Popular-Library_Scraping/](P45-T4_Post-Fix_Readiness_Decision_for_Bounded_Popular-Library_Scraping/) | 2026-06-20 | PASS |
 | P45-T5 | [P45-T5_Selected-Member_Role_Taxonomy_Hardening/](P45-T5_Selected-Member_Role_Taxonomy_Hardening/) | 2026-06-20 | PASS |
+| P45-T6 | [P45-T6_Single-Package_no_proposal_subjects_Policy/](P45-T6_Single-Package_no_proposal_subjects_Policy/) | 2026-06-20 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -344,6 +345,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P45-T6 | Archived Single-Package no_proposal_subjects Policy (PASS) |
 | 2026-06-20 | P45-T5 | Archived REVIEW_p45_t5_selected_member_role_taxonomy_hardening report |
 | 2026-06-20 | P45-T5 | Archived Selected-Member Role Taxonomy Hardening (PASS) |
 | 2026-06-20 | P45-T4 | Archived REVIEW_p45_t4_post_fix_readiness_decision report |
