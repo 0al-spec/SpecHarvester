@@ -2152,7 +2152,7 @@ Acceptance:
   `no_proposal_subjects` policy for FastAPI/Gin-style repositories, deciding
   when a diagnostic-clean zero-subject AI draft is acceptable, when it should
   be warning-level, and what evidence must be visible before broader scraping.
-- [ ] `P45-T7` Re-run the bounded operational MVP corpus after P45-T5/P45-T6,
+- [x] `P45-T7` Re-run the bounded operational MVP corpus after P45-T5/P45-T6,
   comparing warning codes, diagnostic counts, stop-policy reasons,
   proposal-only boundaries, and raw prompt/response/chain-of-thought
   non-persistence against P45-T3.
