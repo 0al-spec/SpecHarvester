@@ -1133,6 +1133,13 @@ and the machine-readable
 `SpecHarvesterOperationalMVPTargetedAIDraftPolicyRerun` fixture. It records
 that the P45-T5/P45-T6 targeted rerun resolves the AI draft blockers while
 preserving the remaining Gin AI enrichment warning for P45-T8 readiness review.
+P45-T8 adds
+[`OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md`](OPERATIONAL_MVP_TARGETED_HARDENING_READINESS_DECISION.md)
+and the machine-readable
+`SpecHarvesterTargetedHardeningReadinessDecision` fixture. It selects
+`ready_for_phase46_bounded_popular_library_pilot` while carrying Gin
+`model_evidence_path_unsupported` into Phase 46 triage and keeping all AI output
+proposal-only.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
