@@ -28,13 +28,13 @@ The exit report references:
 
 ```text
 tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json
-sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab
+sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0
 
 tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json
-sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d
+sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a
 
 tests/fixtures/operational_mvp_validation/p43-t6-operational-mvp-author-handoff-summaries.example.json
-sha256:7e1ccf38f662529777344f3b82c886572538a55190093ca70170c0a6ee349ca9
+sha256:53daf55c0afd5721d773cb3e0126dd2467f0cbfe247d0f429844845085fba6bd
 ```
 
 ## Decision
@@ -61,7 +61,8 @@ approve broader autonomous popular-library scraping because:
   proposal-only enrichment evidence, but each repository retained
   `ai_draft_warning_enrichment_completed`.
 - P43-T6 keeps xyflow's
-  `resolve_or_accept_partial_public_interface_index` manual-correction item.
+  `resolve_or_accept_partial_public_interface_index` and
+  `review_operator_checkout_origin_fork_mismatch` manual-correction items.
 - P43-T6 records `doNotPromote` guidance for every repository.
 
 ## Rejected Alternatives
@@ -77,6 +78,8 @@ does not require trusted local adapter execution.
 ## Quality Hardening Plan
 
 - `burn_down_xyflow_partial_public_interface_index`
+- `review_xyflow_fork_origin_caveat`: confirm whether SoundBlaster/xyflow fork
+  evidence is acceptable for canonical xyflow package review
 - `triage_ai_draft_warnings_and_proposal_quality`
 - `define_bounded_popular_library_batch_gate`
 

@@ -9,21 +9,21 @@
   "sourceArtifacts": {
     "staticOnlyBaseline": {
       "path": "tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json",
-      "digest": "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
+      "digest": "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
       "apiVersion": "spec-harvester.operational-mvp-static-only-baseline/v0",
       "kind": "SpecHarvesterOperationalMVPStaticOnlyBaseline",
       "authority": "producer_operational_mvp_static_only_baseline_only"
     },
     "aiEnabledComparison": {
       "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
-      "digest": "sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d",
+      "digest": "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
       "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
       "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
       "authority": "producer_operational_mvp_ai_comparison_only"
     },
     "authorHandoffSummaries": {
       "path": "tests/fixtures/operational_mvp_validation/p43-t6-operational-mvp-author-handoff-summaries.example.json",
-      "digest": "sha256:7e1ccf38f662529777344f3b82c886572538a55190093ca70170c0a6ee349ca9",
+      "digest": "sha256:53daf55c0afd5721d773cb3e0126dd2467f0cbfe247d0f429844845085fba6bd",
       "apiVersion": "spec-harvester.operational-mvp-author-handoff/v0",
       "kind": "SpecHarvesterOperationalMVPAuthorHandoffSummaries",
       "authority": "producer_operational_mvp_author_handoff_only"
@@ -34,7 +34,7 @@
     "readyForBoundedAutonomousScraping": false,
     "needsQualityHardening": true,
     "blockedUntilAdapterExecution": false,
-    "rationale": "Static-only output is useful and ready for author review across the pinned corpus, and the live AI-enabled comparison produced proposal-only enrichment evidence, but AI draft warnings remain and xyflow still has a manual-correction caveat. The next step is targeted quality hardening before broader autonomous popular-library scraping."
+    "rationale": "Static-only output is useful and ready for author review across the pinned corpus, and the live AI-enabled comparison produced proposal-only enrichment evidence, but AI draft warnings remain and xyflow still has manual-correction caveats. The next step is targeted quality hardening before broader autonomous popular-library scraping."
   },
   "decisionInputs": {
     "staticOnlyBaseline": {
@@ -78,7 +78,7 @@
     {
       "id": "manual_correction_caveat_remains_visible",
       "blocksDecision": "ready_for_bounded_autonomous_scraping",
-      "summary": "P43-T6 keeps xyflow's partial public-interface-index caveat as resolve_or_accept_partial_public_interface_index."
+      "summary": "P43-T6 keeps xyflow's partial public-interface-index and fork-origin caveats as manual-correction items."
     },
     {
       "id": "adapter_execution_not_required_for_current_exit",
@@ -89,7 +89,7 @@
   "rejectedAlternatives": [
     {
       "id": "ready_for_bounded_autonomous_scraping",
-      "reason": "Rejected because the live AI-enabled comparison still has draft warnings, AI sidecars remain proposal-only and unapplied, and one repository still has a manual-correction caveat. Broader scraping should wait for targeted quality hardening and a bounded batch gate.",
+      "reason": "Rejected because the live AI-enabled comparison still has draft warnings, AI sidecars remain proposal-only and unapplied, and one repository still has manual-correction caveats. Broader scraping should wait for targeted quality hardening and a bounded batch gate.",
       "wouldRequire": [
         "ai_draft_warning_triage",
         "manual_correction_burn_down",
@@ -109,6 +109,10 @@
     {
       "id": "burn_down_xyflow_partial_public_interface_index",
       "summary": "Resolve or explicitly accept the xyflow partial public-interface-index caveat before using it as a broader scraping quality baseline."
+    },
+    {
+      "id": "review_xyflow_fork_origin_caveat",
+      "summary": "Confirm whether SoundBlaster/xyflow fork evidence is acceptable for canonical xyflow package review before using it as a broader scraping quality baseline."
     },
     {
       "id": "triage_ai_draft_warnings_and_proposal_quality",

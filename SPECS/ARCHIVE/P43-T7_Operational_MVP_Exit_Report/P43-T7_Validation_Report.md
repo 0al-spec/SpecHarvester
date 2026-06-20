@@ -18,7 +18,7 @@ needs_quality_hardening
 
 The report rejects immediate `ready_for_bounded_autonomous_scraping` because
 the live AI-enabled comparison still has draft warnings, AI sidecars remain
-proposal-only and unapplied, and xyflow retains a manual-correction caveat. It
+proposal-only and unapplied, and xyflow retains manual-correction caveats. It
 rejects `blocked_until_adapter_execution` because useful author-reviewable
 static-only handoff material exists and the current Phase 43 result does not
 require trusted local adapter execution.
@@ -40,11 +40,11 @@ require trusted local adapter execution.
 - Fixture digest:
   `sha256:8630da1e0ad387e37d2133441bfba39de1328868ed53fcaffbf509ce74f5e384`
 - Source static baseline digest:
-  `sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab`
+  `sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0`
 - Source AI comparison digest:
-  `sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d`
+  `sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a`
 - Source author handoff digest:
-  `sha256:7e1ccf38f662529777344f3b82c886572538a55190093ca70170c0a6ee349ca9`
+  `sha256:53daf55c0afd5721d773cb3e0126dd2467f0cbfe247d0f429844845085fba6bd`
 
 ## Decision Evidence
 
@@ -52,8 +52,9 @@ require trusted local adapter execution.
 - Static-only preflight passed for 6 preview candidates.
 - P43-T5 recorded live local LM Studio proposal-only AI evidence with
   `completed_with_draft_warnings`.
-- P43-T6 kept xyflow's `resolve_or_accept_partial_public_interface_index`
-  manual-correction item visible.
+- P43-T6 kept xyflow's `resolve_or_accept_partial_public_interface_index` and
+  `review_operator_checkout_origin_fork_mismatch` manual-correction items
+  visible.
 - Adapter execution remains disabled and is not required for the current exit
   decision.
 - The report does not approve broader autonomous scraping or grant registry

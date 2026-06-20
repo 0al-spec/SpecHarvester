@@ -29105,8 +29105,8 @@ def test_operational_mvp_exit_report_is_documented() -> None:
         "rationale": (
             "Static-only output is useful and ready for author review across the pinned "
             "corpus, and the live AI-enabled comparison produced proposal-only "
-            "enrichment evidence, but AI draft warnings remain and xyflow still has a "
-            "manual-correction caveat. The next step is targeted quality hardening "
+            "enrichment evidence, but AI draft warnings remain and xyflow still has "
+            "manual-correction caveats. The next step is targeted quality hardening "
             "before broader autonomous popular-library scraping."
         ),
     }
@@ -29179,6 +29179,7 @@ def test_operational_mvp_exit_report_is_documented() -> None:
     assert "does not require" in rejected["blocked_until_adapter_execution"]["reason"]
     assert [item["id"] for item in payload["qualityHardeningPlan"]] == [
         "burn_down_xyflow_partial_public_interface_index",
+        "review_xyflow_fork_origin_caveat",
         "triage_ai_draft_warnings_and_proposal_quality",
         "define_bounded_popular_library_batch_gate",
     ]
@@ -29239,17 +29240,20 @@ def test_operational_mvp_exit_report_is_documented() -> None:
             "producer_operational_mvp_exit_report_only",
             "p43-t7-operational-mvp-exit-report.example.json",
             "p43-t4-operational-mvp-static-only-baseline.example.json",
-            "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
+            "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
             "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
-            "sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d",
+            "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
             "p43-t6-operational-mvp-author-handoff-summaries.example.json",
-            "sha256:7e1ccf38f662529777344f3b82c886572538a55190093ca70170c0a6ee349ca9",
+            "sha256:53daf55c0afd5721d773cb3e0126dd2467f0cbfe247d0f429844845085fba6bd",
             "needs_quality_hardening",
             "ready_for_bounded_autonomous_scraping",
             "blocked_until_adapter_execution",
             "completed_with_draft_warnings",
             "ai_draft_warning_enrichment_completed",
             "resolve_or_accept_partial_public_interface_index",
+            "review_operator_checkout_origin_fork_mismatch",
+            "review_xyflow_fork_origin_caveat",
+            "SoundBlaster/xyflow fork",
             "doNotPromote",
             "burn_down_xyflow_partial_public_interface_index",
             "triage_ai_draft_warnings_and_proposal_quality",

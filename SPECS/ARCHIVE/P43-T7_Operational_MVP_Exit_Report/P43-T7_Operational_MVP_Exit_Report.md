@@ -27,7 +27,7 @@ P43-T6 evidence.
 The expected decision is `needs_quality_hardening`: static-only output is
 useful and author-reviewable, but the live AI-enabled comparison still has
 draft warnings, AI sidecars remain proposal-only, and xyflow still has a
-visible manual-correction caveat. That is not an adapter execution blocker, but
+visible manual-correction caveats. That is not an adapter execution blocker, but
 it is also not strong enough evidence to expand directly to broader autonomous
 popular-library scraping.
 
