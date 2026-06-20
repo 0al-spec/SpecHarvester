@@ -38,6 +38,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P44-T2 Operational MVP AI Proposal Quality Review" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
+        assert "`P44-T2`" in next_text
+        assert "`P44-T1` Operational MVP Warning Triage" in next_text
+        assert "proposal-only AI enrichment" in next_text
+        assert "xyflow, FastAPI, and Gin" in next_text
+        assert "do-not-promote" in next_text
+        assert "Do not treat AI output" in next_text
+        return
+
     if "# Next Task: P44-T1 Operational MVP Warning Triage" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
