@@ -2,9 +2,10 @@
 
 Status: P43-T6 author handoff summaries.
 
-P43-T6 translates the P43-T4 static-only baseline and P43-T5 AI comparison gate
-into author-facing handoff summaries. The summaries show what is valid, what
-is reviewable, what needs manual correction, and what should not be promoted.
+P43-T6 translates the P43-T4 static-only baseline and P43-T5 live
+proposal-only AI comparison gate into author-facing handoff summaries. The
+summaries show what is valid, what is reviewable, what needs manual
+correction, and what should not be promoted.
 
 The durable fixture is:
 
@@ -29,7 +30,7 @@ tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-bas
 sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab
 
 tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json
-sha256:c9934bae637aff8d748e431476d297dc58f81583ab7fdb8fc00db1141889e049
+sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d
 ```
 
 ## Handoff Categories
@@ -42,8 +43,8 @@ Each repository records four author categories:
   intents, constraints, evidence support, and downstream SpecPM validation.
 - `needsManualCorrection`: repository-specific caveats that need manual
   inspection before relying on the output.
-- `doNotPromote`: preview candidates, AI deltas, and adapter output must not be
-  promoted without explicit SpecPM maintainer review.
+- `doNotPromote`: preview candidates, AI proposal sidecars, and adapter output
+  must not be promoted without explicit SpecPM maintainer review.
 
 ## Corpus Handoff
 
@@ -60,17 +61,18 @@ generated interface evidence.
 
 ## AI Comparison State
 
-P43-T5 recorded `provider_unavailable`, so no AI improvement is available in
-this handoff. Each repository records:
+P43-T5 recorded live local LM Studio proposal-only AI evidence. Each
+repository records:
 
 ```text
-aiImprovementAvailable: false
-warningCode: ai_provider_unavailable_static_baseline_retained
-deltaStatus: not_evaluated_provider_unavailable
+status: completed_with_draft_warnings
+aiImprovementAvailable: true
+warningCode: ai_draft_warning_enrichment_completed
+deltaStatus: ai_proposal_available_for_author_review
 ```
 
-The static-only handoff remains usable for author review; it is not upgraded by
-AI and is not registry acceptance.
+The static-only handoff remains usable for author review. AI proposal sidecars
+are review evidence only and are not registry acceptance.
 
 ## Non-Authority Boundary
 

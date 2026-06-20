@@ -21,10 +21,11 @@
 ### Architectural Notes
 
 - The P43-T6 fixture stays on the producer-side evidence boundary. It summarizes
-  P43-T4 static-only and P43-T5 provider-unavailable evidence for author review
-  without package acceptance, relation acceptance, registry authority, baseline
-  seeding, AI execution, adapter execution, repository fetch, dependency
-  installation, package-manager invocation, or harvested-code execution.
+  P43-T4 static-only and P43-T5 live proposal-only AI evidence for author
+  review without package acceptance, relation acceptance, registry authority,
+  baseline seeding, AI execution by the handoff task, adapter execution,
+  repository fetch, dependency installation, package-manager invocation, or
+  harvested-code execution.
 - The handoff categories are appropriately author-facing: `valid`,
   `reviewable`, `needsManualCorrection`, and `doNotPromote`.
 - The xyflow partial public-interface-index caveat remains visible as a manual

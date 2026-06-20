@@ -7,9 +7,9 @@ Planned.
 ## Motivation
 
 P43-T4 proves that the static-only pipeline can produce handoff-ready preview
-candidates for xyflow, FastAPI, and Gin. P43-T5 proves that the AI-enabled
-comparison is unavailable in the current environment and must not be treated as
-missing quality evidence.
+candidates for xyflow, FastAPI, and Gin. P43-T5 proves that live local
+LM Studio AI draft/enrichment sidecars are available, but they remain
+proposal-only and must not be treated as registry truth.
 
 Package authors need a concise handoff layer that explains what is valid, what
 is reviewable, what needs manual correction, and what should not be promoted.
@@ -33,7 +33,7 @@ the summary as registry truth.
 - Handoff categories for `valid`, `reviewable`, `needsManualCorrection`, and
   `doNotPromote`.
 - Explicit handling of xyflow's partial public-interface-index caveat and the
-  P43-T5 provider-unavailable AI state.
+  P43-T5 live proposal-only AI state.
 - GitHub documentation describing the author handoff summary artifact.
 - DocC mirror and index/capability/roadmap links.
 - Docs-contract regression coverage for fixture identity, source linkage,
@@ -47,8 +47,8 @@ the summary as registry truth.
 - The fixture references P43-T4 and P43-T5 with current SHA-256 digests.
 - Every repository records what is valid, what is reviewable, what needs manual
   correction, and what should not be promoted.
-- The handoff distinguishes static-only readiness from AI comparison
-  unavailability.
+- The handoff distinguishes static-only readiness from proposal-only AI
+  comparison evidence.
 - The handoff remains producer-side review evidence and not package acceptance,
   relation acceptance, registry authority, baseline seeding, or `preview_only`
   removal.

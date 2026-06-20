@@ -8,7 +8,7 @@ Status: PASS
 
 P43-T6 adds an author-facing operational MVP handoff summary fixture and
 matching Markdown/DocC documentation. The handoff translates P43-T4 static-only
-baseline evidence and P43-T5 provider-unavailable AI comparison evidence into
+baseline evidence and P43-T5 live proposal-only AI comparison evidence into
 four author categories:
 
 - `valid`
@@ -37,19 +37,19 @@ output as registry truth.
 - Fixture kind: `SpecHarvesterOperationalMVPAuthorHandoffSummaries`
 - Fixture authority: `producer_operational_mvp_author_handoff_only`
 - Fixture digest:
-  `sha256:0cf13f0a4349cefa5f0d5268d7c88d4d519ecfaf944e689005ae3db1a1f2bd96`
+  `sha256:7e1ccf38f662529777344f3b82c886572538a55190093ca70170c0a6ee349ca9`
 - Source static baseline digest:
   `sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab`
 - Source AI comparison digest:
-  `sha256:c9934bae637aff8d748e431476d297dc58f81583ab7fdb8fc00db1141889e049`
+  `sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d`
 
 ## Results
 
 - Repository handoff summaries: 3
 - Ready for author review: 3
 - Static-only handoff ready: 3
-- AI improvements available: 0
-- Provider unavailable records: 3
+- AI improvements available as proposal-only evidence: 3
+- Provider unavailable records: 0
 - Repositories needing manual correction: 1 (`xyflow`)
 - Repositories with do-not-promote guidance: 3
 - Registry authority: false

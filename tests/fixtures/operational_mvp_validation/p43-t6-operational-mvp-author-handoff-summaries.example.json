@@ -16,7 +16,7 @@
     },
     "aiEnabledComparison": {
       "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
-      "digest": "sha256:c9934bae637aff8d748e431476d297dc58f81583ab7fdb8fc00db1141889e049",
+      "digest": "sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d",
       "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
       "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
       "authority": "producer_operational_mvp_ai_comparison_only"
@@ -26,11 +26,12 @@
     "repositoryHandoffCount": 3,
     "readyForAuthorReviewCount": 3,
     "staticOnlyHandoffReadyCount": 3,
-    "aiImprovementAvailableCount": 0,
-    "providerUnavailableCount": 3,
+    "aiImprovementAvailableCount": 3,
+    "providerUnavailableCount": 0,
     "needsManualCorrectionRepositoryCount": 1,
     "doNotPromoteRepositoryCount": 3,
-    "registryAuthority": false
+    "registryAuthority": false,
+    "aiProposalOnlyEvidenceCount": 3
   },
   "authorCategories": [
     "valid",
@@ -76,10 +77,12 @@
         }
       },
       "aiComparisonEvidence": {
-        "status": "provider_unavailable",
-        "aiImprovementAvailable": false,
-        "warningCode": "ai_provider_unavailable_static_baseline_retained",
-        "deltaStatus": "not_evaluated_provider_unavailable"
+        "status": "completed_with_draft_warnings",
+        "aiImprovementAvailable": true,
+        "warningCode": "ai_draft_warning_enrichment_completed",
+        "deltaStatus": "ai_proposal_available_for_author_review",
+        "aiEnrichmentProposalCount": 4,
+        "aiOutputAcceptedAsRegistryTruth": false
       },
       "authorSummary": {
         "valid": [
@@ -131,8 +134,8 @@
           },
           {
             "id": "do_not_promote_ai_delta",
-            "summary": "Do not promote AI deltas because no AI proposal was available in P43-T5.",
-            "source": "P43-T5 provider_unavailable comparison"
+            "summary": "Do not promote AI proposal sidecars as registry truth without explicit SpecPM maintainer review.",
+            "source": "P43-T5 live proposal-only comparison"
           },
           {
             "id": "do_not_promote_adapter_output",
@@ -192,10 +195,12 @@
         }
       },
       "aiComparisonEvidence": {
-        "status": "provider_unavailable",
-        "aiImprovementAvailable": false,
-        "warningCode": "ai_provider_unavailable_static_baseline_retained",
-        "deltaStatus": "not_evaluated_provider_unavailable"
+        "status": "completed_with_draft_warnings",
+        "aiImprovementAvailable": true,
+        "warningCode": "ai_draft_warning_enrichment_completed",
+        "deltaStatus": "ai_proposal_available_for_author_review",
+        "aiEnrichmentProposalCount": 1,
+        "aiOutputAcceptedAsRegistryTruth": false
       },
       "authorSummary": {
         "valid": [
@@ -241,8 +246,8 @@
           },
           {
             "id": "do_not_promote_ai_delta",
-            "summary": "Do not promote AI deltas because no AI proposal was available in P43-T5.",
-            "source": "P43-T5 provider_unavailable comparison"
+            "summary": "Do not promote AI proposal sidecars as registry truth without explicit SpecPM maintainer review.",
+            "source": "P43-T5 live proposal-only comparison"
           },
           {
             "id": "do_not_promote_adapter_output",
@@ -302,10 +307,12 @@
         }
       },
       "aiComparisonEvidence": {
-        "status": "provider_unavailable",
-        "aiImprovementAvailable": false,
-        "warningCode": "ai_provider_unavailable_static_baseline_retained",
-        "deltaStatus": "not_evaluated_provider_unavailable"
+        "status": "completed_with_draft_warnings",
+        "aiImprovementAvailable": true,
+        "warningCode": "ai_draft_warning_enrichment_completed",
+        "deltaStatus": "ai_proposal_available_for_author_review",
+        "aiEnrichmentProposalCount": 1,
+        "aiOutputAcceptedAsRegistryTruth": false
       },
       "authorSummary": {
         "valid": [
@@ -351,8 +358,8 @@
           },
           {
             "id": "do_not_promote_ai_delta",
-            "summary": "Do not promote AI deltas because no AI proposal was available in P43-T5.",
-            "source": "P43-T5 provider_unavailable comparison"
+            "summary": "Do not promote AI proposal sidecars as registry truth without explicit SpecPM maintainer review.",
+            "source": "P43-T5 live proposal-only comparison"
           },
           {
             "id": "do_not_promote_adapter_output",

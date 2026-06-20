@@ -28774,8 +28774,9 @@ def test_operational_mvp_author_handoff_summaries_are_documented() -> None:
         "repositoryHandoffCount": 3,
         "readyForAuthorReviewCount": 3,
         "staticOnlyHandoffReadyCount": 3,
-        "aiImprovementAvailableCount": 0,
-        "providerUnavailableCount": 3,
+        "aiImprovementAvailableCount": 3,
+        "providerUnavailableCount": 0,
+        "aiProposalOnlyEvidenceCount": 3,
         "needsManualCorrectionRepositoryCount": 1,
         "doNotPromoteRepositoryCount": 3,
         "registryAuthority": False,
@@ -28809,11 +28810,14 @@ def test_operational_mvp_author_handoff_summaries_are_documented() -> None:
             summary["staticOnlyEvidence"]["specpmHandoffReadiness"]
             == (baseline_result["specpmHandoffReadiness"])
         )
+        ai_enabled = ai_result["aiEnabledResult"]
         assert summary["aiComparisonEvidence"] == {
-            "status": "provider_unavailable",
-            "aiImprovementAvailable": False,
+            "status": "completed_with_draft_warnings",
+            "aiImprovementAvailable": True,
             "warningCode": ai_result["warning"]["code"],
             "deltaStatus": ai_result["delta"]["status"],
+            "aiEnrichmentProposalCount": ai_enabled["aiEnrichmentProposalCount"],
+            "aiOutputAcceptedAsRegistryTruth": False,
         }
         assert summary["authorActionCounts"]["validCount"] == 3
         assert summary["authorActionCounts"]["reviewableCount"] == 3
@@ -28900,7 +28904,7 @@ def test_operational_mvp_author_handoff_summaries_are_documented() -> None:
             "p43-t4-operational-mvp-static-only-baseline.example.json",
             "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
             "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
-            "sha256:c9934bae637aff8d748e431476d297dc58f81583ab7fdb8fc00db1141889e049",
+            "sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d",
             "valid",
             "reviewable",
             "needsManualCorrection",
@@ -28910,9 +28914,11 @@ def test_operational_mvp_author_handoff_summaries_are_documented() -> None:
             "fastapi",
             "gin",
             "resolve_or_accept_partial_public_interface_index",
-            "provider_unavailable",
-            "ai_provider_unavailable_static_baseline_retained",
-            "not_evaluated_provider_unavailable",
+            "completed_with_draft_warnings",
+            "ai_draft_warning_enrichment_completed",
+            "ai_proposal_available_for_author_review",
+            "aiImprovementAvailable: true",
+            "proposal-only",
             "P43-T7",
         ):
             assert required in text or required in normalized, (
