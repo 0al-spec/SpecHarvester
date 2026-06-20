@@ -29891,9 +29891,7 @@ def test_operational_mvp_quality_hardened_rerun_is_documented() -> None:
     next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
 
     payload = json.loads(fixture_path.read_text(encoding="utf-8"))
-    assert payload["apiVersion"] == (
-        "spec-harvester.operational-mvp-quality-hardened-rerun/v0"
-    )
+    assert payload["apiVersion"] == ("spec-harvester.operational-mvp-quality-hardened-rerun/v0")
     assert payload["kind"] == "SpecHarvesterOperationalMVPQualityHardenedRerun"
     assert payload["authority"] == "producer_operational_mvp_quality_hardened_rerun_only"
     assert payload["phase"] == "P44"
@@ -29915,9 +29913,10 @@ def test_operational_mvp_quality_hardened_rerun_is_documented() -> None:
         "rerun_passed_but_warning_ambiguity_not_fully_resolved"
     )
     assert payload["authorityBoundary"]["qualityHardenedRerunIsRegistryAuthority"] is False
-    assert "does_not_treat_quality_hardened_rerun_output_as_registry_truth" in payload[
-        "nonAuthorityStatements"
-    ]
+    assert (
+        "does_not_treat_quality_hardened_rerun_output_as_registry_truth"
+        in payload["nonAuthorityStatements"]
+    )
 
     for path in (github_doc, docc_doc):
         text = path.read_text(encoding="utf-8")
