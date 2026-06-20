@@ -30019,10 +30019,7 @@ def test_operational_mvp_post_hardening_readiness_decision_is_documented() -> No
         "spec-harvester.operational-mvp-post-hardening-readiness-decision/v0"
     )
     assert payload["kind"] == "SpecHarvesterOperationalMVPPostHardeningReadinessDecision"
-    assert (
-        payload["authority"]
-        == "producer_operational_mvp_post_hardening_readiness_decision_only"
-    )
+    assert payload["authority"] == "producer_operational_mvp_post_hardening_readiness_decision_only"
     assert payload["phase"] == "P44"
     assert payload["task"] == "P44-T5"
     assert payload["decision"]["selected"] == "needs_another_quality_pass"
@@ -30041,9 +30038,7 @@ def test_operational_mvp_post_hardening_readiness_decision_is_documented() -> No
     }
     assert payload["authorityBoundary"]["readinessDecisionIsRegistryAuthority"] is False
     assert payload["authorityBoundary"]["approvesBoundedPopularLibraryScraping"] is False
-    assert "does_not_treat_readiness_output_as_registry_truth" in payload[
-        "nonAuthorityStatements"
-    ]
+    assert "does_not_treat_readiness_output_as_registry_truth" in payload["nonAuthorityStatements"]
 
     for path in (github_doc, docc_doc):
         text = path.read_text(encoding="utf-8")
