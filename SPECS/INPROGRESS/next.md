@@ -11,8 +11,8 @@ correction, and what should not be promoted.
 
 - P43-T4 records static-only preview candidates that are handoff-ready but not
   registry-accepted.
-- P43-T5 records that AI-enabled comparison could not run because the local
-  OpenAI-compatible provider was unavailable.
+- P43-T5 records a live local LM Studio AI-enabled comparison over the same
+  pinned corpus. AI draft/enrichment output remains proposal-only.
 - A package author needs a concise handoff summary that separates valid
   generated material from reviewable caveats, manual correction items, and
   content that should not be promoted.
@@ -22,7 +22,7 @@ correction, and what should not be promoted.
 ## Goal
 
 Add author-facing operational MVP handoff summaries that use the P43-T4
-static-only baseline and P43-T5 provider-unavailable comparison state to show
+static-only baseline and P43-T5 live proposal-only AI comparison state to show
 what is valid, what is reviewable, what needs manual correction, and what
 should not be promoted.
 
@@ -32,7 +32,7 @@ should not be promoted.
   corpus.
 - Include per-repository author summary records for xyflow, FastAPI, and Gin.
 - Preserve static-only candidate readiness, xyflow partial public-interface
-  caveat, provider-unavailable AI comparison state, and non-authority warnings.
+  caveat, live proposal-only AI comparison state, and non-authority warnings.
 - Add GitHub and DocC documentation for reading the handoff summary.
 - Add docs-contract coverage for handoff summary identity, source artifact
   linkage, author-facing categories, and boundaries.

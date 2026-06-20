@@ -58,8 +58,8 @@ handoff readiness, and the remaining non-authority boundary.
 P43-T5 records the AI-enabled comparison gate as
 <doc:OperationalMVPAIEnabledComparison> and the
 `SpecHarvesterOperationalMVPAIEnabledComparison` fixture. The comparison uses
-the same pinned corpus and records provider-unavailable state when no local
-OpenAI-compatible provider is running.
+the same pinned corpus and records live local LM Studio proposal-only AI draft
+and enrichment sidecars without accepting AI output as registry truth.
 
 ## Corpus
 

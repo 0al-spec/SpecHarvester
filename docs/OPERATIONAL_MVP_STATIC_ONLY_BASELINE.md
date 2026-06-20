@@ -113,8 +113,9 @@ maintainer review and acceptance.
 
 - `P43-T5`: recorded
   [`OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md`](OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md)
-  over the same pinned corpus; the local OpenAI-compatible provider was
-  unavailable, so no AI proposal deltas were measured.
+  over the same pinned corpus with local LM Studio `openai/gpt-oss-20b`;
+  AI draft/enrichment sidecars are proposal-only and do not change static
+  handoff truth.
 - `P43-T6`: add author handoff summaries.
 - `P43-T7`: record the operational MVP exit decision.
 
