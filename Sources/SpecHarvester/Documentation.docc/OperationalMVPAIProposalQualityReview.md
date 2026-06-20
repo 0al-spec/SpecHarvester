@@ -7,6 +7,12 @@ FastAPI, and Gin without rerunning AI or applying proposals.
 tests/fixtures/operational_mvp_quality_hardening/p44-t2-operational-mvp-ai-proposal-quality-review.example.json
 ```
 
+Reviewed proposal artifacts are preserved under:
+
+```text
+tests/fixtures/operational_mvp_quality_hardening/p44-t2-reviewed-ai-proposals/
+```
+
 Fixture identity:
 
 ```text

@@ -1,0 +1,211 @@
+{
+  "apiVersion": "spec-harvester.package-set-ai-enrichment/v0",
+  "authority": "proposal_only_not_registry_acceptance",
+  "diagnostics": [],
+  "inputs": [
+    {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "97d6deb5babb9716770bba1d9669d8b18b07ee3975f40d836fb2346fcf86af6e"
+      },
+      "path": "package-set-draft.json",
+      "pathScope": "bundle_relative",
+      "role": "package_set_draft"
+    },
+    {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "5e92f64185471a62848a9535cbc7a45287cf916a951a1802c519a9132c80b3ee"
+      },
+      "path": "package-relation-proposals.json",
+      "pathScope": "bundle_relative",
+      "role": "package_relation_proposals"
+    },
+    {
+      "path": "/Users/egor/Development/GitHub/gin",
+      "pathScope": "local_path",
+      "role": "source_checkout"
+    },
+    {
+      "evidencePathCount": 5,
+      "evidencePaths": [
+        "README.md",
+        "gin.core/harvest.json",
+        "gin.core/specpm.yaml",
+        "gin.core/specs/gin.spec.yaml",
+        "readme.md"
+      ],
+      "packageCount": 1,
+      "role": "compact_model_input"
+    }
+  ],
+  "kind": "SpecHarvesterPackageSetAIEnrichmentProposal",
+  "nonGoals": [
+    "specpm_acceptance",
+    "package_acceptance",
+    "relation_acceptance",
+    "registry_publication",
+    "model_authored_file_mutation"
+  ],
+  "packageSet": {
+    "candidateCount": 1,
+    "id": "gin.core",
+    "relationCount": 0
+  },
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "rawModelResponsesPersisted": false,
+    "rawPromptsPersisted": false,
+    "secretsIncluded": false
+  },
+  "proposals": [
+    {
+      "capabilities": [
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "gin.core/specpm.yaml"
+          ],
+          "id": "gin.core.routing",
+          "intentIds": [
+            "intent.web.http_routing"
+          ],
+          "summary": "Provides zero\u2011allocation router for defining HTTP routes with path parameters, query strings, and method constraints."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "gin.core/specpm.yaml",
+            "README.md"
+          ],
+          "id": "gin.core.middleware_pipeline",
+          "intentIds": [
+            "intent.web.middleware_pipeline"
+          ],
+          "summary": "Extensible middleware system supporting logging, recovery, authentication, CORS, compression, and custom user middleware."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "gin.core/specpm.yaml",
+            "gin.core/specs/gin.spec.yaml"
+          ],
+          "id": "gin.core.request_response_context",
+          "intentIds": [
+            "intent.web.request_response_context"
+          ],
+          "summary": "Exposes a Context type with helpers for binding JSON/XML/HTML, accessing headers, query parameters, cookies, and sending responses."
+        },
+        {
+          "confidence": "medium",
+          "evidencePaths": [
+            "gin.core/specpm.yaml",
+            "README.md"
+          ],
+          "id": "gin.core.rendering",
+          "intentIds": [
+            "intent.web.framework_surface"
+          ],
+          "summary": "Built\u2011in rendering support for JSON, XML, HTML templates, and plain text via Context methods."
+        },
+        {
+          "confidence": "medium",
+          "evidencePaths": [
+            "gin.core/specpm.yaml",
+            "README.md"
+          ],
+          "id": "gin.core.json_validation",
+          "intentIds": [
+            "intent.web.http_routing"
+          ],
+          "summary": "Automatic request/response JSON binding and validation using struct tags and error handling helpers."
+        }
+      ],
+      "evidenceGaps": [],
+      "interfaces": [
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "gin.core/specpm.yaml",
+            "gin.core/harvest.json"
+          ],
+          "id": "gin.core.library",
+          "kind": "library",
+          "summary": "Public Go package github.com/gin-gonic/gin providing the framework API."
+        }
+      ],
+      "overallConfidence": "high",
+      "packageId": "gin.core",
+      "providerReceipt": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "chainOfThoughtPersisted": false,
+        "durationMs": 40385,
+        "endpoint": "/v1/chat/completions",
+        "jsonRepairAttemptCount": 0,
+        "jsonRepairNeeded": false,
+        "jsonRepairStatus": "not_needed",
+        "maxOutputTokens": 2200,
+        "modelId": "openai/gpt-oss-20b",
+        "providerKind": "openai_compatible",
+        "providerName": "lm_studio",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "reportedPackageId": "gin.core",
+        "requestId": "package-set-ai-enrichment-gin.core",
+        "responseDigest": "sha256:2ddb49da218644719acdcbf930d27ebbe8364ef2eadda51524b510d8ea5c175a",
+        "startedAt": "2026-06-20T07:18:47Z",
+        "temperature": 0.0,
+        "usage": {
+          "completion_tokens": 443,
+          "prompt_tokens": 15226,
+          "total_tokens": 15669
+        }
+      },
+      "refinedSummary": "Gin Core is a statically evidenced Go web framework providing HTTP routing, middleware, request/response context, and rendering capabilities.",
+      "status": "proposed"
+    }
+  ],
+  "provider": {
+    "baseUrl": "http://127.0.0.1:1234",
+    "execution": "operator_opt_in_local",
+    "kind": "openai_compatible",
+    "model": "openai/gpt-oss-20b",
+    "name": "lm_studio"
+  },
+  "schemaVersion": 1,
+  "status": "completed",
+  "stopPolicySummary": {
+    "decision": "stop_for_author_review",
+    "diagnosticCounts": {
+      "errorCount": 0,
+      "warningCount": 0
+    },
+    "nonAuthority": [
+      "The stop-policy summary is producer-side review evidence only.",
+      "It is not SpecPM registry acceptance.",
+      "It is not maintainer approval.",
+      "It is not upstream project endorsement."
+    ],
+    "reason": "remaining_work_is_author_reviewable",
+    "schemaVersion": 1,
+    "sourceStatus": "completed",
+    "status": "author_ready_draft",
+    "subjectCount": 1,
+    "summary": "Proposal diagnostics are clean; stop model iteration and hand off for review."
+  },
+  "summary": {
+    "errorCount": 0,
+    "proposalCount": 1,
+    "providerCompletionTokens": 443,
+    "providerPromptTokens": 15226,
+    "providerTotalTokens": 15669,
+    "warningCount": 0
+  },
+  "trustBoundary": [
+    "AI enrichment output is proposal evidence only.",
+    "Model output cannot accept packages, accept relations, or publish registry metadata.",
+    "SpecPM remains the validation, acceptance, relation, and registry authority.",
+    "Evidence paths must refer to supplied deterministic package-set or allowlisted source files.",
+    "Raw prompts, raw provider responses, secrets, and model chain-of-thought are not persisted."
+  ]
+}

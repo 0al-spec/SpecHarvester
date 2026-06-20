@@ -12,6 +12,12 @@ The durable fixture is:
 tests/fixtures/operational_mvp_quality_hardening/p44-t2-operational-mvp-ai-proposal-quality-review.example.json
 ```
 
+The reviewed proposal artifacts are also preserved durably under:
+
+```text
+tests/fixtures/operational_mvp_quality_hardening/p44-t2-reviewed-ai-proposals/
+```
+
 Fixture identity:
 
 ```text

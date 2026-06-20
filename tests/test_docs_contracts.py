@@ -29657,6 +29657,13 @@ def test_operational_mvp_ai_proposal_quality_review_is_documented() -> None:
     assert reviews["fastapi"]["qualityClassification"]["usefulSuggestions"] == ["fastapi.core"]
     assert reviews["gin"]["qualityClassification"]["usefulSuggestions"] == ["gin.core"]
     for item in reviews.values():
+        proposal_path_text = item["proposalArtifact"]["path"]
+        assert not proposal_path_text.startswith("/tmp/")
+        proposal_path = ROOT / proposal_path_text
+        assert proposal_path.is_file()
+        assert item["proposalArtifact"]["digest"] == (
+            "sha256:" + hashlib.sha256(proposal_path.read_bytes()).hexdigest()
+        )
         assert item["proposalArtifact"]["status"] == "completed"
         assert item["proposalArtifact"]["diagnosticCount"] == 0
         assert item["qualityClassification"]["unsupportedClaims"] == []
@@ -29684,6 +29691,7 @@ def test_operational_mvp_ai_proposal_quality_review_is_documented() -> None:
             "spec-harvester.operational-mvp-ai-proposal-quality-review/v0",
             "producer_operational_mvp_ai_proposal_quality_review_only",
             "p44-t2-operational-mvp-ai-proposal-quality-review.example.json",
+            "p44-t2-reviewed-ai-proposals",
             "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
             "p44-t1-operational-mvp-warning-triage.example.json",
             "xyflow.workspace",

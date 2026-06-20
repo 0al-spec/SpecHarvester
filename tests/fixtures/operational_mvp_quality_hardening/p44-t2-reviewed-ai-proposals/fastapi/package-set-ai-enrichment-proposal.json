@@ -1,0 +1,196 @@
+{
+  "apiVersion": "spec-harvester.package-set-ai-enrichment/v0",
+  "authority": "proposal_only_not_registry_acceptance",
+  "diagnostics": [],
+  "inputs": [
+    {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "dbf931914575f6f96425f5fc00b5084f1152fd5e931e951df25ec4c445a8743b"
+      },
+      "path": "package-set-draft.json",
+      "pathScope": "bundle_relative",
+      "role": "package_set_draft"
+    },
+    {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "be2d82b170f9dca67ebc4d9c8ac39008e5bd6ef192610496a69d083640a8f901"
+      },
+      "path": "package-relation-proposals.json",
+      "pathScope": "bundle_relative",
+      "role": "package_relation_proposals"
+    },
+    {
+      "path": "/Users/egor/Development/GitHub/fastapi",
+      "pathScope": "local_path",
+      "role": "source_checkout"
+    },
+    {
+      "evidencePathCount": 5,
+      "evidencePaths": [
+        "README.md",
+        "fastapi.core/harvest.json",
+        "fastapi.core/specpm.yaml",
+        "fastapi.core/specs/fastapi.spec.yaml",
+        "readme.md"
+      ],
+      "packageCount": 1,
+      "role": "compact_model_input"
+    }
+  ],
+  "kind": "SpecHarvesterPackageSetAIEnrichmentProposal",
+  "nonGoals": [
+    "specpm_acceptance",
+    "package_acceptance",
+    "relation_acceptance",
+    "registry_publication",
+    "model_authored_file_mutation"
+  ],
+  "packageSet": {
+    "candidateCount": 1,
+    "id": "fastapi.core",
+    "relationCount": 0
+  },
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "rawModelResponsesPersisted": false,
+    "rawPromptsPersisted": false,
+    "secretsIncluded": false
+  },
+  "proposals": [
+    {
+      "capabilities": [
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "fastapi.core/specpm.yaml"
+          ],
+          "id": "fastapi.core.http_routing",
+          "intentIds": [
+            "intent.web.http_routing"
+          ],
+          "summary": "Provides declarative HTTP route definitions via path operation decorators (e.g., @app.get)."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "fastapi.core/specpm.yaml"
+          ],
+          "id": "fastapi.core.middleware_support",
+          "intentIds": [
+            "intent.web.framework_surface"
+          ],
+          "summary": "Supports adding middleware components to the ASGI application stack."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "fastapi.core/specpm.yaml"
+          ],
+          "id": "fastapi.core.request_response_context",
+          "intentIds": [
+            "intent.web.request_response_context"
+          ],
+          "summary": "Exposes request and response objects with type\u2011hinted data models for validation and serialization."
+        },
+        {
+          "confidence": "medium",
+          "evidencePaths": [
+            "fastapi.core/specpm.yaml"
+          ],
+          "id": "fastapi.core.openapi_generation",
+          "intentIds": [
+            "intent.metadata.schema_validation"
+          ],
+          "summary": "Automatically generates OpenAPI schemas from path operation signatures and Pydantic models."
+        }
+      ],
+      "evidenceGaps": [],
+      "interfaces": [
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "fastapi.core/harvest.json",
+            "fastapi.core/specpm.yaml"
+          ],
+          "id": "fastapi.core.library",
+          "kind": "library",
+          "summary": "Python package providing the FastAPI class, decorators, and utilities for building ASGI applications."
+        }
+      ],
+      "overallConfidence": "high",
+      "packageId": "fastapi.core",
+      "providerReceipt": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "chainOfThoughtPersisted": false,
+        "durationMs": 41683,
+        "endpoint": "/v1/chat/completions",
+        "jsonRepairAttemptCount": 0,
+        "jsonRepairNeeded": false,
+        "jsonRepairStatus": "not_needed",
+        "maxOutputTokens": 2200,
+        "modelId": "openai/gpt-oss-20b",
+        "providerKind": "openai_compatible",
+        "providerName": "lm_studio",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "reportedPackageId": "fastapi.core",
+        "requestId": "package-set-ai-enrichment-fastapi.core",
+        "responseDigest": "sha256:911dd22efd857b169b11206cbf194e6620111dd2464bfa576aef7b2622efccfd",
+        "startedAt": "2026-06-20T07:17:56Z",
+        "temperature": 0.0,
+        "usage": {
+          "completion_tokens": 394,
+          "prompt_tokens": 16146,
+          "total_tokens": 16540
+        }
+      },
+      "refinedSummary": "FastAPI Core is a statically evidenced Python web framework that provides HTTP routing, middleware, request/response handling, and automatic OpenAPI documentation generation.",
+      "status": "proposed"
+    }
+  ],
+  "provider": {
+    "baseUrl": "http://127.0.0.1:1234",
+    "execution": "operator_opt_in_local",
+    "kind": "openai_compatible",
+    "model": "openai/gpt-oss-20b",
+    "name": "lm_studio"
+  },
+  "schemaVersion": 1,
+  "status": "completed",
+  "stopPolicySummary": {
+    "decision": "stop_for_author_review",
+    "diagnosticCounts": {
+      "errorCount": 0,
+      "warningCount": 0
+    },
+    "nonAuthority": [
+      "The stop-policy summary is producer-side review evidence only.",
+      "It is not SpecPM registry acceptance.",
+      "It is not maintainer approval.",
+      "It is not upstream project endorsement."
+    ],
+    "reason": "remaining_work_is_author_reviewable",
+    "schemaVersion": 1,
+    "sourceStatus": "completed",
+    "status": "author_ready_draft",
+    "subjectCount": 1,
+    "summary": "Proposal diagnostics are clean; stop model iteration and hand off for review."
+  },
+  "summary": {
+    "errorCount": 0,
+    "proposalCount": 1,
+    "providerCompletionTokens": 394,
+    "providerPromptTokens": 16146,
+    "providerTotalTokens": 16540,
+    "warningCount": 0
+  },
+  "trustBoundary": [
+    "AI enrichment output is proposal evidence only.",
+    "Model output cannot accept packages, accept relations, or publish registry metadata.",
+    "SpecPM remains the validation, acceptance, relation, and registry authority.",
+    "Evidence paths must refer to supplied deterministic package-set or allowlisted source files.",
+    "Raw prompts, raw provider responses, secrets, and model chain-of-thought are not persisted."
+  ]
+}

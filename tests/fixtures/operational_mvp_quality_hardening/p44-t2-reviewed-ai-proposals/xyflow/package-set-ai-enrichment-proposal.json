@@ -1,0 +1,542 @@
+{
+  "apiVersion": "spec-harvester.package-set-ai-enrichment/v0",
+  "authority": "proposal_only_not_registry_acceptance",
+  "diagnostics": [],
+  "inputs": [
+    {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "9c233b1ba374ecdc1f14273f01f27d011baeac22877ae27903afe23dd64c4118"
+      },
+      "path": "package-set-draft.json",
+      "pathScope": "bundle_relative",
+      "role": "package_set_draft"
+    },
+    {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "42bff19363d23f0c50277c31d21b5cb55604c7d382093b33a9ffc15a853a3acb"
+      },
+      "path": "package-relation-proposals.json",
+      "pathScope": "bundle_relative",
+      "role": "package_relation_proposals"
+    },
+    {
+      "path": "/Users/egor/Development/GitHub/xyflow",
+      "pathScope": "local_path",
+      "role": "source_checkout"
+    },
+    {
+      "evidencePathCount": 31,
+      "evidencePaths": [
+        "README.md",
+        "package.json",
+        "packages/react/README.md",
+        "packages/react/package.json",
+        "packages/react/readme.md",
+        "packages/react/src/index.ts",
+        "packages/react/src/types/index.ts",
+        "packages/react/src/utils/index.ts",
+        "packages/svelte/README.md",
+        "packages/svelte/package.json",
+        "packages/svelte/readme.md",
+        "packages/svelte/src/lib/index.ts",
+        "packages/system/README.md",
+        "packages/system/package.json",
+        "packages/system/readme.md",
+        "packages/system/src/index.ts",
+        "packages/system/src/types/index.ts",
+        "packages/system/src/utils/index.ts",
+        "readme.md",
+        "xyflow.react/harvest.json",
+        "xyflow.react/specpm.yaml",
+        "xyflow.react/specs/react.spec.yaml",
+        "xyflow.svelte/harvest.json",
+        "xyflow.svelte/specpm.yaml",
+        "xyflow.svelte/specs/svelte.spec.yaml",
+        "xyflow.system/harvest.json",
+        "xyflow.system/specpm.yaml",
+        "xyflow.system/specs/system.spec.yaml",
+        "xyflow.workspace/harvest.json",
+        "xyflow.workspace/specpm.yaml",
+        "xyflow.workspace/specs/xyflow.spec.yaml"
+      ],
+      "packageCount": 4,
+      "role": "compact_model_input"
+    }
+  ],
+  "kind": "SpecHarvesterPackageSetAIEnrichmentProposal",
+  "nonGoals": [
+    "specpm_acceptance",
+    "package_acceptance",
+    "relation_acceptance",
+    "registry_publication",
+    "model_authored_file_mutation"
+  ],
+  "packageSet": {
+    "candidateCount": 4,
+    "id": "xyflow.workspace",
+    "relationCount": 3
+  },
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "rawModelResponsesPersisted": false,
+    "rawPromptsPersisted": false,
+    "secretsIncluded": false
+  },
+  "proposals": [
+    {
+      "capabilities": [
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "xyflow.react/specpm.yaml",
+            "packages/react/src/index.ts"
+          ],
+          "id": "xyflow.react.flow_canvas",
+          "intentIds": [
+            "intent.ui.flow_diagramming",
+            "intent.ui.node_based_editor"
+          ],
+          "summary": "Provides a canvas component (ReactFlow) that renders nodes, edges, and supports zooming, panning, selection, and custom node/edge types."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/react/src/index.ts",
+            "packages/react/README.md"
+          ],
+          "id": "xyflow.react.viewport_controls",
+          "intentIds": [
+            "intent.ui.flow_diagramming"
+          ],
+          "summary": "Exposes viewport manipulation hooks (useViewport, useOnViewportChange) and components (MiniMap, Controls, Background)."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/react/src/index.ts",
+            "packages/react/README.md"
+          ],
+          "id": "xyflow.react.node_editor",
+          "intentIds": [
+            "intent.ui.node_based_editor"
+          ],
+          "summary": "Provides node editing hooks (useNodesState, useEdgesState) and utilities for adding/removing nodes and edges."
+        },
+        {
+          "confidence": "medium",
+          "evidencePaths": [
+            "packages/react/src/index.ts",
+            "packages/react/README.md"
+          ],
+          "id": "xyflow.react.edge_types",
+          "intentIds": [
+            "intent.ui.flow_diagramming"
+          ],
+          "summary": "Exports built\u2011in edge components (StraightEdge, BezierEdge, SmoothStepEdge) and path utilities."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/react/src/index.ts",
+            "packages/react/README.md"
+          ],
+          "id": "xyflow.react.hooks_api",
+          "intentIds": [
+            "intent.javascript.react_library"
+          ],
+          "summary": "Public API includes React hooks for accessing flow state (useReactFlow, useStore, useOnSelectionChange)."
+        },
+        {
+          "confidence": "medium",
+          "evidencePaths": [
+            "packages/react/package.json",
+            "packages/react/README.md"
+          ],
+          "id": "xyflow.react.style_assets",
+          "intentIds": [],
+          "summary": "Provides CSS assets (dist/base.css, dist/style.css) for styling the flow canvas and components."
+        }
+      ],
+      "evidenceGaps": [],
+      "interfaces": [
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/react/src/index.ts"
+          ],
+          "id": "package.react",
+          "kind": "library",
+          "summary": "Public package export surface of @xyflow/react."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/react/src/index.ts"
+          ],
+          "id": "component.ReactFlow",
+          "kind": "component",
+          "summary": "Main canvas component rendering nodes and edges."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/react/src/index.ts"
+          ],
+          "id": "hook.useReactFlow",
+          "kind": "hook",
+          "summary": "Hook exposing flow state and actions."
+        },
+        {
+          "confidence": "medium",
+          "evidencePaths": [
+            "packages/react/src/index.ts"
+          ],
+          "id": "utility.getBezierPath",
+          "kind": "utility",
+          "summary": "Computes Bezier path for edges."
+        },
+        {
+          "confidence": "medium",
+          "evidencePaths": [
+            "packages/react/package.json"
+          ],
+          "id": "style_asset.flow_css",
+          "kind": "style_asset",
+          "summary": "CSS file providing default styling for the flow canvas and components."
+        }
+      ],
+      "overallConfidence": "high",
+      "packageId": "xyflow.react",
+      "providerReceipt": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "chainOfThoughtPersisted": false,
+        "durationMs": 44435,
+        "endpoint": "/v1/chat/completions",
+        "jsonRepairAttemptCount": 0,
+        "jsonRepairNeeded": false,
+        "jsonRepairStatus": "not_needed",
+        "maxOutputTokens": 2200,
+        "modelId": "openai/gpt-oss-20b",
+        "providerKind": "openai_compatible",
+        "providerName": "lm_studio",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "reportedPackageId": "xyflow.react",
+        "requestId": "package-set-ai-enrichment-xyflow.react",
+        "responseDigest": "sha256:67b52dc7ef24095265b271f824ef7bcd4f409086311228afb618321bc3c80978",
+        "startedAt": "2026-06-20T07:15:36Z",
+        "temperature": 0.0,
+        "usage": {
+          "completion_tokens": 699,
+          "prompt_tokens": 14572,
+          "total_tokens": 15271
+        }
+      },
+      "refinedSummary": "A highly customizable React library for building node\u2011based editors and interactive flow charts.",
+      "status": "proposed"
+    },
+    {
+      "capabilities": [
+        {
+          "confidence": "low",
+          "evidencePaths": [
+            "xyflow.svelte/specpm.yaml"
+          ],
+          "id": "xyflow.svelte.flow_canvas",
+          "intentIds": [
+            "intent.javascript.svelte_library",
+            "intent.package.javascript_library",
+            "intent.ui.diagramming",
+            "intent.ui.flow_diagramming",
+            "intent.ui.node_based_editor"
+          ],
+          "summary": "Svelte Flow \u2013 a highly customizable Svelte library for building node\u2011based editors, workflow systems and diagrams."
+        },
+        {
+          "confidence": "low",
+          "evidencePaths": [
+            "packages/svelte/src/lib/index.ts",
+            "packages/svelte/README.md"
+          ],
+          "id": "xyflow.svelte.viewport_controls",
+          "intentIds": [],
+          "summary": "Built\u2011in viewport control components (Controls, Background, MiniMap) that provide zooming, panning, background styling and minimap functionality."
+        }
+      ],
+      "evidenceGaps": [],
+      "interfaces": [
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/svelte/package.json"
+          ],
+          "id": "package.svelte",
+          "kind": "library",
+          "summary": "@xyflow/svelte npm package exposing Svelte Flow components and utilities."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/svelte/src/lib/index.ts",
+            "packages/svelte/README.md"
+          ],
+          "id": "component.SvelteFlow",
+          "kind": "component",
+          "summary": "Main Svelte component rendering the flow graph with nodes, edges and viewport management."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/svelte/src/lib/index.ts"
+          ],
+          "id": "plugin.Controls",
+          "kind": "plugin",
+          "summary": "Controls plugin providing zoom in/out, fit view and reset view actions."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/svelte/src/lib/index.ts"
+          ],
+          "id": "plugin.Background",
+          "kind": "plugin",
+          "summary": "Background plugin for setting background color or pattern of the flow canvas."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/svelte/src/lib/index.ts"
+          ],
+          "id": "plugin.Minimap",
+          "kind": "plugin",
+          "summary": "MiniMap plugin rendering a miniature view of the entire graph."
+        }
+      ],
+      "overallConfidence": "high",
+      "packageId": "xyflow.svelte",
+      "providerReceipt": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "chainOfThoughtPersisted": false,
+        "durationMs": 39330,
+        "endpoint": "/v1/chat/completions",
+        "jsonRepairAttemptCount": 0,
+        "jsonRepairNeeded": false,
+        "jsonRepairStatus": "not_needed",
+        "maxOutputTokens": 2200,
+        "modelId": "openai/gpt-oss-20b",
+        "providerKind": "openai_compatible",
+        "providerName": "lm_studio",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "reportedPackageId": "",
+        "requestId": "package-set-ai-enrichment-xyflow.svelte",
+        "responseDigest": "sha256:83909e74cf5f5c5f49f7b538325aac9be984f03a1e02a4af911cef3d9d8e1fe9",
+        "startedAt": "2026-06-20T07:16:15Z",
+        "temperature": 0.0,
+        "usage": {
+          "completion_tokens": 558,
+          "prompt_tokens": 13850,
+          "total_tokens": 14408
+        }
+      },
+      "refinedSummary": "Svelte Flow is an npm library that provides a customizable Svelte component for building node\u2011based editors, complete with viewport controls and plugins.",
+      "status": "proposed"
+    },
+    {
+      "capabilities": [
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "xyflow.system/specpm.yaml",
+            "xyflow.system/specs/system.spec.yaml"
+          ],
+          "id": "xyflow.system.flow_system_utilities",
+          "intentIds": [
+            "intent.javascript.react_library",
+            "intent.javascript.svelte_library",
+            "intent.package.javascript_library",
+            "intent.ui.flow_system_utilities"
+          ],
+          "summary": "Provides shared utilities such as pan/zoom, dragging, edge path calculations, minimap, and graph helpers used by React Flow and Svelte Flow."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/system/README.md",
+            "packages/system/src/index.ts"
+          ],
+          "id": "xyflow.system.pan_zoom",
+          "intentIds": [],
+          "summary": "Utility for interactive pan and zoom on a canvas."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/system/README.md",
+            "packages/system/src/index.ts"
+          ],
+          "id": "xyflow.system.dragging",
+          "intentIds": [],
+          "summary": "Helpers for node and selection dragging logic."
+        },
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/system/README.md",
+            "packages/system/src/index.ts"
+          ],
+          "id": "xyflow.system.edge_utilities",
+          "intentIds": [],
+          "summary": "Functions to create SVG edge paths (bezier, straight, step, smoothstep)."
+        }
+      ],
+      "evidenceGaps": [],
+      "interfaces": [
+        {
+          "confidence": "high",
+          "evidencePaths": [
+            "packages/system/src/index.ts",
+            "packages/system/package.json"
+          ],
+          "id": "package.system",
+          "kind": "library",
+          "summary": "Exports all public utilities and types from @xyflow/system."
+        }
+      ],
+      "overallConfidence": "high",
+      "packageId": "xyflow.system",
+      "providerReceipt": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "chainOfThoughtPersisted": false,
+        "durationMs": 28055,
+        "endpoint": "/v1/chat/completions",
+        "jsonRepairAttemptCount": 0,
+        "jsonRepairNeeded": false,
+        "jsonRepairStatus": "not_needed",
+        "maxOutputTokens": 2200,
+        "modelId": "openai/gpt-oss-20b",
+        "providerKind": "openai_compatible",
+        "providerName": "lm_studio",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "reportedPackageId": "xyflow.system",
+        "requestId": "package-set-ai-enrichment-xyflow.system",
+        "responseDigest": "sha256:e730aa05b708dc2a1c6f62eb6183e7636e69ebbfe9c460fec4426ad82b8f0146",
+        "startedAt": "2026-06-20T07:16:43Z",
+        "temperature": 0.0,
+        "usage": {
+          "completion_tokens": 379,
+          "prompt_tokens": 10662,
+          "total_tokens": 11041
+        }
+      },
+      "refinedSummary": "Core utility package providing framework\u2011agnostic helpers for building node\u2011based editors.",
+      "status": "proposed"
+    },
+    {
+      "capabilities": [
+        {
+          "confidence": "low",
+          "evidencePaths": [
+            "xyflow.workspace/specpm.yaml"
+          ],
+          "id": "xyflow.workspace.workspace",
+          "intentIds": [
+            "intent.javascript.react_library",
+            "intent.package.javascript_library",
+            "intent.repository.package_workspace",
+            "intent.ui.flow_diagramming",
+            "intent.ui.node_based_editor"
+          ],
+          "summary": "A highly customizable React library for building node-based editors and interactive flow charts"
+        }
+      ],
+      "evidenceGaps": [],
+      "interfaces": [
+        {
+          "confidence": "low",
+          "evidencePaths": [
+            "xyflow.workspace/specs/xyflow.spec.yaml"
+          ],
+          "id": "package.monorepo",
+          "kind": "library",
+          "summary": "Observed import surface for @xyflow/monorepo."
+        }
+      ],
+      "overallConfidence": "high",
+      "packageId": "xyflow.workspace",
+      "providerReceipt": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "chainOfThoughtPersisted": false,
+        "durationMs": 18805,
+        "endpoint": "/v1/chat/completions",
+        "jsonRepairAttemptCount": 0,
+        "jsonRepairNeeded": false,
+        "jsonRepairStatus": "not_needed",
+        "maxOutputTokens": 2200,
+        "modelId": "openai/gpt-oss-20b",
+        "providerKind": "openai_compatible",
+        "providerName": "lm_studio",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "reportedPackageId": "",
+        "requestId": "package-set-ai-enrichment-xyflow.workspace",
+        "responseDigest": "sha256:2b89a439b03aff25d9e5adaa17fc633e5e15e0bfdfb1e9873b4486361e672726",
+        "startedAt": "2026-06-20T07:17:02Z",
+        "temperature": 0.0,
+        "usage": {
+          "completion_tokens": 220,
+          "prompt_tokens": 7854,
+          "total_tokens": 8074
+        }
+      },
+      "refinedSummary": "Xyflow Workspace is a highly customizable React library enabling node-based editors and interactive flow charts.",
+      "status": "proposed"
+    }
+  ],
+  "provider": {
+    "baseUrl": "http://127.0.0.1:1234",
+    "execution": "operator_opt_in_local",
+    "kind": "openai_compatible",
+    "model": "openai/gpt-oss-20b",
+    "name": "lm_studio"
+  },
+  "schemaVersion": 1,
+  "status": "completed",
+  "stopPolicySummary": {
+    "decision": "stop_for_author_review",
+    "diagnosticCounts": {
+      "errorCount": 0,
+      "warningCount": 0
+    },
+    "nonAuthority": [
+      "The stop-policy summary is producer-side review evidence only.",
+      "It is not SpecPM registry acceptance.",
+      "It is not maintainer approval.",
+      "It is not upstream project endorsement."
+    ],
+    "reason": "remaining_work_is_author_reviewable",
+    "schemaVersion": 1,
+    "sourceStatus": "completed",
+    "status": "author_ready_draft",
+    "subjectCount": 4,
+    "summary": "Proposal diagnostics are clean; stop model iteration and hand off for review."
+  },
+  "summary": {
+    "errorCount": 0,
+    "proposalCount": 4,
+    "providerCompletionTokens": 1856,
+    "providerPromptTokens": 46938,
+    "providerTotalTokens": 48794,
+    "warningCount": 0
+  },
+  "trustBoundary": [
+    "AI enrichment output is proposal evidence only.",
+    "Model output cannot accept packages, accept relations, or publish registry metadata.",
+    "SpecPM remains the validation, acceptance, relation, and registry authority.",
+    "Evidence paths must refer to supplied deterministic package-set or allowlisted source files.",
+    "Raw prompts, raw provider responses, secrets, and model chain-of-thought are not persisted."
+  ]
+}
