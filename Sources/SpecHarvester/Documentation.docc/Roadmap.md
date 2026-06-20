@@ -832,6 +832,11 @@ P46-T1 adds <doc:BoundedPopularLibraryPilotManifest> and the machine-readable
 `SpecHarvesterBoundedPopularLibraryPilotManifest` fixture for
 `inputs/p46-bounded-popular-library-pilot/repositories.yml`. It pins the first
 post-hardening bounded pilot manifest and keeps P46-T2 static-only-first.
+P46-T2 records <doc:BoundedPopularLibraryPilotStaticOnlyRun> and the
+machine-readable `SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun`
+fixture for the real static-only gate: six repositories processed, nine
+preview candidates, three relation proposals, zero AI proposals, zero adapter
+sidecars, and no registry authority.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

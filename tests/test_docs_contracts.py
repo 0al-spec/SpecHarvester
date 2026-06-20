@@ -38,6 +38,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P46-T3 Bounded Popular-Library Pilot AI-Enabled Run" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening" in (
+            next_text
+        )
+        assert "`P46-T3`" in next_text
+        assert "`P46-T2` Bounded Popular-Library Pilot Static-Only Run" in next_text
+        assert "inputs/p46-bounded-popular-library-pilot/repositories.yml" in next_text
+        assert "static-only gate passed" in normalized
+        assert "six repositories processed" in normalized
+        assert "nine preview candidates" in normalized
+        assert "three relation proposals" in normalized
+        assert "local OpenAI-compatible provider" in normalized
+        assert "proposal-only" in normalized
+        assert "Do not persist raw prompts" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P46-T2 Bounded Popular-Library Pilot Static-Only Run" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -30939,6 +30958,244 @@ def test_bounded_popular_library_pilot_manifest_records_p46_t1_contract() -> Non
         (capabilities_docc, "BoundedPopularLibraryPilotManifest"),
         (roadmap, "BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md"),
         (roadmap_docc, "BoundedPopularLibraryPilotManifest"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_bounded_popular_library_pilot_static_only_run_records_p46_t2_gate() -> None:
+    manifest_path = ROOT / "inputs" / "p46-bounded-popular-library-pilot" / "repositories.yml"
+    manifest_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_popular_library_pilot_manifest"
+        / "p46-t1-bounded-popular-library-pilot-manifest.example.json"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_popular_library_pilot_static_only_run"
+        / "p46-t2-bounded-popular-library-pilot-static-only-run.example.json"
+    )
+    github_doc = ROOT / "docs" / "BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "BoundedPopularLibraryPilotStaticOnlyRun.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.bounded-popular-library-pilot-static-only-run/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun"
+    assert payload["authority"] == "producer_static_preview_evidence_only"
+    assert payload["phase"] == "P46"
+    assert payload["task"] == "P46-T2"
+    assert payload["run"]["mode"] == "static_only"
+    assert payload["run"]["status"] == "passed"
+    assert "--skip-ai" in payload["run"]["command"]
+    assert "--repository-profile-selection auto" in payload["run"]["command"]
+
+    source_artifact = payload["sourceArtifacts"]["p46PilotManifest"]
+    source_artifact_path = ROOT / source_artifact["path"]
+    source_artifact_payload = json.loads(source_artifact_path.read_text(encoding="utf-8"))
+    assert source_artifact_path == manifest_fixture_path
+    assert source_artifact["digest"] == (
+        "sha256:" + hashlib.sha256(source_artifact_path.read_bytes()).hexdigest()
+    )
+    assert source_artifact["apiVersion"] == source_artifact_payload["apiVersion"]
+    assert source_artifact["kind"] == source_artifact_payload["kind"]
+    assert source_artifact["authority"] == source_artifact_payload["authority"]
+
+    assert payload["sourceManifest"] == {
+        "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+        "digest": "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+        "entryCount": 6,
+        "requiresExistingCheckouts": True,
+        "cloneAllowed": False,
+        "fetchAllowed": False,
+    }
+    assert payload["batchReport"]["apiVersion"] == "spec-harvester.autonomous-candidate-batch/v0"
+    assert payload["batchReport"]["kind"] == "SpecHarvesterAutonomousCandidateBatchReport"
+    assert payload["batchReport"]["authority"] == "producer_preview_evidence_only"
+    assert payload["batchReport"]["digest"] == (
+        "sha256:01a47a4ceb6d787a11a0059dfca805c35ea51625943bb1873fef5284e271a9b7"
+    )
+
+    assert payload["summary"]["processedCount"] == 6
+    assert payload["summary"]["failedRepositoryCount"] == 0
+    assert payload["summary"]["passedPreflightCount"] == 6
+    assert payload["summary"]["candidateCount"] == 9
+    assert payload["summary"]["relationCount"] == 3
+    assert payload["summary"]["preflightWarningCount"] == 0
+    assert payload["summary"]["interfaceDiagnosticCount"] == 29
+    assert payload["summary"]["repositoryProfileDetectionCount"] == 6
+    assert payload["summary"]["repositoryProfileSelectedCount"] == 4
+    assert payload["summary"]["repositoryProfileFallbackCount"] == 2
+    assert payload["summary"]["aiDraftProposalCount"] == 0
+    assert payload["summary"]["aiEnrichmentProposalCount"] == 0
+    assert payload["summary"]["repositoryPluginAdapterEvidenceSidecarCount"] == 0
+    assert payload["summary"]["trustedLocalAdapterRunEvidenceSidecarCount"] == 0
+
+    repositories = {repository["id"]: repository for repository in payload["repositories"]}
+    assert list(repositories) == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert repositories["flask"]["candidatePackageIds"] == ["flask.core"]
+    assert repositories["gin"]["candidatePackageIds"] == ["gin.core"]
+    assert repositories["xyflow"]["candidatePackageIds"] == [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace",
+    ]
+    assert repositories["xyflow"]["relationIds"] == [
+        "xyflow.workspace.contains.xyflow.react",
+        "xyflow.workspace.contains.xyflow.svelte",
+        "xyflow.workspace.contains.xyflow.system",
+    ]
+    assert repositories["xyflow"]["interfaceIndex"]["status"] == "partial"
+    assert repositories["xyflow"]["interfaceIndex"]["diagnosticCount"] == 29
+    assert repositories["cupertino"]["repositoryProfileDetection"]["decision"] == "fallback"
+    assert repositories["navigation-split-view"]["repositoryProfileDetection"]["decision"] == (
+        "fallback"
+    )
+    assert repositories["docc2context"]["repositoryProfileDetection"]["selectedProfileId"] == (
+        "generic.single_package.v0"
+    )
+    for repository in repositories.values():
+        assert repository["status"] == "passed"
+        assert repository["preflight"]["status"] == "passed"
+        assert repository["preflight"]["warningCount"] == 0
+        assert repository["authorReadyDraftSummary"]["blocked"] == 0
+        assert repository["aiDraft"] == {
+            "reason": "ai_disabled_by_operator",
+            "status": "skipped",
+        }
+        assert repository["aiEnrichment"] == {
+            "reason": "ai_disabled_by_operator",
+            "status": "skipped",
+        }
+
+    assert payload["qualityGate"]["staticOnlyGate"] == "passed"
+    assert payload["qualityGate"]["warningsBlockP46T3"] is False
+    assert payload["qualityGate"]["blockers"] == []
+    triage_by_code = {item["code"]: item for item in payload["qualityGate"]["carryForwardTriage"]}
+    assert triage_by_code["model_evidence_path_unsupported"]["repositoryId"] == "gin"
+    assert triage_by_code["model_evidence_path_unsupported"]["observedInStaticRun"] is False
+    assert triage_by_code["partial_public_interface_index"]["repositoryId"] == "xyflow"
+    assert triage_by_code["partial_public_interface_index"]["diagnosticCount"] == 29
+    assert triage_by_code["operator_checkout_origin_fork_mismatch"]["repositoryId"] == "xyflow"
+
+    assert payload["aiBoundary"] == {
+        "mode": "disabled",
+        "reason": "operator_disabled",
+        "draftProposalCount": 0,
+        "enrichmentProposalCount": 0,
+        "enrichedPreviewAppliedCount": 0,
+        "rawPromptPersisted": False,
+        "rawProviderResponsePersisted": False,
+        "secretPersisted": False,
+        "chainOfThoughtPersisted": False,
+        "aiOutputAcceptedAsRegistryTruth": False,
+    }
+    assert payload["adapterBoundary"] == {
+        "repositoryPluginAdapterEvidenceSidecarCount": 0,
+        "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+        "adapterExecution": "not_run",
+        "appliedToDrafting": False,
+        "registryAuthority": False,
+        "adapterOutputAcceptedAsRegistryTruth": False,
+    }
+    assert payload["authorityBoundary"]["staticOutputIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
+    assert payload["authorityBoundary"]["seedsBaselines"] is False
+    assert payload["authorityBoundary"]["removesPreviewOnly"] is False
+    assert payload["nextTask"] == "P46-T3"
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Bounded Popular-Library Pilot Static-Only Run",
+            "P46-T2",
+            "SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun",
+            "spec-harvester.bounded-popular-library-pilot-static-only-run/v0",
+            "producer_static_preview_evidence_only",
+            "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+            "p46-t2-bounded-popular-library-pilot-static-only-run.example.json",
+            "six repositories",
+            "nine preview candidates",
+            "three relation proposals",
+            "zero AI proposals",
+            "zero adapter sidecars",
+            "Flask",
+            "Gin",
+            "xyflow",
+            "Cupertino",
+            "NavigationSplitView",
+            "docc2context",
+            "model_evidence_path_unsupported",
+            "partial_public_interface_index",
+            "operator_checkout_origin_fork_mismatch",
+            "P46-T3",
+            "proposal-only",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "run AI",
+            "enable trusted local adapter execution",
+            "run adapter code",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+            "static output as registry truth",
+            "AI output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md"),
+        (docc_root, "docs/BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md"),
+        (docc_root, "<doc:BoundedPopularLibraryPilotStaticOnlyRun>"),
+        (capabilities, "BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md"),
+        (capabilities_docc, "BoundedPopularLibraryPilotStaticOnlyRun"),
+        (roadmap, "BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md"),
+        (roadmap_docc, "BoundedPopularLibraryPilotStaticOnlyRun"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
