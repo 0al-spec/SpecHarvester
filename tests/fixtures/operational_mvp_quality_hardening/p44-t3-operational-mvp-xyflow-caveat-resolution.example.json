@@ -23,7 +23,7 @@
     },
     "aiProposalQualityReview": {
       "path": "tests/fixtures/operational_mvp_quality_hardening/p44-t2-operational-mvp-ai-proposal-quality-review.example.json",
-      "digest": "sha256:43cc8a4214eba3bebf22bdaa8f2569c06d21d8b64e78c675f3053f87b944100b",
+      "digest": "sha256:0a8b7ffd20c523c24c5d76468b3027d98abcf6b6118d0e99af92e3a0e30f8276",
       "apiVersion": "spec-harvester.operational-mvp-ai-proposal-quality-review/v0",
       "kind": "SpecHarvesterOperationalMVPAIProposalQualityReview",
       "authority": "producer_operational_mvp_ai_proposal_quality_review_only"
