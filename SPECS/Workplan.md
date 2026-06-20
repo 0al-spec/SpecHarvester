@@ -2090,7 +2090,7 @@ Acceptance:
 - [x] `P44-T3` Resolve or explicitly accept the xyflow partial
   `PublicInterfaceIndex` caveat from P43-T4/P43-T6 so package-set handoff can
   distinguish real interface gaps from acceptable parser coverage limits.
-- [ ] `P44-T4` Re-run the bounded operational MVP corpus after the targeted
+- [x] `P44-T4` Re-run the bounded operational MVP corpus after the targeted
   hardening work and compare static-only and AI-enabled proposal output against
   the P43 baseline.
 - [ ] `P44-T5` Record a post-hardening readiness decision that decides whether

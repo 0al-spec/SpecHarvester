@@ -2,7 +2,7 @@
 
 ## Status
 
-Planned.
+Archived as PASS on 2026-06-20.
 
 ## Motivation
 

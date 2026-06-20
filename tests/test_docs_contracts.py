@@ -38,6 +38,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P44-T5 Operational MVP Post-Hardening Readiness Decision" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
+        assert "`P44-T5`" in next_text
+        assert "`P44-T4` Operational MVP Quality-Hardened Rerun" in next_text
+        assert "bounded popular-library scraping" in next_text
+        assert "needs another quality pass" in next_text
+        assert "defer until adapter execution" in next_text
+        assert "Do not treat readiness output as registry truth" in next_text
+        return
+
     if "# Next Task: P44-T4 Operational MVP Quality-Hardened Rerun" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 44. Operational MVP Quality Hardening" in next_text
