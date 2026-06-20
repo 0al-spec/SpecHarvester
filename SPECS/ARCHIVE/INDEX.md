@@ -342,6 +342,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P45-T3 | Archived REVIEW_p45_t3_operational_mvp_ai_draft_shape_rerun report |
 | 2026-06-20 | P45-T3 | Archived Operational MVP Corpus Rerun After AI Draft Shape Fix (PASS) |
 | 2026-06-20 | P45-T2 | Archived REVIEW_p45_t2_ai_draft_validation_guard report |
 | 2026-06-20 | P45-T2 | Archived AI Draft Proposal Validation Guard (PASS) |
