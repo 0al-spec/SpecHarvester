@@ -40,8 +40,10 @@ The model output proposes:
 SpecHarvester normalizes this output and emits diagnostics. Unsupported
 evidence paths produce `model_evidence_path_unsupported`; relations fail closed
 when they target packages that were not selected. Common relation endpoint
-aliases such as `source` and `target` are normalized to `sourcePackageId` and
-`targetPackageId` before validation.
+aliases such as `source`, `target`, `sourcePackage`, and `targetPackage` are
+normalized to `sourcePackageId` and `targetPackageId` before validation.
+Endpoint aliases may be direct package-id strings or nested objects with
+`packageId` or `id`.
 
 Selected-member role labels are normalized before they become proposal
 evidence. Canonical role strings are preserved, while narrow aliases from
@@ -123,8 +125,10 @@ and downstream validation.
 selected members. A diagnostic-clean zero-subject proposal is non-blocking only
 when deterministic inventory contains exactly one package, including the
 source-backed package identity fallback when no package manifests were found,
-the validation guard passes, diagnostics are clean, and package-set identity is
-stable. In that case
+the validation guard passes, no blocking diagnostics are present, and
+package-set identity is stable. A warning-level `ai_json_repair_needed`
+diagnostic is non-blocking only when bounded JSON repair succeeded with
+`jsonRepairStatus: repaired`. In that case
 `stopPolicySummary.decision` is `stop_for_author_review`, `reason` is
 `single_package_no_proposal_subjects_non_blocking`, and
 `zeroSubjectPolicy.status` is `accepted_non_blocking`.

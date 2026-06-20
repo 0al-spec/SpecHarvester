@@ -431,6 +431,7 @@ def proposal_from_model_output(
             source_status=status,
             error_count=error_count,
             warning_count=warning_count,
+            diagnostics=diagnostics,
             subject_count=len(selected_members),
             inventory_by_id=inventory_by_id,
             package_set=package_set,
@@ -664,6 +665,7 @@ def package_set_ai_draft_stop_policy_summary(
     source_status: str,
     error_count: int,
     warning_count: int,
+    diagnostics: list[dict[str, Any]],
     subject_count: int,
     inventory_by_id: dict[str, dict[str, Any]],
     package_set: dict[str, Any],
@@ -679,6 +681,7 @@ def package_set_ai_draft_stop_policy_summary(
         source_status=source_status,
         error_count=error_count,
         warning_count=warning_count,
+        diagnostics=diagnostics,
         subject_count=subject_count,
         inventory_by_id=inventory_by_id,
         package_set=package_set,
@@ -701,6 +704,7 @@ def zero_subject_policy_record(
     source_status: str,
     error_count: int,
     warning_count: int,
+    diagnostics: list[dict[str, Any]],
     subject_count: int,
     inventory_by_id: dict[str, dict[str, Any]],
     package_set: dict[str, Any],
@@ -720,7 +724,10 @@ def zero_subject_policy_record(
     if len(inventory_by_id) != 1:
         record["reason"] = "package_set_requires_selected_members"
         return record
-    if source_status != "completed" or error_count or warning_count:
+    if source_status == "failed" or error_count:
+        record["reason"] = "single_package_proposal_has_diagnostics"
+        return record
+    if warning_count and not has_only_successful_repair_warning(diagnostics):
         record["reason"] = "single_package_proposal_has_diagnostics"
         return record
     if validation_guard.get("status") != "passed":
@@ -732,6 +739,16 @@ def zero_subject_policy_record(
     record["status"] = "accepted_non_blocking"
     record["reason"] = "single_package_inventory_subject_stable"
     return record
+
+
+def has_only_successful_repair_warning(diagnostics: list[dict[str, Any]]) -> bool:
+    warning_diagnostics = [item for item in diagnostics if item.get("severity") == "warning"]
+    if not warning_diagnostics:
+        return False
+    return all(
+        item.get("code") == "ai_json_repair_needed" and item.get("jsonRepairStatus") == "repaired"
+        for item in warning_diagnostics
+    )
 
 
 def excluded_package_proposals(
@@ -831,12 +848,12 @@ def relation_proposals(
             )
             continue
         source = (
-            first_string_value(
+            first_endpoint_package_id(
                 item, ("sourcePackageId", "source", "sourcePackage", "fromPackageId")
             )
             or package_set_id
         )
-        target = first_string_value(
+        target = first_endpoint_package_id(
             item,
             ("targetPackageId", "target", "targetPackage", "toPackageId", "packageId"),
         )
@@ -1219,6 +1236,24 @@ def first_string_value(payload: dict[str, Any], keys: tuple[str, ...]) -> str:
         if value:
             return value
     return ""
+
+
+def first_endpoint_package_id(payload: dict[str, Any], keys: tuple[str, ...]) -> str:
+    for key in keys:
+        value = endpoint_package_id(payload.get(key))
+        if value:
+            return value
+    return ""
+
+
+def endpoint_package_id(value: Any) -> str:
+    direct_value = string_value(value)
+    if direct_value:
+        return direct_value
+    record = mapping_value(value)
+    if not record:
+        return ""
+    return first_string_value(record, ("packageId", "id"))
 
 
 def string_list(value: Any) -> list[str]:

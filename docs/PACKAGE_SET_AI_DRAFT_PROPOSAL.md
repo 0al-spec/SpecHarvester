@@ -104,8 +104,10 @@ The model returns one JSON object:
 supplied inventory. `evidencePaths` must refer to supplied compact evidence.
 Unsupported evidence paths produce `model_evidence_path_unsupported`
 diagnostics. Relations fail closed when the target is not selected. Common
-relation endpoint aliases such as `source` and `target` are normalized to
-`sourcePackageId` and `targetPackageId` before validation.
+relation endpoint aliases such as `source`, `target`, `sourcePackage`, and
+`targetPackage` are normalized to `sourcePackageId` and `targetPackageId`
+before validation. Endpoint aliases may be direct package-id strings or nested
+objects with `packageId` or `id`.
 
 When model output omits `packageSet.packageId`, SpecHarvester uses the
 deterministic request package-set id instead of recording a warning. For
@@ -175,7 +177,9 @@ when all of these are true:
 - deterministic inventory contains exactly one package, including the
   source-backed package identity fallback when no package manifests were found;
 - `validationGuard.status` is `passed`;
-- the proposal has no error or warning diagnostics;
+- the proposal has no blocking diagnostics; a warning-level
+  `ai_json_repair_needed` diagnostic is non-blocking only when bounded JSON
+  repair succeeded with `jsonRepairStatus: repaired`;
 - the package-set identity is stable after request-backed normalization.
 
 In that bounded case, `stopPolicySummary.decision` is

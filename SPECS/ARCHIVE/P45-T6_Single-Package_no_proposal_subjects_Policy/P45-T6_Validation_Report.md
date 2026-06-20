@@ -47,12 +47,18 @@ P45-T6 policy surface:
 - Xyflow model output can use common relation endpoint aliases such as
   `source` and `target`; relation proposal normalization now maps those aliases
   to `sourcePackageId` and `targetPackageId` before validation.
+- A second P45-T7 live rerun showed the same endpoint aliases can be nested
+  objects (`sourcePackage` / `targetPackage`) and that successful bounded JSON
+  repair can add a warning-level `ai_json_repair_needed` diagnostic without
+  changing the single-package proposal subject. Nested endpoint aliases now
+  resolve `packageId` or `id`, and successful repair is non-blocking for the
+  single-package zero-subject policy when no other diagnostics are present.
 
 Additional validation after the follow-up:
 
 | Command | Result |
 | --- | --- |
-| `PYTHONPATH=src python -m pytest tests/test_package_set_ai_draft_proposal.py -q` | PASS, 24 passed |
+| `PYTHONPATH=src python -m pytest tests/test_package_set_ai_draft_proposal.py -q` | PASS, 26 passed |
 | `PYTHONPATH=src python -m pytest tests/test_docs_contracts.py::test_docc_and_github_docs_cover_author_ready_draft_quality_bar -q` | PASS |
 | `ruff check src/spec_harvester/package_set_ai_draft_proposal.py tests/test_package_set_ai_draft_proposal.py tests/test_docs_contracts.py` | PASS |
 | `ruff format --check src/spec_harvester/package_set_ai_draft_proposal.py tests/test_package_set_ai_draft_proposal.py tests/test_docs_contracts.py` | PASS |

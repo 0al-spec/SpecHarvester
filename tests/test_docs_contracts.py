@@ -8111,7 +8111,11 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
         assert "excluded_package_unknown" in normalized
         assert "source-backed package identity" in normalized
         assert "relation endpoint aliases" in normalized
+        assert "sourcePackage" in normalized
+        assert "targetPackage" in normalized
         assert "targetPackageId" in normalized
+        assert "ai_json_repair_needed" in normalized
+        assert "jsonRepairStatus: repaired" in normalized
         assert "validationGuard" in normalized
         assert "package_set_subject_identity_missing" in normalized
         assert "zeroSubjectPolicy" in normalized

@@ -403,6 +403,32 @@ def test_package_set_ai_draft_accepts_common_relation_endpoint_aliases(
     }
 
 
+def test_package_set_ai_draft_accepts_nested_relation_endpoint_aliases(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    relation = payload["relations"][0]
+    relation["sourcePackage"] = {"packageId": relation.pop("sourcePackageId")}
+    relation["targetPackage"] = {"id": relation.pop("targetPackageId")}
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    assert report["status"] == "completed"
+    assert "relation_target_not_selected" not in {item["code"] for item in report["diagnostics"]}
+    assert {item["targetPackageId"] for item in report["relations"]} == {
+        "demo.cli",
+        "demo.core",
+    }
+
+
 def test_package_set_ai_draft_keeps_unknown_exclusion_warning_for_package_sets(
     tmp_path: Path,
 ) -> None:
@@ -575,6 +601,71 @@ def test_package_set_ai_draft_requires_regeneration_for_warning_zero_subject_sin
     assert stop_policy["zeroSubjectPolicy"] == {
         "status": "requires_regeneration",
         "reason": "single_package_proposal_has_diagnostics",
+        "inventoryPackageCount": 1,
+        "inventoryPackageIds": ["demo.core"],
+        "packageSetId": "demo.workspace",
+    }
+
+
+def test_package_set_ai_draft_accepts_repaired_json_warning_for_zero_subject_single_package(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inventory = write_single_package_inventory(tmp_path)
+    model_output = json.loads(
+        write_single_package_model_output(tmp_path).read_text(encoding="utf-8")
+    )
+    model_output["selectedMembers"] = []
+    model_output["relations"] = []
+    contents = ["not json", json.dumps(model_output)]
+    calls = []
+
+    class FakeResponse:
+        def __init__(self, content: str, index: int) -> None:
+            self.content = content
+            self.index = index
+
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {
+                    "model": "test-model",
+                    "choices": [{"message": {"content": self.content}}],
+                    "usage": {"total_tokens": self.index + 1},
+                }
+            ).encode("utf-8")
+
+    def fake_urlopen(request, **_kwargs):
+        payload = json.loads(request.data.decode("utf-8"))
+        calls.append(payload)
+        return FakeResponse(contents[len(calls) - 1], len(calls))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            provider_base_url="http://127.0.0.1:1234",
+            model="test-model",
+            json_repair_max_attempts=1,
+        )
+    )
+
+    stop_policy = report["stopPolicySummary"]
+    assert len(calls) == 2
+    assert report["status"] == "warning"
+    assert report["providerReceipt"]["jsonRepairStatus"] == "repaired"
+    assert "ai_json_repair_needed" in {item["code"] for item in report["diagnostics"]}
+    assert stop_policy["decision"] == "stop_for_author_review"
+    assert stop_policy["reason"] == "single_package_no_proposal_subjects_non_blocking"
+    assert stop_policy["zeroSubjectPolicy"] == {
+        "status": "accepted_non_blocking",
+        "reason": "single_package_inventory_subject_stable",
         "inventoryPackageCount": 1,
         "inventoryPackageIds": ["demo.core"],
         "packageSetId": "demo.workspace",
