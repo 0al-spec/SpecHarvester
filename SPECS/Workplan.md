@@ -2187,7 +2187,7 @@ Acceptance:
 
 ## Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening
 
-- [ ] `P46-T1` Define the first post-hardening bounded popular-library pilot
+- [x] `P46-T1` Define the first post-hardening bounded popular-library pilot
   manifest from existing corpus-selection policy, with pinned local checkout
   requirements, ecosystem coverage, exclusion rules, and stop conditions.
 - [ ] `P46-T2` Run the pilot in static-only mode first, recording deterministic
