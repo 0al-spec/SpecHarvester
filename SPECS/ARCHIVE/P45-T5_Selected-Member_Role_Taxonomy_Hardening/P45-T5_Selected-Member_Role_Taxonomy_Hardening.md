@@ -1,10 +1,11 @@
 # P45-T5 Selected-Member Role Taxonomy Hardening
 
-Status: Planned
+Status: Archived PASS
 Phase: Phase 45. Operational MVP AI Draft Shape Hardening
 Task: P45-T5
 Branch: `feature/P45-T5-selected-member-role-taxonomy-hardening`
 Depends on: P45-T4 Post-Fix Readiness Decision for Bounded Popular-Library Scraping
+Archived: 2026-06-20
 
 ## Problem
 

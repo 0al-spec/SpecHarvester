@@ -2144,7 +2144,7 @@ Acceptance:
   boundaries against P44-T4.
 - [x] `P45-T4` Record the post-fix readiness decision for bounded
   popular-library scraping.
-- [ ] `P45-T5` Resolve the xyflow `selected_member_role_unknown` AI draft
+- [x] `P45-T5` Resolve the xyflow `selected_member_role_unknown` AI draft
   blocker by tightening the selected-member role taxonomy, normalization, and
   validation/reporting contract so known package-set member roles do not remain
   ambiguous after provider output is normalized.

@@ -1,39 +1,43 @@
-# Next Task: P45-T5 Selected-Member Role Taxonomy Hardening
+# Next Task: P45-T6 Single-Package no_proposal_subjects Policy
 
 **Status:** Selected
-**Branch:** `feature/P45-T5-selected-member-role-taxonomy-hardening`
+**Branch:** `feature/P45-T6-single-package-no-proposal-subjects-policy`
 **Phase:** Phase 45. Operational MVP AI Draft Shape Hardening
-**Task:** `P45-T5`
-**Depends On:** `P45-T4` Post-Fix Readiness Decision for Bounded Popular-Library Scraping
+**Task:** `P45-T6`
+**Depends On:** `P45-T5` Selected-Member Role Taxonomy Hardening
 
 ## Goal
 
-Resolve the xyflow `selected_member_role_unknown` AI draft blocker by tightening
-the selected-member role taxonomy, normalization, and validation/reporting
-contract.
+Define and implement the single-package `no_proposal_subjects` policy for
+FastAPI/Gin-style repositories, deciding when a diagnostic-clean zero-subject AI
+draft is acceptable, when it should remain warning-level, and what evidence must
+be visible before broader scraping.
 
 ## Context
 
-P45-T4 completed the post-fix readiness decision and did not approve Phase 46.
-The old `package_set_id_missing` / `excluded_package_unknown` warning class is
-resolved, but P45-T3 still left two readiness blockers:
+P45-T5 resolved the xyflow `selected_member_role_unknown` blocker by normalizing
+selected-member role aliases and preserving true unknown role labels as
+diagnostics. The remaining Phase 45 readiness blocker is the single-package
+AI-draft stop-policy ambiguity:
 
-- xyflow reports `selected_member_role_unknown`;
-- FastAPI/Gin expose `no_proposal_subjects`.
+- FastAPI and Gin can produce diagnostic-clean AI draft proposals;
+- those proposals still expose zero selected proposal subjects;
+- the stop-policy reason remains `no_proposal_subjects`;
+- P45-T6 must decide and encode whether that state is acceptable for stable
+  single-package repositories or should continue to block generation.
 
-P45-T5 should address the xyflow role-taxonomy blocker first. P45-T6 will own
-the single-package `no_proposal_subjects` policy, P45-T7 will rerun the bounded
-operational MVP corpus, and P45-T8 will record the final Phase 46 readiness
-decision.
+P45-T7 will rerun the bounded operational MVP corpus after P45-T6, and P45-T8
+will record the final Phase 46 readiness decision.
 
 ## Expected Deliverables
 
-- Tightened selected-member role taxonomy and normalization/validation behavior.
-- Tests proving known package-set member roles no longer remain ambiguous after
-  provider output is normalized.
-- Documentation or fixture updates explaining the selected-member role boundary
-  and warning semantics.
-- Validation report and archive artifacts for P45-T5.
+- Deterministic policy for diagnostic-clean zero-subject single-package AI
+  draft proposals.
+- Tests proving FastAPI/Gin-style single-package outputs get the intended
+  stop-policy decision and reason.
+- Documentation explaining when `no_proposal_subjects` is blocking,
+  warning-level, or accepted as non-blocking model-loop evidence.
+- Validation report and archive artifacts for P45-T6.
 
 ## Boundaries
 
@@ -48,6 +52,7 @@ decision.
 
 ## Recently Archived
 
+- `P45-T5` Selected-Member Role Taxonomy Hardening: PASS on 2026-06-20.
 - `P45-T4` Post-Fix Readiness Decision for Bounded Popular-Library Scraping:
   PASS on 2026-06-20.
 - `P45-T3` Operational MVP Corpus Rerun After AI Draft Shape Fix: PASS on
@@ -57,6 +62,6 @@ decision.
 
 ## Validation Expectations
 
-- Run focused package-set AI draft proposal tests.
+- Run focused package-set AI draft proposal stop-policy tests.
 - Run docs-contract tests covering the current next task.
 - Run formatting/lint/whitespace checks scaled to touched files.
