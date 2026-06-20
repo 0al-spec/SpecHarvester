@@ -2245,6 +2245,15 @@ Acceptance:
   decision, covering Gin and docc2context AI draft regeneration, xyflow
   evidence-gap disposition, and the bounded rerun gate before any larger
   curated corpus approval.
+- [ ] `P47-T2` Execute the targeted pilot quality pass from the P47-T1 plan,
+  producing repair or explicit disposition evidence for Gin and docc2context
+  AI drafts plus xyflow caveats without approving larger corpus expansion.
+- [ ] `P47-T3` Run the bounded pilot rerun gate after targeted dispositions,
+  preserving static-only-before-AI ordering, proposal-only AI output, and the
+  same six-repository pilot scope.
+- [ ] `P47-T4` Record the targeted quality follow-up exit decision, deciding
+  whether larger curated corpus planning can proceed, another targeted pass is
+  needed, or a documented blocker stops expansion.
 
 Motivation:
 
@@ -2271,3 +2280,9 @@ Acceptance:
   accepted.
 - The phase must not approve a larger curated corpus until the targeted quality
   pass has been planned, executed, and reviewed.
+- `P47-T2` must keep regenerated or accepted AI sidecars proposal-only and
+  must not persist raw prompts, raw provider responses, secrets, or
+  chain-of-thought.
+- `P47-T3` must use the same bounded pilot scope before any expansion.
+- `P47-T4` must explicitly choose proceed, another targeted pass, or stop on a
+  documented blocker.

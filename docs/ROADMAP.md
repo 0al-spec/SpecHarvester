@@ -1177,6 +1177,14 @@ and the machine-readable `SpecHarvesterBoundedPopularLibraryPilotExitDecision`
 fixture, selecting a targeted quality pass before larger curated corpus
 expansion because static evidence is reviewable but AI sidecar quality still
 blocks scale.
+P47-T1 records
+[`TARGETED_PILOT_QUALITY_FOLLOW_UP_PLAN.md`](TARGETED_PILOT_QUALITY_FOLLOW_UP_PLAN.md)
+and the machine-readable `SpecHarvesterTargetedPilotQualityFollowUpPlan`
+fixture. It keeps `gin.aiDraft`, `docc2context.aiDraft`, and the xyflow
+`partial_public_interface_index`, `operator_checkout_origin_fork_mismatch`,
+and `model_evidence_path_unsupported` caveats visible, defines repair or
+disposition workstreams, and requires a bounded rerun gate before any larger
+curated corpus approval.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

@@ -155,6 +155,15 @@ The selected handoff dry run is recorded in
 digests, and `external_required` registry acceptance decisions while all
 deferred candidates stay out of the handoff.
 
+The bounded popular-library pilot has completed its Phase 46 decision and
+entered Phase 47 targeted quality follow-up planning. P47-T1 is recorded in
+<doc:TargetedPilotQualityFollowUpPlan>. It keeps `gin.aiDraft`,
+`docc2context.aiDraft`, and the xyflow
+`partial_public_interface_index`, `operator_checkout_origin_fork_mismatch`,
+and `model_evidence_path_unsupported` caveats visible until repair or explicit
+acceptance, and requires a bounded rerun gate before any larger curated corpus
+approval.
+
 ### Selected Candidate SpecPM Intake Handoff
 
 The completed intake-handoff focus turns selected candidate dry-run evidence
