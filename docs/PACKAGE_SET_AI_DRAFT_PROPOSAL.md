@@ -177,6 +177,25 @@ The model may propose generic roles:
 These roles are proposal labels. They do not replace maintainer review and do
 not become SpecPM registry truth by themselves.
 
+Before writing proposal evidence, SpecHarvester normalizes role labels by
+lowercasing them and treating spaces, hyphens, and punctuation as underscores.
+It accepts the canonical role names above plus narrow aliases from adjacent
+producer vocabularies. Important aliases include:
+
+- inventory/profile roles: `core_runtime` -> `primary_package`,
+  `react_binding` / `svelte_binding` / `library_package` -> `published_package`,
+  `tooling_package` -> `private_tooling_package`;
+- profile hints: `package_set_root` -> `workspace`, `bridge_package` ->
+  `plugin_package`;
+- common model labels: `primary` -> `primary_package`, `cli` -> `cli_package`,
+  `fixture` -> `fixture_package`, `test` -> `test_package`, `package` ->
+  `member_package`.
+
+Unknown role labels still produce `selected_member_role_unknown`. The selected
+member record falls back to `member_package`, and the diagnostic records the
+original `modelRole` plus `normalizedFallbackRole` so author review can decide
+whether the taxonomy needs a future extension.
+
 ## Trust Boundary
 
 This contract keeps the original `LLM + schema` idea while avoiding a

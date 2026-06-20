@@ -41,6 +41,17 @@ SpecHarvester normalizes this output and emits diagnostics. Unsupported
 evidence paths produce `model_evidence_path_unsupported`; relations fail closed
 when they target packages that were not selected.
 
+Selected-member role labels are normalized before they become proposal
+evidence. Canonical role strings are preserved, while narrow aliases from
+adjacent producer vocabularies are mapped into the proposal taxonomy:
+`core_runtime` becomes `primary_package`; `react_binding`, `svelte_binding`,
+and `library_package` become `published_package`; `tooling_package` becomes
+`private_tooling_package`; `package_set_root` becomes `workspace`; and common
+model labels such as `primary`, `cli`, `fixture`, `test`, and `package` map to
+their canonical package roles. Unknown labels still emit
+`selected_member_role_unknown`; the selected member falls back to
+`member_package`, and the diagnostic keeps the original `modelRole`.
+
 If model output omits `packageSet.packageId`, SpecHarvester uses the
 deterministic request package-set id instead of recording a warning. For
 single-package inventories, unknown `excludedPackages` entries are ignored as

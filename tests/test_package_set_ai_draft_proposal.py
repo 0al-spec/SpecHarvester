@@ -259,6 +259,56 @@ def test_package_set_ai_draft_normalizes_selected_member_path_to_inventory(
     assert core["sourceTargetPath"] == "packages/core"
 
 
+def test_package_set_ai_draft_normalizes_selected_member_role_aliases(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["selectedMembers"][0]["role"] = "core_runtime"
+    payload["selectedMembers"][1]["role"] = "react binding"
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    members = {item["packageId"]: item for item in report["selectedMembers"]}
+    assert report["status"] == "completed"
+    assert members["demo.core"]["role"] == "primary_package"
+    assert members["demo.cli"]["role"] == "published_package"
+    assert "selected_member_role_unknown" not in {item["code"] for item in report["diagnostics"]}
+
+
+def test_package_set_ai_draft_warns_and_falls_back_for_unknown_selected_member_role(
+    tmp_path: Path,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    payload = json.loads(model_output.read_text(encoding="utf-8"))
+    payload["selectedMembers"][0]["role"] = "mystery surface"
+    model_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    core = next(item for item in report["selectedMembers"] if item["packageId"] == "demo.core")
+    role_diagnostic = next(
+        item for item in report["diagnostics"] if item["code"] == "selected_member_role_unknown"
+    )
+    assert report["status"] == "warning"
+    assert core["role"] == "member_package"
+    assert role_diagnostic["modelRole"] == "mystery surface"
+    assert role_diagnostic["normalizedFallbackRole"] == "member_package"
+
+
 def test_package_set_ai_draft_fails_invalid_relation_endpoint(
     tmp_path: Path,
 ) -> None:

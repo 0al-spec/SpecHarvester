@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import time
 import urllib.error
 import urllib.parse
@@ -46,6 +47,62 @@ PROPOSED_MEMBER_ROLES = {
     "test_package",
     "private_tooling_package",
     "member_package",
+}
+
+PROPOSED_MEMBER_ROLE_ALIASES = {
+    "adapter": "plugin_package",
+    "adapter_package": "plugin_package",
+    "binding": "published_package",
+    "binary": "platform_binary_package",
+    "binary_package": "platform_binary_package",
+    "bridge": "plugin_package",
+    "bridge_package": "plugin_package",
+    "cli": "cli_package",
+    "command_line": "cli_package",
+    "command_line_package": "cli_package",
+    "core": "primary_package",
+    "core_library": "primary_package",
+    "core_package": "primary_package",
+    "core_runtime": "primary_package",
+    "demo": "example_package",
+    "demo_package": "example_package",
+    "example": "example_package",
+    "extension": "plugin_package",
+    "extension_package": "plugin_package",
+    "fixture": "fixture_package",
+    "framework_adapter": "plugin_package",
+    "framework_binding": "published_package",
+    "internal_tool": "private_tooling_package",
+    "internal_tooling": "private_tooling_package",
+    "library": "published_package",
+    "library_package": "published_package",
+    "main": "primary_package",
+    "main_package": "primary_package",
+    "member": "member_package",
+    "module": "member_package",
+    "native_binary": "platform_binary_package",
+    "npm_package": "published_package",
+    "package": "member_package",
+    "package_set_root": "workspace",
+    "playground": "example_package",
+    "primary": "primary_package",
+    "public_package": "published_package",
+    "published": "published_package",
+    "react_binding": "published_package",
+    "root": "workspace",
+    "root_package": "workspace",
+    "runtime": "primary_package",
+    "runtime_package": "primary_package",
+    "sub_package": "member_package",
+    "subpackage": "member_package",
+    "svelte_binding": "published_package",
+    "test": "test_package",
+    "testing": "test_package",
+    "tool": "private_tooling_package",
+    "tooling": "private_tooling_package",
+    "tooling_package": "private_tooling_package",
+    "workspace_member": "member_package",
+    "workspace_package": "workspace",
 }
 
 TRUST_BOUNDARY_NOTES = [
@@ -545,15 +602,19 @@ def selected_member_proposals(
             continue
         seen.add(package_id)
         inventory_record = inventory_by_id[package_id]
-        role = string_value(item.get("role")) or "member_package"
-        if role not in PROPOSED_MEMBER_ROLES:
+        model_role = string_value(item.get("role"))
+        role, role_normalized = normalize_selected_member_role(model_role)
+        if not role_normalized:
             diagnostics.append(
                 diagnostic(
                     "warning",
                     "selected_member_role_unknown",
                     "Selected member role is outside the documented taxonomy.",
                     package_id,
-                    {"role": role},
+                    {
+                        "modelRole": model_role,
+                        "normalizedFallbackRole": role,
+                    },
                 )
             )
         records.append(
@@ -575,6 +636,18 @@ def selected_member_proposals(
             }
         )
     return sorted(records, key=lambda item: item["packageId"])
+
+
+def normalize_selected_member_role(model_role: str) -> tuple[str, bool]:
+    if not model_role:
+        return "member_package", True
+    normalized = re.sub(r"[^a-z0-9]+", "_", model_role.strip().lower()).strip("_")
+    if normalized in PROPOSED_MEMBER_ROLES:
+        return normalized, True
+    alias = PROPOSED_MEMBER_ROLE_ALIASES.get(normalized)
+    if alias is not None:
+        return alias, True
+    return "member_package", False
 
 
 def excluded_package_proposals(
