@@ -27,10 +27,10 @@ The handoff summary references:
 
 ```text
 tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json
-sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab
+sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0
 
 tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json
-sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d
+sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a
 ```
 
 ## Handoff Categories
@@ -50,14 +50,16 @@ Each repository records four author categories:
 
 | Repository | Handoff verdict | Valid | Reviewable | Needs manual correction | Do not promote |
 | --- | --- | ---: | ---: | ---: | ---: |
-| `xyflow` | `ready_for_author_review` | 3 | 3 | 1 | 3 |
+| `xyflow` | `ready_for_author_review` | 3 | 3 | 2 | 3 |
 | `fastapi` | `ready_for_author_review` | 3 | 3 | 0 | 3 |
 | `gin` | `ready_for_author_review` | 3 | 3 | 0 | 3 |
 
-The xyflow manual correction item is
+The xyflow manual correction items are
 `resolve_or_accept_partial_public_interface_index`, which asks the author to
 inspect the partial public-interface index diagnostics before relying on
-generated interface evidence.
+generated interface evidence, and `review_operator_checkout_origin_fork_mismatch`,
+which asks the author to confirm whether evidence from the SoundBlaster fork is
+acceptable for canonical xyflow package review.
 
 ## AI Comparison State
 

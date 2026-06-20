@@ -28845,10 +28845,13 @@ def test_operational_mvp_author_handoff_summaries_are_documented() -> None:
             "do_not_promote_adapter_output",
         }
 
-    assert summaries["xyflow"]["authorActionCounts"]["needsManualCorrectionCount"] == 1
+    assert summaries["xyflow"]["authorActionCounts"]["needsManualCorrectionCount"] == 2
     assert {
         item["id"] for item in summaries["xyflow"]["authorSummary"]["needsManualCorrection"]
-    } == {"resolve_or_accept_partial_public_interface_index"}
+    } == {
+        "resolve_or_accept_partial_public_interface_index",
+        "review_operator_checkout_origin_fork_mismatch",
+    }
     assert summaries["fastapi"]["authorActionCounts"]["needsManualCorrectionCount"] == 0
     assert summaries["gin"]["authorActionCounts"]["needsManualCorrectionCount"] == 0
 
@@ -28902,9 +28905,9 @@ def test_operational_mvp_author_handoff_summaries_are_documented() -> None:
             "producer_operational_mvp_author_handoff_only",
             "p43-t6-operational-mvp-author-handoff-summaries.example.json",
             "p43-t4-operational-mvp-static-only-baseline.example.json",
-            "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
+            "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
             "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
-            "sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d",
+            "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
             "valid",
             "reviewable",
             "needsManualCorrection",
@@ -28914,6 +28917,8 @@ def test_operational_mvp_author_handoff_summaries_are_documented() -> None:
             "fastapi",
             "gin",
             "resolve_or_accept_partial_public_interface_index",
+            "review_operator_checkout_origin_fork_mismatch",
+            "SoundBlaster fork",
             "completed_with_draft_warnings",
             "ai_draft_warning_enrichment_completed",
             "ai_proposal_available_for_author_review",

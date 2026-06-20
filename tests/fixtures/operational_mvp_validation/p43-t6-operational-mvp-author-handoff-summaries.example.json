@@ -9,14 +9,14 @@
   "sourceArtifacts": {
     "staticOnlyBaseline": {
       "path": "tests/fixtures/operational_mvp_validation/p43-t4-operational-mvp-static-only-baseline.example.json",
-      "digest": "sha256:39e623bb3eb835ef1e57286bd6d06394c4fe62fd594e3f756e18f96a4c9ea3ab",
+      "digest": "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
       "apiVersion": "spec-harvester.operational-mvp-static-only-baseline/v0",
       "kind": "SpecHarvesterOperationalMVPStaticOnlyBaseline",
       "authority": "producer_operational_mvp_static_only_baseline_only"
     },
     "aiEnabledComparison": {
       "path": "tests/fixtures/operational_mvp_validation/p43-t5-operational-mvp-ai-enabled-comparison.example.json",
-      "digest": "sha256:1ad9d2b59bd17dfd50d0abd9fc481883d03dacaf3ebe8f717a064b91be58052d",
+      "digest": "sha256:cd03f8486a7cb9bd1dcf6efde1c7660ce6f63457a082207b1e81ee62ff5e327a",
       "apiVersion": "spec-harvester.operational-mvp-ai-comparison/v0",
       "kind": "SpecHarvesterOperationalMVPAIEnabledComparison",
       "authority": "producer_operational_mvp_ai_comparison_only"
@@ -124,6 +124,11 @@
             "id": "resolve_or_accept_partial_public_interface_index",
             "summary": "Inspect xyflow partial public-interface index diagnostics before relying on generated interface evidence.",
             "source": "P43-T4 evidencePrecision caveat"
+          },
+          {
+            "id": "review_operator_checkout_origin_fork_mismatch",
+            "summary": "Confirm whether evidence from the SoundBlaster/xyflow fork is acceptable for canonical xyflow package review before submission.",
+            "source": "P43-T4 evidencePrecision caveat"
           }
         ],
         "doNotPromote": [
@@ -147,7 +152,7 @@
       "authorActionCounts": {
         "validCount": 3,
         "reviewableCount": 3,
-        "needsManualCorrectionCount": 1,
+        "needsManualCorrectionCount": 2,
         "doNotPromoteCount": 3
       },
       "nonAuthority": {
