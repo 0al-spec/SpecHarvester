@@ -1065,6 +1065,12 @@ fixture. It records a real static-only run over operator-provided pinned local
 xyflow, FastAPI, and Gin checkouts, with passed preflight, author-ready preview
 candidates, quality dimensions, a partial public-interface-index caveat for
 xyflow, and no package acceptance or registry authority.
+P43-T5 adds
+[`OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md`](OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md)
+and the machine-readable `SpecHarvesterOperationalMVPAIEnabledComparison`
+fixture. It records the live local LM Studio `openai/gpt-oss-20b` run over the
+same pinned corpus as P43-T4, preserves the static-only handoff baseline, and
+keeps AI draft/enrichment sidecars proposal-only.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

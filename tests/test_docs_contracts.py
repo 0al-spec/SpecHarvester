@@ -38,6 +38,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P43-T6 Operational MVP Author Handoff Summaries" in next_text:
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
+        assert "`P43-T6`" in next_text
+        assert "author handoff summaries" in next_text
+        assert "package author" in next_text
+        assert "what is valid" in next_text
+        assert "what should not be promoted" in next_text
+        return
+
     if "# Next Task: P43-T5 Operational MVP AI-Enabled Comparison" in next_text:
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 43. Operational MVP Validation" in next_text
@@ -28199,6 +28209,457 @@ def test_operational_mvp_static_only_baseline_is_documented() -> None:
     workplan_text = workplan.read_text(encoding="utf-8")
     assert "`P43-T4` Run the operational MVP validation" in workplan_text
     assert "static-only quality baseline" in workplan_text
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_operational_mvp_ai_enabled_comparison_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t5-operational-mvp-ai-enabled-comparison.example.json"
+    )
+    plan_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t2-operational-mvp-validation-plan.example.json"
+    )
+    report_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t3-operational-mvp-validation-report.example.json"
+    )
+    baseline_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "operational_mvp_validation"
+        / "p43-t4-operational-mvp-static-only-baseline.example.json"
+    )
+    github_doc = ROOT / "docs" / "OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPAIEnabledComparison.md"
+    )
+    plan_doc = ROOT / "docs" / "OPERATIONAL_MVP_VALIDATION_PLAN.md"
+    plan_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPValidationPlan.md"
+    )
+    baseline_doc = ROOT / "docs" / "OPERATIONAL_MVP_STATIC_ONLY_BASELINE.md"
+    baseline_docc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "OperationalMVPStaticOnlyBaseline.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.operational-mvp-ai-comparison/v0"
+    assert payload["kind"] == "SpecHarvesterOperationalMVPAIEnabledComparison"
+    assert payload["schemaVersion"] == 1
+    assert payload["authority"] == "producer_operational_mvp_ai_comparison_only"
+    assert payload["phase"] == "P43"
+    assert payload["task"] == "P43-T5"
+    assert payload["reportMode"] == "live_ai_enabled_comparison"
+    assert payload["plan"] == {
+        "path": (
+            "tests/fixtures/operational_mvp_validation/"
+            "p43-t2-operational-mvp-validation-plan.example.json"
+        ),
+        "digest": "sha256:" + hashlib.sha256(plan_path.read_bytes()).hexdigest(),
+        "apiVersion": "spec-harvester.operational-mvp-validation-plan/v0",
+        "kind": "SpecHarvesterOperationalMVPValidationPlan",
+        "authority": "producer_operational_mvp_validation_plan_only",
+    }
+    assert payload["reportFixture"] == {
+        "path": (
+            "tests/fixtures/operational_mvp_validation/"
+            "p43-t3-operational-mvp-validation-report.example.json"
+        ),
+        "digest": "sha256:" + hashlib.sha256(report_fixture_path.read_bytes()).hexdigest(),
+        "apiVersion": "spec-harvester.operational-mvp-validation-report/v0",
+        "kind": "SpecHarvesterOperationalMVPValidationReport",
+        "authority": "producer_operational_mvp_validation_report_only",
+    }
+    assert payload["staticOnlyBaseline"] == {
+        "path": (
+            "tests/fixtures/operational_mvp_validation/"
+            "p43-t4-operational-mvp-static-only-baseline.example.json"
+        ),
+        "digest": "sha256:" + hashlib.sha256(baseline_path.read_bytes()).hexdigest(),
+        "apiVersion": baseline["apiVersion"],
+        "kind": baseline["kind"],
+        "authority": baseline["authority"],
+        "summary": baseline["summary"],
+    }
+    assert payload["sourceRun"] == {
+        "runRoot": ("/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z"),
+        "command": (
+            "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch "
+            "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/"
+            "inputs --out "
+            "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/"
+            "output --repository-profile-selection auto --lm-studio-base-url "
+            "http://127.0.0.1:1234 --lm-studio-model openai/gpt-oss-20b "
+            "--json-repair-max-attempts 1"
+        ),
+        "inputManifest": {
+            "path": (
+                "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/"
+                "inputs/p43-t4-corpus.yml"
+            ),
+            "digest": "sha256:f83b92e94bf766f7b308f77633c4980a60a7dfffa0bd400d7e8faacdf10663de",
+        },
+        "batchReport": {
+            "path": (
+                "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/"
+                "output/autonomous-candidate-batch-report.json"
+            ),
+            "digest": "sha256:3a677f471c18bdbabd7c80d6edcbb5af4ec80ec36ff7d325a483c87f672a8016",
+            "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+            "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+            "authority": "producer_preview_evidence_only",
+            "status": "passed",
+        },
+        "validationReport": {
+            "path": (
+                "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/"
+                "output/reports/batch-validation-report.json"
+            ),
+            "digest": "sha256:94421f015982bd409305dbae50fae9903e62c5ce680f0eea33f132550369bf55",
+        },
+        "aiMode": {
+            "baseUrl": "http://127.0.0.1:1234",
+            "chainOfThoughtPersisted": False,
+            "execution": "operator_opt_in_local",
+            "jsonRepairMaxAttempts": 1,
+            "mode": "local_lm_studio",
+            "model": "openai/gpt-oss-20b",
+            "provider": "lm_studio",
+            "rawPromptPersisted": False,
+            "rawResponsePersisted": False,
+        },
+        "repositoryProfileSelection": {
+            "advisoryHintsAppliedToDrafting": False,
+            "artifact": "repository-profile-detection.json",
+            "authority": "producer_profile_selection_only",
+            "defaultMode": "none",
+            "execution": "static_collected_evidence_only",
+            "mode": "auto",
+            "registryAuthority": False,
+        },
+    }
+    assert payload["providerProbe"] == {
+        "providerPolicy": "local_openai_compatible_optional",
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelsEndpoint": "http://127.0.0.1:1234/v1/models",
+        "command": "curl --silent --show-error --max-time 5 http://127.0.0.1:1234/v1/models",
+        "status": "provider_available",
+        "exitCode": 0,
+        "error": None,
+        "modelListRetrieved": True,
+        "availableModelIds": [
+            "openai/gpt-oss-20b",
+            "phi-4-mini-reasoning-mlx",
+            "text-embedding-nomic-embed-text-v1.5",
+        ],
+        "requestedModel": "openai/gpt-oss-20b",
+        "aiRunAllowed": True,
+    }
+    assert payload["summary"] == {
+        "repositoryComparisonCount": 3,
+        "samePinnedCorpusAsStaticBaseline": True,
+        "staticOnlyBaselineReadyCount": 3,
+        "providerAvailable": True,
+        "aiEnabledRunPerformed": True,
+        "aiDraftProposalArtifactCount": 3,
+        "aiEnrichmentProposalArtifactCount": 3,
+        "aiProposalArtifactCount": 6,
+        "aiEnrichmentProposalMemberCount": 6,
+        "aiComparisonPassedCount": 3,
+        "aiComparisonWarningCount": 3,
+        "aiComparisonProviderUnavailableCount": 0,
+        "aiEnrichedPreviewAppliedCount": 0,
+        "providerPromptTokens": 78310,
+        "providerCompletionTokens": 2693,
+        "providerTotalTokens": 81003,
+        "aiOutputAcceptedAsRegistryTruth": False,
+        "specpmHandoffChangedByAI": False,
+    }
+    expected_dimensions = baseline["qualityDimensionIds"]
+    assert payload["qualityDimensionIds"] == expected_dimensions
+
+    baseline_by_id = {result["repositoryId"]: result for result in baseline["repositoryResults"]}
+    enrichment_counts = {"xyflow": 4, "fastapi": 1, "gin": 1}
+    token_usage = {
+        "xyflow": {
+            "providerPromptTokens": 46938,
+            "providerCompletionTokens": 1856,
+            "providerTotalTokens": 48794,
+        },
+        "fastapi": {
+            "providerPromptTokens": 16146,
+            "providerCompletionTokens": 394,
+            "providerTotalTokens": 16540,
+        },
+        "gin": {
+            "providerPromptTokens": 15226,
+            "providerCompletionTokens": 443,
+            "providerTotalTokens": 15669,
+        },
+    }
+    package_ids = {
+        "xyflow": [
+            "xyflow.react",
+            "xyflow.svelte",
+            "xyflow.system",
+            "xyflow.workspace",
+        ],
+        "fastapi": ["fastapi.core"],
+        "gin": ["gin.core"],
+    }
+    comparisons = payload["repositoryComparisons"]
+    assert {comparison["repositoryId"] for comparison in comparisons} == set(baseline_by_id)
+    for comparison in comparisons:
+        repository_id = comparison["repositoryId"]
+        baseline_result = baseline_by_id[comparison["repositoryId"]]
+        assert comparison["pinnedCheckout"] == baseline_result["pinnedCheckout"]
+        assert comparison["staticOnlyBaseline"] == {
+            "status": baseline_result["staticOnlyResult"]["status"],
+            "authorReadyVerdict": baseline_result["authorReadyVerdict"],
+            "candidateCount": baseline_result["staticOnlyResult"]["candidateCount"],
+            "relationCount": baseline_result["staticOnlyResult"]["relationCount"],
+            "qualityDimensions": baseline_result["qualityDimensions"],
+            "specpmHandoffReadiness": baseline_result["specpmHandoffReadiness"],
+            "caveats": baseline_result["stopPolicyOutcome"].get("caveats", []),
+        }
+        assert comparison["aiEnabledResult"] == {
+            "runMode": "ai_enabled_proposal",
+            "status": "completed_with_draft_warnings",
+            "providerBaseUrl": "http://127.0.0.1:1234",
+            "provider": "lm_studio",
+            "requestedModel": "openai/gpt-oss-20b",
+            "modelSelectionStatus": "selected",
+            "proposalArtifactCount": 2,
+            "aiDraftProposalStatus": "warning",
+            "aiDraftDiagnosticCodes": ["package_set_id_missing"],
+            "aiDraftWarningCount": 1,
+            "aiEnrichmentStatus": "completed",
+            "aiEnrichmentProposalCount": enrichment_counts[repository_id],
+            "aiEnrichmentWarningCount": 0,
+            "aiEnrichmentErrorCount": 0,
+            "aiEnrichedPreviewApplied": False,
+            "aiOutputAuthority": "proposal_only",
+            "rawPromptPersisted": False,
+            "rawResponsePersisted": False,
+            "chainOfThoughtPersisted": False,
+            "adapterExecution": "not_run",
+            "registryAuthority": False,
+        }
+        assert set(comparison["aiArtifacts"]) == {
+            "draftProposal",
+            "draftRequest",
+            "enrichmentProposal",
+            "enrichmentRequests",
+        }
+        for artifact in comparison["aiArtifacts"].values():
+            assert artifact["path"].startswith(
+                "/tmp/specharvester-p43-t5-operational-mvp-ai-enabled-live-20260620T071412Z/"
+            )
+            assert artifact["digest"].startswith("sha256:")
+        assert comparison["aiArtifacts"]["draftProposal"]["status"] == "warning"
+        assert comparison["aiArtifacts"]["enrichmentProposal"]["status"] == "completed"
+        assert comparison["tokenUsage"] == token_usage[repository_id]
+        assert comparison["delta"]["status"] == "ai_proposal_available_for_author_review"
+        assert comparison["delta"]["candidateCountDelta"] == 0
+        assert comparison["delta"]["relationCountDelta"] == 0
+        assert set(comparison["delta"]["qualityDimensionDeltas"]) == set(expected_dimensions)
+        assert comparison["delta"]["qualityDimensionDeltas"]["validity"] == (
+            "unchanged_static_preflight_passed_ai_enrichment_completed"
+        )
+        assert comparison["delta"]["qualityDimensionDeltas"]["repositorySpecificity"] == (
+            "ai_enrichment_proposal_available_for_author_review"
+        )
+        assert comparison["delta"]["handoffReadinessDelta"] == (
+            "unchanged_proposal_only_static_handoff_retained"
+        )
+        assert comparison["warning"]["code"] == "ai_draft_warning_enrichment_completed"
+        assert comparison["warning"]["diagnosticCodes"] == ["package_set_id_missing"]
+        assert "AI enrichment completed cleanly" in comparison["warning"]["message"]
+        assert comparison["stopPolicyOutcome"] == {
+            "outcome": "author_ready_draft_with_ai_enrichment_proposals",
+            "draftStopPolicyStatus": "needs_regeneration",
+            "draftStopPolicyDecision": "continue_generation",
+            "enrichmentStopPolicyStatus": "author_ready_draft",
+            "enrichmentStopPolicyDecision": "stop_for_author_review",
+            "stopConditions": ["ai_enrichment_stop_for_author_review"],
+            "staticOnlyOutcomePreserved": "author_ready_draft",
+        }
+        assert comparison["specpmHandoffImpact"] == {
+            "staticOnlyHandoffReady": True,
+            "aiImprovementAvailable": True,
+            "reason": "proposal_only_ai_enrichment_available_for_author_review",
+            "requiresAuthorReview": True,
+            "aiOutputAcceptedAsRegistryTruth": False,
+            "registryAuthority": False,
+        }
+        assert comparison["authorReadyDraftSummary"] == {
+            "status": "author_ready_draft",
+            "decision": "stop_for_author_review",
+            "memberCounts": {
+                "author_ready_draft": enrichment_counts[repository_id],
+                "blocked": 0,
+                "needs_regeneration": 0,
+                "total": enrichment_counts[repository_id],
+            },
+            "packageIds": package_ids[repository_id],
+            "blockingReasons": [],
+        }
+
+    assert payload["authorityBoundary"] == {
+        "producerSideEvidence": True,
+        "comparisonIsRegistryAuthority": False,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "publishesRegistryMetadata": False,
+        "seedsBaselines": False,
+        "removesPreviewOnly": False,
+        "aiOutputAcceptedAsRegistryTruth": False,
+        "adapterOutputAcceptedAsRegistryTruth": False,
+        "trustedLocalAdapterExecutionEnabled": False,
+        "providerAvailable": True,
+        "aiInvocationPerformed": True,
+        "aiEnrichedPreviewApplied": False,
+        "rawPromptPersisted": False,
+        "rawResponsePersisted": False,
+        "chainOfThoughtPersisted": False,
+        "implicitRepositoryFetchAllowed": False,
+        "networkDiscoveryAllowed": False,
+        "dependencyInstallationAllowed": False,
+        "packageManagerInvocationAllowed": False,
+        "harvestedCodeExecutionAllowed": False,
+    }
+    for statement in (
+        "ai_comparison_is_producer_side_evidence",
+        "live_lm_studio_output_is_proposal_only",
+        "ai_enrichment_sidecars_do_not_change_static_handoff_truth",
+        "does_not_call_hosted_ai_services",
+        "does_not_persist_raw_prompts",
+        "does_not_persist_raw_provider_responses",
+        "does_not_persist_chain_of_thought",
+        "does_not_clone_or_fetch_repositories",
+        "does_not_accept_mutable_repository_state",
+        "does_not_execute_harvested_code",
+        "does_not_install_dependencies",
+        "does_not_invoke_package_managers",
+        "does_not_enable_trusted_local_adapter_execution",
+        "does_not_run_adapter_code",
+        "does_not_accept_packages",
+        "does_not_accept_relations",
+        "does_not_publish_registry_metadata",
+        "does_not_seed_baselines",
+        "does_not_remove_preview_only",
+        "does_not_treat_ai_output_as_registry_truth",
+        "does_not_treat_adapter_output_as_registry_truth",
+    ):
+        assert statement in payload["nonAuthorityStatements"]
+    assert payload["followUp"] == {
+        "authorHandoffSummaryTask": "P43-T6",
+        "exitReportTask": "P43-T7",
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Operational MVP AI-Enabled Comparison",
+            "P43-T5",
+            "live AI-enabled comparison",
+            "p43-t5-operational-mvp-ai-enabled-comparison.example.json",
+            "curl --silent --show-error --max-time 5 http://127.0.0.1:1234/v1/models",
+            "provider_available",
+            "exitCode: 0",
+            "lm_studio",
+            "openai/gpt-oss-20b",
+            "p43-t4-operational-mvp-static-only-baseline.example.json",
+            "sha256:c3913b1c42546fc4c9864e81731edf21d4798143ad703ce8968600611d3ad9f0",
+            "sha256:3a677f471c18bdbabd7c80d6edcbb5af4ec80ec36ff7d325a483c87f672a8016",
+            "same pinned corpus",
+            "aiEnabledRunPerformed: true",
+            "aiProposalArtifactCount: 6",
+            "ai_draft_warning_enrichment_completed",
+            "proposal-only",
+            "P43-T6",
+            "P43-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "call hosted AI services",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+            "clone or fetch repositories",
+            "accept mutable repository state",
+            "execute harvested code",
+            "install dependencies",
+            "invoke package managers",
+            "enable trusted local adapter execution",
+            "run adapter code",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "treat AI output as registry truth",
+            "treat adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md"),
+        (docc_root, "docs/OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md"),
+        (capabilities, "OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md"),
+        (capabilities_docc, "OperationalMVPAIEnabledComparison"),
+        (roadmap, "OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md"),
+        (roadmap_docc, "OperationalMVPAIEnabledComparison"),
+        (plan_doc, "OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md"),
+        (plan_docc, "OperationalMVPAIEnabledComparison"),
+        (baseline_doc, "OPERATIONAL_MVP_AI_ENABLED_COMPARISON.md"),
+        (baseline_docc, "OperationalMVPAIEnabledComparison"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+
+    workplan_text = workplan.read_text(encoding="utf-8")
+    assert "`P43-T5` Run the AI-enabled comparison" in workplan_text
+    assert "AI output stays proposal-only" in workplan_text
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 

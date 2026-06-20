@@ -111,8 +111,9 @@ maintainer review and acceptance.
 
 ## Follow-Up
 
-- `P43-T5`: run the AI-enabled proposal comparison over the same pinned corpus
-  when a local OpenAI-compatible provider is available.
+- `P43-T5`: recorded <doc:OperationalMVPAIEnabledComparison> over the same
+  pinned corpus with local LM Studio `openai/gpt-oss-20b`; AI draft/enrichment
+  sidecars are proposal-only and do not change static handoff truth.
 - `P43-T6`: add author handoff summaries.
 - `P43-T7`: record the operational MVP exit decision.
 
@@ -121,5 +122,6 @@ maintainer review and acceptance.
 - <doc:OperationalMVPValidationPlan>
 - <doc:OperationalMVPValidationPlanFixture>
 - <doc:OperationalMVPValidationReportFixture>
+- <doc:OperationalMVPAIEnabledComparison>
 - <doc:AutonomousCandidateBatch>
 - <doc:AuthorReadyDraftQualityReport>
