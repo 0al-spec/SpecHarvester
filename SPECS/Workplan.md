@@ -2202,7 +2202,7 @@ Acceptance:
 - [x] `P46-T5` Produce author-facing handoff summaries for pilot outputs,
   separating reviewable package evidence from unresolved warnings, caveats, and
   registry-promotion blockers.
-- [ ] `P46-T6` Record the pilot exit decision: proceed to a larger curated
+- [x] `P46-T6` Record the pilot exit decision: proceed to a larger curated
   corpus, run another targeted quality pass, or stop on a documented blocker.
 
 Motivation:

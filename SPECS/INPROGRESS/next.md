@@ -1,44 +1,44 @@
-# Next Task: P46-T6 Bounded Popular-Library Pilot Exit Decision
+# Next Task: Phase 46 Complete
 
-**Status:** Selected
-**Branch:** `feature/P46-T6-bounded-popular-library-pilot-exit-decision`
+**Status:** Complete
 **Phase:** Phase 46. Bounded Popular-Library Pilot After AI Draft Hardening
-**Task:** `P46-T6`
-**Depends On:** `P46-T5` Bounded Popular-Library Pilot Author Handoff Summaries
+**Last Archived:** `P46-T6` Bounded Popular-Library Pilot Exit Decision
 
-## Goal
+## Result
 
-Record the bounded pilot exit decision: proceed to a larger curated corpus,
-run a targeted quality pass, or stop on a documented blocker.
+Phase 46 is complete. P46-T6 selected
+`run_targeted_quality_pass_before_larger_curated_corpus`.
 
-## Context
+The bounded pilot produced reviewable static evidence across all six pilot
+repositories, but a larger curated corpus is not approved yet. The recommended
+follow-up is a targeted quality pass before any broader corpus expansion.
 
-P46-T5 produced author-facing handoff summaries for all six pilot
-repositories. Reviewable static evidence is available for Flask, Gin, xyflow,
-Cupertino, NavigationSplitView, and docc2context, but the exit decision must
-account for do-not-promote AI sidecars:
+## Carry-Forward Signals
+
+Keep do-not-promote AI sidecars visible:
 
 - `gin.aiDraft`
 - `docc2context.aiDraft`
 
-The decision must also carry xyflow evidence gaps and unsupported enrichment
-forward explicitly:
+Keep xyflow caveats visible:
 
 - `partial_public_interface_index`
 - `operator_checkout_origin_fork_mismatch`
 - `model_evidence_path_unsupported`
 
-## Expected Deliverables
+These signals mean the next work should be Phase 47 Targeted Pilot Quality
+Follow-Up Planning, not immediate larger curated corpus execution.
 
-- Machine-readable exit decision fixture for the bounded pilot.
-- Markdown and DocC documentation explaining the selected decision and rejected
-  alternatives.
-- Explicit treatment for static reviewability, do-not-promote AI sidecars,
-  xyflow caveats, and larger-corpus readiness.
-- Docs-contract coverage for decision identity, P46-T5 source artifact linkage,
-  selected/rejected decision options, no-authority boundaries, and current
-  next-task pointer.
-- Validation report and archive artifacts for P46-T6.
+## Completed Phase 46 Tasks
+
+- `P46-T1` Bounded Popular-Library Pilot Manifest: PASS on 2026-06-20.
+- `P46-T2` Bounded Popular-Library Pilot Static-Only Run: PASS on 2026-06-20.
+- `P46-T3` Bounded Popular-Library Pilot AI-Enabled Run: PASS as evidence
+  capture on 2026-06-20.
+- `P46-T4` Bounded Popular-Library Pilot Output Triage: PASS on 2026-06-20.
+- `P46-T5` Bounded Popular-Library Pilot Author Handoff Summaries: PASS on
+  2026-06-20.
+- `P46-T6` Bounded Popular-Library Pilot Exit Decision: PASS on 2026-06-20.
 
 ## Boundaries
 
@@ -59,17 +59,8 @@ forward explicitly:
 - Do not treat exit-decision output as registry truth.
 - Do not treat adapter output as registry truth.
 
-## Recently Archived
+## Recommended Follow-Up
 
-- `P46-T5` Bounded Popular-Library Pilot Author Handoff Summaries: PASS on
-  2026-06-20.
-- `P46-T4` Bounded Popular-Library Pilot Output Triage: PASS on 2026-06-20.
-- `P46-T3` Bounded Popular-Library Pilot AI-Enabled Run: PASS as evidence
-  capture on 2026-06-20.
-
-## Validation Expectations
-
-- Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
-- Run focused docs-contract tests for P46-T6 exit decision and current next
-  task.
-- Run formatting/lint/whitespace checks scaled to touched files.
+Plan Phase 47 as a targeted quality pass that clears or explicitly accepts the
+remaining Gin, docc2context, and xyflow signals before larger curated corpus
+approval.
