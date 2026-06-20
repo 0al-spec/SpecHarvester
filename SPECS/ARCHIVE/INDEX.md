@@ -339,6 +339,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P44-T5 | Archived REVIEW_p44_t5_operational_mvp_post_hardening_readiness_decision report |
 | 2026-06-20 | P44-T5 | Archived Operational MVP Post-Hardening Readiness Decision (PASS) |
 | 2026-06-20 | P44-T4 | Archived REVIEW_p44_t4_operational_mvp_quality_hardened_rerun report |
 | 2026-06-20 | P44-T4 | Archived Operational MVP Quality-Hardened Rerun (PASS) |
