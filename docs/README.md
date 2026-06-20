@@ -284,6 +284,9 @@ Published DocC site:
 69. [`BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md`](BOUNDED_POPULAR_LIBRARY_PILOT_MANIFEST.md):
    P46-T1 manifest for the first post-hardening bounded popular-library pilot
    with pinned local checkouts and static-only-first gates
+70. [`BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md`](BOUNDED_POPULAR_LIBRARY_PILOT_STATIC_ONLY_RUN.md):
+   P46-T2 real local static-only pilot result over the bounded manifest,
+   including candidate/relation counts and no-AI/no-adapter boundaries
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

@@ -1,0 +1,560 @@
+{
+  "apiVersion": "spec-harvester.bounded-popular-library-pilot-static-only-run/v0",
+  "schemaVersion": 1,
+  "kind": "SpecHarvesterBoundedPopularLibraryPilotStaticOnlyRun",
+  "authority": "producer_static_preview_evidence_only",
+  "phase": "P46",
+  "task": "P46-T2",
+  "run": {
+    "id": "p46-t2-bounded-popular-library-static-only-20260620T200603Z",
+    "mode": "static_only",
+    "root": "/tmp/specharvester-p46-t2-bounded-popular-library-static-only-20260620T200603Z",
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch inputs/p46-bounded-popular-library-pilot --out /tmp/specharvester-p46-t2-bounded-popular-library-static-only-20260620T200603Z/output --skip-ai --repository-profile-selection auto",
+    "sourceManifestCommand": "PYTHONPATH=src python -m spec_harvester source-manifests inputs/p46-bounded-popular-library-pilot",
+    "status": "passed"
+  },
+  "sourceArtifacts": {
+    "p46PilotManifest": {
+      "path": "tests/fixtures/bounded_popular_library_pilot_manifest/p46-t1-bounded-popular-library-pilot-manifest.example.json",
+      "digest": "sha256:6b4c804648c94db071d716ba63d6750df773c8fb64e49a917c69f4f6942649fe",
+      "apiVersion": "spec-harvester.bounded-popular-library-pilot-manifest/v0",
+      "kind": "SpecHarvesterBoundedPopularLibraryPilotManifest",
+      "authority": "producer_bounded_pilot_manifest_only"
+    }
+  },
+  "sourceManifest": {
+    "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "digest": "sha256:b00a59837c64477819e01d5f97845ab8379cbe909ae464d2f1faee37e65c2f61",
+    "entryCount": 6,
+    "requiresExistingCheckouts": true,
+    "cloneAllowed": false,
+    "fetchAllowed": false
+  },
+  "batchReport": {
+    "path": "/tmp/specharvester-p46-t2-bounded-popular-library-static-only-20260620T200603Z/output/autonomous-candidate-batch-report.json",
+    "digest": "sha256:01a47a4ceb6d787a11a0059dfca805c35ea51625943bb1873fef5284e271a9b7",
+    "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+    "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+    "authority": "producer_preview_evidence_only"
+  },
+  "summary": {
+    "aiDraftProposalCount": 0,
+    "aiEnrichedPreviewAppliedCount": 0,
+    "aiEnrichedPreviewFailedCount": 0,
+    "aiEnrichedPreviewSkippedCount": 0,
+    "aiEnrichmentProposalCount": 0,
+    "collectedCount": 6,
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 6,
+    "processedCount": 6,
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "repositoryPluginApplicabilitySidecarCount": 0,
+    "repositoryProfileDetectionCount": 6,
+    "repositoryProfileDisabledCount": 0,
+    "repositoryProfileFallbackCount": 2,
+    "repositoryProfileSelectedCount": 4,
+    "skippedCount": 0,
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    "candidateCount": 9,
+    "relationCount": 3,
+    "preflightWarningCount": 0,
+    "interfaceDiagnosticCount": 29
+  },
+  "repositories": [
+    {
+      "id": "flask",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "checkout": "/Users/egor/Development/GitHub/flask",
+      "status": "passed",
+      "packageId": "flask.core",
+      "candidatePackageIds": [
+        "flask.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "errorCount": 0,
+        "path": "/tmp/specharvester-p46-t2-bounded-popular-library-static-only-20260620T200603Z/output/package-sets/flask/bundle-set-preflight.json",
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 941,
+        "packageCount": 1,
+        "entrypointCount": 83,
+        "executedAnalyzerIds": [
+          "spec_harvester.python_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.python_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "gin",
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "checkout": "/Users/egor/Development/GitHub/gin",
+      "status": "passed",
+      "packageId": "gin.core",
+      "candidatePackageIds": [
+        "gin.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "errorCount": 0,
+        "path": "/tmp/specharvester-p46-t2-bounded-popular-library-static-only-20260620T200603Z/output/package-sets/gin/bundle-set-preflight.json",
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 456,
+        "packageCount": 5,
+        "entrypointCount": 56,
+        "executedAnalyzerIds": [
+          "spec_harvester.go_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.c_cpp_manifest_profile",
+          "spec_harvester.go_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "xyflow",
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "checkout": "/Users/egor/Development/GitHub/xyflow",
+      "status": "passed",
+      "packageId": "xyflow.workspace",
+      "candidatePackageIds": [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace"
+      ],
+      "candidateCount": 4,
+      "relationIds": [
+        "xyflow.workspace.contains.xyflow.react",
+        "xyflow.workspace.contains.xyflow.svelte",
+        "xyflow.workspace.contains.xyflow.system"
+      ],
+      "relationCount": 3,
+      "preflight": {
+        "candidateCount": 4,
+        "candidatePreflightPassedCount": 4,
+        "errorCount": 0,
+        "path": "/tmp/specharvester-p46-t2-bounded-popular-library-static-only-20260620T200603Z/output/package-sets/xyflow/bundle-set-preflight.json",
+        "relationCount": 3,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "interfaceIndex": {
+        "status": "partial",
+        "diagnosticCount": 29,
+        "symbolCount": 1,
+        "packageCount": 11,
+        "entrypointCount": 2,
+        "executedAnalyzerIds": [
+          "spec_harvester.js_ts_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.js_ts_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.package_set.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "workspace_manifest_present",
+          "multiple_member_manifests_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 4,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 4,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "cupertino",
+      "repository": "https://github.com/mihaelamj/cupertino",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "checkout": "/Users/egor/Development/GitHub/cupertino",
+      "status": "passed",
+      "packageId": "cupertino.core",
+      "candidatePackageIds": [
+        "cupertino.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "errorCount": 0,
+        "path": "/tmp/specharvester-p46-t2-bounded-popular-library-static-only-20260620T200603Z/output/package-sets/cupertino/bundle-set-preflight.json",
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 2555,
+        "packageCount": 1,
+        "entrypointCount": 154,
+        "executedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.c_cpp_manifest_profile",
+          "spec_harvester.objective_c_manifest_profile",
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "fallback",
+        "confidence": "low",
+        "selectedProfileId": null,
+        "diagnosticCodes": [
+          "repository_profile_fallback"
+        ],
+        "reasonCodes": [
+          "insufficient_high_confidence_profile_evidence"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "navigation-split-view",
+      "repository": "https://github.com/SoundBlaster/NavigationSplitView",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "checkout": "/Users/egor/Development/GitHub/NavigationSplitView",
+      "status": "passed",
+      "packageId": "navigation_split_view.core",
+      "candidatePackageIds": [
+        "navigation_split_view.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "errorCount": 0,
+        "path": "/tmp/specharvester-p46-t2-bounded-popular-library-static-only-20260620T200603Z/output/package-sets/navigation-split-view/bundle-set-preflight.json",
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 54,
+        "packageCount": 1,
+        "entrypointCount": 46,
+        "executedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.objective_c_manifest_profile",
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "fallback",
+        "confidence": "low",
+        "selectedProfileId": null,
+        "diagnosticCodes": [
+          "repository_profile_fallback"
+        ],
+        "reasonCodes": [
+          "insufficient_high_confidence_profile_evidence"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "docc2context",
+      "repository": "https://github.com/SoundBlaster/docc2context",
+      "revision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "checkout": "/Users/egor/Development/GitHub/docc2context",
+      "status": "passed",
+      "packageId": "docc2context.core",
+      "candidatePackageIds": [
+        "docc2context.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "errorCount": 0,
+        "path": "/tmp/specharvester-p46-t2-bounded-popular-library-static-only-20260620T200603Z/output/package-sets/docc2context/bundle-set-preflight.json",
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 372,
+        "packageCount": 1,
+        "entrypointCount": 19,
+        "executedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    }
+  ],
+  "qualityGate": {
+    "staticOnlyGate": "passed",
+    "allRepositoriesProcessed": true,
+    "allPreflightsPassed": true,
+    "candidateLayerReviewable": true,
+    "relationLayerReviewable": true,
+    "warningsBlockP46T3": false,
+    "blockers": [],
+    "carryForwardTriage": [
+      {
+        "repositoryId": "gin",
+        "code": "model_evidence_path_unsupported",
+        "sourceTask": "P45-T8",
+        "observedInStaticRun": false,
+        "mustRemainVisibleForP46T4AndP46T5": true,
+        "registryPromotionBlockerUntilTriaged": true
+      },
+      {
+        "repositoryId": "xyflow",
+        "code": "partial_public_interface_index",
+        "diagnosticCount": 29,
+        "observedInStaticRun": true,
+        "blocksStaticOnlyGate": false,
+        "registryPromotionBlockerUntilReviewed": true
+      },
+      {
+        "repositoryId": "xyflow",
+        "code": "operator_checkout_origin_fork_mismatch",
+        "sourceTask": "P46-T1",
+        "observedInStaticRun": false,
+        "mustRemainVisibleForP46T4AndP46T5": true,
+        "registryPromotionBlockerUntilReviewed": true
+      }
+    ]
+  },
+  "aiBoundary": {
+    "mode": "disabled",
+    "reason": "operator_disabled",
+    "draftProposalCount": 0,
+    "enrichmentProposalCount": 0,
+    "enrichedPreviewAppliedCount": 0,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretPersisted": false,
+    "chainOfThoughtPersisted": false,
+    "aiOutputAcceptedAsRegistryTruth": false
+  },
+  "adapterBoundary": {
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    "adapterExecution": "not_run",
+    "appliedToDrafting": false,
+    "registryAuthority": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "authorityBoundary": {
+    "staticOutputIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "requiresSpecPMMaintainerReview": true
+  },
+  "nonAuthorityStatements": [
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only"
+  ],
+  "nextTask": "P46-T3"
+}

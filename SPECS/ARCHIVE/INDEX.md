@@ -212,6 +212,7 @@
 | P45-T7 | [P45-T7_Operational_MVP_Corpus_Rerun_After_Targeted_AI_Draft_Policy_Fixes/](P45-T7_Operational_MVP_Corpus_Rerun_After_Targeted_AI_Draft_Policy_Fixes/) | 2026-06-20 | PASS |
 | P45-T8 | [P45-T8_Targeted-Hardening_Readiness_Decision/](P45-T8_Targeted-Hardening_Readiness_Decision/) | 2026-06-20 | PASS |
 | P46-T1 | [P46-T1_Bounded_Popular-Library_Pilot_Manifest/](P46-T1_Bounded_Popular-Library_Pilot_Manifest/) | 2026-06-20 | PASS |
+| P46-T2 | [P46-T2_Bounded_Popular-Library_Pilot_Static-Only_Run/](P46-T2_Bounded_Popular-Library_Pilot_Static-Only_Run/) | 2026-06-20 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -348,6 +349,8 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P46-T2 | Archived REVIEW_p46_t2_bounded_popular_library_pilot_static_only_run report |
+| 2026-06-20 | P46-T2 | Archived Bounded Popular-Library Pilot Static-Only Run (PASS) |
 | 2026-06-20 | P46-T1 | Archived REVIEW_p46_t1_bounded_popular_library_pilot_manifest report |
 | 2026-06-20 | P46-T1 | Archived Bounded Popular-Library Pilot Manifest (PASS) |
 | 2026-06-20 | P45-T8 | Archived REVIEW_p45_t8_targeted_hardening_readiness_decision report |
