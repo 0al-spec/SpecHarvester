@@ -210,6 +210,7 @@
 | P45-T5 | [P45-T5_Selected-Member_Role_Taxonomy_Hardening/](P45-T5_Selected-Member_Role_Taxonomy_Hardening/) | 2026-06-20 | PASS |
 | P45-T6 | [P45-T6_Single-Package_no_proposal_subjects_Policy/](P45-T6_Single-Package_no_proposal_subjects_Policy/) | 2026-06-20 | PASS |
 | P45-T7 | [P45-T7_Operational_MVP_Corpus_Rerun_After_Targeted_AI_Draft_Policy_Fixes/](P45-T7_Operational_MVP_Corpus_Rerun_After_Targeted_AI_Draft_Policy_Fixes/) | 2026-06-20 | PASS |
+| P45-T8 | [P45-T8_Targeted-Hardening_Readiness_Decision/](P45-T8_Targeted-Hardening_Readiness_Decision/) | 2026-06-20 | PASS |
 | P19-T1 | [P19-T1_Static_Spec_Renderer/](P19-T1_Static_Spec_Renderer/) | 2026-05-29 | PASS |
 | P12-T1 | [P12-T1_Strict_License_Filename_Compatibility/](P12-T1_Strict_License_Filename_Compatibility/) | 2026-05-21 | PASS |
 | P12-T2 | [P12-T2_Go_Public_Interface_Evidence/](P12-T2_Go_Public_Interface_Evidence/) | 2026-05-21 | PASS |
@@ -346,6 +347,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-20 | P45-T8 | Archived Targeted-Hardening Readiness Decision (PASS) |
 | 2026-06-20 | P45-T7 | Archived REVIEW_p45_t7_operational_mvp_targeted_ai_draft_policy_rerun report |
 | 2026-06-20 | P45-T7 | Archived Operational MVP Corpus Rerun After Targeted AI Draft Policy Fixes (PASS) |
 | 2026-06-20 | P45-T6 | Archived REVIEW_p45_t6_single_package_no_proposal_subjects_policy report |

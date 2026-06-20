@@ -2156,7 +2156,7 @@ Acceptance:
   comparing warning codes, diagnostic counts, stop-policy reasons,
   proposal-only boundaries, and raw prompt/response/chain-of-thought
   non-persistence against P45-T3.
-- [ ] `P45-T8` Record the final targeted-hardening readiness decision for
+- [x] `P45-T8` Record the final targeted-hardening readiness decision for
   Phase 46, explicitly approving bounded popular-library pilot start only if
   `selected_member_role_unknown` and `no_proposal_subjects` are resolved or
   documented as non-blocking.
