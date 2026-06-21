@@ -1,59 +1,63 @@
-# Next Task: P47-T3 Run Bounded Pilot Rerun Gate
+# Next Task: P47-T4 Record Targeted Quality Follow-Up Exit Decision
 
 **Status:** Selected
-**Branch:** `feature/P47-T3-run-bounded-pilot-rerun-gate`
+**Branch:** `feature/P47-T4-record-targeted-quality-follow-up-exit-decision`
 **Phase:** Phase 47. Targeted Pilot Quality Follow-Up
-**Task:** `P47-T3`
-**Last Archived:** `P47-T2` Execute Targeted Pilot Quality Pass
-**Depends On:** `P47-T2` Execute Targeted Pilot Quality Pass
+**Task:** `P47-T4`
+**Last Archived:** `P47-T3` Run Bounded Pilot Rerun Gate
+**Depends On:** `P47-T3` Run Bounded Pilot Rerun Gate
 
 ## Goal
 
-Run the bounded pilot rerun gate after the P47-T2 explicit dispositions while
-preserving static-only-before-AI ordering, proposal-only AI output, and the
-same six-repository bounded pilot scope.
+Record the targeted quality follow-up exit decision after the P47-T3 bounded
+pilot rerun gate, deciding whether the project needs another targeted pass or
+must stop on a documented blocker before larger curated corpus planning.
 
 ## Context
 
-P47-T2 explicitly excluded the current `gin.aiDraft`,
-`docc2context.aiDraft`, and `xyflow.aiEnrichment` sidecars from bounded-rerun
-promotion, accepted the current xyflow caveats only for the bounded rerun gate,
-and kept larger curated corpus approval blocked.
+P47-T3 used the same six-repository bounded pilot scope. The static-only gate
+passed. The AI-enabled gate failed because `gin.aiDraft` and
+`navigation-split-view.aiDraft` failed after one JSON repair attempt.
 
-P47-T3 is the gate that proves the targeted dispositions are sufficient for
-another bounded pilot pass before P47-T4 records an exit decision.
+`docc2context.aiDraft` improved to a repaired warning. `xyflow` did not repeat
+`model_evidence_path_unsupported`, but still carries partial interface and AI
+repair caveats. The larger curated corpus remains blocked until P47-T4 records
+an explicit exit decision.
 
 ## Scope
 
-- Use the same six-repository bounded pilot scope from P46.
-- Use `inputs/p46-bounded-popular-library-pilot/repositories.yml`.
-- Verify pinned local checkouts without expanding the corpus.
-- Run static-only evidence before AI-enabled evidence.
-- Keep AI-enabled output proposal-only.
-- Keep excluded current sidecars out of promotion:
+- Read the P47-T3 validation report and durable fixture.
+- Decide one of:
+  - another targeted quality pass,
+  - stop on documented blocker,
+  - proceed only if the evidence explicitly supports readiness.
+- Name the blocking sidecars and caveats:
   - `gin.aiDraft`
+  - `navigation-split-view.aiDraft`
   - `docc2context.aiDraft`
-  - `xyflow.aiEnrichment`
-- Record new or remaining caveats from the rerun.
+  - `xyflow`
+- Preserve proposal-only AI output and registry authority boundaries.
 
 ## Expected Deliverables
 
-- Bounded rerun gate evidence for the same six repositories.
-- Static-only-before-AI result ordering evidence.
-- Proposal-only AI output evidence.
-- Durable fixture and documentation showing new pass/fail state, remaining
-  sidecar warnings, and remaining caveats.
-- Validation report and archive artifacts for P47-T3.
+- Exit decision document for the targeted quality follow-up.
+- Durable fixture or documentation recording the selected decision and evidence
+  basis.
+- Workplan/next-task update reflecting the selected path.
+- Validation report and archive artifacts for P47-T4.
 
 ## Boundaries
 
-- Do not approve a larger curated corpus.
+- Do not approve a larger curated corpus unless P47-T4 explicitly chooses
+  readiness from recorded evidence.
+- Do not approve a larger curated corpus if the P47-T3 failed AI-enabled gate
+  remains the controlling result.
 - Do not accept packages or relations.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
 - Do not run adapters or enable trusted local adapter execution.
-- Do not expand the pilot scope beyond the same six-repository bounded pilot.
-- Do not clone or fetch repositories unless the P47-T3 plan explicitly
-  verifies already-pinned local checkout inputs.
+- Do not expand beyond the same six-repository bounded pilot scope during the
+  decision task.
+- Do not clone or fetch repositories.
 - Do not execute harvested code.
 - Do not persist raw prompts, raw provider responses, secrets, or
   chain-of-thought.
@@ -65,6 +69,6 @@ another bounded pilot pass before P47-T4 records an exit decision.
 ## Validation Expectations
 
 - Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
-- Run focused docs-contract tests for P47-T3 and current next task.
+- Run focused docs-contract tests for P47-T4 and current next task.
 - Run formatting, lint, coverage, Swift manifest, Swift docs build, and
   whitespace checks as required by Flow.

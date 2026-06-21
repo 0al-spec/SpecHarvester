@@ -2248,7 +2248,7 @@ Acceptance:
 - [x] `P47-T2` Execute the targeted pilot quality pass from the P47-T1 plan,
   producing repair or explicit disposition evidence for Gin and docc2context
   AI drafts plus xyflow caveats without approving larger corpus expansion.
-- [ ] `P47-T3` Run the bounded pilot rerun gate after targeted dispositions,
+- [x] `P47-T3` Run the bounded pilot rerun gate after targeted dispositions,
   preserving static-only-before-AI ordering, proposal-only AI output, and the
   same six-repository pilot scope.
 - [ ] `P47-T4` Record the targeted quality follow-up exit decision, deciding

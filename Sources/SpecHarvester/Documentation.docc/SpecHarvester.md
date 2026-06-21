@@ -86,6 +86,7 @@ The canonical source files remain in the repository:
 - `docs/BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md`
 - `docs/TARGETED_PILOT_QUALITY_FOLLOW_UP_PLAN.md`
 - `docs/TARGETED_PILOT_QUALITY_PASS.md`
+- `docs/TARGETED_PILOT_BOUNDED_RERUN_GATE.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -263,6 +264,7 @@ the host.
 - <doc:BoundedPopularLibraryPilotExitDecision>
 - <doc:TargetedPilotQualityFollowUpPlan>
 - <doc:TargetedPilotQualityPass>
+- <doc:TargetedPilotBoundedRerunGate>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

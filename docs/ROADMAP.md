@@ -1192,6 +1192,13 @@ explicitly excludes current `gin.aiDraft`, `docc2context.aiDraft`, and
 `xyflow.aiEnrichment` sidecars from the bounded rerun gate, gives the three
 xyflow caveats bounded-rerun dispositions, and keeps larger corpus approval
 blocked until P47-T3 and P47-T4 complete.
+P47-T3 records
+[`TARGETED_PILOT_BOUNDED_RERUN_GATE.md`](TARGETED_PILOT_BOUNDED_RERUN_GATE.md)
+and the machine-readable `SpecHarvesterTargetedPilotBoundedRerunGate` fixture.
+The same six-repository scope passed static-only validation again, but the
+AI-enabled gate failed on `gin.aiDraft` and a new
+`navigation-split-view.aiDraft` blocker. The larger corpus remains blocked for
+P47-T4 exit-decision review.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
