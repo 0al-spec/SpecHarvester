@@ -302,6 +302,9 @@ Published DocC site:
 75. [`TARGETED_PILOT_QUALITY_FOLLOW_UP_PLAN.md`](TARGETED_PILOT_QUALITY_FOLLOW_UP_PLAN.md):
    P47-T1 targeted quality follow-up plan for Gin/docc2context AI draft repair,
    xyflow caveat disposition, and the bounded rerun gate
+76. [`TARGETED_PILOT_QUALITY_PASS.md`](TARGETED_PILOT_QUALITY_PASS.md):
+   P47-T2 targeted disposition pass that excludes current bad sidecars from
+   the bounded rerun gate while keeping larger corpus approval blocked
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

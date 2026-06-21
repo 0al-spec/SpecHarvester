@@ -1,0 +1,197 @@
+{
+  "apiVersion": "spec-harvester.targeted-pilot-quality-pass/v0",
+  "kind": "SpecHarvesterTargetedPilotQualityPass",
+  "authority": "producer_quality_pass_evidence_only",
+  "schemaVersion": 1,
+  "phase": "P47",
+  "task": "P47-T2",
+  "createdAt": "2026-06-21T00:00:00+03:00",
+  "sourceArtifacts": {
+    "p47QualityFollowUpPlan": {
+      "path": "tests/fixtures/targeted_pilot_quality_follow_up_plan/p47-t1-targeted-pilot-quality-follow-up-plan.example.json",
+      "digest": "sha256:158f717aac9c5a92df9197a4624b08e82d1bad4963a71c35ca1e9d105439c5a2",
+      "apiVersion": "spec-harvester.targeted-pilot-quality-follow-up-plan/v0",
+      "kind": "SpecHarvesterTargetedPilotQualityFollowUpPlan",
+      "authority": "producer_quality_follow_up_plan_evidence_only"
+    },
+    "p46ExitDecision": {
+      "path": "tests/fixtures/bounded_popular_library_pilot_exit_decision/p46-t6-bounded-popular-library-pilot-exit-decision.example.json",
+      "digest": "sha256:213337e4636eed6e0410bbf0066fb376a059d4482d5fcdf0ab71f8a246265ff7",
+      "apiVersion": "spec-harvester.bounded-popular-library-pilot-exit-decision/v0",
+      "kind": "SpecHarvesterBoundedPopularLibraryPilotExitDecision",
+      "authority": "producer_exit_decision_evidence_only"
+    }
+  },
+  "qualityPass": {
+    "mode": "explicit_disposition_evidence_only",
+    "selectedOutcome": "ready_for_bounded_rerun_gate_with_explicit_exclusions",
+    "readyForP47T3BoundedRerunGate": true,
+    "readyForLargerCuratedCorpus": false,
+    "approvesLargerCuratedCorpus": false,
+    "registryAuthority": false
+  },
+  "dispositionSummary": {
+    "initialApprovalBlockerCount": 6,
+    "currentSidecarExclusionCount": 3,
+    "xyflowCaveatDispositionCount": 3,
+    "blocksBoundedRerunGateAfterDisposition": 0,
+    "largerCuratedCorpusStillBlocked": true,
+    "requiresP47T3BoundedRerunGate": true,
+    "requiresP47T4ExitDecision": true
+  },
+  "sidecarDispositions": [
+    {
+      "repository": "gin",
+      "sidecarId": "gin.aiDraft",
+      "sidecarClass": "do_not_promote_ai_draft",
+      "sourceTask": "P46-T6",
+      "previousStatus": "awaiting_regeneration_or_explicit_non_blocking_acceptance",
+      "disposition": "exclude_current_sidecar_from_bounded_rerun_gate",
+      "reason": "current_ai_draft_is_do_not_promote_but_static_gin_core_remains_reviewable",
+      "currentSidecarPromotable": false,
+      "acceptedAsRegistryTruth": false,
+      "blocksBoundedRerunGate": false,
+      "blocksLargerCuratedCorpusUntilP47T4": true,
+      "p47T3Expectation": "rerun_may_emit_new_proposal_only_sidecar; current_sidecar_must_not_be_reused_as_truth"
+    },
+    {
+      "repository": "docc2context",
+      "sidecarId": "docc2context.aiDraft",
+      "sidecarClass": "do_not_promote_ai_draft",
+      "sourceTask": "P46-T6",
+      "previousStatus": "awaiting_regeneration_or_explicit_non_blocking_acceptance",
+      "disposition": "exclude_current_sidecar_from_bounded_rerun_gate",
+      "reason": "current_ai_draft_is_do_not_promote_but_static_docc2context_core_remains_reviewable",
+      "currentSidecarPromotable": false,
+      "acceptedAsRegistryTruth": false,
+      "blocksBoundedRerunGate": false,
+      "blocksLargerCuratedCorpusUntilP47T4": true,
+      "p47T3Expectation": "rerun_may_emit_new_proposal_only_sidecar; current_sidecar_must_not_be_reused_as_truth"
+    },
+    {
+      "repository": "xyflow",
+      "sidecarId": "xyflow.aiEnrichment",
+      "sidecarClass": "unsupported_ai_enrichment",
+      "sourceTask": "P46-T6",
+      "previousStatus": "awaiting_resolution_or_explicit_acceptance",
+      "disposition": "exclude_current_unsupported_enrichment_sidecar",
+      "reason": "model_evidence_path_unsupported_makes_current_enrichment_unusable_for_promotion",
+      "currentSidecarPromotable": false,
+      "acceptedAsRegistryTruth": false,
+      "blocksBoundedRerunGate": false,
+      "blocksLargerCuratedCorpusUntilP47T4": true,
+      "p47T3Expectation": "rerun_must_resolve_unsupported_path_or_keep_sidecar_exclusion_visible"
+    }
+  ],
+  "xyflowCaveatDispositions": [
+    {
+      "code": "partial_public_interface_index",
+      "sourceTask": "P46-T6",
+      "disposition": "accepted_for_bounded_rerun_with_author_review_visibility",
+      "reason": "partial_index_is_known_static_evidence_gap_and_must_not_expand_claims",
+      "blocksBoundedRerunGate": false,
+      "blocksLargerCuratedCorpusUntilP47T4": true,
+      "p47T3Expectation": "record_partial_index_caveat_if_still_present"
+    },
+    {
+      "code": "operator_checkout_origin_fork_mismatch",
+      "sourceTask": "P46-T6",
+      "disposition": "accepted_for_bounded_rerun_as_operator_checkout_caveat",
+      "reason": "bounded_rerun_can_continue_if_origin_mismatch_stays_visible_and_non_authoritative",
+      "blocksBoundedRerunGate": false,
+      "blocksLargerCuratedCorpusUntilP47T4": true,
+      "p47T3Expectation": "record_checkout_origin_caveat_if_still_present"
+    },
+    {
+      "code": "model_evidence_path_unsupported",
+      "sourceTask": "P46-T6",
+      "disposition": "covered_by_xyflow_ai_enrichment_exclusion",
+      "reason": "unsupported_model_evidence_path_is_tied_to_excluded_xyflow_ai_enrichment_sidecar",
+      "blocksBoundedRerunGate": false,
+      "blocksLargerCuratedCorpusUntilP47T4": true,
+      "p47T3Expectation": "do_not_promote_unsupported_model_evidence_path"
+    }
+  ],
+  "boundedRerunGateReadiness": {
+    "approvedForP47T3": true,
+    "scope": "same_six_repository_bounded_pilot",
+    "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "requiresPinnedLocalCheckouts": true,
+    "requiresNoCorpusExpansion": true,
+    "requiresStaticOnlyBeforeAIEnabled": true,
+    "requiresProposalOnlyAI": true,
+    "requiresNoRawPromptPersistence": true,
+    "requiresNoRegistryPromotion": true,
+    "requiredBeforeRun": [
+      "verify_same_six_repository_scope",
+      "verify_pinned_local_checkouts_without_fetch",
+      "run_static_only_before_ai_enabled",
+      "keep_current_excluded_sidecars_out_of_promotion",
+      "record_new_or_remaining_caveats_in_p47_t3"
+    ]
+  },
+  "largerCorpusGate": {
+    "approvedNow": false,
+    "approvalBlockedBy": [
+      "p47_t3_bounded_rerun_gate_not_run",
+      "p47_t4_quality_follow_up_exit_decision_not_recorded"
+    ],
+    "disposedForBoundedRerunGate": [
+      "gin.aiDraft",
+      "docc2context.aiDraft",
+      "xyflow.aiEnrichment",
+      "partial_public_interface_index",
+      "operator_checkout_origin_fork_mismatch",
+      "model_evidence_path_unsupported"
+    ],
+    "canBeReconsideredAfter": [
+      "bounded_rerun_gate_passed",
+      "quality_follow_up_exit_decision_recorded"
+    ]
+  },
+  "authorityBoundary": {
+    "qualityPassIsRegistryAuthority": false,
+    "approvesLargerCuratedCorpus": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "planOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "rerunsPilot": false,
+    "runsAI": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_treat_quality_pass_output_as_registry_truth",
+    "does_not_treat_plan_output_as_registry_truth",
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_approve_larger_curated_corpus"
+  ],
+  "nextState": {
+    "nextTaskPointer": "P47-T3",
+    "recommendedFollowUp": "Run Bounded Pilot Rerun Gate",
+    "largerCuratedCorpusStillBlocked": true
+  }
+}
