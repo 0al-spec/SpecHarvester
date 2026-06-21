@@ -79,3 +79,8 @@ task without running AI or mutating registry truth.
 - Run focused docs-contract tests for the P48-T1 plan and current next task.
 - Run lint, format, coverage, Swift manifest, Swift docs build, and whitespace
   checks as required by Flow.
+
+---
+
+**Archived:** 2026-06-21
+**Verdict:** PASS
