@@ -38,6 +38,24 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P47-T3 Run Bounded Pilot Rerun Gate" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 47. Targeted Pilot Quality Follow-Up" in next_text
+        assert "`P47-T3`" in next_text
+        assert "`P47-T2` Execute Targeted Pilot Quality Pass" in next_text
+        assert "same six-repository bounded pilot scope" in normalized
+        assert "inputs/p46-bounded-popular-library-pilot/repositories.yml" in next_text
+        assert "static-only evidence before AI-enabled evidence" in normalized
+        assert "proposal-only" in normalized
+        assert "gin.aiDraft" in next_text
+        assert "docc2context.aiDraft" in next_text
+        assert "xyflow.aiEnrichment" in next_text
+        assert "Do not approve a larger curated corpus" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P47-T2 Execute Targeted Pilot Quality Pass" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -32528,6 +32546,258 @@ def test_targeted_pilot_quality_follow_up_plan_records_p47_t1_plan() -> None:
         (workplan, "`P47-T2` Execute the targeted pilot quality pass"),
         (workplan, "`P47-T3` Run the bounded pilot rerun gate"),
         (workplan, "`P47-T4` Record the targeted quality follow-up exit decision"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_targeted_pilot_quality_pass_records_p47_t2_dispositions() -> None:
+    plan_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "targeted_pilot_quality_follow_up_plan"
+        / "p47-t1-targeted-pilot-quality-follow-up-plan.example.json"
+    )
+    exit_decision_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "bounded_popular_library_pilot_exit_decision"
+        / "p46-t6-bounded-popular-library-pilot-exit-decision.example.json"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "targeted_pilot_quality_pass"
+        / "p47-t2-targeted-pilot-quality-pass.example.json"
+    )
+    github_doc = ROOT / "docs" / "TARGETED_PILOT_QUALITY_PASS.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "TargetedPilotQualityPass.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.targeted-pilot-quality-pass/v0"
+    assert payload["kind"] == "SpecHarvesterTargetedPilotQualityPass"
+    assert payload["authority"] == "producer_quality_pass_evidence_only"
+    assert payload["phase"] == "P47"
+    assert payload["task"] == "P47-T2"
+
+    plan_source = payload["sourceArtifacts"]["p47QualityFollowUpPlan"]
+    plan_payload = json.loads(plan_fixture_path.read_text(encoding="utf-8"))
+    assert ROOT / plan_source["path"] == plan_fixture_path
+    assert plan_source["digest"] == (
+        "sha256:" + hashlib.sha256(plan_fixture_path.read_bytes()).hexdigest()
+    )
+    assert plan_source["apiVersion"] == plan_payload["apiVersion"]
+    assert plan_source["kind"] == plan_payload["kind"]
+    assert plan_source["authority"] == plan_payload["authority"]
+
+    exit_source = payload["sourceArtifacts"]["p46ExitDecision"]
+    exit_payload = json.loads(exit_decision_fixture_path.read_text(encoding="utf-8"))
+    assert ROOT / exit_source["path"] == exit_decision_fixture_path
+    assert exit_source["digest"] == (
+        "sha256:" + hashlib.sha256(exit_decision_fixture_path.read_bytes()).hexdigest()
+    )
+    assert exit_source["apiVersion"] == exit_payload["apiVersion"]
+    assert exit_source["kind"] == exit_payload["kind"]
+    assert exit_source["authority"] == exit_payload["authority"]
+
+    assert payload["qualityPass"] == {
+        "mode": "explicit_disposition_evidence_only",
+        "selectedOutcome": "ready_for_bounded_rerun_gate_with_explicit_exclusions",
+        "readyForP47T3BoundedRerunGate": True,
+        "readyForLargerCuratedCorpus": False,
+        "approvesLargerCuratedCorpus": False,
+        "registryAuthority": False,
+    }
+    assert payload["dispositionSummary"] == {
+        "initialApprovalBlockerCount": 6,
+        "currentSidecarExclusionCount": 3,
+        "xyflowCaveatDispositionCount": 3,
+        "blocksBoundedRerunGateAfterDisposition": 0,
+        "largerCuratedCorpusStillBlocked": True,
+        "requiresP47T3BoundedRerunGate": True,
+        "requiresP47T4ExitDecision": True,
+    }
+
+    sidecars = {sidecar["sidecarId"]: sidecar for sidecar in payload["sidecarDispositions"]}
+    assert set(sidecars) == {"gin.aiDraft", "docc2context.aiDraft", "xyflow.aiEnrichment"}
+    assert sidecars["gin.aiDraft"]["disposition"] == (
+        "exclude_current_sidecar_from_bounded_rerun_gate"
+    )
+    assert sidecars["docc2context.aiDraft"]["disposition"] == (
+        "exclude_current_sidecar_from_bounded_rerun_gate"
+    )
+    assert sidecars["xyflow.aiEnrichment"]["disposition"] == (
+        "exclude_current_unsupported_enrichment_sidecar"
+    )
+    for sidecar in sidecars.values():
+        assert sidecar["currentSidecarPromotable"] is False
+        assert sidecar["acceptedAsRegistryTruth"] is False
+        assert sidecar["blocksBoundedRerunGate"] is False
+        assert sidecar["blocksLargerCuratedCorpusUntilP47T4"] is True
+
+    caveats = {caveat["code"]: caveat for caveat in payload["xyflowCaveatDispositions"]}
+    assert set(caveats) == {
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch",
+        "model_evidence_path_unsupported",
+    }
+    assert caveats["partial_public_interface_index"]["disposition"] == (
+        "accepted_for_bounded_rerun_with_author_review_visibility"
+    )
+    assert caveats["operator_checkout_origin_fork_mismatch"]["disposition"] == (
+        "accepted_for_bounded_rerun_as_operator_checkout_caveat"
+    )
+    assert caveats["model_evidence_path_unsupported"]["disposition"] == (
+        "covered_by_xyflow_ai_enrichment_exclusion"
+    )
+    for caveat in caveats.values():
+        assert caveat["blocksBoundedRerunGate"] is False
+        assert caveat["blocksLargerCuratedCorpusUntilP47T4"] is True
+
+    assert payload["boundedRerunGateReadiness"] == {
+        "approvedForP47T3": True,
+        "scope": "same_six_repository_bounded_pilot",
+        "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+        "requiresPinnedLocalCheckouts": True,
+        "requiresNoCorpusExpansion": True,
+        "requiresStaticOnlyBeforeAIEnabled": True,
+        "requiresProposalOnlyAI": True,
+        "requiresNoRawPromptPersistence": True,
+        "requiresNoRegistryPromotion": True,
+        "requiredBeforeRun": [
+            "verify_same_six_repository_scope",
+            "verify_pinned_local_checkouts_without_fetch",
+            "run_static_only_before_ai_enabled",
+            "keep_current_excluded_sidecars_out_of_promotion",
+            "record_new_or_remaining_caveats_in_p47_t3",
+        ],
+    }
+    assert payload["largerCorpusGate"] == {
+        "approvedNow": False,
+        "approvalBlockedBy": [
+            "p47_t3_bounded_rerun_gate_not_run",
+            "p47_t4_quality_follow_up_exit_decision_not_recorded",
+        ],
+        "disposedForBoundedRerunGate": [
+            "gin.aiDraft",
+            "docc2context.aiDraft",
+            "xyflow.aiEnrichment",
+            "partial_public_interface_index",
+            "operator_checkout_origin_fork_mismatch",
+            "model_evidence_path_unsupported",
+        ],
+        "canBeReconsideredAfter": [
+            "bounded_rerun_gate_passed",
+            "quality_follow_up_exit_decision_recorded",
+        ],
+    }
+    assert payload["authorityBoundary"]["qualityPassIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesLargerCuratedCorpus"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
+    assert payload["authorityBoundary"]["seedsBaselines"] is False
+    assert payload["authorityBoundary"]["removesPreviewOnly"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["staticOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["planOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["adapterOutputAcceptedAsRegistryTruth"] is False
+    assert payload["executionBoundary"]["rerunsPilot"] is False
+    assert payload["executionBoundary"]["runsAI"] is False
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["enablesTrustedLocalAdapterExecution"] is False
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["installsDependencies"] is False
+    assert payload["executionBoundary"]["invokesPackageManagers"] is False
+    assert payload["executionBoundary"]["executesHarvestedCode"] is False
+    assert payload["executionBoundary"]["rawPromptPersisted"] is False
+    assert payload["executionBoundary"]["rawProviderResponsePersisted"] is False
+    assert payload["executionBoundary"]["secretsPersisted"] is False
+    assert payload["executionBoundary"]["chainOfThoughtPersisted"] is False
+    assert (
+        "does_not_treat_quality_pass_output_as_registry_truth"
+        in (payload["nonAuthorityStatements"])
+    )
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P47-T3",
+        "recommendedFollowUp": "Run Bounded Pilot Rerun Gate",
+        "largerCuratedCorpusStillBlocked": True,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Targeted Pilot Quality Pass",
+            "P47-T2",
+            "P47-T3",
+            "P47-T4",
+            "SpecHarvesterTargetedPilotQualityPass",
+            "spec-harvester.targeted-pilot-quality-pass/v0",
+            "producer_quality_pass_evidence_only",
+            "p47-t2-targeted-pilot-quality-pass.example.json",
+            "p47-t1-targeted-pilot-quality-follow-up-plan.example.json",
+            "ready_for_bounded_rerun_gate_with_explicit_exclusions",
+            "gin.aiDraft",
+            "docc2context.aiDraft",
+            "xyflow.aiEnrichment",
+            "partial_public_interface_index",
+            "operator_checkout_origin_fork_mismatch",
+            "model_evidence_path_unsupported",
+            "p47_t3_bounded_rerun_gate_not_run",
+            "p47_t4_quality_follow_up_exit_decision_not_recorded",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "rerun the pilot",
+            "run AI",
+            "run adapters",
+            "enable trusted local adapter execution",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+            "quality-pass output as registry truth",
+            "plan output as registry truth",
+            "static output as registry truth",
+            "AI output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "TARGETED_PILOT_QUALITY_PASS.md"),
+        (docc_root, "docs/TARGETED_PILOT_QUALITY_PASS.md"),
+        (docc_root, "<doc:TargetedPilotQualityPass>"),
+        (capabilities, "TARGETED_PILOT_QUALITY_PASS.md"),
+        (capabilities_docc, "TargetedPilotQualityPass"),
+        (roadmap, "TARGETED_PILOT_QUALITY_PASS.md"),
+        (roadmap_docc, "TargetedPilotQualityPass"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

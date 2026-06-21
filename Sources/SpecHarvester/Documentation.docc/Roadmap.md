@@ -163,6 +163,10 @@ entered Phase 47 targeted quality follow-up planning. P47-T1 is recorded in
 and `model_evidence_path_unsupported` caveats visible until repair or explicit
 acceptance, and requires a bounded rerun gate before any larger curated corpus
 approval.
+P47-T2 is recorded in <doc:TargetedPilotQualityPass>. It excludes current bad
+sidecars from the bounded rerun gate, records bounded-rerun dispositions for
+the xyflow caveats, and keeps larger corpus approval blocked until the bounded
+rerun gate and quality follow-up exit decision complete.
 
 ### Selected Candidate SpecPM Intake Handoff
 

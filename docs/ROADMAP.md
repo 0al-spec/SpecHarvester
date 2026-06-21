@@ -1185,6 +1185,13 @@ fixture. It keeps `gin.aiDraft`, `docc2context.aiDraft`, and the xyflow
 and `model_evidence_path_unsupported` caveats visible, defines repair or
 disposition workstreams, and requires a bounded rerun gate before any larger
 curated corpus approval.
+P47-T2 records
+[`TARGETED_PILOT_QUALITY_PASS.md`](TARGETED_PILOT_QUALITY_PASS.md)
+and the machine-readable `SpecHarvesterTargetedPilotQualityPass` fixture. It
+explicitly excludes current `gin.aiDraft`, `docc2context.aiDraft`, and
+`xyflow.aiEnrichment` sidecars from the bounded rerun gate, gives the three
+xyflow caveats bounded-rerun dispositions, and keeps larger corpus approval
+blocked until P47-T3 and P47-T4 complete.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
