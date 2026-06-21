@@ -308,6 +308,9 @@ Published DocC site:
 77. [`TARGETED_PILOT_BOUNDED_RERUN_GATE.md`](TARGETED_PILOT_BOUNDED_RERUN_GATE.md):
    P47-T3 bounded rerun gate showing static pass, AI failure, and continued
    larger corpus block before P47-T4
+78. [`TARGETED_PILOT_QUALITY_FOLLOW_UP_EXIT_DECISION.md`](TARGETED_PILOT_QUALITY_FOLLOW_UP_EXIT_DECISION.md):
+   P47-T4 exit decision selecting another targeted AI draft blocker pass
+   before larger curated corpus planning
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

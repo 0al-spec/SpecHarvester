@@ -2286,3 +2286,48 @@ Acceptance:
 - `P47-T3` must use the same bounded pilot scope before any expansion.
 - `P47-T4` must explicitly choose proceed, another targeted pass, or stop on a
   documented blocker.
+
+## Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus
+
+- [ ] `P48-T1` Plan the AI draft blocker follow-up pass for the P47-T4 exit
+  decision, targeting `gin.aiDraft`, `navigation-split-view.aiDraft`,
+  `docc2context.aiDraft` warning disposition, and xyflow caveat visibility
+  before any larger curated corpus approval.
+- [ ] `P48-T2` Execute the AI draft blocker follow-up pass from the P48-T1
+  plan, preserving proposal-only AI output, no raw prompt/response/
+  chain-of-thought persistence, no registry mutation, and no adapter
+  execution.
+- [ ] `P48-T3` Run the same six-repository bounded pilot rerun gate after the
+  P48-T2 blocker follow-up, preserving static-only-before-AI ordering and
+  recording whether the AI-enabled gate now passes.
+- [ ] `P48-T4` Record the post-blocker follow-up exit decision, deciding
+  whether larger curated corpus planning can proceed, another targeted pass is
+  needed, or a documented blocker stops expansion.
+
+Motivation:
+
+- P47-T4 selected another targeted quality pass because the P47-T3 static-only
+  gate passed, but the AI-enabled gate failed on `gin.aiDraft` and
+  `navigation-split-view.aiDraft`.
+- `docc2context.aiDraft` improved to a repaired warning, and xyflow no longer
+  repeated `model_evidence_path_unsupported`, but xyflow partial interface,
+  fork-origin, and AI repair caveats remain visible.
+
+Goal:
+
+- Clear or explicitly dispose the remaining AI draft blockers and rerun the
+  same bounded gate before any larger curated corpus planning.
+
+Acceptance:
+
+- Phase 48 must not approve larger curated corpus planning until the blocker
+  follow-up pass has been planned, executed, rerun through the same bounded
+  gate, and reviewed in an exit decision.
+- The phase must preserve proposal-only AI output, no raw prompt/response/CoT
+  persistence, no package or relation acceptance, no registry publication, no
+  baseline seeding, no `preview_only` removal, and no trusted local adapter
+  execution.
+- P48-T3 must use the same six-repository bounded pilot scope before any
+  expansion.
+- P48-T4 must explicitly choose proceed, another targeted pass, or stop on a
+  documented blocker.

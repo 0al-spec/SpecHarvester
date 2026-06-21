@@ -1,0 +1,239 @@
+{
+  "apiVersion": "spec-harvester.targeted-pilot-quality-follow-up-exit-decision/v0",
+  "kind": "SpecHarvesterTargetedPilotQualityFollowUpExitDecision",
+  "authority": "producer_quality_follow_up_exit_decision_evidence_only",
+  "schemaVersion": 1,
+  "phase": "P47",
+  "task": "P47-T4",
+  "createdAt": "2026-06-21T17:37:30+03:00",
+  "sourceArtifacts": {
+    "p47BoundedRerunGate": {
+      "path": "tests/fixtures/targeted_pilot_bounded_rerun_gate/p47-t3-targeted-pilot-bounded-rerun-gate.example.json",
+      "digest": "sha256:a2fdffa67ee0cb4e3c40abd56d0112e317a91e64fc5cb31f27b56f74f3d7c350",
+      "apiVersion": "spec-harvester.targeted-pilot-bounded-rerun-gate/v0",
+      "kind": "SpecHarvesterTargetedPilotBoundedRerunGate",
+      "authority": "producer_bounded_rerun_gate_evidence_only"
+    }
+  },
+  "decision": {
+    "selected": "run_another_targeted_quality_pass_before_larger_curated_corpus",
+    "selectedReason": "p47_t3_static_passed_but_ai_enabled_gate_failed",
+    "readyForLargerCuratedCorpusPlanning": false,
+    "needsAnotherTargetedQualityPass": true,
+    "stoppedOnDocumentedBlocker": false,
+    "registryAuthority": false
+  },
+  "evidenceSummary": {
+    "repositoryCount": 6,
+    "staticGatePassed": true,
+    "aiEnabledGatePassed": false,
+    "aiDraftFailedRepositoryCount": 2,
+    "aiDraftWarningRepositoryCount": 3,
+    "aiDraftCompletedRepositoryCount": 1,
+    "aiEnrichmentWarningRepositoryCount": 3,
+    "remainingBlockingAISidecarCount": 2,
+    "newBlockingAISidecarCount": 1,
+    "repairedWarningCount": 1,
+    "xyflowInterfaceDiagnosticCount": 29,
+    "largerCuratedCorpusApproved": false
+  },
+  "selectedPath": {
+    "id": "run_another_targeted_quality_pass_before_larger_curated_corpus",
+    "rationale": [
+      "static_only_gate_passed_for_same_six_repositories",
+      "ai_enabled_gate_failed_for_gin_and_navigation_split_view_ai_drafts",
+      "docc2context_ai_draft_improved_to_non_blocking_warning",
+      "remaining_blockers_are_targeted_and_repairable",
+      "larger_corpus_requires_clean_or_explicitly_disposed_ai_draft_gate"
+    ],
+    "requiredFollowUpSignals": [
+      "regenerate_or_constrain_gin_ai_draft_until_json_repair_exhaustion_clears",
+      "regenerate_or_constrain_navigation_split_view_ai_draft_until_json_repair_exhaustion_clears",
+      "keep_docc2context_ai_draft_warning_non_blocking_or_resolve_it",
+      "record_xyflow_partial_interface_and_ai_repair_caveat_disposition",
+      "rerun_same_six_repository_bounded_gate_before_scale"
+    ]
+  },
+  "rejectedAlternatives": [
+    {
+      "id": "proceed_to_larger_curated_corpus_planning",
+      "rejectedBecause": [
+        "p47_t3_ai_enabled_gate_failed",
+        "gin.aiDraft_failed_with_ai_json_repair_exhausted",
+        "navigation-split-view.aiDraft_failed_with_ai_json_repair_exhausted",
+        "xyflow_partial_public_interface_index_remains_visible"
+      ],
+      "conditionToReconsider": "same_six_repository_bounded_gate_passes_or_blockers_are_explicitly_accepted_with_review_authority"
+    },
+    {
+      "id": "stop_on_documented_blocker",
+      "rejectedBecause": [
+        "static_gate_passed_for_all_six_repositories",
+        "docc2context_ai_draft_improved_to_repaired_warning",
+        "xyflow_model_evidence_path_unsupported_did_not_repeat",
+        "remaining_blockers_are_targeted_ai_draft_shape_failures"
+      ],
+      "conditionToReconsider": "another_targeted_pass_confirms_ai_draft_failures_are_not_repairable"
+    }
+  ],
+  "blockerTreatment": {
+    "blockingAISidecars": [
+      {
+        "sidecarId": "gin.aiDraft",
+        "repositoryId": "gin",
+        "status": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "blocksLargerCuratedCorpus": true,
+        "requiredDisposition": "regenerate_or_constrain_ai_draft_until_repair_exhaustion_clears"
+      },
+      {
+        "sidecarId": "navigation-split-view.aiDraft",
+        "repositoryId": "navigation-split-view",
+        "status": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "blocksLargerCuratedCorpus": true,
+        "requiredDisposition": "regenerate_or_constrain_ai_draft_until_repair_exhaustion_clears"
+      }
+    ],
+    "nonBlockingWarnings": [
+      {
+        "sidecarId": "docc2context.aiDraft",
+        "repositoryId": "docc2context",
+        "status": "warning",
+        "diagnosticCodes": [
+          "ai_json_repair_needed"
+        ],
+        "jsonRepairStatus": "repaired",
+        "blocksLargerCuratedCorpus": false,
+        "requiredDisposition": "keep_visible_until_next_rerun_or_resolve"
+      },
+      {
+        "sidecarId": "xyflow.aiEnrichment",
+        "repositoryId": "xyflow",
+        "status": "warning",
+        "diagnosticCodes": [
+          "ai_json_repair_needed"
+        ],
+        "jsonRepairStatus": "repaired",
+        "blocksLargerCuratedCorpus": false,
+        "requiredDisposition": "keep_visible_until_next_rerun_or_resolve"
+      }
+    ],
+    "xyflowCaveats": [
+      {
+        "code": "partial_public_interface_index",
+        "status": "visible",
+        "blocksLargerCuratedCorpusUntilP48": true
+      },
+      {
+        "code": "operator_checkout_origin_fork_mismatch",
+        "status": "visible",
+        "blocksLargerCuratedCorpusUntilP48": true
+      },
+      {
+        "code": "ai_json_repair_needed",
+        "status": "visible",
+        "blocksLargerCuratedCorpusUntilP48": true
+      }
+    ]
+  },
+  "largerCorpusGate": {
+    "approvedNow": false,
+    "approvalBlockedBy": [
+      "p47_t3_ai_enabled_gate_failed",
+      "gin.aiDraft",
+      "navigation-split-view.aiDraft",
+      "xyflow.partial_public_interface_index",
+      "xyflow.operator_checkout_origin_fork_mismatch",
+      "xyflow.aiEnrichment.ai_json_repair_needed"
+    ],
+    "canBeReconsideredAfter": [
+      "p48_t1_plan_ai_draft_blocker_follow_up",
+      "p48_t2_execute_ai_draft_blocker_follow_up_pass",
+      "p48_t3_run_bounded_rerun_gate_after_blocker_follow_up",
+      "p48_t4_record_post_blocker_follow_up_exit_decision"
+    ]
+  },
+  "p48Workplan": {
+    "phase": "Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus",
+    "nextTask": "P48-T1",
+    "tasks": [
+      {
+        "id": "P48-T1",
+        "title": "Plan AI Draft Blocker Follow-Up Pass"
+      },
+      {
+        "id": "P48-T2",
+        "title": "Execute AI Draft Blocker Follow-Up Pass"
+      },
+      {
+        "id": "P48-T3",
+        "title": "Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up"
+      },
+      {
+        "id": "P48-T4",
+        "title": "Record Post-Blocker Follow-Up Exit Decision"
+      }
+    ]
+  },
+  "phaseExitState": {
+    "phase47Complete": true,
+    "largerCuratedCorpusApproved": false,
+    "anotherTargetedQualityPassRequired": true,
+    "stoppedOnDocumentedBlocker": false,
+    "readyForPhase48BlockerFollowUp": true
+  },
+  "authorityBoundary": {
+    "exitDecisionIsRegistryAuthority": false,
+    "approvesLargerCuratedCorpus": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "rerunGateOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "rerunsPilot": false,
+    "runsAI": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_treat_exit_decision_output_as_registry_truth",
+    "does_not_treat_bounded_rerun_gate_output_as_registry_truth",
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_approve_larger_curated_corpus"
+  ],
+  "nextState": {
+    "nextTaskPointer": "P48-T1",
+    "recommendedFollowUp": "Plan AI Draft Blocker Follow-Up Pass",
+    "largerCuratedCorpusStillBlocked": true
+  }
+}

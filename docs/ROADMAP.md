@@ -1199,6 +1199,14 @@ The same six-repository scope passed static-only validation again, but the
 AI-enabled gate failed on `gin.aiDraft` and a new
 `navigation-split-view.aiDraft` blocker. The larger corpus remains blocked for
 P47-T4 exit-decision review.
+P47-T4 records
+[`TARGETED_PILOT_QUALITY_FOLLOW_UP_EXIT_DECISION.md`](TARGETED_PILOT_QUALITY_FOLLOW_UP_EXIT_DECISION.md)
+and the machine-readable
+`SpecHarvesterTargetedPilotQualityFollowUpExitDecision` fixture. It selects
+`run_another_targeted_quality_pass_before_larger_curated_corpus` because the
+P47-T3 static-only gate passed but the AI-enabled gate failed, carrying
+`gin.aiDraft`, `navigation-split-view.aiDraft`, and xyflow caveats into Phase
+48 blocker follow-up.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
