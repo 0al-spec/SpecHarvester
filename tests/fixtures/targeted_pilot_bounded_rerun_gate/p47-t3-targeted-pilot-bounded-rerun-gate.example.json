@@ -1,0 +1,333 @@
+{
+  "apiVersion": "spec-harvester.targeted-pilot-bounded-rerun-gate/v0",
+  "kind": "SpecHarvesterTargetedPilotBoundedRerunGate",
+  "authority": "producer_bounded_rerun_gate_evidence_only",
+  "schemaVersion": 1,
+  "phase": "P47",
+  "task": "P47-T3",
+  "createdAt": "2026-06-21T16:00:00+03:00",
+  "sourceArtifacts": {
+    "p47TargetedQualityPass": {
+      "path": "tests/fixtures/targeted_pilot_quality_pass/p47-t2-targeted-pilot-quality-pass.example.json",
+      "digest": "sha256:a25434dcb568e60b96bdebd09c0f80e80e1df5557a564b019bc47c0f191c0fa6",
+      "apiVersion": "spec-harvester.targeted-pilot-quality-pass/v0",
+      "kind": "SpecHarvesterTargetedPilotQualityPass",
+      "authority": "producer_quality_pass_evidence_only"
+    }
+  },
+  "sourceManifest": {
+    "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "digest": "sha256:b00a59837c64477819e01d5f97845ab8379cbe909ae464d2f1faee37e65c2f61",
+    "entryCount": 6,
+    "scope": "same_six_repository_bounded_pilot",
+    "expandedCorpus": false
+  },
+  "runInputMirror": {
+    "path": "/tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z/inputs/repositories.yml",
+    "digest": "sha256:058be58216a5a9e21a7a34040cb6f8dba4c5a8d05ec5875a628ca26d9897ab53",
+    "reason": "operator_local_checkout_paths_remapped_to_clean_archived_snapshots",
+    "sameRepositoryIds": true,
+    "sameRevisions": true,
+    "createdFromLocalGitArchive": true,
+    "cloneOrFetch": false
+  },
+  "checkoutVerification": {
+    "checkedBeforeRun": true,
+    "allExpectedCheckoutsPresent": true,
+    "allRevisionsMatched": true,
+    "allSourceWorkingTreesCleanExceptRecordedCaveats": true,
+    "cleanArchiveSnapshotsUsedForRun": true,
+    "operatorCheckoutCaveats": [
+      {
+        "repositoryId": "docc2context",
+        "code": "source_checkout_had_untracked_doccarchive",
+        "runImpact": "excluded_by_clean_git_archive_snapshot",
+        "blocksBoundedRerunGate": false,
+        "blocksLargerCuratedCorpusUntilP47T4": true
+      },
+      {
+        "repositoryId": "xyflow",
+        "code": "operator_checkout_origin_fork_mismatch",
+        "runImpact": "source_snapshot_revision_matched_manifest_but_origin_differs_from_canonical_manifest_repository",
+        "blocksBoundedRerunGate": false,
+        "blocksLargerCuratedCorpusUntilP47T4": true
+      }
+    ]
+  },
+  "executionOrder": [
+    "verify_same_six_repository_scope",
+    "verify_pinned_local_checkouts_without_fetch",
+    "create_clean_archive_snapshots",
+    "run_static_only_gate",
+    "run_ai_enabled_gate",
+    "record_new_or_remaining_caveats"
+  ],
+  "staticOnlyRun": {
+    "id": "p47-t3-bounded-rerun-static-only-20260621T130000Z",
+    "mode": "static_only",
+    "root": "/tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z",
+    "output": "/tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z/output-static",
+    "status": "passed",
+    "command": "PYTHONPATH=src python3 -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z/inputs --out /tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z/output-static --skip-ai --repository-profile-selection auto",
+    "batchReport": {
+      "path": "/tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z/output-static/autonomous-candidate-batch-report.json",
+      "digest": "sha256:9f8bb903cbf6e6974754f9e17a4302e24dc3a5dd7dcb9aee22cf6fe4b1547de0",
+      "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+      "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+      "authority": "producer_preview_evidence_only"
+    },
+    "summary": {
+      "processedCount": 6,
+      "failedRepositoryCount": 0,
+      "passedPreflightCount": 6,
+      "candidateCount": 9,
+      "relationCount": 3,
+      "preflightWarningCount": 0,
+      "interfaceDiagnosticCount": 29,
+      "repositoryProfileDetectionCount": 6,
+      "repositoryProfileSelectedCount": 5,
+      "repositoryProfileFallbackCount": 1,
+      "aiDraftProposalCount": 0,
+      "aiEnrichmentProposalCount": 0,
+      "trustedLocalAdapterRunEvidenceSidecarCount": 0
+    }
+  },
+  "aiEnabledRun": {
+    "id": "p47-t3-bounded-rerun-ai-enabled-20260621T130000Z",
+    "mode": "ai_enabled",
+    "root": "/tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z",
+    "output": "/tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z/output-ai",
+    "status": "failed",
+    "exitCode": 1,
+    "command": "PYTHONPATH=src python3 -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z/inputs --out /tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z/output-ai --repository-profile-selection auto --lm-studio-base-url http://127.0.0.1:1234 --lm-studio-model openai/gpt-oss-20b --json-repair-max-attempts 1",
+    "batchReport": {
+      "path": "/tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z/output-ai/autonomous-candidate-batch-report.json",
+      "digest": "sha256:030b582e11fa789c9fe0ce1ddf948dce28066c3dd7ed3fb7deb414d0f02f18f5",
+      "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+      "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+      "authority": "producer_preview_evidence_only"
+    },
+    "provider": {
+      "baseUrl": "http://127.0.0.1:1234",
+      "chainOfThoughtPersisted": false,
+      "execution": "operator_opt_in_local",
+      "jsonRepairMaxAttempts": 1,
+      "mode": "local_lm_studio",
+      "model": "openai/gpt-oss-20b",
+      "provider": "lm_studio",
+      "rawPromptPersisted": false,
+      "rawResponsePersisted": false
+    },
+    "summary": {
+      "processedCount": 6,
+      "failedRepositoryCount": 2,
+      "passedPreflightCount": 6,
+      "aiDraftProposalCount": 4,
+      "aiDraftCompletedRepositoryCount": 1,
+      "aiDraftWarningRepositoryCount": 3,
+      "aiDraftFailedRepositoryCount": 2,
+      "aiEnrichmentProposalCount": 6,
+      "aiEnrichmentCompletedRepositoryCount": 3,
+      "aiEnrichmentWarningRepositoryCount": 3,
+      "aiEnrichedPreviewAppliedCount": 0,
+      "aiEnrichmentProviderPromptTokens": 107055,
+      "aiEnrichmentProviderCompletionTokens": 3898,
+      "aiEnrichmentProviderTotalTokens": 110953,
+      "repositoryProfileDetectionCount": 6,
+      "repositoryProfileSelectedCount": 5,
+      "repositoryProfileFallbackCount": 1,
+      "trustedLocalAdapterRunEvidenceSidecarCount": 0
+    }
+  },
+  "repositories": [
+    {
+      "id": "flask",
+      "staticStatus": "passed",
+      "interfaceStatus": "complete",
+      "interfaceDiagnosticCount": 0,
+      "aiStatus": "passed",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepairStatus": "not_needed"
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": ["refined_summary_missing"],
+        "jsonRepairStatus": "not_needed"
+      }
+    },
+    {
+      "id": "gin",
+      "staticStatus": "passed",
+      "interfaceStatus": "complete",
+      "interfaceDiagnosticCount": 0,
+      "aiStatus": "failed",
+      "aiDraft": {
+        "status": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "jsonRepairStatus": "exhausted",
+        "stopStatus": "blocked",
+        "stopDecision": "blocked_until_inputs_change"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed"
+      }
+    },
+    {
+      "id": "xyflow",
+      "staticStatus": "passed",
+      "interfaceStatus": "partial",
+      "interfaceDiagnosticCount": 29,
+      "aiStatus": "passed",
+      "aiDraft": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed"
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": ["ai_json_repair_needed"],
+        "jsonRepairStatus": "repaired"
+      }
+    },
+    {
+      "id": "cupertino",
+      "staticStatus": "passed",
+      "interfaceStatus": "complete",
+      "interfaceDiagnosticCount": 0,
+      "aiStatus": "passed",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepairStatus": "not_needed"
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": ["refined_summary_missing"],
+        "jsonRepairStatus": "not_needed"
+      }
+    },
+    {
+      "id": "navigation-split-view",
+      "staticStatus": "passed",
+      "interfaceStatus": "complete",
+      "interfaceDiagnosticCount": 0,
+      "aiStatus": "failed",
+      "aiDraft": {
+        "status": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "jsonRepairStatus": "exhausted",
+        "stopStatus": "blocked",
+        "stopDecision": "blocked_until_inputs_change"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed"
+      }
+    },
+    {
+      "id": "docc2context",
+      "staticStatus": "passed",
+      "interfaceStatus": "complete",
+      "interfaceDiagnosticCount": 0,
+      "aiStatus": "passed",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": ["ai_json_repair_needed"],
+        "jsonRepairStatus": "repaired"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepairStatus": "not_needed"
+      }
+    }
+  ],
+  "dispositionResults": {
+    "currentExcludedSidecarsReusedAsTruth": false,
+    "ginAiDraftResolved": false,
+    "docc2contextAiDraftResolvedToNonBlockingWarning": true,
+    "xyflowUnsupportedModelEvidencePathRepeated": false,
+    "xyflowPartialPublicInterfaceIndexRepeated": true,
+    "xyflowOperatorCheckoutOriginCaveatRepeated": true,
+    "newBlockingAISidecars": ["navigation-split-view.aiDraft"],
+    "remainingBlockingAISidecars": ["gin.aiDraft", "navigation-split-view.aiDraft"],
+    "remainingNonBlockingWarnings": [
+      "flask.aiDraft",
+      "flask.aiEnrichment",
+      "xyflow.aiEnrichment",
+      "cupertino.aiDraft",
+      "cupertino.aiEnrichment",
+      "docc2context.aiDraft"
+    ]
+  },
+  "gateDecision": {
+    "boundedRerunGateExecuted": true,
+    "staticGatePassed": true,
+    "aiEnabledGatePassed": false,
+    "selectedOutcome": "bounded_rerun_executed_static_passed_ai_failed",
+    "readyForP47T4ExitDecision": true,
+    "readyForLargerCuratedCorpus": false,
+    "approvesLargerCuratedCorpus": false,
+    "recommendedP47T4DecisionInput": "another_targeted_pass_or_stop_on_ai_draft_blocker"
+  },
+  "authorityBoundary": {
+    "boundedRerunGateIsRegistryAuthority": false,
+    "approvesLargerCuratedCorpus": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_treat_bounded_rerun_gate_output_as_registry_truth",
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_approve_larger_curated_corpus"
+  ],
+  "nextState": {
+    "nextTaskPointer": "P47-T4",
+    "recommendedFollowUp": "Record Targeted Quality Follow-Up Exit Decision",
+    "largerCuratedCorpusStillBlocked": true
+  }
+}

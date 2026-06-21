@@ -38,6 +38,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P47-T4 Record Targeted Quality Follow-Up Exit Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 47. Targeted Pilot Quality Follow-Up" in next_text
+        assert "`P47-T4`" in next_text
+        assert "`P47-T3` Run Bounded Pilot Rerun Gate" in next_text
+        assert "same six-repository bounded pilot scope" in normalized
+        assert "static-only gate passed" in normalized
+        assert "AI-enabled gate failed" in normalized
+        assert "gin.aiDraft" in next_text
+        assert "navigation-split-view.aiDraft" in next_text
+        assert "docc2context.aiDraft" in next_text
+        assert "xyflow" in next_text
+        assert "larger curated corpus remains blocked" in normalized
+        assert "Do not approve a larger curated corpus" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P47-T3 Run Bounded Pilot Rerun Gate" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -32798,6 +32817,276 @@ def test_targeted_pilot_quality_pass_records_p47_t2_dispositions() -> None:
         (capabilities_docc, "TargetedPilotQualityPass"),
         (roadmap, "TARGETED_PILOT_QUALITY_PASS.md"),
         (roadmap_docc, "TargetedPilotQualityPass"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_targeted_pilot_bounded_rerun_gate_records_p47_t3_result() -> None:
+    quality_pass_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "targeted_pilot_quality_pass"
+        / "p47-t2-targeted-pilot-quality-pass.example.json"
+    )
+    manifest_path = ROOT / "inputs" / "p46-bounded-popular-library-pilot" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "targeted_pilot_bounded_rerun_gate"
+        / "p47-t3-targeted-pilot-bounded-rerun-gate.example.json"
+    )
+    github_doc = ROOT / "docs" / "TARGETED_PILOT_BOUNDED_RERUN_GATE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "TargetedPilotBoundedRerunGate.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.targeted-pilot-bounded-rerun-gate/v0"
+    assert payload["kind"] == "SpecHarvesterTargetedPilotBoundedRerunGate"
+    assert payload["authority"] == "producer_bounded_rerun_gate_evidence_only"
+    assert payload["phase"] == "P47"
+    assert payload["task"] == "P47-T3"
+
+    source_artifact = payload["sourceArtifacts"]["p47TargetedQualityPass"]
+    source_payload = json.loads(quality_pass_path.read_text(encoding="utf-8"))
+    assert ROOT / source_artifact["path"] == quality_pass_path
+    assert source_artifact["digest"] == (
+        "sha256:" + hashlib.sha256(quality_pass_path.read_bytes()).hexdigest()
+    )
+    assert source_artifact["apiVersion"] == source_payload["apiVersion"]
+    assert source_artifact["kind"] == source_payload["kind"]
+    assert source_artifact["authority"] == source_payload["authority"]
+
+    assert payload["sourceManifest"] == {
+        "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+        "digest": "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+        "entryCount": 6,
+        "scope": "same_six_repository_bounded_pilot",
+        "expandedCorpus": False,
+    }
+    assert payload["runInputMirror"]["sameRepositoryIds"] is True
+    assert payload["runInputMirror"]["sameRevisions"] is True
+    assert payload["runInputMirror"]["createdFromLocalGitArchive"] is True
+    assert payload["runInputMirror"]["cloneOrFetch"] is False
+    assert payload["checkoutVerification"]["allExpectedCheckoutsPresent"] is True
+    assert payload["checkoutVerification"]["allRevisionsMatched"] is True
+    caveats = {
+        caveat["code"]: caveat
+        for caveat in payload["checkoutVerification"]["operatorCheckoutCaveats"]
+    }
+    assert set(caveats) == {
+        "source_checkout_had_untracked_doccarchive",
+        "operator_checkout_origin_fork_mismatch",
+    }
+    for caveat in caveats.values():
+        assert caveat["blocksBoundedRerunGate"] is False
+        assert caveat["blocksLargerCuratedCorpusUntilP47T4"] is True
+
+    assert payload["executionOrder"] == [
+        "verify_same_six_repository_scope",
+        "verify_pinned_local_checkouts_without_fetch",
+        "create_clean_archive_snapshots",
+        "run_static_only_gate",
+        "run_ai_enabled_gate",
+        "record_new_or_remaining_caveats",
+    ]
+    static_run = payload["staticOnlyRun"]
+    assert static_run["mode"] == "static_only"
+    assert static_run["status"] == "passed"
+    assert "--skip-ai" in static_run["command"]
+    assert static_run["batchReport"]["digest"] == (
+        "sha256:9f8bb903cbf6e6974754f9e17a4302e24dc3a5dd7dcb9aee22cf6fe4b1547de0"
+    )
+    assert static_run["summary"] == {
+        "processedCount": 6,
+        "failedRepositoryCount": 0,
+        "passedPreflightCount": 6,
+        "candidateCount": 9,
+        "relationCount": 3,
+        "preflightWarningCount": 0,
+        "interfaceDiagnosticCount": 29,
+        "repositoryProfileDetectionCount": 6,
+        "repositoryProfileSelectedCount": 5,
+        "repositoryProfileFallbackCount": 1,
+        "aiDraftProposalCount": 0,
+        "aiEnrichmentProposalCount": 0,
+        "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    }
+
+    ai_run = payload["aiEnabledRun"]
+    assert ai_run["mode"] == "ai_enabled"
+    assert ai_run["status"] == "failed"
+    assert ai_run["exitCode"] == 1
+    assert "--lm-studio-model openai/gpt-oss-20b" in ai_run["command"]
+    assert "--json-repair-max-attempts 1" in ai_run["command"]
+    assert ai_run["batchReport"]["digest"] == (
+        "sha256:030b582e11fa789c9fe0ce1ddf948dce28066c3dd7ed3fb7deb414d0f02f18f5"
+    )
+    assert ai_run["provider"]["rawPromptPersisted"] is False
+    assert ai_run["provider"]["rawResponsePersisted"] is False
+    assert ai_run["provider"]["chainOfThoughtPersisted"] is False
+    assert ai_run["summary"] == {
+        "processedCount": 6,
+        "failedRepositoryCount": 2,
+        "passedPreflightCount": 6,
+        "aiDraftProposalCount": 4,
+        "aiDraftCompletedRepositoryCount": 1,
+        "aiDraftWarningRepositoryCount": 3,
+        "aiDraftFailedRepositoryCount": 2,
+        "aiEnrichmentProposalCount": 6,
+        "aiEnrichmentCompletedRepositoryCount": 3,
+        "aiEnrichmentWarningRepositoryCount": 3,
+        "aiEnrichedPreviewAppliedCount": 0,
+        "aiEnrichmentProviderPromptTokens": 107055,
+        "aiEnrichmentProviderCompletionTokens": 3898,
+        "aiEnrichmentProviderTotalTokens": 110953,
+        "repositoryProfileDetectionCount": 6,
+        "repositoryProfileSelectedCount": 5,
+        "repositoryProfileFallbackCount": 1,
+        "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    }
+
+    repositories = {repository["id"]: repository for repository in payload["repositories"]}
+    assert list(repositories) == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert repositories["gin"]["aiDraft"]["status"] == "failed"
+    assert repositories["gin"]["aiDraft"]["jsonRepairStatus"] == "exhausted"
+    assert repositories["navigation-split-view"]["aiDraft"]["status"] == "failed"
+    assert repositories["navigation-split-view"]["aiDraft"]["jsonRepairStatus"] == "exhausted"
+    assert repositories["docc2context"]["aiDraft"]["status"] == "warning"
+    assert repositories["docc2context"]["aiDraft"]["jsonRepairStatus"] == "repaired"
+    assert repositories["xyflow"]["interfaceStatus"] == "partial"
+    assert repositories["xyflow"]["interfaceDiagnosticCount"] == 29
+    assert repositories["xyflow"]["aiEnrichment"]["diagnosticCodes"] == ["ai_json_repair_needed"]
+    for repository in repositories.values():
+        assert repository["staticStatus"] == "passed"
+
+    assert payload["dispositionResults"] == {
+        "currentExcludedSidecarsReusedAsTruth": False,
+        "ginAiDraftResolved": False,
+        "docc2contextAiDraftResolvedToNonBlockingWarning": True,
+        "xyflowUnsupportedModelEvidencePathRepeated": False,
+        "xyflowPartialPublicInterfaceIndexRepeated": True,
+        "xyflowOperatorCheckoutOriginCaveatRepeated": True,
+        "newBlockingAISidecars": ["navigation-split-view.aiDraft"],
+        "remainingBlockingAISidecars": ["gin.aiDraft", "navigation-split-view.aiDraft"],
+        "remainingNonBlockingWarnings": [
+            "flask.aiDraft",
+            "flask.aiEnrichment",
+            "xyflow.aiEnrichment",
+            "cupertino.aiDraft",
+            "cupertino.aiEnrichment",
+            "docc2context.aiDraft",
+        ],
+    }
+    assert payload["gateDecision"] == {
+        "boundedRerunGateExecuted": True,
+        "staticGatePassed": True,
+        "aiEnabledGatePassed": False,
+        "selectedOutcome": "bounded_rerun_executed_static_passed_ai_failed",
+        "readyForP47T4ExitDecision": True,
+        "readyForLargerCuratedCorpus": False,
+        "approvesLargerCuratedCorpus": False,
+        "recommendedP47T4DecisionInput": "another_targeted_pass_or_stop_on_ai_draft_blocker",
+    }
+    assert payload["authorityBoundary"]["approvesLargerCuratedCorpus"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["staticOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["adapterOutputAcceptedAsRegistryTruth"] is False
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["installsDependencies"] is False
+    assert payload["executionBoundary"]["invokesPackageManagers"] is False
+    assert payload["executionBoundary"]["executesHarvestedCode"] is False
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["rawPromptPersisted"] is False
+    assert payload["executionBoundary"]["rawProviderResponsePersisted"] is False
+    assert payload["executionBoundary"]["chainOfThoughtPersisted"] is False
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P47-T4",
+        "recommendedFollowUp": "Record Targeted Quality Follow-Up Exit Decision",
+        "largerCuratedCorpusStillBlocked": True,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Targeted Pilot Bounded Rerun Gate",
+            "P47-T3",
+            "P47-T4",
+            "SpecHarvesterTargetedPilotBoundedRerunGate",
+            "spec-harvester.targeted-pilot-bounded-rerun-gate/v0",
+            "producer_bounded_rerun_gate_evidence_only",
+            "p47-t3-targeted-pilot-bounded-rerun-gate.example.json",
+            "same six repository ids",
+            "Batch status | passed",
+            "Batch status | failed",
+            "openai/gpt-oss-20b",
+            "110,953",
+            "bounded_rerun_executed_static_passed_ai_failed",
+            "gin.aiDraft",
+            "navigation-split-view.aiDraft",
+            "docc2context.aiDraft",
+            "partial_public_interface_index",
+            "operator checkout origin caveat",
+            "larger curated corpus remains blocked",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "approve a larger curated corpus",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run adapters",
+            "enable trusted local adapter execution",
+            "Raw prompts",
+            "raw provider responses",
+            "chain-of-thought",
+            "Static output, AI output, and adapter output are not registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "TARGETED_PILOT_BOUNDED_RERUN_GATE.md"),
+        (docc_root, "docs/TARGETED_PILOT_BOUNDED_RERUN_GATE.md"),
+        (docc_root, "<doc:TargetedPilotBoundedRerunGate>"),
+        (capabilities, "TARGETED_PILOT_BOUNDED_RERUN_GATE.md"),
+        (capabilities_docc, "TargetedPilotBoundedRerunGate"),
+        (roadmap, "TARGETED_PILOT_BOUNDED_RERUN_GATE.md"),
+        (roadmap_docc, "TargetedPilotBoundedRerunGate"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

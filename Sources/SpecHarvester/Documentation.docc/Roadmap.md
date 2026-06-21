@@ -167,6 +167,10 @@ P47-T2 is recorded in <doc:TargetedPilotQualityPass>. It excludes current bad
 sidecars from the bounded rerun gate, records bounded-rerun dispositions for
 the xyflow caveats, and keeps larger corpus approval blocked until the bounded
 rerun gate and quality follow-up exit decision complete.
+P47-T3 is recorded in <doc:TargetedPilotBoundedRerunGate>. The same
+six-repository scope passed static-only validation again, but the AI-enabled
+gate failed on `gin.aiDraft` and a new `navigation-split-view.aiDraft` blocker.
+The larger corpus remains blocked for P47-T4 exit-decision review.
 
 ### Selected Candidate SpecPM Intake Handoff
 
