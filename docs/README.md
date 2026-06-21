@@ -299,6 +299,9 @@ Published DocC site:
 74. [`BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md`](BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md):
    P46-T6 exit decision selecting a targeted quality pass before any larger
    curated corpus expansion
+75. [`TARGETED_PILOT_QUALITY_FOLLOW_UP_PLAN.md`](TARGETED_PILOT_QUALITY_FOLLOW_UP_PLAN.md):
+   P47-T1 targeted quality follow-up plan for Gin/docc2context AI draft repair,
+   xyflow caveat disposition, and the bounded rerun gate
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

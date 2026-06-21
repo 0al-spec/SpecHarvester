@@ -84,6 +84,7 @@ The canonical source files remain in the repository:
 - `docs/BOUNDED_POPULAR_LIBRARY_PILOT_OUTPUT_TRIAGE.md`
 - `docs/BOUNDED_POPULAR_LIBRARY_PILOT_AUTHOR_HANDOFF.md`
 - `docs/BOUNDED_POPULAR_LIBRARY_PILOT_EXIT_DECISION.md`
+- `docs/TARGETED_PILOT_QUALITY_FOLLOW_UP_PLAN.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -259,6 +260,7 @@ the host.
 - <doc:BoundedPopularLibraryPilotOutputTriage>
 - <doc:BoundedPopularLibraryPilotAuthorHandoff>
 - <doc:BoundedPopularLibraryPilotExitDecision>
+- <doc:TargetedPilotQualityFollowUpPlan>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
