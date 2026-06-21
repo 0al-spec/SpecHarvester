@@ -2251,7 +2251,7 @@ Acceptance:
 - [x] `P47-T3` Run the bounded pilot rerun gate after targeted dispositions,
   preserving static-only-before-AI ordering, proposal-only AI output, and the
   same six-repository pilot scope.
-- [ ] `P47-T4` Record the targeted quality follow-up exit decision, deciding
+- [x] `P47-T4` Record the targeted quality follow-up exit decision, deciding
   whether larger curated corpus planning can proceed, another targeted pass is
   needed, or a documented blocker stops expansion.
 

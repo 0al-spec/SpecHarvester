@@ -1,62 +1,57 @@
-# Next Task: P47-T4 Record Targeted Quality Follow-Up Exit Decision
+# Next Task: P48-T1 Plan AI Draft Blocker Follow-Up Pass
 
 **Status:** Selected
-**Branch:** `feature/P47-T4-record-targeted-quality-follow-up-exit-decision`
-**Phase:** Phase 47. Targeted Pilot Quality Follow-Up
-**Task:** `P47-T4`
-**Last Archived:** `P47-T3` Run Bounded Pilot Rerun Gate
-**Depends On:** `P47-T3` Run Bounded Pilot Rerun Gate
+**Branch:** `feature/P48-T1-plan-ai-draft-blocker-follow-up-pass`
+**Phase:** Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus
+**Task:** `P48-T1`
+**Last Archived:** `P47-T4` Record Targeted Quality Follow-Up Exit Decision
+**Depends On:** `P47-T4` Record Targeted Quality Follow-Up Exit Decision
 
 ## Goal
 
-Record the targeted quality follow-up exit decision after the P47-T3 bounded
-pilot rerun gate, deciding whether the project needs another targeted pass or
-must stop on a documented blocker before larger curated corpus planning.
+Plan the next targeted AI draft blocker follow-up pass selected by P47-T4,
+without expanding beyond the same six-repository bounded pilot scope.
 
 ## Context
 
-P47-T3 used the same six-repository bounded pilot scope. The static-only gate
-passed. The AI-enabled gate failed because `gin.aiDraft` and
-`navigation-split-view.aiDraft` failed after one JSON repair attempt.
+P47-T4 selected
+`run_another_targeted_quality_pass_before_larger_curated_corpus`. The P47-T3
+static-only gate passed, but the AI-enabled gate failed because `gin.aiDraft`
+and `navigation-split-view.aiDraft` exhausted JSON repair with
+`package_set_subject_metadata_missing`.
 
 `docc2context.aiDraft` improved to a repaired warning. `xyflow` did not repeat
-`model_evidence_path_unsupported`, but still carries partial interface and AI
-repair caveats. The larger curated corpus remains blocked until P47-T4 records
-an explicit exit decision.
+`model_evidence_path_unsupported`, but still carries partial interface,
+operator checkout origin, and `ai_json_repair_needed` caveats. The larger
+curated corpus remains blocked until Phase 48 plans, executes, reruns, and
+reviews the blocker follow-up.
 
 ## Scope
 
-- Read the P47-T3 validation report and durable fixture.
-- Decide one of:
-  - another targeted quality pass,
-  - stop on documented blocker,
-  - proceed only if the evidence explicitly supports readiness.
-- Name the blocking sidecars and caveats:
+- Read the P47-T4 exit decision fixture and documentation.
+- Define the P48 targeted blocker follow-up plan for:
   - `gin.aiDraft`
   - `navigation-split-view.aiDraft`
   - `docc2context.aiDraft`
   - `xyflow`
+- Keep the same six-repository bounded pilot scope for any future rerun gate.
 - Preserve proposal-only AI output and registry authority boundaries.
 
 ## Expected Deliverables
 
-- Exit decision document for the targeted quality follow-up.
-- Durable fixture or documentation recording the selected decision and evidence
-  basis.
-- Workplan/next-task update reflecting the selected path.
-- Validation report and archive artifacts for P47-T4.
+- P48-T1 blocker follow-up plan fixture or documentation.
+- Explicit target list and success criteria for P48-T2.
+- Boundaries for P48-T2 and P48-T3, including static-only-before-AI ordering
+  and no registry mutation.
+- Validation report and archive artifacts for P48-T1.
 
 ## Boundaries
 
-- Do not approve a larger curated corpus unless P47-T4 explicitly chooses
-  readiness from recorded evidence.
-- Do not approve a larger curated corpus if the P47-T3 failed AI-enabled gate
-  remains the controlling result.
+- Do not approve a larger curated corpus.
 - Do not accept packages or relations.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
 - Do not run adapters or enable trusted local adapter execution.
-- Do not expand beyond the same six-repository bounded pilot scope during the
-  decision task.
+- Do not expand beyond the same six-repository bounded pilot scope.
 - Do not clone or fetch repositories.
 - Do not execute harvested code.
 - Do not persist raw prompts, raw provider responses, secrets, or
@@ -69,6 +64,6 @@ an explicit exit decision.
 ## Validation Expectations
 
 - Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
-- Run focused docs-contract tests for P47-T4 and current next task.
+- Run focused docs-contract tests for P48-T1 and current next task.
 - Run formatting, lint, coverage, Swift manifest, Swift docs build, and
   whitespace checks as required by Flow.
