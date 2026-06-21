@@ -2245,7 +2245,7 @@ Acceptance:
   decision, covering Gin and docc2context AI draft regeneration, xyflow
   evidence-gap disposition, and the bounded rerun gate before any larger
   curated corpus approval.
-- [ ] `P47-T2` Execute the targeted pilot quality pass from the P47-T1 plan,
+- [x] `P47-T2` Execute the targeted pilot quality pass from the P47-T1 plan,
   producing repair or explicit disposition evidence for Gin and docc2context
   AI drafts plus xyflow caveats without approving larger corpus expansion.
 - [ ] `P47-T3` Run the bounded pilot rerun gate after targeted dispositions,
