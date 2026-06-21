@@ -45,6 +45,7 @@ The source artifact is
 | --- | --- | --- | --- |
 | `gin.aiDraft` | P46-T6 | Regenerate the AI draft or explicitly accept it as non-blocking with a reason | yes |
 | `docc2context.aiDraft` | P46-T6 | Regenerate the AI draft or explicitly accept it as non-blocking with a reason | yes |
+| `xyflow.aiEnrichment` | P46-T6 | Resolve the unsupported enrichment path or explicitly exclude the sidecar | yes |
 | `partial_public_interface_index` | P46-T6 | Resolve the partial interface scope or accept it with a reason | yes |
 | `operator_checkout_origin_fork_mismatch` | P46-T6 | Verify checkout origin or accept the fork-origin caveat | yes |
 | `model_evidence_path_unsupported` | P46-T6 | Resolve the unsupported enrichment path or exclude the enrichment with a reason | yes |
@@ -58,7 +59,7 @@ explicitly accepts them. P47-T1 only plans that work.
 | --- | --- | --- | --- |
 | `gin_ai_draft_quality_repair` | `gin.aiDraft` | Preserve blocker visibility and define execution acceptance | Valid subject identity or explicit non-blocking acceptance |
 | `docc2context_ai_draft_quality_repair` | `docc2context.aiDraft` | Preserve blocker visibility and define execution acceptance | Valid package-set subject metadata or explicit non-blocking acceptance |
-| `xyflow_caveat_disposition` | xyflow caveats | Preserve caveat visibility and define review evidence | Resolution or explicit acceptance for all three xyflow caveats |
+| `xyflow_caveat_disposition` | `xyflow.aiEnrichment` and xyflow caveats | Preserve sidecar and caveat visibility and define review evidence | Resolution, exclusion, or explicit acceptance for the sidecar and all three xyflow caveats |
 | `bounded_rerun_gate` | same six pilot repositories | Define rerun gate and stop conditions | Static-only evidence first, AI proposal-only evidence second, then explicit exit decision |
 
 ## Bounded Rerun Gate

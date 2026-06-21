@@ -46,6 +46,7 @@ def assert_current_next_task(next_text: str) -> None:
         assert "`P47-T1` Targeted Pilot Quality Follow-Up Plan" in next_text
         assert "gin.aiDraft" in next_text
         assert "docc2context.aiDraft" in next_text
+        assert "xyflow.aiEnrichment" in next_text
         assert "partial_public_interface_index" in next_text
         assert "operator_checkout_origin_fork_mismatch" in next_text
         assert "model_evidence_path_unsupported" in next_text
@@ -32358,6 +32359,15 @@ def test_targeted_pilot_quality_follow_up_plan_records_p47_t1_plan() -> None:
         == "regenerate_ai_draft_or_accept_as_non_blocking_with_reason"
         for sidecar in sidecars.values()
     )
+    unsupported_sidecars = {
+        sidecar["sidecarId"]: sidecar
+        for sidecar in payload["carryForwardBlockers"]["unsupportedAISidecars"]
+    }
+    assert set(unsupported_sidecars) == {"xyflow.aiEnrichment"}
+    assert unsupported_sidecars["xyflow.aiEnrichment"]["blocksLargerCuratedCorpus"] is True
+    assert unsupported_sidecars["xyflow.aiEnrichment"]["requiredDisposition"] == (
+        "resolve_unsupported_enrichment_path_or_explicitly_exclude_sidecar"
+    )
 
     caveats = {
         caveat["code"]: caveat for caveat in payload["carryForwardBlockers"]["xyflowCaveats"]
@@ -32381,6 +32391,7 @@ def test_targeted_pilot_quality_follow_up_plan_records_p47_t1_plan() -> None:
         "docc2context.aiDraft"
     ]
     assert workstreams["xyflow_caveat_disposition"]["targets"] == [
+        "xyflow.aiEnrichment",
         "partial_public_interface_index",
         "operator_checkout_origin_fork_mismatch",
         "model_evidence_path_unsupported",
@@ -32409,6 +32420,7 @@ def test_targeted_pilot_quality_follow_up_plan_records_p47_t1_plan() -> None:
         "approvalBlockedBy": [
             "gin.aiDraft",
             "docc2context.aiDraft",
+            "xyflow.aiEnrichment",
             "partial_public_interface_index",
             "operator_checkout_origin_fork_mismatch",
             "model_evidence_path_unsupported",
@@ -32470,6 +32482,7 @@ def test_targeted_pilot_quality_follow_up_plan_records_p47_t1_plan() -> None:
             "run_targeted_quality_pass_before_larger_curated_corpus",
             "gin.aiDraft",
             "docc2context.aiDraft",
+            "xyflow.aiEnrichment",
             "partial_public_interface_index",
             "operator_checkout_origin_fork_mismatch",
             "model_evidence_path_unsupported",

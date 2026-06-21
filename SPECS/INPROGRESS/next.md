@@ -26,6 +26,10 @@ Repair or explicitly dispose the do-not-promote AI sidecars:
 - `gin.aiDraft`
 - `docc2context.aiDraft`
 
+Resolve or explicitly exclude the unsupported AI sidecar:
+
+- `xyflow.aiEnrichment`
+
 Resolve or explicitly accept xyflow caveats:
 
 - `partial_public_interface_index`

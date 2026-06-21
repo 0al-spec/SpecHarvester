@@ -11,9 +11,10 @@ PASS
 ## Summary
 
 P47-T1 records a targeted quality follow-up plan after the P46 exit decision.
-The plan keeps `gin.aiDraft`, `docc2context.aiDraft`, and xyflow caveats
-visible, defines repair or explicit disposition workstreams, and requires a
-bounded rerun gate before any larger curated corpus approval.
+The plan keeps `gin.aiDraft`, `docc2context.aiDraft`, `xyflow.aiEnrichment`,
+and xyflow caveats visible, defines repair or explicit disposition
+workstreams, and requires a bounded rerun gate before any larger curated corpus
+approval.
 
 P47-T1 did not rerun the pilot, run AI, run adapters, clone or fetch
 repositories, execute harvested code, or change registry truth.
@@ -33,6 +34,7 @@ repositories, execute harvested code, or change registry truth.
 | Pilot rerun approved now | no |
 | Next execution task | `P47-T2` |
 | Do-not-promote AI sidecars carried forward | 2 |
+| Unsupported AI sidecars carried forward | 1 |
 | xyflow caveats carried forward | 3 |
 | Workstreams planned | 4 |
 
@@ -40,6 +42,8 @@ repositories, execute harvested code, or change registry truth.
 
 - `gin.aiDraft`: regenerate or explicitly accept as non-blocking.
 - `docc2context.aiDraft`: regenerate or explicitly accept as non-blocking.
+- `xyflow.aiEnrichment`: resolve unsupported enrichment path or explicitly
+  exclude the sidecar.
 - `partial_public_interface_index`: resolve or explicitly accept.
 - `operator_checkout_origin_fork_mismatch`: verify origin or explicitly accept.
 - `model_evidence_path_unsupported`: resolve unsupported enrichment path or

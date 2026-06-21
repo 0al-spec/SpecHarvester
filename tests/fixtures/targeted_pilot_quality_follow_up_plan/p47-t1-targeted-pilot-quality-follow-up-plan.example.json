@@ -43,6 +43,16 @@
         "blocksLargerCuratedCorpus": true
       }
     ],
+    "unsupportedAISidecars": [
+      {
+        "repository": "xyflow",
+        "sidecarId": "xyflow.aiEnrichment",
+        "sourceTask": "P46-T6",
+        "status": "awaiting_resolution_or_explicit_acceptance",
+        "requiredDisposition": "resolve_unsupported_enrichment_path_or_explicitly_exclude_sidecar",
+        "blocksLargerCuratedCorpus": true
+      }
+    ],
     "xyflowCaveats": [
       {
         "code": "partial_public_interface_index",
@@ -120,6 +130,7 @@
       "id": "xyflow_caveat_disposition",
       "repository": "xyflow",
       "targets": [
+        "xyflow.aiEnrichment",
         "partial_public_interface_index",
         "operator_checkout_origin_fork_mismatch",
         "model_evidence_path_unsupported"
@@ -193,6 +204,7 @@
     "approvalBlockedBy": [
       "gin.aiDraft",
       "docc2context.aiDraft",
+      "xyflow.aiEnrichment",
       "partial_public_interface_index",
       "operator_checkout_origin_fork_mismatch",
       "model_evidence_path_unsupported"
