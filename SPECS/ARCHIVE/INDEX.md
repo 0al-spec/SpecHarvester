@@ -357,6 +357,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-06-21 | P47-T4 | Archived REVIEW_p47_t4_record_targeted_quality_follow_up_exit_decision report |
 | 2026-06-21 | P47-T4 | Archived Record Targeted Quality Follow-Up Exit Decision (PASS) |
 | 2026-06-21 | P47-T3 | Archived REVIEW_p47_t3_run_bounded_pilot_rerun_gate report |
 | 2026-06-21 | P47-T3 | Archived Run Bounded Pilot Rerun Gate (PASS) |
