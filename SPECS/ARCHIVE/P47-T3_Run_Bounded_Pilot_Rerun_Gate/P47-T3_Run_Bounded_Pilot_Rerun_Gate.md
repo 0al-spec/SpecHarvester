@@ -85,3 +85,8 @@ proposal-only, and records any new or remaining caveats for P47-T4.
   next task.
 - Run lint, format, coverage, Swift manifest, Swift docs build, and whitespace
   checks as required by Flow.
+
+---
+
+**Archived:** 2026-06-21
+**Verdict:** PASS
