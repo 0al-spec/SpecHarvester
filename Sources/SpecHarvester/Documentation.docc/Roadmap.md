@@ -171,6 +171,11 @@ P47-T3 is recorded in <doc:TargetedPilotBoundedRerunGate>. The same
 six-repository scope passed static-only validation again, but the AI-enabled
 gate failed on `gin.aiDraft` and a new `navigation-split-view.aiDraft` blocker.
 The larger corpus remains blocked for P47-T4 exit-decision review.
+P47-T4 is recorded in <doc:TargetedPilotQualityFollowUpExitDecision>. It
+selects `run_another_targeted_quality_pass_before_larger_curated_corpus`
+because the P47-T3 static-only gate passed but the AI-enabled gate failed,
+carrying `gin.aiDraft`, `navigation-split-view.aiDraft`, and xyflow caveats
+into Phase 48 blocker follow-up.
 
 ### Selected Candidate SpecPM Intake Handoff
 
