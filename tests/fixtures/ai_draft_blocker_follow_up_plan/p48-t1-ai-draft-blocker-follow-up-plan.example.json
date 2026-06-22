@@ -9,7 +9,7 @@
   "sourceArtifacts": {
     "p47ExitDecision": {
       "path": "tests/fixtures/targeted_pilot_quality_follow_up_exit_decision/p47-t4-targeted-pilot-quality-follow-up-exit-decision.example.json",
-      "digest": "sha256:38ebe293edc076af49fad2cc7b4100a9728ba399667fd45eb7dca5d8c5f9e162",
+      "digest": "sha256:e2d3ee9bbd03145908a8bf70d5631993417f9cbf40bb2877a781639e993942c9",
       "apiVersion": "spec-harvester.targeted-pilot-quality-follow-up-exit-decision/v0",
       "kind": "SpecHarvesterTargetedPilotQualityFollowUpExitDecision",
       "authority": "producer_quality_follow_up_exit_decision_evidence_only"
