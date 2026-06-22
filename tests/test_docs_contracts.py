@@ -33235,6 +33235,8 @@ def test_targeted_pilot_quality_follow_up_exit_decision_records_p47_t4_result() 
     assert set(warnings) == {"docc2context.aiDraft", "xyflow.aiEnrichment"}
     assert warnings["docc2context.aiDraft"]["jsonRepairStatus"] == "repaired"
     assert warnings["docc2context.aiDraft"]["blocksLargerCuratedCorpus"] is False
+    assert warnings["xyflow.aiEnrichment"]["jsonRepairStatus"] == "repaired"
+    assert warnings["xyflow.aiEnrichment"]["blocksLargerCuratedCorpus"] is True
     caveats = {caveat["code"]: caveat for caveat in payload["blockerTreatment"]["xyflowCaveats"]}
     assert set(caveats) == {
         "partial_public_interface_index",

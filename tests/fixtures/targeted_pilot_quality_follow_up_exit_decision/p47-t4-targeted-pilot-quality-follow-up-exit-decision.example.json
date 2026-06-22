@@ -123,7 +123,7 @@
           "ai_json_repair_needed"
         ],
         "jsonRepairStatus": "repaired",
-        "blocksLargerCuratedCorpus": false,
+        "blocksLargerCuratedCorpus": true,
         "requiredDisposition": "keep_visible_until_next_rerun_or_resolve"
       }
     ],
