@@ -2289,7 +2289,7 @@ Acceptance:
 
 ## Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus
 
-- [ ] `P48-T1` Plan the AI draft blocker follow-up pass for the P47-T4 exit
+- [x] `P48-T1` Plan the AI draft blocker follow-up pass for the P47-T4 exit
   decision, targeting `gin.aiDraft`, `navigation-split-view.aiDraft`,
   `docc2context.aiDraft` warning disposition, and xyflow caveat visibility
   before any larger curated corpus approval.

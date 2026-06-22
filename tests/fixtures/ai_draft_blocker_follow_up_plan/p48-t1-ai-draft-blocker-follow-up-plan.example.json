@@ -1,0 +1,260 @@
+{
+  "apiVersion": "spec-harvester.ai-draft-blocker-follow-up-plan/v0",
+  "kind": "SpecHarvesterAIDraftBlockerFollowUpPlan",
+  "authority": "producer_ai_draft_blocker_follow_up_plan_evidence_only",
+  "schemaVersion": 1,
+  "phase": "P48",
+  "task": "P48-T1",
+  "createdAt": "2026-06-21T23:07:34+03:00",
+  "sourceArtifacts": {
+    "p47ExitDecision": {
+      "path": "tests/fixtures/targeted_pilot_quality_follow_up_exit_decision/p47-t4-targeted-pilot-quality-follow-up-exit-decision.example.json",
+      "digest": "sha256:e2d3ee9bbd03145908a8bf70d5631993417f9cbf40bb2877a781639e993942c9",
+      "apiVersion": "spec-harvester.targeted-pilot-quality-follow-up-exit-decision/v0",
+      "kind": "SpecHarvesterTargetedPilotQualityFollowUpExitDecision",
+      "authority": "producer_quality_follow_up_exit_decision_evidence_only"
+    }
+  },
+  "planDecision": {
+    "selected": "ai_draft_blocker_follow_up_before_larger_curated_corpus",
+    "selectedReason": "p47_t4_requires_targeted_pass_for_failed_ai_drafts",
+    "approvedForP48T2ExecutionPlanning": true,
+    "approvedForLargerCuratedCorpusPlanning": false,
+    "requiresP48T3BoundedRerunGate": true,
+    "registryAuthority": false
+  },
+  "targetScope": {
+    "sourceScope": "same_six_repository_bounded_pilot",
+    "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "repositoryIds": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ],
+    "expandedCorpus": false
+  },
+  "targetBlockers": {
+    "blockingAISidecars": [
+      {
+        "sidecarId": "gin.aiDraft",
+        "repositoryId": "gin",
+        "currentStatus": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "p48T2Objective": "regenerate_or_constrain_ai_draft_until_repair_exhaustion_clears",
+        "successCriteria": [
+          "ai_json_repair_exhausted_absent",
+          "package_set_subject_metadata_missing_absent",
+          "proposal_shape_valid_or_explicitly_disposed_non_blocking"
+        ]
+      },
+      {
+        "sidecarId": "navigation-split-view.aiDraft",
+        "repositoryId": "navigation-split-view",
+        "currentStatus": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "p48T2Objective": "regenerate_or_constrain_ai_draft_until_repair_exhaustion_clears",
+        "successCriteria": [
+          "ai_json_repair_exhausted_absent",
+          "package_set_subject_metadata_missing_absent",
+          "proposal_shape_valid_or_explicitly_disposed_non_blocking"
+        ]
+      }
+    ],
+    "warningSidecarsToKeepVisible": [
+      {
+        "sidecarId": "docc2context.aiDraft",
+        "repositoryId": "docc2context",
+        "currentStatus": "warning",
+        "diagnosticCodes": [
+          "ai_json_repair_needed"
+        ],
+        "jsonRepairStatus": "repaired",
+        "p48T2Objective": "keep_non_blocking_or_resolve_warning"
+      },
+      {
+        "sidecarId": "xyflow.aiEnrichment",
+        "repositoryId": "xyflow",
+        "currentStatus": "warning",
+        "diagnosticCodes": [
+          "ai_json_repair_needed"
+        ],
+        "jsonRepairStatus": "repaired",
+        "p48T2Objective": "keep_non_blocking_or_resolve_warning"
+      }
+    ],
+    "xyflowCaveatsToKeepVisible": [
+      "partial_public_interface_index",
+      "operator_checkout_origin_fork_mismatch",
+      "ai_json_repair_needed"
+    ]
+  },
+  "workstreams": [
+    {
+      "id": "gin_ai_draft_blocker_repair",
+      "targets": [
+        "gin.aiDraft"
+      ],
+      "nextTask": "P48-T2",
+      "requiredEvidence": [
+        "post_follow_up_ai_draft_status",
+        "diagnostic_code_diff",
+        "raw_prompt_response_cot_non_persistence"
+      ]
+    },
+    {
+      "id": "navigation_split_view_ai_draft_blocker_repair",
+      "targets": [
+        "navigation-split-view.aiDraft"
+      ],
+      "nextTask": "P48-T2",
+      "requiredEvidence": [
+        "post_follow_up_ai_draft_status",
+        "diagnostic_code_diff",
+        "raw_prompt_response_cot_non_persistence"
+      ]
+    },
+    {
+      "id": "docc2context_warning_disposition",
+      "targets": [
+        "docc2context.aiDraft"
+      ],
+      "nextTask": "P48-T2",
+      "requiredEvidence": [
+        "warning_remains_non_blocking_or_resolved",
+        "proposal_only_boundary"
+      ]
+    },
+    {
+      "id": "xyflow_caveat_visibility",
+      "targets": [
+        "xyflow.aiEnrichment",
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch",
+        "ai_json_repair_needed"
+      ],
+      "nextTask": "P48-T2",
+      "requiredEvidence": [
+        "caveat_visibility_table",
+        "larger_corpus_blocker_status"
+      ]
+    },
+    {
+      "id": "bounded_rerun_gate_preconditions",
+      "targets": [
+        "same_six_repository_bounded_pilot",
+        "static_only_before_ai_enabled",
+        "proposal_only_ai_output"
+      ],
+      "nextTask": "P48-T3",
+      "requiredEvidence": [
+        "same_repository_ids_and_revisions_or_explicit_manifest_update",
+        "static_gate_before_ai_gate",
+        "no_registry_truth_mutation"
+      ]
+    }
+  ],
+  "p48T2SuccessCriteria": {
+    "requiredBeforeP48T3": [
+      "gin.aiDraft_ai_json_repair_exhausted_absent_or_explicitly_non_blocking",
+      "gin.aiDraft_package_set_subject_metadata_missing_absent_or_explicitly_non_blocking",
+      "navigation-split-view.aiDraft_ai_json_repair_exhausted_absent_or_explicitly_non_blocking",
+      "navigation-split-view.aiDraft_package_set_subject_metadata_missing_absent_or_explicitly_non_blocking",
+      "docc2context.aiDraft_warning_recorded_as_non_blocking_or_resolved",
+      "xyflow_ai_json_repair_needed_warning_recorded_as_non_blocking_or_resolved"
+    ],
+    "mustPreserve": [
+      "proposal_only_ai_output",
+      "raw_prompt_response_cot_non_persistence",
+      "no_package_or_relation_acceptance",
+      "no_registry_publication",
+      "no_adapter_execution"
+    ]
+  },
+  "p48T3RerunGate": {
+    "required": true,
+    "scope": "same_six_repository_bounded_pilot",
+    "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "requiresStaticOnlyBeforeAIEnabled": true,
+    "requiresProposalOnlyAI": true,
+    "requiresNoRawPromptPersistence": true,
+    "requiresNoRegistryPromotion": true,
+    "largerCorpusCanBeConsideredOnlyAfter": [
+      "p48_t2_success_criteria_recorded",
+      "p48_t3_static_gate_passes",
+      "p48_t3_ai_enabled_gate_passes_or_remaining_blockers_are_explicitly_accepted",
+      "p48_t4_exit_decision_records_readiness"
+    ]
+  },
+  "largerCorpusGate": {
+    "approvedNow": false,
+    "approvalBlockedBy": [
+      "p48_t2_not_executed",
+      "p48_t3_bounded_rerun_gate_not_run",
+      "p48_t4_exit_decision_not_recorded",
+      "gin.aiDraft",
+      "navigation-split-view.aiDraft"
+    ],
+    "canBeReconsideredAfter": [
+      "p48_t2_execute_ai_draft_blocker_follow_up_pass",
+      "p48_t3_run_bounded_pilot_rerun_gate_after_blocker_follow_up",
+      "p48_t4_record_post_blocker_follow_up_exit_decision"
+    ]
+  },
+  "authorityBoundary": {
+    "planIsRegistryAuthority": false,
+    "approvesLargerCuratedCorpus": false,
+    "approvesP48T2ExecutionNow": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "exitDecisionOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "rerunsPilot": false,
+    "runsAI": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_treat_plan_output_as_registry_truth",
+    "does_not_treat_exit_decision_output_as_registry_truth",
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth",
+    "does_not_accept_packages",
+    "does_not_accept_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_approve_larger_curated_corpus"
+  ],
+  "nextState": {
+    "nextTaskPointer": "P48-T2",
+    "recommendedFollowUp": "Execute AI Draft Blocker Follow-Up Pass",
+    "largerCuratedCorpusStillBlocked": true
+  }
+}

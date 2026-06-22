@@ -1207,6 +1207,12 @@ and the machine-readable
 P47-T3 static-only gate passed but the AI-enabled gate failed, carrying
 `gin.aiDraft`, `navigation-split-view.aiDraft`, and xyflow caveats into Phase
 48 blocker follow-up.
+P48-T1 records
+[`AI_DRAFT_BLOCKER_FOLLOW_UP_PLAN.md`](AI_DRAFT_BLOCKER_FOLLOW_UP_PLAN.md)
+and the machine-readable `SpecHarvesterAIDraftBlockerFollowUpPlan` fixture.
+It targets `gin.aiDraft` and `navigation-split-view.aiDraft`, keeps
+`docc2context.aiDraft` and xyflow warnings visible, and defines P48-T2 success
+criteria before another same-scope bounded rerun gate.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

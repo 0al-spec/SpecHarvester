@@ -176,6 +176,10 @@ selects `run_another_targeted_quality_pass_before_larger_curated_corpus`
 because the P47-T3 static-only gate passed but the AI-enabled gate failed,
 carrying `gin.aiDraft`, `navigation-split-view.aiDraft`, and xyflow caveats
 into Phase 48 blocker follow-up.
+P48-T1 is recorded in <doc:AIDraftBlockerFollowUpPlan>. It targets
+`gin.aiDraft` and `navigation-split-view.aiDraft`, keeps
+`docc2context.aiDraft` and xyflow warnings visible, and defines P48-T2 success
+criteria before another same-scope bounded rerun gate.
 
 ### Selected Candidate SpecPM Intake Handoff
 
