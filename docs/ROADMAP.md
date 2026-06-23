@@ -1220,6 +1220,13 @@ It explicitly disposes `gin.aiDraft` and `navigation-split-view.aiDraft` as
 non-blocking for the P48-T3 same-scope bounded rerun gate, keeps
 `docc2context.aiDraft` and xyflow caveats visible, and keeps larger curated
 corpus planning blocked until P48-T3 and P48-T4 complete.
+P48-T3 records
+[`AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md`](AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md)
+and the machine-readable `SpecHarvesterAIDraftBlockerBoundedRerunGate`
+fixture. The static-only same-scope gate passed again, while the AI-enabled
+gate failed on `docc2context.aiDraft`; `gin.aiDraft` and
+`navigation-split-view.aiDraft` no longer hard-fail. Larger curated corpus
+planning remains blocked until the P48-T4 exit decision.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

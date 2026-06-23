@@ -317,6 +317,9 @@ Published DocC site:
 80. [`AI_DRAFT_BLOCKER_FOLLOW_UP_PASS.md`](AI_DRAFT_BLOCKER_FOLLOW_UP_PASS.md):
    P48-T2 evidence-only follow-up pass that disposes Gin and
    NavigationSplitView AI draft blockers for the P48-T3 bounded rerun gate
+81. [`AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md`](AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md):
+   P48-T3 same-scope bounded rerun gate showing static pass, AI failure on
+   `docc2context.aiDraft`, and continued larger corpus block before P48-T4
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

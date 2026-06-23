@@ -38,6 +38,28 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P48-T4 Record Post-Blocker Follow-Up Exit Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus" in (next_text)
+        assert "`P48-T4`" in next_text
+        assert "`P48-T3` Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up" in (
+            next_text
+        )
+        assert "same six-repository bounded pilot scope" in normalized
+        assert "static-only gate passed" in normalized
+        assert "AI-enabled gate failed" in normalized
+        assert "gin.aiDraft" in next_text
+        assert "navigation-split-view.aiDraft" in next_text
+        assert "docc2context.aiDraft" in next_text
+        assert "xyflow" in next_text
+        assert "larger curated corpus remains blocked" in normalized
+        assert "Do not approve a larger curated corpus" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not persist raw prompts" in next_text
+        assert "Do not treat AI output as registry truth" in next_text
+        return
+
     if "# Next Task: P48-T3 Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up" in (
         next_text
     ):
@@ -33676,6 +33698,236 @@ def test_ai_draft_blocker_follow_up_plan_records_p48_t1_plan() -> None:
         (workplan, "`P48-T1` Plan the AI draft blocker follow-up pass"),
         (workplan, "`P48-T2` Execute the AI draft blocker follow-up pass"),
         (workplan, "`P48-T3` Run the same six-repository bounded pilot rerun gate"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_ai_draft_blocker_bounded_rerun_gate_records_p48_t3_result() -> None:
+    source_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "ai_draft_blocker_follow_up_pass"
+        / "p48-t2-ai-draft-blocker-follow-up-pass.example.json"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "ai_draft_blocker_bounded_rerun_gate"
+        / "p48-t3-ai-draft-blocker-bounded-rerun-gate.example.json"
+    )
+    github_doc = ROOT / "docs" / "AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "AIDraftBlockerBoundedRerunGate.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.ai-draft-blocker-bounded-rerun-gate/v0"
+    assert payload["kind"] == "SpecHarvesterAIDraftBlockerBoundedRerunGate"
+    assert payload["authority"] == "producer_ai_draft_blocker_bounded_rerun_gate_evidence_only"
+    assert payload["phase"] == "P48"
+    assert payload["task"] == "P48-T3"
+
+    source = payload["sourceArtifacts"]["p48FollowUpPass"]
+    source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+    assert ROOT / source["path"] == source_path
+    assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+    assert source["apiVersion"] == source_payload["apiVersion"]
+    assert source["kind"] == source_payload["kind"]
+    assert source["authority"] == source_payload["authority"]
+
+    assert payload["targetScope"] == {
+        "sourceScope": "same_six_repository_bounded_pilot",
+        "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+        "repositoryIds": [
+            "flask",
+            "gin",
+            "xyflow",
+            "cupertino",
+            "navigation-split-view",
+            "docc2context",
+        ],
+        "expandedCorpus": False,
+    }
+    assert payload["runInputMirror"]["cloneOrFetch"] is False
+    assert payload["runInputMirror"]["cleanArchiveSnapshotsUsedForRun"] is True
+    assert payload["runInputMirror"]["sameRepositoryIdsAndRevisions"] is True
+    assert payload["executionOrder"] == [
+        "verify_same_six_repository_scope",
+        "verify_clean_archive_snapshots_without_fetch",
+        "run_static_only_gate",
+        "run_ai_enabled_gate",
+        "record_new_or_remaining_warning_and_caveat_evidence",
+    ]
+
+    static_run = payload["staticOnlyRun"]
+    assert static_run["exitCode"] == 0
+    assert static_run["status"] == "passed"
+    assert static_run["summary"]["processedCount"] == 6
+    assert static_run["summary"]["failedRepositoryCount"] == 0
+    assert static_run["summary"]["passedPreflightCount"] == 6
+    assert "--skip-ai" in static_run["command"]
+
+    ai_run = payload["aiEnabledRun"]
+    assert ai_run["exitCode"] == 1
+    assert ai_run["status"] == "failed"
+    assert ai_run["provider"]["provider"] == "lm_studio"
+    assert ai_run["provider"]["model"] == "openai/gpt-oss-20b"
+    assert ai_run["provider"]["rawPromptPersisted"] is False
+    assert ai_run["provider"]["rawResponsePersisted"] is False
+    assert ai_run["provider"]["chainOfThoughtPersisted"] is False
+    assert ai_run["summary"]["processedCount"] == 6
+    assert ai_run["summary"]["failedRepositoryCount"] == 1
+    assert ai_run["summary"]["passedPreflightCount"] == 6
+    assert ai_run["summary"]["aiDraftProposalCount"] == 5
+    assert ai_run["summary"]["aiEnrichmentProposalCount"] == 6
+
+    repos = {item["id"]: item for item in payload["repositories"]}
+    assert set(repos) == {
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    }
+    assert repos["gin"]["aiDraft"]["status"] == "warning"
+    assert repos["navigation-split-view"]["aiDraft"]["status"] == "warning"
+    assert repos["docc2context"]["status"] == "failed"
+    assert repos["docc2context"]["aiDraft"]["status"] == "failed"
+    assert repos["docc2context"]["aiDraft"]["jsonRepair"]["status"] == "exhausted"
+    assert "ai_json_repair_exhausted" in repos["docc2context"]["aiDraft"]["diagnosticCodes"]
+    assert (
+        "package_set_subject_metadata_missing"
+        in (repos["docc2context"]["aiDraft"]["diagnosticCodes"])
+    )
+    assert repos["xyflow"]["interfaceIndex"]["status"] == "partial"
+    assert all(item["preflightStatus"] == "passed" for item in repos.values())
+    assert all(item["aiDraft"]["proposalOnly"] for item in repos.values())
+    assert all(item["aiEnrichment"]["proposalOnly"] for item in repos.values())
+
+    assert payload["dispositionResults"]["p48T2DisposedSidecarsReusedAsTruth"] is False
+    assert payload["dispositionResults"]["ginAiDraftGatePassed"] is True
+    assert payload["dispositionResults"]["navigationSplitViewAiDraftGatePassed"] is True
+    assert payload["dispositionResults"]["docc2contextAiDraftGatePassed"] is False
+    assert payload["dispositionResults"]["remainingBlockingAISidecars"] == ["docc2context.aiDraft"]
+    assert "gin.aiDraft no longer hard-fails" in payload["dispositionResults"]["resolvedSinceP47T3"]
+    assert (
+        "navigation-split-view.aiDraft no longer hard-fails"
+        in (payload["dispositionResults"]["resolvedSinceP47T3"])
+    )
+    assert payload["gateDecision"] == {
+        "boundedRerunGateExecuted": True,
+        "staticGatePassed": True,
+        "aiEnabledGatePassed": False,
+        "selectedOutcome": (
+            "bounded_rerun_executed_static_passed_ai_failed_on_docc2context_ai_draft"
+        ),
+        "readyForP48T4ExitDecision": True,
+        "readyForLargerCuratedCorpus": False,
+        "approvesLargerCuratedCorpus": False,
+        "recommendedP48T4DecisionInput": (
+            "post_blocker_follow_up_exit_decision_with_remaining_docc2context_ai_draft_blocker"
+        ),
+    }
+    assert payload["authorityBoundary"]["rerunGateIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesLargerCuratedCorpus"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["staticOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["adapterOutputAcceptedAsRegistryTruth"] is False
+    assert payload["executionBoundary"]["runsStaticOnlyGate"] is True
+    assert payload["executionBoundary"]["runsAI"] is True
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["rawPromptPersisted"] is False
+    assert payload["executionBoundary"]["rawProviderResponsePersisted"] is False
+    assert payload["executionBoundary"]["chainOfThoughtPersisted"] is False
+    assert "does_not_treat_rerun_output_as_registry_truth" in payload["nonAuthorityStatements"]
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P48-T4",
+        "recommendedFollowUp": "Record Post-Blocker Follow-Up Exit Decision",
+        "largerCuratedCorpusStillBlocked": True,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "AI Draft Blocker Bounded Rerun Gate",
+            "P48-T3",
+            "P48-T4",
+            "SpecHarvesterAIDraftBlockerBoundedRerunGate",
+            "spec-harvester.ai-draft-blocker-bounded-rerun-gate/v0",
+            "producer_ai_draft_blocker_bounded_rerun_gate_evidence_only",
+            "p48-t3-ai-draft-blocker-bounded-rerun-gate.example.json",
+            "p48-t2-ai-draft-blocker-follow-up-pass.example.json",
+            "bounded_rerun_executed_static_passed_ai_failed_on_docc2context_ai_draft",
+            "same six-repository bounded pilot",
+            "static-only-before-AI",
+            "proposal-only",
+            "gin.aiDraft",
+            "navigation-split-view.aiDraft",
+            "docc2context.aiDraft",
+            "xyflow",
+            "ai_json_repair_exhausted",
+            "package_set_subject_metadata_missing",
+            "larger curated corpus",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "approve a larger curated corpus",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "run adapters",
+            "enable trusted local adapter execution",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+            "AI output as registry truth",
+            "static output as registry truth",
+            "rerun output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md"),
+        (docc_root, "docs/AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md"),
+        (docc_root, "<doc:AIDraftBlockerBoundedRerunGate>"),
+        (capabilities, "AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md"),
+        (capabilities_docc, "AIDraftBlockerBoundedRerunGate"),
+        (roadmap, "AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md"),
+        (roadmap_docc, "AIDraftBlockerBoundedRerunGate"),
+        (workplan, "`P48-T3` Run the same six-repository bounded pilot rerun gate"),
+        (workplan, "`P48-T4` Record the post-blocker follow-up exit decision"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
