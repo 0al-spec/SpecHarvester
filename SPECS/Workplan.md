@@ -2293,7 +2293,7 @@ Acceptance:
   decision, targeting `gin.aiDraft`, `navigation-split-view.aiDraft`,
   `docc2context.aiDraft` warning disposition, and xyflow caveat visibility
   before any larger curated corpus approval.
-- [ ] `P48-T2` Execute the AI draft blocker follow-up pass from the P48-T1
+- [x] `P48-T2` Execute the AI draft blocker follow-up pass from the P48-T1
   plan, preserving proposal-only AI output, no raw prompt/response/
   chain-of-thought persistence, no registry mutation, and no adapter
   execution.

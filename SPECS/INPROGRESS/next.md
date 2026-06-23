@@ -1,58 +1,64 @@
-# Next Task: P48-T2 Execute AI Draft Blocker Follow-Up Pass
+# Next Task: P48-T3 Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up
 
 **Status:** Selected
-**Branch:** `feature/P48-T2-execute-ai-draft-blocker-follow-up-pass`
+**Branch:** `feature/P48-T3-run-bounded-pilot-rerun-gate-after-ai-draft-blocker-follow-up`
 **Phase:** Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus
-**Task:** `P48-T2`
-**Last Archived:** `P48-T1` Plan AI Draft Blocker Follow-Up Pass
-**Depends On:** `P48-T1` Plan AI Draft Blocker Follow-Up Pass
+**Task:** `P48-T3`
+**Last Archived:** `P48-T2` Execute AI Draft Blocker Follow-Up Pass
+**Depends On:** `P48-T2` Execute AI Draft Blocker Follow-Up Pass
 
 ## Goal
 
-Execute the P48-T1 blocker follow-up plan for the same six-repository bounded
-pilot scope, clearing or explicitly disposing the AI draft blockers before any
-larger curated corpus approval.
+Run the same six-repository bounded pilot rerun gate after the P48-T2 blocker
+follow-up, preserving static-only-before-AI ordering and recording whether the
+AI-enabled gate now passes.
 
 ## Context
 
-P48-T1 selected
-`ai_draft_blocker_follow_up_before_larger_curated_corpus`. The plan keeps the
-same six-repository bounded pilot scope and targets the failed AI draft
-sidecars from the P47-T3 rerun gate:
+P48-T2 recorded
+`ready_for_p48_t3_bounded_rerun_gate_with_explicit_ai_draft_dispositions`.
+The current `gin.aiDraft` and `navigation-split-view.aiDraft` failed sidecars
+were explicitly disposed as non-blocking for this rerun gate, while remaining
+non-promotable and not accepted as registry truth.
+
+P48-T3 must use the same six-repository bounded pilot scope and manifest:
+
+```text
+inputs/p46-bounded-popular-library-pilot/repositories.yml
+```
+
+The rerun gate must keep visible evidence for:
 
 - `gin.aiDraft`
 - `navigation-split-view.aiDraft`
-
-It also keeps the warning and caveat evidence visible for:
-
 - `docc2context.aiDraft`
 - `xyflow`
 
-The larger curated corpus remains blocked until P48-T2 executes the targeted
-pass, P48-T3 completes the static-only-before-AI bounded rerun gate, and P48-T4
-records the exit decision.
+The larger curated corpus remains blocked until P48-T3 records the same-scope
+bounded rerun result and P48-T4 records the post-blocker follow-up exit
+decision.
 
 ## Scope
 
-- Read the P48-T1 plan fixture and documentation.
-- Execute the targeted blocker follow-up for `gin.aiDraft` and
-  `navigation-split-view.aiDraft`.
-- Preserve `docc2context.aiDraft` warning disposition evidence.
-- Preserve `xyflow` partial-interface, fork-origin, and AI repair caveat
-  visibility.
-- Keep all AI sidecars proposal-only.
-- Keep the same six-repository bounded pilot scope.
-- Prepare evidence needed for the P48-T3 same-scope bounded rerun gate.
+- Verify the same six-repository bounded pilot scope.
+- Run or record the static-only gate before any AI-enabled evidence.
+- Run or record the proposal-only AI-enabled gate after static evidence.
+- Preserve warning and caveat visibility for `docc2context.aiDraft` and
+  `xyflow`.
+- Keep current disposed `gin.aiDraft` and `navigation-split-view.aiDraft`
+  sidecars out of registry truth.
+- Record whether the AI-enabled gate now passes.
 
 ## Expected Deliverables
 
-- Durable P48-T2 evidence describing the targeted blocker follow-up results.
-- Explicit disposition for `gin.aiDraft`.
-- Explicit disposition for `navigation-split-view.aiDraft`.
-- Preserved warning disposition for `docc2context.aiDraft`.
-- Preserved caveat visibility for `xyflow`.
-- Clear statement that larger curated corpus planning remains blocked.
-- Validation report and archive artifacts for P48-T2.
+- Durable P48-T3 bounded rerun gate evidence.
+- Explicit static-only-before-AI ordering evidence.
+- Per-repository gate status for the same six repositories.
+- Proposal-only AI sidecar status for `gin.aiDraft`,
+  `navigation-split-view.aiDraft`, `docc2context.aiDraft`, and `xyflow`.
+- Clear statement that larger curated corpus planning remains blocked until
+  P48-T4.
+- Validation report and archive artifacts for P48-T3.
 
 ## Boundaries
 
@@ -67,12 +73,12 @@ records the exit decision.
   chain-of-thought.
 - Do not treat AI output as registry truth.
 - Do not treat static output as registry truth.
-- Do not treat follow-up output as registry truth.
+- Do not treat rerun output as registry truth.
 - Do not treat adapter output as registry truth.
 
 ## Validation Expectations
 
 - Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
-- Run focused docs-contract tests for P48-T2 and current next task.
+- Run focused docs-contract tests for P48-T3 and current next task.
 - Run formatting, lint, coverage, Swift manifest, Swift docs build, and
   whitespace checks as required by Flow.

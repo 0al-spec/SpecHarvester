@@ -79,3 +79,8 @@ P48-T3 bounded rerun gate.
 - Run focused docs-contract tests for P48-T2 and the current next task.
 - Run `ruff check`, `ruff format --check`, full pytest, Swift manifest/doc
   checks, coverage, and `git diff --check` as required by Flow.
+
+---
+
+**Archived:** 2026-06-23
+**Verdict:** PASS
