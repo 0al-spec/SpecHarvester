@@ -1,69 +1,55 @@
-# Next Task: P48-T3 Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up
+# Next Task: P48-T4 Record Post-Blocker Follow-Up Exit Decision
 
 **Status:** Selected
-**Branch:** `feature/P48-T3-run-bounded-pilot-rerun-gate-after-ai-draft-blocker-follow-up`
+**Branch:** `feature/P48-T4-record-post-blocker-follow-up-exit-decision`
 **Phase:** Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus
-**Task:** `P48-T3`
-**Last Archived:** `P48-T2` Execute AI Draft Blocker Follow-Up Pass
-**Depends On:** `P48-T2` Execute AI Draft Blocker Follow-Up Pass
+**Task:** `P48-T4`
+**Last Archived:** `P48-T3` Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up
+**Depends On:** `P48-T3` Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up
 
 ## Goal
 
-Run the same six-repository bounded pilot rerun gate after the P48-T2 blocker
-follow-up, preserving static-only-before-AI ordering and recording whether the
-AI-enabled gate now passes.
+Record the post-blocker follow-up exit decision using the P48-T3 same-scope
+bounded rerun gate evidence.
 
 ## Context
 
-P48-T2 recorded
-`ready_for_p48_t3_bounded_rerun_gate_with_explicit_ai_draft_dispositions`.
-The current `gin.aiDraft` and `navigation-split-view.aiDraft` failed sidecars
-were explicitly disposed as non-blocking for this rerun gate, while remaining
-non-promotable and not accepted as registry truth.
+P48-T3 reran the same six-repository bounded pilot scope after the P48-T2 AI
+draft blocker follow-up. The static-only gate passed again, but the
+AI-enabled gate failed on `docc2context.aiDraft`.
 
-P48-T3 must use the same six-repository bounded pilot scope and manifest:
+P48-T3 showed:
 
-```text
-inputs/p46-bounded-popular-library-pilot/repositories.yml
-```
+- `gin.aiDraft` no longer hard-fails and is warning-only.
+- `navigation-split-view.aiDraft` no longer hard-fails and is warning-only.
+- `docc2context.aiDraft` remains blocking with `ai_json_repair_exhausted`,
+  `ai_json_repair_needed`, and `package_set_subject_metadata_missing`.
+- `xyflow` caveats remain visible, including `partial_public_interface_index`
+  and `operator_checkout_origin_fork_mismatch`.
 
-The rerun gate must keep visible evidence for:
-
-- `gin.aiDraft`
-- `navigation-split-view.aiDraft`
-- `docc2context.aiDraft`
-- `xyflow`
-
-The larger curated corpus remains blocked until P48-T3 records the same-scope
-bounded rerun result and P48-T4 records the post-blocker follow-up exit
-decision.
+The larger curated corpus remains blocked until P48-T4 explicitly decides
+whether to proceed, run another targeted pass, or stop larger corpus planning.
 
 ## Scope
 
-- Verify the same six-repository bounded pilot scope.
-- Run or record the static-only gate before any AI-enabled evidence.
-- Run or record the proposal-only AI-enabled gate after static evidence.
-- Preserve warning and caveat visibility for `docc2context.aiDraft` and
-  `xyflow`.
-- Keep current disposed `gin.aiDraft` and `navigation-split-view.aiDraft`
-  sidecars out of registry truth.
-- Record whether the AI-enabled gate now passes.
+- Use the P48-T3 bounded rerun gate fixture as decision input.
+- Decide whether the remaining `docc2context.aiDraft` blocker requires another
+  targeted pass, can be accepted as a non-blocking pilot caveat, or stops
+  larger corpus planning.
+- Preserve static-only-before-AI and proposal-only AI boundaries.
+- Keep all warning and caveat evidence visible for future corpus decisions.
 
 ## Expected Deliverables
 
-- Durable P48-T3 bounded rerun gate evidence.
-- Explicit static-only-before-AI ordering evidence.
-- Per-repository gate status for the same six repositories.
-- Proposal-only AI sidecar status for `gin.aiDraft`,
-  `navigation-split-view.aiDraft`, `docc2context.aiDraft`, and `xyflow`.
-- Clear statement that larger curated corpus planning remains blocked until
-  P48-T4.
-- Validation report and archive artifacts for P48-T3.
+- Durable P48-T4 exit decision evidence.
+- Explicit decision on the remaining `docc2context.aiDraft` blocker.
+- Clear larger curated corpus readiness decision.
+- Validation report and archive artifacts for P48-T4.
 
 ## Boundaries
 
-- Do not approve a larger curated corpus.
-- Do not expand beyond the same six-repository bounded pilot scope.
+- Do not approve a larger curated corpus without explicitly resolving the
+  P48-T3 `docc2context.aiDraft` blocker.
 - Do not accept packages or relations.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
 - Do not run adapters or enable trusted local adapter execution.
@@ -79,6 +65,6 @@ decision.
 ## Validation Expectations
 
 - Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
-- Run focused docs-contract tests for P48-T3 and current next task.
+- Run focused docs-contract tests for P48-T4 and current next task.
 - Run formatting, lint, coverage, Swift manifest, Swift docs build, and
   whitespace checks as required by Flow.

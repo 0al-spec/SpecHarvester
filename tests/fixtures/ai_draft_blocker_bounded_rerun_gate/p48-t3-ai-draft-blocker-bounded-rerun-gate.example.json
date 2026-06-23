@@ -1,0 +1,477 @@
+{
+  "apiVersion": "spec-harvester.ai-draft-blocker-bounded-rerun-gate/v0",
+  "kind": "SpecHarvesterAIDraftBlockerBoundedRerunGate",
+  "authority": "producer_ai_draft_blocker_bounded_rerun_gate_evidence_only",
+  "phase": "P48",
+  "task": "P48-T3",
+  "createdAt": "2026-06-23T00:00:00+03:00",
+  "sourceArtifacts": {
+    "p48FollowUpPass": {
+      "path": "tests/fixtures/ai_draft_blocker_follow_up_pass/p48-t2-ai-draft-blocker-follow-up-pass.example.json",
+      "digest": "sha256:60d863511a1b1de59be344fc9a1e4354ad323a6798d953ad19c438ed7f8dd6b8",
+      "apiVersion": "spec-harvester.ai-draft-blocker-follow-up-pass/v0",
+      "kind": "SpecHarvesterAIDraftBlockerFollowUpPass",
+      "authority": "producer_ai_draft_blocker_follow_up_pass_evidence_only"
+    }
+  },
+  "targetScope": {
+    "sourceScope": "same_six_repository_bounded_pilot",
+    "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "repositoryIds": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ],
+    "expandedCorpus": false
+  },
+  "runInputMirror": {
+    "path": "/tmp/specharvester-p48-t3-bounded-rerun-gate-20260623T000000Z/inputs/repositories.yml",
+    "digest": "sha256:058be58216a5a9e21a7a34040cb6f8dba4c5a8d05ec5875a628ca26d9897ab53",
+    "sourceArchive": "/tmp/specharvester-p47-t3-bounded-rerun-gate-20260621T130000Z",
+    "cleanArchiveSnapshotsUsedForRun": true,
+    "cloneOrFetch": false,
+    "sameRepositoryIdsAndRevisions": true,
+    "reason": "reused_p47_t3_clean_archive_snapshot_paths_without_clone_or_fetch"
+  },
+  "executionOrder": [
+    "verify_same_six_repository_scope",
+    "verify_clean_archive_snapshots_without_fetch",
+    "run_static_only_gate",
+    "run_ai_enabled_gate",
+    "record_new_or_remaining_warning_and_caveat_evidence"
+  ],
+  "staticOnlyRun": {
+    "command": "PYTHONPATH=src python3 -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p48-t3-bounded-rerun-gate-20260623T000000Z/inputs --out /tmp/specharvester-p48-t3-bounded-rerun-gate-20260623T000000Z/output-static --skip-ai --repository-profile-selection auto",
+    "exitCode": 0,
+    "status": "passed",
+    "batchReport": {
+      "path": "/tmp/specharvester-p48-t3-bounded-rerun-gate-20260623T000000Z/output-static/autonomous-candidate-batch-report.json",
+      "digest": "sha256:ed91f040ac028aae33622802407c820ac430da106d63237ce4890d7e52f72cd2"
+    },
+    "summary": {
+      "aiDraftProposalCount": 0,
+      "aiEnrichedPreviewAppliedCount": 0,
+      "aiEnrichedPreviewFailedCount": 0,
+      "aiEnrichedPreviewSkippedCount": 0,
+      "aiEnrichmentProposalCount": 0,
+      "collectedCount": 6,
+      "failedRepositoryCount": 0,
+      "passedPreflightCount": 6,
+      "processedCount": 6,
+      "repositoryPluginAdapterEvidenceSidecarCount": 0,
+      "repositoryPluginApplicabilitySidecarCount": 0,
+      "repositoryProfileDetectionCount": 6,
+      "repositoryProfileDisabledCount": 0,
+      "repositoryProfileFallbackCount": 1,
+      "repositoryProfileSelectedCount": 5,
+      "skippedCount": 0,
+      "trustedLocalAdapterRunEvidenceSidecarCount": 0
+    }
+  },
+  "aiEnabledRun": {
+    "command": "PYTHONPATH=src python3 -m spec_harvester autonomous-candidate-batch /tmp/specharvester-p48-t3-bounded-rerun-gate-20260623T000000Z/inputs --out /tmp/specharvester-p48-t3-bounded-rerun-gate-20260623T000000Z/output-ai --repository-profile-selection auto --lm-studio-base-url http://127.0.0.1:1234 --lm-studio-model openai/gpt-oss-20b --json-repair-max-attempts 1",
+    "exitCode": 1,
+    "provider": {
+      "baseUrl": "http://127.0.0.1:1234",
+      "chainOfThoughtPersisted": false,
+      "execution": "operator_opt_in_local",
+      "jsonRepairMaxAttempts": 1,
+      "mode": "local_lm_studio",
+      "model": "openai/gpt-oss-20b",
+      "provider": "lm_studio",
+      "rawPromptPersisted": false,
+      "rawResponsePersisted": false
+    },
+    "status": "failed",
+    "batchReport": {
+      "path": "/tmp/specharvester-p48-t3-bounded-rerun-gate-20260623T000000Z/output-ai/autonomous-candidate-batch-report.json",
+      "digest": "sha256:b15d6a29e1c0de693e6bf0737c39a52d20d36ea8d67ffe81f11de1fc906054de"
+    },
+    "summary": {
+      "aiDraftProposalCount": 5,
+      "aiEnrichedPreviewAppliedCount": 0,
+      "aiEnrichedPreviewFailedCount": 0,
+      "aiEnrichedPreviewSkippedCount": 0,
+      "aiEnrichmentProposalCount": 6,
+      "collectedCount": 6,
+      "failedRepositoryCount": 1,
+      "passedPreflightCount": 6,
+      "processedCount": 6,
+      "repositoryPluginAdapterEvidenceSidecarCount": 0,
+      "repositoryPluginApplicabilitySidecarCount": 0,
+      "repositoryProfileDetectionCount": 6,
+      "repositoryProfileDisabledCount": 0,
+      "repositoryProfileFallbackCount": 1,
+      "repositoryProfileSelectedCount": 5,
+      "skippedCount": 0,
+      "trustedLocalAdapterRunEvidenceSidecarCount": 0
+    }
+  },
+  "repositories": [
+    {
+      "id": "flask",
+      "status": "passed",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "packageId": "flask.core",
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 941,
+        "packageCount": 1
+      },
+      "preflightStatus": "passed",
+      "repositoryProfileDecision": "selected",
+      "repositoryProfileSelectedId": "generic.single_package.v0",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "warningCount": 2,
+        "errorCount": 0,
+        "selectedMemberCount": 1,
+        "proposalOnly": true
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "refined_summary_missing"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "warningCount": 1,
+        "errorCount": 0,
+        "providerTotalTokens": 8233,
+        "proposalOnly": true
+      }
+    },
+    {
+      "id": "gin",
+      "status": "passed",
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "packageId": "gin.core",
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 456,
+        "packageCount": 5
+      },
+      "preflightStatus": "passed",
+      "repositoryProfileDecision": "selected",
+      "repositoryProfileSelectedId": "generic.single_package.v0",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "warningCount": 2,
+        "errorCount": 0,
+        "selectedMemberCount": 1,
+        "proposalOnly": true
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "warningCount": 0,
+        "errorCount": 0,
+        "providerTotalTokens": 15663,
+        "proposalOnly": true
+      }
+    },
+    {
+      "id": "xyflow",
+      "status": "passed",
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "packageId": "xyflow.workspace",
+      "interfaceIndex": {
+        "status": "partial",
+        "diagnosticCount": 29,
+        "symbolCount": 1,
+        "packageCount": 11
+      },
+      "preflightStatus": "passed",
+      "repositoryProfileDecision": "selected",
+      "repositoryProfileSelectedId": "generic.package_set.v0",
+      "aiDraft": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "warningCount": 0,
+        "errorCount": 0,
+        "selectedMemberCount": 3,
+        "proposalOnly": true
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "warningCount": 0,
+        "errorCount": 0,
+        "providerTotalTokens": 48608,
+        "proposalOnly": true
+      }
+    },
+    {
+      "id": "cupertino",
+      "status": "passed",
+      "repository": "https://github.com/mihaelamj/cupertino",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "packageId": "cupertino.core",
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 2555,
+        "packageCount": 1
+      },
+      "preflightStatus": "passed",
+      "repositoryProfileDecision": "fallback",
+      "repositoryProfileSelectedId": null,
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "warningCount": 2,
+        "errorCount": 0,
+        "selectedMemberCount": 1,
+        "proposalOnly": true
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "warningCount": 0,
+        "errorCount": 0,
+        "providerTotalTokens": 14693,
+        "proposalOnly": true
+      }
+    },
+    {
+      "id": "navigation-split-view",
+      "status": "passed",
+      "repository": "https://github.com/SoundBlaster/NavigationSplitView",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "packageId": "navigation_split_view.core",
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 54,
+        "packageCount": 1
+      },
+      "preflightStatus": "passed",
+      "repositoryProfileDecision": "selected",
+      "repositoryProfileSelectedId": "generic.single_package.v0",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "warningCount": 2,
+        "errorCount": 0,
+        "selectedMemberCount": 1,
+        "proposalOnly": true
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "warningCount": 0,
+        "errorCount": 0,
+        "providerTotalTokens": 11086,
+        "proposalOnly": true
+      }
+    },
+    {
+      "id": "docc2context",
+      "status": "failed",
+      "repository": "https://github.com/SoundBlaster/docc2context",
+      "revision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "packageId": "docc2context.core",
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 372,
+        "packageCount": 1
+      },
+      "preflightStatus": "passed",
+      "repositoryProfileDecision": "selected",
+      "repositoryProfileSelectedId": "generic.single_package.v0",
+      "aiDraft": {
+        "status": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "jsonRepair": {
+          "attemptCount": 1,
+          "needed": true,
+          "status": "exhausted"
+        },
+        "warningCount": 2,
+        "errorCount": 1,
+        "selectedMemberCount": 0,
+        "proposalOnly": true
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "warningCount": 0,
+        "errorCount": 0,
+        "providerTotalTokens": 11575,
+        "proposalOnly": true
+      }
+    }
+  ],
+  "dispositionResults": {
+    "p48T2DisposedSidecarsReusedAsTruth": false,
+    "ginAiDraftGatePassed": true,
+    "navigationSplitViewAiDraftGatePassed": true,
+    "docc2contextAiDraftGatePassed": false,
+    "xyflowCaveatsStillVisible": true,
+    "remainingBlockingAISidecars": [
+      "docc2context.aiDraft"
+    ],
+    "remainingNonBlockingWarnings": [
+      "flask.aiDraft",
+      "flask.aiEnrichment",
+      "gin.aiDraft",
+      "cupertino.aiDraft",
+      "navigation-split-view.aiDraft"
+    ],
+    "resolvedSinceP47T3": [
+      "gin.aiDraft no longer hard-fails",
+      "navigation-split-view.aiDraft no longer hard-fails"
+    ],
+    "newOrRemainingCaveats": [
+      "docc2context.aiDraft ai_json_repair_exhausted",
+      "docc2context.aiDraft package_set_subject_metadata_missing",
+      "xyflow partial_public_interface_index remains visible",
+      "xyflow operator_checkout_origin_fork_mismatch remains visible"
+    ]
+  },
+  "gateDecision": {
+    "boundedRerunGateExecuted": true,
+    "staticGatePassed": true,
+    "aiEnabledGatePassed": false,
+    "selectedOutcome": "bounded_rerun_executed_static_passed_ai_failed_on_docc2context_ai_draft",
+    "readyForP48T4ExitDecision": true,
+    "readyForLargerCuratedCorpus": false,
+    "approvesLargerCuratedCorpus": false,
+    "recommendedP48T4DecisionInput": "post_blocker_follow_up_exit_decision_with_remaining_docc2context_ai_draft_blocker"
+  },
+  "authorityBoundary": {
+    "rerunGateIsRegistryAuthority": false,
+    "approvesLargerCuratedCorpus": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "followUpOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "runsStaticOnlyGate": true,
+    "runsAI": true,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_approve_larger_curated_corpus",
+    "does_not_accept_packages_or_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_rerun_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ],
+  "nextState": {
+    "nextTaskPointer": "P48-T4",
+    "recommendedFollowUp": "Record Post-Blocker Follow-Up Exit Decision",
+    "largerCuratedCorpusStillBlocked": true
+  }
+}

@@ -2297,7 +2297,7 @@ Acceptance:
   plan, preserving proposal-only AI output, no raw prompt/response/
   chain-of-thought persistence, no registry mutation, and no adapter
   execution.
-- [ ] `P48-T3` Run the same six-repository bounded pilot rerun gate after the
+- [x] `P48-T3` Run the same six-repository bounded pilot rerun gate after the
   P48-T2 blocker follow-up, preserving static-only-before-AI ordering and
   recording whether the AI-enabled gate now passes.
 - [ ] `P48-T4` Record the post-blocker follow-up exit decision, deciding
