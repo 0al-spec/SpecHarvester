@@ -1,55 +1,59 @@
-# Next Task: P48-T4 Record Post-Blocker Follow-Up Exit Decision
+# Next Task: P49-T1 Plan docc2context AI Draft Targeted Follow-Up Pass
 
 **Status:** Selected
-**Branch:** `feature/P48-T4-record-post-blocker-follow-up-exit-decision`
-**Phase:** Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus
-**Task:** `P48-T4`
-**Last Archived:** `P48-T3` Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up
-**Depends On:** `P48-T3` Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up
+**Branch:** `feature/P49-T1-plan-docc2context-ai-draft-targeted-follow-up-pass`
+**Phase:** Phase 49. docc2context AI Draft Targeted Follow-Up
+**Task:** `P49-T1`
+**Last Archived:** `P48-T4` Record Post-Blocker Follow-Up Exit Decision
+**Depends On:** `P48-T4` Record Post-Blocker Follow-Up Exit Decision
 
 ## Goal
 
-Record the post-blocker follow-up exit decision using the P48-T3 same-scope
-bounded rerun gate evidence.
+Plan the targeted follow-up pass for the remaining `docc2context.aiDraft`
+blocker recorded by P48-T4.
 
 ## Context
 
-P48-T3 reran the same six-repository bounded pilot scope after the P48-T2 AI
-draft blocker follow-up. The static-only gate passed again, but the
-AI-enabled gate failed on `docc2context.aiDraft`.
+P48-T4 selected:
 
-P48-T3 showed:
+```text
+run_docc2context_ai_draft_targeted_pass_before_larger_curated_corpus
+```
 
-- `gin.aiDraft` no longer hard-fails and is warning-only.
-- `navigation-split-view.aiDraft` no longer hard-fails and is warning-only.
-- `docc2context.aiDraft` remains blocking with `ai_json_repair_exhausted`,
-  `ai_json_repair_needed`, and `package_set_subject_metadata_missing`.
-- `xyflow` caveats remain visible, including `partial_public_interface_index`
-  and `operator_checkout_origin_fork_mismatch`.
+P48-T3 showed that the static-only same-scope bounded gate passed, but the
+AI-enabled gate failed on `docc2context.aiDraft` with:
 
-The larger curated corpus remains blocked until P48-T4 explicitly decides
-whether to proceed, run another targeted pass, or stop larger corpus planning.
+- `ai_json_repair_exhausted`
+- `ai_json_repair_needed`
+- `package_set_subject_metadata_missing`
+
+`gin.aiDraft` and `navigation-split-view.aiDraft` no longer hard-fail and are
+warning-only. xyflow caveats remain visible for later exit review.
+
+The larger curated corpus remains blocked until the docc2context targeted pass,
+same-scope bounded rerun gate, and follow-up exit decision complete.
 
 ## Scope
 
-- Use the P48-T3 bounded rerun gate fixture as decision input.
-- Decide whether the remaining `docc2context.aiDraft` blocker requires another
-  targeted pass, can be accepted as a non-blocking pilot caveat, or stops
-  larger corpus planning.
-- Preserve static-only-before-AI and proposal-only AI boundaries.
-- Keep all warning and caveat evidence visible for future corpus decisions.
+- Plan a targeted follow-up for `docc2context.aiDraft`.
+- Preserve the same six-repository bounded pilot scope for the later rerun.
+- Define constraints for subject metadata and JSON repair exhaustion.
+- Keep all AI output proposal-only.
+- Preserve no raw prompt, raw provider response, secrets, or chain-of-thought
+  persistence.
 
 ## Expected Deliverables
 
-- Durable P48-T4 exit decision evidence.
-- Explicit decision on the remaining `docc2context.aiDraft` blocker.
-- Clear larger curated corpus readiness decision.
-- Validation report and archive artifacts for P48-T4.
+- Durable P49-T1 plan evidence.
+- Explicit success criteria for P49-T2 and P49-T3.
+- Clear statement that larger curated corpus planning remains blocked.
+- Validation report and archive artifacts for P49-T1.
 
 ## Boundaries
 
-- Do not approve a larger curated corpus without explicitly resolving the
-  P48-T3 `docc2context.aiDraft` blocker.
+- Do not approve a larger curated corpus.
+- Do not run the targeted pass in P49-T1.
+- Do not run another bounded rerun in P49-T1.
 - Do not accept packages or relations.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
 - Do not run adapters or enable trusted local adapter execution.
@@ -59,12 +63,12 @@ whether to proceed, run another targeted pass, or stop larger corpus planning.
   chain-of-thought.
 - Do not treat AI output as registry truth.
 - Do not treat static output as registry truth.
-- Do not treat rerun output as registry truth.
+- Do not treat exit-decision output as registry truth.
 - Do not treat adapter output as registry truth.
 
 ## Validation Expectations
 
 - Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
-- Run focused docs-contract tests for P48-T4 and current next task.
+- Run focused docs-contract tests for P49-T1 and current next task.
 - Run formatting, lint, coverage, Swift manifest, Swift docs build, and
   whitespace checks as required by Flow.

@@ -1227,6 +1227,12 @@ fixture. The static-only same-scope gate passed again, while the AI-enabled
 gate failed on `docc2context.aiDraft`; `gin.aiDraft` and
 `navigation-split-view.aiDraft` no longer hard-fail. Larger curated corpus
 planning remains blocked until the P48-T4 exit decision.
+P48-T4 records
+[`POST_BLOCKER_FOLLOW_UP_EXIT_DECISION.md`](POST_BLOCKER_FOLLOW_UP_EXIT_DECISION.md)
+and the machine-readable `SpecHarvesterPostBlockerFollowUpExitDecision`
+fixture. It selects another targeted pass for `docc2context.aiDraft` because
+the P48-T3 AI-enabled gate still failed with JSON repair exhaustion and
+missing subject metadata.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

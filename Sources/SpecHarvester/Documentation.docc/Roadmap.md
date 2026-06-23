@@ -190,6 +190,9 @@ same-scope gate passed again, while the AI-enabled gate failed on
 `docc2context.aiDraft`; `gin.aiDraft` and `navigation-split-view.aiDraft` no
 longer hard-fail. Larger curated corpus planning remains blocked until the
 P48-T4 exit decision.
+P48-T4 is recorded in <doc:PostBlockerFollowUpExitDecision>. It selects
+another targeted pass for `docc2context.aiDraft` because the P48-T3 AI-enabled
+gate still failed with JSON repair exhaustion and missing subject metadata.
 
 ### Selected Candidate SpecPM Intake Handoff
 
