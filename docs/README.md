@@ -314,6 +314,9 @@ Published DocC site:
 79. [`AI_DRAFT_BLOCKER_FOLLOW_UP_PLAN.md`](AI_DRAFT_BLOCKER_FOLLOW_UP_PLAN.md):
    P48-T1 plan for Gin and NavigationSplitView AI draft blocker follow-up
    before another bounded rerun gate
+80. [`AI_DRAFT_BLOCKER_FOLLOW_UP_PASS.md`](AI_DRAFT_BLOCKER_FOLLOW_UP_PASS.md):
+   P48-T2 evidence-only follow-up pass that disposes Gin and
+   NavigationSplitView AI draft blockers for the P48-T3 bounded rerun gate
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

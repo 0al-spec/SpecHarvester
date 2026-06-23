@@ -180,6 +180,11 @@ P48-T1 is recorded in <doc:AIDraftBlockerFollowUpPlan>. It targets
 `gin.aiDraft` and `navigation-split-view.aiDraft`, keeps
 `docc2context.aiDraft` and xyflow warnings visible, and defines P48-T2 success
 criteria before another same-scope bounded rerun gate.
+P48-T2 is recorded in <doc:AIDraftBlockerFollowUpPass>. It explicitly
+disposes `gin.aiDraft` and `navigation-split-view.aiDraft` as non-blocking for
+the P48-T3 same-scope bounded rerun gate, keeps `docc2context.aiDraft` and
+xyflow caveats visible, and keeps larger curated corpus planning blocked until
+P48-T3 and P48-T4 complete.
 
 ### Selected Candidate SpecPM Intake Handoff
 
