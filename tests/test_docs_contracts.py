@@ -41,9 +41,7 @@ def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P48-T4 Record Post-Blocker Follow-Up Exit Decision" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
-        assert "**Phase:** Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus" in (
-            next_text
-        )
+        assert "**Phase:** Phase 48. AI Draft Blocker Follow-Up Before Larger Corpus" in (next_text)
         assert "`P48-T4`" in next_text
         assert "`P48-T3` Run Bounded Pilot Rerun Gate After AI Draft Blocker Follow-Up" in (
             next_text
@@ -33817,8 +33815,9 @@ def test_ai_draft_blocker_bounded_rerun_gate_records_p48_t3_result() -> None:
     assert repos["docc2context"]["aiDraft"]["status"] == "failed"
     assert repos["docc2context"]["aiDraft"]["jsonRepair"]["status"] == "exhausted"
     assert "ai_json_repair_exhausted" in repos["docc2context"]["aiDraft"]["diagnosticCodes"]
-    assert "package_set_subject_metadata_missing" in (
-        repos["docc2context"]["aiDraft"]["diagnosticCodes"]
+    assert (
+        "package_set_subject_metadata_missing"
+        in (repos["docc2context"]["aiDraft"]["diagnosticCodes"])
     )
     assert repos["xyflow"]["interfaceIndex"]["status"] == "partial"
     assert all(item["preflightStatus"] == "passed" for item in repos.values())
@@ -33829,12 +33828,11 @@ def test_ai_draft_blocker_bounded_rerun_gate_records_p48_t3_result() -> None:
     assert payload["dispositionResults"]["ginAiDraftGatePassed"] is True
     assert payload["dispositionResults"]["navigationSplitViewAiDraftGatePassed"] is True
     assert payload["dispositionResults"]["docc2contextAiDraftGatePassed"] is False
-    assert payload["dispositionResults"]["remainingBlockingAISidecars"] == [
-        "docc2context.aiDraft"
-    ]
+    assert payload["dispositionResults"]["remainingBlockingAISidecars"] == ["docc2context.aiDraft"]
     assert "gin.aiDraft no longer hard-fails" in payload["dispositionResults"]["resolvedSinceP47T3"]
-    assert "navigation-split-view.aiDraft no longer hard-fails" in (
-        payload["dispositionResults"]["resolvedSinceP47T3"]
+    assert (
+        "navigation-split-view.aiDraft no longer hard-fails"
+        in (payload["dispositionResults"]["resolvedSinceP47T3"])
     )
     assert payload["gateDecision"] == {
         "boundedRerunGateExecuted": True,
