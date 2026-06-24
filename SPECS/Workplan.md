@@ -2340,7 +2340,7 @@ Acceptance:
 - [x] `P49-T2` Execute the docc2context AI draft targeted follow-up pass,
   constraining subject metadata and JSON repair exhaustion while preserving
   proposal-only AI output.
-- [ ] `P49-T3` Run the same six-repository bounded rerun gate after the
+- [x] `P49-T3` Run the same six-repository bounded rerun gate after the
   docc2context follow-up pass, preserving static-only-before-AI ordering.
 - [ ] `P49-T4` Record the docc2context follow-up exit decision, deciding
   whether larger curated corpus planning can proceed, another targeted pass is

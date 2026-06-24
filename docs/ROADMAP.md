@@ -1247,6 +1247,13 @@ fixture. It runs the targeted LM Studio draft proposal for
 `docc2context.aiDraft`, clears JSON repair exhaustion and missing subject
 metadata for P49-T3, and carries the new `excluded_package_also_selected`
 warning as explicitly non-blocking.
+P49-T3 records
+[`DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md`](DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md)
+and the machine-readable
+`SpecHarvesterDocc2contextAIDraftSameScopeBoundedRerunGate` fixture. It stops
+before the static-only gate because the six operator-local P46 checkouts are
+absent, preserves no-clone/no-fetch boundaries, and leaves the exit decision to
+P49-T4.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

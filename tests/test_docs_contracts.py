@@ -38,6 +38,37 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P49-T4 Record docc2context Follow-Up Exit Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 49. docc2context AI Draft Targeted Follow-Up" in next_text
+        assert "`P49-T4`" in next_text
+        assert "`P49-T3` Run Same-Scope Bounded Rerun Gate" in next_text
+        assert "same_scope_bounded_rerun_gate_blocked_operator_local_checkouts_missing" in (
+            next_text
+        )
+        for repository_id in (
+            "flask",
+            "gin",
+            "xyflow",
+            "cupertino",
+            "navigation-split-view",
+            "docc2context",
+        ):
+            assert repository_id in next_text
+        assert "openai/gpt-oss-20b" in next_text
+        assert "static-only-before-AI ordering stopped at checkout preflight" in (normalized)
+        assert "docc2context.aiDraft_warning_explicitly_non_blocking_for_p49_t3" in (next_text)
+        assert "excluded_package_also_selected" in next_text
+        assert "larger curated corpus remains blocked" in normalized
+        assert "Do not approve a larger curated corpus unless" in next_text
+        assert "Do not run another bounded rerun in P49-T4" in next_text
+        assert "Do not run AI" in next_text
+        assert "Do not clone or fetch repositories" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not treat AI output" in next_text
+        return
+
     if "# Next Task: P49-T3 Run Same-Scope Bounded Rerun Gate" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -33781,6 +33812,249 @@ def test_ai_draft_blocker_follow_up_plan_records_p48_t1_plan() -> None:
         (workplan, "`P48-T1` Plan the AI draft blocker follow-up pass"),
         (workplan, "`P48-T2` Execute the AI draft blocker follow-up pass"),
         (workplan, "`P48-T3` Run the same six-repository bounded pilot rerun gate"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_docc2context_ai_draft_same_scope_bounded_rerun_gate_records_p49_t3_result() -> None:
+    source_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "docc2context_ai_draft_targeted_follow_up_pass"
+        / "p49-t2-docc2context-ai-draft-targeted-follow-up-pass.example.json"
+    )
+    manifest_path = ROOT / "inputs" / "p46-bounded-popular-library-pilot" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "docc2context_ai_draft_same_scope_bounded_rerun_gate"
+        / "p49-t3-docc2context-ai-draft-same-scope-bounded-rerun-gate.example.json"
+    )
+    github_doc = ROOT / "docs" / "DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "Docc2contextAIDraftSameScopeBoundedRerunGate.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == (
+        "spec-harvester.docc2context-ai-draft-same-scope-bounded-rerun-gate/v0"
+    )
+    assert payload["kind"] == "SpecHarvesterDocc2contextAIDraftSameScopeBoundedRerunGate"
+    assert payload["authority"] == (
+        "producer_docc2context_ai_draft_same_scope_bounded_rerun_gate_evidence_only"
+    )
+    assert payload["phase"] == "P49"
+    assert payload["task"] == "P49-T3"
+
+    source = payload["sourceArtifacts"]["p49FollowUpPass"]
+    source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+    assert ROOT / source["path"] == source_path
+    assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+    assert source["apiVersion"] == source_payload["apiVersion"]
+    assert source["kind"] == source_payload["kind"]
+    assert source["authority"] == source_payload["authority"]
+    manifest = payload["sourceArtifacts"]["p46SourceManifest"]
+    assert ROOT / manifest["path"] == manifest_path
+    assert manifest["digest"] == "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+
+    expected_ids = [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert payload["targetScope"] == {
+        "sourceScope": "same_six_repository_bounded_pilot",
+        "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+        "repositoryIds": expected_ids,
+        "expandedCorpus": False,
+    }
+    assert payload["preflight"]["status"] == "blocked"
+    assert payload["preflight"]["lmStudioAvailable"] is True
+    assert payload["preflight"]["lmStudioModel"] == "openai/gpt-oss-20b"
+    assert payload["preflight"]["allOperatorLocalCheckoutsPresent"] is False
+    assert payload["preflight"]["missingCheckoutCount"] == 6
+    missing = {item["repositoryId"]: item for item in payload["preflight"]["missingCheckouts"]}
+    assert set(missing) == set(expected_ids)
+    assert all(item["exists"] is False for item in missing.values())
+    assert missing["flask"]["resolvedPath"] == "/Users/egor/Development/GitHub/0AL/flask"
+    assert missing["navigation-split-view"]["manifestCheckout"] == "../../../NavigationSplitView"
+    assert payload["executionOrder"] == [
+        "verify_p49_t2_follow_up_pass",
+        "verify_same_six_repository_scope",
+        "verify_operator_local_checkouts",
+        "stop_before_static_only_gate",
+    ]
+    assert payload["staticOnlyRun"] == {
+        "attempted": False,
+        "status": "not_run",
+        "blockedBy": "operator_local_checkouts_missing",
+        "command": None,
+    }
+    assert payload["aiEnabledRun"]["attempted"] is False
+    assert payload["aiEnabledRun"]["status"] == "not_run"
+    assert payload["aiEnabledRun"]["blockedBy"] == "static_only_gate_not_run"
+    assert payload["aiEnabledRun"]["provider"]["available"] is True
+    assert payload["aiEnabledRun"]["provider"]["rawPromptPersisted"] is False
+    assert payload["aiEnabledRun"]["provider"]["rawResponsePersisted"] is False
+    assert payload["aiEnabledRun"]["provider"]["chainOfThoughtPersisted"] is False
+    assert payload["gateResult"] == {
+        "selectedOutcome": "same_scope_bounded_rerun_gate_blocked_operator_local_checkouts_missing",
+        "status": "blocked",
+        "staticGatePassed": False,
+        "aiEnabledGatePassed": False,
+        "processedCount": 0,
+        "failedRepositoryCount": 0,
+        "passedPreflightCount": 0,
+        "blockingCodes": [
+            "operator_local_checkouts_missing",
+            "static_only_gate_not_run",
+            "ai_enabled_gate_not_run",
+        ],
+        "blocksLargerCuratedCorpusUntilP49T4": True,
+    }
+    assert payload["carriedForwardEvidence"] == {
+        "p49T2SelectedOutcome": "docc2context.aiDraft_warning_explicitly_non_blocking_for_p49_t3",
+        "p49T2NonBlockingWarning": "excluded_package_also_selected",
+        "p48WarningIds": [
+            "flask.aiDraft",
+            "flask.aiEnrichment",
+            "gin.aiDraft",
+            "cupertino.aiDraft",
+            "navigation-split-view.aiDraft",
+        ],
+        "xyflowCaveats": [
+            "xyflow.partial_public_interface_index",
+            "xyflow.operator_checkout_origin_fork_mismatch",
+        ],
+        "docc2contextPreviousBlockingDiagnosticsClearedForGate": [
+            "ai_json_repair_exhausted",
+            "ai_json_repair_needed",
+            "package_set_subject_metadata_missing",
+        ],
+    }
+    assert payload["p49T4ExitDecisionInput"] == {
+        "required": True,
+        "available": True,
+        "decisionOptions": [
+            "stop_on_operator_local_checkout_blocker",
+            "rerun_p49_t3_after_operator_local_checkouts_are_restored",
+            "record_no_larger_corpus_readiness",
+        ],
+        "largerCorpusCanProceedNow": False,
+    }
+    assert payload["largerCorpusGate"]["approvedNow"] is False
+    assert "operator_local_checkouts_missing" in payload["largerCorpusGate"]["approvalBlockedBy"]
+    assert payload["authorityBoundary"]["rerunGateIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesLargerCuratedCorpus"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
+    assert payload["authorityBoundary"]["rerunOutputAcceptedAsRegistryTruth"] is False
+    assert payload["executionBoundary"]["runsStaticOnlyGate"] is False
+    assert payload["executionBoundary"]["runsAIEnabledGate"] is False
+    assert payload["executionBoundary"]["runsAI"] is False
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["installsDependencies"] is False
+    assert payload["executionBoundary"]["invokesPackageManagers"] is False
+    assert payload["executionBoundary"]["executesHarvestedCode"] is False
+    assert payload["executionBoundary"]["rawPromptPersisted"] is False
+    assert payload["executionBoundary"]["rawProviderResponsePersisted"] is False
+    assert payload["executionBoundary"]["chainOfThoughtPersisted"] is False
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P49-T4",
+        "recommendedFollowUp": "Record docc2context follow-up exit decision",
+        "largerCuratedCorpusStillBlocked": True,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "docc2context AI Draft Same-Scope Bounded Rerun Gate",
+            "P49-T3",
+            "P49-T4",
+            "SpecHarvesterDocc2contextAIDraftSameScopeBoundedRerunGate",
+            "spec-harvester.docc2context-ai-draft-same-scope-bounded-rerun-gate/v0",
+            "producer_docc2context_ai_draft_same_scope_bounded_rerun_gate_evidence_only",
+            "p49-t3-docc2context-ai-draft-same-scope-bounded-rerun-gate.example.json",
+            "p49-t2-docc2context-ai-draft-targeted-follow-up-pass.example.json",
+            "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+            "same_scope_bounded_rerun_gate_blocked_operator_local_checkouts_missing",
+            "operator_local_checkouts_missing",
+            "openai/gpt-oss-20b",
+            "docc2context.aiDraft_warning_explicitly_non_blocking_for_p49_t3",
+            "excluded_package_also_selected",
+            "ai_json_repair_exhausted",
+            "ai_json_repair_needed",
+            "package_set_subject_metadata_missing",
+            "flask.aiDraft",
+            "flask.aiEnrichment",
+            "gin.aiDraft",
+            "cupertino.aiDraft",
+            "navigation-split-view.aiDraft",
+            "xyflow.partial_public_interface_index",
+            "xyflow.operator_checkout_origin_fork_mismatch",
+            "larger curated corpus",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "approve a larger curated corpus",
+            "expand beyond the same six-repository bounded pilot scope",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run the static-only gate",
+            "run the AI-enabled gate",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist chain-of-thought",
+            "AI output as registry truth",
+            "static output as registry truth",
+            "rerun output as registry truth",
+            "targeted follow-up output as registry truth",
+            "exit-decision output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md"),
+        (docc_root, "docs/DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md"),
+        (docc_root, "<doc:Docc2contextAIDraftSameScopeBoundedRerunGate>"),
+        (capabilities, "DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md"),
+        (capabilities_docc, "Docc2contextAIDraftSameScopeBoundedRerunGate"),
+        (roadmap, "DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md"),
+        (roadmap_docc, "Docc2contextAIDraftSameScopeBoundedRerunGate"),
+        (workplan, "`P49-T3` Run the same six-repository bounded rerun gate"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
