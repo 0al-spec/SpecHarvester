@@ -92,6 +92,7 @@ The canonical source files remain in the repository:
 - `docs/AI_DRAFT_BLOCKER_FOLLOW_UP_PASS.md`
 - `docs/AI_DRAFT_BLOCKER_BOUNDED_RERUN_GATE.md`
 - `docs/POST_BLOCKER_FOLLOW_UP_EXIT_DECISION.md`
+- `docs/DOCC2CONTEXT_AI_DRAFT_TARGETED_FOLLOW_UP_PLAN.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -275,6 +276,7 @@ the host.
 - <doc:AIDraftBlockerFollowUpPass>
 - <doc:AIDraftBlockerBoundedRerunGate>
 - <doc:PostBlockerFollowUpExitDecision>
+- <doc:Docc2contextAIDraftTargetedFollowUpPlan>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

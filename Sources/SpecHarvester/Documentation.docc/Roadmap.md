@@ -193,6 +193,11 @@ P48-T4 exit decision.
 P48-T4 is recorded in <doc:PostBlockerFollowUpExitDecision>. It selects
 another targeted pass for `docc2context.aiDraft` because the P48-T3 AI-enabled
 gate still failed with JSON repair exhaustion and missing subject metadata.
+P49-T1 is recorded in <doc:Docc2contextAIDraftTargetedFollowUpPlan>. It
+constrains the next targeted pass to `docc2context.aiDraft`, requires
+`docc2context.core` subject metadata, preserves carried-forward warning IDs,
+and keeps larger curated corpus planning blocked until P49-T2, P49-T3, and
+P49-T4 complete.
 
 ### Selected Candidate SpecPM Intake Handoff
 
