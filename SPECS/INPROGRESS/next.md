@@ -69,6 +69,8 @@ the exit decision.
   chain-of-thought.
 - Do not treat AI output as registry truth.
 - Do not treat static output as registry truth.
+- Do not treat targeted follow-up output as registry truth.
+- Do not treat exit-decision output as registry truth.
 - Do not treat plan output as registry truth.
 - Do not treat adapter output as registry truth.
 

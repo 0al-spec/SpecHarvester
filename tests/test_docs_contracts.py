@@ -65,6 +65,8 @@ def assert_current_next_task(next_text: str) -> None:
         assert "Do not accept packages or relations" in next_text
         assert "Do not persist raw prompts" in next_text
         assert "Do not treat AI output as registry truth" in next_text
+        assert "Do not treat targeted follow-up output as registry truth" in next_text
+        assert "Do not treat exit-decision output as registry truth" in next_text
         return
 
     if "# Next Task: P49-T1 Plan docc2context AI Draft Targeted Follow-Up Pass" in (next_text):
