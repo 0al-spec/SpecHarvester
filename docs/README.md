@@ -323,6 +323,9 @@ Published DocC site:
 82. [`POST_BLOCKER_FOLLOW_UP_EXIT_DECISION.md`](POST_BLOCKER_FOLLOW_UP_EXIT_DECISION.md):
    P48-T4 exit decision selecting a targeted `docc2context.aiDraft` follow-up
    before larger curated corpus planning
+83. [`DOCC2CONTEXT_AI_DRAFT_TARGETED_FOLLOW_UP_PLAN.md`](DOCC2CONTEXT_AI_DRAFT_TARGETED_FOLLOW_UP_PLAN.md):
+   P49-T1 plan for constraining `docc2context.aiDraft` subject metadata and
+   JSON repair exhaustion before the next bounded rerun gate
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

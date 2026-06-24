@@ -2334,7 +2334,7 @@ Acceptance:
 
 ## Phase 49. docc2context AI Draft Targeted Follow-Up
 
-- [ ] `P49-T1` Plan the docc2context AI draft targeted follow-up pass selected
+- [x] `P49-T1` Plan the docc2context AI draft targeted follow-up pass selected
   by P48-T4, preserving the same six-repository bounded pilot scope and larger
   corpus block.
 - [ ] `P49-T2` Execute the docc2context AI draft targeted follow-up pass,

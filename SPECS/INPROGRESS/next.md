@@ -1,59 +1,65 @@
-# Next Task: P49-T1 Plan docc2context AI Draft Targeted Follow-Up Pass
+# Next Task: P49-T2 Execute docc2context AI Draft Targeted Follow-Up Pass
 
 **Status:** Selected
-**Branch:** `feature/P49-T1-plan-docc2context-ai-draft-targeted-follow-up-pass`
+**Branch:** `feature/P49-T2-execute-docc2context-ai-draft-targeted-follow-up-pass`
 **Phase:** Phase 49. docc2context AI Draft Targeted Follow-Up
-**Task:** `P49-T1`
-**Last Archived:** `P48-T4` Record Post-Blocker Follow-Up Exit Decision
-**Depends On:** `P48-T4` Record Post-Blocker Follow-Up Exit Decision
+**Task:** `P49-T2`
+**Last Archived:** `P49-T1` Plan docc2context AI Draft Targeted Follow-Up Pass
+**Depends On:** `P49-T1` Plan docc2context AI Draft Targeted Follow-Up Pass
 
 ## Goal
 
-Plan the targeted follow-up pass for the remaining `docc2context.aiDraft`
-blocker recorded by P48-T4.
+Execute the targeted follow-up pass for `docc2context.aiDraft`, constraining
+subject metadata and JSON repair exhaustion before the next same-scope bounded
+rerun gate.
 
 ## Context
 
-P48-T4 selected:
+P49-T1 selected:
 
 ```text
-run_docc2context_ai_draft_targeted_pass_before_larger_curated_corpus
+docc2context_ai_draft_targeted_follow_up_before_larger_curated_corpus
 ```
 
-P48-T3 showed that the static-only same-scope bounded gate passed, but the
-AI-enabled gate failed on `docc2context.aiDraft` with:
+The target blocker remains:
 
+- `docc2context.aiDraft`
 - `ai_json_repair_exhausted`
 - `ai_json_repair_needed`
 - `package_set_subject_metadata_missing`
 
-`gin.aiDraft` and `navigation-split-view.aiDraft` no longer hard-fail and are
-warning-only. xyflow caveats remain visible for later exit review.
+P49-T2 must keep `docc2context.core` subject metadata present and must record
+whether the sidecar becomes `completed` or explicitly non-blocking `warning`.
 
-The larger curated corpus remains blocked until the docc2context targeted pass,
-same-scope bounded rerun gate, and follow-up exit decision complete.
+The larger curated corpus remains blocked until P49-T2 executes the targeted
+pass, P49-T3 reruns the same six-repository bounded gate, and P49-T4 records
+the exit decision.
 
 ## Scope
 
-- Plan a targeted follow-up for `docc2context.aiDraft`.
-- Preserve the same six-repository bounded pilot scope for the later rerun.
-- Define constraints for subject metadata and JSON repair exhaustion.
+- Target only `docc2context.aiDraft`.
+- Preserve P48-T3/P48-T4 warning IDs unchanged:
+  `flask.aiDraft`, `flask.aiEnrichment`, `gin.aiDraft`,
+  `cupertino.aiDraft`, and `navigation-split-view.aiDraft`.
+- Preserve xyflow caveats for the next exit review; xyflow caveats remain
+  visible until P49-T4 records their exit disposition.
 - Keep all AI output proposal-only.
 - Preserve no raw prompt, raw provider response, secrets, or chain-of-thought
   persistence.
 
 ## Expected Deliverables
 
-- Durable P49-T1 plan evidence.
-- Explicit success criteria for P49-T2 and P49-T3.
-- Clear statement that larger curated corpus planning remains blocked.
-- Validation report and archive artifacts for P49-T1.
+- Durable P49-T2 execution evidence.
+- Explicit status for `docc2context.aiDraft`.
+- Clear disposition for `ai_json_repair_exhausted` and
+  `package_set_subject_metadata_missing`.
+- Validation report and archive artifacts for P49-T2.
 
 ## Boundaries
 
 - Do not approve a larger curated corpus.
-- Do not run the targeted pass in P49-T1.
-- Do not run another bounded rerun in P49-T1.
+- Do not run the same-scope bounded rerun in P49-T2.
+- Do not expand beyond `docc2context.aiDraft`.
 - Do not accept packages or relations.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
 - Do not run adapters or enable trusted local adapter execution.
@@ -63,12 +69,12 @@ same-scope bounded rerun gate, and follow-up exit decision complete.
   chain-of-thought.
 - Do not treat AI output as registry truth.
 - Do not treat static output as registry truth.
-- Do not treat exit-decision output as registry truth.
+- Do not treat plan output as registry truth.
 - Do not treat adapter output as registry truth.
 
 ## Validation Expectations
 
 - Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
-- Run focused docs-contract tests for P49-T1 and current next task.
+- Run focused docs-contract tests for P49-T2 and current next task.
 - Run formatting, lint, coverage, Swift manifest, Swift docs build, and
   whitespace checks as required by Flow.
