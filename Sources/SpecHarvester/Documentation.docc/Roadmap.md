@@ -202,6 +202,10 @@ P49-T2 is recorded in <doc:Docc2contextAIDraftTargetedFollowUpPass>. It runs
 the targeted LM Studio draft proposal for `docc2context.aiDraft`, clears JSON
 repair exhaustion and missing subject metadata for P49-T3, and carries the new
 `excluded_package_also_selected` warning as explicitly non-blocking.
+P49-T3 is recorded in <doc:Docc2contextAIDraftSameScopeBoundedRerunGate>. It
+stops before the static-only gate because the six operator-local P46 checkouts
+are absent, preserves no-clone/no-fetch boundaries, and leaves the exit
+decision to P49-T4.
 
 ### Selected Candidate SpecPM Intake Handoff
 

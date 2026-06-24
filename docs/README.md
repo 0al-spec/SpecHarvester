@@ -330,6 +330,9 @@ Published DocC site:
    P49-T2 targeted LM Studio follow-up pass for `docc2context.aiDraft`,
    clearing previous JSON repair exhaustion and subject metadata blockers for
    the P49-T3 bounded rerun gate
+85. [`DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md`](DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md):
+   P49-T3 same-scope bounded rerun gate evidence recording the missing
+   operator-local checkout blocker before P49-T4 exit decision
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

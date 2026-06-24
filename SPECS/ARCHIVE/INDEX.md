@@ -838,3 +838,5 @@
 | 2026-06-24 | P49-T1 | Archived REVIEW_p49_t1_docc2context_ai_draft_targeted_follow_up_plan report |
 | 2026-06-24 | P49-T2 | Archived Execute docc2context AI Draft Targeted Follow-Up Pass (PASS) |
 | 2026-06-24 | P49-T2 | Archived REVIEW_p49_t2_docc2context_ai_draft_targeted_follow_up_pass report |
+| 2026-06-25 | P49-T3 | Archived Run Same-Scope Bounded Rerun Gate (PASS) |
+| 2026-06-25 | P49-T3 | Archived REVIEW_p49_t3_same_scope_bounded_rerun_gate report |
