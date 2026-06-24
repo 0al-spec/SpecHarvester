@@ -198,6 +198,10 @@ constrains the next targeted pass to `docc2context.aiDraft`, requires
 `docc2context.core` subject metadata, preserves carried-forward warning IDs,
 and keeps larger curated corpus planning blocked until P49-T2, P49-T3, and
 P49-T4 complete.
+P49-T2 is recorded in <doc:Docc2contextAIDraftTargetedFollowUpPass>. It runs
+the targeted LM Studio draft proposal for `docc2context.aiDraft`, clears JSON
+repair exhaustion and missing subject metadata for P49-T3, and carries the new
+`excluded_package_also_selected` warning as explicitly non-blocking.
 
 ### Selected Candidate SpecPM Intake Handoff
 

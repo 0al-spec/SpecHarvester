@@ -2337,7 +2337,7 @@ Acceptance:
 - [x] `P49-T1` Plan the docc2context AI draft targeted follow-up pass selected
   by P48-T4, preserving the same six-repository bounded pilot scope and larger
   corpus block.
-- [ ] `P49-T2` Execute the docc2context AI draft targeted follow-up pass,
+- [x] `P49-T2` Execute the docc2context AI draft targeted follow-up pass,
   constraining subject metadata and JSON repair exhaustion while preserving
   proposal-only AI output.
 - [ ] `P49-T3` Run the same six-repository bounded rerun gate after the
