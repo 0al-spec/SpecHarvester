@@ -1,21 +1,19 @@
-# Next Task: P49-T4 Record docc2context Follow-Up Exit Decision
+# Next Task: None Selected After P49-T4
 
-**Status:** Selected
-**Branch:** `feature/P49-T4-record-docc2context-follow-up-exit-decision`
+**Status:** Complete / Blocked for Expansion
 **Phase:** Phase 49. docc2context AI Draft Targeted Follow-Up
-**Task:** `P49-T4`
-**Last Archived:** `P49-T3` Run Same-Scope Bounded Rerun Gate
-**Depends On:** `P49-T3` Run Same-Scope Bounded Rerun Gate
+**Last Archived:** `P49-T4` Record docc2context Follow-Up Exit Decision
+**Decision:** `record_no_larger_corpus_readiness_due_to_operator_local_checkout_blocker`
 
-## Goal
+## Current State
 
-Record the docc2context follow-up exit decision after P49-T3 documented that
-the same-scope bounded rerun gate is blocked by missing operator-local
-checkouts.
+P49-T4 recorded the docc2context follow-up exit decision:
 
-## Context
+```text
+record_no_larger_corpus_readiness_due_to_operator_local_checkout_blocker
+```
 
-P49-T3 selected:
+The decision uses P49-T3 evidence:
 
 ```text
 same_scope_bounded_rerun_gate_blocked_operator_local_checkouts_missing
@@ -41,29 +39,41 @@ docc2context.aiDraft_warning_explicitly_non_blocking_for_p49_t3
 excluded_package_also_selected
 ```
 
-The larger curated corpus remains blocked until P49-T4 records the exit
-decision.
+The P48 warning IDs and xyflow caveats remain visible:
 
-## Scope
+- `flask.aiDraft`
+- `flask.aiEnrichment`
+- `gin.aiDraft`
+- `cupertino.aiDraft`
+- `navigation-split-view.aiDraft`
+- `xyflow.partial_public_interface_index`
+- `xyflow.operator_checkout_origin_fork_mismatch`
 
-- Decide whether Phase 49 should stop on the operator-local checkout blocker,
-  request a P49-T3 rerun after checkouts are restored, or record no larger
-  corpus readiness.
-- Preserve P48 warning IDs and xyflow caveats.
-- Preserve proposal-only and non-registry-authority boundaries.
+## Expansion Decision
 
-## Expected Deliverables
+Larger curated corpus planning remains blocked.
 
-- Durable P49-T4 exit decision evidence.
-- GitHub and DocC documentation for the exit decision.
-- Workplan/next update to the selected follow-up state.
-- Validation report and archive artifacts for P49-T4.
+P49-T4 does not select readiness for a larger curated corpus because the
+same-scope bounded rerun gate did not reach either static-only execution or
+AI-enabled execution.
+
+Readiness can be reconsidered only after:
+
+- the same six operator-local checkouts are restored;
+- P49-T3 is rerun over the same six-repository scope;
+- a new or revisited exit decision records a successful same-scope rerun.
+
+## Practical Follow-Up
+
+No Workplan task is currently selected. The practical follow-up is operator
+action: restore the same six operator-local checkouts before rerunning P49-T3,
+or author a new follow-up phase if the project wants a different path.
 
 ## Boundaries
 
-- Do not approve a larger curated corpus unless the P49-T3 blocker is
-  explicitly resolved by evidence.
-- Do not run another bounded rerun in P49-T4.
+- Do not approve a larger curated corpus from the current P49 evidence.
+- Do not run another bounded rerun without restoring the operator-local
+  checkouts first.
 - Do not run AI.
 - Do not run adapters or enable trusted local adapter execution.
 - Do not clone or fetch repositories.
@@ -71,10 +81,3 @@ decision.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
 - Do not treat AI output, static output, rerun output, targeted follow-up
   output, exit-decision output, or adapter output as registry truth.
-
-## Validation Expectations
-
-- Validate any durable JSON fixture with `python3 -m json.tool` or equivalent.
-- Run focused docs-contract tests for P49-T4 and current next task.
-- Run formatting, lint, coverage, Swift manifest, Swift docs build, and
-  whitespace checks as required by Flow.

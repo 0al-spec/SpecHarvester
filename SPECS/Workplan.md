@@ -2342,7 +2342,7 @@ Acceptance:
   proposal-only AI output.
 - [x] `P49-T3` Run the same six-repository bounded rerun gate after the
   docc2context follow-up pass, preserving static-only-before-AI ordering.
-- [ ] `P49-T4` Record the docc2context follow-up exit decision, deciding
+- [x] `P49-T4` Record the docc2context follow-up exit decision, deciding
   whether larger curated corpus planning can proceed, another targeted pass is
   needed, or expansion stops on a documented blocker.
 

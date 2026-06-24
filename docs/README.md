@@ -333,6 +333,9 @@ Published DocC site:
 85. [`DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md`](DOCC2CONTEXT_AI_DRAFT_SAME_SCOPE_BOUNDED_RERUN_GATE.md):
    P49-T3 same-scope bounded rerun gate evidence recording the missing
    operator-local checkout blocker before P49-T4 exit decision
+86. [`DOCC2CONTEXT_FOLLOW_UP_EXIT_DECISION.md`](DOCC2CONTEXT_FOLLOW_UP_EXIT_DECISION.md):
+   P49-T4 exit decision recording no larger corpus readiness because the
+   same-scope bounded rerun gate did not reach static-only or AI execution
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

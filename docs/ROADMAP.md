@@ -1254,6 +1254,13 @@ and the machine-readable
 before the static-only gate because the six operator-local P46 checkouts are
 absent, preserves no-clone/no-fetch boundaries, and leaves the exit decision to
 P49-T4.
+P49-T4 records
+[`DOCC2CONTEXT_FOLLOW_UP_EXIT_DECISION.md`](DOCC2CONTEXT_FOLLOW_UP_EXIT_DECISION.md)
+and the machine-readable `SpecHarvesterDocc2contextFollowUpExitDecision`
+fixture. It records no larger corpus readiness because P49-T3 did not reach
+static-only or AI-enabled execution, keeps larger corpus planning blocked, and
+requires restoring the same six operator-local checkouts before any P49-T3
+rerun can reconsider readiness.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
