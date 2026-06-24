@@ -326,6 +326,10 @@ Published DocC site:
 83. [`DOCC2CONTEXT_AI_DRAFT_TARGETED_FOLLOW_UP_PLAN.md`](DOCC2CONTEXT_AI_DRAFT_TARGETED_FOLLOW_UP_PLAN.md):
    P49-T1 plan for constraining `docc2context.aiDraft` subject metadata and
    JSON repair exhaustion before the next bounded rerun gate
+84. [`DOCC2CONTEXT_AI_DRAFT_TARGETED_FOLLOW_UP_PASS.md`](DOCC2CONTEXT_AI_DRAFT_TARGETED_FOLLOW_UP_PASS.md):
+   P49-T2 targeted LM Studio follow-up pass for `docc2context.aiDraft`,
+   clearing previous JSON repair exhaustion and subject metadata blockers for
+   the P49-T3 bounded rerun gate
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
