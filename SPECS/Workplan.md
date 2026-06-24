@@ -2300,7 +2300,7 @@ Acceptance:
 - [x] `P48-T3` Run the same six-repository bounded pilot rerun gate after the
   P48-T2 blocker follow-up, preserving static-only-before-AI ordering and
   recording whether the AI-enabled gate now passes.
-- [ ] `P48-T4` Record the post-blocker follow-up exit decision, deciding
+- [x] `P48-T4` Record the post-blocker follow-up exit decision, deciding
   whether larger curated corpus planning can proceed, another targeted pass is
   needed, or a documented blocker stops expansion.
 
@@ -2330,4 +2330,41 @@ Acceptance:
 - P48-T3 must use the same six-repository bounded pilot scope before any
   expansion.
 - P48-T4 must explicitly choose proceed, another targeted pass, or stop on a
+  documented blocker.
+
+## Phase 49. docc2context AI Draft Targeted Follow-Up
+
+- [ ] `P49-T1` Plan the docc2context AI draft targeted follow-up pass selected
+  by P48-T4, preserving the same six-repository bounded pilot scope and larger
+  corpus block.
+- [ ] `P49-T2` Execute the docc2context AI draft targeted follow-up pass,
+  constraining subject metadata and JSON repair exhaustion while preserving
+  proposal-only AI output.
+- [ ] `P49-T3` Run the same six-repository bounded rerun gate after the
+  docc2context follow-up pass, preserving static-only-before-AI ordering.
+- [ ] `P49-T4` Record the docc2context follow-up exit decision, deciding
+  whether larger curated corpus planning can proceed, another targeted pass is
+  needed, or expansion stops on a documented blocker.
+
+Motivation:
+
+- P48-T4 selected another targeted pass because P48-T3 static-only validation
+  passed, but the AI-enabled gate failed on `docc2context.aiDraft`.
+- `gin.aiDraft` and `navigation-split-view.aiDraft` no longer hard-fail, so
+  the remaining hard AI draft blocker is now narrower.
+
+Goal:
+
+- Resolve or explicitly dispose `docc2context.aiDraft` JSON repair exhaustion
+  and missing subject metadata before any larger curated corpus planning.
+
+Acceptance:
+
+- Phase 49 must preserve proposal-only AI output, no raw prompt/response/CoT
+  persistence, no package or relation acceptance, no registry publication, no
+  baseline seeding, no `preview_only` removal, and no trusted local adapter
+  execution.
+- P49-T3 must rerun the same six-repository bounded pilot scope before any
+  expansion.
+- P49-T4 must explicitly choose proceed, another targeted pass, or stop on a
   documented blocker.

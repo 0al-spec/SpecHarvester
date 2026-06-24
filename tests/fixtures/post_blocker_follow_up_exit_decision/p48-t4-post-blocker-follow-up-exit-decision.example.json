@@ -1,0 +1,187 @@
+{
+  "apiVersion": "spec-harvester.post-blocker-follow-up-exit-decision/v0",
+  "kind": "SpecHarvesterPostBlockerFollowUpExitDecision",
+  "authority": "producer_post_blocker_follow_up_exit_decision_only",
+  "phase": "P48",
+  "task": "P48-T4",
+  "createdAt": "2026-06-23T21:30:00+03:00",
+  "sourceArtifacts": {
+    "p48BoundedRerunGate": {
+      "path": "tests/fixtures/ai_draft_blocker_bounded_rerun_gate/p48-t3-ai-draft-blocker-bounded-rerun-gate.example.json",
+      "digest": "sha256:cca65280e6d8537e3cdb0a842b4cca417bc07a07368db298300ecc48609ae569",
+      "apiVersion": "spec-harvester.ai-draft-blocker-bounded-rerun-gate/v0",
+      "kind": "SpecHarvesterAIDraftBlockerBoundedRerunGate",
+      "authority": "producer_ai_draft_blocker_bounded_rerun_gate_evidence_only"
+    }
+  },
+  "observedGateFacts": {
+    "sourceScope": "same_six_repository_bounded_pilot",
+    "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "repositoryIds": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ],
+    "staticGatePassed": true,
+    "aiEnabledGatePassed": false,
+    "aiEnabledExitCode": 1,
+    "processedCount": 6,
+    "failedRepositoryCount": 1,
+    "passedPreflightCount": 6,
+    "proposalOnlyAI": true,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "repositoryDispositionSummary": {
+    "resolvedHardFailures": [
+      {
+        "sidecarId": "gin.aiDraft",
+        "p48T3Status": "warning",
+        "decision": "non_blocking_warning_for_next_targeted_pass",
+        "reason": "p48_t3_no_longer_hard_failed_after_p48_t2_disposition"
+      },
+      {
+        "sidecarId": "navigation-split-view.aiDraft",
+        "p48T3Status": "warning",
+        "decision": "non_blocking_warning_for_next_targeted_pass",
+        "reason": "p48_t3_no_longer_hard_failed_after_p48_t2_disposition"
+      }
+    ],
+    "remainingBlockingSidecars": [
+      {
+        "sidecarId": "docc2context.aiDraft",
+        "repositoryId": "docc2context",
+        "p48T3Status": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "jsonRepairStatus": "exhausted",
+        "decision": "requires_targeted_follow_up_before_larger_curated_corpus",
+        "reason": "ai_enabled_gate_failed_and_subject_metadata_missing_is_not_safe_to_accept_as_non_blocking"
+      }
+    ],
+    "caveatsCarriedForward": [
+      {
+        "id": "xyflow.partial_public_interface_index",
+        "decision": "keep_visible_for_next_exit_review",
+        "blocksNextTargetedPass": false,
+        "blocksLargerCuratedCorpusUntilExitDecision": true
+      },
+      {
+        "id": "xyflow.operator_checkout_origin_fork_mismatch",
+        "decision": "keep_visible_for_next_exit_review",
+        "blocksNextTargetedPass": false,
+        "blocksLargerCuratedCorpusUntilExitDecision": true
+      },
+      {
+        "id": "flask.aiDraft",
+        "decision": "keep_visible_as_non_blocking_warning",
+        "blocksNextTargetedPass": false,
+        "blocksLargerCuratedCorpusUntilExitDecision": false
+      },
+      {
+        "id": "flask.aiEnrichment",
+        "decision": "keep_visible_as_non_blocking_warning",
+        "blocksNextTargetedPass": false,
+        "blocksLargerCuratedCorpusUntilExitDecision": false
+      },
+      {
+        "id": "cupertino.aiDraft",
+        "decision": "keep_visible_as_non_blocking_warning",
+        "blocksNextTargetedPass": false,
+        "blocksLargerCuratedCorpusUntilExitDecision": false
+      }
+    ]
+  },
+  "exitDecision": {
+    "selected": "run_docc2context_ai_draft_targeted_pass_before_larger_curated_corpus",
+    "selectedReason": "p48_t3_static_gate_passed_but_ai_enabled_gate_failed_on_docc2context_ai_draft",
+    "approvedForLargerCuratedCorpusPlanning": false,
+    "requiresAnotherTargetedPass": true,
+    "stopsLargerCorpusPlanning": false,
+    "registryAuthority": false
+  },
+  "nextTargetedPass": {
+    "nextTaskPointer": "P49-T1",
+    "recommendedFollowUp": "Plan docc2context AI Draft Targeted Follow-Up Pass",
+    "targetSidecars": [
+      "docc2context.aiDraft"
+    ],
+    "requiredBeforeNextBoundedRerun": [
+      "constrain_docc2context_ai_draft_subject_metadata",
+      "record_json_repair_exhaustion_disposition",
+      "preserve_static_only_before_ai_ordering",
+      "preserve_proposal_only_ai_output",
+      "preserve_raw_prompt_response_cot_non_persistence"
+    ],
+    "sameScopeRerunRequiredAfterTargetedPass": true
+  },
+  "largerCorpusGate": {
+    "approvedNow": false,
+    "approvalBlockedBy": [
+      "docc2context.aiDraft.ai_json_repair_exhausted",
+      "docc2context.aiDraft.package_set_subject_metadata_missing",
+      "p49_t1_targeted_follow_up_not_planned",
+      "post_targeted_pass_same_scope_bounded_rerun_not_run",
+      "post_targeted_pass_exit_decision_not_recorded",
+      "xyflow.partial_public_interface_index",
+      "xyflow.operator_checkout_origin_fork_mismatch"
+    ],
+    "canBeReconsideredAfter": [
+      "p49_t1_plan_docc2context_ai_draft_targeted_follow_up_pass",
+      "p49_execute_docc2context_ai_draft_targeted_follow_up_pass",
+      "p49_same_scope_bounded_rerun_gate",
+      "p49_exit_decision"
+    ]
+  },
+  "authorityBoundary": {
+    "exitDecisionIsRegistryAuthority": false,
+    "approvesLargerCuratedCorpus": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "rerunOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "runsAnotherBoundedRerun": false,
+    "runsAI": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_approve_larger_curated_corpus",
+    "does_not_accept_packages_or_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_rerun_output_as_registry_truth",
+    "does_not_treat_exit_decision_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ],
+  "nextState": {
+    "nextTaskPointer": "P49-T1",
+    "recommendedFollowUp": "Plan docc2context AI Draft Targeted Follow-Up Pass",
+    "largerCuratedCorpusStillBlocked": true
+  }
+}
