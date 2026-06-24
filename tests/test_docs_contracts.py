@@ -33823,6 +33823,20 @@ def test_post_blocker_follow_up_exit_decision_records_p48_t4_result() -> None:
     assert blockers["docc2context.aiDraft"]["decision"] == (
         "requires_targeted_follow_up_before_larger_curated_corpus"
     )
+    caveats = {
+        item["id"]: item
+        for item in payload["repositoryDispositionSummary"]["caveatsCarriedForward"]
+    }
+    assert set(caveats) == {
+        "xyflow.partial_public_interface_index",
+        "xyflow.operator_checkout_origin_fork_mismatch",
+        "flask.aiDraft",
+        "flask.aiEnrichment",
+        "cupertino.aiDraft",
+    }
+    assert caveats["flask.aiDraft"]["decision"] == "keep_visible_as_non_blocking_warning"
+    assert caveats["flask.aiEnrichment"]["decision"] == "keep_visible_as_non_blocking_warning"
+    assert caveats["cupertino.aiDraft"]["decision"] == "keep_visible_as_non_blocking_warning"
 
     assert payload["exitDecision"] == {
         "selected": "run_docc2context_ai_draft_targeted_pass_before_larger_curated_corpus",
@@ -33898,6 +33912,9 @@ def test_post_blocker_follow_up_exit_decision_records_p48_t4_result() -> None:
             "docc2context.aiDraft",
             "ai_json_repair_exhausted",
             "package_set_subject_metadata_missing",
+            "flask.aiDraft",
+            "flask.aiEnrichment",
+            "cupertino.aiDraft",
             "gin.aiDraft",
             "navigation-split-view.aiDraft",
             "partial_public_interface_index",

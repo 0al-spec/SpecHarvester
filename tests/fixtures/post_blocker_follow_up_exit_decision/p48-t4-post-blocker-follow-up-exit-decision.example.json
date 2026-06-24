@@ -80,13 +80,19 @@
         "blocksLargerCuratedCorpusUntilExitDecision": true
       },
       {
-        "id": "flask.aiDraft.warning",
+        "id": "flask.aiDraft",
         "decision": "keep_visible_as_non_blocking_warning",
         "blocksNextTargetedPass": false,
         "blocksLargerCuratedCorpusUntilExitDecision": false
       },
       {
-        "id": "cupertino.aiDraft.warning",
+        "id": "flask.aiEnrichment",
+        "decision": "keep_visible_as_non_blocking_warning",
+        "blocksNextTargetedPass": false,
+        "blocksLargerCuratedCorpusUntilExitDecision": false
+      },
+      {
+        "id": "cupertino.aiDraft",
         "decision": "keep_visible_as_non_blocking_warning",
         "blocksNextTargetedPass": false,
         "blocksLargerCuratedCorpusUntilExitDecision": false

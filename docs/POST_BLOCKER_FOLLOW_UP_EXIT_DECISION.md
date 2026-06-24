@@ -58,6 +58,9 @@ The P48-T2 follow-up did move the earlier blockers:
   warning-only.
 
 Those warnings remain visible, but they do not block the next targeted pass.
+P48-T4 carries the P48-T3 non-blocking warning IDs forward unchanged:
+`flask.aiDraft`, `flask.aiEnrichment`, `gin.aiDraft`,
+`cupertino.aiDraft`, and `navigation-split-view.aiDraft`.
 
 ## What Still Blocks Expansion
 
