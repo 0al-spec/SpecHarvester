@@ -206,6 +206,11 @@ P49-T3 is recorded in <doc:Docc2contextAIDraftSameScopeBoundedRerunGate>. It
 stops before the static-only gate because the six operator-local P46 checkouts
 are absent, preserves no-clone/no-fetch boundaries, and leaves the exit
 decision to P49-T4.
+P49-T4 is recorded in <doc:Docc2contextFollowUpExitDecision>. It records no
+larger corpus readiness because P49-T3 did not reach static-only or AI-enabled
+execution, keeps larger corpus planning blocked, and requires restoring the
+same six operator-local checkouts before any P49-T3 rerun can reconsider
+readiness.
 
 ### Selected Candidate SpecPM Intake Handoff
 

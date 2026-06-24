@@ -1,0 +1,165 @@
+{
+  "apiVersion": "spec-harvester.docc2context-follow-up-exit-decision/v0",
+  "kind": "SpecHarvesterDocc2contextFollowUpExitDecision",
+  "authority": "producer_docc2context_follow_up_exit_decision_only",
+  "phase": "P49",
+  "task": "P49-T4",
+  "createdAt": "2026-06-25T00:17:34+03:00",
+  "sourceArtifacts": {
+    "p49SameScopeBoundedRerunGate": {
+      "path": "tests/fixtures/docc2context_ai_draft_same_scope_bounded_rerun_gate/p49-t3-docc2context-ai-draft-same-scope-bounded-rerun-gate.example.json",
+      "digest": "sha256:fafdd28028461214cbc608665689df623817f51c06bd68ab40266142444726ec",
+      "apiVersion": "spec-harvester.docc2context-ai-draft-same-scope-bounded-rerun-gate/v0",
+      "kind": "SpecHarvesterDocc2contextAIDraftSameScopeBoundedRerunGate",
+      "authority": "producer_docc2context_ai_draft_same_scope_bounded_rerun_gate_evidence_only"
+    }
+  },
+  "observedGateFacts": {
+    "sourceScope": "same_six_repository_bounded_pilot",
+    "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "repositoryIds": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ],
+    "operatorLocalCheckoutsPresent": false,
+    "missingCheckoutCount": 6,
+    "missingCheckoutRepositoryIds": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ],
+    "staticGateAttempted": false,
+    "staticGatePassed": false,
+    "aiEnabledGateAttempted": false,
+    "aiEnabledGatePassed": false,
+    "lmStudioAvailable": true,
+    "lmStudioModel": "openai/gpt-oss-20b",
+    "aiExecutionReached": false,
+    "processedCount": 0,
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 0,
+    "proposalOnlyAI": true,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "carriedForwardEvidence": {
+    "p49T3SelectedOutcome": "same_scope_bounded_rerun_gate_blocked_operator_local_checkouts_missing",
+    "p49T2SelectedOutcome": "docc2context.aiDraft_warning_explicitly_non_blocking_for_p49_t3",
+    "p49T2NonBlockingWarning": "excluded_package_also_selected",
+    "p48WarningIds": [
+      "flask.aiDraft",
+      "flask.aiEnrichment",
+      "gin.aiDraft",
+      "cupertino.aiDraft",
+      "navigation-split-view.aiDraft"
+    ],
+    "xyflowCaveats": [
+      "xyflow.partial_public_interface_index",
+      "xyflow.operator_checkout_origin_fork_mismatch"
+    ],
+    "docc2contextPreviousBlockingDiagnosticsClearedForGate": [
+      "ai_json_repair_exhausted",
+      "ai_json_repair_needed",
+      "package_set_subject_metadata_missing"
+    ]
+  },
+  "exitDecision": {
+    "selected": "record_no_larger_corpus_readiness_due_to_operator_local_checkout_blocker",
+    "selectedReason": "p49_t3_did_not_reach_static_or_ai_gate_because_all_operator_local_checkouts_were_missing",
+    "approvedForLargerCuratedCorpusPlanning": false,
+    "requiresP49T3RerunAfterCheckoutsRestored": true,
+    "requiresAnotherTargetedPass": false,
+    "stopsLargerCorpusPlanning": true,
+    "registryAuthority": false
+  },
+  "rerunPrerequisites": {
+    "nextTaskPointer": null,
+    "recommendedFollowUp": "Restore the same six operator-local checkouts before rerunning P49-T3",
+    "sameScopeRerunRequiredBeforeReadinessCanBeReconsidered": true,
+    "requiredBeforeNextBoundedRerun": [
+      "restore_operator_local_checkout_flask",
+      "restore_operator_local_checkout_gin",
+      "restore_operator_local_checkout_xyflow",
+      "restore_operator_local_checkout_cupertino",
+      "restore_operator_local_checkout_navigation_split_view",
+      "restore_operator_local_checkout_docc2context",
+      "preserve_static_only_before_ai_ordering",
+      "preserve_proposal_only_ai_output",
+      "preserve_raw_prompt_response_cot_non_persistence"
+    ]
+  },
+  "largerCorpusGate": {
+    "approvedNow": false,
+    "approvalBlockedBy": [
+      "p49_t3_same_scope_bounded_rerun_gate_blocked",
+      "operator_local_checkouts_missing",
+      "static_only_gate_not_run",
+      "ai_enabled_gate_not_run",
+      "xyflow.partial_public_interface_index",
+      "xyflow.operator_checkout_origin_fork_mismatch"
+    ],
+    "canBeReconsideredAfter": [
+      "operator_local_checkouts_restored_for_same_six_repository_scope",
+      "p49_t3_same_scope_bounded_rerun_gate_rerun",
+      "p49_t4_exit_decision_revisited_after_successful_rerun"
+    ]
+  },
+  "authorityBoundary": {
+    "exitDecisionIsRegistryAuthority": false,
+    "approvesLargerCuratedCorpus": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "rerunOutputAcceptedAsRegistryTruth": false,
+    "targetedFollowUpOutputAcceptedAsRegistryTruth": false,
+    "exitDecisionOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "runsAnotherBoundedRerun": false,
+    "runsStaticOnlyGate": false,
+    "runsAIEnabledGate": false,
+    "runsAI": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_approve_larger_curated_corpus",
+    "does_not_accept_packages_or_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_rerun_output_as_registry_truth",
+    "does_not_treat_targeted_follow_up_output_as_registry_truth",
+    "does_not_treat_exit_decision_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ],
+  "nextState": {
+    "nextTaskPointer": null,
+    "recommendedFollowUp": "Restore operator-local checkouts before rerunning P49-T3 or author a new follow-up phase",
+    "largerCuratedCorpusStillBlocked": true,
+    "phase49Complete": true
+  }
+}
