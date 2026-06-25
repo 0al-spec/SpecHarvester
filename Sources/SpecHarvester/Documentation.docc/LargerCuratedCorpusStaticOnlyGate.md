@@ -104,8 +104,9 @@ xyflow produced the relation proposals:
 
 ## Carry-Forward Triage
 
-Two non-blocking caveats remain visible for P51-T6 triage:
+Three non-blocking caveats remain visible for P51-T6 triage:
 
+- `xyflow.partial_public_interface_index`
 - `xyflow.operator_checkout_origin_fork_mismatch`
 - `docc2context.source_checkout_had_untracked_doccarchive`
 

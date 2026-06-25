@@ -82,6 +82,7 @@ sha256:2f6bd4e6f8762463d1698be5bfa3369e7fbdae8214d3cbb8b552a15855e73823
 
 ## Caveats Carried Forward
 
+- `xyflow.partial_public_interface_index`
 - `xyflow.operator_checkout_origin_fork_mismatch`
 - `docc2context.source_checkout_had_untracked_doccarchive`
 

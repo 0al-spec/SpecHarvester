@@ -890,6 +890,13 @@
   "carriedForwardCaveats": [
     {
       "sourceId": "xyflow",
+      "code": "partial_public_interface_index",
+      "blocking": false,
+      "diagnosticCount": 29,
+      "disposition": "carry_forward_to_p51_t6_triage"
+    },
+    {
+      "sourceId": "xyflow",
       "code": "operator_checkout_origin_fork_mismatch",
       "blocking": false,
       "disposition": "carry_forward_to_p51_t6_triage"

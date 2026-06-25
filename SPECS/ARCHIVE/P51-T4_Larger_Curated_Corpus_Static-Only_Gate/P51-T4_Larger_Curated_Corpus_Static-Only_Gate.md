@@ -61,7 +61,8 @@ flows.
   produced or persisted.
 - Trusted local adapter execution remains disabled and adapter sidecars do not
   become authority.
-- `xyflow.operator_checkout_origin_fork_mismatch` and
+- `xyflow.partial_public_interface_index`,
+  `xyflow.operator_checkout_origin_fork_mismatch`, and
   `docc2context.source_checkout_had_untracked_doccarchive` are carried forward
   as review evidence.
 - If the static-only batch passes with no failed repositories, the fixture

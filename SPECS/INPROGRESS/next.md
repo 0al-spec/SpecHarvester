@@ -38,7 +38,8 @@ candidates, 3 relation proposals, 0 AI proposals, and 0 adapter sidecars.
   warnings, diagnostics, and per-source AI proposal state.
 - Preserve raw prompt, raw provider response, secret, and chain-of-thought
   non-persistence.
-- Carry `xyflow.operator_checkout_origin_fork_mismatch` and
+- Carry `xyflow.partial_public_interface_index`,
+  `xyflow.operator_checkout_origin_fork_mismatch`, and
   `docc2context.source_checkout_had_untracked_doccarchive` forward as review
   evidence.
 - Decide whether P51-T6 output triage can proceed.

@@ -58,6 +58,7 @@ def assert_current_next_task(next_text: str) -> None:
         assert "raw prompt" in normalized
         assert "raw provider response" in normalized
         assert "chain-of-thought" in next_text
+        assert "xyflow.partial_public_interface_index" in next_text
         assert "xyflow.operator_checkout_origin_fork_mismatch" in next_text
         assert "docc2context.source_checkout_had_untracked_doccarchive" in next_text
         assert "Do not accept packages or relations" in next_text
@@ -35508,6 +35509,13 @@ def test_larger_curated_corpus_static_only_gate_records_p51_t4_run() -> None:
     assert payload["carriedForwardCaveats"] == [
         {
             "sourceId": "xyflow",
+            "code": "partial_public_interface_index",
+            "blocking": False,
+            "diagnosticCount": 29,
+            "disposition": "carry_forward_to_p51_t6_triage",
+        },
+        {
+            "sourceId": "xyflow",
             "code": "operator_checkout_origin_fork_mismatch",
             "blocking": False,
             "disposition": "carry_forward_to_p51_t6_triage",
@@ -35573,6 +35581,7 @@ def test_larger_curated_corpus_static_only_gate_records_p51_t4_run() -> None:
             "15 preview candidates",
             "three relation proposals",
             "xyflow.workspace.contains.xyflow.react",
+            "xyflow.partial_public_interface_index",
             "xyflow.operator_checkout_origin_fork_mismatch",
             "docc2context.source_checkout_had_untracked_doccarchive",
             "allows the P51-T5 AI-enabled proposal-only gate",

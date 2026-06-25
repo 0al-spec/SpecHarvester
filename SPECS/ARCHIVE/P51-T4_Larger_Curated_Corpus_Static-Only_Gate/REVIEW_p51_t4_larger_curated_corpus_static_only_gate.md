@@ -29,7 +29,8 @@ None.
   static evidence. AI draft/enrichment proposal counts remain zero.
 - No runtime harvesting behavior changed. The implementation adds evidence,
   docs, DocC mirroring, and docs-contract coverage.
-- xyflow and docc2context caveats remain visible for P51-T6 triage.
+- xyflow partial-interface and checkout caveats plus the docc2context checkout
+  caveat remain visible for P51-T6 triage.
 - `next.md` correctly selects P51-T5 AI-enabled proposal-only gate after
   archive.
 
