@@ -199,6 +199,7 @@
     "rerunOutputAcceptedAsRegistryTruth": false,
     "planningOutputAcceptedAsRegistryTruth": false,
     "triageOutputAcceptedAsRegistryTruth": false,
+    "exitDecisionOutputAcceptedAsRegistryTruth": false,
     "adapterOutputAcceptedAsRegistryTruth": false
   },
   "executionBoundary": {

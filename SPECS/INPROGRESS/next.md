@@ -33,13 +33,19 @@ deferred
 do_not_promote
 ```
 
-The exit decision carries the P51-T7 caveats forward:
+The exit decision carries four P51-T7 caveats forward:
 
 ```text
 xyflow.partial_public_interface_index
 xyflow.operator_checkout_origin_fork_mismatch
 docc2context.source_checkout_had_untracked_doccarchive
 hyperprompt.single_package_deterministic_fallback_applied
+```
+
+It also preserves the fifth registry-promotion blocker from the do-not-promote
+AI enrichment sidecar:
+
+```text
 specnode.model_evidence_path_unsupported
 ```
 

@@ -36868,6 +36868,7 @@ def test_larger_curated_corpus_exit_decision_records_p51_t8_result() -> None:
         "rerunOutputAcceptedAsRegistryTruth": False,
         "planningOutputAcceptedAsRegistryTruth": False,
         "triageOutputAcceptedAsRegistryTruth": False,
+        "exitDecisionOutputAcceptedAsRegistryTruth": False,
         "adapterOutputAcceptedAsRegistryTruth": False,
     }
     assert payload["executionBoundary"] == {
