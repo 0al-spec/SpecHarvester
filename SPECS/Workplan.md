@@ -2414,7 +2414,7 @@ Acceptance:
 - [x] `P51-T3` Run the larger curated corpus checkout readiness gate, verifying
   that every selected source has an operator-provided pinned local checkout
   before any static or AI-enabled batch run.
-- [ ] `P51-T4` Run the larger curated corpus static-only gate after readiness
+- [x] `P51-T4` Run the larger curated corpus static-only gate after readiness
   passes, preserving deterministic evidence, preflight counts, diagnostics,
   and no-AI boundaries.
 - [ ] `P51-T5` Run the larger curated corpus AI-enabled proposal-only gate only

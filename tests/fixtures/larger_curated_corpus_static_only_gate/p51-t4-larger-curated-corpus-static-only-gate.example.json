@@ -1,0 +1,974 @@
+{
+  "apiVersion": "spec-harvester.larger-curated-corpus-static-only-gate/v0",
+  "schemaVersion": 1,
+  "kind": "SpecHarvesterLargerCuratedCorpusStaticOnlyGate",
+  "authority": "producer_static_preview_evidence_only",
+  "phase": "P51",
+  "task": "P51-T4",
+  "createdAt": "2026-06-25T13:33:22+03:00",
+  "run": {
+    "id": "p51-t4-larger-curated-corpus-static-only-20260625T103322Z",
+    "mode": "static_only",
+    "root": "/tmp/specharvester-p51-t4-larger-curated-corpus-static-only-20260625T103322Z",
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch inputs/p51-larger-curated-corpus --out /tmp/specharvester-p51-t4-larger-curated-corpus-static-only-20260625T103322Z/output --skip-ai --repository-profile-selection auto",
+    "sourceManifestCommand": "PYTHONPATH=src python -m spec_harvester source-manifests inputs/p51-larger-curated-corpus",
+    "status": "passed"
+  },
+  "sourceArtifacts": {
+    "p51CheckoutReadiness": {
+      "path": "tests/fixtures/larger_curated_corpus_checkout_readiness/p51-t3-larger-curated-corpus-checkout-readiness.example.json",
+      "digest": "sha256:a9b225dd5976dc1c4b215ca02a7c5acf1c5f48d6ecc9250a812e25c118ed1001",
+      "apiVersion": "spec-harvester.larger-curated-corpus-checkout-readiness/v0",
+      "kind": "SpecHarvesterLargerCuratedCorpusCheckoutReadiness",
+      "authority": "producer_larger_curated_corpus_checkout_readiness_only"
+    }
+  },
+  "sourceManifest": {
+    "path": "inputs/p51-larger-curated-corpus/repositories.yml",
+    "digest": "sha256:7676d9d5069f223c33c3e3650c76a60897ada6bed05034dfb5f94dba1d4be79a",
+    "entryCount": 12,
+    "requiresExistingCheckouts": true,
+    "cloneAllowed": false,
+    "fetchAllowed": false
+  },
+  "batchReport": {
+    "path": "/tmp/specharvester-p51-t4-larger-curated-corpus-static-only-20260625T103322Z/output/autonomous-candidate-batch-report.json",
+    "digest": "sha256:2f6bd4e6f8762463d1698be5bfa3369e7fbdae8214d3cbb8b552a15855e73823",
+    "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+    "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+    "authority": "producer_preview_evidence_only"
+  },
+  "summary": {
+    "aiDraftProposalCount": 0,
+    "aiEnrichedPreviewAppliedCount": 0,
+    "aiEnrichedPreviewFailedCount": 0,
+    "aiEnrichedPreviewSkippedCount": 0,
+    "aiEnrichmentProposalCount": 0,
+    "collectedCount": 12,
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 12,
+    "processedCount": 12,
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "repositoryPluginApplicabilitySidecarCount": 0,
+    "repositoryProfileDetectionCount": 12,
+    "repositoryProfileDisabledCount": 0,
+    "repositoryProfileFallbackCount": 2,
+    "repositoryProfileSelectedCount": 10,
+    "skippedCount": 0,
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    "candidateCount": 15,
+    "relationCount": 3,
+    "preflightWarningCount": 0,
+    "preflightErrorCount": 0,
+    "interfaceDiagnosticCount": 29,
+    "authorReadyDraftCount": 15,
+    "authorReadyBlockedCount": 0,
+    "authorReadyNeedsRegenerationCount": 0
+  },
+  "repositories": [
+    {
+      "id": "flask",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "checkout": "/Users/egor/Development/GitHub/flask",
+      "status": "passed",
+      "packageId": "flask.core",
+      "candidatePackageIds": [
+        "flask.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 941,
+        "packageCount": 1,
+        "entrypointCount": 83,
+        "executedAnalyzerIds": [
+          "spec_harvester.python_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.python_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "gin",
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "checkout": "/Users/egor/Development/GitHub/gin",
+      "status": "passed",
+      "packageId": "gin.core",
+      "candidatePackageIds": [
+        "gin.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 456,
+        "packageCount": 5,
+        "entrypointCount": 56,
+        "executedAnalyzerIds": [
+          "spec_harvester.go_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.c_cpp_manifest_profile",
+          "spec_harvester.go_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "xyflow",
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "checkout": "/Users/egor/Development/GitHub/xyflow",
+      "status": "passed",
+      "packageId": "xyflow.workspace",
+      "candidatePackageIds": [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace"
+      ],
+      "candidateCount": 4,
+      "relationIds": [
+        "xyflow.workspace.contains.xyflow.react",
+        "xyflow.workspace.contains.xyflow.svelte",
+        "xyflow.workspace.contains.xyflow.system"
+      ],
+      "relationCount": 3,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 4,
+        "candidatePreflightPassedCount": 4,
+        "relationCount": 3,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "partial",
+        "diagnosticCount": 29,
+        "symbolCount": 1,
+        "packageCount": 11,
+        "entrypointCount": 2,
+        "executedAnalyzerIds": [
+          "spec_harvester.js_ts_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.js_ts_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.package_set.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "workspace_manifest_present",
+          "multiple_member_manifests_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 4,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 4,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "cupertino",
+      "repository": "https://github.com/mihaelamj/cupertino",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "checkout": "/Users/egor/Development/GitHub/cupertino",
+      "status": "passed",
+      "packageId": "cupertino.core",
+      "candidatePackageIds": [
+        "cupertino.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 2555,
+        "packageCount": 1,
+        "entrypointCount": 154,
+        "executedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.c_cpp_manifest_profile",
+          "spec_harvester.objective_c_manifest_profile",
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "fallback",
+        "confidence": "low",
+        "selectedProfileId": null,
+        "diagnosticCodes": [
+          "repository_profile_fallback"
+        ],
+        "reasonCodes": [
+          "insufficient_high_confidence_profile_evidence"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "navigation-split-view",
+      "repository": "https://github.com/SoundBlaster/NavigationSplitView",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "checkout": "/Users/egor/Development/GitHub/NavigationSplitView",
+      "status": "passed",
+      "packageId": "navigation_split_view.core",
+      "candidatePackageIds": [
+        "navigation_split_view.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 54,
+        "packageCount": 1,
+        "entrypointCount": 46,
+        "executedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.objective_c_manifest_profile",
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "fallback",
+        "confidence": "low",
+        "selectedProfileId": null,
+        "diagnosticCodes": [
+          "repository_profile_fallback"
+        ],
+        "reasonCodes": [
+          "insufficient_high_confidence_profile_evidence"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "docc2context",
+      "repository": "https://github.com/SoundBlaster/docc2context",
+      "revision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "checkout": "/Users/egor/Development/GitHub/docc2context",
+      "status": "passed",
+      "packageId": "docc2context.core",
+      "candidatePackageIds": [
+        "docc2context.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 372,
+        "packageCount": 1,
+        "entrypointCount": 19,
+        "executedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "fastapi",
+      "repository": "https://github.com/fastapi/fastapi",
+      "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+      "checkout": "/Users/egor/Development/GitHub/fastapi",
+      "status": "passed",
+      "packageId": "fastapi.core",
+      "candidatePackageIds": [
+        "fastapi.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 6009,
+        "packageCount": 1,
+        "entrypointCount": 1121,
+        "executedAnalyzerIds": [
+          "spec_harvester.python_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.python_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "fastmcp",
+      "repository": "https://github.com/PrefectHQ/fastmcp",
+      "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+      "checkout": "/Users/egor/Development/GitHub/fastmcp",
+      "status": "passed",
+      "packageId": "fastmcp.core",
+      "candidatePackageIds": [
+        "fastmcp.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 9199,
+        "packageCount": 1,
+        "entrypointCount": 772,
+        "executedAnalyzerIds": [
+          "spec_harvester.python_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.python_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "specpm",
+      "repository": "git@github.com:0al-spec/SpecPM.git",
+      "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+      "checkout": "/Users/egor/Development/GitHub/0AL/SpecPM",
+      "status": "passed",
+      "packageId": "specpm.core",
+      "candidatePackageIds": [
+        "specpm.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 810,
+        "packageCount": 2,
+        "entrypointCount": 13,
+        "executedAnalyzerIds": [
+          "spec_harvester.python_public_api",
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.c_cpp_manifest_profile",
+          "spec_harvester.python_public_api",
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "hypercode",
+      "repository": "git@github.com:0al-spec/Hypercode.git",
+      "revision": "995663326bbb1fc4981c5362014d80f3df7bd504",
+      "checkout": "/Users/egor/Development/GitHub/0AL/Hypercode",
+      "status": "passed",
+      "packageId": "hypercode.core",
+      "candidatePackageIds": [
+        "hypercode.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 332,
+        "packageCount": 1,
+        "entrypointCount": 30,
+        "executedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "specnode",
+      "repository": "git@github.com:0al-spec/SpecNode.git",
+      "revision": "9f0bc2245c75e4539d59b4eaeabadcda52a5d413",
+      "checkout": "/Users/egor/Development/GitHub/0AL/SpecNode",
+      "status": "passed",
+      "packageId": "specnode.core",
+      "candidatePackageIds": [
+        "specnode.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 3,
+        "packageCount": 1,
+        "entrypointCount": 2,
+        "executedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.c_cpp_manifest_profile",
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    },
+    {
+      "id": "hyperprompt",
+      "repository": "git@github.com:0al-spec/Hyperprompt.git",
+      "revision": "7e73cfe7a5a863014114e6a1e03cf3c1077b5a5a",
+      "checkout": "/Users/egor/Development/GitHub/0AL/Hyperprompt",
+      "status": "passed",
+      "packageId": "hyperprompt.core",
+      "candidatePackageIds": [
+        "hyperprompt.core"
+      ],
+      "candidateCount": 1,
+      "relationIds": [],
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 753,
+        "packageCount": 2,
+        "entrypointCount": 85,
+        "executedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ],
+        "plannedAnalyzerIds": [
+          "spec_harvester.swift_public_api"
+        ]
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "authorReadyDraftSummary": {
+        "author_ready_draft": 1,
+        "blocked": 0,
+        "needs_regeneration": 0,
+        "total": 1,
+        "status": "author_ready_draft",
+        "decision": "stop_for_author_review"
+      },
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      }
+    }
+  ],
+  "carriedForwardCaveats": [
+    {
+      "sourceId": "xyflow",
+      "code": "partial_public_interface_index",
+      "blocking": false,
+      "diagnosticCount": 29,
+      "disposition": "carry_forward_to_p51_t6_triage"
+    },
+    {
+      "sourceId": "xyflow",
+      "code": "operator_checkout_origin_fork_mismatch",
+      "blocking": false,
+      "disposition": "carry_forward_to_p51_t6_triage"
+    },
+    {
+      "sourceId": "docc2context",
+      "code": "source_checkout_had_untracked_doccarchive",
+      "blocking": false,
+      "disposition": "carry_forward_to_p51_t6_triage"
+    }
+  ],
+  "qualityGate": {
+    "staticOnlyGateStatus": "passed",
+    "allSelectedSourcesProcessed": true,
+    "allPreflightsPassed": true,
+    "failedRepositoryCount": 0,
+    "blockingReasonCount": 0,
+    "p51T5AIEnabledGateAllowed": true
+  },
+  "aiBoundary": {
+    "mode": "disabled",
+    "provider": null,
+    "model": null,
+    "reason": "operator_disabled",
+    "aiDraftProposalCount": 0,
+    "aiEnrichmentProposalCount": 0,
+    "aiEnrichedPreviewAppliedCount": 0,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "adapterBoundary": {
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "repositoryPluginApplicabilitySidecarCount": 0,
+    "trustedLocalAdapterExecution": "not_run",
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "authorityBoundary": {
+    "staticOutputIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "requiresSpecPMMaintainerReview": true
+  },
+  "executionBoundary": {
+    "runsStaticOnlyGate": true,
+    "runsAI": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false
+  },
+  "nonAuthorityStatements": [
+    "Autonomous candidate batch output is producer evidence only.",
+    "Generated package files remain preview candidates until explicit SpecPM review.",
+    "SpecHarvester does not clone repositories, install dependencies, run builds, or execute package scripts.",
+    "Live model execution is limited to the operator-provided local OpenAI-compatible endpoint.",
+    "Raw prompts, raw provider responses, secrets, and chain-of-thought are not persisted.",
+    "SpecPM remains the validation, acceptance, relation, and registry authority."
+  ],
+  "nextState": {
+    "nextTaskPointer": "P51-T5",
+    "recommendedFollowUp": "Run the larger curated corpus AI-enabled proposal-only gate",
+    "staticOnlyGatePassed": true,
+    "aiEnabledGateAllowed": true,
+    "largerCuratedCorpusExecutionReadyForAIProposalOnly": true,
+    "phase51Complete": false
+  }
+}

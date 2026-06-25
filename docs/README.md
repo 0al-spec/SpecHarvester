@@ -349,6 +349,9 @@ Published DocC site:
 90. [`LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md`](LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md):
    P51-T3 checkout readiness gate showing all 12 selected sources present and
    revision-matched before the P51-T4 static-only gate
+91. [`LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md`](LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md):
+   P51-T4 static-only gate showing all 12 selected sources processed with 15
+   preview candidates, three relation proposals, and no AI or adapter output
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

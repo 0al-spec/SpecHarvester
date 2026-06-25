@@ -228,6 +228,10 @@ all 12 selected sources have present local git checkouts whose observed
 revisions match the manifest pins, carries xyflow and docc2context checkout
 caveats forward, and allows P51-T4 static-only execution while keeping AI
 execution blocked until static-only evidence passes.
+P51-T4 is recorded in <doc:LargerCuratedCorpusStaticOnlyGate>. It processes all
+12 selected sources in static-only mode, produces 15 preview candidates and
+three relation proposals, carries checkout caveats forward, and allows P51-T5
+AI-enabled proposal-only execution.
 
 ### Selected Candidate SpecPM Intake Handoff
 
