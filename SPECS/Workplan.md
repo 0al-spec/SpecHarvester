@@ -2411,7 +2411,7 @@ Acceptance:
   criteria, including target count bounds, ecosystem and repository-shape
   coverage, importance signals, exclusion rules, pinned revision requirements,
   and operator-local checkout paths.
-- [ ] `P51-T3` Run the larger curated corpus checkout readiness gate, verifying
+- [x] `P51-T3` Run the larger curated corpus checkout readiness gate, verifying
   that every selected source has an operator-provided pinned local checkout
   before any static or AI-enabled batch run.
 - [ ] `P51-T4` Run the larger curated corpus static-only gate after readiness

@@ -1,0 +1,327 @@
+{
+  "apiVersion": "spec-harvester.larger-curated-corpus-checkout-readiness/v0",
+  "kind": "SpecHarvesterLargerCuratedCorpusCheckoutReadiness",
+  "authority": "producer_larger_curated_corpus_checkout_readiness_only",
+  "phase": "P51",
+  "task": "P51-T3",
+  "createdAt": "2026-06-25T12:45:14+03:00",
+  "sourceArtifacts": {
+    "p51SourcePlan": {
+      "path": "tests/fixtures/larger_curated_corpus_source_plan/p51-t2-larger-curated-corpus-source-plan.example.json",
+      "digest": "sha256:d0539892ed4cad56632de58bcddd7c68d77b74d46b39010449350991685eab2a",
+      "apiVersion": "spec-harvester.larger-curated-corpus-source-plan/v0",
+      "kind": "SpecHarvesterLargerCuratedCorpusSourcePlan",
+      "authority": "producer_larger_curated_corpus_source_plan_only"
+    },
+    "sourceManifest": {
+      "path": "inputs/p51-larger-curated-corpus/repositories.yml",
+      "digest": "sha256:7676d9d5069f223c33c3e3650c76a60897ada6bed05034dfb5f94dba1d4be79a",
+      "format": "spec-harvester.repository-source-manifest/v1"
+    }
+  },
+  "run": {
+    "command": "PYTHONPATH=src python3 - <<'PY' ... read_repository_source_manifests(Path('inputs/p51-larger-curated-corpus')) ... git rev-parse HEAD ... git status --porcelain ... PY",
+    "networkAccessRequired": false,
+    "cloneOrFetchPerformed": false,
+    "dependencyInstallPerformed": false,
+    "packageManagerInvoked": false,
+    "harvestedCodeExecuted": false,
+    "adapterExecutionPerformed": false,
+    "aiExecutionPerformed": false
+  },
+  "readinessGate": {
+    "status": "passed",
+    "selectedSourceCount": 12,
+    "manifestParsed": true,
+    "checkoutPresentCount": 12,
+    "gitRepositoryCount": 12,
+    "revisionMatchCount": 12,
+    "missingCheckoutCount": 0,
+    "revisionMismatchCount": 0,
+    "blockingReasonCount": 0,
+    "sourceWithCaveatCount": 2,
+    "allSelectedSourcesReady": true,
+    "p51T4StaticOnlyGateAllowed": true,
+    "p51T5AIEnabledGateAllowed": false
+  },
+  "verificationPolicy": {
+    "mustParseManifest": true,
+    "mustResolveCheckoutPathWithoutCloneOrFetch": true,
+    "mustVerifyGitRepository": true,
+    "mustCompareObservedHeadToPinnedRevision": true,
+    "missingCheckoutBlocksReadiness": true,
+    "revisionMismatchBlocksReadiness": true,
+    "dirtyWorktreeBlocksReadiness": false,
+    "operatorCheckoutCaveatsRemainReviewEvidence": true
+  },
+  "sourceResults": [
+    {
+      "id": "flask",
+      "status": "ready",
+      "manifestRevision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "observedRevision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../flask",
+        "resolvedPath": "/Users/egor/Development/GitHub/flask",
+        "gitTopLevel": "/Users/egor/Development/GitHub/flask",
+        "origin": "https://github.com/pallets/flask.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    },
+    {
+      "id": "gin",
+      "status": "ready",
+      "manifestRevision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "observedRevision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../gin",
+        "resolvedPath": "/Users/egor/Development/GitHub/gin",
+        "gitTopLevel": "/Users/egor/Development/GitHub/gin",
+        "origin": "https://github.com/gin-gonic/gin.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    },
+    {
+      "id": "xyflow",
+      "status": "ready_with_operator_checkout_caveat",
+      "manifestRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "observedRevision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../xyflow",
+        "resolvedPath": "/Users/egor/Development/GitHub/xyflow",
+        "gitTopLevel": "/Users/egor/Development/GitHub/xyflow",
+        "origin": "git@github.com:SoundBlaster/xyflow.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": ["operator_checkout_origin_fork_mismatch"]
+    },
+    {
+      "id": "cupertino",
+      "status": "ready",
+      "manifestRevision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "observedRevision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../cupertino",
+        "resolvedPath": "/Users/egor/Development/GitHub/cupertino",
+        "gitTopLevel": "/Users/egor/Development/GitHub/cupertino",
+        "origin": "git@github.com:mihaelamj/cupertino.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    },
+    {
+      "id": "navigation-split-view",
+      "status": "ready",
+      "manifestRevision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "observedRevision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../NavigationSplitView",
+        "resolvedPath": "/Users/egor/Development/GitHub/NavigationSplitView",
+        "gitTopLevel": "/Users/egor/Development/GitHub/NavigationSplitView",
+        "origin": "git@github.com:SoundBlaster/NavigationSplitView.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    },
+    {
+      "id": "docc2context",
+      "status": "ready_with_checkout_caveat",
+      "manifestRevision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "observedRevision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../docc2context",
+        "resolvedPath": "/Users/egor/Development/GitHub/docc2context",
+        "gitTopLevel": "/Users/egor/Development/GitHub/docc2context",
+        "origin": "git@github.com:SoundBlaster/docc2context.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 1
+      },
+      "blockingReasons": [],
+      "caveats": ["source_checkout_had_untracked_doccarchive"]
+    },
+    {
+      "id": "fastapi",
+      "status": "ready",
+      "manifestRevision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+      "observedRevision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../fastapi",
+        "resolvedPath": "/Users/egor/Development/GitHub/fastapi",
+        "gitTopLevel": "/Users/egor/Development/GitHub/fastapi",
+        "origin": "https://github.com/fastapi/fastapi",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    },
+    {
+      "id": "fastmcp",
+      "status": "ready",
+      "manifestRevision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+      "observedRevision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../fastmcp",
+        "resolvedPath": "/Users/egor/Development/GitHub/fastmcp",
+        "gitTopLevel": "/Users/egor/Development/GitHub/fastmcp",
+        "origin": "https://github.com/PrefectHQ/fastmcp",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    },
+    {
+      "id": "specpm",
+      "status": "ready",
+      "manifestRevision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+      "observedRevision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../SpecPM",
+        "resolvedPath": "/Users/egor/Development/GitHub/0AL/SpecPM",
+        "gitTopLevel": "/Users/egor/Development/GitHub/0AL/SpecPM",
+        "origin": "git@github.com:0al-spec/SpecPM.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    },
+    {
+      "id": "hypercode",
+      "status": "ready",
+      "manifestRevision": "995663326bbb1fc4981c5362014d80f3df7bd504",
+      "observedRevision": "995663326bbb1fc4981c5362014d80f3df7bd504",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../Hypercode",
+        "resolvedPath": "/Users/egor/Development/GitHub/0AL/Hypercode",
+        "gitTopLevel": "/Users/egor/Development/GitHub/0AL/Hypercode",
+        "origin": "git@github.com:0al-spec/Hypercode.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    },
+    {
+      "id": "specnode",
+      "status": "ready",
+      "manifestRevision": "9f0bc2245c75e4539d59b4eaeabadcda52a5d413",
+      "observedRevision": "9f0bc2245c75e4539d59b4eaeabadcda52a5d413",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../SpecNode",
+        "resolvedPath": "/Users/egor/Development/GitHub/0AL/SpecNode",
+        "gitTopLevel": "/Users/egor/Development/GitHub/0AL/SpecNode",
+        "origin": "git@github.com:0al-spec/SpecNode.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    },
+    {
+      "id": "hyperprompt",
+      "status": "ready",
+      "manifestRevision": "7e73cfe7a5a863014114e6a1e03cf3c1077b5a5a",
+      "observedRevision": "7e73cfe7a5a863014114e6a1e03cf3c1077b5a5a",
+      "revisionMatches": true,
+      "checkout": {
+        "manifestPath": "../../../Hyperprompt",
+        "resolvedPath": "/Users/egor/Development/GitHub/0AL/Hyperprompt",
+        "gitTopLevel": "/Users/egor/Development/GitHub/0AL/Hyperprompt",
+        "origin": "git@github.com:0al-spec/Hyperprompt.git",
+        "present": true,
+        "gitRepository": true,
+        "worktreeChangeCount": 0
+      },
+      "blockingReasons": [],
+      "caveats": []
+    }
+  ],
+  "operatorCheckoutCaveats": [
+    {
+      "sourceId": "xyflow",
+      "code": "operator_checkout_origin_fork_mismatch",
+      "blocking": false,
+      "disposition": "carry_forward_to_p51_t6_triage"
+    },
+    {
+      "sourceId": "docc2context",
+      "code": "source_checkout_had_untracked_doccarchive",
+      "blocking": false,
+      "disposition": "carry_forward_to_p51_t6_triage"
+    }
+  ],
+  "authorityBoundary": {
+    "readinessGateIsRegistryAuthority": false,
+    "approvesP51T4StaticOnlyGate": true,
+    "approvesP51T5AIEnabledGate": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "readinessOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "runsCheckoutReadinessGate": true,
+    "runsLargerCorpusBatch": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "runsAI": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nextState": {
+    "nextTaskPointer": "P51-T4",
+    "recommendedFollowUp": "Run the larger curated corpus static-only gate",
+    "checkoutReadinessPassed": true,
+    "staticOnlyGateAllowed": true,
+    "aiEnabledGateAllowed": false,
+    "largerCuratedCorpusExecutionReadyForStaticOnly": true,
+    "phase51Complete": false
+  }
+}
