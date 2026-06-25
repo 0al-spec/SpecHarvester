@@ -346,6 +346,9 @@ Published DocC site:
 89. [`LARGER_CURATED_CORPUS_SOURCE_PLAN.md`](LARGER_CURATED_CORPUS_SOURCE_PLAN.md):
    P51-T2 larger curated corpus source plan and manifest criteria for the
    P51-T3 checkout readiness gate
+90. [`LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md`](LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md):
+   P51-T3 checkout readiness gate showing all 12 selected sources present and
+   revision-matched before the P51-T4 static-only gate
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

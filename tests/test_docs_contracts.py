@@ -38,6 +38,35 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P51-T4 Larger Curated Corpus Static-Only Gate" in (next_text):
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun" in (
+            next_text
+        )
+        assert "**Task:** `P51-T4`" in next_text
+        assert "`P51-T3` Larger Curated Corpus Checkout Readiness Gate" in next_text
+        assert "larger curated corpus static-only gate" in normalized
+        assert "p51-t3-larger-curated-corpus-checkout-readiness.example.json" in next_text
+        assert "inputs/p51-larger-curated-corpus/repositories.yml" in next_text
+        assert "all 12 selected sources are present and revision-matched" in normalized
+        assert "P51-T5 AI-enabled proposal-only gate remains blocked" in next_text
+        assert "static-only evidence" in normalized
+        assert "xyflow.operator_checkout_origin_fork_mismatch" in next_text
+        assert "docc2context.source_checkout_had_untracked_doccarchive" in next_text
+        assert "Do not run AI in P51-T4" in next_text
+        assert "Do not clone or fetch repositories" in next_text
+        assert "Do not install dependencies" in next_text
+        assert "Do not invoke package managers" in next_text
+        assert "Do not execute harvested code" in next_text
+        assert "Do not run adapters or enable trusted local adapter execution" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        assert "Do not treat static output" in next_text
+        return
+
     if "# Next Task: P51-T3 Larger Curated Corpus Checkout Readiness Gate" in (next_text):
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -35020,6 +35049,259 @@ def test_larger_curated_corpus_source_plan_records_p51_t2_manifest() -> None:
         (roadmap_docc, "LargerCuratedCorpusSourcePlan"),
         (workplan, "`P51-T2` Author the larger curated corpus source plan"),
         (workplan, "`P51-T3` Run the larger curated corpus checkout readiness gate"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_larger_curated_corpus_checkout_readiness_records_p51_t3_gate() -> None:
+    source_plan_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_source_plan"
+        / "p51-t2-larger-curated-corpus-source-plan.example.json"
+    )
+    manifest_path = ROOT / "inputs" / "p51-larger-curated-corpus" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_checkout_readiness"
+        / "p51-t3-larger-curated-corpus-checkout-readiness.example.json"
+    )
+    github_doc = ROOT / "docs" / "LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LargerCuratedCorpusCheckoutReadiness.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == ("spec-harvester.larger-curated-corpus-checkout-readiness/v0")
+    assert payload["kind"] == "SpecHarvesterLargerCuratedCorpusCheckoutReadiness"
+    assert payload["authority"] == "producer_larger_curated_corpus_checkout_readiness_only"
+    assert payload["phase"] == "P51"
+    assert payload["task"] == "P51-T3"
+
+    source_plan = payload["sourceArtifacts"]["p51SourcePlan"]
+    source_plan_payload = json.loads(source_plan_path.read_text(encoding="utf-8"))
+    assert ROOT / source_plan["path"] == source_plan_path
+    assert (
+        source_plan["digest"]
+        == "sha256:" + hashlib.sha256(source_plan_path.read_bytes()).hexdigest()
+    )
+    assert source_plan["apiVersion"] == source_plan_payload["apiVersion"]
+    assert source_plan["kind"] == source_plan_payload["kind"]
+    assert source_plan["authority"] == source_plan_payload["authority"]
+
+    source_manifest = payload["sourceArtifacts"]["sourceManifest"]
+    assert ROOT / source_manifest["path"] == manifest_path
+    assert (
+        source_manifest["digest"]
+        == "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    )
+    assert source_manifest["format"] == "spec-harvester.repository-source-manifest/v1"
+
+    assert payload["run"]["networkAccessRequired"] is False
+    assert payload["run"]["cloneOrFetchPerformed"] is False
+    assert payload["run"]["dependencyInstallPerformed"] is False
+    assert payload["run"]["packageManagerInvoked"] is False
+    assert payload["run"]["harvestedCodeExecuted"] is False
+    assert payload["run"]["adapterExecutionPerformed"] is False
+    assert payload["run"]["aiExecutionPerformed"] is False
+
+    gate = payload["readinessGate"]
+    assert gate == {
+        "status": "passed",
+        "selectedSourceCount": 12,
+        "manifestParsed": True,
+        "checkoutPresentCount": 12,
+        "gitRepositoryCount": 12,
+        "revisionMatchCount": 12,
+        "missingCheckoutCount": 0,
+        "revisionMismatchCount": 0,
+        "blockingReasonCount": 0,
+        "sourceWithCaveatCount": 2,
+        "allSelectedSourcesReady": True,
+        "p51T4StaticOnlyGateAllowed": True,
+        "p51T5AIEnabledGateAllowed": False,
+    }
+
+    policy = payload["verificationPolicy"]
+    assert policy["mustParseManifest"] is True
+    assert policy["mustResolveCheckoutPathWithoutCloneOrFetch"] is True
+    assert policy["mustVerifyGitRepository"] is True
+    assert policy["mustCompareObservedHeadToPinnedRevision"] is True
+    assert policy["missingCheckoutBlocksReadiness"] is True
+    assert policy["revisionMismatchBlocksReadiness"] is True
+    assert policy["dirtyWorktreeBlocksReadiness"] is False
+    assert policy["operatorCheckoutCaveatsRemainReviewEvidence"] is True
+
+    manifest_records = read_repository_source_manifests(manifest_path.parent)
+    manifest_by_id = {record["id"]: record for record in manifest_records}
+    results = payload["sourceResults"]
+    result_ids = [result["id"] for result in results]
+    assert result_ids == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+        "fastapi",
+        "fastmcp",
+        "specpm",
+        "hypercode",
+        "specnode",
+        "hyperprompt",
+    ]
+    assert set(result_ids) == set(manifest_by_id)
+    for result in results:
+        record = manifest_by_id[result["id"]]
+        checkout = result["checkout"]
+        assert result["manifestRevision"] == record["revision"]
+        assert result["observedRevision"] == record["revision"]
+        assert len(result["observedRevision"]) == 40
+        assert result["revisionMatches"] is True
+        assert checkout["manifestPath"] == record["checkout"]
+        assert checkout["resolvedPath"].startswith("/Users/egor/Development/GitHub/")
+        assert checkout["gitTopLevel"].startswith("/Users/egor/Development/GitHub/")
+        assert checkout["present"] is True
+        assert checkout["gitRepository"] is True
+        assert isinstance(checkout["worktreeChangeCount"], int)
+        assert result["blockingReasons"] == []
+        assert result["status"].startswith("ready")
+
+    result_by_id = {result["id"]: result for result in results}
+    assert result_by_id["xyflow"]["caveats"] == ["operator_checkout_origin_fork_mismatch"]
+    assert result_by_id["xyflow"]["checkout"]["origin"] == (
+        "git@github.com:SoundBlaster/xyflow.git"
+    )
+    assert result_by_id["docc2context"]["caveats"] == ["source_checkout_had_untracked_doccarchive"]
+    assert result_by_id["docc2context"]["checkout"]["worktreeChangeCount"] == 1
+
+    caveats = payload["operatorCheckoutCaveats"]
+    assert caveats == [
+        {
+            "sourceId": "xyflow",
+            "code": "operator_checkout_origin_fork_mismatch",
+            "blocking": False,
+            "disposition": "carry_forward_to_p51_t6_triage",
+        },
+        {
+            "sourceId": "docc2context",
+            "code": "source_checkout_had_untracked_doccarchive",
+            "blocking": False,
+            "disposition": "carry_forward_to_p51_t6_triage",
+        },
+    ]
+
+    assert payload["authorityBoundary"]["readinessGateIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesP51T4StaticOnlyGate"] is True
+    assert payload["authorityBoundary"]["approvesP51T5AIEnabledGate"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
+    assert payload["authorityBoundary"]["seedsBaselines"] is False
+    assert payload["authorityBoundary"]["removesPreviewOnly"] is False
+    assert payload["authorityBoundary"]["readinessOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["staticOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["adapterOutputAcceptedAsRegistryTruth"] is False
+    assert payload["executionBoundary"]["runsCheckoutReadinessGate"] is True
+    assert payload["executionBoundary"]["runsLargerCorpusBatch"] is False
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["installsDependencies"] is False
+    assert payload["executionBoundary"]["invokesPackageManagers"] is False
+    assert payload["executionBoundary"]["executesHarvestedCode"] is False
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["enablesTrustedLocalAdapterExecution"] is False
+    assert payload["executionBoundary"]["runsAI"] is False
+    assert payload["executionBoundary"]["rawPromptPersisted"] is False
+    assert payload["executionBoundary"]["rawProviderResponsePersisted"] is False
+    assert payload["executionBoundary"]["secretsPersisted"] is False
+    assert payload["executionBoundary"]["chainOfThoughtPersisted"] is False
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P51-T4",
+        "recommendedFollowUp": "Run the larger curated corpus static-only gate",
+        "checkoutReadinessPassed": True,
+        "staticOnlyGateAllowed": True,
+        "aiEnabledGateAllowed": False,
+        "largerCuratedCorpusExecutionReadyForStaticOnly": True,
+        "phase51Complete": False,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Larger Curated Corpus Checkout Readiness",
+            "P51-T3",
+            "P51-T4",
+            "P51-T5",
+            "SpecHarvesterLargerCuratedCorpusCheckoutReadiness",
+            "spec-harvester.larger-curated-corpus-checkout-readiness/v0",
+            "producer_larger_curated_corpus_checkout_readiness_only",
+            "p51-t3-larger-curated-corpus-checkout-readiness.example.json",
+            "p51-t2-larger-curated-corpus-source-plan.example.json",
+            "inputs/p51-larger-curated-corpus/repositories.yml",
+            "The readiness gate passed",
+            "Selected sources",
+            "Revision matches",
+            "xyflow.operator_checkout_origin_fork_mismatch",
+            "docc2context.source_checkout_had_untracked_doccarchive",
+            "static-only gate is allowed",
+            "AI-enabled gate remains blocked",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "did not run a larger corpus batch",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run adapters",
+            "enable trusted local adapter execution",
+            "run AI",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist secrets",
+            "persist chain-of-thought",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "readiness output",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md"),
+        (docc_root, "docs/LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md"),
+        (docc_root, "<doc:LargerCuratedCorpusCheckoutReadiness>"),
+        (capabilities, "LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md"),
+        (capabilities_docc, "LargerCuratedCorpusCheckoutReadiness"),
+        (roadmap, "LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md"),
+        (roadmap_docc, "LargerCuratedCorpusCheckoutReadiness"),
+        (workplan, "`P51-T3` Run the larger curated corpus checkout readiness gate"),
+        (workplan, "`P51-T4` Run the larger curated corpus static-only gate"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

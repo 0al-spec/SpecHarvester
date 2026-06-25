@@ -1282,6 +1282,13 @@ It selects 12 curated pinned local-checkout sources, preserves the original
 six restored-checkout repositories, defines manifest criteria and stop
 conditions, and keeps execution blocked until P51-T3 verifies checkout
 readiness.
+P51-T3 records
+[`LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md`](LARGER_CURATED_CORPUS_CHECKOUT_READINESS.md)
+and the machine-readable `SpecHarvesterLargerCuratedCorpusCheckoutReadiness`
+fixture. It verifies all 12 selected sources have present local git checkouts
+whose observed revisions match the manifest pins, carries xyflow and
+docc2context checkout caveats forward, and allows P51-T4 static-only execution
+while keeping AI execution blocked until static-only evidence passes.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
