@@ -2407,7 +2407,7 @@ Acceptance:
   rerun evidence, defining bounded scope, gate ordering, follow-up tasks,
   source-selection constraints, and non-authority boundaries before any larger
   corpus run is attempted.
-- [ ] `P51-T2` Author the larger curated corpus source plan and manifest
+- [x] `P51-T2` Author the larger curated corpus source plan and manifest
   criteria, including target count bounds, ecosystem and repository-shape
   coverage, importance signals, exclusion rules, pinned revision requirements,
   and operator-local checkout paths.

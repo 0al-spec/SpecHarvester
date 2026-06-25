@@ -38,6 +38,38 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P51-T3 Larger Curated Corpus Checkout Readiness Gate" in (next_text):
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun" in (
+            next_text
+        )
+        assert "**Task:** `P51-T3`" in next_text
+        assert "`P51-T2` Larger Curated Corpus Source Plan and Manifest Criteria" in (next_text)
+        assert "larger curated corpus checkout readiness gate" in normalized
+        assert "12 selected P51-T2 sources" in next_text
+        assert "inputs/p51-larger-curated-corpus/repositories.yml" in next_text
+        assert "p51-t2-larger-curated-corpus-source-plan.example.json" in next_text
+        assert "operator-provided pinned local checkout" in normalized
+        assert "observed HEAD against the pinned revision" in normalized
+        assert "missing_pinned_local_checkout" in next_text
+        assert "checkout_revision_mismatch" in next_text
+        assert "clone_or_fetch_required" in next_text
+        assert "P51-T4 static-only gate" in next_text
+        assert "Do not run a larger corpus batch in P51-T3" in next_text
+        assert "Do not clone or fetch repositories" in next_text
+        assert "Do not install dependencies" in next_text
+        assert "Do not invoke package managers" in next_text
+        assert "Do not execute harvested code" in next_text
+        assert "Do not run adapters or enable trusted local adapter execution" in next_text
+        assert "Do not run AI" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        assert "Do not treat readiness output" in next_text
+        return
+
     if "# Next Task: P51-T2 Larger Curated Corpus Source Plan and Manifest Criteria" in (next_text):
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -34704,6 +34736,290 @@ def test_larger_curated_corpus_planning_phase_records_p51_t1_plan() -> None:
         (workplan, "`P51-T1` Plan the larger curated corpus phase"),
         (workplan, "`P51-T2` Author the larger curated corpus source plan"),
         (workplan, "`P51-T7` Record the larger curated corpus exit decision"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_larger_curated_corpus_source_plan_records_p51_t2_manifest() -> None:
+    planning_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_planning_phase"
+        / "p51-t1-larger-curated-corpus-planning-phase.example.json"
+    )
+    manifest_path = ROOT / "inputs" / "p51-larger-curated-corpus" / "repositories.yml"
+    p46_manifest_path = ROOT / "inputs" / "p46-bounded-popular-library-pilot" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_source_plan"
+        / "p51-t2-larger-curated-corpus-source-plan.example.json"
+    )
+    github_doc = ROOT / "docs" / "LARGER_CURATED_CORPUS_SOURCE_PLAN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LargerCuratedCorpusSourcePlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.larger-curated-corpus-source-plan/v0"
+    assert payload["kind"] == "SpecHarvesterLargerCuratedCorpusSourcePlan"
+    assert payload["authority"] == "producer_larger_curated_corpus_source_plan_only"
+    assert payload["phase"] == "P51"
+    assert payload["task"] == "P51-T2"
+
+    planning = payload["sourceArtifacts"]["p51PlanningPhase"]
+    planning_payload = json.loads(planning_path.read_text(encoding="utf-8"))
+    assert ROOT / planning["path"] == planning_path
+    assert planning["digest"] == "sha256:" + hashlib.sha256(planning_path.read_bytes()).hexdigest()
+    assert planning["apiVersion"] == planning_payload["apiVersion"]
+    assert planning["kind"] == planning_payload["kind"]
+    assert planning["authority"] == planning_payload["authority"]
+
+    source_manifest = payload["sourceArtifacts"]["sourceManifest"]
+    assert ROOT / source_manifest["path"] == manifest_path
+    assert (
+        source_manifest["digest"]
+        == "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    )
+    assert source_manifest["format"] == "spec-harvester.repository-source-manifest/v1"
+    p46_manifest = payload["sourceArtifacts"]["p46SourceManifest"]
+    assert ROOT / p46_manifest["path"] == p46_manifest_path
+    assert (
+        p46_manifest["digest"]
+        == "sha256:" + hashlib.sha256(p46_manifest_path.read_bytes()).hexdigest()
+    )
+
+    assert payload["planDecision"] == {
+        "selected": "larger_curated_corpus_source_plan_authored_ready_for_checkout_readiness",
+        "sourcePlanAuthored": True,
+        "manifestCriteriaAuthored": True,
+        "preservesP46BoundedPilotSources": True,
+        "checkoutReadinessVerified": False,
+        "largerCorpusExecutionApproved": False,
+        "registryAuthority": False,
+    }
+
+    plan = payload["sourcePlan"]
+    assert plan["repositoryCount"] == 12
+    assert plan["targetRepositoryCountRange"] == {"minimum": 10, "maximum": 16}
+    assert plan["sourceManifest"] == "inputs/p51-larger-curated-corpus/repositories.yml"
+    assert plan["sourceSelectionMode"] == "curated_operator_selection_not_registry_crawl"
+    assert plan["operatorCurated"] is True
+    assert plan["bounded"] is True
+    assert plan["pinnedLocalCheckoutsRequired"] is True
+    assert plan["checkoutReadinessGateTask"] == "P51-T3"
+    assert plan["staticOnlyGateTask"] == "P51-T4"
+    assert plan["aiEnabledGateTask"] == "P51-T5"
+    assert plan["executionReady"] is False
+
+    criteria = payload["manifestCriteria"]
+    assert criteria["requiredFields"] == [
+        "id",
+        "repository",
+        "revision",
+        "checkout",
+        "packageId",
+        "labels",
+    ]
+    assert criteria["revisionPolicy"]["exactFortyCharacterGitRevisionRequired"] is True
+    assert criteria["revisionPolicy"]["mutableRefsAllowed"] is False
+    assert criteria["checkoutPolicy"]["operatorLocalCheckoutRequired"] is True
+    assert criteria["checkoutPolicy"]["cloneOrFetchAllowed"] is False
+    assert "python" in criteria["requiredEcosystemFamilies"]
+    assert "go" in criteria["requiredEcosystemFamilies"]
+    assert "swift" in criteria["requiredEcosystemFamilies"]
+    assert "javascript_typescript" in criteria["requiredEcosystemFamilies"]
+    assert "documentation_heavy" in criteria["requiredEcosystemFamilies"]
+    assert "workspace_or_monorepo" in criteria["requiredRepositoryShapes"]
+    assert "tooling_or_adapter_like" in criteria["requiredRepositoryShapes"]
+    for stop_condition in (
+        "missing_pinned_local_checkout",
+        "checkout_revision_mismatch",
+        "clone_or_fetch_required",
+        "dependency_installation_required_for_basic_evidence",
+        "harvested_code_execution_required",
+        "unclear_license_or_source_boundary",
+    ):
+        assert stop_condition in criteria["stopConditions"]
+
+    manifest_records = read_repository_source_manifests(manifest_path.parent)
+    manifest_by_id = {record["id"]: record for record in manifest_records}
+    selected = payload["selectedSources"]
+    selected_ids = [source["id"] for source in selected]
+    assert selected_ids == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+        "fastapi",
+        "fastmcp",
+        "specpm",
+        "hypercode",
+        "specnode",
+        "hyperprompt",
+    ]
+    assert set(manifest_by_id) == set(selected_ids)
+    for source in selected:
+        record = manifest_by_id[source["id"]]
+        assert source["repository"] == record["repository"]
+        assert source["revision"] == record["revision"]
+        assert len(source["revision"]) == 40
+        assert source["checkout"] == record["checkout"]
+        assert source["packageId"] == record["packageId"]
+        assert "p51_larger_curated_corpus" in record["labels"]
+        assert source["exclusionStatus"].startswith("selected")
+        assert source["importanceSignals"]
+
+    assert payload["coverageSummary"]["p46SourcesPreserved"] == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert payload["coverageSummary"]["newSources"] == [
+        "fastapi",
+        "fastmcp",
+        "specpm",
+        "hypercode",
+        "specnode",
+        "hyperprompt",
+    ]
+    assert payload["coverageSummary"]["ecosystemFamilies"]["python"] >= 3
+    assert payload["coverageSummary"]["ecosystemFamilies"]["swift"] >= 4
+    assert payload["coverageSummary"]["ecosystemFamilies"]["documentation_heavy"] >= 5
+    assert payload["coverageSummary"]["repositoryShapes"]["workspace_or_monorepo"] >= 3
+    assert "xyflow.operator_checkout_origin_fork_mismatch" in payload["carriedForwardCaveats"]
+    assert (
+        "docc2context.source_checkout_had_untracked_doccarchive"
+        in (payload["carriedForwardCaveats"])
+    )
+
+    readiness = payload["readinessGateRequirements"]
+    assert readiness["task"] == "P51-T3"
+    assert readiness["mustVerifyEverySelectedSource"] is True
+    assert readiness["mustResolveCheckoutPathWithoutCloneOrFetch"] is True
+    assert readiness["mustCompareObservedHeadToPinnedRevision"] is True
+    assert readiness["mustPassBeforeStaticOnlyGate"] is True
+
+    assert payload["authorityBoundary"]["sourcePlanIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesLargerCorpusExecution"] is False
+    assert payload["authorityBoundary"]["checkoutReadinessVerified"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
+    assert payload["authorityBoundary"]["seedsBaselines"] is False
+    assert payload["authorityBoundary"]["removesPreviewOnly"] is False
+    assert payload["authorityBoundary"]["sourcePlanAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["staticOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["adapterOutputAcceptedAsRegistryTruth"] is False
+    assert payload["executionBoundary"]["runsLargerCorpusBatch"] is False
+    assert payload["executionBoundary"]["runsCheckoutReadinessGate"] is False
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["installsDependencies"] is False
+    assert payload["executionBoundary"]["invokesPackageManagers"] is False
+    assert payload["executionBoundary"]["executesHarvestedCode"] is False
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["enablesTrustedLocalAdapterExecution"] is False
+    assert payload["executionBoundary"]["runsAI"] is False
+    assert payload["executionBoundary"]["rawPromptPersisted"] is False
+    assert payload["executionBoundary"]["rawProviderResponsePersisted"] is False
+    assert payload["executionBoundary"]["secretsPersisted"] is False
+    assert payload["executionBoundary"]["chainOfThoughtPersisted"] is False
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P51-T3",
+        "recommendedFollowUp": "Run the larger curated corpus checkout readiness gate",
+        "sourcePlanAuthored": True,
+        "checkoutReadinessVerified": False,
+        "largerCuratedCorpusExecutionReady": False,
+        "phase51Complete": False,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Larger Curated Corpus Source Plan",
+            "P51-T2",
+            "P51-T3",
+            "SpecHarvesterLargerCuratedCorpusSourcePlan",
+            "spec-harvester.larger-curated-corpus-source-plan/v0",
+            "producer_larger_curated_corpus_source_plan_only",
+            "p51-t2-larger-curated-corpus-source-plan.example.json",
+            "inputs/p51-larger-curated-corpus/repositories.yml",
+            "flask",
+            "gin",
+            "xyflow",
+            "fastapi",
+            "fastmcp",
+            "specpm",
+            "hypercode",
+            "specnode",
+            "hyperprompt",
+            "missing_pinned_local_checkout",
+            "checkout_revision_mismatch",
+            "clone_or_fetch_required",
+            "xyflow.operator_checkout_origin_fork_mismatch",
+            "docc2context.source_checkout_had_untracked_doccarchive",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "does not run a larger corpus batch",
+            "run checkout readiness",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run adapters",
+            "enable trusted local adapter execution",
+            "run AI",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist secrets",
+            "persist chain-of-thought",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "source-plan output",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "LARGER_CURATED_CORPUS_SOURCE_PLAN.md"),
+        (docc_root, "docs/LARGER_CURATED_CORPUS_SOURCE_PLAN.md"),
+        (docc_root, "<doc:LargerCuratedCorpusSourcePlan>"),
+        (capabilities, "LARGER_CURATED_CORPUS_SOURCE_PLAN.md"),
+        (capabilities_docc, "LargerCuratedCorpusSourcePlan"),
+        (roadmap, "LARGER_CURATED_CORPUS_SOURCE_PLAN.md"),
+        (roadmap_docc, "LargerCuratedCorpusSourcePlan"),
+        (workplan, "`P51-T2` Author the larger curated corpus source plan"),
+        (workplan, "`P51-T3` Run the larger curated corpus checkout readiness gate"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

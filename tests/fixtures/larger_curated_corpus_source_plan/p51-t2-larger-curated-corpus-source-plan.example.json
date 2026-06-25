@@ -1,0 +1,361 @@
+{
+  "apiVersion": "spec-harvester.larger-curated-corpus-source-plan/v0",
+  "kind": "SpecHarvesterLargerCuratedCorpusSourcePlan",
+  "authority": "producer_larger_curated_corpus_source_plan_only",
+  "phase": "P51",
+  "task": "P51-T2",
+  "createdAt": "2026-06-25T12:28:06+03:00",
+  "sourceArtifacts": {
+    "p51PlanningPhase": {
+      "path": "tests/fixtures/larger_curated_corpus_planning_phase/p51-t1-larger-curated-corpus-planning-phase.example.json",
+      "digest": "sha256:c29bcf57f55f723d8e43632af11cb0fab1c849018674425a6b2c409d58889baf",
+      "apiVersion": "spec-harvester.larger-curated-corpus-planning-phase/v0",
+      "kind": "SpecHarvesterLargerCuratedCorpusPlanningPhase",
+      "authority": "producer_larger_curated_corpus_planning_phase_only"
+    },
+    "sourceManifest": {
+      "path": "inputs/p51-larger-curated-corpus/repositories.yml",
+      "digest": "sha256:7676d9d5069f223c33c3e3650c76a60897ada6bed05034dfb5f94dba1d4be79a",
+      "format": "spec-harvester.repository-source-manifest/v1"
+    },
+    "p46SourceManifest": {
+      "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+      "digest": "sha256:b00a59837c64477819e01d5f97845ab8379cbe909ae464d2f1faee37e65c2f61"
+    }
+  },
+  "planDecision": {
+    "selected": "larger_curated_corpus_source_plan_authored_ready_for_checkout_readiness",
+    "sourcePlanAuthored": true,
+    "manifestCriteriaAuthored": true,
+    "preservesP46BoundedPilotSources": true,
+    "checkoutReadinessVerified": false,
+    "largerCorpusExecutionApproved": false,
+    "registryAuthority": false
+  },
+  "sourcePlan": {
+    "scopeName": "larger_curated_corpus_after_restored_rerun",
+    "repositoryCount": 12,
+    "targetRepositoryCountRange": {
+      "minimum": 10,
+      "maximum": 16
+    },
+    "sourceManifest": "inputs/p51-larger-curated-corpus/repositories.yml",
+    "sourceSelectionMode": "curated_operator_selection_not_registry_crawl",
+    "operatorCurated": true,
+    "bounded": true,
+    "pinnedLocalCheckoutsRequired": true,
+    "checkoutReadinessGateTask": "P51-T3",
+    "staticOnlyGateTask": "P51-T4",
+    "aiEnabledGateTask": "P51-T5",
+    "executionReady": false
+  },
+  "manifestCriteria": {
+    "requiredFields": [
+      "id",
+      "repository",
+      "revision",
+      "checkout",
+      "packageId",
+      "labels"
+    ],
+    "revisionPolicy": {
+      "exactFortyCharacterGitRevisionRequired": true,
+      "mutableRefsAllowed": false,
+      "revisionMustMatchOperatorCheckoutBeforeRun": true
+    },
+    "checkoutPolicy": {
+      "operatorLocalCheckoutRequired": true,
+      "absolutePathNotRequiredInManifest": true,
+      "cloneOrFetchAllowed": false,
+      "missingCheckoutBlocksReadiness": true
+    },
+    "requiredEcosystemFamilies": [
+      "python",
+      "go",
+      "swift",
+      "javascript_typescript",
+      "documentation_heavy"
+    ],
+    "requiredRepositoryShapes": [
+      "single_package",
+      "workspace_or_monorepo",
+      "documentation_heavy",
+      "framework_or_runtime_library",
+      "tooling_or_adapter_like"
+    ],
+    "sourceEvidenceRequired": [
+      "importance_signal",
+      "ecosystem_family",
+      "repository_shape",
+      "expected_package_subject",
+      "pinned_revision",
+      "operator_local_checkout_path",
+      "exclusion_reason_when_deferred"
+    ],
+    "stopConditions": [
+      "missing_pinned_local_checkout",
+      "checkout_revision_mismatch",
+      "clone_or_fetch_required",
+      "dependency_installation_required_for_basic_evidence",
+      "harvested_code_execution_required",
+      "unclear_license_or_source_boundary"
+    ]
+  },
+  "selectedSources": [
+    {
+      "id": "flask",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "checkout": "../../../flask",
+      "packageId": "flask.core",
+      "ecosystemFamilies": ["python"],
+      "repositoryShape": ["single_package"],
+      "importanceSignals": ["mature_python_web_framework", "p46_restored_checkout_passed"],
+      "carriedForwardCaveats": [
+        "flask.aiDraft.excluded_package_also_selected",
+        "flask.aiDraft.selected_member_role_unknown",
+        "flask.aiEnrichment.refined_summary_missing"
+      ],
+      "exclusionStatus": "selected"
+    },
+    {
+      "id": "gin",
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "checkout": "../../../gin",
+      "packageId": "gin.core",
+      "ecosystemFamilies": ["go"],
+      "repositoryShape": ["single_package"],
+      "importanceSignals": ["mature_go_web_framework", "p46_restored_checkout_passed"],
+      "carriedForwardCaveats": ["gin.aiDraft.selected_member_role_unknown"],
+      "exclusionStatus": "selected"
+    },
+    {
+      "id": "xyflow",
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "checkout": "../../../xyflow",
+      "packageId": "xyflow.workspace",
+      "ecosystemFamilies": ["javascript_typescript"],
+      "repositoryShape": ["workspace_or_monorepo"],
+      "importanceSignals": ["typescript_workspace_ui_library", "p46_restored_checkout_passed"],
+      "carriedForwardCaveats": [
+        "xyflow.partial_public_interface_index",
+        "xyflow.operator_checkout_origin_fork_mismatch",
+        "xyflow.aiEnrichment.refined_summary_missing"
+      ],
+      "exclusionStatus": "selected_with_operator_checkout_caveat"
+    },
+    {
+      "id": "cupertino",
+      "repository": "https://github.com/mihaelamj/cupertino",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "checkout": "../../../cupertino",
+      "packageId": "cupertino.core",
+      "ecosystemFamilies": ["swift"],
+      "repositoryShape": ["single_package"],
+      "importanceSignals": ["swift_ui_library", "p46_restored_checkout_passed"],
+      "carriedForwardCaveats": [
+        "cupertino.aiDraft.excluded_package_also_selected",
+        "cupertino.aiDraft.selected_member_role_unknown"
+      ],
+      "exclusionStatus": "selected"
+    },
+    {
+      "id": "navigation-split-view",
+      "repository": "https://github.com/SoundBlaster/NavigationSplitView",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "checkout": "../../../NavigationSplitView",
+      "packageId": "navigation_split_view.core",
+      "ecosystemFamilies": ["swift"],
+      "repositoryShape": ["single_package"],
+      "importanceSignals": ["swift_ui_library", "p46_restored_checkout_passed"],
+      "carriedForwardCaveats": [
+        "navigation-split-view.aiDraft.selected_member_role_unknown",
+        "navigation-split-view.aiEnrichment.ai_json_repair_needed"
+      ],
+      "exclusionStatus": "selected"
+    },
+    {
+      "id": "docc2context",
+      "repository": "https://github.com/SoundBlaster/docc2context",
+      "revision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "checkout": "../../../docc2context",
+      "packageId": "docc2context.core",
+      "ecosystemFamilies": ["swift", "documentation_heavy"],
+      "repositoryShape": ["single_package", "documentation_heavy"],
+      "importanceSignals": ["docc_tooling", "p46_restored_checkout_passed"],
+      "carriedForwardCaveats": [
+        "docc2context.aiDraft.excluded_package_also_selected",
+        "docc2context.aiDraft.selected_member_role_unknown",
+        "docc2context.source_checkout_had_untracked_doccarchive"
+      ],
+      "exclusionStatus": "selected_with_checkout_caveat"
+    },
+    {
+      "id": "fastapi",
+      "repository": "https://github.com/fastapi/fastapi",
+      "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+      "checkout": "../../../fastapi",
+      "packageId": "fastapi.core",
+      "ecosystemFamilies": ["python", "documentation_heavy"],
+      "repositoryShape": ["single_package", "documentation_heavy"],
+      "importanceSignals": ["widely_used_python_api_framework", "documentation_rich"],
+      "carriedForwardCaveats": [],
+      "exclusionStatus": "selected"
+    },
+    {
+      "id": "fastmcp",
+      "repository": "https://github.com/PrefectHQ/fastmcp",
+      "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+      "checkout": "../../../fastmcp",
+      "packageId": "fastmcp.core",
+      "ecosystemFamilies": ["python"],
+      "repositoryShape": ["framework_or_runtime_library", "single_package"],
+      "importanceSignals": ["mcp_framework", "agent_tooling_relevance"],
+      "carriedForwardCaveats": [],
+      "exclusionStatus": "selected"
+    },
+    {
+      "id": "specpm",
+      "repository": "git@github.com:0al-spec/SpecPM.git",
+      "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+      "checkout": "../../../SpecPM",
+      "packageId": "specpm.core",
+      "ecosystemFamilies": ["python", "swift", "documentation_heavy"],
+      "repositoryShape": ["workspace_or_monorepo", "tooling_or_adapter_like"],
+      "importanceSignals": ["0al_specification_package_manager", "cross_repo_contract_surface"],
+      "carriedForwardCaveats": [],
+      "exclusionStatus": "selected"
+    },
+    {
+      "id": "hypercode",
+      "repository": "git@github.com:0al-spec/Hypercode.git",
+      "revision": "995663326bbb1fc4981c5362014d80f3df7bd504",
+      "checkout": "../../../Hypercode",
+      "packageId": "hypercode.core",
+      "ecosystemFamilies": ["swift", "documentation_heavy"],
+      "repositoryShape": ["workspace_or_monorepo", "framework_or_runtime_library"],
+      "importanceSignals": ["declarative_behavior_language", "specification_heavy"],
+      "carriedForwardCaveats": [],
+      "exclusionStatus": "selected"
+    },
+    {
+      "id": "specnode",
+      "repository": "git@github.com:0al-spec/SpecNode.git",
+      "revision": "9f0bc2245c75e4539d59b4eaeabadcda52a5d413",
+      "checkout": "../../../SpecNode",
+      "packageId": "specnode.core",
+      "ecosystemFamilies": ["swift"],
+      "repositoryShape": ["framework_or_runtime_library", "single_package"],
+      "importanceSignals": ["0al_swift_runtime_component", "specification_runtime_surface"],
+      "carriedForwardCaveats": [],
+      "exclusionStatus": "selected"
+    },
+    {
+      "id": "hyperprompt",
+      "repository": "git@github.com:0al-spec/Hyperprompt.git",
+      "revision": "7e73cfe7a5a863014114e6a1e03cf3c1077b5a5a",
+      "checkout": "../../../Hyperprompt",
+      "packageId": "hyperprompt.core",
+      "ecosystemFamilies": ["swift", "documentation_heavy"],
+      "repositoryShape": ["workspace_or_monorepo", "tooling_or_adapter_like"],
+      "importanceSignals": ["prompt_tooling_surface", "documentation_heavy_swift_tooling"],
+      "carriedForwardCaveats": [],
+      "exclusionStatus": "selected"
+    }
+  ],
+  "coverageSummary": {
+    "ecosystemFamilies": {
+      "python": 4,
+      "go": 1,
+      "swift": 7,
+      "javascript_typescript": 1,
+      "documentation_heavy": 6
+    },
+    "repositoryShapes": {
+      "single_package": 8,
+      "workspace_or_monorepo": 4,
+      "documentation_heavy": 5,
+      "framework_or_runtime_library": 3,
+      "tooling_or_adapter_like": 3
+    },
+    "p46SourcesPreserved": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ],
+    "newSources": [
+      "fastapi",
+      "fastmcp",
+      "specpm",
+      "hypercode",
+      "specnode",
+      "hyperprompt"
+    ]
+  },
+  "carriedForwardCaveats": [
+    "flask.aiDraft.excluded_package_also_selected",
+    "flask.aiDraft.selected_member_role_unknown",
+    "flask.aiEnrichment.refined_summary_missing",
+    "gin.aiDraft.selected_member_role_unknown",
+    "xyflow.partial_public_interface_index",
+    "xyflow.operator_checkout_origin_fork_mismatch",
+    "xyflow.aiEnrichment.refined_summary_missing",
+    "cupertino.aiDraft.excluded_package_also_selected",
+    "cupertino.aiDraft.selected_member_role_unknown",
+    "navigation-split-view.aiDraft.selected_member_role_unknown",
+    "navigation-split-view.aiEnrichment.ai_json_repair_needed",
+    "docc2context.aiDraft.excluded_package_also_selected",
+    "docc2context.aiDraft.selected_member_role_unknown",
+    "docc2context.source_checkout_had_untracked_doccarchive"
+  ],
+  "readinessGateRequirements": {
+    "task": "P51-T3",
+    "mustVerifyEverySelectedSource": true,
+    "mustResolveCheckoutPathWithoutCloneOrFetch": true,
+    "mustCompareObservedHeadToPinnedRevision": true,
+    "mustRecordMissingOrMismatchedSources": true,
+    "mustPassBeforeStaticOnlyGate": true
+  },
+  "authorityBoundary": {
+    "sourcePlanIsRegistryAuthority": false,
+    "approvesLargerCorpusExecution": false,
+    "checkoutReadinessVerified": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "sourcePlanAcceptedAsRegistryTruth": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "runsLargerCorpusBatch": false,
+    "runsCheckoutReadinessGate": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "runsAI": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nextState": {
+    "nextTaskPointer": "P51-T3",
+    "recommendedFollowUp": "Run the larger curated corpus checkout readiness gate",
+    "sourcePlanAuthored": true,
+    "checkoutReadinessVerified": false,
+    "largerCuratedCorpusExecutionReady": false,
+    "phase51Complete": false
+  }
+}

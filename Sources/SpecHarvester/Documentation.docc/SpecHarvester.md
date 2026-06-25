@@ -98,6 +98,7 @@ The canonical source files remain in the repository:
 - `docs/DOCC2CONTEXT_FOLLOW_UP_EXIT_DECISION.md`
 - `docs/RESTORED_CHECKOUT_RERUN_EVIDENCE.md`
 - `docs/LARGER_CURATED_CORPUS_PLANNING_PHASE.md`
+- `docs/LARGER_CURATED_CORPUS_SOURCE_PLAN.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -287,6 +288,7 @@ the host.
 - <doc:Docc2contextFollowUpExitDecision>
 - <doc:RestoredCheckoutRerunEvidence>
 - <doc:LargerCuratedCorpusPlanningPhase>
+- <doc:LargerCuratedCorpusSourcePlan>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

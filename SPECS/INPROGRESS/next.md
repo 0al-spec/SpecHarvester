@@ -1,41 +1,51 @@
-# Next Task: P51-T2 Larger Curated Corpus Source Plan and Manifest Criteria
+# Next Task: P51-T3 Larger Curated Corpus Checkout Readiness Gate
 
 **Status:** Selected
 **Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun
-**Task:** `P51-T2`
-**Last Archived:** `P51-T1` Larger Curated Corpus Planning Phase
-**Depends On:** `P51-T1` Larger Curated Corpus Planning Phase
+**Task:** `P51-T3`
+**Last Archived:** `P51-T2` Larger Curated Corpus Source Plan and Manifest Criteria
+**Depends On:** `P51-T2` Larger Curated Corpus Source Plan and Manifest Criteria
 
 ## Goal
 
-Author the larger curated corpus source plan and manifest criteria before any
-readiness check or corpus run.
+Run the larger curated corpus checkout readiness gate for the 12 selected
+P51-T2 sources before any static-only or AI-enabled corpus run.
 
 ## Context
 
-P51-T1 created the planning phase from P50 restored-checkout rerun evidence.
-P50 showed that the previous operator-local checkout blocker is resolved and
-that the same six-repository static-only and AI-enabled gates passed.
-
-P51-T1 did not run a larger corpus batch and did not approve execution. It
-defined the required sequence:
+P51-T2 authored the source plan and manifest criteria for the larger curated
+corpus. The selected manifest is:
 
 ```text
-source plan -> readiness -> static-only -> AI-enabled -> triage -> exit decision
+inputs/p51-larger-curated-corpus/repositories.yml
 ```
+
+The source-plan fixture is:
+
+```text
+tests/fixtures/larger_curated_corpus_source_plan/p51-t2-larger-curated-corpus-source-plan.example.json
+```
+
+P51-T2 did not verify checkout readiness and did not approve execution.
+P51-T3 must verify every selected source has an operator-provided pinned local
+checkout before the P51-T4 static-only gate can run.
 
 ## Scope
 
-- Define the target larger corpus count bounds.
-- Define required ecosystem and repository-shape coverage.
-- Define source importance signals and exclusion rules.
-- Define pinned revision and operator-local checkout path requirements.
-- Define the manifest criteria that P51-T3 must check before any batch run.
-- Carry P50 warnings and xyflow caveats forward as review evidence.
+- Parse the P51-T2 source manifest.
+- Resolve each operator-provided pinned local checkout path without clone or
+  fetch.
+- Compare each observed HEAD against the pinned revision from the manifest.
+- Record readiness status for all 12 selected P51-T2 sources.
+- Record any `missing_pinned_local_checkout`, `checkout_revision_mismatch`, or
+  `clone_or_fetch_required` blockers.
+- Carry P50 warnings, xyflow caveats, and docc2context checkout caveats forward
+  as review evidence.
+- Decide whether the P51-T4 static-only gate is allowed to run.
 
 ## Boundaries
 
-- Do not run a larger corpus batch in P51-T2.
+- Do not run a larger corpus batch in P51-T3.
 - Do not clone or fetch repositories.
 - Do not install dependencies.
 - Do not invoke package managers.
@@ -44,5 +54,5 @@ source plan -> readiness -> static-only -> AI-enabled -> triage -> exit decision
 - Do not run AI.
 - Do not accept packages or relations.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
-- Do not treat AI output, static output, rerun output, planning output, or
-  adapter output as registry truth.
+- Do not treat readiness output, AI output, static output, rerun output,
+  planning output, or adapter output as registry truth.
