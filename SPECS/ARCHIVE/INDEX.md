@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-06-24
+**Last Updated:** 2026-06-25
 
 ## Archived Tasks
 
@@ -842,3 +842,4 @@
 | 2026-06-25 | P49-T3 | Archived REVIEW_p49_t3_same_scope_bounded_rerun_gate report |
 | 2026-06-25 | P49-T4 | Archived Record docc2context Follow-Up Exit Decision (PASS) |
 | 2026-06-25 | P49-T4 | Archived REVIEW_p49_t4_docc2context_follow_up_exit_decision report |
+| 2026-06-25 | P50-T1 | Archived Record Restored-Checkout Rerun Evidence (PASS) |
