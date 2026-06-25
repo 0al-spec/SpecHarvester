@@ -352,6 +352,10 @@ Published DocC site:
 91. [`LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md`](LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md):
    P51-T4 static-only gate showing all 12 selected sources processed with 15
    preview candidates, three relation proposals, and no AI or adapter output
+92. [`LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md`](LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md):
+   P51-T5 AI-enabled proposal-only gate showing all 12 selected sources
+   processed, one failed `hyperprompt.aiDraft` sidecar, and P51-T6 triage
+   allowed without registry authority
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

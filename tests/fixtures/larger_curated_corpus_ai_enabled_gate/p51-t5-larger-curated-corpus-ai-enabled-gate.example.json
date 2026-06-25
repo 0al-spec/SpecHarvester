@@ -1,0 +1,1349 @@
+{
+  "apiVersion": "spec-harvester.larger-curated-corpus-ai-enabled-gate/v0",
+  "schemaVersion": 1,
+  "kind": "SpecHarvesterLargerCuratedCorpusAIEnabledGate",
+  "authority": "producer_ai_enabled_proposal_evidence_only",
+  "phase": "P51",
+  "task": "P51-T5",
+  "createdAt": "2026-06-25T15:04:58+03:00",
+  "run": {
+    "id": "p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z",
+    "mode": "ai_enabled_proposal_only",
+    "root": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z",
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch inputs/p51-larger-curated-corpus --out /tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output --repository-profile-selection auto --lm-studio-base-url http://127.0.0.1:1234 --lm-studio-model openai/gpt-oss-20b --json-repair-max-attempts 1 --apply-ai-enrichment",
+    "sourceManifestCommand": "PYTHONPATH=src python -m spec_harvester source-manifests inputs/p51-larger-curated-corpus",
+    "exitCode": 1,
+    "status": "failed",
+    "completedAsEvidenceCapture": true
+  },
+  "sourceArtifacts": {
+    "p51StaticOnlyGate": {
+      "path": "tests/fixtures/larger_curated_corpus_static_only_gate/p51-t4-larger-curated-corpus-static-only-gate.example.json",
+      "digest": "sha256:856abe611a2d5f6f1f67440804f0e85ef233e468a3b6c04bc7adb5908e9ce9d9",
+      "apiVersion": "spec-harvester.larger-curated-corpus-static-only-gate/v0",
+      "kind": "SpecHarvesterLargerCuratedCorpusStaticOnlyGate",
+      "authority": "producer_static_preview_evidence_only"
+    }
+  },
+  "sourceManifest": {
+    "path": "inputs/p51-larger-curated-corpus/repositories.yml",
+    "digest": "sha256:7676d9d5069f223c33c3e3650c76a60897ada6bed05034dfb5f94dba1d4be79a",
+    "entryCount": 12,
+    "requiresExistingCheckouts": true,
+    "cloneAllowed": false,
+    "fetchAllowed": false
+  },
+  "batchReport": {
+    "path": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/autonomous-candidate-batch-report.json",
+    "digest": "sha256:3072ee644db22cad1cdafdf39f5de23a336c848a3aa1709c129bcd6c2cad1c29",
+    "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+    "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+    "authority": "producer_preview_evidence_only",
+    "status": "failed"
+  },
+  "validationReport": {
+    "path": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/reports/batch-validation-report.json",
+    "digest": "sha256:a23b0e495b2f70ee5a122704868974135abcc214830d71e847f762547dfdeb87"
+  },
+  "provider": {
+    "baseUrl": "http://127.0.0.1:1234",
+    "chainOfThoughtPersisted": false,
+    "execution": "operator_opt_in_local",
+    "jsonRepairMaxAttempts": 1,
+    "mode": "local_lm_studio",
+    "model": "openai/gpt-oss-20b",
+    "provider": "lm_studio",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "proposalOnly": true,
+    "applyAIEnrichment": true,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false
+  },
+  "summary": {
+    "aiDraftProposalCount": 11,
+    "aiEnrichedPreviewAppliedCount": 8,
+    "aiEnrichedPreviewFailedCount": 0,
+    "aiEnrichedPreviewSkippedCount": 7,
+    "aiEnrichmentProposalCount": 12,
+    "collectedCount": 12,
+    "failedRepositoryCount": 1,
+    "passedPreflightCount": 12,
+    "processedCount": 12,
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "repositoryPluginApplicabilitySidecarCount": 0,
+    "repositoryProfileDetectionCount": 12,
+    "repositoryProfileDisabledCount": 0,
+    "repositoryProfileFallbackCount": 2,
+    "repositoryProfileSelectedCount": 10,
+    "skippedCount": 0,
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    "candidateCount": 15,
+    "relationCount": 3,
+    "preflightWarningCount": 0,
+    "preflightErrorCount": 0,
+    "interfaceDiagnosticCount": 29,
+    "aiDraftCompletedRepositoryCount": 5,
+    "aiDraftWarningRepositoryCount": 6,
+    "aiDraftFailedRepositoryCount": 1,
+    "aiDraftArtifactCount": 12,
+    "aiEnrichmentCompletedRepositoryCount": 8,
+    "aiEnrichmentWarningRepositoryCount": 4,
+    "aiEnrichmentFailedRepositoryCount": 0,
+    "aiEnrichmentProviderPromptTokens": 183710,
+    "aiEnrichmentProviderCompletionTokens": 6572,
+    "aiEnrichmentProviderTotalTokens": 190282,
+    "aiEnrichedPreviewPreparedRepositoryCount": 8,
+    "aiEnrichedPreviewSkippedRepositoryCount": 4
+  },
+  "repositories": [
+    {
+      "id": "flask",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "checkout": "/Users/egor/Development/GitHub/flask",
+      "status": "passed",
+      "packageId": "flask.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 941,
+        "packageCount": 1,
+        "entrypointCount": 83
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/flask/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/flask/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation"
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "refined_summary_missing"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/flask/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/flask/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation",
+        "providerPromptTokens": 7942,
+        "providerCompletionTokens": 291,
+        "providerTotalTokens": 8233
+      },
+      "aiEnrichedPreview": {
+        "status": "skipped",
+        "authority": null,
+        "summary": {
+          "appliedCount": 0,
+          "failedCount": 0,
+          "skippedCount": 1
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "gin",
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "checkout": "/Users/egor/Development/GitHub/gin",
+      "status": "passed",
+      "packageId": "gin.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 456,
+        "packageCount": 5,
+        "entrypointCount": 56
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/gin/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/gin/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/gin/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/gin/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review",
+        "providerPromptTokens": 15227,
+        "providerCompletionTokens": 475,
+        "providerTotalTokens": 15702
+      },
+      "aiEnrichedPreview": {
+        "status": "prepared",
+        "authority": "producer_preview_evidence_only",
+        "summary": {
+          "appliedCount": 1,
+          "failedCount": 0,
+          "skippedCount": 0
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "xyflow",
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "checkout": "/Users/egor/Development/GitHub/xyflow",
+      "status": "passed",
+      "packageId": "xyflow.workspace",
+      "candidateCount": 4,
+      "relationCount": 3,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 4,
+        "candidatePreflightPassedCount": 4,
+        "relationCount": 3,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "partial",
+        "diagnosticCount": 29,
+        "symbolCount": 1,
+        "packageCount": 11,
+        "entrypointCount": 2
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.package_set.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "workspace_manifest_present",
+          "multiple_member_manifests_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/xyflow/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/xyflow/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review"
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "refined_summary_missing"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/xyflow/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/xyflow/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation",
+        "providerPromptTokens": 46897,
+        "providerCompletionTokens": 1674,
+        "providerTotalTokens": 48571
+      },
+      "aiEnrichedPreview": {
+        "status": "skipped",
+        "authority": null,
+        "summary": {
+          "appliedCount": 0,
+          "failedCount": 0,
+          "skippedCount": 4
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "cupertino",
+      "repository": "https://github.com/mihaelamj/cupertino",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "checkout": "/Users/egor/Development/GitHub/cupertino",
+      "status": "passed",
+      "packageId": "cupertino.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 2555,
+        "packageCount": 1,
+        "entrypointCount": 154
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "fallback",
+        "confidence": "low",
+        "selectedProfileId": null,
+        "diagnosticCodes": [
+          "repository_profile_fallback"
+        ],
+        "reasonCodes": [
+          "insufficient_high_confidence_profile_evidence"
+        ]
+      },
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/cupertino/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/cupertino/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/cupertino/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/cupertino/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review",
+        "providerPromptTokens": 14325,
+        "providerCompletionTokens": 346,
+        "providerTotalTokens": 14671
+      },
+      "aiEnrichedPreview": {
+        "status": "prepared",
+        "authority": "producer_preview_evidence_only",
+        "summary": {
+          "appliedCount": 1,
+          "failedCount": 0,
+          "skippedCount": 0
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "navigation-split-view",
+      "repository": "https://github.com/SoundBlaster/NavigationSplitView",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "checkout": "/Users/egor/Development/GitHub/NavigationSplitView",
+      "status": "passed",
+      "packageId": "navigation_split_view.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 54,
+        "packageCount": 1,
+        "entrypointCount": 46
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "fallback",
+        "confidence": "low",
+        "selectedProfileId": null,
+        "diagnosticCodes": [
+          "repository_profile_fallback"
+        ],
+        "reasonCodes": [
+          "insufficient_high_confidence_profile_evidence"
+        ]
+      },
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/navigation-split-view/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/navigation-split-view/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation"
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "ai_json_repair_needed"
+        ],
+        "jsonRepair": {
+          "attemptCount": 1,
+          "exhaustedCount": 0,
+          "needed": true,
+          "repairedCount": 1,
+          "status": "repaired"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/navigation-split-view/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/navigation-split-view/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation",
+        "providerPromptTokens": 11821,
+        "providerCompletionTokens": 820,
+        "providerTotalTokens": 12641
+      },
+      "aiEnrichedPreview": {
+        "status": "skipped",
+        "authority": null,
+        "summary": {
+          "appliedCount": 0,
+          "failedCount": 0,
+          "skippedCount": 1
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "docc2context",
+      "repository": "https://github.com/SoundBlaster/docc2context",
+      "revision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "checkout": "/Users/egor/Development/GitHub/docc2context",
+      "status": "passed",
+      "packageId": "docc2context.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 372,
+        "packageCount": 1,
+        "entrypointCount": 19
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/docc2context/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/docc2context/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/docc2context/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/docc2context/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review",
+        "providerPromptTokens": 11039,
+        "providerCompletionTokens": 399,
+        "providerTotalTokens": 11438
+      },
+      "aiEnrichedPreview": {
+        "status": "prepared",
+        "authority": "producer_preview_evidence_only",
+        "summary": {
+          "appliedCount": 1,
+          "failedCount": 0,
+          "skippedCount": 0
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "fastapi",
+      "repository": "https://github.com/fastapi/fastapi",
+      "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+      "checkout": "/Users/egor/Development/GitHub/fastapi",
+      "status": "passed",
+      "packageId": "fastapi.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 6009,
+        "packageCount": 1,
+        "entrypointCount": 1121
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/fastapi/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/fastapi/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/fastapi/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/fastapi/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review",
+        "providerPromptTokens": 16147,
+        "providerCompletionTokens": 368,
+        "providerTotalTokens": 16515
+      },
+      "aiEnrichedPreview": {
+        "status": "prepared",
+        "authority": "producer_preview_evidence_only",
+        "summary": {
+          "appliedCount": 1,
+          "failedCount": 0,
+          "skippedCount": 0
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "fastmcp",
+      "repository": "https://github.com/PrefectHQ/fastmcp",
+      "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+      "checkout": "/Users/egor/Development/GitHub/fastmcp",
+      "status": "passed",
+      "packageId": "fastmcp.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 9199,
+        "packageCount": 1,
+        "entrypointCount": 772
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/fastmcp/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/fastmcp/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/fastmcp/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/fastmcp/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review",
+        "providerPromptTokens": 12288,
+        "providerCompletionTokens": 382,
+        "providerTotalTokens": 12670
+      },
+      "aiEnrichedPreview": {
+        "status": "prepared",
+        "authority": "producer_preview_evidence_only",
+        "summary": {
+          "appliedCount": 1,
+          "failedCount": 0,
+          "skippedCount": 0
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "specpm",
+      "repository": "git@github.com:0al-spec/SpecPM.git",
+      "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+      "checkout": "/Users/egor/Development/GitHub/0AL/SpecPM",
+      "status": "passed",
+      "packageId": "specpm.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 810,
+        "packageCount": 2,
+        "entrypointCount": 13
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/specpm/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/specpm/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/specpm/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/specpm/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review",
+        "providerPromptTokens": 14448,
+        "providerCompletionTokens": 329,
+        "providerTotalTokens": 14777
+      },
+      "aiEnrichedPreview": {
+        "status": "prepared",
+        "authority": "producer_preview_evidence_only",
+        "summary": {
+          "appliedCount": 1,
+          "failedCount": 0,
+          "skippedCount": 0
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "hypercode",
+      "repository": "git@github.com:0al-spec/Hypercode.git",
+      "revision": "995663326bbb1fc4981c5362014d80f3df7bd504",
+      "checkout": "/Users/egor/Development/GitHub/0AL/Hypercode",
+      "status": "passed",
+      "packageId": "hypercode.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 332,
+        "packageCount": 1,
+        "entrypointCount": 30
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/hypercode/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/hypercode/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/hypercode/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/hypercode/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review",
+        "providerPromptTokens": 10988,
+        "providerCompletionTokens": 528,
+        "providerTotalTokens": 11516
+      },
+      "aiEnrichedPreview": {
+        "status": "prepared",
+        "authority": "producer_preview_evidence_only",
+        "summary": {
+          "appliedCount": 1,
+          "failedCount": 0,
+          "skippedCount": 0
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "specnode",
+      "repository": "git@github.com:0al-spec/SpecNode.git",
+      "revision": "9f0bc2245c75e4539d59b4eaeabadcda52a5d413",
+      "checkout": "/Users/egor/Development/GitHub/0AL/SpecNode",
+      "status": "passed",
+      "packageId": "specnode.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 3,
+        "packageCount": 1,
+        "entrypointCount": 2
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "needed": false,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/specnode/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/specnode/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review"
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "model_evidence_path_unsupported"
+        ],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/specnode/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/specnode/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "needs_regeneration",
+        "stopPolicyDecision": "continue_generation",
+        "providerPromptTokens": 9053,
+        "providerCompletionTokens": 404,
+        "providerTotalTokens": 9457
+      },
+      "aiEnrichedPreview": {
+        "status": "skipped",
+        "authority": null,
+        "summary": {
+          "appliedCount": 0,
+          "failedCount": 0,
+          "skippedCount": 1
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    },
+    {
+      "id": "hyperprompt",
+      "repository": "git@github.com:0al-spec/Hyperprompt.git",
+      "revision": "7e73cfe7a5a863014114e6a1e03cf3c1077b5a5a",
+      "checkout": "/Users/egor/Development/GitHub/0AL/Hyperprompt",
+      "status": "failed",
+      "packageId": "hyperprompt.core",
+      "candidateCount": 1,
+      "relationCount": 0,
+      "preflight": {
+        "status": "passed",
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "relationCount": 0,
+        "warningCount": 0,
+        "errorCount": 0
+      },
+      "interfaceIndex": {
+        "status": "complete",
+        "diagnosticCount": 0,
+        "symbolCount": 753,
+        "packageCount": 2,
+        "entrypointCount": 85
+      },
+      "repositoryProfileDetection": {
+        "status": "completed",
+        "decision": "selected",
+        "confidence": "high",
+        "selectedProfileId": "generic.single_package.v0",
+        "diagnosticCodes": [
+          "repository_profile_selected"
+        ],
+        "reasonCodes": [
+          "root_manifest_present"
+        ]
+      },
+      "aiDraft": {
+        "status": "failed",
+        "diagnosticCodes": [
+          "ai_json_repair_exhausted",
+          "ai_json_repair_needed",
+          "package_set_subject_metadata_missing"
+        ],
+        "jsonRepair": {
+          "attemptCount": 1,
+          "needed": true,
+          "status": "exhausted"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/hyperprompt/ai/package-set-ai-draft-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/hyperprompt/ai/package-set-ai-draft-request.json",
+        "stopPolicy": "blocked",
+        "stopPolicyDecision": "blocked_until_inputs_change"
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": [],
+        "jsonRepair": {
+          "attemptCount": 0,
+          "exhaustedCount": 0,
+          "needed": false,
+          "repairedCount": 0,
+          "status": "not_needed"
+        },
+        "privacy": {
+          "chainOfThoughtPersisted": false,
+          "rawModelResponsesPersisted": false,
+          "rawPromptsPersisted": false,
+          "secretsIncluded": false
+        },
+        "authority": "proposal_only_not_registry_acceptance",
+        "output": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/hyperprompt/ai/package-set-ai-enrichment-proposal.json",
+        "request": "/tmp/specharvester-p51-t5-larger-curated-corpus-ai-enabled-20260625T115302Z/output/package-sets/hyperprompt/ai/package-set-ai-enrichment-requests.json",
+        "stopPolicy": "author_ready_draft",
+        "stopPolicyDecision": "stop_for_author_review",
+        "providerPromptTokens": 13535,
+        "providerCompletionTokens": 556,
+        "providerTotalTokens": 14091
+      },
+      "aiEnrichedPreview": {
+        "status": "prepared",
+        "authority": "producer_preview_evidence_only",
+        "summary": {
+          "appliedCount": 1,
+          "failedCount": 0,
+          "skippedCount": 0
+        },
+        "sourceCandidateMutated": false,
+        "previewOnly": true
+      }
+    }
+  ],
+  "failedRepositories": [
+    {
+      "id": "hyperprompt",
+      "status": "failed",
+      "aiDraftStatus": "failed",
+      "aiDraftDiagnosticCodes": [
+        "ai_json_repair_exhausted",
+        "ai_json_repair_needed",
+        "package_set_subject_metadata_missing"
+      ],
+      "aiDraftJsonRepair": {
+        "attemptCount": 1,
+        "needed": true,
+        "status": "exhausted"
+      },
+      "aiEnrichmentStatus": "completed",
+      "disposition": "carry_forward_to_p51_t6_output_triage_as_do_not_promote_ai_draft_sidecar"
+    }
+  ],
+  "carriedForwardCaveats": [
+    {
+      "sourceId": "xyflow",
+      "code": "partial_public_interface_index",
+      "blocking": false,
+      "diagnosticCount": 29,
+      "disposition": "carry_forward_to_p51_t6_triage"
+    },
+    {
+      "sourceId": "xyflow",
+      "code": "operator_checkout_origin_fork_mismatch",
+      "blocking": false,
+      "disposition": "carry_forward_to_p51_t6_triage"
+    },
+    {
+      "sourceId": "docc2context",
+      "code": "source_checkout_had_untracked_doccarchive",
+      "blocking": false,
+      "disposition": "carry_forward_to_p51_t6_triage"
+    },
+    {
+      "sourceId": "hyperprompt",
+      "code": "ai_draft_failed_after_json_repair",
+      "blocking": true,
+      "diagnostics": [
+        "ai_json_repair_exhausted",
+        "ai_json_repair_needed",
+        "package_set_subject_metadata_missing"
+      ],
+      "disposition": "carry_forward_to_p51_t6_triage_as_do_not_promote_ai_draft_sidecar"
+    }
+  ],
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false,
+    "compactModelRequestsPersisted": true
+  },
+  "adapterBoundary": {
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0,
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "repositoryPluginApplicabilitySidecarCount": 0,
+    "trustedLocalAdapterExecution": "not_run",
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "authorityBoundary": {
+    "aiOutputIsRegistryAuthority": false,
+    "enrichedPreviewOutputIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "requiresSpecPMMaintainerReview": true
+  },
+  "executionBoundary": {
+    "runsAI": true,
+    "applyAIEnrichment": true,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false
+  },
+  "qualityGate": {
+    "evidenceCaptureVerdict": "pass",
+    "aiEnabledGateStatus": "failed",
+    "aiEnabledGatePassed": false,
+    "staticOnlyBeforeAI": true,
+    "nextTriageTask": "P51-T6",
+    "triageAllowed": true,
+    "triageRequiredBeforeExitDecision": true,
+    "reason": "larger_curated_corpus_ai_enabled_gate_failed_on_hyperprompt_ai_draft_but_output_triage_can_classify_failed_sidecar"
+  },
+  "nextState": {
+    "nextTaskPointer": "P51-T6",
+    "recommendedFollowUp": "Triage larger curated corpus output including hyperprompt failed AI draft sidecar",
+    "aiEnabledGatePassed": false,
+    "p51T6TriageAllowed": true,
+    "p51T7ExitDecisionAllowed": false,
+    "phase51Complete": false
+  }
+}

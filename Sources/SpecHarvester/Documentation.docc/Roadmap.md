@@ -232,6 +232,12 @@ P51-T4 is recorded in <doc:LargerCuratedCorpusStaticOnlyGate>. It processes all
 12 selected sources in static-only mode, produces 15 preview candidates and
 three relation proposals, carries checkout caveats forward, and allows P51-T5
 AI-enabled proposal-only execution.
+P51-T5 is recorded in <doc:LargerCuratedCorpusAIEnabledGate>. It runs the same
+12 selected sources through local LM Studio `openai/gpt-oss-20b`, preserves
+proposal-only AI output and raw prompt/response/chain-of-thought
+non-persistence, records one failed `hyperprompt.aiDraft` sidecar, and allows
+P51-T6 output triage without accepting packages, relations, enriched previews,
+or AI output as registry truth.
 
 ### Selected Candidate SpecPM Intake Handoff
 
