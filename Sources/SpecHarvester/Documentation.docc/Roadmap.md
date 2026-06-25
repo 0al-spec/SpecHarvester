@@ -219,6 +219,10 @@ P51-T1 is recorded in <doc:LargerCuratedCorpusPlanningPhase>. It starts the
 larger curated corpus planning phase from P50 evidence, defines source-plan,
 readiness, static-only, AI-enabled, triage, and exit-decision gates, and keeps
 larger corpus execution unapproved until those follow-up tasks complete.
+P51-T2 is recorded in <doc:LargerCuratedCorpusSourcePlan>. It selects 12
+curated pinned local-checkout sources, preserves the original six
+restored-checkout repositories, defines manifest criteria and stop conditions,
+and keeps execution blocked until P51-T3 verifies checkout readiness.
 
 ### Selected Candidate SpecPM Intake Handoff
 

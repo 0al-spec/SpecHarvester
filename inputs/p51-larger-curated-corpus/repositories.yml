@@ -1,0 +1,78 @@
+# P51-T2 larger curated corpus source manifest.
+# This file is data only. Checkout paths are operator-local and pinned by exact
+# revision. P51-T2 must not clone, fetch, install dependencies, invoke package
+# managers, execute harvested code, run adapters, accept packages, or publish
+# registry metadata.
+repositories:
+  - id: flask
+    repository: https://github.com/pallets/flask
+    revision: 954f5684e4841aad84a8eec7ace7b81a0d3f6831
+    checkout: ../../../flask
+    packageId: flask.core
+    labels: [python, pypi, web_framework, single_package, p46_bounded_pilot, p51_larger_curated_corpus]
+  - id: gin
+    repository: https://github.com/gin-gonic/gin
+    revision: 5f4f9643258dc2a65e684b63f12c8d543c936c67
+    checkout: ../../../gin
+    packageId: gin.core
+    labels: [go, web_framework, single_package, p46_bounded_pilot, carry_forward_triage, p51_larger_curated_corpus]
+  - id: xyflow
+    repository: https://github.com/xyflow/xyflow
+    revision: a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd
+    checkout: ../../../xyflow
+    packageId: xyflow.workspace
+    labels: [javascript, typescript, npm, package_set, workspace_or_monorepo, p46_bounded_pilot, fork_origin_caveat, p51_larger_curated_corpus]
+  - id: cupertino
+    repository: https://github.com/mihaelamj/cupertino
+    revision: 65dcae238d30cfbd0d9d15ae10f7b8c67575c19b
+    checkout: ../../../cupertino
+    packageId: cupertino.core
+    labels: [swift, spm, ui_library, single_package, p46_bounded_pilot, p51_larger_curated_corpus]
+  - id: navigation-split-view
+    repository: https://github.com/SoundBlaster/NavigationSplitView
+    revision: 2c88df50b8f587560b91f6027e9ea275aee17060
+    checkout: ../../../NavigationSplitView
+    packageId: navigation_split_view.core
+    labels: [swift, spm, ui_library, single_package, p46_bounded_pilot, p51_larger_curated_corpus]
+  - id: docc2context
+    repository: https://github.com/SoundBlaster/docc2context
+    revision: a2babcc4910c87bbd1b65f9a4221097f5ae4b753
+    checkout: ../../../docc2context
+    packageId: docc2context.core
+    labels: [swift, spm, cli, documentation, documentation_heavy, single_package, p46_bounded_pilot, checkout_caveat_untracked_doccarchive, p51_larger_curated_corpus]
+  - id: fastapi
+    repository: https://github.com/fastapi/fastapi
+    revision: 9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263
+    checkout: ../../../../fastapi
+    packageId: fastapi.core
+    labels: [python, pypi, web_framework, documentation_heavy, single_package, p51_larger_curated_corpus]
+  - id: fastmcp
+    repository: https://github.com/PrefectHQ/fastmcp
+    revision: 3b8538e2422a1c43fdb69661c610de7985b785f2
+    checkout: ../../../../fastmcp
+    packageId: fastmcp.core
+    labels: [python, pypi, mcp, framework_or_runtime_library, single_package, p51_larger_curated_corpus]
+  - id: specpm
+    repository: git@github.com:0al-spec/SpecPM.git
+    revision: 8a5ce3dece3d18bf8f601a5a599520bd520c7839
+    checkout: ../../../SpecPM
+    packageId: specpm.core
+    labels: [python, swift, specification, documentation_heavy, tooling_or_adapter_like, workspace_or_monorepo, p51_larger_curated_corpus]
+  - id: hypercode
+    repository: git@github.com:0al-spec/Hypercode.git
+    revision: 995663326bbb1fc4981c5362014d80f3df7bd504
+    checkout: ../../../Hypercode
+    packageId: hypercode.core
+    labels: [swift, specification, documentation_heavy, framework_or_runtime_library, workspace_or_monorepo, p51_larger_curated_corpus]
+  - id: specnode
+    repository: git@github.com:0al-spec/SpecNode.git
+    revision: 9f0bc2245c75e4539d59b4eaeabadcda52a5d413
+    checkout: ../../../SpecNode
+    packageId: specnode.core
+    labels: [swift, spm, specification, framework_or_runtime_library, single_package, p51_larger_curated_corpus]
+  - id: hyperprompt
+    repository: git@github.com:0al-spec/Hyperprompt.git
+    revision: 7e73cfe7a5a863014114e6a1e03cf3c1077b5a5a
+    checkout: ../../../Hyperprompt
+    packageId: hyperprompt.core
+    labels: [swift, documentation_heavy, tooling_or_adapter_like, workspace_or_monorepo, p51_larger_curated_corpus]

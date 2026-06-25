@@ -1275,6 +1275,13 @@ fixture. It starts the larger curated corpus planning phase from P50 evidence,
 defines source-plan, readiness, static-only, AI-enabled, triage, and
 exit-decision gates, and keeps larger corpus execution unapproved until those
 follow-up tasks complete.
+P51-T2 records
+[`LARGER_CURATED_CORPUS_SOURCE_PLAN.md`](LARGER_CURATED_CORPUS_SOURCE_PLAN.md)
+and the machine-readable `SpecHarvesterLargerCuratedCorpusSourcePlan` fixture.
+It selects 12 curated pinned local-checkout sources, preserves the original
+six restored-checkout repositories, defines manifest criteria and stop
+conditions, and keeps execution blocked until P51-T3 verifies checkout
+readiness.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

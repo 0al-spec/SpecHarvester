@@ -343,6 +343,9 @@ Published DocC site:
    P51-T1 planning phase for the larger curated corpus after the restored
    checkout rerun, preserving source-plan, readiness, static-only, AI-enabled,
    triage, and exit-decision gates
+89. [`LARGER_CURATED_CORPUS_SOURCE_PLAN.md`](LARGER_CURATED_CORPUS_SOURCE_PLAN.md):
+   P51-T2 larger curated corpus source plan and manifest criteria for the
+   P51-T3 checkout readiness gate
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
