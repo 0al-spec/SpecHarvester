@@ -2424,7 +2424,7 @@ Acceptance:
 - [x] `P51-T6` Repair the reproducible `hyperprompt.aiDraft` single-package JSON
   contract failure with a bounded producer-side fallback and targeted rerun gate,
   without accepting packages, relations, or AI output as registry truth.
-- [ ] `P51-T7` Triage larger curated corpus output into selected, deferred, and
+- [x] `P51-T7` Triage larger curated corpus output into selected, deferred, and
   do-not-promote outcomes after the Hyperprompt repair, carrying warning/caveat
   evidence forward without accepting packages or relations.
 - [ ] `P51-T8` Record the larger curated corpus exit decision, deciding whether

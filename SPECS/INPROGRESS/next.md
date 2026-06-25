@@ -1,61 +1,61 @@
-# Next Task: P51-T7 Larger Curated Corpus Output Triage
+# Next Task: P51-T8 Larger Curated Corpus Exit Decision
 
 **Status:** Selected
 **Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun
-**Task:** `P51-T7`
-**Last Archived:** `P51-T6` Hyperprompt AI Draft Single-Package Fallback
-**Depends On:** `P51-T6` Hyperprompt AI Draft Single-Package Fallback
+**Task:** `P51-T8`
+**Last Archived:** `P51-T7` Larger Curated Corpus Output Triage
+**Depends On:** `P51-T7` Larger Curated Corpus Output Triage
 
 ## Goal
 
-Triage the larger curated corpus static, AI draft, AI enrichment, AI-enriched
-preview, relation, warning, fallback, and caveat evidence into selected,
-deferred, and do-not-promote outcomes without changing registry truth.
-This is the larger curated corpus output triage pass over proposal-only
-evidence.
+Record the larger curated corpus exit decision using P51-T7 triage evidence.
+Decide whether to proceed, run another targeted pass, or stop on a documented
+blocker before any further expansion.
 
 ## Context
 
-P51-T6 repaired the reproduced `hyperprompt.aiDraft` hard blocker with a
-deterministic single-package fallback:
+P51-T7 produced the machine-readable
+`SpecHarvesterLargerCuratedCorpusOutputTriage` fixture:
 
 ```text
-fixture: tests/fixtures/hyperprompt_ai_draft_single_package_fallback/p51-t6-hyperprompt-ai-draft-single-package-fallback.example.json
-targeted rerun exit code: 0
-batch status: passed
-repository status: passed
-aiDraft status: warning
-aiDraft selected members: 1
-aiDraft stop policy: stop_for_author_review
-diagnostic: single_package_deterministic_fallback_applied
+tests/fixtures/larger_curated_corpus_output_triage/p51-t7-larger-curated-corpus-output-triage.example.json
 ```
 
-The repaired sidecar still records `ai_json_repair_exhausted`,
-`ai_json_repair_needed`, and `package_set_subject_metadata_missing`, but these
-are non-blocking fallback warnings for the deterministic single-package
-Hyperprompt inventory.
+The triage classified 15 static packages, three relation proposals, 12 AI
+draft sidecars, 12 AI enrichment sidecars, AI-enriched preview outcomes,
+warning evidence, and carried-forward caveats into:
 
-P51-T5 remains the full-corpus evidence source, and P51-T6 is the targeted
-repair evidence source for Hyperprompt.
+```text
+selected_for_author_review
+deferred
+do_not_promote
+```
+
+The previous `hyperprompt.aiDraft` hard blocker is superseded by P51-T6
+fallback evidence, but the repaired sidecar remains proposal-only and carries
+`hyperprompt.single_package_deterministic_fallback_applied`.
+
+P51-T7 carries these caveats into the P51-T8 exit decision:
+
+```text
+xyflow.partial_public_interface_index
+xyflow.operator_checkout_origin_fork_mismatch
+docc2context.source_checkout_had_untracked_doccarchive
+hyperprompt.single_package_deterministic_fallback_applied
+```
 
 ## Scope
 
-- Classify all 15 static candidate packages and 3 relation proposals.
-- Classify AI draft sidecars, including repaired `hyperprompt.aiDraft`.
-- Classify AI enrichment sidecars and AI-enriched preview copies.
-- Classify warning-only proposal evidence as selected, deferred, or
-  do-not-promote.
-- Carry `xyflow.partial_public_interface_index`,
-  `xyflow.operator_checkout_origin_fork_mismatch`,
-  `docc2context.source_checkout_had_untracked_doccarchive`, and
-  `hyperprompt.single_package_deterministic_fallback_applied` forward as
-  triage evidence.
-- Decide whether P51-T8 exit decision can proceed.
+- Decide whether Phase 51 can proceed, needs another targeted pass, or must
+  stop on a documented blocker.
+- Preserve the distinction between author-review evidence and registry truth.
+- Carry selected, deferred, and do_not_promote outcomes forward explicitly.
+- Record whether any further larger curated corpus expansion is approved.
 
 ## Boundaries
 
-- Do not rerun the larger corpus in P51-T7.
-- Do not run AI in P51-T7.
+- Do not rerun the larger corpus in P51-T8.
+- Do not run AI in P51-T8.
 - Do not accept packages or relations.
 - Do not publish registry metadata.
 - Do not seed baselines.
