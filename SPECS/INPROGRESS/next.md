@@ -11,6 +11,8 @@
 Triage the larger curated corpus static, AI draft, AI enrichment, AI-enriched
 preview, relation, warning, fallback, and caveat evidence into selected,
 deferred, and do-not-promote outcomes without changing registry truth.
+This is the larger curated corpus output triage pass over proposal-only
+evidence.
 
 ## Context
 
