@@ -38,6 +38,50 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P51-T6 Larger Curated Corpus Output Triage" in (next_text):
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun" in (
+            next_text
+        )
+        assert "**Task:** `P51-T6`" in next_text
+        assert "`P51-T5` Larger Curated Corpus AI-Enabled Proposal-Only Gate" in next_text
+        assert "larger curated corpus output triage" in normalized
+        assert "p51-t5-larger-curated-corpus-ai-enabled-gate.example.json" in next_text
+        assert "AI-enabled batch ended `failed`" in next_text
+        assert "processed repositories: `12`" in next_text
+        assert "failed repositories: `1`" in next_text
+        assert "hyperprompt.aiDraft" in next_text
+        assert "ai_json_repair_exhausted" in next_text
+        assert "package_set_subject_metadata_missing" in next_text
+        assert "AI draft proposals: `11`" in next_text
+        assert "AI enrichment proposals: `12`" in next_text
+        assert "AI-enriched preview applied packages: `8`" in next_text
+        assert "proposal-only" in normalized
+        assert "raw prompt" in normalized
+        assert "raw provider response" in normalized
+        assert "chain-of-thought" in next_text
+        assert "xyflow.partial_public_interface_index" in next_text
+        assert "xyflow.operator_checkout_origin_fork_mismatch" in next_text
+        assert "docc2context.source_checkout_had_untracked_doccarchive" in next_text
+        assert "hyperprompt.ai_draft_failed_after_json_repair" in next_text
+        assert "Do not rerun the larger corpus in P51-T6" in next_text
+        assert "Do not run AI in P51-T6" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata" in next_text
+        assert "Do not seed baselines" in next_text
+        assert "Do not remove `preview_only`" in next_text
+        assert "Do not persist raw prompts" in next_text
+        assert "Do not persist raw provider responses" in next_text
+        assert "Do not persist secrets" in next_text
+        assert "Do not persist chain-of-thought" in next_text
+        assert "Do not clone or fetch repositories" in next_text
+        assert "Do not install dependencies" in next_text
+        assert "Do not invoke package managers" in next_text
+        assert "Do not execute harvested code" in next_text
+        assert "Do not run adapters or enable trusted local adapter execution" in next_text
+        return
+
     if "# Next Task: P51-T5 Larger Curated Corpus AI-Enabled Proposal-Only Gate" in (next_text):
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -35619,6 +35663,377 @@ def test_larger_curated_corpus_static_only_gate_records_p51_t4_run() -> None:
         (roadmap_docc, "LargerCuratedCorpusStaticOnlyGate"),
         (workplan, "`P51-T4` Run the larger curated corpus static-only gate"),
         (workplan, "`P51-T5` Run the larger curated corpus AI-enabled proposal-only gate"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_larger_curated_corpus_ai_enabled_gate_records_p51_t5_run() -> None:
+    static_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_static_only_gate"
+        / "p51-t4-larger-curated-corpus-static-only-gate.example.json"
+    )
+    manifest_path = ROOT / "inputs" / "p51-larger-curated-corpus" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_ai_enabled_gate"
+        / "p51-t5-larger-curated-corpus-ai-enabled-gate.example.json"
+    )
+    github_doc = ROOT / "docs" / "LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LargerCuratedCorpusAIEnabledGate.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.larger-curated-corpus-ai-enabled-gate/v0"
+    assert payload["kind"] == "SpecHarvesterLargerCuratedCorpusAIEnabledGate"
+    assert payload["authority"] == "producer_ai_enabled_proposal_evidence_only"
+    assert payload["phase"] == "P51"
+    assert payload["task"] == "P51-T5"
+
+    static_gate = payload["sourceArtifacts"]["p51StaticOnlyGate"]
+    static_payload = json.loads(static_fixture_path.read_text(encoding="utf-8"))
+    assert ROOT / static_gate["path"] == static_fixture_path
+    assert (
+        static_gate["digest"]
+        == "sha256:" + hashlib.sha256(static_fixture_path.read_bytes()).hexdigest()
+    )
+    assert static_gate["apiVersion"] == static_payload["apiVersion"]
+    assert static_gate["kind"] == static_payload["kind"]
+    assert static_gate["authority"] == static_payload["authority"]
+
+    source_manifest = payload["sourceManifest"]
+    assert ROOT / source_manifest["path"] == manifest_path
+    assert (
+        source_manifest["digest"]
+        == "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    )
+    assert source_manifest["entryCount"] == 12
+    assert source_manifest["requiresExistingCheckouts"] is True
+    assert source_manifest["cloneAllowed"] is False
+    assert source_manifest["fetchAllowed"] is False
+
+    assert payload["batchReport"]["apiVersion"] == "spec-harvester.autonomous-candidate-batch/v0"
+    assert payload["batchReport"]["kind"] == "SpecHarvesterAutonomousCandidateBatchReport"
+    assert payload["batchReport"]["authority"] == "producer_preview_evidence_only"
+    assert payload["batchReport"]["digest"].startswith("sha256:")
+    assert payload["validationReport"]["digest"].startswith("sha256:")
+
+    run = payload["run"]
+    assert run["mode"] == "ai_enabled_proposal_only"
+    assert run["exitCode"] == 1
+    assert run["status"] == "failed"
+    assert run["completedAsEvidenceCapture"] is True
+    assert "--lm-studio-model openai/gpt-oss-20b" in run["command"]
+    assert "--json-repair-max-attempts 1" in run["command"]
+    assert "--apply-ai-enrichment" in run["command"]
+    assert "--skip-ai" not in run["command"]
+
+    provider = payload["provider"]
+    assert provider["mode"] == "local_lm_studio"
+    assert provider["provider"] == "lm_studio"
+    assert provider["baseUrl"] == "http://127.0.0.1:1234"
+    assert provider["model"] == "openai/gpt-oss-20b"
+    assert provider["execution"] == "operator_opt_in_local"
+    assert provider["jsonRepairMaxAttempts"] == 1
+    assert provider["proposalOnly"] is True
+    assert provider["applyAIEnrichment"] is True
+    assert provider["rawPromptPersisted"] is False
+    assert provider["rawProviderResponsePersisted"] is False
+    assert provider["rawResponsePersisted"] is False
+    assert provider["secretsPersisted"] is False
+    assert provider["chainOfThoughtPersisted"] is False
+
+    summary = payload["summary"]
+    assert summary["processedCount"] == 12
+    assert summary["collectedCount"] == 12
+    assert summary["failedRepositoryCount"] == 1
+    assert summary["skippedCount"] == 0
+    assert summary["passedPreflightCount"] == 12
+    assert summary["candidateCount"] == 15
+    assert summary["relationCount"] == 3
+    assert summary["preflightWarningCount"] == 0
+    assert summary["preflightErrorCount"] == 0
+    assert summary["repositoryProfileDetectionCount"] == 12
+    assert summary["repositoryProfileSelectedCount"] == 10
+    assert summary["repositoryProfileFallbackCount"] == 2
+    assert summary["aiDraftArtifactCount"] == 12
+    assert summary["aiDraftProposalCount"] == 11
+    assert summary["aiDraftCompletedRepositoryCount"] == 5
+    assert summary["aiDraftWarningRepositoryCount"] == 6
+    assert summary["aiDraftFailedRepositoryCount"] == 1
+    assert summary["aiEnrichmentProposalCount"] == 12
+    assert summary["aiEnrichmentCompletedRepositoryCount"] == 8
+    assert summary["aiEnrichmentWarningRepositoryCount"] == 4
+    assert summary["aiEnrichmentFailedRepositoryCount"] == 0
+    assert summary["aiEnrichmentProviderPromptTokens"] == 183710
+    assert summary["aiEnrichmentProviderCompletionTokens"] == 6572
+    assert summary["aiEnrichmentProviderTotalTokens"] == 190282
+    assert summary["aiEnrichedPreviewAppliedCount"] == 8
+    assert summary["aiEnrichedPreviewSkippedCount"] == 7
+    assert summary["aiEnrichedPreviewFailedCount"] == 0
+    assert summary["trustedLocalAdapterRunEvidenceSidecarCount"] == 0
+    assert summary["repositoryPluginAdapterEvidenceSidecarCount"] == 0
+
+    manifest_records = read_repository_source_manifests(manifest_path.parent)
+    manifest_by_id = {record["id"]: record for record in manifest_records}
+    repositories = payload["repositories"]
+    repository_ids = [repository["id"] for repository in repositories]
+    assert repository_ids == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+        "fastapi",
+        "fastmcp",
+        "specpm",
+        "hypercode",
+        "specnode",
+        "hyperprompt",
+    ]
+    assert set(repository_ids) == set(manifest_by_id)
+    assert sum(repository["candidateCount"] for repository in repositories) == 15
+    assert sum(repository["relationCount"] for repository in repositories) == 3
+
+    for repository in repositories:
+        record = manifest_by_id[repository["id"]]
+        assert repository["repository"] == record["repository"]
+        assert repository["revision"] == record["revision"]
+        assert repository["packageId"] == record["packageId"]
+        assert repository["preflight"]["status"] == "passed"
+        assert repository["preflight"]["warningCount"] == 0
+        assert repository["preflight"]["errorCount"] == 0
+        assert repository["aiDraft"]["authority"] == "proposal_only_not_registry_acceptance"
+        assert repository["aiEnrichment"]["authority"] == "proposal_only_not_registry_acceptance"
+        assert repository["aiDraft"]["privacy"]["rawPromptsPersisted"] is False
+        assert repository["aiDraft"]["privacy"]["rawModelResponsesPersisted"] is False
+        assert repository["aiDraft"]["privacy"]["secretsIncluded"] is False
+        assert repository["aiDraft"]["privacy"]["chainOfThoughtPersisted"] is False
+        assert repository["aiEnrichment"]["privacy"]["rawPromptsPersisted"] is False
+        assert repository["aiEnrichment"]["privacy"]["rawModelResponsesPersisted"] is False
+        assert repository["aiEnrichment"]["privacy"]["secretsIncluded"] is False
+        assert repository["aiEnrichment"]["privacy"]["chainOfThoughtPersisted"] is False
+        assert repository["aiEnrichedPreview"]["sourceCandidateMutated"] is False
+
+    repository_by_id = {repository["id"]: repository for repository in repositories}
+    assert repository_by_id["xyflow"]["candidateCount"] == 4
+    assert repository_by_id["xyflow"]["relationCount"] == 3
+    assert repository_by_id["xyflow"]["interfaceIndex"]["status"] == "partial"
+    assert repository_by_id["xyflow"]["interfaceIndex"]["diagnosticCount"] == 29
+    assert repository_by_id["xyflow"]["aiDraft"]["status"] == "completed"
+    assert repository_by_id["xyflow"]["aiEnrichment"]["status"] == "warning"
+    assert repository_by_id["xyflow"]["aiEnrichedPreview"]["summary"]["skippedCount"] == 4
+    assert repository_by_id["fastapi"]["aiDraft"]["status"] == "completed"
+    assert repository_by_id["fastmcp"]["aiEnrichment"]["status"] == "completed"
+    assert repository_by_id["specnode"]["aiEnrichment"]["diagnosticCodes"] == [
+        "model_evidence_path_unsupported"
+    ]
+    assert (
+        repository_by_id["navigation-split-view"]["aiEnrichment"]["jsonRepair"]["status"]
+        == "repaired"
+    )
+
+    hyperprompt = repository_by_id["hyperprompt"]
+    assert hyperprompt["status"] == "failed"
+    assert hyperprompt["aiDraft"]["status"] == "failed"
+    assert hyperprompt["aiDraft"]["jsonRepair"] == {
+        "attemptCount": 1,
+        "needed": True,
+        "status": "exhausted",
+    }
+    assert hyperprompt["aiDraft"]["diagnosticCodes"] == [
+        "ai_json_repair_exhausted",
+        "ai_json_repair_needed",
+        "package_set_subject_metadata_missing",
+    ]
+    assert hyperprompt["aiEnrichment"]["status"] == "completed"
+
+    assert payload["failedRepositories"] == [
+        {
+            "id": "hyperprompt",
+            "status": "failed",
+            "aiDraftStatus": "failed",
+            "aiDraftDiagnosticCodes": [
+                "ai_json_repair_exhausted",
+                "ai_json_repair_needed",
+                "package_set_subject_metadata_missing",
+            ],
+            "aiDraftJsonRepair": {
+                "attemptCount": 1,
+                "needed": True,
+                "status": "exhausted",
+            },
+            "aiEnrichmentStatus": "completed",
+            "disposition": (
+                "carry_forward_to_p51_t6_output_triage_as_do_not_promote_ai_draft_sidecar"
+            ),
+        }
+    ]
+    assert payload["carriedForwardCaveats"] == [
+        {
+            "sourceId": "xyflow",
+            "code": "partial_public_interface_index",
+            "blocking": False,
+            "diagnosticCount": 29,
+            "disposition": "carry_forward_to_p51_t6_triage",
+        },
+        {
+            "sourceId": "xyflow",
+            "code": "operator_checkout_origin_fork_mismatch",
+            "blocking": False,
+            "disposition": "carry_forward_to_p51_t6_triage",
+        },
+        {
+            "sourceId": "docc2context",
+            "code": "source_checkout_had_untracked_doccarchive",
+            "blocking": False,
+            "disposition": "carry_forward_to_p51_t6_triage",
+        },
+        {
+            "sourceId": "hyperprompt",
+            "code": "ai_draft_failed_after_json_repair",
+            "blocking": True,
+            "diagnostics": [
+                "ai_json_repair_exhausted",
+                "ai_json_repair_needed",
+                "package_set_subject_metadata_missing",
+            ],
+            "disposition": "carry_forward_to_p51_t6_triage_as_do_not_promote_ai_draft_sidecar",
+        },
+    ]
+    assert payload["privacyBoundary"] == {
+        "rawPromptsPersisted": False,
+        "rawProviderResponsesPersisted": False,
+        "secretsPersisted": False,
+        "chainOfThoughtPersisted": False,
+        "compactModelRequestsPersisted": True,
+    }
+    assert payload["adapterBoundary"]["trustedLocalAdapterRunEvidenceSidecarCount"] == 0
+    assert payload["adapterBoundary"]["adapterOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["aiOutputIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["enrichedPreviewOutputIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
+    assert payload["authorityBoundary"]["seedsBaselines"] is False
+    assert payload["authorityBoundary"]["removesPreviewOnly"] is False
+    assert payload["executionBoundary"]["runsAI"] is True
+    assert payload["executionBoundary"]["applyAIEnrichment"] is True
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["installsDependencies"] is False
+    assert payload["executionBoundary"]["invokesPackageManagers"] is False
+    assert payload["executionBoundary"]["executesHarvestedCode"] is False
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["enablesTrustedLocalAdapterExecution"] is False
+    assert payload["qualityGate"] == {
+        "evidenceCaptureVerdict": "pass",
+        "aiEnabledGateStatus": "failed",
+        "aiEnabledGatePassed": False,
+        "staticOnlyBeforeAI": True,
+        "nextTriageTask": "P51-T6",
+        "triageAllowed": True,
+        "triageRequiredBeforeExitDecision": True,
+        "reason": (
+            "larger_curated_corpus_ai_enabled_gate_failed_on_hyperprompt_ai_draft_but_"
+            "output_triage_can_classify_failed_sidecar"
+        ),
+    }
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P51-T6",
+        "recommendedFollowUp": (
+            "Triage larger curated corpus output including hyperprompt failed AI draft sidecar"
+        ),
+        "aiEnabledGatePassed": False,
+        "p51T6TriageAllowed": True,
+        "p51T7ExitDecisionAllowed": False,
+        "phase51Complete": False,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Larger Curated Corpus AI-Enabled Gate",
+            "P51-T5",
+            "P51-T6",
+            "SpecHarvesterLargerCuratedCorpusAIEnabledGate",
+            "spec-harvester.larger-curated-corpus-ai-enabled-gate/v0",
+            "producer_ai_enabled_proposal_evidence_only",
+            "p51-t5-larger-curated-corpus-ai-enabled-gate.example.json",
+            "inputs/p51-larger-curated-corpus/repositories.yml",
+            "Batch status | failed",
+            "Processed repositories | 12",
+            "Failed repositories | 1",
+            "AI draft proposals | 11",
+            "AI enrichment proposals | 12",
+            "AI enrichment provider total tokens | 190,282",
+            "Hyperprompt | failed | failed | completed",
+            "hyperprompt.aiDraft",
+            "ai_json_repair_exhausted",
+            "package_set_subject_metadata_missing",
+            "xyflow.partial_public_interface_index",
+            "xyflow.operator_checkout_origin_fork_mismatch",
+            "docc2context.source_checkout_had_untracked_doccarchive",
+            "P51-T6 output triage is allowed",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "proposal-only",
+            "did not enable trusted local adapter execution",
+            "run adapter",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist secrets",
+            "persist chain-of-thought",
+            "AI output as registry truth",
+            "enriched preview output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md"),
+        (docc_root, "docs/LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md"),
+        (docc_root, "<doc:LargerCuratedCorpusAIEnabledGate>"),
+        (capabilities, "LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md"),
+        (capabilities_docc, "LargerCuratedCorpusAIEnabledGate"),
+        (roadmap, "LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md"),
+        (roadmap_docc, "LargerCuratedCorpusAIEnabledGate"),
+        (workplan, "`P51-T5` Run the larger curated corpus AI-enabled proposal-only gate"),
+        (workplan, "`P51-T6` Triage larger curated corpus output"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
