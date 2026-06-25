@@ -1268,6 +1268,13 @@ fixture. It restores the same operator-local checkout paths through symlinks,
 runs the same six-repository scope in static-only then AI-enabled order, and
 records both gates as passed while preserving warning caveats and
 non-authority boundaries.
+P51-T1 records
+[`LARGER_CURATED_CORPUS_PLANNING_PHASE.md`](LARGER_CURATED_CORPUS_PLANNING_PHASE.md)
+and the machine-readable `SpecHarvesterLargerCuratedCorpusPlanningPhase`
+fixture. It starts the larger curated corpus planning phase from P50 evidence,
+defines source-plan, readiness, static-only, AI-enabled, triage, and
+exit-decision gates, and keeps larger corpus execution unapproved until those
+follow-up tasks complete.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

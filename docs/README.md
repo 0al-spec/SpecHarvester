@@ -339,6 +339,10 @@ Published DocC site:
 87. [`RESTORED_CHECKOUT_RERUN_EVIDENCE.md`](RESTORED_CHECKOUT_RERUN_EVIDENCE.md):
    P50-T1 restored-checkout rerun evidence showing the same-scope static-only
    and AI-enabled gates pass after operator-local checkout paths are restored
+88. [`LARGER_CURATED_CORPUS_PLANNING_PHASE.md`](LARGER_CURATED_CORPUS_PLANNING_PHASE.md):
+   P51-T1 planning phase for the larger curated corpus after the restored
+   checkout rerun, preserving source-plan, readiness, static-only, AI-enabled,
+   triage, and exit-decision gates
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
