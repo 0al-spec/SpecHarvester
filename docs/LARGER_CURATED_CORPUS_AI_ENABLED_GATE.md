@@ -107,7 +107,7 @@ one JSON repair attempt and emitted `package_set_subject_metadata_missing`.
 
 ## Carry-Forward Triage
 
-Four caveats remain visible for P51-T6 triage:
+Four caveats remain visible for P51-T7 triage:
 
 - `xyflow.partial_public_interface_index`
 - `xyflow.operator_checkout_origin_fork_mismatch`
@@ -115,20 +115,20 @@ Four caveats remain visible for P51-T6 triage:
 - `hyperprompt.ai_draft_failed_after_json_repair`
 
 The `hyperprompt.aiDraft` sidecar is the only hard blocker in P51-T5. P51-T6
-can proceed as output triage, but it must classify that failed AI draft sidecar
-as do-not-promote or deferred evidence unless a later task repairs or accepts
-it explicitly.
+is the targeted repair task for that blocker; P51-T7 output triage must use the
+repair result rather than treating the failed P51-T5 sidecar as accepted
+evidence.
 
 ## Gate Decision
 
 P51-T5 is complete as an evidence-capture task. The AI-enabled gate did not
 pass cleanly.
 
-P51-T6 output triage is allowed and required before P51-T7 can record an exit
-decision. P51-T6 must triage the static candidates, relation proposals,
-AI draft sidecars, AI enrichment sidecars, warning evidence, failed
-`hyperprompt.aiDraft` sidecar, and carried-forward checkout/interface caveats
-without accepting packages or relations.
+P51-T6 targeted repair is allowed and required before P51-T7 can triage corpus
+outputs. P51-T7 must triage the static candidates, relation proposals, AI draft
+sidecars, AI enrichment sidecars, warning evidence, repaired Hyperprompt
+fallback evidence, and carried-forward checkout/interface caveats without
+accepting packages or relations.
 
 ## Boundary
 

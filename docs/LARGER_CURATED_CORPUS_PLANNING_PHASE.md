@@ -51,13 +51,14 @@ into unbounded harvesting.
 | `P51-T3` | Run the checkout readiness gate for the selected local checkouts. | no |
 | `P51-T4` | Run the static-only gate. | yes |
 | `P51-T5` | Run the AI-enabled proposal-only gate. | yes |
-| `P51-T6` | Triage selected, deferred, and do-not-promote output. | no |
-| `P51-T7` | Record the exit decision before any further expansion. | no |
+| `P51-T6` | Repair the reproducible Hyperprompt single-package AI draft blocker. | targeted |
+| `P51-T7` | Triage selected, deferred, and do-not-promote output. | no |
+| `P51-T8` | Record the exit decision before any further expansion. | no |
 
 The gate order is:
 
 ```text
-source plan -> readiness -> static-only -> AI-enabled -> triage -> exit decision
+source plan -> readiness -> static-only -> AI-enabled -> targeted repair -> triage -> exit decision
 ```
 
 Static-only evidence must come before AI-enabled evidence.

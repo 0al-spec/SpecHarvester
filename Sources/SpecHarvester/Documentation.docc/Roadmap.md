@@ -236,8 +236,13 @@ P51-T5 is recorded in <doc:LargerCuratedCorpusAIEnabledGate>. It runs the same
 12 selected sources through local LM Studio `openai/gpt-oss-20b`, preserves
 proposal-only AI output and raw prompt/response/chain-of-thought
 non-persistence, records one failed `hyperprompt.aiDraft` sidecar, and allows
-P51-T6 output triage without accepting packages, relations, enriched previews,
-or AI output as registry truth.
+P51-T6 targeted repair without accepting packages, relations, enriched
+previews, or AI output as registry truth.
+P51-T6 is recorded in <doc:HyperpromptAIDraftSinglePackageFallback>. It applies
+a deterministic single-package fallback for the reproduced Hyperprompt AI draft
+JSON repair exhaustion, verifies the targeted rerun exits 0, keeps the sidecar
+warning-level and proposal-only, and allows P51-T7 output triage with
+Hyperprompt treated as author-reviewable fallback evidence.
 
 ### Selected Candidate SpecPM Intake Handoff
 

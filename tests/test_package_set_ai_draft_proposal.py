@@ -764,6 +764,73 @@ def test_package_set_ai_draft_accepts_repaired_json_warning_for_zero_subject_sin
     }
 
 
+def test_package_set_ai_draft_applies_single_package_fallback_when_json_repair_exhausted(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inventory = write_single_package_inventory(tmp_path)
+    contents = ["not json", "still not json"]
+    calls = []
+
+    class FakeResponse:
+        def __init__(self, content: str) -> None:
+            self.content = content
+
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {
+                    "model": "test-model",
+                    "choices": [{"message": {"content": self.content}}],
+                    "usage": {"total_tokens": 1},
+                }
+            ).encode("utf-8")
+
+    def fake_urlopen(request, **_kwargs):
+        payload = json.loads(request.data.decode("utf-8"))
+        calls.append(payload)
+        return FakeResponse(contents[len(calls) - 1])
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            provider_base_url="http://127.0.0.1:1234",
+            model="test-model",
+            json_repair_max_attempts=1,
+        )
+    )
+
+    codes = {item["code"] for item in report["diagnostics"]}
+    exhausted = next(
+        item for item in report["diagnostics"] if item["code"] == "ai_json_repair_exhausted"
+    )
+    stop_policy = report["stopPolicySummary"]
+    serialized = json.dumps(report)
+
+    assert len(calls) == 2
+    assert report["status"] == "warning"
+    assert report["providerReceipt"]["jsonRepairStatus"] == "exhausted"
+    assert report["summary"]["errorCount"] == 0
+    assert report["packageSet"]["packageId"] == "demo.workspace"
+    assert [item["packageId"] for item in report["selectedMembers"]] == ["demo.core"]
+    assert "ai_json_repair_exhausted" in codes
+    assert "package_set_subject_metadata_missing" in codes
+    assert "single_package_deterministic_fallback_applied" in codes
+    assert exhausted["severity"] == "warning"
+    assert exhausted["nonBlockingReason"] == "deterministic_single_package_fallback"
+    assert stop_policy["decision"] == "stop_for_author_review"
+    assert stop_policy["reason"] == "single_package_deterministic_fallback_non_blocking"
+    assert "still not json" not in serialized
+    assert report["privacy"]["rawModelResponsesPersisted"] is False
+
+
 def test_package_set_ai_draft_cli_writes_request_and_proposal(
     tmp_path: Path,
     capsys,

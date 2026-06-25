@@ -1,0 +1,232 @@
+{
+  "apiVersion": "spec-harvester.hyperprompt-ai-draft-single-package-fallback/v0",
+  "schemaVersion": 1,
+  "kind": "SpecHarvesterHyperpromptAIDraftSinglePackageFallback",
+  "authority": "producer_ai_enabled_proposal_evidence_only",
+  "phase": "P51",
+  "task": "P51-T6",
+  "createdAt": "2026-06-25T16:14:46+03:00",
+  "problem": {
+    "reproducedBy": "/tmp/specharvester-p51-t5-hyperprompt-rerun-20260625T130432Z",
+    "previousExitCode": 1,
+    "previousRepositoryStatus": "failed",
+    "previousAiDraftStatus": "failed",
+    "previousDiagnosticCodes": [
+      "ai_json_repair_exhausted",
+      "ai_json_repair_needed",
+      "package_set_subject_metadata_missing"
+    ]
+  },
+  "run": {
+    "id": "p51-t6-hyperprompt-fallback-rerun-20260625T131341Z",
+    "mode": "targeted_ai_enabled_proposal_only",
+    "root": "/tmp/specharvester-p51-t6-hyperprompt-fallback-rerun-20260625T131341Z",
+    "command": "PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch inputs/p51-larger-curated-corpus --select hyperprompt --out /tmp/specharvester-p51-t6-hyperprompt-fallback-rerun-20260625T131341Z/output --repository-profile-selection auto --lm-studio-base-url http://127.0.0.1:1234 --lm-studio-model openai/gpt-oss-20b --json-repair-max-attempts 1 --apply-ai-enrichment",
+    "exitCode": 0,
+    "status": "passed"
+  },
+  "sourceManifest": {
+    "path": "inputs/p51-larger-curated-corpus/repositories.yml",
+    "selectedIds": [
+      "hyperprompt"
+    ],
+    "skippedCount": 11,
+    "cloneAllowed": false,
+    "fetchAllowed": false
+  },
+  "batchReport": {
+    "path": "/tmp/specharvester-p51-t6-hyperprompt-fallback-rerun-20260625T131341Z/output/autonomous-candidate-batch-report.json",
+    "digest": "sha256:14bcf72675c758a68f59531799b804ccc803282b47d44b2986d2f2a43ac6090f",
+    "status": "passed",
+    "processedCount": 1,
+    "failedRepositoryCount": 0
+  },
+  "validationReport": {
+    "path": "/tmp/specharvester-p51-t6-hyperprompt-fallback-rerun-20260625T131341Z/output/reports/batch-validation-report.json",
+    "digest": "sha256:092fc097577e45e2094fe22f3dc0a8aa32cd177561201a5afc0acb6fd1733365"
+  },
+  "proposal": {
+    "path": "/tmp/specharvester-p51-t6-hyperprompt-fallback-rerun-20260625T131341Z/output/package-sets/hyperprompt/ai/package-set-ai-draft-proposal.json",
+    "digest": "sha256:7f2e9c3c6433d2952d0cf8686b0fd56722275a9f776e164c747b1d74beac34e7",
+    "status": "warning",
+    "authority": "proposal_only_not_registry_acceptance",
+    "packageSet": {
+      "confidence": "medium",
+      "evidencePaths": [
+        "workspace-inventory.json"
+      ],
+      "packageId": "hyperprompt.workspace",
+      "summary": "Single-package workspace containing hyperprompt.core."
+    },
+    "selectedMembers": [
+      {
+        "confidence": "medium",
+        "evidencePaths": [
+          "workspace-inventory.json"
+        ],
+        "inventoryRole": "member_package",
+        "manifestPath": "",
+        "packageId": "hyperprompt.core",
+        "reason": "Deterministic workspace inventory contains exactly one package subject, so the producer can expose it as proposal-only fallback evidence after malformed AI draft JSON.",
+        "role": "member_package",
+        "sourceTargetPath": "."
+      }
+    ],
+    "relations": [],
+    "evidenceGaps": [
+      "Local model output exhausted bounded JSON repair; package-set subject and single selected member were recovered from deterministic request inventory."
+    ],
+    "diagnosticCodes": [
+      "ai_json_repair_needed",
+      "ai_json_repair_exhausted",
+      "package_set_subject_metadata_missing",
+      "single_package_deterministic_fallback_applied"
+    ],
+    "diagnostics": [
+      {
+        "code": "ai_json_repair_needed",
+        "jsonRepairStatus": "exhausted",
+        "message": "Initial local model output was not a valid JSON object; bounded repair was attempted.",
+        "repairAttemptCount": 1,
+        "severity": "warning",
+        "subject": "packageSet"
+      },
+      {
+        "code": "ai_json_repair_exhausted",
+        "message": "Local model output remained invalid JSON after bounded repair attempts.",
+        "nonBlockingReason": "deterministic_single_package_fallback",
+        "repairAttemptCount": 1,
+        "severity": "warning",
+        "subject": "packageSet"
+      },
+      {
+        "code": "package_set_subject_metadata_missing",
+        "message": "Model output omits the top-level packageSet metadata object; single-package fallback recovered it from deterministic request context.",
+        "modelField": "packageSet",
+        "nonBlockingReason": "deterministic_single_package_fallback",
+        "requestField": "packageSet.id",
+        "severity": "warning",
+        "subject": "hyperprompt.workspace"
+      },
+      {
+        "code": "single_package_deterministic_fallback_applied",
+        "message": "Producer recovered package-set draft subjects from deterministic single-package inventory after local model JSON repair was exhausted.",
+        "nonAuthority": "proposal_only_not_registry_acceptance",
+        "packageSetId": "hyperprompt.workspace",
+        "severity": "warning",
+        "subject": "hyperprompt.core"
+      }
+    ],
+    "stopPolicySummary": {
+      "decision": "stop_for_author_review",
+      "diagnosticCounts": {
+        "errorCount": 0,
+        "warningCount": 4
+      },
+      "nonAuthority": [
+        "The stop-policy summary is producer-side review evidence only.",
+        "It is not SpecPM registry acceptance.",
+        "It is not maintainer approval.",
+        "It is not upstream project endorsement."
+      ],
+      "reason": "single_package_deterministic_fallback_non_blocking",
+      "schemaVersion": 1,
+      "sourceStatus": "warning",
+      "status": "author_ready_draft",
+      "subjectCount": 1,
+      "summary": "Single-package fallback produced reviewable proposal evidence from deterministic inventory after malformed AI draft JSON.",
+      "zeroSubjectPolicy": {
+        "inventoryPackageCount": 1,
+        "inventoryPackageIds": [
+          "hyperprompt.core"
+        ],
+        "packageSetId": "hyperprompt.workspace",
+        "reason": "proposal_subjects_present",
+        "status": "not_applicable"
+      }
+    },
+    "privacy": {
+      "chainOfThoughtPersisted": false,
+      "rawModelResponsesPersisted": false,
+      "rawPromptsPersisted": false,
+      "secretsIncluded": false
+    }
+  },
+  "repository": {
+    "id": "hyperprompt",
+    "status": "passed",
+    "packageId": "hyperprompt.core",
+    "preflightStatus": "passed",
+    "aiDraft": {
+      "status": "warning",
+      "diagnosticCodes": [
+        "ai_json_repair_exhausted",
+        "ai_json_repair_needed",
+        "package_set_subject_metadata_missing",
+        "single_package_deterministic_fallback_applied"
+      ],
+      "jsonRepair": {
+        "attemptCount": 1,
+        "needed": true,
+        "status": "exhausted"
+      },
+      "selectedMemberCount": 1,
+      "errorCount": 0,
+      "warningCount": 4,
+      "stopPolicyDecision": "stop_for_author_review",
+      "stopPolicyReason": "single_package_deterministic_fallback_non_blocking",
+      "stopPolicyStatus": "author_ready_draft"
+    },
+    "aiEnrichment": {
+      "status": "completed",
+      "diagnosticCodes": [],
+      "proposalCount": 1
+    },
+    "aiEnrichedPreview": {
+      "status": "prepared",
+      "appliedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0
+    }
+  },
+  "summary": {
+    "aiDraftProposalCount": 1,
+    "aiEnrichedPreviewAppliedCount": 1,
+    "aiEnrichedPreviewFailedCount": 0,
+    "aiEnrichedPreviewSkippedCount": 0,
+    "aiEnrichmentProposalCount": 1,
+    "collectedCount": 1,
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 1,
+    "processedCount": 1,
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "repositoryPluginApplicabilitySidecarCount": 0,
+    "repositoryProfileDetectionCount": 1,
+    "repositoryProfileDisabledCount": 0,
+    "repositoryProfileFallbackCount": 0,
+    "repositoryProfileSelectedCount": 1,
+    "skippedCount": 11,
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0
+  },
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawModelResponsesPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "chainOfThoughtPersisted": false,
+    "secretsIncluded": false
+  },
+  "authorityBoundary": {
+    "proposalOnly": true,
+    "registryTruthChanged": false,
+    "packagesAccepted": false,
+    "relationsAccepted": false,
+    "previewOnlyRemoved": false,
+    "registryPublished": false
+  },
+  "nextState": {
+    "nextTask": "P51-T7",
+    "nextTaskName": "Larger Curated Corpus Output Triage",
+    "hyperpromptDisposition": "author_reviewable_with_single_package_fallback_warning",
+    "previousHardBlockerResolved": true
+  }
+}
