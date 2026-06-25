@@ -8,14 +8,14 @@
   "sourceArtifacts": {
     "p51SourcePlan": {
       "path": "tests/fixtures/larger_curated_corpus_source_plan/p51-t2-larger-curated-corpus-source-plan.example.json",
-      "digest": "sha256:a1521aa85f87cb3c85fb9351a52deb607dc672fb70f0073412f87b5f6eafb6c9",
+      "digest": "sha256:d0539892ed4cad56632de58bcddd7c68d77b74d46b39010449350991685eab2a",
       "apiVersion": "spec-harvester.larger-curated-corpus-source-plan/v0",
       "kind": "SpecHarvesterLargerCuratedCorpusSourcePlan",
       "authority": "producer_larger_curated_corpus_source_plan_only"
     },
     "sourceManifest": {
       "path": "inputs/p51-larger-curated-corpus/repositories.yml",
-      "digest": "sha256:4a5dfb341431b8b08c959b481ec5427b4ee667bfe27d9b89267e46d5e57e865f",
+      "digest": "sha256:7676d9d5069f223c33c3e3650c76a60897ada6bed05034dfb5f94dba1d4be79a",
       "format": "spec-harvester.repository-source-manifest/v1"
     }
   },
@@ -170,7 +170,7 @@
       "observedRevision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
       "revisionMatches": true,
       "checkout": {
-        "manifestPath": "../../../../fastapi",
+        "manifestPath": "../../../fastapi",
         "resolvedPath": "/Users/egor/Development/GitHub/fastapi",
         "gitTopLevel": "/Users/egor/Development/GitHub/fastapi",
         "origin": "https://github.com/fastapi/fastapi",
@@ -188,7 +188,7 @@
       "observedRevision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
       "revisionMatches": true,
       "checkout": {
-        "manifestPath": "../../../../fastmcp",
+        "manifestPath": "../../../fastmcp",
         "resolvedPath": "/Users/egor/Development/GitHub/fastmcp",
         "gitTopLevel": "/Users/egor/Development/GitHub/fastmcp",
         "origin": "https://github.com/PrefectHQ/fastmcp",
