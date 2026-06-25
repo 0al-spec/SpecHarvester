@@ -2427,7 +2427,7 @@ Acceptance:
 - [x] `P51-T7` Triage larger curated corpus output into selected, deferred, and
   do-not-promote outcomes after the Hyperprompt repair, carrying warning/caveat
   evidence forward without accepting packages or relations.
-- [ ] `P51-T8` Record the larger curated corpus exit decision, deciding whether
+- [x] `P51-T8` Record the larger curated corpus exit decision, deciding whether
   to proceed, run another targeted pass, or stop on a documented blocker before
   any further expansion.
 

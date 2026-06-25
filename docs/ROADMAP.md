@@ -1316,6 +1316,13 @@ and the machine-readable `SpecHarvesterLargerCuratedCorpusOutputTriage`
 fixture. It classifies 15 static packages, three relation proposals, 12 AI
 draft sidecars, 12 AI enrichment sidecars, 15 preview-copy outcomes, and four
 carried-forward caveats before the P51-T8 exit decision.
+P51-T8 records
+[`LARGER_CURATED_CORPUS_EXIT_DECISION.md`](LARGER_CURATED_CORPUS_EXIT_DECISION.md)
+and the machine-readable `SpecHarvesterLargerCuratedCorpusExitDecision`
+fixture. It completes Phase 51 as author-review evidence ready, rejects another
+targeted pass and hard-blocker stop, and keeps further larger corpus expansion,
+registry promotion, package acceptance, relation acceptance, baseline seeding,
+and `preview_only` removal unapproved.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
