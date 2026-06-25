@@ -38,6 +38,57 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: None Selected After P50-T1" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Complete / Planning Reconsideration Ready" in next_text
+        assert "**Phase:** Phase 50. Restored-Checkout Rerun Follow-Up" in next_text
+        assert "`P50-T1` Record Restored-Checkout Rerun Evidence" in next_text
+        assert "larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun" in (
+            next_text
+        )
+        assert "P49-T4 remains correct" in next_text
+        for repository_id in (
+            "flask",
+            "gin",
+            "xyflow",
+            "cupertino",
+            "navigation-split-view",
+            "docc2context",
+        ):
+            assert repository_id in next_text
+        assert "/tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309" in (
+            next_text
+        )
+        assert "static-only gate: `passed`" in next_text
+        assert "AI-enabled gate: `passed`" in next_text
+        assert "processed repositories: `6`" in next_text
+        assert "failed repositories: `0`" in next_text
+        assert "passed preflight: `6`" in next_text
+        assert "AI draft proposals: `6`" in next_text
+        assert "AI enrichment proposals: `6`" in next_text
+        assert "raw prompts, raw provider responses, and chain-of-thought: not persisted" in (
+            normalized
+        )
+        assert "Flask, Gin, Cupertino, NavigationSplitView, docc2context" in next_text
+        assert "Flask, xyflow, NavigationSplitView" in next_text
+        assert "partial_public_interface_index" in next_text
+        assert "operator_checkout_origin_fork_mismatch" in next_text
+        assert "planning readiness only" in normalized
+        assert "No Workplan task is currently selected" in next_text
+        assert "author the larger curated corpus planning phase" in normalized
+        assert "Do not treat P50-T1 as registry authority" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        assert "Do not clone or fetch repositories" in next_text
+        assert "Do not install dependencies" in next_text
+        assert "Do not invoke package managers" in next_text
+        assert "Do not execute harvested code" in next_text
+        assert "Do not run adapters or enable trusted local adapter execution" in next_text
+        assert "Do not treat AI output" in next_text
+        return
+
     if "# Next Task: None Selected After P49-T4" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Complete / Blocked for Expansion" in next_text
@@ -34101,6 +34152,289 @@ def test_docc2context_follow_up_exit_decision_records_p49_t4_result() -> None:
         (roadmap, "DOCC2CONTEXT_FOLLOW_UP_EXIT_DECISION.md"),
         (roadmap_docc, "Docc2contextFollowUpExitDecision"),
         (workplan, "`P49-T4` Record the docc2context follow-up exit decision"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_restored_checkout_rerun_evidence_records_p50_t1_result() -> None:
+    p49_exit_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "docc2context_follow_up_exit_decision"
+        / "p49-t4-docc2context-follow-up-exit-decision.example.json"
+    )
+    manifest_path = ROOT / "inputs" / "p46-bounded-popular-library-pilot" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "restored_checkout_rerun_evidence"
+        / "p50-t1-restored-checkout-rerun-evidence.example.json"
+    )
+    github_doc = ROOT / "docs" / "RESTORED_CHECKOUT_RERUN_EVIDENCE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "RestoredCheckoutRerunEvidence.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.restored-checkout-rerun-evidence/v0"
+    assert payload["kind"] == "SpecHarvesterRestoredCheckoutRerunEvidence"
+    assert payload["authority"] == "producer_restored_checkout_rerun_evidence_only"
+    assert payload["phase"] == "P50"
+    assert payload["task"] == "P50-T1"
+
+    p49_source = payload["sourceArtifacts"]["p49ExitDecision"]
+    p49_payload = json.loads(p49_exit_path.read_text(encoding="utf-8"))
+    assert ROOT / p49_source["path"] == p49_exit_path
+    assert (
+        p49_source["digest"] == "sha256:" + hashlib.sha256(p49_exit_path.read_bytes()).hexdigest()
+    )
+    assert p49_source["apiVersion"] == p49_payload["apiVersion"]
+    assert p49_source["kind"] == p49_payload["kind"]
+    assert p49_source["authority"] == p49_payload["authority"]
+
+    manifest_source = payload["sourceArtifacts"]["p46SourceManifest"]
+    assert ROOT / manifest_source["path"] == manifest_path
+    assert (
+        manifest_source["digest"]
+        == "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    )
+
+    static_source = payload["sourceArtifacts"]["staticOnlyRunReport"]
+    ai_source = payload["sourceArtifacts"]["aiEnabledRunReport"]
+    assert static_source["path"].startswith(
+        "/tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309/"
+    )
+    assert ai_source["path"].startswith(
+        "/tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309/"
+    )
+    assert static_source["digest"] == (
+        "sha256:cc1a51ab0e033700ad5813b85bae4d74a79ba1efcd9bbd2eb6237a50bedbd988"
+    )
+    assert ai_source["digest"] == (
+        "sha256:30d69b30794886df2753e2549dfff1ef00a05edacd92b3f0040eab4df0d9d3a6"
+    )
+
+    expected_ids = [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+    ]
+    assert payload["targetScope"] == {
+        "sourceScope": "same_six_repository_bounded_pilot",
+        "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+        "repositoryIds": expected_ids,
+        "expandedCorpus": False,
+    }
+
+    restored = {item["repositoryId"]: item for item in payload["restoredCheckouts"]}
+    assert list(restored) == expected_ids
+    expected_revisions = {
+        "flask": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+        "gin": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+        "xyflow": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+        "cupertino": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+        "navigation-split-view": "2c88df50b8f587560b91f6027e9ea275aee17060",
+        "docc2context": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+    }
+    for repository_id, revision in expected_revisions.items():
+        checkout = restored[repository_id]
+        assert checkout["linkType"] == "symlink"
+        assert checkout["revision"] == revision
+        assert checkout["matchesManifestRevision"] is True
+        assert checkout["expectedPath"].startswith("/Users/egor/Development/GitHub/0AL/")
+        assert checkout["targetPath"].startswith("/Users/egor/Development/GitHub/")
+    assert restored["xyflow"]["originCaveat"] == "git@github.com:SoundBlaster/xyflow.git"
+
+    assert payload["executionOrder"] == [
+        "restore_operator_local_checkout_paths",
+        "verify_manifest_revisions",
+        "run_static_only_gate",
+        "run_ai_enabled_gate",
+        "record_post_restore_rerun_evidence",
+    ]
+    assert payload["staticOnlyRun"]["status"] == "passed"
+    assert payload["staticOnlyRun"]["exitCode"] == 0
+    assert payload["staticOnlyRun"]["processedCount"] == 6
+    assert payload["staticOnlyRun"]["failedRepositoryCount"] == 0
+    assert payload["staticOnlyRun"]["passedPreflightCount"] == 6
+    assert payload["staticOnlyRun"]["aiDraftProposalCount"] == 0
+    assert payload["staticOnlyRun"]["aiEnrichmentProposalCount"] == 0
+    assert payload["staticOnlyRun"]["repositoryProfileSelectedCount"] == 4
+    assert payload["staticOnlyRun"]["repositoryProfileFallbackCount"] == 2
+
+    ai_run = payload["aiEnabledRun"]
+    assert ai_run["status"] == "passed"
+    assert ai_run["exitCode"] == 0
+    assert ai_run["processedCount"] == 6
+    assert ai_run["failedRepositoryCount"] == 0
+    assert ai_run["passedPreflightCount"] == 6
+    assert ai_run["aiDraftProposalCount"] == 6
+    assert ai_run["aiEnrichmentProposalCount"] == 6
+    assert ai_run["provider"] == {
+        "provider": "lm_studio",
+        "baseUrl": "http://127.0.0.1:1234",
+        "model": "openai/gpt-oss-20b",
+        "jsonRepairMaxAttempts": 1,
+        "promptTokens": 107251,
+        "completionTokens": 4005,
+        "totalTokens": 111256,
+        "rawPromptPersisted": False,
+        "rawResponsePersisted": False,
+        "chainOfThoughtPersisted": False,
+    }
+
+    repository_results = {item["repositoryId"]: item for item in payload["repositoryResults"]}
+    assert list(repository_results) == expected_ids
+    for repository_id in expected_ids:
+        assert repository_results[repository_id]["status"] == "passed"
+        assert repository_results[repository_id]["preflight"] == "passed"
+    assert repository_results["xyflow"]["interfaceIndex"] == "partial"
+    assert repository_results["xyflow"]["interfaceIndexDiagnosticCount"] == 29
+    assert repository_results["navigation-split-view"]["aiEnrichment"]["diagnosticCodes"] == [
+        "ai_json_repair_needed",
+    ]
+    assert (
+        "excluded_package_also_selected"
+        in (repository_results["docc2context"]["aiDraft"]["diagnosticCodes"])
+    )
+    assert (
+        "refined_summary_missing"
+        in (repository_results["flask"]["aiEnrichment"]["diagnosticCodes"])
+    )
+
+    assert payload["postRestoreDecision"] == {
+        "selected": "larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun",
+        "selectedReason": (
+            "same_scope_static_only_and_ai_enabled_gates_passed_after_operator_local_checkout_paths_were_restored"
+        ),
+        "checkoutBlockerResolved": True,
+        "staticGatePassed": True,
+        "aiEnabledGatePassed": True,
+        "approvedForLargerCuratedCorpusPlanning": True,
+        "registryAuthority": False,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+    }
+    for caveat in (
+        "xyflow.partial_public_interface_index",
+        "xyflow.operator_checkout_origin_fork_mismatch",
+        "navigation-split-view.aiEnrichment.ai_json_repair_needed",
+        "docc2context.aiDraft.excluded_package_also_selected",
+    ):
+        assert caveat in payload["remainingCaveats"]
+
+    assert payload["authorityBoundary"]["rerunEvidenceIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["approvesLargerCuratedCorpusPlanning"] is True
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
+    assert payload["authorityBoundary"]["seedsBaselines"] is False
+    assert payload["authorityBoundary"]["removesPreviewOnly"] is False
+    assert payload["authorityBoundary"]["aiOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["staticOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["rerunOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["targetedFollowUpOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["exitDecisionOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["adapterOutputAcceptedAsRegistryTruth"] is False
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["installsDependencies"] is False
+    assert payload["executionBoundary"]["invokesPackageManagers"] is False
+    assert payload["executionBoundary"]["executesHarvestedCode"] is False
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["enablesTrustedLocalAdapterExecution"] is False
+    assert payload["executionBoundary"]["rawPromptPersisted"] is False
+    assert payload["executionBoundary"]["rawProviderResponsePersisted"] is False
+    assert payload["executionBoundary"]["secretsPersisted"] is False
+    assert payload["executionBoundary"]["chainOfThoughtPersisted"] is False
+    assert payload["nextState"] == {
+        "nextTaskPointer": None,
+        "recommendedFollowUp": (
+            "Author the larger curated corpus planning phase from restored-checkout rerun evidence"
+        ),
+        "largerCuratedCorpusPlanningReconsiderationReady": True,
+        "phase50Complete": True,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Restored-Checkout Rerun Evidence",
+            "P50-T1",
+            "P49-T4 correctly recorded no larger corpus readiness",
+            "SpecHarvesterRestoredCheckoutRerunEvidence",
+            "spec-harvester.restored-checkout-rerun-evidence/v0",
+            "producer_restored_checkout_rerun_evidence_only",
+            "p50-t1-restored-checkout-rerun-evidence.example.json",
+            "p49-t4-docc2context-follow-up-exit-decision.example.json",
+            "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+            "openai/gpt-oss-20b",
+            "static-only",
+            "AI-enabled",
+            "AI draft proposals",
+            "AI enrichment proposals",
+            "111,256",
+            "larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun",
+            "partial_public_interface_index",
+            "operator_checkout_origin_fork_mismatch",
+            "ai_json_repair_needed",
+            "not registry acceptance",
+            "planning readiness",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "does not accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run adapters",
+            "enable trusted local adapter execution",
+            "AI output as registry truth",
+            "static output as registry truth",
+            "rerun output as registry truth",
+            "targeted follow-up output as registry truth",
+            "exit-decision output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "RESTORED_CHECKOUT_RERUN_EVIDENCE.md"),
+        (docc_root, "docs/RESTORED_CHECKOUT_RERUN_EVIDENCE.md"),
+        (docc_root, "<doc:RestoredCheckoutRerunEvidence>"),
+        (capabilities, "RESTORED_CHECKOUT_RERUN_EVIDENCE.md"),
+        (capabilities_docc, "RestoredCheckoutRerunEvidence"),
+        (roadmap, "RESTORED_CHECKOUT_RERUN_EVIDENCE.md"),
+        (roadmap_docc, "RestoredCheckoutRerunEvidence"),
+        (workplan, "`P50-T1` Record restored-checkout same-scope rerun evidence"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

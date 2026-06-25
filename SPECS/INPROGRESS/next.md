@@ -1,48 +1,55 @@
-# Next Task: P50-T1 Record Restored-Checkout Rerun Evidence
+# Next Task: None Selected After P50-T1
 
-**Status:** Selected
-**Branch:** `feature/P50-T1-record-restored-checkout-rerun-evidence`
+**Status:** Complete / Planning Reconsideration Ready
 **Phase:** Phase 50. Restored-Checkout Rerun Follow-Up
-**Task:** `P50-T1`
-**Last Archived:** `P49-T4` Record docc2context Follow-Up Exit Decision
-**Depends On:** `P49-T4` Record docc2context Follow-Up Exit Decision
+**Last Archived:** `P50-T1` Record Restored-Checkout Rerun Evidence
+**Decision:** `larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun`
 
-## Goal
+## Current State
 
-Record the restored-checkout same-scope rerun evidence after the six
-operator-local checkout paths from the P46 manifest were restored.
+P50-T1 recorded restored-checkout rerun evidence after the operator-local paths
+expected by the P46 manifest were restored.
 
-## Context
-
-P49-T4 selected:
+The restored same-scope rerun selected:
 
 ```text
-record_no_larger_corpus_readiness_due_to_operator_local_checkout_blocker
+larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun
 ```
 
-That decision was correct for the evidence then available: P49-T3 could not
-reach static-only or AI-enabled execution because all six expected checkout
-paths were missing.
+This updates the current planning state after P49-T4. P49-T4 remains correct
+for its original evidence: at that time all six expected checkouts were
+missing, so larger corpus readiness could not be selected.
 
-The operator-local paths are now restored through symlinks:
+## Rerun Evidence
 
-- `/Users/egor/Development/GitHub/0AL/flask`
-- `/Users/egor/Development/GitHub/0AL/gin`
-- `/Users/egor/Development/GitHub/0AL/xyflow`
-- `/Users/egor/Development/GitHub/0AL/cupertino`
-- `/Users/egor/Development/GitHub/0AL/NavigationSplitView`
-- `/Users/egor/Development/GitHub/0AL/docc2context`
+The rerun used the same six P46 repositories:
 
-The restored checkouts point to the pinned repositories under
-`/Users/egor/Development/GitHub/` and match the P46 manifest revisions.
+- `flask`
+- `gin`
+- `xyflow`
+- `cupertino`
+- `navigation-split-view`
+- `docc2context`
 
-The local rerun evidence is under:
+The restored expected paths are operator-local symlinks under:
+
+```text
+/Users/egor/Development/GitHub/0AL/
+```
+
+They point to pinned checkouts under:
+
+```text
+/Users/egor/Development/GitHub/
+```
+
+The run evidence is under:
 
 ```text
 /tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309
 ```
 
-Observed rerun result:
+Observed result:
 
 - static-only gate: `passed`
 - AI-enabled gate: `passed`
@@ -53,38 +60,39 @@ Observed rerun result:
 - AI enrichment proposals: `6`
 - raw prompts, raw provider responses, and chain-of-thought: not persisted
 
-## Scope
+## Remaining Caveats
 
-- Add durable P50-T1 restored-checkout rerun evidence.
-- Document static-only-before-AI ordering and same-scope P46 manifest reuse.
-- Record remaining warning/caveat evidence without treating warnings as
-  registry truth.
-- Update the current next-state decision from checkout-blocked to
-  larger-corpus planning reconsideration-ready.
+The rerun passed, but warnings remain review evidence:
 
-## Expected Deliverables
+- AI draft warnings: Flask, Gin, Cupertino, NavigationSplitView, docc2context.
+- AI enrichment warnings: Flask, xyflow, NavigationSplitView.
+- xyflow still has `partial_public_interface_index` and
+  `operator_checkout_origin_fork_mismatch` caveats.
 
-- Durable P50-T1 restored-checkout rerun evidence fixture.
-- GitHub and DocC documentation for the restored-checkout rerun.
-- Workplan/next update to the selected post-rerun state.
-- Focused docs-contract tests.
-- Validation report and archive artifacts for P50-T1.
+## Planning Decision
+
+Larger curated corpus planning is now reconsideration-ready from restored
+same-scope rerun evidence.
+
+This is planning readiness only. It is not package acceptance, relation
+acceptance, registry publication, baseline seeding, `preview_only` removal, or
+maintainer approval.
+
+## Practical Follow-Up
+
+No Workplan task is currently selected. The practical follow-up is to author
+the larger curated corpus planning phase from the restored-checkout rerun
+evidence, while preserving the remaining warnings and xyflow caveats.
 
 ## Boundaries
 
+- Do not treat P50-T1 as registry authority.
+- Do not accept packages or relations.
+- Do not publish registry metadata, seed baselines, or remove `preview_only`.
 - Do not clone or fetch repositories.
 - Do not install dependencies.
 - Do not invoke package managers.
 - Do not execute harvested code.
 - Do not run adapters or enable trusted local adapter execution.
-- Do not accept packages or relations.
-- Do not publish registry metadata, seed baselines, or remove `preview_only`.
 - Do not treat AI output, static output, rerun output, targeted follow-up
   output, exit-decision output, or adapter output as registry truth.
-
-## Validation Expectations
-
-- Validate the durable JSON fixture with `python3 -m json.tool`.
-- Run focused docs-contract tests for P50-T1 and current next task.
-- Run formatting, lint, coverage, Swift manifest, Swift docs build, and
-  whitespace checks as required by Flow.

@@ -336,6 +336,9 @@ Published DocC site:
 86. [`DOCC2CONTEXT_FOLLOW_UP_EXIT_DECISION.md`](DOCC2CONTEXT_FOLLOW_UP_EXIT_DECISION.md):
    P49-T4 exit decision recording no larger corpus readiness because the
    same-scope bounded rerun gate did not reach static-only or AI execution
+87. [`RESTORED_CHECKOUT_RERUN_EVIDENCE.md`](RESTORED_CHECKOUT_RERUN_EVIDENCE.md):
+   P50-T1 restored-checkout rerun evidence showing the same-scope static-only
+   and AI-enabled gates pass after operator-local checkout paths are restored
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

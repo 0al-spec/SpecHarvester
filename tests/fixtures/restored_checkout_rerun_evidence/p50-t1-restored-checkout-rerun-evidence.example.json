@@ -1,0 +1,305 @@
+{
+  "apiVersion": "spec-harvester.restored-checkout-rerun-evidence/v0",
+  "kind": "SpecHarvesterRestoredCheckoutRerunEvidence",
+  "authority": "producer_restored_checkout_rerun_evidence_only",
+  "phase": "P50",
+  "task": "P50-T1",
+  "createdAt": "2026-06-25T09:09:29+03:00",
+  "sourceArtifacts": {
+    "p49ExitDecision": {
+      "path": "tests/fixtures/docc2context_follow_up_exit_decision/p49-t4-docc2context-follow-up-exit-decision.example.json",
+      "digest": "sha256:c01def13745cb0fe35925ee15a0fe5d4b6db0b5ebc9ba938b5b32324142bda53",
+      "apiVersion": "spec-harvester.docc2context-follow-up-exit-decision/v0",
+      "kind": "SpecHarvesterDocc2contextFollowUpExitDecision",
+      "authority": "producer_docc2context_follow_up_exit_decision_only"
+    },
+    "p46SourceManifest": {
+      "path": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+      "digest": "sha256:b00a59837c64477819e01d5f97845ab8379cbe909ae464d2f1faee37e65c2f61"
+    },
+    "staticOnlyRunReport": {
+      "path": "/tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309/output-static/autonomous-candidate-batch-report.json",
+      "digest": "sha256:cc1a51ab0e033700ad5813b85bae4d74a79ba1efcd9bbd2eb6237a50bedbd988",
+      "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+      "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+      "authority": "producer_preview_evidence_only"
+    },
+    "aiEnabledRunReport": {
+      "path": "/tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309/output-ai/autonomous-candidate-batch-report.json",
+      "digest": "sha256:30d69b30794886df2753e2549dfff1ef00a05edacd92b3f0040eab4df0d9d3a6",
+      "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+      "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+      "authority": "producer_preview_evidence_only"
+    }
+  },
+  "targetScope": {
+    "sourceScope": "same_six_repository_bounded_pilot",
+    "sourceManifest": "inputs/p46-bounded-popular-library-pilot/repositories.yml",
+    "repositoryIds": [
+      "flask",
+      "gin",
+      "xyflow",
+      "cupertino",
+      "navigation-split-view",
+      "docc2context"
+    ],
+    "expandedCorpus": false
+  },
+  "restoredCheckouts": [
+    {
+      "repositoryId": "flask",
+      "expectedPath": "/Users/egor/Development/GitHub/0AL/flask",
+      "targetPath": "/Users/egor/Development/GitHub/flask",
+      "linkType": "symlink",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "matchesManifestRevision": true
+    },
+    {
+      "repositoryId": "gin",
+      "expectedPath": "/Users/egor/Development/GitHub/0AL/gin",
+      "targetPath": "/Users/egor/Development/GitHub/gin",
+      "linkType": "symlink",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "matchesManifestRevision": true
+    },
+    {
+      "repositoryId": "xyflow",
+      "expectedPath": "/Users/egor/Development/GitHub/0AL/xyflow",
+      "targetPath": "/Users/egor/Development/GitHub/xyflow",
+      "linkType": "symlink",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "matchesManifestRevision": true,
+      "originCaveat": "git@github.com:SoundBlaster/xyflow.git"
+    },
+    {
+      "repositoryId": "cupertino",
+      "expectedPath": "/Users/egor/Development/GitHub/0AL/cupertino",
+      "targetPath": "/Users/egor/Development/GitHub/cupertino",
+      "linkType": "symlink",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "matchesManifestRevision": true
+    },
+    {
+      "repositoryId": "navigation-split-view",
+      "expectedPath": "/Users/egor/Development/GitHub/0AL/NavigationSplitView",
+      "targetPath": "/Users/egor/Development/GitHub/NavigationSplitView",
+      "linkType": "symlink",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "matchesManifestRevision": true
+    },
+    {
+      "repositoryId": "docc2context",
+      "expectedPath": "/Users/egor/Development/GitHub/0AL/docc2context",
+      "targetPath": "/Users/egor/Development/GitHub/docc2context",
+      "linkType": "symlink",
+      "revision": "a2babcc4910c87bbd1b65f9a4221097f5ae4b753",
+      "matchesManifestRevision": true
+    }
+  ],
+  "executionOrder": [
+    "restore_operator_local_checkout_paths",
+    "verify_manifest_revisions",
+    "run_static_only_gate",
+    "run_ai_enabled_gate",
+    "record_post_restore_rerun_evidence"
+  ],
+  "staticOnlyRun": {
+    "command": "PYTHONPATH=src python3 -m spec_harvester autonomous-candidate-batch inputs/p46-bounded-popular-library-pilot --out /tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309/output-static --skip-ai --repository-profile-selection auto",
+    "status": "passed",
+    "exitCode": 0,
+    "processedCount": 6,
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 6,
+    "aiDraftProposalCount": 0,
+    "aiEnrichmentProposalCount": 0,
+    "repositoryProfileSelectedCount": 4,
+    "repositoryProfileFallbackCount": 2
+  },
+  "aiEnabledRun": {
+    "command": "PYTHONPATH=src python3 -m spec_harvester autonomous-candidate-batch inputs/p46-bounded-popular-library-pilot --out /tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309/output-ai --repository-profile-selection auto --lm-studio-base-url http://127.0.0.1:1234 --lm-studio-model openai/gpt-oss-20b --json-repair-max-attempts 1",
+    "status": "passed",
+    "exitCode": 0,
+    "processedCount": 6,
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 6,
+    "aiDraftProposalCount": 6,
+    "aiEnrichmentProposalCount": 6,
+    "provider": {
+      "provider": "lm_studio",
+      "baseUrl": "http://127.0.0.1:1234",
+      "model": "openai/gpt-oss-20b",
+      "jsonRepairMaxAttempts": 1,
+      "promptTokens": 107251,
+      "completionTokens": 4005,
+      "totalTokens": 111256,
+      "rawPromptPersisted": false,
+      "rawResponsePersisted": false,
+      "chainOfThoughtPersisted": false
+    }
+  },
+  "repositoryResults": [
+    {
+      "repositoryId": "flask",
+      "status": "passed",
+      "preflight": "passed",
+      "interfaceIndex": "complete",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ]
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "refined_summary_missing"
+        ]
+      }
+    },
+    {
+      "repositoryId": "gin",
+      "status": "passed",
+      "preflight": "passed",
+      "interfaceIndex": "complete",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "selected_member_role_unknown"
+        ]
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": []
+      }
+    },
+    {
+      "repositoryId": "xyflow",
+      "status": "passed",
+      "preflight": "passed",
+      "interfaceIndex": "partial",
+      "interfaceIndexDiagnosticCount": 29,
+      "aiDraft": {
+        "status": "completed",
+        "diagnosticCodes": []
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "refined_summary_missing"
+        ]
+      }
+    },
+    {
+      "repositoryId": "cupertino",
+      "status": "passed",
+      "preflight": "passed",
+      "interfaceIndex": "complete",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ]
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": []
+      }
+    },
+    {
+      "repositoryId": "navigation-split-view",
+      "status": "passed",
+      "preflight": "passed",
+      "interfaceIndex": "complete",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "selected_member_role_unknown"
+        ]
+      },
+      "aiEnrichment": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "ai_json_repair_needed"
+        ]
+      }
+    },
+    {
+      "repositoryId": "docc2context",
+      "status": "passed",
+      "preflight": "passed",
+      "interfaceIndex": "complete",
+      "aiDraft": {
+        "status": "warning",
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ]
+      },
+      "aiEnrichment": {
+        "status": "completed",
+        "diagnosticCodes": []
+      }
+    }
+  ],
+  "postRestoreDecision": {
+    "selected": "larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun",
+    "selectedReason": "same_scope_static_only_and_ai_enabled_gates_passed_after_operator_local_checkout_paths_were_restored",
+    "checkoutBlockerResolved": true,
+    "staticGatePassed": true,
+    "aiEnabledGatePassed": true,
+    "approvedForLargerCuratedCorpusPlanning": true,
+    "registryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false
+  },
+  "remainingCaveats": [
+    "flask.aiDraft.excluded_package_also_selected",
+    "flask.aiDraft.selected_member_role_unknown",
+    "flask.aiEnrichment.refined_summary_missing",
+    "gin.aiDraft.selected_member_role_unknown",
+    "xyflow.partial_public_interface_index",
+    "xyflow.operator_checkout_origin_fork_mismatch",
+    "xyflow.aiEnrichment.refined_summary_missing",
+    "cupertino.aiDraft.excluded_package_also_selected",
+    "cupertino.aiDraft.selected_member_role_unknown",
+    "navigation-split-view.aiDraft.selected_member_role_unknown",
+    "navigation-split-view.aiEnrichment.ai_json_repair_needed",
+    "docc2context.aiDraft.excluded_package_also_selected",
+    "docc2context.aiDraft.selected_member_role_unknown"
+  ],
+  "authorityBoundary": {
+    "rerunEvidenceIsRegistryAuthority": false,
+    "approvesLargerCuratedCorpusPlanning": true,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "rerunOutputAcceptedAsRegistryTruth": false,
+    "targetedFollowUpOutputAcceptedAsRegistryTruth": false,
+    "exitDecisionOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nextState": {
+    "nextTaskPointer": null,
+    "recommendedFollowUp": "Author the larger curated corpus planning phase from restored-checkout rerun evidence",
+    "largerCuratedCorpusPlanningReconsiderationReady": true,
+    "phase50Complete": true
+  }
+}

@@ -2371,7 +2371,7 @@ Acceptance:
 
 ## Phase 50. Restored-Checkout Rerun Follow-Up
 
-- [ ] `P50-T1` Record restored-checkout same-scope rerun evidence after the
+- [x] `P50-T1` Record restored-checkout same-scope rerun evidence after the
   operator-local checkout paths were restored, updating the current
   larger-corpus planning decision without treating rerun output as registry
   truth.
