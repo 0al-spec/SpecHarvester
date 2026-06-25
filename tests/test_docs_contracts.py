@@ -47,9 +47,7 @@ def assert_current_next_task(next_text: str) -> None:
         assert "`P51-T8` Larger Curated Corpus Exit Decision" in next_text
         assert "p51-t8-larger-curated-corpus-exit-decision.example.json" in next_text
         assert "SpecHarvesterLargerCuratedCorpusExitDecision" in next_text
-        assert "complete_phase_51_with_author_review_evidence_no_further_expansion" in (
-            next_text
-        )
+        assert "complete_phase_51_with_author_review_evidence_no_further_expansion" in (next_text)
         assert "Phase 51 is complete" in next_text
         assert "No Workplan task is currently selected" in next_text
         assert "further expansion is not approved" in normalized
@@ -36787,9 +36785,10 @@ def test_larger_curated_corpus_exit_decision_records_p51_t8_result() -> None:
         "hyperprompt.single_package_deterministic_fallback_applied",
     }
     assert all(item["blocksRegistryPromotion"] is True for item in caveats.values())
-    assert caveats["hyperprompt.single_package_deterministic_fallback_applied"][
-        "nonBlockingReason"
-    ] == "deterministic_single_package_fallback"
+    assert (
+        caveats["hyperprompt.single_package_deterministic_fallback_applied"]["nonBlockingReason"]
+        == "deterministic_single_package_fallback"
+    )
     assert payload["registryPromotionBlockers"] == [
         "xyflow.partial_public_interface_index",
         "xyflow.operator_checkout_origin_fork_mismatch",
@@ -36824,15 +36823,13 @@ def test_larger_curated_corpus_exit_decision_records_p51_t8_result() -> None:
         {
             "alternative": "stop_on_documented_blocker",
             "rejectedReason": (
-                "no_hard_runtime_or_ai_draft_blocker_remains_after_p51_t6_hyperprompt_"
-                "fallback"
+                "no_hard_runtime_or_ai_draft_blocker_remains_after_p51_t6_hyperprompt_fallback"
             ),
         },
         {
             "alternative": "approve_further_larger_corpus_expansion",
             "rejectedReason": (
-                "p51_t7_keeps_five_registry_promotion_blockers_and_no_phase_52_scope_"
-                "is_selected"
+                "p51_t7_keeps_five_registry_promotion_blockers_and_no_phase_52_scope_is_selected"
             ),
         },
     ]
