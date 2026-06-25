@@ -211,6 +211,10 @@ larger corpus readiness because P49-T3 did not reach static-only or AI-enabled
 execution, keeps larger corpus planning blocked, and requires restoring the
 same six operator-local checkouts before any P49-T3 rerun can reconsider
 readiness.
+P50-T1 is recorded in <doc:RestoredCheckoutRerunEvidence>. It restores the
+same operator-local checkout paths through symlinks, runs the same
+six-repository scope in static-only then AI-enabled order, and records both
+gates as passed while preserving warning caveats and non-authority boundaries.
 
 ### Selected Candidate SpecPM Intake Handoff
 

@@ -1,26 +1,28 @@
-# Next Task: None Selected After P49-T4
+# Next Task: None Selected After P50-T1
 
-**Status:** Complete / Blocked for Expansion
-**Phase:** Phase 49. docc2context AI Draft Targeted Follow-Up
-**Last Archived:** `P49-T4` Record docc2context Follow-Up Exit Decision
-**Decision:** `record_no_larger_corpus_readiness_due_to_operator_local_checkout_blocker`
+**Status:** Complete / Planning Reconsideration Ready
+**Phase:** Phase 50. Restored-Checkout Rerun Follow-Up
+**Last Archived:** `P50-T1` Record Restored-Checkout Rerun Evidence
+**Decision:** `larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun`
 
 ## Current State
 
-P49-T4 recorded the docc2context follow-up exit decision:
+P50-T1 recorded restored-checkout rerun evidence after the operator-local paths
+expected by the P46 manifest were restored.
+
+The restored same-scope rerun selected:
 
 ```text
-record_no_larger_corpus_readiness_due_to_operator_local_checkout_blocker
+larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun
 ```
 
-The decision uses P49-T3 evidence:
+This updates the current planning state after P49-T4. P49-T4 remains correct
+for its original evidence: at that time all six expected checkouts were
+missing, so larger corpus readiness could not be selected.
 
-```text
-same_scope_bounded_rerun_gate_blocked_operator_local_checkouts_missing
-```
+## Rerun Evidence
 
-P49-T3 did not run the static-only gate or the AI-enabled gate because all six
-P46 operator-local checkout paths were absent:
+The rerun used the same six P46 repositories:
 
 - `flask`
 - `gin`
@@ -29,55 +31,68 @@ P46 operator-local checkout paths were absent:
 - `navigation-split-view`
 - `docc2context`
 
-LM Studio was available with `openai/gpt-oss-20b`, but AI execution was not
-reached because static-only-before-AI ordering stopped at checkout preflight.
-
-P49-T2 remains carried forward as:
+The restored expected paths are operator-local symlinks under:
 
 ```text
-docc2context.aiDraft_warning_explicitly_non_blocking_for_p49_t3
-excluded_package_also_selected
+/Users/egor/Development/GitHub/0AL/
 ```
 
-The P48 warning IDs and xyflow caveats remain visible:
+They point to pinned checkouts under:
 
-- `flask.aiDraft`
-- `flask.aiEnrichment`
-- `gin.aiDraft`
-- `cupertino.aiDraft`
-- `navigation-split-view.aiDraft`
-- `xyflow.partial_public_interface_index`
-- `xyflow.operator_checkout_origin_fork_mismatch`
+```text
+/Users/egor/Development/GitHub/
+```
 
-## Expansion Decision
+The run evidence is under:
 
-Larger curated corpus planning remains blocked.
+```text
+/tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309
+```
 
-P49-T4 does not select readiness for a larger curated corpus because the
-same-scope bounded rerun gate did not reach either static-only execution or
-AI-enabled execution.
+Observed result:
 
-Readiness can be reconsidered only after:
+- static-only gate: `passed`
+- AI-enabled gate: `passed`
+- processed repositories: `6`
+- failed repositories: `0`
+- passed preflight: `6`
+- AI draft proposals: `6`
+- AI enrichment proposals: `6`
+- raw prompts, raw provider responses, and chain-of-thought: not persisted
 
-- the same six operator-local checkouts are restored;
-- P49-T3 is rerun over the same six-repository scope;
-- a new or revisited exit decision records a successful same-scope rerun.
+## Remaining Caveats
+
+The rerun passed, but warnings remain review evidence:
+
+- AI draft warnings: Flask, Gin, Cupertino, NavigationSplitView, docc2context.
+- AI enrichment warnings: Flask, xyflow, NavigationSplitView.
+- xyflow still has `partial_public_interface_index` and
+  `operator_checkout_origin_fork_mismatch` caveats.
+
+## Planning Decision
+
+Larger curated corpus planning is now reconsideration-ready from restored
+same-scope rerun evidence.
+
+This is planning readiness only. It is not package acceptance, relation
+acceptance, registry publication, baseline seeding, `preview_only` removal, or
+maintainer approval.
 
 ## Practical Follow-Up
 
-No Workplan task is currently selected. The practical follow-up is operator
-action: restore the same six operator-local checkouts before rerunning P49-T3,
-or author a new follow-up phase if the project wants a different path.
+No Workplan task is currently selected. The practical follow-up is to author
+the larger curated corpus planning phase from the restored-checkout rerun
+evidence, while preserving the remaining warnings and xyflow caveats.
 
 ## Boundaries
 
-- Do not approve a larger curated corpus from the current P49 evidence.
-- Do not run another bounded rerun without restoring the operator-local
-  checkouts first.
-- Do not run AI.
-- Do not run adapters or enable trusted local adapter execution.
-- Do not clone or fetch repositories.
+- Do not treat P50-T1 as registry authority.
 - Do not accept packages or relations.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
+- Do not clone or fetch repositories.
+- Do not install dependencies.
+- Do not invoke package managers.
+- Do not execute harvested code.
+- Do not run adapters or enable trusted local adapter execution.
 - Do not treat AI output, static output, rerun output, targeted follow-up
   output, exit-decision output, or adapter output as registry truth.

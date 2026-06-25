@@ -2368,3 +2368,35 @@ Acceptance:
   expansion.
 - P49-T4 must explicitly choose proceed, another targeted pass, or stop on a
   documented blocker.
+
+## Phase 50. Restored-Checkout Rerun Follow-Up
+
+- [x] `P50-T1` Record restored-checkout same-scope rerun evidence after the
+  operator-local checkout paths were restored, updating the current
+  larger-corpus planning decision without treating rerun output as registry
+  truth.
+
+Motivation:
+
+- P49-T4 correctly stopped larger curated corpus readiness because P49-T3 could
+  not reach static-only or AI-enabled execution while all six operator-local
+  checkouts were missing.
+- The missing checkout paths were later restored through operator-local
+  symlinks to the pinned repositories, allowing the same P46 scope to rerun.
+
+Goal:
+
+- Record the restored-checkout rerun result durably and decide whether larger
+  curated corpus planning can be reconsidered from the new evidence.
+
+Acceptance:
+
+- P50-T1 must preserve the same six-repository bounded pilot scope.
+- P50-T1 must record static-only-before-AI ordering, restored checkout
+  provenance, static-only gate result, AI-enabled gate result, warning/caveat
+  summary, and no-authority boundaries.
+- P50-T1 must not accept packages or relations, publish registry metadata, seed
+  baselines, remove `preview_only`, clone/fetch repositories, install
+  dependencies, invoke package managers, execute harvested code, or treat
+  static, AI, rerun, follow-up, exit-decision, or adapter output as registry
+  truth.
