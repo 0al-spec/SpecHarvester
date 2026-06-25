@@ -57,6 +57,35 @@ Result:
 188 passed
 ```
 
+Post-archive focused validation:
+
+```bash
+PYTHONPATH=src pytest tests/test_docs_contracts.py -k larger_curated_corpus_exit_decision
+```
+
+Initial post-archive result: failed because `next.md` used `Further expansion`
+with uppercase `F` while the no-next-state contract expected the literal
+lowercase phrase `further expansion is not approved`. The text was corrected
+without changing the decision semantics.
+
+Final post-archive result:
+
+```text
+1 passed, 187 deselected
+```
+
+Post-archive full validation:
+
+```bash
+PYTHONPATH=src pytest tests/test_docs_contracts.py
+```
+
+Result:
+
+```text
+188 passed
+```
+
 ## Verified
 
 - `SpecHarvesterLargerCuratedCorpusExitDecision` fixture identity.
