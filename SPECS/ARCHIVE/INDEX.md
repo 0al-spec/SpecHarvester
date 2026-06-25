@@ -843,3 +843,4 @@
 | 2026-06-25 | P49-T4 | Archived Record docc2context Follow-Up Exit Decision (PASS) |
 | 2026-06-25 | P49-T4 | Archived REVIEW_p49_t4_docc2context_follow_up_exit_decision report |
 | 2026-06-25 | P50-T1 | Archived Record Restored-Checkout Rerun Evidence (PASS) |
+| 2026-06-25 | P50-T1 | Archived REVIEW_p50_t1_restored_checkout_rerun_evidence report |
