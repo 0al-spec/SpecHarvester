@@ -38,7 +38,40 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    if "# Next Task: P51-T6 Larger Curated Corpus Output Triage" in (next_text):
+    if "# Next Task: P51-T7 Larger Curated Corpus Output Triage" in (next_text):
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun" in (
+            next_text
+        )
+        assert "**Task:** `P51-T7`" in next_text
+        assert "`P51-T6` Hyperprompt AI Draft Single-Package Fallback" in next_text
+        assert "larger curated corpus output triage" in normalized
+        assert "p51-t6-hyperprompt-ai-draft-single-package-fallback.example.json" in next_text
+        assert "hyperprompt.aiDraft" in next_text
+        assert "single_package_deterministic_fallback_applied" in next_text
+        assert "ai_json_repair_exhausted" in next_text
+        assert "stop_for_author_review" in next_text
+        assert "proposal-only" in normalized
+        assert "raw prompt" in normalized
+        assert "raw provider response" in normalized
+        assert "chain-of-thought" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata" in next_text
+        assert "Do not seed baselines" in next_text
+        assert "Do not remove `preview_only`" in next_text
+        assert "Do not persist raw prompts" in next_text
+        assert "Do not persist raw provider responses" in next_text
+        assert "Do not persist secrets" in next_text
+        assert "Do not persist chain-of-thought" in next_text
+        assert "Do not clone or fetch repositories" in next_text
+        assert "Do not install dependencies" in next_text
+        assert "Do not invoke package managers" in next_text
+        assert "Do not execute harvested code" in next_text
+        assert "Do not run adapters or enable trusted local adapter execution" in next_text
+        return
+
+    if "# Next Task: P51-T6 Hyperprompt AI Draft Single-Package Fallback" in (next_text):
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun" in (
@@ -46,27 +79,19 @@ def assert_current_next_task(next_text: str) -> None:
         )
         assert "**Task:** `P51-T6`" in next_text
         assert "`P51-T5` Larger Curated Corpus AI-Enabled Proposal-Only Gate" in next_text
-        assert "larger curated corpus output triage" in normalized
-        assert "p51-t5-larger-curated-corpus-ai-enabled-gate.example.json" in next_text
-        assert "AI-enabled batch ended `failed`" in next_text
-        assert "processed repositories: `12`" in next_text
-        assert "failed repositories: `1`" in next_text
+        assert "reproducible `hyperprompt.aiDraft` failure" in next_text
+        assert "targeted Hyperprompt rerun" in next_text
+        assert "exit code: 1" in next_text
         assert "hyperprompt.aiDraft" in next_text
         assert "ai_json_repair_exhausted" in next_text
         assert "package_set_subject_metadata_missing" in next_text
-        assert "AI draft proposals: `11`" in next_text
-        assert "AI enrichment proposals: `12`" in next_text
-        assert "AI-enriched preview applied packages: `8`" in next_text
+        assert "deterministic producer-side fallback" in normalized
+        assert "single-package workspace" in normalized
+        assert "Run a targeted `hyperprompt` AI-enabled rerun" in next_text
         assert "proposal-only" in normalized
         assert "raw prompt" in normalized
         assert "raw provider response" in normalized
         assert "chain-of-thought" in next_text
-        assert "xyflow.partial_public_interface_index" in next_text
-        assert "xyflow.operator_checkout_origin_fork_mismatch" in next_text
-        assert "docc2context.source_checkout_had_untracked_doccarchive" in next_text
-        assert "hyperprompt.ai_draft_failed_after_json_repair" in next_text
-        assert "Do not rerun the larger corpus in P51-T6" in next_text
-        assert "Do not run AI in P51-T6" in next_text
         assert "Do not accept packages or relations" in next_text
         assert "Do not publish registry metadata" in next_text
         assert "Do not seed baselines" in next_text
@@ -34798,7 +34823,10 @@ def test_larger_curated_corpus_planning_phase_records_p51_t1_plan() -> None:
             "p51-t1-larger-curated-corpus-planning-phase.example.json",
             "p50-t1-restored-checkout-rerun-evidence.example.json",
             "larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun",
-            "source plan -> readiness -> static-only -> AI-enabled -> triage -> exit decision",
+            (
+                "source plan -> readiness -> static-only -> AI-enabled -> "
+                "targeted repair -> triage -> exit decision"
+            ),
             "operator-selected sources only",
             "pinned local checkouts required",
             "no registry search crawl",
@@ -34846,7 +34874,8 @@ def test_larger_curated_corpus_planning_phase_records_p51_t1_plan() -> None:
         (roadmap_docc, "LargerCuratedCorpusPlanningPhase"),
         (workplan, "`P51-T1` Plan the larger curated corpus phase"),
         (workplan, "`P51-T2` Author the larger curated corpus source plan"),
-        (workplan, "`P51-T7` Record the larger curated corpus exit decision"),
+        (workplan, "`P51-T7` Triage larger curated corpus output"),
+        (workplan, "`P51-T8` Record the larger curated corpus exit decision"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
@@ -35997,7 +36026,7 @@ def test_larger_curated_corpus_ai_enabled_gate_records_p51_t5_run() -> None:
             "xyflow.partial_public_interface_index",
             "xyflow.operator_checkout_origin_fork_mismatch",
             "docc2context.source_checkout_had_untracked_doccarchive",
-            "P51-T6 output triage is allowed",
+            "P51-T6 targeted repair is allowed",
         ):
             assert required in text or required in normalized, (
                 f"Required term {required!r} not found in {path}"
@@ -36033,7 +36062,180 @@ def test_larger_curated_corpus_ai_enabled_gate_records_p51_t5_run() -> None:
         (roadmap, "LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md"),
         (roadmap_docc, "LargerCuratedCorpusAIEnabledGate"),
         (workplan, "`P51-T5` Run the larger curated corpus AI-enabled proposal-only gate"),
-        (workplan, "`P51-T6` Triage larger curated corpus output"),
+        (workplan, "`P51-T6` Repair the reproducible `hyperprompt.aiDraft`"),
+        (workplan, "`P51-T7` Triage larger curated corpus output"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_hyperprompt_ai_draft_single_package_fallback_records_p51_t6_repair() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "hyperprompt_ai_draft_single_package_fallback"
+        / "p51-t6-hyperprompt-ai-draft-single-package-fallback.example.json"
+    )
+    github_doc = ROOT / "docs" / "HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "HyperpromptAIDraftSinglePackageFallback.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.hyperprompt-ai-draft-single-package-fallback/v0"
+    assert payload["kind"] == "SpecHarvesterHyperpromptAIDraftSinglePackageFallback"
+    assert payload["authority"] == "producer_ai_enabled_proposal_evidence_only"
+    assert payload["phase"] == "P51"
+    assert payload["task"] == "P51-T6"
+
+    assert payload["problem"] == {
+        "reproducedBy": "/tmp/specharvester-p51-t5-hyperprompt-rerun-20260625T130432Z",
+        "previousExitCode": 1,
+        "previousRepositoryStatus": "failed",
+        "previousAiDraftStatus": "failed",
+        "previousDiagnosticCodes": [
+            "ai_json_repair_exhausted",
+            "ai_json_repair_needed",
+            "package_set_subject_metadata_missing",
+        ],
+    }
+
+    run = payload["run"]
+    assert run["mode"] == "targeted_ai_enabled_proposal_only"
+    assert run["exitCode"] == 0
+    assert run["status"] == "passed"
+    assert "--select hyperprompt" in run["command"]
+    assert "--json-repair-max-attempts 1" in run["command"]
+    assert "--apply-ai-enrichment" in run["command"]
+
+    assert payload["batchReport"]["status"] == "passed"
+    assert payload["batchReport"]["processedCount"] == 1
+    assert payload["batchReport"]["failedRepositoryCount"] == 0
+    assert payload["batchReport"]["digest"].startswith("sha256:")
+    assert payload["validationReport"]["digest"].startswith("sha256:")
+
+    proposal = payload["proposal"]
+    assert proposal["status"] == "warning"
+    assert proposal["authority"] == "proposal_only_not_registry_acceptance"
+    assert proposal["packageSet"]["packageId"] == "hyperprompt.workspace"
+    assert [item["packageId"] for item in proposal["selectedMembers"]] == ["hyperprompt.core"]
+    assert proposal["relations"] == []
+    assert proposal["diagnosticCodes"] == [
+        "ai_json_repair_needed",
+        "ai_json_repair_exhausted",
+        "package_set_subject_metadata_missing",
+        "single_package_deterministic_fallback_applied",
+    ]
+    diagnostics = {item["code"]: item for item in proposal["diagnostics"]}
+    assert diagnostics["ai_json_repair_exhausted"]["severity"] == "warning"
+    assert (
+        diagnostics["ai_json_repair_exhausted"]["nonBlockingReason"]
+        == "deterministic_single_package_fallback"
+    )
+    assert diagnostics["package_set_subject_metadata_missing"]["severity"] == "warning"
+    assert diagnostics["single_package_deterministic_fallback_applied"]["severity"] == "warning"
+    stop_policy = proposal["stopPolicySummary"]
+    assert stop_policy["status"] == "author_ready_draft"
+    assert stop_policy["decision"] == "stop_for_author_review"
+    assert stop_policy["reason"] == "single_package_deterministic_fallback_non_blocking"
+    assert stop_policy["subjectCount"] == 1
+
+    repository = payload["repository"]
+    assert repository["id"] == "hyperprompt"
+    assert repository["status"] == "passed"
+    assert repository["preflightStatus"] == "passed"
+    assert repository["aiDraft"]["status"] == "warning"
+    assert repository["aiDraft"]["errorCount"] == 0
+    assert repository["aiDraft"]["selectedMemberCount"] == 1
+    assert repository["aiDraft"]["stopPolicyDecision"] == "stop_for_author_review"
+    assert repository["aiEnrichment"]["status"] == "completed"
+    assert repository["aiEnrichedPreview"]["status"] == "prepared"
+    assert payload["summary"]["failedRepositoryCount"] == 0
+    assert payload["summary"]["aiDraftProposalCount"] == 1
+
+    assert payload["privacyBoundary"] == {
+        "rawPromptsPersisted": False,
+        "rawModelResponsesPersisted": False,
+        "rawProviderResponsesPersisted": False,
+        "chainOfThoughtPersisted": False,
+        "secretsIncluded": False,
+    }
+    assert payload["authorityBoundary"] == {
+        "proposalOnly": True,
+        "registryTruthChanged": False,
+        "packagesAccepted": False,
+        "relationsAccepted": False,
+        "previewOnlyRemoved": False,
+        "registryPublished": False,
+    }
+    assert payload["nextState"] == {
+        "nextTask": "P51-T7",
+        "nextTaskName": "Larger Curated Corpus Output Triage",
+        "hyperpromptDisposition": "author_reviewable_with_single_package_fallback_warning",
+        "previousHardBlockerResolved": True,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Hyperprompt AI Draft Single-Package Fallback",
+            "P51-T6",
+            "hyperprompt.aiDraft",
+            "p51-t6-hyperprompt-ai-draft-single-package-fallback.example.json",
+            "Exit code | `0`",
+            "Batch status | `passed`",
+            "AI draft status | `warning`",
+            "ai_json_repair_exhausted",
+            "package_set_subject_metadata_missing",
+            "single_package_deterministic_fallback_applied",
+            "deterministic_single_package_fallback",
+            "P51-T7",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "proposal-only",
+            "multi-package malformed AI draft output remains a hard failure",
+            "No registry truth changes",
+            "package acceptance",
+            "relation acceptance",
+            "raw prompt",
+            "raw provider response",
+            "secrets",
+            "chain-of-thought",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md"),
+        (docc_root, "docs/HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md"),
+        (docc_root, "<doc:HyperpromptAIDraftSinglePackageFallback>"),
+        (capabilities, "HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md"),
+        (capabilities_docc, "HyperpromptAIDraftSinglePackageFallback"),
+        (roadmap, "HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md"),
+        (roadmap_docc, "HyperpromptAIDraftSinglePackageFallback"),
+        (workplan, "`P51-T6` Repair the reproducible `hyperprompt.aiDraft`"),
+        (workplan, "`P51-T7` Triage larger curated corpus output"),
+        (workplan, "`P51-T8` Record the larger curated corpus exit decision"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

@@ -372,23 +372,37 @@ def proposal_from_model_output(
     provider: dict[str, Any],
     provider_receipt: dict[str, Any],
 ) -> dict[str, Any]:
+    fallback_record = single_package_json_repair_fallback(request, model_output, provider_receipt)
+    effective_model_output = (
+        mapping_value(fallback_record.get("modelOutput")) if fallback_record else model_output
+    )
     diagnostics: list[dict[str, Any]] = []
-    diagnostics.extend(json_repair_diagnostics(provider_receipt, "packageSet"))
+    diagnostics.extend(
+        json_repair_diagnostics(
+            provider_receipt,
+            "packageSet",
+            exhausted_severity="warning" if fallback_record else "error",
+        )
+    )
+    if fallback_record:
+        diagnostics.extend(single_package_fallback_diagnostics(fallback_record))
     allowed_paths = set(string_list(request.get("allowedEvidencePaths")))
     inventory_by_id = {
         item["packageId"]: item
         for item in list_value(request.get("packages"))
         if isinstance(item, dict) and isinstance(item.get("packageId"), str)
     }
-    validation_guard = model_output_validation_guard(model_output, request, inventory_by_id)
+    validation_guard = model_output_validation_guard(
+        effective_model_output, request, inventory_by_id
+    )
     diagnostics.extend(validation_guard["diagnostics"])
-    package_set = package_set_proposal(model_output, request, allowed_paths, diagnostics)
+    package_set = package_set_proposal(effective_model_output, request, allowed_paths, diagnostics)
     selected_members = selected_member_proposals(
-        model_output, inventory_by_id, allowed_paths, diagnostics
+        effective_model_output, inventory_by_id, allowed_paths, diagnostics
     )
     selected_ids = {member["packageId"] for member in selected_members}
     excluded_packages = excluded_package_proposals(
-        model_output,
+        effective_model_output,
         inventory_by_id,
         selected_ids,
         allowed_paths,
@@ -396,7 +410,7 @@ def proposal_from_model_output(
         report_unknown_exclusions=False,
     )
     relations = relation_proposals(
-        model_output,
+        effective_model_output,
         package_set,
         selected_ids,
         allowed_paths,
@@ -438,8 +452,8 @@ def proposal_from_model_output(
             excluded_package_ids={item["packageId"] for item in excluded_packages},
             validation_guard=validation_guard,
         ),
-        "evidenceGaps": string_list(model_output.get("evidenceGaps")),
-        "overallConfidence": confidence_value(model_output.get("overallConfidence")),
+        "evidenceGaps": string_list(effective_model_output.get("evidenceGaps")),
+        "overallConfidence": confidence_value(effective_model_output.get("overallConfidence")),
         "privacy": {
             "rawPromptsPersisted": False,
             "rawModelResponsesPersisted": False,
@@ -458,6 +472,110 @@ def proposal_from_model_output(
             "model_authored_file_mutation",
         ],
     }
+
+
+def single_package_json_repair_fallback(
+    request: dict[str, Any],
+    model_output: dict[str, Any],
+    provider_receipt: dict[str, Any],
+) -> dict[str, Any]:
+    if provider_receipt.get("jsonRepairStatus") != "exhausted":
+        return {}
+    if model_output:
+        return {}
+    request_package_set = mapping_value(request.get("packageSet"))
+    package_set_id = string_value(request_package_set.get("id"))
+    packages = [item for item in list_value(request.get("packages")) if isinstance(item, dict)]
+    if len(packages) != 1:
+        return {}
+    package = packages[0]
+    package_id = string_value(package.get("packageId"))
+    if not package_set_id or not package_id:
+        return {}
+    allowed_paths = set(string_list(request.get("allowedEvidencePaths")))
+    evidence_paths = (
+        ["workspace-inventory.json"] if "workspace-inventory.json" in allowed_paths else []
+    )
+    manifest_path = string_value(package.get("manifestPath"))
+    if manifest_path and manifest_path in allowed_paths:
+        evidence_paths.append(manifest_path)
+    source_target_path = string_value(package.get("sourceTargetPath")) or "."
+    role, _role_normalized = normalize_selected_member_role(
+        string_value(package.get("inventoryRole"))
+    )
+    model_payload = {
+        "packageSet": {
+            "packageId": package_set_id,
+            "summary": f"Single-package workspace containing {package_id}.",
+            "evidencePaths": sorted(set(evidence_paths)),
+            "confidence": "medium",
+        },
+        "selectedMembers": [
+            {
+                "packageId": package_id,
+                "role": role,
+                "sourceTargetPath": source_target_path,
+                "reason": (
+                    "Deterministic workspace inventory contains exactly one package "
+                    "subject, so the producer can expose it as proposal-only fallback "
+                    "evidence after malformed AI draft JSON."
+                ),
+                "evidencePaths": sorted(set(evidence_paths)),
+                "confidence": "medium",
+            }
+        ],
+        "excludedPackages": [],
+        "relations": [],
+        "evidenceGaps": [
+            (
+                "Local model output exhausted bounded JSON repair; package-set subject "
+                "and single selected member were recovered from deterministic request "
+                "inventory."
+            )
+        ],
+        "overallConfidence": "medium",
+    }
+    return {
+        "modelOutput": model_payload,
+        "packageSetId": package_set_id,
+        "packageId": package_id,
+    }
+
+
+def single_package_fallback_diagnostics(
+    fallback_record: dict[str, Any],
+) -> list[dict[str, Any]]:
+    package_set_id = string_value(fallback_record.get("packageSetId"))
+    package_id = string_value(fallback_record.get("packageId"))
+    return [
+        diagnostic(
+            "warning",
+            "package_set_subject_metadata_missing",
+            (
+                "Model output omits the top-level packageSet metadata object; "
+                "single-package fallback recovered it from deterministic request context."
+            ),
+            package_set_id,
+            {
+                "modelField": "packageSet",
+                "requestField": "packageSet.id",
+                "nonBlockingReason": "deterministic_single_package_fallback",
+            },
+        ),
+        diagnostic(
+            "warning",
+            "single_package_deterministic_fallback_applied",
+            (
+                "Producer recovered package-set draft subjects from deterministic "
+                "single-package inventory after local model JSON repair was exhausted."
+            ),
+            package_id,
+            {
+                "packageSetId": package_set_id,
+                "nonAuthority": "proposal_only_not_registry_acceptance",
+            },
+        ),
+    ]
 
 
 def model_output_validation_guard(
@@ -698,6 +816,20 @@ def package_set_ai_draft_stop_policy_summary(
             "Diagnostic-clean single-package inventory already supplies the proposal "
             "subject; no additional package-set members are required."
         )
+    if has_only_single_package_fallback_warnings(
+        diagnostics=diagnostics,
+        error_count=error_count,
+        warning_count=warning_count,
+        subject_count=subject_count,
+        inventory_by_id=inventory_by_id,
+    ):
+        summary["status"] = AUTHOR_READY_STATUS_READY
+        summary["decision"] = AUTHOR_READY_STOP_DECISION_STOP
+        summary["reason"] = "single_package_deterministic_fallback_non_blocking"
+        summary["summary"] = (
+            "Single-package fallback produced reviewable proposal evidence from "
+            "deterministic inventory after malformed AI draft JSON."
+        )
     summary["zeroSubjectPolicy"] = zero_subject_policy
     return summary
 
@@ -758,6 +890,28 @@ def has_only_successful_repair_warning(diagnostics: list[dict[str, Any]]) -> boo
         item.get("code") == "ai_json_repair_needed" and item.get("jsonRepairStatus") == "repaired"
         for item in warning_diagnostics
     )
+
+
+def has_only_single_package_fallback_warnings(
+    *,
+    diagnostics: list[dict[str, Any]],
+    error_count: int,
+    warning_count: int,
+    subject_count: int,
+    inventory_by_id: dict[str, dict[str, Any]],
+) -> bool:
+    if error_count or not warning_count or subject_count <= 0 or len(inventory_by_id) != 1:
+        return False
+    allowed_codes = {
+        "ai_json_repair_needed",
+        "ai_json_repair_exhausted",
+        "package_set_subject_metadata_missing",
+        "single_package_deterministic_fallback_applied",
+    }
+    warning_codes = {item.get("code") for item in diagnostics if item.get("severity") == "warning"}
+    if "single_package_deterministic_fallback_applied" not in warning_codes:
+        return False
+    return warning_codes <= allowed_codes
 
 
 def excluded_package_proposals(
@@ -1176,6 +1330,8 @@ def parse_model_json_object(raw_content: str) -> dict[str, Any]:
 def json_repair_diagnostics(
     provider_receipt: dict[str, Any],
     subject: str,
+    *,
+    exhausted_severity: str = "error",
 ) -> list[dict[str, Any]]:
     if not provider_receipt.get("jsonRepairNeeded"):
         return []
@@ -1196,13 +1352,22 @@ def json_repair_diagnostics(
     if repair_status == "exhausted":
         diagnostics.append(
             diagnostic(
-                "error",
+                exhausted_severity,
                 "ai_json_repair_exhausted",
                 "Local model output remained invalid JSON after bounded repair attempts.",
                 subject,
-                {
-                    "repairAttemptCount": attempt_count if isinstance(attempt_count, int) else 0,
-                },
+                remove_empty_values(
+                    {
+                        "nonBlockingReason": (
+                            "deterministic_single_package_fallback"
+                            if exhausted_severity == "warning"
+                            else ""
+                        ),
+                        "repairAttemptCount": attempt_count
+                        if isinstance(attempt_count, int)
+                        else 0,
+                    }
+                ),
             )
         )
     return diagnostics
@@ -1288,6 +1453,10 @@ def relation_target_from_relation_id(relation_id: str, selected_ids: set[str]) -
 
 def string_list(value: Any) -> list[str]:
     return [item for item in list_value(value) if isinstance(item, str)]
+
+
+def remove_empty_values(payload: dict[str, Any]) -> dict[str, Any]:
+    return {key: value for key, value in payload.items() if value not in {"", None}}
 
 
 def confidence_value(value: Any) -> str:

@@ -1301,9 +1301,15 @@ and the machine-readable `SpecHarvesterLargerCuratedCorpusAIEnabledGate`
 fixture. It runs the same 12 selected sources through local LM Studio
 `openai/gpt-oss-20b`, preserves proposal-only AI output and raw
 prompt/response/chain-of-thought non-persistence, records one failed
-`hyperprompt.aiDraft` sidecar, and allows P51-T6 output triage without
+`hyperprompt.aiDraft` sidecar, and preserves the blocker as evidence without
 accepting packages, relations, enriched previews, or AI output as registry
-truth.
+truth. P51-T6 records
+[`HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md`](HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md)
+and the machine-readable `SpecHarvesterHyperpromptAIDraftSinglePackageFallback`
+fixture. It applies a deterministic single-package fallback for the reproduced
+Hyperprompt AI draft JSON repair exhaustion, verifies the targeted rerun exits
+0, keeps the sidecar warning-level and proposal-only, and allows P51-T7 output
+triage with Hyperprompt treated as author-reviewable fallback evidence.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository

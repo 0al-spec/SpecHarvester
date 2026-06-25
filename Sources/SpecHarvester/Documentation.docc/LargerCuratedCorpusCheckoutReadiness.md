@@ -63,7 +63,7 @@ Two non-blocking operator checkout caveats remain visible:
 - `docc2context.source_checkout_had_untracked_doccarchive`.
 
 These caveats do not block P51-T4 because the checked revisions match the
-manifest pins. They must remain visible for P51-T6 triage and P51-T7 exit
+manifest pins. They must remain visible for P51-T7 triage and P51-T8 exit
 decision.
 
 ## Stop Conditions Checked

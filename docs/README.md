@@ -354,8 +354,12 @@ Published DocC site:
    preview candidates, three relation proposals, and no AI or adapter output
 92. [`LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md`](LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md):
    P51-T5 AI-enabled proposal-only gate showing all 12 selected sources
-   processed, one failed `hyperprompt.aiDraft` sidecar, and P51-T6 triage
-   allowed without registry authority
+   processed and one failed `hyperprompt.aiDraft` sidecar without registry
+   authority
+93. [`HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md`](HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md):
+   P51-T6 targeted repair evidence showing the reproduced
+   `hyperprompt.aiDraft` hard blocker becoming warning-level author-reviewable
+   fallback evidence for the single-package workspace
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

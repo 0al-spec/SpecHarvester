@@ -96,7 +96,7 @@ P51-T2 preserves caveats from the restored six-repository evidence, including:
 - `docc2context.source_checkout_had_untracked_doccarchive`.
 
 These are not registry blockers at source-plan time, but they remain review
-evidence for P51-T6 triage and P51-T7 exit decision.
+evidence for P51-T7 triage and P51-T8 exit decision.
 
 ## Next Gate
 
