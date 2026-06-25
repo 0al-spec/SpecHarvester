@@ -1,0 +1,216 @@
+{
+  "apiVersion": "spec-harvester.larger-curated-corpus-planning-phase/v0",
+  "kind": "SpecHarvesterLargerCuratedCorpusPlanningPhase",
+  "authority": "producer_larger_curated_corpus_planning_phase_only",
+  "phase": "P51",
+  "task": "P51-T1",
+  "createdAt": "2026-06-25T10:52:00+03:00",
+  "sourceArtifacts": {
+    "p50RestoredCheckoutRerunEvidence": {
+      "path": "tests/fixtures/restored_checkout_rerun_evidence/p50-t1-restored-checkout-rerun-evidence.example.json",
+      "digest": "sha256:eeb94038127f016d0302c03ae141312c7a8cda6fd286a5ec58e401481fabed07",
+      "apiVersion": "spec-harvester.restored-checkout-rerun-evidence/v0",
+      "kind": "SpecHarvesterRestoredCheckoutRerunEvidence",
+      "authority": "producer_restored_checkout_rerun_evidence_only"
+    }
+  },
+  "sourceDecision": {
+    "p50Selected": "larger_corpus_planning_reconsideration_ready_after_restored_checkout_rerun",
+    "checkoutBlockerResolved": true,
+    "sameScopeStaticGatePassed": true,
+    "sameScopeAIEnabledGatePassed": true,
+    "planningReadinessOnly": true,
+    "largerCorpusExecutionApproved": false,
+    "registryAuthority": false
+  },
+  "planningScope": {
+    "scopeName": "larger_curated_corpus_after_restored_rerun",
+    "operatorCurated": true,
+    "bounded": true,
+    "pinnedLocalCheckoutsRequired": true,
+    "expandedBeyondP46AllowedOnlyAfterSourcePlan": true,
+    "targetRepositoryCountRange": {
+      "minimum": 10,
+      "maximum": 16
+    },
+    "sourceSelectionMode": "curated_operator_selection_not_registry_crawl",
+    "sourceManifestDraftingTask": "P51-T2",
+    "readinessGateTask": "P51-T3",
+    "staticOnlyGateTask": "P51-T4",
+    "aiEnabledGateTask": "P51-T5",
+    "triageTask": "P51-T6",
+    "exitDecisionTask": "P51-T7"
+  },
+  "selectionConstraints": {
+    "mustIncludeEcosystemDiversity": true,
+    "requiredEcosystemFamilies": [
+      "python",
+      "go",
+      "swift",
+      "javascript_typescript",
+      "documentation_heavy"
+    ],
+    "requiredRepositoryShapes": [
+      "single_package",
+      "workspace_or_monorepo",
+      "documentation_heavy",
+      "framework_or_runtime_library",
+      "tooling_or_adapter_like"
+    ],
+    "selectionEvidenceRequired": [
+      "importance_signal",
+      "ecosystem_family",
+      "repository_shape",
+      "expected_package_subject",
+      "pinned_revision",
+      "operator_local_checkout_path",
+      "exclusion_reason_when_deferred"
+    ],
+    "exclusionRules": [
+      "exclude_private_repositories",
+      "exclude_repositories_without_operator_local_checkout",
+      "exclude_repositories_requiring_dependency_installation_for_basic_evidence",
+      "exclude_repositories_requiring_harvested_code_execution",
+      "exclude_repositories_with_unclear_license_or_source_boundary_until_triaged"
+    ]
+  },
+  "gateSequence": [
+    {
+      "task": "P51-T2",
+      "name": "Author Larger Curated Corpus Source Plan and Manifest Criteria",
+      "requiredBefore": [
+        "P51-T3",
+        "P51-T4",
+        "P51-T5",
+        "P51-T6",
+        "P51-T7"
+      ],
+      "runsBatch": false
+    },
+    {
+      "task": "P51-T3",
+      "name": "Run Larger Curated Corpus Checkout Readiness Gate",
+      "requiredBefore": [
+        "P51-T4",
+        "P51-T5",
+        "P51-T6",
+        "P51-T7"
+      ],
+      "runsBatch": false
+    },
+    {
+      "task": "P51-T4",
+      "name": "Run Larger Curated Corpus Static-Only Gate",
+      "requiredBefore": [
+        "P51-T5",
+        "P51-T6",
+        "P51-T7"
+      ],
+      "runsBatch": true,
+      "aiEnabled": false
+    },
+    {
+      "task": "P51-T5",
+      "name": "Run Larger Curated Corpus AI-Enabled Proposal Gate",
+      "requiredBefore": [
+        "P51-T6",
+        "P51-T7"
+      ],
+      "runsBatch": true,
+      "aiEnabled": true,
+      "proposalOnly": true
+    },
+    {
+      "task": "P51-T6",
+      "name": "Triage Larger Curated Corpus Output",
+      "requiredBefore": [
+        "P51-T7"
+      ],
+      "runsBatch": false
+    },
+    {
+      "task": "P51-T7",
+      "name": "Record Larger Curated Corpus Exit Decision",
+      "requiredBefore": [],
+      "runsBatch": false
+    }
+  ],
+  "gateOrdering": {
+    "sourcePlanBeforeReadiness": true,
+    "readinessBeforeStaticOnly": true,
+    "staticOnlyBeforeAI": true,
+    "aiBeforeTriage": true,
+    "triageBeforeExitDecision": true,
+    "exitDecisionRequiredBeforeFurtherExpansion": true
+  },
+  "carriedForwardCaveats": [
+    "flask.aiDraft.excluded_package_also_selected",
+    "flask.aiDraft.selected_member_role_unknown",
+    "flask.aiEnrichment.refined_summary_missing",
+    "gin.aiDraft.selected_member_role_unknown",
+    "xyflow.partial_public_interface_index",
+    "xyflow.operator_checkout_origin_fork_mismatch",
+    "xyflow.aiEnrichment.refined_summary_missing",
+    "cupertino.aiDraft.excluded_package_also_selected",
+    "cupertino.aiDraft.selected_member_role_unknown",
+    "navigation-split-view.aiDraft.selected_member_role_unknown",
+    "navigation-split-view.aiEnrichment.ai_json_repair_needed",
+    "docc2context.aiDraft.excluded_package_also_selected",
+    "docc2context.aiDraft.selected_member_role_unknown"
+  ],
+  "futureGateRequirements": {
+    "staticOnlyGate": {
+      "mustPassBeforeAI": true,
+      "failedRepositoryCountMustBeZeroForAI": true,
+      "passedPreflightRequired": true
+    },
+    "aiEnabledGate": {
+      "proposalOnly": true,
+      "rawPromptPersisted": false,
+      "rawProviderResponsePersisted": false,
+      "chainOfThoughtPersisted": false,
+      "providerMustBeLocalOpenAICompatible": true,
+      "warningsMustBeTriagedBeforeExitDecision": true
+    },
+    "triage": {
+      "mustClassifySelectedDeferredAndDoNotPromote": true,
+      "mustPreserveWarningsAndCaveats": true,
+      "mustNotAcceptRegistryTruth": true
+    }
+  },
+  "authorityBoundary": {
+    "planningPhaseIsRegistryAuthority": false,
+    "approvesLargerCorpusExecution": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "rerunOutputAcceptedAsRegistryTruth": false,
+    "planningOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "runsLargerCorpusBatch": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false,
+    "runsAI": false,
+    "rawPromptPersisted": false,
+    "rawProviderResponsePersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nextState": {
+    "nextTaskPointer": "P51-T2",
+    "recommendedFollowUp": "Author the larger curated corpus source plan and manifest criteria",
+    "largerCuratedCorpusPlanningPhaseStarted": true,
+    "largerCuratedCorpusExecutionReady": false,
+    "phase51Complete": false
+  }
+}

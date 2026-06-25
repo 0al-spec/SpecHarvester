@@ -215,6 +215,10 @@ P50-T1 is recorded in <doc:RestoredCheckoutRerunEvidence>. It restores the
 same operator-local checkout paths through symlinks, runs the same
 six-repository scope in static-only then AI-enabled order, and records both
 gates as passed while preserving warning caveats and non-authority boundaries.
+P51-T1 is recorded in <doc:LargerCuratedCorpusPlanningPhase>. It starts the
+larger curated corpus planning phase from P50 evidence, defines source-plan,
+readiness, static-only, AI-enabled, triage, and exit-decision gates, and keeps
+larger corpus execution unapproved until those follow-up tasks complete.
 
 ### Selected Candidate SpecPM Intake Handoff
 
