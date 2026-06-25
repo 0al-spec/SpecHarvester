@@ -38,6 +38,48 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: None Selected After P51-T8" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Complete / No Next Task Selected" in next_text
+        assert "**Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun" in (
+            next_text
+        )
+        assert "`P51-T8` Larger Curated Corpus Exit Decision" in next_text
+        assert "p51-t8-larger-curated-corpus-exit-decision.example.json" in next_text
+        assert "SpecHarvesterLargerCuratedCorpusExitDecision" in next_text
+        assert "complete_phase_51_with_author_review_evidence_no_further_expansion" in (
+            next_text
+        )
+        assert "Phase 51 is complete" in next_text
+        assert "No Workplan task is currently selected" in next_text
+        assert "further expansion is not approved" in normalized
+        assert "registry promotion is not allowed" in normalized
+        assert "author-review evidence ready" in normalized
+        assert "selected_for_author_review" in next_text
+        assert "deferred" in next_text
+        assert "do_not_promote" in next_text
+        assert "xyflow.partial_public_interface_index" in next_text
+        assert "xyflow.operator_checkout_origin_fork_mismatch" in next_text
+        assert "docc2context.source_checkout_had_untracked_doccarchive" in next_text
+        assert "hyperprompt.single_package_deterministic_fallback_applied" in next_text
+        assert "specnode.model_evidence_path_unsupported" in next_text
+        assert "Do not approve further larger curated corpus expansion" in next_text
+        assert "Do not approve registry promotion" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata" in next_text
+        assert "Do not seed baselines" in next_text
+        assert "Do not remove `preview_only`" in next_text
+        assert "Do not persist raw prompts" in next_text
+        assert "Do not persist raw provider responses" in next_text
+        assert "Do not persist secrets" in next_text
+        assert "Do not persist chain-of-thought" in next_text
+        assert "Do not clone or fetch repositories" in next_text
+        assert "Do not install dependencies" in next_text
+        assert "Do not invoke package managers" in next_text
+        assert "Do not execute harvested code" in next_text
+        assert "Do not run adapters or enable trusted local adapter execution" in next_text
+        return
+
     if "# Next Task: P51-T8 Larger Curated Corpus Exit Decision" in (next_text):
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -36621,6 +36663,305 @@ def test_larger_curated_corpus_output_triage_records_p51_t7_classification() -> 
         (roadmap, "LARGER_CURATED_CORPUS_OUTPUT_TRIAGE.md"),
         (roadmap_docc, "LargerCuratedCorpusOutputTriage"),
         (workplan, "`P51-T7` Triage larger curated corpus output"),
+        (workplan, "`P51-T8` Record the larger curated corpus exit decision"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_larger_curated_corpus_exit_decision_records_p51_t8_result() -> None:
+    source_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_output_triage"
+        / "p51-t7-larger-curated-corpus-output-triage.example.json"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_exit_decision"
+        / "p51-t8-larger-curated-corpus-exit-decision.example.json"
+    )
+    github_doc = ROOT / "docs" / "LARGER_CURATED_CORPUS_EXIT_DECISION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LargerCuratedCorpusExitDecision.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.larger-curated-corpus-exit-decision/v0"
+    assert payload["kind"] == "SpecHarvesterLargerCuratedCorpusExitDecision"
+    assert payload["authority"] == "producer_exit_decision_evidence_only"
+    assert payload["phase"] == "P51"
+    assert payload["task"] == "P51-T8"
+
+    artifact = payload["sourceArtifacts"]["p51OutputTriage"]
+    assert ROOT / artifact["path"] == source_path
+    assert artifact["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+    assert artifact["apiVersion"] == source_payload["apiVersion"]
+    assert artifact["kind"] == source_payload["kind"]
+    assert artifact["authority"] == source_payload["authority"]
+
+    assert payload["observedTriageFacts"] == {
+        "repositoriesTriaged": 12,
+        "candidatePackageCount": 15,
+        "selectedStaticPackageCount": 11,
+        "deferredStaticPackageCount": 4,
+        "doNotPromoteStaticPackageCount": 0,
+        "relationProposalCount": 3,
+        "selectedRelationProposalCount": 0,
+        "deferredRelationProposalCount": 3,
+        "doNotPromoteRelationProposalCount": 0,
+        "aiDraftSidecarCount": 12,
+        "aiDraftSelectedForAuthorReviewCount": 6,
+        "aiDraftDeferredCount": 6,
+        "aiDraftSupersededDoNotPromoteCount": 1,
+        "aiEnrichmentSidecarCount": 12,
+        "aiEnrichmentSelectedForAuthorReviewCount": 8,
+        "aiEnrichmentDeferredCount": 3,
+        "aiEnrichmentDoNotPromoteCount": 1,
+        "aiEnrichedPreviewPreparedCount": 8,
+        "aiEnrichedPreviewSkippedCount": 7,
+        "aiEnrichedPreviewDeferredCount": 8,
+        "aiEnrichedPreviewDoNotPromoteCount": 7,
+        "carriedForwardCaveatCount": 4,
+        "registryPromotionBlockerCount": 5,
+        "p51T8ExitDecisionAllowed": True,
+        "largerCuratedCorpusRerunRequired": False,
+    }
+
+    carry_forward = payload["classificationCarryForward"]
+    assert carry_forward["selectedForAuthorReviewStaticPackages"] == [
+        "flask.core",
+        "gin.core",
+        "cupertino.core",
+        "navigation_split_view.core",
+        "docc2context.core",
+        "fastapi.core",
+        "fastmcp.core",
+        "specpm.core",
+        "hypercode.core",
+        "specnode.core",
+        "hyperprompt.core",
+    ]
+    assert carry_forward["deferredStaticPackages"] == [
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace",
+    ]
+    assert carry_forward["deferredRelationProposals"] == [
+        "xyflow.workspace.contains.xyflow.react",
+        "xyflow.workspace.contains.xyflow.svelte",
+        "xyflow.workspace.contains.xyflow.system",
+    ]
+    assert carry_forward["doNotPromoteSidecars"] == [
+        "hyperprompt.aiDraft.p51-t5",
+        "specnode.aiEnrichment",
+    ]
+
+    caveats = {item["code"]: item for item in payload["carriedForwardCaveats"]}
+    assert set(caveats) == {
+        "xyflow.partial_public_interface_index",
+        "xyflow.operator_checkout_origin_fork_mismatch",
+        "docc2context.source_checkout_had_untracked_doccarchive",
+        "hyperprompt.single_package_deterministic_fallback_applied",
+    }
+    assert all(item["blocksRegistryPromotion"] is True for item in caveats.values())
+    assert caveats["hyperprompt.single_package_deterministic_fallback_applied"][
+        "nonBlockingReason"
+    ] == "deterministic_single_package_fallback"
+    assert payload["registryPromotionBlockers"] == [
+        "xyflow.partial_public_interface_index",
+        "xyflow.operator_checkout_origin_fork_mismatch",
+        "docc2context.source_checkout_had_untracked_doccarchive",
+        "hyperprompt.single_package_deterministic_fallback_applied",
+        "specnode.model_evidence_path_unsupported",
+    ]
+
+    assert payload["exitDecision"] == {
+        "selected": "complete_phase_51_with_author_review_evidence_no_further_expansion",
+        "selectedReason": (
+            "larger_curated_corpus_outputs_classified_no_rerun_required_but_registry_"
+            "promotion_blocked_by_caveats"
+        ),
+        "phase51Complete": True,
+        "authorReviewEvidenceReady": True,
+        "largerCuratedCorpusRerunRequired": False,
+        "needsAnotherTargetedPass": False,
+        "stoppedOnDocumentedBlocker": False,
+        "furtherExpansionApproved": False,
+        "registryPromotionAllowed": False,
+        "registryAuthority": False,
+    }
+    assert payload["rejectedAlternatives"] == [
+        {
+            "alternative": "run_another_targeted_pass_before_exit",
+            "rejectedReason": (
+                "p51_t7_classified_all_output_layers_and_set_larger_curated_corpus_"
+                "rerun_required_false"
+            ),
+        },
+        {
+            "alternative": "stop_on_documented_blocker",
+            "rejectedReason": (
+                "no_hard_runtime_or_ai_draft_blocker_remains_after_p51_t6_hyperprompt_"
+                "fallback"
+            ),
+        },
+        {
+            "alternative": "approve_further_larger_corpus_expansion",
+            "rejectedReason": (
+                "p51_t7_keeps_five_registry_promotion_blockers_and_no_phase_52_scope_"
+                "is_selected"
+            ),
+        },
+    ]
+    assert payload["phaseExitState"] == {
+        "phase": "P51",
+        "status": "complete",
+        "nextTaskSelected": False,
+        "nextPhaseSelected": False,
+        "reason": "phase_51_completed_bounded_larger_curated_corpus_evidence_record",
+    }
+    assert payload["nextState"] == {
+        "nextTaskPointer": None,
+        "recommendedFollowUp": (
+            "Maintainer disposition of selected, deferred, and do-not-promote evidence "
+            "before any further expansion"
+        ),
+        "phase51Complete": True,
+        "authorReviewEvidenceReady": True,
+        "furtherExpansionApproved": False,
+        "registryPromotionAllowed": False,
+    }
+    assert payload["authorityBoundary"] == {
+        "exitDecisionIsRegistryAuthority": False,
+        "approvesFurtherExpansion": False,
+        "approvesRegistryPromotion": False,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "publishesRegistryMetadata": False,
+        "seedsBaselines": False,
+        "removesPreviewOnly": False,
+        "staticOutputAcceptedAsRegistryTruth": False,
+        "readinessOutputAcceptedAsRegistryTruth": False,
+        "aiOutputAcceptedAsRegistryTruth": False,
+        "enrichedPreviewOutputAcceptedAsRegistryTruth": False,
+        "repairOutputAcceptedAsRegistryTruth": False,
+        "rerunOutputAcceptedAsRegistryTruth": False,
+        "planningOutputAcceptedAsRegistryTruth": False,
+        "triageOutputAcceptedAsRegistryTruth": False,
+        "adapterOutputAcceptedAsRegistryTruth": False,
+    }
+    assert payload["executionBoundary"] == {
+        "rerunsCorpus": False,
+        "runsAI": False,
+        "cloneOrFetch": False,
+        "installsDependencies": False,
+        "invokesPackageManagers": False,
+        "executesHarvestedCode": False,
+        "runsAdapters": False,
+        "enablesTrustedLocalAdapterExecution": False,
+    }
+    assert payload["privacyBoundary"] == {
+        "rawPromptsPersisted": False,
+        "rawProviderResponsesPersisted": False,
+        "secretsPersisted": False,
+        "chainOfThoughtPersisted": False,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Larger Curated Corpus Exit Decision",
+            "P51-T8",
+            "P51-T7",
+            "SpecHarvesterLargerCuratedCorpusExitDecision",
+            "spec-harvester.larger-curated-corpus-exit-decision/v0",
+            "producer_exit_decision_evidence_only",
+            "p51-t8-larger-curated-corpus-exit-decision.example.json",
+            "p51-t7-larger-curated-corpus-output-triage.example.json",
+            "complete_phase_51_with_author_review_evidence_no_further_expansion",
+            "Selected static packages | 11",
+            "Deferred static packages | 4",
+            "Relation proposals | 3",
+            "AI draft selected for author review | 6",
+            "AI enrichment do-not-promote | 1",
+            "Registry-promotion blockers | 5",
+            "xyflow.workspace.contains.xyflow.react",
+            "hyperprompt.aiDraft.p51-t5",
+            "specnode.aiEnrichment",
+            "xyflow.partial_public_interface_index",
+            "xyflow.operator_checkout_origin_fork_mismatch",
+            "docc2context.source_checkout_had_untracked_doccarchive",
+            "hyperprompt.single_package_deterministic_fallback_applied",
+            "specnode.model_evidence_path_unsupported",
+            "Phase 51 is complete",
+            "There is no next task selected by P51-T8",
+            "Further expansion is not approved",
+            "registry promotion is not allowed",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "did not rerun the larger corpus",
+            "run AI",
+            "run adapters",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist secrets",
+            "persist chain-of-thought",
+            "static output as registry truth",
+            "readiness output as registry truth",
+            "AI output as registry truth",
+            "enriched preview output as registry truth",
+            "repair output as registry truth",
+            "rerun output as registry truth",
+            "planning output as registry truth",
+            "triage output as registry truth",
+            "exit-decision output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "LARGER_CURATED_CORPUS_EXIT_DECISION.md"),
+        (docc_root, "docs/LARGER_CURATED_CORPUS_EXIT_DECISION.md"),
+        (docc_root, "<doc:LargerCuratedCorpusExitDecision>"),
+        (capabilities, "LARGER_CURATED_CORPUS_EXIT_DECISION.md"),
+        (capabilities_docc, "LargerCuratedCorpusExitDecision"),
+        (roadmap, "LARGER_CURATED_CORPUS_EXIT_DECISION.md"),
+        (roadmap_docc, "LargerCuratedCorpusExitDecision"),
         (workplan, "`P51-T8` Record the larger curated corpus exit decision"),
     ):
         assert required in path.read_text(encoding="utf-8"), (

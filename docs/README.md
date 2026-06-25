@@ -364,6 +364,9 @@ Published DocC site:
    P51-T7 output triage classifying larger curated corpus static packages,
    relation proposals, AI sidecars, enriched previews, warnings, and caveats
    before the P51-T8 exit decision
+95. [`LARGER_CURATED_CORPUS_EXIT_DECISION.md`](LARGER_CURATED_CORPUS_EXIT_DECISION.md):
+   P51-T8 exit decision completing Phase 51 as author-review evidence ready
+   while keeping further expansion and registry promotion unapproved
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

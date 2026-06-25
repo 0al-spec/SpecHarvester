@@ -1,0 +1,237 @@
+{
+  "apiVersion": "spec-harvester.larger-curated-corpus-exit-decision/v0",
+  "kind": "SpecHarvesterLargerCuratedCorpusExitDecision",
+  "authority": "producer_exit_decision_evidence_only",
+  "schemaVersion": 1,
+  "createdAt": "2026-06-25T15:35:44Z",
+  "phase": "P51",
+  "task": "P51-T8",
+  "sourceArtifacts": {
+    "p51OutputTriage": {
+      "path": "tests/fixtures/larger_curated_corpus_output_triage/p51-t7-larger-curated-corpus-output-triage.example.json",
+      "digest": "sha256:6c757fe4c65546404076a5b4b4d45d09b8f815859495fa467dc6a1e9cd9b8b11",
+      "apiVersion": "spec-harvester.larger-curated-corpus-output-triage/v0",
+      "kind": "SpecHarvesterLargerCuratedCorpusOutputTriage",
+      "authority": "producer_triage_evidence_only"
+    }
+  },
+  "observedTriageFacts": {
+    "repositoriesTriaged": 12,
+    "candidatePackageCount": 15,
+    "selectedStaticPackageCount": 11,
+    "deferredStaticPackageCount": 4,
+    "doNotPromoteStaticPackageCount": 0,
+    "relationProposalCount": 3,
+    "selectedRelationProposalCount": 0,
+    "deferredRelationProposalCount": 3,
+    "doNotPromoteRelationProposalCount": 0,
+    "aiDraftSidecarCount": 12,
+    "aiDraftSelectedForAuthorReviewCount": 6,
+    "aiDraftDeferredCount": 6,
+    "aiDraftSupersededDoNotPromoteCount": 1,
+    "aiEnrichmentSidecarCount": 12,
+    "aiEnrichmentSelectedForAuthorReviewCount": 8,
+    "aiEnrichmentDeferredCount": 3,
+    "aiEnrichmentDoNotPromoteCount": 1,
+    "aiEnrichedPreviewPreparedCount": 8,
+    "aiEnrichedPreviewSkippedCount": 7,
+    "aiEnrichedPreviewDeferredCount": 8,
+    "aiEnrichedPreviewDoNotPromoteCount": 7,
+    "carriedForwardCaveatCount": 4,
+    "registryPromotionBlockerCount": 5,
+    "p51T8ExitDecisionAllowed": true,
+    "largerCuratedCorpusRerunRequired": false
+  },
+  "classificationCarryForward": {
+    "selectedForAuthorReviewStaticPackages": [
+      "flask.core",
+      "gin.core",
+      "cupertino.core",
+      "navigation_split_view.core",
+      "docc2context.core",
+      "fastapi.core",
+      "fastmcp.core",
+      "specpm.core",
+      "hypercode.core",
+      "specnode.core",
+      "hyperprompt.core"
+    ],
+    "deferredStaticPackages": [
+      "xyflow.react",
+      "xyflow.svelte",
+      "xyflow.system",
+      "xyflow.workspace"
+    ],
+    "deferredRelationProposals": [
+      "xyflow.workspace.contains.xyflow.react",
+      "xyflow.workspace.contains.xyflow.svelte",
+      "xyflow.workspace.contains.xyflow.system"
+    ],
+    "selectedForAuthorReviewAIDraftSidecars": [
+      "xyflow.aiDraft",
+      "fastapi.aiDraft",
+      "fastmcp.aiDraft",
+      "hypercode.aiDraft",
+      "specnode.aiDraft",
+      "hyperprompt.aiDraft"
+    ],
+    "deferredAIDraftSidecars": [
+      "flask.aiDraft",
+      "gin.aiDraft",
+      "cupertino.aiDraft",
+      "navigation-split-view.aiDraft",
+      "docc2context.aiDraft",
+      "specpm.aiDraft"
+    ],
+    "selectedForAuthorReviewAIEnrichmentSidecars": [
+      "gin.aiEnrichment",
+      "cupertino.aiEnrichment",
+      "docc2context.aiEnrichment",
+      "fastapi.aiEnrichment",
+      "fastmcp.aiEnrichment",
+      "specpm.aiEnrichment",
+      "hypercode.aiEnrichment",
+      "hyperprompt.aiEnrichment"
+    ],
+    "deferredAIEnrichmentSidecars": [
+      "flask.aiEnrichment",
+      "xyflow.aiEnrichment",
+      "navigation-split-view.aiEnrichment"
+    ],
+    "doNotPromoteSidecars": [
+      "hyperprompt.aiDraft.p51-t5",
+      "specnode.aiEnrichment"
+    ]
+  },
+  "carriedForwardCaveats": [
+    {
+      "code": "xyflow.partial_public_interface_index",
+      "sourceTriageCode": "partial_public_interface_index",
+      "classification": "deferred",
+      "blocksRegistryPromotion": true,
+      "disposition": "carry_forward_to_author_review_before_any_promotion"
+    },
+    {
+      "code": "xyflow.operator_checkout_origin_fork_mismatch",
+      "sourceTriageCode": "operator_checkout_origin_fork_mismatch",
+      "classification": "deferred",
+      "blocksRegistryPromotion": true,
+      "disposition": "carry_forward_to_author_review_before_any_promotion"
+    },
+    {
+      "code": "docc2context.source_checkout_had_untracked_doccarchive",
+      "sourceTriageCode": "source_checkout_had_untracked_doccarchive",
+      "classification": "deferred",
+      "blocksRegistryPromotion": true,
+      "disposition": "carry_forward_to_author_review_before_any_promotion"
+    },
+    {
+      "code": "hyperprompt.single_package_deterministic_fallback_applied",
+      "sourceTriageCode": "single_package_deterministic_fallback_applied",
+      "classification": "deferred",
+      "blocksRegistryPromotion": true,
+      "nonBlockingReason": "deterministic_single_package_fallback",
+      "disposition": "carry_forward_to_author_review_before_any_promotion"
+    }
+  ],
+  "registryPromotionBlockers": [
+    "xyflow.partial_public_interface_index",
+    "xyflow.operator_checkout_origin_fork_mismatch",
+    "docc2context.source_checkout_had_untracked_doccarchive",
+    "hyperprompt.single_package_deterministic_fallback_applied",
+    "specnode.model_evidence_path_unsupported"
+  ],
+  "exitDecision": {
+    "selected": "complete_phase_51_with_author_review_evidence_no_further_expansion",
+    "selectedReason": "larger_curated_corpus_outputs_classified_no_rerun_required_but_registry_promotion_blocked_by_caveats",
+    "phase51Complete": true,
+    "authorReviewEvidenceReady": true,
+    "largerCuratedCorpusRerunRequired": false,
+    "needsAnotherTargetedPass": false,
+    "stoppedOnDocumentedBlocker": false,
+    "furtherExpansionApproved": false,
+    "registryPromotionAllowed": false,
+    "registryAuthority": false
+  },
+  "rejectedAlternatives": [
+    {
+      "alternative": "run_another_targeted_pass_before_exit",
+      "rejectedReason": "p51_t7_classified_all_output_layers_and_set_larger_curated_corpus_rerun_required_false"
+    },
+    {
+      "alternative": "stop_on_documented_blocker",
+      "rejectedReason": "no_hard_runtime_or_ai_draft_blocker_remains_after_p51_t6_hyperprompt_fallback"
+    },
+    {
+      "alternative": "approve_further_larger_corpus_expansion",
+      "rejectedReason": "p51_t7_keeps_five_registry_promotion_blockers_and_no_phase_52_scope_is_selected"
+    }
+  ],
+  "phaseExitState": {
+    "phase": "P51",
+    "status": "complete",
+    "nextTaskSelected": false,
+    "nextPhaseSelected": false,
+    "reason": "phase_51_completed_bounded_larger_curated_corpus_evidence_record"
+  },
+  "nextState": {
+    "nextTaskPointer": null,
+    "recommendedFollowUp": "Maintainer disposition of selected, deferred, and do-not-promote evidence before any further expansion",
+    "phase51Complete": true,
+    "authorReviewEvidenceReady": true,
+    "furtherExpansionApproved": false,
+    "registryPromotionAllowed": false
+  },
+  "authorityBoundary": {
+    "exitDecisionIsRegistryAuthority": false,
+    "approvesFurtherExpansion": false,
+    "approvesRegistryPromotion": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "readinessOutputAcceptedAsRegistryTruth": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "enrichedPreviewOutputAcceptedAsRegistryTruth": false,
+    "repairOutputAcceptedAsRegistryTruth": false,
+    "rerunOutputAcceptedAsRegistryTruth": false,
+    "planningOutputAcceptedAsRegistryTruth": false,
+    "triageOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "executionBoundary": {
+    "rerunsCorpus": false,
+    "runsAI": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false
+  },
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nonAuthorityStatements": [
+    "does_not_approve_further_larger_curated_corpus_expansion",
+    "does_not_approve_registry_promotion",
+    "does_not_accept_packages_or_relations",
+    "does_not_publish_registry_metadata",
+    "does_not_seed_baselines",
+    "does_not_remove_preview_only",
+    "does_not_treat_static_output_as_registry_truth",
+    "does_not_treat_readiness_output_as_registry_truth",
+    "does_not_treat_ai_output_as_registry_truth",
+    "does_not_treat_enriched_preview_output_as_registry_truth",
+    "does_not_treat_repair_output_as_registry_truth",
+    "does_not_treat_rerun_output_as_registry_truth",
+    "does_not_treat_planning_output_as_registry_truth",
+    "does_not_treat_triage_output_as_registry_truth",
+    "does_not_treat_adapter_output_as_registry_truth"
+  ]
+}

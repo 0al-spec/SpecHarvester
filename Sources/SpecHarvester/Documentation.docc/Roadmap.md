@@ -247,6 +247,11 @@ P51-T7 is recorded in <doc:LargerCuratedCorpusOutputTriage>. It classifies 15
 static packages, three relation proposals, 12 AI draft sidecars, 12 AI
 enrichment sidecars, 15 preview-copy outcomes, and four carried-forward caveats
 before the P51-T8 exit decision.
+P51-T8 is recorded in <doc:LargerCuratedCorpusExitDecision>. It completes
+Phase 51 as author-review evidence ready, rejects another targeted pass and
+hard-blocker stop, and keeps further larger corpus expansion, registry
+promotion, package acceptance, relation acceptance, baseline seeding, and
+`preview_only` removal unapproved.
 
 ### Selected Candidate SpecPM Intake Handoff
 
