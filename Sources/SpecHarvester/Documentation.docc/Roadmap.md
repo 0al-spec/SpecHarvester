@@ -243,6 +243,10 @@ a deterministic single-package fallback for the reproduced Hyperprompt AI draft
 JSON repair exhaustion, verifies the targeted rerun exits 0, keeps the sidecar
 warning-level and proposal-only, and allows P51-T7 output triage with
 Hyperprompt treated as author-reviewable fallback evidence.
+P51-T7 is recorded in <doc:LargerCuratedCorpusOutputTriage>. It classifies 15
+static packages, three relation proposals, 12 AI draft sidecars, 12 AI
+enrichment sidecars, 15 preview-copy outcomes, and four carried-forward caveats
+before the P51-T8 exit decision.
 
 ### Selected Candidate SpecPM Intake Handoff
 
