@@ -1113,7 +1113,7 @@ def test_draft_spec_package_writes_candidate_files(tmp_path: Path) -> None:
         "candidateStatus": "review-ready",
     }
     assert receipt["producer"]["name"] == "SpecHarvester"
-    assert receipt["producer"]["version"] == "0.1.0"
+    assert receipt["producer"]["version"] == "0.2.0"
     assert receipt["validation"] == {
         "status": validation_report["status"],
         "warningCount": validation_report["warningCount"],
