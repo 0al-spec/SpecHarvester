@@ -35309,6 +35309,277 @@ def test_larger_curated_corpus_checkout_readiness_records_p51_t3_gate() -> None:
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
 
 
+def test_larger_curated_corpus_static_only_gate_records_p51_t4_run() -> None:
+    readiness_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_checkout_readiness"
+        / "p51-t3-larger-curated-corpus-checkout-readiness.example.json"
+    )
+    manifest_path = ROOT / "inputs" / "p51-larger-curated-corpus" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_static_only_gate"
+        / "p51-t4-larger-curated-corpus-static-only-gate.example.json"
+    )
+    github_doc = ROOT / "docs" / "LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LargerCuratedCorpusStaticOnlyGate.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.larger-curated-corpus-static-only-gate/v0"
+    assert payload["kind"] == "SpecHarvesterLargerCuratedCorpusStaticOnlyGate"
+    assert payload["authority"] == "producer_static_preview_evidence_only"
+    assert payload["phase"] == "P51"
+    assert payload["task"] == "P51-T4"
+
+    readiness = payload["sourceArtifacts"]["p51CheckoutReadiness"]
+    readiness_payload = json.loads(readiness_path.read_text(encoding="utf-8"))
+    assert ROOT / readiness["path"] == readiness_path
+    assert (
+        readiness["digest"] == "sha256:" + hashlib.sha256(readiness_path.read_bytes()).hexdigest()
+    )
+    assert readiness["apiVersion"] == readiness_payload["apiVersion"]
+    assert readiness["kind"] == readiness_payload["kind"]
+    assert readiness["authority"] == readiness_payload["authority"]
+
+    source_manifest = payload["sourceManifest"]
+    assert ROOT / source_manifest["path"] == manifest_path
+    assert (
+        source_manifest["digest"]
+        == "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    )
+    assert source_manifest["entryCount"] == 12
+    assert source_manifest["requiresExistingCheckouts"] is True
+    assert source_manifest["cloneAllowed"] is False
+    assert source_manifest["fetchAllowed"] is False
+
+    assert payload["batchReport"]["apiVersion"] == "spec-harvester.autonomous-candidate-batch/v0"
+    assert payload["batchReport"]["kind"] == "SpecHarvesterAutonomousCandidateBatchReport"
+    assert payload["batchReport"]["authority"] == "producer_preview_evidence_only"
+    assert payload["batchReport"]["digest"].startswith("sha256:")
+
+    run = payload["run"]
+    assert run["mode"] == "static_only"
+    assert run["status"] == "passed"
+    assert "--skip-ai" in run["command"]
+    assert "--repository-profile-selection auto" in run["command"]
+    assert "inputs/p51-larger-curated-corpus" in run["sourceManifestCommand"]
+
+    summary = payload["summary"]
+    assert summary["processedCount"] == 12
+    assert summary["collectedCount"] == 12
+    assert summary["failedRepositoryCount"] == 0
+    assert summary["skippedCount"] == 0
+    assert summary["passedPreflightCount"] == 12
+    assert summary["candidateCount"] == 15
+    assert summary["relationCount"] == 3
+    assert summary["preflightWarningCount"] == 0
+    assert summary["preflightErrorCount"] == 0
+    assert summary["repositoryProfileDetectionCount"] == 12
+    assert summary["repositoryProfileSelectedCount"] == 10
+    assert summary["repositoryProfileFallbackCount"] == 2
+    assert summary["authorReadyDraftCount"] == 15
+    assert summary["authorReadyBlockedCount"] == 0
+    assert summary["authorReadyNeedsRegenerationCount"] == 0
+    assert summary["aiDraftProposalCount"] == 0
+    assert summary["aiEnrichmentProposalCount"] == 0
+    assert summary["trustedLocalAdapterRunEvidenceSidecarCount"] == 0
+    assert summary["repositoryPluginAdapterEvidenceSidecarCount"] == 0
+
+    manifest_records = read_repository_source_manifests(manifest_path.parent)
+    manifest_by_id = {record["id"]: record for record in manifest_records}
+    repositories = payload["repositories"]
+    repository_ids = [repository["id"] for repository in repositories]
+    assert repository_ids == [
+        "flask",
+        "gin",
+        "xyflow",
+        "cupertino",
+        "navigation-split-view",
+        "docc2context",
+        "fastapi",
+        "fastmcp",
+        "specpm",
+        "hypercode",
+        "specnode",
+        "hyperprompt",
+    ]
+    assert set(repository_ids) == set(manifest_by_id)
+    assert sum(repository["candidateCount"] for repository in repositories) == 15
+    assert sum(repository["relationCount"] for repository in repositories) == 3
+
+    for repository in repositories:
+        record = manifest_by_id[repository["id"]]
+        assert repository["repository"] == record["repository"]
+        assert repository["revision"] == record["revision"]
+        assert repository["packageId"] == record["packageId"]
+        assert repository["status"] == "passed"
+        assert repository["preflight"]["status"] == "passed"
+        assert repository["preflight"]["warningCount"] == 0
+        assert repository["preflight"]["errorCount"] == 0
+        assert repository["aiDraft"] == {
+            "reason": "ai_disabled_by_operator",
+            "status": "skipped",
+        }
+        assert repository["aiEnrichment"] == {
+            "reason": "ai_disabled_by_operator",
+            "status": "skipped",
+        }
+        assert repository["aiEnrichedPreview"] == {
+            "reason": "ai_disabled_by_operator",
+            "status": "skipped",
+        }
+        assert repository["authorReadyDraftSummary"]["blocked"] == 0
+        assert repository["authorReadyDraftSummary"]["needs_regeneration"] == 0
+
+    repository_by_id = {repository["id"]: repository for repository in repositories}
+    xyflow = repository_by_id["xyflow"]
+    assert xyflow["candidateCount"] == 4
+    assert xyflow["relationIds"] == [
+        "xyflow.workspace.contains.xyflow.react",
+        "xyflow.workspace.contains.xyflow.svelte",
+        "xyflow.workspace.contains.xyflow.system",
+    ]
+    assert xyflow["interfaceIndex"]["status"] == "partial"
+    assert xyflow["interfaceIndex"]["diagnosticCount"] == 29
+    assert xyflow["repositoryProfileDetection"]["selectedProfileId"] == "generic.package_set.v0"
+    assert repository_by_id["cupertino"]["repositoryProfileDetection"]["decision"] == "fallback"
+    assert (
+        repository_by_id["navigation-split-view"]["repositoryProfileDetection"]["decision"]
+        == "fallback"
+    )
+
+    assert payload["carriedForwardCaveats"] == [
+        {
+            "sourceId": "xyflow",
+            "code": "operator_checkout_origin_fork_mismatch",
+            "blocking": False,
+            "disposition": "carry_forward_to_p51_t6_triage",
+        },
+        {
+            "sourceId": "docc2context",
+            "code": "source_checkout_had_untracked_doccarchive",
+            "blocking": False,
+            "disposition": "carry_forward_to_p51_t6_triage",
+        },
+    ]
+    assert payload["qualityGate"] == {
+        "staticOnlyGateStatus": "passed",
+        "allSelectedSourcesProcessed": True,
+        "allPreflightsPassed": True,
+        "failedRepositoryCount": 0,
+        "blockingReasonCount": 0,
+        "p51T5AIEnabledGateAllowed": True,
+    }
+    assert payload["aiBoundary"]["mode"] == "disabled"
+    assert payload["aiBoundary"]["rawPromptPersisted"] is False
+    assert payload["aiBoundary"]["rawProviderResponsePersisted"] is False
+    assert payload["aiBoundary"]["secretsPersisted"] is False
+    assert payload["aiBoundary"]["chainOfThoughtPersisted"] is False
+    assert payload["adapterBoundary"]["trustedLocalAdapterRunEvidenceSidecarCount"] == 0
+    assert payload["adapterBoundary"]["adapterOutputAcceptedAsRegistryTruth"] is False
+    assert payload["authorityBoundary"]["staticOutputIsRegistryAuthority"] is False
+    assert payload["authorityBoundary"]["acceptsPackages"] is False
+    assert payload["authorityBoundary"]["acceptsRelations"] is False
+    assert payload["authorityBoundary"]["publishesRegistryMetadata"] is False
+    assert payload["authorityBoundary"]["seedsBaselines"] is False
+    assert payload["authorityBoundary"]["removesPreviewOnly"] is False
+    assert payload["executionBoundary"]["runsStaticOnlyGate"] is True
+    assert payload["executionBoundary"]["runsAI"] is False
+    assert payload["executionBoundary"]["cloneOrFetch"] is False
+    assert payload["executionBoundary"]["installsDependencies"] is False
+    assert payload["executionBoundary"]["invokesPackageManagers"] is False
+    assert payload["executionBoundary"]["executesHarvestedCode"] is False
+    assert payload["executionBoundary"]["runsAdapters"] is False
+    assert payload["executionBoundary"]["enablesTrustedLocalAdapterExecution"] is False
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P51-T5",
+        "recommendedFollowUp": "Run the larger curated corpus AI-enabled proposal-only gate",
+        "staticOnlyGatePassed": True,
+        "aiEnabledGateAllowed": True,
+        "largerCuratedCorpusExecutionReadyForAIProposalOnly": True,
+        "phase51Complete": False,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Larger Curated Corpus Static-Only Gate",
+            "P51-T4",
+            "P51-T5",
+            "SpecHarvesterLargerCuratedCorpusStaticOnlyGate",
+            "spec-harvester.larger-curated-corpus-static-only-gate/v0",
+            "producer_static_preview_evidence_only",
+            "p51-t4-larger-curated-corpus-static-only-gate.example.json",
+            "inputs/p51-larger-curated-corpus/repositories.yml",
+            "12 repositories processed successfully",
+            "15 preview candidates",
+            "three relation proposals",
+            "xyflow.workspace.contains.xyflow.react",
+            "xyflow.operator_checkout_origin_fork_mismatch",
+            "docc2context.source_checkout_had_untracked_doccarchive",
+            "allows the P51-T5 AI-enabled proposal-only gate",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "did not run AI",
+            "enable trusted local adapter execution",
+            "run adapter",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist secrets",
+            "persist chain-of-thought",
+            "static output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md"),
+        (docc_root, "docs/LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md"),
+        (docc_root, "<doc:LargerCuratedCorpusStaticOnlyGate>"),
+        (capabilities, "LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md"),
+        (capabilities_docc, "LargerCuratedCorpusStaticOnlyGate"),
+        (roadmap, "LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md"),
+        (roadmap_docc, "LargerCuratedCorpusStaticOnlyGate"),
+        (workplan, "`P51-T4` Run the larger curated corpus static-only gate"),
+        (workplan, "`P51-T5` Run the larger curated corpus AI-enabled proposal-only gate"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
 def test_docc2context_ai_draft_same_scope_bounded_rerun_gate_records_p49_t3_result() -> None:
     source_path = (
         ROOT

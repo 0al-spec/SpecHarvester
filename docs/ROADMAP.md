@@ -1289,6 +1289,12 @@ fixture. It verifies all 12 selected sources have present local git checkouts
 whose observed revisions match the manifest pins, carries xyflow and
 docc2context checkout caveats forward, and allows P51-T4 static-only execution
 while keeping AI execution blocked until static-only evidence passes.
+P51-T4 records
+[`LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md`](LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md)
+and the machine-readable `SpecHarvesterLargerCuratedCorpusStaticOnlyGate`
+fixture. It processes all 12 selected sources in static-only mode, produces 15
+preview candidates and three relation proposals, carries checkout caveats
+forward, and allows P51-T5 AI-enabled proposal-only execution.
 
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
