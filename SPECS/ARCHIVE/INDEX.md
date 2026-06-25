@@ -854,3 +854,4 @@
 | 2026-06-25 | P51-T4 | Archived REVIEW_p51_t4_larger_curated_corpus_static_only_gate report |
 | 2026-06-25 | P51-T5 | Archived Larger Curated Corpus AI-Enabled Proposal-Only Gate (PASS) |
 | 2026-06-25 | P51-T5 | Archived REVIEW_p51_t5_larger_curated_corpus_ai_enabled_gate report |
+| 2026-06-25 | P51-T6 | Archived Hyperprompt AI Draft Single-Package Fallback (PASS) |

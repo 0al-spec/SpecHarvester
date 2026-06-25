@@ -2421,7 +2421,7 @@ Acceptance:
   after the static-only gate passes, preserving local provider metadata,
   warning diagnostics, raw prompt/response/CoT non-persistence, and
   non-authority boundaries.
-- [ ] `P51-T6` Repair the reproducible `hyperprompt.aiDraft` single-package JSON
+- [x] `P51-T6` Repair the reproducible `hyperprompt.aiDraft` single-package JSON
   contract failure with a bounded producer-side fallback and targeted rerun gate,
   without accepting packages, relations, or AI output as registry truth.
 - [ ] `P51-T7` Triage larger curated corpus output into selected, deferred, and
