@@ -1,57 +1,81 @@
-# Next Task: P51-T5 Larger Curated Corpus AI-Enabled Proposal-Only Gate
+# Next Task: P51-T6 Larger Curated Corpus Output Triage
 
 **Status:** Selected
 **Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun
-**Task:** `P51-T5`
-**Last Archived:** `P51-T4` Larger Curated Corpus Static-Only Gate
-**Depends On:** `P51-T4` Larger Curated Corpus Static-Only Gate
+**Task:** `P51-T6`
+**Last Archived:** `P51-T5` Larger Curated Corpus AI-Enabled Proposal-Only Gate
+**Depends On:** `P51-T5` Larger Curated Corpus AI-Enabled Proposal-Only Gate
 
 ## Goal
 
-Run the larger curated corpus AI-enabled proposal-only gate after the P51-T4
-static-only gate passed for all 12 selected sources.
+Triage the larger curated corpus static, AI draft, AI enrichment, AI-enriched
+preview, relation, warning, failed-sidecar, and caveat evidence into selected,
+deferred, and do-not-promote outcomes without rerunning the corpus or changing
+registry truth. This larger curated corpus output triage is an evidence
+classification task, not an acceptance task.
 
 ## Context
 
-P51-T4 processed all 12 selected sources from the P51 manifest in static-only
-mode:
+P51-T5 ran the same 12 selected sources from the P51 manifest through local
+LM Studio `openai/gpt-oss-20b`:
 
 ```text
 inputs/p51-larger-curated-corpus/repositories.yml
 ```
 
-The static-only gate fixture is:
+The AI-enabled gate fixture is:
 
 ```text
-tests/fixtures/larger_curated_corpus_static_only_gate/p51-t4-larger-curated-corpus-static-only-gate.example.json
+tests/fixtures/larger_curated_corpus_ai_enabled_gate/p51-t5-larger-curated-corpus-ai-enabled-gate.example.json
 ```
 
-P51-T4 passed with 12 processed repositories, 0 failed repositories, 15 preview
-candidates, 3 relation proposals, 0 AI proposals, and 0 adapter sidecars.
+AI-enabled batch ended `failed`, but evidence capture completed:
+
+```text
+processed repositories: `12`
+failed repositories: `1`
+AI draft proposals: `11`
+AI enrichment proposals: `12`
+AI-enriched preview applied packages: `8`
+```
+
+The hard blocker is `hyperprompt.aiDraft`, which exhausted one JSON repair
+attempt and emitted:
+
+```text
+ai_json_repair_exhausted
+ai_json_repair_needed
+package_set_subject_metadata_missing
+```
+
+All AI output remains proposal-only. Raw prompt, raw provider response,
+secret, and chain-of-thought non-persistence remains part of the evidence.
 
 ## Scope
 
-- Run the AI-enabled larger curated corpus gate over the same 12 selected
-  sources.
-- Preserve proposal-only AI draft and enrichment outputs.
-- Record local provider metadata, model identity, processed/failed counts,
-  warnings, diagnostics, and per-source AI proposal state.
-- Preserve raw prompt, raw provider response, secret, and chain-of-thought
-  non-persistence.
+- Classify all 15 static candidate packages and 3 relation proposals.
+- Classify AI draft sidecars, including the failed `hyperprompt.aiDraft`
+  sidecar.
+- Classify AI enrichment sidecars and AI-enriched preview copies.
+- Classify warning-only proposal evidence as selected, deferred, or
+  do-not-promote.
 - Carry `xyflow.partial_public_interface_index`,
-  `xyflow.operator_checkout_origin_fork_mismatch`, and
-  `docc2context.source_checkout_had_untracked_doccarchive` forward as review
-  evidence.
-- Decide whether P51-T6 output triage can proceed.
+  `xyflow.operator_checkout_origin_fork_mismatch`,
+  `docc2context.source_checkout_had_untracked_doccarchive`, and
+  `hyperprompt.ai_draft_failed_after_json_repair` forward as triage evidence.
+- Decide whether P51-T7 exit decision can proceed.
 
 ## Boundaries
 
+- Do not rerun the larger corpus in P51-T6.
+- Do not run AI in P51-T6.
 - Do not accept packages or relations.
 - Do not publish registry metadata.
 - Do not seed baselines.
 - Do not remove `preview_only`.
-- Do not treat static output, readiness output, AI output, rerun output,
-  planning output, or adapter output as registry truth.
+- Do not treat static output, readiness output, AI output, AI-enriched preview
+  output, rerun output, planning output, triage output, or adapter output as
+  registry truth.
 - Do not persist raw prompts.
 - Do not persist raw provider responses.
 - Do not persist secrets.

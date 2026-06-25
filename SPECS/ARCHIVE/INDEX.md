@@ -852,3 +852,4 @@
 | 2026-06-25 | P51-T3 | Archived REVIEW_p51_t3_larger_curated_corpus_checkout_readiness report |
 | 2026-06-25 | P51-T4 | Archived Larger Curated Corpus Static-Only Gate (PASS) |
 | 2026-06-25 | P51-T4 | Archived REVIEW_p51_t4_larger_curated_corpus_static_only_gate report |
+| 2026-06-25 | P51-T5 | Archived Larger Curated Corpus AI-Enabled Proposal-Only Gate (PASS) |

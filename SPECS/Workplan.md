@@ -2417,13 +2417,14 @@ Acceptance:
 - [x] `P51-T4` Run the larger curated corpus static-only gate after readiness
   passes, preserving deterministic evidence, preflight counts, diagnostics,
   and no-AI boundaries.
-- [ ] `P51-T5` Run the larger curated corpus AI-enabled proposal-only gate only
+- [x] `P51-T5` Run the larger curated corpus AI-enabled proposal-only gate only
   after the static-only gate passes, preserving local provider metadata,
   warning diagnostics, raw prompt/response/CoT non-persistence, and
   non-authority boundaries.
 - [ ] `P51-T6` Triage larger curated corpus output into selected, deferred, and
-  do-not-promote outcomes, carrying warning/caveat evidence forward without
-  accepting packages or relations.
+  do-not-promote outcomes, carrying warning/caveat evidence and the failed
+  `hyperprompt.aiDraft` sidecar forward without accepting packages or
+  relations.
 - [ ] `P51-T7` Record the larger curated corpus exit decision, deciding whether
   to proceed, run another targeted pass, or stop on a documented blocker before
   any further expansion.
