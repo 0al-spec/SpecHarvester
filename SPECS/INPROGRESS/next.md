@@ -1,83 +1,90 @@
-# Next Task: None Selected After P49-T4
+# Next Task: P50-T1 Record Restored-Checkout Rerun Evidence
 
-**Status:** Complete / Blocked for Expansion
-**Phase:** Phase 49. docc2context AI Draft Targeted Follow-Up
+**Status:** Selected
+**Branch:** `feature/P50-T1-record-restored-checkout-rerun-evidence`
+**Phase:** Phase 50. Restored-Checkout Rerun Follow-Up
+**Task:** `P50-T1`
 **Last Archived:** `P49-T4` Record docc2context Follow-Up Exit Decision
-**Decision:** `record_no_larger_corpus_readiness_due_to_operator_local_checkout_blocker`
+**Depends On:** `P49-T4` Record docc2context Follow-Up Exit Decision
 
-## Current State
+## Goal
 
-P49-T4 recorded the docc2context follow-up exit decision:
+Record the restored-checkout same-scope rerun evidence after the six
+operator-local checkout paths from the P46 manifest were restored.
+
+## Context
+
+P49-T4 selected:
 
 ```text
 record_no_larger_corpus_readiness_due_to_operator_local_checkout_blocker
 ```
 
-The decision uses P49-T3 evidence:
+That decision was correct for the evidence then available: P49-T3 could not
+reach static-only or AI-enabled execution because all six expected checkout
+paths were missing.
+
+The operator-local paths are now restored through symlinks:
+
+- `/Users/egor/Development/GitHub/0AL/flask`
+- `/Users/egor/Development/GitHub/0AL/gin`
+- `/Users/egor/Development/GitHub/0AL/xyflow`
+- `/Users/egor/Development/GitHub/0AL/cupertino`
+- `/Users/egor/Development/GitHub/0AL/NavigationSplitView`
+- `/Users/egor/Development/GitHub/0AL/docc2context`
+
+The restored checkouts point to the pinned repositories under
+`/Users/egor/Development/GitHub/` and match the P46 manifest revisions.
+
+The local rerun evidence is under:
 
 ```text
-same_scope_bounded_rerun_gate_blocked_operator_local_checkouts_missing
+/tmp/specharvester-p49-t3-rerun-after-checkout-restore-20260625T004309
 ```
 
-P49-T3 did not run the static-only gate or the AI-enabled gate because all six
-P46 operator-local checkout paths were absent:
+Observed rerun result:
 
-- `flask`
-- `gin`
-- `xyflow`
-- `cupertino`
-- `navigation-split-view`
-- `docc2context`
+- static-only gate: `passed`
+- AI-enabled gate: `passed`
+- processed repositories: `6`
+- failed repositories: `0`
+- passed preflight: `6`
+- AI draft proposals: `6`
+- AI enrichment proposals: `6`
+- raw prompts, raw provider responses, and chain-of-thought: not persisted
 
-LM Studio was available with `openai/gpt-oss-20b`, but AI execution was not
-reached because static-only-before-AI ordering stopped at checkout preflight.
+## Scope
 
-P49-T2 remains carried forward as:
+- Add durable P50-T1 restored-checkout rerun evidence.
+- Document static-only-before-AI ordering and same-scope P46 manifest reuse.
+- Record remaining warning/caveat evidence without treating warnings as
+  registry truth.
+- Update the current next-state decision from checkout-blocked to
+  larger-corpus planning reconsideration-ready.
 
-```text
-docc2context.aiDraft_warning_explicitly_non_blocking_for_p49_t3
-excluded_package_also_selected
-```
+## Expected Deliverables
 
-The P48 warning IDs and xyflow caveats remain visible:
-
-- `flask.aiDraft`
-- `flask.aiEnrichment`
-- `gin.aiDraft`
-- `cupertino.aiDraft`
-- `navigation-split-view.aiDraft`
-- `xyflow.partial_public_interface_index`
-- `xyflow.operator_checkout_origin_fork_mismatch`
-
-## Expansion Decision
-
-Larger curated corpus planning remains blocked.
-
-P49-T4 does not select readiness for a larger curated corpus because the
-same-scope bounded rerun gate did not reach either static-only execution or
-AI-enabled execution.
-
-Readiness can be reconsidered only after:
-
-- the same six operator-local checkouts are restored;
-- P49-T3 is rerun over the same six-repository scope;
-- a new or revisited exit decision records a successful same-scope rerun.
-
-## Practical Follow-Up
-
-No Workplan task is currently selected. The practical follow-up is operator
-action: restore the same six operator-local checkouts before rerunning P49-T3,
-or author a new follow-up phase if the project wants a different path.
+- Durable P50-T1 restored-checkout rerun evidence fixture.
+- GitHub and DocC documentation for the restored-checkout rerun.
+- Workplan/next update to the selected post-rerun state.
+- Focused docs-contract tests.
+- Validation report and archive artifacts for P50-T1.
 
 ## Boundaries
 
-- Do not approve a larger curated corpus from the current P49 evidence.
-- Do not run another bounded rerun without restoring the operator-local
-  checkouts first.
-- Do not run AI.
-- Do not run adapters or enable trusted local adapter execution.
 - Do not clone or fetch repositories.
+- Do not install dependencies.
+- Do not invoke package managers.
+- Do not execute harvested code.
+- Do not run adapters or enable trusted local adapter execution.
 - Do not accept packages or relations.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
 - Do not treat AI output, static output, rerun output, targeted follow-up
   output, exit-decision output, or adapter output as registry truth.
+
+## Validation Expectations
+
+- Validate the durable JSON fixture with `python3 -m json.tool`.
+- Run focused docs-contract tests for P50-T1 and current next task.
+- Run formatting, lint, coverage, Swift manifest, Swift docs build, and
+  whitespace checks as required by Flow.
