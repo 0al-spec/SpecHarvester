@@ -43,13 +43,13 @@ repositories:
   - id: fastapi
     repository: https://github.com/fastapi/fastapi
     revision: 9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263
-    checkout: ../../../../fastapi
+    checkout: ../../../fastapi
     packageId: fastapi.core
     labels: [python, pypi, web_framework, documentation_heavy, single_package, p51_larger_curated_corpus]
   - id: fastmcp
     repository: https://github.com/PrefectHQ/fastmcp
     revision: 3b8538e2422a1c43fdb69661c610de7985b785f2
-    checkout: ../../../../fastmcp
+    checkout: ../../../fastmcp
     packageId: fastmcp.core
     labels: [python, pypi, mcp, framework_or_runtime_library, single_package, p51_larger_curated_corpus]
   - id: specpm
