@@ -1,0 +1,616 @@
+{
+  "apiVersion": "spec-harvester.larger-curated-corpus-output-triage/v0",
+  "kind": "SpecHarvesterLargerCuratedCorpusOutputTriage",
+  "authority": "producer_triage_evidence_only",
+  "schemaVersion": 1,
+  "createdAt": "2026-06-25T14:55:01Z",
+  "phase": "P51",
+  "task": "P51-T7",
+  "sourceArtifacts": {
+    "p51StaticOnlyGate": {
+      "path": "tests/fixtures/larger_curated_corpus_static_only_gate/p51-t4-larger-curated-corpus-static-only-gate.example.json",
+      "digest": "sha256:856abe611a2d5f6f1f67440804f0e85ef233e468a3b6c04bc7adb5908e9ce9d9",
+      "apiVersion": "spec-harvester.larger-curated-corpus-static-only-gate/v0",
+      "kind": "SpecHarvesterLargerCuratedCorpusStaticOnlyGate",
+      "authority": "producer_static_preview_evidence_only"
+    },
+    "p51AIEnabledGate": {
+      "path": "tests/fixtures/larger_curated_corpus_ai_enabled_gate/p51-t5-larger-curated-corpus-ai-enabled-gate.example.json",
+      "digest": "sha256:59890c08339a8a3a3f5577284e6a121aed724f8484fc0b7541b3488487042731",
+      "apiVersion": "spec-harvester.larger-curated-corpus-ai-enabled-gate/v0",
+      "kind": "SpecHarvesterLargerCuratedCorpusAIEnabledGate",
+      "authority": "producer_ai_enabled_proposal_evidence_only"
+    },
+    "p51HyperpromptFallback": {
+      "path": "tests/fixtures/hyperprompt_ai_draft_single_package_fallback/p51-t6-hyperprompt-ai-draft-single-package-fallback.example.json",
+      "digest": "sha256:78089ff7a41265c6f06a1ebe6868c9c5972d80e14be1e4d55e00753fd8c73c33",
+      "apiVersion": "spec-harvester.hyperprompt-ai-draft-single-package-fallback/v0",
+      "kind": "SpecHarvesterHyperpromptAIDraftSinglePackageFallback",
+      "authority": "producer_ai_enabled_proposal_evidence_only"
+    },
+    "sourceManifest": {
+      "path": "inputs/p51-larger-curated-corpus/repositories.yml",
+      "digest": "sha256:7676d9d5069f223c33c3e3650c76a60897ada6bed05034dfb5f94dba1d4be79a",
+      "entryCount": 12,
+      "requiresExistingCheckouts": true,
+      "cloneAllowed": false,
+      "fetchAllowed": false
+    }
+  },
+  "classificationVocabulary": {
+    "selected_for_author_review": "Evidence is suitable for human review, but is not registry acceptance.",
+    "deferred": "Evidence remains useful, but a caveat, warning, or explicit exit decision must be handled before promotion.",
+    "do_not_promote": "Evidence must not be used as registry-promotion input in its current form."
+  },
+  "summary": {
+    "repositoriesTriaged": 12,
+    "candidatePackageCount": 15,
+    "selectedStaticPackageCount": 11,
+    "deferredStaticPackageCount": 4,
+    "doNotPromoteStaticPackageCount": 0,
+    "relationProposalCount": 3,
+    "selectedRelationProposalCount": 0,
+    "deferredRelationProposalCount": 3,
+    "doNotPromoteRelationProposalCount": 0,
+    "aiDraftSidecarCount": 12,
+    "aiDraftSelectedForAuthorReviewCount": 6,
+    "aiDraftDeferredCount": 6,
+    "aiDraftSupersededDoNotPromoteCount": 1,
+    "aiEnrichmentSidecarCount": 12,
+    "aiEnrichmentSelectedForAuthorReviewCount": 8,
+    "aiEnrichmentDeferredCount": 3,
+    "aiEnrichmentDoNotPromoteCount": 1,
+    "aiEnrichedPreviewPreparedCount": 8,
+    "aiEnrichedPreviewSkippedCount": 7,
+    "aiEnrichedPreviewDeferredCount": 8,
+    "aiEnrichedPreviewDoNotPromoteCount": 7,
+    "carriedForwardCaveatCount": 4,
+    "registryPromotionBlockerCount": 5,
+    "p51T8ExitDecisionAllowed": true
+  },
+  "staticPackages": [
+    {
+      "repositoryId": "flask",
+      "packageId": "flask.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    },
+    {
+      "repositoryId": "gin",
+      "packageId": "gin.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    },
+    {
+      "repositoryId": "xyflow",
+      "packageId": "xyflow.react",
+      "classification": "deferred",
+      "reasonCodes": [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch"
+      ]
+    },
+    {
+      "repositoryId": "xyflow",
+      "packageId": "xyflow.svelte",
+      "classification": "deferred",
+      "reasonCodes": [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch"
+      ]
+    },
+    {
+      "repositoryId": "xyflow",
+      "packageId": "xyflow.system",
+      "classification": "deferred",
+      "reasonCodes": [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch"
+      ]
+    },
+    {
+      "repositoryId": "xyflow",
+      "packageId": "xyflow.workspace",
+      "classification": "deferred",
+      "reasonCodes": [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch"
+      ]
+    },
+    {
+      "repositoryId": "cupertino",
+      "packageId": "cupertino.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    },
+    {
+      "repositoryId": "navigation-split-view",
+      "packageId": "navigation_split_view.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    },
+    {
+      "repositoryId": "docc2context",
+      "packageId": "docc2context.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": [
+        "passed_preflight",
+        "complete_interface_index",
+        "source_checkout_had_untracked_doccarchive"
+      ]
+    },
+    {
+      "repositoryId": "fastapi",
+      "packageId": "fastapi.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    },
+    {
+      "repositoryId": "fastmcp",
+      "packageId": "fastmcp.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    },
+    {
+      "repositoryId": "specpm",
+      "packageId": "specpm.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    },
+    {
+      "repositoryId": "hypercode",
+      "packageId": "hypercode.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    },
+    {
+      "repositoryId": "specnode",
+      "packageId": "specnode.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    },
+    {
+      "repositoryId": "hyperprompt",
+      "packageId": "hyperprompt.core",
+      "classification": "selected_for_author_review",
+      "reasonCodes": ["passed_preflight", "complete_interface_index"]
+    }
+  ],
+  "relationProposals": [
+    {
+      "repositoryId": "xyflow",
+      "relationId": "xyflow.workspace.contains.xyflow.react",
+      "sourcePackageId": "xyflow.workspace",
+      "targetPackageId": "xyflow.react",
+      "relationType": "contains",
+      "classification": "deferred",
+      "reasonCodes": [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch"
+      ]
+    },
+    {
+      "repositoryId": "xyflow",
+      "relationId": "xyflow.workspace.contains.xyflow.svelte",
+      "sourcePackageId": "xyflow.workspace",
+      "targetPackageId": "xyflow.svelte",
+      "relationType": "contains",
+      "classification": "deferred",
+      "reasonCodes": [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch"
+      ]
+    },
+    {
+      "repositoryId": "xyflow",
+      "relationId": "xyflow.workspace.contains.xyflow.system",
+      "sourcePackageId": "xyflow.workspace",
+      "targetPackageId": "xyflow.system",
+      "relationType": "contains",
+      "classification": "deferred",
+      "reasonCodes": [
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch"
+      ]
+    }
+  ],
+  "aiDraftSidecars": [
+    {
+      "id": "flask.aiDraft",
+      "repositoryId": "flask",
+      "sourceTask": "P51-T5",
+      "status": "warning",
+      "classification": "deferred",
+      "diagnosticCodes": [
+        "excluded_package_also_selected",
+        "selected_member_role_unknown"
+      ],
+      "stopPolicyDecision": "continue_generation"
+    },
+    {
+      "id": "gin.aiDraft",
+      "repositoryId": "gin",
+      "sourceTask": "P51-T5",
+      "status": "warning",
+      "classification": "deferred",
+      "diagnosticCodes": ["selected_member_role_unknown"],
+      "stopPolicyDecision": "continue_generation"
+    },
+    {
+      "id": "xyflow.aiDraft",
+      "repositoryId": "xyflow",
+      "sourceTask": "P51-T5",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "id": "cupertino.aiDraft",
+      "repositoryId": "cupertino",
+      "sourceTask": "P51-T5",
+      "status": "warning",
+      "classification": "deferred",
+      "diagnosticCodes": [
+        "excluded_package_also_selected",
+        "selected_member_role_unknown"
+      ],
+      "stopPolicyDecision": "continue_generation"
+    },
+    {
+      "id": "navigation-split-view.aiDraft",
+      "repositoryId": "navigation-split-view",
+      "sourceTask": "P51-T5",
+      "status": "warning",
+      "classification": "deferred",
+      "diagnosticCodes": ["selected_member_role_unknown"],
+      "stopPolicyDecision": "continue_generation"
+    },
+    {
+      "id": "docc2context.aiDraft",
+      "repositoryId": "docc2context",
+      "sourceTask": "P51-T5",
+      "status": "warning",
+      "classification": "deferred",
+      "diagnosticCodes": [
+        "excluded_package_also_selected",
+        "selected_member_role_unknown"
+      ],
+      "stopPolicyDecision": "continue_generation"
+    },
+    {
+      "id": "fastapi.aiDraft",
+      "repositoryId": "fastapi",
+      "sourceTask": "P51-T5",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "id": "fastmcp.aiDraft",
+      "repositoryId": "fastmcp",
+      "sourceTask": "P51-T5",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "id": "specpm.aiDraft",
+      "repositoryId": "specpm",
+      "sourceTask": "P51-T5",
+      "status": "warning",
+      "classification": "deferred",
+      "diagnosticCodes": [
+        "excluded_package_also_selected",
+        "selected_member_role_unknown"
+      ],
+      "stopPolicyDecision": "continue_generation"
+    },
+    {
+      "id": "hypercode.aiDraft",
+      "repositoryId": "hypercode",
+      "sourceTask": "P51-T5",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "id": "specnode.aiDraft",
+      "repositoryId": "specnode",
+      "sourceTask": "P51-T5",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "id": "hyperprompt.aiDraft",
+      "repositoryId": "hyperprompt",
+      "sourceTask": "P51-T6",
+      "status": "warning",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [
+        "ai_json_repair_needed",
+        "ai_json_repair_exhausted",
+        "package_set_subject_metadata_missing",
+        "single_package_deterministic_fallback_applied"
+      ],
+      "nonBlockingReason": "deterministic_single_package_fallback",
+      "stopPolicyDecision": "stop_for_author_review"
+    }
+  ],
+  "supersededSidecars": [
+    {
+      "id": "hyperprompt.aiDraft.p51-t5",
+      "repositoryId": "hyperprompt",
+      "sourceTask": "P51-T5",
+      "status": "failed",
+      "classification": "do_not_promote",
+      "diagnosticCodes": [
+        "ai_json_repair_exhausted",
+        "ai_json_repair_needed",
+        "package_set_subject_metadata_missing"
+      ],
+      "supersededBy": "P51-T6",
+      "disposition": "do_not_promote_failed_sidecar_use_p51_t6_fallback_evidence"
+    }
+  ],
+  "aiEnrichmentSidecars": [
+    {
+      "id": "flask.aiEnrichment",
+      "repositoryId": "flask",
+      "status": "warning",
+      "classification": "deferred",
+      "diagnosticCodes": ["refined_summary_missing"]
+    },
+    {
+      "id": "gin.aiEnrichment",
+      "repositoryId": "gin",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": []
+    },
+    {
+      "id": "xyflow.aiEnrichment",
+      "repositoryId": "xyflow",
+      "status": "warning",
+      "classification": "deferred",
+      "diagnosticCodes": ["refined_summary_missing"]
+    },
+    {
+      "id": "cupertino.aiEnrichment",
+      "repositoryId": "cupertino",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": []
+    },
+    {
+      "id": "navigation-split-view.aiEnrichment",
+      "repositoryId": "navigation-split-view",
+      "status": "warning",
+      "classification": "deferred",
+      "diagnosticCodes": ["ai_json_repair_needed"],
+      "jsonRepairStatus": "repaired"
+    },
+    {
+      "id": "docc2context.aiEnrichment",
+      "repositoryId": "docc2context",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": []
+    },
+    {
+      "id": "fastapi.aiEnrichment",
+      "repositoryId": "fastapi",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": []
+    },
+    {
+      "id": "fastmcp.aiEnrichment",
+      "repositoryId": "fastmcp",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": []
+    },
+    {
+      "id": "specpm.aiEnrichment",
+      "repositoryId": "specpm",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": []
+    },
+    {
+      "id": "hypercode.aiEnrichment",
+      "repositoryId": "hypercode",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": []
+    },
+    {
+      "id": "specnode.aiEnrichment",
+      "repositoryId": "specnode",
+      "status": "warning",
+      "classification": "do_not_promote",
+      "diagnosticCodes": ["model_evidence_path_unsupported"]
+    },
+    {
+      "id": "hyperprompt.aiEnrichment",
+      "repositoryId": "hyperprompt",
+      "status": "completed",
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": []
+    }
+  ],
+  "aiEnrichedPreviews": [
+    {
+      "repositoryId": "flask",
+      "classification": "do_not_promote",
+      "status": "skipped",
+      "packageCount": 1,
+      "reasonCodes": ["ai_enrichment_warning"]
+    },
+    {
+      "repositoryId": "gin",
+      "classification": "deferred",
+      "status": "prepared",
+      "packageCount": 1,
+      "reasonCodes": ["preview_only_copy"]
+    },
+    {
+      "repositoryId": "xyflow",
+      "classification": "do_not_promote",
+      "status": "skipped",
+      "packageCount": 4,
+      "reasonCodes": ["ai_enrichment_warning", "partial_public_interface_index"]
+    },
+    {
+      "repositoryId": "cupertino",
+      "classification": "deferred",
+      "status": "prepared",
+      "packageCount": 1,
+      "reasonCodes": ["preview_only_copy"]
+    },
+    {
+      "repositoryId": "navigation-split-view",
+      "classification": "do_not_promote",
+      "status": "skipped",
+      "packageCount": 1,
+      "reasonCodes": ["ai_enrichment_warning"]
+    },
+    {
+      "repositoryId": "docc2context",
+      "classification": "deferred",
+      "status": "prepared",
+      "packageCount": 1,
+      "reasonCodes": ["preview_only_copy", "source_checkout_had_untracked_doccarchive"]
+    },
+    {
+      "repositoryId": "fastapi",
+      "classification": "deferred",
+      "status": "prepared",
+      "packageCount": 1,
+      "reasonCodes": ["preview_only_copy"]
+    },
+    {
+      "repositoryId": "fastmcp",
+      "classification": "deferred",
+      "status": "prepared",
+      "packageCount": 1,
+      "reasonCodes": ["preview_only_copy"]
+    },
+    {
+      "repositoryId": "specpm",
+      "classification": "deferred",
+      "status": "prepared",
+      "packageCount": 1,
+      "reasonCodes": ["preview_only_copy"]
+    },
+    {
+      "repositoryId": "hypercode",
+      "classification": "deferred",
+      "status": "prepared",
+      "packageCount": 1,
+      "reasonCodes": ["preview_only_copy"]
+    },
+    {
+      "repositoryId": "specnode",
+      "classification": "do_not_promote",
+      "status": "skipped",
+      "packageCount": 1,
+      "reasonCodes": ["model_evidence_path_unsupported"]
+    },
+    {
+      "repositoryId": "hyperprompt",
+      "classification": "deferred",
+      "status": "prepared",
+      "packageCount": 1,
+      "reasonCodes": [
+        "preview_only_copy",
+        "single_package_deterministic_fallback_applied"
+      ]
+    }
+  ],
+  "carriedForwardCaveats": [
+    {
+      "sourceId": "xyflow",
+      "code": "partial_public_interface_index",
+      "classification": "deferred",
+      "blocksRegistryPromotion": true,
+      "diagnosticCount": 29,
+      "disposition": "carry_forward_to_p51_t8_exit_decision"
+    },
+    {
+      "sourceId": "xyflow",
+      "code": "operator_checkout_origin_fork_mismatch",
+      "classification": "deferred",
+      "blocksRegistryPromotion": true,
+      "disposition": "carry_forward_to_p51_t8_exit_decision"
+    },
+    {
+      "sourceId": "docc2context",
+      "code": "source_checkout_had_untracked_doccarchive",
+      "classification": "deferred",
+      "blocksRegistryPromotion": true,
+      "disposition": "carry_forward_to_p51_t8_exit_decision"
+    },
+    {
+      "sourceId": "hyperprompt",
+      "code": "single_package_deterministic_fallback_applied",
+      "classification": "deferred",
+      "blocksRegistryPromotion": true,
+      "diagnostics": [
+        "ai_json_repair_needed",
+        "ai_json_repair_exhausted",
+        "package_set_subject_metadata_missing"
+      ],
+      "nonBlockingReason": "deterministic_single_package_fallback",
+      "disposition": "carry_forward_to_p51_t8_exit_decision"
+    }
+  ],
+  "qualityGate": {
+    "triageVerdict": "pass",
+    "largerCuratedCorpusRerunRequired": false,
+    "p51T8ExitDecisionAllowed": true,
+    "phase51Complete": false,
+    "reason": "all larger curated corpus output layers are classified and the previous hyperprompt hard blocker is superseded by P51-T6 fallback evidence"
+  },
+  "authorityBoundary": {
+    "triageOutputIsRegistryAuthority": false,
+    "staticOutputIsRegistryAuthority": false,
+    "aiOutputIsRegistryAuthority": false,
+    "enrichedPreviewOutputIsRegistryAuthority": false,
+    "adapterOutputIsRegistryAuthority": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false
+  },
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "executionBoundary": {
+    "rerunsCorpus": false,
+    "runsAI": false,
+    "cloneOrFetch": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "enablesTrustedLocalAdapterExecution": false
+  },
+  "nextState": {
+    "nextTaskPointer": "P51-T8",
+    "recommendedFollowUp": "Record the larger curated corpus exit decision",
+    "p51T8ExitDecisionAllowed": true,
+    "phase51Complete": false,
+    "registryPromotionAllowed": false
+  }
+}

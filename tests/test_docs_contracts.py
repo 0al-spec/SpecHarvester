@@ -38,6 +38,46 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P51-T8 Larger Curated Corpus Exit Decision" in (next_text):
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun" in (
+            next_text
+        )
+        assert "**Task:** `P51-T8`" in next_text
+        assert "`P51-T7` Larger Curated Corpus Output Triage" in next_text
+        assert "larger curated corpus exit decision" in normalized
+        assert "p51-t7-larger-curated-corpus-output-triage.example.json" in next_text
+        assert "SpecHarvesterLargerCuratedCorpusOutputTriage" in next_text
+        assert "selected_for_author_review" in next_text
+        assert "deferred" in next_text
+        assert "do_not_promote" in next_text
+        assert "15 static packages" in normalized
+        assert "three relation proposals" in normalized
+        assert "P51-T8 exit decision" in next_text
+        assert "xyflow.partial_public_interface_index" in next_text
+        assert "xyflow.operator_checkout_origin_fork_mismatch" in next_text
+        assert "docc2context.source_checkout_had_untracked_doccarchive" in next_text
+        assert "hyperprompt.single_package_deterministic_fallback_applied" in next_text
+        assert "proposal-only" in normalized
+        assert "raw prompt" in normalized
+        assert "raw provider response" in normalized
+        assert "chain-of-thought" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata" in next_text
+        assert "Do not seed baselines" in next_text
+        assert "Do not remove `preview_only`" in next_text
+        assert "Do not persist raw prompts" in next_text
+        assert "Do not persist raw provider responses" in next_text
+        assert "Do not persist secrets" in next_text
+        assert "Do not persist chain-of-thought" in next_text
+        assert "Do not clone or fetch repositories" in next_text
+        assert "Do not install dependencies" in next_text
+        assert "Do not invoke package managers" in next_text
+        assert "Do not execute harvested code" in next_text
+        assert "Do not run adapters or enable trusted local adapter execution" in next_text
+        return
+
     if "# Next Task: P51-T7 Larger Curated Corpus Output Triage" in (next_text):
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
@@ -36234,6 +36274,352 @@ def test_hyperprompt_ai_draft_single_package_fallback_records_p51_t6_repair() ->
         (roadmap, "HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md"),
         (roadmap_docc, "HyperpromptAIDraftSinglePackageFallback"),
         (workplan, "`P51-T6` Repair the reproducible `hyperprompt.aiDraft`"),
+        (workplan, "`P51-T7` Triage larger curated corpus output"),
+        (workplan, "`P51-T8` Record the larger curated corpus exit decision"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_larger_curated_corpus_output_triage_records_p51_t7_classification() -> None:
+    static_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_static_only_gate"
+        / "p51-t4-larger-curated-corpus-static-only-gate.example.json"
+    )
+    ai_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_ai_enabled_gate"
+        / "p51-t5-larger-curated-corpus-ai-enabled-gate.example.json"
+    )
+    fallback_fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "hyperprompt_ai_draft_single_package_fallback"
+        / "p51-t6-hyperprompt-ai-draft-single-package-fallback.example.json"
+    )
+    manifest_path = ROOT / "inputs" / "p51-larger-curated-corpus" / "repositories.yml"
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_output_triage"
+        / "p51-t7-larger-curated-corpus-output-triage.example.json"
+    )
+    github_doc = ROOT / "docs" / "LARGER_CURATED_CORPUS_OUTPUT_TRIAGE.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "LargerCuratedCorpusOutputTriage.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert payload["apiVersion"] == "spec-harvester.larger-curated-corpus-output-triage/v0"
+    assert payload["kind"] == "SpecHarvesterLargerCuratedCorpusOutputTriage"
+    assert payload["authority"] == "producer_triage_evidence_only"
+    assert payload["phase"] == "P51"
+    assert payload["task"] == "P51-T7"
+
+    source_artifacts = payload["sourceArtifacts"]
+    for artifact_key, artifact_path in (
+        ("p51StaticOnlyGate", static_fixture_path),
+        ("p51AIEnabledGate", ai_fixture_path),
+        ("p51HyperpromptFallback", fallback_fixture_path),
+    ):
+        artifact = source_artifacts[artifact_key]
+        source_payload = json.loads(artifact_path.read_text(encoding="utf-8"))
+        assert ROOT / artifact["path"] == artifact_path
+        assert (
+            artifact["digest"] == "sha256:" + hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        )
+        assert artifact["apiVersion"] == source_payload["apiVersion"]
+        assert artifact["kind"] == source_payload["kind"]
+        assert artifact["authority"] == source_payload["authority"]
+
+    manifest_artifact = source_artifacts["sourceManifest"]
+    assert ROOT / manifest_artifact["path"] == manifest_path
+    assert (
+        manifest_artifact["digest"]
+        == "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    )
+    assert manifest_artifact["entryCount"] == 12
+    assert manifest_artifact["cloneAllowed"] is False
+    assert manifest_artifact["fetchAllowed"] is False
+
+    summary = payload["summary"]
+    assert summary == {
+        "repositoriesTriaged": 12,
+        "candidatePackageCount": 15,
+        "selectedStaticPackageCount": 11,
+        "deferredStaticPackageCount": 4,
+        "doNotPromoteStaticPackageCount": 0,
+        "relationProposalCount": 3,
+        "selectedRelationProposalCount": 0,
+        "deferredRelationProposalCount": 3,
+        "doNotPromoteRelationProposalCount": 0,
+        "aiDraftSidecarCount": 12,
+        "aiDraftSelectedForAuthorReviewCount": 6,
+        "aiDraftDeferredCount": 6,
+        "aiDraftSupersededDoNotPromoteCount": 1,
+        "aiEnrichmentSidecarCount": 12,
+        "aiEnrichmentSelectedForAuthorReviewCount": 8,
+        "aiEnrichmentDeferredCount": 3,
+        "aiEnrichmentDoNotPromoteCount": 1,
+        "aiEnrichedPreviewPreparedCount": 8,
+        "aiEnrichedPreviewSkippedCount": 7,
+        "aiEnrichedPreviewDeferredCount": 8,
+        "aiEnrichedPreviewDoNotPromoteCount": 7,
+        "carriedForwardCaveatCount": 4,
+        "registryPromotionBlockerCount": 5,
+        "p51T8ExitDecisionAllowed": True,
+    }
+
+    vocabulary = payload["classificationVocabulary"]
+    assert set(vocabulary) == {
+        "selected_for_author_review",
+        "deferred",
+        "do_not_promote",
+    }
+    assert "not registry acceptance" in vocabulary["selected_for_author_review"]
+
+    static_packages = payload["staticPackages"]
+    assert len(static_packages) == 15
+    selected_static = {
+        item["packageId"]
+        for item in static_packages
+        if item["classification"] == "selected_for_author_review"
+    }
+    assert selected_static == {
+        "flask.core",
+        "gin.core",
+        "cupertino.core",
+        "navigation_split_view.core",
+        "docc2context.core",
+        "fastapi.core",
+        "fastmcp.core",
+        "specpm.core",
+        "hypercode.core",
+        "specnode.core",
+        "hyperprompt.core",
+    }
+    deferred_static = {
+        item["packageId"] for item in static_packages if item["classification"] == "deferred"
+    }
+    assert deferred_static == {
+        "xyflow.react",
+        "xyflow.svelte",
+        "xyflow.system",
+        "xyflow.workspace",
+    }
+
+    relations = payload["relationProposals"]
+    assert [item["classification"] for item in relations] == ["deferred"] * 3
+    assert [item["relationId"] for item in relations] == [
+        "xyflow.workspace.contains.xyflow.react",
+        "xyflow.workspace.contains.xyflow.svelte",
+        "xyflow.workspace.contains.xyflow.system",
+    ]
+
+    ai_drafts = {item["id"]: item for item in payload["aiDraftSidecars"]}
+    assert len(ai_drafts) == 12
+    assert ai_drafts["fastapi.aiDraft"]["classification"] == "selected_for_author_review"
+    assert ai_drafts["specpm.aiDraft"]["classification"] == "deferred"
+    assert ai_drafts["hyperprompt.aiDraft"]["sourceTask"] == "P51-T6"
+    assert ai_drafts["hyperprompt.aiDraft"]["classification"] == "selected_for_author_review"
+    assert ai_drafts["hyperprompt.aiDraft"]["diagnosticCodes"] == [
+        "ai_json_repair_needed",
+        "ai_json_repair_exhausted",
+        "package_set_subject_metadata_missing",
+        "single_package_deterministic_fallback_applied",
+    ]
+    assert (
+        ai_drafts["hyperprompt.aiDraft"]["nonBlockingReason"]
+        == "deterministic_single_package_fallback"
+    )
+
+    superseded = payload["supersededSidecars"]
+    assert superseded == [
+        {
+            "id": "hyperprompt.aiDraft.p51-t5",
+            "repositoryId": "hyperprompt",
+            "sourceTask": "P51-T5",
+            "status": "failed",
+            "classification": "do_not_promote",
+            "diagnosticCodes": [
+                "ai_json_repair_exhausted",
+                "ai_json_repair_needed",
+                "package_set_subject_metadata_missing",
+            ],
+            "supersededBy": "P51-T6",
+            "disposition": "do_not_promote_failed_sidecar_use_p51_t6_fallback_evidence",
+        }
+    ]
+
+    enrichments = {item["id"]: item for item in payload["aiEnrichmentSidecars"]}
+    assert len(enrichments) == 12
+    assert enrichments["hyperprompt.aiEnrichment"]["classification"] == (
+        "selected_for_author_review"
+    )
+    assert enrichments["xyflow.aiEnrichment"]["classification"] == "deferred"
+    assert enrichments["specnode.aiEnrichment"] == {
+        "id": "specnode.aiEnrichment",
+        "repositoryId": "specnode",
+        "status": "warning",
+        "classification": "do_not_promote",
+        "diagnosticCodes": ["model_evidence_path_unsupported"],
+    }
+
+    previews = payload["aiEnrichedPreviews"]
+    assert sum(item["packageCount"] for item in previews) == 15
+    assert (
+        sum(item["packageCount"] for item in previews if item["classification"] == "deferred") == 8
+    )
+    assert (
+        sum(item["packageCount"] for item in previews if item["classification"] == "do_not_promote")
+        == 7
+    )
+
+    caveats = {item["code"]: item for item in payload["carriedForwardCaveats"]}
+    assert set(caveats) == {
+        "partial_public_interface_index",
+        "operator_checkout_origin_fork_mismatch",
+        "source_checkout_had_untracked_doccarchive",
+        "single_package_deterministic_fallback_applied",
+    }
+    assert all(item["blocksRegistryPromotion"] is True for item in caveats.values())
+    assert caveats["single_package_deterministic_fallback_applied"]["nonBlockingReason"] == (
+        "deterministic_single_package_fallback"
+    )
+
+    assert payload["qualityGate"] == {
+        "triageVerdict": "pass",
+        "largerCuratedCorpusRerunRequired": False,
+        "p51T8ExitDecisionAllowed": True,
+        "phase51Complete": False,
+        "reason": (
+            "all larger curated corpus output layers are classified and the previous "
+            "hyperprompt hard blocker is superseded by P51-T6 fallback evidence"
+        ),
+    }
+    assert payload["nextState"] == {
+        "nextTaskPointer": "P51-T8",
+        "recommendedFollowUp": "Record the larger curated corpus exit decision",
+        "p51T8ExitDecisionAllowed": True,
+        "phase51Complete": False,
+        "registryPromotionAllowed": False,
+    }
+    assert payload["authorityBoundary"] == {
+        "triageOutputIsRegistryAuthority": False,
+        "staticOutputIsRegistryAuthority": False,
+        "aiOutputIsRegistryAuthority": False,
+        "enrichedPreviewOutputIsRegistryAuthority": False,
+        "adapterOutputIsRegistryAuthority": False,
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "publishesRegistryMetadata": False,
+        "seedsBaselines": False,
+        "removesPreviewOnly": False,
+    }
+    assert payload["privacyBoundary"] == {
+        "rawPromptsPersisted": False,
+        "rawProviderResponsesPersisted": False,
+        "secretsPersisted": False,
+        "chainOfThoughtPersisted": False,
+    }
+    assert payload["executionBoundary"] == {
+        "rerunsCorpus": False,
+        "runsAI": False,
+        "cloneOrFetch": False,
+        "installsDependencies": False,
+        "invokesPackageManagers": False,
+        "executesHarvestedCode": False,
+        "runsAdapters": False,
+        "enablesTrustedLocalAdapterExecution": False,
+    }
+
+    for path in (github_doc, docc_doc):
+        text = path.read_text(encoding="utf-8")
+        normalized = " ".join(text.split())
+        for required in (
+            "Larger Curated Corpus Output Triage",
+            "P51-T7",
+            "P51-T8",
+            "SpecHarvesterLargerCuratedCorpusOutputTriage",
+            "spec-harvester.larger-curated-corpus-output-triage/v0",
+            "producer_triage_evidence_only",
+            "p51-t7-larger-curated-corpus-output-triage.example.json",
+            "selected_for_author_review",
+            "deferred",
+            "do_not_promote",
+            "Selected static packages | 11",
+            "Deferred static packages | 4",
+            "Relation proposals | 3",
+            "AI draft selected for author review | 6",
+            "AI enrichment do-not-promote | 1",
+            "xyflow.workspace.contains.xyflow.react",
+            "hyperprompt.aiDraft",
+            "ai_json_repair_exhausted",
+            "single_package_deterministic_fallback_applied",
+            "model_evidence_path_unsupported",
+            "xyflow.partial_public_interface_index",
+            "xyflow.operator_checkout_origin_fork_mismatch",
+            "docc2context.source_checkout_had_untracked_doccarchive",
+            "P51-T8 exit decision",
+        ):
+            assert required in text or required in normalized, (
+                f"Required term {required!r} not found in {path}"
+            )
+        for boundary in (
+            "did not rerun the larger corpus",
+            "run AI",
+            "run adapters",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "persist raw prompts",
+            "persist raw provider responses",
+            "persist secrets",
+            "persist chain-of-thought",
+            "static output as registry truth",
+            "AI output as registry truth",
+            "enriched preview output as registry truth",
+            "triage output as registry truth",
+            "adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "LARGER_CURATED_CORPUS_OUTPUT_TRIAGE.md"),
+        (docc_root, "docs/LARGER_CURATED_CORPUS_OUTPUT_TRIAGE.md"),
+        (docc_root, "<doc:LargerCuratedCorpusOutputTriage>"),
+        (capabilities, "LARGER_CURATED_CORPUS_OUTPUT_TRIAGE.md"),
+        (capabilities_docc, "LargerCuratedCorpusOutputTriage"),
+        (roadmap, "LARGER_CURATED_CORPUS_OUTPUT_TRIAGE.md"),
+        (roadmap_docc, "LargerCuratedCorpusOutputTriage"),
         (workplan, "`P51-T7` Triage larger curated corpus output"),
         (workplan, "`P51-T8` Record the larger curated corpus exit decision"),
     ):

@@ -103,6 +103,7 @@ The canonical source files remain in the repository:
 - `docs/LARGER_CURATED_CORPUS_STATIC_ONLY_GATE.md`
 - `docs/LARGER_CURATED_CORPUS_AI_ENABLED_GATE.md`
 - `docs/HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md`
+- `docs/LARGER_CURATED_CORPUS_OUTPUT_TRIAGE.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -297,6 +298,7 @@ the host.
 - <doc:LargerCuratedCorpusStaticOnlyGate>
 - <doc:LargerCuratedCorpusAIEnabledGate>
 - <doc:HyperpromptAIDraftSinglePackageFallback>
+- <doc:LargerCuratedCorpusOutputTriage>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
