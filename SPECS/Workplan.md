@@ -2400,3 +2400,36 @@ Acceptance:
   dependencies, invoke package managers, execute harvested code, or treat
   static, AI, rerun, follow-up, exit-decision, or adapter output as registry
   truth.
+
+## Phase 51. Larger Curated Corpus Planning After Restored Rerun
+
+- [ ] `P51-T1` Plan the larger curated corpus phase from P50 restored-checkout
+  rerun evidence, defining bounded scope, gate ordering, follow-up tasks,
+  source-selection constraints, and non-authority boundaries before any larger
+  corpus run is attempted.
+
+Motivation:
+
+- P50-T1 resolved the operator-local checkout blocker recorded by P49-T4 and
+  showed the same six-repository static-only and AI-enabled gates passing.
+- Larger curated corpus planning can now be reconsidered, but planning
+  readiness is not execution approval, package acceptance, relation acceptance,
+  registry publication, or AI truth.
+
+Goal:
+
+- Convert the P50 restored-checkout rerun evidence into a bounded Phase 51
+  roadmap for selecting, preparing, gating, triaging, and deciding on a larger
+  curated corpus.
+
+Acceptance:
+
+- P51-T1 must preserve P50 evidence as the source of planning authority.
+- P51-T1 must define the follow-up tasks needed before any larger corpus run is
+  treated as ready.
+- P51-T1 must keep the larger corpus curated, bounded, pinned, local-checkout
+  based, static-only-before-AI, and proposal-only for AI output.
+- P51-T1 must not clone or fetch repositories, install dependencies, invoke
+  package managers, execute harvested code, run adapters, accept packages or
+  relations, publish registry metadata, seed baselines, remove `preview_only`,
+  or treat AI/static/rerun/planning/adapter output as registry truth.
