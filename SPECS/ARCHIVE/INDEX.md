@@ -850,3 +850,4 @@
 | 2026-06-25 | P51-T2 | Archived REVIEW_p51_t2_larger_curated_corpus_source_plan report |
 | 2026-06-25 | P51-T3 | Archived Larger Curated Corpus Checkout Readiness Gate (PASS) |
 | 2026-06-25 | P51-T3 | Archived REVIEW_p51_t3_larger_curated_corpus_checkout_readiness report |
+| 2026-06-25 | P51-T4 | Archived Larger Curated Corpus Static-Only Gate (PASS) |

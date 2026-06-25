@@ -38,6 +38,43 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P51-T5 Larger Curated Corpus AI-Enabled Proposal-Only Gate" in (next_text):
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert "**Phase:** Phase 51. Larger Curated Corpus Planning After Restored Rerun" in (
+            next_text
+        )
+        assert "**Task:** `P51-T5`" in next_text
+        assert "`P51-T4` Larger Curated Corpus Static-Only Gate" in next_text
+        assert "larger curated corpus AI-enabled proposal-only gate" in normalized
+        assert "p51-t4-larger-curated-corpus-static-only-gate.example.json" in next_text
+        assert "inputs/p51-larger-curated-corpus/repositories.yml" in next_text
+        assert "12 processed repositories" in next_text
+        assert "15 preview" in normalized
+        assert "3 relation proposals" in next_text
+        assert "0 AI proposals" in next_text
+        assert "0 adapter sidecars" in next_text
+        assert "proposal-only AI draft and enrichment outputs" in normalized
+        assert "raw prompt" in normalized
+        assert "raw provider response" in normalized
+        assert "chain-of-thought" in next_text
+        assert "xyflow.operator_checkout_origin_fork_mismatch" in next_text
+        assert "docc2context.source_checkout_had_untracked_doccarchive" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata" in next_text
+        assert "Do not seed baselines" in next_text
+        assert "Do not remove `preview_only`" in next_text
+        assert "Do not persist raw prompts" in next_text
+        assert "Do not persist raw provider responses" in next_text
+        assert "Do not persist secrets" in next_text
+        assert "Do not persist chain-of-thought" in next_text
+        assert "Do not clone or fetch repositories" in next_text
+        assert "Do not install dependencies" in next_text
+        assert "Do not invoke package managers" in next_text
+        assert "Do not execute harvested code" in next_text
+        assert "Do not run adapters or enable trusted local adapter execution" in next_text
+        return
+
     if "# Next Task: P51-T4 Larger Curated Corpus Static-Only Gate" in (next_text):
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
