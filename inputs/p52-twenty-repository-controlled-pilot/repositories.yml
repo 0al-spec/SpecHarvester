@@ -70,7 +70,7 @@ repositories:
     labels: [rust, security, library, single_package, p52_t4]
   - id: agent-surface
     repository: https://github.com/0al-spec/agent-surface
-    revision: c3d717f56e1bfc3e57922bd0d01588058a86dc5a
+    revision: 0bff3b754ad9ee540d2c20a3eb2471d13c160ec0
     checkout: ../../../agent-surface
     packageId: agent-surface.core
     labels: [rust, ai, developer_tool, single_package, p52_t4]
