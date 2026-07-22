@@ -1353,6 +1353,16 @@ the calibration unlocks P52-T4. LM Studio provider logging remains an
 operator-managed external privacy precondition; no raw model data is persisted
 by SpecHarvester.
 
+P52-T4 records [`TWENTY_REPOSITORY_CONTROLLED_PILOT.md`](TWENTY_REPOSITORY_CONTROLLED_PILOT.md)
+and the machine-readable `SpecHarvesterTwentyRepositoryControlledPilotReport`
+fixture. It runs static-only collection first and then proposal-only LM Studio
+`openai/gpt-oss-20b` and schema-validated `gpt-5.3-codex-spark` controls over
+twenty clean pinned local checkouts. All static, LM Studio, and Codex controls
+complete; Codex has 100% completion, schema validity, and repository
+specificity with zero unsupported claims. Ten digest-bound author reviews are
+supported, so P52-T4 unlocks P52-T5 while preserving proposal-only and
+no-registry-authority boundaries.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install

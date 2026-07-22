@@ -1,0 +1,124 @@
+# P52-T4 controlled-pilot sources. These are operator-provided, clean local
+# checkouts pinned to the exact revisions below; this manifest authorizes no
+# clone, fetch, restoration, or source mutation.
+repositories:
+  - id: flask
+    repository: https://github.com/pallets/flask
+    revision: 954f5684e4841aad84a8eec7ace7b81a0d3f6831
+    checkout: ../../../../flask
+    packageId: flask.core
+    labels: [python, pypi, web_framework, single_package, p52_t4]
+  - id: gin
+    repository: https://github.com/gin-gonic/gin
+    revision: 5f4f9643258dc2a65e684b63f12c8d543c936c67
+    checkout: ../../../../gin
+    packageId: gin.core
+    labels: [go, web_framework, single_package, p52_t4]
+  - id: fastapi
+    repository: https://github.com/fastapi/fastapi
+    revision: 9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263
+    checkout: ../../../../fastapi
+    packageId: fastapi.core
+    labels: [python, pypi, web_framework, documentation_heavy, p52_t4]
+  - id: fastmcp
+    repository: https://github.com/PrefectHQ/fastmcp
+    revision: 3b8538e2422a1c43fdb69661c610de7985b785f2
+    checkout: ../../../../fastmcp
+    packageId: fastmcp.core
+    labels: [python, pypi, mcp, framework_or_runtime_library, p52_t4]
+  - id: transmission
+    repository: https://github.com/transmission/transmission
+    revision: 98fdf2dc0bfc77e537992ce50fa310b1c3ac636a
+    checkout: ../../../../transmission
+    packageId: transmission.core
+    labels: [c, cpp, desktop_application, multi_component, p52_t4]
+  - id: serena
+    repository: https://github.com/oraios/serena
+    revision: 892ef9cf19e2c154a75cb58f4b34c8589eada346
+    checkout: ../../../../serena
+    packageId: serena.core
+    labels: [python, mcp, developer_tool, workspace_or_monorepo, p52_t4]
+  - id: altstore
+    repository: https://github.com/altstoreio/AltStore
+    revision: 502848e3b090ee2606de4e40bf2598327ed987ce
+    checkout: ../../../../AltStore
+    packageId: altstore.workspace
+    labels: [swift, ios, application, workspace_or_monorepo, p52_t4]
+  - id: ontology
+    repository: https://github.com/0al-spec/Ontology
+    revision: 3d0c977c61fb4f725cbc4261fa8c6efad412f12b
+    checkout: ../../../Ontology
+    packageId: ontology.core
+    labels: [swift, specification, library, single_package, p52_t4]
+  - id: specgraph
+    repository: https://github.com/0al-spec/SpecGraph
+    revision: 4395f78fc10217275a266ebac2b29d659f6f888f
+    checkout: ../../../SpecGraph
+    packageId: specgraph.workspace
+    labels: [python, swift, specification, workspace_or_monorepo, p52_t4]
+  - id: cupertino
+    repository: https://github.com/mihaelamj/cupertino
+    revision: 65dcae238d30cfbd0d9d15ae10f7b8c67575c19b
+    checkout: ../../../../cupertino
+    packageId: cupertino.core
+    labels: [swift, ios, library, documentation_heavy, p52_t4]
+  - id: agent-passport
+    repository: https://github.com/0al-spec/agent-passport
+    revision: 5acb80ccd83b945f4ca7f4367a6c021df7015b15
+    checkout: ../../../agent-passport
+    packageId: agent-passport.core
+    labels: [rust, security, library, single_package, p52_t4]
+  - id: agent-surface
+    repository: https://github.com/0al-spec/agent-surface
+    revision: 0bff3b754ad9ee540d2c20a3eb2471d13c160ec0
+    checkout: ../../../agent-surface
+    packageId: agent-surface.core
+    labels: [rust, ai, developer_tool, single_package, p52_t4]
+  - id: mcp-server-manager
+    repository: https://github.com/vlazic/mcp-server-manager
+    revision: e157ed92dbd04bc04d764d0f0a09935eb302ac36
+    checkout: ../../../../mcp-server-manager
+    packageId: mcp-server-manager.core
+    labels: [typescript, mcp, developer_tool, single_package, p52_t4]
+  - id: mcpm-sh
+    repository: https://github.com/pathintegral-institute/mcpm.sh
+    revision: 3a21496dbddffa8b352797aaa498fd4f4d094161
+    checkout: ../../../../mcpm.sh
+    packageId: mcpm-sh.core
+    labels: [shell, mcp, command_line_tool, single_package, p52_t4]
+  - id: hopper-mcp-wrapper
+    repository: https://github.com/SoundBlaster/HopperMCPWrapper
+    revision: 88913f2d0e1a95400de9439fcc7b3521418fac8e
+    checkout: ../../../../HopperMCPWrapper
+    packageId: hopper-mcp-wrapper.core
+    labels: [python, mcp, developer_tool, single_package, p52_t4]
+  - id: specpm
+    repository: https://github.com/0al-spec/SpecPM
+    revision: 8a5ce3dece3d18bf8f601a5a599520bd520c7839
+    checkout: ../../../SpecPM
+    packageId: specpm.workspace
+    labels: [yaml, specification, workspace_or_monorepo, p52_t4]
+  - id: hypercode
+    repository: https://github.com/0al-spec/Hypercode
+    revision: 995663326bbb1fc4981c5362014d80f3df7bd504
+    checkout: ../../../Hypercode
+    packageId: hypercode.workspace
+    labels: [rust, specification, workspace_or_monorepo, p52_t4]
+  - id: hyperprompt
+    repository: https://github.com/0al-spec/Hyperprompt
+    revision: 044ad60cf8f49a836a9cd2a79e9f95bedd950b12
+    checkout: ../../../Hyperprompt
+    packageId: hyperprompt.workspace
+    labels: [typescript, ai, workspace_or_monorepo, p52_t4]
+  - id: agent-ready-kit
+    repository: https://github.com/0al-spec/agent-ready-kit
+    revision: cbf917ccfae23fec121648a7822073e7a04799c9
+    checkout: ../../../../agent-ready-kit
+    packageId: agent-ready-kit.workspace
+    labels: [typescript, ai, developer_tool, workspace_or_monorepo, p52_t4]
+  - id: specnode
+    repository: https://github.com/0al-spec/SpecNode
+    revision: 9f0bc2245c75e4539d59b4eaeabadcda52a5d413
+    checkout: ../../../SpecNode
+    packageId: specnode.workspace
+    labels: [typescript, specification, workspace_or_monorepo, p52_t4]

@@ -274,6 +274,13 @@ repository-specificity, and unsupported-claim thresholds, unlocking P52-T4.
 LM Studio provider logging remains an operator-managed external privacy
 precondition; SpecHarvester persists no raw model data.
 
+P52-T4 is recorded in <doc:TwentyRepositoryControlledPilot>. Its twenty-source
+static baseline, LM Studio control, and Codex Spark control all completed; the
+Codex quality thresholds passed at 100% completion, schema validity, and
+repository specificity with zero unsupported claims. Ten digest-bound author
+reviews found the sampled candidates supported, unlocking P52-T5 while keeping
+all output proposal-only and outside registry authority.
+
 ### Selected Candidate SpecPM Intake Handoff
 
 The completed intake-handoff focus turns selected candidate dry-run evidence

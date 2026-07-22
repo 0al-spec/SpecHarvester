@@ -347,6 +347,7 @@ the host.
 - <doc:PackageSetAIEnrichment>
 - <doc:CodexSparkExternalModelAdapterContract>
 - <doc:FiveRepositoryControlledCalibration>
+- <doc:TwentyRepositoryControlledPilot>
 - <doc:AIEnrichmentCandidatePatch>
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateIntakePolicy>

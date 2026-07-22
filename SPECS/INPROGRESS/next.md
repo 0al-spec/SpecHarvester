@@ -1,16 +1,14 @@
-# Next Task: P52-T4 Twenty-Repository Controlled Pilot
+# Next Task: P52-T5 Final 50-100 Repository Source Manifest and Checkout Readiness
 
 **Status:** Planned
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
-**Depends On:** `P52-T3` Five-Repository Controlled Calibration
+**Depends On:** `P52-T4` Twenty-Repository Controlled Pilot
 
 ## Objective
 
-Run the bounded Phase 52 twenty-repository controlled pilot after P52-T3's
-passing calibration. Record static-only baseline results first, then controlled
-proposal-only LM Studio and Codex Spark outcomes, including concurrency,
-token/usage receipts, schema failures, repository specificity, unsupported
-claims, and stop-policy evidence.
+Create the final 50-100 repository manifest and checkout-readiness evidence,
+using pinned clean local checkouts, provenance, license, size, and stop-policy
+metadata before any larger-corpus static or model gate.
 
 ## Preconditions
 
