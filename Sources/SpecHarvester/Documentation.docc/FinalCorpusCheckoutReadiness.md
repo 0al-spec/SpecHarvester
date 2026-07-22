@@ -8,6 +8,10 @@ Companion metadata records provenance, license evidence, tracked-file size
 budgets, importance signals, ecosystem coverage, repository shape, and stop
 policy.
 
+Readiness validates an exact HTTPS `github.com` source URL, binds provenance to
+that URL, validates nested metadata and required stop flags, and records the
+selection rationale, provenance, and stop policy in its sanitized output.
+
 All 50 pinned public checkouts are clean, revision-matched, provenance-resolved,
 license-resolved, and within budget. The corpus spans 13 ecosystem categories
 and six repository shapes, so P52-T6 is unlocked.

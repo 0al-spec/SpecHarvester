@@ -11,7 +11,9 @@ from spec_harvester.final_corpus_checkout_readiness import (
     FinalCorpusCheckoutReadinessOptions,
     read_metadata,
     tracked_file_bytes,
+    validate_corpus_structure,
 )
+from spec_harvester.source_manifest import read_repository_source_manifests
 
 
 def test_fifty_source_readiness_passes_and_unlocks_p52_t6(tmp_path: Path) -> None:
@@ -80,13 +82,15 @@ def test_readiness_collects_all_source_policy_failures(tmp_path: Path) -> None:
     manifest_path.write_text(
         manifest_path.read_text(encoding="utf-8").replace(
             "https://github.com/example/repo-00",
-            "https://example.test/repo-00",
+            "https://github.com.evil/example/repo-00",
         ),
         encoding="utf-8",
     )
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     metadata["repositories"][0]["provenance"]["status"] = "unresolved"
+    metadata["repositories"][0]["provenance"]["repository"] = "https://github.com/wrong/repo"
     metadata["repositories"][0]["licenseProvenance"]["status"] = "unresolved"
+    metadata["repositories"][0]["stopPolicy"]["excludeOnDirtyCheckout"] = False
     metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
     readiness = FinalCorpusCheckoutReadiness(
         FinalCorpusCheckoutReadinessOptions(
@@ -108,7 +112,9 @@ def test_readiness_collects_all_source_policy_failures(tmp_path: Path) -> None:
         "checkout_revision_mismatch",
         "checkout_status_unavailable",
         "provenance_unresolved",
+        "provenance_repository_mismatch",
         "license_provenance_unresolved",
+        "stop_policy_incomplete",
         "tracked_size_mismatch",
         "size_budget_exceeded",
     }
@@ -144,6 +150,40 @@ def test_tracked_file_bytes_reads_only_git_tracked_files(tmp_path: Path) -> None
     assert tracked_file_bytes(checkout) == len("tracked\n")
 
 
+def test_corpus_structure_rejects_invalid_nested_metadata(tmp_path: Path) -> None:
+    inputs, _revisions, metadata_path = write_inputs(tmp_path)
+    metadata = read_metadata(metadata_path)
+    sources = read_repository_source_manifests(inputs)
+    metadata["repo-00"]["sizeBudget"] = {"observedBytes": -1, "maximumBytes": 0}
+
+    with pytest.raises(ValueError, match="size budget is invalid"):
+        validate_corpus_structure(sources, metadata)
+
+
+def test_corpus_structure_rejects_invalid_manifest_metadata_contract(tmp_path: Path) -> None:
+    inputs, _revisions, metadata_path = write_inputs(tmp_path)
+    sources = read_repository_source_manifests(inputs)
+    metadata = read_metadata(metadata_path)
+
+    with pytest.raises(ValueError, match="between 50 and 100"):
+        validate_corpus_structure(sources[:-1], metadata)
+
+    with pytest.raises(ValueError, match="ids must match"):
+        validate_corpus_structure(
+            sources, {key: value for key, value in metadata.items() if key != "repo-00"}
+        )
+
+    invalid_revision_sources = [dict(source) for source in sources]
+    invalid_revision_sources[0]["revision"] = "short"
+    with pytest.raises(ValueError, match="full pinned revision"):
+        validate_corpus_structure(invalid_revision_sources, metadata)
+
+    incomplete_metadata = {key: dict(value) for key, value in metadata.items()}
+    incomplete_metadata["repo-00"].pop("stopPolicy")
+    with pytest.raises(ValueError, match="metadata is incomplete"):
+        validate_corpus_structure(sources, incomplete_metadata)
+
+
 def write_inputs(tmp_path: Path) -> tuple[Path, dict[str, str], Path]:
     inputs = tmp_path / "inputs"
     checkouts = inputs / "checkouts"
@@ -166,7 +206,10 @@ def write_inputs(tmp_path: Path) -> tuple[Path, dict[str, str], Path]:
                 "ecosystem": "python",
                 "repositoryShape": "single_package",
                 "importanceSignals": ["test_fixture"],
-                "provenance": {"status": "resolved"},
+                "provenance": {
+                    "status": "resolved",
+                    "repository": f"https://github.com/example/{repository_id}",
+                },
                 "licenseProvenance": {"status": "resolved"},
                 "sizeBudget": {"observedBytes": 1024, "maximumBytes": 2048},
                 "selectionRationale": "test_fixture",

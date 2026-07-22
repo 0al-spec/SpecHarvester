@@ -6,6 +6,11 @@ companion `selection-metadata.json` records provenance, license evidence,
 tracked-file size budgets, ecosystem/shape coverage, importance signals, and
 stop policy.
 
+The gate requires an exact HTTPS `github.com` repository URL, binds each
+provenance record to that URL, validates nested metadata types and required stop
+flags, and carries selection rationale, provenance, and stop policy into the
+sanitized report.
+
 The final corpus contains 50 public repositories. It combines the previously
 calibrated sources, canonical popular projects across Python, JavaScript,
 TypeScript, Go, Rust, Swift, C/C++, and shell, plus deliberately selected
@@ -28,7 +33,7 @@ The deterministic readiness gate passed all 50 sources:
 The durable report is
 `tests/fixtures/final_corpus_checkout_readiness/p52-t5-final-corpus-checkout-readiness.example.json`
 with digest
-`sha256:bb66eb53487d9c9a86e3db0d72f19008bdec1e4f79f20d6451ffb5952e39038d`.
+`sha256:e19cb19c393fc55bf1cd09ce9214be73408dab1cc267e7cfa53239c77acfb140`.
 
 The result unlocks P52-T6, the 50-repository static-only gate. It does not run
 collection, models, package managers, adapters, or harvested code and does not

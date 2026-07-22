@@ -6,6 +6,7 @@ from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
+from urllib.parse import urlsplit
 
 from spec_harvester.batch_collection import resolve_checkout
 from spec_harvester.controlled_calibration import git_dirty_status, git_head, write_json
@@ -15,6 +16,12 @@ FINAL_CORPUS_READINESS_API_VERSION = "spec-harvester.final-corpus-checkout-readi
 FINAL_CORPUS_READINESS_KIND = "SpecHarvesterFinalCorpusCheckoutReadiness"
 MINIMUM_REPOSITORY_COUNT = 50
 MAXIMUM_REPOSITORY_COUNT = 100
+REQUIRED_STOP_POLICY_FLAGS = (
+    "excludeOnDirtyCheckout",
+    "excludeOnRevisionMismatch",
+    "excludeOnSizeBudgetExceeded",
+    "excludeOnUnresolvedProvenance",
+)
 
 
 @dataclass(frozen=True)
@@ -82,7 +89,7 @@ class FinalCorpusCheckoutReadiness:
         dirty = self.dirty_reader(checkout)
         observed_bytes = self.size_reader(checkout)
         failures = []
-        if not source["repository"].startswith("https://github.com/"):
+        if not is_public_github_repository(source["repository"]):
             failures.append("repository_not_public_https_github")
         if head != revision:
             failures.append("checkout_revision_mismatch")
@@ -93,10 +100,15 @@ class FinalCorpusCheckoutReadiness:
         provenance = object_value(metadata.get("provenance"))
         license_provenance = object_value(metadata.get("licenseProvenance"))
         size_budget = object_value(metadata.get("sizeBudget"))
+        stop_policy = object_value(metadata.get("stopPolicy"))
         if provenance.get("status") != "resolved":
             failures.append("provenance_unresolved")
+        if provenance.get("repository") != source["repository"]:
+            failures.append("provenance_repository_mismatch")
         if license_provenance.get("status") != "resolved":
             failures.append("license_provenance_unresolved")
+        if any(stop_policy.get(flag) is not True for flag in REQUIRED_STOP_POLICY_FLAGS):
+            failures.append("stop_policy_incomplete")
         maximum_bytes = integer_value(size_budget.get("maximumBytes"))
         declared_bytes = integer_value(size_budget.get("observedBytes"))
         if observed_bytes is None:
@@ -112,7 +124,10 @@ class FinalCorpusCheckoutReadiness:
             "ecosystem": metadata["ecosystem"],
             "repositoryShape": metadata["repositoryShape"],
             "importanceSignals": metadata["importanceSignals"],
+            "selectionRationale": metadata["selectionRationale"],
+            "provenance": provenance,
             "licenseProvenance": license_provenance,
+            "stopPolicy": stop_policy,
             "sizeBudget": {
                 "observedBytes": observed_bytes,
                 "maximumBytes": maximum_bytes,
@@ -174,6 +189,53 @@ def validate_corpus_structure(
         }
         if not required <= set(record):
             raise ValueError(f"P52-T5 metadata is incomplete for {repository_id!r}")
+        validate_metadata_record(repository_id, record)
+
+
+def validate_metadata_record(repository_id: str, record: dict[str, Any]) -> None:
+    for field in ("ecosystem", "repositoryShape", "selectionRationale"):
+        if not isinstance(record[field], str) or not record[field]:
+            raise ValueError(f"P52-T5 metadata field {field!r} is invalid for {repository_id!r}")
+    importance_signals = record["importanceSignals"]
+    if (
+        not isinstance(importance_signals, list)
+        or not importance_signals
+        or not all(isinstance(value, str) and value for value in importance_signals)
+    ):
+        raise ValueError(f"P52-T5 importance signals are invalid for {repository_id!r}")
+    for field in ("provenance", "licenseProvenance", "sizeBudget", "stopPolicy"):
+        if not isinstance(record[field], dict):
+            raise ValueError(f"P52-T5 metadata field {field!r} is invalid for {repository_id!r}")
+    size_budget = record["sizeBudget"]
+    observed_bytes = size_budget.get("observedBytes")
+    maximum_bytes = size_budget.get("maximumBytes")
+    if (
+        integer_value(observed_bytes) != observed_bytes
+        or integer_value(maximum_bytes) != maximum_bytes
+        or observed_bytes < 0
+        or maximum_bytes <= 0
+    ):
+        raise ValueError(f"P52-T5 size budget is invalid for {repository_id!r}")
+    stop_policy = record["stopPolicy"]
+    if any(not isinstance(stop_policy.get(flag), bool) for flag in REQUIRED_STOP_POLICY_FLAGS):
+        raise ValueError(f"P52-T5 stop policy is invalid for {repository_id!r}")
+
+
+def is_public_github_repository(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        parsed = urlsplit(value)
+        path_parts = [part for part in parsed.path.split("/") if part]
+        return (
+            parsed.scheme == "https"
+            and parsed.netloc == "github.com"
+            and len(path_parts) == 2
+            and not parsed.query
+            and not parsed.fragment
+        )
+    except ValueError:
+        return False
 
 
 def tracked_file_bytes(checkout: Path) -> int | None:
