@@ -25,7 +25,7 @@ path. A future operator-opt-in invocation is constrained to:
 
 ```text
 codex exec --model gpt-5.3-codex-spark --sandbox read-only --ephemeral \
-  --ignore-user-config --cd <generated-read-only-evidence-stage> \
+  --ignore-user-config --skip-git-repo-check --cd <generated-read-only-evidence-stage> \
   --output-schema <package-set-ai-draft-final-message.schema.json> \
   --output-last-message <ephemeral-final-message.json> <bounded-instruction-text>
 ```
@@ -36,6 +36,8 @@ No original checkout, writable agent workspace, `--add-dir`, dependency
 installation, package manager, harvested code, adapter code, or network/provider
 endpoint is allowed. `--dangerously-bypass-approvals-and-sandbox`, `--full-auto`,
 and `--json` are forbidden.
+`--skip-git-repo-check` is limited to the deliberately non-Git evidence stage;
+it does not relax the read-only sandbox.
 
 ## Handoff And Rejection
 
