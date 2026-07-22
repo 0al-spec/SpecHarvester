@@ -862,3 +862,4 @@
 | 2026-06-25 | P51-T8 | Archived Larger Curated Corpus Exit Decision (PASS) |
 | 2026-06-25 | P51-T8 | Archived REVIEW_p51_t8_larger_curated_corpus_exit_decision report |
 | 2026-07-22 | P52-T1 | Archived Controlled 50-100 Repository Corpus Plan (PASS) |
+| 2026-07-22 | P52-T1 | Archived REVIEW_p52_t1_controlled_repository_corpus_plan report |
