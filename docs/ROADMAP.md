@@ -1334,6 +1334,14 @@ triage/handoff, and exit decision. The plan keeps live execution, registry
 promotion, package and relation acceptance, baseline seeding, and
 `preview_only` removal unapproved.
 
+P52-T2 records
+[`CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md`](CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md)
+and the machine-readable `SpecHarvesterCodexSparkExternalModelAdapterContract`
+fixture. It defines the future read-only, ephemeral `codex exec` profile,
+schema-validated final-message handoff into the existing external
+`--model-output` seam, bounded receipts, and failure rejection policy. It does
+not invoke Codex, change LM Studio, or grant registry authority.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install

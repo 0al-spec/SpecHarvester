@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-harvester.local/schemas/package-set-ai-draft-final-message/v0",
+  "title": "SpecHarvester Codex Spark Package-Set AI Draft Final Message",
+  "description": "The only model-authored payload permitted to enter the external --model-output handoff.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["proposal"],
+  "properties": {
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packageSet",
+        "selectedMembers",
+        "excludedPackages",
+        "relations",
+        "evidenceGaps",
+        "overallConfidence"
+      ],
+      "properties": {
+        "packageSet": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["packageId", "summary", "evidencePaths", "confidence"],
+          "properties": {
+            "packageId": {"type": "string", "minLength": 1},
+            "summary": {"type": "string", "minLength": 1},
+            "evidencePaths": {"$ref": "#/$defs/evidencePaths"},
+            "confidence": {"$ref": "#/$defs/confidence"}
+          }
+        },
+        "selectedMembers": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/selectedMember"}
+        },
+        "excludedPackages": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/excludedPackage"}
+        },
+        "relations": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/relation"}
+        },
+        "evidenceGaps": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "overallConfidence": {"$ref": "#/$defs/confidence"}
+      }
+    }
+  },
+  "$defs": {
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "evidencePaths": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "selectedMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packageId",
+        "role",
+        "sourceTargetPath",
+        "reason",
+        "evidencePaths",
+        "confidence"
+      ],
+      "properties": {
+        "packageId": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "sourceTargetPath": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1},
+        "evidencePaths": {"$ref": "#/$defs/evidencePaths"},
+        "confidence": {"$ref": "#/$defs/confidence"}
+      }
+    },
+    "excludedPackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packageId", "category", "reason", "evidencePaths", "confidence"],
+      "properties": {
+        "packageId": {"type": "string", "minLength": 1},
+        "category": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1},
+        "evidencePaths": {"$ref": "#/$defs/evidencePaths"},
+        "confidence": {"$ref": "#/$defs/confidence"}
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "sourcePackageId",
+        "targetPackageId",
+        "evidencePaths",
+        "confidence"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {"const": "contains"},
+        "sourcePackageId": {"type": "string", "minLength": 1},
+        "targetPackageId": {"type": "string", "minLength": 1},
+        "evidencePaths": {"$ref": "#/$defs/evidencePaths"},
+        "confidence": {"$ref": "#/$defs/confidence"}
+      }
+    }
+  }
+}

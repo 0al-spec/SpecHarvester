@@ -1,0 +1,142 @@
+{
+  "apiVersion": "spec-harvester.codex-spark-external-model-adapter-contract/v0",
+  "kind": "SpecHarvesterCodexSparkExternalModelAdapterContract",
+  "authority": "producer_adapter_contract_evidence_only",
+  "schemaVersion": 1,
+  "createdAt": "2026-07-22T00:00:00Z",
+  "phase": "P52",
+  "task": "P52-T2",
+  "sourceArtifacts": {
+    "p52CorpusPlan": {
+      "path": "tests/fixtures/controlled_repository_corpus_plan/p52-t1-controlled-repository-corpus-plan.example.json",
+      "digest": "sha256:2455aa8b9c6441b17c38481e10e4c9e2fa5ecace2779e90fed686734eaa5799f",
+      "apiVersion": "spec-harvester.controlled-repository-corpus-plan/v0",
+      "kind": "SpecHarvesterControlledRepositoryCorpusPlan",
+      "authority": "producer_planning_evidence_only",
+      "requiredModel": "gpt-5.3-codex-spark"
+    }
+  },
+  "adapter": {
+    "id": "codex.spark.external-model-output.v0",
+    "providerKind": "codex_exec_external_model_output",
+    "model": "gpt-5.3-codex-spark",
+    "execution": "not_run",
+    "isOpenAICompatibleHttpProvider": false,
+    "replacesLMStudioPath": false,
+    "requiresOperatorOptIn": true
+  },
+  "operation": {
+    "id": "package_set_ai_draft",
+    "requestRecordKind": "SpecHarvesterPackageSetAIDraftRequest",
+    "handoffCommand": "package-set-ai-draft-proposal --model-output",
+    "finalMessageSchema": {
+      "path": "tests/fixtures/codex_spark_external_model_adapter_contract/package-set-ai-draft-final-message.schema.json",
+      "digest": "sha256:d40b941f03b95c63c0dd241f78631706b96daee9885bc571c7d628c134493128",
+      "envelopeProperty": "proposal",
+      "validatesBeforeHandoff": true,
+      "allowsJsonRepair": false
+    }
+  },
+  "invocationProfile": {
+    "command": "codex exec",
+    "requiredArguments": [
+      "--model gpt-5.3-codex-spark",
+      "--sandbox read-only",
+      "--ephemeral",
+      "--ignore-user-config",
+      "--cd <generated-read-only-evidence-stage>",
+      "--output-schema <package-set-ai-draft-final-message.schema.json>",
+      "--output-last-message <ephemeral-final-message.json>"
+    ],
+    "forbiddenArguments": [
+      "--add-dir",
+      "--dangerously-bypass-approvals-and-sandbox",
+      "--full-auto",
+      "--json"
+    ],
+    "agentWritesWorkspace": false,
+    "eventStreamPersisted": false
+  },
+  "evidenceStaging": {
+    "input": "deterministic_compact_request_and_allowlisted_evidence_copies",
+    "originalRepositoryCheckoutProvided": false,
+    "sourceCheckoutReadAllowed": false,
+    "writableAgentWorkspaceProvided": false,
+    "writableAddDirectoryProvided": false,
+    "networkProviderEndpointProvided": false,
+    "dependencyInstallationAllowed": false,
+    "packageManagerAllowed": false,
+    "harvestedCodeExecutionAllowed": false,
+    "adapterExecutionAllowed": false
+  },
+  "handoff": {
+    "acceptsOnlySchemaValidatedFinalMessage": true,
+    "acceptsOnlyFinalMessage": true,
+    "unwrapsProposalEnvelope": true,
+    "proposalOnly": true,
+    "registryTruth": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false
+  },
+  "receiptPolicy": {
+    "persisted": true,
+    "allowedFields": [
+      "model",
+      "codexCliVersion",
+      "sandbox",
+      "schemaDigest",
+      "evidenceDigest",
+      "durationMs",
+      "exitCode",
+      "finalOutputDigest"
+    ],
+    "forbiddenFields": [
+      "rawPrompt",
+      "rawProviderResponse",
+      "secret",
+      "sessionState",
+      "chainOfThought"
+    ]
+  },
+  "failurePolicy": {
+    "timeoutSeconds": 300,
+    "rejectedFailureCodes": [
+      "codex_not_found",
+      "codex_cli_version_mismatch",
+      "model_not_authorized",
+      "nonzero_exit",
+      "timeout",
+      "missing_final_message",
+      "final_message_schema_invalid",
+      "policy_drift",
+      "receipt_mismatch",
+      "model_output_handoff_failed"
+    ],
+    "onFailure": "reject_proposal_only_output_without_retry_or_repair"
+  },
+  "executionBoundary": {
+    "runsCodex": false,
+    "runsAI": false,
+    "createsOrRestoresCheckouts": false,
+    "clonesOrFetchesRepositories": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false
+  },
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false,
+    "sessionStatePersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nextState": {
+    "unlocks": "P52-T3",
+    "liveCodexRunPerformed": false,
+    "fiveRepositoryCalibrationApprovedByThisArtifact": false
+  }
+}

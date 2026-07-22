@@ -371,6 +371,10 @@ Published DocC site:
    P52-T1 controlled 50-100 repository plan defining Codex Spark external
    model boundaries, staged 5/20/50-100 rollout gates, corpus source policy,
    quality thresholds, and proposal-only authority limits
+97. [`CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md`](CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md):
+   P52-T2 contract defining a future schema-validated `codex exec` handoff,
+   read-only evidence boundary, bounded receipts, and proposal-only rejection
+   policy without a live model call
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
