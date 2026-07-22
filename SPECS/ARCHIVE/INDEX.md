@@ -868,3 +868,4 @@
 | 2026-07-22 | P52-T2 | Archived Codex Spark External-Model Adapter Contract (PASS) |
 | 2026-07-22 | P52-T2 | Archived REVIEW_p52_t2_codex_spark_external_model_adapter_contract report |
 | 2026-07-22 | P52-T3 | Archived Five-Repository Controlled Calibration (PASS) |
+| 2026-07-22 | P52-T3 | Archived REVIEW_p52_t3_five_repository_controlled_calibration report |
