@@ -1,6 +1,6 @@
 # Next Task: P52-T3 Five-Repository Controlled Calibration
 
-**Status:** Selected
+**Status:** Planned
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
 **Depends On:** `P52-T2` Codex Spark External-Model Adapter Contract
 

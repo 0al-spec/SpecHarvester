@@ -8745,6 +8745,9 @@ def test_docc_and_github_docs_cover_package_set_ai_enrichment() -> None:
             "interfaces",
             "evidencePaths",
             "model_evidence_path_unsupported",
+            "response_format.type: json_schema",
+            "Chat Template",
+            "providerReceipt.responseFormat",
             "stopPolicySummary",
             "stop_for_author_review",
             "continue_generation",
@@ -8962,6 +8965,9 @@ def test_docc_and_github_docs_cover_author_ready_draft_quality_bar() -> None:
         assert "single-item target list" in normalized
         assert "ai_json_repair_needed" in normalized
         assert "jsonRepairStatus: repaired" in normalized
+        assert "response_format.type: json_schema" in normalized
+        assert "Chat Template" in normalized
+        assert "providerReceipt.responseFormat" in normalized
         assert "validationGuard" in normalized
         assert "package_set_subject_identity_missing" in normalized
         assert "zeroSubjectPolicy" in normalized
@@ -37374,8 +37380,8 @@ def test_codex_spark_external_model_adapter_contract_records_p52_t2() -> None:
             "codex_exec_external_model_output",
             "--sandbox read-only",
             "--ephemeral",
-                "--ignore-user-config",
-                "--skip-git-repo-check",
+            "--ignore-user-config",
+            "--skip-git-repo-check",
             "--output-schema",
             "--output-last-message",
             "--model-output",
@@ -37399,6 +37405,168 @@ def test_codex_spark_external_model_adapter_contract_records_p52_t2() -> None:
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"
         )
+
+
+def test_five_repository_controlled_calibration_records_p52_t3_result() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "controlled_calibration"
+        / "p52-t3-five-repository-controlled-calibration.example.json"
+    )
+    manifest_path = ROOT / "inputs" / "p52-five-repository-calibration" / "repositories.yml"
+    github_doc = ROOT / "docs" / "FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "FiveRepositoryControlledCalibration.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    sources = read_repository_source_manifests(manifest_path.parent)
+
+    assert payload["apiVersion"] == "spec-harvester.controlled-calibration/v0"
+    assert payload["kind"] == "SpecHarvesterControlledCalibrationReport"
+    assert payload["schemaVersion"] == 1
+    assert payload["phase"] == "P52"
+    assert payload["task"] == "P52-T3"
+    assert payload["status"] == "passed"
+    assert [source["id"] for source in payload["sources"]] == [
+        "flask",
+        "gin",
+        "xyflow",
+        "fastapi",
+        "fastmcp",
+    ]
+    assert [source["revision"] for source in payload["sources"]] == [
+        source["revision"] for source in sources
+    ]
+    assert all(record["status"] == "passed" for record in payload["staticOnly"]["repositories"])
+
+    lm_studio = payload["lmStudio"]
+    assert lm_studio["status"] == "completed"
+    assert lm_studio["provider"] == {
+        "baseUrl": "http://127.0.0.1:1234",
+        "kind": "openai_compatible",
+        "model": "openai/gpt-oss-20b",
+        "name": "lm_studio",
+        "responseFormat": "json_schema",
+    }
+    assert all(record["status"] == "completed" for record in lm_studio["repositories"])
+
+    codex = payload["codexSpark"]
+    assert codex["status"] == "completed"
+    assert codex["provider"]["kind"] == "codex_exec_external_model_output"
+    assert codex["provider"]["model"] == "gpt-5.3-codex-spark"
+    assert codex["provider"]["sandbox"] == "read-only"
+    assert codex["provider"]["ephemeral"] is True
+    assert codex["provider"]["ignoreUserConfig"] is True
+    assert codex["provider"]["skipGitRepoCheck"] is True
+    assert all(record["status"] == "completed" for record in codex["repositories"])
+    assert all(record["schemaValid"] is True for record in codex["repositories"])
+    assert all(record["repositorySpecific"] is True for record in codex["repositories"])
+    assert all(record["unsupportedClaimCount"] == 0 for record in codex["repositories"])
+    assert all(record["receipt"]["exitCode"] == 0 for record in codex["repositories"])
+
+    assert payload["qualityMetrics"] == {
+        "codexCompletionRate": {
+            "denominator": 5,
+            "minimum": 0.9,
+            "numerator": 5,
+            "passed": True,
+            "value": 1.0,
+        },
+        "repositorySpecificRate": {
+            "denominator": 5,
+            "minimum": 0.8,
+            "numerator": 5,
+            "passed": True,
+            "value": 1.0,
+        },
+        "schemaValidRate": {
+            "denominator": 5,
+            "minimum": 0.98,
+            "numerator": 5,
+            "passed": True,
+            "value": 1.0,
+        },
+        "staticCompletionRate": {
+            "denominator": 5,
+            "minimum": 0.95,
+            "numerator": 5,
+            "passed": True,
+            "value": 1.0,
+        },
+        "unsupportedClaimRate": {
+            "denominator": 5,
+            "maximum": 0.05,
+            "numerator": 0,
+            "passed": True,
+            "value": 0.0,
+        },
+    }
+    assert payload["decision"] == {
+        "controlsCompleted": True,
+        "p52T4Unlocked": True,
+        "selectedDecision": "unlock_p52_t4",
+        "thresholdsMet": True,
+    }
+    assert payload["privacy"] == {
+        "rawPromptsPersisted": False,
+        "rawModelResponsesPersisted": False,
+        "chainOfThoughtPersisted": False,
+        "secretsIncluded": False,
+        "scope": "spec_harvester_durable_artifacts",
+        "externalProviderLogging": "operator_managed_not_verified",
+    }
+    assert "package-set-ai-draft-request.json" not in json.dumps(payload)
+
+    digest = "sha256:" + hashlib.sha256(fixture_path.read_bytes()).hexdigest()
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "Five-Repository Controlled Calibration",
+            "P52-T3",
+            "openai/gpt-oss-20b",
+            "response_format.type: json_schema",
+            "gpt-5.3-codex-spark",
+            "read-only",
+            "ephemeral",
+            "ignore-user-config",
+            "skip-git-repo-check",
+            "repository-specific",
+            "operator-managed",
+            "P52-T4",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+        assert digest in normalized
+
+    for path, required in (
+        (docs_index, "FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md"),
+        (docc_root, "docs/FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md"),
+        (docc_root, "<doc:FiveRepositoryControlledCalibration>"),
+        (capabilities, "FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md"),
+        (capabilities_docc, "FiveRepositoryControlledCalibration"),
+        (roadmap, "FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md"),
+        (roadmap_docc, "FiveRepositoryControlledCalibration"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(
+        (ROOT / "SPECS" / "INPROGRESS" / "next.md").read_text(encoding="utf-8")
+    )
 
 
 def test_docc2context_ai_draft_same_scope_bounded_rerun_gate_records_p49_t3_result() -> None:

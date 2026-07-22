@@ -133,6 +133,21 @@ exclusions can become proposal evidence. Request-backed missing
 `packageSet.packageId` and single-package inventories with model-side unknown
 exclusions remain clean guard passes.
 
+## LM Studio Structured Output
+
+For the default `lm_studio` provider name, each live request includes
+`response_format.type: json_schema` with the minimal
+`spec_harvester_json_object` JSON-object schema. This request-side constraint
+ensures the local `gpt-oss` control path returns one JSON object rather than a
+Harmony control-token stream that the OpenAI-compatible endpoint cannot expose.
+
+This schema is sent by SpecHarvester. Do not paste it into LM Studio's Chat
+Template field. It guarantees JSON-object syntax only; the existing deterministic
+inventory, evidence-path, relation, and semantic validation remains authoritative
+after the response is received. `providerReceipt.responseFormat` records the
+request-side mode. Other OpenAI-compatible provider names keep their existing
+payload shape.
+
 ## Bounded JSON Repair
 
 Live local provider output is parsed as one JSON object. When the first LM

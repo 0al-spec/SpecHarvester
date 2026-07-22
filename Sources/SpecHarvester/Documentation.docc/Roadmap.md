@@ -266,6 +266,14 @@ final-message JSON Schema, receipt and failure policy, and existing external
 `--model-output` handoff without invoking Codex, replacing LM Studio, or
 granting registry authority.
 
+P52-T3 is recorded in <doc:FiveRepositoryControlledCalibration>. It runs the
+static-only baseline first and then proposal-only LM Studio `openai/gpt-oss-20b`
+and schema-validated `gpt-5.3-codex-spark` controls over five pinned checkouts.
+All five repositories pass the static, Codex completion, schema-validity,
+repository-specificity, and unsupported-claim thresholds, unlocking P52-T4.
+LM Studio provider logging remains an operator-managed external privacy
+precondition; SpecHarvester persists no raw model data.
+
 ### Selected Candidate SpecPM Intake Handoff
 
 The completed intake-handoff focus turns selected candidate dry-run evidence

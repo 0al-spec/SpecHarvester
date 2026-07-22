@@ -1,0 +1,33 @@
+# P52-T3 controlled calibration sources. All checkouts are operator-provided
+# and pinned; this manifest never authorizes clone, fetch, or source mutation.
+repositories:
+  - id: flask
+    repository: https://github.com/pallets/flask
+    revision: 954f5684e4841aad84a8eec7ace7b81a0d3f6831
+    checkout: ../../../flask
+    packageId: flask.core
+    labels: [python, pypi, web_framework, single_package, p52_t3]
+  - id: gin
+    repository: https://github.com/gin-gonic/gin
+    revision: 5f4f9643258dc2a65e684b63f12c8d543c936c67
+    checkout: ../../../gin
+    packageId: gin.core
+    labels: [go, web_framework, single_package, p52_t3]
+  - id: xyflow
+    repository: https://github.com/xyflow/xyflow
+    revision: a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd
+    checkout: ../../../xyflow
+    packageId: xyflow.workspace
+    labels: [javascript, typescript, npm, workspace_or_monorepo, p52_t3]
+  - id: fastapi
+    repository: https://github.com/fastapi/fastapi
+    revision: 9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263
+    checkout: ../../../fastapi
+    packageId: fastapi.core
+    labels: [python, pypi, web_framework, documentation_heavy, p52_t3]
+  - id: fastmcp
+    repository: https://github.com/PrefectHQ/fastmcp
+    revision: 3b8538e2422a1c43fdb69661c610de7985b785f2
+    checkout: ../../../fastmcp
+    packageId: fastmcp.core
+    labels: [python, pypi, mcp, framework_or_runtime_library, p52_t3]

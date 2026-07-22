@@ -914,10 +914,70 @@ def test_package_set_ai_draft_repairs_malformed_live_json(
     assert report["providerReceipt"]["jsonRepairNeeded"] is True
     assert report["providerReceipt"]["jsonRepairAttemptCount"] == 1
     assert report["providerReceipt"]["jsonRepairStatus"] == "repaired"
+    assert report["providerReceipt"]["responseFormat"] == {
+        "type": "json_schema",
+        "schemaName": "spec_harvester_json_object",
+    }
     assert report["providerReceipt"]["usage"]["total_tokens"] == 5
+    assert all(
+        payload["response_format"]
+        == {
+            "type": "json_schema",
+            "json_schema": {
+                "name": "spec_harvester_json_object",
+                "schema": {"type": "object", "additionalProperties": True},
+            },
+        }
+        for payload in calls
+    )
     assert "ai_json_repair_needed" in {item["code"] for item in report["diagnostics"]}
     assert "not json" not in serialized
     assert report["privacy"]["rawModelResponsesPersisted"] is False
+
+
+def test_package_set_ai_draft_leaves_non_lm_studio_payload_unchanged(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    inventory = write_inventory(tmp_path)
+    model_output = write_model_output(tmp_path)
+    calls = []
+
+    class FakeResponse:
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {
+                    "model": "test-model",
+                    "choices": [{"message": {"content": model_output.read_text(encoding="utf-8")}}],
+                    "usage": {"total_tokens": 1},
+                }
+            ).encode("utf-8")
+
+    def fake_urlopen(request, **_kwargs):
+        calls.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse()
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            provider_base_url="http://127.0.0.1:1234",
+            provider_name="local_test_provider",
+            model="test-model",
+        )
+    )
+
+    assert report["status"] == "completed"
+    assert len(calls) == 1
+    assert "response_format" not in calls[0]
+    assert "responseFormat" not in report["providerReceipt"]
 
 
 def test_package_set_ai_draft_fails_when_json_repair_is_exhausted(

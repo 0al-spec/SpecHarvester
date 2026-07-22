@@ -106,6 +106,8 @@ The canonical source files remain in the repository:
 - `docs/LARGER_CURATED_CORPUS_OUTPUT_TRIAGE.md`
 - `docs/LARGER_CURATED_CORPUS_EXIT_DECISION.md`
 - `docs/CONTROLLED_REPOSITORY_CORPUS_PLAN.md`
+- `docs/CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md`
+- `docs/FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -344,6 +346,7 @@ the host.
 - <doc:PackageSetAIDraftProposal>
 - <doc:PackageSetAIEnrichment>
 - <doc:CodexSparkExternalModelAdapterContract>
+- <doc:FiveRepositoryControlledCalibration>
 - <doc:AIEnrichmentCandidatePatch>
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateIntakePolicy>

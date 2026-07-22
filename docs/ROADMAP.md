@@ -1342,6 +1342,17 @@ schema-validated final-message handoff into the existing external
 `--model-output` seam, bounded receipts, and failure rejection policy. It does
 not invoke Codex, change LM Studio, or grant registry authority.
 
+P52-T3 records
+[`FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md`](FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md)
+and the machine-readable `SpecHarvesterControlledCalibrationReport` fixture.
+It runs the static-only baseline first and then proposal-only LM Studio
+`openai/gpt-oss-20b` and schema-validated `gpt-5.3-codex-spark` controls over
+five pinned checkouts. All five repositories pass the static, Codex completion,
+schema-validity, repository-specificity, and unsupported-claim thresholds, so
+the calibration unlocks P52-T4. LM Studio provider logging remains an
+operator-managed external privacy precondition; no raw model data is persisted
+by SpecHarvester.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install

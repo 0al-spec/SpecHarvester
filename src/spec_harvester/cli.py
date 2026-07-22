@@ -82,6 +82,14 @@ from spec_harvester.collector import (
     HarvestOptions,
     collect_local_repository,
 )
+from spec_harvester.controlled_calibration import (
+    DEFAULT_CODEX_COMMAND,
+    DEFAULT_CODEX_MODEL,
+    DEFAULT_CODEX_SCHEMA_PATH,
+    DEFAULT_CODEX_TIMEOUT_SECONDS,
+    ControlledCalibrationOptions,
+    run_controlled_calibration,
+)
 from spec_harvester.drafter import (
     DEFAULT_AUTHOR,
     DEFAULT_SPEC_VERSION,
@@ -463,6 +471,79 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     autonomous_candidate_batch.set_defaults(func=run_autonomous_candidate_batch_cli)
+
+    controlled_calibration = subcommands.add_parser(
+        "controlled-calibration",
+        help=(
+            "Run the P52 five-repository static, LM Studio, and Codex Spark "
+            "proposal-only calibration."
+        ),
+    )
+    controlled_calibration.add_argument(
+        "inputs",
+        type=Path,
+        help="Directory containing the exactly-five P52 pinned source manifest.",
+    )
+    controlled_calibration.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output root for static evidence and sanitized proposal-only reports.",
+    )
+    controlled_calibration.add_argument(
+        "--lm-studio-base-url",
+        default=DEFAULT_LM_STUDIO_BASE_URL,
+        help=f"Local OpenAI-compatible provider base URL. Default: {DEFAULT_LM_STUDIO_BASE_URL}.",
+    )
+    controlled_calibration.add_argument(
+        "--lm-studio-model",
+        help="Local LM Studio model id, e.g. openai/gpt-oss-20b.",
+    )
+    controlled_calibration.add_argument(
+        "--codex-command",
+        default=DEFAULT_CODEX_COMMAND,
+        help=f"Codex executable. Default: {DEFAULT_CODEX_COMMAND}.",
+    )
+    controlled_calibration.add_argument(
+        "--codex-model",
+        default=DEFAULT_CODEX_MODEL,
+        help=f"Codex model id. Default: {DEFAULT_CODEX_MODEL}.",
+    )
+    controlled_calibration.add_argument(
+        "--codex-schema",
+        type=Path,
+        default=DEFAULT_CODEX_SCHEMA_PATH,
+        help="JSON Schema required for the ephemeral Codex final message.",
+    )
+    controlled_calibration.add_argument(
+        "--codex-timeout-seconds",
+        type=float,
+        default=DEFAULT_CODEX_TIMEOUT_SECONDS,
+        help=(
+            "Maximum duration for each Codex invocation in seconds. "
+            f"Default: {DEFAULT_CODEX_TIMEOUT_SECONDS:.0f}."
+        ),
+    )
+    controlled_calibration.add_argument(
+        "--json-repair-max-attempts",
+        type=int,
+        default=DEFAULT_JSON_REPAIR_MAX_ATTEMPTS,
+        help=(
+            "Maximum malformed JSON repair prompts for each LM Studio provider call. "
+            f"Default: {DEFAULT_JSON_REPAIR_MAX_ATTEMPTS}."
+        ),
+    )
+    controlled_calibration.add_argument(
+        "--skip-lm-studio",
+        action="store_true",
+        help="Skip the LM Studio control for bounded diagnostics only.",
+    )
+    controlled_calibration.add_argument(
+        "--skip-codex",
+        action="store_true",
+        help="Skip the Codex Spark control for bounded diagnostics only.",
+    )
+    controlled_calibration.set_defaults(func=run_controlled_calibration_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -1780,6 +1861,30 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 repository_plugin_adapter_manifest=args.repository_plugin_adapter_manifest,
                 repository_plugin_adapter_preflight=args.repository_plugin_adapter_preflight,
                 trusted_local_adapter_run_report=args.trusted_local_adapter_run_report,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_controlled_calibration_cli(args: argparse.Namespace) -> int:
+    try:
+        result = run_controlled_calibration(
+            ControlledCalibrationOptions(
+                inputs=args.inputs,
+                out=args.out,
+                lm_studio_base_url=args.lm_studio_base_url,
+                lm_studio_model=args.lm_studio_model,
+                codex_command=args.codex_command,
+                codex_model=args.codex_model,
+                codex_schema=args.codex_schema,
+                codex_timeout_seconds=args.codex_timeout_seconds,
+                json_repair_max_attempts=args.json_repair_max_attempts,
+                run_lm_studio=not args.skip_lm_studio,
+                run_codex=not args.skip_codex,
             )
         )
     except ValueError as exc:

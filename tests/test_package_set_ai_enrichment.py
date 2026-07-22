@@ -191,6 +191,8 @@ def test_package_set_ai_enrichment_trims_package_local_evidence_paths(
 def test_openai_compatible_provider_receipt_uses_configured_provider_name(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    calls = []
+
     class FakeResponse:
         def __enter__(self) -> FakeResponse:
             return self
@@ -207,7 +209,11 @@ def test_openai_compatible_provider_receipt_uses_configured_provider_name(
                 }
             ).encode("utf-8")
 
-    monkeypatch.setattr(urllib.request, "urlopen", lambda *_args, **_kwargs: FakeResponse())
+    def fake_urlopen(request, **_kwargs):
+        calls.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse()
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
     provider = OpenAICompatibleProvider(
         base_url="http://localhost:1234",
         provider_name="local_test_provider",
@@ -220,6 +226,59 @@ def test_openai_compatible_provider_receipt_uses_configured_provider_name(
 
     _payload, receipt = provider.complete_json({"packageId": "xyflow.react"})
     assert receipt["providerName"] == "local_test_provider"
+    assert "response_format" not in calls[0]
+    assert "responseFormat" not in receipt
+
+
+def test_openai_compatible_provider_requests_lm_studio_json_schema(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls = []
+
+    class FakeResponse:
+        def __enter__(self) -> FakeResponse:
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {
+                    "model": "test-model",
+                    "choices": [{"message": {"content": '{"packageId":"xyflow.react"}'}}],
+                    "usage": {"total_tokens": 7},
+                }
+            ).encode("utf-8")
+
+    def fake_urlopen(request, **_kwargs):
+        calls.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse()
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    provider = OpenAICompatibleProvider(
+        base_url="http://localhost:1234",
+        provider_name="lm_studio",
+        model="test-model",
+        timeout_seconds=1,
+        max_output_tokens=128,
+        temperature=0,
+        json_repair_max_attempts=1,
+    )
+
+    _payload, receipt = provider.complete_json({"packageId": "xyflow.react"})
+
+    assert calls[0]["response_format"] == {
+        "type": "json_schema",
+        "json_schema": {
+            "name": "spec_harvester_json_object",
+            "schema": {"type": "object", "additionalProperties": True},
+        },
+    }
+    assert receipt["responseFormat"] == {
+        "type": "json_schema",
+        "schemaName": "spec_harvester_json_object",
+    }
 
 
 def test_package_set_ai_enrichment_repairs_malformed_live_json(
