@@ -379,6 +379,14 @@ Published DocC site:
    P52-T3 live five-repository calibration showing static-only, LM Studio, and
    schema-validated Codex Spark proposal-only results, with all Phase 52
    quality thresholds passed and P52-T4 unlocked
+99. [`TWENTY_REPOSITORY_CONTROLLED_PILOT.md`](TWENTY_REPOSITORY_CONTROLLED_PILOT.md):
+   P52-T4 twenty-source static-first pilot with proposal-only LM Studio and
+   Codex Spark controls plus digest-bound author review
+100. [`FINAL_CORPUS_CHECKOUT_READINESS.md`](FINAL_CORPUS_CHECKOUT_READINESS.md):
+   P52-T5 final 50-source manifest and checkout readiness evidence
+101. [`FINAL_CORPUS_STATIC_ONLY_GATE.md`](FINAL_CORPUS_STATIC_ONLY_GATE.md):
+   P52-T6 final corpus static-only gate meeting the 95% threshold at 96% while
+   retaining two explicit dual-license filename allowlist failures
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

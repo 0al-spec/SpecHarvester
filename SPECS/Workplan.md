@@ -2488,7 +2488,7 @@ Acceptance:
   compatible with `read_repository_source_manifests`; record curated selection
   rationale, provenance, and size/stop-policy fields in a companion metadata
   schema.
-- [ ] `P52-T6` Run the 50-100 repository static-only gate only after P52-T5
+- [x] `P52-T6` Run the 50-100 repository static-only gate only after P52-T5
   readiness passes, preserving deterministic preview candidates and requiring
   the static completion threshold before any Codex Spark execution.
 - [ ] `P52-T7` Run the 50-100 repository Codex Spark proposal-only gate only
@@ -2500,6 +2500,10 @@ Acceptance:
 - [ ] `P52-T9` Record the Phase 52 exit decision, deciding whether to stop,
   run a bounded follow-up, or make selected evidence available for maintainer
   disposition without approving registry promotion by default.
+- [ ] `P52-T10` Add strict collector support for common root
+  `LICENSE-APACHE`/`LICENSE-MIT` dual-license filenames and run a targeted
+  static validation over `actix-web` and `uv`, preserving the historical
+  P52-T6 48/50 evidence and completing before P52-T8 output triage.
 
 Motivation:
 
@@ -2530,5 +2534,7 @@ Acceptance:
 - P52-T2 must complete before P52-T3. P52-T3 quality thresholds must pass
   before P52-T4. P52-T4 quality thresholds must pass before P52-T5. P52-T5
   readiness must pass before P52-T6. P52-T6 static-only evidence must pass
-  before P52-T7. P52-T8 and P52-T9 must complete before any Phase 52 outcome
-  is treated as ready for maintainer disposition.
+  before P52-T7. P52-T10 must resolve or explicitly disposition the two
+  dual-license filename false negatives before P52-T8. P52-T8 and P52-T9 must
+  complete before any Phase 52 outcome is treated as ready for maintainer
+  disposition.
