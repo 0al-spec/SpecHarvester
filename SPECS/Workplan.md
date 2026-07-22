@@ -2488,7 +2488,7 @@ Acceptance:
   compatible with `read_repository_source_manifests`; record curated selection
   rationale, provenance, and size/stop-policy fields in a companion metadata
   schema.
-- [ ] `P52-T6` Run the 50-100 repository static-only gate only after P52-T5
+- [x] `P52-T6` Run the 50-100 repository static-only gate only after P52-T5
   readiness passes, preserving deterministic preview candidates and requiring
   the static completion threshold before any Codex Spark execution.
 - [ ] `P52-T7` Run the 50-100 repository Codex Spark proposal-only gate only

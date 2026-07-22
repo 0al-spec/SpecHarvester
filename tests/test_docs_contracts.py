@@ -38,6 +38,28 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P52-T7 50-100 Repository Codex Spark Proposal-Only Gate" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Planned" in next_text
+        assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
+            next_text
+        )
+        assert "`P52-T6` 50-100 Repository Static-Only Gate" in next_text
+        assert "96% strict static completion rate" in normalized
+        assert "schema-validated Codex Spark proposal-only path" in normalized
+        assert "bounded receipts" in normalized
+        assert "dual-license filename findings remain explicit" in normalized
+        assert "Do not create, restore, clone, or fetch repositories" in next_text
+        assert "Do not install dependencies or invoke package managers" in next_text
+        assert "Do not execute harvested code or adapters" in next_text
+        assert "Invoke only the approved read-only Codex Spark proposal path" in normalized
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        assert "Do not persist raw prompts, raw provider responses" in normalized
+        return
+
     if "# Next Task: P52-T6 50-100 Repository Static-Only Gate" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text

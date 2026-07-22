@@ -67,3 +67,7 @@ minimum before any Codex Spark execution is allowed.
 - Validate durable JSON artifacts with `python -m json.tool`.
 - Run Flow gates from `.flow/params.yaml`: full pytest with coverage >=90%,
   Ruff, Swift package/DocC build, and `git diff --check`.
+
+---
+**Archived:** 2026-07-23
+**Verdict:** PASS
