@@ -2465,3 +2465,37 @@ Acceptance:
   package managers, execute harvested code, run adapters, accept packages or
   relations, publish registry metadata, seed baselines, remove `preview_only`,
   or treat AI/static/rerun/planning/adapter output as registry truth.
+
+## Phase 52. Controlled Popular Repository Corpus with Codex Spark
+
+- [ ] `P52-T1` Plan the controlled 50-100 repository corpus, defining the
+  phased rollout, Codex Spark agent boundary, calibration gates, source-policy
+  constraints, quality metrics, and non-authority boundaries before any new
+  repository checkout or batch execution is attempted.
+
+Motivation:
+
+- P51-T8 completed the 12-source larger curated corpus as author-review
+  evidence, but did not approve further expansion.
+- The maintainer now wants a controlled path to 50-100 popular repositories
+  using Codex Spark under Codex-agent supervision.
+
+Goal:
+
+- Establish the evidence-led Phase 52 plan required before a 50-100 repository
+  corpus can be prepared, calibrated, or processed.
+
+Acceptance:
+
+- P52-T1 must preserve P51-T8 as its planning authority and explicitly record
+  that it does not itself approve a live corpus run.
+- P52-T1 must define staged calibration before scale-out and preserve
+  static-only-before-AI ordering.
+- P52-T1 must define the Codex Spark agent as proposal-only evidence producer,
+  with schema validation and no raw prompt, raw provider response, secret, or
+  chain-of-thought persistence.
+- P52-T1 must not clone or fetch repositories, install dependencies, invoke
+  package managers, execute harvested code, run Codex, run AI, accept packages
+  or relations, publish registry metadata, seed baselines, remove
+  `preview_only`, or treat any candidate, AI, planning, or adapter output as
+  registry truth.
