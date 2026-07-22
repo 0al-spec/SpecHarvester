@@ -876,3 +876,4 @@
 | 2026-07-22 | P52-T5 | Archived Final 50-100 Repository Source Manifest and Checkout Readiness (PASS) |
 | 2026-07-22 | P52-T5 | Archived REVIEW_p52_t5_final_corpus_checkout_readiness report |
 | 2026-07-23 | P52-T6 | Archived 50-100 Repository Static-Only Gate (PASS) |
+| 2026-07-23 | P52-T6 | Archived REVIEW_p52_t6_final_corpus_static_only_gate report |
