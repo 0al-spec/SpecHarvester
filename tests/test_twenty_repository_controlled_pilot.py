@@ -12,6 +12,7 @@ from spec_harvester.twenty_repository_controlled_pilot import (
     TWENTY_REPOSITORY_CONTROLLED_PILOT_REPORT_FILENAME,
     TwentyRepositoryControlledPilot,
     TwentyRepositoryControlledPilotOptions,
+    finalize_twenty_repository_controlled_pilot,
 )
 
 
@@ -120,6 +121,51 @@ def test_pilot_rejects_parallelism_until_a_bounded_parallel_runner_exists(tmp_pa
 
     with pytest.raises(ValueError, match="--max-concurrency 1"):
         pilot.validate_pilot_options()
+
+
+def test_finalize_pilot_unlocks_p52_t5_after_digest_bound_human_review(tmp_path: Path) -> None:
+    report_path = tmp_path / "report.json"
+    review_path = tmp_path / "review.json"
+    output_path = tmp_path / "finalized-report.json"
+    records = []
+    reviews = []
+    for index in range(10):
+        repository_id = f"repository-{index:02d}"
+        digest = {"algorithm": "sha256", "value": f"digest-{index:02d}"}
+        records.append({"id": repository_id, "proposal": {"digest": digest}})
+        reviews.append(
+            {
+                "repositoryId": repository_id,
+                "proposalDigest": digest,
+                "verdict": "supported",
+                "finding": "Selected package and evidence paths are repository-specific.",
+            }
+        )
+    report_path.write_text(
+        json.dumps(
+            {
+                "task": "P52-T4",
+                "status": "review_pending",
+                "staticOnly": {"status": "passed"},
+                "lmStudio": {"status": "completed"},
+                "codexSpark": {"status": "completed", "repositories": records},
+                "qualityMetrics": {"staticCompletionRate": {"passed": True}},
+            }
+        ),
+        encoding="utf-8",
+    )
+    review_path.write_text(json.dumps({"reviews": reviews}), encoding="utf-8")
+
+    finalized = finalize_twenty_repository_controlled_pilot(
+        report_path,
+        review_path,
+        output_path,
+    )
+
+    assert finalized["status"] == "passed"
+    assert finalized["decision"]["p52T5Unlocked"] is True
+    assert finalized["humanReview"]["reviewedCandidateCount"] == 10
+    assert json.loads(output_path.read_text(encoding="utf-8")) == finalized
 
 
 def write_pilot_inputs(

@@ -1,0 +1,2194 @@
+{
+  "apiVersion": "spec-harvester.twenty-repository-controlled-pilot/v0",
+  "authority": "producer_controlled_pilot_evidence_only",
+  "codexSpark": {
+    "authority": "proposal_only_not_registry_acceptance",
+    "privacy": {
+      "chainOfThoughtPersisted": false,
+      "externalProviderLogging": "operator_managed_not_verified",
+      "rawModelResponsesPersisted": false,
+      "rawPromptsPersisted": false,
+      "scope": "spec_harvester_durable_artifacts",
+      "secretsIncluded": false
+    },
+    "provider": {
+      "codexCliVersion": "codex-cli 0.145.0",
+      "ephemeral": true,
+      "execution": "operator_opt_in_external",
+      "ignoreUserConfig": true,
+      "kind": "codex_exec_external_model_output",
+      "model": "gpt-5.3-codex-spark",
+      "sandbox": "read-only",
+      "skipGitRepoCheck": true
+    },
+    "repositories": [
+      {
+        "diagnosticCodes": [],
+        "id": "flask",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "0b43a82384c6194b00c465cb8984fba00c9a899484dcae73ca88efefbebe5643"
+          },
+          "path": "codex-spark/flask/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 14485,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "40baf087634cc335c1924942001143f477e9d5abc0424fdd8a96588e14522bb7"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "5e5663c0dfb89b35264fb5e0823c08f4005ab18050bb44d1cc468cede6b4c04d"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "gin",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "622b67063fcf4764641c27486911138c40a181794fe5a8317300fd491669dffe"
+          },
+          "path": "codex-spark/gin/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 17181,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "daa6bcc70d2e34b8392b6ec52b80b78f5d440ec68718a31222697ac7d74d578b"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "31f66ca89dac07580056844b485c14e9f01f6ca881ca4439ad64b60ae8534bff"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "fastapi",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "47d8d325bc4c9891feb032c32aa8a7d71a3479e7031d52cdccf1f0ec57c1fb46"
+          },
+          "path": "codex-spark/fastapi/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 25785,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "095f49828e406ceb598664eae9b4bd4f650aff5e729bd16fb4a7c6fd0f1e80f9"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "0ed74b35ca9342339b55d32007191bd7e97dfcf571ad5dc3e471561829ec8df0"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "fastmcp",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "c86a3a0e88400cbfb3813ddc822e1922161ea26f9373db328e5563049d61cbd1"
+          },
+          "path": "codex-spark/fastmcp/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 12137,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "0c30684b0afab3e5ac54591676a883ffe8eee80ee3bcbedcd5fc637d03aa502c"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "17a6a0a475a939d073a17112168db42f841d80218fde1c7a273d0cf29554d376"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "transmission",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "96ef6279d0140477f18da1576fe72cc8d855d56ae691d1bfd073b77251083334"
+          },
+          "path": "codex-spark/transmission/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 35529,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "98a2277a6d74118d242cc345036d91c9d0ffb354b8c160d15c4deed4f0b45207"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "a6fcb147ef89807906cbb983f1b04d450bd5f5f50ff3bbc173a1bd1122491543"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "serena",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "dff27993517cdcaf2fe8d5e01150d438c934252bc3bad44d162453e91461d4fd"
+          },
+          "path": "codex-spark/serena/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 33677,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "5fef99ba6bebbd124898b9f1933add1b77f6e448b55dff2942c008cec2b56a35"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "bf7cdadc8d6b70206fef1bfa0879f3938973f41cf6f17cfb95aa6db750e0c65b"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "altstore",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "caa86bbf8d75f30ebe114e5dd627235277cfc6622b1d6a5db22179875ecacf7a"
+          },
+          "path": "codex-spark/altstore/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 22583,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "62a3f355d7a1ea1ed7ba653dd8febcb17a2576cd3d791d1cff20a42250e1bcab"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "f53b51336cca851ce88f830c5d9caaffbf71431e7ced27c83d3ad36f8f0d0909"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "ontology",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "0abee561cf299780f7a2730032641595fe268aa30477582388f9647b9a08a079"
+          },
+          "path": "codex-spark/ontology/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 20040,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "7406c22994559ab6af3f113ceb44b553ea8c423184b314949a779a64b23337c6"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "068788e7b873a7e29602333c7413223e20ca9338522af44e2b6adc5638e3fc84"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "specgraph",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "a0389de2a77b6f844ef06e202402077ac3759622bac2337b6a866c4452c1480b"
+          },
+          "path": "codex-spark/specgraph/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 20852,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "0f42f62be4dd6c1021d7d8a521d0326fd55a21ad8f0775dbb3d416bbb876c15d"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "a938b6e50373be166dd5456500cde76c443fdb228009216825a16f557920d08d"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "cupertino",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "f81caf4c46402dfe4bfdc572f9d2e2392d22a6b2b66dbb3e09d4536ac2d2dd3b"
+          },
+          "path": "codex-spark/cupertino/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 28207,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "b400e0c963369fac85abd921e43dcb8f2a3d84b0100522f4f3b5863ffc34af53"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "d06d023e71fe98eccf92b90c5ff15b51ef269f8cd87117a3c737a1100d50257b"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "agent-passport",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "669b644466fdcaeaadc388442d110b6b011c87089f0361de4eaf724429c701d4"
+          },
+          "path": "codex-spark/agent-passport/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 18028,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "5b07026a66c0110e77b6aac504f4d7fe92ab9c70e8969d68d4ca3e43fa85cf75"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "026baa3ccabc5634ac97d03144d13b53a95b357171d1f84b8146545702099afa"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "agent-surface",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "12560ae2a4bd103049c198412b5414b912c9ba06ae8faab23380a41f2b713648"
+          },
+          "path": "codex-spark/agent-surface/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 15688,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "ebb7620b85b3e19b80a5c3e365845df551a43772652580a004602666fb92a17c"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "067faef25905141c800a82e353cfedd83e8d8190819615a3cba6186b8c694e2e"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "mcp-server-manager",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "cf4094ff2fc15ad8f911ff48218408615713751a4bfe3096b49caaa8a6ea4638"
+          },
+          "path": "codex-spark/mcp-server-manager/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 16945,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "de10f4d583f48b25762c80b9e3984a2215340325090b66c8e365f60c610e2998"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "eaa6ff62156188b8062b71e7979606cb23a586e680cda3c26b56475ffeaacbe5"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "mcpm-sh",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "8d272ad7982291f8ed2e087f45101ad069ffbb254a23e22eef487be0eb5ff01f"
+          },
+          "path": "codex-spark/mcpm-sh/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 27786,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "955f80b73f5e7d781420f5c56505701f4491264dfe360eae2f2b6c3228597e83"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "a3e5ce52ef38a68e9eefed8eb8923cb6060af1e38a7075378cae0629af5a6cc4"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "hopper-mcp-wrapper",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "29a2d6d4c8c5255055250d001d799037563cb256dc81523fca7026bf075dcb33"
+          },
+          "path": "codex-spark/hopper-mcp-wrapper/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 29716,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "d9937da403365bf2a796bb018e0e2fbe09fbf25242fcfaf1cb6ea4fb6aa368ca"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "106a9c47295857a5c363f5d5a1330a691e80f12963e037a0e166f5c59095e277"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "specpm",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "6ce17c4b5e249d55a415bcea27fd4769665c4132f07a932b24179ad8035fb5dd"
+          },
+          "path": "codex-spark/specpm/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 0,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 22979,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "e7b355fc017d62884e3894a3647bacf9c6e741b1130b7e6f1d232cd5bef99672"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "7e74b17c8fbb38586024889ed7d3e37baeca9f8780ec300c3250aad6c53c0176"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "hypercode",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "0fe81f0d5d101d1a6b4ca7d04cc2334b2af32df7ad1a1c2bcde7db5b896b22dc"
+          },
+          "path": "codex-spark/hypercode/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 16764,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "0afbbdcf145177f035c103a09d15fe0084996402d5d92a5fb333de722a4ea07d"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "a0a810d093abdc379b58f9375b523e89af9e3135adfe307ea3066e5a662c4896"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "hyperprompt",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "c5ef23e6194d528c97e4ed9bf7e0fcd02e9f803f6ec536a7af47e838b95ef73b"
+          },
+          "path": "codex-spark/hyperprompt/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 27028,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "e6fe3cece17627265d5426abfa2f03c983362ff7368c2e3b5269b9229bb59c11"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "cef6e014b9c9a80d7f2dd120e5c09e5d8aca2eee682b7c7141ba190b30021d29"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "agent-ready-kit",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "b7a580440a5c4c35f512f8115f50aae9f71dfa42670dccd43444ed7a27baef0b"
+          },
+          "path": "codex-spark/agent-ready-kit/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 0,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 24410,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "a0d6471f5feecaddb308fd7549c18727fad45f43ada0ab3d26d9216756e34d32"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "23ca7f0684af9203e610150a023ebca1571dbc5be2236927a275fcd2e755bce3"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "specnode",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "b42769359e4c68ed6e6a0a1f1701d974b2f6fd10a6b6048c5326ef24f64d4077"
+          },
+          "path": "codex-spark/specnode/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 0,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 24351,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "0129b85e4f281a99d9178126927b6a033c77e626c5c6640a5e308a42921c6b61"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "bd080c958599653e08b7280e2c1fb01b93433b2617c0cae834c04399fa5845fe"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      }
+    ],
+    "status": "completed"
+  },
+  "concurrency": {
+    "configured": 1,
+    "execution": "sequential_deterministic",
+    "observedMaximum": 1,
+    "reason": "bounded_local_provider_and_external_agent_control"
+  },
+  "decision": {
+    "p52T5Unlocked": true,
+    "selectedDecision": "unlock_p52_t5",
+    "status": "passed"
+  },
+  "humanReview": {
+    "authority": "author_review_evidence_only_not_registry_acceptance",
+    "reviewedCandidateCount": 10,
+    "reviewedRepositoryCount": 10,
+    "reviews": [
+      {
+        "finding": "The one selected root package and containment relation match the static inventory.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "0b43a82384c6194b00c465cb8984fba00c9a899484dcae73ca88efefbebe5643"
+        },
+        "repositoryId": "flask",
+        "verdict": "supported"
+      },
+      {
+        "finding": "Selected members are grounded in the static workspace inventory without diagnostics.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "622b67063fcf4764641c27486911138c40a181794fe5a8317300fd491669dffe"
+        },
+        "repositoryId": "gin",
+        "verdict": "supported"
+      },
+      {
+        "finding": "The proposal selects a repository-specific package supported by allowlisted evidence.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "47d8d325bc4c9891feb032c32aa8a7d71a3479e7031d52cdccf1f0ec57c1fb46"
+        },
+        "repositoryId": "fastapi",
+        "verdict": "supported"
+      },
+      {
+        "finding": "Selected package membership and relation are consistent with the deterministic inventory.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "c86a3a0e88400cbfb3813ddc822e1922161ea26f9373db328e5563049d61cbd1"
+        },
+        "repositoryId": "fastmcp",
+        "verdict": "supported"
+      },
+      {
+        "finding": "The proposal has a passing validation guard and no unsupported-evidence diagnostic.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "96ef6279d0140477f18da1576fe72cc8d855d56ae691d1bfd073b77251083334"
+        },
+        "repositoryId": "transmission",
+        "verdict": "supported"
+      },
+      {
+        "finding": "Selected member output is specific to the source inventory and requires no promotion.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "dff27993517cdcaf2fe8d5e01150d438c934252bc3bad44d162453e91461d4fd"
+        },
+        "repositoryId": "serena",
+        "verdict": "supported"
+      },
+      {
+        "finding": "The proposal is schema-valid, inventory-grounded, and remains proposal-only.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "caa86bbf8d75f30ebe114e5dd627235277cfc6622b1d6a5db22179875ecacf7a"
+        },
+        "repositoryId": "altstore",
+        "verdict": "supported"
+      },
+      {
+        "finding": "Package selection is supported by static evidence and contains no validation diagnostics.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "0abee561cf299780f7a2730032641595fe268aa30477582388f9647b9a08a079"
+        },
+        "repositoryId": "ontology",
+        "verdict": "supported"
+      },
+      {
+        "finding": "The selected package is repository-specific and its evidence path is allowlisted.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "a0389de2a77b6f844ef06e202402077ac3759622bac2337b6a866c4452c1480b"
+        },
+        "repositoryId": "specgraph",
+        "verdict": "supported"
+      },
+      {
+        "finding": "The proposal passed its validation guard with a source-specific selected member.",
+        "proposalDigest": {
+          "algorithm": "sha256",
+          "value": "f81caf4c46402dfe4bfdc572f9d2e2392d22a6b2b66dbb3e09d4536ac2d2dd3b"
+        },
+        "repositoryId": "cupertino",
+        "verdict": "supported"
+      }
+    ],
+    "status": "completed",
+    "supportedCandidateCount": 10,
+    "unsupportedCandidateCount": 0
+  },
+  "kind": "SpecHarvesterTwentyRepositoryControlledPilotReport",
+  "lmStudio": {
+    "authority": "proposal_only_not_registry_acceptance",
+    "privacy": {
+      "chainOfThoughtPersisted": false,
+      "externalProviderLogging": "operator_managed_not_verified",
+      "rawModelResponsesPersisted": false,
+      "rawPromptsPersisted": false,
+      "scope": "spec_harvester_durable_artifacts",
+      "secretsIncluded": false
+    },
+    "provider": {
+      "baseUrl": "http://127.0.0.1:1234",
+      "kind": "openai_compatible",
+      "model": "openai/gpt-oss-20b",
+      "name": "lm_studio",
+      "responseFormat": "json_schema"
+    },
+    "repositories": [
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "refined_summary_missing",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "27d72511b7796a851f1158c6f3a824d985fb8cb3185237e8e511647bd6383849"
+          },
+          "path": "lm-studio/flask/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "c3223dd3af1a389db29049d453fb36d6c927618cfed27e95413776e4d7ead248"
+          },
+          "path": "lm-studio/flask/package-set-ai-enrichment-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 291,
+            "providerPromptTokens": 7942,
+            "providerTotalTokens": 8233,
+            "warningCount": 1
+          }
+        },
+        "id": "flask",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "c2e38586c505a5277a98e619e7cd53251d6ff86d0810daecdd98ef3fec77ea37"
+          },
+          "path": "lm-studio/gin/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "69725fc4877fca39e189643f79493e44c535aeb9b7b9db9ec2bacc29c7a73cc1"
+          },
+          "path": "lm-studio/gin/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 463,
+            "providerPromptTokens": 15227,
+            "providerTotalTokens": 15690,
+            "warningCount": 0
+          }
+        },
+        "id": "gin",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "ca87194ca446eba4e8a69d40e33bb66a036c6841302d3c0b3988f1d3bba58aae"
+          },
+          "path": "lm-studio/fastapi/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "8f6323a797d90e56eb851e2915ed690b5176fc094f16fd3412368cbcff216648"
+          },
+          "path": "lm-studio/fastapi/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 368,
+            "providerPromptTokens": 16147,
+            "providerTotalTokens": 16515,
+            "warningCount": 0
+          }
+        },
+        "id": "fastapi",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "4ee7ac06ab3033ccc1faae5d386764063f2ca3de103b6cc0169af7c9685012f3"
+          },
+          "path": "lm-studio/fastmcp/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "38c7b318db4770727665ec61cc1ee72fd5278b8b096826ca3a8e473a30bbdcf8"
+          },
+          "path": "lm-studio/fastmcp/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 382,
+            "providerPromptTokens": 12288,
+            "providerTotalTokens": 12670,
+            "warningCount": 0
+          }
+        },
+        "id": "fastmcp",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "5db2d6974f8315265d3438a9e7b912b3f9b0300c3bfd67f03b8a833ac273b904"
+          },
+          "path": "lm-studio/transmission/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 1
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "174ce1ebcc452f5ba594b6051c313c84a3efbd77a6411fc2ff4117557d2a384b"
+          },
+          "path": "lm-studio/transmission/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 305,
+            "providerPromptTokens": 9349,
+            "providerTotalTokens": 9654,
+            "warningCount": 0
+          }
+        },
+        "id": "transmission",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "8cb392304c7dc451a55cbdb0060554b47f456401d8f863471ba280ca36167080"
+          },
+          "path": "lm-studio/serena/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "63ef45e72d1205aff79018da7e30155681446e5e901300c428f7aa9fbc188253"
+          },
+          "path": "lm-studio/serena/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 547,
+            "providerPromptTokens": 14341,
+            "providerTotalTokens": 14888,
+            "warningCount": 0
+          }
+        },
+        "id": "serena",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "51fb0765b86563f4d42d08eaef9fd1cc9cb85a7b7ff7073379b374c5d1dc766d"
+          },
+          "path": "lm-studio/altstore/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 0,
+            "selectedMemberCount": 1,
+            "warningCount": 1
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "ba7a36715374f22293b5249b550f51408f3a855f259507069751e2734140287e"
+          },
+          "path": "lm-studio/altstore/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 328,
+            "providerPromptTokens": 10434,
+            "providerTotalTokens": 10762,
+            "warningCount": 0
+          }
+        },
+        "id": "altstore",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "d21d725065da616ceb25e8a1a09adf8e9b07484da830413ee3f9a9c2f2b39ee6"
+          },
+          "path": "lm-studio/ontology/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 1
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "806ee07d43d96ed82cd5af81c5cdf9507d080853bd306ab2a05ca01a4afff423"
+          },
+          "path": "lm-studio/ontology/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 453,
+            "providerPromptTokens": 13076,
+            "providerTotalTokens": 13529,
+            "warningCount": 0
+          }
+        },
+        "id": "ontology",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "9911f4e41781afdb4fa537e24d2ab665a43bb3f3528f781dee76937d4854906c"
+          },
+          "path": "lm-studio/specgraph/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "a59f1228ddff01bd776d40c7526a2ba662ce3865e98d2e7af5ef2a146e92d0fe"
+          },
+          "path": "lm-studio/specgraph/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 313,
+            "providerPromptTokens": 9408,
+            "providerTotalTokens": 9721,
+            "warningCount": 0
+          }
+        },
+        "id": "specgraph",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "ddfebc2209808127ec4f873771b7d884a427dbd416248a68f202139b2f0bdd9a"
+          },
+          "path": "lm-studio/cupertino/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "ab2369b1b0d13ffeb5432f350c833b73c6fc0a39af05c51b14bca4faba0d17da"
+          },
+          "path": "lm-studio/cupertino/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 369,
+            "providerPromptTokens": 14325,
+            "providerTotalTokens": 14694,
+            "warningCount": 0
+          }
+        },
+        "id": "cupertino",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "f154db24771f3e122c67bf250a12948c715b554ba1960e77edca5dfe537858cd"
+          },
+          "path": "lm-studio/agent-passport/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "f2c15ed99afdf80da9051977019108c45e3acd194d1ee68e580ccf28e4a2a05a"
+          },
+          "path": "lm-studio/agent-passport/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 246,
+            "providerPromptTokens": 6437,
+            "providerTotalTokens": 6683,
+            "warningCount": 0
+          }
+        },
+        "id": "agent-passport",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "2f80d62979c15f33602fb50c8303c5066d86b85f35868d2a2aa2a0a7b582aa3c"
+          },
+          "path": "lm-studio/agent-surface/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "3fe7e6ded647c1f47b1f80f2889d15f504de918458f0e4addfb0856f839b057f"
+          },
+          "path": "lm-studio/agent-surface/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 395,
+            "providerPromptTokens": 10802,
+            "providerTotalTokens": 11197,
+            "warningCount": 0
+          }
+        },
+        "id": "agent-surface",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "model_evidence_path_unsupported",
+          "refined_summary_missing"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "a82c6bb91ee96e26d5eb0e47ba42f4833090f5e51597d52b714e863efbb068e2"
+          },
+          "path": "lm-studio/mcp-server-manager/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 1
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "0c73b4f60f30268e576506aeba745a6f96ab7d06c41f80185b6a990298b1fbc1"
+          },
+          "path": "lm-studio/mcp-server-manager/package-set-ai-enrichment-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 317,
+            "providerPromptTokens": 8900,
+            "providerTotalTokens": 9217,
+            "warningCount": 2
+          }
+        },
+        "id": "mcp-server-manager",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "model_evidence_path_unsupported",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "e190068cbeccd3925d03956ad86201f6188d79a028e650163ed7944ee4a07f59"
+          },
+          "path": "lm-studio/mcpm-sh/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "70b43e86db65eb16e0075a6aea68e3ed6a060854c6843bc10ed2005eda6e903d"
+          },
+          "path": "lm-studio/mcpm-sh/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 230,
+            "providerPromptTokens": 11299,
+            "providerTotalTokens": 11529,
+            "warningCount": 0
+          }
+        },
+        "id": "mcpm-sh",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "11eff2a63380238742bc39dfbfcf51a6bc665e960ae90909904c7afcab7f6027"
+          },
+          "path": "lm-studio/hopper-mcp-wrapper/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "7bcd7ca226747092cfc42fb7de8f52e21ad4b9c26168bb360aa6764d5c292c88"
+          },
+          "path": "lm-studio/hopper-mcp-wrapper/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 260,
+            "providerPromptTokens": 9041,
+            "providerTotalTokens": 9301,
+            "warningCount": 0
+          }
+        },
+        "id": "hopper-mcp-wrapper",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "8c48e43e76c8b77f025bcb673f15ad720bfe22479ea38d2580cafa2a709e9a68"
+          },
+          "path": "lm-studio/specpm/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "8d0bda262c47fa69f59240a32aa01f0f8ffe6286cc10f35dff52695baf38e8a8"
+          },
+          "path": "lm-studio/specpm/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 279,
+            "providerPromptTokens": 14445,
+            "providerTotalTokens": 14724,
+            "warningCount": 0
+          }
+        },
+        "id": "specpm",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "e493ffbe8093b7996dce49be22be517420505dfff5261642e3cea4ba243bcd17"
+          },
+          "path": "lm-studio/hypercode/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "80c2c7778507ff9aeeae63158f6e9dad57bfd276a1687f892a36e111e69c296b"
+          },
+          "path": "lm-studio/hypercode/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 492,
+            "providerPromptTokens": 10975,
+            "providerTotalTokens": 11467,
+            "warningCount": 0
+          }
+        },
+        "id": "hypercode",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "0fd5111532714cef0317655bf38146341a8354759be26e7f102dd2760450b7e6"
+          },
+          "path": "lm-studio/hyperprompt/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "ccc909af9438a39a260902c7c569675d5fb95cfc5db894316bea4351029a6f68"
+          },
+          "path": "lm-studio/hyperprompt/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 465,
+            "providerPromptTokens": 13522,
+            "providerTotalTokens": 13987,
+            "warningCount": 0
+          }
+        },
+        "id": "hyperprompt",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "b5cc8ddde344719d88bf7e88a2cb82b5482a1dd74da86f04d37e7fb89761ff24"
+          },
+          "path": "lm-studio/agent-ready-kit/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 0,
+            "selectedMemberCount": 0,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "b18b53ece53e3637d1519864ad4d04f44b12152225ad1b04a412abbcfe72f77f"
+          },
+          "path": "lm-studio/agent-ready-kit/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 141,
+            "providerPromptTokens": 4046,
+            "providerTotalTokens": 4187,
+            "warningCount": 0
+          }
+        },
+        "id": "agent-ready-kit",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "model_evidence_path_unsupported"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "25056f2d5778a0f6ebd68a740cf401192d44a80ab0424c91a331b7eb17ea9926"
+          },
+          "path": "lm-studio/specnode/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "44ffd238bc945c0cb700b3b7980c3959d1a6f380e7c32a6a9de686dd25840b79"
+          },
+          "path": "lm-studio/specnode/package-set-ai-enrichment-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 438,
+            "providerPromptTokens": 9033,
+            "providerTotalTokens": 9471,
+            "warningCount": 4
+          }
+        },
+        "id": "specnode",
+        "status": "completed"
+      }
+    ],
+    "status": "completed"
+  },
+  "nonGoals": [
+    "checkout_creation_or_restore",
+    "repository_clone_or_fetch",
+    "dependency_installation",
+    "package_manager_execution",
+    "harvested_code_execution",
+    "adapter_execution",
+    "package_acceptance",
+    "relation_acceptance",
+    "registry_publication",
+    "baseline_seeding",
+    "preview_only_removal"
+  ],
+  "phase": "P52",
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "externalProviderLogging": "operator_managed_not_verified",
+    "rawModelResponsesPersisted": false,
+    "rawPromptsPersisted": false,
+    "scope": "spec_harvester_durable_artifacts",
+    "secretsIncluded": false
+  },
+  "qualityMetrics": {
+    "codexCompletionRate": {
+      "denominator": 20,
+      "minimum": 0.9,
+      "numerator": 20,
+      "passed": true,
+      "value": 1.0
+    },
+    "repositorySpecificRate": {
+      "denominator": 20,
+      "minimum": 0.8,
+      "numerator": 20,
+      "passed": true,
+      "value": 1.0
+    },
+    "schemaValidRate": {
+      "denominator": 20,
+      "minimum": 0.98,
+      "numerator": 20,
+      "passed": true,
+      "value": 1.0
+    },
+    "staticCompletionRate": {
+      "denominator": 20,
+      "minimum": 0.95,
+      "numerator": 20,
+      "passed": true,
+      "value": 1.0
+    },
+    "unsupportedClaimRate": {
+      "denominator": 20,
+      "maximum": 0.05,
+      "numerator": 0,
+      "passed": true,
+      "value": 0.0
+    }
+  },
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "flask",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "sourceManifest": {
+        "entryIndex": 0,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "gin",
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "sourceManifest": {
+        "entryIndex": 1,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "fastapi",
+      "repository": "https://github.com/fastapi/fastapi",
+      "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+      "sourceManifest": {
+        "entryIndex": 2,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "fastmcp",
+      "repository": "https://github.com/PrefectHQ/fastmcp",
+      "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+      "sourceManifest": {
+        "entryIndex": 3,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "transmission",
+      "repository": "https://github.com/transmission/transmission",
+      "revision": "98fdf2dc0bfc77e537992ce50fa310b1c3ac636a",
+      "sourceManifest": {
+        "entryIndex": 4,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "serena",
+      "repository": "https://github.com/oraios/serena",
+      "revision": "892ef9cf19e2c154a75cb58f4b34c8589eada346",
+      "sourceManifest": {
+        "entryIndex": 5,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "altstore",
+      "repository": "https://github.com/altstoreio/AltStore",
+      "revision": "502848e3b090ee2606de4e40bf2598327ed987ce",
+      "sourceManifest": {
+        "entryIndex": 6,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "ontology",
+      "repository": "https://github.com/0al-spec/Ontology",
+      "revision": "3d0c977c61fb4f725cbc4261fa8c6efad412f12b",
+      "sourceManifest": {
+        "entryIndex": 7,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "specgraph",
+      "repository": "https://github.com/0al-spec/SpecGraph",
+      "revision": "4395f78fc10217275a266ebac2b29d659f6f888f",
+      "sourceManifest": {
+        "entryIndex": 8,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "cupertino",
+      "repository": "https://github.com/mihaelamj/cupertino",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "sourceManifest": {
+        "entryIndex": 9,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "agent-passport",
+      "repository": "https://github.com/0al-spec/agent-passport",
+      "revision": "5acb80ccd83b945f4ca7f4367a6c021df7015b15",
+      "sourceManifest": {
+        "entryIndex": 10,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "agent-surface",
+      "repository": "https://github.com/0al-spec/agent-surface",
+      "revision": "0bff3b754ad9ee540d2c20a3eb2471d13c160ec0",
+      "sourceManifest": {
+        "entryIndex": 11,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "mcp-server-manager",
+      "repository": "https://github.com/vlazic/mcp-server-manager",
+      "revision": "e157ed92dbd04bc04d764d0f0a09935eb302ac36",
+      "sourceManifest": {
+        "entryIndex": 12,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "mcpm-sh",
+      "repository": "https://github.com/pathintegral-institute/mcpm.sh",
+      "revision": "3a21496dbddffa8b352797aaa498fd4f4d094161",
+      "sourceManifest": {
+        "entryIndex": 13,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "hopper-mcp-wrapper",
+      "repository": "https://github.com/SoundBlaster/HopperMCPWrapper",
+      "revision": "88913f2d0e1a95400de9439fcc7b3521418fac8e",
+      "sourceManifest": {
+        "entryIndex": 14,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "specpm",
+      "repository": "https://github.com/0al-spec/SpecPM",
+      "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+      "sourceManifest": {
+        "entryIndex": 15,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "hypercode",
+      "repository": "https://github.com/0al-spec/Hypercode",
+      "revision": "995663326bbb1fc4981c5362014d80f3df7bd504",
+      "sourceManifest": {
+        "entryIndex": 16,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "hyperprompt",
+      "repository": "https://github.com/0al-spec/Hyperprompt",
+      "revision": "044ad60cf8f49a836a9cd2a79e9f95bedd950b12",
+      "sourceManifest": {
+        "entryIndex": 17,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "agent-ready-kit",
+      "repository": "https://github.com/0al-spec/agent-ready-kit",
+      "revision": "cbf917ccfae23fec121648a7822073e7a04799c9",
+      "sourceManifest": {
+        "entryIndex": 18,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "specnode",
+      "repository": "https://github.com/0al-spec/SpecNode",
+      "revision": "9f0bc2245c75e4539d59b4eaeabadcda52a5d413",
+      "sourceManifest": {
+        "entryIndex": 19,
+        "path": "repositories.yml"
+      }
+    }
+  ],
+  "staticOnly": {
+    "report": {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "263205137fc92acf3f1f01902359577f41c4caf4cae10696199259f5d47d575c"
+      },
+      "path": "static-only/autonomous-candidate-batch-report.json"
+    },
+    "repositories": [
+      {
+        "id": "flask",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "gin",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "fastapi",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "fastmcp",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "transmission",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "serena",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "altstore",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "ontology",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "specgraph",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "cupertino",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "agent-passport",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "agent-surface",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "mcp-server-manager",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "mcpm-sh",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "hopper-mcp-wrapper",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "specpm",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "hypercode",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "hyperprompt",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "agent-ready-kit",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "specnode",
+        "preflightStatus": "passed",
+        "status": "passed"
+      }
+    ],
+    "status": "passed"
+  },
+  "status": "passed",
+  "task": "P52-T4"
+}

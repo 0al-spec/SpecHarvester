@@ -208,6 +208,7 @@ from spec_harvester.trusted_local_adapter_synthetic_sandbox_run_verifier import 
 )
 from spec_harvester.twenty_repository_controlled_pilot import (
     TwentyRepositoryControlledPilotOptions,
+    finalize_twenty_repository_controlled_pilot,
     run_twenty_repository_controlled_pilot,
 )
 from spec_harvester.xyflow_package_set_smoke import (
@@ -628,6 +629,24 @@ def build_parser() -> argparse.ArgumentParser:
         help="Skip the Codex Spark control for bounded diagnostics only.",
     )
     controlled_pilot.set_defaults(func=run_twenty_repository_controlled_pilot_cli)
+
+    finalize_controlled_pilot = subcommands.add_parser(
+        "finalize-twenty-repository-controlled-pilot",
+        help="Attach a bounded author review to an existing P52-T4 live report.",
+    )
+    finalize_controlled_pilot.add_argument("report", type=Path, help="P52-T4 live report.")
+    finalize_controlled_pilot.add_argument(
+        "human_review",
+        type=Path,
+        help="Sanitized author-review evidence bound to proposal digests.",
+    )
+    finalize_controlled_pilot.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output path for the finalized P52-T4 report.",
+    )
+    finalize_controlled_pilot.set_defaults(func=run_finalize_twenty_repository_controlled_pilot_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -1996,6 +2015,20 @@ def run_twenty_repository_controlled_pilot_cli(args: argparse.Namespace) -> int:
                 run_lm_studio=not args.skip_lm_studio,
                 run_codex=not args.skip_codex,
             )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_finalize_twenty_repository_controlled_pilot_cli(args: argparse.Namespace) -> int:
+    try:
+        result = finalize_twenty_repository_controlled_pilot(
+            args.report,
+            args.human_review,
+            args.out,
         )
     except ValueError as exc:
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2))

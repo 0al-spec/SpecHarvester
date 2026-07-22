@@ -1,0 +1,68 @@
+{
+  "apiVersion": "spec-harvester.p52-t4-human-review/v0",
+  "kind": "SpecHarvesterP52T4HumanReview",
+  "task": "P52-T4",
+  "authority": "author_review_evidence_only_not_registry_acceptance",
+  "reviews": [
+    {
+      "repositoryId": "flask",
+      "proposalDigest": {"algorithm": "sha256", "value": "0b43a82384c6194b00c465cb8984fba00c9a899484dcae73ca88efefbebe5643"},
+      "verdict": "supported",
+      "finding": "The one selected root package and containment relation match the static inventory."
+    },
+    {
+      "repositoryId": "gin",
+      "proposalDigest": {"algorithm": "sha256", "value": "622b67063fcf4764641c27486911138c40a181794fe5a8317300fd491669dffe"},
+      "verdict": "supported",
+      "finding": "Selected members are grounded in the static workspace inventory without diagnostics."
+    },
+    {
+      "repositoryId": "fastapi",
+      "proposalDigest": {"algorithm": "sha256", "value": "47d8d325bc4c9891feb032c32aa8a7d71a3479e7031d52cdccf1f0ec57c1fb46"},
+      "verdict": "supported",
+      "finding": "The proposal selects a repository-specific package supported by allowlisted evidence."
+    },
+    {
+      "repositoryId": "fastmcp",
+      "proposalDigest": {"algorithm": "sha256", "value": "c86a3a0e88400cbfb3813ddc822e1922161ea26f9373db328e5563049d61cbd1"},
+      "verdict": "supported",
+      "finding": "Selected package membership and relation are consistent with the deterministic inventory."
+    },
+    {
+      "repositoryId": "transmission",
+      "proposalDigest": {"algorithm": "sha256", "value": "96ef6279d0140477f18da1576fe72cc8d855d56ae691d1bfd073b77251083334"},
+      "verdict": "supported",
+      "finding": "The proposal has a passing validation guard and no unsupported-evidence diagnostic."
+    },
+    {
+      "repositoryId": "serena",
+      "proposalDigest": {"algorithm": "sha256", "value": "dff27993517cdcaf2fe8d5e01150d438c934252bc3bad44d162453e91461d4fd"},
+      "verdict": "supported",
+      "finding": "Selected member output is specific to the source inventory and requires no promotion."
+    },
+    {
+      "repositoryId": "altstore",
+      "proposalDigest": {"algorithm": "sha256", "value": "caa86bbf8d75f30ebe114e5dd627235277cfc6622b1d6a5db22179875ecacf7a"},
+      "verdict": "supported",
+      "finding": "The proposal is schema-valid, inventory-grounded, and remains proposal-only."
+    },
+    {
+      "repositoryId": "ontology",
+      "proposalDigest": {"algorithm": "sha256", "value": "0abee561cf299780f7a2730032641595fe268aa30477582388f9647b9a08a079"},
+      "verdict": "supported",
+      "finding": "Package selection is supported by static evidence and contains no validation diagnostics."
+    },
+    {
+      "repositoryId": "specgraph",
+      "proposalDigest": {"algorithm": "sha256", "value": "a0389de2a77b6f844ef06e202402077ac3759622bac2337b6a866c4452c1480b"},
+      "verdict": "supported",
+      "finding": "The selected package is repository-specific and its evidence path is allowlisted."
+    },
+    {
+      "repositoryId": "cupertino",
+      "proposalDigest": {"algorithm": "sha256", "value": "f81caf4c46402dfe4bfdc572f9d2e2392d22a6b2b66dbb3e09d4536ac2d2dd3b"},
+      "verdict": "supported",
+      "finding": "The proposal passed its validation guard with a source-specific selected member."
+    }
+  ]
+}

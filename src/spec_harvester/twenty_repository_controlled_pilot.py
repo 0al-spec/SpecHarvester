@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
@@ -18,6 +19,7 @@ TWENTY_REPOSITORY_CONTROLLED_PILOT_REPORT_FILENAME = (
     "twenty-repository-controlled-pilot-report.json"
 )
 PILOT_REPOSITORY_COUNT = 20
+MINIMUM_HUMAN_REVIEW_REPOSITORIES = 10
 
 
 @dataclass(frozen=True)
@@ -153,6 +155,56 @@ def run_twenty_repository_controlled_pilot(
     return TwentyRepositoryControlledPilot(options).run()
 
 
+def finalize_twenty_repository_controlled_pilot(
+    report_path: Path,
+    human_review_path: Path,
+    output_path: Path,
+) -> dict[str, Any]:
+    """Attach a bounded author review to an existing P52-T4 live report."""
+    report = read_json_object(report_path, "P52-T4 report")
+    review = read_json_object(human_review_path, "P52-T4 human review")
+    if report.get("task") != "P52-T4":
+        raise ValueError("P52-T4 report has an unexpected task")
+    if report.get("status") != "review_pending":
+        raise ValueError("P52-T4 report is not awaiting human review")
+
+    review_records = calibration.list_value(review.get("reviews"))
+    codex_repositories = calibration.list_value(
+        calibration.mapping_value(report.get("codexSpark")).get("repositories")
+    )
+    codex_records = {
+        calibration.string_value(record.get("id")): record
+        for record in codex_repositories
+        if isinstance(record, dict)
+    }
+    finalized_reviews = [
+        finalize_review_record(record, codex_records)
+        for record in review_records
+        if isinstance(record, dict)
+    ]
+    reviewed_ids = {record["repositoryId"] for record in finalized_reviews}
+    if len(finalized_reviews) != len(reviewed_ids):
+        raise ValueError("P52-T4 human review has duplicate repository ids")
+    if len(finalized_reviews) < MINIMUM_HUMAN_REVIEW_REPOSITORIES:
+        raise ValueError("P52-T4 human review requires at least ten repositories")
+
+    supported_count = sum(record["verdict"] == "supported" for record in finalized_reviews)
+    unsupported_count = len(finalized_reviews) - supported_count
+    report["humanReview"] = {
+        "status": "completed",
+        "reviewedRepositoryCount": len(finalized_reviews),
+        "reviewedCandidateCount": len(finalized_reviews),
+        "supportedCandidateCount": supported_count,
+        "unsupportedCandidateCount": unsupported_count,
+        "reviews": finalized_reviews,
+        "authority": "author_review_evidence_only_not_registry_acceptance",
+    }
+    report["decision"] = finalized_pilot_decision(report, unsupported_count)
+    report["status"] = report["decision"]["status"]
+    calibration.write_json(output_path, report)
+    return report
+
+
 def controlled_pilot_report(
     *,
     options: TwentyRepositoryControlledPilotOptions,
@@ -251,3 +303,73 @@ def pilot_decision(
         "selectedDecision": "require_human_review_sample",
         "p52T5Unlocked": False,
     }
+
+
+def finalized_pilot_decision(report: dict[str, Any], unsupported_count: int) -> dict[str, Any]:
+    if unsupported_count:
+        return {
+            "status": "failed",
+            "selectedDecision": "stop_human_review_unsupported_claim",
+            "p52T5Unlocked": False,
+        }
+    metrics = calibration.mapping_value(report.get("qualityMetrics"))
+    thresholds_met = all(
+        calibration.mapping_value(value).get("passed") is True for value in metrics.values()
+    )
+    controls = [
+        calibration.mapping_value(report.get("staticOnly")),
+        calibration.mapping_value(report.get("lmStudio")),
+        calibration.mapping_value(report.get("codexSpark")),
+    ]
+    controls_completed = all(
+        control.get("status") in {"passed", "completed"} for control in controls
+    )
+    if not thresholds_met or not controls_completed:
+        return {
+            "status": "failed",
+            "selectedDecision": "stop_quality_threshold_failure",
+            "p52T5Unlocked": False,
+        }
+    return {
+        "status": "passed",
+        "selectedDecision": "unlock_p52_t5",
+        "p52T5Unlocked": True,
+    }
+
+
+def finalize_review_record(
+    review: dict[str, Any],
+    codex_records: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    repository_id = calibration.string_value(review.get("repositoryId"))
+    verdict = calibration.string_value(review.get("verdict"))
+    finding = calibration.string_value(review.get("finding"))
+    record = codex_records.get(repository_id)
+    if record is None:
+        raise ValueError(f"P52-T4 human review has unknown repository {repository_id!r}")
+    if verdict not in {"supported", "unsupported"}:
+        raise ValueError(f"P52-T4 human review has invalid verdict for {repository_id!r}")
+    if not finding:
+        raise ValueError(f"P52-T4 human review requires a finding for {repository_id!r}")
+    expected_digest = calibration.mapping_value(
+        calibration.mapping_value(record.get("proposal")).get("digest")
+    )
+    supplied_digest = calibration.mapping_value(review.get("proposalDigest"))
+    if supplied_digest != expected_digest:
+        raise ValueError(f"P52-T4 human review digest mismatch for {repository_id!r}")
+    return {
+        "repositoryId": repository_id,
+        "proposalDigest": supplied_digest,
+        "verdict": verdict,
+        "finding": finding,
+    }
+
+
+def read_json_object(path: Path, description: str) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"{description} is unavailable") from exc
+    if not isinstance(value, dict):
+        raise ValueError(f"{description} must be an object")
+    return value
