@@ -206,6 +206,10 @@ from spec_harvester.trusted_local_adapter_synthetic_sandbox_run_verifier import 
     build_synthetic_trusted_local_adapter_sandbox_run_verifier_report,
     write_synthetic_trusted_local_adapter_sandbox_run_verifier_report,
 )
+from spec_harvester.twenty_repository_controlled_pilot import (
+    TwentyRepositoryControlledPilotOptions,
+    run_twenty_repository_controlled_pilot,
+)
 from spec_harvester.xyflow_package_set_smoke import (
     XyflowPackageSetSmokeOptions,
     run_xyflow_package_set_smoke,
@@ -544,6 +548,86 @@ def build_parser() -> argparse.ArgumentParser:
         help="Skip the Codex Spark control for bounded diagnostics only.",
     )
     controlled_calibration.set_defaults(func=run_controlled_calibration_cli)
+
+    controlled_pilot = subcommands.add_parser(
+        "twenty-repository-controlled-pilot",
+        help=(
+            "Run the P52 twenty-repository static, LM Studio, and Codex Spark proposal-only pilot."
+        ),
+    )
+    controlled_pilot.add_argument(
+        "inputs",
+        type=Path,
+        help="Directory containing the exactly-twenty P52 pinned source manifest.",
+    )
+    controlled_pilot.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output root for static evidence and sanitized proposal-only reports.",
+    )
+    controlled_pilot.add_argument(
+        "--lm-studio-base-url",
+        default=DEFAULT_LM_STUDIO_BASE_URL,
+        help=f"Local OpenAI-compatible provider base URL. Default: {DEFAULT_LM_STUDIO_BASE_URL}.",
+    )
+    controlled_pilot.add_argument("--lm-studio-model", help="Local LM Studio model id.")
+    controlled_pilot.add_argument(
+        "--codex-command",
+        default=DEFAULT_CODEX_COMMAND,
+        help=f"Codex executable. Default: {DEFAULT_CODEX_COMMAND}.",
+    )
+    controlled_pilot.add_argument(
+        "--codex-model",
+        default=DEFAULT_CODEX_MODEL,
+        help=f"Codex model id. Default: {DEFAULT_CODEX_MODEL}.",
+    )
+    controlled_pilot.add_argument(
+        "--codex-schema",
+        type=Path,
+        default=DEFAULT_CODEX_SCHEMA_PATH,
+        help="JSON Schema required for the ephemeral Codex final message.",
+    )
+    controlled_pilot.add_argument(
+        "--codex-timeout-seconds",
+        type=float,
+        default=DEFAULT_CODEX_TIMEOUT_SECONDS,
+        help=(
+            "Maximum duration for each Codex invocation in seconds. "
+            f"Default: {DEFAULT_CODEX_TIMEOUT_SECONDS:.0f}."
+        ),
+    )
+    controlled_pilot.add_argument(
+        "--json-repair-max-attempts",
+        type=int,
+        default=DEFAULT_JSON_REPAIR_MAX_ATTEMPTS,
+        help="Maximum malformed JSON repair prompts per LM Studio provider call.",
+    )
+    controlled_pilot.add_argument(
+        "--max-concurrency",
+        type=int,
+        default=1,
+        help="Bounded pilot concurrency. Only deterministic value 1 is currently supported.",
+    )
+    controlled_pilot.add_argument(
+        "--provider-logs-disabled",
+        action="store_true",
+        help=(
+            "Record the operator confirmation that LM Studio sensitive provider "
+            "logging is disabled."
+        ),
+    )
+    controlled_pilot.add_argument(
+        "--skip-lm-studio",
+        action="store_true",
+        help="Skip the LM Studio control for bounded diagnostics only.",
+    )
+    controlled_pilot.add_argument(
+        "--skip-codex",
+        action="store_true",
+        help="Skip the Codex Spark control for bounded diagnostics only.",
+    )
+    controlled_pilot.set_defaults(func=run_twenty_repository_controlled_pilot_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -1883,6 +1967,32 @@ def run_controlled_calibration_cli(args: argparse.Namespace) -> int:
                 codex_schema=args.codex_schema,
                 codex_timeout_seconds=args.codex_timeout_seconds,
                 json_repair_max_attempts=args.json_repair_max_attempts,
+                run_lm_studio=not args.skip_lm_studio,
+                run_codex=not args.skip_codex,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_twenty_repository_controlled_pilot_cli(args: argparse.Namespace) -> int:
+    try:
+        result = run_twenty_repository_controlled_pilot(
+            TwentyRepositoryControlledPilotOptions(
+                inputs=args.inputs,
+                out=args.out,
+                lm_studio_base_url=args.lm_studio_base_url,
+                lm_studio_model=args.lm_studio_model,
+                codex_command=args.codex_command,
+                codex_model=args.codex_model,
+                codex_schema=args.codex_schema,
+                codex_timeout_seconds=args.codex_timeout_seconds,
+                json_repair_max_attempts=args.json_repair_max_attempts,
+                max_concurrency=args.max_concurrency,
+                provider_logs_disabled=args.provider_logs_disabled,
                 run_lm_studio=not args.skip_lm_studio,
                 run_codex=not args.skip_codex,
             )
