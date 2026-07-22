@@ -56,3 +56,7 @@ any larger-corpus static or model gate can run.
 - Validate durable JSON artifacts with `python -m json.tool`.
 - Run Flow gates from `.flow/params.yaml`, including full pytest with coverage
   >=90%, Ruff, Swift package/DocC build, and `git diff --check`.
+
+---
+**Archived:** 2026-07-22
+**Verdict:** PASS

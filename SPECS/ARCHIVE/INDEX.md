@@ -233,6 +233,8 @@
 | P52-T1 | [P52-T1_Controlled_50-100_Repository_Corpus_Plan/](P52-T1_Controlled_50-100_Repository_Corpus_Plan/) | 2026-07-22 | PASS |
 | P52-T2 | [P52-T2_Codex_Spark_External-Model_Adapter_Contract/](P52-T2_Codex_Spark_External-Model_Adapter_Contract/) | 2026-07-22 | PASS |
 | P52-T3 | [P52-T3_Five-Repository_Controlled_Calibration/](P52-T3_Five-Repository_Controlled_Calibration/) | 2026-07-22 | PASS |
+| P52-T4 | [P52-T4_Twenty-Repository_Controlled_Pilot/](P52-T4_Twenty-Repository_Controlled_Pilot/) | 2026-07-22 | PASS |
+| P52-T5 | [P52-T5_Final_50-100_Repository_Source_Manifest_and_Checkout_Readiness/](P52-T5_Final_50-100_Repository_Source_Manifest_and_Checkout_Readiness/) | 2026-07-22 | PASS |
 
 ## Historical Artifacts
 
@@ -869,3 +871,5 @@
 | 2026-07-22 | P52-T2 | Archived REVIEW_p52_t2_codex_spark_external_model_adapter_contract report |
 | 2026-07-22 | P52-T3 | Archived Five-Repository Controlled Calibration (PASS) |
 | 2026-07-22 | P52-T3 | Archived REVIEW_p52_t3_five_repository_controlled_calibration report |
+| 2026-07-22 | P52-T4 | Archived Twenty-Repository Controlled Pilot (PASS) |
+| 2026-07-22 | P52-T5 | Archived Final 50-100 Repository Source Manifest and Checkout Readiness (PASS) |

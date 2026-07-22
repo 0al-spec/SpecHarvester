@@ -38,6 +38,27 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P52-T6 50-100 Repository Static-Only Gate" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Planned" in next_text
+        assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
+            next_text
+        )
+        assert "`P52-T5` Final 50-100 Repository Source Manifest" in next_text
+        assert "approved 50-repository P52-T5 corpus" in normalized
+        assert "static completion rate" in normalized
+        assert "Phase 52 minimum of 95%" in normalized
+        assert "before P52-T7 can invoke Codex Spark" in normalized
+        assert "Do not create, restore, clone, or fetch repositories" in next_text
+        assert "Do not install dependencies or invoke package managers" in next_text
+        assert "Do not execute harvested code or adapters" in next_text
+        assert "Do not invoke LM Studio, Codex Spark, or any other model" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        return
+
     if "# Next Task: P52-T5 Final 50-100 Repository Source Manifest" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
