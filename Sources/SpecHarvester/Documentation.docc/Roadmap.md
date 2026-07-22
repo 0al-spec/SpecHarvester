@@ -287,6 +287,12 @@ passes all 50 clean revision-matched local checkouts across 14 ecosystem
 categories and six repository shapes. The result unlocks P52-T6 without
 running collection, models, adapters, package managers, or harvested code.
 
+P52-T6 is recorded in <doc:FinalCorpusStaticOnlyGate>. All 50 approved sources
+produced deterministic static outcomes; 48 passed strict collection validation,
+meeting the 95% threshold at 96%. The two explicit dual-license filename
+allowlist failures are retained, AI and adapters remained disabled, and P52-T7
+is unlocked without registry authority.
+
 ### Selected Candidate SpecPM Intake Handoff
 
 The completed intake-handoff focus turns selected candidate dry-run evidence

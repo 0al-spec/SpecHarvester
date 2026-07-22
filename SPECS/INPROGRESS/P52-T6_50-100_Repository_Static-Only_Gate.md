@@ -40,8 +40,10 @@ minimum before any Codex Spark execution is allowed.
   adapter, build, test, or harvested-code execution occurs.
 - The P52-T5 readiness artifact is digest-bound and its source ids exactly match
   the manifest and the P52-T6 static results.
-- P52-T7 is unlocked only when readiness, source coverage, autonomous batch
-  status, and the 95% static completion threshold all pass.
+- P52-T7 is unlocked only when readiness, exact source coverage, the static-only
+  execution boundary, and the 95% static completion threshold all pass. The
+  underlying batch status may be `failed` when the explicitly recorded failure
+  count remains within the threshold; no failure may be omitted.
 - Generated package output remains `preview_only` producer evidence. No package
   or relation is accepted, registry metadata is published, baseline is seeded,
   or registry truth is changed.

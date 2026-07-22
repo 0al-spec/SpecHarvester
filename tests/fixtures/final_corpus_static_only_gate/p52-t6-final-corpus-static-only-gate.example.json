@@ -1,0 +1,593 @@
+{
+  "apiVersion": "spec-harvester.final-corpus-static-only-gate/v0",
+  "authority": "producer_static_gate_evidence_only",
+  "decision": {
+    "p52T7Unlocked": true,
+    "selectedDecision": "unlock_p52_t7"
+  },
+  "failedRepositoryIds": [
+    "actix-web",
+    "uv"
+  ],
+  "kind": "SpecHarvesterFinalCorpusStaticOnlyGateReport",
+  "nonAuthority": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "changesRegistryTruth": false,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false,
+    "seedsBaselines": false
+  },
+  "phase": "P52",
+  "readiness": {
+    "digest": {
+      "algorithm": "sha256",
+      "value": "49b31573ea40eeb1396b0dea67164264d4e7effa1fbc5fc0996b5d0210d5c9af"
+    },
+    "path": "tests/fixtures/final_corpus_checkout_readiness/p52-t5-final-corpus-checkout-readiness.example.json",
+    "status": "passed"
+  },
+  "repositories": [
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "flask",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "gin",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "fastapi",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "fastmcp",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "transmission",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "serena",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "altstore",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "ontology",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "specgraph",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "cupertino",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "agent-passport",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "calcu",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "mcp-server-manager",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "mcpm-sh",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "hopper-mcp-wrapper",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "specpm",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "hypercode",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "hyperprompt",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "agent-ready-kit",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "specnode",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "express",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "pydantic",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "httpx",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "typer",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "fastify",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 278,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "vite",
+      "preflightStatus": "passed",
+      "relationCount": 277,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 3,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "svelte",
+      "preflightStatus": "passed",
+      "relationCount": 2,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 10,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [
+        "files_skipped"
+      ],
+      "id": "nest",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 42,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [
+        "files_skipped"
+      ],
+      "id": "react",
+      "preflightStatus": "passed",
+      "relationCount": 41,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 18,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "vue-core",
+      "preflightStatus": "passed",
+      "relationCount": 17,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "github-cli",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "pebble",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "error",
+      "diagnosticCodes": [
+        "missing_license_file"
+      ],
+      "id": "uv",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "failed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [
+        "files_skipped"
+      ],
+      "id": "axum",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "error",
+      "diagnosticCodes": [
+        "files_skipped",
+        "missing_license_file"
+      ],
+      "id": "actix-web",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "failed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "feature-passport",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "platform",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "toys-sandbox",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 4,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "xyflow",
+      "preflightStatus": "passed",
+      "relationCount": 3,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "tokenkeeper",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "flow",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "zed-objc",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "navigation-split-view",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "nested-swiftui-a11y",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "paraconsistent-logic",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "specification-kit",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [
+        "no_package_manifests"
+      ],
+      "id": "swiftui-blur",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "xcode-mcp-wrapper",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "specification-core-rs",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    },
+    {
+      "batchStatus": "passed",
+      "candidateCount": 1,
+      "collectionValidationStatus": "passed",
+      "diagnosticCodes": [],
+      "id": "docc2context-service",
+      "preflightStatus": "passed",
+      "relationCount": 0,
+      "status": "passed"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceCoverage": {
+    "manifestCount": 50,
+    "missingIds": [],
+    "passed": true,
+    "resultCount": 50,
+    "unexpectedIds": [],
+    "uniqueResultCount": 50
+  },
+  "staticBatch": {
+    "authority": "producer_preview_evidence_only",
+    "report": {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "e660723a9006088cbce979100df9a63ec3a9d6aa4f6106f6d0e6c772f6ad5cb3"
+      },
+      "path": "static-only/autonomous-candidate-batch-report.json"
+    },
+    "status": "failed",
+    "validationReport": {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "29ee43d6eb7d98982fda3f52b7fa65ddf8d56491437f4b188532c7a742b16f73"
+      },
+      "path": "static-only/reports/batch-validation-report.json"
+    }
+  },
+  "staticCompletionRate": {
+    "denominator": 50,
+    "minimum": 0.95,
+    "numerator": 48,
+    "passed": true,
+    "value": 0.96
+  },
+  "staticExecutionBoundary": {
+    "adapterExecution": "not_run",
+    "aiArtifactPaths": [],
+    "aiMode": "disabled",
+    "executesHarvestedCode": false,
+    "invokesPackageManagers": false,
+    "model": null,
+    "passed": true,
+    "provider": null,
+    "repositoryAIRecordsSkipped": true,
+    "trustedAdapterExecution": "not_run"
+  },
+  "status": "passed",
+  "task": "P52-T6"
+}

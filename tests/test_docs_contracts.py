@@ -40,7 +40,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P52-T6 50-100 Repository Static-Only Gate" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Planned" in next_text
+        assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
             next_text
         )
@@ -39468,3 +39468,96 @@ def test_fastapi_parser_profile_rerun_is_documented() -> None:
     assert "FastAPIParserProfileRerun" in capabilities_docc.read_text(encoding="utf-8")
     assert "FASTAPI_PARSER_PROFILE_RERUN.md" in roadmap.read_text(encoding="utf-8")
     assert "FastAPIParserProfileRerun" in roadmap_docc.read_text(encoding="utf-8")
+
+
+def test_final_corpus_static_only_gate_is_documented() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "final_corpus_static_only_gate"
+        / "p52-t6-final-corpus-static-only-gate.example.json"
+    )
+    readiness_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "final_corpus_checkout_readiness"
+        / "p52-t5-final-corpus-checkout-readiness.example.json"
+    )
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.final-corpus-static-only-gate/v0"
+    assert payload["kind"] == "SpecHarvesterFinalCorpusStaticOnlyGateReport"
+    assert payload["schemaVersion"] == 1
+    assert payload["task"] == "P52-T6"
+    assert payload["status"] == "passed"
+    assert payload["readiness"]["digest"] == {
+        "algorithm": "sha256",
+        "value": hashlib.sha256(readiness_path.read_bytes()).hexdigest(),
+    }
+    assert payload["sourceCoverage"] == {
+        "manifestCount": 50,
+        "resultCount": 50,
+        "uniqueResultCount": 50,
+        "missingIds": [],
+        "unexpectedIds": [],
+        "passed": True,
+    }
+    assert payload["staticCompletionRate"] == {
+        "value": 0.96,
+        "numerator": 48,
+        "denominator": 50,
+        "minimum": 0.95,
+        "passed": True,
+    }
+    assert payload["failedRepositoryIds"] == ["actix-web", "uv"]
+    assert payload["staticExecutionBoundary"] == {
+        "passed": True,
+        "aiMode": "disabled",
+        "provider": None,
+        "model": None,
+        "repositoryAIRecordsSkipped": True,
+        "aiArtifactPaths": [],
+        "adapterExecution": "not_run",
+        "trustedAdapterExecution": "not_run",
+        "invokesPackageManagers": False,
+        "executesHarvestedCode": False,
+    }
+    assert payload["decision"] == {
+        "p52T7Unlocked": True,
+        "selectedDecision": "unlock_p52_t7",
+    }
+    assert all(value is False for value in payload["nonAuthority"].values())
+
+    github_doc = ROOT / "docs" / "FINAL_CORPUS_STATIC_ONLY_GATE.md"
+    docc_doc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "FinalCorpusStaticOnlyGate.md"
+    )
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        assert "96%" in normalized
+        assert "95%" in normalized
+        assert "uv" in normalized
+        assert "actix-web" in normalized
+        assert "AI" in normalized
+        assert "registry authority" in normalized
+
+    assert "FINAL_CORPUS_STATIC_ONLY_GATE.md" in (ROOT / "docs" / "README.md").read_text(
+        encoding="utf-8"
+    )
+    assert "FINAL_CORPUS_STATIC_ONLY_GATE.md" in (ROOT / "docs" / "CAPABILITIES.md").read_text(
+        encoding="utf-8"
+    )
+    assert "FINAL_CORPUS_STATIC_ONLY_GATE.md" in (ROOT / "docs" / "ROADMAP.md").read_text(
+        encoding="utf-8"
+    )
+    assert "FinalCorpusStaticOnlyGate" in (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    ).read_text(encoding="utf-8")
+    assert "FinalCorpusStaticOnlyGate" in (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    ).read_text(encoding="utf-8")
+    assert "FinalCorpusStaticOnlyGate" in (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    ).read_text(encoding="utf-8")
