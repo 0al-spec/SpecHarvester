@@ -111,3 +111,7 @@ operator provides pinned local checkouts.
   - `swift package dump-package >/dev/null`
   - `swift build --target SpecHarvesterDocs`
   - `git diff --check`
+
+---
+**Archived:** 2026-07-22
+**Verdict:** PASS

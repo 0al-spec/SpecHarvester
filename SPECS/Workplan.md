@@ -2468,7 +2468,7 @@ Acceptance:
 
 ## Phase 52. Controlled Popular Repository Corpus with Codex Spark
 
-- [ ] `P52-T1` Plan the controlled 50-100 repository corpus, defining the
+- [x] `P52-T1` Plan the controlled 50-100 repository corpus, defining the
   phased rollout, Codex Spark agent boundary, calibration gates, source-policy
   constraints, quality metrics, and non-authority boundaries before any new
   repository checkout or batch execution is attempted.
