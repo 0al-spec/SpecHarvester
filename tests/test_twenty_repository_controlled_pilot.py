@@ -13,6 +13,7 @@ from spec_harvester.twenty_repository_controlled_pilot import (
     TwentyRepositoryControlledPilot,
     TwentyRepositoryControlledPilotOptions,
     finalize_twenty_repository_controlled_pilot,
+    finalized_pilot_decision,
 )
 
 
@@ -149,7 +150,13 @@ def test_finalize_pilot_unlocks_p52_t5_after_digest_bound_human_review(tmp_path:
                 "staticOnly": {"status": "passed"},
                 "lmStudio": {"status": "completed"},
                 "codexSpark": {"status": "completed", "repositories": records},
-                "qualityMetrics": {"staticCompletionRate": {"passed": True}},
+                "qualityMetrics": {
+                    "staticCompletionRate": {"passed": True},
+                    "codexCompletionRate": {"passed": True},
+                    "schemaValidRate": {"passed": True},
+                    "repositorySpecificRate": {"passed": True},
+                    "unsupportedClaimRate": {"passed": True},
+                },
             }
         ),
         encoding="utf-8",
@@ -166,6 +173,21 @@ def test_finalize_pilot_unlocks_p52_t5_after_digest_bound_human_review(tmp_path:
     assert finalized["decision"]["p52T5Unlocked"] is True
     assert finalized["humanReview"]["reviewedCandidateCount"] == 10
     assert json.loads(output_path.read_text(encoding="utf-8")) == finalized
+
+
+def test_finalize_pilot_rejects_truncated_quality_metrics(tmp_path: Path) -> None:
+    report = {
+        "qualityMetrics": {"staticCompletionRate": {"passed": True}},
+        "staticOnly": {"status": "passed"},
+        "lmStudio": {"status": "completed"},
+        "codexSpark": {"status": "completed"},
+    }
+
+    assert finalized_pilot_decision(report, 0) == {
+        "status": "failed",
+        "selectedDecision": "stop_quality_threshold_failure",
+        "p52T5Unlocked": False,
+    }
 
 
 def write_pilot_inputs(

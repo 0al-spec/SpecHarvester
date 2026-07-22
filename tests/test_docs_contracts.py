@@ -38,6 +38,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P52-T5 Final 50-100 Repository Source Manifest" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Planned" in next_text
+        assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
+            next_text
+        )
+        assert "`P52-T4` Twenty-Repository Controlled Pilot" in next_text
+        assert "50-100 repository manifest" in normalized
+        assert "pinned clean local checkouts" in normalized
+        assert "provenance, license, size, and stop-policy metadata" in normalized
+        assert "Do not create, restore, clone, or fetch repositories" in next_text
+        assert "Do not install dependencies or invoke package managers" in next_text
+        assert "Do not execute harvested code or adapters" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        return
+
     if "# Next Task: P52-T4 Twenty-Repository Controlled Pilot" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text

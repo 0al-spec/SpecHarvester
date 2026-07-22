@@ -20,6 +20,15 @@ TWENTY_REPOSITORY_CONTROLLED_PILOT_REPORT_FILENAME = (
 )
 PILOT_REPOSITORY_COUNT = 20
 MINIMUM_HUMAN_REVIEW_REPOSITORIES = 10
+REQUIRED_QUALITY_METRICS = frozenset(
+    {
+        "staticCompletionRate",
+        "codexCompletionRate",
+        "schemaValidRate",
+        "repositorySpecificRate",
+        "unsupportedClaimRate",
+    }
+)
 
 
 @dataclass(frozen=True)
@@ -313,7 +322,7 @@ def finalized_pilot_decision(report: dict[str, Any], unsupported_count: int) -> 
             "p52T5Unlocked": False,
         }
     metrics = calibration.mapping_value(report.get("qualityMetrics"))
-    thresholds_met = all(
+    thresholds_met = set(metrics) == REQUIRED_QUALITY_METRICS and all(
         calibration.mapping_value(value).get("passed") is True for value in metrics.values()
     )
     controls = [
