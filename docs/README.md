@@ -375,6 +375,10 @@ Published DocC site:
    P52-T2 contract defining a future schema-validated `codex exec` handoff,
    read-only evidence boundary, bounded receipts, and proposal-only rejection
    policy without a live model call
+98. [`FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md`](FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md):
+   P52-T3 live five-repository calibration showing static-only, LM Studio, and
+   schema-validated Codex Spark proposal-only results, with all Phase 52
+   quality thresholds passed and P52-T4 unlocked
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

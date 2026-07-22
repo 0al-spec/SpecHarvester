@@ -8,6 +8,7 @@ from typing import Any
 
 DEFAULT_JSON_REPAIR_MAX_ATTEMPTS = 1
 MAX_REPAIR_INPUT_CHARS = 24_000
+LM_STUDIO_JSON_SCHEMA_NAME = "spec_harvester_json_object"
 
 
 @dataclass(frozen=True)
@@ -33,6 +34,23 @@ class ModelJsonFailure:
 
 class ModelJsonParseError(ValueError):
     """Raised when model output cannot be parsed as a JSON object."""
+
+
+def openai_compatible_json_response_format(provider_name: str) -> dict[str, Any] | None:
+    """Return LM Studio's request-side JSON-object constraint when applicable."""
+    normalized_name = re.sub(r"[\s-]+", "_", provider_name.strip().lower())
+    if normalized_name != "lm_studio":
+        return None
+    return {
+        "type": "json_schema",
+        "json_schema": {
+            "name": LM_STUDIO_JSON_SCHEMA_NAME,
+            "schema": {
+                "type": "object",
+                "additionalProperties": True,
+            },
+        },
+    }
 
 
 def complete_json_with_repair(

@@ -17,6 +17,7 @@ from spec_harvester.model_json_repair import (
     ModelJsonFailure,
     ModelJsonParseError,
     complete_json_with_repair,
+    openai_compatible_json_response_format,
 )
 from spec_harvester.model_json_repair import (
     parse_model_json_object as parse_model_json_object_shared,
@@ -159,6 +160,7 @@ class OpenAICompatibleDraftProvider:
         self.max_output_tokens = max_output_tokens
         self.temperature = temperature
         self.json_repair_max_attempts = json_repair_max_attempts
+        self.response_format = openai_compatible_json_response_format(provider_name)
 
     def complete_json(self, request: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
         started = time.monotonic()
@@ -193,6 +195,11 @@ class OpenAICompatibleDraftProvider:
             "rawResponsePersisted": False,
             "chainOfThoughtPersisted": False,
         }
+        if self.response_format is not None:
+            receipt["responseFormat"] = {
+                "type": self.response_format["type"],
+                "schemaName": self.response_format["json_schema"]["name"],
+            }
         if isinstance(result, ModelJsonFailure):
             return {}, receipt
         receipt["responseDigest"] = sha256_text(raw_content)
@@ -205,6 +212,8 @@ class OpenAICompatibleDraftProvider:
             "max_tokens": self.max_output_tokens,
             "messages": messages,
         }
+        if self.response_format is not None:
+            payload["response_format"] = self.response_format
         http_request = urllib.request.Request(
             f"{self.base_url}/v1/chat/completions",
             data=json.dumps(payload).encode("utf-8"),

@@ -32,6 +32,7 @@ codex exec \
   --sandbox read-only \
   --ephemeral \
   --ignore-user-config \
+  --skip-git-repo-check \
   --cd <generated-read-only-evidence-stage> \
   --output-schema <package-set-ai-draft-final-message.schema.json> \
   --output-last-message <ephemeral-final-message.json> \
@@ -45,6 +46,9 @@ It must not expose an original checkout, writable agent workspace,
 adapter code, or a network/provider endpoint. The profile also forbids
 `--dangerously-bypass-approvals-and-sandbox`, `--full-auto`, and `--json`;
 therefore event-stream transcripts are not retained.
+`--skip-git-repo-check` is required only because the generated evidence stage
+is deliberately not a source checkout or Git worktree; it does not relax the
+read-only sandbox.
 
 ## Structured Handoff
 

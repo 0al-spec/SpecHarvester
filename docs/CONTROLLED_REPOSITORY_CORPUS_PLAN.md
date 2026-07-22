@@ -54,6 +54,17 @@ The first two live stages are deliberately small. A five-repository calibration
 proves the integration shape; a twenty-repository pilot reveals concurrency,
 schema, and quality failure modes before the larger corpus is prepared.
 
+## P52-T3 Result
+
+P52-T3 is recorded in
+[`FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md`](FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md).
+Its static-only, LM Studio, and Codex Spark proposal-only controls passed over
+Flask, Gin, xyflow, FastAPI, and FastMCP. The five-repository calibration met
+all P52 quality thresholds and unlocked P52-T4. Its durable privacy guarantee
+is limited to SpecHarvester artifacts: an operator must separately disable
+provider-side request/response logging before treating a future live run as
+provider-log-clean.
+
 ## Codex Spark Boundary
 
 `gpt-5.3-codex-spark` is planned as an external proposal-only worker invoked

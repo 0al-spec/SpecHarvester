@@ -31,7 +31,7 @@
     "handoffCommand": "package-set-ai-draft-proposal <generated-workspace-inventory.json> --model-output <validated-final-message.json>",
     "finalMessageSchema": {
       "path": "tests/fixtures/codex_spark_external_model_adapter_contract/package-set-ai-draft-final-message.schema.json",
-      "digest": "sha256:d40b941f03b95c63c0dd241f78631706b96daee9885bc571c7d628c134493128",
+      "digest": "sha256:f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60",
       "envelopeProperty": "proposal",
       "validatesBeforeHandoff": true,
       "allowsJsonRepair": false
@@ -44,6 +44,7 @@
       "--sandbox read-only",
       "--ephemeral",
       "--ignore-user-config",
+      "--skip-git-repo-check",
       "--cd <generated-read-only-evidence-stage>",
       "--output-schema <package-set-ai-draft-final-message.schema.json>",
       "--output-last-message <ephemeral-final-message.json>"

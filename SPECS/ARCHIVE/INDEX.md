@@ -232,6 +232,7 @@
 | P12-T6 | [P12-T6_Popular_Repository_Smoke_Scenario_Promotion/](P12-T6_Popular_Repository_Smoke_Scenario_Promotion/) | 2026-05-21 | PASS |
 | P52-T1 | [P52-T1_Controlled_50-100_Repository_Corpus_Plan/](P52-T1_Controlled_50-100_Repository_Corpus_Plan/) | 2026-07-22 | PASS |
 | P52-T2 | [P52-T2_Codex_Spark_External-Model_Adapter_Contract/](P52-T2_Codex_Spark_External-Model_Adapter_Contract/) | 2026-07-22 | PASS |
+| P52-T3 | [P52-T3_Five-Repository_Controlled_Calibration/](P52-T3_Five-Repository_Controlled_Calibration/) | 2026-07-22 | PASS |
 
 ## Historical Artifacts
 
@@ -866,3 +867,5 @@
 | 2026-07-22 | P52-T1 | Archived REVIEW_p52_t1_controlled_repository_corpus_plan report |
 | 2026-07-22 | P52-T2 | Archived Codex Spark External-Model Adapter Contract (PASS) |
 | 2026-07-22 | P52-T2 | Archived REVIEW_p52_t2_codex_spark_external_model_adapter_contract report |
+| 2026-07-22 | P52-T3 | Archived Five-Repository Controlled Calibration (PASS) |
+| 2026-07-22 | P52-T3 | Archived REVIEW_p52_t3_five_repository_controlled_calibration report |

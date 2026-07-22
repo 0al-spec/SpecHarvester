@@ -38,6 +38,18 @@ the proposal package. For example, `harvest.json` in the `xyflow.react`
 proposal is normalized to `xyflow.react/harvest.json` when that package-local
 artifact was supplied in the compact request.
 
+## LM Studio Structured Output
+
+For the default `lm_studio` provider name, each live request includes
+`response_format.type: json_schema` with the minimal
+`spec_harvester_json_object` JSON-object schema. This is request-side API
+metadata, not a schema to paste into LM Studio's Chat Template field.
+
+The constraint guarantees JSON-object syntax only. Existing evidence-path and
+semantic validation remains authoritative after the response is received, and
+`providerReceipt.responseFormat` records the mode. Other OpenAI-compatible
+provider names keep their existing payload shape.
+
 ## Bounded JSON Repair
 
 Live local provider output is parsed separately for each package member. When a

@@ -1,0 +1,628 @@
+{
+  "apiVersion": "spec-harvester.controlled-calibration/v0",
+  "authority": "producer_calibration_evidence_only",
+  "codexSpark": {
+    "authority": "proposal_only_not_registry_acceptance",
+    "privacy": {
+      "chainOfThoughtPersisted": false,
+      "externalProviderLogging": "operator_managed_not_verified",
+      "rawModelResponsesPersisted": false,
+      "rawPromptsPersisted": false,
+      "scope": "spec_harvester_durable_artifacts",
+      "secretsIncluded": false
+    },
+    "provider": {
+      "codexCliVersion": "codex-cli 0.145.0",
+      "ephemeral": true,
+      "execution": "operator_opt_in_external",
+      "ignoreUserConfig": true,
+      "kind": "codex_exec_external_model_output",
+      "model": "gpt-5.3-codex-spark",
+      "sandbox": "read-only",
+      "skipGitRepoCheck": true
+    },
+    "repositories": [
+      {
+        "diagnosticCodes": [],
+        "id": "flask",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "87b78ca13fb4a5f86cd1daf7c2200bbb6ec372839b38fe1149fa2f446b833ad5"
+          },
+          "path": "codex-spark/flask/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 18895,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "40baf087634cc335c1924942001143f477e9d5abc0424fdd8a96588e14522bb7"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "16077b639368cda1080fdf1384e4d8136036b2f43f1c34fc492a4c8d88695c3a"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "gin",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "7f3cc656cf6442efb6536cb3b197dfaa6e42ed9c78a968cf2a9f9b00124e784b"
+          },
+          "path": "codex-spark/gin/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 46162,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "daa6bcc70d2e34b8392b6ec52b80b78f5d440ec68718a31222697ac7d74d578b"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "3d1f0aeb143f6a82368dd61f874371713363b86c6ad271222bbb973ea47ea351"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "xyflow",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "49e0e9de4aebb9a678db544a74ea771a721a1060d2d25e6390164ed1869ee0fa"
+          },
+          "path": "codex-spark/xyflow/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 7,
+            "relationCount": 3,
+            "selectedMemberCount": 3,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 24601,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "178699166d19dd44d0d0ef02d649d0a80c52f487017ff7f1b0e486bbaf235a4f"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "4ce3ef6c0d5cbf764544304faaf823cb6c9e5be2116c0f6b5318414b885f24e1"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "fastapi",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "0fc93162da56ded26e453b7582842b498f5f81262fd1453d3881888635ab914b"
+          },
+          "path": "codex-spark/fastapi/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 29369,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "780d963b13ffd7a78c6e97e4471cee19d2cc93a81acad1fdf8f77414c0b3ba94"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "651dedd1bbc6ff850fbd88014f37ba8a8f4c34e992a9cbe776f91e61b17b69cd"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "fastmcp",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "24c25740050f510fed9c7fface0d33614d43320ee0e8da3fc7dc060f33f40db8"
+          },
+          "path": "codex-spark/fastmcp/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 25896,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "4842daa075a420f18d7b102bdf72812d741e2729f1bd4eaf2b3807dd72ab8551"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "c89bb28b5dfe2e370847e2566293af328c6e3de531ef327ae5844066e8153e05"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      }
+    ],
+    "status": "completed"
+  },
+  "decision": {
+    "controlsCompleted": true,
+    "p52T4Unlocked": true,
+    "selectedDecision": "unlock_p52_t4",
+    "thresholdsMet": true
+  },
+  "kind": "SpecHarvesterControlledCalibrationReport",
+  "lmStudio": {
+    "authority": "proposal_only_not_registry_acceptance",
+    "privacy": {
+      "chainOfThoughtPersisted": false,
+      "externalProviderLogging": "operator_managed_not_verified",
+      "rawModelResponsesPersisted": false,
+      "rawPromptsPersisted": false,
+      "scope": "spec_harvester_durable_artifacts",
+      "secretsIncluded": false
+    },
+    "provider": {
+      "baseUrl": "http://127.0.0.1:1234",
+      "kind": "openai_compatible",
+      "model": "openai/gpt-oss-20b",
+      "name": "lm_studio",
+      "responseFormat": "json_schema"
+    },
+    "repositories": [
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "refined_summary_missing",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "137873c7d3e32129de3467b60ddcfa4b8d003ec73854ddf53ec06e2ec1c9230c"
+          },
+          "path": "lm-studio/flask/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "6e2e7be727266bf1e0faeed3d484b81d58184312913c24a2cec747f925aeee9f"
+          },
+          "path": "lm-studio/flask/package-set-ai-enrichment-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 291,
+            "providerPromptTokens": 7942,
+            "providerTotalTokens": 8233,
+            "warningCount": 1
+          }
+        },
+        "id": "flask",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "45706c18a4b8f87f896855882a81836dbd9efefd971dac3c58a6c2b6148aef99"
+          },
+          "path": "lm-studio/gin/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "a7db416480e5e5f2da5ef313c8e5aba8623cbe20b70e6a03e28de44aafbcc2ff"
+          },
+          "path": "lm-studio/gin/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 463,
+            "providerPromptTokens": 15227,
+            "providerTotalTokens": 15690,
+            "warningCount": 0
+          }
+        },
+        "id": "gin",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "4f26d2048cc3927ceac5baddb2467dca05ebfad8b861ad3d59e0f05a7ec926fd"
+          },
+          "path": "lm-studio/xyflow/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 7,
+            "relationCount": 3,
+            "selectedMemberCount": 3,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "7876747129093ce5c569ac3cce63a7643651dd8050ae21bb66fa4f39ef32fcfe"
+          },
+          "path": "lm-studio/xyflow/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 4,
+            "providerCompletionTokens": 1856,
+            "providerPromptTokens": 46897,
+            "providerTotalTokens": 48753,
+            "warningCount": 0
+          }
+        },
+        "id": "xyflow",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [
+          "excluded_package_also_selected",
+          "selected_member_role_unknown"
+        ],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "fc92384af017680da5f62f5d3468069b4047fc555f5273c755adb4d0a6a474a9"
+          },
+          "path": "lm-studio/fastapi/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 2
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "d48f2681a3dbd99845bde7d1f7dac5e969fd9a0e00a3fdca646f4ebb9986ffcc"
+          },
+          "path": "lm-studio/fastapi/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 368,
+            "providerPromptTokens": 16147,
+            "providerTotalTokens": 16515,
+            "warningCount": 0
+          }
+        },
+        "id": "fastapi",
+        "status": "completed"
+      },
+      {
+        "diagnosticCodes": [],
+        "draft": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "a68d1cbd4f6d713d2a27359fc51b093e80f33d75343075d28b953166510ca9ca"
+          },
+          "path": "lm-studio/fastmcp/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "enrichment": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "f78180855ee2cc81690f43524a26a80cd85e0f60f5e5dbcf8fe1bcf83337d604"
+          },
+          "path": "lm-studio/fastmcp/package-set-ai-enrichment-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "proposalCount": 1,
+            "providerCompletionTokens": 382,
+            "providerPromptTokens": 12288,
+            "providerTotalTokens": 12670,
+            "warningCount": 0
+          }
+        },
+        "id": "fastmcp",
+        "status": "completed"
+      }
+    ],
+    "status": "completed"
+  },
+  "nonGoals": [
+    "checkout_creation_or_restore",
+    "repository_clone_or_fetch",
+    "dependency_installation",
+    "package_manager_execution",
+    "harvested_code_execution",
+    "adapter_execution",
+    "package_acceptance",
+    "relation_acceptance",
+    "registry_publication",
+    "baseline_seeding",
+    "preview_only_removal"
+  ],
+  "phase": "P52",
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "externalProviderLogging": "operator_managed_not_verified",
+    "rawModelResponsesPersisted": false,
+    "rawPromptsPersisted": false,
+    "scope": "spec_harvester_durable_artifacts",
+    "secretsIncluded": false
+  },
+  "qualityMetrics": {
+    "codexCompletionRate": {
+      "denominator": 5,
+      "minimum": 0.9,
+      "numerator": 5,
+      "passed": true,
+      "value": 1.0
+    },
+    "repositorySpecificRate": {
+      "denominator": 5,
+      "minimum": 0.8,
+      "numerator": 5,
+      "passed": true,
+      "value": 1.0
+    },
+    "schemaValidRate": {
+      "denominator": 5,
+      "minimum": 0.98,
+      "numerator": 5,
+      "passed": true,
+      "value": 1.0
+    },
+    "staticCompletionRate": {
+      "denominator": 5,
+      "minimum": 0.95,
+      "numerator": 5,
+      "passed": true,
+      "value": 1.0
+    },
+    "unsupportedClaimRate": {
+      "denominator": 5,
+      "maximum": 0.05,
+      "numerator": 0,
+      "passed": true,
+      "value": 0.0
+    }
+  },
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "flask",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "sourceManifest": {
+        "entryIndex": 0,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "gin",
+      "repository": "https://github.com/gin-gonic/gin",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "sourceManifest": {
+        "entryIndex": 1,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "xyflow",
+      "repository": "https://github.com/xyflow/xyflow",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "sourceManifest": {
+        "entryIndex": 2,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "fastapi",
+      "repository": "https://github.com/fastapi/fastapi",
+      "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+      "sourceManifest": {
+        "entryIndex": 3,
+        "path": "repositories.yml"
+      }
+    },
+    {
+      "id": "fastmcp",
+      "repository": "https://github.com/PrefectHQ/fastmcp",
+      "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+      "sourceManifest": {
+        "entryIndex": 4,
+        "path": "repositories.yml"
+      }
+    }
+  ],
+  "staticOnly": {
+    "report": {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "d9e66105d0d9ecefff3193cc9474dc71eeb78abe23327bd2e1faea761811e026"
+      },
+      "path": "static-only/autonomous-candidate-batch-report.json"
+    },
+    "repositories": [
+      {
+        "id": "flask",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "gin",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "xyflow",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "fastapi",
+        "preflightStatus": "passed",
+        "status": "passed"
+      },
+      {
+        "id": "fastmcp",
+        "preflightStatus": "passed",
+        "status": "passed"
+      }
+    ],
+    "status": "passed"
+  },
+  "status": "passed",
+  "task": "P52-T3",
+  "trustBoundary": [
+    "Static, LM Studio, and Codex outputs are proposal-only calibration evidence.",
+    "Codex receives only a temporary compact allowlisted evidence stage.",
+    "Raw prompts, raw model responses, Codex stdout/stderr, and session state are not persisted.",
+    "SpecPM remains the acceptance, relation, and registry authority."
+  ]
+}

@@ -2476,9 +2476,10 @@ Acceptance:
   deterministic evidence inputs, `codex exec` invocation policy, structured
   JSON handoff, schema validation, receipts, timeouts, failure taxonomy, and
   proposal-only/non-persistence boundaries before a live model call.
-- [ ] `P52-T3` Run a five-repository controlled calibration only after P52-T2,
-  comparing static-only evidence and Codex Spark proposal output against the
-  Phase 52 quality metrics without registry authority.
+- [x] `P52-T3` Run a five-repository controlled calibration only after P52-T2,
+  comparing static-only evidence, an LM Studio control using request-side JSON
+  Schema, and Codex Spark proposal output against the Phase 52 quality metrics
+  without registry authority.
 - [ ] `P52-T4` Run a twenty-repository controlled pilot only after P52-T3
   meets its metrics, recording concurrency, token/usage receipts, schema
   failures, quality outcomes, and stop-policy evidence.
