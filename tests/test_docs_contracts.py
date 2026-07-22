@@ -38,6 +38,31 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P52-T3 Five-Repository Controlled Calibration" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Planned" in next_text
+        assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
+            next_text
+        )
+        assert "`P52-T2` Codex Spark External-Model Adapter Contract" in next_text
+        assert "exactly five" in normalized
+        assert "operator-provided, pinned local repository checkouts" in next_text
+        assert "static-only evidence" in next_text
+        assert "Codex Spark proposal-only output" in next_text
+        assert "P52-T2 schema-validated external-model handoff" in normalized
+        assert "Do not create, restore, clone, or fetch repositories" in next_text
+        assert "Do not install dependencies or invoke package managers" in next_text
+        assert "Do not execute harvested code or adapters" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        assert "Do not persist raw prompts, raw provider responses, secrets, session state," in (
+            next_text
+        )
+        assert "chain-of-thought" in next_text
+        return
+
     if "# Next Task: P52-T2 Codex Spark External-Model Adapter Contract" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text

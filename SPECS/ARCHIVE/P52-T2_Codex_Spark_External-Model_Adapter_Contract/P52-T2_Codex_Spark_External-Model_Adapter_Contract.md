@@ -88,4 +88,8 @@ five-repository calibration.
   - `ruff check src tests`
   - `swift package dump-package >/dev/null`
   - `swift build --target SpecHarvesterDocs`
-  - `git diff --check`
+- `git diff --check`
+
+---
+**Archived:** 2026-07-22
+**Verdict:** PASS
