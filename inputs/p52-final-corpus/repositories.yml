@@ -222,36 +222,36 @@ repositories:
     checkout: ../../../../0AL/Platform
     packageId: platform.core
     labels: [specification, documentation_heavy, p52_t5]
-  - id: specspace
-    repository: https://github.com/0al-spec/SpecSpace
-    revision: 340efc65f385f74a549dcd022bec3aa3d052004a
-    checkout: ../../../../0AL/SpecSpace
-    packageId: specspace.core
+  - id: toys-sandbox
+    repository: https://github.com/SoundBlaster/ToysSandbox
+    revision: 563fc90b6af675501843331de9b9d0a9872abf2c
+    checkout: ../../../../ToysSandbox
+    packageId: toys-sandbox.core
+    labels: [godot, workspace, p52_t5]
+  - id: xyflow
+    repository: https://github.com/xyflow/xyflow
+    revision: a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd
+    checkout: ../../../../xyflow
+    packageId: xyflow.core
     labels: [typescript, workspace, p52_t5]
-  - id: altkit
-    repository: https://github.com/altstoreio/AltKit
-    revision: 2fd376df1c79ec06a5c80cc8933da027f65b3148
-    checkout: ../../../../AltKit
-    packageId: altkit.core
-    labels: [swift, workspace, p52_t5]
-  - id: idevice
-    repository: https://github.com/altstoreio/idevice
-    revision: edfea40b0d04f1f4c4d93bb80c6f16be4b324108
-    checkout: ../../../../idevice
-    packageId: idevice.core
-    labels: [swift, workspace, p52_t5]
+  - id: tokenkeeper
+    repository: https://github.com/SoundBlaster/tokenkeeper
+    revision: a43c11fc97a2a2056d6e656f0c0247fa77575e5a
+    checkout: ../../../../tokenkeeper
+    packageId: tokenkeeper.core
+    labels: [rust, single_package, p52_t5]
   - id: flow
     repository: https://github.com/SoundBlaster/Flow
     revision: 5128f448ed751b7be930972088e566060fa281ea
     checkout: ../../../../Flow
     packageId: flow.core
     labels: [documentation, documentation_heavy, p52_t5]
-  - id: iso-inspector
-    repository: https://github.com/SoundBlaster/ISOInspector
-    revision: 278e5c5692caeb38d4e27b17fc9d0b4709ce5ad2
-    checkout: ../../../../ISOInspector
-    packageId: iso-inspector.core
-    labels: [swift, workspace, p52_t5]
+  - id: zed-objc
+    repository: https://github.com/SoundBlaster/zed-objective-c
+    revision: 6bb388c56b56d9763be3b6baf733593985528978
+    checkout: ../../../../ZedObjC
+    packageId: zed-objc.core
+    labels: [rust, single_package, p52_t5]
   - id: navigation-split-view
     repository: https://github.com/SoundBlaster/NavigationSplitView
     revision: 2c88df50b8f587560b91f6027e9ea275aee17060

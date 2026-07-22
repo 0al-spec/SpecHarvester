@@ -16,6 +16,8 @@ FINAL_CORPUS_READINESS_API_VERSION = "spec-harvester.final-corpus-checkout-readi
 FINAL_CORPUS_READINESS_KIND = "SpecHarvesterFinalCorpusCheckoutReadiness"
 MINIMUM_REPOSITORY_COUNT = 50
 MAXIMUM_REPOSITORY_COUNT = 100
+MINIMUM_ECOSYSTEM_COUNT = 2
+MINIMUM_REPOSITORY_SHAPE_COUNT = 2
 REQUIRED_STOP_POLICY_FLAGS = (
     "excludeOnDirtyCheckout",
     "excludeOnRevisionMismatch",
@@ -50,7 +52,9 @@ class FinalCorpusCheckoutReadiness:
         metadata = read_metadata(self.options.metadata)
         validate_corpus_structure(sources, metadata)
         records = [self.repository_record(source, metadata[source["id"]]) for source in sources]
-        passed = all(record["status"] == "ready" for record in records)
+        summary = readiness_summary(records)
+        coverage_passed = summary["coveragePolicy"]["status"] == "passed"
+        passed = all(record["status"] == "ready" for record in records) and coverage_passed
         report = {
             "apiVersion": FINAL_CORPUS_READINESS_API_VERSION,
             "kind": FINAL_CORPUS_READINESS_KIND,
@@ -59,7 +63,8 @@ class FinalCorpusCheckoutReadiness:
             "task": "P52-T5",
             "status": "passed" if passed else "failed",
             "repositories": records,
-            "summary": readiness_summary(records),
+            "summary": summary,
+            "gateFailures": [] if coverage_passed else ["corpus_coverage_insufficient"],
             "decision": {
                 "p52T6Unlocked": passed,
                 "selectedDecision": "unlock_p52_t6" if passed else "block_p52_t6",
@@ -107,6 +112,8 @@ class FinalCorpusCheckoutReadiness:
             failures.append("provenance_repository_mismatch")
         if license_provenance.get("status") != "resolved":
             failures.append("license_provenance_unresolved")
+        elif not license_evidence_available(checkout, license_provenance):
+            failures.append("license_evidence_unavailable")
         if any(stop_policy.get(flag) is not True for flag in REQUIRED_STOP_POLICY_FLAGS):
             failures.append("stop_policy_incomplete")
         maximum_bytes = integer_value(size_budget.get("maximumBytes"))
@@ -256,17 +263,44 @@ def tracked_file_bytes(checkout: Path) -> int | None:
         return None
 
 
+def license_evidence_available(checkout: Path, license_provenance: dict[str, Any]) -> bool:
+    paths = license_provenance.get("paths")
+    if not isinstance(paths, list) or not paths:
+        return False
+    checkout_root = checkout.resolve()
+    for value in paths:
+        if not isinstance(value, str) or not value:
+            return False
+        candidate = (checkout_root / value).resolve()
+        if not candidate.is_relative_to(checkout_root) or not candidate.is_file():
+            return False
+    return True
+
+
 def readiness_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
+    ecosystem_distribution = dict(
+        sorted(Counter(record["ecosystem"] for record in records).items())
+    )
+    shape_distribution = dict(
+        sorted(Counter(record["repositoryShape"] for record in records).items())
+    )
+    coverage_passed = (
+        len(ecosystem_distribution) >= MINIMUM_ECOSYSTEM_COUNT
+        and len(shape_distribution) >= MINIMUM_REPOSITORY_SHAPE_COUNT
+    )
     return {
         "repositoryCount": len(records),
         "readyCount": sum(record["status"] == "ready" for record in records),
         "blockedCount": sum(record["status"] == "blocked" for record in records),
-        "ecosystemDistribution": dict(
-            sorted(Counter(record["ecosystem"] for record in records).items())
-        ),
-        "repositoryShapeDistribution": dict(
-            sorted(Counter(record["repositoryShape"] for record in records).items())
-        ),
+        "ecosystemDistribution": ecosystem_distribution,
+        "repositoryShapeDistribution": shape_distribution,
+        "coveragePolicy": {
+            "minimumEcosystemCount": MINIMUM_ECOSYSTEM_COUNT,
+            "observedEcosystemCount": len(ecosystem_distribution),
+            "minimumRepositoryShapeCount": MINIMUM_REPOSITORY_SHAPE_COUNT,
+            "observedRepositoryShapeCount": len(shape_distribution),
+            "status": "passed" if coverage_passed else "failed",
+        },
     }
 
 

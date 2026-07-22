@@ -36,8 +36,8 @@ No open Medium, Low, or Nit findings.
 
 ### Tests
 
-- Focused readiness and CLI tests: PASS, 8 passed and 5 deselected.
-- Full suite: PASS, 947 passed and 1 skipped.
+- Focused readiness and CLI tests: PASS, 10 passed and 5 deselected.
+- Full suite: PASS, 949 passed and 1 skipped.
 - Coverage: PASS, 90.02% against the required 90% threshold; the new readiness
   module is covered at 92%.
 - Ruff check and format: PASS.
@@ -45,7 +45,7 @@ No open Medium, Low, or Nit findings.
   existing unhandled DocC resource warning.
 - Live 50-source readiness rerun: PASS, 50 ready and 0 blocked; live and fixture
   digest both equal
-  `sha256:e19cb19c393fc55bf1cd09ce9214be73408dab1cc267e7cfa53239c77acfb140`.
+  `sha256:49b31573ea40eeb1396b0dea67164264d4e7effa1fbc5fc0996b5d0210d5c9af`.
 - JSON validation and `git diff --check`: PASS.
 
 ### Next Steps

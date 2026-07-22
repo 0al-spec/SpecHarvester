@@ -15,11 +15,11 @@ deterministic checkout-readiness gate for 50 public repositories.
 - Clean checkouts at matching immutable revisions: 50.
 - Resolved repository and license provenance: 50.
 - Checkouts within tracked-file size budgets: 50.
-- Ecosystem categories: 13.
+- Ecosystem categories: 14.
 - Repository shapes: 6.
 - P52-T6 decision: unlocked.
 - Durable report digest:
-  `sha256:e19cb19c393fc55bf1cd09ce9214be73408dab1cc267e7cfa53239c77acfb140`.
+  `sha256:49b31573ea40eeb1396b0dea67164264d4e7effa1fbc5fc0996b5d0210d5c9af`.
 
 The final live rerun and committed fixture produced the same digest.
 
@@ -28,8 +28,8 @@ The final live rerun and committed fixture produced the same digest.
 - `PYTHONPATH=src python -m spec_harvester final-corpus-checkout-readiness inputs/p52-final-corpus --metadata inputs/p52-final-corpus/selection-metadata.json --out /tmp/p52-t5-readiness-final.json`: PASS, 50/50 ready.
 - `python -m json.tool inputs/p52-final-corpus/selection-metadata.json`: PASS.
 - `python -m json.tool tests/fixtures/final_corpus_checkout_readiness/p52-t5-final-corpus-checkout-readiness.example.json`: PASS.
-- `.venv/bin/pytest -q tests/test_final_corpus_checkout_readiness.py tests/test_cli_report_commands.py -k 'final_corpus or final-corpus'`: PASS, 8 passed and 5 deselected.
-- `.venv/bin/pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90`: PASS, 947 passed, 1 skipped, 90.02% total coverage.
+- `.venv/bin/pytest -q tests/test_final_corpus_checkout_readiness.py tests/test_cli_report_commands.py -k 'final_corpus or final-corpus'`: PASS, 10 passed and 5 deselected.
+- `.venv/bin/pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90`: PASS, 949 passed, 1 skipped, 90.02% total coverage.
 - `uv run ruff check src tests`: PASS.
 - `uv run ruff format --check src tests`: PASS.
 - `swift package dump-package`: PASS.

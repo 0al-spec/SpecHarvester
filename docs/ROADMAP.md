@@ -1367,7 +1367,7 @@ P52-T5 records
 [`FINAL_CORPUS_CHECKOUT_READINESS.md`](FINAL_CORPUS_CHECKOUT_READINESS.md), the
 final 50-source manifest, companion selection metadata, and a deterministic
 readiness fixture. All 50 checkouts pass revision, cleanliness, provenance,
-license, and size-budget gates across 13 ecosystem categories and six
+license, and size-budget gates across 14 ecosystem categories and six
 repository shapes, unlocking the P52-T6 static-only gate without running AI or
 granting registry authority.
 

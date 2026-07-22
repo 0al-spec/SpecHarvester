@@ -58,6 +58,54 @@ def test_dirty_checkout_blocks_p52_t6(tmp_path: Path) -> None:
     assert report["repositories"][0]["failures"] == ["checkout_dirty"]
 
 
+def test_missing_license_evidence_blocks_p52_t6(tmp_path: Path) -> None:
+    inputs, revisions, metadata_path = write_inputs(tmp_path)
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata["repositories"][0]["licenseProvenance"]["paths"] = []
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+    readiness = FinalCorpusCheckoutReadiness(
+        FinalCorpusCheckoutReadinessOptions(
+            inputs=inputs,
+            metadata=metadata_path,
+            output=tmp_path / "report.json",
+        ),
+        head_reader=lambda checkout: revisions[checkout.name],
+        dirty_reader=lambda _checkout: "",
+        size_reader=lambda _checkout: 1024,
+    )
+
+    report = readiness.run()
+
+    assert report["status"] == "failed"
+    assert report["repositories"][0]["failures"] == ["license_evidence_unavailable"]
+
+
+def test_collapsed_corpus_coverage_blocks_p52_t6(tmp_path: Path) -> None:
+    inputs, revisions, metadata_path = write_inputs(tmp_path)
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    for record in metadata["repositories"]:
+        record["ecosystem"] = "python"
+        record["repositoryShape"] = "single_package"
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+    readiness = FinalCorpusCheckoutReadiness(
+        FinalCorpusCheckoutReadinessOptions(
+            inputs=inputs,
+            metadata=metadata_path,
+            output=tmp_path / "report.json",
+        ),
+        head_reader=lambda checkout: revisions[checkout.name],
+        dirty_reader=lambda _checkout: "",
+        size_reader=lambda _checkout: 1024,
+    )
+
+    report = readiness.run()
+
+    assert report["summary"]["readyCount"] == 50
+    assert report["summary"]["coveragePolicy"]["status"] == "failed"
+    assert report["gateFailures"] == ["corpus_coverage_insufficient"]
+    assert report["decision"]["p52T6Unlocked"] is False
+
+
 def test_durable_p52_t5_fixture_records_passing_fifty_source_gate() -> None:
     root = Path(__file__).resolve().parents[1]
     report = json.loads(
@@ -191,7 +239,10 @@ def write_inputs(tmp_path: Path) -> tuple[Path, dict[str, str], Path]:
     manifest = ["repositories:"]
     metadata_records = []
     for repository_id, revision in revisions.items():
-        (checkouts / repository_id).mkdir(parents=True)
+        checkout = checkouts / repository_id
+        checkout.mkdir(parents=True)
+        (checkout / "LICENSE").write_text("test license\n", encoding="utf-8")
+        index = int(repository_id.rsplit("-", maxsplit=1)[1])
         manifest.extend(
             [
                 f"  - id: {repository_id}",
@@ -203,14 +254,14 @@ def write_inputs(tmp_path: Path) -> tuple[Path, dict[str, str], Path]:
         metadata_records.append(
             {
                 "id": repository_id,
-                "ecosystem": "python",
-                "repositoryShape": "single_package",
+                "ecosystem": "python" if index % 2 == 0 else "go",
+                "repositoryShape": "single_package" if index % 2 == 0 else "workspace",
                 "importanceSignals": ["test_fixture"],
                 "provenance": {
                     "status": "resolved",
                     "repository": f"https://github.com/example/{repository_id}",
                 },
-                "licenseProvenance": {"status": "resolved"},
+                "licenseProvenance": {"status": "resolved", "paths": ["LICENSE"]},
                 "sizeBudget": {"observedBytes": 1024, "maximumBytes": 2048},
                 "selectionRationale": "test_fixture",
                 "stopPolicy": {

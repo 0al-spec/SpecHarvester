@@ -14,6 +14,7 @@
     "runsAI": false,
     "runsAdapters": false
   },
+  "gateFailures": [],
   "kind": "SpecHarvesterFinalCorpusCheckoutReadiness",
   "phase": "P52",
   "repositories": [
@@ -173,9 +174,7 @@
       "licenseProvenance": {
         "kind": "license_file",
         "paths": [
-          "licenses",
-          "qt/LicenseDialog.cc",
-          "qt/LicenseDialog.h"
+          "COPYING"
         ],
         "status": "resolved"
       },
@@ -211,9 +210,7 @@
       "licenseProvenance": {
         "kind": "license_file",
         "paths": [
-          ".venv/lib/python3.11/site-packages/MarkupSafe-3.0.2.dist-info/LICENSE.txt",
-          ".venv/lib/python3.11/site-packages/PyYAML-6.0.2.dist-info/LICENSE",
-          ".venv/lib/python3.11/site-packages/annotated_types-0.7.0.dist-info/licenses"
+          "LICENSE"
         ],
         "status": "resolved"
       },
@@ -325,9 +322,7 @@
       "licenseProvenance": {
         "kind": "license_file",
         "paths": [
-          ".venv/lib/python3.12/site-packages/iniconfig-2.3.0.dist-info/licenses",
-          ".venv/lib/python3.12/site-packages/iniconfig-2.3.0.dist-info/licenses/LICENSE",
-          ".venv/lib/python3.12/site-packages/packaging-26.2.dist-info/licenses"
+          "LICENSE"
         ],
         "status": "resolved"
       },
@@ -584,9 +579,7 @@
       "licenseProvenance": {
         "kind": "license_file",
         "paths": [
-          ".build/checkouts/swift-docc-plugin/LICENSE.txt",
-          ".build/checkouts/swift-docc-symbolkit/LICENSE.txt",
-          ".venv/lib/python3.12/site-packages/iniconfig-2.3.0.dist-info/licenses"
+          "LICENSE"
         ],
         "status": "resolved"
       },
@@ -1366,9 +1359,7 @@
       "licenseProvenance": {
         "kind": "license_file",
         "paths": [
-          ".venv/lib/python3.12/site-packages/attrs-26.1.0.dist-info/licenses",
-          ".venv/lib/python3.12/site-packages/attrs-26.1.0.dist-info/licenses/LICENSE",
-          ".venv/lib/python3.12/site-packages/jsonschema-4.26.0.dist-info/licenses"
+          "LICENSE"
         ],
         "status": "resolved"
       },
@@ -1395,33 +1386,31 @@
       }
     },
     {
-      "ecosystem": "typescript",
+      "ecosystem": "godot",
       "failures": [],
-      "id": "specspace",
+      "id": "toys-sandbox",
       "importanceSignals": [
         "ecosystem_shape_coverage"
       ],
       "licenseProvenance": {
         "kind": "license_file",
         "paths": [
-          ".specspace-dev/py312/lib/python3.12/site-packages/iniconfig-2.3.0.dist-info/licenses",
-          ".specspace-dev/py312/lib/python3.12/site-packages/iniconfig-2.3.0.dist-info/licenses/LICENSE",
-          ".specspace-dev/py312/lib/python3.12/site-packages/packaging-26.2.dist-info/licenses"
+          "LICENSE"
         ],
         "status": "resolved"
       },
       "provenance": {
         "kind": "canonical_origin_or_operator_curated_public_source",
-        "repository": "https://github.com/0al-spec/SpecSpace",
+        "repository": "https://github.com/SoundBlaster/ToysSandbox",
         "status": "resolved"
       },
-      "repository": "https://github.com/0al-spec/SpecSpace",
+      "repository": "https://github.com/SoundBlaster/ToysSandbox",
       "repositoryShape": "workspace",
-      "revision": "340efc65f385f74a549dcd022bec3aa3d052004a",
+      "revision": "563fc90b6af675501843331de9b9d0a9872abf2c",
       "selectionRationale": "ecosystem_shape_coverage",
       "sizeBudget": {
         "maximumBytes": 67108864,
-        "observedBytes": 14949052,
+        "observedBytes": 614942,
         "withinBudget": true
       },
       "status": "ready",
@@ -1433,29 +1422,31 @@
       }
     },
     {
-      "ecosystem": "swift",
+      "ecosystem": "typescript",
       "failures": [],
-      "id": "altkit",
+      "id": "xyflow",
       "importanceSignals": [
         "ecosystem_shape_coverage"
       ],
       "licenseProvenance": {
-        "kind": "upstream_repository_metadata",
-        "paths": [],
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
         "status": "resolved"
       },
       "provenance": {
         "kind": "canonical_origin_or_operator_curated_public_source",
-        "repository": "https://github.com/altstoreio/AltKit",
+        "repository": "https://github.com/xyflow/xyflow",
         "status": "resolved"
       },
-      "repository": "https://github.com/altstoreio/AltKit",
+      "repository": "https://github.com/xyflow/xyflow",
       "repositoryShape": "workspace",
-      "revision": "2fd376df1c79ec06a5c80cc8933da027f65b3148",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
       "selectionRationale": "ecosystem_shape_coverage",
       "sizeBudget": {
         "maximumBytes": 67108864,
-        "observedBytes": 54072,
+        "observedBytes": 2333928,
         "withinBudget": true
       },
       "status": "ready",
@@ -1467,29 +1458,31 @@
       }
     },
     {
-      "ecosystem": "swift",
+      "ecosystem": "rust",
       "failures": [],
-      "id": "idevice",
+      "id": "tokenkeeper",
       "importanceSignals": [
         "ecosystem_shape_coverage"
       ],
       "licenseProvenance": {
-        "kind": "upstream_repository_metadata",
-        "paths": [],
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
         "status": "resolved"
       },
       "provenance": {
         "kind": "canonical_origin_or_operator_curated_public_source",
-        "repository": "https://github.com/altstoreio/idevice",
+        "repository": "https://github.com/SoundBlaster/tokenkeeper",
         "status": "resolved"
       },
-      "repository": "https://github.com/altstoreio/idevice",
-      "repositoryShape": "workspace",
-      "revision": "edfea40b0d04f1f4c4d93bb80c6f16be4b324108",
+      "repository": "https://github.com/SoundBlaster/tokenkeeper",
+      "repositoryShape": "single_package",
+      "revision": "a43c11fc97a2a2056d6e656f0c0247fa77575e5a",
       "selectionRationale": "ecosystem_shape_coverage",
       "sizeBudget": {
         "maximumBytes": 67108864,
-        "observedBytes": 2657511,
+        "observedBytes": 401481,
         "withinBudget": true
       },
       "status": "ready",
@@ -1537,33 +1530,31 @@
       }
     },
     {
-      "ecosystem": "swift",
+      "ecosystem": "rust",
       "failures": [],
-      "id": "iso-inspector",
+      "id": "zed-objc",
       "importanceSignals": [
         "ecosystem_shape_coverage"
       ],
       "licenseProvenance": {
         "kind": "license_file",
         "paths": [
-          "Documentation/FixtureCatalog/licenses",
-          "FoundationUI/.build/checkouts/Yams/LICENSE",
-          "FoundationUI/.build/index-build/checkouts/Yams/LICENSE"
+          "LICENSE"
         ],
         "status": "resolved"
       },
       "provenance": {
         "kind": "canonical_origin_or_operator_curated_public_source",
-        "repository": "https://github.com/SoundBlaster/ISOInspector",
+        "repository": "https://github.com/SoundBlaster/zed-objective-c",
         "status": "resolved"
       },
-      "repository": "https://github.com/SoundBlaster/ISOInspector",
-      "repositoryShape": "workspace",
-      "revision": "278e5c5692caeb38d4e27b17fc9d0b4709ce5ad2",
+      "repository": "https://github.com/SoundBlaster/zed-objective-c",
+      "repositoryShape": "single_package",
+      "revision": "6bb388c56b56d9763be3b6baf733593985528978",
       "selectionRationale": "ecosystem_shape_coverage",
       "sizeBudget": {
         "maximumBytes": 67108864,
-        "observedBytes": 20239338,
+        "observedBytes": 69571,
         "withinBudget": true
       },
       "status": "ready",
@@ -1871,19 +1862,27 @@
   "status": "passed",
   "summary": {
     "blockedCount": 0,
+    "coveragePolicy": {
+      "minimumEcosystemCount": 2,
+      "minimumRepositoryShapeCount": 2,
+      "observedEcosystemCount": 14,
+      "observedRepositoryShapeCount": 6,
+      "status": "passed"
+    },
     "ecosystemDistribution": {
       "c_cpp": 1,
       "documentation": 1,
       "go": 3,
+      "godot": 1,
       "javascript": 3,
       "python": 7,
       "python_rust": 1,
       "python_swift": 2,
-      "rust": 5,
+      "rust": 7,
       "rust_python": 1,
       "shell": 1,
       "specification": 2,
-      "swift": 14,
+      "swift": 11,
       "typescript": 9
     },
     "readyCount": 50,
@@ -1893,8 +1892,8 @@
       "framework": 1,
       "multi_component": 2,
       "service": 1,
-      "single_package": 18,
-      "workspace": 23
+      "single_package": 20,
+      "workspace": 21
     }
   },
   "task": "P52-T5"

@@ -9,11 +9,12 @@ budgets, importance signals, ecosystem coverage, repository shape, and stop
 policy.
 
 Readiness validates an exact HTTPS `github.com` source URL, binds provenance to
-that URL, validates nested metadata and required stop flags, and records the
-selection rationale, provenance, and stop policy in its sanitized output.
+that URL, requires concrete license evidence inside the checkout, validates
+nested metadata, required stop flags, and minimum ecosystem and repository-shape
+coverage, and records those outcomes in its sanitized output.
 
 All 50 pinned public checkouts are clean, revision-matched, provenance-resolved,
-license-resolved, and within budget. The corpus spans 13 ecosystem categories
+license-resolved, and within budget. The corpus spans 14 ecosystem categories
 and six repository shapes, so P52-T6 is unlocked.
 
 The readiness report is producer evidence only. It does not run static

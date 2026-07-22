@@ -283,7 +283,7 @@ all output proposal-only and outside registry authority.
 
 P52-T5 is recorded in <doc:FinalCorpusCheckoutReadiness>. It fixes a
 50-repository public source manifest and companion selection metadata, then
-passes all 50 clean revision-matched local checkouts across 13 ecosystem
+passes all 50 clean revision-matched local checkouts across 14 ecosystem
 categories and six repository shapes. The result unlocks P52-T6 without
 running collection, models, adapters, package managers, or harvested code.
 
