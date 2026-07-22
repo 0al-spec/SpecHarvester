@@ -36,8 +36,9 @@ inventory is non-empty; the final full calibration passed with that rule.
 
 ## Boundary
 
-The runner verifies revisions, runs static-only collection first, and gives
-Codex only a temporary compact evidence stage. Its Codex invocation is
+The runner verifies revisions and clean checkout status before running
+static-only collection, then gives Codex only a temporary compact evidence
+stage. Its Codex invocation is
 `read-only`, `ephemeral`, `ignore-user-config`, and
 `skip-git-repo-check`; it validates the final JSON Schema before using the
 existing `--model-output` handoff.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -12,6 +13,7 @@ from spec_harvester.controlled_calibration import (
     CodexExecutionResult,
     ControlledCalibration,
     ControlledCalibrationOptions,
+    git_dirty_status,
     privacy_record,
     quality_metrics,
     schema_validation_errors,
@@ -58,7 +60,7 @@ def test_offline_diagnostic_run_writes_report_without_unlocking_p52_t4(tmp_path:
     options = ControlledCalibrationOptions(
         inputs=inputs,
         out=tmp_path / "out",
-        codex_schema=schema_path(),
+        codex_schema=tmp_path / "unavailable-codex-schema.json",
         run_lm_studio=False,
         run_codex=False,
     )
@@ -66,6 +68,7 @@ def test_offline_diagnostic_run_writes_report_without_unlocking_p52_t4(tmp_path:
         options,
         batch_runner=batch_runner,
         checkout_head_reader=lambda checkout: revisions[checkout.name],
+        checkout_dirty_reader=lambda _checkout: "",
     )
 
     report = calibration.run()
@@ -221,6 +224,31 @@ repositories:
         calibration.sources()
 
     assert len(CONTROLLED_CALIBRATION_REPOSITORY_IDS) == 5
+
+
+def test_sources_reject_dirty_p52_checkout(tmp_path: Path) -> None:
+    inputs, revisions = write_p52_inputs(tmp_path)
+    calibration = ControlledCalibration(
+        ControlledCalibrationOptions(
+            inputs=inputs,
+            out=tmp_path / "out",
+            run_lm_studio=False,
+            run_codex=False,
+        ),
+        checkout_head_reader=lambda checkout: revisions[checkout.name],
+        checkout_dirty_reader=lambda _checkout: "?? local-untracked-file\n",
+    )
+
+    with pytest.raises(ValueError, match="checkout must be clean"):
+        calibration.sources()
+
+
+def test_git_dirty_status_reports_untracked_files(tmp_path: Path) -> None:
+    checkout = tmp_path / "checkout"
+    subprocess.run(["git", "init", "-q", str(checkout)], check=True)
+    (checkout / "untracked.txt").write_text("local-only\n", encoding="utf-8")
+
+    assert git_dirty_status(checkout) == "?? untracked.txt\n"
 
 
 def write_inventory_and_checkout(tmp_path: Path) -> tuple[Path, Path]:

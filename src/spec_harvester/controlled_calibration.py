@@ -177,6 +177,7 @@ class ControlledCalibration:
         ),
         codex_executor: CodexSparkExecutor | None = None,
         checkout_head_reader: Callable[[Path], str | None] | None = None,
+        checkout_dirty_reader: Callable[[Path], str | None] | None = None,
     ) -> None:
         self.options = options
         self.batch_runner = batch_runner
@@ -185,13 +186,15 @@ class ControlledCalibration:
             options.codex_timeout_seconds,
         )
         self.checkout_head_reader = checkout_head_reader or git_head
+        self.checkout_dirty_reader = checkout_dirty_reader or git_dirty_status
         self.static_root = options.out / STATIC_DIRNAME
         self.lm_studio_root = options.out / LM_STUDIO_DIRNAME
         self.codex_root = options.out / CODEX_DIRNAME
 
     def run(self) -> dict[str, Any]:
         sources = self.sources()
-        schema = self.schema()
+        self.validate_lm_studio_options()
+        schema = self.schema() if self.options.run_codex else {}
         self.options.out.mkdir(parents=True, exist_ok=True)
         static = self.static_baseline()
         static_repositories = list_value(static.get("repositories"))
@@ -233,15 +236,17 @@ class ControlledCalibration:
             head = self.checkout_head_reader(checkout)
             if head != revision:
                 raise ValueError(f"P52-T3 checkout revision mismatch for {source['id']!r}")
+            dirty_status = self.checkout_dirty_reader(checkout)
+            if dirty_status is None:
+                raise ValueError(f"P52-T3 checkout status unavailable for {source['id']!r}")
+            if dirty_status:
+                raise ValueError(f"P52-T3 checkout must be clean for {source['id']!r}")
         return sources
 
     def schema(self) -> dict[str, Any]:
         if self.options.codex_timeout_seconds <= 0:
             raise ValueError("--codex-timeout-seconds must be greater than zero")
-        if self.options.json_repair_max_attempts < 0:
-            raise ValueError("--json-repair-max-attempts must be zero or greater")
-        if self.options.run_lm_studio and not self.options.lm_studio_model:
-            raise ValueError("LM Studio control requires --lm-studio-model")
+
         schema_path = self.options.codex_schema.resolve()
         try:
             schema = json.loads(schema_path.read_text(encoding="utf-8"))
@@ -254,6 +259,14 @@ class ControlledCalibration:
         except Exception as exc:  # noqa: BLE001
             raise ValueError("P52-T3 Codex final-message schema is invalid") from exc
         return schema
+
+    def validate_lm_studio_options(self) -> None:
+        if not self.options.run_lm_studio:
+            return
+        if self.options.json_repair_max_attempts < 0:
+            raise ValueError("--json-repair-max-attempts must be zero or greater")
+        if not self.options.lm_studio_model:
+            raise ValueError("LM Studio control requires --lm-studio-model")
 
     def static_baseline(self) -> dict[str, Any]:
         return self.batch_runner(
@@ -810,6 +823,18 @@ def git_head(checkout: Path) -> str | None:
         return None
     value = result.stdout.strip()
     return value or None
+
+
+def git_dirty_status(checkout: Path) -> str | None:
+    result = subprocess.run(  # noqa: S603
+        ["git", "-C", str(checkout), "status", "--porcelain", "--untracked-files=all"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None
+    return result.stdout
 
 
 def relative_evidence_path(value: Any) -> Path | None:

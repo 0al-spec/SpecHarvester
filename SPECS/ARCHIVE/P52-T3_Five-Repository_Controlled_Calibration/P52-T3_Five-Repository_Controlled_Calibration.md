@@ -39,8 +39,8 @@ a schema pasted into LM Studio's Chat Template field.
 
 ## Acceptance Criteria
 
-- Exactly five existing pinned local checkouts are used; no checkout is cloned,
-  fetched, restored, or modified.
+- Exactly five existing, clean pinned local checkouts are used; no checkout is
+  cloned, fetched, restored, or modified.
 - Static-only evidence completes before LM Studio or Codex Spark is invoked.
 - Codex receives no original checkout, writable add-directory, network/provider
   endpoint, dependency installation path, package manager, harvested code, or

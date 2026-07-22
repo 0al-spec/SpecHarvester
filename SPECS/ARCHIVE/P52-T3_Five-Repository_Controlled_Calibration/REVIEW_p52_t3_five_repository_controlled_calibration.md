@@ -48,3 +48,13 @@ None found.
 FOLLOW-UP is skipped: the review found no actionable code or documentation
 finding. P52-T4 is the next planned task, with the provider-log-clean operator
 precondition retained in `SPECS/INPROGRESS/next.md`.
+
+### Post-Archive PR Review
+
+The external PR review subsequently raised two P2 findings. Both were fixed in
+the current PR without a follow-up task: Codex schema validation is skipped
+when Codex is disabled, and every source checkout must be clean under
+`git status --porcelain` before collection. Regression coverage includes an
+offline missing-schema run, injected dirty-source rejection, and a real Git
+untracked-file check. The final coverage gate passed with `933 passed, 1
+skipped` and `90.09%` coverage.

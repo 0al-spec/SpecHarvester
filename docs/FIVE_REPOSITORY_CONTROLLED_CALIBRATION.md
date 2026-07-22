@@ -25,8 +25,9 @@ sha256:9d33c7fec360f131eb564d83815ee6c2ba628fec9a16e1801ea6f990250b85bf
 
 The input manifest is
 [`inputs/p52-five-repository-calibration/repositories.yml`](../inputs/p52-five-repository-calibration/repositories.yml).
-The runner first verified that every checkout existed, was a Git worktree, and
-had the manifest's exact revision.
+The runner first verified that every checkout existed, was a clean Git
+worktree, and had the manifest's exact revision. Any staged, unstaged, or
+untracked path blocks the calibration before static collection.
 
 | Repository | Revision | Static-only | LM Studio | Codex Spark |
 | --- | --- | --- | --- | --- |

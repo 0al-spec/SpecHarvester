@@ -81,3 +81,16 @@ that the static baseline, LM Studio JSON Schema control, and schema-validated
 Codex proposal-only handoff work together without granting registry authority.
 The next task is P52-T4, the twenty-repository controlled pilot, subject to the
 same external provider logging precondition.
+
+## Post-Review Correction
+
+External PR review added two source-integrity corrections before merge:
+
+- `--skip-codex` no longer loads or validates the Codex final-message schema;
+  an offline diagnostic run can write its blocked report without a Codex schema.
+- Every P52 checkout must now be clean under `git status --porcelain`, including
+  staged, unstaged, and untracked paths, before static collection begins.
+
+The correction passed focused coverage and documentation checks, then
+`PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`:
+`933 passed, 1 skipped`, total coverage `90.09%`.
