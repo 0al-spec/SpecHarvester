@@ -1,6 +1,6 @@
 # Next Task: P52-T5 Final 50-100 Repository Source Manifest and Checkout Readiness
 
-**Status:** Planned
+**Status:** Selected
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
 **Depends On:** `P52-T4` Twenty-Repository Controlled Pilot
 
