@@ -155,6 +155,35 @@ def test_ai_activity_blocks_static_execution_boundary(tmp_path: Path) -> None:
     assert report["decision"]["p52T7Unlocked"] is False
 
 
+def test_incomplete_collection_validation_coverage_blocks_p52_t7(tmp_path: Path) -> None:
+    inputs, readiness, digest = write_inputs_and_readiness(tmp_path)
+
+    def batch_runner(options: AutonomousCandidateBatchOptions) -> dict[str, Any]:
+        batch = write_batch(options, passed_count=50)
+        validation_path = options.out / "reports/batch-validation-report.json"
+        validation = json.loads(validation_path.read_text())
+        validation["records"].pop()
+        validation_path.write_text(json.dumps(validation, indent=2, sort_keys=True) + "\n")
+        return batch
+
+    gate = FinalCorpusStaticOnlyGate(
+        FinalCorpusStaticOnlyGateOptions(
+            inputs=inputs,
+            readiness=readiness,
+            readiness_sha256=digest,
+            out=tmp_path / "out",
+        ),
+        batch_runner=batch_runner,
+    )
+
+    report = gate.run()
+
+    assert report["sourceCoverage"]["collectionValidationResultCount"] == 49
+    assert report["sourceCoverage"]["collectionValidationMissingIds"] == ["repo-49"]
+    assert report["sourceCoverage"]["passed"] is False
+    assert report["decision"]["p52T7Unlocked"] is False
+
+
 def test_static_only_gate_cli_maps_passing_report_to_zero(monkeypatch, capsys) -> None:
     captured: list[FinalCorpusStaticOnlyGateOptions] = []
 

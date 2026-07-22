@@ -544,6 +544,10 @@
   ],
   "schemaVersion": 1,
   "sourceCoverage": {
+    "collectionValidationMissingIds": [],
+    "collectionValidationResultCount": 50,
+    "collectionValidationUnexpectedIds": [],
+    "collectionValidationUniqueResultCount": 50,
     "manifestCount": 50,
     "missingIds": [],
     "passed": true,

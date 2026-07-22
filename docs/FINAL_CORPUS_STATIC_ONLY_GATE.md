@@ -28,7 +28,7 @@ the collection validation errors as failures. No source was omitted.
 The durable sanitized report is
 `tests/fixtures/final_corpus_static_only_gate/p52-t6-final-corpus-static-only-gate.example.json`
 with digest
-`sha256:64a142093fec3587437702fa4845c1bcddfeaab0c578f7f8c0d9ce3caec805cf`.
+`sha256:6a8f781ccd1e727fb10424c6c7619fe0da9b44c9722fb5edc229c8946d4a2678`.
 It binds the disposable autonomous batch report digest
 `sha256:e660723a9006088cbce979100df9a63ec3a9d6aa4f6106f6d0e6c772f6ad5cb3`
 and collection validation report digest

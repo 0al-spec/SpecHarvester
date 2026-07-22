@@ -110,11 +110,20 @@ def build_static_only_gate_report(
     static_report_path: Path,
     validation_report_path: Path,
 ) -> dict[str, Any]:
-    repositories = repository_records(batch, validation_report_path)
+    validation_records = collection_validation_record_list(validation_report_path)
+    validation_ids = [string_value(record.get("id")) for record in validation_records]
+    validation_records_by_id = {
+        string_value(record.get("id")): record for record in validation_records if record.get("id")
+    }
+    repositories = repository_records(batch, validation_records_by_id)
     result_ids = [record["id"] for record in repositories]
-    source_coverage_passed = len(result_ids) == len(set(result_ids)) and set(result_ids) == set(
+    batch_coverage_passed = len(result_ids) == len(set(result_ids)) and set(result_ids) == set(
         source_ids
     )
+    validation_coverage_passed = len(validation_ids) == len(set(validation_ids)) and set(
+        validation_ids
+    ) == set(source_ids)
+    source_coverage_passed = batch_coverage_passed and validation_coverage_passed
     passed_count = sum(record["status"] == "passed" for record in repositories)
     metric = rate_metric(
         numerator=passed_count,
@@ -159,6 +168,10 @@ def build_static_only_gate_report(
             "uniqueResultCount": len(set(result_ids)),
             "missingIds": sorted(set(source_ids) - set(result_ids)),
             "unexpectedIds": sorted(set(result_ids) - set(source_ids)),
+            "collectionValidationResultCount": len(validation_ids),
+            "collectionValidationUniqueResultCount": len(set(validation_ids)),
+            "collectionValidationMissingIds": sorted(set(source_ids) - set(validation_ids)),
+            "collectionValidationUnexpectedIds": sorted(set(validation_ids) - set(source_ids)),
             "passed": source_coverage_passed,
         },
         "staticCompletionRate": metric,
@@ -216,8 +229,9 @@ def validate_readiness(
         raise ValueError("P52-T5 readiness contains blocked repositories")
 
 
-def repository_records(batch: dict[str, Any], validation_report_path: Path) -> list[dict[str, Any]]:
-    validation_records = collection_validation_records(validation_report_path)
+def repository_records(
+    batch: dict[str, Any], validation_records: dict[str, dict[str, Any]]
+) -> list[dict[str, Any]]:
     records = []
     for item in list_value(batch.get("repositories")):
         if not isinstance(item, dict):
@@ -309,15 +323,11 @@ def artifact_record(path: Path, output_root: Path) -> dict[str, Any]:
     return {"path": display_path, "digest": digest_record(sha256_file(path))}
 
 
-def collection_validation_records(path: Path) -> dict[str, dict[str, Any]]:
+def collection_validation_record_list(path: Path) -> list[dict[str, Any]]:
     if not path.is_file():
-        return {}
+        return []
     payload = read_json_object(path, "static batch validation report")
-    return {
-        string_value(record.get("id")): record
-        for record in list_value(payload.get("records"))
-        if isinstance(record, dict) and record.get("id")
-    }
+    return [record for record in list_value(payload.get("records")) if isinstance(record, dict)]
 
 
 def diagnostic_codes(value: Any) -> list[str]:

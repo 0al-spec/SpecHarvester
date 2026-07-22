@@ -39524,6 +39524,10 @@ def test_final_corpus_static_only_gate_is_documented() -> None:
         "uniqueResultCount": 50,
         "missingIds": [],
         "unexpectedIds": [],
+        "collectionValidationResultCount": 50,
+        "collectionValidationUniqueResultCount": 50,
+        "collectionValidationMissingIds": [],
+        "collectionValidationUnexpectedIds": [],
         "passed": True,
     }
     assert payload["staticCompletionRate"] == {
