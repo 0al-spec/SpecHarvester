@@ -348,6 +348,7 @@ the host.
 - <doc:CodexSparkExternalModelAdapterContract>
 - <doc:FiveRepositoryControlledCalibration>
 - <doc:TwentyRepositoryControlledPilot>
+- <doc:FinalCorpusCheckoutReadiness>
 - <doc:AIEnrichmentCandidatePatch>
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateIntakePolicy>

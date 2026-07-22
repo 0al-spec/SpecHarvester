@@ -1363,6 +1363,14 @@ specificity with zero unsupported claims. Ten digest-bound author reviews are
 supported, so P52-T4 unlocks P52-T5 while preserving proposal-only and
 no-registry-authority boundaries.
 
+P52-T5 records
+[`FINAL_CORPUS_CHECKOUT_READINESS.md`](FINAL_CORPUS_CHECKOUT_READINESS.md), the
+final 50-source manifest, companion selection metadata, and a deterministic
+readiness fixture. All 50 checkouts pass revision, cleanliness, provenance,
+license, and size-budget gates across 13 ecosystem categories and six
+repository shapes, unlocking the P52-T6 static-only gate without running AI or
+granting registry authority.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install
