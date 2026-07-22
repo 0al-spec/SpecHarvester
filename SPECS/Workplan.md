@@ -2465,3 +2465,69 @@ Acceptance:
   package managers, execute harvested code, run adapters, accept packages or
   relations, publish registry metadata, seed baselines, remove `preview_only`,
   or treat AI/static/rerun/planning/adapter output as registry truth.
+
+## Phase 52. Controlled Popular Repository Corpus with Codex Spark
+
+- [x] `P52-T1` Plan the controlled 50-100 repository corpus, defining the
+  phased rollout, Codex Spark agent boundary, calibration gates, source-policy
+  constraints, quality metrics, and non-authority boundaries before any new
+  repository checkout or batch execution is attempted.
+- [ ] `P52-T2` Define the Codex Spark external-model adapter contract, including
+  deterministic evidence inputs, `codex exec` invocation policy, structured
+  JSON handoff, schema validation, receipts, timeouts, failure taxonomy, and
+  proposal-only/non-persistence boundaries before a live model call.
+- [ ] `P52-T3` Run a five-repository controlled calibration only after P52-T2,
+  comparing static-only evidence and Codex Spark proposal output against the
+  Phase 52 quality metrics without registry authority.
+- [ ] `P52-T4` Run a twenty-repository controlled pilot only after P52-T3
+  meets its metrics, recording concurrency, token/usage receipts, schema
+  failures, quality outcomes, and stop-policy evidence.
+- [ ] `P52-T5` Author the final 50-100 repository source manifest and checkout
+  readiness gate only after P52-T4 meets its metrics. Keep the source manifest
+  compatible with `read_repository_source_manifests`; record curated selection
+  rationale, provenance, and size/stop-policy fields in a companion metadata
+  schema.
+- [ ] `P52-T6` Run the 50-100 repository static-only gate only after P52-T5
+  readiness passes, preserving deterministic preview candidates and requiring
+  the static completion threshold before any Codex Spark execution.
+- [ ] `P52-T7` Run the 50-100 repository Codex Spark proposal-only gate only
+  after P52-T6 passes, preserving schema validation, bounded receipts,
+  non-persistence, and no-registry-authority boundaries.
+- [ ] `P52-T8` Triage Phase 52 static, Spark, and enriched-preview outputs into
+  author-review, deferred, and do-not-promote outcomes, then prepare portable
+  author handoff evidence without accepting packages or relations.
+- [ ] `P52-T9` Record the Phase 52 exit decision, deciding whether to stop,
+  run a bounded follow-up, or make selected evidence available for maintainer
+  disposition without approving registry promotion by default.
+
+Motivation:
+
+- P51-T8 completed the 12-source larger curated corpus as author-review
+  evidence, but did not approve further expansion.
+- The maintainer now wants a controlled path to 50-100 popular repositories
+  using Codex Spark under Codex-agent supervision.
+
+Goal:
+
+- Establish the evidence-led Phase 52 plan required before a 50-100 repository
+  corpus can be prepared, calibrated, or processed.
+
+Acceptance:
+
+- P52-T1 must preserve P51-T8 as its planning authority and explicitly record
+  that it does not itself approve a live corpus run.
+- P52-T1 must define staged calibration before scale-out and preserve
+  static-only-before-AI ordering.
+- P52-T1 must define the Codex Spark agent as proposal-only evidence producer,
+  with schema validation and no raw prompt, raw provider response, secret, or
+  chain-of-thought persistence.
+- P52-T1 must not clone or fetch repositories, install dependencies, invoke
+  package managers, execute harvested code, run Codex, run AI, accept packages
+  or relations, publish registry metadata, seed baselines, remove
+  `preview_only`, or treat any candidate, AI, planning, or adapter output as
+  registry truth.
+- P52-T2 must complete before P52-T3. P52-T3 quality thresholds must pass
+  before P52-T4. P52-T4 quality thresholds must pass before P52-T5. P52-T5
+  readiness must pass before P52-T6. P52-T6 static-only evidence must pass
+  before P52-T7. P52-T8 and P52-T9 must complete before any Phase 52 outcome
+  is treated as ready for maintainer disposition.
