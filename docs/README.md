@@ -367,6 +367,10 @@ Published DocC site:
 95. [`LARGER_CURATED_CORPUS_EXIT_DECISION.md`](LARGER_CURATED_CORPUS_EXIT_DECISION.md):
    P51-T8 exit decision completing Phase 51 as author-review evidence ready
    while keeping further expansion and registry promotion unapproved
+96. [`CONTROLLED_REPOSITORY_CORPUS_PLAN.md`](CONTROLLED_REPOSITORY_CORPUS_PLAN.md):
+   P52-T1 controlled 50-100 repository plan defining Codex Spark external
+   model boundaries, staged 5/20/50-100 rollout gates, corpus source policy,
+   quality thresholds, and proposal-only authority limits
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

@@ -1,0 +1,178 @@
+{
+  "apiVersion": "spec-harvester.controlled-repository-corpus-plan/v0",
+  "kind": "SpecHarvesterControlledRepositoryCorpusPlan",
+  "authority": "producer_planning_evidence_only",
+  "schemaVersion": 1,
+  "createdAt": "2026-07-22T00:00:00Z",
+  "phase": "P52",
+  "task": "P52-T1",
+  "sourceArtifacts": {
+    "p51ExitDecision": {
+      "path": "tests/fixtures/larger_curated_corpus_exit_decision/p51-t8-larger-curated-corpus-exit-decision.example.json",
+      "digest": "sha256:9c080b5f8f17d021894a3b2755177fefc56ac4d836aebd450098fbb09ee06ec9",
+      "apiVersion": "spec-harvester.larger-curated-corpus-exit-decision/v0",
+      "kind": "SpecHarvesterLargerCuratedCorpusExitDecision",
+      "authority": "producer_exit_decision_evidence_only",
+      "selectedDecision": "complete_phase_51_with_author_review_evidence_no_further_expansion"
+    }
+  },
+  "scope": {
+    "targetRepositoryCount": {
+      "minimum": 50,
+      "maximum": 100
+    },
+    "selection": "operator_curated_popular_repositories",
+    "repositoryAcquisition": "operator_provided_pinned_local_checkouts",
+    "staticOnlyBeforeAI": true,
+    "requiresPhase52ExitDecision": true
+  },
+  "sourcePolicy": {
+    "requiredRepositoryFields": [
+      "id",
+      "upstreamUrl",
+      "pinnedRevision",
+      "localCheckoutPath",
+      "ecosystem",
+      "repositoryShape",
+      "importanceSignals",
+      "licenseProvenance",
+      "sizeBudget"
+    ],
+    "requiredCoverage": [
+      "multiple_ecosystems",
+      "single_package_repositories",
+      "workspace_or_monorepo_repositories",
+      "documentation_heavy_repositories",
+      "framework_and_library_repositories"
+    ],
+    "exclusionRules": [
+      "unresolvable_license_or_provenance",
+      "missing_pinned_revision",
+      "missing_operator_local_checkout",
+      "repository_exceeds_size_budget",
+      "generated_or_vendor_content_only",
+      "unsafe_or_unreviewable_source_layout"
+    ],
+    "stopConditions": [
+      "checkout_readiness_failure",
+      "static_completion_below_threshold",
+      "schema_validity_below_threshold",
+      "unsupported_claim_rate_above_threshold",
+      "unresolved_security_or_privacy_boundary_violation"
+    ]
+  },
+  "stagedRollout": [
+    {
+      "task": "P52-T2",
+      "stage": "codex_spark_external_model_adapter_contract",
+      "repositoryCount": 0,
+      "requires": ["schema_defined", "no_live_execution"],
+      "unlocks": ["P52-T3"]
+    },
+    {
+      "task": "P52-T3",
+      "stage": "five_repository_calibration",
+      "repositoryCount": 5,
+      "requires": ["P52-T2", "operator_provided_pinned_local_checkouts", "static_only_before_ai"],
+      "unlocks": ["P52-T4"]
+    },
+    {
+      "task": "P52-T4",
+      "stage": "twenty_repository_pilot",
+      "repositoryCount": 20,
+      "requires": ["P52-T3_quality_thresholds_met", "operator_provided_pinned_local_checkouts"],
+      "unlocks": ["P52-T5"]
+    },
+    {
+      "task": "P52-T5",
+      "stage": "50_100_source_manifest_and_checkout_readiness",
+      "repositoryCountRange": {"minimum": 50, "maximum": 100},
+      "requires": ["P52-T4_quality_thresholds_met", "operator_provided_pinned_local_checkouts"],
+      "unlocks": ["P52-T6"]
+    },
+    {
+      "task": "P52-T6",
+      "stage": "50_100_static_only_gate",
+      "requires": ["P52-T5_readiness_passed"],
+      "unlocks": ["P52-T7"]
+    },
+    {
+      "task": "P52-T7",
+      "stage": "50_100_codex_spark_proposal_only_gate",
+      "requires": ["P52-T6_static_only_passed"],
+      "unlocks": ["P52-T8"]
+    },
+    {
+      "task": "P52-T8",
+      "stage": "output_triage_and_author_handoff",
+      "requires": ["P52-T7_evidence_recorded"],
+      "unlocks": ["P52-T9"]
+    },
+    {
+      "task": "P52-T9",
+      "stage": "phase_exit_decision",
+      "requires": ["P52-T8_triage_complete"],
+      "unlocks": []
+    }
+  ],
+  "codexSparkBoundary": {
+    "model": "gpt-5.3-codex-spark",
+    "role": "external_proposal_only_worker",
+    "invocationSurface": "codex_exec",
+    "integration": "schema_validated_external_model_output",
+    "isOpenAICompatibleHttpProvider": false,
+    "requiresOperatorOptIn": true,
+    "requiresSchemaValidation": true,
+    "requiresDeterministicEvidenceInputs": true,
+    "mayAcceptPackages": false,
+    "mayAcceptRelations": false,
+    "mayPublishRegistryMetadata": false,
+    "mayRemovePreviewOnly": false,
+    "mayGrantRegistryAuthority": false
+  },
+  "qualityMetrics": {
+    "staticCompletionRateMinimum": 0.95,
+    "aiCompletionRateMinimum": 0.9,
+    "schemaValidRateMinimum": 0.98,
+    "repositorySpecificRateMinimum": 0.8,
+    "unsupportedClaimRateMaximum": 0.05,
+    "humanReviewSampleRateMinimum": 0.1,
+    "humanReviewSampleMinimum": 10
+  },
+  "executionBoundary": {
+    "createsOrRestoresCheckouts": false,
+    "clonesOrFetchesRepositories": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false,
+    "runsCodex": false,
+    "runsAI": false
+  },
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "authorityBoundary": {
+    "planIsRegistryAuthority": false,
+    "approvesLiveCorpusRun": false,
+    "approvesRegistryPromotion": false,
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "publishesRegistryMetadata": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "staticOutputAcceptedAsRegistryTruth": false,
+    "aiOutputAcceptedAsRegistryTruth": false,
+    "planningOutputAcceptedAsRegistryTruth": false,
+    "adapterOutputAcceptedAsRegistryTruth": false
+  },
+  "nextState": {
+    "nextTaskPointer": "P52-T2",
+    "nextTask": "Codex Spark External-Model Adapter Contract",
+    "liveCorpusRunApproved": false,
+    "registryPromotionAllowed": false
+  }
+}

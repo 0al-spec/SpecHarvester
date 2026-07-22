@@ -38,6 +38,29 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P52-T2 Codex Spark External-Model Adapter Contract" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Planned" in next_text
+        assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
+            next_text
+        )
+        assert "`P52-T1` Controlled 50-100 Repository Corpus Plan" in next_text
+        assert "p52-t1-controlled-repository-corpus-plan.example.json" in next_text
+        assert "schema-validated `codex exec` handoff" in next_text
+        assert "proposal-only" in normalized
+        assert "Do not create, restore, clone, or fetch repositories" in next_text
+        assert "Do not install dependencies or invoke package managers" in next_text
+        assert "Do not execute harvested code, adapters, Codex, or AI during planning" in (
+            next_text
+        )
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        assert "Do not persist raw prompts, raw provider responses, secrets, or" in next_text
+        assert "chain-of-thought" in next_text
+        return
+
     if "# Next Task: None Selected After P51-T8" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Complete / No Next Task Selected" in next_text
@@ -36961,6 +36984,177 @@ def test_larger_curated_corpus_exit_decision_records_p51_t8_result() -> None:
         (roadmap, "LARGER_CURATED_CORPUS_EXIT_DECISION.md"),
         (roadmap_docc, "LargerCuratedCorpusExitDecision"),
         (workplan, "`P51-T8` Record the larger curated corpus exit decision"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
+    assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_controlled_repository_corpus_plan_records_p52_t1_contract() -> None:
+    source_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "larger_curated_corpus_exit_decision"
+        / "p51-t8-larger-curated-corpus-exit-decision.example.json"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "controlled_repository_corpus_plan"
+        / "p52-t1-controlled-repository-corpus-plan.example.json"
+    )
+    github_doc = ROOT / "docs" / "CONTROLLED_REPOSITORY_CORPUS_PLAN.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "ControlledRepositoryCorpusPlan.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+    next_task = ROOT / "SPECS" / "INPROGRESS" / "next.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.controlled-repository-corpus-plan/v0"
+    assert payload["kind"] == "SpecHarvesterControlledRepositoryCorpusPlan"
+    assert payload["authority"] == "producer_planning_evidence_only"
+    assert payload["phase"] == "P52"
+    assert payload["task"] == "P52-T1"
+
+    source = payload["sourceArtifacts"]["p51ExitDecision"]
+    assert ROOT / source["path"] == source_path
+    assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+    assert source["apiVersion"] == source_payload["apiVersion"]
+    assert source["kind"] == source_payload["kind"]
+    assert source["authority"] == source_payload["authority"]
+    assert source["selectedDecision"] == (
+        "complete_phase_51_with_author_review_evidence_no_further_expansion"
+    )
+
+    assert payload["scope"] == {
+        "targetRepositoryCount": {"minimum": 50, "maximum": 100},
+        "selection": "operator_curated_popular_repositories",
+        "repositoryAcquisition": "operator_provided_pinned_local_checkouts",
+        "staticOnlyBeforeAI": True,
+        "requiresPhase52ExitDecision": True,
+    }
+    assert [stage["task"] for stage in payload["stagedRollout"]] == [
+        "P52-T2",
+        "P52-T3",
+        "P52-T4",
+        "P52-T5",
+        "P52-T6",
+        "P52-T7",
+        "P52-T8",
+        "P52-T9",
+    ]
+    assert payload["stagedRollout"][1]["repositoryCount"] == 5
+    assert payload["stagedRollout"][2]["repositoryCount"] == 20
+    assert payload["stagedRollout"][3]["repositoryCountRange"] == {
+        "minimum": 50,
+        "maximum": 100,
+    }
+    assert payload["codexSparkBoundary"] == {
+        "model": "gpt-5.3-codex-spark",
+        "role": "external_proposal_only_worker",
+        "invocationSurface": "codex_exec",
+        "integration": "schema_validated_external_model_output",
+        "isOpenAICompatibleHttpProvider": False,
+        "requiresOperatorOptIn": True,
+        "requiresSchemaValidation": True,
+        "requiresDeterministicEvidenceInputs": True,
+        "mayAcceptPackages": False,
+        "mayAcceptRelations": False,
+        "mayPublishRegistryMetadata": False,
+        "mayRemovePreviewOnly": False,
+        "mayGrantRegistryAuthority": False,
+    }
+    assert payload["qualityMetrics"] == {
+        "staticCompletionRateMinimum": 0.95,
+        "aiCompletionRateMinimum": 0.9,
+        "schemaValidRateMinimum": 0.98,
+        "repositorySpecificRateMinimum": 0.8,
+        "unsupportedClaimRateMaximum": 0.05,
+        "humanReviewSampleRateMinimum": 0.1,
+        "humanReviewSampleMinimum": 10,
+    }
+    assert payload["executionBoundary"] == {
+        "createsOrRestoresCheckouts": False,
+        "clonesOrFetchesRepositories": False,
+        "installsDependencies": False,
+        "invokesPackageManagers": False,
+        "executesHarvestedCode": False,
+        "runsAdapters": False,
+        "runsCodex": False,
+        "runsAI": False,
+    }
+    assert all(value is False for value in payload["privacyBoundary"].values())
+    assert all(value is False for value in payload["authorityBoundary"].values())
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "Controlled 50-100 Repository Corpus Plan",
+            "P52-T1",
+            "P51-T8",
+            "SpecHarvesterControlledRepositoryCorpusPlan",
+            "spec-harvester.controlled-repository-corpus-plan/v0",
+            "producer_planning_evidence_only",
+            "p52-t1-controlled-repository-corpus-plan.example.json",
+            "gpt-5.3-codex-spark",
+            "codex exec",
+            "not treated as an OpenAI-compatible HTTP provider",
+            "five-repository calibration",
+            "twenty-repository pilot",
+            "50-100 source manifest and checkout readiness",
+            "at least 95%",
+            "at least 90%",
+            "at least 98%",
+            "at least 80%",
+            "at most 5%",
+            "at least 10% and at least 10 candidates",
+            "Raw prompts, raw provider responses, secrets, and chain-of-thought are not persisted",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+        for boundary in (
+            "did not create or restore checkouts",
+            "clone or fetch repositories",
+            "install dependencies",
+            "invoke package managers",
+            "execute harvested code",
+            "run adapters",
+            "run Codex",
+            "run AI",
+            "accept packages or relations",
+            "publish registry metadata",
+            "seed baselines",
+            "remove `preview_only`",
+            "static, AI, planning, or adapter output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "CONTROLLED_REPOSITORY_CORPUS_PLAN.md"),
+        (docc_root, "docs/CONTROLLED_REPOSITORY_CORPUS_PLAN.md"),
+        (docc_root, "<doc:ControlledRepositoryCorpusPlan>"),
+        (capabilities, "CONTROLLED_REPOSITORY_CORPUS_PLAN.md"),
+        (capabilities_docc, "ControlledRepositoryCorpusPlan"),
+        (roadmap, "CONTROLLED_REPOSITORY_CORPUS_PLAN.md"),
+        (roadmap_docc, "ControlledRepositoryCorpusPlan"),
+        (workplan, "`P52-T9` Record the Phase 52 exit decision"),
     ):
         assert required in path.read_text(encoding="utf-8"), (
             f"Reference {required!r} not found in {path}"

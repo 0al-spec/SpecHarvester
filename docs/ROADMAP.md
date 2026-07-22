@@ -1324,6 +1324,16 @@ targeted pass and hard-blocker stop, and keeps further larger corpus expansion,
 registry promotion, package acceptance, relation acceptance, baseline seeding,
 and `preview_only` removal unapproved.
 
+P52-T1 records
+[`CONTROLLED_REPOSITORY_CORPUS_PLAN.md`](CONTROLLED_REPOSITORY_CORPUS_PLAN.md)
+and the machine-readable `SpecHarvesterControlledRepositoryCorpusPlan` fixture.
+It defines a controlled 50-100 repository rollout through a Codex Spark
+external-model adapter contract, five-repository calibration, twenty-repository
+pilot, source/readiness gate, static-only gate, proposal-only Spark gate,
+triage/handoff, and exit decision. The plan keeps live execution, registry
+promotion, package and relation acceptance, baseline seeding, and
+`preview_only` removal unapproved.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install

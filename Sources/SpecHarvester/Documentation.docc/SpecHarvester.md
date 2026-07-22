@@ -105,6 +105,7 @@ The canonical source files remain in the repository:
 - `docs/HYPERPROMPT_AI_DRAFT_SINGLE_PACKAGE_FALLBACK.md`
 - `docs/LARGER_CURATED_CORPUS_OUTPUT_TRIAGE.md`
 - `docs/LARGER_CURATED_CORPUS_EXIT_DECISION.md`
+- `docs/CONTROLLED_REPOSITORY_CORPUS_PLAN.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -301,6 +302,7 @@ the host.
 - <doc:HyperpromptAIDraftSinglePackageFallback>
 - <doc:LargerCuratedCorpusOutputTriage>
 - <doc:LargerCuratedCorpusExitDecision>
+- <doc:ControlledRepositoryCorpusPlan>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
