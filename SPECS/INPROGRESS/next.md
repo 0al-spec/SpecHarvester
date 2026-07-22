@@ -18,6 +18,8 @@ schema-validated external-model handoff and record the Phase 52 quality metrics.
 - An operator supplies five pinned local checkouts and an ingestible source
   manifest with matching revisions.
 - Static-only collection completes before any Spark invocation.
+- LM Studio is loaded locally and accepts `response_format.type: json_schema`;
+  the schema is sent by the client, not configured in the Chat Template.
 - The `gpt-5.3-codex-spark` operator authorization is available at execution
   time; this pointer does not itself make a live model call.
 
