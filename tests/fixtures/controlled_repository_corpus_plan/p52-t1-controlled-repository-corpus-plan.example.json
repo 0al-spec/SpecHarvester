@@ -27,17 +27,28 @@
     "requiresPhase52ExitDecision": true
   },
   "sourcePolicy": {
-    "requiredRepositoryFields": [
+    "repositoryManifestRequiredFields": [
       "id",
-      "upstreamUrl",
-      "pinnedRevision",
-      "localCheckoutPath",
+      "repository",
+      "revision_or_ref",
+      "checkout"
+    ],
+    "repositoryManifestOptionalFields": [
+      "target",
+      "packageId",
+      "enabled",
+      "labels"
+    ],
+    "companionSelectionMetadata": {
+      "apiVersion": "spec-harvester.controlled-repository-selection-metadata/v0",
+      "requiredFields": [
       "ecosystem",
       "repositoryShape",
       "importanceSignals",
       "licenseProvenance",
       "sizeBudget"
-    ],
+      ]
+    },
     "requiredCoverage": [
       "multiple_ecosystems",
       "single_package_repositories",

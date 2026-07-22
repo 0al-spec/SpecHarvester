@@ -37051,6 +37051,28 @@ def test_controlled_repository_corpus_plan_records_p52_t1_contract() -> None:
         "staticOnlyBeforeAI": True,
         "requiresPhase52ExitDecision": True,
     }
+    assert payload["sourcePolicy"]["repositoryManifestRequiredFields"] == [
+        "id",
+        "repository",
+        "revision_or_ref",
+        "checkout",
+    ]
+    assert payload["sourcePolicy"]["repositoryManifestOptionalFields"] == [
+        "target",
+        "packageId",
+        "enabled",
+        "labels",
+    ]
+    assert payload["sourcePolicy"]["companionSelectionMetadata"] == {
+        "apiVersion": "spec-harvester.controlled-repository-selection-metadata/v0",
+        "requiredFields": [
+            "ecosystem",
+            "repositoryShape",
+            "importanceSignals",
+            "licenseProvenance",
+            "sizeBudget",
+        ],
+    }
     assert [stage["task"] for stage in payload["stagedRollout"]] == [
         "P52-T2",
         "P52-T3",
@@ -37117,6 +37139,8 @@ def test_controlled_repository_corpus_plan_records_p52_t1_contract() -> None:
             "gpt-5.3-codex-spark",
             "codex exec",
             "not treated as an OpenAI-compatible HTTP provider",
+            "read_repository_source_manifests",
+            "spec-harvester.controlled-repository-selection-metadata/v0",
             "five-repository calibration",
             "twenty-repository pilot",
             "50-100 source manifest and checkout readiness",

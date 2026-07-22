@@ -68,11 +68,21 @@ remove `preview_only`, or grant registry authority.
 
 ## Source Policy
 
-Each future source must have an operator-provided pinned local checkout and
-record its upstream URL, revision, ecosystem, repository shape, importance
-signals, license/provenance evidence, and size budget. The corpus must cover
-multiple ecosystems as well as single-package, workspace/monorepo,
-documentation-heavy, framework, and library shapes.
+Each future source must have an operator-provided pinned local checkout. The
+ingestible repository manifest uses the existing `repository`, `revision` (or
+`ref`), and `checkout` keys, with `id` required and `target`, `packageId`,
+`enabled`, and `labels` optional. P52-T5 must keep that manifest compatible
+with `read_repository_source_manifests`.
+
+Ecosystem, repository shape, importance signals, license/provenance evidence,
+and size budget belong in a separate companion selection-metadata document:
+
+```text
+spec-harvester.controlled-repository-selection-metadata/v0
+```
+
+The corpus must cover multiple ecosystems as well as single-package,
+workspace/monorepo, documentation-heavy, framework, and library shapes.
 
 Sources are excluded when their pinned revision or local checkout is missing,
 license/provenance is unresolved, size budget is exceeded, content is only

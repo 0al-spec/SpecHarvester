@@ -54,6 +54,28 @@ seed baselines, remove `preview_only`, or treat any output as registry truth.
 - `git diff --check`
   - PASS
 
+## Post-Review Correction
+
+PR #303 review identified that the initial source-policy vocabulary could be
+read as keys for the existing repository manifest. P52-T1 now distinguishes:
+
+- the existing ingestible manifest keys: `id`, `repository`, `revision` or
+  `ref`, and `checkout`, with the existing optional keys retained; and
+- a separate `spec-harvester.controlled-repository-selection-metadata/v0`
+  companion schema for ecosystem, repository shape, importance, license
+  provenance, and size budget.
+
+Focused revalidation after the correction:
+
+- `python -m json.tool tests/fixtures/controlled_repository_corpus_plan/p52-t1-controlled-repository-corpus-plan.example.json >/dev/null`
+  - PASS
+- `PYTHONPATH=src python -m pytest tests/test_docs_contracts.py -k controlled_repository_corpus_plan -q`
+  - PASS: `1 passed, 188 deselected`
+- `ruff format --check tests/test_docs_contracts.py && ruff check tests/test_docs_contracts.py`
+  - PASS
+- `git diff --check`
+  - PASS
+
 ## Result
 
 P52-T1 passes. Phase 52 is now defined as a controlled rollout rather than a

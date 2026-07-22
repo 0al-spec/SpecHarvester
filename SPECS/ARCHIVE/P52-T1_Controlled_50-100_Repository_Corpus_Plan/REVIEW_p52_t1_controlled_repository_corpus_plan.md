@@ -18,6 +18,13 @@ None.
 
 None.
 
+### Post-Review Update
+
+- [P2] PR #303 review correctly noted that richer source-selection fields must
+  not be added to the existing repository manifest. The plan now reserves the
+  manifest for its supported keys and requires a separate companion metadata
+  schema for those fields. Focused fixture and docs-contract validation passed.
+
 ### Architectural Notes
 
 - P52-T1 is planning-only. It does not add a repository acquisition path,

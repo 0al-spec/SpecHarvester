@@ -69,9 +69,11 @@ operator provides pinned local checkouts.
   authority.
 - The plan has a target range of 50-100 repositories but requires a staged
   five-repository calibration and twenty-repository pilot before scale-out.
-- The source policy requires pinned operator-provided local checkouts, explicit
-  selection rationale, ecosystem/repository-shape coverage, size limits,
-  licensing/provenance evidence, and exclusion/stop rules.
+- The source policy requires pinned operator-provided local checkouts and an
+  ingestible manifest compatible with `read_repository_source_manifests`.
+  Explicit selection rationale, ecosystem/repository-shape coverage, size
+  limits, and licensing/provenance evidence belong in a companion metadata
+  schema with exclusion/stop rules.
 - The gate order is explicit: adapter contract, calibration, pilot, source
   manifest/readiness, static-only, AI-enabled proposal-only, triage/handoff,
   exit decision.

@@ -2483,9 +2483,10 @@ Acceptance:
   meets its metrics, recording concurrency, token/usage receipts, schema
   failures, quality outcomes, and stop-policy evidence.
 - [ ] `P52-T5` Author the final 50-100 repository source manifest and checkout
-  readiness gate only after P52-T4 meets its metrics, requiring curated
-  selection rationale, pinned revisions, operator-local checkout paths,
-  provenance, and size/stop-policy checks.
+  readiness gate only after P52-T4 meets its metrics. Keep the source manifest
+  compatible with `read_repository_source_manifests`; record curated selection
+  rationale, provenance, and size/stop-policy fields in a companion metadata
+  schema.
 - [ ] `P52-T6` Run the 50-100 repository static-only gate only after P52-T5
   readiness passes, preserving deterministic preview candidates and requiring
   the static completion threshold before any Codex Spark execution.
