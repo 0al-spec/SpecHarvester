@@ -1,0 +1,1900 @@
+{
+  "apiVersion": "spec-harvester.final-corpus-checkout-readiness/v0",
+  "authority": "producer_checkout_readiness_evidence_only",
+  "decision": {
+    "p52T6Unlocked": true,
+    "selectedDecision": "unlock_p52_t6"
+  },
+  "executionBoundary": {
+    "clonesOrFetchesRepositories": false,
+    "createsOrRestoresCheckouts": false,
+    "executesHarvestedCode": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "runsAI": false,
+    "runsAdapters": false
+  },
+  "gateFailures": [],
+  "kind": "SpecHarvesterFinalCorpusCheckoutReadiness",
+  "phase": "P52",
+  "repositories": [
+    {
+      "ecosystem": "python",
+      "failures": [],
+      "id": "flask",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE.txt",
+          "docs/license.rst",
+          "examples/javascript/LICENSE.txt"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/pallets/flask",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/pallets/flask",
+      "repositoryShape": "single_package",
+      "revision": "954f5684e4841aad84a8eec7ace7b81a0d3f6831",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 1814849,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "go",
+      "failures": [],
+      "id": "gin",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/gin-gonic/gin",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/gin-gonic/gin",
+      "repositoryShape": "single_package",
+      "revision": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 860563,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "python",
+      "failures": [],
+      "id": "fastapi",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/fastapi/fastapi",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/fastapi/fastapi",
+      "repositoryShape": "documentation_heavy",
+      "revision": "9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 33486669,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "python",
+      "failures": [],
+      "id": "fastmcp",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/PrefectHQ/fastmcp",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/PrefectHQ/fastmcp",
+      "repositoryShape": "framework",
+      "revision": "3b8538e2422a1c43fdb69661c610de7985b785f2",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 41195669,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "c_cpp",
+      "failures": [],
+      "id": "transmission",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "COPYING"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/transmission/transmission",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/transmission/transmission",
+      "repositoryShape": "multi_component",
+      "revision": "98fdf2dc0bfc77e537992ce50fa310b1c3ac636a",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 30045201,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "python",
+      "failures": [],
+      "id": "serena",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/oraios/serena",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/oraios/serena",
+      "repositoryShape": "workspace",
+      "revision": "892ef9cf19e2c154a75cb58f4b34c8589eada346",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 3099545,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "altstore",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "AltStore/Settings/LicensesViewController.swift",
+          "Dependencies/AltSign/Dependencies/OpenSSL/LICENSE.txt",
+          "Dependencies/Roxas/LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/altstoreio/AltStore",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/altstoreio/AltStore",
+      "repositoryShape": "workspace",
+      "revision": "502848e3b090ee2606de4e40bf2598327ed987ce",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 201326592,
+        "observedBytes": 153072832,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "ontology",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          ".build/checkouts/SpecificationCore/LICENSE",
+          ".build/checkouts/Yams/LICENSE",
+          ".build/checkouts/swift-docc-plugin/LICENSE.txt"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/Ontology",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/Ontology",
+      "repositoryShape": "single_package",
+      "revision": "3d0c977c61fb4f725cbc4261fa8c6efad412f12b",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 2709848,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "python_swift",
+      "failures": [],
+      "id": "specgraph",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/SpecGraph",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/SpecGraph",
+      "repositoryShape": "workspace",
+      "revision": "4395f78fc10217275a266ebac2b29d659f6f888f",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 16252919,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "cupertino",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "Packages/.build/checkouts/swift-argument-parser/LICENSE.txt",
+          "Packages/.build/checkouts/swift-syntax/LICENSE.txt"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/mihaelamj/cupertino",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/mihaelamj/cupertino",
+      "repositoryShape": "documentation_heavy",
+      "revision": "65dcae238d30cfbd0d9d15ae10f7b8c67575c19b",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 38452631,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "rust",
+      "failures": [],
+      "id": "agent-passport",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "LICENSE-CC-BY-4.0"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/agent-passport",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/agent-passport",
+      "repositoryShape": "single_package",
+      "revision": "5acb80ccd83b945f4ca7f4367a6c021df7015b15",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 274734,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "calcu",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "node_modules/@acemir/cssom/LICENSE.txt",
+          "node_modules/@asamuzakjp/css-color/LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/Calcu",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/Calcu",
+      "repositoryShape": "single_package",
+      "revision": "4c7181a686d9bdf3e268776be74d5ae60e49f033",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 2296541,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "typescript",
+      "failures": [],
+      "id": "mcp-server-manager",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/vlazic/mcp-server-manager",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/vlazic/mcp-server-manager",
+      "repositoryShape": "single_package",
+      "revision": "e157ed92dbd04bc04d764d0f0a09935eb302ac36",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 348106,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "shell",
+      "failures": [],
+      "id": "mcpm-sh",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/pathintegral-institute/mcpm.sh",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/pathintegral-institute/mcpm.sh",
+      "repositoryShape": "multi_component",
+      "revision": "3a21496dbddffa8b352797aaa498fd4f4d094161",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 5929682,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "python",
+      "failures": [],
+      "id": "hopper-mcp-wrapper",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/HopperMCPWrapper",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/HopperMCPWrapper",
+      "repositoryShape": "single_package",
+      "revision": "88913f2d0e1a95400de9439fcc7b3521418fac8e",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 29127,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "python_swift",
+      "failures": [],
+      "id": "specpm",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/SpecPM",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/SpecPM",
+      "repositoryShape": "workspace",
+      "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 3801394,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "rust",
+      "failures": [],
+      "id": "hypercode",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          ".build/checkouts/SpecificationCore/LICENSE",
+          ".build/checkouts/swift-asn1/LICENSE.txt",
+          ".build/checkouts/swift-crypto/LICENSE.txt"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/Hypercode",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/Hypercode",
+      "repositoryShape": "workspace",
+      "revision": "995663326bbb1fc4981c5362014d80f3df7bd504",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 459478,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "typescript",
+      "failures": [],
+      "id": "hyperprompt",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          ".build/checkouts/SpecificationCore/LICENSE",
+          ".build/checkouts/swift-argument-parser/LICENSE.txt",
+          ".build/checkouts/swift-asn1/LICENSE.txt"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/Hyperprompt",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/Hyperprompt",
+      "repositoryShape": "workspace",
+      "revision": "044ad60cf8f49a836a9cd2a79e9f95bedd950b12",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 12964648,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "typescript",
+      "failures": [],
+      "id": "agent-ready-kit",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/agent-ready-kit",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/agent-ready-kit",
+      "repositoryShape": "workspace",
+      "revision": "cbf917ccfae23fec121648a7822073e7a04799c9",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 25088,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "typescript",
+      "failures": [],
+      "id": "specnode",
+      "importanceSignals": [
+        "phase_52_calibrated"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          ".build/checkouts/swift-docc-plugin/LICENSE.txt",
+          ".build/checkouts/swift-docc-symbolkit/LICENSE.txt",
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/SpecNode",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/SpecNode",
+      "repositoryShape": "workspace",
+      "revision": "9f0bc2245c75e4539d59b4eaeabadcda52a5d413",
+      "selectionRationale": "phase_52_calibrated",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 60796,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "javascript",
+      "failures": [],
+      "id": "express",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/expressjs/express",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/expressjs/express",
+      "repositoryShape": "single_package",
+      "revision": "ae6dd37680e3a00618d6c8a3e522f0ee4eeba1a4",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 713381,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "python_rust",
+      "failures": [],
+      "id": "pydantic",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "pydantic-core/LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/pydantic/pydantic",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/pydantic/pydantic",
+      "repositoryShape": "workspace",
+      "revision": "7b3dd4cf4ba551c33c963f22627cdc566402d8f6",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 11037267,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "python",
+      "failures": [],
+      "id": "httpx",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE.md"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/encode/httpx",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/encode/httpx",
+      "repositoryShape": "single_package",
+      "revision": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 3321071,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "python",
+      "failures": [],
+      "id": "typer",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "typer/_click/LICENSE.txt"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/tiangolo/typer",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/tiangolo/typer",
+      "repositoryShape": "single_package",
+      "revision": "0974a7e39fdd8ea591c0b58e573ccb2451a302c3",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 2072522,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "javascript",
+      "failures": [],
+      "id": "fastify",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/fastify/fastify",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/fastify/fastify",
+      "repositoryShape": "single_package",
+      "revision": "ada0623dce9ed776306f2ccaa095b8ee01a492ba",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 2938935,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "typescript",
+      "failures": [],
+      "id": "vite",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "packages/create-vite/LICENSE",
+          "packages/plugin-legacy/LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/vitejs/vite",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/vitejs/vite",
+      "repositoryShape": "workspace",
+      "revision": "428bda3b98886708006f4f2f409095f89d705df1",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 17392277,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "typescript",
+      "failures": [],
+      "id": "svelte",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE.md"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/sveltejs/svelte",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/sveltejs/svelte",
+      "repositoryShape": "workspace",
+      "revision": "2bace308e37ac1def958be750bd699ed302bb715",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 7002734,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "typescript",
+      "failures": [],
+      "id": "nest",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/nestjs/nest",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/nestjs/nest",
+      "repositoryShape": "workspace",
+      "revision": "ff7a16e82f5e80a71c839f5cc327d20bcab0d455",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 5413378,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "javascript",
+      "failures": [],
+      "id": "react",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "compiler/packages/react-forgive/LICENSE",
+          "packages/eslint-plugin-react-hooks/src/code-path-analysis/LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/facebook/react",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/facebook/react",
+      "repositoryShape": "workspace",
+      "revision": "711c445bccc331b3ef85a793feb8e13dcf968fc3",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 40733101,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "typescript",
+      "failures": [],
+      "id": "vue-core",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "packages/compiler-core/LICENSE",
+          "packages/compiler-dom/LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/vuejs/core",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/vuejs/core",
+      "repositoryShape": "workspace",
+      "revision": "b5f8518379b77c3b62a7a9d2b52f6c76cda09bd5",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 6240748,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "go",
+      "failures": [],
+      "id": "github-cli",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          ".github/licenses.tmpl",
+          "LICENSE",
+          "docs/license-compliance.md"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/cli/cli",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/cli/cli",
+      "repositoryShape": "single_package",
+      "revision": "ae66a1c02e08366858f3070664f493afbe0cdf18",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 22490962,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "go",
+      "failures": [],
+      "id": "pebble",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "internal/arenaskl/LICENSE",
+          "internal/cache/LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/cockroachdb/pebble",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/cockroachdb/pebble",
+      "repositoryShape": "single_package",
+      "revision": "8fb150d9135d6f94e183a874475e0bd1afb18f63",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 20852014,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "rust_python",
+      "failures": [],
+      "id": "uv",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE-APACHE",
+          "LICENSE-MIT",
+          "crates/uv-build-frontend/src/pipreqs/LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/astral-sh/uv",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/astral-sh/uv",
+      "repositoryShape": "workspace",
+      "revision": "25ada4d695c8d05232a3b22cef69bcf9858e274a",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 35294513,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "rust",
+      "failures": [],
+      "id": "axum",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "axum-core/LICENSE",
+          "axum-extra/LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/tokio-rs/axum",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/tokio-rs/axum",
+      "repositoryShape": "workspace",
+      "revision": "0704574455272caa79ff3ae8207adf8f620516c9",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 1900319,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "rust",
+      "failures": [],
+      "id": "actix-web",
+      "importanceSignals": [
+        "popular_canonical_repository"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE-APACHE",
+          "LICENSE-MIT",
+          "actix-files/LICENSE-APACHE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/actix/actix-web",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/actix/actix-web",
+      "repositoryShape": "workspace",
+      "revision": "eee23e2326d1f063c2959a71fa642e1b7c3b1dc9",
+      "selectionRationale": "popular_canonical_repository",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 3284703,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "specification",
+      "failures": [],
+      "id": "feature-passport",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/FeaturePassport",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/FeaturePassport",
+      "repositoryShape": "documentation_heavy",
+      "revision": "724e51c47fee89de1fcd4a3857ebbcea9bf1fa19",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 31997,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "specification",
+      "failures": [],
+      "id": "platform",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/0al-spec/Platform",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/0al-spec/Platform",
+      "repositoryShape": "documentation_heavy",
+      "revision": "65642a00c544ca422d659bfb76673b4d7118a1e4",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 3072762,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "godot",
+      "failures": [],
+      "id": "toys-sandbox",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/ToysSandbox",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/ToysSandbox",
+      "repositoryShape": "workspace",
+      "revision": "563fc90b6af675501843331de9b9d0a9872abf2c",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 614942,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "typescript",
+      "failures": [],
+      "id": "xyflow",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/xyflow/xyflow",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/xyflow/xyflow",
+      "repositoryShape": "workspace",
+      "revision": "a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 2333928,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "rust",
+      "failures": [],
+      "id": "tokenkeeper",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/tokenkeeper",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/tokenkeeper",
+      "repositoryShape": "single_package",
+      "revision": "a43c11fc97a2a2056d6e656f0c0247fa77575e5a",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 401481,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "documentation",
+      "failures": [],
+      "id": "flow",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/Flow",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/Flow",
+      "repositoryShape": "documentation_heavy",
+      "revision": "5128f448ed751b7be930972088e566060fa281ea",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 169403,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "rust",
+      "failures": [],
+      "id": "zed-objc",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/zed-objective-c",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/zed-objective-c",
+      "repositoryShape": "single_package",
+      "revision": "6bb388c56b56d9763be3b6baf733593985528978",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 69571,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "navigation-split-view",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/NavigationSplitView",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/NavigationSplitView",
+      "repositoryShape": "single_package",
+      "revision": "2c88df50b8f587560b91f6027e9ea275aee17060",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 719620,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "nested-swiftui-a11y",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/NestedSwiftUIA11y",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/NestedSwiftUIA11y",
+      "repositoryShape": "single_package",
+      "revision": "07e660e410d74016f209262782ab2fae39be9e93",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 561790,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "paraconsistent-logic",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/ParaconsistentLogic",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/ParaconsistentLogic",
+      "repositoryShape": "single_package",
+      "revision": "684e87a0337ad00e4a8f53b977250acfaa4f6274",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 14684,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "specification-kit",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/SpecificationKit",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/SpecificationKit",
+      "repositoryShape": "workspace",
+      "revision": "2adc31895b7135ec4641535ba2d68c597bfb4d82",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 12851864,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "swiftui-blur",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/SwiftUIBlur",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/SwiftUIBlur",
+      "repositoryShape": "single_package",
+      "revision": "82ac4d5a88dbd3238d9cc8dc9cee11af7ec7cc7b",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 8382854,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "xcode-mcp-wrapper",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          ".build/checkouts/swift-docc-plugin/LICENSE.txt",
+          ".build/checkouts/swift-docc-symbolkit/LICENSE.txt",
+          ".build/index-build/checkouts/swift-docc-plugin/LICENSE.txt"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/XcodeMCPWrapper",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/XcodeMCPWrapper",
+      "repositoryShape": "workspace",
+      "revision": "177e4d93149a14337cab3809733b13c00753873e",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 3152732,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "rust",
+      "failures": [],
+      "id": "specification-core-rs",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE",
+          "crates/specification-core/LICENSE",
+          "target/doc/static.files/LICENSE-APACHE-a60eea81.txt"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/specification-core-rs",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/specification-core-rs",
+      "repositoryShape": "single_package",
+      "revision": "ee8485fbe86c80b84cdbbd164d4ccca65eb716ae",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 383412,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    },
+    {
+      "ecosystem": "swift",
+      "failures": [],
+      "id": "docc2context-service",
+      "importanceSignals": [
+        "ecosystem_shape_coverage"
+      ],
+      "licenseProvenance": {
+        "kind": "license_file",
+        "paths": [
+          "LICENSE"
+        ],
+        "status": "resolved"
+      },
+      "provenance": {
+        "kind": "canonical_origin_or_operator_curated_public_source",
+        "repository": "https://github.com/SoundBlaster/docc2context-service",
+        "status": "resolved"
+      },
+      "repository": "https://github.com/SoundBlaster/docc2context-service",
+      "repositoryShape": "service",
+      "revision": "128ce026ca9a525b26ee86632141cd67112c97bf",
+      "selectionRationale": "ecosystem_shape_coverage",
+      "sizeBudget": {
+        "maximumBytes": 67108864,
+        "observedBytes": 14441441,
+        "withinBudget": true
+      },
+      "status": "ready",
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true
+      }
+    }
+  ],
+  "schemaVersion": 1,
+  "status": "passed",
+  "summary": {
+    "blockedCount": 0,
+    "coveragePolicy": {
+      "minimumEcosystemCount": 2,
+      "minimumRepositoryShapeCount": 2,
+      "observedEcosystemCount": 14,
+      "observedRepositoryShapeCount": 6,
+      "status": "passed"
+    },
+    "ecosystemDistribution": {
+      "c_cpp": 1,
+      "documentation": 1,
+      "go": 3,
+      "godot": 1,
+      "javascript": 3,
+      "python": 7,
+      "python_rust": 1,
+      "python_swift": 2,
+      "rust": 7,
+      "rust_python": 1,
+      "shell": 1,
+      "specification": 2,
+      "swift": 11,
+      "typescript": 9
+    },
+    "readyCount": 50,
+    "repositoryCount": 50,
+    "repositoryShapeDistribution": {
+      "documentation_heavy": 5,
+      "framework": 1,
+      "multi_component": 2,
+      "service": 1,
+      "single_package": 20,
+      "workspace": 21
+    }
+  },
+  "task": "P52-T5"
+}

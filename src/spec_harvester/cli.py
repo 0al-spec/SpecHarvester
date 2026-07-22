@@ -96,6 +96,10 @@ from spec_harvester.drafter import (
     DraftOptions,
     draft_spec_package,
 )
+from spec_harvester.final_corpus_checkout_readiness import (
+    FinalCorpusCheckoutReadinessOptions,
+    run_final_corpus_checkout_readiness,
+)
 from spec_harvester.fresh_candidate_refresh_run import (
     FreshCandidateRefreshRunOptions,
     build_fresh_candidate_refresh_run,
@@ -647,6 +651,29 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output path for the finalized P52-T4 report.",
     )
     finalize_controlled_pilot.set_defaults(func=run_finalize_twenty_repository_controlled_pilot_cli)
+
+    final_corpus_readiness = subcommands.add_parser(
+        "final-corpus-checkout-readiness",
+        help="Validate the P52-T5 final 50-100 source manifest and local checkouts.",
+    )
+    final_corpus_readiness.add_argument(
+        "inputs",
+        type=Path,
+        help="Directory containing the final P52 source manifest.",
+    )
+    final_corpus_readiness.add_argument(
+        "--metadata",
+        type=Path,
+        required=True,
+        help="Companion P52 selection metadata JSON.",
+    )
+    final_corpus_readiness.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output path for the sanitized readiness report.",
+    )
+    final_corpus_readiness.set_defaults(func=run_final_corpus_checkout_readiness_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2029,6 +2056,22 @@ def run_finalize_twenty_repository_controlled_pilot_cli(args: argparse.Namespace
             args.report,
             args.human_review,
             args.out,
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_final_corpus_checkout_readiness_cli(args: argparse.Namespace) -> int:
+    try:
+        result = run_final_corpus_checkout_readiness(
+            FinalCorpusCheckoutReadinessOptions(
+                inputs=args.inputs,
+                metadata=args.metadata,
+                output=args.out,
+            )
         )
     except ValueError as exc:
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2))

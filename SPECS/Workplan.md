@@ -2480,10 +2480,10 @@ Acceptance:
   comparing static-only evidence, an LM Studio control using request-side JSON
   Schema, and Codex Spark proposal output against the Phase 52 quality metrics
   without registry authority.
-- [ ] `P52-T4` Run a twenty-repository controlled pilot only after P52-T3
+- [x] `P52-T4` Run a twenty-repository controlled pilot only after P52-T3
   meets its metrics, recording concurrency, token/usage receipts, schema
   failures, quality outcomes, and stop-policy evidence.
-- [ ] `P52-T5` Author the final 50-100 repository source manifest and checkout
+- [x] `P52-T5` Author the final 50-100 repository source manifest and checkout
   readiness gate only after P52-T4 meets its metrics. Keep the source manifest
   compatible with `read_repository_source_manifests`; record curated selection
   rationale, provenance, and size/stop-policy fields in a companion metadata

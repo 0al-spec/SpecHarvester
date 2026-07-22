@@ -1,0 +1,302 @@
+# P52-T5 final 50-source corpus. Operator-curated and pinned; no runtime acquisition.
+repositories:
+  - id: flask
+    repository: https://github.com/pallets/flask
+    revision: 954f5684e4841aad84a8eec7ace7b81a0d3f6831
+    checkout: ../../../../flask
+    packageId: flask.core
+    labels: [python, single_package, p52_t5]
+  - id: gin
+    repository: https://github.com/gin-gonic/gin
+    revision: 5f4f9643258dc2a65e684b63f12c8d543c936c67
+    checkout: ../../../../gin
+    packageId: gin.core
+    labels: [go, single_package, p52_t5]
+  - id: fastapi
+    repository: https://github.com/fastapi/fastapi
+    revision: 9a9c4ad5d06f5fe8ee6775a5aeaa2f83c854f263
+    checkout: ../../../../fastapi
+    packageId: fastapi.core
+    labels: [python, documentation_heavy, p52_t5]
+  - id: fastmcp
+    repository: https://github.com/PrefectHQ/fastmcp
+    revision: 3b8538e2422a1c43fdb69661c610de7985b785f2
+    checkout: ../../../../fastmcp
+    packageId: fastmcp.core
+    labels: [python, framework, p52_t5]
+  - id: transmission
+    repository: https://github.com/transmission/transmission
+    revision: 98fdf2dc0bfc77e537992ce50fa310b1c3ac636a
+    checkout: ../../../../transmission
+    packageId: transmission.core
+    labels: [c_cpp, multi_component, p52_t5]
+  - id: serena
+    repository: https://github.com/oraios/serena
+    revision: 892ef9cf19e2c154a75cb58f4b34c8589eada346
+    checkout: ../../../../serena
+    packageId: serena.core
+    labels: [python, workspace, p52_t5]
+  - id: altstore
+    repository: https://github.com/altstoreio/AltStore
+    revision: 502848e3b090ee2606de4e40bf2598327ed987ce
+    checkout: ../../../../AltStore
+    packageId: altstore.core
+    labels: [swift, workspace, p52_t5]
+  - id: ontology
+    repository: https://github.com/0al-spec/Ontology
+    revision: 3d0c977c61fb4f725cbc4261fa8c6efad412f12b
+    checkout: ../../../../0AL/Ontology
+    packageId: ontology.core
+    labels: [swift, single_package, p52_t5]
+  - id: specgraph
+    repository: https://github.com/0al-spec/SpecGraph
+    revision: 4395f78fc10217275a266ebac2b29d659f6f888f
+    checkout: ../../../../0AL/SpecGraph
+    packageId: specgraph.core
+    labels: [python_swift, workspace, p52_t5]
+  - id: cupertino
+    repository: https://github.com/mihaelamj/cupertino
+    revision: 65dcae238d30cfbd0d9d15ae10f7b8c67575c19b
+    checkout: ../../../../cupertino
+    packageId: cupertino.core
+    labels: [swift, documentation_heavy, p52_t5]
+  - id: agent-passport
+    repository: https://github.com/0al-spec/agent-passport
+    revision: 5acb80ccd83b945f4ca7f4367a6c021df7015b15
+    checkout: ../../../../0AL/agent-passport
+    packageId: agent-passport.core
+    labels: [rust, single_package, p52_t5]
+  - id: calcu
+    repository: https://github.com/SoundBlaster/Calcu
+    revision: 4c7181a686d9bdf3e268776be74d5ae60e49f033
+    checkout: ../../../../Calcu
+    packageId: calcu.core
+    labels: [swift, single_package, p52_t5]
+  - id: mcp-server-manager
+    repository: https://github.com/vlazic/mcp-server-manager
+    revision: e157ed92dbd04bc04d764d0f0a09935eb302ac36
+    checkout: ../../../../mcp-server-manager
+    packageId: mcp-server-manager.core
+    labels: [typescript, single_package, p52_t5]
+  - id: mcpm-sh
+    repository: https://github.com/pathintegral-institute/mcpm.sh
+    revision: 3a21496dbddffa8b352797aaa498fd4f4d094161
+    checkout: ../../../../mcpm.sh
+    packageId: mcpm-sh.core
+    labels: [shell, multi_component, p52_t5]
+  - id: hopper-mcp-wrapper
+    repository: https://github.com/SoundBlaster/HopperMCPWrapper
+    revision: 88913f2d0e1a95400de9439fcc7b3521418fac8e
+    checkout: ../../../../HopperMCPWrapper
+    packageId: hopper-mcp-wrapper.core
+    labels: [python, single_package, p52_t5]
+  - id: specpm
+    repository: https://github.com/0al-spec/SpecPM
+    revision: 8a5ce3dece3d18bf8f601a5a599520bd520c7839
+    checkout: ../../../../0AL/SpecPM
+    packageId: specpm.core
+    labels: [python_swift, workspace, p52_t5]
+  - id: hypercode
+    repository: https://github.com/0al-spec/Hypercode
+    revision: 995663326bbb1fc4981c5362014d80f3df7bd504
+    checkout: ../../../../0AL/Hypercode
+    packageId: hypercode.core
+    labels: [rust, workspace, p52_t5]
+  - id: hyperprompt
+    repository: https://github.com/0al-spec/Hyperprompt
+    revision: 044ad60cf8f49a836a9cd2a79e9f95bedd950b12
+    checkout: ../../../../0AL/Hyperprompt
+    packageId: hyperprompt.core
+    labels: [typescript, workspace, p52_t5]
+  - id: agent-ready-kit
+    repository: https://github.com/0al-spec/agent-ready-kit
+    revision: cbf917ccfae23fec121648a7822073e7a04799c9
+    checkout: ../../../../agent-ready-kit
+    packageId: agent-ready-kit.core
+    labels: [typescript, workspace, p52_t5]
+  - id: specnode
+    repository: https://github.com/0al-spec/SpecNode
+    revision: 9f0bc2245c75e4539d59b4eaeabadcda52a5d413
+    checkout: ../../../../0AL/SpecNode
+    packageId: specnode.core
+    labels: [typescript, workspace, p52_t5]
+  - id: express
+    repository: https://github.com/expressjs/express
+    revision: ae6dd37680e3a00618d6c8a3e522f0ee4eeba1a4
+    checkout: ../../../../P52Sources/express
+    packageId: express.core
+    labels: [javascript, single_package, p52_t5]
+  - id: pydantic
+    repository: https://github.com/pydantic/pydantic
+    revision: 7b3dd4cf4ba551c33c963f22627cdc566402d8f6
+    checkout: ../../../../P52Sources/pydantic
+    packageId: pydantic.core
+    labels: [python_rust, workspace, p52_t5]
+  - id: httpx
+    repository: https://github.com/encode/httpx
+    revision: b5addb64f0161ff6bfe94c124ef76f6a1fba5254
+    checkout: ../../../../P52Sources/httpx
+    packageId: httpx.core
+    labels: [python, single_package, p52_t5]
+  - id: typer
+    repository: https://github.com/tiangolo/typer
+    revision: 0974a7e39fdd8ea591c0b58e573ccb2451a302c3
+    checkout: ../../../../P52Sources/typer
+    packageId: typer.core
+    labels: [python, single_package, p52_t5]
+  - id: fastify
+    repository: https://github.com/fastify/fastify
+    revision: ada0623dce9ed776306f2ccaa095b8ee01a492ba
+    checkout: ../../../../P52Sources/fastify
+    packageId: fastify.core
+    labels: [javascript, single_package, p52_t5]
+  - id: vite
+    repository: https://github.com/vitejs/vite
+    revision: 428bda3b98886708006f4f2f409095f89d705df1
+    checkout: ../../../../P52Sources/vite
+    packageId: vite.core
+    labels: [typescript, workspace, p52_t5]
+  - id: svelte
+    repository: https://github.com/sveltejs/svelte
+    revision: 2bace308e37ac1def958be750bd699ed302bb715
+    checkout: ../../../../P52Sources/svelte
+    packageId: svelte.core
+    labels: [typescript, workspace, p52_t5]
+  - id: nest
+    repository: https://github.com/nestjs/nest
+    revision: ff7a16e82f5e80a71c839f5cc327d20bcab0d455
+    checkout: ../../../../P52Sources/nest
+    packageId: nest.core
+    labels: [typescript, workspace, p52_t5]
+  - id: react
+    repository: https://github.com/facebook/react
+    revision: 711c445bccc331b3ef85a793feb8e13dcf968fc3
+    checkout: ../../../../P52Sources/react
+    packageId: react.core
+    labels: [javascript, workspace, p52_t5]
+  - id: vue-core
+    repository: https://github.com/vuejs/core
+    revision: b5f8518379b77c3b62a7a9d2b52f6c76cda09bd5
+    checkout: ../../../../P52Sources/core
+    packageId: vue-core.core
+    labels: [typescript, workspace, p52_t5]
+  - id: github-cli
+    repository: https://github.com/cli/cli
+    revision: ae66a1c02e08366858f3070664f493afbe0cdf18
+    checkout: ../../../../P52Sources/cli
+    packageId: github-cli.core
+    labels: [go, single_package, p52_t5]
+  - id: pebble
+    repository: https://github.com/cockroachdb/pebble
+    revision: 8fb150d9135d6f94e183a874475e0bd1afb18f63
+    checkout: ../../../../P52Sources/pebble
+    packageId: pebble.core
+    labels: [go, single_package, p52_t5]
+  - id: uv
+    repository: https://github.com/astral-sh/uv
+    revision: 25ada4d695c8d05232a3b22cef69bcf9858e274a
+    checkout: ../../../../P52Sources/uv
+    packageId: uv.core
+    labels: [rust_python, workspace, p52_t5]
+  - id: axum
+    repository: https://github.com/tokio-rs/axum
+    revision: 0704574455272caa79ff3ae8207adf8f620516c9
+    checkout: ../../../../P52Sources/axum
+    packageId: axum.core
+    labels: [rust, workspace, p52_t5]
+  - id: actix-web
+    repository: https://github.com/actix/actix-web
+    revision: eee23e2326d1f063c2959a71fa642e1b7c3b1dc9
+    checkout: ../../../../P52Sources/actix-web
+    packageId: actix-web.core
+    labels: [rust, workspace, p52_t5]
+  - id: feature-passport
+    repository: https://github.com/0al-spec/FeaturePassport
+    revision: 724e51c47fee89de1fcd4a3857ebbcea9bf1fa19
+    checkout: ../../../../0AL/FeaturePassport
+    packageId: feature-passport.core
+    labels: [specification, documentation_heavy, p52_t5]
+  - id: platform
+    repository: https://github.com/0al-spec/Platform
+    revision: 65642a00c544ca422d659bfb76673b4d7118a1e4
+    checkout: ../../../../0AL/Platform
+    packageId: platform.core
+    labels: [specification, documentation_heavy, p52_t5]
+  - id: toys-sandbox
+    repository: https://github.com/SoundBlaster/ToysSandbox
+    revision: 563fc90b6af675501843331de9b9d0a9872abf2c
+    checkout: ../../../../ToysSandbox
+    packageId: toys-sandbox.core
+    labels: [godot, workspace, p52_t5]
+  - id: xyflow
+    repository: https://github.com/xyflow/xyflow
+    revision: a58568f11bc0e1a1bdca1b3549e959e2e1ca0cdd
+    checkout: ../../../../xyflow
+    packageId: xyflow.core
+    labels: [typescript, workspace, p52_t5]
+  - id: tokenkeeper
+    repository: https://github.com/SoundBlaster/tokenkeeper
+    revision: a43c11fc97a2a2056d6e656f0c0247fa77575e5a
+    checkout: ../../../../tokenkeeper
+    packageId: tokenkeeper.core
+    labels: [rust, single_package, p52_t5]
+  - id: flow
+    repository: https://github.com/SoundBlaster/Flow
+    revision: 5128f448ed751b7be930972088e566060fa281ea
+    checkout: ../../../../Flow
+    packageId: flow.core
+    labels: [documentation, documentation_heavy, p52_t5]
+  - id: zed-objc
+    repository: https://github.com/SoundBlaster/zed-objective-c
+    revision: 6bb388c56b56d9763be3b6baf733593985528978
+    checkout: ../../../../ZedObjC
+    packageId: zed-objc.core
+    labels: [rust, single_package, p52_t5]
+  - id: navigation-split-view
+    repository: https://github.com/SoundBlaster/NavigationSplitView
+    revision: 2c88df50b8f587560b91f6027e9ea275aee17060
+    checkout: ../../../../NavigationSplitView
+    packageId: navigation-split-view.core
+    labels: [swift, single_package, p52_t5]
+  - id: nested-swiftui-a11y
+    repository: https://github.com/SoundBlaster/NestedSwiftUIA11y
+    revision: 07e660e410d74016f209262782ab2fae39be9e93
+    checkout: ../../../../NestedSwiftUIA11y
+    packageId: nested-swiftui-a11y.core
+    labels: [swift, single_package, p52_t5]
+  - id: paraconsistent-logic
+    repository: https://github.com/SoundBlaster/ParaconsistentLogic
+    revision: 684e87a0337ad00e4a8f53b977250acfaa4f6274
+    checkout: ../../../../ParaconsistentLogic
+    packageId: paraconsistent-logic.core
+    labels: [swift, single_package, p52_t5]
+  - id: specification-kit
+    repository: https://github.com/SoundBlaster/SpecificationKit
+    revision: 2adc31895b7135ec4641535ba2d68c597bfb4d82
+    checkout: ../../../../SpecificationKit
+    packageId: specification-kit.core
+    labels: [swift, workspace, p52_t5]
+  - id: swiftui-blur
+    repository: https://github.com/SoundBlaster/SwiftUIBlur
+    revision: 82ac4d5a88dbd3238d9cc8dc9cee11af7ec7cc7b
+    checkout: ../../../../SwiftUIBlur
+    packageId: swiftui-blur.core
+    labels: [swift, single_package, p52_t5]
+  - id: xcode-mcp-wrapper
+    repository: https://github.com/SoundBlaster/XcodeMCPWrapper
+    revision: 177e4d93149a14337cab3809733b13c00753873e
+    checkout: ../../../../XcodeMCPWrapper
+    packageId: xcode-mcp-wrapper.core
+    labels: [swift, workspace, p52_t5]
+  - id: specification-core-rs
+    repository: https://github.com/SoundBlaster/specification-core-rs
+    revision: ee8485fbe86c80b84cdbbd164d4ccca65eb716ae
+    checkout: ../../../../specification-core-rs
+    packageId: specification-core-rs.core
+    labels: [rust, single_package, p52_t5]
+  - id: docc2context-service
+    repository: https://github.com/SoundBlaster/docc2context-service
+    revision: 128ce026ca9a525b26ee86632141cd67112c97bf
+    checkout: ../../../../docc2context-service
+    packageId: docc2context-service.core
+    labels: [swift, service, p52_t5]

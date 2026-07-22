@@ -1,37 +1,33 @@
-# Next Task: P52-T5 Final 50-100 Repository Source Manifest and Checkout Readiness
+# Next Task: P52-T6 50-100 Repository Static-Only Gate
 
 **Status:** Planned
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
-**Depends On:** `P52-T4` Twenty-Repository Controlled Pilot
+**Depends On:** `P52-T5` Final 50-100 Repository Source Manifest and Checkout Readiness
 
 ## Objective
 
-Create the final 50-100 repository manifest and checkout-readiness evidence,
-using pinned clean local checkouts, provenance, license, size, and stop-policy
-metadata before any larger-corpus static or model gate.
+Run deterministic static-only collection for the approved 50-repository P52-T5
+corpus, preserving preview candidates and recording completion, failures, and
+bounded receipts before any Codex Spark execution.
 
 ## Preconditions
 
-- P52-T3 is archived with a PASS verdict: five repositories passed the static,
-  Codex completion, schema-validity, repository-specificity, and unsupported
-  claim thresholds, and P52-T4 is unlocked.
-- An operator supplies exactly twenty pinned local checkouts and an ingestible
-  source manifest with matching revisions.
-- Static-only collection completes before any LM Studio or Spark invocation.
-- LM Studio is loaded locally, accepts `response_format.type: json_schema`, and
-  provider-side sensitive request/response logging is disabled by the operator.
-  The schema is sent by the client, not configured in the Chat Template.
-- The `gpt-5.3-codex-spark` operator authorization is available at execution
-  time; its P52-T2 read-only, ephemeral external-model handoff is preserved.
+- P52-T5 is archived with a PASS verdict and unlocks P52-T6.
+- The P52-T5 manifest contains 50 clean local checkouts at matching immutable
+  revisions with resolved provenance, license evidence, and size budgets.
+- The static completion rate must meet the Phase 52 minimum of 95% before P52-T7
+  can invoke Codex Spark.
+- Repository failures remain explicit and subject to the recorded stop policy;
+  no failed source is silently dropped or replaced.
 
 ## Boundaries
 
 - Do not create, restore, clone, or fetch repositories.
 - Do not install dependencies or invoke package managers.
 - Do not execute harvested code or adapters.
+- Do not invoke LM Studio, Codex Spark, or any other model.
 - Do not accept packages or relations.
 - Do not publish registry metadata, seed baselines, or remove `preview_only`.
-- Do not treat static, AI, AI-enriched, calibration, or adapter output as
-  registry truth.
+- Do not treat static candidates or reports as registry truth.
 - Do not persist raw prompts, raw provider responses, secrets, session state,
   or chain-of-thought.
