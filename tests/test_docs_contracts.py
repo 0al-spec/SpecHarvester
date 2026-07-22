@@ -40,7 +40,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P52-T4 Twenty-Repository Controlled Pilot" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Planned" in next_text
+        assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
             next_text
         )
