@@ -873,3 +873,4 @@
 | 2026-07-22 | P52-T3 | Archived REVIEW_p52_t3_five_repository_controlled_calibration report |
 | 2026-07-22 | P52-T4 | Archived Twenty-Repository Controlled Pilot (PASS) |
 | 2026-07-22 | P52-T5 | Archived Final 50-100 Repository Source Manifest and Checkout Readiness (PASS) |
+| 2026-07-22 | P52-T5 | Archived REVIEW_p52_t5_final_corpus_checkout_readiness report |
