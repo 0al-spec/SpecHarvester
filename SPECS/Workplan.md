@@ -2472,7 +2472,7 @@ Acceptance:
   phased rollout, Codex Spark agent boundary, calibration gates, source-policy
   constraints, quality metrics, and non-authority boundaries before any new
   repository checkout or batch execution is attempted.
-- [ ] `P52-T2` Define the Codex Spark external-model adapter contract, including
+- [x] `P52-T2` Define the Codex Spark external-model adapter contract, including
   deterministic evidence inputs, `codex exec` invocation policy, structured
   JSON handoff, schema validation, receipts, timeouts, failure taxonomy, and
   proposal-only/non-persistence boundaries before a live model call.

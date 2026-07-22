@@ -260,6 +260,11 @@ source/readiness gate, static-only gate, proposal-only Spark gate,
 triage/handoff, and exit decision. The plan keeps live execution, registry
 promotion, package and relation acceptance, baseline seeding, and
 `preview_only` removal unapproved.
+P52-T2 is recorded in <doc:CodexSparkExternalModelAdapterContract>. It fixes
+the future `codex exec` invocation policy, read-only evidence boundary,
+final-message JSON Schema, receipt and failure policy, and existing external
+`--model-output` handoff without invoking Codex, replacing LM Studio, or
+granting registry authority.
 
 ### Selected Candidate SpecPM Intake Handoff
 

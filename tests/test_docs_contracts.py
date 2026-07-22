@@ -38,9 +38,34 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    if "# Next Task: P52-T2 Codex Spark External-Model Adapter Contract" in next_text:
+    if "# Next Task: P52-T3 Five-Repository Controlled Calibration" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Planned" in next_text
+        assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
+            next_text
+        )
+        assert "`P52-T2` Codex Spark External-Model Adapter Contract" in next_text
+        assert "exactly five" in normalized
+        assert "operator-provided, pinned local repository checkouts" in next_text
+        assert "static-only evidence" in next_text
+        assert "Codex Spark proposal-only output" in next_text
+        assert "P52-T2 schema-validated external-model handoff" in normalized
+        assert "Do not create, restore, clone, or fetch repositories" in next_text
+        assert "Do not install dependencies or invoke package managers" in next_text
+        assert "Do not execute harvested code or adapters" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        assert "Do not persist raw prompts, raw provider responses, secrets, session state," in (
+            next_text
+        )
+        assert "chain-of-thought" in next_text
+        return
+
+    if "# Next Task: P52-T2 Codex Spark External-Model Adapter Contract" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
         assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
             next_text
         )
@@ -37184,6 +37209,194 @@ def test_controlled_repository_corpus_plan_records_p52_t1_contract() -> None:
             f"Reference {required!r} not found in {path}"
         )
     assert_current_next_task(next_task.read_text(encoding="utf-8"))
+
+
+def test_codex_spark_external_model_adapter_contract_records_p52_t2() -> None:
+    source_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "controlled_repository_corpus_plan"
+        / "p52-t1-controlled-repository-corpus-plan.example.json"
+    )
+    schema_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "codex_spark_external_model_adapter_contract"
+        / "package-set-ai-draft-final-message.schema.json"
+    )
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "codex_spark_external_model_adapter_contract"
+        / "p52-t2-codex-spark-external-model-adapter-contract.example.json"
+    )
+    github_doc = ROOT / "docs" / "CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md"
+    docc_doc = (
+        ROOT
+        / "Sources"
+        / "SpecHarvester"
+        / "Documentation.docc"
+        / "CodexSparkExternalModelAdapterContract.md"
+    )
+    docs_index = ROOT / "docs" / "README.md"
+    docc_root = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "SpecHarvester.md"
+    capabilities = ROOT / "docs" / "CAPABILITIES.md"
+    capabilities_docc = (
+        ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Capabilities.md"
+    )
+    roadmap = ROOT / "docs" / "ROADMAP.md"
+    roadmap_docc = ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
+    workplan = ROOT / "SPECS" / "Workplan.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.codex-spark-external-model-adapter-contract/v0"
+    assert payload["kind"] == "SpecHarvesterCodexSparkExternalModelAdapterContract"
+    assert payload["authority"] == "producer_adapter_contract_evidence_only"
+    assert payload["phase"] == "P52"
+    assert payload["task"] == "P52-T2"
+    source = payload["sourceArtifacts"]["p52CorpusPlan"]
+    assert ROOT / source["path"] == source_path
+    assert source["digest"] == "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest()
+    assert source["apiVersion"] == source_payload["apiVersion"]
+    assert source["kind"] == source_payload["kind"]
+    assert source["authority"] == source_payload["authority"]
+    assert source["requiredModel"] == "gpt-5.3-codex-spark"
+
+    assert payload["adapter"] == {
+        "id": "codex.spark.external-model-output.v0",
+        "providerKind": "codex_exec_external_model_output",
+        "model": "gpt-5.3-codex-spark",
+        "execution": "not_run",
+        "isOpenAICompatibleHttpProvider": False,
+        "replacesLMStudioPath": False,
+        "requiresOperatorOptIn": True,
+    }
+    assert payload["operation"]["handoffCommand"] == (
+        "package-set-ai-draft-proposal <generated-workspace-inventory.json> "
+        "--model-output <validated-final-message.json>"
+    )
+    final_schema = payload["operation"]["finalMessageSchema"]
+    assert ROOT / final_schema["path"] == schema_path
+    assert final_schema["digest"] == (
+        "sha256:" + hashlib.sha256(schema_path.read_bytes()).hexdigest()
+    )
+    assert final_schema["envelopeProperty"] == "proposal"
+    assert final_schema["validatesBeforeHandoff"] is True
+    assert final_schema["allowsJsonRepair"] is False
+    assert schema["required"] == ["proposal"]
+    assert schema["properties"]["proposal"]["required"] == [
+        "packageSet",
+        "selectedMembers",
+        "excludedPackages",
+        "relations",
+        "evidenceGaps",
+        "overallConfidence",
+    ]
+
+    profile = payload["invocationProfile"]
+    assert profile["command"] == "codex exec"
+    assert profile["requiredArguments"] == [
+        "--model gpt-5.3-codex-spark",
+        "--sandbox read-only",
+        "--ephemeral",
+        "--ignore-user-config",
+        "--cd <generated-read-only-evidence-stage>",
+        "--output-schema <package-set-ai-draft-final-message.schema.json>",
+        "--output-last-message <ephemeral-final-message.json>",
+    ]
+    assert profile["forbiddenArguments"] == [
+        "--add-dir",
+        "--dangerously-bypass-approvals-and-sandbox",
+        "--full-auto",
+        "--json",
+    ]
+    assert profile["agentWritesWorkspace"] is False
+    assert profile["eventStreamPersisted"] is False
+    assert all(
+        value is False for value in payload["evidenceStaging"].values() if isinstance(value, bool)
+    )
+    assert payload["handoff"]["acceptsOnlySchemaValidatedFinalMessage"] is True
+    assert payload["handoff"]["proposalOnly"] is True
+    assert all(
+        value is False
+        for key, value in payload["handoff"].items()
+        if key
+        not in {
+            "acceptsOnlySchemaValidatedFinalMessage",
+            "acceptsOnlyFinalMessage",
+            "unwrapsProposalEnvelope",
+            "proposalOnly",
+        }
+    )
+    assert payload["receiptPolicy"]["allowedFields"] == [
+        "model",
+        "codexCliVersion",
+        "sandbox",
+        "schemaDigest",
+        "evidenceDigest",
+        "durationMs",
+        "exitCode",
+        "finalOutputDigest",
+    ]
+    assert payload["receiptPolicy"]["forbiddenFields"] == [
+        "rawPrompt",
+        "rawProviderResponse",
+        "secret",
+        "sessionState",
+        "chainOfThought",
+    ]
+    assert payload["failurePolicy"]["timeoutSeconds"] == 300
+    assert (
+        payload["failurePolicy"]["onFailure"]
+        == "reject_proposal_only_output_without_retry_or_repair"
+    )
+    assert all(value is False for value in payload["executionBoundary"].values())
+    assert all(value is False for value in payload["privacyBoundary"].values())
+    assert payload["nextState"] == {
+        "unlocks": "P52-T3",
+        "liveCodexRunPerformed": False,
+        "fiveRepositoryCalibrationApprovedByThisArtifact": False,
+    }
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "Codex Spark External-Model Adapter Contract",
+            "P52-T2",
+            "gpt-5.3-codex-spark",
+            "codex_exec_external_model_output",
+            "--sandbox read-only",
+            "--ephemeral",
+            "--ignore-user-config",
+            "--output-schema",
+            "--output-last-message",
+            "--model-output",
+            "generated-workspace-inventory.json",
+            "not an OpenAI-compatible HTTP provider",
+            "does not replace the LM Studio path",
+            "raw prompts, raw provider responses, secrets, session state, and chain-of-thought",
+            "execution: not_run",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    for path, required in (
+        (docs_index, "CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md"),
+        (docc_root, "<doc:CodexSparkExternalModelAdapterContract>"),
+        (capabilities, "CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md"),
+        (capabilities_docc, "CodexSparkExternalModelAdapterContract"),
+        (roadmap, "CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md"),
+        (roadmap_docc, "CodexSparkExternalModelAdapterContract"),
+        (workplan, "`P52-T2` Define the Codex Spark external-model adapter contract"),
+    ):
+        assert required in path.read_text(encoding="utf-8"), (
+            f"Reference {required!r} not found in {path}"
+        )
 
 
 def test_docc2context_ai_draft_same_scope_bounded_rerun_gate_records_p49_t3_result() -> None:

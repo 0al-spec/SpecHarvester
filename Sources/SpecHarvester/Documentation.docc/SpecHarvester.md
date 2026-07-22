@@ -343,6 +343,7 @@ the host.
 - <doc:BaselineSubmissionHandoff>
 - <doc:PackageSetAIDraftProposal>
 - <doc:PackageSetAIEnrichment>
+- <doc:CodexSparkExternalModelAdapterContract>
 - <doc:AIEnrichmentCandidatePatch>
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateIntakePolicy>
