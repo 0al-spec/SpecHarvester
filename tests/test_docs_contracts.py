@@ -38,6 +38,34 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P52-T4 Twenty-Repository Controlled Pilot" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Planned" in next_text
+        assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
+            next_text
+        )
+        assert "`P52-T3` Five-Repository Controlled Calibration" in next_text
+        assert "exactly twenty pinned local checkouts" in normalized
+        assert "Static-only collection completes before any LM Studio or Spark invocation" in (
+            next_text
+        )
+        assert "response_format.type: json_schema" in next_text
+        assert "provider-side sensitive request/response logging is disabled" in next_text
+        assert "gpt-5.3-codex-spark" in next_text
+        assert "read-only, ephemeral external-model handoff" in next_text
+        assert "Do not create, restore, clone, or fetch repositories" in next_text
+        assert "Do not install dependencies or invoke package managers" in next_text
+        assert "Do not execute harvested code or adapters" in next_text
+        assert "Do not accept packages or relations" in next_text
+        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in (
+            next_text
+        )
+        assert "Do not persist raw prompts, raw provider responses, secrets, session state," in (
+            next_text
+        )
+        assert "chain-of-thought" in next_text
+        return
+
     if "# Next Task: P52-T3 Five-Repository Controlled Calibration" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Planned" in next_text

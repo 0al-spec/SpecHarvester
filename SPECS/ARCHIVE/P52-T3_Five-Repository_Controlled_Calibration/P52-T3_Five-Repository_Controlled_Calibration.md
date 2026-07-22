@@ -77,3 +77,7 @@ a schema pasted into LM Studio's Chat Template field.
 - Validate every durable JSON artifact with `python -m json.tool`.
 - Run Flow gates from `.flow/params.yaml`, including full pytest, Ruff,
   coverage >=90%, Swift package/DocC build, and `git diff --check`.
+
+---
+**Archived:** 2026-07-22
+**Verdict:** PASS

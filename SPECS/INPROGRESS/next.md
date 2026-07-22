@@ -1,27 +1,30 @@
-# Next Task: P52-T3 Five-Repository Controlled Calibration
+# Next Task: P52-T4 Twenty-Repository Controlled Pilot
 
 **Status:** Planned
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
-**Depends On:** `P52-T2` Codex Spark External-Model Adapter Contract
+**Depends On:** `P52-T3` Five-Repository Controlled Calibration
 
 ## Objective
 
-Run the first bounded Phase 52 calibration over exactly five
-operator-provided, pinned local repository checkouts. Compare deterministic
-static-only evidence with Codex Spark proposal-only output using the P52-T2
-schema-validated external-model handoff and record the Phase 52 quality metrics.
+Run the bounded Phase 52 twenty-repository controlled pilot after P52-T3's
+passing calibration. Record static-only baseline results first, then controlled
+proposal-only LM Studio and Codex Spark outcomes, including concurrency,
+token/usage receipts, schema failures, repository specificity, unsupported
+claims, and stop-policy evidence.
 
 ## Preconditions
 
-- P52-T2 is archived with a PASS verdict and its invocation profile is used
-  without weakening the read-only, ephemeral, no-raw-persistence constraints.
-- An operator supplies five pinned local checkouts and an ingestible source
-  manifest with matching revisions.
-- Static-only collection completes before any Spark invocation.
-- LM Studio is loaded locally and accepts `response_format.type: json_schema`;
-  the schema is sent by the client, not configured in the Chat Template.
+- P52-T3 is archived with a PASS verdict: five repositories passed the static,
+  Codex completion, schema-validity, repository-specificity, and unsupported
+  claim thresholds, and P52-T4 is unlocked.
+- An operator supplies exactly twenty pinned local checkouts and an ingestible
+  source manifest with matching revisions.
+- Static-only collection completes before any LM Studio or Spark invocation.
+- LM Studio is loaded locally, accepts `response_format.type: json_schema`, and
+  provider-side sensitive request/response logging is disabled by the operator.
+  The schema is sent by the client, not configured in the Chat Template.
 - The `gpt-5.3-codex-spark` operator authorization is available at execution
-  time; this pointer does not itself make a live model call.
+  time; its P52-T2 read-only, ephemeral external-model handoff is preserved.
 
 ## Boundaries
 
