@@ -57,13 +57,16 @@ Only after JSON Schema validation may the adapter unwrap `proposal` and invoke
 the existing external handoff:
 
 ```text
-package-set-ai-draft-proposal --model-output <validated-final-message.json>
+package-set-ai-draft-proposal <generated-workspace-inventory.json> \
+  --model-output <validated-final-message.json>
 ```
 
-The established `--model-output` seam already marks the provider record as an
-externally produced model output. The future adapter must not send the output
-through LM Studio, substitute an HTTP provider, repair malformed JSON, or
-retain the raw model session.
+The generated `workspace-inventory.json` remains the required positional input:
+SpecHarvester uses it to rebuild the deterministic request before reading the
+validated external output. The established `--model-output` seam then marks the
+provider record as an externally produced model output. The future adapter must
+not send the output through LM Studio, substitute an HTTP provider, repair
+malformed JSON, or retain the raw model session.
 
 ## Receipts And Failure Policy
 

@@ -28,7 +28,7 @@
   "operation": {
     "id": "package_set_ai_draft",
     "requestRecordKind": "SpecHarvesterPackageSetAIDraftRequest",
-    "handoffCommand": "package-set-ai-draft-proposal --model-output",
+    "handoffCommand": "package-set-ai-draft-proposal <generated-workspace-inventory.json> --model-output <validated-final-message.json>",
     "finalMessageSchema": {
       "path": "tests/fixtures/codex_spark_external_model_adapter_contract/package-set-ai-draft-final-message.schema.json",
       "digest": "sha256:d40b941f03b95c63c0dd241f78631706b96daee9885bc571c7d628c134493128",

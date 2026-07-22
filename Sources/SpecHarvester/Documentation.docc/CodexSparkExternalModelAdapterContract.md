@@ -41,9 +41,11 @@ and `--json` are forbidden.
 
 The only accepted model artifact is a final JSON message that passes the P52-T2
 schema. Its required `proposal` envelope carries the existing package-set draft
-shape. After validation, the adapter unwraps the envelope and uses the existing
-`package-set-ai-draft-proposal --model-output` boundary. There is no malformed
-JSON repair and no raw session persistence.
+shape. After validation, the adapter unwraps the envelope and invokes
+`package-set-ai-draft-proposal <generated-workspace-inventory.json> --model-output
+<validated-final-message.json>`. The generated inventory remains the required
+positional input used to rebuild the deterministic request before the external
+output is read. There is no malformed JSON repair and no raw session persistence.
 
 A receipt may keep model, CLI version, sandbox, schema/evidence/output digests,
 duration, and exit code. It excludes raw prompts, raw provider responses,

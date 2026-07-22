@@ -37277,7 +37277,10 @@ def test_codex_spark_external_model_adapter_contract_records_p52_t2() -> None:
         "replacesLMStudioPath": False,
         "requiresOperatorOptIn": True,
     }
-    assert payload["operation"]["handoffCommand"] == "package-set-ai-draft-proposal --model-output"
+    assert payload["operation"]["handoffCommand"] == (
+        "package-set-ai-draft-proposal <generated-workspace-inventory.json> "
+        "--model-output <validated-final-message.json>"
+    )
     final_schema = payload["operation"]["finalMessageSchema"]
     assert ROOT / final_schema["path"] == schema_path
     assert final_schema["digest"] == (
@@ -37374,6 +37377,7 @@ def test_codex_spark_external_model_adapter_contract_records_p52_t2() -> None:
             "--output-schema",
             "--output-last-message",
             "--model-output",
+            "generated-workspace-inventory.json",
             "not an OpenAI-compatible HTTP provider",
             "does not replace the LM Studio path",
             "raw prompts, raw provider responses, secrets, session state, and chain-of-thought",
