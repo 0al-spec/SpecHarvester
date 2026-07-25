@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-07-23
+**Last Updated:** 2026-07-25
 
 ## Archived Tasks
 
@@ -236,6 +236,7 @@
 | P52-T4 | [P52-T4_Twenty-Repository_Controlled_Pilot/](P52-T4_Twenty-Repository_Controlled_Pilot/) | 2026-07-22 | PASS |
 | P52-T5 | [P52-T5_Final_50-100_Repository_Source_Manifest_and_Checkout_Readiness/](P52-T5_Final_50-100_Repository_Source_Manifest_and_Checkout_Readiness/) | 2026-07-22 | PASS |
 | P52-T6 | [P52-T6_50-100_Repository_Static-Only_Gate/](P52-T6_50-100_Repository_Static-Only_Gate/) | 2026-07-23 | PASS |
+| P52-T7 | [P52-T7_Codex_Spark_Proposal-Only_Gate/](P52-T7_Codex_Spark_Proposal-Only_Gate/) | 2026-07-25 | PASS |
 
 ## Historical Artifacts
 
@@ -877,3 +878,5 @@
 | 2026-07-22 | P52-T5 | Archived REVIEW_p52_t5_final_corpus_checkout_readiness report |
 | 2026-07-23 | P52-T6 | Archived 50-100 Repository Static-Only Gate (PASS) |
 | 2026-07-23 | P52-T6 | Archived REVIEW_p52_t6_final_corpus_static_only_gate report |
+| 2026-07-25 | P52-T7 | Archived 50-100 Repository Codex Spark Proposal-Only Gate (PASS) |
+| 2026-07-25 | P52-T7 | Archived REVIEW_p52_t7_codex_spark_proposal_only_gate report |
