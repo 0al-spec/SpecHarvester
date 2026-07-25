@@ -253,6 +253,8 @@ def write_inputs_and_readiness(tmp_path: Path) -> tuple[Path, Path, str]:
             ]
         )
         repositories.append({"id": repository_id, "status": "ready"})
+        repositories[-1]["repository"] = f"https://github.com/example/{repository_id}"
+        repositories[-1]["revision"] = f"{index:040x}"
     (inputs / "repositories.yml").write_text("\n".join(manifest) + "\n")
     readiness = tmp_path / "readiness.json"
     readiness.write_text(
