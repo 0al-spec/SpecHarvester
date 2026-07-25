@@ -1,27 +1,24 @@
-# Next Task: P52-T7 50-100 Repository Codex Spark Proposal-Only Gate
+# Next Task: P52-T8 Triage Phase 52 outputs
 
 **Status:** In Progress
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
-**Depends On:** `P52-T6` 50-100 Repository Static-Only Gate
+**Depends On:** `P52-T7` 50-100 Repository Codex Spark Proposal-Only Gate
 **Started:** 2026-07-25
-**Active Task:** `P52-T7` 50-100 Repository Codex Spark Proposal-Only Gate
+**Active Task:** `P52-T8` Triage Static and Spark Output into Author Handoff
 **Branch:** feature/p52-t7-codex-spark-proposal-only-gate
 
 ## Objective
 
-Run the approved 50-repository corpus through the schema-validated Codex Spark
-proposal-only path, preserving bounded receipts, explicit failures, and
-non-persistence before output triage.
+Continue Phase 52 output processing by triaging static, Codex, and enriched preview
+artifacts from the P52 corpus into author-review and disposition buckets.
 
 ## Preconditions
 
-- P52-T6 is archived with a PASS verdict and explicitly unlocks P52-T7.
-- All 50 approved sources produced static outcomes, with a 96% strict static
-  completion rate against the required 95% minimum.
-- The Codex Spark adapter contract and P52-T3/P52-T4 calibration evidence remain
-  binding for schema validation, receipts, timeouts, and rejection policy.
-- The two P52-T6 dual-license filename findings remain explicit and must not be
-  silently omitted or treated as package-quality approval.
+- P52-T7 is archived with a PASS verdict and unlocks P52-T8.
+- All P52 static/spark/disposition evidence remains immutable and reviewable.
+- Non-authority boundaries remain: no registry mutation, no package/relation
+  acceptance, no preview-only removal, and no raw prompt/prompt-response
+  persistence.
 
 ## Boundaries
 
