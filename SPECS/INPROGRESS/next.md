@@ -1,8 +1,11 @@
 # Next Task: P52-T7 50-100 Repository Codex Spark Proposal-Only Gate
 
-**Status:** Planned
+**Status:** In Progress
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
 **Depends On:** `P52-T6` 50-100 Repository Static-Only Gate
+**Started:** 2026-07-25
+**Active Task:** `P52-T7` 50-100 Repository Codex Spark Proposal-Only Gate
+**Branch:** feature/p52-t7-codex-spark-proposal-only-gate
 
 ## Objective
 
