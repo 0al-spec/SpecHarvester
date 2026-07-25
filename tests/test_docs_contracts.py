@@ -44,9 +44,14 @@ def assert_current_next_task(next_text: str) -> None:
         assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
             next_text
         )
-        assert "**Depends On:** `P52-T7` 50-100 Repository Codex Spark Proposal-Only Gate" in next_text
+        assert (
+            "**Depends On:** `P52-T7` 50-100 Repository Codex Spark Proposal-Only Gate"
+            in next_text
+        )
         assert "**Started:** 2026-07-25" in next_text
-        assert "`P52-T8` Triage Static and Spark Output into Author Handoff" in next_text
+        assert (
+            "`P52-T8` Triage Static and Spark Output into Author Handoff" in next_text
+        )
         assert "feature/p52-t7-codex-spark-proposal-only-gate" in next_text
         assert "Continue Phase 52 output processing by triaging static, Codex, and enriched preview" in normalized
         assert "P52-T7 is archived with a PASS verdict and unlocks P52-T8." in next_text
@@ -56,14 +61,22 @@ def assert_current_next_task(next_text: str) -> None:
         assert "Do not install dependencies or invoke package managers" in next_text
         assert "Do not execute harvested code or adapters" in next_text
         assert (
-            "Invoke only the approved read-only Codex Spark proposal path; do not invoke LM Studio or another model provider."
+            "Invoke only the approved read-only Codex Spark proposal path; do not invoke LM"
+            " Studio or another model provider."
             in next_text
         )
         assert "Do not accept packages or relations" in next_text
-        assert "Do not publish registry metadata, seed baselines, or remove `preview_only`" in next_text
-        assert "Do not treat static candidates, model proposals, or reports as registry truth" in next_text
         assert (
-            "Do not persist raw prompts, raw provider responses, secrets, session state, or chain-of-thought"
+            "Do not publish registry metadata, seed baselines, or remove `preview_only`"
+            in next_text
+        )
+        assert (
+            "Do not treat static candidates, model proposals, or reports as registry truth"
+            in next_text
+        )
+        assert (
+            "Do not persist raw prompts, raw provider responses, secrets, session state, or"
+            " chain-of-thought"
             in next_text
         )
         return
