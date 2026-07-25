@@ -65,6 +65,9 @@ class FinalCorpusStaticOnlyGate:
     def run(self) -> dict[str, Any]:
         sources = read_repository_source_manifests(self.options.inputs)
         source_ids = [string_value(source.get("id")) for source in sources]
+        source_by_id = {
+            string_value(source.get("id")): source for source in sources if source.get("id")
+        }
         validate_source_ids(source_ids)
         readiness = read_json_object(self.options.readiness, "P52-T5 readiness report")
         readiness_digest = sha256_file(self.options.readiness)
@@ -73,6 +76,7 @@ class FinalCorpusStaticOnlyGate:
             expected_digest=self.options.readiness_sha256,
             observed_digest=readiness_digest,
             source_ids=source_ids,
+            source_by_id=source_by_id,
         )
         batch = self.batch_runner(
             AutonomousCandidateBatchOptions(
@@ -209,6 +213,7 @@ def validate_readiness(
     expected_digest: str,
     observed_digest: str,
     source_ids: list[str],
+    source_by_id: dict[str, dict[str, Any]],
 ) -> None:
     if observed_digest != expected_digest:
         raise ValueError("P52-T5 readiness digest mismatch")
@@ -227,6 +232,11 @@ def validate_readiness(
         raise ValueError("P52-T5 readiness source ids do not match the P52-T6 manifest")
     if any(record.get("status") != "ready" for record in records):
         raise ValueError("P52-T5 readiness contains blocked repositories")
+    for record in records:
+        source_id = string_value(record.get("id"))
+        source = source_by_id.get(source_id, {})
+        if record.get("repository") != source.get("repository") or record.get("revision") != source.get("revision"):
+            raise ValueError("P52-T5 readiness contains drifted manifest fields")
 
 
 def repository_records(
