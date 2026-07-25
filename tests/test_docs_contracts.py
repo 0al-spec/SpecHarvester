@@ -55,7 +55,7 @@ def assert_current_next_task(next_text: str) -> None:
             " preview" in normalized
         )
         assert "P52-T7 is archived with a PASS verdict and unlocks P52-T8." in next_text
-        assert "No registry mutation" in normalized
+        assert "no registry mutation" in normalized
         assert "no raw prompt" in normalized
         assert "Do not create, restore, clone, or fetch repositories" in next_text
         assert "Do not install dependencies or invoke package managers" in next_text
