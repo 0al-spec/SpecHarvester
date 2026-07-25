@@ -45,13 +45,10 @@ def assert_current_next_task(next_text: str) -> None:
             next_text
         )
         assert (
-            "**Depends On:** `P52-T7` 50-100 Repository Codex Spark Proposal-Only Gate"
-            in next_text
+            "**Depends On:** `P52-T7` 50-100 Repository Codex Spark Proposal-Only Gate" in next_text
         )
         assert "**Started:** 2026-07-25" in next_text
-        assert (
-            "`P52-T8` Triage Static and Spark Output into Author Handoff" in next_text
-        )
+        assert "`P52-T8` Triage Static and Spark Output into Author Handoff" in next_text
         assert "feature/p52-t7-codex-spark-proposal-only-gate" in next_text
         assert (
             "Continue Phase 52 output processing by triaging static, Codex, and enriched"
@@ -65,8 +62,7 @@ def assert_current_next_task(next_text: str) -> None:
         assert "Do not execute harvested code or adapters" in next_text
         assert (
             "Invoke only the approved read-only Codex Spark proposal path; do not invoke LM"
-            " Studio or another model provider."
-            in next_text
+            " Studio or another model provider." in next_text
         )
         assert "Do not accept packages or relations" in next_text
         assert (
@@ -79,8 +75,7 @@ def assert_current_next_task(next_text: str) -> None:
         )
         assert (
             "Do not persist raw prompts, raw provider responses, secrets, session state, or"
-            " chain-of-thought"
-            in next_text
+            " chain-of-thought" in next_text
         )
         return
 
