@@ -349,6 +349,7 @@ the host.
 - <doc:FiveRepositoryControlledCalibration>
 - <doc:TwentyRepositoryControlledPilot>
 - <doc:FinalCorpusCheckoutReadiness>
+- <doc:FinalCorpusStaticOnlyGate>
 - <doc:AIEnrichmentCandidatePatch>
 - <doc:AutonomousCandidateBatch>
 - <doc:AutonomousCandidateIntakePolicy>

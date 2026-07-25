@@ -100,6 +100,10 @@ from spec_harvester.final_corpus_checkout_readiness import (
     FinalCorpusCheckoutReadinessOptions,
     run_final_corpus_checkout_readiness,
 )
+from spec_harvester.final_corpus_static_only_gate import (
+    FinalCorpusStaticOnlyGateOptions,
+    run_final_corpus_static_only_gate,
+)
 from spec_harvester.fresh_candidate_refresh_run import (
     FreshCandidateRefreshRunOptions,
     build_fresh_candidate_refresh_run,
@@ -674,6 +678,34 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output path for the sanitized readiness report.",
     )
     final_corpus_readiness.set_defaults(func=run_final_corpus_checkout_readiness_cli)
+
+    final_corpus_static = subcommands.add_parser(
+        "final-corpus-static-only-gate",
+        help="Run the P52-T6 static-only gate over the approved final corpus.",
+    )
+    final_corpus_static.add_argument(
+        "inputs",
+        type=Path,
+        help="Directory containing the approved P52 final source manifest.",
+    )
+    final_corpus_static.add_argument(
+        "--readiness",
+        type=Path,
+        required=True,
+        help="Passing P52-T5 checkout-readiness report.",
+    )
+    final_corpus_static.add_argument(
+        "--readiness-sha256",
+        required=True,
+        help="Expected lowercase SHA-256 digest of the P52-T5 readiness report.",
+    )
+    final_corpus_static.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output root for disposable static candidates and the P52-T6 report.",
+    )
+    final_corpus_static.set_defaults(func=run_final_corpus_static_only_gate_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2071,6 +2103,23 @@ def run_final_corpus_checkout_readiness_cli(args: argparse.Namespace) -> int:
                 inputs=args.inputs,
                 metadata=args.metadata,
                 output=args.out,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_final_corpus_static_only_gate_cli(args: argparse.Namespace) -> int:
+    try:
+        result = run_final_corpus_static_only_gate(
+            FinalCorpusStaticOnlyGateOptions(
+                inputs=args.inputs,
+                readiness=args.readiness,
+                readiness_sha256=args.readiness_sha256,
+                out=args.out,
             )
         )
     except ValueError as exc:

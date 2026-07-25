@@ -1371,6 +1371,14 @@ license, and size-budget gates across 14 ecosystem categories and six
 repository shapes, unlocking the P52-T6 static-only gate without running AI or
 granting registry authority.
 
+P52-T6 records
+[`FINAL_CORPUS_STATIC_ONLY_GATE.md`](FINAL_CORPUS_STATIC_ONLY_GATE.md), the
+digest-bound 50-source static-only run. All 50 sources produced outcomes; 48
+passed strict collection validation for a 96% completion rate against the 95%
+minimum. `uv` and `actix-web` remain explicit dual-license filename allowlist
+failures. AI and adapters stayed disabled, and P52-T7 is unlocked without
+granting registry authority.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install
