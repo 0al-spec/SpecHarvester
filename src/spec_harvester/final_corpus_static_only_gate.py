@@ -235,7 +235,9 @@ def validate_readiness(
     for record in records:
         source_id = string_value(record.get("id"))
         source = source_by_id.get(source_id, {})
-        if record.get("repository") != source.get("repository") or record.get("revision") != source.get("revision"):
+        same_repository = record.get("repository") == source.get("repository")
+        same_revision = record.get("revision") == source.get("revision")
+        if not same_repository or not same_revision:
             raise ValueError("P52-T5 readiness contains drifted manifest fields")
 
 
