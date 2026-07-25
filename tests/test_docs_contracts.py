@@ -53,7 +53,10 @@ def assert_current_next_task(next_text: str) -> None:
             "`P52-T8` Triage Static and Spark Output into Author Handoff" in next_text
         )
         assert "feature/p52-t7-codex-spark-proposal-only-gate" in next_text
-        assert "Continue Phase 52 output processing by triaging static, Codex, and enriched preview" in normalized
+        assert (
+            "Continue Phase 52 output processing by triaging static, Codex, and enriched"
+            " preview" in normalized
+        )
         assert "P52-T7 is archived with a PASS verdict and unlocks P52-T8." in next_text
         assert "No registry mutation" in normalized
         assert "no raw prompt" in normalized
