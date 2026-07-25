@@ -62,7 +62,7 @@ def assert_current_next_task(next_text: str) -> None:
         assert "Do not execute harvested code or adapters" in next_text
         assert "Invoke only" in next_text
         assert "approved read-only Codex Spark proposal path" in next_text
-        assert "do not invoke LM Studio or another model provider" in next_text
+        assert "do not invoke LM Studio or another model provider" in normalized
         assert "Do not accept packages or relations" in next_text
         assert (
             "Do not publish registry metadata, seed baselines, or remove `preview_only`"
