@@ -21,6 +21,15 @@ prevents maintainer disposition.
 The durable record is
 `tests/fixtures/phase_52_exit_decision/p52-t9-phase-52-exit-decision.example.json`.
 
+## Evidence Version Transition
+
+P52-T8 retains the P52-T7 fixture digest that existed when triage was recorded:
+`sha256:949cb6f...`. The current P52-T7 fixture is
+`sha256:a711e4d...` because its P52-T8 review corrected static
+execution-boundary fixture fields. No Codex quality metric, proposal, or
+registry-authority outcome changed. P52-T9 records both identities explicitly
+instead of silently treating the two evidence versions as interchangeable.
+
 ## Guardrails
 
 - Maintainers may inspect and explicitly disposition the selected evidence.

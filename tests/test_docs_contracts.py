@@ -32912,6 +32912,15 @@ def test_bounded_popular_library_pilot_exit_decision_records_p46_t6_result() -> 
     )
     assert payload["kind"] == "SpecHarvesterBoundedPopularLibraryPilotExitDecision"
     assert payload["authority"] == "producer_exit_decision_evidence_only"
+    assert payload["authorityBoundary"] == {
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "changesRegistryTruth": False,
+        "publishesRegistryMetadata": False,
+        "removesPreviewOnly": False,
+        "seedsBaselines": False,
+        "treatsEvidenceAsRegistryTruth": False,
+    }
     assert payload["phase"] == "P46"
     assert payload["task"] == "P46-T6"
 
@@ -39750,6 +39759,11 @@ def test_phase_52_exit_decision_records_guarded_maintainer_disposition() -> None
     for item in payload["sourceEvidence"]:
         source = ROOT / item["path"]
         assert item["digest"] == f"sha256:{hashlib.sha256(source.read_bytes()).hexdigest()}"
+    assert payload["sourceEvidence"][0]["transitionFromP52T8Binding"] == {
+        "historicalDigest": "sha256:949cb6f1563baeb824c018169a3f83f2ea2954a5a313d4d170d8987b4b242c31",
+        "reason": "P52-T8 review-time correction of static execution-boundary fixture fields",
+        "semanticImpact": "No Codex quality metric, proposal, or registry-authority outcome changed.",
+    }
 
     doc = ROOT / "docs/P52_T9_Phase_52_Exit_Decision.md"
     normalized = " ".join(doc.read_text(encoding="utf-8").split())
@@ -39758,5 +39772,6 @@ def test_phase_52_exit_decision_records_guarded_maintainer_disposition() -> None
         "registry",
         "corpus expansion",
         "P52-T10",
+        "version transition",
     ):
         assert required in normalized
