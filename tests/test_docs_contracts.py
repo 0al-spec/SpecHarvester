@@ -39776,6 +39776,6 @@ def test_phase_52_exit_decision_records_guarded_maintainer_disposition() -> None
         "registry",
         "corpus expansion",
         "P52-T10",
-        "version transition",
+        "Evidence Version Transition",
     ):
         assert required in normalized
