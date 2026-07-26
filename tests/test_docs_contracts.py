@@ -74,7 +74,7 @@ def assert_current_next_task(next_text: str) -> None:
         )
         assert (
             "Do not persist raw prompts, raw provider responses, secrets, session state, or"
-            " chain-of-thought" in next_text
+            " chain-of-thought" in normalized
         )
         return
 
