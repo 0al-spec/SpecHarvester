@@ -2505,7 +2505,7 @@ Acceptance:
 - [ ] `P52-T10` Add strict collector support for common root
   `LICENSE-APACHE`/`LICENSE-MIT` dual-license filenames and run a targeted
   static validation over `actix-web` and `uv`, preserving the historical
-  P52-T6 48/50 evidence and completing before P52-T8 output triage.
+  P52-T6 48/50 evidence and completing before P52-T8 output triage. **INPROGRESS**
 
 Motivation:
 
