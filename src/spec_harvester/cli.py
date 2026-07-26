@@ -100,6 +100,10 @@ from spec_harvester.final_corpus_checkout_readiness import (
     FinalCorpusCheckoutReadinessOptions,
     run_final_corpus_checkout_readiness,
 )
+from spec_harvester.final_corpus_codex_spark_gate import (
+    FinalCorpusCodexSparkGateOptions,
+    run_final_corpus_codex_spark_gate,
+)
 from spec_harvester.final_corpus_static_only_gate import (
     FinalCorpusStaticOnlyGateOptions,
     run_final_corpus_static_only_gate,
@@ -706,6 +710,64 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output root for disposable static candidates and the P52-T6 report.",
     )
     final_corpus_static.set_defaults(func=run_final_corpus_static_only_gate_cli)
+
+    final_corpus_codex = subcommands.add_parser(
+        "final-corpus-codex-spark-gate",
+        help="Run the P52-T7 Codex Spark proposal-only gate over the approved corpus.",
+    )
+    final_corpus_codex.add_argument(
+        "inputs",
+        type=Path,
+        help="Directory containing the approved P52 final source manifest.",
+    )
+    final_corpus_codex.add_argument(
+        "--readiness",
+        type=Path,
+        required=True,
+        help="Passing P52-T6 static-only gate report.",
+    )
+    final_corpus_codex.add_argument(
+        "--readiness-sha256",
+        required=True,
+        help="Expected lowercase SHA-256 digest of the P52-T6 readiness report.",
+    )
+    final_corpus_codex.add_argument(
+        "--out",
+        type=Path,
+        required=True,
+        help="Output root for static evidence and the P52-T7 report.",
+    )
+    final_corpus_codex.add_argument(
+        "--codex-command",
+        default=DEFAULT_CODEX_COMMAND,
+        help=f"Codex executable. Default: {DEFAULT_CODEX_COMMAND}.",
+    )
+    final_corpus_codex.add_argument(
+        "--codex-model",
+        default=DEFAULT_CODEX_MODEL,
+        help=f"Codex model id. Default: {DEFAULT_CODEX_MODEL}.",
+    )
+    final_corpus_codex.add_argument(
+        "--codex-schema",
+        type=Path,
+        default=DEFAULT_CODEX_SCHEMA_PATH,
+        help="JSON Schema required for the ephemeral Codex final message.",
+    )
+    final_corpus_codex.add_argument(
+        "--codex-timeout-seconds",
+        type=float,
+        default=DEFAULT_CODEX_TIMEOUT_SECONDS,
+        help=(
+            "Maximum duration for each Codex invocation in seconds. "
+            f"Default: {DEFAULT_CODEX_TIMEOUT_SECONDS:.0f}."
+        ),
+    )
+    final_corpus_codex.add_argument(
+        "--skip-codex",
+        action="store_true",
+        help="Skip the Codex control for diagnostics only.",
+    )
+    final_corpus_codex.set_defaults(func=run_final_corpus_codex_spark_gate_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2120,6 +2182,28 @@ def run_final_corpus_static_only_gate_cli(args: argparse.Namespace) -> int:
                 readiness=args.readiness,
                 readiness_sha256=args.readiness_sha256,
                 out=args.out,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_final_corpus_codex_spark_gate_cli(args: argparse.Namespace) -> int:
+    try:
+        result = run_final_corpus_codex_spark_gate(
+            FinalCorpusCodexSparkGateOptions(
+                inputs=args.inputs,
+                readiness=args.readiness,
+                readiness_sha256=args.readiness_sha256,
+                out=args.out,
+                codex_command=args.codex_command,
+                codex_model=args.codex_model,
+                codex_schema=args.codex_schema,
+                codex_timeout_seconds=args.codex_timeout_seconds,
+                run_codex=not args.skip_codex,
             )
         )
     except ValueError as exc:
