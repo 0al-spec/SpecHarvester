@@ -118,7 +118,9 @@ def assert_current_next_task(next_text: str) -> None:
             in next_text
         )
         assert "P52-T8 is archived" in next_text
-        assert "P52-T10 has resolved the two historical dual-license filename findings." in next_text
+        assert (
+            "P52-T10 has resolved the two historical dual-license filename findings." in next_text
+        )
         assert "Preconditions" in next_text
         return
 
@@ -39710,5 +39712,43 @@ def test_final_corpus_dual_license_follow_up_records_p52_t10_result() -> None:
         "actix-web",
         "48/50",
         "registry truth",
+    ):
+        assert required in normalized
+
+
+def test_phase_52_exit_decision_records_guarded_maintainer_disposition() -> None:
+    fixture = (
+        ROOT / "tests/fixtures/phase_52_exit_decision/p52-t9-phase-52-exit-decision.example.json"
+    )
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.phase-52-exit-decision/v0"
+    assert payload["kind"] == "SpecHarvesterPhase52ExitDecision"
+    assert payload["authority"] == "producer_exit_decision_evidence_only"
+    assert payload["decision"] == {
+        "authorReviewEvidenceReady": True,
+        "corpusExpansionApproved": False,
+        "registryPromotionAllowed": False,
+        "selectedDecision": "go_with_guardrails_for_maintainer_disposition",
+    }
+    assert payload["qualityEvidence"] == {
+        "codexCompletionRate": 1.0,
+        "repositorySpecificRate": 1.0,
+        "schemaValidRate": 1.0,
+        "staticCompletionRateHistorical": 0.96,
+        "unsupportedClaimRate": 0.0,
+    }
+    assert [item["task"] for item in payload["sourceEvidence"]] == ["P52-T7", "P52-T8", "P52-T10"]
+    for item in payload["sourceEvidence"]:
+        source = ROOT / item["path"]
+        assert item["digest"] == f"sha256:{hashlib.sha256(source.read_bytes()).hexdigest()}"
+
+    doc = ROOT / "docs/P52_T9_Phase_52_Exit_Decision.md"
+    normalized = " ".join(doc.read_text(encoding="utf-8").split())
+    for required in (
+        "go_with_guardrails_for_maintainer_disposition",
+        "registry",
+        "corpus expansion",
+        "P52-T10",
     ):
         assert required in normalized
