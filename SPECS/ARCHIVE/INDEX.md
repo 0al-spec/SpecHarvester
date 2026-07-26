@@ -885,3 +885,4 @@
 | 2026-07-26 | P52-T8 | Archived Triage Phase 52 Static Spark Output into Author Handoff (PASS) |
 | 2026-07-26 | P52-T8 | Archived REVIEW_p52_t8_output_triage report |
 | 2026-07-27 | P52-T10 | Archived Add Strict Collector Support for Canonical Dual-License Filenames (PASS) |
+| 2026-07-27 | P52-T10 | Archived REVIEW_p52_t10_dual_license_collector report |
