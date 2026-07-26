@@ -2494,7 +2494,7 @@ Acceptance:
 - [x] `P52-T7` Run the 50-100 repository Codex Spark proposal-only gate only
   after P52-T6 passes, preserving schema validation, bounded receipts,
   non-persistence, and no-registry-authority boundaries.
-- [ ] `P52-T8` Triage Phase 52 static, Spark, and enriched-preview outputs into
+- [x] `P52-T8` Triage Phase 52 static, Spark, and enriched-preview outputs into
   author-review, deferred, and do-not-promote outcomes, then prepare portable
   author handoff evidence without accepting packages or relations.
 - [ ] `P52-T9` Record the Phase 52 exit decision, deciding whether to stop,

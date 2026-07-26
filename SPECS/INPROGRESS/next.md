@@ -1,34 +1,19 @@
-# Next Task: P52-T8 Triage Phase 52 outputs
+# Next Task: P52-T9 Record Phase 52 exit decision
 
 **Status:** In Progress
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
-**Depends On:** `P52-T7` 50-100 Repository Codex Spark Proposal-Only Gate
-**Started:** 2026-07-25
-**Active Task:** `P52-T8` Triage Static and Spark Output into Author Handoff
-**Branch:** feature/p52-t7-codex-spark-proposal-only-gate
+**Depends On:** `P52-T8` Triage outputs into author handoff
+**Started:** 2026-07-26
+**Active Task:** `P52-T9` Record the Phase 52 exit decision, deciding whether to stop, run a bounded follow-up, or make selected evidence available for maintainer disposition.
+**Branch:** feature/p52-t8-output-triage
 
 ## Objective
 
-Continue Phase 52 output processing by triaging static, Codex, and enriched preview
-artifacts from the P52 corpus into author-review and disposition buckets.
+Prepare the Phase 52 exit decision evidence from P52-T8 triage outputs, then decide whether to stop, run a bounded follow-up, or release selected outputs for maintainer disposition.
 
 ## Preconditions
 
-- P52-T7 is archived with a PASS verdict and unlocks P52-T8.
-- All P52 static/spark/disposition evidence remains immutable and reviewable.
-- Non-authority boundaries remain: no registry mutation, no package/relation
-  acceptance, no preview-only removal, and no raw prompt/prompt-response
-  persistence.
-
-## Boundaries
-
-- Do not create, restore, clone, or fetch repositories.
-- Do not install dependencies or invoke package managers.
-- Do not execute harvested code or adapters.
-- Invoke only the approved read-only Codex Spark proposal path; do not invoke LM
-  Studio or another model provider.
-- Do not accept packages or relations.
-- Do not publish registry metadata, seed baselines, or remove `preview_only`.
-- Do not treat static candidates, model proposals, or reports as registry truth.
-- Do not persist raw prompts, raw provider responses, secrets, session state,
-  or chain-of-thought.
+- P52-T8 is archived with a PASS/PARTIAL decision recorded.
+- No registry mutation occurs outside author-review evidence flow.
+- Static/Spark/evidence-boundary metadata remains intact.
+- No raw prompt/prompt-response persistence and no chain-of-thought storage.

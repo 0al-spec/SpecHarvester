@@ -1,0 +1,1421 @@
+{
+  "apiVersion": "spec-harvester.final-corpus-codex-spark-gate/v0",
+  "authority": "producer_static_and_codex_gate_evidence_only",
+  "codexSpark": {
+    "authority": "proposal_only_not_registry_acceptance",
+    "privacy": {},
+    "provider": {
+      "kind": "codex_exec_external_model_output",
+      "model": "gpt-5.3-codex-spark"
+    },
+    "repositories": [
+      {
+        "failure": null,
+        "id": "flask",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "gin",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "fastapi",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "fastmcp",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "transmission",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "serena",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "altstore",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "ontology",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "specgraph",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "cupertino",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "agent-passport",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "calcu",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "mcp-server-manager",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "mcpm-sh",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "hopper-mcp-wrapper",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "specpm",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "hypercode",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "hyperprompt",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "agent-ready-kit",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "specnode",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "express",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "pydantic",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "httpx",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "typer",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "fastify",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "vite",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "svelte",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "nest",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "react",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "vue-core",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "github-cli",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "pebble",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "uv",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "axum",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "actix-web",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "feature-passport",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "platform",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "toys-sandbox",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "xyflow",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "tokenkeeper",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "flow",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "zed-objc",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "navigation-split-view",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "nested-swiftui-a11y",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "paraconsistent-logic",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "specification-kit",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "swiftui-blur",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "xcode-mcp-wrapper",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "specification-core-rs",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "failure": null,
+        "id": "docc2context-service",
+        "proposal": {
+          "diagnostics": [],
+          "provider": {
+            "execution": "external_schema_validated",
+            "kind": "codex_exec_external_model_output",
+            "model": "gpt-5.3-codex-spark",
+            "name": "codex"
+          }
+        },
+        "receipt": {
+          "model": "gpt-5.3-codex-spark"
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      }
+    ],
+    "status": "completed"
+  },
+  "controlPolicy": {
+    "prohibited": [
+      "repository_clone_or_fetch",
+      "package_execution",
+      "dependency_installation",
+      "adapter_execution"
+    ]
+  },
+  "decision": {
+    "p52T8Unlocked": true,
+    "selectedDecision": "unlock_p52_t8"
+  },
+  "executionBoundary": {
+    "codex": {
+      "provider": {
+        "execution": null,
+        "kind": "codex_exec_external_model_output",
+        "model": "gpt-5.3-codex-spark",
+        "sandbox": null
+      },
+      "repositoryRecordCount": 50,
+      "status": "completed"
+    },
+    "static": {
+      "adapterExecution": null,
+      "aiArtifactPaths": [],
+      "aiMode": null,
+      "executesHarvestedCode": false,
+      "invokesPackageManagers": false,
+      "model": null,
+      "passed": false,
+      "provider": null,
+      "repositoryAIRecordsSkipped": false,
+      "trustedAdapterExecution": null
+    }
+  },
+  "kind": "SpecHarvesterFinalCorpusCodexSparkGateReport",
+  "nonAuthority": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "changesRegistryTruth": false,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false,
+    "seedsBaselines": false
+  },
+  "phase": "P52",
+  "qualityMetrics": {
+    "codexCompletionRate": {
+      "denominator": 50,
+      "minimum": 0.9,
+      "numerator": 50,
+      "passed": true,
+      "value": 1.0
+    },
+    "repositorySpecificRate": {
+      "denominator": 50,
+      "minimum": 0.8,
+      "numerator": 50,
+      "passed": true,
+      "value": 1.0
+    },
+    "schemaValidRate": {
+      "denominator": 50,
+      "minimum": 0.98,
+      "numerator": 50,
+      "passed": true,
+      "value": 1.0
+    },
+    "staticCompletionRate": {
+      "denominator": 50,
+      "minimum": 0.95,
+      "numerator": 48,
+      "passed": true,
+      "value": 0.96
+    },
+    "unsupportedClaimRate": {
+      "denominator": 50,
+      "maximum": 0.05,
+      "numerator": 0,
+      "passed": true,
+      "value": 0.0
+    }
+  },
+  "readiness": {
+    "digest": {
+      "algorithm": "sha256",
+      "value": "5796be16b19c8f9cc1a0d34e915ad41251741fab18387c447288b47288a79903"
+    },
+    "path": "tmp-p52-t6-readiness.json",
+    "status": "passed"
+  },
+  "schemaVersion": 1,
+  "sourceCoverage": {
+    "manifestCount": 50,
+    "resultCount": 50,
+    "resultIds": [
+      "actix-web",
+      "agent-passport",
+      "agent-ready-kit",
+      "altstore",
+      "axum",
+      "calcu",
+      "cupertino",
+      "docc2context-service",
+      "express",
+      "fastapi",
+      "fastify",
+      "fastmcp",
+      "feature-passport",
+      "flask",
+      "flow",
+      "gin",
+      "github-cli",
+      "hopper-mcp-wrapper",
+      "httpx",
+      "hypercode",
+      "hyperprompt",
+      "mcp-server-manager",
+      "mcpm-sh",
+      "navigation-split-view",
+      "nest",
+      "nested-swiftui-a11y",
+      "ontology",
+      "paraconsistent-logic",
+      "pebble",
+      "platform",
+      "pydantic",
+      "react",
+      "serena",
+      "specgraph",
+      "specification-core-rs",
+      "specification-kit",
+      "specnode",
+      "specpm",
+      "svelte",
+      "swiftui-blur",
+      "tokenkeeper",
+      "toys-sandbox",
+      "transmission",
+      "typer",
+      "uv",
+      "vite",
+      "vue-core",
+      "xcode-mcp-wrapper",
+      "xyflow",
+      "zed-objc"
+    ]
+  },
+  "staticOnly": {
+    "report": null,
+    "repositories": [
+      {
+        "id": "flask",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "gin",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "fastapi",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "fastmcp",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "transmission",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "serena",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "altstore",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "ontology",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "specgraph",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "cupertino",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "agent-passport",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "calcu",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "mcp-server-manager",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "mcpm-sh",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "hopper-mcp-wrapper",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "specpm",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "hypercode",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "hyperprompt",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "agent-ready-kit",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "specnode",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "express",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "pydantic",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "httpx",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "typer",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "fastify",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "vite",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "svelte",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "nest",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "react",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "vue-core",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "github-cli",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "pebble",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "uv",
+        "preflightStatus": null,
+        "status": "failed"
+      },
+      {
+        "id": "axum",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "actix-web",
+        "preflightStatus": null,
+        "status": "failed"
+      },
+      {
+        "id": "feature-passport",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "platform",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "toys-sandbox",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "xyflow",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "tokenkeeper",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "flow",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "zed-objc",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "navigation-split-view",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "nested-swiftui-a11y",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "paraconsistent-logic",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "specification-kit",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "swiftui-blur",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "xcode-mcp-wrapper",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "specification-core-rs",
+        "preflightStatus": null,
+        "status": "passed"
+      },
+      {
+        "id": "docc2context-service",
+        "preflightStatus": null,
+        "status": "passed"
+      }
+    ],
+    "status": "passed"
+  },
+  "status": "passed",
+  "task": "P52-T7"
+}
