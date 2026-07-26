@@ -17,3 +17,9 @@ Prepare the Phase 52 exit decision evidence from P52-T8 triage outputs, then dec
 - No registry mutation occurs outside author-review evidence flow.
 - Static/Spark/evidence-boundary metadata remains intact.
 - No raw prompt/prompt-response persistence and no chain-of-thought storage.
+
+## Follow-Up
+
+P52-T10 review found no actionable follow-up. Its exact filename allowlist,
+targeted pinned-checkout validation, and historical-evidence handling are ready
+for P52-T9 exit-decision use.
