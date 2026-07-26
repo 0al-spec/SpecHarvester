@@ -851,7 +851,10 @@ def test_metadata_helpers_cover_static_file_variants(tmp_path: Path) -> None:
     assert classify_file(tmp_path / "notes.txt") == "metadata"
     assert is_license_filename(tmp_path / "LICENSE.txt")
     assert is_license_filename(tmp_path / "copying.rst")
+    assert is_license_filename(tmp_path / "LICENSE-APACHE")
+    assert is_license_filename(tmp_path / "LICENSE-MIT")
     assert not is_license_filename(tmp_path / "LICENSE.png")
+    assert not is_license_filename(tmp_path / "LICENSE-APACHE-2.0")
     assert not is_license_filename(tmp_path / "THIRD_PARTY_LICENSES.txt")
     assert markdown_headings("# One\n## Two\n### Three\n", limit=2) == ["One", "Two"]
     semantic_hints = markdown_semantic_hints(
@@ -3002,6 +3005,36 @@ def test_draft_spec_package_infers_license_from_license_file(
     assert "source: license_file_hint" in manifest
     assert "paths:" in manifest
     assert "- LICENSE" in manifest
+
+
+def test_draft_spec_package_preserves_canonical_dual_license_file_hints(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "LICENSE-APACHE").write_text(
+        "Apache License\nVersion 2.0, January 2004\n",
+        encoding="utf-8",
+    )
+    (repo / "LICENSE-MIT").write_text(
+        "MIT License\nCopyright 2026 Example\n"
+        "Permission is hereby granted, free of charge, to any person\n",
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(source=repo, repository="https://github.com/example/system")
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    manifest = Path(result["manifest"]).read_text(encoding="utf-8")
+    assert "license: MIT OR Apache-2.0" in manifest
+    assert "source: dual_license_file_hints" in manifest
+    assert "- LICENSE-APACHE" in manifest
+    assert "- LICENSE-MIT" in manifest
 
 
 def test_draft_spec_package_keeps_unknown_for_ambiguous_license_file(

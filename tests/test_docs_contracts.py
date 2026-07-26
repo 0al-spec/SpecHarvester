@@ -38,6 +38,21 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if (
+        "# Next Task: P52-T10 Add strict collector support for canonical dual-license filenames"
+        in next_text
+    ):
+        assert "**Status:** Selected" in next_text
+        assert (
+            "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark"
+            in next_text
+        )
+        assert "**Depends On:** `P52-T6` static-only gate evidence" in next_text
+        assert "`LICENSE-APACHE`/`LICENSE-MIT`" in next_text
+        assert "feature/p52-t10-dual-license-collector" in next_text
+        assert "No AI, adapter, package-manager, or registry operation is needed." in next_text
+        return
+
     if "# Next Task: P52-T8 Triage Phase 52 outputs" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** In Progress" in next_text
@@ -39652,3 +39667,44 @@ def test_final_corpus_static_only_gate_is_documented() -> None:
     assert "FinalCorpusStaticOnlyGate" in (
         ROOT / "Sources" / "SpecHarvester" / "Documentation.docc" / "Roadmap.md"
     ).read_text(encoding="utf-8")
+
+
+def test_final_corpus_dual_license_follow_up_records_p52_t10_result() -> None:
+    fixture_path = (
+        ROOT
+        / "tests"
+        / "fixtures"
+        / "final_corpus_dual_license_follow_up"
+        / "p52-t10-dual-license-follow-up.example.json"
+    )
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.phase-52-dual-license-follow-up/v0"
+    assert payload["kind"] == "SpecHarvesterPhase52DualLicenseFollowUp"
+    assert payload["authority"] == "producer_validation_evidence_only"
+    assert payload["historicalP52T6Completion"] == {
+        "failedRepositoryIds": ["actix-web", "uv"],
+        "staticCompletionRate": 0.96,
+        "status": "preserved",
+    }
+    assert [record["id"] for record in payload["repositories"]] == ["uv", "actix-web"]
+    assert all(record["licenseFileCount"] == 2 for record in payload["repositories"])
+    assert all(record["missingLicenseFile"] is False for record in payload["repositories"])
+    assert all(record["status"] == "passed" for record in payload["repositories"])
+    assert payload["strictCollectorPolicy"] == {
+        "acceptedCanonicalRootNames": ["LICENSE-APACHE", "LICENSE-MIT"],
+        "preservesTextExtensionFilter": True,
+    }
+
+    doc = ROOT / "docs" / "P52_T10_Dual_License_Collector_Follow_Up.md"
+    normalized = " ".join(doc.read_text(encoding="utf-8").split())
+    for required in (
+        "P52-T10",
+        "LICENSE-APACHE",
+        "LICENSE-MIT",
+        "uv",
+        "actix-web",
+        "48/50",
+        "registry truth",
+    ):
+        assert required in normalized

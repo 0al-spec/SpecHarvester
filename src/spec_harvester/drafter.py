@@ -1680,6 +1680,24 @@ def infer_license_with_evidence(
         for record in license_records
         if isinstance(record.get("licenseHint"), str) and record["licenseHint"].strip()
     ]
+    dual_license_paths = {
+        str(path).upper(): str(path)
+        for path, _ in license_hints
+        if isinstance(path, str) and path.upper() in {"LICENSE-APACHE", "LICENSE-MIT"}
+    }
+    dual_license_hints = {hint for _, hint in license_hints}
+    if set(dual_license_paths) == {"LICENSE-APACHE", "LICENSE-MIT"} and {
+        "MIT",
+        "Apache-2.0",
+    }.issubset(dual_license_hints):
+        return LicenseInference(
+            name="MIT OR Apache-2.0",
+            evidence={
+                "source": "dual_license_file_hints",
+                "confidence": "medium",
+                "paths": [dual_license_paths["LICENSE-APACHE"], dual_license_paths["LICENSE-MIT"]],
+            },
+        )
     if license_hints:
         path, hint = license_hints[0]
         return LicenseInference(

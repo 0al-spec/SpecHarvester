@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-07-26
+**Last Updated:** 2026-07-27
 
 ## Archived Tasks
 
@@ -238,6 +238,7 @@
 | P52-T6 | [P52-T6_50-100_Repository_Static-Only_Gate/](P52-T6_50-100_Repository_Static-Only_Gate/) | 2026-07-23 | PASS |
 | P52-T7 | [P52-T7_Codex_Spark_Proposal-Only_Gate/](P52-T7_Codex_Spark_Proposal-Only_Gate/) | 2026-07-25 | PASS |
 | P52-T8 | [P52-T8_Triage_Phase_52_Static_Spark_Output_into_Author_Handoff/](P52-T8_Triage_Phase_52_Static_Spark_Output_into_Author_Handoff/) | 2026-07-26 | PASS |
+| P52-T10 | [P52-T10_Add_Strict_Collector_Support_for_Canonical_Dual_License_Filenames/](P52-T10_Add_Strict_Collector_Support_for_Canonical_Dual_License_Filenames/) | 2026-07-27 | PASS |
 
 ## Historical Artifacts
 
@@ -883,3 +884,5 @@
 | 2026-07-25 | P52-T7 | Archived REVIEW_p52_t7_codex_spark_proposal_only_gate report |
 | 2026-07-26 | P52-T8 | Archived Triage Phase 52 Static Spark Output into Author Handoff (PASS) |
 | 2026-07-26 | P52-T8 | Archived REVIEW_p52_t8_output_triage report |
+| 2026-07-27 | P52-T10 | Archived Add Strict Collector Support for Canonical Dual-License Filenames (PASS) |
+| 2026-07-27 | P52-T10 | Archived REVIEW_p52_t10_dual_license_collector report |
