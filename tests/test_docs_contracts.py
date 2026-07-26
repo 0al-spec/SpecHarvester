@@ -101,7 +101,10 @@ def assert_current_next_task(next_text: str) -> None:
         assert "feature/p52-t8-output-triage" in next_text
         assert "No registry mutation occurs" in next_text
         assert "No raw prompt/prompt-response persistence" in next_text
-        assert "No raw prompt/prompt-response persistence and no chain-of-thought storage." in next_text
+        assert (
+            "No raw prompt/prompt-response persistence and no chain-of-thought storage."
+            in next_text
+        )
         assert "P52-T8 is archived" in next_text
         assert "Preconditions" in next_text
         return
