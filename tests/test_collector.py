@@ -3007,6 +3007,36 @@ def test_draft_spec_package_infers_license_from_license_file(
     assert "- LICENSE" in manifest
 
 
+def test_draft_spec_package_preserves_canonical_dual_license_file_hints(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "demo"
+    repo.mkdir()
+    (repo / "LICENSE-APACHE").write_text(
+        "Apache License\nVersion 2.0, January 2004\n",
+        encoding="utf-8",
+    )
+    (repo / "LICENSE-MIT").write_text(
+        "MIT License\nCopyright 2026 Example\n"
+        "Permission is hereby granted, free of charge, to any person\n",
+        encoding="utf-8",
+    )
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    snapshot = collect_local_repository(
+        HarvestOptions(source=repo, repository="https://github.com/example/system")
+    )
+    (candidate / "harvest.json").write_text(json.dumps(snapshot), encoding="utf-8")
+
+    result = draft_spec_package(DraftOptions(snapshot=candidate, out=candidate))
+
+    manifest = Path(result["manifest"]).read_text(encoding="utf-8")
+    assert "license: MIT OR Apache-2.0" in manifest
+    assert "source: dual_license_file_hints" in manifest
+    assert "- LICENSE-APACHE" in manifest
+    assert "- LICENSE-MIT" in manifest
+
+
 def test_draft_spec_package_keeps_unknown_for_ambiguous_license_file(
     tmp_path: Path,
 ) -> None:
