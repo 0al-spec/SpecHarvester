@@ -1,25 +1,14 @@
-# Next Task: P52-T9 Record Phase 52 exit decision
+# Phase 52 Complete
 
-**Status:** In Progress
-**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
-**Depends On:** `P52-T8` Triage outputs into author handoff
-**Started:** 2026-07-26
-**Active Task:** `P52-T9` Record the Phase 52 exit decision, deciding whether to stop, run a bounded follow-up, or make selected evidence available for maintainer disposition.
-**Branch:** feature/p52-t8-output-triage
+P52-T9 recorded `go_with_guardrails_for_maintainer_disposition`. The approved
+50-source proposal-only evidence is ready for explicit maintainer disposition.
+Registry promotion, automatic package or relation acceptance, and corpus
+expansion remain unapproved.
 
-## Objective
+P52-T9 review found no actionable follow-up; the completed decision is the
+current authoritative Phase 52 workflow state.
 
-Prepare the Phase 52 exit decision evidence from P52-T8 triage outputs, then decide whether to stop, run a bounded follow-up, or release selected outputs for maintainer disposition.
+## Next Step
 
-## Preconditions
-
-- P52-T8 is archived with a PASS/PARTIAL decision recorded.
-- No registry mutation occurs outside author-review evidence flow.
-- Static/Spark/evidence-boundary metadata remains intact.
-- No raw prompt/prompt-response persistence and no chain-of-thought storage.
-
-## Follow-Up
-
-P52-T10 review found no actionable follow-up. Its exact filename allowlist,
-targeted pinned-checkout validation, and historical-evidence handling are ready
-for P52-T9 exit-decision use.
+Create a new planning phase before acquiring or processing a new popular
+repository corpus beyond the approved 50-source scope.

@@ -38,6 +38,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Phase 52 Complete" in next_text:
+        assert "go_with_guardrails_for_maintainer_disposition" in next_text
+        assert "50-source proposal-only evidence" in next_text
+        assert "Registry promotion, automatic package or relation acceptance" in next_text
+        assert "expansion remain unapproved" in next_text
+        assert "new planning phase" in next_text
+        return
+
     if (
         "# Next Task: P52-T10 Add strict collector support for canonical dual-license filenames"
         in next_text
@@ -99,15 +107,18 @@ def assert_current_next_task(next_text: str) -> None:
         assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
             next_text
         )
-        assert "**Depends On:** `P52-T8` Triage outputs into author handoff" in next_text
-        assert "**Started:** 2026-07-26" in next_text
+        assert (
+            "**Depends On:** `P52-T8` output triage and `P52-T10` dual-license follow-up"
+            in next_text
+        )
+        assert "**Started:** 2026-07-27" in next_text
         assert "**Active Task:** `P52-T9` Record the Phase 52 exit decision" in next_text
         assert (
             "deciding whether to stop, run a bounded follow-up, or make selected evidence"
             in normalized
         )
         assert "make selected evidence available for maintainer disposition" in normalized
-        assert "feature/p52-t8-output-triage" in next_text
+        assert "feature/p52-t9-phase-52-exit-decision" in next_text
         assert "No registry mutation occurs" in next_text
         assert "No raw prompt/prompt-response persistence" in next_text
         assert (
@@ -115,6 +126,9 @@ def assert_current_next_task(next_text: str) -> None:
             in next_text
         )
         assert "P52-T8 is archived" in next_text
+        assert (
+            "P52-T10 has resolved the two historical dual-license filename findings." in next_text
+        )
         assert "Preconditions" in next_text
         return
 
@@ -39706,5 +39720,62 @@ def test_final_corpus_dual_license_follow_up_records_p52_t10_result() -> None:
         "actix-web",
         "48/50",
         "registry truth",
+    ):
+        assert required in normalized
+
+
+def test_phase_52_exit_decision_records_guarded_maintainer_disposition() -> None:
+    fixture = (
+        ROOT / "tests/fixtures/phase_52_exit_decision/p52-t9-phase-52-exit-decision.example.json"
+    )
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.phase-52-exit-decision/v0"
+    assert payload["kind"] == "SpecHarvesterPhase52ExitDecision"
+    assert payload["authority"] == "producer_exit_decision_evidence_only"
+    assert payload["authorityBoundary"] == {
+        "acceptsPackages": False,
+        "acceptsRelations": False,
+        "changesRegistryTruth": False,
+        "publishesRegistryMetadata": False,
+        "removesPreviewOnly": False,
+        "seedsBaselines": False,
+        "treatsEvidenceAsRegistryTruth": False,
+    }
+    assert payload["decision"] == {
+        "authorReviewEvidenceReady": True,
+        "corpusExpansionApproved": False,
+        "registryPromotionAllowed": False,
+        "selectedDecision": "go_with_guardrails_for_maintainer_disposition",
+    }
+    assert payload["qualityEvidence"] == {
+        "codexCompletionRate": 1.0,
+        "repositorySpecificRate": 1.0,
+        "schemaValidRate": 1.0,
+        "staticCompletionRateHistorical": 0.96,
+        "unsupportedClaimRate": 0.0,
+    }
+    assert [item["task"] for item in payload["sourceEvidence"]] == ["P52-T7", "P52-T8", "P52-T10"]
+    for item in payload["sourceEvidence"]:
+        source = ROOT / item["path"]
+        assert item["digest"] == f"sha256:{hashlib.sha256(source.read_bytes()).hexdigest()}"
+    assert payload["sourceEvidence"][0]["transitionFromP52T8Binding"] == {
+        "historicalDigest": (
+            "sha256:949cb6f1563baeb824c018169a3f83f2ea2954a5a313d4d170d8987b4b242c31"
+        ),
+        "reason": "P52-T8 review-time correction of static execution-boundary fixture fields",
+        "semanticImpact": (
+            "No Codex quality metric, proposal, or registry-authority outcome changed."
+        ),
+    }
+
+    doc = ROOT / "docs/P52_T9_Phase_52_Exit_Decision.md"
+    normalized = " ".join(doc.read_text(encoding="utf-8").split())
+    for required in (
+        "go_with_guardrails_for_maintainer_disposition",
+        "registry",
+        "corpus expansion",
+        "P52-T10",
+        "Evidence Version Transition",
     ):
         assert required in normalized

@@ -1,0 +1,49 @@
+{
+  "apiVersion": "spec-harvester.phase-52-exit-decision/v0",
+  "authority": "producer_exit_decision_evidence_only",
+  "authorityBoundary": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "changesRegistryTruth": false,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false,
+    "seedsBaselines": false,
+    "treatsEvidenceAsRegistryTruth": false
+  },
+  "decision": {
+    "authorReviewEvidenceReady": true,
+    "corpusExpansionApproved": false,
+    "registryPromotionAllowed": false,
+    "selectedDecision": "go_with_guardrails_for_maintainer_disposition"
+  },
+  "kind": "SpecHarvesterPhase52ExitDecision",
+  "qualityEvidence": {
+    "codexCompletionRate": 1.0,
+    "repositorySpecificRate": 1.0,
+    "schemaValidRate": 1.0,
+    "staticCompletionRateHistorical": 0.96,
+    "unsupportedClaimRate": 0.0
+  },
+  "sourceEvidence": [
+    {
+      "digest": "sha256:a711e4d478257bc94c941ed0bee83a235563ba3aec6fff760c3f14a21b382487",
+      "path": "tests/fixtures/final_corpus_codex_spark_gate/p52-t7-final-corpus-codex-spark-gate.example.json",
+      "task": "P52-T7",
+      "transitionFromP52T8Binding": {
+        "historicalDigest": "sha256:949cb6f1563baeb824c018169a3f83f2ea2954a5a313d4d170d8987b4b242c31",
+        "reason": "P52-T8 review-time correction of static execution-boundary fixture fields",
+        "semanticImpact": "No Codex quality metric, proposal, or registry-authority outcome changed."
+      }
+    },
+    {
+      "digest": "sha256:595e04648ae8c062f0a17c074dd212cf9042a694295f4479007cceb345ba004b",
+      "path": "tests/fixtures/final_corpus_output_triage/p52-t8-final-corpus-output-triage.example.json",
+      "task": "P52-T8"
+    },
+    {
+      "digest": "sha256:89c9a154ab5a6684d54a088fb5839d864e64e02e63d7495d666208c4f6efc00e",
+      "path": "tests/fixtures/final_corpus_dual_license_follow_up/p52-t10-dual-license-follow-up.example.json",
+      "task": "P52-T10"
+    }
+  ]
+}
