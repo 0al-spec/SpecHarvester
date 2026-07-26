@@ -2,10 +2,10 @@
 
 **Status:** In Progress
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
-**Depends On:** `P52-T8` Triage outputs into author handoff
-**Started:** 2026-07-26
+**Depends On:** `P52-T8` output triage and `P52-T10` dual-license follow-up
+**Started:** 2026-07-27
 **Active Task:** `P52-T9` Record the Phase 52 exit decision, deciding whether to stop, run a bounded follow-up, or make selected evidence available for maintainer disposition.
-**Branch:** feature/p52-t8-output-triage
+**Branch:** feature/p52-t9-phase-52-exit-decision
 
 ## Objective
 
@@ -14,6 +14,7 @@ Prepare the Phase 52 exit decision evidence from P52-T8 triage outputs, then dec
 ## Preconditions
 
 - P52-T8 is archived with a PASS/PARTIAL decision recorded.
+- P52-T10 has resolved the two historical dual-license filename findings.
 - No registry mutation occurs outside author-review evidence flow.
 - Static/Spark/evidence-boundary metadata remains intact.
 - No raw prompt/prompt-response persistence and no chain-of-thought storage.
