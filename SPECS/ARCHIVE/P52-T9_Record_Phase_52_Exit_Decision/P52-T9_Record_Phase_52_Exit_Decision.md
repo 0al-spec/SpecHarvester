@@ -30,3 +30,7 @@ P52-T9 does not rerun the corpus, invoke Codex or LM Studio, clone or fetch,
 install dependencies, execute harvested code, run adapters, accept packages or
 relations, publish registry metadata, seed baselines, remove `preview_only`, or
 persist raw prompts, raw responses, secrets, or chain-of-thought.
+
+---
+**Archived:** 2026-07-27
+**Verdict:** PASS
