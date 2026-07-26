@@ -86,18 +86,12 @@ def assert_current_next_task(next_text: str) -> None:
         )
         assert "**Depends On:** `P52-T8` Triage outputs into author handoff" in next_text
         assert "**Started:** 2026-07-26" in next_text
-        assert (
-            "**Active Task:** `P52-T9` Record the Phase 52 exit decision"
-            in next_text
-        )
+        assert "**Active Task:** `P52-T9` Record the Phase 52 exit decision" in next_text
         assert (
             "deciding whether to stop, run a bounded follow-up, or make selected evidence"
             in normalized
         )
-        assert (
-            "make selected evidence available for maintainer disposition"
-            in normalized
-        )
+        assert "make selected evidence available for maintainer disposition" in normalized
         assert "feature/p52-t8-output-triage" in next_text
         assert "No registry mutation occurs" in next_text
         assert "No raw prompt/prompt-response persistence" in next_text
