@@ -78,6 +78,34 @@ def assert_current_next_task(next_text: str) -> None:
         )
         return
 
+    if "# Next Task: P52-T9 Record Phase 52 exit decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** In Progress" in next_text
+        assert "**Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark" in (
+            next_text
+        )
+        assert "**Depends On:** `P52-T8` Triage outputs into author handoff" in next_text
+        assert "**Started:** 2026-07-26" in next_text
+        assert (
+            "**Active Task:** `P52-T9` Record the Phase 52 exit decision"
+            in next_text
+        )
+        assert (
+            "deciding whether to stop, run a bounded follow-up, or make selected evidence"
+            in normalized
+        )
+        assert (
+            "make selected evidence available for maintainer disposition"
+            in normalized
+        )
+        assert "feature/p52-t8-output-triage" in next_text
+        assert "No registry mutation occurs" in next_text
+        assert "No raw prompt/prompt-response persistence" in next_text
+        assert "No raw prompt/prompt-response persistence and no chain-of-thought storage." in next_text
+        assert "P52-T8 is archived" in next_text
+        assert "Preconditions" in next_text
+        return
+
     if "# Next Task: P52-T7 50-100 Repository Codex Spark Proposal-Only Gate" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Planned" in next_text

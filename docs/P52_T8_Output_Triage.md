@@ -54,6 +54,7 @@ P52-T8 uses these existing artifacts:
 | AI draft selected for author review | 50 |
 | AI enrichment sidecars | 0 |
 | AI-enriched preview prepared packages | 0 |
+| Do-not-promote reason count | 2 |
 | Registry-promotion blockers | 2 |
 
 ## Static Package Triage

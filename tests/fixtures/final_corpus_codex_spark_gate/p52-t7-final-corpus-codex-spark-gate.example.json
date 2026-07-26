@@ -1036,16 +1036,16 @@
       "status": "completed"
     },
     "static": {
-      "adapterExecution": null,
+      "adapterExecution": "not_run",
       "aiArtifactPaths": [],
-      "aiMode": null,
+      "aiMode": "disabled",
       "executesHarvestedCode": false,
       "invokesPackageManagers": false,
       "model": null,
-      "passed": false,
+      "passed": true,
       "provider": null,
-      "repositoryAIRecordsSkipped": false,
-      "trustedAdapterExecution": null
+      "repositoryAIRecordsSkipped": true,
+      "trustedAdapterExecution": "not_run"
     }
   },
   "kind": "SpecHarvesterFinalCorpusCodexSparkGateReport",

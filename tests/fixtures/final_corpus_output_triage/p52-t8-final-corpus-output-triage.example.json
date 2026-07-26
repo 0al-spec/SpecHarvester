@@ -852,6 +852,7 @@
     "deferredStaticPackageCount": 2,
     "doNotPromoteRelationProposalCount": 0,
     "doNotPromoteStaticPackageCount": 0,
+    "doNotPromoteReasonCount": 2,
     "p52T9ExitDecisionAllowed": true,
     "registryPromotionBlockerCount": 2,
     "relationProposalCount": 0,

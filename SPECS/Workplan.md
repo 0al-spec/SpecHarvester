@@ -2494,9 +2494,11 @@ Acceptance:
 - [x] `P52-T7` Run the 50-100 repository Codex Spark proposal-only gate only
   after P52-T6 passes, preserving schema validation, bounded receipts,
   non-persistence, and no-registry-authority boundaries.
-- [x] `P52-T8` Triage Phase 52 static, Spark, and enriched-preview outputs into
+- [ ] `P52-T8` Triage Phase 52 static, Spark, and enriched-preview outputs into
   author-review, deferred, and do-not-promote outcomes, then prepare portable
   author handoff evidence without accepting packages or relations.
+  - Pending explicit disposition of the two dual-license filename false
+    negatives (`actix-web`, `uv`) until P52-T10 is completed.
 - [ ] `P52-T9` Record the Phase 52 exit decision, deciding whether to stop,
   run a bounded follow-up, or make selected evidence available for maintainer
   disposition without approving registry promotion by default.
