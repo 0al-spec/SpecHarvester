@@ -1,0 +1,870 @@
+{
+  "aiDraftSidecars": [
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "flask.aiDraft",
+      "repositoryId": "flask",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "gin.aiDraft",
+      "repositoryId": "gin",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "fastapi.aiDraft",
+      "repositoryId": "fastapi",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "fastmcp.aiDraft",
+      "repositoryId": "fastmcp",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "transmission.aiDraft",
+      "repositoryId": "transmission",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "serena.aiDraft",
+      "repositoryId": "serena",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "altstore.aiDraft",
+      "repositoryId": "altstore",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "ontology.aiDraft",
+      "repositoryId": "ontology",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "specgraph.aiDraft",
+      "repositoryId": "specgraph",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "cupertino.aiDraft",
+      "repositoryId": "cupertino",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "agent-passport.aiDraft",
+      "repositoryId": "agent-passport",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "calcu.aiDraft",
+      "repositoryId": "calcu",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "mcp-server-manager.aiDraft",
+      "repositoryId": "mcp-server-manager",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "mcpm-sh.aiDraft",
+      "repositoryId": "mcpm-sh",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "hopper-mcp-wrapper.aiDraft",
+      "repositoryId": "hopper-mcp-wrapper",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "specpm.aiDraft",
+      "repositoryId": "specpm",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "hypercode.aiDraft",
+      "repositoryId": "hypercode",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "hyperprompt.aiDraft",
+      "repositoryId": "hyperprompt",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "agent-ready-kit.aiDraft",
+      "repositoryId": "agent-ready-kit",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "specnode.aiDraft",
+      "repositoryId": "specnode",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "express.aiDraft",
+      "repositoryId": "express",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "pydantic.aiDraft",
+      "repositoryId": "pydantic",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "httpx.aiDraft",
+      "repositoryId": "httpx",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "typer.aiDraft",
+      "repositoryId": "typer",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "fastify.aiDraft",
+      "repositoryId": "fastify",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "vite.aiDraft",
+      "repositoryId": "vite",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "svelte.aiDraft",
+      "repositoryId": "svelte",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "nest.aiDraft",
+      "repositoryId": "nest",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "react.aiDraft",
+      "repositoryId": "react",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "vue-core.aiDraft",
+      "repositoryId": "vue-core",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "github-cli.aiDraft",
+      "repositoryId": "github-cli",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "pebble.aiDraft",
+      "repositoryId": "pebble",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "uv.aiDraft",
+      "repositoryId": "uv",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "axum.aiDraft",
+      "repositoryId": "axum",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "actix-web.aiDraft",
+      "repositoryId": "actix-web",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "feature-passport.aiDraft",
+      "repositoryId": "feature-passport",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "platform.aiDraft",
+      "repositoryId": "platform",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "toys-sandbox.aiDraft",
+      "repositoryId": "toys-sandbox",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "xyflow.aiDraft",
+      "repositoryId": "xyflow",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "tokenkeeper.aiDraft",
+      "repositoryId": "tokenkeeper",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "flow.aiDraft",
+      "repositoryId": "flow",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "zed-objc.aiDraft",
+      "repositoryId": "zed-objc",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "navigation-split-view.aiDraft",
+      "repositoryId": "navigation-split-view",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "nested-swiftui-a11y.aiDraft",
+      "repositoryId": "nested-swiftui-a11y",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "paraconsistent-logic.aiDraft",
+      "repositoryId": "paraconsistent-logic",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "specification-kit.aiDraft",
+      "repositoryId": "specification-kit",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "swiftui-blur.aiDraft",
+      "repositoryId": "swiftui-blur",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "xcode-mcp-wrapper.aiDraft",
+      "repositoryId": "xcode-mcp-wrapper",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "specification-core-rs.aiDraft",
+      "repositoryId": "specification-core-rs",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "diagnosticCodes": [],
+      "id": "docc2context-service.aiDraft",
+      "repositoryId": "docc2context-service",
+      "sourceTask": "P52-T7",
+      "status": "completed",
+      "stopPolicyDecision": "stop_for_author_review"
+    }
+  ],
+  "aiEnrichedPreviews": [],
+  "aiEnrichmentSidecars": [],
+  "apiVersion": "spec-harvester.phase-52-output-triage/v0",
+  "authority": "producer_triage_evidence_only",
+  "carriedForwardCaveats": [
+    "actix-web.license_evidence_missing_file_names",
+    "uv.license_evidence_missing_file_names"
+  ],
+  "classificationVocabulary": {
+    "deferred": "Useful evidence; requires explicit disposition before registry promotion.",
+    "do_not_promote": "Evidence is blocked and must not be used for registry-promotion input in current form.",
+    "selected_for_author_review": "Evidence is suitable for human review, but is not registry acceptance."
+  },
+  "createdAt": "2026-07-26T00:00:00Z",
+  "executionBoundary": {
+    "adaptersEnabled": false,
+    "cloneOrFetch": false,
+    "codexRerun": false,
+    "dependenciesInstalled": false,
+    "harvestedCodeExecuted": false,
+    "packageManagersInvoked": false,
+    "staticRerun": false
+  },
+  "kind": "SpecHarvesterPhase52OutputTriage",
+  "phase": "P52",
+  "registryPromotionBlockers": [
+    {
+      "id": "actix-web",
+      "reasonCodes": [
+        "missing_license_file"
+      ]
+    },
+    {
+      "id": "uv",
+      "reasonCodes": [
+        "missing_license_file"
+      ]
+    }
+  ],
+  "relationProposals": [],
+  "schemaVersion": 1,
+  "sourceArtifacts": {
+    "p52CodexSparkGate": {
+      "apiVersion": "spec-harvester.final-corpus-codex-spark-gate/v0",
+      "authority": "producer_static_and_codex_gate_evidence_only",
+      "digest": "sha256:949cb6f1563baeb824c018169a3f83f2ea2954a5a313d4d170d8987b4b242c31",
+      "kind": "SpecHarvesterFinalCorpusCodexSparkGateReport",
+      "path": "tests/fixtures/final_corpus_codex_spark_gate/p52-t7-final-corpus-codex-spark-gate.example.json"
+    },
+    "p52StaticOnlyGate": {
+      "apiVersion": "spec-harvester.final-corpus-static-only-gate/v0",
+      "authority": "producer_static_gate_evidence_only",
+      "digest": "sha256:6a8f781ccd1e727fb10424c6c7619fe0da9b44c9722fb5edc229c8946d4a2678",
+      "kind": "SpecHarvesterFinalCorpusStaticOnlyGateReport",
+      "path": "tests/fixtures/final_corpus_static_only_gate/p52-t6-final-corpus-static-only-gate.example.json"
+    },
+    "sourceManifest": {
+      "cloneAllowed": false,
+      "digest": "sha256:3b2565ba039cd8f10729ee10c507c3af726365b51a84a58ab986b1f3b72da83e",
+      "entryCount": 50,
+      "fetchAllowed": false,
+      "path": "inputs/p52-final-corpus/repositories.yml",
+      "requiresExistingCheckouts": true
+    }
+  },
+  "staticPackages": [
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "flask.core",
+      "reasonCodes": [],
+      "repositoryId": "flask"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "gin.core",
+      "reasonCodes": [],
+      "repositoryId": "gin"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "fastapi.core",
+      "reasonCodes": [],
+      "repositoryId": "fastapi"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "fastmcp.core",
+      "reasonCodes": [],
+      "repositoryId": "fastmcp"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "transmission.core",
+      "reasonCodes": [],
+      "repositoryId": "transmission"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "serena.core",
+      "reasonCodes": [],
+      "repositoryId": "serena"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "altstore.core",
+      "reasonCodes": [],
+      "repositoryId": "altstore"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "ontology.core",
+      "reasonCodes": [],
+      "repositoryId": "ontology"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "specgraph.core",
+      "reasonCodes": [],
+      "repositoryId": "specgraph"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "cupertino.core",
+      "reasonCodes": [],
+      "repositoryId": "cupertino"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "agent-passport.core",
+      "reasonCodes": [],
+      "repositoryId": "agent-passport"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "calcu.core",
+      "reasonCodes": [],
+      "repositoryId": "calcu"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "mcp-server-manager.core",
+      "reasonCodes": [],
+      "repositoryId": "mcp-server-manager"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "mcpm-sh.core",
+      "reasonCodes": [],
+      "repositoryId": "mcpm-sh"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "hopper-mcp-wrapper.core",
+      "reasonCodes": [],
+      "repositoryId": "hopper-mcp-wrapper"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "specpm.core",
+      "reasonCodes": [],
+      "repositoryId": "specpm"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "hypercode.core",
+      "reasonCodes": [],
+      "repositoryId": "hypercode"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "hyperprompt.core",
+      "reasonCodes": [],
+      "repositoryId": "hyperprompt"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "agent-ready-kit.core",
+      "reasonCodes": [],
+      "repositoryId": "agent-ready-kit"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "specnode.core",
+      "reasonCodes": [],
+      "repositoryId": "specnode"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "express.core",
+      "reasonCodes": [],
+      "repositoryId": "express"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "pydantic.core",
+      "reasonCodes": [],
+      "repositoryId": "pydantic"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "httpx.core",
+      "reasonCodes": [],
+      "repositoryId": "httpx"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "typer.core",
+      "reasonCodes": [],
+      "repositoryId": "typer"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "fastify.core",
+      "reasonCodes": [],
+      "repositoryId": "fastify"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "vite.core",
+      "reasonCodes": [],
+      "repositoryId": "vite"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "svelte.core",
+      "reasonCodes": [],
+      "repositoryId": "svelte"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "nest.core",
+      "reasonCodes": [
+        "files_skipped"
+      ],
+      "repositoryId": "nest"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "react.core",
+      "reasonCodes": [
+        "files_skipped"
+      ],
+      "repositoryId": "react"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "vue-core.core",
+      "reasonCodes": [],
+      "repositoryId": "vue-core"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "github-cli.core",
+      "reasonCodes": [],
+      "repositoryId": "github-cli"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "pebble.core",
+      "reasonCodes": [],
+      "repositoryId": "pebble"
+    },
+    {
+      "classification": "deferred",
+      "packageId": "uv.core",
+      "reasonCodes": [
+        "missing_license_file",
+        "missing_license_file"
+      ],
+      "repositoryId": "uv"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "axum.core",
+      "reasonCodes": [
+        "files_skipped"
+      ],
+      "repositoryId": "axum"
+    },
+    {
+      "classification": "deferred",
+      "packageId": "actix-web.core",
+      "reasonCodes": [
+        "files_skipped",
+        "missing_license_file",
+        "missing_license_file"
+      ],
+      "repositoryId": "actix-web"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "feature-passport.core",
+      "reasonCodes": [],
+      "repositoryId": "feature-passport"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "platform.core",
+      "reasonCodes": [],
+      "repositoryId": "platform"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "toys-sandbox.core",
+      "reasonCodes": [],
+      "repositoryId": "toys-sandbox"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "xyflow.core",
+      "reasonCodes": [],
+      "repositoryId": "xyflow"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "tokenkeeper.core",
+      "reasonCodes": [],
+      "repositoryId": "tokenkeeper"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "flow.core",
+      "reasonCodes": [],
+      "repositoryId": "flow"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "zed-objc.core",
+      "reasonCodes": [],
+      "repositoryId": "zed-objc"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "navigation-split-view.core",
+      "reasonCodes": [],
+      "repositoryId": "navigation-split-view"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "nested-swiftui-a11y.core",
+      "reasonCodes": [],
+      "repositoryId": "nested-swiftui-a11y"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "paraconsistent-logic.core",
+      "reasonCodes": [],
+      "repositoryId": "paraconsistent-logic"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "specification-kit.core",
+      "reasonCodes": [],
+      "repositoryId": "specification-kit"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "swiftui-blur.core",
+      "reasonCodes": [
+        "no_package_manifests"
+      ],
+      "repositoryId": "swiftui-blur"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "xcode-mcp-wrapper.core",
+      "reasonCodes": [],
+      "repositoryId": "xcode-mcp-wrapper"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "specification-core-rs.core",
+      "reasonCodes": [],
+      "repositoryId": "specification-core-rs"
+    },
+    {
+      "classification": "selected_for_author_review",
+      "packageId": "docc2context-service.core",
+      "reasonCodes": [],
+      "repositoryId": "docc2context-service"
+    }
+  ],
+  "summary": {
+    "aiDraftDeferredCount": 0,
+    "aiDraftSelectedForAuthorReviewCount": 50,
+    "aiDraftSidecarCount": 50,
+    "aiDraftSupersededDoNotPromoteCount": 0,
+    "aiEnrichedPreviewDeferredCount": 0,
+    "aiEnrichedPreviewDoNotPromoteCount": 0,
+    "aiEnrichedPreviewPreparedCount": 0,
+    "aiEnrichedPreviewSkippedCount": 0,
+    "aiEnrichmentDeferredCount": 0,
+    "aiEnrichmentDoNotPromoteCount": 0,
+    "aiEnrichmentSelectedForAuthorReviewCount": 0,
+    "aiEnrichmentSidecarCount": 0,
+    "candidatePackageCount": 50,
+    "carriedForwardCaveatCount": 2,
+    "deferredRelationProposalCount": 0,
+    "deferredStaticPackageCount": 2,
+    "doNotPromoteRelationProposalCount": 0,
+    "doNotPromoteStaticPackageCount": 0,
+    "doNotPromoteReasonCount": 2,
+    "p52T9ExitDecisionAllowed": true,
+    "registryPromotionBlockerCount": 2,
+    "relationProposalCount": 0,
+    "repositoriesTriaged": 50,
+    "selectedRelationProposalCount": 0,
+    "selectedStaticPackageCount": 48
+  },
+  "task": "P52-T8",
+  "trustBoundary": [
+    "No raw prompts or raw provider responses were persisted.",
+    "No session state or chain-of-thought was persisted.",
+    "No secrets or registry truth mutations were persisted.",
+    "Candidates remain author-review evidence only."
+  ]
+}
