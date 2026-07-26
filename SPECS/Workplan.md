@@ -2502,10 +2502,10 @@ Acceptance:
 - [ ] `P52-T9` Record the Phase 52 exit decision, deciding whether to stop,
   run a bounded follow-up, or make selected evidence available for maintainer
   disposition without approving registry promotion by default.
-- [ ] `P52-T10` Add strict collector support for common root
+- [x] `P52-T10` Add strict collector support for common root
   `LICENSE-APACHE`/`LICENSE-MIT` dual-license filenames and run a targeted
   static validation over `actix-web` and `uv`, preserving the historical
-  P52-T6 48/50 evidence and completing before P52-T8 output triage. **INPROGRESS**
+  P52-T6 48/50 evidence and completing before P52-T8 output triage.
 
 Motivation:
 

@@ -1,18 +1,19 @@
-# Next Task: P52-T10 Add strict collector support for canonical dual-license filenames
+# Next Task: P52-T9 Record Phase 52 exit decision
 
-**Status:** Selected
+**Status:** In Progress
 **Phase:** Phase 52. Controlled Popular Repository Corpus with Codex Spark
-**Depends On:** `P52-T6` static-only gate evidence
-**Started:** 2026-07-27
-**Active Task:** `P52-T10` Add strict collector support for common root `LICENSE-APACHE`/`LICENSE-MIT` dual-license filenames and validate `actix-web` and `uv`.
-**Branch:** feature/p52-t10-dual-license-collector
+**Depends On:** `P52-T8` Triage outputs into author handoff
+**Started:** 2026-07-26
+**Active Task:** `P52-T9` Record the Phase 52 exit decision, deciding whether to stop, run a bounded follow-up, or make selected evidence available for maintainer disposition.
+**Branch:** feature/p52-t8-output-triage
 
 ## Objective
 
-Resolve the two known strict static false negatives without changing the historical P52-T6 evidence or granting registry authority.
+Prepare the Phase 52 exit decision evidence from P52-T8 triage outputs, then decide whether to stop, run a bounded follow-up, or release selected outputs for maintainer disposition.
 
 ## Preconditions
 
-- The pinned `actix-web` and `uv` checkouts remain available under `P52Sources`.
-- The collector remains strict and deterministic.
-- No AI, adapter, package-manager, or registry operation is needed.
+- P52-T8 is archived with a PASS/PARTIAL decision recorded.
+- No registry mutation occurs outside author-review evidence flow.
+- Static/Spark/evidence-boundary metadata remains intact.
+- No raw prompt/prompt-response persistence and no chain-of-thought storage.
