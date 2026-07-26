@@ -1,0 +1,34 @@
+{
+  "apiVersion": "spec-harvester.phase-52-dual-license-follow-up/v0",
+  "authority": "producer_validation_evidence_only",
+  "historicalP52T6Completion": {
+    "failedRepositoryIds": ["actix-web", "uv"],
+    "staticCompletionRate": 0.96,
+    "status": "preserved"
+  },
+  "kind": "SpecHarvesterPhase52DualLicenseFollowUp",
+  "repositories": [
+    {
+      "id": "uv",
+      "licenseFileCount": 2,
+      "missingLicenseFile": false,
+      "revision": "25ada4d695c8d05232a3b22cef69bcf9858e274a",
+      "status": "passed"
+    },
+    {
+      "id": "actix-web",
+      "licenseFileCount": 2,
+      "missingLicenseFile": false,
+      "revision": "eee23e2326d1f063c2959a71fa642e1b7c3b1dc9",
+      "status": "passed"
+    }
+  ],
+  "result": {
+    "processedRepositoryCount": 2,
+    "status": "passed"
+  },
+  "strictCollectorPolicy": {
+    "acceptedCanonicalRootNames": ["LICENSE-APACHE", "LICENSE-MIT"],
+    "preservesTextExtensionFilter": true
+  }
+}

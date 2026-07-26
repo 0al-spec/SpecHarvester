@@ -59,9 +59,11 @@ P52-T8 uses these existing artifacts:
 
 ## Static Package Triage
 
-`actix-web` and `uv` are carried as `deferred` because they fail static
-readiness on canonical dual-license file variants (`LICENSE-APACHE`/`LICENSE-MIT`),
-while static outputs for all other repositories are `selected_for_author_review`.
+At the time of triage, `actix-web` and `uv` were carried as `deferred` because
+the strict collector did not recognize their canonical dual-license file
+variants (`LICENSE-APACHE`/`LICENSE-MIT`). P52-T10 subsequently resolved that
+collector gap for the pinned revisions; the historical triage fixture itself is
+not rewritten.
 
 ## Spark Draft Sidecars
 
@@ -75,8 +77,8 @@ P52-T8; enriched preview handoff is deferred to follow-up remediation tasks.
 
 ## Caveats Carried Forward
 
-- `actix-web.license_evidence_missing_file_names`
-- `uv.license_evidence_missing_file_names`
+- `actix-web.license_evidence_missing_file_names` (resolved by P52-T10)
+- `uv.license_evidence_missing_file_names` (resolved by P52-T10)
 
 These caveats do not block P52-T9 by themselves but must be explicitly tracked
 in maintainer follow-up before registry promotion.

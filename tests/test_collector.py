@@ -851,7 +851,10 @@ def test_metadata_helpers_cover_static_file_variants(tmp_path: Path) -> None:
     assert classify_file(tmp_path / "notes.txt") == "metadata"
     assert is_license_filename(tmp_path / "LICENSE.txt")
     assert is_license_filename(tmp_path / "copying.rst")
+    assert is_license_filename(tmp_path / "LICENSE-APACHE")
+    assert is_license_filename(tmp_path / "LICENSE-MIT")
     assert not is_license_filename(tmp_path / "LICENSE.png")
+    assert not is_license_filename(tmp_path / "LICENSE-APACHE-2.0")
     assert not is_license_filename(tmp_path / "THIRD_PARTY_LICENSES.txt")
     assert markdown_headings("# One\n## Two\n### Three\n", limit=2) == ["One", "Two"]
     semantic_hints = markdown_semantic_hints(
