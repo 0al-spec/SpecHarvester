@@ -38,6 +38,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Phase 52 Complete" in next_text:
+        assert "go_with_guardrails_for_maintainer_disposition" in next_text
+        assert "50-source proposal-only evidence" in next_text
+        assert "Registry promotion, automatic package or relation acceptance" in next_text
+        assert "corpus expansion remain unapproved" in next_text
+        assert "new planning phase" in next_text
+        return
+
     if (
         "# Next Task: P52-T10 Add strict collector support for canonical dual-license filenames"
         in next_text
