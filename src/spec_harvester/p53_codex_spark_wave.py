@@ -25,11 +25,23 @@ from spec_harvester.mass_campaign_orchestration import (
 from spec_harvester.mass_corpus_source_manifest import read_mass_corpus_selection_metadata
 from spec_harvester.source_manifest import read_repository_source_manifests
 
-P53_WAVE_REPORT_FILENAME = "p53-t6-codex-spark-wave-1-report.json"
 P53_CHECKPOINT_FILENAME = "p53-campaign-checkpoint.json"
 P53_OUTCOMES_FILENAME = "p53-codex-spark-wave-outcomes.json"
 WAVE_ONE = "wave-1"
+WAVE_TWO = "wave-2"
 MAX_CONCURRENCY = 2
+WAVE_CONFIGURATION = {
+    WAVE_ONE: {
+        "task": "P53-T6",
+        "positions": range(1, 26),
+        "reportFilename": "p53-t6-codex-spark-wave-1-report.json",
+    },
+    WAVE_TWO: {
+        "task": "P53-T8",
+        "positions": range(26, 51),
+        "reportFilename": "p53-t8-codex-spark-wave-2-report.json",
+    },
+}
 
 
 @dataclass(frozen=True)
@@ -42,11 +54,15 @@ class P53CodexSparkWaveOptions:
     codex_model: str = calibration.DEFAULT_CODEX_MODEL
     codex_schema: Path = calibration.DEFAULT_CODEX_SCHEMA_PATH
     codex_timeout_seconds: float = calibration.DEFAULT_CODEX_TIMEOUT_SECONDS
+    wave: str = WAVE_ONE
+    scale_out_decision: Path | None = None
 
 
 class P53CodexSparkWave:
     def __init__(self, options: P53CodexSparkWaveOptions) -> None:
         self.options = options
+        if options.wave not in WAVE_CONFIGURATION:
+            raise ValueError(f"P53 supports only configured waves: {', '.join(WAVE_CONFIGURATION)}")
         self.static_root = options.out / "static-only"
         self.checkpoint_path = options.out / P53_CHECKPOINT_FILENAME
         self.outcomes_path = options.out / P53_OUTCOMES_FILENAME
@@ -64,21 +80,25 @@ class P53CodexSparkWave:
         )
 
     def run(self) -> dict[str, Any]:
-        sources = wave_one_sources(self.options.inputs, self.options.metadata)
         plan = read_json(self.options.campaign_plan)
+        scale_out_decision = self.validate_scale_out_decision(plan)
+        sources = wave_sources(self.options.inputs, self.options.metadata, self.options.wave)
         expected_checkpoint = build_campaign_checkpoint(
             plan,
             tuple(
                 CampaignRepositoryInput(
                     repository_id=source["id"],
                     input_digest=input_digest(source),
-                    wave_id=WAVE_ONE,
+                    wave_id=self.options.wave,
                 )
                 for source in sources
             ),
         )
         self.options.out.mkdir(parents=True, exist_ok=True)
         checkpoint = self.resume_or_create_checkpoint(expected_checkpoint)
+        if scale_out_decision is not None:
+            checkpoint["unlockedWave"] = self.options.wave
+            write_campaign_checkpoint(self.checkpoint_path, checkpoint)
         static = run_autonomous_candidate_batch(
             AutonomousCandidateBatchOptions(
                 inputs=self.options.inputs,
@@ -90,7 +110,9 @@ class P53CodexSparkWave:
             )
         )
         if static.get("status") != "passed":
-            return self.write_report(sources, static, checkpoint, [], "failed", {})
+            return self.write_report(
+                sources, static, checkpoint, [], "failed", {}, scale_out_decision
+            )
         records = {record["id"]: record for record in static["repositories"]}
         schema = self.calibration.schema()
         version = self.calibration.codex_executor.version()
@@ -135,7 +157,77 @@ class P53CodexSparkWave:
             if completed and quality["passed"] and (stop is None or natural_wave_budget_exhaustion)
             else "failed"
         )
-        return self.write_report(sources, static, checkpoint, outcome_records, status, quality)
+        return self.write_report(
+            sources, static, checkpoint, outcome_records, status, quality, scale_out_decision
+        )
+
+    def validate_scale_out_decision(self, plan: dict[str, Any]) -> dict[str, Any] | None:
+        if self.options.wave == WAVE_ONE:
+            if self.options.scale_out_decision is not None:
+                raise ValueError("P53 wave-1 does not accept a scale-out decision artifact")
+            return None
+        if self.options.scale_out_decision is None:
+            raise ValueError("P53 wave-2 requires a validated P53-T7 scale-out decision artifact")
+        payload = read_json_object(self.options.scale_out_decision)
+        required = {
+            "apiVersion": "spec-harvester.p53-scale-out-decision/v0",
+            "kind": "SpecHarvesterP53ScaleOutDecision",
+            "phase": "P53",
+            "task": "P53-T7",
+            "status": "passed",
+            "fromWave": WAVE_ONE,
+            "toWave": WAVE_TWO,
+            "decision": "unlock_wave-2_only",
+        }
+        if any(payload.get(key) != value for key, value in required.items()):
+            raise ValueError("P53 wave-2 scale-out decision does not authorize P53-T8")
+        source_report = calibration.mapping_value(payload.get("sourceWaveReport"))
+        source_digest = source_report.get("sha256")
+        if (
+            source_report.get("task") != "P53-T6"
+            or not isinstance(source_digest, str)
+            or len(source_digest) != 64
+            or any(character not in "0123456789abcdef" for character in source_digest)
+        ):
+            raise ValueError("P53 wave-2 scale-out decision has no valid P53-T6 evidence digest")
+        metrics = calibration.mapping_value(payload.get("qualityMetrics"))
+        thresholds = calibration.mapping_value(plan.get("qualityMetrics"))
+        if (
+            not metric_at_least(
+                metrics, "codexCompletionRate", thresholds, "codexCompletionRateMinimum"
+            )
+            or not metric_at_least(metrics, "schemaValidRate", thresholds, "schemaValidRateMinimum")
+            or not metric_at_least(
+                metrics, "repositorySpecificRate", thresholds, "repositorySpecificRateMinimum"
+            )
+            or not metric_at_most(
+                metrics, "unsupportedClaimRate", thresholds, "unsupportedClaimRateMaximum"
+            )
+            or metrics.get("terminalFailureCount") != 0
+        ):
+            raise ValueError("P53 wave-2 scale-out decision does not meet P53 quality thresholds")
+        review = calibration.mapping_value(payload.get("humanReview"))
+        reviewed_ids = review.get("reviewedRepositoryIds")
+        required_reviews = calibration.mapping_value(thresholds.get("humanReview")).get(
+            "wave1Minimum"
+        )
+        if (
+            not isinstance(required_reviews, int)
+            or review.get("minimumRequired") != required_reviews
+            or not isinstance(reviewed_ids, list)
+            or len(reviewed_ids) < required_reviews
+            or len(set(reviewed_ids)) != len(reviewed_ids)
+            or not all(
+                isinstance(repository_id, str) and repository_id for repository_id in reviewed_ids
+            )
+        ):
+            raise ValueError("P53 wave-2 scale-out decision has insufficient human review evidence")
+        return {
+            "path": str(self.options.scale_out_decision),
+            "sha256": calibration.sha256(self.options.scale_out_decision.read_bytes()).hexdigest(),
+            "task": payload["task"],
+            "sourceWaveReport": source_report,
+        }
 
     def resume_or_create_checkpoint(self, expected: dict[str, Any]) -> dict[str, Any]:
         if not self.checkpoint_path.is_file():
@@ -187,15 +279,16 @@ class P53CodexSparkWave:
         outcomes: list[dict[str, Any]],
         status: str,
         quality: dict[str, Any],
+        scale_out_decision: dict[str, Any] | None,
     ) -> dict[str, Any]:
         report = {
             "apiVersion": "spec-harvester.p53-codex-spark-wave/v0",
             "kind": "SpecHarvesterP53CodexSparkWaveReport",
             "schemaVersion": 1,
             "phase": "P53",
-            "task": "P53-T6",
+            "task": WAVE_CONFIGURATION[self.options.wave]["task"],
             "status": status,
-            "wave": WAVE_ONE,
+            "wave": self.options.wave,
             "sourceIds": [source["id"] for source in sources],
             "static": {
                 "status": static.get("status"),
@@ -220,21 +313,39 @@ class P53CodexSparkWave:
                 "stop": checkpoint["stop"],
             },
             "quality": quality,
+            "scaleOutDecision": scale_out_decision,
             "privacy": calibration.privacy_record(),
             "authority": "producer_wave_evidence_only",
         }
-        calibration.write_json(self.options.out / P53_WAVE_REPORT_FILENAME, report)
+        calibration.write_json(
+            self.options.out / WAVE_CONFIGURATION[self.options.wave]["reportFilename"], report
+        )
         return report
 
 
 def wave_one_sources(inputs: Path, metadata_path: Path) -> list[dict[str, Any]]:
+    return wave_sources(inputs, metadata_path, WAVE_ONE)
+
+
+def wave_sources(inputs: Path, metadata_path: Path, wave: str) -> list[dict[str, Any]]:
+    if wave not in WAVE_CONFIGURATION:
+        raise ValueError(f"P53 supports only configured waves: {', '.join(WAVE_CONFIGURATION)}")
     metadata = read_mass_corpus_selection_metadata(metadata_path)
     positions = {item["id"]: item["position"] for item in metadata["repositories"]}
+    waves = {item["id"]: item["wave"] for item in metadata["repositories"]}
     selected = [
-        item for item in read_repository_source_manifests(inputs) if positions[item["id"]] <= 25
+        item for item in read_repository_source_manifests(inputs) if waves[item["id"]] == wave
     ]
-    if len(selected) != 25 or [positions[item["id"]] for item in selected] != list(range(1, 26)):
-        raise ValueError("P53-T6 requires exactly positions 1 through 25")
+    selected.sort(key=lambda item: positions[item["id"]])
+    expected_positions = list(WAVE_CONFIGURATION[wave]["positions"])
+    if (
+        len(selected) != len(expected_positions)
+        or [positions[item["id"]] for item in selected] != expected_positions
+    ):
+        raise ValueError(
+            f"P53 {wave} requires exactly positions "
+            f"{expected_positions[0]} through {expected_positions[-1]}"
+        )
     return selected
 
 
@@ -307,6 +418,26 @@ def quality_metrics(
 
 def rate(numerator: int, denominator: int) -> float:
     return numerator / denominator if denominator else 0.0
+
+
+def metric_at_least(
+    metrics: dict[str, Any], metric: str, thresholds: dict[str, Any], threshold: str
+) -> bool:
+    value = metrics.get(metric)
+    minimum = thresholds.get(threshold)
+    return (
+        isinstance(value, (int, float)) and isinstance(minimum, (int, float)) and value >= minimum
+    )
+
+
+def metric_at_most(
+    metrics: dict[str, Any], metric: str, thresholds: dict[str, Any], threshold: str
+) -> bool:
+    value = metrics.get(metric)
+    maximum = thresholds.get(threshold)
+    return (
+        isinstance(value, (int, float)) and isinstance(maximum, (int, float)) and value <= maximum
+    )
 
 
 def read_json(path: Path) -> dict[str, Any]:

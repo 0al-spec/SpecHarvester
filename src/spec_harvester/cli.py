@@ -802,7 +802,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p53_wave = subcommands.add_parser(
         "p53-codex-spark-wave-1",
-        help="Run P53-T6 Codex Spark proposal-only wave 1 over positions 1-25.",
+        help="Run a configured P53 Codex Spark proposal-only wave.",
     )
     p53_wave.add_argument("inputs", type=Path, help="P53 source manifest directory.")
     p53_wave.add_argument(
@@ -812,6 +812,17 @@ def build_parser() -> argparse.ArgumentParser:
         "--campaign-plan", type=Path, required=True, help="P53 campaign plan JSON."
     )
     p53_wave.add_argument("--out", type=Path, required=True, help="Wave output root.")
+    p53_wave.add_argument(
+        "--wave",
+        choices=("wave-1", "wave-2"),
+        default="wave-1",
+        help="Frozen P53 wave to execute. Default: wave-1.",
+    )
+    p53_wave.add_argument(
+        "--scale-out-decision",
+        type=Path,
+        help="Required validated P53-T7 decision artifact when running wave-2.",
+    )
     p53_wave.add_argument("--codex-command", default=DEFAULT_CODEX_COMMAND)
     p53_wave.add_argument("--codex-model", default=DEFAULT_CODEX_MODEL)
     p53_wave.add_argument("--codex-schema", type=Path, default=DEFAULT_CODEX_SCHEMA_PATH)
@@ -2293,6 +2304,8 @@ def run_p53_codex_spark_wave_cli(args: argparse.Namespace) -> int:
                 codex_model=args.codex_model,
                 codex_schema=args.codex_schema,
                 codex_timeout_seconds=args.codex_timeout_seconds,
+                wave=args.wave,
+                scale_out_decision=args.scale_out_decision,
             )
         )
     except ValueError as exc:

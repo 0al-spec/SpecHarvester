@@ -1,24 +1,27 @@
-# Next Task: P53-T8 Codex Spark Wave 2
+# Next Task: P53-T9 Wave-2 Quality Review and Scale-Out Decision
 
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Dependencies:** `P53-T7` Wave-1 Quality Review and Scale-Out Decision (`unlock_p53_t8`)
+**Dependencies:** `P53-T8` Codex Spark Wave 2
 **Status:** In Progress
 **Started:** 2026-07-28
-**Branch:** feature/p53-t8-codex-spark-wave-2
+**Branch:** pending selection after P53-T8 review
 
 ## Objective
 
-Run Codex 5.3 Spark only for the 25 manifest-pinned repositories at positions
-26-50 after revalidating their static evidence and revisions.
+Review the wave-2 quality sample, including the `bitcoin-bitcoin` warning, and
+record whether P53-T10 may process only positions 51-75.
 
 ## Next Step
 
-Persist proposal-only receipts, checkpoint state, and aggregate metrics for
-P53-T9. Do not process positions 1-25 or 51-100, accept packages, or modify
-registry truth.
+Require at least three manual reviews and all Phase 53 quality thresholds.
+Do not run wave 3 as part of this task.
 
 ## Recently Archived
+
+- `P53-T8` Codex Spark Wave 2: PASS for execution. All 25 frozen wave-2
+  sources completed with valid schemas and no terminal failures; one
+  `bitcoin-bitcoin` unsupported-claim warning blocks automatic wave-3 unlock.
 
 - `P53-T5` Mass Corpus Static-Only Gate: PASS. All 100 pinned local checkouts
   produced deterministic preview evidence with zero failures; AI and execution
