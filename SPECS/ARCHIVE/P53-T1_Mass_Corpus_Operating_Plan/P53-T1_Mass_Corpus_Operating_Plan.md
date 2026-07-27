@@ -66,3 +66,7 @@ worker.
 The campaign may progress only as `P53-T5 -> P53-T6 -> P53-T7 -> P53-T8 ->
 P53-T9 -> P53-T10 -> P53-T11 -> P53-T12 -> P53-T13 -> P53-T14 -> P53-T15`.
 Each human-review decision unlocks only the immediately following wave.
+
+---
+**Archived:** 2026-07-27
+**Verdict:** PASS

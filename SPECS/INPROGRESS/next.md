@@ -1,25 +1,30 @@
-# Next Task: P53-T1 Mass Corpus Operating Plan
+# Next Task: P53-T2 Resumable Mass-Run Orchestration
 
-**Status:** In Progress
+**Status:** Selected
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Depends On:** `P52-T9` Phase 52 exit decision
+**Depends On:** `P53-T1` Mass Corpus Operating Plan
 **Started:** 2026-07-27
-**Active Task:** `P53-T1` Record the mass-corpus operating plan and
-machine-readable campaign contract for 100 new repositories.
-**Branch:** feature/p53-t1-mass-corpus-operating-plan
+**Active Task:** `P53-T2` Implement and validate the resumable mass-run
+orchestration contract.
+**Branch:** feature/p53-t2-resumable-mass-run-orchestration
 
 ## Objective
 
-Define the immutable 100-source, four-wave campaign contract, quality gates,
-budget and resume policy, stop conditions, evidence retention, and
-non-authority boundaries before source acquisition or live execution.
+Implement the campaign runner contract for deterministic run identity,
+per-repository state, two-worker bounded concurrency, atomic checkpoints,
+idempotent resume, classified retries, token/time receipts, and aggregate
+budget enforcement. It must enforce the P53-T1 `gpt-5.3-codex-spark` worker
+policy but must not select sources or invoke a live model.
 
 ## Preconditions
 
-- P52-T9 is archived with
-  `go_with_guardrails_for_maintainer_disposition`.
-- The P52 50-source corpus remains reference/canary evidence and is not counted
-  as new P53 output.
-- P53-T1 does not acquire repositories, run static parsing, invoke Codex or LM
+- P53-T1 is archived with its 100-source, four-wave campaign contract.
+- The sole future campaign worker is `gpt-5.3-codex-spark` through the
+  schema-validated `codex exec` external-model-output boundary.
+- P53-T2 does not acquire repositories, run static parsing, invoke Codex or LM
   Studio, execute adapters/package managers/harvested code, or mutate registry
   truth.
+
+## Recently Archived
+
+- `P53-T1` Mass Corpus Operating Plan: PASS. No review follow-up was needed.
