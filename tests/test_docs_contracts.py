@@ -38,6 +38,26 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P53-T9 Wave-2 Quality Review and Scale-Out Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** In Progress" in next_text
+        assert "`P53-T8` Codex Spark Wave 2" in next_text
+        assert "pending selection after P53-T8 review" in next_text
+        assert "bitcoin-bitcoin" in next_text
+        assert "at least three manual reviews" in normalized
+        assert "Do not run wave 3" in next_text
+        return
+
+    if "# Next Task: P53-T7 Wave-1 Quality Review and Scale-Out Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** In Progress" in next_text
+        assert "`P53-T6` Codex Spark Wave 1" in next_text
+        assert "feature/p53-t7-wave-1-quality-decision" in next_text
+        assert "at least five schema-validated wave-1 proposals" in normalized
+        assert "unlock for P53-T8" in normalized
+        assert "If quality thresholds remain met" in next_text
+        return
+
     if "# Next Task: P53-T6 Codex Spark Wave 1" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Priority:** P0" in next_text

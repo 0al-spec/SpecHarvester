@@ -5,6 +5,11 @@ import urllib.request
 from pathlib import Path
 
 from spec_harvester.cli import main
+from spec_harvester.controlled_calibration import (
+    diagnostic_codes,
+    repository_specific,
+    unsupported_claim_count,
+)
 from spec_harvester.package_set_ai_draft_proposal import (
     PACKAGE_SET_AI_DRAFT_API_VERSION,
     PACKAGE_SET_AI_DRAFT_KIND,
@@ -164,6 +169,74 @@ def test_package_set_ai_draft_ignores_blank_evidence_paths(
 
     assert report["status"] == "completed"
     assert "model_evidence_path_unsupported" not in {item["code"] for item in report["diagnostics"]}
+
+
+def test_package_set_ai_draft_omits_manifestless_contains_relation(
+    tmp_path: Path,
+) -> None:
+    inventory = write_source_backed_empty_package_inventory(tmp_path)
+    inventory_payload = json.loads(inventory.read_text(encoding="utf-8"))
+    inventory_payload["source"]["packageId"] = "demo.core"
+    inventory.write_text(
+        json.dumps(inventory_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    model_output = tmp_path / "manifestless-model-output.json"
+    model_output.write_text(
+        json.dumps(
+            {
+                "packageSet": {
+                    "packageId": "demo.workspace",
+                    "summary": "Manifestless source fallback.",
+                    "evidencePaths": ["workspace-inventory.json"],
+                    "confidence": "low",
+                },
+                "selectedMembers": [
+                    {
+                        "packageId": "demo.core",
+                        "role": "primary_package",
+                        "sourceTargetPath": ".",
+                        "reason": "Only deterministic source fallback candidate.",
+                        "evidencePaths": ["workspace-inventory.json"],
+                        "confidence": "low",
+                    }
+                ],
+                "excludedPackages": [],
+                "relations": [
+                    {
+                        "id": "contains-demo.core",
+                        "type": "contains",
+                        "sourcePackageId": "demo.workspace",
+                        "targetPackageId": "demo.core",
+                        "evidencePaths": ["package-set-ai-draft-request.json"],
+                        "confidence": "low",
+                    }
+                ],
+                "evidenceGaps": ["No package manifest was discovered."],
+                "overallConfidence": "low",
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    report = build_package_set_ai_draft_proposal(
+        PackageSetAIDraftProposalOptions(
+            inventory=inventory,
+            model_output=model_output,
+        )
+    )
+
+    codes = diagnostic_codes(report)
+    assert report["relations"] == []
+    assert report["summary"]["selectedMemberCount"] == 1
+    assert report["summary"]["relationCount"] == 0
+    assert "relation_omitted_missing_manifest_evidence" in codes
+    assert "model_evidence_path_unsupported" not in codes
+    assert unsupported_claim_count(codes) == 0
+    assert repository_specific(report) is True
 
 
 def test_package_set_ai_draft_fails_package_set_id_mismatch(

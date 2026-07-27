@@ -522,6 +522,8 @@ class ControlledCalibration:
                 "path. The supplied P52 inventory is non-empty: selectedMembers must "
                 "include at least one package from packages, and a single-package "
                 "inventory must select its only package rather than only excluding it. "
+                "If a selected package has an empty manifestPath, omit contains relations; "
+                "selectedMembers is sufficient proposal evidence. "
                 "The proposal is review evidence only: do not claim package acceptance, "
                 "relation acceptance, registry publication, or any fact unsupported by "
                 "the supplied evidence paths."
