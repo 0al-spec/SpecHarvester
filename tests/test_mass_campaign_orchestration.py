@@ -95,3 +95,17 @@ def test_budget_limit_stops_campaign_and_checkpoint_write_is_atomic(tmp_path: Pa
     output = tmp_path / "checkpoint.json"
     write_campaign_checkpoint(output, stopped)
     assert json.loads(output.read_text(encoding="utf-8")) == stopped
+
+
+def test_cumulative_per_repository_budget_stops_campaign() -> None:
+    campaign_plan = plan()
+    campaign_plan["budgetPolicy"]["perRepositoryMaxTokens"] = 10
+    checkpoint, dispatched = reserve_dispatch(build_campaign_checkpoint(campaign_plan, sources()))
+    checkpoint = apply_repository_result(
+        checkpoint, dispatched[0], outcome="transport_failure", token_used=6, wall_time_seconds=1
+    )
+    checkpoint, dispatched = reserve_dispatch(checkpoint)
+    stopped = apply_repository_result(
+        checkpoint, dispatched[0], outcome="completed", token_used=5, wall_time_seconds=1
+    )
+    assert stopped["stop"]["trigger"] == "campaign_budget_limit"

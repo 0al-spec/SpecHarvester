@@ -102,8 +102,8 @@ def apply_repository_result(
     record["tokenUsed"] += token_used
     record["wallTimeSeconds"] += wall_time_seconds
     if (
-        token_used > updated["budgetPolicy"]["perRepositoryMaxTokens"]
-        or wall_time_seconds > updated["budgetPolicy"]["perRepositoryMaxWallTimeSeconds"]
+        record["tokenUsed"] > updated["budgetPolicy"]["perRepositoryMaxTokens"]
+        or record["wallTimeSeconds"] > updated["budgetPolicy"]["perRepositoryMaxWallTimeSeconds"]
     ):
         stop_trigger = "campaign_budget_limit"
     record["state"] = (
@@ -119,6 +119,11 @@ def apply_repository_result(
         return _stop(updated, stop_trigger)
     if _total(updated, "tokenUsed") >= updated["budgetPolicy"]["campaignMaxTokens"]:
         return _stop(updated, "campaign_budget_limit")
+    if (
+        _total_wave(updated, record["wave"], "tokenUsed")
+        >= updated["budgetPolicy"]["perWaveMaxTokens"]
+    ):
+        return _stop(updated, "wave_budget_limit")
     return updated
 
 
@@ -169,3 +174,7 @@ def _digest(value: Any) -> str:
 
 def _total(checkpoint: dict[str, Any], key: str) -> int:
     return sum(record[key] for record in checkpoint["repositories"])
+
+
+def _total_wave(checkpoint: dict[str, Any], wave: str, key: str) -> int:
+    return sum(record[key] for record in checkpoint["repositories"] if record["wave"] == wave)
