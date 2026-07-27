@@ -1,24 +1,27 @@
-# Next Task: P53-T3 Mass Corpus Source Manifest
+# Next Task: P53-T4 Mass Corpus Checkout Readiness Gate
 
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Dependencies:** `P53-T1` Mass Corpus Operating Plan and `P53-T2` Resumable
-Mass-Run Orchestration
+**Dependencies:** `P53-T3` Mass Corpus Source Manifest
 **Status:** Selected
 
 ## Objective
 
-Freeze the identities, revisions, local checkout paths, wave assignment, and
-selection evidence for exactly 100 new public repositories. The manifest must
-remain separate from P52 and provide the input boundary for P53-T4 readiness.
+Verify all 100 operator-provided local checkouts against the immutable P53-T3
+source manifest. Require presence, clean revision match, safe size, and
+resolved local provenance and license evidence before P53-T5 static parsing can
+be unlocked.
 
 ## Next Step
 
 Run the PLAN command to generate the implementation-ready PRD. This selection
-does not acquire or process repositories, invoke Codex or another model, or
-mutate registry truth.
+does not create, restore, clone, or fetch repositories; run static parsing;
+invoke Codex or another model; or mutate registry truth.
 
 ## Recently Archived
 
 - `P53-T1` Mass Corpus Operating Plan: PASS. Structured review found no
   actionable findings, so FOLLOW-UP created no new tasks.
+- `P53-T3` Mass Corpus Source Manifest: PASS. It froze 100 new source
+  identities and public discovery evidence; all checkout-dependent evidence is
+  pending P53-T4 verification.

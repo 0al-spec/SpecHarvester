@@ -38,6 +38,22 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P53-T4 Mass Corpus Checkout Readiness Gate" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Priority:** P0" in next_text
+        assert "**Status:** Selected" in next_text
+        assert (
+            "**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production"
+            in next_text
+        )
+        assert "`P53-T3` Mass Corpus Source Manifest" in next_text
+        assert "all 100 operator-provided local checkouts" in normalized
+        assert "P53-T5 static parsing" in normalized
+        assert "does not create, restore, clone, or fetch repositories" in normalized
+        assert "invoke Codex or another model" in normalized
+        assert "mutate registry truth" in normalized
+        return
+
     if "# Next Task: P53-T3 Mass Corpus Source Manifest" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Priority:** P0" in next_text
