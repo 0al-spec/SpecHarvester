@@ -370,6 +370,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Disable strict public registry preflight checks for private-code experiments.",
     )
     autonomous_candidate_batch.add_argument(
+        "--verify-checkout-revisions",
+        action="store_true",
+        help=(
+            "Require every selected checkout to be clean and at its pinned manifest revision "
+            "before collection."
+        ),
+    )
+    autonomous_candidate_batch.add_argument(
         "--analyzer-cache-dir",
         type=Path,
         help="Optional root for per-repository static analyzer caches.",
@@ -2085,6 +2093,7 @@ def run_autonomous_candidate_batch_cli(args: argparse.Namespace) -> int:
                 selected_ids=tuple(args.select),
                 max_file_bytes=args.max_file_bytes,
                 strict_public=not args.relaxed_private,
+                verify_checkout_revisions=args.verify_checkout_revisions,
                 analyzer_cache_dir=args.analyzer_cache_dir,
                 parser_profile_id=args.parser_profile_id,
                 role_profile=args.role_profile,

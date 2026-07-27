@@ -1,0 +1,40 @@
+{
+  "apiVersion": "spec-harvester.mass-corpus-static-gate-result/v0",
+  "authority": "producer_preview_evidence_only",
+  "executionBoundary": {
+    "adaptersRun": false,
+    "aiRun": false,
+    "checkoutRevisionVerification": "required_clean_pinned_revision",
+    "dependencyInstallation": false,
+    "harvestedCodeExecution": false,
+    "packageManagerExecution": false,
+    "registryMutation": false
+  },
+  "inputs": {
+    "selectionMetadata": {
+      "path": "inputs/p53-mass-corpus/selection-metadata.json",
+      "sha256": "18501fe3ee8b396933a5033c7fb2ff7bcba3c254bfaeee8349b558838a206f0a"
+    },
+    "sourceManifest": {
+      "path": "inputs/p53-mass-corpus/repositories.yml",
+      "sha256": "d1443331ff27845683d68a3bbafc146f45a337962ec7d1b9537aff37f967403d"
+    }
+  },
+  "kind": "SpecHarvesterMassCorpusStaticGateResult",
+  "result": {
+    "aiMode": "disabled",
+    "batchStatus": "passed",
+    "collectedRepositoryCount": 100,
+    "failedRepositoryCount": 0,
+    "preflightPassedRepositoryCount": 100,
+    "processedRepositoryCount": 100,
+    "proposalCount": 0
+  },
+  "run": {
+    "batchReportSha256": "65eb3a34d52246695d72405acb1e63f6f4b77b7693147687e48494bc16097312",
+    "checkoutRevisionVerification": true,
+    "command": "autonomous-candidate-batch --skip-ai --repository-profile-selection auto --verify-checkout-revisions"
+  },
+  "schemaVersion": 1,
+  "task": "P53-T5"
+}

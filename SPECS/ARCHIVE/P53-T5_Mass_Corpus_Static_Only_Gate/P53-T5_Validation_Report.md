@@ -10,7 +10,8 @@
 PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch inputs/p53-mass-corpus \
   --out /tmp/p53-t5-full-static-only \
   --skip-ai \
-  --repository-profile-selection auto
+  --repository-profile-selection auto \
+  --verify-checkout-revisions
 ```
 
 ## Results
@@ -30,12 +31,15 @@ PYTHONPATH=src python -m spec_harvester autonomous-candidate-batch inputs/p53-ma
 | Authority | `producer_preview_evidence_only` |
 
 The 345 MiB machine-local output is retained at
-`/tmp/p53-t5-full-static-only` for inspection. Git records the command and
-sanitized metrics, not the generated corpus or console log.
+`/tmp/p53-t5-full-static-only-verified` for inspection. Git records the command,
+sanitized metrics, and a digest-backed result record at
+`tests/fixtures/p53_t5_mass_corpus_static_gate/p53-t5-static-gate-result.example.json`,
+not the generated corpus or console log.
 
 ## Boundary Confirmation
 
-The run did not invoke Codex Spark, LM Studio, another model provider,
+Before collection, every checkout was required to be clean and at its exact
+manifest-pinned Git revision. The run did not invoke Codex Spark, LM Studio, another model provider,
 repository plugins, trusted local adapters, package managers, dependency
 installation, builds, package scripts, or harvested code. It did not clone,
 fetch, or mutate source repositories; accept packages or relations; publish

@@ -93,6 +93,47 @@ repositories:
     assert not (out / "beta").exists()
 
 
+def test_collect_batch_snapshots_rejects_revision_or_worktree_drift_when_requested(
+    tmp_path: Path,
+) -> None:
+    inputs = tmp_path / "inputs"
+    out = tmp_path / "candidates"
+    checkout = make_checkout(tmp_path / "checkout", "# Demo\n")
+    initialize_git_checkout(checkout)
+    revision = git_output(checkout, "rev-parse", "HEAD")
+    inputs.mkdir()
+    (inputs / "repos.yml").write_text(
+        f"""
+repositories:
+  - id: demo
+    repository: https://github.com/example/demo
+    revision: {revision}
+    checkout: {relative_to(checkout, inputs)}
+""",
+        encoding="utf-8",
+    )
+
+    collect_batch_snapshots(
+        BatchCollectOptions(inputs=inputs, out=out, verify_checkout_revisions=True)
+    )
+
+    (checkout / "README.md").write_text("# Changed\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="uncommitted changes"):
+        collect_batch_snapshots(
+            BatchCollectOptions(inputs=inputs, out=out, verify_checkout_revisions=True)
+        )
+
+    (checkout / "README.md").write_text("# Demo\n", encoding="utf-8")
+    (inputs / "repos.yml").write_text(
+        (inputs / "repos.yml").read_text(encoding="utf-8").replace(revision, "0" * 40),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="checkout revision mismatch"):
+        collect_batch_snapshots(
+            BatchCollectOptions(inputs=inputs, out=out, verify_checkout_revisions=True)
+        )
+
+
 def test_collect_batch_snapshots_does_not_emit_interface_indexes_by_default(
     tmp_path: Path,
 ) -> None:
@@ -1419,6 +1460,37 @@ def make_checkout(path: Path, readme: str) -> Path:
     path.mkdir(parents=True)
     (path / "README.md").write_text(readme, encoding="utf-8")
     return path
+
+
+def initialize_git_checkout(checkout: Path) -> None:
+    subprocess.run(["git", "-C", str(checkout), "init"], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(checkout), "add", "README.md"], check=True)
+    subprocess.run(
+        [
+            "git",
+            "-C",
+            str(checkout),
+            "-c",
+            "user.email=test@example.com",
+            "-c",
+            "user.name=Test User",
+            "commit",
+            "-m",
+            "Initial",
+        ],
+        check=True,
+        capture_output=True,
+    )
+
+
+def git_output(checkout: Path, *args: str) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(checkout), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip()
 
 
 def make_scoped_source_matrix_checkout(path: Path) -> Path:

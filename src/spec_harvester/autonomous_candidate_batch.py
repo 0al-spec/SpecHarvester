@@ -157,6 +157,7 @@ class AutonomousCandidateBatchOptions:
     selected_ids: tuple[str, ...] = ()
     max_file_bytes: int = DEFAULT_MAX_FILE_BYTES
     strict_public: bool = True
+    verify_checkout_revisions: bool = False
     analyzer_cache_dir: Path | None = None
     parser_profile_id: str | None = None
     role_profile: str = DEFAULT_AUTONOMOUS_ROLE_PROFILE
@@ -303,6 +304,7 @@ class AutonomousCandidateBatch:
                 max_file_bytes=self.options.max_file_bytes,
                 report=self.validation_report_path(),
                 strict_public=self.options.strict_public,
+                verify_checkout_revisions=self.options.verify_checkout_revisions,
                 emit_interface_indexes=True,
                 analyzer_cache_dir=self.options.analyzer_cache_dir or self.out / "analyzer-cache",
                 emit_workspace_inventory=True,
