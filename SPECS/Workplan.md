@@ -2557,11 +2557,11 @@ Acceptance:
   record popularity/importance signals, ecosystem and repository-shape quotas,
   license/provenance evidence, pinned revisions, local checkout paths, and
   explicit exclusions.
-- [ ] `P53-T4` **INPROGRESS** Run the checkout and source-policy readiness gate over all 100
+- [x] `P53-T4` Run the checkout and source-policy readiness gate over all 100
   selected repositories. Require clean revision-matched operator-provided local
   checkouts, resolved provenance/license evidence, safe size budgets, and zero
   missing sources before static parsing.
-- [ ] `P53-T5` Run the full 100-repository static-only gate, generating
+- [x] `P53-T5` Run the full 100-repository static-only gate, generating
   deterministic harvest snapshots and preview candidates while Codex, LM
   Studio, adapters, package managers, and harvested code remain disabled.
 - [ ] `P53-T6` Execute Codex Spark wave 1 over repositories 1-25 through the

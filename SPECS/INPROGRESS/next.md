@@ -1,26 +1,28 @@
-# Next Task: P53-T4 Mass Corpus Checkout Readiness Gate
+# Next Task: P53-T6 Codex Spark Wave 1
 
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Dependencies:** `P53-T3` Mass Corpus Source Manifest
-**Status:** In Progress
+**Dependencies:** `P53-T5` Mass Corpus Static-Only Gate
+**Status:** Selected
 **Started:** 2026-07-27
-**Branch:** feature/p53-t4-mass-corpus-checkout-readiness
+**Branch:** pending `P53-T5` merge
 
 ## Objective
 
-Verify all 100 operator-provided local checkouts against the immutable P53-T3
-source manifest. Require presence, clean revision match, safe size, and
-resolved local provenance and license evidence before P53-T5 static parsing can
-be unlocked.
+Run only repositories 1-25 through the existing P53 Codex Spark campaign path.
+Enforce two-worker concurrency, per-source and campaign budgets, checkpointed
+resume, schema validation, bounded retries, and the wave stop policy.
 
 ## Next Step
 
-Run the PLAN command to generate the implementation-ready PRD. This selection
-does not create, restore, clone, or fetch repositories; run static parsing;
-invoke Codex or another model; or mutate registry truth.
+After wave 1 completes, manually review at least five candidates and record the
+P53-T7 scale-out decision before any wave-2 work begins.
 
 ## Recently Archived
+
+- `P53-T5` Mass Corpus Static-Only Gate: PASS. All 100 pinned local checkouts
+  produced deterministic preview evidence with zero failures; AI and execution
+  surfaces remained disabled.
 
 - `P53-T1` Mass Corpus Operating Plan: PASS. Structured review found no
   actionable findings, so FOLLOW-UP created no new tasks.

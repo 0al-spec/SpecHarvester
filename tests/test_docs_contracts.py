@@ -38,6 +38,36 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P53-T6 Codex Spark Wave 1" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Priority:** P0" in next_text
+        assert "**Status:** Selected" in next_text
+        assert (
+            "**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production"
+            in next_text
+        )
+        assert "`P53-T5` Mass Corpus Static-Only Gate" in next_text
+        assert "repositories 1-25" in normalized
+        assert "two-worker concurrency" in normalized
+        assert "checkpointed resume" in normalized
+        assert "P53-T7 scale-out decision" in normalized
+        assert "P53-T5` Mass Corpus Static-Only Gate: PASS" in next_text
+        return
+
+    if "# Next Task: P53-T5 First-Five Mass Corpus Static-Only Pilot" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Priority:** P0" in next_text
+        assert "**Status:** In Progress" in next_text
+        assert (
+            "**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production"
+            in next_text
+        )
+        assert "`P53-T4` Mass Corpus Checkout Readiness Gate" in next_text
+        assert "feature/p53-t5-first-five-static-gate" in next_text
+        assert "first bounded static-only pilot" in normalized
+        assert "remaining wave-1 sources" in normalized
+        return
+
     if "# Next Task: P53-T4 Mass Corpus Checkout Readiness Gate" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Priority:** P0" in next_text

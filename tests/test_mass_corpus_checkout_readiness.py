@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -178,6 +179,36 @@ def test_git_and_license_helpers_handle_supported_and_unavailable_inputs(
     assert _canonical_origin("git@github.com:example/repo.git") == "example/repo"
     assert _canonical_origin("https://gitlab.com/example/repo") is None
     assert _canonical_origin("https://github.com/example/repo/extra") is None
+
+
+def test_p53_t5_static_gate_result_binds_metrics_to_pinned_inputs() -> None:
+    result_path = (
+        Path(__file__).resolve().parents[1]
+        / "tests/fixtures/p53_t5_mass_corpus_static_gate/p53-t5-static-gate-result.example.json"
+    )
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    root = Path(__file__).resolve().parents[1]
+
+    assert result["apiVersion"] == "spec-harvester.mass-corpus-static-gate-result/v0"
+    assert result["task"] == "P53-T5"
+    assert result["result"] == {
+        "aiMode": "disabled",
+        "batchStatus": "passed",
+        "collectedRepositoryCount": 100,
+        "failedRepositoryCount": 0,
+        "preflightPassedRepositoryCount": 100,
+        "processedRepositoryCount": 100,
+        "proposalCount": 0,
+    }
+    for key, path in (
+        ("sourceManifest", root / "inputs/p53-mass-corpus/repositories.yml"),
+        ("selectionMetadata", root / "inputs/p53-mass-corpus/selection-metadata.json"),
+    ):
+        assert result["inputs"][key]["sha256"] == hashlib.sha256(path.read_bytes()).hexdigest()
+    assert result["run"]["checkoutRevisionVerification"] is True
+    assert result["executionBoundary"]["checkoutRevisionVerification"] == (
+        "required_clean_pinned_revision"
+    )
 
 
 def build_readiness(

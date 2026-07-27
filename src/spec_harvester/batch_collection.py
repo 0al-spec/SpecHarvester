@@ -46,6 +46,7 @@ class BatchCollectOptions:
     analyzer_cache_dir: Path | None = None
     emit_workspace_inventory: bool = False
     parser_profile_id: str | None = None
+    verify_checkout_revisions: bool = False
 
 
 def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
@@ -72,6 +73,8 @@ def collect_batch_snapshots(options: BatchCollectOptions) -> dict[str, Any]:
 
         output_dir = candidate_directory(out_root, repository_id)
         checkout = resolve_checkout(inputs_root, repository)
+        if options.verify_checkout_revisions:
+            reject_checkout_revision_drift(checkout, repository)
         if options.strict_public:
             reject_staged_changes(checkout, repository_id)
         plans.append(
@@ -272,6 +275,60 @@ def reject_staged_changes(checkout: Path, repository_id: str) -> None:
         f"Repository id {repository_id!r} has staged changes in strict public mode: "
         f"{preview}{suffix}"
     )
+
+
+def reject_checkout_revision_drift(checkout: Path, repository: dict[str, Any]) -> None:
+    """Require a clean Git checkout at the manifest's immutable revision."""
+    repository_id = repository["id"]
+    expected_revision = repository.get("revision")
+    if not isinstance(expected_revision, str) or not expected_revision:
+        raise ValueError(
+            f"Repository id {repository_id!r} requires an immutable revision "
+            "when checkout revision verification is enabled"
+        )
+    head = git_head(checkout)
+    if head != expected_revision:
+        raise ValueError(
+            f"Repository id {repository_id!r} checkout revision mismatch: "
+            f"expected {expected_revision}, observed {head or 'unavailable'}"
+        )
+    dirty_paths = git_dirty_paths(checkout)
+    if dirty_paths is None:
+        raise ValueError(
+            f"Repository id {repository_id!r} checkout status is unavailable "
+            "during revision verification"
+        )
+    if dirty_paths:
+        preview = ", ".join(dirty_paths[:5])
+        suffix = "" if len(dirty_paths) <= 5 else f", and {len(dirty_paths) - 5} more"
+        raise ValueError(
+            f"Repository id {repository_id!r} checkout has uncommitted changes "
+            f"during revision verification: {preview}{suffix}"
+        )
+
+
+def git_head(checkout: Path) -> str | None:
+    result = subprocess.run(  # noqa: S603
+        ["git", "-C", str(checkout), "rev-parse", "HEAD"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None
+    return result.stdout.strip() or None
+
+
+def git_dirty_paths(checkout: Path) -> list[str] | None:
+    result = subprocess.run(  # noqa: S603
+        ["git", "-C", str(checkout), "status", "--porcelain"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None
+    return [line.rstrip() for line in result.stdout.splitlines() if line.strip()]
 
 
 def git_staged_paths(checkout: Path) -> list[str]:
