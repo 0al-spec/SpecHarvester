@@ -891,3 +891,4 @@
 | 2026-07-27 | P52-T9 | Archived Record Phase 52 Exit Decision (PASS) |
 | 2026-07-27 | P52-T9 | Archived REVIEW_p52_t9_phase_52_exit_decision report |
 | 2026-07-27 | P53-T1 | Archived Mass Corpus Operating Plan (PASS) |
+| 2026-07-27 | P53-T1 | Archived REVIEW_p53_t1_mass_corpus_operating_plan report |
