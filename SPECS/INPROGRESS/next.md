@@ -27,4 +27,5 @@ policy but must not select sources or invoke a live model.
 
 ## Recently Archived
 
-- `P53-T1` Mass Corpus Operating Plan: PASS. No review follow-up was needed.
+- `P53-T1` Mass Corpus Operating Plan: PASS. Structured review found no
+  actionable findings, so FOLLOW-UP created no new tasks.
