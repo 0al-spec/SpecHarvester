@@ -293,6 +293,13 @@ meeting the 95% threshold at 96%. The two explicit dual-license filename
 allowlist failures are retained, AI and adapters remained disabled, and P52-T7
 is unlocked without registry authority.
 
+P53-T1 is recorded in <doc:MassRepositoryCampaignPlan>. It defines an immutable
+100-repository campaign in four sequential waves of 25, with
+`gpt-5.3-codex-spark` as the sole proposal-only campaign worker. The plan fixes
+initial concurrency at two, records token/time and retry limits, and requires
+separate human-review decisions before waves 2, 3, and 4. It does not acquire
+sources, invoke Codex, or approve registry promotion.
+
 ### Selected Candidate SpecPM Intake Handoff
 
 The completed intake-handoff focus turns selected candidate dry-run evidence

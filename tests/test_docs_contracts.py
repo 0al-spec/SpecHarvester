@@ -38,9 +38,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    if "# Next Task: P53-T1 Mass Corpus Operating Plan" in next_text:
+    if "# Next Task: P53-T2 Resumable Mass-Run Orchestration" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Selected" in next_text
+        assert (
+            "**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production"
+            in next_text
+        )
+        assert "**Depends On:** `P53-T1` Mass Corpus Operating Plan" in next_text
+        assert "gpt-5.3-codex-spark" in next_text
+        assert "two-worker bounded concurrency" in normalized
+        assert "does not acquire repositories" in normalized
+        assert "mutate registry truth" in normalized
+        return
+
+    if "# Next Task: P53-T1 Mass Corpus Operating Plan" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** In Progress" in next_text
         assert (
             "**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production"
             in next_text
@@ -50,7 +64,7 @@ def assert_current_next_task(next_text: str) -> None:
         assert "four-wave campaign contract" in normalized
         assert "quality gates" in normalized
         assert "budget and resume policy" in normalized
-        assert "feature/p53-mass-popular-repository-plan" in next_text
+        assert "feature/p53-t1-mass-corpus-operating-plan" in next_text
         assert "does not acquire repositories" in normalized
         assert "mutate registry truth" in normalized
         return
@@ -39808,3 +39822,138 @@ def test_phase_53_workplan_has_explicit_sequential_wave_review_gates() -> None:
     assert "P53-T11` Review the wave-3 quality sample" in workplan_text
     assert "before only repositories 76-100 are unlocked" in normalized
     assert "repositories 26-100 are unlocked" not in normalized
+
+
+def test_mass_repository_campaign_plan_records_p53_t1_codex_spark_contract() -> None:
+    source_path = (
+        ROOT / "tests/fixtures/phase_52_exit_decision/p52-t9-phase-52-exit-decision.example.json"
+    )
+    fixture_path = (
+        ROOT / "tests/fixtures/mass_repository_campaign_plan/"
+        "p53-t1-mass-repository-campaign-plan.example.json"
+    )
+    github_doc = ROOT / "docs/MASS_REPOSITORY_CAMPAIGN_PLAN.md"
+    docc_doc = ROOT / "Sources/SpecHarvester/Documentation.docc/MassRepositoryCampaignPlan.md"
+
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+    source_payload = json.loads(source_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.mass-repository-campaign-plan/v0"
+    assert payload["kind"] == "SpecHarvesterMassRepositoryCampaignPlan"
+    assert payload["authority"] == "producer_planning_evidence_only"
+    assert payload["phase"] == "P53"
+    assert payload["task"] == "P53-T1"
+    assert payload["sourceArtifacts"]["p52ExitDecision"] == {
+        "apiVersion": source_payload["apiVersion"],
+        "authority": source_payload["authority"],
+        "digest": "sha256:" + hashlib.sha256(source_path.read_bytes()).hexdigest(),
+        "kind": source_payload["kind"],
+        "path": "tests/fixtures/phase_52_exit_decision/p52-t9-phase-52-exit-decision.example.json",
+        "selectedDecision": "go_with_guardrails_for_maintainer_disposition",
+    }
+    assert payload["scope"] == {
+        "newRepositoryCount": 100,
+        "p52ReferenceCorpusCountedAsNewOutput": False,
+        "repositoryAcquisition": "operator_provided_pinned_local_checkouts",
+        "selection": "operator_curated_popular_repositories",
+        "staticOnlyBeforeAI": True,
+    }
+    assert payload["worker"] == {
+        "alternateAIWorkersAllowed": False,
+        "invocationSurface": "codex_exec",
+        "kind": "codex_exec_external_model_output",
+        "lmStudioAllowed": False,
+        "model": "gpt-5.3-codex-spark",
+        "proposalOnly": True,
+        "requiresOperatorOptIn": True,
+        "requiresSchemaValidation": True,
+        "role": "sole_campaign_ai_worker",
+    }
+    assert payload["waves"] == [
+        {"id": "wave-1", "repositoryRange": {"first": 1, "last": 25}},
+        {"id": "wave-2", "repositoryRange": {"first": 26, "last": 50}},
+        {"id": "wave-3", "repositoryRange": {"first": 51, "last": 75}},
+        {"id": "wave-4", "repositoryRange": {"first": 76, "last": 100}},
+    ]
+    assert payload["executionPolicy"] == {
+        "configuredInitialConcurrency": 2,
+        "maxClassifiedRetriesPerRepository": 1,
+        "requiresAtomicCheckpoints": True,
+        "requiresDeterministicRunIdentity": True,
+        "requiresIdempotentResume": True,
+        "resumeDoesNotRerunCompletedRepositories": True,
+    }
+    assert payload["budgetPolicy"] == {
+        "campaignMaxTokens": 2_000_000,
+        "campaignMaxWallTimeSeconds": 28_800,
+        "perRepositoryMaxTokens": 20_000,
+        "perRepositoryMaxWallTimeSeconds": 300,
+        "perWaveMaxTokens": 500_000,
+        "stopBeforeCampaignBudgetExceeded": True,
+    }
+    assert payload["stopPolicy"] == {
+        "blockLaterWavesOnStop": True,
+        "onAuthorityBoundaryBreach": "stop_current_wave_and_block_later_waves",
+        "onCampaignBudgetLimit": "stop_current_wave_and_block_later_waves",
+        "onConsecutiveCodexSchemaOrTransportFailures": {
+            "consecutiveFailureCount": 3,
+            "outcome": "stop_current_wave_and_block_later_waves",
+        },
+        "onInputRevisionOrDigestDrift": "stop_current_wave_and_block_later_waves",
+        "onQualityThresholdFailure": "stop_current_wave_and_block_later_waves",
+    }
+    assert payload["qualityMetrics"] == {
+        "codexCompletionRateMinimum": 0.95,
+        "humanReview": {
+            "aggregateMinimum": 15,
+            "wave1Minimum": 5,
+            "wave1RateMinimum": 0.2,
+            "waves2To4Minimum": 3,
+            "waves2To4RateMinimum": 0.1,
+        },
+        "repositorySpecificRateMinimum": 0.9,
+        "schemaValidRateMinimum": 0.99,
+        "staticCompletionRateMinimum": 0.98,
+        "unsupportedClaimRateMaximum": 0.02,
+    }
+    assert [decision["task"] for decision in payload["scaleOutDecisions"]] == [
+        "P53-T7",
+        "P53-T9",
+        "P53-T11",
+    ]
+    assert all(value is False for value in payload["privacyBoundary"].values())
+    assert all(value is False for value in payload["authorityBoundary"].values())
+    assert all(value is False for value in payload["executionBoundary"].values())
+
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "Mass Popular Repository Campaign Plan",
+            "P53-T1",
+            "SpecHarvesterMassRepositoryCampaignPlan",
+            "spec-harvester.mass-repository-campaign-plan/v0",
+            "gpt-5.3-codex-spark",
+            "sole campaign AI worker",
+            "LM Studio is not a campaign worker",
+            "four sequential waves of 25",
+            "at most 2 workers",
+            "20,000 tokens",
+            "2,000,000 tokens",
+            "P53-T7",
+            "P53-T9",
+            "P53-T11",
+            "Raw prompts, raw provider responses, secrets, session state, stdout/stderr, "
+            "and chain-of-thought are not persisted",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+        for boundary in (
+            "did not create or restore checkouts",
+            "clone or fetch repositories",
+            "run Codex",
+            "run AI",
+            "accept packages or relations",
+            "publish registry metadata",
+            "remove `preview_only`",
+            "planning, static, or AI output as registry truth",
+        ):
+            assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"

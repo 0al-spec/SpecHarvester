@@ -2543,7 +2543,7 @@ Acceptance:
 
 ## Phase 53. Mass Popular Repository Parsing and Candidate Production
 
-- [ ] `P53-T1` Record the mass-corpus operating plan and machine-readable
+- [x] `P53-T1` Record the mass-corpus operating plan and machine-readable
   campaign contract for 100 new operator-curated popular repositories,
   processed as four sequential waves of 25. Define quality thresholds, budget
   envelopes, stop-policy triggers, resumability, evidence retention, and

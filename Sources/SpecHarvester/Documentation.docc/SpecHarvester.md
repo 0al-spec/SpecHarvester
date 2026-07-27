@@ -108,6 +108,7 @@ The canonical source files remain in the repository:
 - `docs/CONTROLLED_REPOSITORY_CORPUS_PLAN.md`
 - `docs/CODEX_SPARK_EXTERNAL_MODEL_ADAPTER_CONTRACT.md`
 - `docs/FIVE_REPOSITORY_CONTROLLED_CALIBRATION.md`
+- `docs/MASS_REPOSITORY_CAMPAIGN_PLAN.md`
 - `docs/AUTONOMOUS_CANDIDATE_BATCH.md`
 - `docs/REPOSITORY_SOURCE_MANIFESTS.md`
 - `docs/BATCH_COLLECTION.md`
@@ -305,6 +306,7 @@ the host.
 - <doc:LargerCuratedCorpusOutputTriage>
 - <doc:LargerCuratedCorpusExitDecision>
 - <doc:ControlledRepositoryCorpusPlan>
+- <doc:MassRepositoryCampaignPlan>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
