@@ -38,6 +38,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P53-T1 Mass Corpus Operating Plan" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Selected" in next_text
+        assert (
+            "**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production"
+            in next_text
+        )
+        assert "**Depends On:** `P52-T9` Phase 52 exit decision" in next_text
+        assert "100 new repositories" in normalized
+        assert "four-wave campaign contract" in normalized
+        assert "quality gates" in normalized
+        assert "budget and resume policy" in normalized
+        assert "feature/p53-mass-popular-repository-plan" in next_text
+        assert "does not acquire repositories" in normalized
+        assert "mutate registry truth" in normalized
+        return
+
     if "# Phase 52 Complete" in next_text:
         assert "go_with_guardrails_for_maintainer_disposition" in next_text
         assert "50-source proposal-only evidence" in next_text
