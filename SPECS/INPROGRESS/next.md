@@ -1,24 +1,28 @@
-# Next Task: P53-T5 First-Five Mass Corpus Static-Only Pilot
+# Next Task: P53-T6 Codex Spark Wave 1
 
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Dependencies:** `P53-T4` Mass Corpus Checkout Readiness Gate
-**Status:** In Progress
+**Dependencies:** `P53-T5` Mass Corpus Static-Only Gate
+**Status:** Selected
 **Started:** 2026-07-27
-**Branch:** feature/p53-t5-first-five-static-gate
+**Branch:** pending `P53-T5` merge
 
 ## Objective
 
-Run the first bounded static-only pilot for five repositories from P53 wave 1.
-Generate deterministic harvest snapshots and preview candidates while AI,
-adapters, package managers, and harvested-code execution remain disabled.
+Run only repositories 1-25 through the existing P53 Codex Spark campaign path.
+Enforce two-worker concurrency, per-source and campaign budgets, checkpointed
+resume, schema validation, bounded retries, and the wave stop policy.
 
 ## Next Step
 
-After this pilot passes its evidence and boundary checks, review its output
-quality before expanding the static-only run to the remaining wave-1 sources.
+After wave 1 completes, manually review at least five candidates and record the
+P53-T7 scale-out decision before any wave-2 work begins.
 
 ## Recently Archived
+
+- `P53-T5` Mass Corpus Static-Only Gate: PASS. All 100 pinned local checkouts
+  produced deterministic preview evidence with zero failures; AI and execution
+  surfaces remained disabled.
 
 - `P53-T1` Mass Corpus Operating Plan: PASS. Structured review found no
   actionable findings, so FOLLOW-UP created no new tasks.
