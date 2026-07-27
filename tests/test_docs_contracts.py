@@ -39796,3 +39796,15 @@ def test_phase_52_exit_decision_records_guarded_maintainer_disposition() -> None
         "Evidence Version Transition",
     ):
         assert required in normalized
+
+
+def test_phase_53_workplan_has_explicit_sequential_wave_review_gates() -> None:
+    workplan_text = (ROOT / "SPECS" / "Workplan.md").read_text(encoding="utf-8")
+    normalized = " ".join(workplan_text.split())
+
+    assert "before only repositories 26-50 are unlocked" in normalized
+    assert "P53-T9` Review the wave-2 quality sample" in workplan_text
+    assert "before only repositories 51-75 are unlocked" in normalized
+    assert "P53-T11` Review the wave-3 quality sample" in workplan_text
+    assert "before only repositories 76-100 are unlocked" in normalized
+    assert "repositories 26-100 are unlocked" not in normalized

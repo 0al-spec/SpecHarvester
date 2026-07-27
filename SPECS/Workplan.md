@@ -2569,26 +2569,32 @@ Acceptance:
   timeout and token limits, bounded retries, receipts, and stop-policy checks.
 - [ ] `P53-T7` Review the wave-1 quality sample and record the scale-out
   decision. Require at least five manually reviewed candidates and all Phase 53
-  quality thresholds before repositories 26-100 are unlocked.
+  quality thresholds before only repositories 26-50 are unlocked.
 - [ ] `P53-T8` Execute Codex Spark wave 2 over repositories 26-50 only after
   P53-T7 passes, preserving the same run contract, budgets, checkpoints,
   quality metrics, and stop-policy boundary.
-- [ ] `P53-T9` Execute Codex Spark wave 3 over repositories 51-75 only after
-  wave 2 passes its gate, stopping on quality regression, budget exhaustion,
-  source drift, or repeated schema/transport failure.
-- [ ] `P53-T10` Execute Codex Spark wave 4 over repositories 76-100 only after
-  wave 3 passes its gate, completing the approved corpus without silently
+- [ ] `P53-T9` Review the wave-2 quality sample and record the scale-out
+  decision. Require at least three manually reviewed candidates and all Phase 53
+  quality thresholds before only repositories 51-75 are unlocked.
+- [ ] `P53-T10` Execute Codex Spark wave 3 over repositories 51-75 only after
+  P53-T9 passes, stopping on quality regression, budget exhaustion, source
+  drift, or repeated schema/transport failure.
+- [ ] `P53-T11` Review the wave-3 quality sample and record the scale-out
+  decision. Require at least three manually reviewed candidates and all Phase 53
+  quality thresholds before only repositories 76-100 are unlocked.
+- [ ] `P53-T12` Execute Codex Spark wave 4 over repositories 76-100 only after
+  P53-T11 passes, completing the approved corpus without silently
   substituting, skipping, or expanding sources.
-- [ ] `P53-T11` Aggregate campaign quality and triage every repository/package
+- [ ] `P53-T13` Aggregate campaign quality and triage every repository/package
   outcome into selected-for-author-review, deferred, and do-not-promote
   classes. Record static/AI completion, schema validity, repository
   specificity, unsupported claims, retries, token/time usage, and all
   stop-policy events.
-- [ ] `P53-T12` Prepare portable author handoff packets and run SpecPM intake
+- [ ] `P53-T14` Prepare portable author handoff packets and run SpecPM intake
   preflight for selected candidates without accepting packages or relations.
   Preserve source/evidence digests, preview-only status, and explicit
   maintainer disposition requirements.
-- [ ] `P53-T13` Record the Phase 53 exit decision: stop, run a bounded targeted
+- [ ] `P53-T15` Record the Phase 53 exit decision: stop, run a bounded targeted
   follow-up, repeat the same scale under revised budgets, or make selected
   evidence available for maintainer disposition. Do not approve registry
   promotion or a larger corpus by default.
@@ -2621,8 +2627,8 @@ Operating Model:
   immutable waves of 25. The P52 corpus is reference/canary evidence and is not
   counted as new Phase 53 output.
 - Ordering: readiness -> static-only all-source gate -> wave 1 -> wave-1 human
-  review -> waves 2-4 with a gate after each wave -> aggregate triage -> SpecPM
-  intake preflight -> exit decision.
+  review -> wave 2 -> wave-2 human review -> wave 3 -> wave-3 human review ->
+  wave 4 -> aggregate triage -> SpecPM intake preflight -> exit decision.
 - Concurrency: start with a configured maximum of 2 Codex workers. Any increase
   requires a recorded wave decision; lowering concurrency never changes source
   identity or quality thresholds.
@@ -2649,7 +2655,9 @@ Quality Gates:
 - Repository-specific candidate output: at least 90%.
 - Unsupported claim rate: at most 2%.
 - Human review: at least 20% and five candidates in wave 1; at least 10% and
-  three candidates in each later wave; at least 15 candidates overall.
+  three candidates in each of waves 2-4; at least 15 candidates overall. The
+  wave-2 and wave-3 samples are explicit scale-out decisions, not implicit
+  completion checks inside later execution tasks.
 - License/provenance and source-digest drift: zero undispositioned failures
   before an affected candidate can be selected for handoff.
 
@@ -2673,12 +2681,14 @@ Acceptance:
 - P53-T3 must freeze exactly 100 new source identities and wave assignments.
   P53-T4 must pass for all sources before P53-T5.
 - P53-T5 static evidence must pass before P53-T6. P53-T7 must pass before
-  P53-T8. Each later wave must pass the same thresholds before the next wave.
-- P53-T11 must account for every selected source exactly once and reconcile all
+  P53-T8; P53-T9 must pass before P53-T10; and P53-T11 must pass before P53-T12.
+  Each review decision must meet the applicable human-review sample and all
+  quality thresholds before only the immediately following wave is unlocked.
+- P53-T13 must account for every selected source exactly once and reconcile all
   static, proposal, retry, failure, and budget receipts.
-- P53-T12 may prepare review packets and run intake preflight, but it must not
+- P53-T14 may prepare review packets and run intake preflight, but it must not
   accept packages or relations or mutate SpecPM canonical sources.
-- P53-T13 must complete before another corpus, automatic promotion policy, or
+- P53-T15 must complete before another corpus, automatic promotion policy, or
   higher concurrency is planned.
 - All Phase 53 tasks must preserve proposal-only output, explicit maintainer
   disposition, `preview_only`, no registry authority, no package/relation
