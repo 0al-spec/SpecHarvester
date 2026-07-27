@@ -1,0 +1,39 @@
+{
+  "apiVersion": "spec-harvester.p53-scale-out-decision/v0",
+  "kind": "SpecHarvesterP53ScaleOutDecision",
+  "schemaVersion": 1,
+  "phase": "P53",
+  "task": "P53-T7",
+  "status": "passed",
+  "fromWave": "wave-1",
+  "toWave": "wave-2",
+  "decision": "unlock_wave-2_only",
+  "sourceWaveReport": {
+    "task": "P53-T6",
+    "sha256": "2546f93722408925578695c67c8fa94affcfb71aef0e9b89b236f7aecf3982b4"
+  },
+  "qualityMetrics": {
+    "codexCompletionRate": 1.0,
+    "schemaValidRate": 1.0,
+    "repositorySpecificRate": 1.0,
+    "unsupportedClaimRate": 0.0,
+    "terminalFailureCount": 0
+  },
+  "humanReview": {
+    "minimumRequired": 5,
+    "reviewedRepositoryIds": [
+      "public-apis-public-apis",
+      "spf13-cobra",
+      "tokio-rs-tokio",
+      "iluwatar-java-design-patterns",
+      "vuejs-vue"
+    ]
+  },
+  "authority": "producer_scale_out_evidence_only",
+  "nonGoals": [
+    "wave-3_unlock",
+    "registry_acceptance",
+    "package_acceptance",
+    "relation_acceptance"
+  ]
+}

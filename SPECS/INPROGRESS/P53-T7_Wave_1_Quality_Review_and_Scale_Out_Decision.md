@@ -10,3 +10,7 @@ claims, and no undispositioned source or authority-boundary failure.
 
 This task does not run Codex, execute wave 2, accept packages or relations, or
 change registry truth.
+
+The decision is emitted as a machine-readable artifact tied to the P53-T6
+report digest and reviewed repository IDs. A later wave must consume that
+artifact rather than treating this document as executable authorization.
