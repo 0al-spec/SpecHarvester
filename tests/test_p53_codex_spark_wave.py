@@ -45,8 +45,75 @@ def test_runner_dispatches_only_wave_one_and_persists_completed_checkpoint(
     static = {
         "status": "passed",
         "repositories": [
-            {"id": source["id"], "checkout": str(tmp_path / source["id"])} for source in sources
+            {
+                "id": source["id"],
+                "status": "passed",
+                "checkout": str(tmp_path / source["id"]),
+            }
+            for source in sources
         ],
+    }
+    monkeypatch.setattr(wave_module, "wave_one_sources", lambda *_args: sources)
+    monkeypatch.setattr(wave_module, "read_json", lambda *_args: plan)
+    monkeypatch.setattr(wave_module, "run_autonomous_candidate_batch", lambda *_args: static)
+    runner = P53CodexSparkWave(
+        P53CodexSparkWaveOptions(
+            inputs=tmp_path,
+            metadata=tmp_path / "metadata.json",
+            campaign_plan=tmp_path / "plan.json",
+            out=tmp_path / "out",
+        )
+    )
+    monkeypatch.setattr(runner.calibration, "schema", lambda: {})
+    monkeypatch.setattr(runner.calibration.codex_executor, "version", lambda: "test")
+    calls: list[str] = []
+
+    def completed_record(
+        record: dict[str, object], _schema: object, _version: object
+    ) -> dict[str, object]:
+        calls.append(str(record["id"]))
+        return {
+            "id": record["id"],
+            "status": "completed",
+            "schemaValid": True,
+            "repositorySpecific": True,
+            "unsupportedClaimCount": 0,
+            "receipt": {"durationMs": 1},
+        }
+
+    monkeypatch.setattr(runner.calibration, "codex_repository_record", completed_record)
+
+    report = runner.run()
+
+    assert report["status"] == "passed"
+    assert report["checkpointSummary"] == {
+        "completed": 25,
+        "terminalFailed": 0,
+        "stop": {
+            "trigger": "wave_budget_limit",
+            "outcome": "stop_current_wave_and_block_later_waves",
+        },
+    }
+    assert len(report["codexSpark"]["repositories"]) == 25
+    assert report["quality"]["passed"] is True
+
+    resumed = runner.run()
+
+    assert len(calls) == 25
+    assert len(resumed["codexSpark"]["repositories"]) == 25
+    assert resumed["status"] == "passed"
+
+
+def test_runner_stops_when_aggregate_quality_threshold_fails(tmp_path: Path, monkeypatch) -> None:
+    sources = [{"id": f"repo-{index:02d}", "revision": f"{index:040x}"} for index in range(25)]
+    plan = wave_module.read_json(
+        ROOT
+        / "tests/fixtures/mass_repository_campaign_plan"
+        / "p53-t1-mass-repository-campaign-plan.example.json"
+    )
+    static = {
+        "status": "passed",
+        "repositories": [{"id": source["id"], "status": "passed"} for source in sources],
     }
     monkeypatch.setattr(wave_module, "wave_one_sources", lambda *_args: sources)
     monkeypatch.setattr(wave_module, "read_json", lambda *_args: plan)
@@ -68,18 +135,14 @@ def test_runner_dispatches_only_wave_one_and_persists_completed_checkpoint(
             "id": record["id"],
             "status": "completed",
             "schemaValid": True,
-            "repositorySpecific": True,
-            "unsupportedClaimCount": 0,
+            "repositorySpecific": record["id"] != "repo-00",
+            "unsupportedClaimCount": 1 if record["id"] == "repo-00" else 0,
             "receipt": {"durationMs": 1},
         },
     )
 
     report = runner.run()
 
-    assert report["status"] == "passed"
-    assert report["checkpointSummary"] == {
-        "completed": 25,
-        "terminalFailed": 0,
-        "stop": None,
-    }
-    assert len(report["codexSpark"]["repositories"]) == 25
+    assert report["status"] == "failed"
+    assert report["quality"]["passed"] is False
+    assert report["checkpointSummary"]["stop"]["trigger"] == "quality_threshold_failure"

@@ -151,6 +151,23 @@ def write_campaign_checkpoint(path: Path, checkpoint: dict[str, Any]) -> None:
     os.replace(temporary, path)
 
 
+def read_campaign_checkpoint(path: Path) -> dict[str, Any]:
+    try:
+        checkpoint = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"P53-T2 cannot read campaign checkpoint: {path}") from exc
+    if not isinstance(checkpoint, dict):
+        raise ValueError("P53-T2 checkpoint must be a JSON object")
+    _validate_checkpoint(checkpoint)
+    return checkpoint
+
+
+def stop_campaign(checkpoint: dict[str, Any], trigger: str) -> dict[str, Any]:
+    """Persist a non-retryable campaign gate after aggregate evaluation."""
+    _validate_checkpoint(checkpoint)
+    return _stop(checkpoint, trigger)
+
+
 def recover_interrupted_reservations(checkpoint: dict[str, Any]) -> dict[str, Any]:
     """Release persisted reservations after the caller confirms interruption."""
     _validate_checkpoint(checkpoint)

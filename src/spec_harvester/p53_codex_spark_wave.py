@@ -16,7 +16,10 @@ from spec_harvester.mass_campaign_orchestration import (
     CampaignRepositoryInput,
     apply_repository_result,
     build_campaign_checkpoint,
+    read_campaign_checkpoint,
+    recover_interrupted_reservations,
     reserve_dispatch,
+    stop_campaign,
     write_campaign_checkpoint,
 )
 from spec_harvester.mass_corpus_source_manifest import read_mass_corpus_selection_metadata
@@ -24,6 +27,7 @@ from spec_harvester.source_manifest import read_repository_source_manifests
 
 P53_WAVE_REPORT_FILENAME = "p53-t6-codex-spark-wave-1-report.json"
 P53_CHECKPOINT_FILENAME = "p53-campaign-checkpoint.json"
+P53_OUTCOMES_FILENAME = "p53-codex-spark-wave-outcomes.json"
 WAVE_ONE = "wave-1"
 MAX_CONCURRENCY = 2
 
@@ -45,6 +49,7 @@ class P53CodexSparkWave:
         self.options = options
         self.static_root = options.out / "static-only"
         self.checkpoint_path = options.out / P53_CHECKPOINT_FILENAME
+        self.outcomes_path = options.out / P53_OUTCOMES_FILENAME
         self.calibration = calibration.ControlledCalibration(
             calibration.ControlledCalibrationOptions(
                 inputs=options.inputs,
@@ -61,7 +66,7 @@ class P53CodexSparkWave:
     def run(self) -> dict[str, Any]:
         sources = wave_one_sources(self.options.inputs, self.options.metadata)
         plan = read_json(self.options.campaign_plan)
-        checkpoint = build_campaign_checkpoint(
+        expected_checkpoint = build_campaign_checkpoint(
             plan,
             tuple(
                 CampaignRepositoryInput(
@@ -73,7 +78,7 @@ class P53CodexSparkWave:
             ),
         )
         self.options.out.mkdir(parents=True, exist_ok=True)
-        write_campaign_checkpoint(self.checkpoint_path, checkpoint)
+        checkpoint = self.resume_or_create_checkpoint(expected_checkpoint)
         static = run_autonomous_candidate_batch(
             AutonomousCandidateBatchOptions(
                 inputs=self.options.inputs,
@@ -85,11 +90,11 @@ class P53CodexSparkWave:
             )
         )
         if static.get("status") != "passed":
-            return self.write_report(sources, static, checkpoint, [], "failed")
+            return self.write_report(sources, static, checkpoint, [], "failed", {})
         records = {record["id"]: record for record in static["repositories"]}
         schema = self.calibration.schema()
         version = self.calibration.codex_executor.version()
-        outcomes: list[dict[str, Any]] = []
+        outcomes = self.load_outcomes({source["id"] for source in sources})
         while True:
             checkpoint, identifiers = reserve_dispatch(checkpoint)
             write_campaign_checkpoint(self.checkpoint_path, checkpoint)
@@ -105,19 +110,74 @@ class P53CodexSparkWave:
                 for future in as_completed(futures):
                     repository_id = futures[future]
                     record = future.result()
-                    outcomes.append(record)
+                    outcomes[repository_id] = record
+                    self.write_outcomes(outcomes)
                     checkpoint = apply_repository_result(
                         checkpoint,
                         repository_id,
                         outcome=outcome_kind(record),
-                        token_used=0,
+                        token_used=reserved_token_charge(checkpoint, repository_id),
                         wall_time_seconds=duration_seconds(record),
                     )
                     write_campaign_checkpoint(self.checkpoint_path, checkpoint)
-        status = (
-            "passed" if all(item.get("status") == "completed" for item in outcomes) else "failed"
+        outcome_records = list(outcomes.values())
+        quality = quality_metrics(plan, static, outcome_records)
+        completed = all(item["state"] == "completed" for item in checkpoint["repositories"])
+        if completed and not quality["passed"]:
+            checkpoint = stop_campaign(checkpoint, "quality_threshold_failure")
+            write_campaign_checkpoint(self.checkpoint_path, checkpoint)
+        stop = checkpoint["stop"]
+        natural_wave_budget_exhaustion = (
+            completed and isinstance(stop, dict) and stop.get("trigger") == "wave_budget_limit"
         )
-        return self.write_report(sources, static, checkpoint, outcomes, status)
+        status = (
+            "passed"
+            if completed and quality["passed"] and (stop is None or natural_wave_budget_exhaustion)
+            else "failed"
+        )
+        return self.write_report(sources, static, checkpoint, outcome_records, status, quality)
+
+    def resume_or_create_checkpoint(self, expected: dict[str, Any]) -> dict[str, Any]:
+        if not self.checkpoint_path.is_file():
+            write_campaign_checkpoint(self.checkpoint_path, expected)
+            return expected
+        checkpoint = read_campaign_checkpoint(self.checkpoint_path)
+        if checkpoint["runId"] != expected["runId"]:
+            raise ValueError("P53-T6 checkpoint run identity does not match pinned inputs")
+        checkpoint = recover_interrupted_reservations(checkpoint)
+        write_campaign_checkpoint(self.checkpoint_path, checkpoint)
+        return checkpoint
+
+    def load_outcomes(self, source_ids: set[str]) -> dict[str, dict[str, Any]]:
+        if not self.outcomes_path.is_file():
+            return {}
+        payload = read_json_object(self.outcomes_path)
+        records = payload.get("repositories")
+        if not isinstance(records, list):
+            raise ValueError("P53-T6 outcomes must contain repositories")
+        outcomes = {
+            item["id"]: item
+            for item in records
+            if (
+                isinstance(item, dict)
+                and isinstance(item.get("id"), str)
+                and item["id"] in source_ids
+            )
+        }
+        if len(outcomes) != len(records):
+            raise ValueError("P53-T6 outcomes contain an unknown or duplicate repository")
+        return outcomes
+
+    def write_outcomes(self, outcomes: dict[str, dict[str, Any]]) -> None:
+        calibration.write_json(
+            self.outcomes_path,
+            {
+                "apiVersion": "spec-harvester.p53-codex-spark-outcomes/v0",
+                "kind": "SpecHarvesterP53CodexSparkOutcomes",
+                "schemaVersion": 1,
+                "repositories": sorted(outcomes.values(), key=lambda item: item["id"]),
+            },
+        )
 
     def write_report(
         self,
@@ -126,6 +186,7 @@ class P53CodexSparkWave:
         checkpoint: dict[str, Any],
         outcomes: list[dict[str, Any]],
         status: str,
+        quality: dict[str, Any],
     ) -> dict[str, Any]:
         report = {
             "apiVersion": "spec-harvester.p53-codex-spark-wave/v0",
@@ -148,6 +209,7 @@ class P53CodexSparkWave:
                 "authority": "proposal_only_not_registry_acceptance",
             },
             "checkpoint": str(self.checkpoint_path),
+            "outcomes": str(self.outcomes_path),
             "checkpointSummary": {
                 "completed": sum(
                     item["state"] == "completed" for item in checkpoint["repositories"]
@@ -157,6 +219,7 @@ class P53CodexSparkWave:
                 ),
                 "stop": checkpoint["stop"],
             },
+            "quality": quality,
             "privacy": calibration.privacy_record(),
             "authority": "producer_wave_evidence_only",
         }
@@ -202,10 +265,61 @@ def duration_seconds(record: dict[str, Any]) -> int:
     return max(0, int(receipt.get("durationMs", 0)) // 1000)
 
 
+def reserved_token_charge(checkpoint: dict[str, Any], repository_id: str) -> int:
+    record = next(item for item in checkpoint["repositories"] if item["id"] == repository_id)
+    return int(record["reservedTokens"])
+
+
+def quality_metrics(
+    plan: dict[str, Any], static: dict[str, Any], outcomes: list[dict[str, Any]]
+) -> dict[str, Any]:
+    thresholds = plan["qualityMetrics"]
+    static_records = static.get("repositories", [])
+    if not isinstance(static_records, list):
+        static_records = []
+    values = {
+        "staticCompletionRate": rate(
+            sum(item.get("status") == "passed" for item in static_records),
+            len(static_records),
+        ),
+        "codexCompletionRate": rate(
+            sum(item.get("status") == "completed" for item in outcomes), len(outcomes)
+        ),
+        "schemaValidRate": rate(
+            sum(item.get("schemaValid") is True for item in outcomes), len(outcomes)
+        ),
+        "repositorySpecificRate": rate(
+            sum(item.get("repositorySpecific") is True for item in outcomes), len(outcomes)
+        ),
+        "unsupportedClaimRate": rate(
+            sum(int(item.get("unsupportedClaimCount", 0)) > 0 for item in outcomes), len(outcomes)
+        ),
+    }
+    passed = (
+        values["staticCompletionRate"] >= thresholds["staticCompletionRateMinimum"]
+        and values["codexCompletionRate"] >= thresholds["codexCompletionRateMinimum"]
+        and values["schemaValidRate"] >= thresholds["schemaValidRateMinimum"]
+        and values["repositorySpecificRate"] >= thresholds["repositorySpecificRateMinimum"]
+        and values["unsupportedClaimRate"] <= thresholds["unsupportedClaimRateMaximum"]
+    )
+    return {"passed": passed, "metrics": values}
+
+
+def rate(numerator: int, denominator: int) -> float:
+    return numerator / denominator if denominator else 0.0
+
+
 def read_json(path: Path) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"))
+    value = read_json_object(path)
     if not isinstance(value, dict):
         raise ValueError("P53 campaign plan must be a JSON object")
+    return value
+
+
+def read_json_object(path: Path) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError("P53 JSON artifact must be an object")
     return value
 
 
