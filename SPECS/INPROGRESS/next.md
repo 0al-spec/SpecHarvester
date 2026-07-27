@@ -25,3 +25,5 @@ invoke Codex or another model; or mutate registry truth.
 - `P53-T3` Mass Corpus Source Manifest: PASS. It froze 100 new source
   identities and public discovery evidence; all checkout-dependent evidence is
   pending P53-T4 verification.
+- `P53-T3` review: no actionable follow-up tasks. The case-insensitive P52
+  source-identity check was corrected during review and is covered by tests.
