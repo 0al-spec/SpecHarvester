@@ -14,8 +14,9 @@ campaign's checkpoint policy.
   after static collection verifies every pinned checkout revision.
 - A local report and checkpoint with provider receipts and aggregate outcome
   metrics, without raw prompts, responses, or chain-of-thought.
-- Focused tests covering exact wave-2 selection and the prerequisite scale-out
-  checkpoint transition.
+- Focused tests covering exact wave-2 selection and mandatory validation of the
+  recorded P53-T7 scale-out decision artifact before any source, static, or
+  Codex work begins.
 
 ## Acceptance Criteria
 
@@ -34,8 +35,10 @@ campaign's checkpoint policy.
 
 ## Dependencies and Boundary
 
-- P53-T7 is the sole authorization to unlock `wave-2`; this task does not
-  unlock `wave-3`.
+- P53-T7 is the sole authorization to unlock `wave-2`. The runner requires its
+  recorded decision artifact and validates its identity, P53-T6 evidence
+  digest, quality metrics, terminal-failure count, and human-review evidence;
+  this task does not unlock `wave-3`.
 - The P53-T1 campaign plan remains the authority for budgets and worker choice.
 - Provider output is retained only in the existing sanitized proposal and
   receipt fields; raw prompt/response/reasoning content is not persisted.
