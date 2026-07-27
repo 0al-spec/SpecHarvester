@@ -144,7 +144,7 @@ def test_git_and_license_helpers_handle_supported_and_unavailable_inputs(
 ) -> None:
     checkout = tmp_path / "checkout"
     checkout.mkdir()
-    (checkout / "LICENSE").write_text("license", encoding="utf-8")
+    (checkout / "LICENSE-APACHE").write_text("license", encoding="utf-8")
     (checkout / "notice.md").write_text("notice", encoding="utf-8")
     (checkout / "README.md").write_text("readme", encoding="utf-8")
 
@@ -161,7 +161,7 @@ def test_git_and_license_helpers_handle_supported_and_unavailable_inputs(
     assert git_origin(checkout) == "https://github.com/example/repo.git"
     monkeypatch.setattr(readiness_module.subprocess, "run", lambda *_args, **_kwargs: Result(1, ""))
     assert git_origin(checkout) is None
-    assert root_license_files(checkout) == ["LICENSE", "notice.md"]
+    assert root_license_files(checkout) == ["LICENSE-APACHE", "notice.md"]
     assert root_license_files(tmp_path / "missing") == []
     assert _canonical_origin("https://github.com/example/repo.git") == "example/repo"
     assert _canonical_origin("git@github.com:example/repo.git") == "example/repo"

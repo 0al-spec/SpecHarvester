@@ -161,7 +161,8 @@ def root_license_files(checkout: Path) -> list[str]:
         return sorted(
             path.name
             for path in checkout.iterdir()
-            if path.is_file() and path.name.split(".", 1)[0].lower() in LICENSE_FILENAMES
+            if path.is_file()
+            and path.name.split(".", 1)[0].split("-", 1)[0].lower() in LICENSE_FILENAMES
         )
     except OSError:
         return []

@@ -162,32 +162,32 @@
       }
     },
     {
-      "id": "avelino-awesome-go",
+      "id": "spf13-cobra",
       "position": 4,
       "wave": "wave-1",
       "ecosystem": "go",
-      "repositoryShape": "documentation_heavy",
-      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "repositoryShape": "single_package",
+      "selectionRationale": "utility_library_substitution_for_checkout_readiness",
       "importanceSignals": {
-        "githubStargazerCount": 179359,
+        "githubStargazerCount": 44319,
         "githubPrimaryLanguage": "Go",
         "operatorCurated": true
       },
       "provenance": {
         "kind": "canonical_public_github_repository",
-        "repository": "https://github.com/avelino/awesome-go",
-        "githubFullName": "avelino/awesome-go",
+        "repository": "https://github.com/spf13/cobra",
+        "githubFullName": "spf13/cobra",
         "status": "public_metadata_observed",
         "checkoutVerification": "pending_p53_t4"
       },
       "licenseProvenance": {
         "kind": "github_license_api_metadata",
-        "declaredSpdxId": "MIT",
-        "declaredName": "MIT License",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache-2.0",
         "status": "pending_checkout_file_verification"
       },
       "sizeBudget": {
-        "githubDiskUsageKiB": 12420,
+        "githubDiskUsageKiB": 2107,
         "maximumBytes": 67108864,
         "status": "pending_checkout_verification"
       },
@@ -808,33 +808,33 @@
       }
     },
     {
-      "id": "rustdesk-rustdesk",
+      "id": "sirupsen-logrus",
       "position": 21,
       "wave": "wave-1",
-      "ecosystem": "rust",
+      "ecosystem": "go",
       "repositoryShape": "single_package",
-      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "selectionRationale": "utility_library_substitution_for_checkout_readiness",
       "importanceSignals": {
-        "githubStargazerCount": 118979,
-        "githubPrimaryLanguage": "Rust",
+        "githubStargazerCount": 25751,
+        "githubPrimaryLanguage": "Go",
         "operatorCurated": true
       },
       "provenance": {
         "kind": "canonical_public_github_repository",
-        "repository": "https://github.com/rustdesk/rustdesk",
-        "githubFullName": "rustdesk/rustdesk",
+        "repository": "https://github.com/sirupsen/logrus",
+        "githubFullName": "sirupsen/logrus",
         "status": "public_metadata_observed",
         "checkoutVerification": "pending_p53_t4"
       },
       "licenseProvenance": {
         "kind": "github_license_api_metadata",
-        "declaredSpdxId": "AGPL-3.0",
-        "declaredName": "GNU Affero General Public License v3.0",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT",
         "status": "pending_checkout_file_verification"
       },
       "sizeBudget": {
-        "githubDiskUsageKiB": 75769,
-        "maximumBytes": 116381184,
+        "githubDiskUsageKiB": 1292,
+        "maximumBytes": 67108864,
         "status": "pending_checkout_verification"
       },
       "stopPolicy": {
@@ -846,33 +846,33 @@
       }
     },
     {
-      "id": "stirling-tools-stirling-pdf",
+      "id": "tokio-rs-tokio",
       "position": 22,
       "wave": "wave-1",
-      "ecosystem": "java",
-      "repositoryShape": "multi_component",
-      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "ecosystem": "rust",
+      "repositoryShape": "single_package",
+      "selectionRationale": "utility_library_substitution_for_checkout_readiness",
       "importanceSignals": {
-        "githubStargazerCount": 88125,
-        "githubPrimaryLanguage": "Java",
+        "githubStargazerCount": 32676,
+        "githubPrimaryLanguage": "Rust",
         "operatorCurated": true
       },
       "provenance": {
         "kind": "canonical_public_github_repository",
-        "repository": "https://github.com/Stirling-Tools/Stirling-PDF",
-        "githubFullName": "Stirling-Tools/Stirling-PDF",
+        "repository": "https://github.com/tokio-rs/tokio",
+        "githubFullName": "tokio-rs/tokio",
         "status": "public_metadata_observed",
         "checkoutVerification": "pending_p53_t4"
       },
       "licenseProvenance": {
         "kind": "github_license_api_metadata",
-        "declaredSpdxId": "NOASSERTION",
-        "declaredName": "Other",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT",
         "status": "pending_checkout_file_verification"
       },
       "sizeBudget": {
-        "githubDiskUsageKiB": 360393,
-        "maximumBytes": 553563648,
+        "githubDiskUsageKiB": 17138,
+        "maximumBytes": 67108864,
         "status": "pending_checkout_verification"
       },
       "stopPolicy": {
@@ -1986,33 +1986,33 @@
       }
     },
     {
-      "id": "oven-sh-bun",
+      "id": "rayon-rs-rayon",
       "position": 52,
       "wave": "wave-3",
       "ecosystem": "rust",
-      "repositoryShape": "multi_component",
-      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "repositoryShape": "single_package",
+      "selectionRationale": "utility_library_substitution_for_checkout_readiness",
       "importanceSignals": {
-        "githubStargazerCount": 95036,
+        "githubStargazerCount": 13188,
         "githubPrimaryLanguage": "Rust",
         "operatorCurated": true
       },
       "provenance": {
         "kind": "canonical_public_github_repository",
-        "repository": "https://github.com/oven-sh/bun",
-        "githubFullName": "oven-sh/bun",
+        "repository": "https://github.com/rayon-rs/rayon",
+        "githubFullName": "rayon-rs/rayon",
         "status": "public_metadata_observed",
         "checkoutVerification": "pending_p53_t4"
       },
       "licenseProvenance": {
         "kind": "github_license_api_metadata",
-        "declaredSpdxId": "NOASSERTION",
-        "declaredName": "Other",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache-2.0",
         "status": "pending_checkout_file_verification"
       },
       "sizeBudget": {
-        "githubDiskUsageKiB": 851516,
-        "maximumBytes": 1073741824,
+        "githubDiskUsageKiB": 3622,
+        "maximumBytes": 67108864,
         "status": "pending_checkout_verification"
       },
       "stopPolicy": {
@@ -2252,33 +2252,33 @@
       }
     },
     {
-      "id": "zed-industries-zed",
+      "id": "rust-lang-regex",
       "position": 59,
       "wave": "wave-3",
       "ecosystem": "rust",
-      "repositoryShape": "multi_component",
-      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "repositoryShape": "single_package",
+      "selectionRationale": "utility_library_substitution_for_checkout_readiness",
       "importanceSignals": {
-        "githubStargazerCount": 87587,
+        "githubStargazerCount": 3993,
         "githubPrimaryLanguage": "Rust",
         "operatorCurated": true
       },
       "provenance": {
         "kind": "canonical_public_github_repository",
-        "repository": "https://github.com/zed-industries/zed",
-        "githubFullName": "zed-industries/zed",
+        "repository": "https://github.com/rust-lang/regex",
+        "githubFullName": "rust-lang/regex",
         "status": "public_metadata_observed",
         "checkoutVerification": "pending_p53_t4"
       },
       "licenseProvenance": {
         "kind": "github_license_api_metadata",
-        "declaredSpdxId": "NOASSERTION",
-        "declaredName": "Other",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache-2.0",
         "status": "pending_checkout_file_verification"
       },
       "sizeBudget": {
-        "githubDiskUsageKiB": 489025,
-        "maximumBytes": 751142400,
+        "githubDiskUsageKiB": 8811,
+        "maximumBytes": 67108864,
         "status": "pending_checkout_verification"
       },
       "stopPolicy": {
@@ -2784,33 +2784,33 @@
       }
     },
     {
-      "id": "unionlabs-union",
+      "id": "serde-rs-serde",
       "position": 73,
       "wave": "wave-3",
       "ecosystem": "rust",
-      "repositoryShape": "multi_component",
-      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "repositoryShape": "single_package",
+      "selectionRationale": "utility_library_substitution_for_checkout_readiness",
       "importanceSignals": {
-        "githubStargazerCount": 73871,
+        "githubStargazerCount": 10728,
         "githubPrimaryLanguage": "Rust",
         "operatorCurated": true
       },
       "provenance": {
         "kind": "canonical_public_github_repository",
-        "repository": "https://github.com/unionlabs/union",
-        "githubFullName": "unionlabs/union",
+        "repository": "https://github.com/serde-rs/serde",
+        "githubFullName": "serde-rs/serde",
         "status": "public_metadata_observed",
         "checkoutVerification": "pending_p53_t4"
       },
       "licenseProvenance": {
         "kind": "github_license_api_metadata",
         "declaredSpdxId": "Apache-2.0",
-        "declaredName": "Apache License 2.0",
+        "declaredName": "Apache-2.0",
         "status": "pending_checkout_file_verification"
       },
       "sizeBudget": {
-        "githubDiskUsageKiB": 485234,
-        "maximumBytes": 745319424,
+        "githubDiskUsageKiB": 8760,
+        "maximumBytes": 67108864,
         "status": "pending_checkout_verification"
       },
       "stopPolicy": {
@@ -3392,33 +3392,33 @@
       }
     },
     {
-      "id": "nektos-act",
+      "id": "clap-rs-clap",
       "position": 89,
       "wave": "wave-4",
-      "ecosystem": "go",
+      "ecosystem": "rust",
       "repositoryShape": "single_package",
-      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "selectionRationale": "utility_library_substitution_for_checkout_readiness",
       "importanceSignals": {
-        "githubStargazerCount": 71219,
-        "githubPrimaryLanguage": "Go",
+        "githubStargazerCount": 16588,
+        "githubPrimaryLanguage": "Rust",
         "operatorCurated": true
       },
       "provenance": {
         "kind": "canonical_public_github_repository",
-        "repository": "https://github.com/nektos/act",
-        "githubFullName": "nektos/act",
+        "repository": "https://github.com/clap-rs/clap",
+        "githubFullName": "clap-rs/clap",
         "status": "public_metadata_observed",
         "checkoutVerification": "pending_p53_t4"
       },
       "licenseProvenance": {
         "kind": "github_license_api_metadata",
-        "declaredSpdxId": "MIT",
-        "declaredName": "MIT License",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache-2.0",
         "status": "pending_checkout_file_verification"
       },
       "sizeBudget": {
-        "githubDiskUsageKiB": 17758,
-        "maximumBytes": 67108864,
+        "githubDiskUsageKiB": 21090,
+        "maximumBytes": 134217728,
         "status": "pending_checkout_verification"
       },
       "stopPolicy": {
@@ -3620,33 +3620,33 @@
       }
     },
     {
-      "id": "alacritty-alacritty",
+      "id": "apache-commons-lang",
       "position": 95,
       "wave": "wave-4",
-      "ecosystem": "rust",
+      "ecosystem": "java",
       "repositoryShape": "single_package",
-      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "selectionRationale": "utility_library_substitution_for_checkout_readiness",
       "importanceSignals": {
-        "githubStargazerCount": 65105,
-        "githubPrimaryLanguage": "Rust",
+        "githubStargazerCount": 2988,
+        "githubPrimaryLanguage": "Java",
         "operatorCurated": true
       },
       "provenance": {
         "kind": "canonical_public_github_repository",
-        "repository": "https://github.com/alacritty/alacritty",
-        "githubFullName": "alacritty/alacritty",
+        "repository": "https://github.com/apache/commons-lang",
+        "githubFullName": "apache/commons-lang",
         "status": "public_metadata_observed",
         "checkoutVerification": "pending_p53_t4"
       },
       "licenseProvenance": {
         "kind": "github_license_api_metadata",
         "declaredSpdxId": "Apache-2.0",
-        "declaredName": "Apache License 2.0",
+        "declaredName": "Apache-2.0",
         "status": "pending_checkout_file_verification"
       },
       "sizeBudget": {
-        "githubDiskUsageKiB": 14577,
-        "maximumBytes": 67108864,
+        "githubDiskUsageKiB": 32298,
+        "maximumBytes": 134217728,
         "status": "pending_checkout_verification"
       },
       "stopPolicy": {
