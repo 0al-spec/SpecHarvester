@@ -3,9 +3,9 @@
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
 **Dependencies:** `P53-T5` Mass Corpus Static-Only Gate
-**Status:** Selected
+**Status:** In Progress
 **Started:** 2026-07-27
-**Branch:** pending `P53-T5` merge
+**Branch:** feature/p53-t6-codex-spark-wave-1
 
 ## Objective
 

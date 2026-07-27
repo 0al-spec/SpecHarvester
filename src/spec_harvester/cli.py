@@ -130,6 +130,10 @@ from spec_harvester.namespace_reports import (
     build_namespace_upstream_report,
     write_namespace_upstream_report,
 )
+from spec_harvester.p53_codex_spark_wave import (
+    P53CodexSparkWaveOptions,
+    run_p53_codex_spark_wave,
+)
 from spec_harvester.package_set_ai_draft_proposal import (
     PackageSetAIDraftProposalOptions,
     build_package_set_ai_draft_proposal,
@@ -795,6 +799,26 @@ def build_parser() -> argparse.ArgumentParser:
         help="Skip the Codex control for diagnostics only.",
     )
     final_corpus_codex.set_defaults(func=run_final_corpus_codex_spark_gate_cli)
+
+    p53_wave = subcommands.add_parser(
+        "p53-codex-spark-wave-1",
+        help="Run P53-T6 Codex Spark proposal-only wave 1 over positions 1-25.",
+    )
+    p53_wave.add_argument("inputs", type=Path, help="P53 source manifest directory.")
+    p53_wave.add_argument(
+        "--metadata", type=Path, required=True, help="P53 selection metadata JSON."
+    )
+    p53_wave.add_argument(
+        "--campaign-plan", type=Path, required=True, help="P53 campaign plan JSON."
+    )
+    p53_wave.add_argument("--out", type=Path, required=True, help="Wave output root.")
+    p53_wave.add_argument("--codex-command", default=DEFAULT_CODEX_COMMAND)
+    p53_wave.add_argument("--codex-model", default=DEFAULT_CODEX_MODEL)
+    p53_wave.add_argument("--codex-schema", type=Path, default=DEFAULT_CODEX_SCHEMA_PATH)
+    p53_wave.add_argument(
+        "--codex-timeout-seconds", type=float, default=DEFAULT_CODEX_TIMEOUT_SECONDS
+    )
+    p53_wave.set_defaults(func=run_p53_codex_spark_wave_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2248,6 +2272,27 @@ def run_final_corpus_codex_spark_gate_cli(args: argparse.Namespace) -> int:
                 codex_schema=args.codex_schema,
                 codex_timeout_seconds=args.codex_timeout_seconds,
                 run_codex=not args.skip_codex,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_p53_codex_spark_wave_cli(args: argparse.Namespace) -> int:
+    try:
+        result = run_p53_codex_spark_wave(
+            P53CodexSparkWaveOptions(
+                inputs=args.inputs,
+                metadata=args.metadata,
+                campaign_plan=args.campaign_plan,
+                out=args.out,
+                codex_command=args.codex_command,
+                codex_model=args.codex_model,
+                codex_schema=args.codex_schema,
+                codex_timeout_seconds=args.codex_timeout_seconds,
             )
         )
     except ValueError as exc:
