@@ -1,0 +1,602 @@
+# P53-T3 mass corpus. Public metadata pins; checkouts are supplied and verified only by P53-T4.
+repositories:
+  - id: public-apis-public-apis
+    repository: https://github.com/public-apis/public-apis
+    revision: c4cfee67d61923e500d64ca382f499ff93e52ba8
+    checkout: ../../../../P53Sources/public-apis-public-apis
+    packageId: public-apis-public-apis.core
+    labels: [python, single_package, wave_1, p53_t3]
+  - id: freecodecamp-freecodecamp
+    repository: https://github.com/freeCodeCamp/freeCodeCamp
+    revision: b6380af76d8ac7a625aaf1d92b9999ec87a8013b
+    checkout: ../../../../P53Sources/freecodecamp-freecodecamp
+    packageId: freecodecamp-freecodecamp.core
+    labels: [typescript, multi_component, wave_1, p53_t3]
+  - id: affaan-m-ecc
+    repository: https://github.com/affaan-m/ECC
+    revision: 6a9f075cd97c139a5f7e84e1e3f2c9ab095adf64
+    checkout: ../../../../P53Sources/affaan-m-ecc
+    packageId: affaan-m-ecc.core
+    labels: [javascript, workspace, wave_1, p53_t3]
+  - id: avelino-awesome-go
+    repository: https://github.com/avelino/awesome-go
+    revision: 2fc8bced827862980133e8ca1f024b07980dee54
+    checkout: ../../../../P53Sources/avelino-awesome-go
+    packageId: avelino-awesome-go.core
+    labels: [go, documentation_heavy, wave_1, p53_t3]
+  - id: ultraworkers-claw-code
+    repository: https://github.com/ultraworkers/claw-code
+    revision: 4ea31c1bc91c4e9bcbd67d51c550c01e127e6d0d
+    checkout: ../../../../P53Sources/ultraworkers-claw-code
+    packageId: ultraworkers-claw-code.core
+    labels: [rust, single_package, wave_1, p53_t3]
+  - id: krahets-hello-algo
+    repository: https://github.com/krahets/hello-algo
+    revision: 69932aed1891a7b7f6a0de88cd116d3fe13e7032
+    checkout: ../../../../P53Sources/krahets-hello-algo
+    packageId: krahets-hello-algo.core
+    labels: [java, documentation_heavy, wave_1, p53_t3]
+  - id: electron-electron
+    repository: https://github.com/electron/electron
+    revision: 99778533351cbdfd33d47cd1832a36d0941a1549
+    checkout: ../../../../P53Sources/electron-electron
+    packageId: electron-electron.core
+    labels: [c_cpp, multi_component, wave_1, p53_t3]
+  - id: jaywcjlove-awesome-mac
+    repository: https://github.com/jaywcjlove/awesome-mac
+    revision: b4934443e339e0002a2cebaf4cb9d7026942cf99
+    checkout: ../../../../P53Sources/jaywcjlove-awesome-mac
+    packageId: jaywcjlove-awesome-mac.core
+    labels: [swift, documentation_heavy, wave_1, p53_t3]
+  - id: ebookfoundation-free-programming-books
+    repository: https://github.com/EbookFoundation/free-programming-books
+    revision: 2a0e856963d72b53eb2120c88e51a945ae859c71
+    checkout: ../../../../P53Sources/ebookfoundation-free-programming-books
+    packageId: ebookfoundation-free-programming-books.core
+    labels: [python, documentation_heavy, wave_1, p53_t3]
+  - id: nilbuild-developer-roadmap
+    repository: https://github.com/nilbuild/developer-roadmap
+    revision: 6f745dc1eaa9d6a9841fe964be33835263f0fd92
+    checkout: ../../../../P53Sources/nilbuild-developer-roadmap
+    packageId: nilbuild-developer-roadmap.core
+    labels: [typescript, documentation_heavy, wave_1, p53_t3]
+  - id: trekhleb-javascript-algorithms
+    repository: https://github.com/trekhleb/javascript-algorithms
+    revision: 85293e3e2b88f4d2ce330d956b139cf628aa1e82
+    checkout: ../../../../P53Sources/trekhleb-javascript-algorithms
+    packageId: trekhleb-javascript-algorithms.core
+    labels: [javascript, documentation_heavy, wave_1, p53_t3]
+  - id: ollama-ollama
+    repository: https://github.com/ollama/ollama
+    revision: be7572e2cf442789e1c0f7fbbbd8bb5c89250a7d
+    checkout: ../../../../P53Sources/ollama-ollama
+    packageId: ollama-ollama.core
+    labels: [go, single_package, wave_1, p53_t3]
+  - id: farion1231-cc-switch
+    repository: https://github.com/farion1231/cc-switch
+    revision: 708b38791cec070e634b2364958d6afba9000770
+    checkout: ../../../../P53Sources/farion1231-cc-switch
+    packageId: farion1231-cc-switch.core
+    labels: [rust, single_package, wave_1, p53_t3]
+  - id: iluwatar-java-design-patterns
+    repository: https://github.com/iluwatar/java-design-patterns
+    revision: b55fc2bcb5f8e1c4b884bca0a38d402d19fe467c
+    checkout: ../../../../P53Sources/iluwatar-java-design-patterns
+    packageId: iluwatar-java-design-patterns.core
+    labels: [java, documentation_heavy, wave_1, p53_t3]
+  - id: ggml-org-llama-cpp
+    repository: https://github.com/ggml-org/llama.cpp
+    revision: 8e8681e0e20820a7736960381d71dec06a830163
+    checkout: ../../../../P53Sources/ggml-org-llama-cpp
+    packageId: ggml-org-llama-cpp.core
+    labels: [c_cpp, multi_component, wave_1, p53_t3]
+  - id: vsouza-awesome-ios
+    repository: https://github.com/vsouza/awesome-ios
+    revision: 0c8131c4cbf5c8b6d5c54c23e2ee0fbbbe2b8394
+    checkout: ../../../../P53Sources/vsouza-awesome-ios
+    packageId: vsouza-awesome-ios.core
+    labels: [swift, documentation_heavy, wave_1, p53_t3]
+  - id: donnemartin-system-design-primer
+    repository: https://github.com/donnemartin/system-design-primer
+    revision: ae9bbd7b02d90b9866215de185217d33f39ab733
+    checkout: ../../../../P53Sources/donnemartin-system-design-primer
+    packageId: donnemartin-system-design-primer.core
+    labels: [python, documentation_heavy, wave_1, p53_t3]
+  - id: vuejs-vue
+    repository: https://github.com/vuejs/vue
+    revision: 9e88707940088cb1f4cd7dd210c9168a50dc347c
+    checkout: ../../../../P53Sources/vuejs-vue
+    packageId: vuejs-vue.core
+    labels: [typescript, workspace, wave_1, p53_t3]
+  - id: snailclimb-javaguide
+    repository: https://github.com/Snailclimb/JavaGuide
+    revision: 8fb36af2bcd92d87c5223214980a9a97ef946f10
+    checkout: ../../../../P53Sources/snailclimb-javaguide
+    packageId: snailclimb-javaguide.core
+    labels: [javascript, documentation_heavy, wave_1, p53_t3]
+  - id: golang-go
+    repository: https://github.com/golang/go
+    revision: d1c13566375db0bdb716525f91659c9951320f81
+    checkout: ../../../../P53Sources/golang-go
+    packageId: golang-go.core
+    labels: [go, multi_component, wave_1, p53_t3]
+  - id: rustdesk-rustdesk
+    repository: https://github.com/rustdesk/rustdesk
+    revision: eefd22b2057ba057305b10a6b5bf93c79b686eb9
+    checkout: ../../../../P53Sources/rustdesk-rustdesk
+    packageId: rustdesk-rustdesk.core
+    labels: [rust, single_package, wave_1, p53_t3]
+  - id: stirling-tools-stirling-pdf
+    repository: https://github.com/Stirling-Tools/Stirling-PDF
+    revision: a380a822342c4e399b200f40204edf705a00e906
+    checkout: ../../../../P53Sources/stirling-tools-stirling-pdf
+    packageId: stirling-tools-stirling-pdf.core
+    labels: [java, multi_component, wave_1, p53_t3]
+  - id: microsoft-terminal
+    repository: https://github.com/microsoft/terminal
+    revision: 4f225a56aff245bbb9d1400f266c20e1747cc580
+    checkout: ../../../../P53Sources/microsoft-terminal
+    packageId: microsoft-terminal.core
+    labels: [c_cpp, workspace, wave_1, p53_t3]
+  - id: apple-container
+    repository: https://github.com/apple/container
+    revision: d1d763530df3c6a326dbae7f0c0a59a335808045
+    checkout: ../../../../P53Sources/apple-container
+    packageId: apple-container.core
+    labels: [swift, single_package, wave_1, p53_t3]
+  - id: vinta-awesome-python
+    repository: https://github.com/vinta/awesome-python
+    revision: 3c3c8fc607903d2a80fa434d3ffce58b6fca4ac6
+    checkout: ../../../../P53Sources/vinta-awesome-python
+    packageId: vinta-awesome-python.core
+    labels: [python, documentation_heavy, wave_1, p53_t3]
+  - id: n8n-io-n8n
+    repository: https://github.com/n8n-io/n8n
+    revision: 082b5d9190f4bc81d93c6a94d6d4692bed4660ca
+    checkout: ../../../../P53Sources/n8n-io-n8n
+    packageId: n8n-io-n8n.core
+    labels: [typescript, multi_component, wave_2, p53_t3]
+  - id: airbnb-javascript
+    repository: https://github.com/airbnb/javascript
+    revision: 8ed19247bef145e3cc41b24a02dd1fe6d9b5e681
+    checkout: ../../../../P53Sources/airbnb-javascript
+    packageId: airbnb-javascript.core
+    labels: [javascript, workspace, wave_2, p53_t3]
+  - id: fatedier-frp
+    repository: https://github.com/fatedier/frp
+    revision: 2175557d4813ab8805c76ea0e04fe1d11d688f91
+    checkout: ../../../../P53Sources/fatedier-frp
+    packageId: fatedier-frp.core
+    labels: [go, single_package, wave_2, p53_t3]
+  - id: tauri-apps-tauri
+    repository: https://github.com/tauri-apps/tauri
+    revision: 2e763a77756e13fe8c9da0c545bc1ef02730f831
+    checkout: ../../../../P53Sources/tauri-apps-tauri
+    packageId: tauri-apps-tauri.core
+    labels: [rust, workspace, wave_2, p53_t3]
+  - id: macrozheng-mall
+    repository: https://github.com/macrozheng/mall
+    revision: 0504e86b1f1b6f1b8aa6a734d37a90fb67346be7
+    checkout: ../../../../P53Sources/macrozheng-mall
+    packageId: macrozheng-mall.core
+    labels: [java, workspace, wave_2, p53_t3]
+  - id: opencv-opencv
+    repository: https://github.com/opencv/opencv
+    revision: 70fc3465808d801c36eb6930591df5e362ec74ab
+    checkout: ../../../../P53Sources/opencv-opencv
+    packageId: opencv-opencv.core
+    labels: [c_cpp, multi_component, wave_2, p53_t3]
+  - id: iina-iina
+    repository: https://github.com/iina/iina
+    revision: a25ed1390eff00cbed5f2eca045ee8dccd28d791
+    checkout: ../../../../P53Sources/iina-iina
+    packageId: iina-iina.core
+    labels: [swift, multi_component, wave_2, p53_t3]
+  - id: practical-tutorials-project-based-learning
+    repository: https://github.com/practical-tutorials/project-based-learning
+    revision: 1febb5232e9f68350aa0b23e060bf38b0ab71224
+    checkout: ../../../../P53Sources/practical-tutorials-project-based-learning
+    packageId: practical-tutorials-project-based-learning.core
+    labels: [python, documentation_heavy, wave_2, p53_t3]
+  - id: anomalyco-opencode
+    repository: https://github.com/anomalyco/opencode
+    revision: 4f62295e4432ad0fe21b597e79bcf060a7164106
+    checkout: ../../../../P53Sources/anomalyco-opencode
+    packageId: anomalyco-opencode.core
+    labels: [typescript, multi_component, wave_2, p53_t3]
+  - id: chalarangelo-30-seconds-of-code
+    repository: https://github.com/Chalarangelo/30-seconds-of-code
+    revision: f27b87678c44b3146a9ede9f2b70cf0c9d8508c0
+    checkout: ../../../../P53Sources/chalarangelo-30-seconds-of-code
+    packageId: chalarangelo-30-seconds-of-code.core
+    labels: [javascript, multi_component, wave_2, p53_t3]
+  - id: gohugoio-hugo
+    repository: https://github.com/gohugoio/hugo
+    revision: 0796fa7aced4c27d0bad1d01f0aa2e99b943019f
+    checkout: ../../../../P53Sources/gohugoio-hugo
+    packageId: gohugoio-hugo.core
+    labels: [go, single_package, wave_2, p53_t3]
+  - id: denoland-deno
+    repository: https://github.com/denoland/deno
+    revision: 9b71df7274b295f48eb40425a3da0082a99bc40c
+    checkout: ../../../../P53Sources/denoland-deno
+    packageId: denoland-deno.core
+    labels: [rust, multi_component, wave_2, p53_t3]
+  - id: spring-projects-spring-boot
+    repository: https://github.com/spring-projects/spring-boot
+    revision: 3b225c6f98b15c0fc74ea4cd825390e159c570fe
+    checkout: ../../../../P53Sources/spring-projects-spring-boot
+    packageId: spring-projects-spring-boot.core
+    labels: [java, multi_component, wave_2, p53_t3]
+  - id: bitcoin-bitcoin
+    repository: https://github.com/bitcoin/bitcoin
+    revision: a2aab6df97d9f3e1186e8c3fc57ad909cc8aef9b
+    checkout: ../../../../P53Sources/bitcoin-bitcoin
+    packageId: bitcoin-bitcoin.core
+    labels: [c_cpp, multi_component, wave_2, p53_t3]
+  - id: alamofire-alamofire
+    repository: https://github.com/Alamofire/Alamofire
+    revision: 903c53c710d1cbbac0b4b9c2527aefb791e1fee3
+    checkout: ../../../../P53Sources/alamofire-alamofire
+    packageId: alamofire-alamofire.core
+    labels: [swift, single_package, wave_2, p53_t3]
+  - id: thealgorithms-python
+    repository: https://github.com/TheAlgorithms/Python
+    revision: 25bcced0f37df781b0e5aaa575e2a4fad41a2816
+    checkout: ../../../../P53Sources/thealgorithms-python
+    packageId: thealgorithms-python.core
+    labels: [python, documentation_heavy, wave_2, p53_t3]
+  - id: firecrawl-firecrawl
+    repository: https://github.com/firecrawl/firecrawl
+    revision: ab033afd95b6e7865cf8d955fec359043389f227
+    checkout: ../../../../P53Sources/firecrawl-firecrawl
+    packageId: firecrawl-firecrawl.core
+    labels: [typescript, workspace, wave_2, p53_t3]
+  - id: axios-axios
+    repository: https://github.com/axios/axios
+    revision: 509719387e4993392ca40da03a49678269cdfb90
+    checkout: ../../../../P53Sources/axios-axios
+    packageId: axios-axios.core
+    labels: [javascript, workspace, wave_2, p53_t3]
+  - id: syncthing-syncthing
+    repository: https://github.com/syncthing/syncthing
+    revision: bcef5c5bc68dddfb68a3d341f41fad44c11fb52e
+    checkout: ../../../../P53Sources/syncthing-syncthing
+    packageId: syncthing-syncthing.core
+    labels: [go, workspace, wave_2, p53_t3]
+  - id: openai-codex
+    repository: https://github.com/openai/codex
+    revision: 16d7daad7c5dc73da8558102a65bb7d7709807e1
+    checkout: ../../../../P53Sources/openai-codex
+    packageId: openai-codex.core
+    labels: [rust, multi_component, wave_2, p53_t3]
+  - id: doocs-advanced-java
+    repository: https://github.com/doocs/advanced-java
+    revision: 1659850d7de4739ac9394dddd6c68466a8c38761
+    checkout: ../../../../P53Sources/doocs-advanced-java
+    packageId: doocs-advanced-java.core
+    labels: [java, documentation_heavy, wave_2, p53_t3]
+  - id: nomic-ai-gpt4all
+    repository: https://github.com/nomic-ai/gpt4all
+    revision: b666d16db5aeab8b91aaf7963adcee9c643734d7
+    checkout: ../../../../P53Sources/nomic-ai-gpt4all
+    packageId: nomic-ai-gpt4all.core
+    labels: [c_cpp, single_package, wave_2, p53_t3]
+  - id: nousresearch-hermes-agent
+    repository: https://github.com/NousResearch/hermes-agent
+    revision: d71033a4077a6dfdcdb42c9e9eeab4c41e4a7012
+    checkout: ../../../../P53Sources/nousresearch-hermes-agent
+    packageId: nousresearch-hermes-agent.core
+    labels: [python, multi_component, wave_2, p53_t3]
+  - id: langgenius-dify
+    repository: https://github.com/langgenius/dify
+    revision: f73f83c5d65d8111386a9bf4ced2e27702869088
+    checkout: ../../../../P53Sources/langgenius-dify
+    packageId: langgenius-dify.core
+    labels: [typescript, multi_component, wave_2, p53_t3]
+  - id: react-create-react-app
+    repository: https://github.com/react/create-react-app
+    revision: 6254386531d263688ccfa542d0e628fbc0de0b28
+    checkout: ../../../../P53Sources/react-create-react-app
+    packageId: react-create-react-app.core
+    labels: [javascript, workspace, wave_2, p53_t3]
+  - id: infiniflow-ragflow
+    repository: https://github.com/infiniflow/ragflow
+    revision: 1ae1dd1edb4fbc435db2a75bbd6d0d287916979e
+    checkout: ../../../../P53Sources/infiniflow-ragflow
+    packageId: infiniflow-ragflow.core
+    labels: [go, single_package, wave_3, p53_t3]
+  - id: oven-sh-bun
+    repository: https://github.com/oven-sh/bun
+    revision: 4eb6f99c1afeae07a7445218c25b3b742b643f11
+    checkout: ../../../../P53Sources/oven-sh-bun
+    packageId: oven-sh-bun.core
+    labels: [rust, multi_component, wave_3, p53_t3]
+  - id: nationalsecurityagency-ghidra
+    repository: https://github.com/NationalSecurityAgency/ghidra
+    revision: 30d4a5a70d363a96ee531b9211c769259652b11b
+    checkout: ../../../../P53Sources/nationalsecurityagency-ghidra
+    packageId: nationalsecurityagency-ghidra.core
+    labels: [java, multi_component, wave_3, p53_t3]
+  - id: tesseract-ocr-tesseract
+    repository: https://github.com/tesseract-ocr/tesseract
+    revision: a62bcef9b9364452d193c1d9b078e4ebedef64d2
+    checkout: ../../../../P53Sources/tesseract-ocr-tesseract
+    packageId: tesseract-ocr-tesseract.core
+    labels: [c_cpp, single_package, wave_3, p53_t3]
+  - id: significant-gravitas-autogpt
+    repository: https://github.com/Significant-Gravitas/AutoGPT
+    revision: f5d15e243b78ca1a73ae050e8e79eabd9a841182
+    checkout: ../../../../P53Sources/significant-gravitas-autogpt
+    packageId: significant-gravitas-autogpt.core
+    labels: [python, multi_component, wave_3, p53_t3]
+  - id: yangshun-tech-interview-handbook
+    repository: https://github.com/yangshun/tech-interview-handbook
+    revision: 8ee2acb54a05c4add123a824d15e7dfc4e703b2f
+    checkout: ../../../../P53Sources/yangshun-tech-interview-handbook
+    packageId: yangshun-tech-interview-handbook.core
+    labels: [typescript, documentation_heavy, wave_3, p53_t3]
+  - id: mui-material-ui
+    repository: https://github.com/mui/material-ui
+    revision: 5392ed6707ff1b2977bb5b598967eb4ef3430430
+    checkout: ../../../../P53Sources/mui-material-ui
+    packageId: mui-material-ui.core
+    labels: [javascript, multi_component, wave_3, p53_t3]
+  - id: junegunn-fzf
+    repository: https://github.com/junegunn/fzf
+    revision: 13a83e34753e6c8715dde13812cd9a4d1a25a541
+    checkout: ../../../../P53Sources/junegunn-fzf
+    packageId: junegunn-fzf.core
+    labels: [go, single_package, wave_3, p53_t3]
+  - id: zed-industries-zed
+    repository: https://github.com/zed-industries/zed
+    revision: 28f47fa3a027d9533e326e03040db60a215c6015
+    checkout: ../../../../P53Sources/zed-industries-zed
+    packageId: zed-industries-zed.core
+    labels: [rust, multi_component, wave_3, p53_t3]
+  - id: thealgorithms-java
+    repository: https://github.com/TheAlgorithms/Java
+    revision: ef61ee8920d3db606d94160af4307f5d1a80459f
+    checkout: ../../../../P53Sources/thealgorithms-java
+    packageId: thealgorithms-java.core
+    labels: [java, documentation_heavy, wave_3, p53_t3]
+  - id: ocornut-imgui
+    repository: https://github.com/ocornut/imgui
+    revision: a9e7a8c880cf4a7fbf142b13a41bcbb1f43d0938
+    checkout: ../../../../P53Sources/ocornut-imgui
+    packageId: ocornut-imgui.core
+    labels: [c_cpp, single_package, wave_3, p53_t3]
+  - id: yt-dlp-yt-dlp
+    repository: https://github.com/yt-dlp/yt-dlp
+    revision: fdcc954df4955267ec1627cbeb347b661a110e7c
+    checkout: ../../../../P53Sources/yt-dlp-yt-dlp
+    packageId: yt-dlp-yt-dlp.core
+    labels: [python, single_package, wave_3, p53_t3]
+  - id: clash-verge-rev-clash-verge-rev
+    repository: https://github.com/clash-verge-rev/clash-verge-rev
+    revision: f41dea96225bdb26226e10c95fee5b6d6bb932ab
+    checkout: ../../../../P53Sources/clash-verge-rev-clash-verge-rev
+    packageId: clash-verge-rev-clash-verge-rev.core
+    labels: [typescript, workspace, wave_3, p53_t3]
+  - id: ryanmcdermott-clean-code-javascript
+    repository: https://github.com/ryanmcdermott/clean-code-javascript
+    revision: 5311f64b03fc0c2450ab17a45ee9818669c8b9b5
+    checkout: ../../../../P53Sources/ryanmcdermott-clean-code-javascript
+    packageId: ryanmcdermott-clean-code-javascript.core
+    labels: [javascript, documentation_heavy, wave_3, p53_t3]
+  - id: jesseduffield-lazygit
+    repository: https://github.com/jesseduffield/lazygit
+    revision: 292035709f880f33b9f9c90177f1d2fe63f2bd6a
+    checkout: ../../../../P53Sources/jesseduffield-lazygit
+    packageId: jesseduffield-lazygit.core
+    labels: [go, single_package, wave_3, p53_t3]
+  - id: ruvnet-ruview
+    repository: https://github.com/ruvnet/RuView
+    revision: 2cc378c12f56bbe462f237496188f44a57de45eb
+    checkout: ../../../../P53Sources/ruvnet-ruview
+    packageId: ruvnet-ruview.core
+    labels: [rust, single_package, wave_3, p53_t3]
+  - id: kdn251-interviews
+    repository: https://github.com/kdn251/interviews
+    revision: 03fdcb2703ce72dc0606748733d0c13f09d41d21
+    checkout: ../../../../P53Sources/kdn251-interviews
+    packageId: kdn251-interviews.core
+    labels: [java, documentation_heavy, wave_3, p53_t3]
+  - id: protocolbuffers-protobuf
+    repository: https://github.com/protocolbuffers/protobuf
+    revision: c4be7483cbb23b9836b2d9e599f37fa1f2c93bed
+    checkout: ../../../../P53Sources/protocolbuffers-protobuf
+    packageId: protocolbuffers-protobuf.core
+    labels: [c_cpp, multi_component, wave_3, p53_t3]
+  - id: microsoft-markitdown
+    repository: https://github.com/microsoft/markitdown
+    revision: 2e42a01c404629b06892a1bdb5e7bf5261770c40
+    checkout: ../../../../P53Sources/microsoft-markitdown
+    packageId: microsoft-markitdown.core
+    labels: [python, single_package, wave_3, p53_t3]
+  - id: excalidraw-excalidraw
+    repository: https://github.com/excalidraw/excalidraw
+    revision: b2e81e38a6fde8b3cb5dfdf2f2fb651323ad309d
+    checkout: ../../../../P53Sources/excalidraw-excalidraw
+    packageId: excalidraw-excalidraw.core
+    labels: [typescript, workspace, wave_3, p53_t3]
+  - id: juliusbrussee-caveman
+    repository: https://github.com/JuliusBrussee/caveman
+    revision: 0d95a81d35a9f2d123a5e9430d1cfc43d55f1bb0
+    checkout: ../../../../P53Sources/juliusbrussee-caveman
+    packageId: juliusbrussee-caveman.core
+    labels: [javascript, workspace, wave_3, p53_t3]
+  - id: netdata-netdata
+    repository: https://github.com/netdata/netdata
+    revision: a9b85823f2ef5191c7f7008107a5060d4bb3e8d0
+    checkout: ../../../../P53Sources/netdata-netdata
+    packageId: netdata-netdata.core
+    labels: [go, multi_component, wave_3, p53_t3]
+  - id: unionlabs-union
+    repository: https://github.com/unionlabs/union
+    revision: 031785bb6dc6b957c624e62bc64c184409c97d7b
+    checkout: ../../../../P53Sources/unionlabs-union
+    packageId: unionlabs-union.core
+    labels: [rust, multi_component, wave_3, p53_t3]
+  - id: spring-projects-spring-framework
+    repository: https://github.com/spring-projects/spring-framework
+    revision: 1d1aac3674f56799e0997b92d6c4348fe087dbe1
+    checkout: ../../../../P53Sources/spring-projects-spring-framework
+    packageId: spring-projects-spring-framework.core
+    labels: [java, multi_component, wave_3, p53_t3]
+  - id: ladybirdbrowser-ladybird
+    repository: https://github.com/LadybirdBrowser/ladybird
+    revision: f73142581c6ef117ec69ffe8778322f293f2659a
+    checkout: ../../../../P53Sources/ladybirdbrowser-ladybird
+    packageId: ladybirdbrowser-ladybird.core
+    labels: [c_cpp, multi_component, wave_3, p53_t3]
+  - id: automatic1111-stable-diffusion-webui
+    repository: https://github.com/AUTOMATIC1111/stable-diffusion-webui
+    revision: 82a973c04367123ae98bd9abdf80d9eda9b910e2
+    checkout: ../../../../P53Sources/automatic1111-stable-diffusion-webui
+    packageId: automatic1111-stable-diffusion-webui.core
+    labels: [python, single_package, wave_4, p53_t3]
+  - id: garrytan-gstack
+    repository: https://github.com/garrytan/gstack
+    revision: a3259400a366593e0c909dd9ac3e59752efd2488
+    checkout: ../../../../P53Sources/garrytan-gstack
+    packageId: garrytan-gstack.core
+    labels: [typescript, workspace, wave_4, p53_t3]
+  - id: dietrichgebert-ponytail
+    repository: https://github.com/DietrichGebert/ponytail
+    revision: 16f29800fd2681bdf24f3eb4ccffe38be3baec6b
+    checkout: ../../../../P53Sources/dietrichgebert-ponytail
+    packageId: dietrichgebert-ponytail.core
+    labels: [javascript, workspace, wave_4, p53_t3]
+  - id: caddyserver-caddy
+    repository: https://github.com/caddyserver/caddy
+    revision: c96bca12693419ac5be751a0cbbae2c3cbf89c58
+    checkout: ../../../../P53Sources/caddyserver-caddy
+    packageId: caddyserver-caddy.core
+    labels: [go, single_package, wave_4, p53_t3]
+  - id: rtk-ai-rtk
+    repository: https://github.com/rtk-ai/rtk
+    revision: 7da2674073394194754a228d346189a74869e6ba
+    checkout: ../../../../P53Sources/rtk-ai-rtk
+    packageId: rtk-ai-rtk.core
+    labels: [rust, single_package, wave_4, p53_t3]
+  - id: huggingface-transformers
+    repository: https://github.com/huggingface/transformers
+    revision: f3f0c8b7784f56717e37743cabfc3c51041f24ed
+    checkout: ../../../../P53Sources/huggingface-transformers
+    packageId: huggingface-transformers.core
+    labels: [python, multi_component, wave_4, p53_t3]
+  - id: shadcn-ui-ui
+    repository: https://github.com/shadcn-ui/ui
+    revision: 7774cd7dcee1e98d0815aa6e829f33a7fc952fdf
+    checkout: ../../../../P53Sources/shadcn-ui-ui
+    packageId: shadcn-ui-ui.core
+    labels: [typescript, workspace, wave_4, p53_t3]
+  - id: louislam-uptime-kuma
+    repository: https://github.com/louislam/uptime-kuma
+    revision: 1aa80912e73c17d525d232073c4c8d757f8e38ab
+    checkout: ../../../../P53Sources/louislam-uptime-kuma
+    packageId: louislam-uptime-kuma.core
+    labels: [javascript, workspace, wave_4, p53_t3]
+  - id: moby-moby
+    repository: https://github.com/moby/moby
+    revision: 555bf824677a1fb4844ec13f3fe3bf7854288304
+    checkout: ../../../../P53Sources/moby-moby
+    packageId: moby-moby.core
+    labels: [go, multi_component, wave_4, p53_t3]
+  - id: openinterpreter-openinterpreter
+    repository: https://github.com/openinterpreter/openinterpreter
+    revision: aaf0aebf8203559711df6ed25b265a3f096bd3ea
+    checkout: ../../../../P53Sources/openinterpreter-openinterpreter
+    packageId: openinterpreter-openinterpreter.core
+    labels: [rust, multi_component, wave_4, p53_t3]
+  - id: open-webui-open-webui
+    repository: https://github.com/open-webui/open-webui
+    revision: 01f4282f1ffe0d6212f58d3afbeae21fffd0c4be
+    checkout: ../../../../P53Sources/open-webui-open-webui
+    packageId: open-webui-open-webui.core
+    labels: [python, multi_component, wave_4, p53_t3]
+  - id: immich-app-immich
+    repository: https://github.com/immich-app/immich
+    revision: 3606144190f14fd68bbad89675d7b9da47c15f75
+    checkout: ../../../../P53Sources/immich-app-immich
+    packageId: immich-app-immich.core
+    labels: [typescript, multi_component, wave_4, p53_t3]
+  - id: thedotmack-claude-mem
+    repository: https://github.com/thedotmack/claude-mem
+    revision: 132b46343e60ecf4057c427736c57b08f7615dfe
+    checkout: ../../../../P53Sources/thedotmack-claude-mem
+    packageId: thedotmack-claude-mem.core
+    labels: [javascript, multi_component, wave_4, p53_t3]
+  - id: nektos-act
+    repository: https://github.com/nektos/act
+    revision: 4f411281417e88660bea1c1a1749aa71ae0bd60f
+    checkout: ../../../../P53Sources/nektos-act
+    packageId: nektos-act.core
+    labels: [go, single_package, wave_4, p53_t3]
+  - id: burntsushi-ripgrep
+    repository: https://github.com/BurntSushi/ripgrep
+    revision: f9c05a949d1a0dc8e16dee28ca9605d38611faeb
+    checkout: ../../../../P53Sources/burntsushi-ripgrep
+    packageId: burntsushi-ripgrep.core
+    labels: [rust, single_package, wave_4, p53_t3]
+  - id: langchain-ai-langchain
+    repository: https://github.com/langchain-ai/langchain
+    revision: 39701d6b8e9dc62b57f63fec1d10d2d1f4293303
+    checkout: ../../../../P53Sources/langchain-ai-langchain
+    packageId: langchain-ai-langchain.core
+    labels: [python, multi_component, wave_4, p53_t3]
+  - id: google-gemini-gemini-cli
+    repository: https://github.com/google-gemini/gemini-cli
+    revision: 3818efbbfbf8ef029ef53a6ab1093db39971ce83
+    checkout: ../../../../P53Sources/google-gemini-gemini-cli
+    packageId: google-gemini-gemini-cli.core
+    labels: [typescript, workspace, wave_4, p53_t3]
+  - id: addyosmani-agent-skills
+    repository: https://github.com/addyosmani/agent-skills
+    revision: 7829ffd90d973b6325f5f12f1b1226dcace74443
+    checkout: ../../../../P53Sources/addyosmani-agent-skills
+    packageId: addyosmani-agent-skills.core
+    labels: [javascript, workspace, wave_4, p53_t3]
+  - id: prometheus-prometheus
+    repository: https://github.com/prometheus/prometheus
+    revision: ab225f6ef5a833551ea0130be468f1d1b1968daa
+    checkout: ../../../../P53Sources/prometheus-prometheus
+    packageId: prometheus-prometheus.core
+    labels: [go, multi_component, wave_4, p53_t3]
+  - id: alacritty-alacritty
+    repository: https://github.com/alacritty/alacritty
+    revision: 852e971cddfabe222d2d5bcda466e130f53af207
+    checkout: ../../../../P53Sources/alacritty-alacritty
+    packageId: alacritty-alacritty.core
+    labels: [rust, single_package, wave_4, p53_t3]
+  - id: ytdl-org-youtube-dl
+    repository: https://github.com/ytdl-org/youtube-dl
+    revision: 956b8c585591b401a543e409accb163eeaaa1193
+    checkout: ../../../../P53Sources/ytdl-org-youtube-dl
+    packageId: ytdl-org-youtube-dl.core
+    labels: [python, single_package, wave_4, p53_t3]
+  - id: angular-angular
+    repository: https://github.com/angular/angular
+    revision: 5ad823139758b4d3a8a021d378b008c3457f8689
+    checkout: ../../../../P53Sources/angular-angular
+    packageId: angular-angular.core
+    labels: [typescript, multi_component, wave_4, p53_t3]
+  - id: anuraghazra-github-readme-stats
+    repository: https://github.com/anuraghazra/github-readme-stats
+    revision: 54a7985aeefda00d5eadb55b80c17c7f976c37d2
+    checkout: ../../../../P53Sources/anuraghazra-github-readme-stats
+    packageId: anuraghazra-github-readme-stats.core
+    labels: [javascript, workspace, wave_4, p53_t3]
+  - id: traefik-traefik
+    repository: https://github.com/traefik/traefik
+    revision: fd5a576df2e8aeb0bfc8a96b6ef6e60a61f7ec0a
+    checkout: ../../../../P53Sources/traefik-traefik
+    packageId: traefik-traefik.core
+    labels: [go, single_package, wave_4, p53_t3]
+  - id: dani-garcia-vaultwarden
+    repository: https://github.com/dani-garcia/vaultwarden
+    revision: 46ae59eaf444f0ae0a799070cf2bd6c415284a51
+    checkout: ../../../../P53Sources/dani-garcia-vaultwarden
+    packageId: dani-garcia-vaultwarden.core
+    labels: [rust, single_package, wave_4, p53_t3]

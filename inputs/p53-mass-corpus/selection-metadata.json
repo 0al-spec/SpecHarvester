@@ -1,0 +1,3851 @@
+{
+  "apiVersion": "spec-harvester.mass-corpus-selection-metadata/v0",
+  "kind": "SpecHarvesterMassCorpusSelectionMetadata",
+  "authority": "operator_source_selection_evidence_only",
+  "phase": "P53",
+  "task": "P53-T3",
+  "sourceDiscovery": {
+    "provider": "github_graphql_public_metadata",
+    "observedAt": "2026-07-27",
+    "queryConstraints": [
+      "archived:false",
+      "fork:false",
+      "pinned_default_branch_commit",
+      "public_https_origin"
+    ]
+  },
+  "corpus": {
+    "repositoryCount": 100,
+    "p52ReferenceCorpusReused": false,
+    "expectedCheckoutRoot": "../../../../P53Sources",
+    "checkoutReadiness": "pending_p53_t4",
+    "staticCollection": "not_run",
+    "codexExecution": "not_run"
+  },
+  "quotas": {
+    "ecosystemExactCounts": {
+      "python": 15,
+      "typescript": 15,
+      "javascript": 15,
+      "go": 15,
+      "rust": 15,
+      "java": 10,
+      "c_cpp": 10,
+      "swift": 5
+    },
+    "repositoryShapeMinimums": {
+      "documentation_heavy": 10,
+      "multi_component": 20,
+      "workspace": 20,
+      "single_package": 20
+    },
+    "waveExactCounts": {
+      "wave-1": 25,
+      "wave-2": 25,
+      "wave-3": 25,
+      "wave-4": 25
+    }
+  },
+  "repositories": [
+    {
+      "id": "public-apis-public-apis",
+      "position": 1,
+      "wave": "wave-1",
+      "ecosystem": "python",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 452738,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/public-apis/public-apis",
+        "githubFullName": "public-apis/public-apis",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 7732,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "freecodecamp-freecodecamp",
+      "position": 2,
+      "wave": "wave-1",
+      "ecosystem": "typescript",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 452941,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/freeCodeCamp/freeCodeCamp",
+        "githubFullName": "freeCodeCamp/freeCodeCamp",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "BSD-3-Clause",
+        "declaredName": "BSD 3-Clause \"New\" or \"Revised\" License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 579002,
+        "maximumBytes": 889347072,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "affaan-m-ecc",
+      "position": 3,
+      "wave": "wave-1",
+      "ecosystem": "javascript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 233865,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/affaan-m/ECC",
+        "githubFullName": "affaan-m/ECC",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 47015,
+        "maximumBytes": 72215040,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "avelino-awesome-go",
+      "position": 4,
+      "wave": "wave-1",
+      "ecosystem": "go",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 179359,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/avelino/awesome-go",
+        "githubFullName": "avelino/awesome-go",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 12420,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "ultraworkers-claw-code",
+      "position": 5,
+      "wave": "wave-1",
+      "ecosystem": "rust",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 194932,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/ultraworkers/claw-code",
+        "githubFullName": "ultraworkers/claw-code",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 25104,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "krahets-hello-algo",
+      "position": 6,
+      "wave": "wave-1",
+      "ecosystem": "java",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 128869,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/krahets/hello-algo",
+        "githubFullName": "krahets/hello-algo",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 476524,
+        "maximumBytes": 731940864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "electron-electron",
+      "position": 7,
+      "wave": "wave-1",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 122211,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/electron/electron",
+        "githubFullName": "electron/electron",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 209648,
+        "maximumBytes": 322019328,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "jaywcjlove-awesome-mac",
+      "position": 8,
+      "wave": "wave-1",
+      "ecosystem": "swift",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 108747,
+        "githubPrimaryLanguage": "Swift",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/jaywcjlove/awesome-mac",
+        "githubFullName": "jaywcjlove/awesome-mac",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "CC0-1.0",
+        "declaredName": "Creative Commons Zero v1.0 Universal",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 50757,
+        "maximumBytes": 77962752,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "ebookfoundation-free-programming-books",
+      "position": 9,
+      "wave": "wave-1",
+      "ecosystem": "python",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 393109,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/EbookFoundation/free-programming-books",
+        "githubFullName": "EbookFoundation/free-programming-books",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "CC-BY-4.0",
+        "declaredName": "Creative Commons Attribution 4.0 International",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 21619,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "nilbuild-developer-roadmap",
+      "position": 10,
+      "wave": "wave-1",
+      "ecosystem": "typescript",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 362823,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/nilbuild/developer-roadmap",
+        "githubFullName": "nilbuild/developer-roadmap",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 361931,
+        "maximumBytes": 555926016,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "trekhleb-javascript-algorithms",
+      "position": 11,
+      "wave": "wave-1",
+      "ecosystem": "javascript",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 196337,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/trekhleb/javascript-algorithms",
+        "githubFullName": "trekhleb/javascript-algorithms",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 14964,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "ollama-ollama",
+      "position": 12,
+      "wave": "wave-1",
+      "ecosystem": "go",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 176981,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/ollama/ollama",
+        "githubFullName": "ollama/ollama",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 90018,
+        "maximumBytes": 138267648,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "farion1231-cc-switch",
+      "position": 13,
+      "wave": "wave-1",
+      "ecosystem": "rust",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 121614,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/farion1231/cc-switch",
+        "githubFullName": "farion1231/cc-switch",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 66639,
+        "maximumBytes": 102357504,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "iluwatar-java-design-patterns",
+      "position": 14,
+      "wave": "wave-1",
+      "ecosystem": "java",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 94244,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/iluwatar/java-design-patterns",
+        "githubFullName": "iluwatar/java-design-patterns",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 47683,
+        "maximumBytes": 73241088,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "ggml-org-llama-cpp",
+      "position": 15,
+      "wave": "wave-1",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 121756,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/ggml-org/llama.cpp",
+        "githubFullName": "ggml-org/llama.cpp",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 422477,
+        "maximumBytes": 648924672,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "vsouza-awesome-ios",
+      "position": 16,
+      "wave": "wave-1",
+      "ecosystem": "swift",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 52888,
+        "githubPrimaryLanguage": "Swift",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/vsouza/awesome-ios",
+        "githubFullName": "vsouza/awesome-ios",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 17305,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "donnemartin-system-design-primer",
+      "position": 17,
+      "wave": "wave-1",
+      "ecosystem": "python",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 359351,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/donnemartin/system-design-primer",
+        "githubFullName": "donnemartin/system-design-primer",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 11277,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "vuejs-vue",
+      "position": 18,
+      "wave": "wave-1",
+      "ecosystem": "typescript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 210129,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/vuejs/vue",
+        "githubFullName": "vuejs/vue",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 32152,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "snailclimb-javaguide",
+      "position": 19,
+      "wave": "wave-1",
+      "ecosystem": "javascript",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 157333,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/Snailclimb/JavaGuide",
+        "githubFullName": "Snailclimb/JavaGuide",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 182987,
+        "maximumBytes": 281068032,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "golang-go",
+      "position": 20,
+      "wave": "wave-1",
+      "ecosystem": "go",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 135404,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/golang/go",
+        "githubFullName": "golang/go",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "BSD-3-Clause",
+        "declaredName": "BSD 3-Clause \"New\" or \"Revised\" License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 446223,
+        "maximumBytes": 685398528,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "rustdesk-rustdesk",
+      "position": 21,
+      "wave": "wave-1",
+      "ecosystem": "rust",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 118979,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/rustdesk/rustdesk",
+        "githubFullName": "rustdesk/rustdesk",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "AGPL-3.0",
+        "declaredName": "GNU Affero General Public License v3.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 75769,
+        "maximumBytes": 116381184,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "stirling-tools-stirling-pdf",
+      "position": 22,
+      "wave": "wave-1",
+      "ecosystem": "java",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 88125,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/Stirling-Tools/Stirling-PDF",
+        "githubFullName": "Stirling-Tools/Stirling-PDF",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 360393,
+        "maximumBytes": 553563648,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "microsoft-terminal",
+      "position": 23,
+      "wave": "wave-1",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 104376,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/microsoft/terminal",
+        "githubFullName": "microsoft/terminal",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 174447,
+        "maximumBytes": 267950592,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "apple-container",
+      "position": 24,
+      "wave": "wave-1",
+      "ecosystem": "swift",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 48330,
+        "githubPrimaryLanguage": "Swift",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/apple/container",
+        "githubFullName": "apple/container",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 3897,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "vinta-awesome-python",
+      "position": 25,
+      "wave": "wave-1",
+      "ecosystem": "python",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 310608,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/vinta/awesome-python",
+        "githubFullName": "vinta/awesome-python",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 5752,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "n8n-io-n8n",
+      "position": 26,
+      "wave": "wave-2",
+      "ecosystem": "typescript",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 198195,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/n8n-io/n8n",
+        "githubFullName": "n8n-io/n8n",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 541858,
+        "maximumBytes": 832293888,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "airbnb-javascript",
+      "position": 27,
+      "wave": "wave-2",
+      "ecosystem": "javascript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 148088,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/airbnb/javascript",
+        "githubFullName": "airbnb/javascript",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 3738,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "fatedier-frp",
+      "position": 28,
+      "wave": "wave-2",
+      "ecosystem": "go",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 108377,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/fatedier/frp",
+        "githubFullName": "fatedier/frp",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 32292,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "tauri-apps-tauri",
+      "position": 29,
+      "wave": "wave-2",
+      "ecosystem": "rust",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 109557,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/tauri-apps/tauri",
+        "githubFullName": "tauri-apps/tauri",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 107563,
+        "maximumBytes": 165216768,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "macrozheng-mall",
+      "position": 30,
+      "wave": "wave-2",
+      "ecosystem": "java",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 84434,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/macrozheng/mall",
+        "githubFullName": "macrozheng/mall",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 58736,
+        "maximumBytes": 90218496,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "opencv-opencv",
+      "position": 31,
+      "wave": "wave-2",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 90157,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/opencv/opencv",
+        "githubFullName": "opencv/opencv",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 563466,
+        "maximumBytes": 865483776,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "iina-iina",
+      "position": 32,
+      "wave": "wave-2",
+      "ecosystem": "swift",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 45714,
+        "githubPrimaryLanguage": "Swift",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/iina/iina",
+        "githubFullName": "iina/iina",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "GPL-3.0",
+        "declaredName": "GNU General Public License v3.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 248460,
+        "maximumBytes": 381634560,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "practical-tutorials-project-based-learning",
+      "position": 33,
+      "wave": "wave-2",
+      "ecosystem": "python",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 275419,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/practical-tutorials/project-based-learning",
+        "githubFullName": "practical-tutorials/project-based-learning",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 446,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "anomalyco-opencode",
+      "position": 34,
+      "wave": "wave-2",
+      "ecosystem": "typescript",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 190131,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/anomalyco/opencode",
+        "githubFullName": "anomalyco/opencode",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 428438,
+        "maximumBytes": 658080768,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "chalarangelo-30-seconds-of-code",
+      "position": 35,
+      "wave": "wave-2",
+      "ecosystem": "javascript",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 128510,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/Chalarangelo/30-seconds-of-code",
+        "githubFullName": "Chalarangelo/30-seconds-of-code",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "CC-BY-4.0",
+        "declaredName": "Creative Commons Attribution 4.0 International",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 742715,
+        "maximumBytes": 1073741824,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "gohugoio-hugo",
+      "position": 36,
+      "wave": "wave-2",
+      "ecosystem": "go",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 89206,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/gohugoio/hugo",
+        "githubFullName": "gohugoio/hugo",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 143008,
+        "maximumBytes": 219660288,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "denoland-deno",
+      "position": 37,
+      "wave": "wave-2",
+      "ecosystem": "rust",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 107823,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/denoland/deno",
+        "githubFullName": "denoland/deno",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 245091,
+        "maximumBytes": 376459776,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "spring-projects-spring-boot",
+      "position": 38,
+      "wave": "wave-2",
+      "ecosystem": "java",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 81169,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/spring-projects/spring-boot",
+        "githubFullName": "spring-projects/spring-boot",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 217211,
+        "maximumBytes": 333636096,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "bitcoin-bitcoin",
+      "position": 39,
+      "wave": "wave-2",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 89709,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/bitcoin/bitcoin",
+        "githubFullName": "bitcoin/bitcoin",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 320697,
+        "maximumBytes": 492590592,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "alamofire-alamofire",
+      "position": 40,
+      "wave": "wave-2",
+      "ecosystem": "swift",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 42407,
+        "githubPrimaryLanguage": "Swift",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/Alamofire/Alamofire",
+        "githubFullName": "Alamofire/Alamofire",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 43674,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "thealgorithms-python",
+      "position": 41,
+      "wave": "wave-2",
+      "ecosystem": "python",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 223200,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/TheAlgorithms/Python",
+        "githubFullName": "TheAlgorithms/Python",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 16574,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "firecrawl-firecrawl",
+      "position": 42,
+      "wave": "wave-2",
+      "ecosystem": "typescript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 156790,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/firecrawl/firecrawl",
+        "githubFullName": "firecrawl/firecrawl",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "AGPL-3.0",
+        "declaredName": "GNU Affero General Public License v3.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 96725,
+        "maximumBytes": 148569600,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "axios-axios",
+      "position": 43,
+      "wave": "wave-2",
+      "ecosystem": "javascript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 109163,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/axios/axios",
+        "githubFullName": "axios/axios",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 28235,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "syncthing-syncthing",
+      "position": 44,
+      "wave": "wave-2",
+      "ecosystem": "go",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 86944,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/syncthing/syncthing",
+        "githubFullName": "syncthing/syncthing",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MPL-2.0",
+        "declaredName": "Mozilla Public License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 127248,
+        "maximumBytes": 195452928,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "openai-codex",
+      "position": 45,
+      "wave": "wave-2",
+      "ecosystem": "rust",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 101799,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/openai/codex",
+        "githubFullName": "openai/codex",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 524458,
+        "maximumBytes": 805567488,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "doocs-advanced-java",
+      "position": 46,
+      "wave": "wave-2",
+      "ecosystem": "java",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 79012,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/doocs/advanced-java",
+        "githubFullName": "doocs/advanced-java",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "CC-BY-SA-4.0",
+        "declaredName": "Creative Commons Attribution Share Alike 4.0 International",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 34444,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "nomic-ai-gpt4all",
+      "position": 47,
+      "wave": "wave-2",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 77402,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/nomic-ai/gpt4all",
+        "githubFullName": "nomic-ai/gpt4all",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 44678,
+        "maximumBytes": 68625408,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "nousresearch-hermes-agent",
+      "position": 48,
+      "wave": "wave-2",
+      "ecosystem": "python",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 221222,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/NousResearch/hermes-agent",
+        "githubFullName": "NousResearch/hermes-agent",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 557738,
+        "maximumBytes": 856685568,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "langgenius-dify",
+      "position": 49,
+      "wave": "wave-2",
+      "ecosystem": "typescript",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 150411,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/langgenius/dify",
+        "githubFullName": "langgenius/dify",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 455599,
+        "maximumBytes": 699800064,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "react-create-react-app",
+      "position": 50,
+      "wave": "wave-2",
+      "ecosystem": "javascript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 103298,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/react/create-react-app",
+        "githubFullName": "react/create-react-app",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 25186,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "infiniflow-ragflow",
+      "position": 51,
+      "wave": "wave-3",
+      "ecosystem": "go",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 86128,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/infiniflow/ragflow",
+        "githubFullName": "infiniflow/ragflow",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 143280,
+        "maximumBytes": 220078080,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "oven-sh-bun",
+      "position": 52,
+      "wave": "wave-3",
+      "ecosystem": "rust",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 95036,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/oven-sh/bun",
+        "githubFullName": "oven-sh/bun",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 851516,
+        "maximumBytes": 1073741824,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "nationalsecurityagency-ghidra",
+      "position": 53,
+      "wave": "wave-3",
+      "ecosystem": "java",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 71425,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/NationalSecurityAgency/ghidra",
+        "githubFullName": "NationalSecurityAgency/ghidra",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 411703,
+        "maximumBytes": 632375808,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "tesseract-ocr-tesseract",
+      "position": 54,
+      "wave": "wave-3",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 75576,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/tesseract-ocr/tesseract",
+        "githubFullName": "tesseract-ocr/tesseract",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 54935,
+        "maximumBytes": 84380160,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "significant-gravitas-autogpt",
+      "position": 55,
+      "wave": "wave-3",
+      "ecosystem": "python",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 185706,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/Significant-Gravitas/AutoGPT",
+        "githubFullName": "Significant-Gravitas/AutoGPT",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 634842,
+        "maximumBytes": 975117312,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "yangshun-tech-interview-handbook",
+      "position": 56,
+      "wave": "wave-3",
+      "ecosystem": "typescript",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 141265,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/yangshun/tech-interview-handbook",
+        "githubFullName": "yangshun/tech-interview-handbook",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 33749,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "mui-material-ui",
+      "position": 57,
+      "wave": "wave-3",
+      "ecosystem": "javascript",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 98636,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/mui/material-ui",
+        "githubFullName": "mui/material-ui",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 742815,
+        "maximumBytes": 1073741824,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "junegunn-fzf",
+      "position": 58,
+      "wave": "wave-3",
+      "ecosystem": "go",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 81990,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/junegunn/fzf",
+        "githubFullName": "junegunn/fzf",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 8536,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "zed-industries-zed",
+      "position": 59,
+      "wave": "wave-3",
+      "ecosystem": "rust",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 87587,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/zed-industries/zed",
+        "githubFullName": "zed-industries/zed",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 489025,
+        "maximumBytes": 751142400,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "thealgorithms-java",
+      "position": 60,
+      "wave": "wave-3",
+      "ecosystem": "java",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 66060,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/TheAlgorithms/Java",
+        "githubFullName": "TheAlgorithms/Java",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 7503,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "ocornut-imgui",
+      "position": 61,
+      "wave": "wave-3",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 75119,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/ocornut/imgui",
+        "githubFullName": "ocornut/imgui",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 130371,
+        "maximumBytes": 200249856,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "yt-dlp-yt-dlp",
+      "position": 62,
+      "wave": "wave-3",
+      "ecosystem": "python",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 180360,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/yt-dlp/yt-dlp",
+        "githubFullName": "yt-dlp/yt-dlp",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Unlicense",
+        "declaredName": "The Unlicense",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 61518,
+        "maximumBytes": 94491648,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "clash-verge-rev-clash-verge-rev",
+      "position": 63,
+      "wave": "wave-3",
+      "ecosystem": "typescript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 134020,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/clash-verge-rev/clash-verge-rev",
+        "githubFullName": "clash-verge-rev/clash-verge-rev",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "GPL-3.0",
+        "declaredName": "GNU General Public License v3.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 77758,
+        "maximumBytes": 119436288,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "ryanmcdermott-clean-code-javascript",
+      "position": 64,
+      "wave": "wave-3",
+      "ecosystem": "javascript",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 94751,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/ryanmcdermott/clean-code-javascript",
+        "githubFullName": "ryanmcdermott/clean-code-javascript",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 520,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "jesseduffield-lazygit",
+      "position": 65,
+      "wave": "wave-3",
+      "ecosystem": "go",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 80776,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/jesseduffield/lazygit",
+        "githubFullName": "jesseduffield/lazygit",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 156048,
+        "maximumBytes": 239689728,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "ruvnet-ruview",
+      "position": 66,
+      "wave": "wave-3",
+      "ecosystem": "rust",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 86794,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/ruvnet/RuView",
+        "githubFullName": "ruvnet/RuView",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 188555,
+        "maximumBytes": 289620480,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "kdn251-interviews",
+      "position": 67,
+      "wave": "wave-3",
+      "ecosystem": "java",
+      "repositoryShape": "documentation_heavy",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 65067,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/kdn251/interviews",
+        "githubFullName": "kdn251/interviews",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 24462,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "protocolbuffers-protobuf",
+      "position": 68,
+      "wave": "wave-3",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 71649,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/protocolbuffers/protobuf",
+        "githubFullName": "protocolbuffers/protobuf",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 233793,
+        "maximumBytes": 359106048,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "microsoft-markitdown",
+      "position": 69,
+      "wave": "wave-3",
+      "ecosystem": "python",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 169355,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/microsoft/markitdown",
+        "githubFullName": "microsoft/markitdown",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 4333,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "excalidraw-excalidraw",
+      "position": 70,
+      "wave": "wave-3",
+      "ecosystem": "typescript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 128439,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/excalidraw/excalidraw",
+        "githubFullName": "excalidraw/excalidraw",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 101518,
+        "maximumBytes": 155931648,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "juliusbrussee-caveman",
+      "position": 71,
+      "wave": "wave-3",
+      "ecosystem": "javascript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 93389,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/JuliusBrussee/caveman",
+        "githubFullName": "JuliusBrussee/caveman",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 2527,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "netdata-netdata",
+      "position": 72,
+      "wave": "wave-3",
+      "ecosystem": "go",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 79872,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/netdata/netdata",
+        "githubFullName": "netdata/netdata",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "GPL-3.0",
+        "declaredName": "GNU General Public License v3.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 296313,
+        "maximumBytes": 455136768,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "unionlabs-union",
+      "position": 73,
+      "wave": "wave-3",
+      "ecosystem": "rust",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 73871,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/unionlabs/union",
+        "githubFullName": "unionlabs/union",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 485234,
+        "maximumBytes": 745319424,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "spring-projects-spring-framework",
+      "position": 74,
+      "wave": "wave-3",
+      "ecosystem": "java",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 60144,
+        "githubPrimaryLanguage": "Java",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/spring-projects/spring-framework",
+        "githubFullName": "spring-projects/spring-framework",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 243458,
+        "maximumBytes": 373951488,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "ladybirdbrowser-ladybird",
+      "position": 75,
+      "wave": "wave-3",
+      "ecosystem": "c_cpp",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 64677,
+        "githubPrimaryLanguage": "C++",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/LadybirdBrowser/ladybird",
+        "githubFullName": "LadybirdBrowser/ladybird",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "BSD-2-Clause",
+        "declaredName": "BSD 2-Clause \"Simplified\" License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 475265,
+        "maximumBytes": 730007040,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "automatic1111-stable-diffusion-webui",
+      "position": 76,
+      "wave": "wave-4",
+      "ecosystem": "python",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 164286,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
+        "githubFullName": "AUTOMATIC1111/stable-diffusion-webui",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "AGPL-3.0",
+        "declaredName": "GNU Affero General Public License v3.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 36552,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "garrytan-gstack",
+      "position": 77,
+      "wave": "wave-4",
+      "ecosystem": "typescript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 124702,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/garrytan/gstack",
+        "githubFullName": "garrytan/gstack",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 116115,
+        "maximumBytes": 178352640,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "dietrichgebert-ponytail",
+      "position": 78,
+      "wave": "wave-4",
+      "ecosystem": "javascript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 90150,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/DietrichGebert/ponytail",
+        "githubFullName": "DietrichGebert/ponytail",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 2253,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "caddyserver-caddy",
+      "position": 79,
+      "wave": "wave-4",
+      "ecosystem": "go",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 74390,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/caddyserver/caddy",
+        "githubFullName": "caddyserver/caddy",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 21744,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "rtk-ai-rtk",
+      "position": 80,
+      "wave": "wave-4",
+      "ecosystem": "rust",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 73444,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/rtk-ai/rtk",
+        "githubFullName": "rtk-ai/rtk",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 6054,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "huggingface-transformers",
+      "position": 81,
+      "wave": "wave-4",
+      "ecosystem": "python",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 163032,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/huggingface/transformers",
+        "githubFullName": "huggingface/transformers",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 505666,
+        "maximumBytes": 776702976,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "shadcn-ui-ui",
+      "position": 82,
+      "wave": "wave-4",
+      "ecosystem": "typescript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 119922,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/shadcn-ui/ui",
+        "githubFullName": "shadcn-ui/ui",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 68835,
+        "maximumBytes": 105730560,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "louislam-uptime-kuma",
+      "position": 83,
+      "wave": "wave-4",
+      "ecosystem": "javascript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 89531,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/louislam/uptime-kuma",
+        "githubFullName": "louislam/uptime-kuma",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 37969,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "moby-moby",
+      "position": 84,
+      "wave": "wave-4",
+      "ecosystem": "go",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 71913,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/moby/moby",
+        "githubFullName": "moby/moby",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 267011,
+        "maximumBytes": 410128896,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "openinterpreter-openinterpreter",
+      "position": 85,
+      "wave": "wave-4",
+      "ecosystem": "rust",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 67336,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/openinterpreter/openinterpreter",
+        "githubFullName": "openinterpreter/openinterpreter",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 230278,
+        "maximumBytes": 353707008,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "open-webui-open-webui",
+      "position": 86,
+      "wave": "wave-4",
+      "ecosystem": "python",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 146900,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/open-webui/open-webui",
+        "githubFullName": "open-webui/open-webui",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "NOASSERTION",
+        "declaredName": "Other",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 405672,
+        "maximumBytes": 623112192,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "immich-app-immich",
+      "position": 87,
+      "wave": "wave-4",
+      "ecosystem": "typescript",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 108940,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/immich-app/immich",
+        "githubFullName": "immich-app/immich",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "AGPL-3.0",
+        "declaredName": "GNU Affero General Public License v3.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 314475,
+        "maximumBytes": 483033600,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "thedotmack-claude-mem",
+      "position": 88,
+      "wave": "wave-4",
+      "ecosystem": "javascript",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 88691,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/thedotmack/claude-mem",
+        "githubFullName": "thedotmack/claude-mem",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 289177,
+        "maximumBytes": 444175872,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "nektos-act",
+      "position": 89,
+      "wave": "wave-4",
+      "ecosystem": "go",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 71219,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/nektos/act",
+        "githubFullName": "nektos/act",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 17758,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "burntsushi-ripgrep",
+      "position": 90,
+      "wave": "wave-4",
+      "ecosystem": "rust",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 66572,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/BurntSushi/ripgrep",
+        "githubFullName": "BurntSushi/ripgrep",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Unlicense",
+        "declaredName": "The Unlicense",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 5690,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "langchain-ai-langchain",
+      "position": 91,
+      "wave": "wave-4",
+      "ecosystem": "python",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 142676,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/langchain-ai/langchain",
+        "githubFullName": "langchain-ai/langchain",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 585256,
+        "maximumBytes": 898953216,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "google-gemini-gemini-cli",
+      "position": 92,
+      "wave": "wave-4",
+      "ecosystem": "typescript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 106204,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/google-gemini/gemini-cli",
+        "githubFullName": "google-gemini/gemini-cli",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 101218,
+        "maximumBytes": 155470848,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "addyosmani-agent-skills",
+      "position": 93,
+      "wave": "wave-4",
+      "ecosystem": "javascript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 80588,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/addyosmani/agent-skills",
+        "githubFullName": "addyosmani/agent-skills",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 671,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "prometheus-prometheus",
+      "position": 94,
+      "wave": "wave-4",
+      "ecosystem": "go",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 65329,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/prometheus/prometheus",
+        "githubFullName": "prometheus/prometheus",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 286014,
+        "maximumBytes": 439317504,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "alacritty-alacritty",
+      "position": 95,
+      "wave": "wave-4",
+      "ecosystem": "rust",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 65105,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/alacritty/alacritty",
+        "githubFullName": "alacritty/alacritty",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Apache-2.0",
+        "declaredName": "Apache License 2.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 14577,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "ytdl-org-youtube-dl",
+      "position": 96,
+      "wave": "wave-4",
+      "ecosystem": "python",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 140807,
+        "githubPrimaryLanguage": "Python",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/ytdl-org/youtube-dl",
+        "githubFullName": "ytdl-org/youtube-dl",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "Unlicense",
+        "declaredName": "The Unlicense",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 65510,
+        "maximumBytes": 100623360,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "angular-angular",
+      "position": 97,
+      "wave": "wave-4",
+      "ecosystem": "typescript",
+      "repositoryShape": "multi_component",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 100622,
+        "githubPrimaryLanguage": "TypeScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/angular/angular",
+        "githubFullName": "angular/angular",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 649529,
+        "maximumBytes": 997676544,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "anuraghazra-github-readme-stats",
+      "position": 98,
+      "wave": "wave-4",
+      "ecosystem": "javascript",
+      "repositoryShape": "workspace",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 79788,
+        "githubPrimaryLanguage": "JavaScript",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/anuraghazra/github-readme-stats",
+        "githubFullName": "anuraghazra/github-readme-stats",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 7741,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "traefik-traefik",
+      "position": 99,
+      "wave": "wave-4",
+      "ecosystem": "go",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 64135,
+        "githubPrimaryLanguage": "Go",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/traefik/traefik",
+        "githubFullName": "traefik/traefik",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "MIT",
+        "declaredName": "MIT License",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 159391,
+        "maximumBytes": 244824576,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    },
+    {
+      "id": "dani-garcia-vaultwarden",
+      "position": 100,
+      "wave": "wave-4",
+      "ecosystem": "rust",
+      "repositoryShape": "single_package",
+      "selectionRationale": "public_popularity_and_ecosystem_quota",
+      "importanceSignals": {
+        "githubStargazerCount": 64389,
+        "githubPrimaryLanguage": "Rust",
+        "operatorCurated": true
+      },
+      "provenance": {
+        "kind": "canonical_public_github_repository",
+        "repository": "https://github.com/dani-garcia/vaultwarden",
+        "githubFullName": "dani-garcia/vaultwarden",
+        "status": "public_metadata_observed",
+        "checkoutVerification": "pending_p53_t4"
+      },
+      "licenseProvenance": {
+        "kind": "github_license_api_metadata",
+        "declaredSpdxId": "AGPL-3.0",
+        "declaredName": "GNU Affero General Public License v3.0",
+        "status": "pending_checkout_file_verification"
+      },
+      "sizeBudget": {
+        "githubDiskUsageKiB": 12016,
+        "maximumBytes": 67108864,
+        "status": "pending_checkout_verification"
+      },
+      "stopPolicy": {
+        "excludeOnDirtyCheckout": true,
+        "excludeOnRevisionMismatch": true,
+        "excludeOnSizeBudgetExceeded": true,
+        "excludeOnUnresolvedProvenance": true,
+        "excludeOnUnresolvedLicenseEvidence": true
+      }
+    }
+  ]
+}
