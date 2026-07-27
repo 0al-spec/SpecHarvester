@@ -361,6 +361,10 @@ def model_request_record(options: PackageSetAIDraftProposalOptions) -> dict[str,
             ),
             "Explain every selected member and every important exclusion.",
             "Relations may only connect the aggregate package set to selected members.",
+            (
+                "Omit contains relations for selected members whose manifestPath is empty; "
+                "selectedMembers already records the proposal without inventing relation evidence."
+            ),
         ],
         "allowedEvidencePaths": evidence_paths,
         "evidence": evidence,
@@ -421,6 +425,7 @@ def proposal_from_model_output(
     relations = relation_proposals(
         effective_model_output,
         package_set,
+        inventory_by_id,
         selected_ids,
         allowed_paths,
         diagnostics,
@@ -1000,6 +1005,7 @@ def excluded_package_proposals(
 def relation_proposals(
     model_output: dict[str, Any],
     package_set: dict[str, Any],
+    inventory_by_id: dict[str, dict[str, Any]],
     selected_ids: set[str],
     allowed_paths: set[str],
     diagnostics: list[dict[str, Any]],
@@ -1070,6 +1076,25 @@ def relation_proposals(
                     "Relation target must be one of the selected member package ids.",
                     target,
                     {"index": index},
+                )
+            )
+            continue
+        target_inventory = inventory_by_id[target]
+        if not string_value(target_inventory.get("manifestPath")):
+            diagnostics.append(
+                diagnostic(
+                    "warning",
+                    "relation_omitted_missing_manifest_evidence",
+                    (
+                        "Contains relation was omitted because the selected member has no "
+                        "deterministic package manifest evidence."
+                    ),
+                    target,
+                    {
+                        "index": index,
+                        "relationType": relation_type,
+                        "nonBlockingReason": "selected_member_remains_reviewable",
+                    },
                 )
             )
             continue

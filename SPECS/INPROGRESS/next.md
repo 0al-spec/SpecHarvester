@@ -9,8 +9,9 @@
 
 ## Objective
 
-Review the wave-2 quality sample, including the `bitcoin-bitcoin` warning, and
-record whether P53-T10 may process only positions 51-75.
+Review the wave-2 quality sample, including the original `bitcoin-bitcoin`
+warning and its clean targeted corrective rerun, and record whether P53-T10 may
+process only positions 51-75.
 
 ## Next Step
 
@@ -20,8 +21,10 @@ Do not run wave 3 as part of this task.
 ## Recently Archived
 
 - `P53-T8` Codex Spark Wave 2: PASS for execution. All 25 frozen wave-2
-  sources completed with valid schemas and no terminal failures; one
-  `bitcoin-bitcoin` unsupported-claim warning blocks automatic wave-3 unlock.
+  sources completed with valid schemas and no terminal failures. A targeted
+  `bitcoin-bitcoin` corrective rerun removed the unsupported relation claim;
+  effective wave metrics now meet the quality thresholds, pending P53-T9
+  manual review and decision.
 
 - `P53-T5` Mass Corpus Static-Only Gate: PASS. All 100 pinned local checkouts
   produced deterministic preview evidence with zero failures; AI and execution

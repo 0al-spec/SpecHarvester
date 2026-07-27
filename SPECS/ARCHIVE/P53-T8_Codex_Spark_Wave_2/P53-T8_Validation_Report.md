@@ -16,13 +16,34 @@
 - Aggregate Codex receipt duration: `432895 ms`; maximum single receipt:
   `27375 ms`.
 
-## Quality Boundary for P53-T9
+## Initial Quality Boundary for P53-T9
 
 `bitcoin-bitcoin` is the sole quality exception. Its proposal is schema-valid
 but has `repositorySpecific: false` and `unsupportedClaimCount: 1`. This makes
 the unsupported-claim rate `1 / 25` (4%), above the Phase 53 scale-out limit of
-2%. P53-T9 must review and disposition this evidence; P53-T8 does not unlock
-wave 3.
+2%.
+
+## Targeted Corrective Rerun
+
+The producer now omits `contains` relations for selected members whose
+deterministic inventory has an empty `manifestPath`. The member remains in the
+proposal, but the producer does not retain a relation claim without manifest
+evidence. The Codex instruction records the same boundary.
+
+A revision-verified rerun of only `bitcoin-bitcoin` completed with:
+
+- schema-valid: `true`;
+- repository-specific: `true`;
+- unsupported claims: `0`;
+- selected members: `1`;
+- relations: `0`;
+- warnings and errors: `0`.
+
+Replacing only the original `bitcoin-bitcoin` record with this bounded rerun
+gives effective wave-2 metrics of 25/25 completed, 25/25 schema-valid, 25/25
+repository-specific, and 0/25 unsupported claims. P53-T9 must still manually
+review at least three proposals and record the scale-out decision; this
+corrective evidence does not itself unlock wave 3.
 
 ## Durable Local Evidence
 
@@ -34,6 +55,15 @@ wave 3.
 
 Evidence root: `/tmp/p53-t8-wave-2-rerun/`. Durable artifacts persist no raw
 prompts, raw model responses, or chain-of-thought.
+
+| Targeted follow-up artifact | SHA-256 |
+| --- | --- |
+| Follow-up report | `7ecfc66ecbb48a377acd2b01f22b53ae8aafdf8b700e8a2abb1a7050418f4ddd` |
+| Corrected proposal | `4818f764de36046994d4de1b37b3644f53adcc8a966fd9635af54af5c3297803` |
+| Targeted static report | `b9a4d591b3cf32328a9518f48ab8bd403b917507a2d8afae6792155f87816074` |
+
+Targeted evidence root:
+`/tmp/p53-t8-bitcoin-follow-up.mDtiaB/`.
 
 ## Corrected Preflight Invocation
 

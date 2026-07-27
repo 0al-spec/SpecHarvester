@@ -41,3 +41,12 @@ implementation defect to hide or a reason to bypass the wave gate.
 
 FOLLOW-UP is skipped: no new implementation follow-up is needed. P53-T9 must
 review the wave-2 quality exception before any wave-3 authorization.
+
+### Post-Review Corrective Evidence
+
+After this review, the current PR added a deterministic guard that omits
+manifestless `contains` relations while preserving the selected member. A
+targeted `bitcoin-bitcoin` rerun completed schema-valid and
+repository-specific with zero unsupported claims. P53-T9 must review both the
+original warning and the bounded replacement evidence before deciding whether
+to unlock wave 3.
