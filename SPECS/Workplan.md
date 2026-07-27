@@ -2548,7 +2548,7 @@ Acceptance:
   processed as four sequential waves of 25. Define quality thresholds, budget
   envelopes, stop-policy triggers, resumability, evidence retention, and
   proposal-only authority boundaries before acquiring or processing sources.
-- [ ] `P53-T2` Implement and validate the resumable mass-run orchestration
+- [ ] `P53-T2` **INPROGRESS** Implement and validate the resumable mass-run orchestration
   contract: deterministic run identity, per-repository state, bounded
   concurrency, atomic checkpoints, idempotent resume, retry classification,
   token/time receipts, and aggregate budget enforcement.

@@ -1,6 +1,6 @@
 # Next Task: P53-T2 Resumable Mass-Run Orchestration
 
-**Status:** Selected
+**Status:** In Progress
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
 **Depends On:** `P53-T1` Mass Corpus Operating Plan
 **Started:** 2026-07-27
