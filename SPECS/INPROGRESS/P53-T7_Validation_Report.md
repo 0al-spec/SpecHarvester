@@ -3,6 +3,10 @@
 **Verdict:** PASS
 **Decision:** `unlock_p53_t8`
 
+Machine-readable decision evidence is stored in
+`SPECS/INPROGRESS/P53-T7_Scale_Out_Decision.json`. P53-T8 must validate this
+artifact before dispatching `wave-2`; Markdown alone is not authorization.
+
 ## Wave Metrics
 
 | Quality gate | Threshold | Observed |
