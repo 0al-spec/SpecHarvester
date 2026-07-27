@@ -40,7 +40,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P53-T2 Resumable Mass-Run Orchestration" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Selected" in next_text
+        assert "**Status:** In Progress" in next_text
         assert (
             "**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production"
             in next_text
