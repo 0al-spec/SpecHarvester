@@ -1,12 +1,12 @@
 # Next Task: P53-T1 Mass Corpus Operating Plan
 
-**Status:** Selected
+**Status:** In Progress
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
 **Depends On:** `P52-T9` Phase 52 exit decision
 **Started:** 2026-07-27
 **Active Task:** `P53-T1` Record the mass-corpus operating plan and
 machine-readable campaign contract for 100 new repositories.
-**Branch:** feature/p53-mass-popular-repository-plan
+**Branch:** feature/p53-t1-mass-corpus-operating-plan
 
 ## Objective
 
