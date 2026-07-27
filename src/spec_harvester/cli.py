@@ -121,6 +121,10 @@ from spec_harvester.license_provenance_reports import (
     build_license_provenance_risk_report,
     write_license_provenance_report,
 )
+from spec_harvester.mass_corpus_checkout_readiness import (
+    MassCorpusCheckoutReadinessOptions,
+    run_mass_corpus_checkout_readiness,
+)
 from spec_harvester.model_json_repair import DEFAULT_JSON_REPAIR_MAX_ATTEMPTS
 from spec_harvester.namespace_reports import (
     build_namespace_upstream_report,
@@ -682,6 +686,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output path for the sanitized readiness report.",
     )
     final_corpus_readiness.set_defaults(func=run_final_corpus_checkout_readiness_cli)
+
+    mass_corpus_readiness = subcommands.add_parser(
+        "mass-corpus-checkout-readiness",
+        help="Validate the P53-T4 100-source manifest and operator-provided local checkouts.",
+    )
+    mass_corpus_readiness.add_argument(
+        "inputs", type=Path, help="Directory containing the P53 source manifest."
+    )
+    mass_corpus_readiness.add_argument(
+        "--metadata", type=Path, required=True, help="Companion P53 selection metadata JSON."
+    )
+    mass_corpus_readiness.add_argument(
+        "--out", type=Path, required=True, help="Output path for the sanitized readiness report."
+    )
+    mass_corpus_readiness.set_defaults(func=run_mass_corpus_checkout_readiness_cli)
 
     final_corpus_static = subcommands.add_parser(
         "final-corpus-static-only-gate",
@@ -2162,6 +2181,22 @@ def run_final_corpus_checkout_readiness_cli(args: argparse.Namespace) -> int:
     try:
         result = run_final_corpus_checkout_readiness(
             FinalCorpusCheckoutReadinessOptions(
+                inputs=args.inputs,
+                metadata=args.metadata,
+                output=args.out,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_mass_corpus_checkout_readiness_cli(args: argparse.Namespace) -> int:
+    try:
+        result = run_mass_corpus_checkout_readiness(
+            MassCorpusCheckoutReadinessOptions(
                 inputs=args.inputs,
                 metadata=args.metadata,
                 output=args.out,
