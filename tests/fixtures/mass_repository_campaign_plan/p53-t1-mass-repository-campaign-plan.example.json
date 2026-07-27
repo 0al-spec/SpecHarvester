@@ -1,0 +1,151 @@
+{
+  "apiVersion": "spec-harvester.mass-repository-campaign-plan/v0",
+  "authority": "producer_planning_evidence_only",
+  "authorityBoundary": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "changesRegistryTruth": false,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false,
+    "seedsBaselines": false,
+    "treatsEvidenceAsRegistryTruth": false
+  },
+  "budgetPolicy": {
+    "campaignMaxTokens": 2000000,
+    "campaignMaxWallTimeSeconds": 28800,
+    "perRepositoryMaxTokens": 20000,
+    "perRepositoryMaxWallTimeSeconds": 300,
+    "perWaveMaxTokens": 500000,
+    "stopBeforeCampaignBudgetExceeded": true
+  },
+  "executionBoundary": {
+    "clonesOrFetchesRepositories": false,
+    "createsOrRestoresCheckouts": false,
+    "executesHarvestedCode": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "runsAI": false,
+    "runsAdapters": false,
+    "runsCodex": false
+  },
+  "executionPolicy": {
+    "configuredInitialConcurrency": 2,
+    "maxClassifiedRetriesPerRepository": 1,
+    "requiresAtomicCheckpoints": true,
+    "requiresDeterministicRunIdentity": true,
+    "requiresIdempotentResume": true,
+    "resumeDoesNotRerunCompletedRepositories": true
+  },
+  "kind": "SpecHarvesterMassRepositoryCampaignPlan",
+  "phase": "P53",
+  "privacyBoundary": {
+    "chainOfThoughtPersisted": false,
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false,
+    "sessionStatePersisted": false,
+    "stdoutOrStderrPersisted": false
+  },
+  "qualityMetrics": {
+    "codexCompletionRateMinimum": 0.95,
+    "humanReview": {
+      "aggregateMinimum": 15,
+      "wave1Minimum": 5,
+      "wave1RateMinimum": 0.2,
+      "waves2To4Minimum": 3,
+      "waves2To4RateMinimum": 0.1
+    },
+    "repositorySpecificRateMinimum": 0.9,
+    "schemaValidRateMinimum": 0.99,
+    "staticCompletionRateMinimum": 0.98,
+    "unsupportedClaimRateMaximum": 0.02
+  },
+  "scaleOutDecisions": [
+    {
+      "humanReviewMinimum": 5,
+      "task": "P53-T7",
+      "unlocks": "P53-T8",
+      "unlocksRepositoryRange": {
+        "first": 26,
+        "last": 50
+      }
+    },
+    {
+      "humanReviewMinimum": 3,
+      "task": "P53-T9",
+      "unlocks": "P53-T10",
+      "unlocksRepositoryRange": {
+        "first": 51,
+        "last": 75
+      }
+    },
+    {
+      "humanReviewMinimum": 3,
+      "task": "P53-T11",
+      "unlocks": "P53-T12",
+      "unlocksRepositoryRange": {
+        "first": 76,
+        "last": 100
+      }
+    }
+  ],
+  "scope": {
+    "newRepositoryCount": 100,
+    "p52ReferenceCorpusCountedAsNewOutput": false,
+    "repositoryAcquisition": "operator_provided_pinned_local_checkouts",
+    "selection": "operator_curated_popular_repositories",
+    "staticOnlyBeforeAI": true
+  },
+  "sourceArtifacts": {
+    "p52ExitDecision": {
+      "apiVersion": "spec-harvester.phase-52-exit-decision/v0",
+      "authority": "producer_exit_decision_evidence_only",
+      "digest": "sha256:e4917bcacbc4ff7dfca45627cc01f599cf6fd0c7d4f5a9be167cd8c11018ad56",
+      "kind": "SpecHarvesterPhase52ExitDecision",
+      "path": "tests/fixtures/phase_52_exit_decision/p52-t9-phase-52-exit-decision.example.json",
+      "selectedDecision": "go_with_guardrails_for_maintainer_disposition"
+    }
+  },
+  "task": "P53-T1",
+  "waves": [
+    {
+      "id": "wave-1",
+      "repositoryRange": {
+        "first": 1,
+        "last": 25
+      }
+    },
+    {
+      "id": "wave-2",
+      "repositoryRange": {
+        "first": 26,
+        "last": 50
+      }
+    },
+    {
+      "id": "wave-3",
+      "repositoryRange": {
+        "first": 51,
+        "last": 75
+      }
+    },
+    {
+      "id": "wave-4",
+      "repositoryRange": {
+        "first": 76,
+        "last": 100
+      }
+    }
+  ],
+  "worker": {
+    "alternateAIWorkersAllowed": false,
+    "invocationSurface": "codex_exec",
+    "kind": "codex_exec_external_model_output",
+    "lmStudioAllowed": false,
+    "model": "gpt-5.3-codex-spark",
+    "proposalOnly": true,
+    "requiresOperatorOptIn": true,
+    "requiresSchemaValidation": true,
+    "role": "sole_campaign_ai_worker"
+  }
+}

@@ -387,6 +387,9 @@ Published DocC site:
 101. [`FINAL_CORPUS_STATIC_ONLY_GATE.md`](FINAL_CORPUS_STATIC_ONLY_GATE.md):
    P52-T6 final corpus static-only gate meeting the 95% threshold at 96% while
    retaining two explicit dual-license filename allowlist failures
+102. [`MASS_REPOSITORY_CAMPAIGN_PLAN.md`](MASS_REPOSITORY_CAMPAIGN_PLAN.md):
+   P53-T1 100-repository operating contract with Codex 5.3 Spark as the sole
+   worker, four wave gates, budget/resume policy, and proposal-only boundaries
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

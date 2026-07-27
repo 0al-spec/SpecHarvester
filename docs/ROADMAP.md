@@ -1379,6 +1379,15 @@ minimum. `uv` and `actix-web` remain explicit dual-license filename allowlist
 failures. AI and adapters stayed disabled, and P52-T7 is unlocked without
 granting registry authority.
 
+P53-T1 records
+[`MASS_REPOSITORY_CAMPAIGN_PLAN.md`](MASS_REPOSITORY_CAMPAIGN_PLAN.md) and the
+machine-readable `SpecHarvesterMassRepositoryCampaignPlan` fixture. It defines
+an immutable 100-repository campaign in four sequential waves of 25, with
+`gpt-5.3-codex-spark` as the sole proposal-only campaign worker. The plan fixes
+initial concurrency at two, records token/time and retry limits, and requires
+separate human-review decisions before waves 2, 3, and 4. It does not acquire
+sources, invoke Codex, or approve registry promotion.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install
