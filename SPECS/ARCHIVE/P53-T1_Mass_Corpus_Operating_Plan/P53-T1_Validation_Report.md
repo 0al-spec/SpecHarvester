@@ -20,6 +20,11 @@ run identity, immutable inputs, atomic checkpoints, and idempotent resume.
 P53-T7, P53-T9, and P53-T11 each unlock only the immediately following wave
 after the required human-review sample and quality thresholds pass.
 
+Post-review, the fixture also encodes the complete stop policy: quality failure,
+three consecutive Codex/schema/transport failures, budget limit, input
+revision/digest drift, and authority-boundary breach all stop the current wave
+and block later waves.
+
 ## Evidence
 
 - Source decision:

@@ -39891,6 +39891,17 @@ def test_mass_repository_campaign_plan_records_p53_t1_codex_spark_contract() -> 
         "perWaveMaxTokens": 500_000,
         "stopBeforeCampaignBudgetExceeded": True,
     }
+    assert payload["stopPolicy"] == {
+        "blockLaterWavesOnStop": True,
+        "onAuthorityBoundaryBreach": "stop_current_wave_and_block_later_waves",
+        "onCampaignBudgetLimit": "stop_current_wave_and_block_later_waves",
+        "onConsecutiveCodexSchemaOrTransportFailures": {
+            "consecutiveFailureCount": 3,
+            "outcome": "stop_current_wave_and_block_later_waves",
+        },
+        "onInputRevisionOrDigestDrift": "stop_current_wave_and_block_later_waves",
+        "onQualityThresholdFailure": "stop_current_wave_and_block_later_waves",
+    }
     assert payload["qualityMetrics"] == {
         "codexCompletionRateMinimum": 0.95,
         "humanReview": {

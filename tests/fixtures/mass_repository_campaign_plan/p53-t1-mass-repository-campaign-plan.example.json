@@ -106,6 +106,17 @@
       "selectedDecision": "go_with_guardrails_for_maintainer_disposition"
     }
   },
+  "stopPolicy": {
+    "blockLaterWavesOnStop": true,
+    "onAuthorityBoundaryBreach": "stop_current_wave_and_block_later_waves",
+    "onCampaignBudgetLimit": "stop_current_wave_and_block_later_waves",
+    "onConsecutiveCodexSchemaOrTransportFailures": {
+      "consecutiveFailureCount": 3,
+      "outcome": "stop_current_wave_and_block_later_waves"
+    },
+    "onInputRevisionOrDigestDrift": "stop_current_wave_and_block_later_waves",
+    "onQualityThresholdFailure": "stop_current_wave_and_block_later_waves"
+  },
   "task": "P53-T1",
   "waves": [
     {
