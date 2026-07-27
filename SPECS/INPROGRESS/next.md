@@ -1,14 +1,25 @@
-# Phase 52 Complete
+# Next Task: P53-T1 Mass Corpus Operating Plan
 
-P52-T9 recorded `go_with_guardrails_for_maintainer_disposition`. The approved
-50-source proposal-only evidence is ready for explicit maintainer disposition.
-Registry promotion, automatic package or relation acceptance, and corpus
-expansion remain unapproved.
+**Status:** Selected
+**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
+**Depends On:** `P52-T9` Phase 52 exit decision
+**Started:** 2026-07-27
+**Active Task:** `P53-T1` Record the mass-corpus operating plan and
+machine-readable campaign contract for 100 new repositories.
+**Branch:** feature/p53-mass-popular-repository-plan
 
-P52-T9 review found no actionable follow-up; the completed decision is the
-current authoritative Phase 52 workflow state.
+## Objective
 
-## Next Step
+Define the immutable 100-source, four-wave campaign contract, quality gates,
+budget and resume policy, stop conditions, evidence retention, and
+non-authority boundaries before source acquisition or live execution.
 
-Create a new planning phase before acquiring or processing a new popular
-repository corpus beyond the approved 50-source scope.
+## Preconditions
+
+- P52-T9 is archived with
+  `go_with_guardrails_for_maintainer_disposition`.
+- The P52 50-source corpus remains reference/canary evidence and is not counted
+  as new P53 output.
+- P53-T1 does not acquire repositories, run static parsing, invoke Codex or LM
+  Studio, execute adapters/package managers/harvested code, or mutate registry
+  truth.
