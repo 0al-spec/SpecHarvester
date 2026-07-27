@@ -3,7 +3,9 @@
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
 **Dependencies:** `P53-T3` Mass Corpus Source Manifest
-**Status:** Selected
+**Status:** In Progress
+**Started:** 2026-07-27
+**Branch:** feature/p53-t4-mass-corpus-checkout-readiness
 
 ## Objective
 

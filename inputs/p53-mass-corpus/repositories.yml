@@ -18,12 +18,12 @@ repositories:
     checkout: ../../../../P53Sources/affaan-m-ecc
     packageId: affaan-m-ecc.core
     labels: [javascript, workspace, wave_1, p53_t3]
-  - id: avelino-awesome-go
-    repository: https://github.com/avelino/awesome-go
-    revision: 2fc8bced827862980133e8ca1f024b07980dee54
-    checkout: ../../../../P53Sources/avelino-awesome-go
-    packageId: avelino-awesome-go.core
-    labels: [go, documentation_heavy, wave_1, p53_t3]
+  - id: spf13-cobra
+    repository: https://github.com/spf13/cobra
+    revision: adbc8813901bba65827259daa8e22ff94ec1f30e
+    checkout: ../../../../P53Sources/spf13-cobra
+    packageId: spf13-cobra.core
+    labels: [go, single_package, wave_1, p53_t3]
   - id: ultraworkers-claw-code
     repository: https://github.com/ultraworkers/claw-code
     revision: 4ea31c1bc91c4e9bcbd67d51c550c01e127e6d0d
@@ -120,18 +120,18 @@ repositories:
     checkout: ../../../../P53Sources/golang-go
     packageId: golang-go.core
     labels: [go, multi_component, wave_1, p53_t3]
-  - id: rustdesk-rustdesk
-    repository: https://github.com/rustdesk/rustdesk
-    revision: eefd22b2057ba057305b10a6b5bf93c79b686eb9
-    checkout: ../../../../P53Sources/rustdesk-rustdesk
-    packageId: rustdesk-rustdesk.core
+  - id: sirupsen-logrus
+    repository: https://github.com/sirupsen/logrus
+    revision: a23d315dfebb6de47d18c92c8ae1430736a60b0c
+    checkout: ../../../../P53Sources/sirupsen-logrus
+    packageId: sirupsen-logrus.core
+    labels: [go, single_package, wave_1, p53_t3]
+  - id: tokio-rs-tokio
+    repository: https://github.com/tokio-rs/tokio
+    revision: df28ffe61dcf776de4be16e8a216831b24bbff3a
+    checkout: ../../../../P53Sources/tokio-rs-tokio
+    packageId: tokio-rs-tokio.core
     labels: [rust, single_package, wave_1, p53_t3]
-  - id: stirling-tools-stirling-pdf
-    repository: https://github.com/Stirling-Tools/Stirling-PDF
-    revision: a380a822342c4e399b200f40204edf705a00e906
-    checkout: ../../../../P53Sources/stirling-tools-stirling-pdf
-    packageId: stirling-tools-stirling-pdf.core
-    labels: [java, multi_component, wave_1, p53_t3]
   - id: microsoft-terminal
     repository: https://github.com/microsoft/terminal
     revision: 4f225a56aff245bbb9d1400f266c20e1747cc580
@@ -306,12 +306,12 @@ repositories:
     checkout: ../../../../P53Sources/infiniflow-ragflow
     packageId: infiniflow-ragflow.core
     labels: [go, single_package, wave_3, p53_t3]
-  - id: oven-sh-bun
-    repository: https://github.com/oven-sh/bun
-    revision: 4eb6f99c1afeae07a7445218c25b3b742b643f11
-    checkout: ../../../../P53Sources/oven-sh-bun
-    packageId: oven-sh-bun.core
-    labels: [rust, multi_component, wave_3, p53_t3]
+  - id: rayon-rs-rayon
+    repository: https://github.com/rayon-rs/rayon
+    revision: 1f9bb2538e50f1e6d1bc2e3d06a361ba2af0b632
+    checkout: ../../../../P53Sources/rayon-rs-rayon
+    packageId: rayon-rs-rayon.core
+    labels: [rust, single_package, wave_3, p53_t3]
   - id: nationalsecurityagency-ghidra
     repository: https://github.com/NationalSecurityAgency/ghidra
     revision: 30d4a5a70d363a96ee531b9211c769259652b11b
@@ -348,12 +348,12 @@ repositories:
     checkout: ../../../../P53Sources/junegunn-fzf
     packageId: junegunn-fzf.core
     labels: [go, single_package, wave_3, p53_t3]
-  - id: zed-industries-zed
-    repository: https://github.com/zed-industries/zed
-    revision: 28f47fa3a027d9533e326e03040db60a215c6015
-    checkout: ../../../../P53Sources/zed-industries-zed
-    packageId: zed-industries-zed.core
-    labels: [rust, multi_component, wave_3, p53_t3]
+  - id: rust-lang-regex
+    repository: https://github.com/rust-lang/regex
+    revision: 2b527599eb9eea0dcc288c704584f242f26a5c61
+    checkout: ../../../../P53Sources/rust-lang-regex
+    packageId: rust-lang-regex.core
+    labels: [rust, single_package, wave_3, p53_t3]
   - id: thealgorithms-java
     repository: https://github.com/TheAlgorithms/Java
     revision: ef61ee8920d3db606d94160af4307f5d1a80459f
@@ -432,12 +432,12 @@ repositories:
     checkout: ../../../../P53Sources/netdata-netdata
     packageId: netdata-netdata.core
     labels: [go, multi_component, wave_3, p53_t3]
-  - id: unionlabs-union
-    repository: https://github.com/unionlabs/union
-    revision: 031785bb6dc6b957c624e62bc64c184409c97d7b
-    checkout: ../../../../P53Sources/unionlabs-union
-    packageId: unionlabs-union.core
-    labels: [rust, multi_component, wave_3, p53_t3]
+  - id: serde-rs-serde
+    repository: https://github.com/serde-rs/serde
+    revision: 747814f7d5fbab872df3b02f070c165b91bde062
+    checkout: ../../../../P53Sources/serde-rs-serde
+    packageId: serde-rs-serde.core
+    labels: [rust, single_package, wave_3, p53_t3]
   - id: spring-projects-spring-framework
     repository: https://github.com/spring-projects/spring-framework
     revision: 1d1aac3674f56799e0997b92d6c4348fe087dbe1
@@ -528,12 +528,12 @@ repositories:
     checkout: ../../../../P53Sources/thedotmack-claude-mem
     packageId: thedotmack-claude-mem.core
     labels: [javascript, multi_component, wave_4, p53_t3]
-  - id: nektos-act
-    repository: https://github.com/nektos/act
-    revision: 4f411281417e88660bea1c1a1749aa71ae0bd60f
-    checkout: ../../../../P53Sources/nektos-act
-    packageId: nektos-act.core
-    labels: [go, single_package, wave_4, p53_t3]
+  - id: clap-rs-clap
+    repository: https://github.com/clap-rs/clap
+    revision: d93a00d64e3c697cef06cb7ff875d1a98d73d2f6
+    checkout: ../../../../P53Sources/clap-rs-clap
+    packageId: clap-rs-clap.core
+    labels: [rust, single_package, wave_4, p53_t3]
   - id: burntsushi-ripgrep
     repository: https://github.com/BurntSushi/ripgrep
     revision: f9c05a949d1a0dc8e16dee28ca9605d38611faeb
@@ -564,12 +564,12 @@ repositories:
     checkout: ../../../../P53Sources/prometheus-prometheus
     packageId: prometheus-prometheus.core
     labels: [go, multi_component, wave_4, p53_t3]
-  - id: alacritty-alacritty
-    repository: https://github.com/alacritty/alacritty
-    revision: 852e971cddfabe222d2d5bcda466e130f53af207
-    checkout: ../../../../P53Sources/alacritty-alacritty
-    packageId: alacritty-alacritty.core
-    labels: [rust, single_package, wave_4, p53_t3]
+  - id: apache-commons-lang
+    repository: https://github.com/apache/commons-lang
+    revision: 94ad3a756aad97add12e48ed8ff54d630a927d4b
+    checkout: ../../../../P53Sources/apache-commons-lang
+    packageId: apache-commons-lang.core
+    labels: [java, single_package, wave_4, p53_t3]
   - id: ytdl-org-youtube-dl
     repository: https://github.com/ytdl-org/youtube-dl
     revision: 956b8c585591b401a543e409accb163eeaaa1193
