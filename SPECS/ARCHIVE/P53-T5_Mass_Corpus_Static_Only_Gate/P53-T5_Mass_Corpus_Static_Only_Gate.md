@@ -37,3 +37,7 @@ invoke package managers, run builds or package scripts, execute harvested code
 or adapters, accept packages or relations, publish registry metadata, remove
 `preview_only`, or retain raw prompts, provider responses, secrets, session
 state, stdout/stderr, or chain-of-thought.
+
+---
+**Archived:** 2026-07-27
+**Verdict:** PASS

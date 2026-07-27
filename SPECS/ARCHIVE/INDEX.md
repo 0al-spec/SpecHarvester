@@ -242,6 +242,7 @@
 | P52-T9 | [P52-T9_Record_Phase_52_Exit_Decision/](P52-T9_Record_Phase_52_Exit_Decision/) | 2026-07-27 | PASS |
 | P53-T1 | [P53-T1_Mass_Corpus_Operating_Plan/](P53-T1_Mass_Corpus_Operating_Plan/) | 2026-07-27 | PASS |
 | P53-T3 | [P53-T3_Mass_Corpus_Source_Manifest/](P53-T3_Mass_Corpus_Source_Manifest/) | 2026-07-27 | PASS |
+| P53-T5 | [P53-T5_Mass_Corpus_Static_Only_Gate/](P53-T5_Mass_Corpus_Static_Only_Gate/) | 2026-07-27 | PASS |
 
 ## Historical Artifacts
 
@@ -895,3 +896,4 @@
 | 2026-07-27 | P53-T1 | Archived REVIEW_p53_t1_mass_corpus_operating_plan report |
 | 2026-07-27 | P53-T3 | Archived Mass Corpus Source Manifest (PASS) |
 | 2026-07-27 | P53-T3 | Archived REVIEW_p53_t3_mass_corpus_source_manifest report |
+| 2026-07-27 | P53-T5 | Archived Mass Corpus Static-Only Gate (PASS) |
