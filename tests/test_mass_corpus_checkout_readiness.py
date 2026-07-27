@@ -99,7 +99,18 @@ def test_position_wave_drift_is_rejected_before_checkout_reading(tmp_path: Path)
     metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
     readiness = build_readiness(inputs, metadata_path, revisions, tmp_path / "report.json")
 
-    with pytest.raises(ValueError, match="wave does not match position"):
+    with pytest.raises(ValueError, match="exactly 1 through 100"):
+        readiness.run()
+
+
+def test_duplicate_position_is_rejected_before_checkout_reading(tmp_path: Path) -> None:
+    inputs, metadata_path, revisions = write_inputs(tmp_path)
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata["repositories"][1]["position"] = 1
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+    readiness = build_readiness(inputs, metadata_path, revisions, tmp_path / "report.json")
+
+    with pytest.raises(ValueError, match="exactly 1 through 100"):
         readiness.run()
 
 

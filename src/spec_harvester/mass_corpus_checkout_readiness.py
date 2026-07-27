@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 from spec_harvester.batch_collection import resolve_checkout
 from spec_harvester.controlled_calibration import git_dirty_status, git_head, write_json
 from spec_harvester.final_corpus_checkout_readiness import tracked_file_bytes
+from spec_harvester.license_files import is_license_filename
 from spec_harvester.mass_corpus_source_manifest import read_mass_corpus_selection_metadata
 from spec_harvester.source_manifest import read_repository_source_manifests
 
@@ -162,7 +163,10 @@ def root_license_files(checkout: Path) -> list[str]:
             path.name
             for path in checkout.iterdir()
             if path.is_file()
-            and path.name.split(".", 1)[0].split("-", 1)[0].lower() in LICENSE_FILENAMES
+            and (
+                is_license_filename(path)
+                or path.name.split(".", 1)[0].lower() in {"notice", "copying"}
+            )
         )
     except OSError:
         return []
@@ -205,6 +209,9 @@ def _metadata_by_id(payload: dict[str, Any]) -> dict[str, dict[str, Any]]:
 def _validate_structure(sources: list[dict[str, Any]], metadata: dict[str, dict[str, Any]]) -> None:
     if len(sources) != 100 or {source["id"] for source in sources} != set(metadata):
         raise ValueError("P53-T4 source manifest and metadata must contain matching 100 records")
+    positions = [metadata[source["id"]].get("position") for source in sources]
+    if sorted(positions) != list(range(1, 101)):
+        raise ValueError("P53-T4 metadata positions must contain exactly 1 through 100")
     for source in sources:
         record = metadata[source["id"]]
         required = {"position", "wave", "ecosystem", "repositoryShape", "sizeBudget"}
