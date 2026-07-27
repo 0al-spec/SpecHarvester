@@ -1,31 +1,29 @@
-# Next Task: P53-T2 Resumable Mass-Run Orchestration
+# Next Task: P53-T4 Mass Corpus Checkout Readiness Gate
 
-**Status:** In Progress
+**Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Depends On:** `P53-T1` Mass Corpus Operating Plan
-**Started:** 2026-07-27
-**Active Task:** `P53-T2` Implement and validate the resumable mass-run
-orchestration contract.
-**Branch:** feature/p53-t2-resumable-mass-run-orchestration
+**Dependencies:** `P53-T3` Mass Corpus Source Manifest
+**Status:** Selected
 
 ## Objective
 
-Implement the campaign runner contract for deterministic run identity,
-per-repository state, two-worker bounded concurrency, atomic checkpoints,
-idempotent resume, classified retries, token/time receipts, and aggregate
-budget enforcement. It must enforce the P53-T1 `gpt-5.3-codex-spark` worker
-policy but must not select sources or invoke a live model.
+Verify all 100 operator-provided local checkouts against the immutable P53-T3
+source manifest. Require presence, clean revision match, safe size, and
+resolved local provenance and license evidence before P53-T5 static parsing can
+be unlocked.
 
-## Preconditions
+## Next Step
 
-- P53-T1 is archived with its 100-source, four-wave campaign contract.
-- The sole future campaign worker is `gpt-5.3-codex-spark` through the
-  schema-validated `codex exec` external-model-output boundary.
-- P53-T2 does not acquire repositories, run static parsing, invoke Codex or LM
-  Studio, execute adapters/package managers/harvested code, or mutate registry
-  truth.
+Run the PLAN command to generate the implementation-ready PRD. This selection
+does not create, restore, clone, or fetch repositories; run static parsing;
+invoke Codex or another model; or mutate registry truth.
 
 ## Recently Archived
 
 - `P53-T1` Mass Corpus Operating Plan: PASS. Structured review found no
   actionable findings, so FOLLOW-UP created no new tasks.
+- `P53-T3` Mass Corpus Source Manifest: PASS. It froze 100 new source
+  identities and public discovery evidence; all checkout-dependent evidence is
+  pending P53-T4 verification.
+- `P53-T3` review: no actionable follow-up tasks. The case-insensitive P52
+  source-identity check was corrected during review and is covered by tests.
