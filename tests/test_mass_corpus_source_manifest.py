@@ -30,12 +30,12 @@ def test_p52_source_reuse_is_rejected(tmp_path: Path) -> None:
     manifest = (INPUTS / "repositories.yml").read_text(encoding="utf-8")
     (inputs / "repositories.yml").write_text(
         manifest.replace(
-            "https://github.com/public-apis/public-apis", "https://github.com/pallets/flask"
+            "https://github.com/public-apis/public-apis", "https://github.com/PALLETS/FLASK"
         ),
         encoding="utf-8",
     )
     metadata = json.loads(METADATA.read_text(encoding="utf-8"))
-    metadata["repositories"][0]["provenance"]["repository"] = "https://github.com/pallets/flask"
+    metadata["repositories"][0]["provenance"]["repository"] = "https://github.com/PALLETS/FLASK"
     invalid = tmp_path / "metadata.json"
     invalid.write_text(json.dumps(metadata), encoding="utf-8")
 

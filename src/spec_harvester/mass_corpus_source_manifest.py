@@ -64,7 +64,7 @@ def validate_mass_corpus_source_manifest(
     source_ids = {source["id"] for source in sources}
     if source_ids != set(metadata_by_id):
         raise ValueError("P53-T3 source manifest and metadata ids must match")
-    p52_urls = {source["repository"] for source in p52_sources}
+    p52_urls = {_canonical_repository_identity(source["repository"]) for source in p52_sources}
     if source_ids & {source["id"] for source in p52_sources}:
         raise ValueError("P53-T3 source ids must not reuse P52 identities")
 
@@ -115,7 +115,7 @@ def _validate_source_record(
     source: dict[str, Any], record: dict[str, Any], p52_urls: set[str]
 ) -> None:
     repository_id = source["id"]
-    if source["repository"] in p52_urls:
+    if _canonical_repository_identity(source["repository"]) in p52_urls:
         raise ValueError(f"P53-T3 source {repository_id!r} must not reuse a P52 repository")
     if not source["repository"].startswith("https://github.com/"):
         raise ValueError(f"P53-T3 source {repository_id!r} must use a public GitHub HTTPS origin")
@@ -156,3 +156,7 @@ def _validate_source_record(
     expected_label = record["wave"].replace("-", "_")
     if expected_label not in source["labels"] or record["ecosystem"] not in source["labels"]:
         raise ValueError(f"P53-T3 manifest labels do not match metadata for {repository_id!r}")
+
+
+def _canonical_repository_identity(repository: str) -> str:
+    return repository.rstrip("/").lower()
