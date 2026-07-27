@@ -1,8 +1,8 @@
 # P53-T1 Mass Corpus Operating Plan
 
-**Status:** Planned  
-**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production  
-**Task:** `P53-T1`  
+**Status:** Planned
+**Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
+**Task:** `P53-T1`
 **Depends On:** `P52-T9` Phase 52 exit decision
 
 ## Objective

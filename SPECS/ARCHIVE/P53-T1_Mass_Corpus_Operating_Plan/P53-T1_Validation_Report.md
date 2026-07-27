@@ -1,7 +1,7 @@
 # P53-T1 Validation Report
 
-**Task:** `P53-T1` Mass Corpus Operating Plan  
-**Date:** 2026-07-27  
+**Task:** `P53-T1` Mass Corpus Operating Plan
+**Date:** 2026-07-27
 **Verdict:** PASS
 
 ## Result
