@@ -64,6 +64,9 @@ def validate_mass_corpus_source_manifest(
     source_ids = {source["id"] for source in sources}
     if source_ids != set(metadata_by_id):
         raise ValueError("P53-T3 source manifest and metadata ids must match")
+    source_origins = {_canonical_repository_identity(source["repository"]) for source in sources}
+    if len(source_origins) != len(sources):
+        raise ValueError("P53-T3 source origins must be unique")
     p52_urls = {_canonical_repository_identity(source["repository"]) for source in p52_sources}
     if source_ids & {source["id"] for source in p52_sources}:
         raise ValueError("P53-T3 source ids must not reuse P52 identities")
@@ -79,10 +82,16 @@ def validate_mass_corpus_source_manifest(
         ecosystem = record["ecosystem"]
         wave = record["wave"]
         shape = record["repositoryShape"]
+        position = record["position"]
+        if not isinstance(position, int) or not 1 <= position <= 100:
+            raise ValueError(f"P53-T3 position is invalid for {repository_id!r}")
+        expected_wave = f"wave-{((position - 1) // 25) + 1}"
+        if wave != expected_wave:
+            raise ValueError(f"P53-T3 wave does not match position for {repository_id!r}")
         ecosystems[ecosystem] = ecosystems.get(ecosystem, 0) + 1
         waves[wave] = waves.get(wave, 0) + 1
         shapes[shape] = shapes.get(shape, 0) + 1
-        positions.append(record["position"])
+        positions.append(position)
 
     if ecosystems != EXPECTED_ECOSYSTEM_COUNTS:
         raise ValueError("P53-T3 ecosystem quota mismatch")

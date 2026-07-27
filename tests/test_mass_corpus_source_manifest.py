@@ -53,6 +53,39 @@ def test_invalid_wave_assignment_is_rejected(tmp_path: Path) -> None:
         validate_mass_corpus_source_manifest(INPUTS, invalid, P52_INPUTS)
 
 
+def test_duplicate_source_origin_is_rejected(tmp_path: Path) -> None:
+    inputs = tmp_path / "inputs"
+    inputs.mkdir()
+    manifest = (INPUTS / "repositories.yml").read_text(encoding="utf-8")
+    (inputs / "repositories.yml").write_text(
+        manifest.replace(
+            "https://github.com/public-apis/public-apis",
+            "https://github.com/freeCodeCamp/freeCodeCamp",
+        ),
+        encoding="utf-8",
+    )
+    metadata = json.loads(METADATA.read_text(encoding="utf-8"))
+    metadata["repositories"][0]["provenance"]["repository"] = (
+        "https://github.com/freeCodeCamp/freeCodeCamp"
+    )
+    invalid = tmp_path / "metadata.json"
+    invalid.write_text(json.dumps(metadata), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="source origins must be unique"):
+        validate_mass_corpus_source_manifest(inputs, invalid, P52_INPUTS)
+
+
+def test_position_swap_across_waves_is_rejected(tmp_path: Path) -> None:
+    metadata = json.loads(METADATA.read_text(encoding="utf-8"))
+    metadata["repositories"][0]["position"] = 26
+    metadata["repositories"][25]["position"] = 1
+    invalid = tmp_path / "metadata.json"
+    invalid.write_text(json.dumps(metadata), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="wave does not match position"):
+        validate_mass_corpus_source_manifest(INPUTS, invalid, P52_INPUTS)
+
+
 def test_metadata_reader_and_record_index_fail_closed(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="unavailable"):
         read_mass_corpus_selection_metadata(tmp_path / "missing.json")
