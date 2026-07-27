@@ -9,6 +9,8 @@ from spec_harvester.mass_campaign_orchestration import (
     CampaignRepositoryInput,
     apply_repository_result,
     build_campaign_checkpoint,
+    record_scale_out_decision,
+    recover_interrupted_reservations,
     reserve_dispatch,
     write_campaign_checkpoint,
 )
@@ -53,7 +55,7 @@ def test_resume_skips_completed_and_allows_one_classified_retry() -> None:
     )
 
     resumed, dispatched = reserve_dispatch(checkpoint)
-    assert dispatched == ["beta", "gamma"]
+    assert dispatched == ["beta"]
     checkpoint = apply_repository_result(
         resumed, "beta", outcome="transport_failure", token_used=10, wall_time_seconds=1
     )
@@ -87,9 +89,13 @@ def test_stop_trigger_blocks_later_wave_dispatch(trigger: str) -> None:
 def test_budget_limit_stops_campaign_and_checkpoint_write_is_atomic(tmp_path: Path) -> None:
     campaign_plan = plan()
     campaign_plan["budgetPolicy"]["campaignMaxTokens"] = 10
+    campaign_plan["budgetPolicy"]["perRepositoryMaxTokens"] = 5
     checkpoint, dispatched = reserve_dispatch(build_campaign_checkpoint(campaign_plan, sources()))
+    checkpoint = apply_repository_result(
+        checkpoint, dispatched[0], outcome="completed", token_used=5, wall_time_seconds=1
+    )
     stopped = apply_repository_result(
-        checkpoint, dispatched[0], outcome="completed", token_used=10, wall_time_seconds=1
+        checkpoint, dispatched[1], outcome="completed", token_used=5, wall_time_seconds=1
     )
     assert stopped["stop"]["trigger"] == "campaign_budget_limit"
     output = tmp_path / "checkpoint.json"
@@ -109,3 +115,38 @@ def test_cumulative_per_repository_budget_stops_campaign() -> None:
         checkpoint, dispatched[0], outcome="completed", token_used=5, wall_time_seconds=1
     )
     assert stopped["stop"]["trigger"] == "campaign_budget_limit"
+
+
+def test_interrupted_reservations_are_explicitly_recovered() -> None:
+    checkpoint, _dispatched = reserve_dispatch(build_campaign_checkpoint(plan(), sources()))
+    resumed, dispatched = reserve_dispatch(recover_interrupted_reservations(checkpoint))
+    assert dispatched == ["alpha", "beta"]
+    assert all(record["reservedTokens"] > 0 for record in resumed["repositories"][:2])
+
+
+def test_later_wave_requires_scale_out_decision() -> None:
+    checkpoint, dispatched = reserve_dispatch(build_campaign_checkpoint(plan(), sources()))
+    for repository_id in dispatched:
+        checkpoint = apply_repository_result(
+            checkpoint, repository_id, outcome="completed", token_used=1, wall_time_seconds=1
+        )
+    advanced = record_scale_out_decision(checkpoint, "P53-T7")
+    assert reserve_dispatch(advanced)[1] == ["gamma"]
+
+
+def test_three_classified_failures_stop_the_campaign() -> None:
+    extra_sources = sources() + (CampaignRepositoryInput("delta", "d" * 64, "wave-1"),)
+    checkpoint, dispatched = reserve_dispatch(build_campaign_checkpoint(plan(), extra_sources))
+    for repository_id in dispatched:
+        checkpoint = apply_repository_result(
+            checkpoint,
+            repository_id,
+            outcome="transport_failure",
+            token_used=1,
+            wall_time_seconds=1,
+        )
+    checkpoint, dispatched = reserve_dispatch(checkpoint)
+    stopped = apply_repository_result(
+        checkpoint, dispatched[0], outcome="timeout", token_used=1, wall_time_seconds=1
+    )
+    assert stopped["stop"]["trigger"] == "consecutive_codex_schema_or_transport_failures"

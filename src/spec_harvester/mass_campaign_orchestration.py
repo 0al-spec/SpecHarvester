@@ -47,12 +47,16 @@ def build_campaign_checkpoint(
                 "wave": source.wave_id,
                 "state": "pending",
                 "attemptCount": 0,
+                "reservedTokens": 0,
+                "reservedWallTimeSeconds": 0,
                 "tokenUsed": 0,
                 "wallTimeSeconds": 0,
             }
             for source in ordered
         ],
+        "failureStreak": 0,
         "stop": None,
+        "unlockedWave": "wave-1",
     }
 
 
@@ -62,8 +66,9 @@ def reserve_dispatch(checkpoint: dict[str, Any]) -> tuple[dict[str, Any], list[s
         return checkpoint, []
     policy = checkpoint["budgetPolicy"]
     if (
-        _total(checkpoint, "tokenUsed") >= policy["campaignMaxTokens"]
-        or _total(checkpoint, "wallTimeSeconds") >= policy["campaignMaxWallTimeSeconds"]
+        _reserved_total(checkpoint, "tokenUsed", "reservedTokens") >= policy["campaignMaxTokens"]
+        or _reserved_total(checkpoint, "wallTimeSeconds", "reservedWallTimeSeconds")
+        >= policy["campaignMaxWallTimeSeconds"]
     ):
         return _stop(checkpoint, "campaign_budget_limit"), []
     available = 2 - sum(record["state"] == "running" for record in checkpoint["repositories"])
@@ -74,11 +79,17 @@ def reserve_dispatch(checkpoint: dict[str, Any]) -> tuple[dict[str, Any], list[s
     for record in updated["repositories"]:
         if len(dispatched) == available:
             break
+        if record["wave"] != updated["unlockedWave"]:
+            continue
         if record["state"] == "pending" or (
             record["state"] == "retryable_failed" and record["attemptCount"] < 2
         ):
+            if not _can_reserve(updated, record):
+                return _stop(updated, "campaign_budget_limit"), dispatched
             record["state"] = "running"
             record["attemptCount"] += 1
+            record["reservedTokens"] = policy["perRepositoryMaxTokens"]
+            record["reservedWallTimeSeconds"] = policy["perRepositoryMaxWallTimeSeconds"]
             dispatched.append(record["id"])
     return updated, dispatched
 
@@ -101,6 +112,8 @@ def apply_repository_result(
         raise ValueError("P53-T2 receipt values must be non-negative")
     record["tokenUsed"] += token_used
     record["wallTimeSeconds"] += wall_time_seconds
+    record["reservedTokens"] = 0
+    record["reservedWallTimeSeconds"] = 0
     if (
         record["tokenUsed"] > updated["budgetPolicy"]["perRepositoryMaxTokens"]
         or record["wallTimeSeconds"] > updated["budgetPolicy"]["perRepositoryMaxWallTimeSeconds"]
@@ -115,6 +128,9 @@ def apply_repository_result(
             else "terminal_failed"
         )
     )
+    updated["failureStreak"] = 0 if outcome == "completed" else updated["failureStreak"] + 1
+    if updated["failureStreak"] >= 3:
+        return _stop(updated, "consecutive_codex_schema_or_transport_failures")
     if stop_trigger is not None:
         return _stop(updated, stop_trigger)
     if _total(updated, "tokenUsed") >= updated["budgetPolicy"]["campaignMaxTokens"]:
@@ -135,6 +151,34 @@ def write_campaign_checkpoint(path: Path, checkpoint: dict[str, Any]) -> None:
     os.replace(temporary, path)
 
 
+def recover_interrupted_reservations(checkpoint: dict[str, Any]) -> dict[str, Any]:
+    """Release persisted reservations after the caller confirms interruption."""
+    _validate_checkpoint(checkpoint)
+    updated = _copy(checkpoint)
+    for record in updated["repositories"]:
+        if record["state"] == "running":
+            record["state"] = "pending" if record["attemptCount"] == 1 else "retryable_failed"
+            record["reservedTokens"] = 0
+            record["reservedWallTimeSeconds"] = 0
+    return updated
+
+
+def record_scale_out_decision(checkpoint: dict[str, Any], decision_task: str) -> dict[str, Any]:
+    _validate_checkpoint(checkpoint)
+    waves = {"P53-T7": "wave-2", "P53-T9": "wave-3", "P53-T11": "wave-4"}
+    if decision_task not in waves:
+        raise ValueError("P53-T2 received an unknown scale-out decision")
+    updated = _copy(checkpoint)
+    current = updated["unlockedWave"]
+    if any(
+        record["wave"] == current and record["state"] not in {"completed", "terminal_failed"}
+        for record in updated["repositories"]
+    ):
+        raise ValueError("P53-T2 cannot unlock a later wave before the current wave finishes")
+    updated["unlockedWave"] = waves[decision_task]
+    return updated
+
+
 def _validate_plan(plan: dict[str, Any]) -> None:
     if plan.get("task") != "P53-T1" or plan.get("worker", {}).get("model") != "gpt-5.3-codex-spark":
         raise ValueError("P53-T2 requires the P53-T1 Codex 5.3 Spark campaign plan")
@@ -152,6 +196,21 @@ def _validate_checkpoint(checkpoint: dict[str, Any]) -> None:
         record.get("state") not in ALLOWED_STATES for record in checkpoint.get("repositories", [])
     ):
         raise ValueError("P53-T2 checkpoint contains an invalid repository state")
+
+
+def _can_reserve(checkpoint: dict[str, Any], record: dict[str, Any]) -> bool:
+    policy = checkpoint["budgetPolicy"]
+    return (
+        _reserved_total(checkpoint, "tokenUsed", "reservedTokens")
+        + policy["perRepositoryMaxTokens"]
+        <= policy["campaignMaxTokens"]
+        and _reserved_total(checkpoint, "wallTimeSeconds", "reservedWallTimeSeconds")
+        + policy["perRepositoryMaxWallTimeSeconds"]
+        <= policy["campaignMaxWallTimeSeconds"]
+        and _reserved_total(checkpoint, "tokenUsed", "reservedTokens", record["wave"])
+        + policy["perRepositoryMaxTokens"]
+        <= policy["perWaveMaxTokens"]
+    )
 
 
 def _stop(checkpoint: dict[str, Any], trigger: str) -> dict[str, Any]:
@@ -174,6 +233,16 @@ def _digest(value: Any) -> str:
 
 def _total(checkpoint: dict[str, Any], key: str) -> int:
     return sum(record[key] for record in checkpoint["repositories"])
+
+
+def _reserved_total(
+    checkpoint: dict[str, Any], used_key: str, reserved_key: str, wave: str | None = None
+) -> int:
+    return sum(
+        record[used_key] + record[reserved_key]
+        for record in checkpoint["repositories"]
+        if wave is None or record["wave"] == wave
+    )
 
 
 def _total_wave(checkpoint: dict[str, Any], wave: str, key: str) -> int:
