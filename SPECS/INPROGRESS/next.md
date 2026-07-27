@@ -1,29 +1,22 @@
-# Next Task: P53-T2 Resumable Mass-Run Orchestration
+# Next Task: P53-T3 Mass Corpus Source Manifest
 
-**Status:** In Progress
+**Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Depends On:** `P53-T1` Mass Corpus Operating Plan
-**Started:** 2026-07-27
-**Active Task:** `P53-T2` Implement and validate the resumable mass-run
-orchestration contract.
-**Branch:** feature/p53-t2-resumable-mass-run-orchestration
+**Dependencies:** `P53-T1` Mass Corpus Operating Plan and `P53-T2` Resumable
+Mass-Run Orchestration
+**Status:** Selected
 
 ## Objective
 
-Implement the campaign runner contract for deterministic run identity,
-per-repository state, two-worker bounded concurrency, atomic checkpoints,
-idempotent resume, classified retries, token/time receipts, and aggregate
-budget enforcement. It must enforce the P53-T1 `gpt-5.3-codex-spark` worker
-policy but must not select sources or invoke a live model.
+Freeze the identities, revisions, local checkout paths, wave assignment, and
+selection evidence for exactly 100 new public repositories. The manifest must
+remain separate from P52 and provide the input boundary for P53-T4 readiness.
 
-## Preconditions
+## Next Step
 
-- P53-T1 is archived with its 100-source, four-wave campaign contract.
-- The sole future campaign worker is `gpt-5.3-codex-spark` through the
-  schema-validated `codex exec` external-model-output boundary.
-- P53-T2 does not acquire repositories, run static parsing, invoke Codex or LM
-  Studio, execute adapters/package managers/harvested code, or mutate registry
-  truth.
+Run the PLAN command to generate the implementation-ready PRD. This selection
+does not acquire or process repositories, invoke Codex or another model, or
+mutate registry truth.
 
 ## Recently Archived
 
