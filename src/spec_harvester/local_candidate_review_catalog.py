@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
+import re
 import tarfile
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -12,6 +14,7 @@ PACKET_API_VERSION = "spec-harvester.p53-portable-author-handoff-packet/v0"
 PACKET_KIND = "SpecHarvesterP53PortableAuthorHandoffPacket"
 PACKET_AUTHORITY = "producer_portable_handoff_evidence_only"
 AGGREGATE_MEMBER = "aggregate-handoff.json"
+CANDIDATE_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 
 @dataclass(frozen=True)
@@ -31,7 +34,8 @@ def _sha256(data: bytes) -> str:
 
 def _read_archive(options: LocalCandidateReviewCatalogOptions) -> tuple[str, dict[str, bytes]]:
     try:
-        archive_bytes = options.archive.read_bytes()
+        with options.archive.open("rb") as source:
+            archive_bytes = source.read(options.max_archive_bytes + 1)
     except OSError as exc:
         raise ValueError(f"Cannot read portable handoff archive: {exc}") from exc
     if len(archive_bytes) > options.max_archive_bytes:
@@ -44,7 +48,7 @@ def _read_archive(options: LocalCandidateReviewCatalogOptions) -> tuple[str, dic
     members: dict[str, bytes] = {}
     total_bytes = 0
     try:
-        with tarfile.open(options.archive, mode="r:gz") as archive:
+        with tarfile.open(fileobj=io.BytesIO(archive_bytes), mode="r:gz") as archive:
             infos = archive.getmembers()
             if len(infos) > options.max_members:
                 raise ValueError("Portable handoff archive exceeds the configured member limit")
@@ -87,11 +91,11 @@ def _json_object(payload: bytes, label: str) -> dict[str, Any]:
     return value
 
 
-def _preflight_statuses(aggregate: dict[str, Any]) -> dict[str, str]:
+def _preflight_statuses(aggregate: dict[str, Any]) -> dict[str, tuple[str, str]]:
     selected = aggregate.get("selectedCandidates")
     if not isinstance(selected, list):
         raise ValueError("Aggregate handoff selectedCandidates must be an array")
-    statuses: dict[str, str] = {}
+    statuses: dict[str, tuple[str, str]] = {}
     for record in selected:
         if not isinstance(record, dict):
             raise ValueError("Aggregate handoff candidate must be an object")
@@ -102,7 +106,22 @@ def _preflight_statuses(aggregate: dict[str, Any]) -> dict[str, str]:
             raise ValueError("Aggregate handoff candidate has invalid preflight metadata")
         if candidate_id in statuses:
             raise ValueError(f"Duplicate aggregate handoff candidate: {candidate_id}")
-        statuses[candidate_id] = status
+        evidence_links = record.get("evidenceLinks")
+        if not isinstance(evidence_links, list):
+            raise ValueError("Aggregate handoff candidate is missing portable packet evidence")
+        portable_packet_digests = [
+            link.get("digest")
+            for link in evidence_links
+            if isinstance(link, dict)
+            and link.get("role") == "portable_packet"
+            and link.get("status") == "present"
+        ]
+        if len(portable_packet_digests) != 1 or not isinstance(portable_packet_digests[0], str):
+            raise ValueError("Aggregate handoff candidate has invalid portable packet evidence")
+        digest = portable_packet_digests[0]
+        if not digest.startswith("sha256:"):
+            raise ValueError("Aggregate portable packet digest must use sha256")
+        statuses[candidate_id] = (status, _validate_digest(digest[7:], candidate_id))
     return statuses
 
 
@@ -165,7 +184,7 @@ def _validate_packet_files(
 def _catalog_item(
     member_name: str,
     packet_bytes: bytes,
-    preflight_statuses: dict[str, str],
+    preflight_statuses: dict[str, tuple[str, str]],
     members: dict[str, bytes],
 ) -> tuple[int, dict[str, Any]]:
     packet = _json_object(packet_bytes, member_name)
@@ -182,8 +201,10 @@ def _catalog_item(
     if not isinstance(repository, dict) or not isinstance(triage, dict):
         raise ValueError(f"Packet repository or triage metadata is invalid: {member_name}")
     candidate_id = repository.get("id")
+    if not isinstance(candidate_id, str) or not CANDIDATE_ID_PATTERN.fullmatch(candidate_id):
+        raise ValueError(f"Packet candidate identity is invalid: {member_name}")
     expected_parts = ("packets", candidate_id, "packet.json")
-    if not isinstance(candidate_id, str) or PurePosixPath(member_name).parts != expected_parts:
+    if PurePosixPath(member_name).parts != expected_parts:
         raise ValueError(f"Packet identity does not match its archive path: {member_name}")
     if triage.get("id") != candidate_id:
         raise ValueError(f"Packet triage identity mismatch: {member_name}")
@@ -213,6 +234,9 @@ def _catalog_item(
         raise ValueError(f"Packet warning count is invalid: {member_name}")
     if candidate_id not in preflight_statuses:
         raise ValueError(f"Packet is missing aggregate preflight metadata: {member_name}")
+    preflight_status, expected_packet_digest = preflight_statuses[candidate_id]
+    if _sha256(packet_bytes) != expected_packet_digest:
+        raise ValueError(f"Packet SHA-256 does not match aggregate evidence: {member_name}")
 
     return position, {
         "candidateId": candidate_id,
@@ -223,7 +247,7 @@ def _catalog_item(
         "packageShape": package_shape,
         "warningCount": warning_count,
         "corrected": "correction" in triage,
-        "preflightStatus": preflight_statuses[candidate_id],
+        "preflightStatus": preflight_status,
     }
 
 

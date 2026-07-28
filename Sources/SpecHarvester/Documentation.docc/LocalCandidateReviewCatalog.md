@@ -3,9 +3,11 @@
 P54-T3 provides a deterministic catalog generator for validated P53-T14
 portable handoff archives.
 
-The generator verifies the compressed archive digest, bounded archive and
-expanded payload sizes, member count and types, safe relative paths, packet
-identity, candidate and portable AI file digests, and aggregate preflight
+The generator reads at most the configured archive limit once, verifies the
+compressed archive digest, and parses those same verified bytes. It also
+enforces expanded payload sizes, member count and types, safe relative paths,
+schema-valid candidate identities, packet identity, candidate and portable AI
+file digests, aggregate packet-digest bindings, and aggregate preflight
 metadata. It reads tar members without extracting them to the filesystem.
 
 Catalog items are sorted by the frozen repository position and bind directly to

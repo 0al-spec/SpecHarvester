@@ -67,10 +67,28 @@ def archive_payload(
     packets: list[dict[str, Any]],
     *,
     extra_members: list[tuple[tarfile.TarInfo, bytes]] | None = None,
+    aggregate_packet_digest_overrides: dict[str, str] | None = None,
 ) -> bytes:
+    packet_payloads = {
+        item["repository"]["id"]: json.dumps(item, sort_keys=True).encode() for item in packets
+    }
     aggregate = {
         "selectedCandidates": [
-            {"id": item["repository"]["id"], "producerPreflight": {"status": "passed"}}
+            {
+                "id": item["repository"]["id"],
+                "producerPreflight": {"status": "passed"},
+                "evidenceLinks": [
+                    {
+                        "role": "portable_packet",
+                        "status": "present",
+                        "digest": "sha256:"
+                        + (aggregate_packet_digest_overrides or {}).get(
+                            item["repository"]["id"],
+                            hashlib.sha256(packet_payloads[item["repository"]["id"]]).hexdigest(),
+                        ),
+                    }
+                ],
+            }
             for item in packets
         ]
     }
@@ -79,7 +97,7 @@ def archive_payload(
         *[
             (
                 f"packets/{item['repository']['id']}/packet.json",
-                json.dumps(item, sort_keys=True).encode(),
+                packet_payloads[item["repository"]["id"]],
             )
             for item in packets
         ],
@@ -143,6 +161,17 @@ def test_catalog_rejects_archive_digest_drift(tmp_path: Path) -> None:
         build(tmp_path, payload, expected_archive_sha256="0" * 64)
 
 
+def test_catalog_rejects_missing_archive(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="Cannot read portable handoff archive"):
+        build_local_candidate_review_catalog(
+            LocalCandidateReviewCatalogOptions(
+                archive=tmp_path / "missing.tar.gz",
+                expected_archive_sha256="0" * 64,
+                expected_packet_count=2,
+            )
+        )
+
+
 @pytest.mark.parametrize(
     ("member_name", "member_type"),
     [
@@ -197,6 +226,16 @@ def test_catalog_rejects_referenced_file_digest_mismatch(tmp_path: Path) -> None
     payload = archive_payload([first, packet("second", 2)])
 
     with pytest.raises(ValueError, match="file SHA-256 mismatch"):
+        build(tmp_path, payload)
+
+
+def test_catalog_rejects_packet_digest_that_does_not_match_aggregate(tmp_path: Path) -> None:
+    payload = archive_payload(
+        [packet("first", 1), packet("second", 2)],
+        aggregate_packet_digest_overrides={"first": "0" * 64},
+    )
+
+    with pytest.raises(ValueError, match="does not match aggregate evidence"):
         build(tmp_path, payload)
 
 
@@ -262,6 +301,13 @@ def test_catalog_rejects_invalid_facets_and_duplicate_positions(tmp_path: Path) 
     duplicate_path.mkdir()
     with pytest.raises(ValueError, match="duplicate repository positions"):
         build(duplicate_path, payload)
+
+
+def test_catalog_rejects_candidate_identity_outside_schema_pattern(tmp_path: Path) -> None:
+    payload = archive_payload([packet("bad id", 1), packet("second", 2)])
+
+    with pytest.raises(ValueError, match="candidate identity is invalid"):
+        build(tmp_path, payload)
 
 
 def test_cli_writes_catalog(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
