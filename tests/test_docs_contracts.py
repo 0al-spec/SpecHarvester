@@ -38,6 +38,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P53-T15 Record Phase 53 Exit Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text
+        assert "`P53-T14` Portable Author Handoff and SpecPM Intake Preflight" in next_text
+        assert "pending selection after P53-T14 review" in next_text
+        assert "maintainer disposition" in normalized
+        assert "Do not approve registry promotion" in normalized
+        return
+
     if "# Next Task: P53-T14 Portable Author Handoff and SpecPM Intake Preflight" in next_text:
         normalized = " ".join(next_text.split())
         assert "`P53-T13` Campaign Quality Triage" in next_text

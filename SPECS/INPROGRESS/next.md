@@ -1,25 +1,28 @@
-# Next Task: P53-T14 Portable Author Handoff and SpecPM Intake Preflight
+# Next Task: P53-T15 Record Phase 53 Exit Decision
 
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Dependencies:** `P53-T13` Campaign Quality Triage
-**Status:** Selected
-**Branch:** `feature/P53-T14-portable-author-handoff`
+**Dependencies:** `P53-T14` Portable Author Handoff and SpecPM Intake Preflight
+**Status:** Ready
+**Branch:** pending selection after P53-T14 review
 
 ## Objective
 
-Prepare 100 digest-bound portable author handoff packets for the selected P53
-corpus and run SpecPM intake preflight without accepting packages or relations.
+Record whether Phase 53 should stop, run a bounded targeted follow-up, repeat
+the same scale under revised budgets, or make the selected evidence available
+for maintainer disposition.
 
 ## Next Step
 
-Reconstruct deterministic preview candidates from the pinned corpus where
-needed, package only durable repo-relative evidence, preserve `preview_only`
-and explicit AI proposal availability, and verify the aggregate handoff through
-the SpecPM consumer preflight.
+Consume the durable P53-T13 triage and P53-T14 producer/SpecPM evidence. Do not
+approve registry promotion, a larger corpus, automatic acceptance, or higher
+concurrency by default.
 
 ## Recently Archived
 
+- `P53-T14` Portable Author Handoff and SpecPM Intake Preflight: PASS. All 100
+  selected repositories have portable preview candidates and digest-bound
+  packets; SpecPM consumer preflight passed with zero errors and warnings.
 - `P53-T13` Campaign Quality Triage: PASS. Exactly 100 frozen repositories were
   accounted for once; all effective outcomes met quality thresholds and were
   selected for author review. Two bounded corrections remain explicit in the
