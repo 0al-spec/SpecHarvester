@@ -1,0 +1,43 @@
+{
+  "apiVersion": "spec-harvester.p53-scale-out-decision/v0",
+  "kind": "SpecHarvesterP53ScaleOutDecision",
+  "schemaVersion": 1,
+  "phase": "P53",
+  "task": "P53-T9",
+  "status": "passed",
+  "fromWave": "wave-2",
+  "toWave": "wave-3",
+  "decision": "unlock_wave-3_only",
+  "sourceWaveReport": {
+    "task": "P53-T8",
+    "sha256": "b859cb6accc440d46735756ffd741b4a6b7649c6cb2638aa574ee50f61bf3fce"
+  },
+  "qualityMetrics": {
+    "codexCompletionRate": 1.0,
+    "schemaValidRate": 1.0,
+    "repositorySpecificRate": 1.0,
+    "unsupportedClaimRate": 0.0,
+    "terminalFailureCount": 0
+  },
+  "humanReview": {
+    "minimumRequired": 3,
+    "reviewedRepositoryIds": [
+      "n8n-io-n8n",
+      "tauri-apps-tauri",
+      "bitcoin-bitcoin"
+    ]
+  },
+  "correctionDisposition": {
+    "repositoryId": "bitcoin-bitcoin",
+    "originalOutcome": "unsupported_relation_claim",
+    "replacementEvidence": "revision_verified_targeted_rerun",
+    "effectiveOutcome": "schema_valid_repository_specific_zero_unsupported_claims"
+  },
+  "authority": "producer_scale_out_evidence_only",
+  "nonGoals": [
+    "wave-4_unlock",
+    "registry_acceptance",
+    "package_acceptance",
+    "relation_acceptance"
+  ]
+}

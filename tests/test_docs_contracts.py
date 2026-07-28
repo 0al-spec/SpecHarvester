@@ -42,7 +42,7 @@ def assert_current_next_task(next_text: str) -> None:
         normalized = " ".join(next_text.split())
         assert "**Status:** In Progress" in next_text
         assert "`P53-T8` Codex Spark Wave 2" in next_text
-        assert "pending selection after P53-T8 review" in next_text
+        assert "feature/p53-t9-wave-2-quality-decision" in next_text
         assert "bitcoin-bitcoin" in next_text
         assert "at least three manual reviews" in normalized
         assert "Do not run wave 3" in next_text
