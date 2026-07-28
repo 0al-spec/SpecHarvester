@@ -309,6 +309,7 @@ the host.
 - <doc:MassRepositoryCampaignPlan>
 - <doc:LocalCandidateReviewWorkbenchContract>
 - <doc:LocalCandidateReviewWorkbenchSchemas>
+- <doc:LocalCandidateReviewCatalog>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

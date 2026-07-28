@@ -121,6 +121,11 @@ from spec_harvester.license_provenance_reports import (
     build_license_provenance_risk_report,
     write_license_provenance_report,
 )
+from spec_harvester.local_candidate_review_catalog import (
+    LocalCandidateReviewCatalogOptions,
+    build_local_candidate_review_catalog,
+    write_local_candidate_review_catalog,
+)
 from spec_harvester.mass_corpus_checkout_readiness import (
     MassCorpusCheckoutReadinessOptions,
     run_mass_corpus_checkout_readiness,
@@ -875,6 +880,22 @@ def build_parser() -> argparse.ArgumentParser:
     p53_handoff.add_argument("--candidate-root", type=Path)
     p53_handoff.add_argument("--proposal-root", type=Path)
     p53_handoff.set_defaults(func=run_p53_portable_author_handoff_cli)
+
+    local_review_catalog = subcommands.add_parser(
+        "local-candidate-review-catalog",
+        help="Build a deterministic local review catalog from a portable P53 handoff archive.",
+    )
+    local_review_catalog.add_argument("archive", type=Path)
+    local_review_catalog.add_argument("--expected-sha256", required=True)
+    local_review_catalog.add_argument("--expected-packet-count", type=int, default=100)
+    local_review_catalog.add_argument("--output", type=Path, required=True)
+    local_review_catalog.add_argument("--max-archive-bytes", type=int, default=512 * 1024 * 1024)
+    local_review_catalog.add_argument("--max-member-bytes", type=int, default=32 * 1024 * 1024)
+    local_review_catalog.add_argument("--max-members", type=int, default=10_000)
+    local_review_catalog.add_argument(
+        "--max-total-member-bytes", type=int, default=512 * 1024 * 1024
+    )
+    local_review_catalog.set_defaults(func=run_local_candidate_review_catalog_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2413,6 +2434,38 @@ def run_p53_portable_author_handoff_cli(args: argparse.Namespace) -> int:
         return 2
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result.get("status") == "passed" else 1
+
+
+def run_local_candidate_review_catalog_cli(args: argparse.Namespace) -> int:
+    try:
+        catalog = build_local_candidate_review_catalog(
+            LocalCandidateReviewCatalogOptions(
+                archive=args.archive,
+                expected_archive_sha256=args.expected_sha256,
+                expected_packet_count=args.expected_packet_count,
+                max_archive_bytes=args.max_archive_bytes,
+                max_member_bytes=args.max_member_bytes,
+                max_members=args.max_members,
+                max_total_member_bytes=args.max_total_member_bytes,
+            )
+        )
+        write_local_candidate_review_catalog(args.output, catalog)
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(
+        json.dumps(
+            {
+                "status": "passed",
+                "candidateCount": len(catalog["items"]),
+                "output": str(args.output),
+                "sourceBundleSha256": catalog["sourceBundleSha256"],
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return 0
 
 
 def run_draft_package_set(args: argparse.Namespace) -> int:
