@@ -28,7 +28,9 @@ authorize automatic acceptance or publication.
 The Workbench must verify the archive digest, packet count, packet digests, and
 schemas before producing a catalog. Absolute paths, traversal members,
 symlinks, device files, executable content, and extraction outside the
-configured workspace are forbidden.
+configured workspace are forbidden. Import must enforce configured archive,
+member, extracted-byte, and member-count limits before resource use becomes
+unbounded.
 
 ## Product Scope
 
@@ -92,7 +94,9 @@ interrupted writes, and workspace escape.
 Every candidate-controlled value is rendered as inert text under a restrictive
 Content Security Policy. Inline script is forbidden. Candidate content cannot
 execute in the reviewer origin, invoke the decision service, or submit a
-disposition. P54-T9 must prove this with hostile-markup fixtures.
+disposition. The decision service binds to loopback only and requires origin
+validation plus a CSRF token for writes. P54-T9 must prove this with
+hostile-markup fixtures.
 
 ## SpecPM Boundary
 

@@ -60,6 +60,9 @@ Workbench state is registry truth.
 - Exactly 100 portable packets are in the approved initial input scope.
 - Offline operation is required after local import.
 - Candidate content is inert and cannot invoke the decision service.
+- Archive/member/extracted-byte/member-count limits are mandatory.
+- Decision writes require a loopback-only service, origin validation, and CSRF
+  protection.
 - Reads/writes remain within the configured review workspace.
 - Decisions are validated, atomic, append-auditable, digest-bound, and
   restart-safe.

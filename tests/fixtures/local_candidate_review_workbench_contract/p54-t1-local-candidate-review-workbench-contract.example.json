@@ -75,7 +75,11 @@
     "allowsSymlinks": false,
     "allowsDeviceFiles": false,
     "allowsExecutableContent": false,
-    "extractsOutsideConfiguredWorkspace": false
+    "extractsOutsideConfiguredWorkspace": false,
+    "requiresConfiguredArchiveByteLimit": true,
+    "requiresConfiguredMemberByteLimit": true,
+    "requiresConfiguredExtractedByteLimit": true,
+    "requiresConfiguredMemberCountLimit": true
   },
   "decisionLifecycle": {
     "initialState": "unreviewed",
@@ -129,6 +133,9 @@
     "candidateValuesRenderedAsInertText": true,
     "restrictiveContentSecurityPolicyRequired": true,
     "inlineScriptAllowed": false,
+    "decisionServiceBindsLoopbackOnly": true,
+    "decisionWritesRequireOriginValidation": true,
+    "decisionWritesRequireCsrfToken": true,
     "candidateOriginCanInvokeDecisionService": false,
     "candidateMarkupCanSubmitDisposition": false,
     "hostileMarkupFixtureRequired": true

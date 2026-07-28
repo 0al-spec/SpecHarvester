@@ -18,6 +18,8 @@ security, workspace confinement, and the read-only SpecPM preflight boundary.
   extraction outside the configured workspace are forbidden.
 - Restrictive CSP is required; inline script and candidate-origin decision
   requests are forbidden.
+- Import requires bounded archive/member/count limits; decision writes require
+  loopback binding, origin validation, and CSRF protection.
 - Decisions are digest-bound, atomic, history-preserving, restart-safe, and
   never registry truth.
 - Only `accept_for_intake` may reach read-only SpecPM preflight.

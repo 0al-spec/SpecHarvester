@@ -40219,6 +40219,10 @@ def test_local_candidate_review_workbench_contract_records_p54_t1() -> None:
     assert portable["requiredPacketCount"] == 100
     assert portable["requiresArchiveDigestVerification"] is True
     assert portable["requiresPacketDigestVerification"] is True
+    assert portable["requiresConfiguredArchiveByteLimit"] is True
+    assert portable["requiresConfiguredMemberByteLimit"] is True
+    assert portable["requiresConfiguredExtractedByteLimit"] is True
+    assert portable["requiresConfiguredMemberCountLimit"] is True
     assert all(
         portable[key] is False
         for key in (
@@ -40246,6 +40250,9 @@ def test_local_candidate_review_workbench_contract_records_p54_t1() -> None:
     assert browser["candidateValuesRenderedAsInertText"] is True
     assert browser["restrictiveContentSecurityPolicyRequired"] is True
     assert browser["inlineScriptAllowed"] is False
+    assert browser["decisionServiceBindsLoopbackOnly"] is True
+    assert browser["decisionWritesRequireOriginValidation"] is True
+    assert browser["decisionWritesRequireCsrfToken"] is True
     assert browser["candidateOriginCanInvokeDecisionService"] is False
     assert browser["candidateMarkupCanSubmitDisposition"] is False
     assert payload["specpmBridge"]["mode"] == "read_only_preflight"
