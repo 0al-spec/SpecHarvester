@@ -3,18 +3,20 @@
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
 **Dependencies:** `P53-T13` Campaign Quality Triage
-**Status:** Ready
-**Branch:** pending selection after P53-T13 review
+**Status:** Selected
+**Branch:** `feature/P53-T14-portable-author-handoff`
 
 ## Objective
 
-Prepare portable author handoff packets for selected candidates and run SpecPM
-intake preflight without accepting packages or relations.
+Prepare 100 digest-bound portable author handoff packets for the selected P53
+corpus and run SpecPM intake preflight without accepting packages or relations.
 
 ## Next Step
 
-Consume only the durable P53-T13 triage after structured review. Preserve source
-and evidence digests, `preview_only`, and explicit maintainer disposition.
+Reconstruct deterministic preview candidates from the pinned corpus where
+needed, package only durable repo-relative evidence, preserve explicit AI
+proposal availability, and verify the aggregate handoff through the SpecPM
+consumer preflight.
 
 ## Recently Archived
 
