@@ -2573,7 +2573,7 @@ Acceptance:
 - [x] `P53-T8` Execute Codex Spark wave 2 over repositories 26-50 only after
   P53-T7 passes, preserving the same run contract, budgets, checkpoints,
   quality metrics, and stop-policy boundary.
-- [ ] `P53-T9` Review the wave-2 quality sample and record the scale-out
+- [x] `P53-T9` Review the wave-2 quality sample and record the scale-out
   decision. Require at least three manually reviewed candidates and all Phase 53
   quality thresholds before only repositories 51-75 are unlocked.
 - [ ] `P53-T10` Execute Codex Spark wave 3 over repositories 51-75 only after

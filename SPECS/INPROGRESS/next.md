@@ -1,30 +1,29 @@
-# Next Task: P53-T9 Wave-2 Quality Review and Scale-Out Decision
+# Next Task: P53-T10 Codex Spark Wave 3
 
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Dependencies:** `P53-T8` Codex Spark Wave 2
-**Status:** In Progress
+**Dependencies:** `P53-T9` Wave-2 Quality Review and Scale-Out Decision
+**Status:** Ready
 **Started:** 2026-07-28
-**Branch:** pending selection after P53-T8 review
+**Branch:** pending selection after P53-T9 review
 
 ## Objective
 
-Review the wave-2 quality sample, including the original `bitcoin-bitcoin`
-warning and its clean targeted corrective rerun, and record whether P53-T10 may
-process only positions 51-75.
+Run the third bounded Codex 5.3 Spark proposal-only wave over the frozen source
+identities at positions 51-75, consuming the recorded P53-T9 decision artifact
+before any static or Codex work.
 
 ## Next Step
 
-Require at least three manual reviews and all Phase 53 quality thresholds.
-Do not run wave 3 as part of this task.
+Preserve revision verification, checkpoints, budget and stop-policy gates, and
+proposal-only authority. Do not unlock wave 4 as part of this task.
 
 ## Recently Archived
 
-- `P53-T8` Codex Spark Wave 2: PASS for execution. All 25 frozen wave-2
-  sources completed with valid schemas and no terminal failures. A targeted
-  `bitcoin-bitcoin` corrective rerun removed the unsupported relation claim;
-  effective wave metrics now meet the quality thresholds, pending P53-T9
-  manual review and decision.
+- `P53-T9` Wave-2 Quality Review and Scale-Out Decision: PASS. Three
+  representative proposals, including the corrected `bitcoin-bitcoin` case,
+  passed manual review. The recorded decision unlocks only P53-T10 / positions
+  51-75 and does not authorize registry acceptance or wave 4.
 
 - `P53-T5` Mass Corpus Static-Only Gate: PASS. All 100 pinned local checkouts
   produced deterministic preview evidence with zero failures; AI and execution
