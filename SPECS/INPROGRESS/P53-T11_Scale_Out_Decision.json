@@ -1,0 +1,16 @@
+{
+  "apiVersion": "spec-harvester.p53-scale-out-decision/v0",
+  "kind": "SpecHarvesterP53ScaleOutDecision",
+  "schemaVersion": 1,
+  "phase": "P53",
+  "task": "P53-T11",
+  "status": "passed",
+  "fromWave": "wave-3",
+  "toWave": "wave-4",
+  "decision": "unlock_wave-4_only",
+  "sourceWaveReport": {"task": "P53-T10", "sha256": "bf0a32afa8c964af5d0447b00cf2e68f16a7c72e30ac6e45ecf8bb44a0d9a7a0"},
+  "qualityMetrics": {"codexCompletionRate": 1.0, "schemaValidRate": 1.0, "repositorySpecificRate": 1.0, "unsupportedClaimRate": 0.0, "terminalFailureCount": 0},
+  "humanReview": {"minimumRequired": 3, "reviewedRepositoryIds": ["nationalsecurityagency-ghidra", "mui-material-ui", "serde-rs-serde"]},
+  "authority": "producer_scale_out_evidence_only",
+  "nonGoals": ["wave-5_unlock", "registry_acceptance", "package_acceptance", "relation_acceptance"]
+}

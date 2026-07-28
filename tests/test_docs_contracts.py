@@ -39,9 +39,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P53-T11 Wave-3 Quality Review and Scale-Out Decision" in next_text:
-        assert "**Status:** Ready" in next_text
+        assert "**Status:** In Progress" in next_text
         assert "`P53-T10` Codex Spark Wave 3" in next_text
-        assert "pending selection after P53-T10 review" in next_text
+        assert "feature/p53-t11-wave-3-quality-decision" in next_text
         assert "at least three manual reviews" in " ".join(next_text.split())
         assert "Do not run\nwave 4" in next_text
         return
