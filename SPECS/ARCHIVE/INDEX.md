@@ -923,3 +923,4 @@
 | 2026-07-28 | P53-T14 | Archived Portable Author Handoff and SpecPM Intake Preflight (PASS) |
 | 2026-07-28 | P53-T14 | Archived REVIEW_p53_t14_portable_author_handoff report |
 | 2026-07-28 | P53-T15 | Archived Record Phase 53 Exit Decision (PASS) |
+| 2026-07-28 | P53-T15 | Archived REVIEW_p53_t15_phase_53_exit_decision report |
