@@ -2,20 +2,31 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://spec-harvester.dev/schemas/local-candidate-review-workbench-v0.schema.json",
   "title": "Local Candidate Review Workbench Schema Bundle",
-  "type": "object",
-  "additionalProperties": false,
-  "required": ["apiVersion", "kind", "catalog", "detail", "comparison", "decision", "reasons", "export"],
-  "properties": {
-    "apiVersion": {"const": "spec-harvester.local-candidate-review-schema-fixture/v0"},
-    "kind": {"const": "SpecHarvesterLocalCandidateReviewSchemaFixture"},
-    "catalog": {"$ref": "#/$defs/catalog"},
-    "detail": {"$ref": "#/$defs/detail"},
-    "comparison": {"$ref": "#/$defs/comparison"},
-    "decision": {"$ref": "#/$defs/decision"},
-    "reasons": {"$ref": "#/$defs/reasons"},
-    "export": {"$ref": "#/$defs/export"}
-  },
+  "oneOf": [
+    {"$ref": "#/$defs/fixture"},
+    {"$ref": "#/$defs/catalog"},
+    {"$ref": "#/$defs/detail"},
+    {"$ref": "#/$defs/comparison"},
+    {"$ref": "#/$defs/decision"},
+    {"$ref": "#/$defs/reasons"},
+    {"$ref": "#/$defs/export"}
+  ],
   "$defs": {
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "catalog", "detail", "comparison", "decision", "reasons", "export"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.local-candidate-review-schema-fixture/v0"},
+        "kind": {"const": "SpecHarvesterLocalCandidateReviewSchemaFixture"},
+        "catalog": {"$ref": "#/$defs/catalog"},
+        "detail": {"$ref": "#/$defs/detail"},
+        "comparison": {"$ref": "#/$defs/comparison"},
+        "decision": {"$ref": "#/$defs/decision"},
+        "reasons": {"$ref": "#/$defs/reasons"},
+        "export": {"$ref": "#/$defs/export"}
+      }
+    },
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "candidateId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
     "binding": {
@@ -92,8 +103,24 @@
         "kind": {"const": "SpecHarvesterCandidateReviewComparison"},
         "authority": {"const": "local_review_comparison_evidence_only"},
         "binding": {"$ref": "#/$defs/binding"},
-        "static": {"type": "object"},
-        "ai": {"type": "object"}
+        "static": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["memberCount"],
+          "properties": {
+            "memberCount": {"type": "integer", "minimum": 0}
+          }
+        },
+        "ai": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status"],
+          "properties": {
+            "status": {"enum": ["portable", "summary_only_not_portable", "not_available"]},
+            "warningCount": {"type": "integer", "minimum": 0},
+            "proposalSha256": {"$ref": "#/$defs/sha256"}
+          }
+        }
       }
     },
     "decision": {

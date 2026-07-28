@@ -17,6 +17,12 @@ as inert text, JSON, or YAML. Export authority is fixed to
 `portable_local_review_evidence_only` and registry mutation count is fixed to
 zero.
 
+The schema file accepts each versioned record as a standalone document as well
+as the all-record fixture envelope. Consumers that combine a decision with a
+reason taxonomy must also run `validate_decision_reason_compatibility`; JSON
+Schema validates each record shape, while that semantic check enforces that the
+reason exists and permits the selected disposition.
+
 Breaking changes require a new API version. Additive changes are permitted only
 where the current schema explicitly allows them; consumers must not silently
 reinterpret unknown authority or decision fields.
