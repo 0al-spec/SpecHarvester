@@ -24,6 +24,11 @@ output with zero warnings, errors, or unsupported claims. This is the only
 replacement used in the effective aggregate; the original warning remains
 documented in the P53-T8 validation report.
 
+The machine-readable decision binds the follow-up report, corrected proposal,
+and targeted static report SHA-256 digests, so a later runner can verify that
+the effective aggregate is based on this exact correction rather than on the
+original failing record.
+
 ## Representative Review
 
 | Repository | Shape | Review result |

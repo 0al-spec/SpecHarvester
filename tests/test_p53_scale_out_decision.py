@@ -37,4 +37,8 @@ def test_p53_t9_scale_out_decision_is_machine_readable_and_wave_bounded() -> Non
     assert payload["qualityMetrics"]["unsupportedClaimRate"] <= 0.02
     assert payload["qualityMetrics"]["terminalFailureCount"] == 0
     assert payload["correctionDisposition"]["repositoryId"] == "bitcoin-bitcoin"
+    artifacts = payload["correctionDisposition"]["artifacts"]
+    assert len(artifacts["followUpReport"]["sha256"]) == 64
+    assert len(artifacts["correctedProposal"]["sha256"]) == 64
+    assert len(artifacts["targetedStaticReport"]["sha256"]) == 64
     assert "wave-4_unlock" in payload["nonGoals"]

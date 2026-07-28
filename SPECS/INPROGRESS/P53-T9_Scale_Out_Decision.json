@@ -31,7 +31,18 @@
     "repositoryId": "bitcoin-bitcoin",
     "originalOutcome": "unsupported_relation_claim",
     "replacementEvidence": "revision_verified_targeted_rerun",
-    "effectiveOutcome": "schema_valid_repository_specific_zero_unsupported_claims"
+    "effectiveOutcome": "schema_valid_repository_specific_zero_unsupported_claims",
+    "artifacts": {
+      "followUpReport": {
+        "sha256": "7ecfc66ecbb48a377acd2b01f22b53ae8aafdf8b700e8a2abb1a7050418f4ddd"
+      },
+      "correctedProposal": {
+        "sha256": "4818f764de36046994d4de1b37b3644f53adcc8a966fd9635af54af5c3297803"
+      },
+      "targetedStaticReport": {
+        "sha256": "b9a4d591b3cf32328a9518f48ab8bd403b917507a2d8afae6792155f87816074"
+      }
+    }
   },
   "authority": "producer_scale_out_evidence_only",
   "nonGoals": [
