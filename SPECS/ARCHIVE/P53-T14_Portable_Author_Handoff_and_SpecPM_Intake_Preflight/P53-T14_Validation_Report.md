@@ -1,7 +1,7 @@
 # P53-T14 Validation Report
 
-**Task:** `P53-T14` Portable Author Handoff and SpecPM Intake Preflight  
-**Date:** 2026-07-28  
+**Task:** `P53-T14` Portable Author Handoff and SpecPM Intake Preflight
+**Date:** 2026-07-28
 **Verdict:** PASS
 
 ## Live Result
