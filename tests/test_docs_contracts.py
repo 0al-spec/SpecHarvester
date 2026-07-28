@@ -41,11 +41,14 @@ ROOT = Path(__file__).resolve().parents[1]
 def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P54-T1 Local Candidate Review Workbench Product Contract" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Ready" in next_text
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
         assert "`P53-T15` Phase 53 Exit Decision" in next_text
-        assert "pending selection after P53-T15 review" in next_text
+        if "**Status:** Selected" in next_text:
+            assert "feature/P54-T1-local-candidate-review-workbench-contract" in next_text
+        else:
+            assert "pending selection after P53-T15 review" in next_text
         assert "digest-bound P53-T14 portable handoff" in normalized
-        assert "without accepting packages, relations, or registry truth" in normalized
+        assert "schemas, catalog generation, browser UI" in normalized
         return
 
     if "# Next Task: P53-T15 Record Phase 53 Exit Decision" in next_text:
@@ -40174,3 +40177,126 @@ def test_p53_phase_exit_decision_is_digest_bound_and_non_authoritative() -> None
     assert_current_next_task(
         (ROOT / "SPECS" / "INPROGRESS" / "next.md").read_text(encoding="utf-8")
     )
+
+
+def test_local_candidate_review_workbench_contract_records_p54_t1() -> None:
+    fixture_path = (
+        ROOT / "tests/fixtures/local_candidate_review_workbench_contract/"
+        "p54-t1-local-candidate-review-workbench-contract.example.json"
+    )
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == ("spec-harvester.local-candidate-review-workbench-contract/v0")
+    assert payload["kind"] == "SpecHarvesterLocalCandidateReviewWorkbenchContract"
+    assert payload["authority"] == "producer_product_contract_evidence_only"
+    assert payload["phase"] == "P54"
+    assert payload["task"] == "P54-T1"
+    for source in payload["sourceArtifacts"].values():
+        source_path = ROOT / source["path"]
+        assert source_path.is_file()
+        assert source["sha256"] == hashlib.sha256(source_path.read_bytes()).hexdigest()
+
+    assert payload["product"]["initialCandidateCount"] == 100
+    assert payload["product"]["networkRequiredAfterImport"] is False
+    assert set(payload["roles"]) == {"operator", "reviewer", "maintainer", "producer"}
+    assert payload["trustZones"] == [
+        "immutable_import_bundle",
+        "generated_read_only_catalog",
+        "mutable_local_review_workspace",
+        "external_read_only_specpm_preflight",
+    ]
+    portable = payload["portableInputBoundary"]
+    assert portable["requiredPacketCount"] == 100
+    assert portable["requiresArchiveDigestVerification"] is True
+    assert portable["requiresPacketDigestVerification"] is True
+    assert all(
+        portable[key] is False
+        for key in (
+            "allowsAbsolutePaths",
+            "allowsTraversalMembers",
+            "allowsSymlinks",
+            "allowsDeviceFiles",
+            "allowsExecutableContent",
+            "extractsOutsideConfiguredWorkspace",
+        )
+    )
+    lifecycle = payload["decisionLifecycle"]
+    assert lifecycle["initialState"] == "unreviewed"
+    assert lifecycle["terminalOrReplaceableStates"] == [
+        "accept_for_intake",
+        "request_revision",
+        "defer",
+        "do_not_promote",
+    ]
+    assert lifecycle["atomicWritesRequired"] is True
+    assert lifecycle["historyPreserved"] is True
+    assert lifecycle["silentOverwriteAllowed"] is False
+    assert lifecycle["isRegistryTruth"] is False
+    browser = payload["browserSecurity"]
+    assert browser["candidateValuesRenderedAsInertText"] is True
+    assert browser["restrictiveContentSecurityPolicyRequired"] is True
+    assert browser["inlineScriptAllowed"] is False
+    assert browser["candidateOriginCanInvokeDecisionService"] is False
+    assert browser["candidateMarkupCanSubmitDisposition"] is False
+    assert payload["specpmBridge"]["mode"] == "read_only_preflight"
+    assert payload["specpmBridge"]["mutatesSpecPM"] is False
+    assert all(value is False for value in payload["authorityBoundary"].values())
+    assert all(value is False for value in payload["executionBoundary"].values())
+    assert all(value is False for value in payload["privacyBoundary"].values())
+    assert payload["implementationSequence"] == [
+        "P54-T2",
+        "P54-T3",
+        "P54-T4",
+        "P54-T5",
+        "P54-T6",
+        "P54-T7",
+        "P54-T8",
+        "P54-T9",
+        "P54-T10",
+    ]
+
+    github_doc = ROOT / "docs/LOCAL_CANDIDATE_REVIEW_WORKBENCH_CONTRACT.md"
+    docc_doc = (
+        ROOT / "Sources/SpecHarvester/Documentation.docc/LocalCandidateReviewWorkbenchContract.md"
+    )
+    for path in (github_doc, docc_doc):
+        normalized = " ".join(path.read_text(encoding="utf-8").split())
+        for required in (
+            "Local Candidate Review Workbench Product Contract",
+            "P54-T1",
+            "SpecHarvesterLocalCandidateReviewWorkbenchContract",
+            "producer_product_contract_evidence_only",
+            "immutable import bundle",
+            "generated read-only catalog",
+            "mutable local review workspace",
+            "external read-only SpecPM preflight",
+            "hostile markup",
+            "restrictive Content Security Policy",
+            "Candidate content cannot execute",
+            "accept_for_intake",
+            "request_revision",
+            "do_not_promote",
+            "A Workbench decision is not registry truth",
+        ):
+            assert required in normalized, f"Required term {required!r} not found in {path}"
+
+    references = (
+        (ROOT / "docs/README.md", "LOCAL_CANDIDATE_REVIEW_WORKBENCH_CONTRACT.md"),
+        (ROOT / "docs/CAPABILITIES.md", "LOCAL_CANDIDATE_REVIEW_WORKBENCH_CONTRACT.md"),
+        (ROOT / "docs/ROADMAP.md", "LOCAL_CANDIDATE_REVIEW_WORKBENCH_CONTRACT.md"),
+        (
+            ROOT / "Sources/SpecHarvester/Documentation.docc/SpecHarvester.md",
+            "<doc:LocalCandidateReviewWorkbenchContract>",
+        ),
+        (
+            ROOT / "Sources/SpecHarvester/Documentation.docc/Capabilities.md",
+            "<doc:LocalCandidateReviewWorkbenchContract>",
+        ),
+        (
+            ROOT / "Sources/SpecHarvester/Documentation.docc/Roadmap.md",
+            "<doc:LocalCandidateReviewWorkbenchContract>",
+        ),
+    )
+    for path, required in references:
+        assert required in path.read_text(encoding="utf-8")
+    assert_current_next_task((ROOT / "SPECS/INPROGRESS/next.md").read_text(encoding="utf-8"))

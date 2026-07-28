@@ -1,0 +1,179 @@
+{
+  "apiVersion": "spec-harvester.local-candidate-review-workbench-contract/v0",
+  "kind": "SpecHarvesterLocalCandidateReviewWorkbenchContract",
+  "schemaVersion": 1,
+  "phase": "P54",
+  "task": "P54-T1",
+  "status": "planned",
+  "authority": "producer_product_contract_evidence_only",
+  "sourceArtifacts": {
+    "p53PortableHandoff": {
+      "path": "SPECS/EVIDENCE/P53-T14/P53-T14_Execution_Summary.json",
+      "sha256": "014434b523d739c5b8f999b3fd1234c50ec460d48d2d661a5c69e1ba9fadd237"
+    },
+    "p53PortablePacketBundle": {
+      "path": "SPECS/EVIDENCE/P53-T14/P53-T14_Portable_Handoff.tar.gz",
+      "sha256": "db2593d7b17fd3f0da348b3fce72ea86b510d7c562b82b78047b926608709e63",
+      "repositoryCount": 100
+    },
+    "p53ExitDecision": {
+      "path": "SPECS/EVIDENCE/P53-T15/P53-T15_Phase_53_Exit_Decision.json",
+      "sha256": "4b87b7c92deed7567904481b9379032f0abbe15cdc5c57c730df71fa22de480c",
+      "decision": "make_selected_evidence_available_for_maintainer_disposition"
+    }
+  },
+  "product": {
+    "deployment": "local_first_single_maintainer_workspace",
+    "networkRequiredAfterImport": false,
+    "initialCandidateCount": 100,
+    "purpose": [
+      "inspect_portable_candidates",
+      "compare_static_and_codex_evidence",
+      "record_maintainer_dispositions",
+      "prepare_approved_candidates_for_read_only_specpm_preflight"
+    ],
+    "notA": [
+      "registry",
+      "publication_service",
+      "package_manager",
+      "model_runner",
+      "source_acquisition_system",
+      "automatic_acceptance_engine"
+    ]
+  },
+  "roles": {
+    "operator": [
+      "configure_review_workspace",
+      "import_digest_verified_bundle"
+    ],
+    "reviewer": [
+      "inspect_inert_candidate_content",
+      "record_bounded_disposition"
+    ],
+    "maintainer": [
+      "authorize_read_only_specpm_preflight",
+      "retain_external_acceptance_authority"
+    ],
+    "producer": [
+      "supply_proposal_evidence_without_review_or_registry_authority"
+    ]
+  },
+  "trustZones": [
+    "immutable_import_bundle",
+    "generated_read_only_catalog",
+    "mutable_local_review_workspace",
+    "external_read_only_specpm_preflight"
+  ],
+  "portableInputBoundary": {
+    "acceptedFormat": "digest_bound_p53_t14_tar_gz",
+    "requiredPacketCount": 100,
+    "requiresSchemaValidation": true,
+    "requiresArchiveDigestVerification": true,
+    "requiresPacketDigestVerification": true,
+    "allowsAbsolutePaths": false,
+    "allowsTraversalMembers": false,
+    "allowsSymlinks": false,
+    "allowsDeviceFiles": false,
+    "allowsExecutableContent": false,
+    "extractsOutsideConfiguredWorkspace": false
+  },
+  "decisionLifecycle": {
+    "initialState": "unreviewed",
+    "transientState": "in_review",
+    "terminalOrReplaceableStates": [
+      "accept_for_intake",
+      "request_revision",
+      "defer",
+      "do_not_promote"
+    ],
+    "requiredBindings": [
+      "reviewer_identity",
+      "timestamp",
+      "reason_code",
+      "packet_digest",
+      "prior_decision_digest"
+    ],
+    "atomicWritesRequired": true,
+    "historyPreserved": true,
+    "silentOverwriteAllowed": false,
+    "restartSafe": true,
+    "isRegistryTruth": false
+  },
+  "threatModel": {
+    "untrustedInputs": [
+      "archive_members",
+      "packet_json",
+      "specpm_yaml",
+      "specifications",
+      "evidence",
+      "diagnostics",
+      "repository_metadata",
+      "imported_reviewer_notes"
+    ],
+    "threats": [
+      "digest_drift",
+      "malformed_json_or_yaml",
+      "archive_path_traversal",
+      "symlink_or_special_file",
+      "oversized_input",
+      "hostile_markup",
+      "script_execution",
+      "decision_request_forgery",
+      "stale_decision",
+      "silent_overwrite",
+      "interrupted_write",
+      "workspace_escape"
+    ]
+  },
+  "browserSecurity": {
+    "candidateValuesRenderedAsInertText": true,
+    "restrictiveContentSecurityPolicyRequired": true,
+    "inlineScriptAllowed": false,
+    "candidateOriginCanInvokeDecisionService": false,
+    "candidateMarkupCanSubmitDisposition": false,
+    "hostileMarkupFixtureRequired": true
+  },
+  "specpmBridge": {
+    "eligibleDisposition": "accept_for_intake",
+    "revalidatesPacketAndDecisionDigests": true,
+    "mode": "read_only_preflight",
+    "mutatesSpecPM": false
+  },
+  "authorityBoundary": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "mutatesAcceptedSources": false,
+    "mutatesRegistryTruth": false,
+    "publishesRegistryMetadata": false,
+    "automaticallyPromotesCandidates": false
+  },
+  "executionBoundary": {
+    "clonesOrFetchesRepositories": false,
+    "runsCodex": false,
+    "runsLMStudio": false,
+    "runsAdapters": false,
+    "runsPlugins": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false
+  },
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "implementationSequence": [
+    "P54-T2",
+    "P54-T3",
+    "P54-T4",
+    "P54-T5",
+    "P54-T6",
+    "P54-T7",
+    "P54-T8",
+    "P54-T9",
+    "P54-T10"
+  ]
+}

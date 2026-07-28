@@ -1002,6 +1002,12 @@ fixture, selecting a targeted quality pass before larger curated corpus
 expansion because static evidence is reviewable but AI sidecar quality still
 blocks scale.
 
+P54-T1 records <doc:LocalCandidateReviewWorkbenchContract>. It defines a
+local-first review surface over the digest-bound 100-packet P53 handoff, with
+explicit roles, trust zones, decision history, inert rendering, restrictive
+CSP, workspace confinement, and read-only SpecPM preflight. It does not
+implement the Workbench or grant registry authority.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install
