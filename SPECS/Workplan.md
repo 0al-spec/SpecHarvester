@@ -2700,7 +2700,7 @@ Acceptance:
 - [x] `P54-T1` Record the Local Candidate Review Workbench product contract,
   threat model, reviewer roles, decision lifecycle, portable input boundary,
   and acceptance/non-authority rules before implementing a review surface.
-- [ ] `P54-T2` Define versioned schemas for the candidate review catalog,
+- [x] `P54-T2` Define versioned schemas for the candidate review catalog,
   candidate detail record, static-versus-AI comparison, reviewer decision,
   reason taxonomy, and export bundle. Bind every record to a P53-T14 handoff
   packet digest and include representative valid and invalid fixtures.

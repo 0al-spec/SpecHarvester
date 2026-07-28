@@ -39,6 +39,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P54-T3 Deterministic Local Candidate Review Catalog" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P54-T2` Local Candidate Review Workbench Schemas" in next_text
+        if "**Status:** Selected" in next_text:
+            assert "feature/P54-T3-deterministic-local-review-catalog" in next_text
+        else:
+            assert "pending selection after P54-T2 review" in next_text
+        assert "validated portable handoff packets" in normalized
+        assert "packet SHA-256 bindings" in normalized
+        assert "deterministic ordering" in normalized
+        return
+
     if "# Next Task: P54-T2 Local Candidate Review Workbench Schemas" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
