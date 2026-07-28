@@ -1,0 +1,181 @@
+{
+  "aiDraft": {
+    "reason": "ai_disabled_by_operator",
+    "status": "skipped"
+  },
+  "aiEnrichedPreview": {
+    "reason": "ai_disabled_by_operator",
+    "status": "skipped"
+  },
+  "aiEnrichment": {
+    "reason": "ai_disabled_by_operator",
+    "status": "skipped"
+  },
+  "authorReadyDraftSummary": {
+    "blockingReasons": [],
+    "decision": "stop_for_author_review",
+    "memberCounts": {
+      "author_ready_draft": 1,
+      "blocked": 0,
+      "needs_regeneration": 0,
+      "total": 1
+    },
+    "members": [
+      {
+        "actionItemCount": 3,
+        "decision": "stop_for_author_review",
+        "packageId": "ggml_org_llama_cpp.core",
+        "qualityReportPath": "ggml_org_llama_cpp.core/author-ready-draft-quality-report.json",
+        "status": "author_ready_draft",
+        "stopReason": "remaining_work_is_author_reviewable"
+      }
+    ],
+    "nonAuthority": [
+      "The stop-policy summary is producer-side review evidence only.",
+      "It is not SpecPM registry acceptance.",
+      "It is not maintainer approval.",
+      "It is not upstream project endorsement."
+    ],
+    "reviewableDimensions": [
+      {
+        "count": 1,
+        "id": "claimConservatism",
+        "packageIds": [
+          "ggml_org_llama_cpp.core"
+        ],
+        "ratings": [
+          "reviewable"
+        ]
+      },
+      {
+        "count": 1,
+        "id": "packageTopology",
+        "packageIds": [
+          "ggml_org_llama_cpp.core"
+        ],
+        "ratings": [
+          "reviewable"
+        ]
+      },
+      {
+        "count": 1,
+        "id": "repositorySpecificity",
+        "packageIds": [
+          "ggml_org_llama_cpp.core"
+        ],
+        "ratings": [
+          "reviewable"
+        ]
+      }
+    ],
+    "schemaVersion": 1,
+    "status": "author_ready_draft",
+    "summary": "All member candidates are valid starter packages ready for author review.",
+    "topAuthorActionItems": [
+      {
+        "category": "author_review",
+        "id": "review_capabilities_and_intents",
+        "packageId": "ggml_org_llama_cpp.core",
+        "severity": "info",
+        "summary": "Confirm capabilities, intents, constraints, and evidence support.",
+        "target": "specs/*.spec.yaml"
+      },
+      {
+        "category": "author_review",
+        "id": "review_package_identity_and_summary",
+        "packageId": "ggml_org_llama_cpp.core",
+        "severity": "info",
+        "summary": "Confirm package id, name, summary, license, keywords, and version.",
+        "target": "specpm.yaml"
+      },
+      {
+        "category": "handoff",
+        "id": "run_specpm_validation_before_submission",
+        "packageId": "ggml_org_llama_cpp.core",
+        "severity": "info",
+        "summary": "Run downstream SpecPM validation before requesting public index acceptance.",
+        "target": "SpecPM"
+      }
+    ]
+  },
+  "checkout": "/Users/egor/Development/GitHub/P53Sources/ggml-org-llama-cpp",
+  "harvest": {
+    "path": "/tmp/p53-t13-wave-1-restored/static-only/collected/ggml-org-llama-cpp/harvest.json"
+  },
+  "id": "ggml-org-llama-cpp",
+  "interfaceIndex": {
+    "diagnostics": [],
+    "executedAnalyzerIds": [
+      "spec_harvester.python_public_api",
+      "spec_harvester.swift_public_api"
+    ],
+    "output": "/tmp/p53-t13-wave-1-restored/static-only/collected/ggml-org-llama-cpp/public-interface-index.json",
+    "parserProfileId": null,
+    "plannedAnalyzerIds": [
+      "spec_harvester.c_cpp_manifest_profile",
+      "spec_harvester.python_public_api",
+      "spec_harvester.swift_public_api"
+    ],
+    "skippedAnalyzerPlans": [
+      {
+        "id": "spec_harvester.c_cpp_manifest_profile",
+        "reason": "project_profile_plan_not_recommended",
+        "status": "manifest_only"
+      }
+    ],
+    "status": "complete",
+    "summary": {
+      "diagnosticCount": 0,
+      "entrypointCount": 208,
+      "packageCount": 2,
+      "status": "complete",
+      "symbolCount": 2860
+    }
+  },
+  "packageId": "ggml-org-llama-cpp.core",
+  "packageSetDraft": {
+    "bundleSet": "/tmp/p53-t13-wave-1-restored/static-only/package-sets/ggml-org-llama-cpp",
+    "candidateCount": 1,
+    "relationCount": 0,
+    "relationProposals": "/tmp/p53-t13-wave-1-restored/static-only/package-sets/ggml-org-llama-cpp/package-relation-proposals.json",
+    "skippedCount": 0,
+    "status": "ok",
+    "summary": "/tmp/p53-t13-wave-1-restored/static-only/package-sets/ggml-org-llama-cpp/package-set-draft.json"
+  },
+  "preflight": {
+    "candidateCount": 1,
+    "candidatePreflightPassedCount": 1,
+    "errorCount": 0,
+    "path": "/tmp/p53-t13-wave-1-restored/static-only/package-sets/ggml-org-llama-cpp/bundle-set-preflight.json",
+    "relationCount": 0,
+    "status": "passed",
+    "warningCount": 0
+  },
+  "ref": null,
+  "repository": "https://github.com/ggml-org/llama.cpp",
+  "repositoryProfileDetection": {
+    "advisoryHintCount": 0,
+    "authority": "producer_profile_selection_only",
+    "candidateProfileCount": 3,
+    "confidence": "high",
+    "decision": "selected",
+    "diagnosticCodes": [
+      "repository_profile_selected"
+    ],
+    "fallbackProfileId": "generic.repository.v0",
+    "mode": "auto",
+    "overrideSource": "none",
+    "path": "/tmp/p53-t13-wave-1-restored/static-only/reports/repository-profile-detections/ggml-org-llama-cpp/repository-profile-detection.json",
+    "reasonCodes": [
+      "root_manifest_present"
+    ],
+    "rejectedProfileCount": 2,
+    "selectedProfileId": "generic.single_package.v0",
+    "status": "completed"
+  },
+  "revision": "8e8681e0e20820a7736960381d71dec06a830163",
+  "status": "passed",
+  "workspaceInventory": {
+    "path": "/tmp/p53-t13-wave-1-restored/static-only/collected/ggml-org-llama-cpp/workspace-inventory.json"
+  }
+}

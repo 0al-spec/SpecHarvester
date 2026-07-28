@@ -1,0 +1,657 @@
+{
+  "ai": {
+    "mode": "disabled",
+    "model": null,
+    "provider": null,
+    "reason": "operator_disabled"
+  },
+  "apiVersion": "spec-harvester.autonomous-candidate-batch/v0",
+  "authority": "producer_preview_evidence_only",
+  "collection": {
+    "collectedCount": 1,
+    "outputRoot": "/tmp/p53-t13-bitcoin-review-fix-327/static-only/collected",
+    "skippedCount": 99,
+    "status": "ok",
+    "validationReport": "/tmp/p53-t13-bitcoin-review-fix-327/static-only/reports/batch-validation-report.json"
+  },
+  "input": "inputs/p53-mass-corpus",
+  "kind": "SpecHarvesterAutonomousCandidateBatchReport",
+  "nonGoals": [
+    "repository_clone",
+    "network_scraping",
+    "package_execution",
+    "dependency_installation",
+    "specpm_acceptance",
+    "registry_publication"
+  ],
+  "outputRoot": "/tmp/p53-t13-bitcoin-review-fix-327/static-only",
+  "repositories": [
+    {
+      "aiDraft": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichedPreview": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "aiEnrichment": {
+        "reason": "ai_disabled_by_operator",
+        "status": "skipped"
+      },
+      "authorReadyDraftSummary": {
+        "blockingReasons": [],
+        "decision": "stop_for_author_review",
+        "memberCounts": {
+          "author_ready_draft": 1,
+          "blocked": 0,
+          "needs_regeneration": 0,
+          "total": 1
+        },
+        "members": [
+          {
+            "actionItemCount": 3,
+            "decision": "stop_for_author_review",
+            "packageId": "bitcoin_bitcoin.core",
+            "qualityReportPath": "bitcoin_bitcoin.core/author-ready-draft-quality-report.json",
+            "status": "author_ready_draft",
+            "stopReason": "remaining_work_is_author_reviewable"
+          }
+        ],
+        "nonAuthority": [
+          "The stop-policy summary is producer-side review evidence only.",
+          "It is not SpecPM registry acceptance.",
+          "It is not maintainer approval.",
+          "It is not upstream project endorsement."
+        ],
+        "reviewableDimensions": [
+          {
+            "count": 1,
+            "id": "claimConservatism",
+            "packageIds": [
+              "bitcoin_bitcoin.core"
+            ],
+            "ratings": [
+              "reviewable"
+            ]
+          },
+          {
+            "count": 1,
+            "id": "packageTopology",
+            "packageIds": [
+              "bitcoin_bitcoin.core"
+            ],
+            "ratings": [
+              "reviewable"
+            ]
+          },
+          {
+            "count": 1,
+            "id": "repositorySpecificity",
+            "packageIds": [
+              "bitcoin_bitcoin.core"
+            ],
+            "ratings": [
+              "reviewable"
+            ]
+          }
+        ],
+        "schemaVersion": 1,
+        "status": "author_ready_draft",
+        "summary": "All member candidates are valid starter packages ready for author review.",
+        "topAuthorActionItems": [
+          {
+            "category": "author_review",
+            "id": "review_capabilities_and_intents",
+            "packageId": "bitcoin_bitcoin.core",
+            "severity": "info",
+            "summary": "Confirm capabilities, intents, constraints, and evidence support.",
+            "target": "specs/*.spec.yaml"
+          },
+          {
+            "category": "author_review",
+            "id": "review_package_identity_and_summary",
+            "packageId": "bitcoin_bitcoin.core",
+            "severity": "info",
+            "summary": "Confirm package id, name, summary, license, keywords, and version.",
+            "target": "specpm.yaml"
+          },
+          {
+            "category": "handoff",
+            "id": "run_specpm_validation_before_submission",
+            "packageId": "bitcoin_bitcoin.core",
+            "severity": "info",
+            "summary": "Run downstream SpecPM validation before requesting public index acceptance.",
+            "target": "SpecPM"
+          }
+        ]
+      },
+      "checkout": "/Users/egor/Development/GitHub/P53Sources/bitcoin-bitcoin",
+      "harvest": {
+        "path": "/tmp/p53-t13-bitcoin-review-fix-327/static-only/collected/bitcoin-bitcoin/harvest.json"
+      },
+      "id": "bitcoin-bitcoin",
+      "interfaceIndex": {
+        "diagnostics": [],
+        "executedAnalyzerIds": [],
+        "parserProfileId": null,
+        "plannedAnalyzerIds": [
+          "spec_harvester.c_cpp_manifest_profile"
+        ],
+        "skippedAnalyzerPlans": [
+          {
+            "id": "spec_harvester.c_cpp_manifest_profile",
+            "reason": "project_profile_plan_not_recommended",
+            "status": "manifest_only"
+          }
+        ],
+        "status": "skipped"
+      },
+      "packageId": "bitcoin-bitcoin.core",
+      "packageSetDraft": {
+        "bundleSet": "/tmp/p53-t13-bitcoin-review-fix-327/static-only/package-sets/bitcoin-bitcoin",
+        "candidateCount": 1,
+        "relationCount": 0,
+        "relationProposals": "/tmp/p53-t13-bitcoin-review-fix-327/static-only/package-sets/bitcoin-bitcoin/package-relation-proposals.json",
+        "skippedCount": 0,
+        "status": "ok",
+        "summary": "/tmp/p53-t13-bitcoin-review-fix-327/static-only/package-sets/bitcoin-bitcoin/package-set-draft.json"
+      },
+      "preflight": {
+        "candidateCount": 1,
+        "candidatePreflightPassedCount": 1,
+        "errorCount": 0,
+        "path": "/tmp/p53-t13-bitcoin-review-fix-327/static-only/package-sets/bitcoin-bitcoin/bundle-set-preflight.json",
+        "relationCount": 0,
+        "status": "passed",
+        "warningCount": 0
+      },
+      "ref": null,
+      "repository": "https://github.com/bitcoin/bitcoin",
+      "repositoryProfileDetection": {
+        "advisoryHintCount": 0,
+        "authority": "producer_profile_selection_only",
+        "candidateProfileCount": 3,
+        "confidence": "low",
+        "decision": "fallback",
+        "diagnosticCodes": [
+          "repository_profile_fallback"
+        ],
+        "fallbackProfileId": "generic.repository.v0",
+        "mode": "auto",
+        "overrideSource": "none",
+        "path": "/tmp/p53-t13-bitcoin-review-fix-327/static-only/reports/repository-profile-detections/bitcoin-bitcoin/repository-profile-detection.json",
+        "reasonCodes": [
+          "insufficient_high_confidence_profile_evidence"
+        ],
+        "rejectedProfileCount": 3,
+        "selectedProfileId": null,
+        "status": "completed"
+      },
+      "revision": "a2aab6df97d9f3e1186e8c3fc57ad909cc8aef9b",
+      "status": "passed",
+      "workspaceInventory": {
+        "path": "/tmp/p53-t13-bitcoin-review-fix-327/static-only/collected/bitcoin-bitcoin/workspace-inventory.json"
+      }
+    }
+  ],
+  "repositoryPluginAdapterEvidence": {
+    "adapterExecution": "not_run",
+    "appliedToDrafting": false,
+    "reason": "operator_not_provided",
+    "registryAuthority": false,
+    "status": "not_provided"
+  },
+  "repositoryPluginApplicability": {
+    "appliedToDrafting": false,
+    "reason": "operator_not_provided",
+    "registryAuthority": false,
+    "status": "not_provided"
+  },
+  "repositoryProfileSelection": {
+    "advisoryHintsAppliedToDrafting": false,
+    "artifact": "repository-profile-detection.json",
+    "authority": "producer_profile_selection_only",
+    "defaultMode": "none",
+    "execution": "static_collected_evidence_only",
+    "mode": "auto",
+    "registryAuthority": false
+  },
+  "schemaVersion": 1,
+  "selectedIds": [
+    "bitcoin-bitcoin"
+  ],
+  "skipped": [
+    {
+      "id": "public-apis-public-apis",
+      "reason": "not_selected"
+    },
+    {
+      "id": "freecodecamp-freecodecamp",
+      "reason": "not_selected"
+    },
+    {
+      "id": "affaan-m-ecc",
+      "reason": "not_selected"
+    },
+    {
+      "id": "spf13-cobra",
+      "reason": "not_selected"
+    },
+    {
+      "id": "ultraworkers-claw-code",
+      "reason": "not_selected"
+    },
+    {
+      "id": "krahets-hello-algo",
+      "reason": "not_selected"
+    },
+    {
+      "id": "electron-electron",
+      "reason": "not_selected"
+    },
+    {
+      "id": "jaywcjlove-awesome-mac",
+      "reason": "not_selected"
+    },
+    {
+      "id": "ebookfoundation-free-programming-books",
+      "reason": "not_selected"
+    },
+    {
+      "id": "nilbuild-developer-roadmap",
+      "reason": "not_selected"
+    },
+    {
+      "id": "trekhleb-javascript-algorithms",
+      "reason": "not_selected"
+    },
+    {
+      "id": "ollama-ollama",
+      "reason": "not_selected"
+    },
+    {
+      "id": "farion1231-cc-switch",
+      "reason": "not_selected"
+    },
+    {
+      "id": "iluwatar-java-design-patterns",
+      "reason": "not_selected"
+    },
+    {
+      "id": "ggml-org-llama-cpp",
+      "reason": "not_selected"
+    },
+    {
+      "id": "vsouza-awesome-ios",
+      "reason": "not_selected"
+    },
+    {
+      "id": "donnemartin-system-design-primer",
+      "reason": "not_selected"
+    },
+    {
+      "id": "vuejs-vue",
+      "reason": "not_selected"
+    },
+    {
+      "id": "snailclimb-javaguide",
+      "reason": "not_selected"
+    },
+    {
+      "id": "golang-go",
+      "reason": "not_selected"
+    },
+    {
+      "id": "sirupsen-logrus",
+      "reason": "not_selected"
+    },
+    {
+      "id": "tokio-rs-tokio",
+      "reason": "not_selected"
+    },
+    {
+      "id": "microsoft-terminal",
+      "reason": "not_selected"
+    },
+    {
+      "id": "apple-container",
+      "reason": "not_selected"
+    },
+    {
+      "id": "vinta-awesome-python",
+      "reason": "not_selected"
+    },
+    {
+      "id": "n8n-io-n8n",
+      "reason": "not_selected"
+    },
+    {
+      "id": "airbnb-javascript",
+      "reason": "not_selected"
+    },
+    {
+      "id": "fatedier-frp",
+      "reason": "not_selected"
+    },
+    {
+      "id": "tauri-apps-tauri",
+      "reason": "not_selected"
+    },
+    {
+      "id": "macrozheng-mall",
+      "reason": "not_selected"
+    },
+    {
+      "id": "opencv-opencv",
+      "reason": "not_selected"
+    },
+    {
+      "id": "iina-iina",
+      "reason": "not_selected"
+    },
+    {
+      "id": "practical-tutorials-project-based-learning",
+      "reason": "not_selected"
+    },
+    {
+      "id": "anomalyco-opencode",
+      "reason": "not_selected"
+    },
+    {
+      "id": "chalarangelo-30-seconds-of-code",
+      "reason": "not_selected"
+    },
+    {
+      "id": "gohugoio-hugo",
+      "reason": "not_selected"
+    },
+    {
+      "id": "denoland-deno",
+      "reason": "not_selected"
+    },
+    {
+      "id": "spring-projects-spring-boot",
+      "reason": "not_selected"
+    },
+    {
+      "id": "alamofire-alamofire",
+      "reason": "not_selected"
+    },
+    {
+      "id": "thealgorithms-python",
+      "reason": "not_selected"
+    },
+    {
+      "id": "firecrawl-firecrawl",
+      "reason": "not_selected"
+    },
+    {
+      "id": "axios-axios",
+      "reason": "not_selected"
+    },
+    {
+      "id": "syncthing-syncthing",
+      "reason": "not_selected"
+    },
+    {
+      "id": "openai-codex",
+      "reason": "not_selected"
+    },
+    {
+      "id": "doocs-advanced-java",
+      "reason": "not_selected"
+    },
+    {
+      "id": "nomic-ai-gpt4all",
+      "reason": "not_selected"
+    },
+    {
+      "id": "nousresearch-hermes-agent",
+      "reason": "not_selected"
+    },
+    {
+      "id": "langgenius-dify",
+      "reason": "not_selected"
+    },
+    {
+      "id": "react-create-react-app",
+      "reason": "not_selected"
+    },
+    {
+      "id": "infiniflow-ragflow",
+      "reason": "not_selected"
+    },
+    {
+      "id": "rayon-rs-rayon",
+      "reason": "not_selected"
+    },
+    {
+      "id": "nationalsecurityagency-ghidra",
+      "reason": "not_selected"
+    },
+    {
+      "id": "tesseract-ocr-tesseract",
+      "reason": "not_selected"
+    },
+    {
+      "id": "significant-gravitas-autogpt",
+      "reason": "not_selected"
+    },
+    {
+      "id": "yangshun-tech-interview-handbook",
+      "reason": "not_selected"
+    },
+    {
+      "id": "mui-material-ui",
+      "reason": "not_selected"
+    },
+    {
+      "id": "junegunn-fzf",
+      "reason": "not_selected"
+    },
+    {
+      "id": "rust-lang-regex",
+      "reason": "not_selected"
+    },
+    {
+      "id": "thealgorithms-java",
+      "reason": "not_selected"
+    },
+    {
+      "id": "ocornut-imgui",
+      "reason": "not_selected"
+    },
+    {
+      "id": "yt-dlp-yt-dlp",
+      "reason": "not_selected"
+    },
+    {
+      "id": "clash-verge-rev-clash-verge-rev",
+      "reason": "not_selected"
+    },
+    {
+      "id": "ryanmcdermott-clean-code-javascript",
+      "reason": "not_selected"
+    },
+    {
+      "id": "jesseduffield-lazygit",
+      "reason": "not_selected"
+    },
+    {
+      "id": "ruvnet-ruview",
+      "reason": "not_selected"
+    },
+    {
+      "id": "kdn251-interviews",
+      "reason": "not_selected"
+    },
+    {
+      "id": "protocolbuffers-protobuf",
+      "reason": "not_selected"
+    },
+    {
+      "id": "microsoft-markitdown",
+      "reason": "not_selected"
+    },
+    {
+      "id": "excalidraw-excalidraw",
+      "reason": "not_selected"
+    },
+    {
+      "id": "juliusbrussee-caveman",
+      "reason": "not_selected"
+    },
+    {
+      "id": "netdata-netdata",
+      "reason": "not_selected"
+    },
+    {
+      "id": "serde-rs-serde",
+      "reason": "not_selected"
+    },
+    {
+      "id": "spring-projects-spring-framework",
+      "reason": "not_selected"
+    },
+    {
+      "id": "ladybirdbrowser-ladybird",
+      "reason": "not_selected"
+    },
+    {
+      "id": "automatic1111-stable-diffusion-webui",
+      "reason": "not_selected"
+    },
+    {
+      "id": "garrytan-gstack",
+      "reason": "not_selected"
+    },
+    {
+      "id": "dietrichgebert-ponytail",
+      "reason": "not_selected"
+    },
+    {
+      "id": "caddyserver-caddy",
+      "reason": "not_selected"
+    },
+    {
+      "id": "rtk-ai-rtk",
+      "reason": "not_selected"
+    },
+    {
+      "id": "huggingface-transformers",
+      "reason": "not_selected"
+    },
+    {
+      "id": "shadcn-ui-ui",
+      "reason": "not_selected"
+    },
+    {
+      "id": "louislam-uptime-kuma",
+      "reason": "not_selected"
+    },
+    {
+      "id": "moby-moby",
+      "reason": "not_selected"
+    },
+    {
+      "id": "openinterpreter-openinterpreter",
+      "reason": "not_selected"
+    },
+    {
+      "id": "open-webui-open-webui",
+      "reason": "not_selected"
+    },
+    {
+      "id": "immich-app-immich",
+      "reason": "not_selected"
+    },
+    {
+      "id": "thedotmack-claude-mem",
+      "reason": "not_selected"
+    },
+    {
+      "id": "clap-rs-clap",
+      "reason": "not_selected"
+    },
+    {
+      "id": "burntsushi-ripgrep",
+      "reason": "not_selected"
+    },
+    {
+      "id": "langchain-ai-langchain",
+      "reason": "not_selected"
+    },
+    {
+      "id": "google-gemini-gemini-cli",
+      "reason": "not_selected"
+    },
+    {
+      "id": "addyosmani-agent-skills",
+      "reason": "not_selected"
+    },
+    {
+      "id": "prometheus-prometheus",
+      "reason": "not_selected"
+    },
+    {
+      "id": "apache-commons-lang",
+      "reason": "not_selected"
+    },
+    {
+      "id": "ytdl-org-youtube-dl",
+      "reason": "not_selected"
+    },
+    {
+      "id": "angular-angular",
+      "reason": "not_selected"
+    },
+    {
+      "id": "anuraghazra-github-readme-stats",
+      "reason": "not_selected"
+    },
+    {
+      "id": "traefik-traefik",
+      "reason": "not_selected"
+    },
+    {
+      "id": "dani-garcia-vaultwarden",
+      "reason": "not_selected"
+    }
+  ],
+  "status": "passed",
+  "summary": {
+    "aiDraftProposalCount": 0,
+    "aiEnrichedPreviewAppliedCount": 0,
+    "aiEnrichedPreviewFailedCount": 0,
+    "aiEnrichedPreviewSkippedCount": 0,
+    "aiEnrichmentProposalCount": 0,
+    "collectedCount": 1,
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 1,
+    "processedCount": 1,
+    "repositoryPluginAdapterEvidenceSidecarCount": 0,
+    "repositoryPluginApplicabilitySidecarCount": 0,
+    "repositoryProfileDetectionCount": 1,
+    "repositoryProfileDisabledCount": 0,
+    "repositoryProfileFallbackCount": 1,
+    "repositoryProfileSelectedCount": 0,
+    "skippedCount": 99,
+    "trustedLocalAdapterRunEvidenceSidecarCount": 0
+  },
+  "trustBoundary": [
+    "Autonomous candidate batch output is producer evidence only.",
+    "Generated package files remain preview candidates until explicit SpecPM review.",
+    "SpecHarvester does not clone repositories, install dependencies, run builds, or execute package scripts.",
+    "Live model execution is limited to the operator-provided local OpenAI-compatible endpoint.",
+    "Raw prompts, raw provider responses, secrets, and chain-of-thought are not persisted.",
+    "SpecPM remains the validation, acceptance, relation, and registry authority."
+  ],
+  "trustedLocalAdapterRunEvidence": {
+    "adapterExecution": "not_run",
+    "appliedToDrafting": false,
+    "reason": "operator_not_provided",
+    "registryAuthority": false,
+    "status": "not_provided"
+  }
+}

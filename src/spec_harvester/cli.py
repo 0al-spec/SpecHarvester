@@ -130,6 +130,10 @@ from spec_harvester.namespace_reports import (
     build_namespace_upstream_report,
     write_namespace_upstream_report,
 )
+from spec_harvester.p53_campaign_quality_triage import (
+    P53CampaignQualityTriageOptions,
+    build_p53_campaign_quality_triage,
+)
 from spec_harvester.p53_codex_spark_wave import (
     P53CodexSparkWaveOptions,
     run_p53_codex_spark_wave,
@@ -830,6 +834,29 @@ def build_parser() -> argparse.ArgumentParser:
         "--codex-timeout-seconds", type=float, default=DEFAULT_CODEX_TIMEOUT_SECONDS
     )
     p53_wave.set_defaults(func=run_p53_codex_spark_wave_cli)
+
+    p53_triage = subcommands.add_parser(
+        "p53-campaign-quality-triage",
+        help="Reconcile and classify all four P53 Codex Spark waves.",
+    )
+    p53_triage.add_argument("--metadata", type=Path, required=True)
+    p53_triage.add_argument("--campaign-plan", type=Path, required=True)
+    p53_triage.add_argument(
+        "--wave-report",
+        type=Path,
+        action="append",
+        required=True,
+        help="One sanitized P53 wave report; provide exactly four.",
+    )
+    p53_triage.add_argument(
+        "--correction",
+        type=Path,
+        action="append",
+        default=[],
+        help="Optional validated targeted correction decision.",
+    )
+    p53_triage.add_argument("--output", type=Path, required=True)
+    p53_triage.set_defaults(func=run_p53_campaign_quality_triage_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2306,6 +2333,24 @@ def run_p53_codex_spark_wave_cli(args: argparse.Namespace) -> int:
                 codex_timeout_seconds=args.codex_timeout_seconds,
                 wave=args.wave,
                 scale_out_decision=args.scale_out_decision,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["status"] == "passed" else 1
+
+
+def run_p53_campaign_quality_triage_cli(args: argparse.Namespace) -> int:
+    try:
+        result = build_p53_campaign_quality_triage(
+            P53CampaignQualityTriageOptions(
+                metadata=args.metadata,
+                campaign_plan=args.campaign_plan,
+                wave_reports=tuple(args.wave_report),
+                corrections=tuple(args.correction),
+                output=args.output,
             )
         )
     except ValueError as exc:

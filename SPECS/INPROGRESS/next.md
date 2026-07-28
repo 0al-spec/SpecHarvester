@@ -1,35 +1,29 @@
-# Next Task: P53-T12 Codex Spark Wave 4
+# Next Task: P53-T14 Portable Author Handoff and SpecPM Intake Preflight
 
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Dependencies:** `P53-T11` Wave-3 Quality Review and Scale-Out Decision
+**Dependencies:** `P53-T13` Campaign Quality Triage
 **Status:** Ready
-**Started:** 2026-07-28
-**Branch:** pending selection after P53-T11 review
+**Branch:** pending selection after P53-T13 review
 
 ## Objective
 
-Run the fourth bounded Codex 5.3 Spark proposal-only wave over frozen positions
-76-100, consuming the recorded P53-T11 authorization before dispatch.
+Prepare portable author handoff packets for selected candidates and run SpecPM
+intake preflight without accepting packages or relations.
 
 ## Next Step
 
-Preserve all P53 gates and complete no registry acceptance.
+Consume only the durable P53-T13 triage after structured review. Preserve source
+and evidence digests, `preview_only`, and explicit maintainer disposition.
 
 ## Recently Archived
 
-- `P53-T10` Codex Spark Wave 3: PASS. All 25 frozen positions 51-75 passed
+- `P53-T13` Campaign Quality Triage: PASS. Exactly 100 frozen repositories were
+  accounted for once; all effective outcomes met quality thresholds and were
+  selected for author review. Two bounded corrections remain explicit in the
+  audit trail.
+- `P53-T12` Codex Spark Wave 4: PASS. All 25 frozen positions 76-100 passed
   static and Codex quality gates with no unsupported claims or terminal
-  failures. The bounded run does not unlock wave 4.
-
-- `P53-T5` Mass Corpus Static-Only Gate: PASS. All 100 pinned local checkouts
-  produced deterministic preview evidence with zero failures; AI and execution
-  surfaces remained disabled.
-
-- `P53-T1` Mass Corpus Operating Plan: PASS. Structured review found no
-  actionable findings, so FOLLOW-UP created no new tasks.
-- `P53-T3` Mass Corpus Source Manifest: PASS. It froze 100 new source
-  identities and public discovery evidence; all checkout-dependent evidence is
-  pending P53-T4 verification.
-- `P53-T3` review: no actionable follow-up tasks. The case-insensitive P52
-  source-identity check was corrected during review and is covered by tests.
+  failures.
+- `P53-T11` Wave-3 Quality Review and Scale-Out Decision: PASS. Three reviewed
+  completed outcomes and all quality thresholds authorized only wave 4.
