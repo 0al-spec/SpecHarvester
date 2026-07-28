@@ -10,6 +10,7 @@
   "decision": "unlock_wave-3_only",
   "sourceWaveReport": {
     "task": "P53-T8",
+    "path": "SPECS/EVIDENCE/P53-T8_Wave_2_Report.json",
     "sha256": "b859cb6accc440d46735756ffd741b4a6b7649c6cb2638aa574ee50f61bf3fce"
   },
   "qualityMetrics": {

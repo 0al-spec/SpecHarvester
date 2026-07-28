@@ -2576,7 +2576,7 @@ Acceptance:
 - [x] `P53-T9` Review the wave-2 quality sample and record the scale-out
   decision. Require at least three manually reviewed candidates and all Phase 53
   quality thresholds before only repositories 51-75 are unlocked.
-- [ ] `P53-T10` Execute Codex Spark wave 3 over repositories 51-75 only after
+- [x] `P53-T10` Execute Codex Spark wave 3 over repositories 51-75 only after
   P53-T9 passes, stopping on quality regression, budget exhaustion, source
   drift, or repeated schema/transport failure.
 - [ ] `P53-T11` Review the wave-3 quality sample and record the scale-out

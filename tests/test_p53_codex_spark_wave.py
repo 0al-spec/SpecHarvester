@@ -39,6 +39,18 @@ def test_wave_two_source_selection_is_exactly_positions_twenty_six_through_fifty
     assert sources[-1]["id"] == "react-create-react-app"
 
 
+def test_wave_three_source_selection_is_exactly_positions_fifty_one_through_seventy_five() -> None:
+    sources = wave_sources(
+        ROOT / "inputs/p53-mass-corpus",
+        ROOT / "inputs/p53-mass-corpus/selection-metadata.json",
+        "wave-3",
+    )
+
+    assert len(sources) == 25
+    assert sources[0]["id"] == "infiniflow-ragflow"
+    assert sources[-1]["id"] == "ladybirdbrowser-ladybird"
+
+
 def test_outcome_classification_only_retries_transport_or_schema_failures() -> None:
     assert outcome_kind({"status": "completed"}) == "completed"
     assert outcome_kind({"status": "failed", "failure": "codex_timeout"}) == "timeout"
@@ -182,6 +194,8 @@ def test_wave_two_runner_requires_t7_authorization_before_dispatch(
     monkeypatch.setattr(wave_module, "wave_sources", lambda *_args: sources)
     monkeypatch.setattr(wave_module, "read_json", lambda *_args: plan)
     monkeypatch.setattr(wave_module, "run_autonomous_candidate_batch", lambda *_args: static)
+    source_report_path = tmp_path / "p53-t6-report.json"
+    source_report_path.write_text("{}", encoding="utf-8")
     decision_path = tmp_path / "p53-t7-decision.json"
     decision_path.write_text(
         json.dumps(
@@ -194,7 +208,13 @@ def test_wave_two_runner_requires_t7_authorization_before_dispatch(
                 "fromWave": "wave-1",
                 "toWave": "wave-2",
                 "decision": "unlock_wave-2_only",
-                "sourceWaveReport": {"task": "P53-T6", "sha256": "a" * 64},
+                "sourceWaveReport": {
+                    "task": "P53-T6",
+                    "path": str(source_report_path),
+                    "sha256": wave_module.calibration.sha256(
+                        source_report_path.read_bytes()
+                    ).hexdigest(),
+                },
                 "qualityMetrics": {
                     "codexCompletionRate": 1.0,
                     "schemaValidRate": 1.0,

@@ -1,0 +1,1215 @@
+{
+  "apiVersion": "spec-harvester.p53-codex-spark-wave/v0",
+  "authority": "producer_wave_evidence_only",
+  "checkpoint": "/tmp/p53-t8-wave-2-rerun/p53-campaign-checkpoint.json",
+  "checkpointSummary": {
+    "completed": 25,
+    "stop": null,
+    "terminalFailed": 0
+  },
+  "codexSpark": {
+    "authority": "proposal_only_not_registry_acceptance",
+    "maxConcurrency": 2,
+    "model": "gpt-5.3-codex-spark",
+    "provider": "codex_exec_external_model_output",
+    "repositories": [
+      {
+        "diagnosticCodes": [],
+        "id": "airbnb-javascript",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "b6522ef36853fe08c37b746b6cf919e63162289fdc2d18fdf77dcae6aaa624e0"
+          },
+          "path": "codex-spark/airbnb-javascript/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 3,
+            "selectedMemberCount": 3,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 22549,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "63c3e65f3bfda30d2ed96712d76b681ff29c456c350c12b91a97194db414bafb"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "f59aeeda96c4979f0b2be64fdc68b616f8a741117e98539319b26b82ad00b641"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "alamofire-alamofire",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "921bd4124bf17feed92765afa33c63b4a0ece6ebf7d0a119c495975047b0edfa"
+          },
+          "path": "codex-spark/alamofire-alamofire/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 18515,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "37a39682bbd2b4ee187f3f3a3f7f6424797b83d4abd794a2c7c8d9d6e01aaf07"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "f89621b4154ca843c4e553768d81f869b1b5f65f23ed86cdb248fda006661130"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "anomalyco-opencode",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "12ffc9b1868cc722fe2e02e06e00aada93cec2722b2b75f2cbc02d2c1082d1f3"
+          },
+          "path": "codex-spark/anomalyco-opencode/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 36,
+            "selectedMemberCount": 36,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 27375,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "c2ddf06709d17e5fa80c132e40d9b06480760b64e0e84f591836d3b6d781f8e1"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "760e36fd27e6c16a21600d0a7c6ba46128705f6d99b9a0e6cbc4f173725d0b48"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "axios-axios",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "983744ee29745a8a8cf66139bd6d4b246b40c9080b997abdb86cff7e38f63dff"
+          },
+          "path": "codex-spark/axios-axios/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 12533,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "a316a011d07c0173702ab128e6da3c90fb4ce5d41f1ed019f9dd1b00b3623ab3"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "cf836dfe63e636c2d9f77efdb4e870a24940cb8015ae31b3a24585d15b421f84"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [
+          "model_evidence_path_unsupported"
+        ],
+        "id": "bitcoin-bitcoin",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "c406ef852374b5abe9579370aed9c09f3b82a77b143110015ad24f8e89f8e540"
+          },
+          "path": "codex-spark/bitcoin-bitcoin/package-set-ai-draft-proposal.json",
+          "status": "warning",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 1
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 11726,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "1a508a48a9afb4a6bc72a8f2ebd2f846e373af22f5a4f5b980c96c7a01ac3c4e"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "3d55cff1253598abd79d803a8a943fc0bee48771621680ae9e6a1ef80c71f6d4"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": false,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 1
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "chalarangelo-30-seconds-of-code",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "1f9ca2f17aa536cbc96170d46975688d8aeb9f0fcf8edd92f1e865eedfbdbaa3"
+          },
+          "path": "codex-spark/chalarangelo-30-seconds-of-code/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 8885,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "3f76ecd909b3f4169d2b1ac47b5a3894fd549f217746368f380d9eefd6170396"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "1e3420878112509eb481d7188464c64892d5841ff33904938229d6466c0c4938"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "denoland-deno",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "2144a5bb67bb0e2967b0a6e5b97c817bb3ee83755380211c7e356bcc9dba097a"
+          },
+          "path": "codex-spark/denoland-deno/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 12019,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "329f0d8dde368f4419208b800fea98893eb977e83925ee37a8327c7498d0684b"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "416047c54134e650840e45a74defa7cb8809dae5a7a5a16303a92d9820ac35d4"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "doocs-advanced-java",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "3f9787c1a94a7467cf9c7ee29d0e6b08b806b5d025a77464731b975d91058e8e"
+          },
+          "path": "codex-spark/doocs-advanced-java/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 11956,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "485c46e159910d348cce32986bf546d43a871c863a26e1a6366eca38af0c2b5a"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "ae88b9b179fb9e948937af1e5c5cdf5ca222414215447e55e6bb4e1a3ed97c68"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "fatedier-frp",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "d4ba7629c59e097b004490a5b71b56789e00df37fd19366ef2f476d2cf82add1"
+          },
+          "path": "codex-spark/fatedier-frp/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 17973,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "78233b04469c70bb081d0c47f0bcda5aceedb68a3ee615578f4d3a3b3e747dfd"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "54bfc13d5bda0ff382e07b5e0e78a34a192e6d3aec55caa79bc4ee92aa6bd60d"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "firecrawl-firecrawl",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "0913902973051eca14e5b6a036a9ca8b9f2d71ca65393336fb6e6b9abb72c4aa"
+          },
+          "path": "codex-spark/firecrawl-firecrawl/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 3,
+            "relationCount": 2,
+            "selectedMemberCount": 2,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 12298,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "56d6c5e96689020c47ba33f71a7ad3afe6aeb8164497e5094586426bdf64e987"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "8c1e2ed21ff2a5482212531b5c6bbe89a9f7901f76036dbdfefe1767be8c5332"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "gohugoio-hugo",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "21d32c8f351e0727abd150b71fc732e83abe18b0e12591be60f3b474f19a4ef7"
+          },
+          "path": "codex-spark/gohugoio-hugo/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 14059,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "b62e3ebb59377710664b59395eea3e723e3208f5b3d19404bbec62dc2bd15435"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "941c94f1ee342059bc7d02be817421a593352f432df9b5cec007fa2ff73398ab"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "iina-iina",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "465f4a0aef77ba7c0b8d25c6dbd1af9b11d185fba084c916a47ba195248a1126"
+          },
+          "path": "codex-spark/iina-iina/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 13040,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "3e2971af32261894d5bc1c838b0c1ac017279e4890bec823b4f5b60ed06128ef"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "8f7010a561f67343120ca7000faeefb8285ff1e4d075178c0a964b4e76f01a44"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "langgenius-dify",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "b7b6283dbdc2ff8991e1ab5a7a3a50d7c6b6a79af1cafa5956489cbc8b597c7f"
+          },
+          "path": "codex-spark/langgenius-dify/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 8,
+            "relationCount": 3,
+            "selectedMemberCount": 3,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 22875,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "2eb183548e3768b1079c511865207cae0148bbb670bc43b35d3eb6ecfb9245d0"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "4ef5b6ad9d66e75ead621387a4325f2828923de28ea5bfcf6b0e1e4a67e29690"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "macrozheng-mall",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "d4813f606edb5aaaf502b207933e4ca0b5e51113b5d1eda80c062dc589aa09a5"
+          },
+          "path": "codex-spark/macrozheng-mall/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 24643,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "c14b5a2bdd826b8cfa7cd09f84d1ef3bad1ced5aefd1f011f3cc7f518ce4f052"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "478826c336089f0da8aaed223e28b90f9a3506b5e160587206480a6285859eb8"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "n8n-io-n8n",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "75bc70a9ac62e71232def46721cc8f933338865a9add242dd653336aac753248"
+          },
+          "path": "codex-spark/n8n-io-n8n/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 10,
+            "relationCount": 3,
+            "selectedMemberCount": 3,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 26143,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "ab0c6ad081e7d9b26d6aa882ccb3626ff7d87d5f2567446be21624264f88f7be"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "c261eff15edbe6d41c2391efe98b210c0149c536f49bc4191d1d285d892d1dda"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "nomic-ai-gpt4all",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "06b70449426c71fc412bbafe0964bf1017db799242f8dbd2829c5bd571b565f2"
+          },
+          "path": "codex-spark/nomic-ai-gpt4all/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 21916,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "019b105f3dd1185153b6c4383441742701e39229683c7dc3dd7dd49e46d17d5f"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "d67857c3b3c7134eadbf16065c4d363dd7fbd4b803ebe7ab5fae1dcd5968dea2"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "nousresearch-hermes-agent",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "24b9ce95d726d13625c8762df8e6fac7aef84e73475fc27aa6a019777ec90fc6"
+          },
+          "path": "codex-spark/nousresearch-hermes-agent/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 2,
+            "relationCount": 5,
+            "selectedMemberCount": 5,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 21802,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "0d23699f72b5aa49b9b5f312d8fc8506d1436383c6bbc241d1f3d2447664aa48"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "93c4c34c41c209d89e823b291638cfaa38972efaf68dbd130afbd1c4d92532a3"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "openai-codex",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "232d8c0ee8f4bab4eaf9d8edb91b9baf7f18b7af78ed44581b1515c22d2d8dc0"
+          },
+          "path": "codex-spark/openai-codex/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 3,
+            "selectedMemberCount": 3,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 16787,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "964d9147cb04d94674419b338db8dd6a556c3178d1b4932ab8f6c8786f0aaa74"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "1589caf155abca6ed7e959fc73f8031f1daaf8a6c17a64dbc1594099db8a367d"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "opencv-opencv",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "c68b404bd5ea8673fcf3f6081db0e2e2965658e3dc5e591aaddc2c254012d212"
+          },
+          "path": "codex-spark/opencv-opencv/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 15877,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "61df6fdb568c7789e1cafb603b352769298caa7cb28f9fa1ea3e01a5e1156c01"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "96885cd3a91437d3e01b17947d6f9e5dbefdb3b3dc5c5dd1f0ab472ceed9cd11"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "practical-tutorials-project-based-learning",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "2e73f42a6a35206a29f43a736d3722e52a35f6f402592d9d54a17df0abe4953c"
+          },
+          "path": "codex-spark/practical-tutorials-project-based-learning/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 22617,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "2a0cefff446470956cdb71e5bcbb3fece80e2dbcf7c4eb1b974dc21c7a950632"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "b3b1894fdd7a7744c4babbe1a28208715479d830e667308d442c584a7f69bbff"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "react-create-react-app",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "a4c394f24e6c02d99b05b9cf6e561e276efa7aff2e2103e1619f0b4610c8b853"
+          },
+          "path": "codex-spark/react-create-react-app/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 1,
+            "relationCount": 11,
+            "selectedMemberCount": 11,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 13366,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "f786b741cd69e371c29dfcda848f45ecb7f2c516133e90e558f34007aff0cb95"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "9249f3d4504c0058f5223ab9e2289e0ac70555cb95c138694c61ea51d5dac222"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "spring-projects-spring-boot",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "bb394a1098e263eeffc5023494e051832bce2c6b8365d1dccbab69934c0695d5"
+          },
+          "path": "codex-spark/spring-projects-spring-boot/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 17200,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "ef05fa4e03a78ea1e11ecefd7e351567c926cbe390702345f87cb6903f28369b"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "321de83d51023dfc76319ce5cd018356bcd9a6ed2f390bf299eb5f95866453e0"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "syncthing-syncthing",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "73bb6543aa5e9f63591f5cbbe89ec7e0568ea0479cf4b24bc9e2b723301bcc8a"
+          },
+          "path": "codex-spark/syncthing-syncthing/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 11443,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "5ed3127e15c3c5075651118e9df2e93e2c66a1e12dba7f294e03990e865cfd12"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "d2d02e0e955df65ce2d5df90001e06ba516ceddc825001c625f7fbc364122197"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "tauri-apps-tauri",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "a21de178f6767f783ee63a695ee51a48cbbbe25d0b66bd12230bbae3e009773e"
+          },
+          "path": "codex-spark/tauri-apps-tauri/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 4,
+            "relationCount": 2,
+            "selectedMemberCount": 2,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 17394,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "8e999cd1cbbbd8d3ffb6c14f9e269f905bb9baea89b78bb01f562bd63ed408ed"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "5e7d0c6702e6b759056c67b3794b09291ce0c403226d65567e2267048b2d3806"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      {
+        "diagnosticCodes": [],
+        "id": "thealgorithms-python",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "45a4cc37ee5836ab820f9e431ea678e3db19b0f6c35780b150cc41b21eb15a01"
+          },
+          "path": "codex-spark/thealgorithms-python/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 1,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 17904,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "95dd85ee5f3d7d8867c2633cbd9afb1aeacddb34ed9392af28825eaae6a9e6f2"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "5c51246e50f562e97d69983b6c769e677d4674c106a7338982248805fd5f5325"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      }
+    ]
+  },
+  "kind": "SpecHarvesterP53CodexSparkWaveReport",
+  "phase": "P53",
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "externalProviderLogging": "operator_managed_not_verified",
+    "rawModelResponsesPersisted": false,
+    "rawPromptsPersisted": false,
+    "scope": "spec_harvester_durable_artifacts",
+    "secretsIncluded": false
+  },
+  "schemaVersion": 1,
+  "sourceIds": [
+    "n8n-io-n8n",
+    "airbnb-javascript",
+    "fatedier-frp",
+    "tauri-apps-tauri",
+    "macrozheng-mall",
+    "opencv-opencv",
+    "iina-iina",
+    "practical-tutorials-project-based-learning",
+    "anomalyco-opencode",
+    "chalarangelo-30-seconds-of-code",
+    "gohugoio-hugo",
+    "denoland-deno",
+    "spring-projects-spring-boot",
+    "bitcoin-bitcoin",
+    "alamofire-alamofire",
+    "thealgorithms-python",
+    "firecrawl-firecrawl",
+    "axios-axios",
+    "syncthing-syncthing",
+    "openai-codex",
+    "doocs-advanced-java",
+    "nomic-ai-gpt4all",
+    "nousresearch-hermes-agent",
+    "langgenius-dify",
+    "react-create-react-app"
+  ],
+  "static": {
+    "report": "/tmp/p53-t8-wave-2-rerun/static-only/autonomous-candidate-batch-report.json",
+    "status": "passed"
+  },
+  "status": "passed",
+  "task": "P53-T8",
+  "wave": "wave-2"
+}

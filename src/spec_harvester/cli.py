@@ -814,7 +814,7 @@ def build_parser() -> argparse.ArgumentParser:
     p53_wave.add_argument("--out", type=Path, required=True, help="Wave output root.")
     p53_wave.add_argument(
         "--wave",
-        choices=("wave-1", "wave-2"),
+        choices=("wave-1", "wave-2", "wave-3"),
         default="wave-1",
         help="Frozen P53 wave to execute. Default: wave-1.",
     )
