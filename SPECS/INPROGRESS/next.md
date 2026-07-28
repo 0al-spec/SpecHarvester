@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
 **Dependencies:** `P54-T2` Local Candidate Review Workbench Schemas
-**Status:** Ready
-**Branch:** pending selection after P54-T2 review
+**Status:** Selected
+**Branch:** `feature/P54-T3-deterministic-local-review-catalog`
 
 ## Objective
 
