@@ -1,0 +1,7 @@
+[
+  {"case": "bad_packet_digest", "path": ["detail", "binding", "packetSha256"], "value": "../packet"},
+  {"case": "unknown_disposition", "path": ["decision", "disposition"], "value": "publish"},
+  {"case": "invalid_reason_code", "path": ["decision", "reasonCode"], "value": "<script>"},
+  {"case": "missing_prior_link", "path": ["decision"], "delete": "priorDecisionSha256"},
+  {"case": "registry_authority", "path": ["export", "authority"], "value": "registry_truth"}
+]

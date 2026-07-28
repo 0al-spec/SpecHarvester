@@ -17,6 +17,8 @@ export bundle.
 ## Acceptance
 
 - Every candidate-bearing record binds a P53-T14 packet SHA-256.
+- Catalog items expose readiness, warning, correction, ecosystem,
+  package-shape, and preflight facets.
 - Decisions require reviewer, timestamp, reason code, packet digest, and
   prior-decision linkage.
 - Export remains proposal/review evidence and cannot assert registry authority.

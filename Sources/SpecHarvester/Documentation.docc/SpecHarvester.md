@@ -308,6 +308,7 @@ the host.
 - <doc:ControlledRepositoryCorpusPlan>
 - <doc:MassRepositoryCampaignPlan>
 - <doc:LocalCandidateReviewWorkbenchContract>
+- <doc:LocalCandidateReviewWorkbenchSchemas>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

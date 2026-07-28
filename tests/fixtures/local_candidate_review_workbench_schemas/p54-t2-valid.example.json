@@ -1,0 +1,51 @@
+{
+  "apiVersion": "spec-harvester.local-candidate-review-schema-fixture/v0",
+  "kind": "SpecHarvesterLocalCandidateReviewSchemaFixture",
+  "catalog": {
+    "apiVersion": "spec-harvester.candidate-review-catalog/v0",
+    "kind": "SpecHarvesterCandidateReviewCatalog",
+    "authority": "local_review_catalog_evidence_only",
+    "sourceBundleSha256": "db2593d7b17fd3f0da348b3fce72ea86b510d7c562b82b78047b926608709e63",
+    "items": [{"candidateId": "bitcoin-bitcoin", "packetSha256": "573d216eea25945b04202075ab7f9ebea816a4bb4f77722c828ed0a261919cf0", "reviewState": "unreviewed", "readiness": "ready_for_author_review", "ecosystem": "cpp", "packageShape": "single_package", "warningCount": 0, "corrected": false, "preflightStatus": "passed"}]
+  },
+  "detail": {
+    "apiVersion": "spec-harvester.candidate-review-detail/v0",
+    "kind": "SpecHarvesterCandidateReviewDetail",
+    "authority": "local_review_detail_evidence_only",
+    "binding": {"candidateId": "bitcoin-bitcoin", "packetSha256": "573d216eea25945b04202075ab7f9ebea816a4bb4f77722c828ed0a261919cf0"},
+    "previewOnly": true,
+    "sections": [{"id": "manifest", "contentType": "application/yaml", "content": "preview_only: true"}]
+  },
+  "comparison": {
+    "apiVersion": "spec-harvester.candidate-review-comparison/v0",
+    "kind": "SpecHarvesterCandidateReviewComparison",
+    "authority": "local_review_comparison_evidence_only",
+    "binding": {"candidateId": "bitcoin-bitcoin", "packetSha256": "573d216eea25945b04202075ab7f9ebea816a4bb4f77722c828ed0a261919cf0"},
+    "static": {"memberCount": 1},
+    "ai": {"status": "portable"}
+  },
+  "decision": {
+    "apiVersion": "spec-harvester.candidate-review-decision/v0",
+    "kind": "SpecHarvesterCandidateReviewDecision",
+    "authority": "local_review_decision_evidence_only",
+    "binding": {"candidateId": "bitcoin-bitcoin", "packetSha256": "573d216eea25945b04202075ab7f9ebea816a4bb4f77722c828ed0a261919cf0"},
+    "disposition": "accept_for_intake",
+    "reviewer": "maintainer@example",
+    "recordedAt": "2026-07-28T17:00:00Z",
+    "reasonCode": "evidence_verified",
+    "priorDecisionSha256": null
+  },
+  "reasons": {
+    "apiVersion": "spec-harvester.candidate-review-reasons/v0",
+    "kind": "SpecHarvesterCandidateReviewReasons",
+    "codes": [{"code": "evidence_verified", "allowedDispositions": ["accept_for_intake"], "label": "Evidence verified"}]
+  },
+  "export": {
+    "apiVersion": "spec-harvester.candidate-review-export/v0",
+    "kind": "SpecHarvesterCandidateReviewExport",
+    "authority": "portable_local_review_evidence_only",
+    "sourceBundleSha256": "db2593d7b17fd3f0da348b3fce72ea86b510d7c562b82b78047b926608709e63",
+    "decisions": [],
+    "registryMutationCount": 0
+  }
+}
