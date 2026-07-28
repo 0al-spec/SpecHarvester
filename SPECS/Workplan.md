@@ -2730,8 +2730,9 @@ Acceptance:
   public index.
 - [ ] `P54-T9` Run the Workbench end-to-end over the P53 handoff corpus,
   including malformed packet, digest drift, path traversal, stale decision,
-  interrupted write, restart, browser usability, and representative maintainer
-  review checks.
+  interrupted write, restart, browser usability, hostile candidate markup,
+  restrictive CSP, blocked candidate-origin decision requests, and
+  representative maintainer review checks.
 - [ ] `P54-T10` Record the Phase 54 exit decision: stop, run bounded follow-up,
   authorize maintainer use of the local Workbench, or plan a separate
   publication phase. Do not authorize automatic acceptance or registry
@@ -2760,7 +2761,9 @@ Acceptance:
   only schema-valid, digest-bound P53-T14 handoff packets.
 - P54-T4 and P54-T5 must remain usable with the generated local catalog even
   when no public network connection, Docker daemon, or model provider is
-  available.
+  available. Every candidate-controlled value must be rendered as inert content
+  under a restrictive CSP; candidate markup or script must not execute, reach
+  the decision service, or submit a reviewer disposition.
 - P54-T6 must reject path traversal, writes outside the configured review
   workspace, malformed decisions, unknown candidate identities, stale packet
   digests, and silent decision overwrite.
@@ -2770,8 +2773,10 @@ Acceptance:
   approved candidates. It must not edit accepted-source manifests, publish
   packages, accept relations, or mutate registry truth.
 - P54-T9 must exercise representative candidates from all Phase 53 waves and
-  prove that review state survives restart without weakening packet,
-  provenance, privacy, or authority boundaries.
+  prove that review state survives restart. Hostile-markup fixtures must prove
+  that candidate content cannot execute in the reviewer origin or invoke the
+  decision service, without weakening packet, provenance, privacy, or authority
+  boundaries.
 - P54-T10 must complete before any automatic publication workflow, shared
   multi-user service, remote authentication model, or broader corpus review is
   planned.
