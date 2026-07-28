@@ -39,6 +39,16 @@ def campaign_inputs(tmp_path: Path) -> P53CampaignQualityTriageOptions:
     plan = write_json(
         tmp_path / "plan.json",
         {
+            "apiVersion": "spec-harvester.mass-repository-campaign-plan/v0",
+            "kind": "SpecHarvesterMassRepositoryCampaignPlan",
+            "phase": "P53",
+            "task": "P53-T1",
+            "authority": "producer_planning_evidence_only",
+            "worker": {
+                "model": "gpt-5.3-codex-spark",
+                "invocationSurface": "codex_exec",
+                "proposalOnly": True,
+            },
             "qualityMetrics": {
                 "staticCompletionRateMinimum": 0.98,
                 "codexCompletionRateMinimum": 0.95,
@@ -248,6 +258,20 @@ def test_campaign_triage_applies_explicit_corrective_evidence(tmp_path: Path) ->
             },
             ("deferred", ["proposal_artifact_incomplete"]),
         ),
+        (
+            {
+                "status": "completed",
+                "schemaValid": True,
+                "unsupportedClaimCount": 0,
+                "repositorySpecific": True,
+                "proposal": {
+                    "status": "completed",
+                    "path": "proposal.json",
+                    "digest": {"algorithm": "sha256", "value": "invalid"},
+                },
+            },
+            ("deferred", ["proposal_artifact_invalid"]),
+        ),
     ],
 )
 def test_classify_outcome_preserves_failure_dispositions(
@@ -298,6 +322,7 @@ def test_campaign_triage_rejects_invalid_correction_digest(tmp_path: Path) -> No
         ("record_count", "must contain exactly 25 outcomes"),
         ("record_identity", "outcomes do not match frozen source identities"),
         ("privacy", "violates the privacy boundary"),
+        ("receipt_privacy", "outcome receipt violates the privacy boundary"),
     ],
 )
 def test_campaign_triage_rejects_invalid_wave_boundaries(
@@ -317,6 +342,8 @@ def test_campaign_triage_rejects_invalid_wave_boundaries(
         report["codexSpark"]["repositories"].pop()
     elif mutation == "record_identity":
         report["codexSpark"]["repositories"][0]["id"] = "unknown-repository"
+    elif mutation == "receipt_privacy":
+        report["codexSpark"]["repositories"][0]["receipt"]["rawPromptPersisted"] = True
     else:
         report["privacy"]["rawPromptsPersisted"] = True
     write_json(options.wave_reports[0], report)

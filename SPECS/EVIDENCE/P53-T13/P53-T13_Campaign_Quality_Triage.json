@@ -2043,7 +2043,8 @@
       },
       "proposal": {
         "digest": {
-          "sha256": "4818f764de36046994d4de1b37b3644f53adcc8a966fd9635af54af5c3297803"
+          "algorithm": "sha256",
+          "value": "4818f764de36046994d4de1b37b3644f53adcc8a966fd9635af54af5c3297803"
         },
         "path": "codex-spark/bitcoin-bitcoin/package-set-ai-draft-proposal.json",
         "status": "completed",

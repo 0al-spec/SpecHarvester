@@ -38,6 +38,7 @@ def build_p53_campaign_quality_triage(
 ) -> dict[str, Any]:
     metadata = read_json_object(options.metadata)
     plan = read_json_object(options.campaign_plan)
+    validate_campaign_inputs(metadata, plan)
     repositories = metadata.get("repositories")
     if not isinstance(repositories, list) or len(repositories) != 100:
         raise ValueError("P53-T13 requires exactly 100 frozen metadata repositories")
@@ -220,16 +221,21 @@ def validate_wave_report(
     if len(set(record_ids)) != 25 or set(record_ids) != set(expected_ids):
         raise ValueError(f"P53-T13 {wave} outcomes do not match frozen source identities")
     privacy = mapping_value(report.get("privacy"))
-    forbidden = (
-        privacy.get("rawPromptsPersisted"),
-        privacy.get("rawModelResponsesPersisted"),
-        privacy.get("rawProviderResponsesPersisted"),
-        privacy.get("chainOfThoughtPersisted"),
-        privacy.get("secretsIncluded"),
-        privacy.get("secretsPersisted"),
+    required_false = (
+        "rawPromptsPersisted",
+        "rawModelResponsesPersisted",
+        "chainOfThoughtPersisted",
+        "secretsIncluded",
     )
-    if any(value is True for value in forbidden):
+    if any(privacy.get(key) is not False for key in required_false):
         raise ValueError(f"P53-T13 {wave} violates the privacy boundary")
+    for record in records:
+        receipt = mapping_value(mapping_value(record).get("receipt"))
+        if any(
+            receipt.get(key) is not False
+            for key in ("rawPromptPersisted", "rawResponsePersisted", "chainOfThoughtPersisted")
+        ):
+            raise ValueError(f"P53-T13 {wave} outcome receipt violates the privacy boundary")
 
 
 def load_corrections(paths: tuple[Path, ...]) -> dict[str, dict[str, Any]]:
@@ -285,12 +291,16 @@ def effective_outcome(
     effective["repositorySpecific"] = True
     effective["unsupportedClaimCount"] = 0
     effective["diagnosticCodes"] = []
+    corrected_proposal = mapping_value(
+        mapping_value(correction["disposition"].get("artifacts")).get("correctedProposal")
+    )
     effective["proposal"] = {
         **mapping_value(original.get("proposal")),
         "status": "completed",
-        "digest": mapping_value(correction["disposition"].get("artifacts")).get(
-            "correctedProposal"
-        ),
+        "digest": {
+            "algorithm": "sha256",
+            "value": corrected_proposal.get("sha256"),
+        },
     }
     return effective
 
@@ -343,6 +353,15 @@ def classify_outcome(outcome: dict[str, Any]) -> tuple[str, list[str]]:
     proposal_status = mapping_value(outcome.get("proposal")).get("status")
     if proposal_status not in {"completed", "warning"}:
         return "deferred", ["proposal_artifact_incomplete"]
+    proposal = mapping_value(outcome.get("proposal"))
+    digest = mapping_value(proposal.get("digest"))
+    if (
+        not isinstance(proposal.get("path"), str)
+        or not proposal["path"]
+        or digest.get("algorithm") != "sha256"
+        or not valid_sha256(digest.get("value"))
+    ):
+        return "deferred", ["proposal_artifact_invalid"]
     return "selected_for_author_review", []
 
 
@@ -378,6 +397,33 @@ def artifact_record(path: Path, task: Any) -> dict[str, Any]:
         "path": str(path),
         "sha256": sha256(path.read_bytes()).hexdigest(),
     }
+
+
+def validate_campaign_inputs(metadata: dict[str, Any], plan: dict[str, Any]) -> None:
+    metadata_required = {
+        "apiVersion": "spec-harvester.mass-corpus-selection-metadata/v0",
+        "kind": "SpecHarvesterMassCorpusSelectionMetadata",
+        "phase": "P53",
+        "task": "P53-T3",
+    }
+    plan_required = {
+        "apiVersion": "spec-harvester.mass-repository-campaign-plan/v0",
+        "kind": "SpecHarvesterMassRepositoryCampaignPlan",
+        "phase": "P53",
+        "task": "P53-T1",
+        "authority": "producer_planning_evidence_only",
+    }
+    if any(metadata.get(key) != value for key, value in metadata_required.items()):
+        raise ValueError("P53-T13 metadata is not authorized P53-T3 evidence")
+    if any(plan.get(key) != value for key, value in plan_required.items()):
+        raise ValueError("P53-T13 campaign plan is not authorized P53-T1 evidence")
+    worker = mapping_value(plan.get("worker"))
+    if (
+        worker.get("model") != "gpt-5.3-codex-spark"
+        or worker.get("invocationSurface") != "codex_exec"
+        or worker.get("proposalOnly") is not True
+    ):
+        raise ValueError("P53-T13 campaign plan does not authorize the required worker")
 
 
 def valid_sha256(value: Any) -> bool:
