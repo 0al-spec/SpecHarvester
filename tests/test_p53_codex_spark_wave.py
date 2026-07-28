@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 import spec_harvester.cli as cli
 import spec_harvester.p53_codex_spark_wave as wave_module
 from spec_harvester.p53_codex_spark_wave import (
@@ -195,7 +197,22 @@ def test_wave_two_runner_requires_t7_authorization_before_dispatch(
     monkeypatch.setattr(wave_module, "read_json", lambda *_args: plan)
     monkeypatch.setattr(wave_module, "run_autonomous_candidate_batch", lambda *_args: static)
     source_report_path = tmp_path / "p53-t6-report.json"
-    source_report_path.write_text("{}", encoding="utf-8")
+    reviewed_ids = [f"review-{index}" for index in range(5)]
+    source_report_path.write_text(
+        json.dumps(
+            {
+                "task": "P53-T6",
+                "status": "passed",
+                "codexSpark": {
+                    "repositories": [
+                        {"id": repository_id, "status": "completed"}
+                        for repository_id in reviewed_ids
+                    ]
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
     decision_path = tmp_path / "p53-t7-decision.json"
     decision_path.write_text(
         json.dumps(
@@ -224,7 +241,7 @@ def test_wave_two_runner_requires_t7_authorization_before_dispatch(
                 },
                 "humanReview": {
                     "minimumRequired": 5,
-                    "reviewedRepositoryIds": [f"review-{index}" for index in range(5)],
+                    "reviewedRepositoryIds": reviewed_ids,
                 },
             }
         ),
@@ -261,6 +278,29 @@ def test_wave_two_runner_requires_t7_authorization_before_dispatch(
     assert report["wave"] == "wave-2"
     assert report["checkpointSummary"]["completed"] == 25
     assert report["scaleOutDecision"]["task"] == "P53-T7"
+
+    source_payload = json.loads(source_report_path.read_text(encoding="utf-8"))
+    source_payload["status"] = "failed"
+    source_report_path.write_text(json.dumps(source_payload), encoding="utf-8")
+    decision_payload = json.loads(decision_path.read_text(encoding="utf-8"))
+    decision_payload["sourceWaveReport"]["sha256"] = wave_module.calibration.sha256(
+        source_report_path.read_bytes()
+    ).hexdigest()
+    decision_path.write_text(json.dumps(decision_payload), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="source evidence is not a passed prior wave"):
+        runner.validate_scale_out_decision(plan)
+
+    source_payload["status"] = "passed"
+    source_payload["codexSpark"]["repositories"].pop()
+    source_report_path.write_text(json.dumps(source_payload), encoding="utf-8")
+    decision_payload["sourceWaveReport"]["sha256"] = wave_module.calibration.sha256(
+        source_report_path.read_bytes()
+    ).hexdigest()
+    decision_path.write_text(json.dumps(decision_payload), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="reviews are not backed by completed outcomes"):
+        runner.validate_scale_out_decision(plan)
 
 
 def test_wave_two_rejects_missing_t7_authorization(tmp_path: Path, monkeypatch) -> None:
