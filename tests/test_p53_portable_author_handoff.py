@@ -3,9 +3,11 @@ from __future__ import annotations
 import json
 from hashlib import sha256
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
+from spec_harvester import cli
 from spec_harvester.p53_portable_author_handoff import (
     P53PortableAuthorHandoffOptions,
     build_p53_portable_author_handoff,
@@ -207,6 +209,38 @@ def test_rejects_non_selected_triage_record(tmp_path: Path) -> None:
         build_p53_portable_author_handoff(options)
 
 
+def test_rejects_repository_id_path_traversal(tmp_path: Path) -> None:
+    options = handoff_inputs(tmp_path)
+    metadata = json.loads(options.metadata.read_text(encoding="utf-8"))
+    triage = json.loads(options.triage.read_text(encoding="utf-8"))
+    metadata["repositories"][0]["id"] = "../outside"
+    triage["repositories"][0]["id"] = "../outside"
+    write_json(options.metadata, metadata)
+    write_json(options.triage, triage)
+
+    with pytest.raises(ValueError, match="safe path components"):
+        build_p53_portable_author_handoff(options)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("status", "missing"),
+        ("path", "../proposal.json"),
+        ("digest", {"algorithm": "sha256", "value": "not-a-digest"}),
+        ("summary", None),
+    ],
+)
+def test_rejects_malformed_selected_proposal(tmp_path: Path, field: str, value: object) -> None:
+    options = handoff_inputs(tmp_path)
+    triage = json.loads(options.triage.read_text(encoding="utf-8"))
+    triage["repositories"][0]["proposal"][field] = value
+    write_json(options.triage, triage)
+
+    with pytest.raises(ValueError, match="valid proposal evidence"):
+        build_p53_portable_author_handoff(options)
+
+
 def test_rejects_metadata_digest_drift(tmp_path: Path) -> None:
     options = handoff_inputs(tmp_path)
     metadata = json.loads(options.metadata.read_text(encoding="utf-8"))
@@ -247,6 +281,16 @@ def test_rejects_candidate_symlink(tmp_path: Path) -> None:
         build_p53_portable_author_handoff(options)
 
 
+def test_rejects_undeclared_candidate_file(tmp_path: Path) -> None:
+    options = handoff_inputs(tmp_path)
+    (options.candidate_root / "repo-001" / "repo-001.core" / "unexpected.html").write_text(
+        "<p>not declared</p>", encoding="utf-8"
+    )
+
+    with pytest.raises(ValueError, match="undeclared file"):
+        build_p53_portable_author_handoff(options)
+
+
 def test_defers_missing_portable_candidate(tmp_path: Path) -> None:
     options = handoff_inputs(tmp_path)
     options = P53PortableAuthorHandoffOptions(**{**options.__dict__, "candidate_root": None})
@@ -268,3 +312,23 @@ def test_rejects_nonempty_packet_root(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="packet root must be empty"):
         build_p53_portable_author_handoff(options)
+
+
+def test_cli_returns_failure_when_handoff_needs_review(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        cli,
+        "build_p53_portable_author_handoff",
+        lambda _options: {"status": "review_required"},
+    )
+    args = SimpleNamespace(
+        triage=Path("triage.json"),
+        metadata=Path("metadata.json"),
+        packet_root=Path("packets"),
+        aggregate_output=Path("aggregate.json"),
+        report_output=Path("report.json"),
+        repo_root=Path("."),
+        candidate_root=None,
+        proposal_root=None,
+    )
+
+    assert cli.run_p53_portable_author_handoff_cli(args) == 1

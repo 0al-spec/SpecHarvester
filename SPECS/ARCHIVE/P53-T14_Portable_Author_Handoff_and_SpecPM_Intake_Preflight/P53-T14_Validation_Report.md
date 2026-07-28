@@ -75,7 +75,7 @@ metadata, and creates no SpecPM pull request.
 
 - Full pytest: `1058 passed, 1 skipped`.
 - Coverage: `90.02%`, threshold `90%`.
-- Focused P53-T14 tests: `11 passed`.
+- Focused P53-T14 review-hardening tests: `18 passed`.
 - Documentation contracts: `196 passed`.
 - Ruff check: PASS.
 - Ruff format check: PASS.
@@ -99,3 +99,7 @@ metadata, and creates no SpecPM pull request.
 PASS. P53-T14 produced a complete local author-review corpus and a
 SpecPM-preflighted aggregate handoff for all 100 candidates. It unlocks
 P53-T15, which must record the Phase 53 exit decision before Phase 54 starts.
+
+The complete packet corpus is also retained as the digest-bound
+`SPECS/EVIDENCE/P53-T14/P53-T14_Portable_Handoff.tar.gz`, so review input does
+not depend on the original operator workspace.

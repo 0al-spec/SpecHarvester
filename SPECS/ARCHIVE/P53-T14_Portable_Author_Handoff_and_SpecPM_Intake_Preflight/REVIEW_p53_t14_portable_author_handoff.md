@@ -57,3 +57,14 @@
 - Proceed to P53-T15 for the bounded Phase 53 exit decision.
 - Keep package acceptance, relation acceptance, publication, and registry
   mutation outside SpecHarvester authority.
+
+### GitHub Review Remediation
+
+- Repository identities are validated as single safe path components before
+  output paths are created.
+- Every selected record must carry completed, relative-path, SHA-256-bound
+  proposal evidence.
+- Undeclared candidate files fail the handoff instead of being omitted.
+- The CLI returns a failure status when the handoff requires review.
+- Retained SpecPM evidence is sanitized, and the complete 100-packet corpus is
+  available through a repository-retained digest-bound archive.

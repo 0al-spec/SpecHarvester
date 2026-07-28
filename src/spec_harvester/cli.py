@@ -2412,7 +2412,7 @@ def run_p53_portable_author_handoff_cli(args: argparse.Namespace) -> int:
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
         return 2
     print(json.dumps(result, indent=2, sort_keys=True))
-    return 0
+    return 0 if result.get("status") == "passed" else 1
 
 
 def run_draft_package_set(args: argparse.Namespace) -> int:

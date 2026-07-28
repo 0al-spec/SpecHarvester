@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from dataclasses import dataclass
 from hashlib import sha256
@@ -18,6 +19,8 @@ PACKET_KIND = "SpecHarvesterP53PortableAuthorHandoffPacket"
 REPORT_API_VERSION = "spec-harvester.p53-portable-author-handoff/v0"
 REPORT_KIND = "SpecHarvesterP53PortableAuthorHandoff"
 ALLOWED_CANDIDATE_SUFFIXES = {".json", ".yaml", ".yml"}
+SAFE_REPOSITORY_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
+SHA256_HEX = re.compile(r"[0-9a-f]{64}\Z")
 NON_AUTHORITY = [
     "This proposal is review evidence only.",
     "It is not SpecPM registry acceptance.",
@@ -265,9 +268,30 @@ def validate_inputs(
     if len(set(source_ids)) != 100 or set(source_ids) != set(record_ids):
         raise ValueError("P53-T14 metadata and triage identities do not match")
     if any(
+        not isinstance(item, str) or SAFE_REPOSITORY_ID.fullmatch(item) is None
+        for item in source_ids
+    ):
+        raise ValueError("P53-T14 repository IDs must be safe path components")
+    if any(
         mapping_value(item).get("disposition") != "selected_for_author_review" for item in records
     ):
         raise ValueError("P53-T14 cannot hand off a non-selected triage record")
+    for item in records:
+        proposal = mapping_value(mapping_value(item).get("proposal"))
+        digest = mapping_value(proposal.get("digest"))
+        proposal_path = proposal.get("path")
+        if (
+            proposal.get("status") != "completed"
+            or not isinstance(proposal_path, str)
+            or not proposal_path
+            or Path(proposal_path).is_absolute()
+            or ".." in Path(proposal_path).parts
+            or digest.get("algorithm") != "sha256"
+            or not isinstance(digest.get("value"), str)
+            or SHA256_HEX.fullmatch(digest["value"]) is None
+            or not isinstance(proposal.get("summary"), dict)
+        ):
+            raise ValueError("P53-T14 requires valid proposal evidence for every selected record")
     metadata_source = mapping_value(mapping_value(triage.get("sourceArtifacts")).get("metadata"))
     if metadata_source.get("sha256") != sha256_file(options.metadata):
         raise ValueError("P53-T14 metadata digest does not match P53-T13")
@@ -305,8 +329,10 @@ def copy_candidate(
     for path in sorted(source.rglob("*")):
         if path.is_symlink():
             raise ValueError(f"P53-T14 candidate contains a symlink: {path}")
-        if not path.is_file() or path.suffix.lower() not in ALLOWED_CANDIDATE_SUFFIXES:
+        if not path.is_file():
             continue
+        if path.suffix.lower() not in ALLOWED_CANDIDATE_SUFFIXES:
+            raise ValueError(f"P53-T14 candidate contains an undeclared file: {path}")
         relative = path.relative_to(source)
         target = destination / relative
         target.parent.mkdir(parents=True, exist_ok=True)
