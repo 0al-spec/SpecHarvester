@@ -2704,7 +2704,7 @@ Acceptance:
   candidate detail record, static-versus-AI comparison, reviewer decision,
   reason taxonomy, and export bundle. Bind every record to a P53-T14 handoff
   packet digest and include representative valid and invalid fixtures.
-- [ ] `P54-T3` Implement a deterministic catalog generator that ingests only
+- [x] `P54-T3` Implement a deterministic catalog generator that ingests only
   validated portable handoff packets and emits a local static review index with
   readiness, warning, correction, ecosystem, package-shape, and preflight
   facets.

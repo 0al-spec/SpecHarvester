@@ -1,24 +1,26 @@
-# Next Task: P54-T3 Deterministic Local Candidate Review Catalog
+# Next Task: P54-T4 Local Candidate Browser
 
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
-**Dependencies:** `P54-T2` Local Candidate Review Workbench Schemas
+**Dependencies:** `P54-T3` Deterministic Local Candidate Review Catalog
 **Status:** Ready
-**Branch:** pending selection after P54-T2 review
+**Branch:** pending selection after P54-T3 review
 
 ## Objective
 
-Implement a deterministic catalog generator that ingests only validated
-portable handoff packets and emits a local static review index.
+Implement the local candidate browser over the deterministic P54-T3 catalog.
 
 ## Next Step
 
-Validate the source archive and each packet before deriving readiness, warning,
-correction, ecosystem, package-shape, and preflight facets. Preserve packet
-SHA-256 bindings and deterministic ordering.
+Add corpus summary, filtering, sorting, search, review-state navigation, and a
+resumable queue position. Clearly separate candidate packages from already
+accepted public-index packages and preserve static-only operation.
 
 ## Recently Archived
 
+- `P54-T3` Deterministic Local Candidate Review Catalog: PASS. The bounded
+  generator verified all 100 portable packets and emitted a stable,
+  schema-valid catalog with digest bindings and six review facets.
 - `P54-T2` Local Candidate Review Workbench Schemas: PASS. Six versioned
   Workbench records now bind candidate state and decisions to P53-T14 packet
   digests while preserving portable evidence-only authority.

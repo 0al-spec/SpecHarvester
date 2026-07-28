@@ -396,6 +396,8 @@ Published DocC site:
 104. [`LOCAL_CANDIDATE_REVIEW_WORKBENCH_SCHEMAS.md`](LOCAL_CANDIDATE_REVIEW_WORKBENCH_SCHEMAS.md):
    P54-T2 versioned catalog, detail, comparison, decision, reason, and export
    JSON Schema contracts
+105. [`LOCAL_CANDIDATE_REVIEW_CATALOG.md`](LOCAL_CANDIDATE_REVIEW_CATALOG.md):
+   P54-T3 deterministic bounded catalog generation from portable handoff packets
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

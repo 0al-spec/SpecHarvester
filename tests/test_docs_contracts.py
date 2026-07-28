@@ -39,6 +39,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P54-T4 Local Candidate Browser" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P54-T3` Deterministic Local Candidate Review Catalog" in next_text
+        if "**Status:** Selected" in next_text:
+            assert "feature/P54-T4-local-candidate-browser" in next_text
+        else:
+            assert "pending selection after P54-T3 review" in next_text
+        assert "corpus summary" in normalized
+        assert "resumable queue position" in normalized
+        assert "accepted public-index packages" in normalized
+        return
+
     if "# Next Task: P54-T3 Deterministic Local Candidate Review Catalog" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
