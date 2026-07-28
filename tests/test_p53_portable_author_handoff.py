@@ -58,6 +58,7 @@ def handoff_inputs(tmp_path: Path) -> P53PortableAuthorHandoffOptions:
             "repositories": repositories,
         },
     )
+    metadata_digest = sha256(metadata.read_bytes()).hexdigest()
     triage = write_json(
         tmp_path / "evidence" / "triage.json",
         {
@@ -67,6 +68,7 @@ def handoff_inputs(tmp_path: Path) -> P53PortableAuthorHandoffOptions:
             "task": "P53-T13",
             "status": "passed",
             "authority": "producer_triage_evidence_only",
+            "sourceArtifacts": {"metadata": {"sha256": metadata_digest}},
             "repositories": records,
             "privacy": {
                 "rawPromptsPersisted": False,
@@ -88,6 +90,10 @@ def handoff_inputs(tmp_path: Path) -> P53PortableAuthorHandoffOptions:
             encoding="utf-8",
         )
         write_json(package / "validation-report.json", {"status": "passed"})
+        write_json(
+            package / "bundle-set-preflight.json",
+            {"candidateRoot": str(candidate_root / source["id"])},
+        )
     return P53PortableAuthorHandoffOptions(
         triage=triage,
         metadata=metadata,
@@ -122,7 +128,22 @@ def test_builds_one_portable_packet_per_selected_repository(tmp_path: Path) -> N
     assert packet["candidate"]["status"] == "portable"
     assert packet["candidate"]["previewOnly"] is True
     assert packet["aiProposal"]["status"] == "summary_only_not_portable"
-    assert not any(str(tmp_path) in path for path in packet["candidate"]["files"][0].values())
+    packet_text = "".join(
+        path.read_text(encoding="utf-8")
+        for path in (options.packet_root / "repo-001").rglob("*")
+        if path.is_file()
+    )
+    assert str(tmp_path) not in packet_text
+    normalized = json.loads(
+        (
+            options.packet_root
+            / "repo-001"
+            / "candidate"
+            / "repo-001.core"
+            / "bundle-set-preflight.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert normalized["candidateRoot"] == "candidate"
 
 
 def test_copies_only_digest_matching_ai_proposal(tmp_path: Path) -> None:
@@ -183,6 +204,27 @@ def test_rejects_non_selected_triage_record(tmp_path: Path) -> None:
     write_json(options.triage, triage)
 
     with pytest.raises(ValueError, match="non-selected"):
+        build_p53_portable_author_handoff(options)
+
+
+def test_rejects_metadata_digest_drift(tmp_path: Path) -> None:
+    options = handoff_inputs(tmp_path)
+    metadata = json.loads(options.metadata.read_text(encoding="utf-8"))
+    metadata["repositories"][0]["ecosystem"] = "changed"
+    write_json(options.metadata, metadata)
+
+    with pytest.raises(ValueError, match="metadata digest does not match"):
+        build_p53_portable_author_handoff(options)
+
+
+def test_rejects_external_absolute_path_in_candidate_json(tmp_path: Path) -> None:
+    options = handoff_inputs(tmp_path)
+    write_json(
+        options.candidate_root / "repo-001" / "repo-001.core" / "external-path.json",
+        {"source": str(tmp_path / "outside-candidate")},
+    )
+
+    with pytest.raises(ValueError, match="non-portable path"):
         build_p53_portable_author_handoff(options)
 
 

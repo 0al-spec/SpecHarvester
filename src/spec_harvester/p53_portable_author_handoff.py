@@ -17,7 +17,7 @@ PACKET_API_VERSION = "spec-harvester.p53-portable-author-handoff-packet/v0"
 PACKET_KIND = "SpecHarvesterP53PortableAuthorHandoffPacket"
 REPORT_API_VERSION = "spec-harvester.p53-portable-author-handoff/v0"
 REPORT_KIND = "SpecHarvesterP53PortableAuthorHandoff"
-ALLOWED_CANDIDATE_SUFFIXES = {".json", ".yaml", ".yml", ".html", ".css", ".js"}
+ALLOWED_CANDIDATE_SUFFIXES = {".json", ".yaml", ".yml"}
 NON_AUTHORITY = [
     "This proposal is review evidence only.",
     "It is not SpecPM registry acceptance.",
@@ -268,6 +268,9 @@ def validate_inputs(
         mapping_value(item).get("disposition") != "selected_for_author_review" for item in records
     ):
         raise ValueError("P53-T14 cannot hand off a non-selected triage record")
+    metadata_source = mapping_value(mapping_value(triage.get("sourceArtifacts")).get("metadata"))
+    if metadata_source.get("sha256") != sha256_file(options.metadata):
+        raise ValueError("P53-T14 metadata digest does not match P53-T13")
     privacy = mapping_value(triage.get("privacy"))
     if any(
         privacy.get(key) is not False
@@ -307,7 +310,10 @@ def copy_candidate(
         relative = path.relative_to(source)
         target = destination / relative
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(path, target)
+        if path.suffix.lower() == ".json":
+            write_json(target, normalize_portable_json(read_json_value(path), source))
+        else:
+            shutil.copy2(path, target)
         if path.name == "specpm.yaml":
             manifests += 1
             validate_preview_only_manifest(target)
@@ -416,13 +422,43 @@ def portable_path(path: Path, root: Path) -> str:
 
 
 def read_json_object(path: Path) -> dict[str, Any]:
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise ValueError(f"P53-T14 cannot read JSON object: {path}") from exc
+    payload = read_json_value(path)
     if not isinstance(payload, dict):
         raise ValueError(f"P53-T14 requires a JSON object: {path}")
     return payload
+
+
+def read_json_value(path: Path) -> Any:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"P53-T14 cannot read JSON: {path}") from exc
+    return payload
+
+
+def normalize_portable_json(value: Any, source_root: Path) -> Any:
+    if isinstance(value, dict):
+        return {key: normalize_portable_json(item, source_root) for key, item in value.items()}
+    if isinstance(value, list):
+        return [normalize_portable_json(item, source_root) for item in value]
+    if not isinstance(value, str):
+        return value
+    try:
+        relative = Path(value).resolve().relative_to(source_root.resolve())
+    except ValueError:
+        if is_machine_local_path(value):
+            raise ValueError(
+                f"P53-T14 candidate JSON contains a non-portable path: {value}"
+            ) from None
+        return value
+    return str(Path("candidate") / relative)
+
+
+def is_machine_local_path(value: str) -> bool:
+    if value.startswith("//"):
+        return False
+    machine_roots = (str(Path.home()), "/Users/", "/home/", "/tmp/", "/private/var/")
+    return any(value.startswith(root) for root in machine_roots)
 
 
 def sha256_file(path: Path) -> str:

@@ -1,7 +1,7 @@
 {
   "apiVersion": "specpm.selected-candidate-handoff-preflight/v0",
   "authority": "specpm_consumer_preflight",
-  "body": "/Users/egor/Development/GitHub/P53HandoffT14/aggregate-handoff.json",
+  "body": "/Users/egor/Development/GitHub/P53HandoffT14PortableV3/aggregate-handoff.json",
   "errors": [],
   "input": {
     "apiVersion": "spec-harvester.selected-candidate-handoff-proposal/v0",

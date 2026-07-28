@@ -19,7 +19,7 @@ disabled.
 | Portable AI proposal bodies | `2` |
 | Summary-only historical AI proposals | `98` |
 | Deferred candidates | `0` |
-| Packet files | `3,078` |
+| Packet files | `3,080` |
 | Local packet corpus size | `108 MiB` |
 
 The two durable corrected proposals are `bitcoin-bitcoin` and
@@ -32,7 +32,7 @@ explicitly recorded as `summary_only_not_portable`.
 The complete review corpus is retained at:
 
 ```text
-/Users/egor/Development/GitHub/P53HandoffT14
+/Users/egor/Development/GitHub/P53HandoffT14PortableV3
 ```
 
 The deterministic reconstruction root is retained at:
@@ -43,6 +43,9 @@ The deterministic reconstruction root is retained at:
 
 The original dirty `kdn251-interviews` checkout was not modified. Its pinned
 commit was materialized in a separate clean worktree for reconstruction.
+Candidate JSON paths rooted in the reconstruction workspace were rewritten
+relative to `candidate/`; no user-profile or runtime-temporary paths remain in
+the packet corpus.
 
 ## SpecPM Consumer Preflight
 
@@ -70,9 +73,9 @@ metadata, and creates no SpecPM pull request.
 
 ## Quality Gates
 
-- Full pytest: `1056 passed, 1 skipped`.
+- Full pytest: `1058 passed, 1 skipped`.
 - Coverage: `90.02%`, threshold `90%`.
-- Focused P53-T14 tests: `9 passed`.
+- Focused P53-T14 tests: `11 passed`.
 - Documentation contracts: `196 passed`.
 - Ruff check: PASS.
 - Ruff format check: PASS.
