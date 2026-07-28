@@ -16,3 +16,7 @@ Bitcoin corrective-evidence digests.
 4. Persist sanitized receipts, outcomes, checkpoint, and quality metrics without
    raw prompts, provider responses, or chain-of-thought.
 5. Do not unlock wave 4 or change registry, package, or relation truth.
+
+---
+**Archived:** 2026-07-28
+**Verdict:** PASS
