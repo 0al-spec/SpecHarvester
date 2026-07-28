@@ -2564,10 +2564,10 @@ Acceptance:
 - [x] `P53-T5` Run the full 100-repository static-only gate, generating
   deterministic harvest snapshots and preview candidates while Codex, LM
   Studio, adapters, package managers, and harvested code remain disabled.
-- [ ] `P53-T6` Execute Codex Spark wave 1 over repositories 1-25 through the
+- [x] `P53-T6` Execute Codex Spark wave 1 over repositories 1-25 through the
   schema-validated proposal-only path, with configured concurrency, per-source
   timeout and token limits, bounded retries, receipts, and stop-policy checks.
-- [ ] `P53-T7` Review the wave-1 quality sample and record the scale-out
+- [x] `P53-T7` Review the wave-1 quality sample and record the scale-out
   decision. Require at least five manually reviewed candidates and all Phase 53
   quality thresholds before only repositories 26-50 are unlocked.
 - [x] `P53-T8` Execute Codex Spark wave 2 over repositories 26-50 only after
@@ -2585,7 +2585,7 @@ Acceptance:
 - [x] `P53-T12` Execute Codex Spark wave 4 over repositories 76-100 only after
   P53-T11 passes, completing the approved corpus without silently
   substituting, skipping, or expanding sources.
-- [ ] `P53-T13` Aggregate campaign quality and triage every repository/package
+- [x] `P53-T13` Aggregate campaign quality and triage every repository/package
   outcome into selected-for-author-review, deferred, and do-not-promote
   classes. Record static/AI completion, schema validity, repository
   specificity, unsupported claims, retries, token/time usage, and all

@@ -72,3 +72,7 @@ four bounded Codex Spark waves.
 - Expanding beyond the frozen 100-repository corpus.
 - Increasing concurrency or changing the model/provider.
 - Reclassifying unsupported evidence by editorial judgment.
+
+---
+**Archived:** 2026-07-28
+**Verdict:** PASS
