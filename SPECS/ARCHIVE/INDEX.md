@@ -926,3 +926,4 @@
 | 2026-07-28 | P53-T15 | Archived Record Phase 53 Exit Decision (PASS) |
 | 2026-07-28 | P53-T15 | Archived REVIEW_p53_t15_phase_53_exit_decision report |
 | 2026-07-28 | P54-T1 | Archived Local Candidate Review Workbench Product Contract (PASS) |
+| 2026-07-28 | P54-T1 | Archived REVIEW_p54_t1_local_candidate_review_workbench_contract report |
