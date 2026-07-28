@@ -240,6 +240,9 @@ class P53CodexSparkWave:
             )
         if calibration.sha256(Path(source_path).read_bytes()).hexdigest() != source_digest:
             raise ValueError(f"P53 {self.options.wave} source evidence digest mismatch")
+        source_payload = read_json_object(Path(source_path))
+        if source_payload.get("task") != expected[4] or source_payload.get("status") != "passed":
+            raise ValueError(f"P53 {self.options.wave} source evidence is not a passed prior wave")
         metrics = calibration.mapping_value(payload.get("qualityMetrics"))
         thresholds = calibration.mapping_value(plan.get("qualityMetrics"))
         if (
@@ -271,6 +274,17 @@ class P53CodexSparkWave:
         ):
             raise ValueError(
                 f"P53 {self.options.wave} scale-out decision has insufficient review evidence"
+            )
+        completed_ids = {
+            item.get("id")
+            for item in calibration.mapping_value(source_payload.get("codexSpark")).get(
+                "repositories", []
+            )
+            if isinstance(item, dict) and item.get("status") == "completed"
+        }
+        if not set(reviewed_ids).issubset(completed_ids):
+            raise ValueError(
+                f"P53 {self.options.wave} reviews are not backed by completed outcomes"
             )
         correction = calibration.mapping_value(payload.get("correctionDisposition"))
         if self.options.wave == WAVE_THREE:
