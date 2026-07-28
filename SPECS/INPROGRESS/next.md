@@ -3,9 +3,9 @@
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
 **Dependencies:** `P53-T9` Wave-2 Quality Review and Scale-Out Decision
-**Status:** Ready
+**Status:** In Progress
 **Started:** 2026-07-28
-**Branch:** pending selection after P53-T9 review
+**Branch:** `feature/p53-t10-codex-spark-wave-3`
 
 ## Objective
 
