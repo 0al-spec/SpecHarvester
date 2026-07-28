@@ -2582,7 +2582,7 @@ Acceptance:
 - [x] `P53-T11` Review the wave-3 quality sample and record the scale-out
   decision. Require at least three manually reviewed candidates and all Phase 53
   quality thresholds before only repositories 76-100 are unlocked.
-- [ ] `P53-T12` Execute Codex Spark wave 4 over repositories 76-100 only after
+- [x] `P53-T12` Execute Codex Spark wave 4 over repositories 76-100 only after
   P53-T11 passes, completing the approved corpus without silently
   substituting, skipping, or expanding sources.
 - [ ] `P53-T13` Aggregate campaign quality and triage every repository/package
