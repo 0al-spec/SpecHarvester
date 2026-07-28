@@ -1,0 +1,66 @@
+{
+  "apiVersion": "spec-harvester.p53-portable-author-handoff-execution/v0",
+  "authority": "producer_execution_evidence_only",
+  "kind": "SpecHarvesterP53PortableAuthorHandoffExecution",
+  "localArtifacts": {
+    "aggregateHandoff": {
+      "path": "P53HandoffT14PortableV3/aggregate-handoff.json",
+      "sha256": "7e449a2c93413a789eba27a13512252622aa79712a0c1deb4dab04ea1237420c"
+    },
+    "durablePortableBundle": {
+      "format": "tar.gz",
+      "path": "SPECS/EVIDENCE/P53-T14/P53-T14_Portable_Handoff.tar.gz",
+      "repositoryCount": 100,
+      "sha256": "db2593d7b17fd3f0da348b3fce72ea86b510d7c562b82b78047b926608709e63"
+    },
+    "packetRoot": {
+      "fileCount": 3080,
+      "path": "P53HandoffT14PortableV3/packets",
+      "retention": "operator_local_review_workspace"
+    },
+    "producerReport": {
+      "path": "P53HandoffT14PortableV3/p53-t14-report.json",
+      "sha256": "c289ce801b8f85eb857b02bafbab7d680a96e719a1e7e43468924d70ea313edb"
+    },
+    "specpmPreflight": {
+      "path": "SPECS/EVIDENCE/P53-T14/P53-T14_SpecPM_Preflight.json",
+      "sha256": "13edc18a58c4ccd6d79b66cd1ba19a3c943d7199947b8c3c4fa1c0521013d715"
+    },
+    "staticReconstruction": {
+      "path": "P53T14Static/autonomous-candidate-batch-report.json",
+      "sha256": "4f93efca68868ccd4e4847ef4cc7247ee5c6d8b6e2445923ca50261f88ad1ba9"
+    }
+  },
+  "nonAuthority": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "createsSpecPMPullRequest": false,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false
+  },
+  "phase": "P53",
+  "schemaVersion": 1,
+  "specpmConsumerPreflight": {
+    "digestVerifiedCount": 1,
+    "errorCount": 0,
+    "selectedCandidateCount": 100,
+    "status": "passed",
+    "warningCount": 0
+  },
+  "staticReconstruction": {
+    "aiMode": "disabled",
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 100,
+    "processedCount": 100,
+    "status": "passed"
+  },
+  "status": "passed",
+  "summary": {
+    "deferredCandidateCount": 0,
+    "packetCount": 100,
+    "portableAIProposalCount": 2,
+    "portableCandidateCount": 100,
+    "summaryOnlyAIProposalCount": 98
+  },
+  "task": "P53-T14"
+}

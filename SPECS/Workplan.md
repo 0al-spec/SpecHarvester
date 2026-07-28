@@ -2590,7 +2590,7 @@ Acceptance:
   classes. Record static/AI completion, schema validity, repository
   specificity, unsupported claims, retries, token/time usage, and all
   stop-policy events.
-- [ ] `P53-T14` Prepare portable author handoff packets and run SpecPM intake
+- [x] `P53-T14` Prepare portable author handoff packets and run SpecPM intake
   preflight for selected candidates without accepting packages or relations.
   Preserve source/evidence digests, preview-only status, and explicit
   maintainer disposition requirements.

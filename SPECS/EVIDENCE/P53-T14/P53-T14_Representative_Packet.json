@@ -1,0 +1,268 @@
+{
+  "aiProposal": {
+    "path": "ai-proposal.json",
+    "sha256": "1cc0c40af90001b92bd738a9ceedcb19fbf1d4c04aa8fbfcf0458bcc33b18f29",
+    "status": "portable",
+    "summary": {
+      "errorCount": 0,
+      "excludedPackageCount": 0,
+      "relationCount": 0,
+      "selectedMemberCount": 1,
+      "warningCount": 0
+    }
+  },
+  "apiVersion": "spec-harvester.p53-portable-author-handoff-packet/v0",
+  "authority": "producer_portable_handoff_evidence_only",
+  "candidate": {
+    "fileCount": 10,
+    "files": [
+      {
+        "path": "candidate/bitcoin_bitcoin.core/author-ready-draft-quality-report.json",
+        "sha256": "627e10cfa0a606422fc1ad4d8b46f8295e449bdbfe86cdfb6393961b5fc7f206"
+      },
+      {
+        "path": "candidate/bitcoin_bitcoin.core/diagnostics.json",
+        "sha256": "ec66482f9fab5050b9e851860e66772b86f3dcf968b6845aac4f2d0c7d36289f"
+      },
+      {
+        "path": "candidate/bitcoin_bitcoin.core/harvest.json",
+        "sha256": "b8bbc20f01593ac4e2971ea3ec36f2fedbc6f81dcc9f1a9dbac59458ba03e414"
+      },
+      {
+        "path": "candidate/bitcoin_bitcoin.core/producer-receipt.json",
+        "sha256": "6b54ead346220d19ce8f4dcc166ef7b24fdade3c8ca7d445a91bf9c9100c5dde"
+      },
+      {
+        "path": "candidate/bitcoin_bitcoin.core/specpm.yaml",
+        "sha256": "b329aa9ba2b955e50dcc597472141ca260803cda9f216a6e52cd4765a91beb2e"
+      },
+      {
+        "path": "candidate/bitcoin_bitcoin.core/specs/bitcoin.spec.yaml",
+        "sha256": "dc9889cffbcf9d90641bae74a36ea29db10cb5719cc59061a315606aaf4ae98c"
+      },
+      {
+        "path": "candidate/bitcoin_bitcoin.core/validation-report.json",
+        "sha256": "5e9b0127017bf3eb1b7d2587908045413f6eb10fc78e30c329ac419dc5979c13"
+      },
+      {
+        "path": "candidate/bundle-set-preflight.json",
+        "sha256": "dd104c1472a565f1d7c10432bcb2594518e1ade7bd4f94bea872300391e4b80e"
+      },
+      {
+        "path": "candidate/package-relation-proposals.json",
+        "sha256": "196be82aa37859570b6444fc2d11f48ea8761b1264c945f52dd819d0d7be840c"
+      },
+      {
+        "path": "candidate/package-set-draft.json",
+        "sha256": "9eff2e900beb836a51ebf0d5d865c7eeeedf2074ff6f06b3fb5dbac19b3707b6"
+      }
+    ],
+    "manifestCount": 1,
+    "previewOnly": true,
+    "status": "portable"
+  },
+  "kind": "SpecHarvesterP53PortableAuthorHandoffPacket",
+  "maintainerDisposition": "external_required",
+  "nonGoals": [
+    "registry_acceptance",
+    "package_acceptance",
+    "relation_acceptance",
+    "registry_publication"
+  ],
+  "phase": "P53",
+  "previewOnly": true,
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false
+  },
+  "repository": {
+    "ecosystem": "c_cpp",
+    "id": "bitcoin-bitcoin",
+    "licenseProvenance": {
+      "declaredName": "MIT License",
+      "declaredSpdxId": "MIT",
+      "kind": "github_license_api_metadata",
+      "status": "pending_checkout_file_verification"
+    },
+    "position": 39,
+    "provenance": {
+      "checkoutVerification": "pending_p53_t4",
+      "githubFullName": "bitcoin/bitcoin",
+      "kind": "canonical_public_github_repository",
+      "repository": "https://github.com/bitcoin/bitcoin",
+      "status": "public_metadata_observed"
+    },
+    "repositoryShape": "multi_component",
+    "wave": "wave-2"
+  },
+  "schemaVersion": 1,
+  "status": "ready_for_author_review",
+  "task": "P53-T14",
+  "triage": {
+    "correction": {
+      "disposition": {
+        "artifacts": {
+          "correctedProposal": {
+            "path": "P53-T13_Bitcoin_Corrected_Proposal.json",
+            "sha256": "1cc0c40af90001b92bd738a9ceedcb19fbf1d4c04aa8fbfcf0458bcc33b18f29"
+          },
+          "followUpReport": {
+            "path": "P53-T13_Bitcoin_Corrective_Outcome.json",
+            "sha256": "8cfdb88a81f3d87abb6fef677aa86a1703af1add607e7ea618bb005380e081a3"
+          },
+          "targetedStaticReport": {
+            "path": "P53-T13_Bitcoin_Targeted_Static_Report.json",
+            "sha256": "caac07d2ce7b2bd99c3b9f3ee083df4e555cd65d46ffb04f444d04bd688bfa02"
+          }
+        },
+        "effectiveOutcome": "schema_valid_repository_specific_zero_unsupported_claims",
+        "originalOutcome": "unsupported_relation_claim",
+        "replacementEvidence": "revision_verified_targeted_rerun",
+        "repositoryId": "bitcoin-bitcoin"
+      },
+      "effectiveRecord": {
+        "diagnosticCodes": [],
+        "id": "bitcoin-bitcoin",
+        "proposal": {
+          "digest": {
+            "algorithm": "sha256",
+            "value": "1cc0c40af90001b92bd738a9ceedcb19fbf1d4c04aa8fbfcf0458bcc33b18f29"
+          },
+          "path": "codex-spark/bitcoin-bitcoin/package-set-ai-draft-proposal.json",
+          "status": "completed",
+          "summary": {
+            "errorCount": 0,
+            "excludedPackageCount": 0,
+            "relationCount": 0,
+            "selectedMemberCount": 1,
+            "warningCount": 0
+          }
+        },
+        "receipt": {
+          "chainOfThoughtPersisted": false,
+          "codexCliVersion": "codex-cli 0.145.0",
+          "durationMs": 13129,
+          "evidenceDigest": {
+            "algorithm": "sha256",
+            "value": "10419f8a26e10f9901395b2f9538a2da7fe2d8019f1f68cae03521f68635e2d0"
+          },
+          "exitCode": 0,
+          "finalOutputDigest": {
+            "algorithm": "sha256",
+            "value": "6d1cc730ac175cbd85ab2e6c99c22075790557cfe4ffe7bba512e96f172b7d4b"
+          },
+          "model": "gpt-5.3-codex-spark",
+          "rawPromptPersisted": false,
+          "rawResponsePersisted": false,
+          "sandbox": "read-only",
+          "schemaDigest": {
+            "algorithm": "sha256",
+            "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+          },
+          "schemaValid": true
+        },
+        "repositorySpecific": true,
+        "schemaValid": true,
+        "status": "completed",
+        "unsupportedClaimCount": 0
+      },
+      "path": "SPECS/EVIDENCE/P53-T13/P53-T13_Bitcoin_Corrective_Decision.json",
+      "sha256": "8b01b503778d2b9fd95d7fe2c26dafaf684d896309b9d5573d63b676bbb5b92b",
+      "task": "P53-T13"
+    },
+    "diagnosticCodes": [],
+    "disposition": "selected_for_author_review",
+    "id": "bitcoin-bitcoin",
+    "originalOutcome": {
+      "diagnosticCodes": [
+        "model_evidence_path_unsupported"
+      ],
+      "proposal": {
+        "digest": {
+          "algorithm": "sha256",
+          "value": "c406ef852374b5abe9579370aed9c09f3b82a77b143110015ad24f8e89f8e540"
+        },
+        "path": "codex-spark/bitcoin-bitcoin/package-set-ai-draft-proposal.json",
+        "status": "warning",
+        "summary": {
+          "errorCount": 0,
+          "excludedPackageCount": 0,
+          "relationCount": 1,
+          "selectedMemberCount": 1,
+          "warningCount": 1
+        }
+      },
+      "receipt": {
+        "chainOfThoughtPersisted": false,
+        "codexCliVersion": "codex-cli 0.145.0",
+        "durationMs": 11726,
+        "evidenceDigest": {
+          "algorithm": "sha256",
+          "value": "1a508a48a9afb4a6bc72a8f2ebd2f846e373af22f5a4f5b980c96c7a01ac3c4e"
+        },
+        "exitCode": 0,
+        "finalOutputDigest": {
+          "algorithm": "sha256",
+          "value": "3d55cff1253598abd79d803a8a943fc0bee48771621680ae9e6a1ef80c71f6d4"
+        },
+        "model": "gpt-5.3-codex-spark",
+        "rawPromptPersisted": false,
+        "rawResponsePersisted": false,
+        "sandbox": "read-only",
+        "schemaDigest": {
+          "algorithm": "sha256",
+          "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+        },
+        "schemaValid": true
+      },
+      "repositorySpecific": false,
+      "unsupportedClaimCount": 1
+    },
+    "proposal": {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "1cc0c40af90001b92bd738a9ceedcb19fbf1d4c04aa8fbfcf0458bcc33b18f29"
+      },
+      "path": "codex-spark/bitcoin-bitcoin/package-set-ai-draft-proposal.json",
+      "status": "completed",
+      "summary": {
+        "errorCount": 0,
+        "excludedPackageCount": 0,
+        "relationCount": 0,
+        "selectedMemberCount": 1,
+        "warningCount": 0
+      }
+    },
+    "reasons": [],
+    "receipt": {
+      "chainOfThoughtPersisted": false,
+      "codexCliVersion": "codex-cli 0.145.0",
+      "durationMs": 13129,
+      "evidenceDigest": {
+        "algorithm": "sha256",
+        "value": "10419f8a26e10f9901395b2f9538a2da7fe2d8019f1f68cae03521f68635e2d0"
+      },
+      "exitCode": 0,
+      "finalOutputDigest": {
+        "algorithm": "sha256",
+        "value": "6d1cc730ac175cbd85ab2e6c99c22075790557cfe4ffe7bba512e96f172b7d4b"
+      },
+      "model": "gpt-5.3-codex-spark",
+      "rawPromptPersisted": false,
+      "rawResponsePersisted": false,
+      "sandbox": "read-only",
+      "schemaDigest": {
+        "algorithm": "sha256",
+        "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+      },
+      "schemaValid": true
+    },
+    "repositorySpecific": true,
+    "schemaValid": true,
+    "status": "completed",
+    "unsupportedClaimCount": 0,
+    "wave": "wave-2"
+  }
+}

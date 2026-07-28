@@ -138,6 +138,10 @@ from spec_harvester.p53_codex_spark_wave import (
     P53CodexSparkWaveOptions,
     run_p53_codex_spark_wave,
 )
+from spec_harvester.p53_portable_author_handoff import (
+    P53PortableAuthorHandoffOptions,
+    build_p53_portable_author_handoff,
+)
 from spec_harvester.package_set_ai_draft_proposal import (
     PackageSetAIDraftProposalOptions,
     build_package_set_ai_draft_proposal,
@@ -857,6 +861,20 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p53_triage.add_argument("--output", type=Path, required=True)
     p53_triage.set_defaults(func=run_p53_campaign_quality_triage_cli)
+
+    p53_handoff = subcommands.add_parser(
+        "p53-portable-author-handoff",
+        help="Build P53 portable author packets and aggregate SpecPM handoff evidence.",
+    )
+    p53_handoff.add_argument("--triage", type=Path, required=True)
+    p53_handoff.add_argument("--metadata", type=Path, required=True)
+    p53_handoff.add_argument("--packet-root", type=Path, required=True)
+    p53_handoff.add_argument("--aggregate-output", type=Path, required=True)
+    p53_handoff.add_argument("--report-output", type=Path, required=True)
+    p53_handoff.add_argument("--repo-root", type=Path, required=True)
+    p53_handoff.add_argument("--candidate-root", type=Path)
+    p53_handoff.add_argument("--proposal-root", type=Path)
+    p53_handoff.set_defaults(func=run_p53_portable_author_handoff_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2374,6 +2392,27 @@ def run_draft(args: argparse.Namespace) -> int:
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
+
+
+def run_p53_portable_author_handoff_cli(args: argparse.Namespace) -> int:
+    try:
+        result = build_p53_portable_author_handoff(
+            P53PortableAuthorHandoffOptions(
+                triage=args.triage,
+                metadata=args.metadata,
+                packet_root=args.packet_root,
+                aggregate_output=args.aggregate_output,
+                report_output=args.report_output,
+                repo_root=args.repo_root,
+                candidate_root=args.candidate_root,
+                proposal_root=args.proposal_root,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result.get("status") == "passed" else 1
 
 
 def run_draft_package_set(args: argparse.Namespace) -> int:
