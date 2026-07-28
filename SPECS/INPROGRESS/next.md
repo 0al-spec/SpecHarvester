@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
 **Dependencies:** `P53-T14` Portable Author Handoff and SpecPM Intake Preflight
-**Status:** Ready
-**Branch:** pending selection after P53-T14 review
+**Status:** Selected
+**Branch:** `feature/P53-T15-phase-53-exit-decision`
 
 ## Objective
 
@@ -14,9 +14,10 @@ for maintainer disposition.
 
 ## Next Step
 
-Consume the durable P53-T13 triage and P53-T14 producer/SpecPM evidence. Do not
-approve registry promotion, a larger corpus, automatic acceptance, or higher
-concurrency by default.
+Record a digest-bound decision from the durable P53-T13 triage and P53-T14
+producer/SpecPM evidence. Make the selected evidence available for maintainer
+disposition without approving registry promotion, a larger corpus, automatic
+acceptance, or higher concurrency.
 
 ## Recently Archived
 
