@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
 **Dependencies:** `P53-T15` Phase 53 Exit Decision
-**Status:** Ready
-**Branch:** pending selection after P53-T15 review
+**Status:** Selected
+**Branch:** `feature/P54-T1-local-candidate-review-workbench-contract`
 
 ## Objective
 
@@ -14,9 +14,10 @@ candidate review workbench.
 
 ## Next Step
 
-Consume only the digest-bound P53-T14 portable handoff authorized by P53-T15.
-Define a local-first maintainer review surface without accepting packages,
-relations, or registry truth.
+Define the product, trust, role, lifecycle, and non-authority contract from the
+digest-bound P53-T14 portable handoff authorized by P53-T15. Keep implementation
+of schemas, catalog generation, browser UI, decision storage, and SpecPM bridge
+in P54-T2 through P54-T8.
 
 ## Recently Archived
 
