@@ -215,7 +215,9 @@ class P53CodexSparkWave:
                 f"P53 {self.options.wave} scale-out decision has no valid source digest"
             )
         if not isinstance(source_path, str) or not Path(source_path).is_file():
-            raise ValueError(f"P53 {self.options.wave} scale-out decision lacks durable source evidence")
+            raise ValueError(
+                f"P53 {self.options.wave} scale-out decision lacks durable source evidence"
+            )
         if calibration.sha256(Path(source_path).read_bytes()).hexdigest() != source_digest:
             raise ValueError(f"P53 {self.options.wave} source evidence digest mismatch")
         metrics = calibration.mapping_value(payload.get("qualityMetrics"))

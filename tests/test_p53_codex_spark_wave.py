@@ -211,7 +211,9 @@ def test_wave_two_runner_requires_t7_authorization_before_dispatch(
                 "sourceWaveReport": {
                     "task": "P53-T6",
                     "path": str(source_report_path),
-                    "sha256": wave_module.calibration.sha256(source_report_path.read_bytes()).hexdigest(),
+                    "sha256": wave_module.calibration.sha256(
+                        source_report_path.read_bytes()
+                    ).hexdigest(),
                 },
                 "qualityMetrics": {
                     "codexCompletionRate": 1.0,
