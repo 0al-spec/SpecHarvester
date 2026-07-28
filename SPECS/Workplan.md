@@ -2697,7 +2697,7 @@ Acceptance:
 
 ## Phase 54. Local Candidate Review Workbench
 
-- [ ] `P54-T1` Record the Local Candidate Review Workbench product contract,
+- [x] `P54-T1` Record the Local Candidate Review Workbench product contract,
   threat model, reviewer roles, decision lifecycle, portable input boundary,
   and acceptance/non-authority rules before implementing a review surface.
 - [ ] `P54-T2` Define versioned schemas for the candidate review catalog,

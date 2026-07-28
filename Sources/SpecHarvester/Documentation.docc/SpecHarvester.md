@@ -307,6 +307,7 @@ the host.
 - <doc:LargerCuratedCorpusExitDecision>
 - <doc:ControlledRepositoryCorpusPlan>
 - <doc:MassRepositoryCampaignPlan>
+- <doc:LocalCandidateReviewWorkbenchContract>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

@@ -390,6 +390,9 @@ Published DocC site:
 102. [`MASS_REPOSITORY_CAMPAIGN_PLAN.md`](MASS_REPOSITORY_CAMPAIGN_PLAN.md):
    P53-T1 100-repository operating contract with Codex 5.3 Spark as the sole
    worker, four wave gates, budget/resume policy, and proposal-only boundaries
+103. [`LOCAL_CANDIDATE_REVIEW_WORKBENCH_CONTRACT.md`](LOCAL_CANDIDATE_REVIEW_WORKBENCH_CONTRACT.md):
+   P54-T1 local-first product, threat, role, decision-lifecycle, portable-input,
+   browser-security, and no-registry-authority contract
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

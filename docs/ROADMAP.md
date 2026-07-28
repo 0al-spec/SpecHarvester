@@ -1388,6 +1388,13 @@ initial concurrency at two, records token/time and retry limits, and requires
 separate human-review decisions before waves 2, 3, and 4. It does not acquire
 sources, invoke Codex, or approve registry promotion.
 
+P54-T1 records
+[`LOCAL_CANDIDATE_REVIEW_WORKBENCH_CONTRACT.md`](LOCAL_CANDIDATE_REVIEW_WORKBENCH_CONTRACT.md).
+It defines a local-first review surface over the digest-bound 100-packet P53
+handoff, with explicit roles, trust zones, decision history, inert rendering,
+restrictive CSP, workspace confinement, and read-only SpecPM preflight. It
+does not implement the Workbench or grant registry authority.
+
 Python, JavaScript, FastAPI, FastMCP, npm, Cargo, Go, SwiftPM, Maven, Gradle,
 and other ecosystems remain examples, not normative plugin rules. Repository
 plugins and future adapters must not clone or fetch repositories, install
