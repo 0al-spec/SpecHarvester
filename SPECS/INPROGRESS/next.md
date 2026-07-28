@@ -1,23 +1,25 @@
-# Next Task: P54-T4 Local Candidate Browser
+# Next Task: P54-T5 Candidate Detail Review Surface
 
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
-**Dependencies:** `P54-T3` Deterministic Local Candidate Review Catalog
-**Status:** Selected
-**Branch:** `feature/P54-T4-local-candidate-browser`
+**Dependencies:** `P54-T4` Local Candidate Browser
+**Status:** Ready
+**Branch:** pending selection after P54-T4 review
 
 ## Objective
 
-Implement the local candidate browser over the deterministic P54-T3 catalog.
+Implement the candidate detail review surface over the verified portable packets.
 
 ## Next Step
 
-Add corpus summary, filtering, sorting, search, review-state navigation, and a
-resumable queue position. Clearly separate candidate packages from already
-accepted public-index packages and preserve static-only operation.
+Expose provenance, revision, license, topology, generated package files,
+relations, evidence, diagnostics, and bounded static-versus-Codex Spark
+comparison as inert detail data.
 
 ## Recently Archived
 
+- `P54-T4` Local Candidate Browser: PASS. A local static candidate-only browser
+  now provides corpus summary, facets, search, sorting, and a resumable queue.
 - `P54-T3` Deterministic Local Candidate Review Catalog: PASS. The bounded
   generator verified all 100 portable packets and emitted a stable,
   schema-valid catalog with digest bindings and six review facets.
