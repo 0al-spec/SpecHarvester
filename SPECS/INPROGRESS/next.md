@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
 **Dependencies:** `P54-T4` Local Candidate Browser
-**Status:** Ready
-**Branch:** pending selection after P54-T4 review
+**Status:** Selected
+**Branch:** `feature/P54-T5-candidate-detail-review-surface`
 
 ## Objective
 
