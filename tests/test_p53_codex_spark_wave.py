@@ -194,6 +194,8 @@ def test_wave_two_runner_requires_t7_authorization_before_dispatch(
     monkeypatch.setattr(wave_module, "wave_sources", lambda *_args: sources)
     monkeypatch.setattr(wave_module, "read_json", lambda *_args: plan)
     monkeypatch.setattr(wave_module, "run_autonomous_candidate_batch", lambda *_args: static)
+    source_report_path = tmp_path / "p53-t6-report.json"
+    source_report_path.write_text("{}", encoding="utf-8")
     decision_path = tmp_path / "p53-t7-decision.json"
     decision_path.write_text(
         json.dumps(
@@ -206,7 +208,11 @@ def test_wave_two_runner_requires_t7_authorization_before_dispatch(
                 "fromWave": "wave-1",
                 "toWave": "wave-2",
                 "decision": "unlock_wave-2_only",
-                "sourceWaveReport": {"task": "P53-T6", "sha256": "a" * 64},
+                "sourceWaveReport": {
+                    "task": "P53-T6",
+                    "path": str(source_report_path),
+                    "sha256": wave_module.calibration.sha256(source_report_path.read_bytes()).hexdigest(),
+                },
                 "qualityMetrics": {
                     "codexCompletionRate": 1.0,
                     "schemaValidRate": 1.0,
