@@ -101,7 +101,18 @@
     "historyPreserved": true,
     "silentOverwriteAllowed": false,
     "restartSafe": true,
-    "isRegistryTruth": false
+    "isRegistryTruth": false,
+    "priorDecisionBinding": {
+      "genesisValue": null,
+      "replacementRequiresSha256": true
+    }
+  },
+  "decisionStorage": {
+    "workspaceRelativePathRequired": true,
+    "allowsAbsolutePaths": false,
+    "allowsTraversalPaths": false,
+    "allowsReadsOutsideConfiguredWorkspace": false,
+    "allowsWritesOutsideConfiguredWorkspace": false
   },
   "threatModel": {
     "untrustedInputs": [

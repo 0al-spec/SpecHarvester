@@ -80,6 +80,11 @@ timestamp, reason code, packet digest, and prior-decision digest. Writes are
 validated and atomic, silent overwrite is forbidden, and state must survive
 restart. A Workbench decision is not registry truth.
 
+The first decision uses `null` as its explicit no-prior value. Every
+replacement must bind the SHA-256 of its real predecessor. Decision reads and
+writes use workspace-relative paths only; absolute paths, traversal, and any
+access outside the configured review workspace are forbidden.
+
 ## Threat Model
 
 Archive members, packet JSON, `specpm.yaml`, specifications, evidence,

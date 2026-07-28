@@ -40246,6 +40246,21 @@ def test_local_candidate_review_workbench_contract_records_p54_t1() -> None:
     assert lifecycle["historyPreserved"] is True
     assert lifecycle["silentOverwriteAllowed"] is False
     assert lifecycle["isRegistryTruth"] is False
+    assert lifecycle["priorDecisionBinding"] == {
+        "genesisValue": None,
+        "replacementRequiresSha256": True,
+    }
+    storage = payload["decisionStorage"]
+    assert storage["workspaceRelativePathRequired"] is True
+    assert all(
+        storage[key] is False
+        for key in (
+            "allowsAbsolutePaths",
+            "allowsTraversalPaths",
+            "allowsReadsOutsideConfiguredWorkspace",
+            "allowsWritesOutsideConfiguredWorkspace",
+        )
+    )
     browser = payload["browserSecurity"]
     assert browser["candidateValuesRenderedAsInertText"] is True
     assert browser["restrictiveContentSecurityPolicyRequired"] is True
