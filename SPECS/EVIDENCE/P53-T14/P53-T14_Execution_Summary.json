@@ -1,0 +1,60 @@
+{
+  "apiVersion": "spec-harvester.p53-portable-author-handoff-execution/v0",
+  "authority": "producer_execution_evidence_only",
+  "kind": "SpecHarvesterP53PortableAuthorHandoffExecution",
+  "localArtifacts": {
+    "aggregateHandoff": {
+      "path": "/Users/egor/Development/GitHub/P53HandoffT14/aggregate-handoff.json",
+      "sha256": "c527583bca9ed6430c02e09701ce0b79329f3cb609f93fb4056cbf8b0678891f"
+    },
+    "packetRoot": {
+      "fileCount": 3078,
+      "path": "/Users/egor/Development/GitHub/P53HandoffT14/packets",
+      "retention": "operator_local_review_workspace"
+    },
+    "producerReport": {
+      "path": "/Users/egor/Development/GitHub/P53HandoffT14/p53-t14-report.json",
+      "sha256": "79f1cf7a48f91ad63680d72b3cd5f977d5dcb33e879ee15f7c4a5e9b8fb9d58d"
+    },
+    "specpmPreflight": {
+      "path": "/Users/egor/Development/GitHub/P53HandoffT14/specpm-preflight.json",
+      "sha256": "a50496252aa278edbcd64b6a0a4dba5e872758433030fdb46603ef2295c2e827"
+    },
+    "staticReconstruction": {
+      "path": "/Users/egor/Development/GitHub/P53T14Static/autonomous-candidate-batch-report.json",
+      "sha256": "4f93efca68868ccd4e4847ef4cc7247ee5c6d8b6e2445923ca50261f88ad1ba9"
+    }
+  },
+  "nonAuthority": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "createsSpecPMPullRequest": false,
+    "publishesRegistryMetadata": false,
+    "removesPreviewOnly": false
+  },
+  "phase": "P53",
+  "schemaVersion": 1,
+  "specpmConsumerPreflight": {
+    "digestVerifiedCount": 1,
+    "errorCount": 0,
+    "selectedCandidateCount": 100,
+    "status": "passed",
+    "warningCount": 0
+  },
+  "staticReconstruction": {
+    "aiMode": "disabled",
+    "failedRepositoryCount": 0,
+    "passedPreflightCount": 100,
+    "processedCount": 100,
+    "status": "passed"
+  },
+  "status": "passed",
+  "summary": {
+    "deferredCandidateCount": 0,
+    "packetCount": 100,
+    "portableAIProposalCount": 2,
+    "portableCandidateCount": 100,
+    "summaryOnlyAIProposalCount": 98
+  },
+  "task": "P53-T14"
+}

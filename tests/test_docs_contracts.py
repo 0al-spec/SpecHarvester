@@ -40,9 +40,12 @@ ROOT = Path(__file__).resolve().parents[1]
 def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P53-T14 Portable Author Handoff and SpecPM Intake Preflight" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Ready" in next_text
         assert "`P53-T13` Campaign Quality Triage" in next_text
-        assert "pending selection after P53-T13 review" in next_text
+        if "**Status:** Selected" in next_text:
+            assert "feature/P53-T14-portable-author-handoff" in next_text
+        else:
+            assert "**Status:** Ready" in next_text
+            assert "pending selection after P53-T13 review" in next_text
         assert "portable author handoff packets" in normalized
         assert "without accepting packages or relations" in normalized
         assert "`preview_only`" in next_text

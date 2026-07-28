@@ -1,0 +1,151 @@
+{
+  "aiProposal": {
+    "expectedSha256": "cf48766f3a357457b5cba32da121f1285798eabc5e4cfca02886f22aacfce06b",
+    "status": "summary_only_not_portable",
+    "summary": {
+      "errorCount": 0,
+      "excludedPackageCount": 0,
+      "relationCount": 0,
+      "selectedMemberCount": 1,
+      "warningCount": 0
+    }
+  },
+  "apiVersion": "spec-harvester.p53-portable-author-handoff-packet/v0",
+  "authority": "producer_portable_handoff_evidence_only",
+  "candidate": {
+    "fileCount": 10,
+    "files": [
+      {
+        "path": "candidate/bundle-set-preflight.json",
+        "sha256": "aab2476ef3fe115f5ef46cda21e630d29aa750c2dc408c171e3d99e53a1c380a"
+      },
+      {
+        "path": "candidate/package-relation-proposals.json",
+        "sha256": "c729111d3862516a596f7f0193cbbdbe96e9faeb2b8d1df3f2167eade025aee0"
+      },
+      {
+        "path": "candidate/package-set-draft.json",
+        "sha256": "a731db91f8410dec7179d34f76790a66b7e0a9f1596e293cb96c6520f91f3c39"
+      },
+      {
+        "path": "candidate/public_apis_public_apis.core/author-ready-draft-quality-report.json",
+        "sha256": "654a15f35c8162d7f46d7d9f2f4dd2c6687b40c822350c07897fd970818cee7b"
+      },
+      {
+        "path": "candidate/public_apis_public_apis.core/diagnostics.json",
+        "sha256": "a152bc626a95379638cddbf06ff4a68176dab049ee620d3f43777223a547f5a1"
+      },
+      {
+        "path": "candidate/public_apis_public_apis.core/harvest.json",
+        "sha256": "70318a04f89240400e17108b838cdc78708c75f949ee4214c9afc52167765a6e"
+      },
+      {
+        "path": "candidate/public_apis_public_apis.core/producer-receipt.json",
+        "sha256": "e31b3e1e89f709296a74dbb3b91cbba711330deacf49cf1527aae69bf2456cb7"
+      },
+      {
+        "path": "candidate/public_apis_public_apis.core/specpm.yaml",
+        "sha256": "1b50b3cafa862af66cb76bda139fc659e949b6787a167d37a6b438bbe0763f50"
+      },
+      {
+        "path": "candidate/public_apis_public_apis.core/specs/public_apis.spec.yaml",
+        "sha256": "67d2242ea5c76b1c7c46a0592048bb66fd3b220d42996ec289dfb532a62b2848"
+      },
+      {
+        "path": "candidate/public_apis_public_apis.core/validation-report.json",
+        "sha256": "31186776ecd73d1ead729e09b8d62bb240c1151a4b0bb3e090bb6ed10d7598a9"
+      }
+    ],
+    "manifestCount": 1,
+    "previewOnly": true,
+    "status": "portable"
+  },
+  "kind": "SpecHarvesterP53PortableAuthorHandoffPacket",
+  "maintainerDisposition": "external_required",
+  "nonGoals": [
+    "registry_acceptance",
+    "package_acceptance",
+    "relation_acceptance",
+    "registry_publication"
+  ],
+  "phase": "P53",
+  "previewOnly": true,
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false
+  },
+  "repository": {
+    "ecosystem": "python",
+    "id": "public-apis-public-apis",
+    "licenseProvenance": {
+      "declaredName": "MIT License",
+      "declaredSpdxId": "MIT",
+      "kind": "github_license_api_metadata",
+      "status": "pending_checkout_file_verification"
+    },
+    "position": 1,
+    "provenance": {
+      "checkoutVerification": "pending_p53_t4",
+      "githubFullName": "public-apis/public-apis",
+      "kind": "canonical_public_github_repository",
+      "repository": "https://github.com/public-apis/public-apis",
+      "status": "public_metadata_observed"
+    },
+    "repositoryShape": "single_package",
+    "wave": "wave-1"
+  },
+  "schemaVersion": 1,
+  "status": "ready_for_author_review",
+  "task": "P53-T14",
+  "triage": {
+    "diagnosticCodes": [],
+    "disposition": "selected_for_author_review",
+    "id": "public-apis-public-apis",
+    "proposal": {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "cf48766f3a357457b5cba32da121f1285798eabc5e4cfca02886f22aacfce06b"
+      },
+      "path": "codex-spark/public-apis-public-apis/package-set-ai-draft-proposal.json",
+      "status": "completed",
+      "summary": {
+        "errorCount": 0,
+        "excludedPackageCount": 0,
+        "relationCount": 0,
+        "selectedMemberCount": 1,
+        "warningCount": 0
+      }
+    },
+    "reasons": [],
+    "receipt": {
+      "chainOfThoughtPersisted": false,
+      "codexCliVersion": "codex-cli 0.145.0",
+      "durationMs": 14060,
+      "evidenceDigest": {
+        "algorithm": "sha256",
+        "value": "b42494219cbe4a7ad4c20a0c1510c9c6e0e5cab39a9528eae3cabbec0e50e67d"
+      },
+      "exitCode": 0,
+      "finalOutputDigest": {
+        "algorithm": "sha256",
+        "value": "90d6ef5abf2be452c681ce29f45b913b846c55c176e32d5bbee383ef13e339f2"
+      },
+      "model": "gpt-5.3-codex-spark",
+      "rawPromptPersisted": false,
+      "rawResponsePersisted": false,
+      "sandbox": "read-only",
+      "schemaDigest": {
+        "algorithm": "sha256",
+        "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+      },
+      "schemaValid": true
+    },
+    "repositorySpecific": true,
+    "schemaValid": true,
+    "status": "completed",
+    "unsupportedClaimCount": 0,
+    "wave": "wave-1"
+  }
+}

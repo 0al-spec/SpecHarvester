@@ -14,9 +14,9 @@ corpus and run SpecPM intake preflight without accepting packages or relations.
 ## Next Step
 
 Reconstruct deterministic preview candidates from the pinned corpus where
-needed, package only durable repo-relative evidence, preserve explicit AI
-proposal availability, and verify the aggregate handoff through the SpecPM
-consumer preflight.
+needed, package only durable repo-relative evidence, preserve `preview_only`
+and explicit AI proposal availability, and verify the aggregate handoff through
+the SpecPM consumer preflight.
 
 ## Recently Archived
 
