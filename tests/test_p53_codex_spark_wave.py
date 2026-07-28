@@ -39,6 +39,18 @@ def test_wave_two_source_selection_is_exactly_positions_twenty_six_through_fifty
     assert sources[-1]["id"] == "react-create-react-app"
 
 
+def test_wave_three_source_selection_is_exactly_positions_fifty_one_through_seventy_five() -> None:
+    sources = wave_sources(
+        ROOT / "inputs/p53-mass-corpus",
+        ROOT / "inputs/p53-mass-corpus/selection-metadata.json",
+        "wave-3",
+    )
+
+    assert len(sources) == 25
+    assert sources[0]["id"] == "infiniflow-ragflow"
+    assert sources[-1]["id"] == "ladybirdbrowser-ladybird"
+
+
 def test_outcome_classification_only_retries_transport_or_schema_failures() -> None:
     assert outcome_kind({"status": "completed"}) == "completed"
     assert outcome_kind({"status": "failed", "failure": "codex_timeout"}) == "timeout"

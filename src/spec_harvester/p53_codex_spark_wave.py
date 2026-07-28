@@ -29,6 +29,7 @@ P53_CHECKPOINT_FILENAME = "p53-campaign-checkpoint.json"
 P53_OUTCOMES_FILENAME = "p53-codex-spark-wave-outcomes.json"
 WAVE_ONE = "wave-1"
 WAVE_TWO = "wave-2"
+WAVE_THREE = "wave-3"
 MAX_CONCURRENCY = 2
 WAVE_CONFIGURATION = {
     WAVE_ONE: {
@@ -40,6 +41,11 @@ WAVE_CONFIGURATION = {
         "task": "P53-T8",
         "positions": range(26, 51),
         "reportFilename": "p53-t8-codex-spark-wave-2-report.json",
+    },
+    WAVE_THREE: {
+        "task": "P53-T10",
+        "positions": range(51, 76),
+        "reportFilename": "p53-t10-codex-spark-wave-3-report.json",
     },
 }
 
@@ -167,29 +173,46 @@ class P53CodexSparkWave:
                 raise ValueError("P53 wave-1 does not accept a scale-out decision artifact")
             return None
         if self.options.scale_out_decision is None:
-            raise ValueError("P53 wave-2 requires a validated P53-T7 scale-out decision artifact")
+            task = "P53-T7" if self.options.wave == WAVE_TWO else "P53-T9"
+            raise ValueError(
+                f"P53 {self.options.wave} requires a validated {task} scale-out decision artifact"
+            )
         payload = read_json_object(self.options.scale_out_decision)
+        expected = (
+            ("P53-T7", WAVE_ONE, WAVE_TWO, "unlock_wave-2_only", "P53-T6", "wave1Minimum")
+            if self.options.wave == WAVE_TWO
+            else (
+                "P53-T9",
+                WAVE_TWO,
+                WAVE_THREE,
+                "unlock_wave-3_only",
+                "P53-T8",
+                "waves2To4Minimum",
+            )
+        )
         required = {
             "apiVersion": "spec-harvester.p53-scale-out-decision/v0",
             "kind": "SpecHarvesterP53ScaleOutDecision",
             "phase": "P53",
-            "task": "P53-T7",
+            "task": expected[0],
             "status": "passed",
-            "fromWave": WAVE_ONE,
-            "toWave": WAVE_TWO,
-            "decision": "unlock_wave-2_only",
+            "fromWave": expected[1],
+            "toWave": expected[2],
+            "decision": expected[3],
         }
         if any(payload.get(key) != value for key, value in required.items()):
-            raise ValueError("P53 wave-2 scale-out decision does not authorize P53-T8")
+            raise ValueError(f"P53 {self.options.wave} scale-out decision is not authorized")
         source_report = calibration.mapping_value(payload.get("sourceWaveReport"))
         source_digest = source_report.get("sha256")
         if (
-            source_report.get("task") != "P53-T6"
+            source_report.get("task") != expected[4]
             or not isinstance(source_digest, str)
             or len(source_digest) != 64
             or any(character not in "0123456789abcdef" for character in source_digest)
         ):
-            raise ValueError("P53 wave-2 scale-out decision has no valid P53-T6 evidence digest")
+            raise ValueError(
+                f"P53 {self.options.wave} scale-out decision has no valid source digest"
+            )
         metrics = calibration.mapping_value(payload.get("qualityMetrics"))
         thresholds = calibration.mapping_value(plan.get("qualityMetrics"))
         if (
@@ -208,9 +231,7 @@ class P53CodexSparkWave:
             raise ValueError("P53 wave-2 scale-out decision does not meet P53 quality thresholds")
         review = calibration.mapping_value(payload.get("humanReview"))
         reviewed_ids = review.get("reviewedRepositoryIds")
-        required_reviews = calibration.mapping_value(thresholds.get("humanReview")).get(
-            "wave1Minimum"
-        )
+        required_reviews = calibration.mapping_value(thresholds.get("humanReview")).get(expected[5])
         if (
             not isinstance(required_reviews, int)
             or review.get("minimumRequired") != required_reviews
@@ -221,12 +242,23 @@ class P53CodexSparkWave:
                 isinstance(repository_id, str) and repository_id for repository_id in reviewed_ids
             )
         ):
-            raise ValueError("P53 wave-2 scale-out decision has insufficient human review evidence")
+            raise ValueError(
+                f"P53 {self.options.wave} scale-out decision has insufficient review evidence"
+            )
+        correction = calibration.mapping_value(payload.get("correctionDisposition"))
+        if self.options.wave == WAVE_THREE:
+            artifacts = calibration.mapping_value(correction.get("artifacts"))
+            if any(
+                not valid_sha256(calibration.mapping_value(artifacts.get(name)).get("sha256"))
+                for name in ("followUpReport", "correctedProposal", "targetedStaticReport")
+            ):
+                raise ValueError("P53 wave-3 scale-out decision lacks corrective evidence digests")
         return {
             "path": str(self.options.scale_out_decision),
             "sha256": calibration.sha256(self.options.scale_out_decision.read_bytes()).hexdigest(),
             "task": payload["task"],
             "sourceWaveReport": source_report,
+            "correctionDisposition": correction if self.options.wave == WAVE_THREE else None,
         }
 
     def resume_or_create_checkpoint(self, expected: dict[str, Any]) -> dict[str, Any]:
@@ -437,6 +469,14 @@ def metric_at_most(
     maximum = thresholds.get(threshold)
     return (
         isinstance(value, (int, float)) and isinstance(maximum, (int, float)) and value <= maximum
+    )
+
+
+def valid_sha256(value: Any) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
     )
 
 
