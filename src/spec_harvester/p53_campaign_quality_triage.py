@@ -60,6 +60,7 @@ def build_p53_campaign_quality_triage(
     source_artifacts: list[dict[str, Any]] = []
     stop_events: list[dict[str, Any]] = []
     corrected_count = 0
+    duration_ms = 0
 
     for wave, (task, positions) in EXPECTED_WAVES.items():
         report_path, report = reports[wave]
@@ -76,8 +77,10 @@ def build_p53_campaign_quality_triage(
             original = records_by_id[repository_id]
             correction = corrections.get(repository_id)
             effective = effective_outcome(original, correction)
+            duration_ms += receipt_duration_ms(original)
             if correction is not None:
                 corrected_count += 1
+                duration_ms += receipt_duration_ms(effective)
             effective_records.append(
                 repository_triage_record(
                     repository_id,
@@ -100,9 +103,6 @@ def build_p53_campaign_quality_triage(
     metrics = aggregate_metrics(effective_records)
     thresholds = mapping_value(plan.get("qualityMetrics"))
     quality_passed = quality_meets_thresholds(metrics, thresholds)
-    duration_ms = sum(
-        int(mapping_value(item["receipt"]).get("durationMs", 0)) for item in effective_records
-    )
     budget = mapping_value(plan.get("budgetPolicy"))
     result = {
         "apiVersion": "spec-harvester.p53-campaign-quality-triage/v0",
@@ -246,19 +246,22 @@ def load_corrections(paths: tuple[Path, ...]) -> dict[str, dict[str, Any]]:
         repository_id = correction.get("repositoryId")
         artifacts = mapping_value(correction.get("artifacts"))
         if (
-            payload.get("phase") != "P53"
+            payload.get("apiVersion") != "spec-harvester.p53-targeted-correction/v0"
+            or payload.get("kind") != "SpecHarvesterP53TargetedCorrection"
+            or payload.get("phase") != "P53"
+            or payload.get("task") != "P53-T13"
             or payload.get("status") != "passed"
+            or payload.get("authority") != "producer_targeted_correction_evidence_only"
             or not isinstance(repository_id, str)
             or not repository_id
             or repository_id in corrections
             or correction.get("replacementEvidence") != "revision_verified_targeted_rerun"
             or correction.get("effectiveOutcome") != CORRECTED_OUTCOME
-            or any(
-                not valid_sha256(mapping_value(artifacts.get(name)).get("sha256"))
-                for name in ("followUpReport", "correctedProposal", "targetedStaticReport")
-            )
+            or not isinstance(payload.get("effectiveRecord"), dict)
         ):
             raise ValueError("P53-T13 correction evidence is invalid")
+        for name in ("followUpReport", "correctedProposal", "targetedStaticReport"):
+            validate_correction_artifact(path, mapping_value(artifacts.get(name)))
         corrections[repository_id] = {
             "task": payload.get("task"),
             "path": str(path),
@@ -275,46 +278,29 @@ def effective_outcome(
     if correction is None:
         return original
     replacement = correction.get("effectiveRecord")
-    if isinstance(replacement, dict):
-        replacement_digest = mapping_value(
-            mapping_value(replacement.get("proposal")).get("digest")
-        ).get("value")
-        expected_digest = mapping_value(
-            mapping_value(correction["disposition"].get("artifacts")).get("correctedProposal")
-        ).get("sha256")
-        receipt = mapping_value(replacement.get("receipt"))
-        if (
-            replacement.get("id") != original.get("id")
-            or replacement.get("status") != "completed"
-            or replacement.get("schemaValid") is not True
-            or replacement.get("repositorySpecific") is not True
-            or replacement.get("unsupportedClaimCount") != 0
-            or replacement_digest != expected_digest
-            or any(
-                receipt.get(key) is not False
-                for key in ("rawPromptPersisted", "rawResponsePersisted", "chainOfThoughtPersisted")
-            )
-        ):
-            raise ValueError("P53-T13 correction effective record is invalid")
-        return replacement
-    effective = dict(original)
-    effective["status"] = "completed"
-    effective["schemaValid"] = True
-    effective["repositorySpecific"] = True
-    effective["unsupportedClaimCount"] = 0
-    effective["diagnosticCodes"] = []
-    corrected_proposal = mapping_value(
+    if not isinstance(replacement, dict):
+        raise ValueError("P53-T13 correction effective record is required")
+    replacement_digest = mapping_value(
+        mapping_value(replacement.get("proposal")).get("digest")
+    ).get("value")
+    expected_digest = mapping_value(
         mapping_value(correction["disposition"].get("artifacts")).get("correctedProposal")
-    )
-    effective["proposal"] = {
-        **mapping_value(original.get("proposal")),
-        "status": "completed",
-        "digest": {
-            "algorithm": "sha256",
-            "value": corrected_proposal.get("sha256"),
-        },
-    }
-    return effective
+    ).get("sha256")
+    receipt = mapping_value(replacement.get("receipt"))
+    if (
+        replacement.get("id") != original.get("id")
+        or replacement.get("status") != "completed"
+        or replacement.get("schemaValid") is not True
+        or replacement.get("repositorySpecific") is not True
+        or replacement.get("unsupportedClaimCount") != 0
+        or replacement_digest != expected_digest
+        or any(
+            receipt.get(key) is not False
+            for key in ("rawPromptPersisted", "rawResponsePersisted", "chainOfThoughtPersisted")
+        )
+    ):
+        raise ValueError("P53-T13 correction effective record is invalid")
+    return replacement
 
 
 def repository_triage_record(
@@ -345,6 +331,7 @@ def repository_triage_record(
             "unsupportedClaimCount": original.get("unsupportedClaimCount"),
             "diagnosticCodes": original.get("diagnosticCodes", []),
             "proposal": original.get("proposal"),
+            "receipt": original.get("receipt"),
         }
     return record
 
@@ -375,6 +362,29 @@ def classify_outcome(outcome: dict[str, Any]) -> tuple[str, list[str]]:
     ):
         return "deferred", ["proposal_artifact_invalid"]
     return "selected_for_author_review", []
+
+
+def validate_correction_artifact(correction_path: Path, artifact: dict[str, Any]) -> None:
+    relative_path = artifact.get("path")
+    expected_digest = artifact.get("sha256")
+    if (
+        not isinstance(relative_path, str)
+        or not relative_path
+        or Path(relative_path).is_absolute()
+        or not valid_sha256(expected_digest)
+    ):
+        raise ValueError("P53-T13 correction evidence is invalid")
+    artifact_path = correction_path.parent / relative_path
+    if (
+        not artifact_path.is_file()
+        or sha256(artifact_path.read_bytes()).hexdigest() != expected_digest
+    ):
+        raise ValueError("P53-T13 correction artifact digest mismatch")
+
+
+def receipt_duration_ms(record: dict[str, Any]) -> int:
+    duration = mapping_value(record.get("receipt")).get("durationMs", 0)
+    return int(duration) if isinstance(duration, int) and duration >= 0 else 0
 
 
 def aggregate_metrics(records: list[dict[str, Any]]) -> dict[str, float]:

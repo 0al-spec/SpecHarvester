@@ -4,32 +4,32 @@
   "correctionDisposition": {
     "artifacts": {
       "correctedProposal": {
-        "path": "P53-T13_GGML_Corrected_Proposal.json",
-        "sha256": "3953e6c57d0e61d7b42360ba9f0e501c2ff3c46e3d83cea371a49410aedf05fb"
+        "path": "P53-T13_Bitcoin_Corrected_Proposal.json",
+        "sha256": "1cc0c40af90001b92bd738a9ceedcb19fbf1d4c04aa8fbfcf0458bcc33b18f29"
       },
       "followUpReport": {
-        "path": "P53-T13_GGML_Corrective_Outcome.json",
-        "sha256": "a839e5278b128f07967c074f74e79cce79b25827ce200344961a2390f3c70750"
+        "path": "P53-T13_Bitcoin_Corrective_Outcome.json",
+        "sha256": "8cfdb88a81f3d87abb6fef677aa86a1703af1add607e7ea618bb005380e081a3"
       },
       "targetedStaticReport": {
-        "path": "P53-T13_GGML_Targeted_Static_Record.json",
-        "sha256": "e58849216bac534e47c856aeb7d487f12666e42b4b86113800627ec51258fb76"
+        "path": "P53-T13_Bitcoin_Targeted_Static_Report.json",
+        "sha256": "caac07d2ce7b2bd99c3b9f3ee083df4e555cd65d46ffb04f444d04bd688bfa02"
       }
     },
     "effectiveOutcome": "schema_valid_repository_specific_zero_unsupported_claims",
-    "originalOutcome": "package_set_id_mismatch",
+    "originalOutcome": "unsupported_relation_claim",
     "replacementEvidence": "revision_verified_targeted_rerun",
-    "repositoryId": "ggml-org-llama-cpp"
+    "repositoryId": "bitcoin-bitcoin"
   },
   "effectiveRecord": {
     "diagnosticCodes": [],
-    "id": "ggml-org-llama-cpp",
+    "id": "bitcoin-bitcoin",
     "proposal": {
       "digest": {
         "algorithm": "sha256",
-        "value": "3953e6c57d0e61d7b42360ba9f0e501c2ff3c46e3d83cea371a49410aedf05fb"
+        "value": "1cc0c40af90001b92bd738a9ceedcb19fbf1d4c04aa8fbfcf0458bcc33b18f29"
       },
-      "path": "codex-spark/ggml-org-llama-cpp/package-set-ai-draft-proposal.json",
+      "path": "codex-spark/bitcoin-bitcoin/package-set-ai-draft-proposal.json",
       "status": "completed",
       "summary": {
         "errorCount": 0,
@@ -42,15 +42,15 @@
     "receipt": {
       "chainOfThoughtPersisted": false,
       "codexCliVersion": "codex-cli 0.145.0",
-      "durationMs": 19480,
+      "durationMs": 13129,
       "evidenceDigest": {
         "algorithm": "sha256",
-        "value": "e19b2ce7bbc18a917f8cd6532e6423d89159c6377b3beb5fa39b3ad81c130d76"
+        "value": "10419f8a26e10f9901395b2f9538a2da7fe2d8019f1f68cae03521f68635e2d0"
       },
       "exitCode": 0,
       "finalOutputDigest": {
         "algorithm": "sha256",
-        "value": "53d408e4ed2c3168bdc672c682331ede4bde1853ab58210e23b239825673da4d"
+        "value": "6d1cc730ac175cbd85ab2e6c99c22075790557cfe4ffe7bba512e96f172b7d4b"
       },
       "model": "gpt-5.3-codex-spark",
       "rawPromptPersisted": false,

@@ -18,7 +18,8 @@ four bounded Codex Spark waves.
 - P53-T3 frozen source metadata and wave assignments.
 - P53-T5 static-only gate.
 - P53-T6, P53-T8, P53-T10, and P53-T12 wave reports.
-- P53-T8 bounded `bitcoin-bitcoin` corrective evidence.
+- A bounded `bitcoin-bitcoin` corrective record with proposal, static evidence,
+  and receipt bound by SHA-256.
 
 ## Deliverables
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from hashlib import sha256
 from pathlib import Path
 
 import pytest
@@ -16,6 +17,60 @@ from spec_harvester.p53_campaign_quality_triage import (
 def write_json(path: Path, payload: dict[str, object]) -> Path:
     path.write_text(json.dumps(payload), encoding="utf-8")
     return path
+
+
+def corrective_evidence(tmp_path: Path, repository_id: str, *, duration_ms: int = 500) -> Path:
+    artifact_names = {
+        "followUpReport": "corrective-outcome.json",
+        "correctedProposal": "corrected-proposal.json",
+        "targetedStaticReport": "targeted-static-report.json",
+    }
+    artifacts = {}
+    for name, filename in artifact_names.items():
+        artifact_path = write_json(tmp_path / filename, {"artifact": name})
+        artifacts[name] = {
+            "path": filename,
+            "sha256": sha256(artifact_path.read_bytes()).hexdigest(),
+        }
+    proposal_digest = artifacts["correctedProposal"]["sha256"]
+    return write_json(
+        tmp_path / "correction.json",
+        {
+            "apiVersion": "spec-harvester.p53-targeted-correction/v0",
+            "kind": "SpecHarvesterP53TargetedCorrection",
+            "schemaVersion": 1,
+            "phase": "P53",
+            "task": "P53-T13",
+            "status": "passed",
+            "authority": "producer_targeted_correction_evidence_only",
+            "correctionDisposition": {
+                "repositoryId": repository_id,
+                "originalOutcome": "unsupported_relation_claim",
+                "replacementEvidence": "revision_verified_targeted_rerun",
+                "effectiveOutcome": "schema_valid_repository_specific_zero_unsupported_claims",
+                "artifacts": artifacts,
+            },
+            "effectiveRecord": {
+                "id": repository_id,
+                "status": "completed",
+                "schemaValid": True,
+                "repositorySpecific": True,
+                "unsupportedClaimCount": 0,
+                "diagnosticCodes": [],
+                "proposal": {
+                    "status": "completed",
+                    "path": f"codex-spark/{repository_id}/proposal.json",
+                    "digest": {"algorithm": "sha256", "value": proposal_digest},
+                },
+                "receipt": {
+                    "durationMs": duration_ms,
+                    "rawPromptPersisted": False,
+                    "rawResponsePersisted": False,
+                    "chainOfThoughtPersisted": False,
+                },
+            },
+        },
+    )
 
 
 def campaign_inputs(tmp_path: Path) -> P53CampaignQualityTriageOptions:
@@ -178,28 +233,7 @@ def test_campaign_triage_applies_explicit_corrective_evidence(tmp_path: Path) ->
     report["checkpointSummary"]["completed"] = 24
     report["checkpointSummary"]["terminalFailed"] = 1
     write_json(options.wave_reports[1], report)
-    correction = write_json(
-        tmp_path / "correction.json",
-        {
-            "phase": "P53",
-            "task": "P53-T9",
-            "status": "passed",
-            "correctionDisposition": {
-                "repositoryId": corrected_id,
-                "originalOutcome": "unsupported_relation_claim",
-                "replacementEvidence": "revision_verified_targeted_rerun",
-                "effectiveOutcome": "schema_valid_repository_specific_zero_unsupported_claims",
-                "artifacts": {
-                    name: {"sha256": character * 64}
-                    for name, character in (
-                        ("followUpReport", "b"),
-                        ("correctedProposal", "c"),
-                        ("targetedStaticReport", "d"),
-                    )
-                },
-            },
-        },
-    )
+    correction = corrective_evidence(tmp_path, corrected_id)
     options = P53CampaignQualityTriageOptions(
         metadata=options.metadata,
         campaign_plan=options.campaign_plan,
@@ -212,9 +246,10 @@ def test_campaign_triage_applies_explicit_corrective_evidence(tmp_path: Path) ->
     corrected = next(item for item in result["repositories"] if item["id"] == corrected_id)
 
     assert corrected["disposition"] == "selected_for_author_review"
-    assert corrected["correction"]["task"] == "P53-T9"
+    assert corrected["correction"]["task"] == "P53-T13"
     assert corrected["originalOutcome"]["unsupportedClaimCount"] == 1
     assert result["summary"]["correctedRepositoryCount"] == 1
+    assert result["usage"]["aggregateDurationMs"] == 100_500
 
 
 @pytest.mark.parametrize(
@@ -283,24 +318,57 @@ def test_classify_outcome_preserves_failure_dispositions(
 
 def test_campaign_triage_rejects_invalid_correction_digest(tmp_path: Path) -> None:
     options = campaign_inputs(tmp_path)
-    correction = write_json(
-        tmp_path / "correction.json",
-        {
-            "phase": "P53",
-            "task": "P53-T13",
-            "status": "passed",
-            "correctionDisposition": {
-                "repositoryId": "repo-001",
-                "replacementEvidence": "revision_verified_targeted_rerun",
-                "effectiveOutcome": "schema_valid_repository_specific_zero_unsupported_claims",
-                "artifacts": {
-                    "followUpReport": {"sha256": "invalid"},
-                    "correctedProposal": {"sha256": "c" * 64},
-                    "targetedStaticReport": {"sha256": "d" * 64},
-                },
-            },
-        },
+    correction = corrective_evidence(tmp_path, "repo-001")
+    payload = json.loads(correction.read_text(encoding="utf-8"))
+    payload["correctionDisposition"]["artifacts"]["followUpReport"]["sha256"] = "0" * 64
+    write_json(correction, payload)
+    options = P53CampaignQualityTriageOptions(
+        metadata=options.metadata,
+        campaign_plan=options.campaign_plan,
+        wave_reports=options.wave_reports,
+        corrections=(correction,),
+        output=options.output,
     )
+
+    with pytest.raises(ValueError, match="correction artifact digest mismatch"):
+        build_p53_campaign_quality_triage(options)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("apiVersion", "unrelated/v0"),
+        ("kind", "UnrelatedEvidence"),
+        ("task", "P53-T9"),
+        ("authority", "registry_authority"),
+    ],
+)
+def test_campaign_triage_rejects_invalid_correction_authority(
+    tmp_path: Path, field: str, value: str
+) -> None:
+    options = campaign_inputs(tmp_path)
+    correction = corrective_evidence(tmp_path, "repo-001")
+    payload = json.loads(correction.read_text(encoding="utf-8"))
+    payload[field] = value
+    write_json(correction, payload)
+    options = P53CampaignQualityTriageOptions(
+        metadata=options.metadata,
+        campaign_plan=options.campaign_plan,
+        wave_reports=options.wave_reports,
+        corrections=(correction,),
+        output=options.output,
+    )
+
+    with pytest.raises(ValueError, match="correction evidence is invalid"):
+        build_p53_campaign_quality_triage(options)
+
+
+def test_campaign_triage_rejects_correction_without_effective_record(tmp_path: Path) -> None:
+    options = campaign_inputs(tmp_path)
+    correction = corrective_evidence(tmp_path, "repo-001")
+    payload = json.loads(correction.read_text(encoding="utf-8"))
+    payload.pop("effectiveRecord")
+    write_json(correction, payload)
     options = P53CampaignQualityTriageOptions(
         metadata=options.metadata,
         campaign_plan=options.campaign_plan,

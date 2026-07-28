@@ -20,7 +20,7 @@ repositories across four waves of 25.
 | Schema valid | `100%` |
 | Repository specific | `100%` |
 | Unsupported claim rate | `0%` |
-| Aggregate recorded duration | `1,856,358 ms` |
+| Aggregate recorded duration | `1,877,522 ms` |
 
 Actual token counts are not present in Codex worker receipts. The triage records
 this as `not_reported_by_worker_receipts` and preserves the configured
@@ -39,10 +39,12 @@ and no LM Studio worker.
   outcome was `ggml-org-llama-cpp` with `package_set_id_mismatch`.
 - One explicit targeted rerun of `ggml-org-llama-cpp` then completed,
   schema-valid and repository-specific, with zero unsupported claims.
-- The prior explicit `bitcoin-bitcoin` corrective decision remains part of the
-  effective campaign evidence.
+- A fresh bounded `bitcoin-bitcoin` corrective rerun provides a durable,
+  validated replacement record and receipt instead of relying on the earlier
+  summary-only decision.
 - Both original outcomes and both correction records remain visible in the
   aggregate audit trail.
+- Aggregate duration includes both original attempts and corrective reruns.
 
 The pre-restoration checkout scan observed `99 / 100` clean checkouts.
 `kdn251-interviews` in wave 3 contained a modified `.DS_Store`. T13 did not
@@ -65,7 +67,7 @@ were not persisted.
 
 ## Validation
 
-- `PYTHONPATH=src .venv/bin/pytest`: `1042 passed, 1 skipped`.
+- `PYTHONPATH=src .venv/bin/pytest`: `1047 passed, 1 skipped`.
 - `PYTHONPATH=src .venv/bin/pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90`:
   passed at `90.02%`.
 - `.venv/bin/ruff check src tests`: passed.

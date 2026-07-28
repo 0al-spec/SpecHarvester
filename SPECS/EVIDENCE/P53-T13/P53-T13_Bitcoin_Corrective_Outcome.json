@@ -1,0 +1,46 @@
+{
+  "diagnosticCodes": [],
+  "id": "bitcoin-bitcoin",
+  "proposal": {
+    "digest": {
+      "algorithm": "sha256",
+      "value": "1cc0c40af90001b92bd738a9ceedcb19fbf1d4c04aa8fbfcf0458bcc33b18f29"
+    },
+    "path": "codex-spark/bitcoin-bitcoin/package-set-ai-draft-proposal.json",
+    "status": "completed",
+    "summary": {
+      "errorCount": 0,
+      "excludedPackageCount": 0,
+      "relationCount": 0,
+      "selectedMemberCount": 1,
+      "warningCount": 0
+    }
+  },
+  "receipt": {
+    "chainOfThoughtPersisted": false,
+    "codexCliVersion": "codex-cli 0.145.0",
+    "durationMs": 13129,
+    "evidenceDigest": {
+      "algorithm": "sha256",
+      "value": "10419f8a26e10f9901395b2f9538a2da7fe2d8019f1f68cae03521f68635e2d0"
+    },
+    "exitCode": 0,
+    "finalOutputDigest": {
+      "algorithm": "sha256",
+      "value": "6d1cc730ac175cbd85ab2e6c99c22075790557cfe4ffe7bba512e96f172b7d4b"
+    },
+    "model": "gpt-5.3-codex-spark",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "sandbox": "read-only",
+    "schemaDigest": {
+      "algorithm": "sha256",
+      "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+    },
+    "schemaValid": true
+  },
+  "repositorySpecific": true,
+  "schemaValid": true,
+  "status": "completed",
+  "unsupportedClaimCount": 0
+}

@@ -1,0 +1,156 @@
+{
+  "apiVersion": "spec-harvester.package-set-ai-draft/v0",
+  "authority": "proposal_only_not_registry_acceptance",
+  "diagnostics": [],
+  "evidenceGaps": [
+    "No package manifest contents are present in the provided evidence (`packageManifestCount` is 0 and `manifestContentsIncluded` is false)."
+  ],
+  "excludedPackages": [],
+  "inputs": [
+    {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "aa3cd4ed1dad0955af9f8a5f08545274936e9f363b3abfcf4f53316dfceb50e4"
+      },
+      "path": "workspace-inventory.json",
+      "pathScope": "request_relative",
+      "role": "workspace_inventory"
+    },
+    {
+      "evidencePathCount": 3,
+      "evidencePaths": [
+        "README.md",
+        "readme.md",
+        "workspace-inventory.json"
+      ],
+      "packageCount": 1,
+      "role": "compact_model_input"
+    }
+  ],
+  "kind": "SpecHarvesterPackageSetAIDraftProposal",
+  "nonGoals": [
+    "deterministic_spec_generation",
+    "specpm_acceptance",
+    "package_acceptance",
+    "relation_acceptance",
+    "registry_publication",
+    "package_execution",
+    "package_manager_execution",
+    "model_authored_file_mutation"
+  ],
+  "overallConfidence": "medium",
+  "packageSet": {
+    "confidence": "medium",
+    "evidencePaths": [
+      "README.md",
+      "workspace-inventory.json"
+    ],
+    "packageId": "bitcoin-bitcoin.workspace",
+    "summary": "Draft a package set for the Bitcoin Core repository rooted at `.` using the declared source metadata."
+  },
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "rawModelResponsesPersisted": false,
+    "rawPromptsPersisted": false,
+    "secretsIncluded": false
+  },
+  "provider": {
+    "baseUrl": null,
+    "execution": "external_schema_validated",
+    "kind": "codex_exec_external_model_output",
+    "model": "gpt-5.3-codex-spark",
+    "name": "codex"
+  },
+  "providerReceipt": {
+    "chainOfThoughtPersisted": false,
+    "codexCliVersion": "codex-cli 0.145.0",
+    "durationMs": 13129,
+    "evidenceDigest": {
+      "algorithm": "sha256",
+      "value": "10419f8a26e10f9901395b2f9538a2da7fe2d8019f1f68cae03521f68635e2d0"
+    },
+    "exitCode": 0,
+    "finalOutputDigest": {
+      "algorithm": "sha256",
+      "value": "6d1cc730ac175cbd85ab2e6c99c22075790557cfe4ffe7bba512e96f172b7d4b"
+    },
+    "model": "gpt-5.3-codex-spark",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "sandbox": "read-only",
+    "schemaDigest": {
+      "algorithm": "sha256",
+      "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+    },
+    "schemaValid": true
+  },
+  "relations": [],
+  "schemaVersion": 1,
+  "selectedMembers": [
+    {
+      "confidence": "medium",
+      "evidencePaths": [
+        "README.md",
+        "workspace-inventory.json"
+      ],
+      "inventoryRole": "member_package",
+      "manifestPath": "",
+      "packageId": "bitcoin-bitcoin.core",
+      "reason": "The package entry in the requested package inventory maps to package `bitcoin-bitcoin.core` at repository root, which is consistent with the workspace source metadata.",
+      "role": "primary_package",
+      "sourceTargetPath": "."
+    }
+  ],
+  "status": "completed",
+  "stopPolicySummary": {
+    "decision": "stop_for_author_review",
+    "diagnosticCounts": {
+      "errorCount": 0,
+      "warningCount": 0
+    },
+    "nonAuthority": [
+      "The stop-policy summary is producer-side review evidence only.",
+      "It is not SpecPM registry acceptance.",
+      "It is not maintainer approval.",
+      "It is not upstream project endorsement."
+    ],
+    "reason": "remaining_work_is_author_reviewable",
+    "schemaVersion": 1,
+    "sourceStatus": "completed",
+    "status": "author_ready_draft",
+    "subjectCount": 1,
+    "summary": "Proposal diagnostics are clean; stop model iteration and hand off for review.",
+    "zeroSubjectPolicy": {
+      "inventoryPackageCount": 1,
+      "inventoryPackageIds": [
+        "bitcoin-bitcoin.core"
+      ],
+      "packageSetId": "bitcoin-bitcoin.workspace",
+      "reason": "proposal_subjects_present",
+      "status": "not_applicable"
+    }
+  },
+  "summary": {
+    "errorCount": 0,
+    "excludedPackageCount": 0,
+    "relationCount": 0,
+    "selectedMemberCount": 1,
+    "warningCount": 0
+  },
+  "trustBoundary": [
+    "Workspace inventory remains deterministic producer evidence.",
+    "LLM output is a schema-bound package-set draft proposal only.",
+    "Model output cannot accept packages, accept relations, mutate generated specs, or publish registry metadata.",
+    "SpecPM remains the validation, acceptance, relation, and registry authority.",
+    "Maintainers decide which proposed members, exclusions, and relations are accepted.",
+    "Raw prompts, raw provider responses, secrets, and model chain-of-thought are not persisted."
+  ],
+  "validationGuard": {
+    "authority": "producer_deterministic_pre_normalization_validation",
+    "diagnosticCount": 0,
+    "diagnostics": [],
+    "errorCount": 0,
+    "status": "passed",
+    "warningCount": 0
+  }
+}
