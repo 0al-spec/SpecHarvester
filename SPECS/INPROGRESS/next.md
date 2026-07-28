@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
 **Dependencies:** `P54-T1` Local Candidate Review Workbench Product Contract
-**Status:** Ready
-**Branch:** pending selection after P54-T1 review
+**Status:** Selected
+**Branch:** `feature/P54-T2-local-candidate-review-workbench-schemas`
 
 ## Objective
 
