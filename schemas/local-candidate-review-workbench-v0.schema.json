@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-harvester.dev/schemas/local-candidate-review-workbench-v0.schema.json",
+  "title": "Local Candidate Review Workbench Schema Bundle",
+  "oneOf": [
+    {"$ref": "#/$defs/fixture"},
+    {"$ref": "#/$defs/catalog"},
+    {"$ref": "#/$defs/detail"},
+    {"$ref": "#/$defs/comparison"},
+    {"$ref": "#/$defs/decision"},
+    {"$ref": "#/$defs/reasons"},
+    {"$ref": "#/$defs/export"}
+  ],
+  "$defs": {
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "catalog", "detail", "comparison", "decision", "reasons", "export"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.local-candidate-review-schema-fixture/v0"},
+        "kind": {"const": "SpecHarvesterLocalCandidateReviewSchemaFixture"},
+        "catalog": {"$ref": "#/$defs/catalog"},
+        "detail": {"$ref": "#/$defs/detail"},
+        "comparison": {"$ref": "#/$defs/comparison"},
+        "decision": {"$ref": "#/$defs/decision"},
+        "reasons": {"$ref": "#/$defs/reasons"},
+        "export": {"$ref": "#/$defs/export"}
+      }
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "candidateId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidateId", "packetSha256"],
+      "properties": {
+        "candidateId": {"$ref": "#/$defs/candidateId"},
+        "packetSha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "authority", "sourceBundleSha256", "items"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.candidate-review-catalog/v0"},
+        "kind": {"const": "SpecHarvesterCandidateReviewCatalog"},
+        "authority": {"const": "local_review_catalog_evidence_only"},
+        "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["candidateId", "packetSha256", "reviewState", "readiness", "ecosystem", "packageShape", "warningCount", "corrected", "preflightStatus"],
+            "properties": {
+              "candidateId": {"$ref": "#/$defs/candidateId"},
+              "packetSha256": {"$ref": "#/$defs/sha256"},
+              "reviewState": {"enum": ["unreviewed", "in_review", "accept_for_intake", "request_revision", "defer", "do_not_promote"]},
+              "readiness": {"enum": ["ready_for_author_review", "blocked"]},
+              "ecosystem": {"type": "string", "minLength": 1},
+              "packageShape": {"type": "string", "minLength": 1},
+              "warningCount": {"type": "integer", "minimum": 0},
+              "corrected": {"type": "boolean"},
+              "preflightStatus": {"enum": ["passed", "warning", "error", "not_run"]}
+            }
+          }
+        }
+      }
+    },
+    "detail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "authority", "binding", "previewOnly", "sections"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.candidate-review-detail/v0"},
+        "kind": {"const": "SpecHarvesterCandidateReviewDetail"},
+        "authority": {"const": "local_review_detail_evidence_only"},
+        "binding": {"$ref": "#/$defs/binding"},
+        "previewOnly": {"const": true},
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "contentType", "content"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "contentType": {"enum": ["text/plain", "application/json", "application/yaml"]},
+              "content": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "authority", "binding", "static", "ai"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.candidate-review-comparison/v0"},
+        "kind": {"const": "SpecHarvesterCandidateReviewComparison"},
+        "authority": {"const": "local_review_comparison_evidence_only"},
+        "binding": {"$ref": "#/$defs/binding"},
+        "static": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["memberCount"],
+          "properties": {
+            "memberCount": {"type": "integer", "minimum": 0}
+          }
+        },
+        "ai": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status"],
+          "properties": {
+            "status": {"enum": ["portable", "summary_only_not_portable", "not_available"]},
+            "warningCount": {"type": "integer", "minimum": 0},
+            "proposalSha256": {"$ref": "#/$defs/sha256"}
+          }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "authority", "binding", "disposition", "reviewer", "recordedAt", "reasonCode", "priorDecisionSha256"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.candidate-review-decision/v0"},
+        "kind": {"const": "SpecHarvesterCandidateReviewDecision"},
+        "authority": {"const": "local_review_decision_evidence_only"},
+        "binding": {"$ref": "#/$defs/binding"},
+        "disposition": {"enum": ["accept_for_intake", "request_revision", "defer", "do_not_promote"]},
+        "reviewer": {"type": "string", "minLength": 1, "maxLength": 200},
+        "recordedAt": {"type": "string", "format": "date-time"},
+        "reasonCode": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "notes": {"type": "string", "maxLength": 4000},
+        "priorDecisionSha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
+      }
+    },
+    "reasons": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "codes"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.candidate-review-reasons/v0"},
+        "kind": {"const": "SpecHarvesterCandidateReviewReasons"},
+        "codes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "allowedDispositions", "label"],
+            "properties": {
+              "code": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+              "allowedDispositions": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {"enum": ["accept_for_intake", "request_revision", "defer", "do_not_promote"]}
+              },
+              "label": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    },
+    "export": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "authority", "sourceBundleSha256", "decisions", "registryMutationCount"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.candidate-review-export/v0"},
+        "kind": {"const": "SpecHarvesterCandidateReviewExport"},
+        "authority": {"const": "portable_local_review_evidence_only"},
+        "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
+        "decisions": {"type": "array", "items": {"$ref": "#/$defs/decision"}},
+        "registryMutationCount": {"const": 0}
+      }
+    }
+  }
+}

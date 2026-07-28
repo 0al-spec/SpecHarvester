@@ -1,25 +1,27 @@
-# Next Task: P54-T2 Local Candidate Review Workbench Schemas
+# Next Task: P54-T3 Deterministic Local Candidate Review Catalog
 
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
-**Dependencies:** `P54-T1` Local Candidate Review Workbench Product Contract
+**Dependencies:** `P54-T2` Local Candidate Review Workbench Schemas
 **Status:** Ready
-**Branch:** pending selection after P54-T1 review
+**Branch:** pending selection after P54-T2 review
 
 ## Objective
 
-Define versioned schemas for the candidate review catalog, candidate detail
-record, static-versus-AI comparison, reviewer decision, reason taxonomy, and
-portable export bundle.
+Implement a deterministic catalog generator that ingests only validated
+portable handoff packets and emits a local static review index.
 
 ## Next Step
 
-Bind every record to a P53-T14 packet digest and add representative valid and
-invalid fixtures. Preserve the P54-T1 trust zones, inert-content rule,
-decision-history requirements, and non-authority boundary.
+Validate the source archive and each packet before deriving readiness, warning,
+correction, ecosystem, package-shape, and preflight facets. Preserve packet
+SHA-256 bindings and deterministic ordering.
 
 ## Recently Archived
 
+- `P54-T2` Local Candidate Review Workbench Schemas: PASS. Six versioned
+  Workbench records now bind candidate state and decisions to P53-T14 packet
+  digests while preserving portable evidence-only authority.
 - `P54-T1` Local Candidate Review Workbench Product Contract: PASS. Product
   scope, roles, trust zones, portable input, decision lifecycle, hostile-content
   controls, and read-only SpecPM boundary are fixed before implementation.
