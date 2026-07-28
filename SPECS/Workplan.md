@@ -2,7 +2,7 @@
 
 Status: Draft
 Created: 2026-05-17
-Updated: 2026-06-20
+Updated: 2026-07-28
 Input: `PRD.md`, `docs/ROADMAP.md`, current repository implementation
 
 ## Working Rules
@@ -2694,3 +2694,93 @@ Acceptance:
   disposition, `preview_only`, no registry authority, no package/relation
   acceptance, no package-manager execution, no harvested-code execution, no
   adapter execution, and no raw prompt/response/chain-of-thought persistence.
+
+## Phase 54. Local Candidate Review Workbench
+
+- [ ] `P54-T1` Record the Local Candidate Review Workbench product contract,
+  threat model, reviewer roles, decision lifecycle, portable input boundary,
+  and acceptance/non-authority rules before implementing a review surface.
+- [ ] `P54-T2` Define versioned schemas for the candidate review catalog,
+  candidate detail record, static-versus-AI comparison, reviewer decision,
+  reason taxonomy, and export bundle. Bind every record to a P53-T14 handoff
+  packet digest and include representative valid and invalid fixtures.
+- [ ] `P54-T3` Implement a deterministic catalog generator that ingests only
+  validated portable handoff packets and emits a local static review index with
+  readiness, warning, correction, ecosystem, package-shape, and preflight
+  facets.
+- [ ] `P54-T4` Implement the local candidate browser with corpus summary,
+  filtering, sorting, search, review-state navigation, resumable queue
+  position, and clear separation between candidates and already accepted
+  public-index packages.
+- [ ] `P54-T5` Implement the candidate detail review surface for source
+  provenance, pinned revision, license, package topology, generated
+  `specpm.yaml`, specs, relations, evidence, diagnostics, and a bounded
+  static-versus-Codex Spark proposal comparison.
+- [ ] `P54-T6` Implement the bounded local review-decision service and storage
+  contract. Restrict reads and writes to the configured review workspace,
+  validate all submitted decisions, write atomically, preserve history, and
+  support restart without executing candidate or repository content.
+- [ ] `P54-T7` Add reviewer actions for `accept_for_intake`,
+  `request_revision`, `defer`, and `do_not_promote`, with required reason codes,
+  optional notes, decision replacement history, progress summaries, and
+  portable import/export.
+- [ ] `P54-T8` Add the SpecPM intake bridge for reviewer-approved candidates.
+  Revalidate packet and decision digests, run read-only SpecPM intake preflight,
+  and emit proposal evidence without mutating SpecPM canonical sources or the
+  public index.
+- [ ] `P54-T9` Run the Workbench end-to-end over the P53 handoff corpus,
+  including malformed packet, digest drift, path traversal, stale decision,
+  interrupted write, restart, browser usability, hostile candidate markup,
+  restrictive CSP, blocked candidate-origin decision requests, and
+  representative maintainer review checks.
+- [ ] `P54-T10` Record the Phase 54 exit decision: stop, run bounded follow-up,
+  authorize maintainer use of the local Workbench, or plan a separate
+  publication phase. Do not authorize automatic acceptance or registry
+  publication by default.
+
+Motivation:
+
+- Phase 53 produces quality-triaged proposal-only candidates and P53-T14
+  prepares portable author handoff packets, but the existing SpecPM registry
+  viewer is designed for already accepted public-index packages.
+- Maintainers need a local, convenient, auditable surface for comparing static
+  and model-assisted output, inspecting evidence, recording dispositions, and
+  handing only approved candidates to SpecPM intake preflight.
+
+Goal:
+
+- Provide a local-first review workbench for portable candidate packets without
+  coupling the UI to SpecHarvester temporary paths, source checkouts, or mutable
+  public registry state.
+- Make review resumable and auditable across a 100-candidate corpus while
+  preserving human authority over package and relation acceptance.
+
+Acceptance:
+
+- P54-T1 and P54-T2 must complete before implementation. P54-T3 must consume
+  only schema-valid, digest-bound P53-T14 handoff packets.
+- P54-T4 and P54-T5 must remain usable with the generated local catalog even
+  when no public network connection, Docker daemon, or model provider is
+  available. Every candidate-controlled value must be rendered as inert content
+  under a restrictive CSP; candidate markup or script must not execute, reach
+  the decision service, or submit a reviewer disposition.
+- P54-T6 must reject path traversal, writes outside the configured review
+  workspace, malformed decisions, unknown candidate identities, stale packet
+  digests, and silent decision overwrite.
+- P54-T7 must preserve explicit reviewer identity, timestamp, reason, packet
+  digest, prior-decision linkage, and non-authority status in every decision.
+- P54-T8 may run SpecPM validation and intake preflight only for explicitly
+  approved candidates. It must not edit accepted-source manifests, publish
+  packages, accept relations, or mutate registry truth.
+- P54-T9 must exercise representative candidates from all Phase 53 waves and
+  prove that review state survives restart. Hostile-markup fixtures must prove
+  that candidate content cannot execute in the reviewer origin or invoke the
+  decision service, without weakening packet, provenance, privacy, or authority
+  boundaries.
+- P54-T10 must complete before any automatic publication workflow, shared
+  multi-user service, remote authentication model, or broader corpus review is
+  planned.
+- All Phase 54 tasks must keep repository files and candidate packages as
+  untrusted data, avoid package-manager and harvested-code execution, avoid raw
+  prompt/response/chain-of-thought persistence, and keep final acceptance with
+  an explicit maintainer-controlled SpecPM workflow.
