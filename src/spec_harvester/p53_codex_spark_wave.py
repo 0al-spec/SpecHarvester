@@ -30,6 +30,7 @@ P53_OUTCOMES_FILENAME = "p53-codex-spark-wave-outcomes.json"
 WAVE_ONE = "wave-1"
 WAVE_TWO = "wave-2"
 WAVE_THREE = "wave-3"
+WAVE_FOUR = "wave-4"
 MAX_CONCURRENCY = 2
 WAVE_CONFIGURATION = {
     WAVE_ONE: {
@@ -46,6 +47,11 @@ WAVE_CONFIGURATION = {
         "task": "P53-T10",
         "positions": range(51, 76),
         "reportFilename": "p53-t10-codex-spark-wave-3-report.json",
+    },
+    WAVE_FOUR: {
+        "task": "P53-T12",
+        "positions": range(76, 101),
+        "reportFilename": "p53-t12-codex-spark-wave-4-report.json",
     },
 }
 
@@ -178,18 +184,32 @@ class P53CodexSparkWave:
                 f"P53 {self.options.wave} requires a validated {task} scale-out decision artifact"
             )
         payload = read_json_object(self.options.scale_out_decision)
-        expected = (
-            ("P53-T7", WAVE_ONE, WAVE_TWO, "unlock_wave-2_only", "P53-T6", "wave1Minimum")
-            if self.options.wave == WAVE_TWO
-            else (
+        expected = {
+            WAVE_TWO: (
+                "P53-T7",
+                WAVE_ONE,
+                WAVE_TWO,
+                "unlock_wave-2_only",
+                "P53-T6",
+                "wave1Minimum",
+            ),
+            WAVE_THREE: (
                 "P53-T9",
                 WAVE_TWO,
                 WAVE_THREE,
                 "unlock_wave-3_only",
                 "P53-T8",
                 "waves2To4Minimum",
-            )
-        )
+            ),
+            WAVE_FOUR: (
+                "P53-T11",
+                WAVE_THREE,
+                WAVE_FOUR,
+                "unlock_wave-4_only",
+                "P53-T10",
+                "waves2To4Minimum",
+            ),
+        }[self.options.wave]
         required = {
             "apiVersion": "spec-harvester.p53-scale-out-decision/v0",
             "kind": "SpecHarvesterP53ScaleOutDecision",
