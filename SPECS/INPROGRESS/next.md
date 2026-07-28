@@ -3,9 +3,9 @@
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
 **Dependencies:** `P53-T10` Codex Spark Wave 3
-**Status:** Ready
+**Status:** In Progress
 **Started:** 2026-07-28
-**Branch:** pending selection after P53-T10 review
+**Branch:** `feature/p53-t11-wave-3-quality-decision`
 
 ## Objective
 
