@@ -65,9 +65,9 @@ were not persisted.
 
 ## Validation
 
-- `PYTHONPATH=src .venv/bin/pytest`: `1041 passed, 1 skipped`.
+- `PYTHONPATH=src .venv/bin/pytest`: `1042 passed, 1 skipped`.
 - `PYTHONPATH=src .venv/bin/pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90`:
-  passed at `90.00%`.
+  passed at `90.02%`.
 - `.venv/bin/ruff check src tests`: passed.
 - `.venv/bin/ruff format --check src tests`: passed.
 - `swift package dump-package`: passed.

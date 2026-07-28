@@ -276,12 +276,24 @@ def effective_outcome(
         return original
     replacement = correction.get("effectiveRecord")
     if isinstance(replacement, dict):
+        replacement_digest = mapping_value(
+            mapping_value(replacement.get("proposal")).get("digest")
+        ).get("value")
+        expected_digest = mapping_value(
+            mapping_value(correction["disposition"].get("artifacts")).get("correctedProposal")
+        ).get("sha256")
+        receipt = mapping_value(replacement.get("receipt"))
         if (
             replacement.get("id") != original.get("id")
             or replacement.get("status") != "completed"
             or replacement.get("schemaValid") is not True
             or replacement.get("repositorySpecific") is not True
             or replacement.get("unsupportedClaimCount") != 0
+            or replacement_digest != expected_digest
+            or any(
+                receipt.get(key) is not False
+                for key in ("rawPromptPersisted", "rawResponsePersisted", "chainOfThoughtPersisted")
+            )
         ):
             raise ValueError("P53-T13 correction effective record is invalid")
         return replacement

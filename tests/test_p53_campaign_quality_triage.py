@@ -9,6 +9,7 @@ from spec_harvester.p53_campaign_quality_triage import (
     P53CampaignQualityTriageOptions,
     build_p53_campaign_quality_triage,
     classify_outcome,
+    effective_outcome,
 )
 
 
@@ -310,6 +311,33 @@ def test_campaign_triage_rejects_invalid_correction_digest(tmp_path: Path) -> No
 
     with pytest.raises(ValueError, match="correction evidence is invalid"):
         build_p53_campaign_quality_triage(options)
+
+
+def test_effective_outcome_rejects_unbound_replacement_digest() -> None:
+    original = {"id": "repo-001"}
+    correction = {
+        "disposition": {
+            "artifacts": {"correctedProposal": {"sha256": "a" * 64}},
+        },
+        "effectiveRecord": {
+            "id": "repo-001",
+            "status": "completed",
+            "schemaValid": True,
+            "repositorySpecific": True,
+            "unsupportedClaimCount": 0,
+            "proposal": {
+                "digest": {"algorithm": "sha256", "value": "b" * 64},
+            },
+            "receipt": {
+                "rawPromptPersisted": False,
+                "rawResponsePersisted": False,
+                "chainOfThoughtPersisted": False,
+            },
+        },
+    }
+
+    with pytest.raises(ValueError, match="effective record is invalid"):
+        effective_outcome(original, correction)
 
 
 @pytest.mark.parametrize(
