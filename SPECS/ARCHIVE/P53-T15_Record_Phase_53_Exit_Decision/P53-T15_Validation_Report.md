@@ -27,8 +27,11 @@ allows Phase 54 to build that local review surface after its plan lands.
 | SpecPM preflight selected | `100` |
 | SpecPM preflight warnings / errors | `0 / 0` |
 
-The decision fixture binds the P53-T13 triage, P53-T14 execution summary, and
-P53-T14 SpecPM preflight by repository-relative path and SHA-256 digest.
+The decision fixture binds the P53-T13 triage, P53-T14 execution summary,
+complete 100-packet portable archive, and P53-T14 SpecPM preflight by
+repository-relative path and SHA-256 digest. The archive is retained in the
+repository, so maintainer disposition does not depend on an operator-local
+workspace.
 
 ## Authorization
 

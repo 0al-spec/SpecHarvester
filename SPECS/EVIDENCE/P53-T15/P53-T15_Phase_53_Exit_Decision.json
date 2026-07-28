@@ -15,12 +15,19 @@
     },
     "portableHandoff": {
       "path": "SPECS/EVIDENCE/P53-T14/P53-T14_Execution_Summary.json",
-      "sha256": "e5aa41f6f71dceb3e1ec705d60f1c234b6c321176f57afe040a650bfa2f46153",
+      "sha256": "014434b523d739c5b8f999b3fd1234c50ec460d48d2d661a5c69e1ba9fadd237",
+      "status": "passed"
+    },
+    "portablePacketBundle": {
+      "format": "tar.gz",
+      "path": "SPECS/EVIDENCE/P53-T14/P53-T14_Portable_Handoff.tar.gz",
+      "repositoryCount": 100,
+      "sha256": "db2593d7b17fd3f0da348b3fce72ea86b510d7c562b82b78047b926608709e63",
       "status": "passed"
     },
     "specpmPreflight": {
       "path": "SPECS/EVIDENCE/P53-T14/P53-T14_SpecPM_Preflight.json",
-      "sha256": "eb3775c2b114e9af615cfae78ab6521d4a1e8765ddd5b5cec335ea86938c97cc",
+      "sha256": "13edc18a58c4ccd6d79b66cd1ba19a3c943d7199947b8c3c4fa1c0521013d715",
       "status": "passed"
     }
   },
@@ -40,6 +47,7 @@
   },
   "authorization": {
     "phase53Complete": true,
+    "durablePacketBundleAvailable": true,
     "maintainerDispositionAvailable": true,
     "phase54LocalReviewWorkbenchMayProceed": true,
     "boundedTargetedFollowUpApproved": false,

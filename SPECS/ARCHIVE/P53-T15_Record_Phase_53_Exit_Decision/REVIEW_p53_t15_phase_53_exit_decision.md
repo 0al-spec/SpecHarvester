@@ -47,3 +47,10 @@
 - P54-T1 is the next ready task after the stacked plan and Phase 53 exit
   decision are merged.
 - Do not begin automatic publication or corpus expansion from this decision.
+
+### GitHub Review Remediation
+
+- Maintainer disposition is now explicitly conditioned on a repository-retained
+  digest-bound archive containing all 100 portable packets.
+- Contract tests open the archive, require exactly 100 packet records, and
+  reject absolute or traversal member paths.

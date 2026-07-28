@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import tarfile
 from pathlib import Path
 
 from spec_harvester.source_manifest import read_repository_source_manifests
@@ -40146,6 +40147,7 @@ def test_p53_phase_exit_decision_is_digest_bound_and_non_authoritative() -> None
     }
     authorization = payload["authorization"]
     assert authorization["phase53Complete"] is True
+    assert authorization["durablePacketBundleAvailable"] is True
     assert authorization["maintainerDispositionAvailable"] is True
     assert authorization["phase54LocalReviewWorkbenchMayProceed"] is True
     assert all(
@@ -40164,6 +40166,11 @@ def test_p53_phase_exit_decision_is_digest_bound_and_non_authoritative() -> None
     assert all(value is False for value in payload["executionBoundary"].values())
     assert all(value is False for value in payload["privacyBoundary"].values())
     assert payload["nextStep"]["task"] == "P54-T1"
+    bundle = ROOT / payload["sourceArtifacts"]["portablePacketBundle"]["path"]
+    with tarfile.open(bundle, "r:gz") as archive:
+        names = archive.getnames()
+    assert len([name for name in names if name.endswith("/packet.json")]) == 100
+    assert all(not Path(name).is_absolute() and ".." not in Path(name).parts for name in names)
     assert_current_next_task(
         (ROOT / "SPECS" / "INPROGRESS" / "next.md").read_text(encoding="utf-8")
     )
