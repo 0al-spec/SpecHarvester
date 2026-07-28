@@ -352,16 +352,19 @@ def test_campaign_triage_rejects_invalid_wave_boundaries(
         build_p53_campaign_quality_triage(options)
 
 
-@pytest.mark.parametrize("mutation", ["count", "positions"])
+@pytest.mark.parametrize("mutation", ["count", "positions", "identity"])
 def test_campaign_triage_rejects_invalid_frozen_metadata(tmp_path: Path, mutation: str) -> None:
     options = campaign_inputs(tmp_path)
     metadata = json.loads(options.metadata.read_text(encoding="utf-8"))
     if mutation == "count":
         metadata["repositories"].pop()
         message = "exactly 100"
-    else:
+    elif mutation == "positions":
         metadata["repositories"][0]["position"] = 101
         message = "positions 1 through 100"
+    else:
+        metadata["repositories"][0]["id"] = None
+        message = "invalid source identity"
     write_json(options.metadata, metadata)
 
     with pytest.raises(ValueError, match=message):
