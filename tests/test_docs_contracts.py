@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import tarfile
 from pathlib import Path
 
 from spec_harvester.source_manifest import read_repository_source_manifests
@@ -38,13 +39,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
-    if "# Next Task: P53-T15 Record Phase 53 Exit Decision" in next_text:
+    if "# Next Task: P54-T1 Local Candidate Review Workbench Product Contract" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text
+        assert "`P53-T15` Phase 53 Exit Decision" in next_text
+        assert "pending selection after P53-T15 review" in next_text
+        assert "digest-bound P53-T14 portable handoff" in normalized
+        assert "without accepting packages, relations, or registry truth" in normalized
+        return
+
+    if "# Next Task: P53-T15 Record Phase 53 Exit Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
         assert "`P53-T14` Portable Author Handoff and SpecPM Intake Preflight" in next_text
-        assert "pending selection after P53-T14 review" in next_text
+        if "**Status:** Selected" in next_text:
+            assert "feature/P53-T15-phase-53-exit-decision" in next_text
+        else:
+            assert "pending selection after P53-T14 review" in next_text
         assert "maintainer disposition" in normalized
-        assert "Do not approve registry promotion" in normalized
+        assert "registry promotion" in normalized
         return
 
     if "# Next Task: P53-T14 Portable Author Handoff and SpecPM Intake Preflight" in next_text:
@@ -40098,3 +40111,66 @@ def test_mass_repository_campaign_plan_records_p53_t1_codex_spark_contract() -> 
             "planning, static, or AI output as registry truth",
         ):
             assert boundary in normalized, f"Boundary {boundary!r} not found in {path}"
+
+
+def test_p53_phase_exit_decision_is_digest_bound_and_non_authoritative() -> None:
+    decision_path = ROOT / "SPECS" / "EVIDENCE" / "P53-T15" / "P53-T15_Phase_53_Exit_Decision.json"
+    payload = json.loads(decision_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.p53-phase-exit-decision/v0"
+    assert payload["kind"] == "SpecHarvesterP53PhaseExitDecision"
+    assert payload["phase"] == "P53"
+    assert payload["task"] == "P53-T15"
+    assert payload["status"] == "passed"
+    assert payload["authority"] == "producer_exit_decision_evidence_only"
+    assert payload["decision"] == "make_selected_evidence_available_for_maintainer_disposition"
+
+    for source in payload["sourceArtifacts"].values():
+        source_path = ROOT / source["path"]
+        assert source_path.is_file()
+        assert source["sha256"] == hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert source["status"] == "passed"
+
+    assert payload["campaignOutcome"] == {
+        "repositoryCount": 100,
+        "waveCount": 4,
+        "selectedForAuthorReviewCount": 100,
+        "correctedRepositoryCount": 2,
+        "deferredCount": 0,
+        "doNotPromoteCount": 0,
+        "portableCandidateCount": 100,
+        "portableAIProposalCount": 2,
+        "summaryOnlyAIProposalCount": 98,
+        "specpmPreflightSelectedCount": 100,
+        "specpmPreflightWarningCount": 0,
+        "specpmPreflightErrorCount": 0,
+    }
+    authorization = payload["authorization"]
+    assert authorization["phase53Complete"] is True
+    assert authorization["durablePacketBundleAvailable"] is True
+    assert authorization["maintainerDispositionAvailable"] is True
+    assert authorization["phase54LocalReviewWorkbenchMayProceed"] is True
+    assert all(
+        authorization[key] is False
+        for key in (
+            "boundedTargetedFollowUpApproved",
+            "repeatSameScaleApproved",
+            "largerCorpusApproved",
+            "higherConcurrencyApproved",
+            "automaticAcceptanceApproved",
+            "registryPromotionApproved",
+            "registryPublicationApproved",
+        )
+    )
+    assert all(value is False for value in payload["authorityBoundary"].values())
+    assert all(value is False for value in payload["executionBoundary"].values())
+    assert all(value is False for value in payload["privacyBoundary"].values())
+    assert payload["nextStep"]["task"] == "P54-T1"
+    bundle = ROOT / payload["sourceArtifacts"]["portablePacketBundle"]["path"]
+    with tarfile.open(bundle, "r:gz") as archive:
+        names = archive.getnames()
+    assert len([name for name in names if name.endswith("/packet.json")]) == 100
+    assert all(not Path(name).is_absolute() and ".." not in Path(name).parts for name in names)
+    assert_current_next_task(
+        (ROOT / "SPECS" / "INPROGRESS" / "next.md").read_text(encoding="utf-8")
+    )

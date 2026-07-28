@@ -249,6 +249,7 @@
 | P53-T11 | [P53-T11_Wave_3_Quality_Review_and_Scale_Out_Decision/](P53-T11_Wave_3_Quality_Review_and_Scale_Out_Decision/) | 2026-07-28 | PASS |
 | P53-T13 | [P53-T13_Campaign_Quality_Triage/](P53-T13_Campaign_Quality_Triage/) | 2026-07-28 | PASS |
 | P53-T14 | [P53-T14_Portable_Author_Handoff_and_SpecPM_Intake_Preflight/](P53-T14_Portable_Author_Handoff_and_SpecPM_Intake_Preflight/) | 2026-07-28 | PASS |
+| P53-T15 | [P53-T15_Record_Phase_53_Exit_Decision/](P53-T15_Record_Phase_53_Exit_Decision/) | 2026-07-28 | PASS |
 
 ## Historical Artifacts
 
@@ -921,3 +922,5 @@
 | 2026-07-28 | P53-T13 | Archived REVIEW_p53_t13_campaign_quality_triage report |
 | 2026-07-28 | P53-T14 | Archived Portable Author Handoff and SpecPM Intake Preflight (PASS) |
 | 2026-07-28 | P53-T14 | Archived REVIEW_p53_t14_portable_author_handoff report |
+| 2026-07-28 | P53-T15 | Archived Record Phase 53 Exit Decision (PASS) |
+| 2026-07-28 | P53-T15 | Archived REVIEW_p53_t15_phase_53_exit_decision report |

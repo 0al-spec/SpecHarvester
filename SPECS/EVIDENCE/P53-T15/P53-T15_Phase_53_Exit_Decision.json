@@ -1,0 +1,93 @@
+{
+  "apiVersion": "spec-harvester.p53-phase-exit-decision/v0",
+  "kind": "SpecHarvesterP53PhaseExitDecision",
+  "schemaVersion": 1,
+  "phase": "P53",
+  "task": "P53-T15",
+  "status": "passed",
+  "authority": "producer_exit_decision_evidence_only",
+  "decision": "make_selected_evidence_available_for_maintainer_disposition",
+  "sourceArtifacts": {
+    "campaignTriage": {
+      "path": "SPECS/EVIDENCE/P53-T13/P53-T13_Campaign_Quality_Triage.json",
+      "sha256": "be7d5e6d125bb9e5d3cac0b18b75d8a2df000f0ad9284f0888dbc97e202dd627",
+      "status": "passed"
+    },
+    "portableHandoff": {
+      "path": "SPECS/EVIDENCE/P53-T14/P53-T14_Execution_Summary.json",
+      "sha256": "014434b523d739c5b8f999b3fd1234c50ec460d48d2d661a5c69e1ba9fadd237",
+      "status": "passed"
+    },
+    "portablePacketBundle": {
+      "format": "tar.gz",
+      "path": "SPECS/EVIDENCE/P53-T14/P53-T14_Portable_Handoff.tar.gz",
+      "repositoryCount": 100,
+      "sha256": "db2593d7b17fd3f0da348b3fce72ea86b510d7c562b82b78047b926608709e63",
+      "status": "passed"
+    },
+    "specpmPreflight": {
+      "path": "SPECS/EVIDENCE/P53-T14/P53-T14_SpecPM_Preflight.json",
+      "sha256": "13edc18a58c4ccd6d79b66cd1ba19a3c943d7199947b8c3c4fa1c0521013d715",
+      "status": "passed"
+    }
+  },
+  "campaignOutcome": {
+    "repositoryCount": 100,
+    "waveCount": 4,
+    "selectedForAuthorReviewCount": 100,
+    "correctedRepositoryCount": 2,
+    "deferredCount": 0,
+    "doNotPromoteCount": 0,
+    "portableCandidateCount": 100,
+    "portableAIProposalCount": 2,
+    "summaryOnlyAIProposalCount": 98,
+    "specpmPreflightSelectedCount": 100,
+    "specpmPreflightWarningCount": 0,
+    "specpmPreflightErrorCount": 0
+  },
+  "authorization": {
+    "phase53Complete": true,
+    "durablePacketBundleAvailable": true,
+    "maintainerDispositionAvailable": true,
+    "phase54LocalReviewWorkbenchMayProceed": true,
+    "boundedTargetedFollowUpApproved": false,
+    "repeatSameScaleApproved": false,
+    "largerCorpusApproved": false,
+    "higherConcurrencyApproved": false,
+    "automaticAcceptanceApproved": false,
+    "registryPromotionApproved": false,
+    "registryPublicationApproved": false
+  },
+  "authorityBoundary": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "seedsBaselines": false,
+    "removesPreviewOnly": false,
+    "mutatesAcceptedSources": false,
+    "mutatesRegistryTruth": false,
+    "createsSpecPMPullRequest": false
+  },
+  "executionBoundary": {
+    "clonesOrFetchesRepositories": false,
+    "reconstructsCandidates": false,
+    "rerunsStaticCollection": false,
+    "runsCodex": false,
+    "runsAI": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false
+  },
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "secretsPersisted": false,
+    "chainOfThoughtPersisted": false
+  },
+  "nextStep": {
+    "task": "P54-T1",
+    "name": "Local Candidate Review Workbench Product Contract",
+    "condition": "after Phase 54 plan lands",
+    "scope": "local maintainer review of P53-T14 portable packets"
+  }
+}
