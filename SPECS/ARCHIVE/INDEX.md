@@ -246,6 +246,7 @@
 | P53-T8 | [P53-T8_Codex_Spark_Wave_2/](P53-T8_Codex_Spark_Wave_2/) | 2026-07-28 | PASS |
 | P53-T9 | [P53-T9_Wave_2_Quality_Review_and_Scale_Out_Decision/](P53-T9_Wave_2_Quality_Review_and_Scale_Out_Decision/) | 2026-07-28 | PASS |
 | P53-T10 | [P53-T10_Codex_Spark_Wave_3/](P53-T10_Codex_Spark_Wave_3/) | 2026-07-28 | PASS |
+| P53-T11 | [P53-T11_Wave_3_Quality_Review_and_Scale_Out_Decision/](P53-T11_Wave_3_Quality_Review_and_Scale_Out_Decision/) | 2026-07-28 | PASS |
 
 ## Historical Artifacts
 
@@ -254,6 +255,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p53_t5_mass_corpus_static_only_gate.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p53_t9_wave_2_quality_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p53_t10_codex_spark_wave_3.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p53_t11_wave_3_quality_decision.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t7_operational_mvp_exit_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t6_operational_mvp_author_handoff_summaries.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p43_t5_operational_mvp_ai_enabled_comparison.md` |
@@ -911,3 +913,5 @@
 | 2026-07-28 | P53-T9 | Archived REVIEW_p53_t9_wave_2_quality_decision report |
 | 2026-07-28 | P53-T10 | Archived Codex Spark Wave 3 (PASS) |
 | 2026-07-28 | P53-T10 | Archived REVIEW_p53_t10_codex_spark_wave_3 report |
+| 2026-07-28 | P53-T11 | Archived Wave-3 Quality Review and Scale-Out Decision (PASS) |
+| 2026-07-28 | P53-T11 | Archived REVIEW_p53_t11_wave_3_quality_decision report |

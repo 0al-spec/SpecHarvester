@@ -42,3 +42,16 @@ def test_p53_t9_scale_out_decision_is_machine_readable_and_wave_bounded() -> Non
     assert len(artifacts["correctedProposal"]["sha256"]) == 64
     assert len(artifacts["targetedStaticReport"]["sha256"]) == 64
     assert "wave-4_unlock" in payload["nonGoals"]
+
+
+def test_p53_t11_scale_out_decision_unlocks_only_wave_four() -> None:
+    payload = json.loads(Path("SPECS/INPROGRESS/P53-T11_Scale_Out_Decision.json").read_text())
+    assert payload["task"] == "P53-T11"
+    assert payload["decision"] == "unlock_wave-4_only"
+    assert payload["fromWave"] == "wave-3"
+    assert payload["toWave"] == "wave-4"
+    assert payload["sourceWaveReport"]["task"] == "P53-T10"
+    assert len(payload["sourceWaveReport"]["sha256"]) == 64
+    assert len(payload["humanReview"]["reviewedRepositoryIds"]) == 3
+    assert payload["qualityMetrics"]["unsupportedClaimRate"] <= 0.02
+    assert "wave-5_unlock" in payload["nonGoals"]

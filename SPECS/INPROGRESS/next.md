@@ -1,21 +1,20 @@
-# Next Task: P53-T11 Wave-3 Quality Review and Scale-Out Decision
+# Next Task: P53-T12 Codex Spark Wave 4
 
 **Priority:** P0
 **Phase:** Phase 53. Mass Popular Repository Parsing and Candidate Production
-**Dependencies:** `P53-T10` Codex Spark Wave 3
+**Dependencies:** `P53-T11` Wave-3 Quality Review and Scale-Out Decision
 **Status:** Ready
 **Started:** 2026-07-28
-**Branch:** pending selection after P53-T10 review
+**Branch:** pending selection after P53-T11 review
 
 ## Objective
 
-Review the wave-3 quality sample and record whether only P53-T12 / positions
-76-100 may run.
+Run the fourth bounded Codex 5.3 Spark proposal-only wave over frozen positions
+76-100, consuming the recorded P53-T11 authorization before dispatch.
 
 ## Next Step
 
-Require at least three manual reviews and all Phase 53 thresholds. Do not run
-wave 4 as part of this task.
+Preserve all P53 gates and complete no registry acceptance.
 
 ## Recently Archived
 
