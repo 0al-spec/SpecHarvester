@@ -44,6 +44,16 @@ def test_browser_renderer_writes_inert_static_bundle(tmp_path: Path) -> None:
     assert json.loads((tmp_path / "browser/catalog.json").read_text())["items"]
 
 
+def test_browser_copies_valid_detail_set(tmp_path: Path) -> None:
+    details = tmp_path / "details.json"
+    details.write_text(json.dumps({"details": []}))
+    result = render_local_candidate_review_browser(
+        LocalCandidateReviewBrowserOptions(CATALOG, tmp_path / "browser", details)
+    )
+    assert result["detailCount"] == 0
+    assert (tmp_path / "browser/details.json").is_file()
+
+
 def test_browser_rejects_catalog_with_missing_or_duplicate_identity(tmp_path: Path) -> None:
     payload = json.loads(CATALOG.read_text())
     payload["items"][1]["candidateId"] = payload["items"][0]["candidateId"]

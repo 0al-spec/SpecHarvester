@@ -19,6 +19,7 @@ CATALOG_AUTHORITY = "local_review_catalog_evidence_only"
 class LocalCandidateReviewBrowserOptions:
     catalog: Path
     output: Path
+    details: Path | None = None
 
 
 def _read_json_object(path: Path) -> dict[str, Any]:
@@ -96,10 +97,25 @@ def render_local_candidate_review_browser(
     (output / "catalog.json").write_text(
         json.dumps(catalog, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
+    if options.details is not None:
+        try:
+            details = json.loads(options.details.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise ValueError(f"Cannot read candidate detail set: {exc}") from exc
+        if not isinstance(details, dict) or not isinstance(details.get("details"), list):
+            raise ValueError("Candidate detail set is invalid")
+        (output / "details.json").write_text(
+            json.dumps(details, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
     (output / "index.html").write_text(INDEX_HTML, encoding="utf-8")
     (output / "workbench.css").write_text(WORKBENCH_CSS, encoding="utf-8")
     (output / "workbench.js").write_text(WORKBENCH_JS, encoding="utf-8")
-    return {"status": "passed", "output": str(output), **catalog_summary(catalog)}
+    return {
+        "status": "passed",
+        "output": str(output),
+        "detailCount": len(details["details"]) if options.details is not None else 0,
+        **catalog_summary(catalog),
+    }
 
 
 INDEX_HTML = """<!doctype html>
