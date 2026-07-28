@@ -244,6 +244,7 @@
 | P53-T3 | [P53-T3_Mass_Corpus_Source_Manifest/](P53-T3_Mass_Corpus_Source_Manifest/) | 2026-07-27 | PASS |
 | P53-T5 | [P53-T5_Mass_Corpus_Static_Only_Gate/](P53-T5_Mass_Corpus_Static_Only_Gate/) | 2026-07-27 | PASS |
 | P53-T8 | [P53-T8_Codex_Spark_Wave_2/](P53-T8_Codex_Spark_Wave_2/) | 2026-07-28 | PASS |
+| P53-T9 | [P53-T9_Wave_2_Quality_Review_and_Scale_Out_Decision/](P53-T9_Wave_2_Quality_Review_and_Scale_Out_Decision/) | 2026-07-28 | PASS |
 
 ## Historical Artifacts
 
@@ -903,3 +904,4 @@
 | 2026-07-27 | P53-T5 | Archived REVIEW_p53_t5_mass_corpus_static_only_gate report |
 | 2026-07-28 | P53-T8 | Archived Codex Spark Wave 2 (PASS) |
 | 2026-07-28 | P53-T8 | Archived REVIEW_p53_t8_codex_spark_wave_2 report |
+| 2026-07-28 | P53-T9 | Archived Wave-2 Quality Review and Scale-Out Decision (PASS) |
