@@ -121,6 +121,10 @@ from spec_harvester.license_provenance_reports import (
     build_license_provenance_risk_report,
     write_license_provenance_report,
 )
+from spec_harvester.local_candidate_review_browser import (
+    LocalCandidateReviewBrowserOptions,
+    render_local_candidate_review_browser,
+)
 from spec_harvester.local_candidate_review_catalog import (
     LocalCandidateReviewCatalogOptions,
     build_local_candidate_review_catalog,
@@ -896,6 +900,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--max-total-member-bytes", type=int, default=512 * 1024 * 1024
     )
     local_review_catalog.set_defaults(func=run_local_candidate_review_catalog_cli)
+
+    local_review_browser = subcommands.add_parser(
+        "render-local-candidate-review-browser",
+        help="Render a static local browser for a validated candidate review catalog.",
+    )
+    local_review_browser.add_argument("--catalog", type=Path, required=True)
+    local_review_browser.add_argument("--output", type=Path, required=True)
+    local_review_browser.set_defaults(func=run_local_candidate_review_browser_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2465,6 +2477,18 @@ def run_local_candidate_review_catalog_cli(args: argparse.Namespace) -> int:
             sort_keys=True,
         )
     )
+    return 0
+
+
+def run_local_candidate_review_browser_cli(args: argparse.Namespace) -> int:
+    try:
+        result = render_local_candidate_review_browser(
+            LocalCandidateReviewBrowserOptions(catalog=args.catalog, output=args.output)
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 
 
