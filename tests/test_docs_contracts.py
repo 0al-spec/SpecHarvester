@@ -38,6 +38,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P53-T13 Campaign Quality Triage" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** In progress" in next_text
+        assert "`P53-T5`, `P53-T6`, `P53-T8`, `P53-T10`, and `P53-T12`" in next_text
+        assert "feature/p53-t13-campaign-quality-triage" in next_text
+        assert "exactly 100 frozen Phase 53 repositories" in normalized
+        assert "selected-for-author-review, deferred, or do-not-promote" in normalized
+        assert "Restore missing durable sanitized wave-1 and wave-4 reports" in normalized
+        return
+
     if "# Next Task: P53-T12 Codex Spark Wave 4" in next_text:
         assert "**Status:** Ready" in next_text
         assert "`P53-T11` Wave-3 Quality Review and Scale-Out Decision" in next_text

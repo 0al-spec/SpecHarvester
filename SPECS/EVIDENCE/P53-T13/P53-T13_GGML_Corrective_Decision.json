@@ -1,0 +1,72 @@
+{
+  "apiVersion": "spec-harvester.p53-targeted-correction/v0",
+  "authority": "producer_targeted_correction_evidence_only",
+  "correctionDisposition": {
+    "artifacts": {
+      "correctedProposal": {
+        "sha256": "3953e6c57d0e61d7b42360ba9f0e501c2ff3c46e3d83cea371a49410aedf05fb"
+      },
+      "followUpReport": {
+        "sha256": "a839e5278b128f07967c074f74e79cce79b25827ce200344961a2390f3c70750"
+      },
+      "targetedStaticReport": {
+        "sha256": "e58849216bac534e47c856aeb7d487f12666e42b4b86113800627ec51258fb76"
+      }
+    },
+    "effectiveOutcome": "schema_valid_repository_specific_zero_unsupported_claims",
+    "originalOutcome": "package_set_id_mismatch",
+    "replacementEvidence": "revision_verified_targeted_rerun",
+    "repositoryId": "ggml-org-llama-cpp"
+  },
+  "effectiveRecord": {
+    "diagnosticCodes": [],
+    "id": "ggml-org-llama-cpp",
+    "proposal": {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "3953e6c57d0e61d7b42360ba9f0e501c2ff3c46e3d83cea371a49410aedf05fb"
+      },
+      "path": "codex-spark/ggml-org-llama-cpp/package-set-ai-draft-proposal.json",
+      "status": "completed",
+      "summary": {
+        "errorCount": 0,
+        "excludedPackageCount": 0,
+        "relationCount": 0,
+        "selectedMemberCount": 1,
+        "warningCount": 0
+      }
+    },
+    "receipt": {
+      "chainOfThoughtPersisted": false,
+      "codexCliVersion": "codex-cli 0.145.0",
+      "durationMs": 19480,
+      "evidenceDigest": {
+        "algorithm": "sha256",
+        "value": "e19b2ce7bbc18a917f8cd6532e6423d89159c6377b3beb5fa39b3ad81c130d76"
+      },
+      "exitCode": 0,
+      "finalOutputDigest": {
+        "algorithm": "sha256",
+        "value": "53d408e4ed2c3168bdc672c682331ede4bde1853ab58210e23b239825673da4d"
+      },
+      "model": "gpt-5.3-codex-spark",
+      "rawPromptPersisted": false,
+      "rawResponsePersisted": false,
+      "sandbox": "read-only",
+      "schemaDigest": {
+        "algorithm": "sha256",
+        "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+      },
+      "schemaValid": true
+    },
+    "repositorySpecific": true,
+    "schemaValid": true,
+    "status": "completed",
+    "unsupportedClaimCount": 0
+  },
+  "kind": "SpecHarvesterP53TargetedCorrection",
+  "phase": "P53",
+  "schemaVersion": 1,
+  "status": "passed",
+  "task": "P53-T13"
+}

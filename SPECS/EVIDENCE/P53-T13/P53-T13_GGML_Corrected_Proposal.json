@@ -1,0 +1,155 @@
+{
+  "apiVersion": "spec-harvester.package-set-ai-draft/v0",
+  "authority": "proposal_only_not_registry_acceptance",
+  "diagnostics": [],
+  "evidenceGaps": [
+    "The allowlisted evidence includes no package manifest files or package-role metadata; package selection details are limited to deterministic package-set structure and root repository evidence."
+  ],
+  "excludedPackages": [],
+  "inputs": [
+    {
+      "digest": {
+        "algorithm": "sha256",
+        "value": "ec3591862d2cf50593ade90ccdca4182d133f9624da2cf2cae5074c45fd19871"
+      },
+      "path": "workspace-inventory.json",
+      "pathScope": "request_relative",
+      "role": "workspace_inventory"
+    },
+    {
+      "evidencePathCount": 3,
+      "evidencePaths": [
+        "README.md",
+        "readme.md",
+        "workspace-inventory.json"
+      ],
+      "packageCount": 1,
+      "role": "compact_model_input"
+    }
+  ],
+  "kind": "SpecHarvesterPackageSetAIDraftProposal",
+  "nonGoals": [
+    "deterministic_spec_generation",
+    "specpm_acceptance",
+    "package_acceptance",
+    "relation_acceptance",
+    "registry_publication",
+    "package_execution",
+    "package_manager_execution",
+    "model_authored_file_mutation"
+  ],
+  "overallConfidence": "medium",
+  "packageSet": {
+    "confidence": "medium",
+    "evidencePaths": [
+      "workspace-inventory.json"
+    ],
+    "packageId": "ggml-org-llama-cpp.workspace",
+    "summary": "Repository-level package set for ggml-org/llama.cpp at the observed revision."
+  },
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "rawModelResponsesPersisted": false,
+    "rawPromptsPersisted": false,
+    "secretsIncluded": false
+  },
+  "provider": {
+    "baseUrl": null,
+    "execution": "external_schema_validated",
+    "kind": "codex_exec_external_model_output",
+    "model": "gpt-5.3-codex-spark",
+    "name": "codex"
+  },
+  "providerReceipt": {
+    "chainOfThoughtPersisted": false,
+    "codexCliVersion": "codex-cli 0.145.0",
+    "durationMs": 19480,
+    "evidenceDigest": {
+      "algorithm": "sha256",
+      "value": "e19b2ce7bbc18a917f8cd6532e6423d89159c6377b3beb5fa39b3ad81c130d76"
+    },
+    "exitCode": 0,
+    "finalOutputDigest": {
+      "algorithm": "sha256",
+      "value": "53d408e4ed2c3168bdc672c682331ede4bde1853ab58210e23b239825673da4d"
+    },
+    "model": "gpt-5.3-codex-spark",
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false,
+    "sandbox": "read-only",
+    "schemaDigest": {
+      "algorithm": "sha256",
+      "value": "f269f39769237460bbb784bb1d0254cfa70c1a4f053d7addb893b6e78dc96d60"
+    },
+    "schemaValid": true
+  },
+  "relations": [],
+  "schemaVersion": 1,
+  "selectedMembers": [
+    {
+      "confidence": "medium",
+      "evidencePaths": [
+        "README.md",
+        "workspace-inventory.json"
+      ],
+      "inventoryRole": "member_package",
+      "manifestPath": "",
+      "packageId": "ggml-org-llama-cpp.core",
+      "reason": "The only available deterministic package member is the core package at repository root.",
+      "role": "primary_package",
+      "sourceTargetPath": "."
+    }
+  ],
+  "status": "completed",
+  "stopPolicySummary": {
+    "decision": "stop_for_author_review",
+    "diagnosticCounts": {
+      "errorCount": 0,
+      "warningCount": 0
+    },
+    "nonAuthority": [
+      "The stop-policy summary is producer-side review evidence only.",
+      "It is not SpecPM registry acceptance.",
+      "It is not maintainer approval.",
+      "It is not upstream project endorsement."
+    ],
+    "reason": "remaining_work_is_author_reviewable",
+    "schemaVersion": 1,
+    "sourceStatus": "completed",
+    "status": "author_ready_draft",
+    "subjectCount": 1,
+    "summary": "Proposal diagnostics are clean; stop model iteration and hand off for review.",
+    "zeroSubjectPolicy": {
+      "inventoryPackageCount": 1,
+      "inventoryPackageIds": [
+        "ggml-org-llama-cpp.core"
+      ],
+      "packageSetId": "ggml-org-llama-cpp.workspace",
+      "reason": "proposal_subjects_present",
+      "status": "not_applicable"
+    }
+  },
+  "summary": {
+    "errorCount": 0,
+    "excludedPackageCount": 0,
+    "relationCount": 0,
+    "selectedMemberCount": 1,
+    "warningCount": 0
+  },
+  "trustBoundary": [
+    "Workspace inventory remains deterministic producer evidence.",
+    "LLM output is a schema-bound package-set draft proposal only.",
+    "Model output cannot accept packages, accept relations, mutate generated specs, or publish registry metadata.",
+    "SpecPM remains the validation, acceptance, relation, and registry authority.",
+    "Maintainers decide which proposed members, exclusions, and relations are accepted.",
+    "Raw prompts, raw provider responses, secrets, and model chain-of-thought are not persisted."
+  ],
+  "validationGuard": {
+    "authority": "producer_deterministic_pre_normalization_validation",
+    "diagnosticCount": 0,
+    "diagnostics": [],
+    "errorCount": 0,
+    "status": "passed",
+    "warningCount": 0
+  }
+}
