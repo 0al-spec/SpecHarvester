@@ -55,4 +55,11 @@ persist private model material, or publish registry metadata.
 ## Quality Gates
 
 - Focused documentation contracts: `197 passed`.
-- Remaining full gates are recorded before archive.
+- Full pytest: `1059 passed, 1 skipped`.
+- Coverage: `90.02%`, threshold `90%`.
+- Ruff check: PASS.
+- Ruff format check for `src tests`: PASS.
+- `git diff --check`: PASS.
+- `swift package dump-package`: PASS.
+- `swift build --target SpecHarvesterDocs`: PASS with the existing unhandled
+  DocC directory warning.

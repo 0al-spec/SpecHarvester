@@ -2594,7 +2594,7 @@ Acceptance:
   preflight for selected candidates without accepting packages or relations.
   Preserve source/evidence digests, preview-only status, and explicit
   maintainer disposition requirements.
-- [ ] `P53-T15` Record the Phase 53 exit decision: stop, run a bounded targeted
+- [x] `P53-T15` Record the Phase 53 exit decision: stop, run a bounded targeted
   follow-up, repeat the same scale under revised budgets, or make selected
   evidence available for maintainer disposition. Do not approve registry
   promotion or a larger corpus by default.

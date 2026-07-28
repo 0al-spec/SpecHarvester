@@ -38,6 +38,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P54-T1 Local Candidate Review Workbench Product Contract" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text
+        assert "`P53-T15` Phase 53 Exit Decision" in next_text
+        assert "pending selection after P53-T15 review" in next_text
+        assert "digest-bound P53-T14 portable handoff" in normalized
+        assert "without accepting packages, relations, or registry truth" in normalized
+        return
+
     if "# Next Task: P53-T15 Record Phase 53 Exit Decision" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
