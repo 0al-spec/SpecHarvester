@@ -1,26 +1,33 @@
-# Next Task: P55-T1 AI Semantic-Author Product and Authority Contract
+# Next Task: P55-T2 AI Semantic-Author Schemas
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P54-T10` Phase 54 Exit Decision
-**Status:** Selected
-**Branch:** `feature/P55-T1-ai-semantic-author-contract`
+**Dependencies:** `P55-T1` AI Semantic-Author Product and Authority Contract
+**Status:** Ready
+**Branch:** pending selection after P55-T1 review
 
 ## Objective
 
-Record the AI semantic-author product and authority contract before provider,
-validation, portable-proposal, Workbench, or materialization implementation.
+Define versioned, provider-neutral data contracts for bounded semantic author
+requests, complete proposals, review edits, and accepted materialization
+decisions before provider execution begins.
 
 ## Required Scope
 
-Define model-as-author responsibilities, existing-intent reuse, experimental
-intent proposals, evidence requirements, reviewer authority, provider
-interchangeability, and the boundaries between observed, proposed, and accepted
-intent metadata. Keep Codex 5.3 Spark and LM Studio proposal-only and do not
-grant publication authority.
+Cover complete semantic proposals, observed-intent reuse decisions,
+experimental intent proposals, nearby-intent analysis, claim-level evidence
+bindings, reviewer edits, and accepted materialization decisions. Add
+representative valid, malformed, unsupported-evidence, duplicate-intent, and
+stale-digest fixtures. Preserve the P55-T1 provider-neutral, proposal-only
+authority boundary and do not invoke Codex 5.3 Spark or LM Studio.
 
 ## Recently Archived
 
+- `P55-T1` AI Semantic-Author Product and Authority Contract: PASS. Codex 5.3
+  Spark and LM Studio now share one evidence-grounded proposal contract; models
+  may propose observed-intent reuse or visibly experimental intents, while
+  explicit reviewer decisions and separate SpecPM governance retain acceptance,
+  canonicalization, materialization, and publication authority.
 - `P54-T10` Phase 54 Exit Decision: PASS. Local maintainer Workbench use and the
   bounded proposal-only Phase 55 semantic-authoring follow-up are authorized;
   automatic acceptance, canonical intent creation, registry mutation,

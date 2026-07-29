@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P55-T2 AI Semantic-Author Schemas" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P55-T1` AI Semantic-Author Product and Authority Contract" in next_text
+        assert "complete semantic proposals" in normalized
+        assert "unsupported-evidence" in normalized
+        assert "do not invoke Codex 5.3 Spark or LM Studio" in normalized
+        return
+
     if "# Next Task: P55-T1 AI Semantic-Author Product and Authority Contract" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
