@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
 **Dependencies:** `P54-T9` Workbench End-to-End Validation
-**Status:** Ready
-**Branch:** pending selection after P54-T9 review
+**Status:** Selected
+**Branch:** `feature/P54-T10-phase-54-exit-decision`
 
 ## Objective
 
