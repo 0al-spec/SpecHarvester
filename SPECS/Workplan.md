@@ -2733,7 +2733,7 @@ Acceptance:
   interrupted write, restart, browser usability, hostile candidate markup,
   restrictive CSP, blocked candidate-origin decision requests, and
   representative maintainer review checks.
-- [ ] `P54-T10` Record the Phase 54 exit decision: stop, run bounded follow-up,
+- [x] `P54-T10` Record the Phase 54 exit decision: stop, run bounded follow-up,
   authorize maintainer use of the local Workbench, or plan a separate
   publication phase. Do not authorize automatic acceptance or registry
   publication by default.
