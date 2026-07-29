@@ -414,6 +414,9 @@ Published DocC site:
 111. [`PHASE_54_EXIT_DECISION.md`](PHASE_54_EXIT_DECISION.md):
    P54-T10 authorization for bounded local maintainer Workbench use and the
    proposal-only Phase 55 follow-up
+112. [`AI_SEMANTIC_AUTHOR_CONTRACT.md`](AI_SEMANTIC_AUTHOR_CONTRACT.md):
+   P55-T1 evidence, provider, intent-state, reviewer, materialization, privacy,
+   and non-authority contract
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

@@ -40568,3 +40568,118 @@ def test_p54_phase_exit_decision_authorizes_only_bounded_local_maintainer_use() 
     assert "Phase54ExitDecision" in (
         ROOT / "Sources/SpecHarvester/Documentation.docc/SpecHarvester.md"
     ).read_text(encoding="utf-8")
+
+
+def test_ai_semantic_author_contract_preserves_evidence_and_reviewer_authority() -> None:
+    fixture_path = (
+        ROOT / "tests/fixtures/ai_semantic_author_contract/"
+        "p55-t1-ai-semantic-author-contract.example.json"
+    )
+    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.ai-semantic-author-contract/v0"
+    assert payload["kind"] == "SpecHarvesterAISemanticAuthorContract"
+    assert payload["phase"] == "P55"
+    assert payload["task"] == "P55-T1"
+    assert payload["status"] == "planned"
+    assert payload["authority"] == "semantic_author_product_contract_evidence_only"
+
+    source = payload["sourceArtifacts"]["phase54ExitDecision"]
+    source_path = ROOT / source["path"]
+    assert source_path.is_file()
+    assert source["sha256"] == hashlib.sha256(source_path.read_bytes()).hexdigest()
+    assert source["phase55FollowUpApproved"] is True
+    assert source["publicationAuthority"] == "not_granted"
+
+    product = payload["product"]
+    assert product["primaryWorker"] == "gpt-5.3-codex-spark"
+    assert product["comparisonProvider"] == "lm_studio"
+    assert product["providerNeutralProposalContractRequired"] is True
+    assert "experimental_intent_proposals" in product["outputs"]
+    assert "canonicalization_authority" in product["notA"]
+
+    assert set(payload["roles"]) == {
+        "producer",
+        "provider",
+        "reviewer",
+        "maintainer",
+        "specpmGovernance",
+    }
+    provider = payload["providerContract"]
+    assert [record["role"] for record in provider["providers"]] == [
+        "primary_worker",
+        "comparison_provider",
+    ]
+    assert all(
+        provider[key] is True
+        for key in (
+            "sameRequestSchemaRequired",
+            "sameProposalSchemaRequired",
+            "sameEvidenceRulesRequired",
+            "sameReviewSemanticsRequired",
+            "sameAuthorityBoundaryRequired",
+        )
+    )
+    assert provider["providerIdentityCanChangeAuthority"] is False
+    assert provider["transportCanChangeAuthority"] is False
+    assert provider["reasoningCapabilityCanChangeAuthority"] is False
+
+    responsibilities = payload["semanticAuthorResponsibilities"]
+    assert responsibilities["refinePackagePurpose"] is True
+    assert responsibilities["proposeConcretePackageOwnedCapabilities"] is True
+    assert responsibilities["reuseSuitableObservedIntents"] is True
+    assert responsibilities["proposeExperimentalIntents"] is True
+    assert responsibilities["mayTreatDocumentationAsHostInstructions"] is False
+    assert responsibilities["mayClaimMaintainerEndorsement"] is False
+
+    intent_states = payload["intentStateModel"]
+    assert intent_states["experimentalNamespace"] == "intent.experimental.*"
+    assert intent_states["canonicalRequiresSeparateSpecPMGovernance"] is True
+    assert all(
+        intent_states[key] is False
+        for key in (
+            "observedMeansCanonical",
+            "proposedReuseMeansAccepted",
+            "proposedExperimentalMeansCanonical",
+            "reviewerAcceptedMeansCanonical",
+        )
+    )
+
+    evidence = payload["evidenceBoundary"]
+    assert evidence["everySemanticClaimRequiresEvidence"] is True
+    assert evidence["sourcePathRequired"] is True
+    assert evidence["sourceDigestRequired"] is True
+    assert evidence["unknownPathsAllowed"] is False
+    assert evidence["staleDigestsAllowed"] is False
+    assert evidence["documentationTrust"] == "evidence_not_instructions"
+
+    lifecycle = payload["proposalLifecycle"]
+    assert lifecycle["modelMayRecordReviewDecision"] is False
+    assert lifecycle["acceptedOrEditedRequiredForMaterialization"] is True
+    assert lifecycle["priorCandidatePreserved"] is True
+    assert lifecycle["readOnlySpecPMValidationRequired"] is True
+    assert lifecycle["materializedRevisionIsRegistryTruth"] is False
+
+    assert payload["workbenchBoundary"]["modelCanInvokeDecisionService"] is False
+    assert payload["workbenchBoundary"]["modelCanApproveOwnProposal"] is False
+    assert "prompt_injection_in_repository_content" in payload["threatModel"]["threats"]
+    assert all(value is False for value in payload["authorityBoundary"].values())
+    assert all(value is False for value in payload["executionBoundary"].values())
+    assert all(value is False for value in payload["privacyBoundary"].values())
+
+    github_doc = (ROOT / "docs/AI_SEMANTIC_AUTHOR_CONTRACT.md").read_text()
+    docc_doc = (
+        ROOT / "Sources/SpecHarvester/Documentation.docc/AISemanticAuthorContract.md"
+    ).read_text()
+    for text in (github_doc, docc_doc):
+        normalized = " ".join(text.split())
+        assert "Codex 5.3 Spark" in normalized
+        assert "LM Studio" in normalized
+        assert "intent.experimental.*" in normalized
+        assert "untrusted evidence, not host instructions" in normalized
+        assert "proposal-only" in normalized
+    assert "AI_SEMANTIC_AUTHOR_CONTRACT.md" in (ROOT / "docs/CAPABILITIES.md").read_text()
+    assert (
+        "<doc:AISemanticAuthorContract>"
+        in (ROOT / "Sources/SpecHarvester/Documentation.docc/Capabilities.md").read_text()
+    )

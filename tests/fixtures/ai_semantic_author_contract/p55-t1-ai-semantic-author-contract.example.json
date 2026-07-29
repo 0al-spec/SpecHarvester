@@ -1,0 +1,218 @@
+{
+  "apiVersion": "spec-harvester.ai-semantic-author-contract/v0",
+  "kind": "SpecHarvesterAISemanticAuthorContract",
+  "schemaVersion": 1,
+  "phase": "P55",
+  "task": "P55-T1",
+  "status": "planned",
+  "authority": "semantic_author_product_contract_evidence_only",
+  "sourceArtifacts": {
+    "phase54ExitDecision": {
+      "path": "SPECS/EVIDENCE/P54-T10/P54-T10_Phase_54_Exit_Decision.json",
+      "sha256": "9ee9864096e06053bad32158b41381ca5dc5d6c14aad38a0cbbaa20cf19fb216",
+      "decision": "authorize_local_maintainer_workbench_use",
+      "phase55FollowUpApproved": true,
+      "publicationAuthority": "not_granted"
+    }
+  },
+  "product": {
+    "purpose": "produce_complete_evidence_grounded_semantic_candidate_proposals",
+    "primaryWorker": "gpt-5.3-codex-spark",
+    "comparisonProvider": "lm_studio",
+    "providerNeutralProposalContractRequired": true,
+    "outputs": [
+      "purpose_refinement",
+      "package_owned_capability_proposals",
+      "observed_intent_reuse_proposals",
+      "experimental_intent_proposals",
+      "interface_claims",
+      "evidence_bindings",
+      "nearby_intent_analysis",
+      "non_goals"
+    ],
+    "notA": [
+      "intent_registry",
+      "canonicalization_authority",
+      "autonomous_maintainer",
+      "publication_engine",
+      "accepted_source_editor",
+      "registry_truth_writer"
+    ]
+  },
+  "roles": {
+    "producer": [
+      "supply_validated_candidate_and_allowlisted_evidence"
+    ],
+    "provider": [
+      "emit_bounded_semantic_proposal_without_decision_authority"
+    ],
+    "reviewer": [
+      "inspect_static_versus_ai_semantics",
+      "accept_edit_reject_or_defer_fields"
+    ],
+    "maintainer": [
+      "authorize_candidate_revision_materialization",
+      "retain_package_and_relation_acceptance_authority"
+    ],
+    "specpmGovernance": [
+      "retain_canonical_intent_and_publication_authority"
+    ]
+  },
+  "providerContract": {
+    "providers": [
+      {
+        "id": "gpt-5.3-codex-spark",
+        "role": "primary_worker"
+      },
+      {
+        "id": "lm_studio",
+        "role": "comparison_provider"
+      }
+    ],
+    "sameRequestSchemaRequired": true,
+    "sameProposalSchemaRequired": true,
+    "sameEvidenceRulesRequired": true,
+    "sameReviewSemanticsRequired": true,
+    "sameAuthorityBoundaryRequired": true,
+    "providerIdentityCanChangeAuthority": false,
+    "transportCanChangeAuthority": false,
+    "reasoningCapabilityCanChangeAuthority": false
+  },
+  "semanticAuthorResponsibilities": {
+    "refinePackagePurpose": true,
+    "proposeConcretePackageOwnedCapabilities": true,
+    "reuseSuitableObservedIntents": true,
+    "proposeExperimentalIntents": true,
+    "declareNearbyIntentsAndDifferences": true,
+    "declareNonGoals": true,
+    "bindInterfaceClaimsToEvidence": true,
+    "avoidUnsupportedQuantitativeClaims": true,
+    "mayTreatDocumentationAsHostInstructions": false,
+    "mayClaimMaintainerEndorsement": false
+  },
+  "intentStateModel": {
+    "states": [
+      "observed",
+      "proposed_reuse",
+      "proposed_experimental",
+      "reviewer_accepted",
+      "reviewer_edited",
+      "canonical"
+    ],
+    "experimentalNamespace": "intent.experimental.*",
+    "observedMeansCanonical": false,
+    "proposedReuseMeansAccepted": false,
+    "proposedExperimentalMeansCanonical": false,
+    "reviewerAcceptedMeansCanonical": false,
+    "canonicalRequiresSeparateSpecPMGovernance": true
+  },
+  "evidenceBoundary": {
+    "allowedClasses": [
+      "validated_candidate_yaml",
+      "harvested_repository_metadata",
+      "allowlisted_source_documentation",
+      "public_interface_evidence",
+      "specpm_observed_intent_catalog"
+    ],
+    "everySemanticClaimRequiresEvidence": true,
+    "sourcePathRequired": true,
+    "sourceDigestRequired": true,
+    "unknownPathsAllowed": false,
+    "staleDigestsAllowed": false,
+    "privateMachinePathsPortable": false,
+    "repositoryContentTrust": "untrusted_data_only",
+    "documentationTrust": "evidence_not_instructions"
+  },
+  "proposalLifecycle": {
+    "states": [
+      "generated",
+      "validated",
+      "in_review",
+      "accepted",
+      "edited",
+      "rejected",
+      "deferred",
+      "materialized_candidate_revision"
+    ],
+    "modelMayRecordReviewDecision": false,
+    "modelMayEditAfterReviewerDecision": false,
+    "acceptedOrEditedRequiredForMaterialization": true,
+    "reviewerIdentityRequired": true,
+    "proposalDigestRequired": true,
+    "sourceBundleDigestRequired": true,
+    "priorCandidatePreserved": true,
+    "beforeAfterProvenanceRequired": true,
+    "readOnlySpecPMValidationRequired": true,
+    "materializedRevisionIsRegistryTruth": false
+  },
+  "workbenchBoundary": {
+    "staticVersusAIComparisonRequired": true,
+    "candidateAndModelValuesRenderedAsInertText": true,
+    "restrictiveContentSecurityPolicyInherited": true,
+    "modelCanInvokeDecisionService": false,
+    "modelCanReadCsrfToken": false,
+    "modelCanApproveOwnProposal": false
+  },
+  "threatModel": {
+    "untrustedInputs": [
+      "repository_documentation",
+      "candidate_yaml",
+      "provider_output",
+      "observed_intent_descriptions",
+      "imported_reviewer_edits"
+    ],
+    "threats": [
+      "prompt_injection_in_repository_content",
+      "unsupported_semantic_claim",
+      "fabricated_evidence_path",
+      "stale_evidence_digest",
+      "package_namespace_violation",
+      "generic_or_duplicate_intent",
+      "experimental_intent_presented_as_canonical",
+      "provider_specific_authority_escalation",
+      "model_self_approval",
+      "hostile_markup",
+      "private_path_leakage"
+    ]
+  },
+  "authorityBoundary": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "createsCanonicalIntents": false,
+    "removesPreviewOnly": false,
+    "mutatesAcceptedSources": false,
+    "mutatesRegistryTruth": false,
+    "publishesPublicIndex": false,
+    "automaticallyMaterializesProposals": false
+  },
+  "executionBoundary": {
+    "invokesCodex": false,
+    "invokesLMStudio": false,
+    "buildsSemanticInputPacks": false,
+    "materializesCandidateRevisions": false,
+    "clonesOrFetchesRepositories": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false
+  },
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "hiddenReasoningPersisted": false,
+    "credentialsPersisted": false,
+    "privateMachinePathsPersisted": false
+  },
+  "implementationSequence": [
+    "P55-T2",
+    "P55-T3",
+    "P55-T4",
+    "P55-T5",
+    "P55-T6",
+    "P55-T7",
+    "P55-T8",
+    "P55-T9",
+    "P55-T10",
+    "P55-T11"
+  ]
+}

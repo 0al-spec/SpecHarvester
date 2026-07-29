@@ -316,6 +316,7 @@ the host.
 - <doc:LocalSpecPMIntakeBridge>
 - <doc:LocalCandidateReviewWorkbenchE2E>
 - <doc:Phase54ExitDecision>
+- <doc:AISemanticAuthorContract>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
