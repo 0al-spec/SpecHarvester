@@ -1,0 +1,116 @@
+{
+  "apiVersion": "spec-harvester.local-specpm-intake-proposal/v0",
+  "authority": "local_review_specpm_intake_proposal_evidence_only",
+  "candidates": [
+    {
+      "candidateId": "rtk-ai-rtk",
+      "decisionSha256": "861d05af7cfdd8ea40156b3e0ffcdc2228433775d3726a3a14cb4acc0cc49ef3",
+      "packages": [
+        {
+          "packageRoot": "candidate/rtk_ai_rtk.core",
+          "preflightStatus": "passed",
+          "specpmReport": {
+            "capabilities": [
+              "rtk_ai_rtk.core"
+            ],
+            "checkedFiles": [
+              "specpm.yaml",
+              "specs/rtk.spec.yaml"
+            ],
+            "errorCount": 0,
+            "errors": [],
+            "intentMappings": [
+              {
+                "capabilityId": "rtk_ai_rtk.core",
+                "intentId": "intent.api.contract_surface"
+              },
+              {
+                "capabilityId": "rtk_ai_rtk.core",
+                "intentId": "intent.developer.tooling_surface"
+              },
+              {
+                "capabilityId": "rtk_ai_rtk.core",
+                "intentId": "intent.documentation.knowledge_base"
+              },
+              {
+                "capabilityId": "rtk_ai_rtk.core",
+                "intentId": "intent.metadata.schema_validation"
+              },
+              {
+                "capabilityId": "rtk_ai_rtk.core",
+                "intentId": "intent.web.request_response_context"
+              },
+              {
+                "capabilityId": "rtk_ai_rtk.core",
+                "intentId": "intent.workflow.automation_pipeline"
+              }
+            ],
+            "intents": [
+              "intent.api.contract_surface",
+              "intent.developer.tooling_surface",
+              "intent.documentation.knowledge_base",
+              "intent.metadata.schema_validation",
+              "intent.web.request_response_context",
+              "intent.workflow.automation_pipeline"
+            ],
+            "packageIdentity": {
+              "name": "Rtk_ai_rtk Core",
+              "package_id": "rtk_ai_rtk.core",
+              "version": "0.1.0"
+            },
+            "status": "warning_only",
+            "warningCount": 1,
+            "warnings": [
+              {
+                "code": "preview_only_package",
+                "field": "preview_only",
+                "file": "specpm.yaml",
+                "message": "Package is marked preview_only and should be reviewed before publication.",
+                "severity": "warning"
+              }
+            ]
+          },
+          "specpmReportSha256": "f3b9dd0e56da08d94c6c7a8a81b6459b9b505220963e0a8ba722070bfe9b7e28"
+        }
+      ],
+      "packetSha256": "e1aed867b62f5374dbec871d1938d3c4b94516f980b8f50801004ee89a56e06b",
+      "reviewDecision": {
+        "disposition": "accept_for_intake",
+        "reasonCode": "evidence_verified",
+        "recordedAt": "2026-07-29T12:30:00Z",
+        "reviewer": "phase-54-maintainer"
+      },
+      "status": "specpm_preflight_passed"
+    }
+  ],
+  "kind": "SpecHarvesterLocalSpecPMIntakeProposal",
+  "nonAuthority": [
+    "This record is read-only SpecPM intake proposal evidence.",
+    "It is not SpecPM registry acceptance.",
+    "It does not accept packages or relations.",
+    "It does not remove preview_only.",
+    "It does not mutate accepted sources or public index metadata.",
+    "It does not create or merge a SpecPM pull request.",
+    "It does not replace SpecPM maintainer review."
+  ],
+  "notExecuted": [
+    "repository checkout access",
+    "package manager execution",
+    "harvested code execution",
+    "AI provider invocation",
+    "SpecPM accepted-source mutation",
+    "public index mutation",
+    "SpecPM pull request creation"
+  ],
+  "registryMutationCount": 0,
+  "sourceBundleSha256": "db2593d7b17fd3f0da348b3fce72ea86b510d7c562b82b78047b926608709e63",
+  "summary": {
+    "approvedCandidateCount": 1,
+    "packageCount": 1,
+    "reviewedCandidateCount": 1,
+    "skippedDecisionCount": 0,
+    "skippedDispositionCounts": {},
+    "specpmPreflightFailedCount": 0,
+    "specpmPreflightPassedCount": 1
+  }
+}

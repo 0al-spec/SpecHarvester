@@ -1,24 +1,31 @@
-# Next Task: P54-T8 SpecPM Intake Bridge
+# Next Task: P54-T9 Workbench End-to-End Validation
 
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
-**Dependencies:** `P54-T7` Reviewer Actions and Portable Decision Exchange
+**Dependencies:** `P54-T8` SpecPM Intake Bridge
 **Status:** Ready
-**Branch:** pending selection after P54-T7 review
 
 ## Objective
 
-Add a read-only SpecPM intake bridge for explicitly reviewer-approved
-candidates.
+Run the complete local Candidate Review Workbench over the P53 portable handoff
+corpus and prove its integrity, restart behavior, security boundaries, and
+maintainer usability.
 
-## Next Step
+## Required Scope
 
-Revalidate packet and decision digests, run SpecPM intake preflight only for
-`accept_for_intake`, and emit non-authoritative proposal evidence without
-mutating SpecPM canonical sources or the public index.
+Exercise malformed packets, digest drift, path traversal, stale decisions,
+interrupted writes, restart, browser usability, hostile candidate markup,
+restrictive CSP, blocked candidate-origin decision requests, representative
+maintainer reviews across all Phase 53 waves, and the read-only SpecPM intake
+bridge.
 
 ## Recently Archived
 
+- `P54-T8` SpecPM Intake Bridge: PASS. Current reviewer-approved candidates now
+  pass archive, catalog, packet, decision-history, and decision-digest
+  revalidation before bounded read-only SpecPM validation; proposal evidence
+  remains `preview_only`, non-authoritative, and records zero registry
+  mutations.
 - `P54-T7` Reviewer Actions and Portable Decision Exchange: PASS. The local
   Workbench now records four reason-validated reviewer dispositions, preserves
   immutable replacement history, reconciles corpus progress after restart, and

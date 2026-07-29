@@ -138,6 +138,10 @@ from spec_harvester.local_review_decision_service import (
     LocalReviewDecisionServiceOptions,
     serve_local_review_decisions,
 )
+from spec_harvester.local_specpm_intake_bridge import (
+    LocalSpecPMIntakeBridgeOptions,
+    build_local_specpm_intake_proposal,
+)
 from spec_harvester.mass_corpus_checkout_readiness import (
     MassCorpusCheckoutReadinessOptions,
     run_mass_corpus_checkout_readiness,
@@ -940,6 +944,21 @@ def build_parser() -> argparse.ArgumentParser:
     local_review_decisions.add_argument("--port", type=int, default=8765)
     local_review_decisions.add_argument("--max-request-bytes", type=int, default=2 * 1024 * 1024)
     local_review_decisions.set_defaults(func=run_local_review_decisions_cli)
+
+    local_specpm_intake = subcommands.add_parser(
+        "build-local-specpm-intake-proposal",
+        help="Run read-only SpecPM preflight for reviewer-approved local candidates.",
+    )
+    local_specpm_intake.add_argument("--archive", type=Path, required=True)
+    local_specpm_intake.add_argument("--expected-sha256", required=True)
+    local_specpm_intake.add_argument("--catalog", type=Path, required=True)
+    local_specpm_intake.add_argument("--review-workspace", type=Path, required=True)
+    local_specpm_intake.add_argument("--output", type=Path, required=True)
+    local_specpm_intake.add_argument("--specpm-command", default="specpm")
+    local_specpm_intake.add_argument("--specpm-pythonpath")
+    local_specpm_intake.add_argument("--specpm-timeout-seconds", type=int, default=60)
+    local_specpm_intake.add_argument("--max-specpm-report-bytes", type=int, default=2 * 1024 * 1024)
+    local_specpm_intake.set_defaults(func=run_local_specpm_intake_bridge_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2560,6 +2579,28 @@ def run_local_review_decisions_cli(args: argparse.Namespace) -> int:
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
         return 2
     return 0
+
+
+def run_local_specpm_intake_bridge_cli(args: argparse.Namespace) -> int:
+    try:
+        result = build_local_specpm_intake_proposal(
+            LocalSpecPMIntakeBridgeOptions(
+                archive=args.archive,
+                expected_archive_sha256=args.expected_sha256,
+                catalog=args.catalog,
+                review_workspace=args.review_workspace,
+                output=args.output,
+                specpm_command=args.specpm_command,
+                specpm_pythonpath=args.specpm_pythonpath,
+                specpm_timeout_seconds=args.specpm_timeout_seconds,
+                max_specpm_report_bytes=args.max_specpm_report_bytes,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result["specpmPreflightFailedCount"] == 0 else 1
 
 
 def run_draft_package_set(args: argparse.Namespace) -> int:

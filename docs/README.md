@@ -405,6 +405,9 @@ Published DocC site:
 108. [`LOCAL_REVIEW_DECISION_SERVICE.md`](LOCAL_REVIEW_DECISION_SERVICE.md):
    P54-T6/T7 loopback-only decision storage, reviewer actions, progress, and
    portable evidence exchange
+109. [`LOCAL_SPECPM_INTAKE_BRIDGE.md`](LOCAL_SPECPM_INTAKE_BRIDGE.md):
+   P54-T8 digest-bound reviewer-approved candidate reconstruction and read-only
+   SpecPM intake proposal preflight
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

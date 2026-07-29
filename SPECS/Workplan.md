@@ -2724,7 +2724,7 @@ Acceptance:
   `request_revision`, `defer`, and `do_not_promote`, with required reason codes,
   optional notes, decision replacement history, progress summaries, and
   portable import/export.
-- [ ] `P54-T8` Add the SpecPM intake bridge for reviewer-approved candidates.
+- [x] `P54-T8` Add the SpecPM intake bridge for reviewer-approved candidates.
   Revalidate packet and decision digests, run read-only SpecPM intake preflight,
   and emit proposal evidence without mutating SpecPM canonical sources or the
   public index.
