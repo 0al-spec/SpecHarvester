@@ -2728,7 +2728,7 @@ Acceptance:
   Revalidate packet and decision digests, run read-only SpecPM intake preflight,
   and emit proposal evidence without mutating SpecPM canonical sources or the
   public index.
-- [ ] `P54-T9` Run the Workbench end-to-end over the P53 handoff corpus,
+- [x] `P54-T9` Run the Workbench end-to-end over the P53 handoff corpus,
   including malformed packet, digest drift, path traversal, stale decision,
   interrupted write, restart, browser usability, hostile candidate markup,
   restrictive CSP, blocked candidate-origin decision requests, and

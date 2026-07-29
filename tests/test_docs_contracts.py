@@ -39,6 +39,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P54-T10 Phase 54 Exit Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P54-T9` Workbench End-to-End Validation" in next_text
+        assert "authorizing maintainer use of the local Workbench" in normalized
+        assert "do not authorize automatic acceptance" in normalized
+        return
+
     if "# Next Task: P54-T9 Workbench End-to-End Validation" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text

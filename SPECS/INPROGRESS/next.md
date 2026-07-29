@@ -1,27 +1,30 @@
-# Next Task: P54-T9 Workbench End-to-End Validation
+# Next Task: P54-T10 Phase 54 Exit Decision
 
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
-**Dependencies:** `P54-T8` SpecPM Intake Bridge
-**Status:** Selected
-**Branch:** `feature/P54-T9-workbench-e2e-validation`
+**Dependencies:** `P54-T9` Workbench End-to-End Validation
+**Status:** Ready
+**Branch:** pending selection after P54-T9 review
 
 ## Objective
 
-Run the complete local Candidate Review Workbench over the P53 portable handoff
-corpus and prove its integrity, restart behavior, security boundaries, and
-maintainer usability.
+Record the Phase 54 exit decision from the completed Workbench implementation
+and 100-candidate E2E evidence.
 
 ## Required Scope
 
-Exercise malformed packets, digest drift, path traversal, stale decisions,
-interrupted writes, restart, browser usability, hostile candidate markup,
-restrictive CSP, blocked candidate-origin decision requests, representative
-maintainer reviews across all Phase 53 waves, and the read-only SpecPM intake
-bridge.
+Choose explicitly among stopping, running a bounded follow-up, authorizing
+maintainer use of the local Workbench, or planning a separate publication
+phase. Preserve explicit maintainer authority and do not authorize automatic
+acceptance or registry publication by default.
 
 ## Recently Archived
 
+- `P54-T9` Workbench End-to-End Validation: PASS. The full 100-candidate corpus
+  and all four 25-candidate waves were accounted for; representative decisions,
+  restart and portable exchange, fail-closed integrity scenarios, hostile
+  content containment, desktop/mobile usability, and one read-only SpecPM
+  preflight passed with zero registry mutations.
 - `P54-T8` SpecPM Intake Bridge: PASS. Current reviewer-approved candidates now
   pass archive, catalog, packet, decision-history, and decision-digest
   revalidation before bounded read-only SpecPM validation; proposal evidence
