@@ -119,18 +119,21 @@ def render_local_candidate_review_browser(
             errors = list(validator.iter_errors(record))
             if errors:
                 raise ValueError(f"Candidate detail set schema is invalid: {errors[0].message}")
-        catalog_ids = {item["candidateId"] for item in catalog["items"]}
-        detail_ids = {
-            detail.get("binding", {}).get("candidateId")
-            for detail in details["details"]
-            if isinstance(detail, dict)
-        }
-        comparison_ids = {
-            comparison.get("binding", {}).get("candidateId")
-            for comparison in details["comparisons"]
-            if isinstance(comparison, dict)
-        }
-        if detail_ids != catalog_ids or comparison_ids != catalog_ids:
+        expected_bindings = {item["candidateId"]: item["packetSha256"] for item in catalog["items"]}
+
+        def bindings(records: list[Any]) -> dict[str, str]:
+            values = {
+                record["binding"]["candidateId"]: record["binding"]["packetSha256"]
+                for record in records
+            }
+            if len(values) != len(records):
+                raise ValueError("Candidate detail set contains duplicate bindings")
+            return values
+
+        if (
+            bindings(details["details"]) != expected_bindings
+            or bindings(details["comparisons"]) != expected_bindings
+        ):
             raise ValueError("Candidate detail set bindings differ from catalog")
         (output / "details.json").write_text(
             json.dumps(details, indent=2, sort_keys=True) + "\n", encoding="utf-8"

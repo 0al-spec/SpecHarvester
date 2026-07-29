@@ -67,6 +67,21 @@ def test_browser_rejects_detail_set_with_wrong_bundle_binding(tmp_path: Path) ->
         )
 
 
+@pytest.mark.parametrize("record_type", ["details", "comparisons"])
+def test_browser_rejects_detail_set_with_wrong_packet_binding(
+    tmp_path: Path, record_type: str
+) -> None:
+    details = json.loads(DETAILS.read_text())
+    details[record_type][0]["binding"]["packetSha256"] = "0" * 64
+    path = tmp_path / "details.json"
+    path.write_text(json.dumps(details))
+
+    with pytest.raises(ValueError, match="bindings differ"):
+        render_local_candidate_review_browser(
+            LocalCandidateReviewBrowserOptions(CATALOG, tmp_path / "browser", path)
+        )
+
+
 def test_browser_rejects_catalog_with_missing_or_duplicate_identity(tmp_path: Path) -> None:
     payload = json.loads(CATALOG.read_text())
     payload["items"][1]["candidateId"] = payload["items"][0]["candidateId"]
