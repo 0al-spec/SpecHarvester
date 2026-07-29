@@ -411,6 +411,9 @@ Published DocC site:
 110. [`LOCAL_CANDIDATE_REVIEW_WORKBENCH_E2E.md`](LOCAL_CANDIDATE_REVIEW_WORKBENCH_E2E.md):
    P54-T9 full-corpus Workbench integrity, security, restart, browser, and
    read-only SpecPM validation
+111. [`PHASE_54_EXIT_DECISION.md`](PHASE_54_EXIT_DECISION.md):
+   P54-T10 authorization for bounded local maintainer Workbench use and the
+   proposal-only Phase 55 follow-up
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

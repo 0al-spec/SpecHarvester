@@ -1,0 +1,109 @@
+{
+  "apiVersion": "spec-harvester.p54-phase-exit-decision/v0",
+  "kind": "SpecHarvesterP54PhaseExitDecision",
+  "schemaVersion": 1,
+  "phase": "P54",
+  "task": "P54-T10",
+  "status": "passed",
+  "authority": "local_workbench_exit_decision_evidence_only",
+  "decision": "authorize_local_maintainer_workbench_use",
+  "sourceArtifacts": {
+    "productContract": {
+      "path": "tests/fixtures/local_candidate_review_workbench_contract/p54-t1-local-candidate-review-workbench-contract.example.json",
+      "sha256": "37220e62477ccceef8656b934eec503512542b8b47fd4ad275f87e7a8ef2ad44",
+      "status": "passed"
+    },
+    "portablePacketBundle": {
+      "format": "tar.gz",
+      "path": "SPECS/EVIDENCE/P53-T14/P53-T14_Portable_Handoff.tar.gz",
+      "candidateCount": 100,
+      "sha256": "db2593d7b17fd3f0da348b3fce72ea86b510d7c562b82b78047b926608709e63",
+      "status": "passed"
+    },
+    "workbenchE2E": {
+      "path": "SPECS/EVIDENCE/P54-T9/P54-T9_Workbench_E2E_Report.json",
+      "sha256": "331e1462b87c3f27c741798d424924f1732f0437586704abbb97f5deaa7c5b18",
+      "status": "passed"
+    }
+  },
+  "workbenchOutcome": {
+    "candidateCount": 100,
+    "archivePacketCount": 100,
+    "detailCount": 100,
+    "comparisonCount": 100,
+    "waveCounts": {
+      "wave-1": 25,
+      "wave-2": 25,
+      "wave-3": 25,
+      "wave-4": 25
+    },
+    "representativeReviewCount": 4,
+    "restartHydrationPassed": true,
+    "portableDecisionExchangePassed": true,
+    "allPacketBindingsRevalidated": true,
+    "hostileContentContained": true,
+    "originAndCsrfBoundaryPassed": true,
+    "interruptedWriteRollbackPassed": true,
+    "specpmApprovedCandidateCount": 1,
+    "specpmPreflightFailureCount": 0,
+    "registryMutationCount": 0
+  },
+  "authorization": {
+    "phase54Complete": true,
+    "localMaintainerWorkbenchUseApproved": true,
+    "candidateInspectionApproved": true,
+    "boundedReviewerDispositionApproved": true,
+    "portableDecisionExchangeApproved": true,
+    "approvedCandidateReadOnlySpecPMPreflightApproved": true,
+    "boundedPhase55SemanticAuthoringFollowUpApproved": true,
+    "codexSparkPrimaryWorkerApprovedForPhase55": true,
+    "lmStudioComparisonProviderApprovedForPhase55": true,
+    "automaticAcceptanceApproved": false,
+    "registryMutationApproved": false,
+    "registryPublicationApproved": false,
+    "canonicalIntentCreationApproved": false,
+    "remoteMultiUserServiceApproved": false,
+    "broaderCorpusExecutionApproved": false
+  },
+  "operatingGuardrails": {
+    "deployment": "local_only",
+    "input": "validated_digest_bound_portable_candidate_packets",
+    "candidateContentTrust": "untrusted_inert_data",
+    "decisionAuthority": "explicit_maintainer",
+    "specpmMode": "read_only_preflight",
+    "modelAuthority": "proposal_only",
+    "publicationAuthority": "not_granted"
+  },
+  "authorityBoundary": {
+    "acceptsPackages": false,
+    "acceptsRelations": false,
+    "removesPreviewOnly": false,
+    "mutatesAcceptedSources": false,
+    "mutatesRegistryTruth": false,
+    "publishesPublicIndex": false,
+    "createsCanonicalIntents": false
+  },
+  "executionBoundary": {
+    "clonesOrFetchesRepositories": false,
+    "rerunsCollection": false,
+    "runsCodex": false,
+    "runsLMStudio": false,
+    "installsDependencies": false,
+    "invokesPackageManagers": false,
+    "executesHarvestedCode": false,
+    "runsAdapters": false
+  },
+  "privacyBoundary": {
+    "rawPromptsPersisted": false,
+    "rawProviderResponsesPersisted": false,
+    "chainOfThoughtPersisted": false,
+    "credentialsPersisted": false,
+    "privateMachinePathsPersisted": false
+  },
+  "nextStep": {
+    "task": "P55-T1",
+    "name": "AI Semantic-Author Product and Authority Contract",
+    "scope": "bounded evidence-grounded proposal-only semantic authoring",
+    "publicationAuthority": "not_granted"
+  }
+}

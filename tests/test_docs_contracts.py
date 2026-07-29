@@ -40473,3 +40473,89 @@ def test_local_candidate_review_workbench_e2e_docs_and_evidence_are_linked() -> 
     assert evidence["serviceSecurity"]["candidateOriginStatus"] == 403
     assert evidence["specpmIntake"]["failedCount"] == 0
     assert evidence["registryMutationCount"] == 0
+
+
+def test_p54_phase_exit_decision_authorizes_only_bounded_local_maintainer_use() -> None:
+    decision_path = ROOT / "SPECS/EVIDENCE/P54-T10/P54-T10_Phase_54_Exit_Decision.json"
+    payload = json.loads(decision_path.read_text(encoding="utf-8"))
+
+    assert payload["apiVersion"] == "spec-harvester.p54-phase-exit-decision/v0"
+    assert payload["kind"] == "SpecHarvesterP54PhaseExitDecision"
+    assert payload["phase"] == "P54"
+    assert payload["task"] == "P54-T10"
+    assert payload["status"] == "passed"
+    assert payload["authority"] == "local_workbench_exit_decision_evidence_only"
+    assert payload["decision"] == "authorize_local_maintainer_workbench_use"
+
+    for source in payload["sourceArtifacts"].values():
+        source_path = ROOT / source["path"]
+        assert source_path.is_file()
+        assert source["sha256"] == hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert source["status"] == "passed"
+
+    outcome = payload["workbenchOutcome"]
+    assert outcome["candidateCount"] == 100
+    assert outcome["archivePacketCount"] == 100
+    assert outcome["detailCount"] == 100
+    assert outcome["comparisonCount"] == 100
+    assert outcome["waveCounts"] == {
+        "wave-1": 25,
+        "wave-2": 25,
+        "wave-3": 25,
+        "wave-4": 25,
+    }
+    assert outcome["registryMutationCount"] == 0
+    assert all(
+        outcome[key] is True
+        for key in (
+            "restartHydrationPassed",
+            "portableDecisionExchangePassed",
+            "allPacketBindingsRevalidated",
+            "hostileContentContained",
+            "originAndCsrfBoundaryPassed",
+            "interruptedWriteRollbackPassed",
+        )
+    )
+
+    authorization = payload["authorization"]
+    assert all(
+        authorization[key] is True
+        for key in (
+            "phase54Complete",
+            "localMaintainerWorkbenchUseApproved",
+            "candidateInspectionApproved",
+            "boundedReviewerDispositionApproved",
+            "portableDecisionExchangeApproved",
+            "approvedCandidateReadOnlySpecPMPreflightApproved",
+            "boundedPhase55SemanticAuthoringFollowUpApproved",
+            "codexSparkPrimaryWorkerApprovedForPhase55",
+            "lmStudioComparisonProviderApprovedForPhase55",
+        )
+    )
+    assert all(
+        authorization[key] is False
+        for key in (
+            "automaticAcceptanceApproved",
+            "registryMutationApproved",
+            "registryPublicationApproved",
+            "canonicalIntentCreationApproved",
+            "remoteMultiUserServiceApproved",
+            "broaderCorpusExecutionApproved",
+        )
+    )
+    assert all(value is False for value in payload["authorityBoundary"].values())
+    assert all(value is False for value in payload["executionBoundary"].values())
+    assert all(value is False for value in payload["privacyBoundary"].values())
+    assert payload["nextStep"]["task"] == "P55-T1"
+
+    docs = (ROOT / "docs/PHASE_54_EXIT_DECISION.md").read_text(encoding="utf-8")
+    docc = (ROOT / "Sources/SpecHarvester/Documentation.docc/Phase54ExitDecision.md").read_text(
+        encoding="utf-8"
+    )
+    assert "authorize_local_maintainer_workbench_use" in docs
+    assert "Codex 5.3 Spark" in docs
+    assert "LM Studio" in docs
+    assert "Automatic acceptance" in docc
+    assert "Phase54ExitDecision" in (
+        ROOT / "Sources/SpecHarvester/Documentation.docc/SpecHarvester.md"
+    ).read_text(encoding="utf-8")
