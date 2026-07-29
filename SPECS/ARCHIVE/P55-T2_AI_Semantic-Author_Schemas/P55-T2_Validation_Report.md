@@ -47,11 +47,11 @@ reasoning, credential, or private machine-path fields.
 
 ```text
 uv run pytest tests/test_p55_semantic_author_schemas.py tests/test_docs_contracts.py -q
-212 passed
+216 passed
 
 uv run pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90
-1174 passed, 1 skipped
-Total coverage: 90.02%
+1178 passed, 1 skipped
+Total coverage: 90.03%
 
 uv run ruff check src tests
 All checks passed

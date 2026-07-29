@@ -43,6 +43,8 @@ def validate_semantic_author_fixture(payload: dict[str, Any]) -> None:
     request = payload["request"]
     proposal = payload["proposal"]
     source_bundle_digest = request["sourceBundleSha256"]
+    if proposal["candidateId"] != request["candidateId"]:
+        raise ValueError("proposal candidate ID does not match request")
     if proposal["sourceBundleSha256"] != source_bundle_digest:
         raise ValueError("proposal source bundle digest is stale")
 
@@ -59,6 +61,22 @@ def validate_semantic_author_fixture(payload: dict[str, Any]) -> None:
     if len(proposed_intent_ids) != len(set(proposed_intent_ids)):
         raise ValueError("duplicate proposed experimental intent ID")
 
+    claim_ids = {claim["id"] for claim in proposal["claims"]}
+    referenced_claim_ids = set()
+    for record in proposal["intentDecisions"]:
+        if record["state"] == "proposed_reuse":
+            referenced_claim_ids.add(record["rationaleClaimId"])
+        else:
+            referenced_claim_ids.add(record["userNeedClaimId"])
+            referenced_claim_ids.update(record["nonGoalClaimIds"])
+
+    nearby_intent_analysis = payload["nearbyIntentAnalysis"]
+    if nearby_intent_analysis["proposalSha256"] != proposal["proposalSha256"]:
+        raise ValueError("nearby intent analysis proposal digest is stale")
+    referenced_claim_ids.update(
+        entry["differenceClaimId"] for entry in nearby_intent_analysis["entries"]
+    )
+
     reviewer_edit = payload["reviewerEdit"]
     materialization = payload["materializationDecision"]
     for record, name in (
@@ -74,3 +92,11 @@ def validate_semantic_author_fixture(payload: dict[str, Any]) -> None:
         raise ValueError("materialization decision reviewer edit digest is stale")
     if materialization["decision"] not in {"accepted", "edited"}:
         raise ValueError("materialization decision requires accepted or edited reviewer decision")
+    if materialization["candidateId"] != request["candidateId"]:
+        raise ValueError("materialization decision candidate ID does not match request")
+
+    referenced_claim_ids.update(reviewer_edit["acceptedOrEditedClaimIds"])
+    referenced_claim_ids.update(materialization["materializedClaimIds"])
+    unknown_claim_ids = sorted(referenced_claim_ids - claim_ids)
+    if unknown_claim_ids:
+        raise ValueError(f"referenced claim ID is not present in proposal: {unknown_claim_ids[0]}")

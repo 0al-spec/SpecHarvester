@@ -97,11 +97,39 @@ def test_invalid_fixtures_reject_shape_and_cross_record_drift() -> None:
             ["materializationDecision", "reviewerEditSha256"],
             "materialization decision reviewer edit digest is stale",
         ),
+        (
+            ["nearbyIntentAnalysis", "proposalSha256"],
+            "nearby intent analysis proposal digest is stale",
+        ),
     ],
 )
 def test_cross_record_digest_drift_is_rejected(path: list[str | int], message: str) -> None:
     payload = copy.deepcopy(load(VALID))
     set_path(payload, path, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+
+    with pytest.raises(ValueError, match=message):
+        validate_semantic_author_fixture(payload)
+
+
+@pytest.mark.parametrize(
+    ("path", "message"),
+    [
+        (["proposal", "candidateId"], "proposal candidate ID does not match request"),
+        (
+            ["materializationDecision", "candidateId"],
+            "materialization decision candidate ID does not match request",
+        ),
+        (
+            ["nearbyIntentAnalysis", "entries", 0, "differenceClaimId"],
+            "referenced claim ID is not present in proposal",
+        ),
+    ],
+)
+def test_cross_record_identity_and_claim_references_are_rejected(
+    path: list[str | int], message: str
+) -> None:
+    payload = copy.deepcopy(load(VALID))
+    set_path(payload, path, "missing_claim" if "claim" in message else "other-candidate")
 
     with pytest.raises(ValueError, match=message):
         validate_semantic_author_fixture(payload)
