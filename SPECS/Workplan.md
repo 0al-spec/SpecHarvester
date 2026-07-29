@@ -2788,6 +2788,7 @@ Acceptance:
 ## Phase 55. Evidence-Grounded AI Semantic Authoring
 
 - [ ] `P55-T1` Record the AI semantic-author product and authority contract.
+  Depend explicitly on the completed `P54-T10` Phase 54 exit decision.
   Define model-as-author responsibilities, existing-intent reuse, novel
   experimental-intent proposal, evidence requirements, reviewer authority,
   provider interchangeability, and boundaries between observed, proposed, and
@@ -2812,7 +2813,10 @@ Acceptance:
   diagnostics. Enforce identifier and namespace shape, package-to-capability
   ownership, evidence-path allowlists, manifest/BoundarySpec consistency,
   provider-neutral intent wording, unsupported quantitative-claim rejection,
-  generic-intent detection, and duplicate or overlap warnings.
+  generic-intent detection, and duplicate or overlap warnings. Before P55-T9
+  begins, freeze numerical pass thresholds for purpose accuracy, evidence
+  support, schema validity, and reviewer edit burden in a digest-bound policy
+  fixture; calibration results must not redefine those thresholds.
 - [ ] `P55-T6` Replace summary-only portable AI status with complete,
   digest-bound semantic proposal records in the author handoff and candidate
   detail bundle. Preserve provider receipts and proposal digests without raw
@@ -2870,6 +2874,9 @@ Goal:
 
 Acceptance:
 
+- `P54-T10` must complete before `P55-T1` can be selected or any Phase 55
+  execution begins. Its exit decision must explicitly authorize this bounded
+  semantic-authoring follow-up without granting publication authority.
 - P55-T1 and P55-T2 must complete before provider or materialization changes.
   P55-T3 must produce deterministic, size-bounded, digest-bound input packs
   before P55-T4 invokes a provider.
@@ -2879,7 +2886,9 @@ Acceptance:
 - P55-T5 must reject malformed identifiers, package namespace violations,
   unknown evidence paths, stale bindings, and unsupported quantitative claims.
   Novel intent IDs must remain visibly experimental until a separate SpecPM
-  governance decision accepts them.
+  governance decision accepts them. P55-T5 must also publish the digest-bound
+  numerical calibration-threshold policy before P55-T9 starts; later result
+  evidence may evaluate but must not silently alter that policy.
 - P55-T6 must preserve complete validated proposals and receipts while keeping
   raw prompts, raw responses, hidden reasoning, credentials, and private
   machine paths out of portable artifacts.
