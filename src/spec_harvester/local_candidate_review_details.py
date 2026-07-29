@@ -9,6 +9,7 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
+from spec_harvester.candidate_review_schema import load_candidate_review_schema
 from spec_harvester.local_candidate_review_catalog import (
     LocalCandidateReviewCatalogOptions,
     _catalog_item,
@@ -114,15 +115,7 @@ def _comparison(candidate_id: str, packet_sha256: str, packet: dict[str, Any]) -
 
 
 def _validate_record(record: dict[str, Any]) -> None:
-    schema_path = (
-        Path(__file__).resolve().parents[2]
-        / "schemas"
-        / "local-candidate-review-workbench-v0.schema.json"
-    )
-    try:
-        schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise ValueError(f"Cannot read candidate review schema: {exc}") from exc
+    schema = load_candidate_review_schema()
     errors = list(Draft202012Validator(schema).iter_errors(record))
     if errors:
         raise ValueError(f"Candidate detail record schema is invalid: {errors[0].message}")

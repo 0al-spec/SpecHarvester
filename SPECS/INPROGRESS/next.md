@@ -1,23 +1,27 @@
-# Next Task: P54-T6 Local Review-Decision Service and Storage Contract
+# Next Task: P54-T7 Reviewer Actions and Portable Decision Exchange
 
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
-**Dependencies:** `P54-T2` Workbench Schemas, `P54-T4` Browser, `P54-T5` Details
+**Dependencies:** `P54-T6` Local Review-Decision Service and Storage Contract
 **Status:** Ready
-**Branch:** pending selection after P54-T5 review
+**Branch:** pending selection after P54-T6 review
 
 ## Objective
 
-Implement the bounded local review-decision service and storage contract.
+Add bounded reviewer actions and portable decision exchange to the local
+Workbench.
 
 ## Next Step
 
-Restrict reads and writes to the configured review workspace, validate every
-decision, preserve replacement history, and restart without executing candidate
-or repository content.
+Add the four dispositions, validated reason codes and optional notes, replacement
+history, progress summaries, and non-authoritative portable import/export.
 
 ## Recently Archived
 
+- `P54-T6` Local Review-Decision Service and Storage Contract: PASS. Catalog-bound
+  decisions now use atomic current-state writes, immutable digest history,
+  optimistic replacement checks, restart validation, and a loopback
+  Origin/CSRF-protected service boundary.
 - `P54-T5` Candidate Detail Review Surface: PASS. The local browser now opens
   schema-valid, digest-bound provenance, generated-file, diagnostics, and
   proposal-only static-versus-Codex Spark detail evidence for all 100 candidates.

@@ -134,6 +134,10 @@ from spec_harvester.local_candidate_review_details import (
     LocalCandidateReviewDetailsOptions,
     build_local_candidate_review_details,
 )
+from spec_harvester.local_review_decision_service import (
+    LocalReviewDecisionServiceOptions,
+    serve_local_review_decisions,
+)
 from spec_harvester.mass_corpus_checkout_readiness import (
     MassCorpusCheckoutReadinessOptions,
     run_mass_corpus_checkout_readiness,
@@ -923,6 +927,19 @@ def build_parser() -> argparse.ArgumentParser:
     local_review_details.add_argument("--catalog", type=Path, required=True)
     local_review_details.add_argument("--output", type=Path, required=True)
     local_review_details.set_defaults(func=run_local_candidate_review_details_cli)
+
+    local_review_decisions = subcommands.add_parser(
+        "serve-local-review-decisions",
+        help="Serve the bounded loopback review-decision storage boundary.",
+    )
+    local_review_decisions.add_argument("--workspace", type=Path, required=True)
+    local_review_decisions.add_argument("--catalog", type=Path, required=True)
+    local_review_decisions.add_argument("--csrf-token", required=True)
+    local_review_decisions.add_argument("--allowed-origin", required=True)
+    local_review_decisions.add_argument("--host", default="127.0.0.1")
+    local_review_decisions.add_argument("--port", type=int, default=8765)
+    local_review_decisions.add_argument("--max-request-bytes", type=int, default=16 * 1024)
+    local_review_decisions.set_defaults(func=run_local_review_decisions_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2523,6 +2540,25 @@ def run_local_candidate_review_details_cli(args: argparse.Namespace) -> int:
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
         return 2
     print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_local_review_decisions_cli(args: argparse.Namespace) -> int:
+    try:
+        serve_local_review_decisions(
+            LocalReviewDecisionServiceOptions(
+                workspace=args.workspace,
+                catalog=args.catalog,
+                csrf_token=args.csrf_token,
+                allowed_origin=args.allowed_origin,
+                host=args.host,
+                port=args.port,
+                max_request_bytes=args.max_request_bytes,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
     return 0
 
 

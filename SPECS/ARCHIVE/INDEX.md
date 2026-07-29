@@ -255,6 +255,7 @@
 | P54-T3 | [P54-T3_Deterministic_Local_Candidate_Review_Catalog/](P54-T3_Deterministic_Local_Candidate_Review_Catalog/) | 2026-07-28 | PASS |
 | P54-T4 | [P54-T4_Local_Candidate_Browser/](P54-T4_Local_Candidate_Browser/) | 2026-07-29 | PASS |
 | P54-T5 | [P54-T5_Candidate_Detail_Review_Surface/](P54-T5_Candidate_Detail_Review_Surface/) | 2026-07-29 | PASS |
+| P54-T6 | [P54-T6_Local_Review-Decision_Service_and_Storage_Contract/](P54-T6_Local_Review-Decision_Service_and_Storage_Contract/) | 2026-07-29 | PASS |
 
 ## Historical Artifacts
 
@@ -939,3 +940,5 @@
 | 2026-07-29 | P54-T4 | Archived REVIEW_p54_t4_local_candidate_browser report |
 | 2026-07-29 | P54-T5 | Archived Candidate Detail Review Surface (PASS) |
 | 2026-07-29 | P54-T5 | Archived REVIEW_p54_t5_candidate_detail_review_surface report |
+| 2026-07-29 | P54-T6 | Archived Local Review-Decision Service and Storage Contract (PASS) |
+| 2026-07-29 | P54-T6 | Archived REVIEW_p54_t6_local_review_decision_storage report |

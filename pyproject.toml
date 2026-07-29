@@ -38,3 +38,6 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"schemas/local-candidate-review-workbench-v0.schema.json" = "spec_harvester/schemas/local-candidate-review-workbench-v0.schema.json"

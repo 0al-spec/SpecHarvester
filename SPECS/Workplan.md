@@ -2716,7 +2716,7 @@ Acceptance:
   provenance, pinned revision, license, package topology, generated
   `specpm.yaml`, specs, relations, evidence, diagnostics, and a bounded
   static-versus-Codex Spark proposal comparison.
-- [ ] `P54-T6` Implement the bounded local review-decision service and storage
+- [x] `P54-T6` Implement the bounded local review-decision service and storage
   contract. Restrict reads and writes to the configured review workspace,
   validate all submitted decisions, write atomically, preserve history, and
   support restart without executing candidate or repository content.
