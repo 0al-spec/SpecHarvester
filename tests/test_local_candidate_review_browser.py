@@ -68,6 +68,46 @@ def test_browser_copies_valid_detail_set(tmp_path: Path) -> None:
     )
     assert result["detailCount"] == 100
     assert (tmp_path / "browser/details.json").is_file()
+    presentations = json.loads((tmp_path / "browser/presentations.json").read_text())
+    assert len(presentations["presentations"]) == 100
+    first = presentations["presentations"][0]
+    assert first["health"]["preflight"] == "passed"
+    assert first["health"]["validation"] == "valid"
+    assert {document["kind"] for document in first["documents"]} == {
+        "BoundarySpec",
+        "SpecPackage",
+    }
+    assert any(document["path"].endswith("specpm.yaml") for document in first["documents"])
+    package = next(document for document in first["documents"] if document["kind"] == "SpecPackage")
+    boundary = next(
+        document for document in first["documents"] if document["kind"] == "BoundarySpec"
+    )
+    assert package["parsed"]["metadata"]["summary"]
+    assert package["parsed"]["index"]["provides"]["capabilities"]
+    assert boundary["parsed"]["constraints"]
+    assert boundary["parsed"]["evidence"]
+    script = (tmp_path / "browser/workbench.js").read_text()
+    assert "Spec health" in script
+    assert "Package specifications" in script
+    assert "Supporting evidence" in script
+    assert "Raw YAML" in script
+
+
+def test_browser_rejects_invalid_yaml_presentation(tmp_path: Path) -> None:
+    details = json.loads(DETAILS.read_text())
+    yaml_section = next(
+        section
+        for section in details["details"][0]["sections"]
+        if section["contentType"] == "application/yaml"
+    )
+    yaml_section["content"] = "metadata: [unterminated"
+    path = tmp_path / "details.json"
+    path.write_text(json.dumps(details))
+
+    with pytest.raises(ValueError, match="YAML presentation is invalid"):
+        render_local_candidate_review_browser(
+            LocalCandidateReviewBrowserOptions(CATALOG, tmp_path / "browser", path)
+        )
 
 
 def test_browser_rejects_detail_set_with_wrong_bundle_binding(tmp_path: Path) -> None:
