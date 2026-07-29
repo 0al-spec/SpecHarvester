@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import shlex
 import subprocess
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
@@ -244,6 +246,7 @@ def test_specpm_process_boundary_passes_only_validate_arguments_and_normalizes_e
         observed["argv"] = argv
         observed["env"] = kwargs["env"]
         observed["timeout"] = kwargs["timeout"]
+        observed["preexec_fn"] = kwargs["preexec_fn"]
         kwargs["stdout"].write(json.dumps({"status": "valid"}).encode())
         kwargs["stderr"].write(b"bounded diagnostics")
         return SimpleNamespace(returncode=0)
@@ -267,6 +270,7 @@ def test_specpm_process_boundary_passes_only_validate_arguments_and_normalizes_e
     ]
     assert observed["env"]["PYTHONPATH"] == f"/specpm/src:{'/existing'}"
     assert observed["timeout"] == 7
+    assert callable(observed["preexec_fn"])
     assert report == {"status": "valid"}
 
 
@@ -329,20 +333,17 @@ def test_specpm_process_boundary_rejects_malformed_or_unexpected_results(
 
 
 def test_specpm_process_boundary_enforces_output_limit(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path,
 ) -> None:
-    def run(*_: Any, **kwargs: Any) -> SimpleNamespace:
-        kwargs["stdout"].write(b"12345")
-        return SimpleNamespace(returncode=0)
-
-    monkeypatch.setattr(subprocess, "run", run)
+    script = "import os; os.write(1, b'x' * 4096)"
+    command = f"{shlex.quote(sys.executable)} -c {shlex.quote(script)}"
     with pytest.raises(ValueError, match="exceeds the configured byte limit"):
         intake_bridge._run_specpm_validation(
             tmp_path,
-            command="specpm",
+            command=command,
             pythonpath=None,
             timeout_seconds=3,
-            max_report_bytes=4,
+            max_report_bytes=64,
         )
 
 
@@ -353,6 +354,13 @@ def test_specpm_process_boundary_enforces_output_limit(
         ({"error_count": True}, "issue counts are invalid"),
         ({"errors": [{}], "error_count": 1}, "entry is incomplete"),
         ({"warning_count": 2}, "counts do not match entries"),
+        (
+            {
+                "error_count": 1,
+                "errors": [{"code": "explicit_error", "message": "Not intake-ready."}],
+            },
+            "status conflicts with explicit errors",
+        ),
         ({"package_identity": []}, "package identity is invalid"),
         ({"package_identity": {"package_id": "only"}}, "identity is incomplete"),
         ({"intent_mappings": {}}, "intent mappings are invalid"),
@@ -402,3 +410,19 @@ def test_candidate_reconstruction_rejects_unsafe_or_missing_files(
     packet = {"candidate": {"files": [{"path": path}]}}
     with pytest.raises(ValueError, match=message):
         intake_bridge._reconstruct_candidate("candidate-id", packet, members, tmp_path)
+
+
+def test_bridge_rejects_archive_without_aggregate_metadata(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(intake_bridge, "_read_archive", lambda _: (DIGEST, {}))
+    with pytest.raises(ValueError, match="missing aggregate-handoff.json"):
+        build_local_specpm_intake_proposal(
+            LocalSpecPMIntakeBridgeOptions(
+                archive=tmp_path / "handoff.tar.gz",
+                expected_archive_sha256=DIGEST,
+                catalog=CATALOG,
+                review_workspace=tmp_path / "review",
+                output=tmp_path / "proposal.json",
+            )
+        )

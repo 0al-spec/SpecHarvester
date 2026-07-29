@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import resource
 import shlex
 import subprocess
 import tempfile
@@ -109,6 +110,16 @@ def _read_bounded(path: Path, limit: int, label: str) -> bytes:
     return payload
 
 
+def _limit_process_output(max_report_bytes: int) -> Any:
+    def apply_limit() -> None:
+        # Leave one sentinel byte so the parent can distinguish an exact-size
+        # valid report from output that attempted to exceed the bound.
+        limit = max_report_bytes + 1
+        resource.setrlimit(resource.RLIMIT_FSIZE, (limit, limit))
+
+    return apply_limit
+
+
 def _run_specpm_validation(
     candidate: Path,
     *,
@@ -137,6 +148,7 @@ def _run_specpm_validation(
                     stdout=stdout_file,
                     stderr=stderr_file,
                     timeout=timeout_seconds,
+                    preexec_fn=_limit_process_output(max_report_bytes),
                 )
         except FileNotFoundError as exc:
             raise ValueError(f"SpecPM command was not found: {argv[0]}") from exc
@@ -207,6 +219,8 @@ def _normalized_specpm_report(report: dict[str, Any]) -> dict[str, Any]:
     warnings = _issue_list(report.get("warnings"), "warnings")
     if len(errors) != error_count or len(warnings) != warning_count:
         raise ValueError("SpecPM validation issue counts do not match entries")
+    if status in {"valid", "warning_only"} and error_count:
+        raise ValueError("SpecPM validation status conflicts with explicit errors")
     identity = report.get("package_identity")
     if not isinstance(identity, dict):
         raise ValueError("SpecPM validation package identity is invalid")
@@ -329,7 +343,10 @@ def build_local_specpm_intake_proposal(
             expected_archive_sha256=options.expected_archive_sha256,
         )
     )
-    aggregate = _json_object(members["aggregate-handoff.json"], "aggregate-handoff.json")
+    aggregate_bytes = members.get("aggregate-handoff.json")
+    if aggregate_bytes is None:
+        raise ValueError("Portable handoff is missing aggregate-handoff.json")
+    aggregate = _json_object(aggregate_bytes, "aggregate-handoff.json")
     expectations = _preflight_statuses(aggregate)
     bindings = _catalog_bindings(options.catalog)
     store = LocalReviewDecisionStore(options.review_workspace, options.catalog)

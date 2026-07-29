@@ -37,9 +37,9 @@ None.
 
 ### Tests
 
-- 1151 passed, 1 skipped.
-- Total Python coverage: 90.03%; intake bridge coverage: 92%.
-- 25 focused intake-bridge tests passed.
+- 1153 passed, 1 skipped.
+- Total Python coverage: 90.02%; intake bridge coverage: 91%.
+- 27 focused intake-bridge tests passed.
 - Ruff lint and format checks passed.
 - Swift package manifest and documentation target passed.
 - A real local SpecPM run validated one approved `rtk-ai-rtk` package as

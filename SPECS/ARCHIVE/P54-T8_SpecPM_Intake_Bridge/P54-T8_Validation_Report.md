@@ -23,9 +23,9 @@
 
 | Gate | Result |
 | --- | --- |
-| Python tests | PASS: 1151 passed, 1 skipped |
-| Coverage | PASS: 90.03% total; 92% intake bridge |
-| Intake bridge focused tests | PASS: 25 passed |
+| Python tests | PASS: 1153 passed, 1 skipped |
+| Coverage | PASS: 90.02% total; 91% intake bridge |
+| Intake bridge focused tests | PASS: 27 passed |
 | Ruff lint | PASS |
 | Ruff format check | PASS |
 | Swift package manifest | PASS |

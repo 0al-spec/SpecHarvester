@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P54-T9 Workbench End-to-End Validation" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P54-T8` SpecPM Intake Bridge" in next_text
+        assert "malformed packets" in normalized
+        assert "hostile candidate markup" in normalized
+        assert "read-only SpecPM intake bridge" in normalized
+        return
+
     if "# Next Task: P54-T8 SpecPM Intake Bridge" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
