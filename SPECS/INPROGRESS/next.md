@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T1` AI Semantic-Author Product and Authority Contract
-**Status:** Ready
-**Branch:** pending selection after P55-T1 review
+**Status:** Selected
+**Branch:** `feature/P55-T2-ai-semantic-author-schemas`
 
 ## Objective
 
