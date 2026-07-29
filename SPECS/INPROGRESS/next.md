@@ -3,15 +3,15 @@
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
 **Dependencies:** `P54-T7` Reviewer Actions and Portable Decision Exchange
-**Status:** Ready
-**Branch:** pending selection after P54-T7 review
+**Status:** Selected
+**Branch:** `feature/P54-T8-specpm-intake-bridge`
 
 ## Objective
 
 Add a read-only SpecPM intake bridge for explicitly reviewer-approved
 candidates.
 
-## Next Step
+## Selected Scope
 
 Revalidate packet and decision digests, run SpecPM intake preflight only for
 `accept_for_intake`, and emit non-authoritative proposal evidence without
