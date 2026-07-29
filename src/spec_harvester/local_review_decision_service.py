@@ -255,6 +255,16 @@ class LocalReviewDecisionStore:
                 raise ValueError("First review decision must have a null prior digest")
             if current is not None and prior != current["decisionSha256"]:
                 raise ValueError("Review decision prior digest is stale")
+            projected = self._export_record(
+                [
+                    record
+                    for bound_candidate_id in sorted(self._bindings)
+                    for record in self._history(bound_candidate_id)
+                ]
+                + [decision]
+            )
+            if len(_json_bytes(projected)) > MAX_EXCHANGE_BYTES:
+                raise ValueError("Review decision would exceed portable export byte limit")
             history = self._path("history", candidate_id, f"{digest}.json")
             if history.exists():
                 _, history_payload = self._read_path(history)
@@ -367,12 +377,7 @@ class LocalReviewDecisionStore:
             "authority": "local_review_decision_evidence_only",
         }
 
-    def export(self) -> dict[str, Any]:
-        decisions = [
-            decision
-            for candidate_id in sorted(self._bindings)
-            for decision in self._history(candidate_id)
-        ]
+    def _export_record(self, decisions: list[dict[str, Any]]) -> dict[str, Any]:
         return {
             "apiVersion": "spec-harvester.candidate-review-export/v0",
             "kind": "SpecHarvesterCandidateReviewExport",
@@ -381,6 +386,18 @@ class LocalReviewDecisionStore:
             "decisions": decisions,
             "registryMutationCount": 0,
         }
+
+    def export(self) -> dict[str, Any]:
+        exchange = self._export_record(
+            [
+                decision
+                for candidate_id in sorted(self._bindings)
+                for decision in self._history(candidate_id)
+            ]
+        )
+        if len(_json_bytes(exchange)) > MAX_EXCHANGE_BYTES:
+            raise ValueError("Portable review export exceeds byte limit")
+        return exchange
 
     def import_exchange(self, exchange: dict[str, Any]) -> dict[str, Any]:
         errors = list(self._validator.iter_errors(exchange))

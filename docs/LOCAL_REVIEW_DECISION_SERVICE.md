@@ -39,7 +39,10 @@ reason taxonomy, and corpus progress:
 candidate and lineage order. `POST /v0/import` accepts that JSON only when its
 source-bundle digest, packet bindings, reason mappings, and prior-decision
 chain match the target workspace. Import writes require the same Origin and
-CSRF checks as actions. The export fixes `registryMutationCount` at zero.
+CSRF checks as actions. New decisions are rejected before persistence if they
+would make the canonical export exceed the import transport limit, so every
+export produced by the service remains importable. The export fixes
+`registryMutationCount` at zero.
 
 Every submitted record must match the P54-T2 decision schema and the exact
 candidate/packet binding in the validated P54-T3 catalog. A first decision must

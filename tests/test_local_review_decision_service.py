@@ -10,6 +10,7 @@ from typing import Any
 
 import pytest
 
+import spec_harvester.local_review_decision_service as decision_service
 from spec_harvester.local_review_decision_service import (
     LocalReviewDecisionServiceOptions,
     LocalReviewDecisionStore,
@@ -169,6 +170,20 @@ def test_store_summary_and_portable_exchange_round_trip(tmp_path: Path) -> None:
         "registryMutationCount": 0,
     }
     assert target.export() == exchange
+
+
+def test_store_never_creates_an_export_larger_than_import_limit(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    payload = catalog_payload()
+    source = LocalReviewDecisionStore(tmp_path / "source", CATALOG)
+    source.write(decision(payload))
+
+    monkeypatch.setattr(decision_service, "MAX_EXCHANGE_BYTES", 100)
+    with pytest.raises(ValueError, match="export exceeds byte limit"):
+        source.export()
+    with pytest.raises(ValueError, match="would exceed portable export byte limit"):
+        LocalReviewDecisionStore(tmp_path / "target", CATALOG).write(decision(payload))
 
 
 def test_store_rejects_stale_or_broken_portable_exchange(tmp_path: Path) -> None:

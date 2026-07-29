@@ -20,7 +20,7 @@
 
 | Gate | Result |
 | --- | --- |
-| Python tests | PASS: 1124 passed, 1 skipped |
+| Python tests | PASS: 1125 passed, 1 skipped |
 | Coverage | PASS: 90.01% total; 93% decision service |
 | Ruff lint | PASS |
 | Ruff format check | PASS |

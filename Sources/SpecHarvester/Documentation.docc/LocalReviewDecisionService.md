@@ -14,8 +14,10 @@ The local browser records `accept_for_intake`, `request_revision`, `defer`, or
 `do_not_promote` through `POST /v0/actions`. `GET /v0/summary` reconciles
 reviewed and unreviewed candidates. `GET /v0/export` and `POST /v0/import` move
 digest-bound decision history between clean local workspaces while preserving
-`registryMutationCount: 0`. The CSRF token is entered at runtime and is not
-persisted in the generated browser or export.
+`registryMutationCount: 0`. The service rejects a new decision before writing
+when it would make the canonical export exceed the import transport limit. The
+CSRF token is entered at runtime and is not persisted in the generated browser
+or export.
 
 Stored decisions remain local review evidence only. They do not accept packages,
 run SpecPM, or mutate registry truth.

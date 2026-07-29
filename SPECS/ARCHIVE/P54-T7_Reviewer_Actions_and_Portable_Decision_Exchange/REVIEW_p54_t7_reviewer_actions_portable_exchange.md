@@ -35,7 +35,7 @@ before this verdict.
 
 ### Tests
 
-- 1124 passed, 1 skipped.
+- 1125 passed, 1 skipped.
 - Total Python coverage: 90.01%; decision service coverage: 93%.
 - Ruff lint and format checks passed.
 - Swift manifest and documentation target passed.
