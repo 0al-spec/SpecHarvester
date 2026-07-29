@@ -2712,7 +2712,7 @@ Acceptance:
   filtering, sorting, search, review-state navigation, resumable queue
   position, and clear separation between candidates and already accepted
   public-index packages.
-- [ ] `P54-T5` Implement the candidate detail review surface for source
+- [x] `P54-T5` Implement the candidate detail review surface for source
   provenance, pinned revision, license, package topology, generated
   `specpm.yaml`, specs, relations, evidence, diagnostics, and a bounded
   static-versus-Codex Spark proposal comparison.

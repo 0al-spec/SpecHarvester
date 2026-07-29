@@ -130,6 +130,10 @@ from spec_harvester.local_candidate_review_catalog import (
     build_local_candidate_review_catalog,
     write_local_candidate_review_catalog,
 )
+from spec_harvester.local_candidate_review_details import (
+    LocalCandidateReviewDetailsOptions,
+    build_local_candidate_review_details,
+)
 from spec_harvester.mass_corpus_checkout_readiness import (
     MassCorpusCheckoutReadinessOptions,
     run_mass_corpus_checkout_readiness,
@@ -906,8 +910,19 @@ def build_parser() -> argparse.ArgumentParser:
         help="Render a static local browser for a validated candidate review catalog.",
     )
     local_review_browser.add_argument("--catalog", type=Path, required=True)
+    local_review_browser.add_argument("--details", type=Path)
     local_review_browser.add_argument("--output", type=Path, required=True)
     local_review_browser.set_defaults(func=run_local_candidate_review_browser_cli)
+
+    local_review_details = subcommands.add_parser(
+        "build-local-candidate-review-details",
+        help="Build inert digest-bound candidate detail records from a portable handoff.",
+    )
+    local_review_details.add_argument("--archive", type=Path, required=True)
+    local_review_details.add_argument("--expected-sha256", required=True)
+    local_review_details.add_argument("--catalog", type=Path, required=True)
+    local_review_details.add_argument("--output", type=Path, required=True)
+    local_review_details.set_defaults(func=run_local_candidate_review_details_cli)
 
     draft = subcommands.add_parser(
         "draft",
@@ -2483,7 +2498,26 @@ def run_local_candidate_review_catalog_cli(args: argparse.Namespace) -> int:
 def run_local_candidate_review_browser_cli(args: argparse.Namespace) -> int:
     try:
         result = render_local_candidate_review_browser(
-            LocalCandidateReviewBrowserOptions(catalog=args.catalog, output=args.output)
+            LocalCandidateReviewBrowserOptions(
+                catalog=args.catalog, details=args.details, output=args.output
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_local_candidate_review_details_cli(args: argparse.Namespace) -> int:
+    try:
+        result = build_local_candidate_review_details(
+            LocalCandidateReviewDetailsOptions(
+                archive=args.archive,
+                expected_archive_sha256=args.expected_sha256,
+                catalog=args.catalog,
+                output=args.output,
+            )
         )
     except ValueError as exc:
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2))

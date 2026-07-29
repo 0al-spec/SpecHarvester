@@ -400,6 +400,8 @@ Published DocC site:
    P54-T3 deterministic bounded catalog generation from portable handoff packets
 106. [`LOCAL_CANDIDATE_REVIEW_BROWSER.md`](LOCAL_CANDIDATE_REVIEW_BROWSER.md):
    P54-T4 static candidate-only browser with facets and resumable queue
+107. [`LOCAL_CANDIDATE_REVIEW_DETAILS.md`](LOCAL_CANDIDATE_REVIEW_DETAILS.md):
+   P54-T5 digest-bound local candidate details and proposal-only comparison
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence

@@ -311,6 +311,7 @@ the host.
 - <doc:LocalCandidateReviewWorkbenchSchemas>
 - <doc:LocalCandidateReviewCatalog>
 - <doc:LocalCandidateReviewBrowser>
+- <doc:LocalCandidateReviewDetails>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
