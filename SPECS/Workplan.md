@@ -2793,7 +2793,7 @@ Acceptance:
   experimental-intent proposal, evidence requirements, reviewer authority,
   provider interchangeability, and boundaries between observed, proposed, and
   accepted intent metadata.
-- [ ] `P55-T2` Define versioned schemas for semantic author requests, complete
+- [x] `P55-T2` Define versioned schemas for semantic author requests, complete
   provider proposals, intent reuse decisions, experimental intent proposals,
   nearby-intent analysis, evidence bindings, reviewer edits, and accepted
   materialization decisions. Include representative valid, malformed,

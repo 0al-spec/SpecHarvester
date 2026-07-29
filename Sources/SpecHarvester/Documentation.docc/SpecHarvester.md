@@ -317,6 +317,7 @@ the host.
 - <doc:LocalCandidateReviewWorkbenchE2E>
 - <doc:Phase54ExitDecision>
 - <doc:AISemanticAuthorContract>
+- <doc:AISemanticAuthorSchemas>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

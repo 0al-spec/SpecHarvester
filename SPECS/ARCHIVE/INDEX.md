@@ -954,3 +954,5 @@
 | 2026-07-29 | P54-T10 | Archived REVIEW_p54_t10_phase_54_exit_decision report |
 | 2026-07-29 | P55-T1 | Archived AI Semantic-Author Product and Authority Contract (PASS) |
 | 2026-07-29 | P55-T1 | Archived REVIEW_p55_t1_ai_semantic_author_contract report |
+| 2026-07-29 | P55-T2 | Archived AI Semantic-Author Schemas (PASS) |
+| 2026-07-29 | P55-T2 | Archived REVIEW_p55_t2_ai_semantic_author_schemas report |

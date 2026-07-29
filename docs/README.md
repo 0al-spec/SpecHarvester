@@ -417,6 +417,9 @@ Published DocC site:
 112. [`AI_SEMANTIC_AUTHOR_CONTRACT.md`](AI_SEMANTIC_AUTHOR_CONTRACT.md):
    P55-T1 evidence, provider, intent-state, reviewer, materialization, privacy,
    and non-authority contract
+113. [`AI_SEMANTIC_AUTHOR_SCHEMAS.md`](AI_SEMANTIC_AUTHOR_SCHEMAS.md):
+   P55-T2 provider-neutral request, proposal, intent, evidence, reviewer-edit,
+   and materialization-decision schemas with deterministic binding checks
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
