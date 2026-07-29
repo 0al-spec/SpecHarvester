@@ -85,6 +85,7 @@ def test_workbench_e2e_validates_full_corpus_and_security_boundaries(
         "output": str(tmp_path / "workbench-e2e.json"),
     }
     assert report["corpus"] == {
+        "archivePacketCount": 100,
         "candidateCount": 100,
         "comparisonCount": 100,
         "detailCount": 100,
@@ -140,6 +141,34 @@ def test_workbench_e2e_rejects_stale_source_bundle(tmp_path: Path, fake_specpm: 
     )
 
     with pytest.raises(ValueError, match="catalog source bundle digest is stale"):
+        build_local_candidate_review_workbench_e2e(options)
+
+
+def test_workbench_e2e_rejects_consistently_corrupted_nonapproved_binding(
+    tmp_path: Path, fake_specpm: None
+) -> None:
+    catalog = json.loads(CATALOG.read_text())
+    details = json.loads(DETAILS.read_text())
+    candidate_id = catalog["items"][-1]["candidateId"]
+    catalog["items"][-1]["packetSha256"] = "0" * 64
+    for group in ("details", "comparisons"):
+        record = next(
+            item for item in details[group] if item["binding"]["candidateId"] == candidate_id
+        )
+        record["binding"]["packetSha256"] = "0" * 64
+    catalog_path = tmp_path / "catalog.json"
+    details_path = tmp_path / "details.json"
+    catalog_path.write_text(json.dumps(catalog))
+    details_path.write_text(json.dumps(details))
+    options = LocalCandidateReviewWorkbenchE2EOptions(
+        **{
+            **_options(tmp_path).__dict__,
+            "catalog": catalog_path,
+            "details": details_path,
+        }
+    )
+
+    with pytest.raises(ValueError, match="catalog bindings differ from archive packets"):
         build_local_candidate_review_workbench_e2e(options)
 
 

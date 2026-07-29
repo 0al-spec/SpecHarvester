@@ -39,10 +39,12 @@ decision or temporary decision file.
 
 ## Integrity And Security
 
-- Archive, catalog, detail, comparison, packet, and source-bundle bindings were
-  revalidated.
+- All 100 archive packet digests were recomputed and compared with the catalog,
+  detail, and comparison bindings before any passing report was emitted.
 - Malformed packet shape, path traversal, detail digest drift, stale decision,
-  and interrupted-write scenarios failed closed.
+  and interrupted-write scenarios failed closed. The interrupted-write check
+  commits replacement history first, fails the current-decision replacement,
+  and proves rollback preserves the prior current decision and export.
 - Candidate-origin and invalid-CSRF writes returned `403`; an allowed
   reviewer-origin write returned `201`.
 - The browser bundle retains restrictive CSP directives, uses `textContent` for
@@ -91,8 +93,8 @@ uv run pytest tests/test_local_candidate_review_workbench_e2e.py tests/test_docs
 205 passed
 
 uv run pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90
-1160 passed, 1 skipped
-Total coverage: 90.05%
+1162 passed, 1 skipped
+Total coverage: 90.02%
 
 uv run ruff check src tests
 All checks passed

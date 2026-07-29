@@ -18,6 +18,7 @@
     "inlineScriptAllowed": false
   },
   "corpus": {
+    "archivePacketCount": 100,
     "candidateCount": 100,
     "comparisonCount": 100,
     "detailCount": 100,
@@ -44,6 +45,7 @@
   },
   "kind": "SpecHarvesterLocalCandidateReviewWorkbenchE2E",
   "negativeChecks": [
+    "all_packet_bindings_revalidated",
     "archive_digest_revalidated",
     "catalog_digest_revalidated",
     "detail_digest_drift_rejected",

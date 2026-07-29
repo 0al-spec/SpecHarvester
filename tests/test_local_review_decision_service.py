@@ -106,6 +106,39 @@ def test_store_requires_exact_prior_and_preserves_replacement_history(tmp_path: 
     assert second["priorDecisionSha256"] == first["decisionSha256"]
 
 
+def test_store_rolls_back_history_when_current_replacement_is_interrupted(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    payload = catalog_payload()
+    workspace = tmp_path / "workspace"
+    store = LocalReviewDecisionStore(workspace, CATALOG)
+    first = store.write(decision(payload))
+    before = store.export()
+    replacement = decision(
+        payload,
+        prior=first["decisionSha256"],
+        disposition="request_revision",
+    )
+    original_replace = decision_service.os.replace
+    replace_count = 0
+
+    def interrupt_current_replace(source: Path, destination: Path) -> None:
+        nonlocal replace_count
+        replace_count += 1
+        if replace_count == 2:
+            raise OSError("simulated interrupted current-decision replace")
+        original_replace(source, destination)
+
+    monkeypatch.setattr(decision_service.os, "replace", interrupt_current_replace)
+    with pytest.raises(ValueError, match="Cannot persist review decision atomically"):
+        store.write(replacement)
+
+    assert replace_count == 2
+    assert store.current(first["candidateId"])["decisionSha256"] == first["decisionSha256"]  # type: ignore[index]
+    assert store.export() == before
+    assert len(list((workspace / "history" / first["candidateId"]).glob("*.json"))) == 1
+
+
 @pytest.mark.parametrize(
     ("disposition", "reason_code"),
     [

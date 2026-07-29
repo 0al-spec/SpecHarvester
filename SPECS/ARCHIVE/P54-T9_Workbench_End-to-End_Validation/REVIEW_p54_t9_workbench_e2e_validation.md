@@ -40,8 +40,8 @@ None.
 ### Tests
 
 - 205 focused E2E and documentation-contract tests passed.
-- 1160 full Python tests passed; 1 optional live test was skipped.
-- Total Python coverage: 90.05%; E2E validator coverage: 91%.
+- 1162 full Python tests passed; 1 optional live test was skipped.
+- Total Python coverage: 90.02%; E2E validator coverage: 89%.
 - Ruff lint and format checks passed.
 - Swift package manifest and documentation target build passed.
 - Real local SpecPM validation passed for one approved representative.

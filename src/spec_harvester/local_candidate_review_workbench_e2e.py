@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import http.client
 import json
+import os
 import tempfile
 import threading
 from dataclasses import dataclass
@@ -149,6 +150,66 @@ def _exercise_packet_failures(members: dict[str, bytes], aggregate: dict[str, An
     return ["malformed_packet_rejected", "path_traversal_rejected"]
 
 
+def _record_bindings(records: Any, label: str) -> dict[str, str]:
+    if not isinstance(records, list):
+        raise ValueError(f"{label} records are invalid")
+    bindings: dict[str, str] = {}
+    for record in records:
+        try:
+            candidate_id = record["binding"]["candidateId"]
+            packet_sha256 = record["binding"]["packetSha256"]
+        except (KeyError, TypeError) as exc:
+            raise ValueError(f"{label} bindings are invalid") from exc
+        if (
+            not isinstance(candidate_id, str)
+            or not isinstance(packet_sha256, str)
+            or candidate_id in bindings
+        ):
+            raise ValueError(f"{label} bindings are invalid")
+        bindings[candidate_id] = packet_sha256
+    return bindings
+
+
+def _validate_all_bindings(
+    members: dict[str, bytes],
+    aggregate: dict[str, Any],
+    catalog: dict[str, Any],
+    details: dict[str, Any],
+) -> int:
+    expectations = _preflight_statuses(aggregate)
+    archive_bindings: dict[str, str] = {}
+    packet_names = sorted(
+        name for name in members if name.startswith("packets/") and name.endswith("/packet.json")
+    )
+    for packet_name in packet_names:
+        _, item = _catalog_item(packet_name, members[packet_name], expectations, members)
+        candidate_id = item["candidateId"]
+        if candidate_id in archive_bindings:
+            raise ValueError("Archive packet bindings contain duplicate candidates")
+        archive_bindings[candidate_id] = item["packetSha256"]
+
+    catalog_items = catalog.get("items")
+    if not isinstance(catalog_items, list):
+        raise ValueError("Candidate catalog records are invalid")
+    catalog_bindings = {
+        item.get("candidateId"): item.get("packetSha256")
+        for item in catalog_items
+        if isinstance(item, dict)
+    }
+    if len(catalog_bindings) != len(catalog_items) or not all(
+        isinstance(candidate_id, str) and isinstance(packet_sha256, str)
+        for candidate_id, packet_sha256 in catalog_bindings.items()
+    ):
+        raise ValueError("Candidate catalog bindings are invalid")
+    if catalog_bindings != archive_bindings:
+        raise ValueError("Candidate catalog bindings differ from archive packets")
+    if _record_bindings(details.get("details"), "Candidate detail") != archive_bindings:
+        raise ValueError("Candidate detail bindings differ from archive packets")
+    if _record_bindings(details.get("comparisons"), "Candidate comparison") != archive_bindings:
+        raise ValueError("Candidate comparison bindings differ from archive packets")
+    return len(archive_bindings)
+
+
 def _exercise_hostile_browser(
     catalog: Path,
     details: dict[str, Any],
@@ -251,12 +312,27 @@ def _exercise_decisions(
 
     interrupted_workspace = root / "interrupted-review"
     interrupted = LocalReviewDecisionStore(interrupted_workspace, catalog_path)
+    interrupted_candidate = representatives["wave-2"]
+    prior = interrupted.write(_decision(items[interrupted_candidate], "defer", 5))
+    before_interruption = interrupted.export()
+    replacement = _decision(items[interrupted_candidate], "request_revision", 6)
+    replacement["priorDecisionSha256"] = prior["decisionSha256"]
+    original_replace = os.replace
+    replace_count = 0
+
+    def interrupt_current_replace(source: Path, destination: Path) -> None:
+        nonlocal replace_count
+        replace_count += 1
+        if replace_count == 2:
+            raise OSError("simulated interrupted current-decision replace")
+        original_replace(source, destination)
+
     with patch(
         "spec_harvester.local_review_decision_service.os.replace",
-        side_effect=OSError("simulated interrupted replace"),
+        side_effect=interrupt_current_replace,
     ):
         _expect_value_error(
-            lambda: interrupted.write(_decision(items[representatives["wave-2"]], "defer", 5)),
+            lambda: interrupted.write(replacement),
             "Interrupted write",
         )
     temporary_files = [
@@ -264,7 +340,14 @@ def _exercise_decisions(
         for path in interrupted_workspace.rglob(".decision-*")
         if path.name != ".decision-write.lock"
     ]
-    if interrupted.current(representatives["wave-2"]) is not None or temporary_files:
+    current_after_interruption = interrupted.current(interrupted_candidate)
+    if (
+        replace_count != 2
+        or current_after_interruption is None
+        or current_after_interruption["decisionSha256"] != prior["decisionSha256"]
+        or interrupted.export() != before_interruption
+        or temporary_files
+    ):
         raise ValueError("Interrupted decision write left partial state")
     return workspace, reviewed, summary
 
@@ -352,6 +435,7 @@ def build_local_candidate_review_workbench_e2e(
         raise ValueError("Candidate catalog source bundle digest is stale")
     if details.get("sourceBundleSha256") != archive_sha256:
         raise ValueError("Candidate detail source bundle digest is stale")
+    archive_packet_count = _validate_all_bindings(members, aggregate, catalog, details)
     wave_counts, representatives = _wave_records(details)
 
     with tempfile.TemporaryDirectory(prefix="spec-harvester-workbench-e2e-") as temporary:
@@ -401,6 +485,7 @@ def build_local_candidate_review_workbench_e2e(
         "sourceBundleSha256": archive_sha256,
         "corpus": {
             "candidateCount": len(catalog["items"]),
+            "archivePacketCount": archive_packet_count,
             "detailCount": len(details["details"]),
             "comparisonCount": len(details["comparisons"]),
             "waveCounts": dict(sorted(wave_counts.items())),
@@ -420,6 +505,7 @@ def build_local_candidate_review_workbench_e2e(
         "negativeChecks": sorted(
             [
                 *negative_checks,
+                "all_packet_bindings_revalidated",
                 "archive_digest_revalidated",
                 "catalog_digest_revalidated",
                 "interrupted_write_rejected",

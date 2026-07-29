@@ -14,10 +14,12 @@ python -m spec_harvester validate-local-candidate-review-workbench \
   --output workbench-e2e.json
 ```
 
-The validator accounts for all 100 candidates and the four `25/25/25/25`
-campaign waves. It records one bounded reviewer disposition per wave, restarts
-the decision store, round-trips portable decisions, and rejects stale state,
-interrupted writes, malformed packets, path traversal, and digest drift.
+The validator recomputes all 100 archive packet digests and compares every
+catalog, detail, and comparison binding before accounting for the four
+`25/25/25/25` campaign waves. It records one bounded reviewer disposition per
+wave, restarts the decision store, round-trips portable decisions, and rejects
+stale state, interrupted writes, malformed packets, path traversal, and digest
+drift.
 
 Browser checks preserve hostile candidate markup as inert text under the
 restrictive Content Security Policy. Candidate content cannot execute script,
