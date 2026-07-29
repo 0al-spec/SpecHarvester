@@ -3,7 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
 **Dependencies:** `P54-T8` SpecPM Intake Bridge
-**Status:** Ready
+**Status:** Selected
+**Branch:** `feature/P54-T9-workbench-e2e-validation`
 
 ## Objective
 
