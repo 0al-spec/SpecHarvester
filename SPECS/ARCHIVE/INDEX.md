@@ -938,3 +938,4 @@
 | 2026-07-29 | P54-T4 | Archived Local Candidate Browser (PASS) |
 | 2026-07-29 | P54-T4 | Archived REVIEW_p54_t4_local_candidate_browser report |
 | 2026-07-29 | P54-T5 | Archived Candidate Detail Review Surface (PASS) |
+| 2026-07-29 | P54-T5 | Archived REVIEW_p54_t5_candidate_detail_review_surface report |
