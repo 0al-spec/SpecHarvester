@@ -1,25 +1,31 @@
-# Next Task: P54-T10 Phase 54 Exit Decision
+# Next Task: P55-T1 AI Semantic-Author Product and Authority Contract
 
 **Priority:** P0
-**Phase:** Phase 54. Local Candidate Review Workbench
-**Dependencies:** `P54-T9` Workbench End-to-End Validation
+**Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
+**Dependencies:** `P54-T10` Phase 54 Exit Decision
 **Status:** Ready
-**Branch:** pending selection after P54-T9 review
+**Branch:** pending selection after P54-T10 review
 
 ## Objective
 
-Record the Phase 54 exit decision from the completed Workbench implementation
-and 100-candidate E2E evidence.
+Record the AI semantic-author product and authority contract before provider,
+validation, portable-proposal, Workbench, or materialization implementation.
 
 ## Required Scope
 
-Choose explicitly among stopping, running a bounded follow-up, authorizing
-maintainer use of the local Workbench, or planning a separate publication
-phase. Preserve explicit maintainer authority and do not authorize automatic
-acceptance or registry publication by default.
+Define model-as-author responsibilities, existing-intent reuse, experimental
+intent proposals, evidence requirements, reviewer authority, provider
+interchangeability, and the boundaries between observed, proposed, and accepted
+intent metadata. Keep Codex 5.3 Spark and LM Studio proposal-only and do not
+grant publication authority.
 
 ## Recently Archived
 
+- `P54-T10` Phase 54 Exit Decision: PASS. Local maintainer Workbench use and the
+  bounded proposal-only Phase 55 semantic-authoring follow-up are authorized;
+  automatic acceptance, canonical intent creation, registry mutation,
+  publication, remote multi-user deployment, and broader-corpus execution
+  remain unapproved.
 - `P54-T9` Workbench End-to-End Validation: PASS. The full 100-candidate corpus
   and all four 25-candidate waves were accounted for; representative decisions,
   restart and portable exchange, fail-closed integrity scenarios, hostile
