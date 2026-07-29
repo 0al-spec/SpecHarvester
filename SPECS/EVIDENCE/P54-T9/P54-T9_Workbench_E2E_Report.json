@@ -1,0 +1,107 @@
+{
+  "apiVersion": "spec-harvester.local-candidate-review-workbench-e2e/v0",
+  "authority": "local_workbench_validation_evidence_only",
+  "browserSecurity": {
+    "candidateCount": 100,
+    "candidateRenderingPrimitive": "textContent",
+    "contentSecurityPolicy": [
+      "default-src 'self'",
+      "script-src 'self'",
+      "object-src 'none'",
+      "base-uri 'none'",
+      "frame-ancestors 'none'"
+    ],
+    "csrfTokenPersisted": false,
+    "detailCount": 100,
+    "hostileMarkerPersistedAsInertText": true,
+    "hostileMarkerPresentInExecutableAssets": false,
+    "inlineScriptAllowed": false
+  },
+  "corpus": {
+    "archivePacketCount": 100,
+    "candidateCount": 100,
+    "comparisonCount": 100,
+    "detailCount": 100,
+    "waveCounts": {
+      "wave-1": 25,
+      "wave-2": 25,
+      "wave-3": 25,
+      "wave-4": 25
+    }
+  },
+  "decisionLifecycle": {
+    "dispositionCounts": {
+      "accept_for_intake": 1,
+      "defer": 1,
+      "do_not_promote": 1,
+      "request_revision": 1
+    },
+    "interruptedWriteLeftPartialState": false,
+    "portableExchangeRoundTripPassed": true,
+    "restartHydrationPassed": true,
+    "reviewedCount": 4,
+    "staleDecisionRejected": true,
+    "unreviewedCount": 96
+  },
+  "kind": "SpecHarvesterLocalCandidateReviewWorkbenchE2E",
+  "negativeChecks": [
+    "all_packet_bindings_revalidated",
+    "archive_digest_revalidated",
+    "catalog_digest_revalidated",
+    "detail_digest_drift_rejected",
+    "interrupted_write_rejected",
+    "malformed_packet_rejected",
+    "path_traversal_rejected",
+    "stale_decision_rejected"
+  ],
+  "notExecuted": [
+    "package manager",
+    "harvested repository code",
+    "trusted adapter",
+    "AI provider",
+    "registry acceptance",
+    "public index publication"
+  ],
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "rawPromptPersisted": false,
+    "rawResponsePersisted": false
+  },
+  "registryMutationCount": 0,
+  "representativeReviews": [
+    {
+      "candidateId": "affaan-m-ecc",
+      "disposition": "accept_for_intake",
+      "wave": "wave-1"
+    },
+    {
+      "candidateId": "airbnb-javascript",
+      "disposition": "request_revision",
+      "wave": "wave-2"
+    },
+    {
+      "candidateId": "clash-verge-rev-clash-verge-rev",
+      "disposition": "defer",
+      "wave": "wave-3"
+    },
+    {
+      "candidateId": "addyosmani-agent-skills",
+      "disposition": "do_not_promote",
+      "wave": "wave-4"
+    }
+  ],
+  "serviceSecurity": {
+    "candidateOriginStatus": 403,
+    "invalidCsrfStatus": 403,
+    "reviewerOriginStatus": 201
+  },
+  "sourceBundleSha256": "db2593d7b17fd3f0da348b3fce72ea86b510d7c562b82b78047b926608709e63",
+  "specpmIntake": {
+    "approvedCandidateCount": 1,
+    "failedCount": 0,
+    "packageCount": 1,
+    "previewOnlyPreserved": true,
+    "registryMutationCount": 0
+  },
+  "status": "passed"
+}

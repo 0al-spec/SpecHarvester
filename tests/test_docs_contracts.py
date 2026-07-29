@@ -39,6 +39,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P54-T10 Phase 54 Exit Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P54-T9` Workbench End-to-End Validation" in next_text
+        assert "authorizing maintainer use of the local Workbench" in normalized
+        assert "do not authorize automatic acceptance" in normalized
+        return
+
     if "# Next Task: P54-T9 Workbench End-to-End Validation" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
@@ -40431,4 +40439,37 @@ def test_local_specpm_intake_bridge_docs_and_evidence_are_linked() -> None:
     assert evidence["kind"] == "SpecHarvesterLocalSpecPMIntakeProposal"
     assert evidence["summary"]["approvedCandidateCount"] == 1
     assert evidence["summary"]["specpmPreflightFailedCount"] == 0
+    assert evidence["registryMutationCount"] == 0
+
+
+def test_local_candidate_review_workbench_e2e_docs_and_evidence_are_linked() -> None:
+    github_doc = (ROOT / "docs/LOCAL_CANDIDATE_REVIEW_WORKBENCH_E2E.md").read_text()
+    docc_doc = (
+        ROOT / "Sources/SpecHarvester/Documentation.docc/LocalCandidateReviewWorkbenchE2E.md"
+    ).read_text()
+    evidence = json.loads(
+        (ROOT / "SPECS/EVIDENCE/P54-T9/P54-T9_Workbench_E2E_Report.json").read_text()
+    )
+    for text in (github_doc, docc_doc):
+        normalized = " ".join(text.split())
+        for required in (
+            "validate-local-candidate-review-workbench",
+            "25/25/25/25",
+            "hostile candidate markup",
+            "accept_for_intake",
+            "preview_only",
+            "zero registry mutations",
+        ):
+            assert required in normalized
+    assert "LOCAL_CANDIDATE_REVIEW_WORKBENCH_E2E.md" in (ROOT / "docs/CAPABILITIES.md").read_text()
+    assert (
+        "<doc:LocalCandidateReviewWorkbenchE2E>"
+        in (ROOT / "Sources/SpecHarvester/Documentation.docc/Capabilities.md").read_text()
+    )
+    assert evidence["status"] == "passed"
+    assert evidence["corpus"]["candidateCount"] == 100
+    assert set(evidence["corpus"]["waveCounts"].values()) == {25}
+    assert len(evidence["representativeReviews"]) == 4
+    assert evidence["serviceSecurity"]["candidateOriginStatus"] == 403
+    assert evidence["specpmIntake"]["failedCount"] == 0
     assert evidence["registryMutationCount"] == 0

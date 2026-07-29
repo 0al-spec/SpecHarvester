@@ -266,13 +266,30 @@ class LocalReviewDecisionStore:
             if len(_json_bytes(projected)) > MAX_EXCHANGE_BYTES:
                 raise ValueError("Review decision would exceed portable export byte limit")
             history = self._path("history", candidate_id, f"{digest}.json")
+            history_created = False
             if history.exists():
                 _, history_payload = self._read_path(history)
                 if history_payload != payload:
                     raise ValueError("Review decision history digest collision")
             else:
                 self._atomic_write(history, payload)
-            self._atomic_write(self._path("decisions", f"{candidate_id}.json"), payload)
+                history_created = True
+            try:
+                self._atomic_write(self._path("decisions", f"{candidate_id}.json"), payload)
+            except ValueError:
+                if history_created:
+                    try:
+                        history.unlink()
+                        directory_fd = os.open(history.parent, os.O_RDONLY)
+                        try:
+                            os.fsync(directory_fd)
+                        finally:
+                            os.close(directory_fd)
+                    except OSError as exc:
+                        raise ValueError(
+                            f"Cannot roll back interrupted review decision history: {exc}"
+                        ) from exc
+                raise
         return {
             "status": "recorded",
             "candidateId": candidate_id,
