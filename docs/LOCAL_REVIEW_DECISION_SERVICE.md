@@ -1,8 +1,9 @@
 # Local Review Decision Service
 
-P54-T6 provides a loopback-only persistence boundary for local Workbench
-decisions. It stores non-authoritative review evidence; it does not accept a
-package, invoke SpecPM, or mutate registry state.
+P54-T6 provides the loopback-only persistence boundary for local Workbench
+decisions. P54-T7 adds bounded reviewer actions, progress summaries, and
+portable decision exchange. The service stores non-authoritative review
+evidence; it does not accept a package, invoke SpecPM, or mutate registry state.
 
 ```bash
 spec-harvester serve-local-review-decisions \
@@ -14,9 +15,31 @@ spec-harvester serve-local-review-decisions \
   --port 8765
 ```
 
-Writes use `POST /v0/decisions` with `Content-Type: application/json`, the exact
-configured `Origin`, and `X-CSRF-Token`. Reads use
-`GET /v0/decisions/{candidateId}`.
+The browser uses `POST /v0/actions` with `Content-Type: application/json`, the
+exact configured `Origin`, and `X-CSRF-Token`. The service creates the timestamp
+and catalog packet binding. The action must select one valid pair:
+
+| Disposition | Reason code |
+| --- | --- |
+| `accept_for_intake` | `evidence_verified` |
+| `request_revision` | `evidence_revision_required` |
+| `defer` | `review_deferred` |
+| `do_not_promote` | `promotion_not_suitable` |
+
+`POST /v0/decisions` remains available for complete schema-valid records.
+Read-only endpoints expose one current decision, all current decisions, the
+reason taxonomy, and corpus progress:
+
+- `GET /v0/decisions/{candidateId}`
+- `GET /v0/decisions`
+- `GET /v0/reasons`
+- `GET /v0/summary`
+
+`GET /v0/export` emits all immutable decision history in deterministic
+candidate and lineage order. `POST /v0/import` accepts that JSON only when its
+source-bundle digest, packet bindings, reason mappings, and prior-decision
+chain match the target workspace. Import writes require the same Origin and
+CSRF checks as actions. The export fixes `registryMutationCount` at zero.
 
 Every submitted record must match the P54-T2 decision schema and the exact
 candidate/packet binding in the validated P54-T3 catalog. A first decision must
@@ -33,5 +56,7 @@ non-loopback binding, untrusted origins, and invalid CSRF tokens.
 The P54 Workbench JSON Schema is packaged inside the installed wheel, so the
 service does not depend on a repository checkout or editable installation.
 
-The CSRF token is an operator secret and must not be committed, placed in
-candidate content, or persisted in exported review evidence.
+The browser asks for service URL, reviewer identity, and the CSRF token at
+runtime. The token is an operator secret and must not be committed, placed in
+candidate content, local storage, generated browser files, or exported review
+evidence.

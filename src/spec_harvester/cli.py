@@ -938,7 +938,7 @@ def build_parser() -> argparse.ArgumentParser:
     local_review_decisions.add_argument("--allowed-origin", required=True)
     local_review_decisions.add_argument("--host", default="127.0.0.1")
     local_review_decisions.add_argument("--port", type=int, default=8765)
-    local_review_decisions.add_argument("--max-request-bytes", type=int, default=16 * 1024)
+    local_review_decisions.add_argument("--max-request-bytes", type=int, default=2 * 1024 * 1024)
     local_review_decisions.set_defaults(func=run_local_review_decisions_cli)
 
     draft = subcommands.add_parser(

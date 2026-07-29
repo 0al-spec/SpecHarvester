@@ -44,6 +44,12 @@ def decision(
     disposition: str = "defer",
 ) -> dict[str, object]:
     item = catalog["items"][0]  # type: ignore[index]
+    reasons = {
+        "accept_for_intake": "evidence_verified",
+        "request_revision": "evidence_revision_required",
+        "defer": "review_deferred",
+        "do_not_promote": "promotion_not_suitable",
+    }
     return {
         "apiVersion": "spec-harvester.candidate-review-decision/v0",
         "kind": "SpecHarvesterCandidateReviewDecision",
@@ -55,7 +61,7 @@ def decision(
         "disposition": disposition,
         "reviewer": "maintainer@example",
         "recordedAt": "2026-07-29T08:00:00Z",
-        "reasonCode": "manual_review",
+        "reasonCode": reasons[disposition],
         "notes": "Bounded local review evidence.",
         "priorDecisionSha256": prior,
     }
@@ -96,6 +102,90 @@ def test_store_requires_exact_prior_and_preserves_replacement_history(tmp_path: 
     history = list((tmp_path / "workspace" / "history" / first["candidateId"]).glob("*.json"))
     assert len(history) == 2
     assert second["priorDecisionSha256"] == first["decisionSha256"]
+
+
+@pytest.mark.parametrize(
+    ("disposition", "reason_code"),
+    [
+        ("accept_for_intake", "evidence_verified"),
+        ("request_revision", "evidence_revision_required"),
+        ("defer", "review_deferred"),
+        ("do_not_promote", "promotion_not_suitable"),
+    ],
+)
+def test_store_records_each_bounded_reviewer_action(
+    tmp_path: Path, disposition: str, reason_code: str
+) -> None:
+    payload = catalog_payload()
+    item = payload["items"][0]  # type: ignore[index]
+    store = LocalReviewDecisionStore(tmp_path / disposition, CATALOG)
+
+    result = store.record_action(
+        {
+            "candidateId": item["candidateId"],  # type: ignore[index]
+            "disposition": disposition,
+            "reviewer": "maintainer@example",
+            "reasonCode": reason_code,
+            "notes": "Reviewed locally.",
+            "priorDecisionSha256": None,
+        }
+    )
+
+    assert result["status"] == "recorded"
+    assert store.current(result["candidateId"])["decision"]["disposition"] == disposition  # type: ignore[index]
+
+
+def test_store_rejects_reason_for_different_disposition(tmp_path: Path) -> None:
+    store = LocalReviewDecisionStore(tmp_path / "workspace", CATALOG)
+    invalid = decision(catalog_payload())
+    invalid["reasonCode"] = "evidence_verified"
+
+    with pytest.raises(ValueError, match="reason is not allowed"):
+        store.write(invalid)
+
+
+def test_store_summary_and_portable_exchange_round_trip(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    source = LocalReviewDecisionStore(tmp_path / "source", CATALOG)
+    first = source.write(decision(payload))
+    source.write(
+        decision(payload, prior=first["decisionSha256"], disposition="request_revision")
+    )
+
+    summary = source.summary()
+    assert summary["candidateCount"] == 100
+    assert summary["reviewedCount"] == 1
+    assert summary["unreviewedCount"] == 99
+    assert summary["dispositionCounts"]["request_revision"] == 1
+
+    exchange = source.export()
+    assert exchange["registryMutationCount"] == 0
+    assert len(exchange["decisions"]) == 2
+    target = LocalReviewDecisionStore(tmp_path / "target", CATALOG)
+    imported = target.import_exchange(exchange)
+    assert imported == {
+        "status": "imported",
+        "decisionCount": 2,
+        "sourceBundleSha256": exchange["sourceBundleSha256"],
+        "registryMutationCount": 0,
+    }
+    assert target.export() == exchange
+
+
+def test_store_rejects_stale_or_broken_portable_exchange(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    source = LocalReviewDecisionStore(tmp_path / "source", CATALOG)
+    source.write(decision(payload))
+    exchange = source.export()
+
+    stale = {**exchange, "sourceBundleSha256": "0" * 64}
+    with pytest.raises(ValueError, match="source bundle digest is stale"):
+        LocalReviewDecisionStore(tmp_path / "stale", CATALOG).import_exchange(stale)
+
+    broken = json.loads(json.dumps(exchange))
+    broken["decisions"][0]["priorDecisionSha256"] = "0" * 64
+    with pytest.raises(ValueError, match="history is stale or out of order"):
+        LocalReviewDecisionStore(tmp_path / "broken", CATALOG).import_exchange(broken)
 
 
 def test_store_serializes_optimistic_replacements_across_processes(tmp_path: Path) -> None:
