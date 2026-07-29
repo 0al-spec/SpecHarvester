@@ -27,10 +27,16 @@ Serve the output from a local static server. The browser is candidate-only: it
 does not represent, modify, or merge with SpecPM's accepted public index.
 
 It exposes corpus totals, search, readiness, warning, correction, ecosystem,
-package-shape, preflight, and review-state facets. The selected queue item is
-kept in URL state and browser local storage, so review resumes after a reload.
+package-shape, preflight, and review-state facets. The review surface uses a
+two-pane layout: the selected candidate stays in the primary content pane while
+the independently scrollable candidate queue remains in the right sidebar.
+The selected queue item is kept in URL state and browser local storage, so
+review resumes after a reload.
 All untrusted values are inserted through text nodes, and its CSP permits only
 its own static script, styles, and catalog data.
-When included, the selected candidate opens a local detail panel with verified
-source provenance, static evidence, generated files, diagnostics, and a
-proposal-only static-versus-Codex Spark comparison.
+When included, the selected candidate opens with a compact health summary and
+human-readable SpecPackage and BoundarySpec sections for metadata,
+capabilities, intent IDs, scope, constraints, and evidence. Raw YAML remains
+available in a collapsed drawer. Supporting diagnostics, provenance, generated
+files, and proposal-only static-versus-Codex Spark comparison records are
+available in separate collapsed evidence drawers below the specifications.
