@@ -257,6 +257,7 @@
 | P54-T5 | [P54-T5_Candidate_Detail_Review_Surface/](P54-T5_Candidate_Detail_Review_Surface/) | 2026-07-29 | PASS |
 | P54-T6 | [P54-T6_Local_Review-Decision_Service_and_Storage_Contract/](P54-T6_Local_Review-Decision_Service_and_Storage_Contract/) | 2026-07-29 | PASS |
 | P54-T7 | [P54-T7_Reviewer_Actions_and_Portable_Decision_Exchange/](P54-T7_Reviewer_Actions_and_Portable_Decision_Exchange/) | 2026-07-29 | PASS |
+| P54-T8 | [P54-T8_SpecPM_Intake_Bridge/](P54-T8_SpecPM_Intake_Bridge/) | 2026-07-29 | PASS |
 
 ## Historical Artifacts
 
@@ -945,3 +946,4 @@
 | 2026-07-29 | P54-T6 | Archived REVIEW_p54_t6_local_review_decision_storage report |
 | 2026-07-29 | P54-T7 | Archived Reviewer Actions and Portable Decision Exchange (PASS) |
 | 2026-07-29 | P54-T7 | Archived REVIEW_p54_t7_reviewer_actions_portable_exchange report |
+| 2026-07-29 | P54-T8 | Archived SpecPM Intake Bridge (PASS) |
