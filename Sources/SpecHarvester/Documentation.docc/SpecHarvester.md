@@ -314,6 +314,7 @@ the host.
 - <doc:LocalCandidateReviewDetails>
 - <doc:LocalReviewDecisionService>
 - <doc:LocalSpecPMIntakeBridge>
+- <doc:LocalCandidateReviewWorkbenchE2E>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

@@ -408,6 +408,9 @@ Published DocC site:
 109. [`LOCAL_SPECPM_INTAKE_BRIDGE.md`](LOCAL_SPECPM_INTAKE_BRIDGE.md):
    P54-T8 digest-bound reviewer-approved candidate reconstruction and read-only
    SpecPM intake proposal preflight
+110. [`LOCAL_CANDIDATE_REVIEW_WORKBENCH_E2E.md`](LOCAL_CANDIDATE_REVIEW_WORKBENCH_E2E.md):
+   P54-T9 full-corpus Workbench integrity, security, restart, browser, and
+   read-only SpecPM validation
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
