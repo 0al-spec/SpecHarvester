@@ -39,6 +39,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P54-T8 SpecPM Intake Bridge" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P54-T7` Reviewer Actions and Portable Decision Exchange" in next_text
+        assert "accept_for_intake" in normalized
+        assert "without mutating SpecPM canonical sources" in normalized
+        return
+
     if "# Next Task: P54-T7 Reviewer Actions and Portable Decision Exchange" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text

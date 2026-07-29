@@ -2720,7 +2720,7 @@ Acceptance:
   contract. Restrict reads and writes to the configured review workspace,
   validate all submitted decisions, write atomically, preserve history, and
   support restart without executing candidate or repository content.
-- [ ] `P54-T7` Add reviewer actions for `accept_for_intake`,
+- [x] `P54-T7` Add reviewer actions for `accept_for_intake`,
   `request_revision`, `defer`, and `do_not_promote`, with required reason codes,
   optional notes, decision replacement history, progress summaries, and
   portable import/export.
