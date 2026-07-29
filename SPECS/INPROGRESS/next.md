@@ -1,28 +1,31 @@
-# Next Task: P55-T2 AI Semantic-Author Schemas
+# Next Task: P55-T3 Semantic Author Input Pack
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T1` AI Semantic-Author Product and Authority Contract
-**Status:** Selected
-**Branch:** `feature/P55-T2-ai-semantic-author-schemas`
+**Dependencies:** `P55-T2` AI Semantic-Author Schemas
+**Status:** Ready
+**Branch:** pending selection after P55-T2 review
 
 ## Objective
 
-Define versioned, provider-neutral data contracts for bounded semantic author
-requests, complete proposals, review edits, and accepted materialization
-decisions before provider execution begins.
+Build deterministic, size-bounded semantic author input packs from validated
+candidate YAML, harvested metadata, allowlisted source documentation,
+public-interface evidence, and the observed-intent catalog.
 
 ## Required Scope
 
-Cover complete semantic proposals, observed-intent reuse decisions,
-experimental intent proposals, nearby-intent analysis, claim-level evidence
-bindings, reviewer edits, and accepted materialization decisions. Add
-representative valid, malformed, unsupported-evidence, duplicate-intent, and
-stale-digest fixtures. Preserve the P55-T1 provider-neutral, proposal-only
-authority boundary and do not invoke Codex 5.3 Spark or LM Studio.
+Preserve exact repository-relative paths and digests, bounded byte and item
+budgets, provider-neutral request records, allowlisted reads only, and the rule
+that repository documentation is evidence rather than host instructions. Do not
+invoke Codex 5.3 Spark or LM Studio, execute harvested content, or materialize
+candidate revisions.
 
 ## Recently Archived
 
+- `P55-T2` AI Semantic-Author Schemas: PASS. Provider-neutral JSON Schema and
+  deterministic cross-record checks now define evidence-bound requests,
+  proposals, observed-intent reuse, experimental intents, reviewer edits, and
+  future proposal-only materialization decisions without provider execution.
 - `P55-T1` AI Semantic-Author Product and Authority Contract: PASS. Codex 5.3
   Spark and LM Studio now share one evidence-grounded proposal contract; models
   may propose observed-intent reuse or visibly experimental intents, while
