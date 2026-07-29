@@ -313,6 +313,7 @@ the host.
 - <doc:LocalCandidateReviewBrowser>
 - <doc:LocalCandidateReviewDetails>
 - <doc:LocalReviewDecisionService>
+- <doc:LocalSpecPMIntakeBridge>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

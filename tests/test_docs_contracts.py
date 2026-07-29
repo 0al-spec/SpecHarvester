@@ -40393,3 +40393,33 @@ def test_local_candidate_review_workbench_contract_records_p54_t1() -> None:
     for path, required in references:
         assert required in path.read_text(encoding="utf-8")
     assert_current_next_task((ROOT / "SPECS/INPROGRESS/next.md").read_text(encoding="utf-8"))
+
+
+def test_local_specpm_intake_bridge_docs_and_evidence_are_linked() -> None:
+    github_doc = (ROOT / "docs/LOCAL_SPECPM_INTAKE_BRIDGE.md").read_text()
+    docc_doc = (
+        ROOT / "Sources/SpecHarvester/Documentation.docc/LocalSpecPMIntakeBridge.md"
+    ).read_text()
+    capabilities = (ROOT / "docs/CAPABILITIES.md").read_text()
+    docc_capabilities = (
+        ROOT / "Sources/SpecHarvester/Documentation.docc/Capabilities.md"
+    ).read_text()
+    docc_root = (ROOT / "Sources/SpecHarvester/Documentation.docc/SpecHarvester.md").read_text()
+    evidence = json.loads(
+        (
+            ROOT / "SPECS/EVIDENCE/P54-T8/P54-T8_Local_SpecPM_Intake_Proposal.example.json"
+        ).read_text()
+    )
+
+    for text in (github_doc, docc_doc):
+        assert "build-local-specpm-intake-proposal" in text
+        assert "accept_for_intake" in text
+        assert "preview_only" in text
+        assert "zero registry mutations" in text
+    assert "LOCAL_SPECPM_INTAKE_BRIDGE.md" in capabilities
+    assert "<doc:LocalSpecPMIntakeBridge>" in docc_capabilities
+    assert "<doc:LocalSpecPMIntakeBridge>" in docc_root
+    assert evidence["kind"] == "SpecHarvesterLocalSpecPMIntakeProposal"
+    assert evidence["summary"]["approvedCandidateCount"] == 1
+    assert evidence["summary"]["specpmPreflightFailedCount"] == 0
+    assert evidence["registryMutationCount"] == 0
