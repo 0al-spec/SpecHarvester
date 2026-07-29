@@ -31,8 +31,13 @@ def test_detail_builder_emits_bound_inert_records(tmp_path: Path) -> None:
         item for item in payload["details"] if item["binding"]["candidateId"] == "bitcoin-bitcoin"
     )
     assert bitcoin["previewOnly"] is True
-    assert bitcoin["documents"]
-    assert all("content" in document for document in bitcoin["documents"])
+    assert bitcoin["sections"]
+    assert all("content" in section for section in bitcoin["sections"])
+    assert payload["comparisons"]
+    assert {comparison["ai"]["status"] for comparison in payload["comparisons"]} <= {
+        "portable",
+        "summary_only_not_portable",
+    }
 
 
 def test_detail_builder_rejects_catalog_binding_drift(tmp_path: Path) -> None:

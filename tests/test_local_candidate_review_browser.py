@@ -15,6 +15,7 @@ from spec_harvester.local_candidate_review_browser import (
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "SPECS/EVIDENCE/P54-T3/P54-T3_Candidate_Review_Catalog.json"
+DETAILS = ROOT / "SPECS/EVIDENCE/P54-T5/P54-T5_Candidate_Review_Details.json"
 
 
 def test_catalog_load_and_summary_cover_retained_corpus() -> None:
@@ -46,12 +47,24 @@ def test_browser_renderer_writes_inert_static_bundle(tmp_path: Path) -> None:
 
 def test_browser_copies_valid_detail_set(tmp_path: Path) -> None:
     details = tmp_path / "details.json"
-    details.write_text(json.dumps({"details": []}))
+    details.write_text(DETAILS.read_text())
     result = render_local_candidate_review_browser(
         LocalCandidateReviewBrowserOptions(CATALOG, tmp_path / "browser", details)
     )
-    assert result["detailCount"] == 0
+    assert result["detailCount"] == 100
     assert (tmp_path / "browser/details.json").is_file()
+
+
+def test_browser_rejects_detail_set_with_wrong_bundle_binding(tmp_path: Path) -> None:
+    details = json.loads(DETAILS.read_text())
+    details["sourceBundleSha256"] = "0" * 64
+    path = tmp_path / "details.json"
+    path.write_text(json.dumps(details))
+
+    with pytest.raises(ValueError, match="detail set is invalid"):
+        render_local_candidate_review_browser(
+            LocalCandidateReviewBrowserOptions(CATALOG, tmp_path / "browser", path)
+        )
 
 
 def test_browser_rejects_catalog_with_missing_or_duplicate_identity(tmp_path: Path) -> None:
