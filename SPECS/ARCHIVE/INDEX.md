@@ -947,3 +947,4 @@
 | 2026-07-29 | P54-T7 | Archived Reviewer Actions and Portable Decision Exchange (PASS) |
 | 2026-07-29 | P54-T7 | Archived REVIEW_p54_t7_reviewer_actions_portable_exchange report |
 | 2026-07-29 | P54-T8 | Archived SpecPM Intake Bridge (PASS) |
+| 2026-07-29 | P54-T8 | Archived REVIEW_p54_t8_specpm_intake_bridge report |
