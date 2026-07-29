@@ -1,23 +1,28 @@
-# Next Task: P54-T7 Reviewer Actions and Portable Decision Exchange
+# Next Task: P54-T8 SpecPM Intake Bridge
 
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
-**Dependencies:** `P54-T6` Local Review-Decision Service and Storage Contract
+**Dependencies:** `P54-T7` Reviewer Actions and Portable Decision Exchange
 **Status:** Ready
-**Branch:** pending selection after P54-T6 review
+**Branch:** pending selection after P54-T7 review
 
 ## Objective
 
-Add bounded reviewer actions and portable decision exchange to the local
-Workbench.
+Add a read-only SpecPM intake bridge for explicitly reviewer-approved
+candidates.
 
 ## Next Step
 
-Add the four dispositions, validated reason codes and optional notes, replacement
-history, progress summaries, and non-authoritative portable import/export.
+Revalidate packet and decision digests, run SpecPM intake preflight only for
+`accept_for_intake`, and emit non-authoritative proposal evidence without
+mutating SpecPM canonical sources or the public index.
 
 ## Recently Archived
 
+- `P54-T7` Reviewer Actions and Portable Decision Exchange: PASS. The local
+  Workbench now records four reason-validated reviewer dispositions, preserves
+  immutable replacement history, reconciles corpus progress after restart, and
+  imports or exports digest-bound evidence with zero registry mutations.
 - `P54-T6` Local Review-Decision Service and Storage Contract: PASS. Catalog-bound
   decisions now use atomic current-state writes, immutable digest history,
   optimistic replacement checks, restart validation, and a loopback

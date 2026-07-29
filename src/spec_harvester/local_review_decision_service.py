@@ -10,7 +10,7 @@ import threading
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
@@ -29,7 +29,23 @@ from spec_harvester.local_candidate_review_browser import (
 )
 
 MAX_DECISION_BYTES = 16 * 1024
+MAX_EXCHANGE_BYTES = 2 * 1024 * 1024
 LOOPBACK_HOST = "127.0.0.1"
+
+REVIEW_REASONS: dict[str, dict[str, str]] = {
+    "accept_for_intake": {
+        "evidence_verified": "Evidence verified",
+    },
+    "request_revision": {
+        "evidence_revision_required": "Evidence needs revision",
+    },
+    "defer": {
+        "review_deferred": "Review deferred",
+    },
+    "do_not_promote": {
+        "promotion_not_suitable": "Not suitable for promotion",
+    },
+}
 
 
 @dataclass(frozen=True)
@@ -40,7 +56,7 @@ class LocalReviewDecisionServiceOptions:
     allowed_origin: str
     host: str = LOOPBACK_HOST
     port: int = 8765
-    max_request_bytes: int = MAX_DECISION_BYTES
+    max_request_bytes: int = MAX_EXCHANGE_BYTES
 
 
 def _json_bytes(value: dict[str, Any]) -> bytes:
@@ -78,6 +94,25 @@ class LocalReviewDecisionStore:
         self._validator = Draft202012Validator(schema, format_checker=FormatChecker())
         self._lock = threading.Lock()
 
+    @property
+    def source_bundle_sha256(self) -> str:
+        return str(self._catalog["sourceBundleSha256"])
+
+    def reasons(self) -> dict[str, Any]:
+        return {
+            "apiVersion": "spec-harvester.candidate-review-reasons/v0",
+            "kind": "SpecHarvesterCandidateReviewReasons",
+            "codes": [
+                {
+                    "code": code,
+                    "allowedDispositions": [disposition],
+                    "label": label,
+                }
+                for disposition, codes in REVIEW_REASONS.items()
+                for code, label in codes.items()
+            ],
+        }
+
     def _path(self, *parts: str) -> Path:
         if any(not part or part in {".", ".."} or "/" in part or "\\" in part for part in parts):
             raise ValueError("Review workspace path component is unsafe")
@@ -109,6 +144,9 @@ class LocalReviewDecisionStore:
             raise ValueError(f"Unknown review candidate: {candidate_id}")
         if binding["packetSha256"] != expected_digest:
             raise ValueError(f"Review decision packet digest is stale: {candidate_id}")
+        disposition = decision["disposition"]
+        if decision["reasonCode"] not in REVIEW_REASONS[disposition]:
+            raise ValueError(f"Review reason is not allowed for disposition: {disposition}")
         return candidate_id, expected_digest
 
     def _read_path(self, path: Path) -> tuple[dict[str, Any], bytes]:
@@ -217,6 +255,16 @@ class LocalReviewDecisionStore:
                 raise ValueError("First review decision must have a null prior digest")
             if current is not None and prior != current["decisionSha256"]:
                 raise ValueError("Review decision prior digest is stale")
+            projected = self._export_record(
+                [
+                    record
+                    for bound_candidate_id in sorted(self._bindings)
+                    for record in self._history(bound_candidate_id)
+                ]
+                + [decision]
+            )
+            if len(_json_bytes(projected)) > MAX_EXCHANGE_BYTES:
+                raise ValueError("Review decision would exceed portable export byte limit")
             history = self._path("history", candidate_id, f"{digest}.json")
             if history.exists():
                 _, history_payload = self._read_path(history)
@@ -232,6 +280,155 @@ class LocalReviewDecisionStore:
             "decisionSha256": digest,
             "priorDecisionSha256": prior,
             "authority": "local_review_decision_evidence_only",
+        }
+
+    def record_action(self, action: dict[str, Any]) -> dict[str, Any]:
+        allowed = {
+            "candidateId",
+            "disposition",
+            "reviewer",
+            "reasonCode",
+            "notes",
+            "priorDecisionSha256",
+        }
+        if set(action) - allowed:
+            raise ValueError("Review action contains unsupported fields")
+        required = allowed - {"notes"}
+        if not required.issubset(action):
+            raise ValueError("Review action is missing required fields")
+        candidate_id = action["candidateId"]
+        if not isinstance(candidate_id, str) or candidate_id not in self._bindings:
+            raise ValueError(f"Unknown review candidate: {candidate_id}")
+        decision = {
+            "apiVersion": "spec-harvester.candidate-review-decision/v0",
+            "kind": "SpecHarvesterCandidateReviewDecision",
+            "authority": "local_review_decision_evidence_only",
+            "binding": {
+                "candidateId": candidate_id,
+                "packetSha256": self._bindings[candidate_id],
+            },
+            "disposition": action["disposition"],
+            "reviewer": action["reviewer"],
+            "recordedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "reasonCode": action["reasonCode"],
+            "priorDecisionSha256": action["priorDecisionSha256"],
+        }
+        if "notes" in action and action["notes"]:
+            decision["notes"] = action["notes"]
+        return self.write(decision)
+
+    def _history(self, candidate_id: str) -> list[dict[str, Any]]:
+        current = self.current(candidate_id)
+        if current is None:
+            return []
+        directory = self._path("history", candidate_id)
+        records: dict[str, dict[str, Any]] = {}
+        for path in directory.glob("*.json"):
+            value, payload = self._read_path(path)
+            digest = hashlib.sha256(payload).hexdigest()
+            if path.name != f"{digest}.json":
+                raise ValueError("Review decision history filename is not its digest")
+            if value["binding"]["candidateId"] != candidate_id:
+                raise ValueError("Review decision history candidate binding is invalid")
+            records[digest] = value
+        chain: list[dict[str, Any]] = []
+        current_digest: str | None = current["decisionSha256"]
+        visited: set[str] = set()
+        while current_digest is not None:
+            if current_digest in visited or current_digest not in records:
+                raise ValueError("Review decision history chain is invalid")
+            visited.add(current_digest)
+            value = records[current_digest]
+            chain.append(value)
+            current_digest = value["priorDecisionSha256"]
+        if visited != set(records):
+            raise ValueError("Review decision history contains orphan records")
+        return list(reversed(chain))
+
+    def summary(self) -> dict[str, Any]:
+        counts = {disposition: 0 for disposition in REVIEW_REASONS}
+        reviewed = 0
+        for candidate_id in sorted(self._bindings):
+            current = self.current(candidate_id)
+            if current is not None:
+                reviewed += 1
+                counts[current["decision"]["disposition"]] += 1
+        total = len(self._bindings)
+        return {
+            "status": "ok",
+            "candidateCount": total,
+            "reviewedCount": reviewed,
+            "unreviewedCount": total - reviewed,
+            "dispositionCounts": counts,
+            "sourceBundleSha256": self.source_bundle_sha256,
+            "authority": "local_review_decision_evidence_only",
+        }
+
+    def current_decisions(self) -> dict[str, Any]:
+        records = [
+            current
+            for candidate_id in sorted(self._bindings)
+            if (current := self.current(candidate_id)) is not None
+        ]
+        return {
+            "status": "ok",
+            "decisions": records,
+            "sourceBundleSha256": self.source_bundle_sha256,
+            "authority": "local_review_decision_evidence_only",
+        }
+
+    def _export_record(self, decisions: list[dict[str, Any]]) -> dict[str, Any]:
+        return {
+            "apiVersion": "spec-harvester.candidate-review-export/v0",
+            "kind": "SpecHarvesterCandidateReviewExport",
+            "authority": "portable_local_review_evidence_only",
+            "sourceBundleSha256": self.source_bundle_sha256,
+            "decisions": decisions,
+            "registryMutationCount": 0,
+        }
+
+    def export(self) -> dict[str, Any]:
+        exchange = self._export_record(
+            [
+                decision
+                for candidate_id in sorted(self._bindings)
+                for decision in self._history(candidate_id)
+            ]
+        )
+        if len(_json_bytes(exchange)) > MAX_EXCHANGE_BYTES:
+            raise ValueError("Portable review export exceeds byte limit")
+        return exchange
+
+    def import_exchange(self, exchange: dict[str, Any]) -> dict[str, Any]:
+        errors = list(self._validator.iter_errors(exchange))
+        if errors or exchange.get("kind") != "SpecHarvesterCandidateReviewExport":
+            message = errors[0].message if errors else "record is not a review export"
+            raise ValueError(f"Portable review export schema is invalid: {message}")
+        if exchange["sourceBundleSha256"] != self.source_bundle_sha256:
+            raise ValueError("Portable review export source bundle digest is stale")
+        simulated = {
+            candidate_id: (
+                current["decisionSha256"] if (current := self.current(candidate_id)) else None
+            )
+            for candidate_id in self._bindings
+        }
+        validated: list[dict[str, Any]] = []
+        for decision in exchange["decisions"]:
+            candidate_id, _ = self._validate(decision)
+            expected_prior = simulated[candidate_id]
+            if decision["priorDecisionSha256"] != expected_prior:
+                raise ValueError(
+                    f"Portable review export history is stale or out of order: {candidate_id}"
+                )
+            simulated[candidate_id] = decision_sha256(decision)
+            validated.append(decision)
+        for decision in validated:
+            self.write(decision)
+        return {
+            "status": "imported",
+            "decisionCount": len(validated),
+            "sourceBundleSha256": self.source_bundle_sha256,
+            "registryMutationCount": 0,
         }
 
 
@@ -259,7 +456,7 @@ def build_local_review_decision_server(
         raise ValueError("Review decision service CSRF token must contain at least 32 characters")
     if not _valid_origin(options.allowed_origin):
         raise ValueError("Review decision service allowed origin must be local HTTP")
-    if not 1 <= options.max_request_bytes <= MAX_DECISION_BYTES:
+    if not 1 <= options.max_request_bytes <= MAX_EXCHANGE_BYTES:
         raise ValueError("Review decision service request byte limit is invalid")
     store = LocalReviewDecisionStore(options.workspace, options.catalog)
 
@@ -295,6 +492,27 @@ def build_local_review_decision_server(
             self.end_headers()
 
         def do_GET(self) -> None:  # noqa: N802
+            if self.path == "/v0/reasons":
+                self._json(200, store.reasons())
+                return
+            if self.path == "/v0/summary":
+                try:
+                    self._json(200, store.summary())
+                except ValueError as exc:
+                    self._json(409, {"status": "error", "message": str(exc)})
+                return
+            if self.path == "/v0/decisions":
+                try:
+                    self._json(200, store.current_decisions())
+                except ValueError as exc:
+                    self._json(409, {"status": "error", "message": str(exc)})
+                return
+            if self.path == "/v0/export":
+                try:
+                    self._json(200, store.export())
+                except ValueError as exc:
+                    self._json(409, {"status": "error", "message": str(exc)})
+                return
             prefix = "/v0/decisions/"
             if not self.path.startswith(prefix):
                 self._json(404, {"status": "error", "message": "Not found"})
@@ -311,7 +529,7 @@ def build_local_review_decision_server(
             self._json(200, {"status": "found", **current})
 
         def do_POST(self) -> None:  # noqa: N802
-            if self.path != "/v0/decisions":
+            if self.path not in {"/v0/decisions", "/v0/actions", "/v0/import"}:
                 self._json(404, {"status": "error", "message": "Not found"})
                 return
             if not self._origin_allowed():
@@ -335,15 +553,20 @@ def build_local_review_decision_server(
                 return
             payload = self.rfile.read(length)
             try:
-                decision = json.loads(payload)
+                submitted = json.loads(payload)
             except (UnicodeDecodeError, json.JSONDecodeError):
                 self._json(400, {"status": "error", "message": "Request body is invalid JSON"})
                 return
-            if not isinstance(decision, dict):
-                self._json(400, {"status": "error", "message": "Review decision must be an object"})
+            if not isinstance(submitted, dict):
+                self._json(400, {"status": "error", "message": "Request body must be an object"})
                 return
             try:
-                result = store.write(decision)
+                if self.path == "/v0/actions":
+                    result = store.record_action(submitted)
+                elif self.path == "/v0/import":
+                    result = store.import_exchange(submitted)
+                else:
+                    result = store.write(submitted)
             except ValueError as exc:
                 self._json(409, {"status": "error", "message": str(exc)})
                 return

@@ -40,8 +40,23 @@ def test_browser_renderer_writes_inert_static_bundle(tmp_path: Path) -> None:
     index = (tmp_path / "browser/index.html").read_text()
     script = (tmp_path / "browser/workbench.js").read_text()
     assert "Candidate evidence only" in index
+    assert "accept_for_intake" in index
+    assert 'id="csrf-token"' in index
     assert "innerHTML" not in script
     assert "localStorage" in script
+    assert "/v0/actions" in script
+    assert "/v0/export" in script
+    assert "/v0/import" in script
+    for review_state in (
+        "unreviewed",
+        "in_review",
+        "accept_for_intake",
+        "request_revision",
+        "defer",
+        "do_not_promote",
+    ):
+        assert review_state in script
+    assert "p54-t6-test-token" not in index + script
     assert json.loads((tmp_path / "browser/catalog.json").read_text())["items"]
 
 
