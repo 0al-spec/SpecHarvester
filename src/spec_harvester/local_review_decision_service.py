@@ -140,9 +140,16 @@ class LocalReviewDecisionStore:
         binding = value["binding"]
         if binding["candidateId"] != candidate_id or binding["packetSha256"] != expected_digest:
             raise ValueError("Persisted review decision binding differs from storage path")
+        digest = hashlib.sha256(payload).hexdigest()
+        history_path = self._path("history", candidate_id, f"{digest}.json")
+        if not history_path.exists():
+            raise ValueError("Persisted review decision is missing immutable history")
+        _, history_payload = self._read_path(history_path)
+        if history_payload != payload:
+            raise ValueError("Persisted review decision differs from immutable history")
         return {
             "decision": value,
-            "decisionSha256": hashlib.sha256(payload).hexdigest(),
+            "decisionSha256": digest,
             "packetSha256": expected_digest,
         }
 

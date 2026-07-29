@@ -133,6 +133,23 @@ def test_store_rejects_valid_decision_under_wrong_candidate_path(tmp_path: Path)
         store.current(first_item["candidateId"])  # type: ignore[index]
 
 
+def test_store_rejects_current_decision_without_immutable_history(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    store = LocalReviewDecisionStore(tmp_path / "workspace", CATALOG)
+    recorded = store.write(decision(payload))
+    history = (
+        tmp_path
+        / "workspace"
+        / "history"
+        / recorded["candidateId"]
+        / f"{recorded['decisionSha256']}.json"
+    )
+    history.unlink()
+
+    with pytest.raises(ValueError, match="missing immutable history"):
+        store.current(recorded["candidateId"])
+
+
 def test_server_rejects_non_loopback_and_unsafe_write_configuration(tmp_path: Path) -> None:
     base = LocalReviewDecisionServiceOptions(
         workspace=tmp_path / "workspace",
