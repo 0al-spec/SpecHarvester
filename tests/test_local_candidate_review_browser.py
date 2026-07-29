@@ -86,6 +86,13 @@ def test_browser_copies_valid_detail_set(tmp_path: Path) -> None:
     assert package["parsed"]["index"]["provides"]["capabilities"]
     assert boundary["parsed"]["constraints"]
     assert boundary["parsed"]["evidence"]
+    assert boundary["parsed"]["scope"]["includes"]
+    comparison = next(
+        section
+        for section in first["supporting"]
+        if section["id"] == "static-versus-ai-comparison.json"
+    )
+    assert json.loads(comparison["content"])["ai"]["status"] == "summary_only_not_portable"
     script = (tmp_path / "browser/workbench.js").read_text()
     assert "Spec health" in script
     assert "Package specifications" in script
