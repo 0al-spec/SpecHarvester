@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import http.client
 import json
 import multiprocessing
@@ -148,9 +149,7 @@ def test_store_summary_and_portable_exchange_round_trip(tmp_path: Path) -> None:
     payload = catalog_payload()
     source = LocalReviewDecisionStore(tmp_path / "source", CATALOG)
     first = source.write(decision(payload))
-    source.write(
-        decision(payload, prior=first["decisionSha256"], disposition="request_revision")
-    )
+    source.write(decision(payload, prior=first["decisionSha256"], disposition="request_revision"))
 
     summary = source.summary()
     assert summary["candidateCount"] == 100
@@ -186,6 +185,98 @@ def test_store_rejects_stale_or_broken_portable_exchange(tmp_path: Path) -> None
     broken["decisions"][0]["priorDecisionSha256"] = "0" * 64
     with pytest.raises(ValueError, match="history is stale or out of order"):
         LocalReviewDecisionStore(tmp_path / "broken", CATALOG).import_exchange(broken)
+
+    with pytest.raises(ValueError, match="schema is invalid"):
+        LocalReviewDecisionStore(tmp_path / "invalid", CATALOG).import_exchange({})
+
+
+def test_store_rejects_invalid_action_shapes(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    candidate_id = payload["items"][0]["candidateId"]  # type: ignore[index]
+    store = LocalReviewDecisionStore(tmp_path / "workspace", CATALOG)
+    base = {
+        "candidateId": candidate_id,
+        "disposition": "defer",
+        "reviewer": "maintainer@example",
+        "reasonCode": "review_deferred",
+        "priorDecisionSha256": None,
+    }
+    with pytest.raises(ValueError, match="unsupported fields"):
+        store.record_action({**base, "unexpected": True})
+    with pytest.raises(ValueError, match="missing required"):
+        store.record_action({"candidateId": candidate_id})
+    with pytest.raises(ValueError, match="Unknown review candidate"):
+        store.record_action({**base, "candidateId": "unknown"})
+
+
+def test_store_rejects_noncanonical_and_orphan_history(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    workspace = tmp_path / "workspace"
+    store = LocalReviewDecisionStore(workspace, CATALOG)
+    recorded = store.write(decision(payload))
+    candidate_id = recorded["candidateId"]
+    current = store.current(candidate_id)
+    assert current is not None
+    history_dir = workspace / "history" / candidate_id
+    original = history_dir / f"{recorded['decisionSha256']}.json"
+
+    noncanonical = json.loads(original.read_text())
+    noncanonical["recordedAt"] = "2026-07-29T08:00:01Z"
+    orphan_payload = (json.dumps(noncanonical, sort_keys=True) + "\n").encode()
+    orphan_digest = hashlib.sha256(orphan_payload).hexdigest()
+    (history_dir / f"{orphan_digest}.json").write_bytes(orphan_payload)
+    with pytest.raises(ValueError, match="not canonical"):
+        store.export()
+
+    (history_dir / f"{orphan_digest}.json").write_text(
+        json.dumps(noncanonical, indent=2, sort_keys=True) + "\n"
+    )
+    canonical_digest = hashlib.sha256(
+        (json.dumps(noncanonical, indent=2, sort_keys=True) + "\n").encode()
+    ).hexdigest()
+    (history_dir / f"{orphan_digest}.json").rename(history_dir / f"{canonical_digest}.json")
+    with pytest.raises(ValueError, match="orphan records"):
+        store.export()
+
+
+def test_store_rejects_unsafe_workspace_and_corrupt_current_files(tmp_path: Path) -> None:
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    symlink = tmp_path / "symlink"
+    symlink.symlink_to(outside, target_is_directory=True)
+    with pytest.raises(ValueError, match="must not be a symlink"):
+        LocalReviewDecisionStore(symlink, CATALOG)
+
+    payload = catalog_payload()
+    candidate_id = payload["items"][0]["candidateId"]  # type: ignore[index]
+    workspace = tmp_path / "workspace"
+    store = LocalReviewDecisionStore(workspace, CATALOG)
+    with pytest.raises(ValueError, match="component is unsafe"):
+        store._path("..")  # noqa: SLF001
+
+    decisions = workspace / "decisions"
+    decisions.mkdir()
+    current = decisions / f"{candidate_id}.json"
+    current.write_text("{not-json")
+    with pytest.raises(ValueError, match="invalid JSON"):
+        store.current(candidate_id)
+
+    current.write_text("[]")
+    with pytest.raises(ValueError, match="must be an object"):
+        store.current(candidate_id)
+
+    current.write_bytes(b"x" * (16 * 1024 + 1))
+    with pytest.raises(ValueError, match="exceeds byte limit"):
+        store.current(candidate_id)
+
+    current.unlink()
+    current.mkdir()
+    with pytest.raises(ValueError, match="Cannot read persisted"):
+        store.current(candidate_id)
+
+    first_with_prior = decision(payload, prior="0" * 64)
+    with pytest.raises(ValueError, match="First review decision"):
+        LocalReviewDecisionStore(tmp_path / "prior", CATALOG).write(first_with_prior)
 
 
 def test_store_serializes_optimistic_replacements_across_processes(tmp_path: Path) -> None:
@@ -313,6 +404,16 @@ def test_server_rejects_non_loopback_and_unsafe_write_configuration(tmp_path: Pa
                 **{**base.__dict__, "allowed_origin": "https://example.com"}
             )
         )
+    with pytest.raises(ValueError, match="port"):
+        build_local_review_decision_server(
+            LocalReviewDecisionServiceOptions(**{**base.__dict__, "port": -1})
+        )
+    with pytest.raises(ValueError, match="byte limit"):
+        build_local_review_decision_server(
+            LocalReviewDecisionServiceOptions(
+                **{**base.__dict__, "max_request_bytes": 2 * 1024 * 1024 + 1}
+            )
+        )
 
 
 def test_server_enforces_origin_csrf_and_records_decision(tmp_path: Path) -> None:
@@ -366,6 +467,233 @@ def test_server_enforces_origin_csrf_and_records_decision(tmp_path: Path) -> Non
         response = connection.getresponse()
         assert response.status == 200
         assert json.loads(response.read())["decisionSha256"] == recorded["decisionSha256"]
+        connection.close()
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_server_exposes_actions_progress_and_portable_exchange(tmp_path: Path) -> None:
+    server = build_local_review_decision_server(
+        LocalReviewDecisionServiceOptions(
+            workspace=tmp_path / "workspace",
+            catalog=CATALOG,
+            csrf_token=CSRF_TOKEN,
+            allowed_origin=ORIGIN,
+            port=0,
+        )
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    port = server.server_address[1]
+    item = catalog_payload()["items"][0]  # type: ignore[index]
+
+    def request(
+        method: str,
+        path: str,
+        body: object | None = None,
+        *,
+        csrf: str = CSRF_TOKEN,
+        origin: str = ORIGIN,
+        content_type: str = "application/json",
+    ) -> tuple[int, dict[str, Any]]:
+        connection = http.client.HTTPConnection("127.0.0.1", port)
+        encoded = None if body is None else json.dumps(body)
+        headers = {"Origin": origin}
+        if body is not None:
+            headers.update(
+                {
+                    "Content-Type": content_type,
+                    "X-CSRF-Token": csrf,
+                }
+            )
+        connection.request(method, path, body=encoded, headers=headers)
+        response = connection.getresponse()
+        payload = json.loads(response.read())
+        connection.close()
+        return response.status, payload
+
+    try:
+        status, reasons = request("GET", "/v0/reasons")
+        assert status == 200
+        assert len(reasons["codes"]) == 4
+        assert request("GET", "/v0/summary")[1]["unreviewedCount"] == 100
+        assert request("GET", "/v0/decisions")[1]["decisions"] == []
+        assert request("GET", "/v0/export")[1]["decisions"] == []
+        assert request("GET", "/not-found")[0] == 404
+        assert request("GET", "/v0/decisions/not-a-candidate")[0] == 400
+
+        action = {
+            "candidateId": item["candidateId"],  # type: ignore[index]
+            "disposition": "accept_for_intake",
+            "reviewer": "maintainer@example",
+            "reasonCode": "evidence_verified",
+            "notes": "Ready.",
+            "priorDecisionSha256": None,
+        }
+        status, recorded = request("POST", "/v0/actions", action)
+        assert status == 201
+        assert recorded["status"] == "recorded"
+        current = request("GET", "/v0/decisions")[1]["decisions"]
+        assert current[0]["decision"]["disposition"] == "accept_for_intake"
+        progress = request("GET", "/v0/summary")[1]
+        assert progress["reviewedCount"] == 1
+        assert progress["unreviewedCount"] == 99
+        exported = request("GET", "/v0/export")[1]
+        assert exported["decisions"][0]["reasonCode"] == "evidence_verified"
+        assert exported["registryMutationCount"] == 0
+
+        invalid = {**action, "reasonCode": "review_deferred"}
+        assert request("POST", "/v0/actions", invalid)[0] == 409
+        assert request("POST", "/missing", action)[0] == 404
+        assert request("POST", "/v0/actions", action, csrf="wrong")[0] == 403
+        assert request("POST", "/v0/actions", action, content_type="text/plain")[0] == 415
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_server_imports_valid_portable_exchange(tmp_path: Path) -> None:
+    source = LocalReviewDecisionStore(tmp_path / "source", CATALOG)
+    source.write(decision(catalog_payload()))
+    exchange = source.export()
+    server = build_local_review_decision_server(
+        LocalReviewDecisionServiceOptions(
+            workspace=tmp_path / "target",
+            catalog=CATALOG,
+            csrf_token=CSRF_TOKEN,
+            allowed_origin=ORIGIN,
+            port=0,
+        )
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    port = server.server_address[1]
+    try:
+        connection = http.client.HTTPConnection("127.0.0.1", port)
+        connection.request(
+            "POST",
+            "/v0/import",
+            body=json.dumps(exchange),
+            headers={
+                "Content-Type": "application/json",
+                "Origin": ORIGIN,
+                "X-CSRF-Token": CSRF_TOKEN,
+            },
+        )
+        response = connection.getresponse()
+        imported = json.loads(response.read())
+        assert response.status == 201
+        assert imported["decisionCount"] == 1
+        assert imported["registryMutationCount"] == 0
+        connection.close()
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_server_preflight_and_malformed_requests(tmp_path: Path) -> None:
+    server = build_local_review_decision_server(
+        LocalReviewDecisionServiceOptions(
+            workspace=tmp_path / "workspace",
+            catalog=CATALOG,
+            csrf_token=CSRF_TOKEN,
+            allowed_origin=ORIGIN,
+            port=0,
+        )
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    port = server.server_address[1]
+
+    def raw(
+        method: str,
+        path: str,
+        body: str = "",
+        *,
+        origin: str = ORIGIN,
+    ) -> tuple[int, bytes]:
+        connection = http.client.HTTPConnection("127.0.0.1", port)
+        connection.request(
+            method,
+            path,
+            body=body,
+            headers={
+                "Content-Type": "application/json",
+                "Origin": origin,
+                "X-CSRF-Token": CSRF_TOKEN,
+            },
+        )
+        response = connection.getresponse()
+        payload = response.read()
+        status = response.status
+        connection.close()
+        return status, payload
+
+    try:
+        assert raw("OPTIONS", "/v0/actions")[0] == 204
+        assert raw("OPTIONS", "/v0/actions", origin="http://attacker.invalid")[0] == 403
+        assert raw("POST", "/v0/actions", "{not-json")[0] == 400
+        assert raw("POST", "/v0/actions", "[]")[0] == 400
+        second_id = catalog_payload()["items"][1]["candidateId"]  # type: ignore[index]
+        assert raw("GET", f"/v0/decisions/{second_id}")[0] == 404
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_server_reports_corrupt_state_and_request_size_errors(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    server = build_local_review_decision_server(
+        LocalReviewDecisionServiceOptions(
+            workspace=workspace,
+            catalog=CATALOG,
+            csrf_token=CSRF_TOKEN,
+            allowed_origin=ORIGIN,
+            port=0,
+            max_request_bytes=10,
+        )
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    port = server.server_address[1]
+    candidate_id = catalog_payload()["items"][0]["candidateId"]  # type: ignore[index]
+    decisions = workspace / "decisions"
+    decisions.mkdir()
+    (decisions / f"{candidate_id}.json").write_text("{broken")
+    try:
+        for path in ("/v0/summary", "/v0/decisions", "/v0/export"):
+            connection = http.client.HTTPConnection("127.0.0.1", port)
+            connection.request("GET", path)
+            assert connection.getresponse().status == 409
+            connection.close()
+
+        connection = http.client.HTTPConnection("127.0.0.1", port)
+        connection.request(
+            "POST",
+            "/v0/actions",
+            body="01234567890",
+            headers={
+                "Content-Type": "application/json",
+                "Origin": ORIGIN,
+                "X-CSRF-Token": CSRF_TOKEN,
+            },
+        )
+        assert connection.getresponse().status == 413
+        connection.close()
+
+        connection = http.client.HTTPConnection("127.0.0.1", port)
+        connection.putrequest("POST", "/v0/actions")
+        connection.putheader("Content-Type", "application/json")
+        connection.putheader("Origin", ORIGIN)
+        connection.putheader("X-CSRF-Token", CSRF_TOKEN)
+        connection.putheader("Content-Length", "invalid")
+        connection.endheaders()
+        assert connection.getresponse().status == 413
         connection.close()
     finally:
         server.shutdown()

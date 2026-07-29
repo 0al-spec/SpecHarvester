@@ -146,9 +146,7 @@ class LocalReviewDecisionStore:
             raise ValueError(f"Review decision packet digest is stale: {candidate_id}")
         disposition = decision["disposition"]
         if decision["reasonCode"] not in REVIEW_REASONS[disposition]:
-            raise ValueError(
-                f"Review reason is not allowed for disposition: {disposition}"
-            )
+            raise ValueError(f"Review reason is not allowed for disposition: {disposition}")
         return candidate_id, expected_digest
 
     def _read_path(self, path: Path) -> tuple[dict[str, Any], bytes]:
