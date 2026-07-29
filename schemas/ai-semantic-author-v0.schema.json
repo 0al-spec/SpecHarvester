@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-harvester.dev/schemas/ai-semantic-author-v0.schema.json",
+  "title": "AI Semantic-Author Schema Bundle",
+  "oneOf": [
+    {"$ref": "#/$defs/fixture"},
+    {"$ref": "#/$defs/request"},
+    {"$ref": "#/$defs/proposal"},
+    {"$ref": "#/$defs/intentReuse"},
+    {"$ref": "#/$defs/experimentalIntent"},
+    {"$ref": "#/$defs/nearbyIntentAnalysis"},
+    {"$ref": "#/$defs/reviewerEdit"},
+    {"$ref": "#/$defs/materializationDecision"}
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "candidateId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "safePath": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]*$"},
+    "providerId": {"type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 128},
+    "intentId": {"type": "string", "pattern": "^intent\\.[a-z0-9][a-z0-9._-]*$", "maxLength": 200},
+    "experimentalIntentId": {"type": "string", "pattern": "^intent\\.experimental\\.[a-z0-9][a-z0-9._-]*$", "maxLength": 200},
+    "claimId": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,79}$"},
+    "evidenceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "class", "sourcePath", "sha256", "sourceBundleSha256"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,79}$"},
+        "class": {"enum": ["validated_candidate_yaml", "harvested_repository_metadata", "allowlisted_source_documentation", "public_interface_evidence", "specpm_observed_intent_catalog"]},
+        "sourcePath": {"$ref": "#/$defs/safePath"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "sourceBundleSha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "semanticClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "text", "evidence"],
+      "properties": {
+        "id": {"$ref": "#/$defs/claimId"},
+        "kind": {"enum": ["purpose", "capability", "interface", "nearby_intent_difference", "non_goal"]},
+        "text": {"type": "string", "minLength": 1, "maxLength": 4000},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidenceBinding"}}
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "schemaVersion", "authority", "candidateId", "sourceBundleSha256", "evidence"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.ai-semantic-author-request/v0"},
+        "kind": {"const": "SpecHarvesterAISemanticAuthorRequest"},
+        "schemaVersion": {"const": 1},
+        "authority": {"const": "semantic_author_request_evidence_only"},
+        "candidateId": {"$ref": "#/$defs/candidateId"},
+        "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidenceBinding"}}
+      }
+    },
+    "intentReuse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "schemaVersion", "state", "intentId", "observedIntentSha256", "rationaleClaimId"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.ai-semantic-intent-reuse/v0"},
+        "kind": {"const": "SpecHarvesterAISemanticIntentReuse"},
+        "schemaVersion": {"const": 1},
+        "state": {"const": "proposed_reuse"},
+        "intentId": {"$ref": "#/$defs/intentId"},
+        "observedIntentSha256": {"$ref": "#/$defs/sha256"},
+        "rationaleClaimId": {"$ref": "#/$defs/claimId"}
+      }
+    },
+    "experimentalIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "schemaVersion", "state", "intentId", "userNeedClaimId", "nearbyIntentIds", "nonGoalClaimIds"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.ai-semantic-experimental-intent/v0"},
+        "kind": {"const": "SpecHarvesterAISemanticExperimentalIntent"},
+        "schemaVersion": {"const": 1},
+        "state": {"const": "proposed_experimental"},
+        "intentId": {"$ref": "#/$defs/experimentalIntentId"},
+        "userNeedClaimId": {"$ref": "#/$defs/claimId"},
+        "nearbyIntentIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/intentId"}},
+        "nonGoalClaimIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/claimId"}}
+      }
+    },
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "schemaVersion", "authority", "proposalId", "proposalSha256", "candidateId", "sourceBundleSha256", "provider", "claims", "intentDecisions"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.ai-semantic-proposal/v0"},
+        "kind": {"const": "SpecHarvesterAISemanticProposal"},
+        "schemaVersion": {"const": 1},
+        "authority": {"const": "semantic_author_proposal_only"},
+        "proposalId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+        "proposalSha256": {"$ref": "#/$defs/sha256"},
+        "candidateId": {"$ref": "#/$defs/candidateId"},
+        "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
+        "provider": {"type": "object", "additionalProperties": false, "required": ["id", "receiptSha256"], "properties": {"id": {"$ref": "#/$defs/providerId"}, "receiptSha256": {"$ref": "#/$defs/sha256"}}},
+        "claims": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/semanticClaim"}},
+        "intentDecisions": {"type": "array", "items": {"oneOf": [{"$ref": "#/$defs/intentReuse"}, {"$ref": "#/$defs/experimentalIntent"}]}}
+      }
+    },
+    "nearbyIntentAnalysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "schemaVersion", "proposalSha256", "entries"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.ai-semantic-nearby-intent-analysis/v0"},
+        "kind": {"const": "SpecHarvesterAISemanticNearbyIntentAnalysis"},
+        "schemaVersion": {"const": 1},
+        "proposalSha256": {"$ref": "#/$defs/sha256"},
+        "entries": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["intentId", "differenceClaimId"], "properties": {"intentId": {"$ref": "#/$defs/intentId"}, "differenceClaimId": {"$ref": "#/$defs/claimId"}}}}
+      }
+    },
+    "reviewerEdit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "schemaVersion", "authority", "proposalSha256", "reviewerEditSha256", "sourceBundleSha256", "reviewer", "decision", "acceptedOrEditedClaimIds"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.ai-semantic-reviewer-edit/v0"},
+        "kind": {"const": "SpecHarvesterAISemanticReviewerEdit"},
+        "schemaVersion": {"const": 1},
+        "authority": {"const": "reviewer_semantic_decision_evidence_only"},
+        "proposalSha256": {"$ref": "#/$defs/sha256"},
+        "reviewerEditSha256": {"$ref": "#/$defs/sha256"},
+        "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
+        "reviewer": {"type": "string", "minLength": 1, "maxLength": 200},
+        "decision": {"enum": ["accepted", "edited", "rejected", "deferred"]},
+        "acceptedOrEditedClaimIds": {"type": "array", "items": {"$ref": "#/$defs/claimId"}}
+      }
+    },
+    "materializationDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "schemaVersion", "authority", "candidateId", "proposalSha256", "reviewerEditSha256", "sourceBundleSha256", "reviewer", "decision", "materializedClaimIds", "previewOnly", "isRegistryTruth"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.ai-semantic-materialization-decision/v0"},
+        "kind": {"const": "SpecHarvesterAISemanticMaterializationDecision"},
+        "schemaVersion": {"const": 1},
+        "authority": {"const": "maintainer_materialization_decision_evidence_only"},
+        "candidateId": {"$ref": "#/$defs/candidateId"},
+        "proposalSha256": {"$ref": "#/$defs/sha256"},
+        "reviewerEditSha256": {"$ref": "#/$defs/sha256"},
+        "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
+        "reviewer": {"type": "string", "minLength": 1, "maxLength": 200},
+        "decision": {"enum": ["accepted", "edited"]},
+        "materializedClaimIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/claimId"}},
+        "previewOnly": {"const": true},
+        "isRegistryTruth": {"const": false}
+      }
+    },
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "schemaVersion", "sourceContract", "request", "proposal", "nearbyIntentAnalysis", "reviewerEdit", "materializationDecision"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.ai-semantic-author-schema-fixture/v0"},
+        "kind": {"const": "SpecHarvesterAISemanticAuthorSchemaFixture"},
+        "schemaVersion": {"const": 1},
+        "sourceContract": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "authority"], "properties": {"path": {"$ref": "#/$defs/safePath"}, "sha256": {"$ref": "#/$defs/sha256"}, "authority": {"const": "semantic_author_product_contract_evidence_only"}}},
+        "request": {"$ref": "#/$defs/request"},
+        "proposal": {"$ref": "#/$defs/proposal"},
+        "nearbyIntentAnalysis": {"$ref": "#/$defs/nearbyIntentAnalysis"},
+        "reviewerEdit": {"$ref": "#/$defs/reviewerEdit"},
+        "materializationDecision": {"$ref": "#/$defs/materializationDecision"}
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "apiVersion": "spec-harvester.ai-semantic-author-schema-fixture/v0",
+  "kind": "SpecHarvesterAISemanticAuthorSchemaFixture",
+  "schemaVersion": 1,
+  "sourceContract": {
+    "path": "tests/fixtures/ai_semantic_author_contract/p55-t1-ai-semantic-author-contract.example.json",
+    "sha256": "ddde481a6f9cdb8ec051b0d1d8944d217b7f1616174a987db1bb6f1357b9dd32",
+    "authority": "semantic_author_product_contract_evidence_only"
+  },
+  "request": {
+    "apiVersion": "spec-harvester.ai-semantic-author-request/v0",
+    "kind": "SpecHarvesterAISemanticAuthorRequest",
+    "schemaVersion": 1,
+    "authority": "semantic_author_request_evidence_only",
+    "candidateId": "rtk-ai-rtk",
+    "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "evidence": [
+      {
+        "id": "readme",
+        "class": "allowlisted_source_documentation",
+        "sourcePath": "README.md",
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "id": "manifest",
+        "class": "validated_candidate_yaml",
+        "sourcePath": "candidate/specpm.yaml",
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ]
+  },
+  "proposal": {
+    "apiVersion": "spec-harvester.ai-semantic-proposal/v0",
+    "kind": "SpecHarvesterAISemanticProposal",
+    "schemaVersion": 1,
+    "authority": "semantic_author_proposal_only",
+    "proposalId": "rtk-ai-rtk-semantic-v1",
+    "proposalSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "candidateId": "rtk-ai-rtk",
+    "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "provider": {
+      "id": "gpt-5.3-codex-spark",
+      "receiptSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    },
+    "claims": [
+      {
+        "id": "purpose",
+        "kind": "purpose",
+        "text": "Reduce AI context consumption by selecting relevant repository content.",
+        "evidence": [{"id": "readme", "class": "allowlisted_source_documentation", "sourcePath": "README.md", "sha256": "1111111111111111111111111111111111111111111111111111111111111111", "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]
+      },
+      {
+        "id": "capability_context_selection",
+        "kind": "capability",
+        "text": "Select context for AI-assisted work.",
+        "evidence": [{"id": "readme", "class": "allowlisted_source_documentation", "sourcePath": "README.md", "sha256": "1111111111111111111111111111111111111111111111111111111111111111", "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]
+      },
+      {
+        "id": "nearby_difference",
+        "kind": "nearby_intent_difference",
+        "text": "This is narrower than a generic JavaScript library intent.",
+        "evidence": [{"id": "manifest", "class": "validated_candidate_yaml", "sourcePath": "candidate/specpm.yaml", "sha256": "2222222222222222222222222222222222222222222222222222222222222222", "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]
+      },
+      {
+        "id": "non_goal",
+        "kind": "non_goal",
+        "text": "Does not claim canonical intent status.",
+        "evidence": [{"id": "manifest", "class": "validated_candidate_yaml", "sourcePath": "candidate/specpm.yaml", "sha256": "2222222222222222222222222222222222222222222222222222222222222222", "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]
+      }
+    ],
+    "intentDecisions": [
+      {
+        "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+        "kind": "SpecHarvesterAISemanticIntentReuse",
+        "schemaVersion": 1,
+        "state": "proposed_reuse",
+        "intentId": "intent.package.javascript_library",
+        "observedIntentSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "rationaleClaimId": "nearby_difference"
+      },
+      {
+        "apiVersion": "spec-harvester.ai-semantic-experimental-intent/v0",
+        "kind": "SpecHarvesterAISemanticExperimentalIntent",
+        "schemaVersion": 1,
+        "state": "proposed_experimental",
+        "intentId": "intent.experimental.ai_context_optimization",
+        "userNeedClaimId": "purpose",
+        "nearbyIntentIds": ["intent.package.javascript_library"],
+        "nonGoalClaimIds": ["non_goal"]
+      }
+    ]
+  },
+  "nearbyIntentAnalysis": {
+    "apiVersion": "spec-harvester.ai-semantic-nearby-intent-analysis/v0",
+    "kind": "SpecHarvesterAISemanticNearbyIntentAnalysis",
+    "schemaVersion": 1,
+    "proposalSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "entries": [{"intentId": "intent.package.javascript_library", "differenceClaimId": "nearby_difference"}]
+  },
+  "reviewerEdit": {
+    "apiVersion": "spec-harvester.ai-semantic-reviewer-edit/v0",
+    "kind": "SpecHarvesterAISemanticReviewerEdit",
+    "schemaVersion": 1,
+    "authority": "reviewer_semantic_decision_evidence_only",
+    "proposalSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "reviewerEditSha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "reviewer": "maintainer@example",
+    "decision": "edited",
+    "acceptedOrEditedClaimIds": ["purpose", "capability_context_selection", "nearby_difference", "non_goal"]
+  },
+  "materializationDecision": {
+    "apiVersion": "spec-harvester.ai-semantic-materialization-decision/v0",
+    "kind": "SpecHarvesterAISemanticMaterializationDecision",
+    "schemaVersion": 1,
+    "authority": "maintainer_materialization_decision_evidence_only",
+    "candidateId": "rtk-ai-rtk",
+    "proposalSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "reviewerEditSha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "reviewer": "maintainer@example",
+    "decision": "edited",
+    "materializedClaimIds": ["purpose", "capability_context_selection"],
+    "previewOnly": true,
+    "isRegistryTruth": false
+  }
+}

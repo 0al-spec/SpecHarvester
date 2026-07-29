@@ -1,0 +1,8 @@
+[
+  {"case": "malformed proposal digest", "kind": "schema", "path": ["proposal", "proposalSha256"], "value": "not-a-digest"},
+  {"case": "unsupported evidence class", "kind": "schema", "path": ["request", "evidence", 0, "class"], "value": "untrusted_remote_content"},
+  {"case": "absolute evidence path", "kind": "schema", "path": ["proposal", "claims", 0, "evidence", 0, "sourcePath"], "value": "/private/secret.txt"},
+  {"case": "duplicate experimental intent", "kind": "duplicate_experimental_intent"},
+  {"case": "stale reviewer source bundle", "kind": "semantic", "path": ["reviewerEdit", "sourceBundleSha256"], "value": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+  {"case": "materialization without accepted reviewer decision", "kind": "schema", "path": ["materializationDecision", "decision"], "value": "rejected"}
+]

@@ -41,3 +41,4 @@ testpaths = ["tests"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "schemas/local-candidate-review-workbench-v0.schema.json" = "spec_harvester/schemas/local-candidate-review-workbench-v0.schema.json"
+"schemas/ai-semantic-author-v0.schema.json" = "spec_harvester/schemas/ai-semantic-author-v0.schema.json"
