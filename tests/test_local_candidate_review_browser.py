@@ -69,13 +69,24 @@ def test_browser_rejects_item_with_invalid_warning_count(tmp_path: Path) -> None
     catalog = tmp_path / "invalid.json"
     catalog.write_text(json.dumps(payload))
 
-    with pytest.raises(ValueError, match="warning"):
+    with pytest.raises(ValueError, match="schema"):
         load_local_candidate_review_catalog(catalog)
 
     payload = json.loads(CATALOG.read_text())
     payload["items"][0]["corrected"] = "false"
     catalog.write_text(json.dumps(payload))
-    with pytest.raises(ValueError, match="correction"):
+    with pytest.raises(ValueError, match="schema"):
+        load_local_candidate_review_catalog(catalog)
+
+
+def test_browser_rejects_schema_invalid_catalog_values(tmp_path: Path) -> None:
+    payload = json.loads(CATALOG.read_text())
+    payload["sourceBundleSha256"] = "not-a-digest"
+    payload["items"][0]["ecosystem"] = 3
+    catalog = tmp_path / "invalid.json"
+    catalog.write_text(json.dumps(payload))
+
+    with pytest.raises(ValueError, match="schema"):
         load_local_candidate_review_catalog(catalog)
 
 
