@@ -16,6 +16,7 @@ The bundle accepts standalone records as well as the all-record fixture:
 | --- | --- |
 | `SpecHarvesterAISemanticAuthorRequest` | A candidate ID, source-bundle digest, and bounded allowlisted evidence. |
 | `SpecHarvesterAISemanticProposal` | Proposal-only semantic claims, provider receipt digest, and intent decisions. |
+| `SpecHarvesterAISemanticObservedIntent` | A distinct observed SpecPM catalog intent used only as comparison evidence. |
 | `SpecHarvesterAISemanticIntentReuse` | A recommendation to reuse an observed `intent.*` declaration. |
 | `SpecHarvesterAISemanticExperimentalIntent` | A visibly non-canonical `intent.experimental.*` proposal with user need, nearby intents, and non-goals. |
 | `SpecHarvesterAISemanticNearbyIntentAnalysis` | Claim-backed differences from nearby observed intents. |
@@ -38,6 +39,8 @@ express by itself:
 - reviewer edit and materialization decision must bind the proposal digest;
 - materialization decision must bind the reviewer-edit digest;
 - duplicate proposed experimental intent IDs are rejected.
+- every claim binding must exactly match a request allowlist entry;
+- every materialized claim must be accepted or edited by the reviewer.
 
 The fixture also binds the P55-T1 authority contract by repository-relative
 path and SHA-256. A schema record is evidence only, not a live instruction.

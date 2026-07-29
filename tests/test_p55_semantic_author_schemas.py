@@ -40,9 +40,13 @@ def test_schema_loader_returns_packaged_contract() -> None:
     schema = load_ai_semantic_author_schema()
 
     assert schema["$id"].endswith(SCHEMA_NAME)
-    assert {"request", "proposal", "reviewerEdit", "materializationDecision"} <= set(
-        schema["$defs"]
-    )
+    assert {
+        "request",
+        "proposal",
+        "observedIntent",
+        "reviewerEdit",
+        "materializationDecision",
+    } <= set(schema["$defs"])
 
 
 def test_valid_fixture_covers_all_semantic_author_records() -> None:
@@ -57,6 +61,7 @@ def test_valid_fixture_covers_all_semantic_author_records() -> None:
         == hashlib.sha256(SOURCE_CONTRACT.read_bytes()).hexdigest()
     )
     assert payload["proposal"]["provider"]["id"] == "gpt-5.3-codex-spark"
+    assert payload["observedIntents"][0]["state"] == "observed"
     assert payload["proposal"]["intentDecisions"][1]["intentId"].startswith("intent.experimental.")
     assert payload["materializationDecision"]["previewOnly"] is True
     assert payload["materializationDecision"]["isRegistryTruth"] is False
@@ -140,6 +145,49 @@ def test_schema_errors_are_reported_by_cross_record_validator() -> None:
     payload["request"]["evidence"][0]["class"] = "unsupported"
 
     with pytest.raises(ValueError, match="unsupported"):
+        validate_semantic_author_fixture(payload)
+
+
+def test_proposal_requires_complete_semantic_sections_and_an_intent_decision() -> None:
+    payload = copy.deepcopy(load(VALID))
+    schema_validator = Draft202012Validator(load(SCHEMA), format_checker=FormatChecker())
+    payload["proposal"]["claims"] = [payload["proposal"]["claims"][0]]
+    payload["proposal"]["intentDecisions"] = []
+
+    assert list(schema_validator.iter_errors(payload))
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        ("request_evidence_stale", "request evidence source bundle digest is stale"),
+        ("claim_evidence_fabricated", "claim evidence is not in request allowlist"),
+        (
+            "reviewer_rejected",
+            "materialization requires an accepted or edited reviewer decision",
+        ),
+        ("reviewer_decision_mismatch", "materialization decision does not match reviewer decision"),
+        (
+            "unapproved_materialized_claim",
+            "materialized claim ID is not accepted or edited by reviewer",
+        ),
+    ],
+)
+def test_allowlist_and_reviewer_authority_are_enforced(mutation: str, message: str) -> None:
+    payload = copy.deepcopy(load(VALID))
+    if mutation == "request_evidence_stale":
+        payload["request"]["evidence"][0]["sourceBundleSha256"] = "e" * 64
+    elif mutation == "claim_evidence_fabricated":
+        payload["proposal"]["claims"][0]["evidence"][0]["sourcePath"] = "docs/forged.md"
+    elif mutation == "reviewer_rejected":
+        payload["reviewerEdit"]["decision"] = "rejected"
+    elif mutation == "reviewer_decision_mismatch":
+        payload["reviewerEdit"]["decision"] = "accepted"
+    else:
+        payload["reviewerEdit"]["acceptedOrEditedClaimIds"].remove("interface_cli")
+        payload["materializationDecision"]["materializedClaimIds"] = ["interface_cli"]
+
+    with pytest.raises(ValueError, match=message):
         validate_semantic_author_fixture(payload)
 
 

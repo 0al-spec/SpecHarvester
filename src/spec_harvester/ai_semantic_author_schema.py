@@ -43,6 +43,18 @@ def validate_semantic_author_fixture(payload: dict[str, Any]) -> None:
     request = payload["request"]
     proposal = payload["proposal"]
     source_bundle_digest = request["sourceBundleSha256"]
+    request_evidence = {
+        (
+            evidence["id"],
+            evidence["class"],
+            evidence["sourcePath"],
+            evidence["sha256"],
+            evidence["sourceBundleSha256"],
+        )
+        for evidence in request["evidence"]
+    }
+    if any(evidence[4] != source_bundle_digest for evidence in request_evidence):
+        raise ValueError("request evidence source bundle digest is stale")
     if proposal["candidateId"] != request["candidateId"]:
         raise ValueError("proposal candidate ID does not match request")
     if proposal["sourceBundleSha256"] != source_bundle_digest:
@@ -52,6 +64,15 @@ def validate_semantic_author_fixture(payload: dict[str, Any]) -> None:
         for evidence in claim["evidence"]:
             if evidence["sourceBundleSha256"] != source_bundle_digest:
                 raise ValueError("claim evidence source bundle digest is stale")
+            binding = (
+                evidence["id"],
+                evidence["class"],
+                evidence["sourcePath"],
+                evidence["sha256"],
+                evidence["sourceBundleSha256"],
+            )
+            if binding not in request_evidence:
+                raise ValueError("claim evidence is not in request allowlist")
 
     proposed_intent_ids = [
         record["intentId"]
@@ -90,8 +111,12 @@ def validate_semantic_author_fixture(payload: dict[str, Any]) -> None:
 
     if materialization["reviewerEditSha256"] != reviewer_edit["reviewerEditSha256"]:
         raise ValueError("materialization decision reviewer edit digest is stale")
+    if reviewer_edit["decision"] not in {"accepted", "edited"}:
+        raise ValueError("materialization requires an accepted or edited reviewer decision")
     if materialization["decision"] not in {"accepted", "edited"}:
         raise ValueError("materialization decision requires accepted or edited reviewer decision")
+    if materialization["decision"] != reviewer_edit["decision"]:
+        raise ValueError("materialization decision does not match reviewer decision")
     if materialization["candidateId"] != request["candidateId"]:
         raise ValueError("materialization decision candidate ID does not match request")
 
@@ -100,3 +125,12 @@ def validate_semantic_author_fixture(payload: dict[str, Any]) -> None:
     unknown_claim_ids = sorted(referenced_claim_ids - claim_ids)
     if unknown_claim_ids:
         raise ValueError(f"referenced claim ID is not present in proposal: {unknown_claim_ids[0]}")
+    unapproved_materialized_claim_ids = sorted(
+        set(materialization["materializedClaimIds"])
+        - set(reviewer_edit["acceptedOrEditedClaimIds"])
+    )
+    if unapproved_materialized_claim_ids:
+        raise ValueError(
+            "materialized claim ID is not accepted or edited by reviewer: "
+            f"{unapproved_materialized_claim_ids[0]}"
+        )

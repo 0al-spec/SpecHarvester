@@ -6,10 +6,10 @@ before a semantic author can run. The schema bundle is
 
 ## Records
 
-The bundle covers a bounded request, complete proposal, observed-intent reuse,
-experimental intent proposal, nearby-intent analysis, reviewer edit, and
-future materialization decision. Every semantic claim must carry allowlisted
-path-and-digest evidence.
+The bundle covers a bounded request, complete proposal, distinct observed
+catalog intent, observed-intent reuse, experimental intent proposal,
+nearby-intent analysis, reviewer edit, and future materialization decision.
+Every semantic claim must carry allowlisted path-and-digest evidence.
 
 `intent.experimental.*` remains visibly non-canonical. A materialization
 decision requires an explicit `accepted` or `edited` reviewer decision, retains
@@ -18,8 +18,10 @@ decision requires an explicit `accepted` or `edited` reviewer decision, retains
 ## Deterministic Checks
 
 JSON Schema validates record shape. The deterministic fixture validator also
-rejects stale source-bundle or proposal bindings and duplicate experimental
-intent IDs. It binds the P55-T1 authority contract by SHA-256.
+rejects stale source-bundle or proposal bindings, claim evidence outside the
+request allowlist, duplicate experimental intent IDs, and materialized claims
+that the reviewer did not accept or edit. It binds the P55-T1 authority contract
+by SHA-256.
 
 The schema stores no raw prompt, raw provider response, hidden reasoning,
 credential, or private machine path. It neither invokes Codex 5.3 Spark or LM

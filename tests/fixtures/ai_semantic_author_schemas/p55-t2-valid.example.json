@@ -31,6 +31,16 @@
       }
     ]
   },
+  "observedIntents": [
+    {
+      "apiVersion": "spec-harvester.ai-semantic-observed-intent/v0",
+      "kind": "SpecHarvesterAISemanticObservedIntent",
+      "schemaVersion": 1,
+      "state": "observed",
+      "intentId": "intent.package.javascript_library",
+      "observedIntentSha256": "3333333333333333333333333333333333333333333333333333333333333333"
+    }
+  ],
   "proposal": {
     "apiVersion": "spec-harvester.ai-semantic-proposal/v0",
     "kind": "SpecHarvesterAISemanticProposal",
@@ -56,6 +66,12 @@
         "kind": "capability",
         "text": "Select context for AI-assisted work.",
         "evidence": [{"id": "readme", "class": "allowlisted_source_documentation", "sourcePath": "README.md", "sha256": "1111111111111111111111111111111111111111111111111111111111111111", "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]
+      },
+      {
+        "id": "interface_cli",
+        "kind": "interface",
+        "text": "Offers a command-line interface for selecting context.",
+        "evidence": [{"id": "manifest", "class": "validated_candidate_yaml", "sourcePath": "candidate/specpm.yaml", "sha256": "2222222222222222222222222222222222222222222222222222222222222222", "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]
       },
       {
         "id": "nearby_difference",
@@ -109,7 +125,7 @@
     "sourceBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "reviewer": "maintainer@example",
     "decision": "edited",
-    "acceptedOrEditedClaimIds": ["purpose", "capability_context_selection", "nearby_difference", "non_goal"]
+    "acceptedOrEditedClaimIds": ["purpose", "capability_context_selection", "interface_cli", "nearby_difference", "non_goal"]
   },
   "materializationDecision": {
     "apiVersion": "spec-harvester.ai-semantic-materialization-decision/v0",

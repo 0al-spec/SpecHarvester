@@ -40,9 +40,9 @@ None.
 
 ### Tests
 
-- Focused semantic-schema and documentation tests: `216 passed`.
-- Full Python tests: `1178 passed, 1 skipped`.
-- Total Python coverage: `90.03%`.
+- Focused semantic-schema and documentation tests: `222 passed`.
+- Full Python tests: `1184 passed, 1 skipped`.
+- Total Python coverage: `90.04%`.
 - Ruff lint and configured format checks passed.
 - `git diff --check` passed.
 - Swift package manifest and documentation target build passed with the
