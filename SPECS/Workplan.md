@@ -2787,7 +2787,7 @@ Acceptance:
 
 ## Phase 55. Evidence-Grounded AI Semantic Authoring
 
-- [ ] `P55-T1` Record the AI semantic-author product and authority contract.
+- [x] `P55-T1` Record the AI semantic-author product and authority contract.
   Depend explicitly on the completed `P54-T10` Phase 54 exit decision.
   Define model-as-author responsibilities, existing-intent reuse, novel
   experimental-intent proposal, evidence requirements, reviewer authority,
