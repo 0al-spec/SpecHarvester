@@ -1,23 +1,26 @@
-# Next Task: P54-T5 Candidate Detail Review Surface
+# Next Task: P54-T6 Local Review-Decision Service and Storage Contract
 
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
-**Dependencies:** `P54-T4` Local Candidate Browser
-**Status:** Selected
-**Branch:** `feature/P54-T5-candidate-detail-review-surface`
+**Dependencies:** `P54-T2` Workbench Schemas, `P54-T4` Browser, `P54-T5` Details
+**Status:** Ready
+**Branch:** pending selection after P54-T5 review
 
 ## Objective
 
-Implement the candidate detail review surface over the verified portable packets.
+Implement the bounded local review-decision service and storage contract.
 
 ## Next Step
 
-Expose provenance, revision, license, topology, generated package files,
-relations, evidence, diagnostics, and bounded static-versus-Codex Spark
-comparison as inert detail data.
+Restrict reads and writes to the configured review workspace, validate every
+decision, preserve replacement history, and restart without executing candidate
+or repository content.
 
 ## Recently Archived
 
+- `P54-T5` Candidate Detail Review Surface: PASS. The local browser now opens
+  schema-valid, digest-bound provenance, generated-file, diagnostics, and
+  proposal-only static-versus-Codex Spark detail evidence for all 100 candidates.
 - `P54-T4` Local Candidate Browser: PASS. A local static candidate-only browser
   now provides corpus summary, facets, search, sorting, and a resumable queue.
 - `P54-T3` Deterministic Local Candidate Review Catalog: PASS. The bounded
