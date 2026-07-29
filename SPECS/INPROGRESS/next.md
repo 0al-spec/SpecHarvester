@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
 **Dependencies:** `P54-T2` Workbench Schemas, `P54-T4` Browser, `P54-T5` Details
-**Status:** Ready
-**Branch:** pending selection after P54-T5 review
+**Status:** Selected
+**Branch:** `feature/P54-T6-local-review-decision-storage`
 
 ## Objective
 
