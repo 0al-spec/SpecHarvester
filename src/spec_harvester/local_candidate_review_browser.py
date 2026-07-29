@@ -10,6 +10,8 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
+from spec_harvester.candidate_review_schema import load_candidate_review_schema
+
 CATALOG_API_VERSION = "spec-harvester.candidate-review-catalog/v0"
 CATALOG_KIND = "SpecHarvesterCandidateReviewCatalog"
 CATALOG_AUTHORITY = "local_review_catalog_evidence_only"
@@ -34,15 +36,7 @@ def _read_json_object(path: Path) -> dict[str, Any]:
 
 def load_local_candidate_review_catalog(path: Path) -> dict[str, Any]:
     catalog = _read_json_object(path)
-    schema_path = (
-        Path(__file__).resolve().parents[2]
-        / "schemas"
-        / "local-candidate-review-workbench-v0.schema.json"
-    )
-    try:
-        schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise ValueError(f"Cannot read candidate review schema: {exc}") from exc
+    schema = load_candidate_review_schema()
     errors = list(Draft202012Validator(schema).iter_errors(catalog))
     if errors:
         raise ValueError(f"Candidate review catalog schema is invalid: {errors[0].message}")
@@ -105,15 +99,7 @@ def render_local_candidate_review_browser(
             or details.get("sourceBundleSha256") != catalog["sourceBundleSha256"]
         ):
             raise ValueError("Candidate detail set is invalid")
-        schema_path = (
-            Path(__file__).resolve().parents[2]
-            / "schemas"
-            / "local-candidate-review-workbench-v0.schema.json"
-        )
-        try:
-            schema = json.loads(schema_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
-            raise ValueError(f"Cannot read candidate review schema: {exc}") from exc
+        schema = load_candidate_review_schema()
         validator = Draft202012Validator(schema)
         for record in [*details["details"], *details["comparisons"]]:
             errors = list(validator.iter_errors(record))

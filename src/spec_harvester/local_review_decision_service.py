@@ -4,8 +4,11 @@ import hashlib
 import hmac
 import json
 import os
+import stat
 import tempfile
 import threading
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -15,6 +18,12 @@ from urllib.parse import unquote, urlparse
 
 from jsonschema import Draft202012Validator, FormatChecker
 
+try:
+    import fcntl
+except ImportError:  # pragma: no cover - service reports unsupported platform
+    fcntl = None  # type: ignore[assignment]
+
+from spec_harvester.candidate_review_schema import load_candidate_review_schema
 from spec_harvester.local_candidate_review_browser import (
     load_local_candidate_review_catalog,
 )
@@ -65,15 +74,7 @@ class LocalReviewDecisionStore:
         self._bindings = {
             item["candidateId"]: item["packetSha256"] for item in self._catalog["items"]
         }
-        schema_path = (
-            Path(__file__).resolve().parents[2]
-            / "schemas"
-            / "local-candidate-review-workbench-v0.schema.json"
-        )
-        try:
-            schema = json.loads(schema_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
-            raise ValueError(f"Cannot read candidate review schema: {exc}") from exc
+        schema = load_candidate_review_schema()
         self._validator = Draft202012Validator(schema, format_checker=FormatChecker())
         self._lock = threading.Lock()
 
@@ -177,13 +178,39 @@ class LocalReviewDecisionStore:
             if temporary is not None and temporary.exists():
                 temporary.unlink()
 
+    @contextmanager
+    def _workspace_write_lock(self) -> Iterator[None]:
+        if fcntl is None:
+            raise ValueError("Review workspace process locking is unavailable on this platform")
+        path = self._path(".decision-write.lock")
+        flags = os.O_CREAT | os.O_RDWR
+        if hasattr(os, "O_NOFOLLOW"):
+            flags |= os.O_NOFOLLOW
+        try:
+            descriptor = os.open(path, flags, 0o600)
+        except OSError as exc:
+            raise ValueError(f"Cannot open review workspace write lock: {exc}") from exc
+        locked = False
+        try:
+            if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+                raise ValueError("Review workspace write lock must be a regular file")
+            fcntl.flock(descriptor, fcntl.LOCK_EX)
+            locked = True
+            yield
+        except OSError as exc:
+            raise ValueError(f"Cannot lock review workspace writes: {exc}") from exc
+        finally:
+            if locked:
+                fcntl.flock(descriptor, fcntl.LOCK_UN)
+            os.close(descriptor)
+
     def write(self, decision: dict[str, Any]) -> dict[str, Any]:
         candidate_id, packet_sha256 = self._validate(decision)
         payload = _json_bytes(decision)
         if len(payload) > MAX_DECISION_BYTES:
             raise ValueError("Review decision exceeds byte limit")
         digest = hashlib.sha256(payload).hexdigest()
-        with self._lock:
+        with self._lock, self._workspace_write_lock():
             current = self.current(candidate_id)
             prior = decision["priorDecisionSha256"]
             if current is None and prior is not None:

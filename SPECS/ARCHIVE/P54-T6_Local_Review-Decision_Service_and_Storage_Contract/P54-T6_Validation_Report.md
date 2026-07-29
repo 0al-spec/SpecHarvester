@@ -9,6 +9,10 @@
   exact SHA-256 of current canonical decision bytes.
 - Current state is written atomically after immutable digest-addressed history,
   with file and directory durability flushes.
+- A workspace OS file lock serializes optimistic read/check/write transactions
+  across separate service processes.
+- The Workbench schema is packaged as an importable wheel resource and was
+  verified from a non-editable temporary installation outside the source tree.
 - Restart revalidation checks schema, canonical bytes, candidate identity,
   packet digest, and storage-path binding.
 - Workspace path traversal and symlink escapes are rejected; clients cannot

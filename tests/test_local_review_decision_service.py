@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import http.client
 import json
+import multiprocessing
 import threading
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -17,6 +19,22 @@ ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "SPECS/EVIDENCE/P54-T3/P54-T3_Candidate_Review_Catalog.json"
 CSRF_TOKEN = "p54-t6-test-token-with-at-least-32-characters"
 ORIGIN = "http://127.0.0.1:8000"
+
+
+def _write_replacement_process(
+    workspace: str,
+    replacement: dict[str, object],
+    barrier: Any,
+    results: Any,
+) -> None:
+    store = LocalReviewDecisionStore(Path(workspace), CATALOG)
+    barrier.wait()
+    try:
+        recorded = store.write(replacement)
+    except ValueError as exc:
+        results.put(("error", str(exc)))
+    else:
+        results.put(("recorded", recorded["decisionSha256"]))
 
 
 def decision(
@@ -78,6 +96,40 @@ def test_store_requires_exact_prior_and_preserves_replacement_history(tmp_path: 
     history = list((tmp_path / "workspace" / "history" / first["candidateId"]).glob("*.json"))
     assert len(history) == 2
     assert second["priorDecisionSha256"] == first["decisionSha256"]
+
+
+def test_store_serializes_optimistic_replacements_across_processes(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    workspace = tmp_path / "workspace"
+    first = LocalReviewDecisionStore(workspace, CATALOG).write(decision(payload))
+    replacements = [
+        decision(payload, prior=first["decisionSha256"], disposition="request_revision"),
+        decision(payload, prior=first["decisionSha256"], disposition="do_not_promote"),
+    ]
+    replacements[1]["recordedAt"] = "2026-07-29T08:00:01Z"
+    context = multiprocessing.get_context("spawn")
+    barrier = context.Barrier(2)
+    results = context.Queue()
+    processes = [
+        context.Process(
+            target=_write_replacement_process,
+            args=(str(workspace), replacement, barrier, results),
+        )
+        for replacement in replacements
+    ]
+    for process in processes:
+        process.start()
+    for process in processes:
+        process.join(timeout=10)
+        assert process.exitcode == 0
+
+    outcomes = [results.get(timeout=2), results.get(timeout=2)]
+    assert sorted(outcome[0] for outcome in outcomes) == ["error", "recorded"]
+    assert "prior digest is stale" in next(
+        outcome[1] for outcome in outcomes if outcome[0] == "error"
+    )
+    history = list((workspace / "history" / first["candidateId"]).glob("*.json"))
+    assert len(history) == 2
 
 
 def test_store_rejects_unknown_stale_and_malformed_decisions(tmp_path: Path) -> None:

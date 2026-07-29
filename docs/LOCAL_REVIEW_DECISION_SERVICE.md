@@ -25,9 +25,13 @@ actual current decision. Stale replacements are rejected.
 
 Current records live under `decisions/`; immutable digest-addressed copies live
 under `history/`. Writes use a same-filesystem temporary file, durable flush,
-and atomic replacement. The store rejects path traversal, symlink escapes,
+atomic replacement, and a workspace file lock that serializes the complete
+read/check/write transaction across service processes. The store rejects path traversal, symlink escapes,
 unknown candidates, stale packet digests, malformed records, oversized bodies,
 non-loopback binding, untrusted origins, and invalid CSRF tokens.
+
+The P54 Workbench JSON Schema is packaged inside the installed wheel, so the
+service does not depend on a repository checkout or editable installation.
 
 The CSRF token is an operator secret and must not be committed, placed in
 candidate content, or persisted in exported review evidence.
