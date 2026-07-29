@@ -956,3 +956,4 @@
 | 2026-07-29 | P55-T1 | Archived REVIEW_p55_t1_ai_semantic_author_contract report |
 | 2026-07-29 | P55-T2 | Archived AI Semantic-Author Schemas (PASS) |
 | 2026-07-29 | P55-T2 | Archived REVIEW_p55_t2_ai_semantic_author_schemas report |
+| 2026-07-30 | P55-T3 | Archived Semantic Author Input Pack (PASS) |

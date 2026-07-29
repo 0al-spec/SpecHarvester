@@ -2798,7 +2798,7 @@ Acceptance:
   nearby-intent analysis, evidence bindings, reviewer edits, and accepted
   materialization decisions. Include representative valid, malformed,
   unsupported-evidence, duplicate-intent, and stale-digest fixtures.
-- [ ] `P55-T3` Build the bounded semantic author input pack from validated
+- [x] `P55-T3` Build the bounded semantic author input pack from validated
   candidate YAML, harvested metadata, allowlisted source documentation,
   public-interface evidence, and the SpecPM observed-intent catalog. Preserve
   exact source paths and digests without executing repository content or
