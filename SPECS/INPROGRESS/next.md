@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P54-T10` Phase 54 Exit Decision
-**Status:** Ready
-**Branch:** pending selection after P54-T10 review
+**Status:** Selected
+**Branch:** `feature/P55-T1-ai-semantic-author-contract`
 
 ## Objective
 
