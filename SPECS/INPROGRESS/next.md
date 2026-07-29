@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 54. Local Candidate Review Workbench
 **Dependencies:** `P54-T6` Local Review-Decision Service and Storage Contract
-**Status:** Ready
-**Branch:** pending selection after P54-T6 review
+**Status:** Selected
+**Branch:** `feature/P54-T7-reviewer-actions-portable-exchange`
 
 ## Objective
 
