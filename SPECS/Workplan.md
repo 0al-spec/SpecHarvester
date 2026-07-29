@@ -2784,3 +2784,129 @@ Acceptance:
   untrusted data, avoid package-manager and harvested-code execution, avoid raw
   prompt/response/chain-of-thought persistence, and keep final acceptance with
   an explicit maintainer-controlled SpecPM workflow.
+
+## Phase 55. Evidence-Grounded AI Semantic Authoring
+
+- [ ] `P55-T1` Record the AI semantic-author product and authority contract.
+  Depend explicitly on the completed `P54-T10` Phase 54 exit decision.
+  Define model-as-author responsibilities, existing-intent reuse, novel
+  experimental-intent proposal, evidence requirements, reviewer authority,
+  provider interchangeability, and boundaries between observed, proposed, and
+  accepted intent metadata.
+- [ ] `P55-T2` Define versioned schemas for semantic author requests, complete
+  provider proposals, intent reuse decisions, experimental intent proposals,
+  nearby-intent analysis, evidence bindings, reviewer edits, and accepted
+  materialization decisions. Include representative valid, malformed,
+  unsupported-evidence, duplicate-intent, and stale-digest fixtures.
+- [ ] `P55-T3` Build the bounded semantic author input pack from validated
+  candidate YAML, harvested metadata, allowlisted source documentation,
+  public-interface evidence, and the SpecPM observed-intent catalog. Preserve
+  exact source paths and digests without executing repository content or
+  treating documentation as host instructions.
+- [ ] `P55-T4` Implement the provider-neutral semantic author pass with Codex
+  5.3 Spark as the primary worker and LM Studio as a comparison provider. Let
+  the model refine package purpose, propose concrete package-owned
+  capabilities, reuse suitable intents, or propose
+  `intent.experimental.*` identifiers with user need, nearby intents,
+  non-goals, and evidence.
+- [ ] `P55-T5` Implement deterministic semantic proposal validation and quality
+  diagnostics. Enforce identifier and namespace shape, package-to-capability
+  ownership, evidence-path allowlists, manifest/BoundarySpec consistency,
+  provider-neutral intent wording, unsupported quantitative-claim rejection,
+  generic-intent detection, and duplicate or overlap warnings. Before P55-T9
+  begins, freeze numerical pass thresholds for purpose accuracy, evidence
+  support, schema validity, and reviewer edit burden in a digest-bound policy
+  fixture; calibration results must not redefine those thresholds.
+- [ ] `P55-T6` Replace summary-only portable AI status with complete,
+  digest-bound semantic proposal records in the author handoff and candidate
+  detail bundle. Preserve provider receipts and proposal digests without raw
+  prompts, raw responses, hidden reasoning, credentials, or automatic
+  application.
+- [ ] `P55-T7` Extend the Local Candidate Review Workbench with a
+  static-versus-AI author comparison for summaries, capabilities, intents,
+  interfaces, and evidence. Show existing-intent reuse and experimental-intent
+  proposals distinctly and support reviewer accept, edit, reject, and defer
+  actions.
+- [ ] `P55-T8` Implement reviewer-controlled semantic materialization. Apply
+  only explicitly accepted or edited proposal fields to a new candidate
+  revision, retain before/after provenance and decision linkage, and run
+  SpecHarvester plus read-only SpecPM validation without mutating accepted
+  packages or registry truth.
+- [ ] `P55-T9` Run a targeted semantic quality calibration over repositories
+  whose product purpose is poorly represented by generic static intents,
+  including `rtk-ai/rtk` and `openai/codex`. Compare Codex 5.3 Spark and LM
+  Studio for purpose accuracy, evidence support, capability specificity,
+  intent reuse, novel-intent quality, and reviewer edit burden.
+- [ ] `P55-T10` Run the validated semantic author and review flow over the
+  retained 100-repository corpus. Report generic-intent reduction,
+  evidence-supported proposal rate, duplicate-intent warnings, provider
+  failures, accepted/edit/rejected/deferred counts, and token/cost/runtime
+  budgets without automatically promoting candidates.
+- [ ] `P55-T11` Record the Phase 55 exit decision: stop, run a bounded semantic
+  follow-up, authorize maintainer-reviewed AI-authored candidate revisions, or
+  plan a separate intent-governance/publication phase. Do not authorize
+  automatic canonical intent creation or public registry publication by
+  default.
+
+Motivation:
+
+- Phase 53 retained AI execution as proposal-only evidence, while the P53
+  portable handoff reduced complete AI proposals to summary status. Phase 54
+  can review and route static candidates, but reviewers cannot yet inspect or
+  apply the model's full semantic authoring work.
+- Current deterministic intent extraction often captures implementation shape
+  such as `intent.package.javascript_library`, API, schema, or generic tooling
+  while missing the package-neutral user need. Examples include Codex as a
+  coding agent and RTK as a utility for reducing AI context consumption.
+- SpecPM permits authors to declare new well-formed `intent.*` metadata without
+  a closed runtime allowlist, but observation does not make an intent
+  canonical. The same authoring freedom should be available to an AI proposal
+  under stricter evidence, validation, and review controls.
+
+Goal:
+
+- Let Codex 5.3 Spark or another configured provider act as an
+  evidence-grounded candidate spec author rather than a taxonomy-bound label
+  selector.
+- Preserve deterministic safety and explicit maintainer authority while making
+  complete model proposals portable, comparable, editable, and materializable
+  as new candidate revisions.
+
+Acceptance:
+
+- `P54-T10` must complete before `P55-T1` can be selected or any Phase 55
+  execution begins. Its exit decision must explicitly authorize this bounded
+  semantic-authoring follow-up without granting publication authority.
+- P55-T1 and P55-T2 must complete before provider or materialization changes.
+  P55-T3 must produce deterministic, size-bounded, digest-bound input packs
+  before P55-T4 invokes a provider.
+- P55-T4 must use the same semantic proposal contract for Codex 5.3 Spark and
+  LM Studio. Provider-specific transport metadata must not change proposal
+  authority, evidence requirements, or review semantics.
+- P55-T5 must reject malformed identifiers, package namespace violations,
+  unknown evidence paths, stale bindings, and unsupported quantitative claims.
+  Novel intent IDs must remain visibly experimental until a separate SpecPM
+  governance decision accepts them. P55-T5 must also publish the digest-bound
+  numerical calibration-threshold policy before P55-T9 starts; later result
+  evidence may evaluate but must not silently alter that policy.
+- P55-T6 must preserve complete validated proposals and receipts while keeping
+  raw prompts, raw responses, hidden reasoning, credentials, and private
+  machine paths out of portable artifacts.
+- P55-T7 must render all candidate-controlled content as inert text under the
+  Phase 54 browser security boundary. A model proposal must not record its own
+  decision or invoke the local decision service.
+- P55-T8 must require an explicit reviewer identity and accept/edit decision,
+  bind the materialized revision to proposal and source digests, preserve the
+  prior candidate, and remain proposal-only with respect to SpecPM accepted
+  sources and the public index.
+- P55-T9 must include repositories with known weak static semantics and report
+  provider results separately. P55-T10 may proceed only after the targeted
+  calibration meets the recorded purpose-accuracy, evidence-support, schema,
+  and reviewer-burden thresholds.
+- P55-T11 must complete before automatic intent canonicalization, autonomous
+  publication, remote multi-user review, or model-authored mutation of SpecPM
+  registry truth is planned.
+- All Phase 55 tasks must preserve pinned-source provenance, allowlisted reads,
+  no package-manager or harvested-code execution, bounded provider budgets,
+  proposal-only AI authority, explicit reviewer decisions, and independent
+  SpecPM validation.
