@@ -312,6 +312,7 @@ the host.
 - <doc:LocalCandidateReviewCatalog>
 - <doc:LocalCandidateReviewBrowser>
 - <doc:LocalCandidateReviewDetails>
+- <doc:LocalReviewDecisionService>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

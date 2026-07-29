@@ -1,0 +1,214 @@
+from __future__ import annotations
+
+import http.client
+import json
+import threading
+from pathlib import Path
+
+import pytest
+
+from spec_harvester.local_review_decision_service import (
+    LocalReviewDecisionServiceOptions,
+    LocalReviewDecisionStore,
+    build_local_review_decision_server,
+)
+
+ROOT = Path(__file__).resolve().parents[1]
+CATALOG = ROOT / "SPECS/EVIDENCE/P54-T3/P54-T3_Candidate_Review_Catalog.json"
+CSRF_TOKEN = "p54-t6-test-token-with-at-least-32-characters"
+ORIGIN = "http://127.0.0.1:8000"
+
+
+def decision(
+    catalog: dict[str, object],
+    *,
+    prior: str | None = None,
+    disposition: str = "defer",
+) -> dict[str, object]:
+    item = catalog["items"][0]  # type: ignore[index]
+    return {
+        "apiVersion": "spec-harvester.candidate-review-decision/v0",
+        "kind": "SpecHarvesterCandidateReviewDecision",
+        "authority": "local_review_decision_evidence_only",
+        "binding": {
+            "candidateId": item["candidateId"],  # type: ignore[index]
+            "packetSha256": item["packetSha256"],  # type: ignore[index]
+        },
+        "disposition": disposition,
+        "reviewer": "maintainer@example",
+        "recordedAt": "2026-07-29T08:00:00Z",
+        "reasonCode": "manual_review",
+        "notes": "Bounded local review evidence.",
+        "priorDecisionSha256": prior,
+    }
+
+
+def catalog_payload() -> dict[str, object]:
+    return json.loads(CATALOG.read_text())
+
+
+def test_store_records_atomic_history_and_survives_restart(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    store = LocalReviewDecisionStore(tmp_path / "workspace", CATALOG)
+    first = store.write(decision(payload))
+    candidate_id = first["candidateId"]
+
+    current = store.current(candidate_id)
+    assert current is not None
+    assert current["decisionSha256"] == first["decisionSha256"]
+    assert (
+        tmp_path / "workspace" / "history" / candidate_id / f"{first['decisionSha256']}.json"
+    ).is_file()
+
+    restarted = LocalReviewDecisionStore(tmp_path / "workspace", CATALOG)
+    assert restarted.current(candidate_id) == current
+
+
+def test_store_requires_exact_prior_and_preserves_replacement_history(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    store = LocalReviewDecisionStore(tmp_path / "workspace", CATALOG)
+    first = store.write(decision(payload))
+
+    with pytest.raises(ValueError, match="prior digest is stale"):
+        store.write(decision(payload, prior="0" * 64, disposition="request_revision"))
+
+    second = store.write(
+        decision(payload, prior=first["decisionSha256"], disposition="request_revision")
+    )
+    history = list((tmp_path / "workspace" / "history" / first["candidateId"]).glob("*.json"))
+    assert len(history) == 2
+    assert second["priorDecisionSha256"] == first["decisionSha256"]
+
+
+def test_store_rejects_unknown_stale_and_malformed_decisions(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    store = LocalReviewDecisionStore(tmp_path / "workspace", CATALOG)
+
+    unknown = decision(payload)
+    unknown["binding"]["candidateId"] = "unknown-candidate"  # type: ignore[index]
+    with pytest.raises(ValueError, match="Unknown review candidate"):
+        store.write(unknown)
+
+    stale = decision(payload)
+    stale["binding"]["packetSha256"] = "0" * 64  # type: ignore[index]
+    with pytest.raises(ValueError, match="packet digest is stale"):
+        store.write(stale)
+
+    malformed = decision(payload)
+    malformed["recordedAt"] = "not-a-date"
+    with pytest.raises(ValueError, match="schema is invalid"):
+        store.write(malformed)
+
+
+def test_store_rejects_symlink_workspace_escape(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    outside = tmp_path / "outside"
+    workspace.mkdir()
+    outside.mkdir()
+    (workspace / "decisions").symlink_to(outside, target_is_directory=True)
+    store = LocalReviewDecisionStore(workspace, CATALOG)
+
+    with pytest.raises(ValueError, match="symlinks"):
+        store.write(decision(catalog_payload()))
+    assert not list(outside.iterdir())
+
+
+def test_store_rejects_valid_decision_under_wrong_candidate_path(tmp_path: Path) -> None:
+    payload = catalog_payload()
+    store = LocalReviewDecisionStore(tmp_path / "workspace", CATALOG)
+    first_item = payload["items"][0]  # type: ignore[index]
+    second_item = payload["items"][1]  # type: ignore[index]
+    recorded = decision(payload)
+    recorded["binding"] = {
+        "candidateId": second_item["candidateId"],  # type: ignore[index]
+        "packetSha256": second_item["packetSha256"],  # type: ignore[index]
+    }
+    decisions = tmp_path / "workspace" / "decisions"
+    decisions.mkdir()
+    (decisions / f"{first_item['candidateId']}.json").write_text(  # type: ignore[index]
+        json.dumps(recorded, indent=2, sort_keys=True) + "\n"
+    )
+
+    with pytest.raises(ValueError, match="differs from storage path"):
+        store.current(first_item["candidateId"])  # type: ignore[index]
+
+
+def test_server_rejects_non_loopback_and_unsafe_write_configuration(tmp_path: Path) -> None:
+    base = LocalReviewDecisionServiceOptions(
+        workspace=tmp_path / "workspace",
+        catalog=CATALOG,
+        csrf_token=CSRF_TOKEN,
+        allowed_origin=ORIGIN,
+    )
+    with pytest.raises(ValueError, match="bind"):
+        build_local_review_decision_server(
+            LocalReviewDecisionServiceOptions(**{**base.__dict__, "host": "0.0.0.0"})
+        )
+    with pytest.raises(ValueError, match="CSRF"):
+        build_local_review_decision_server(
+            LocalReviewDecisionServiceOptions(**{**base.__dict__, "csrf_token": "short"})
+        )
+    with pytest.raises(ValueError, match="allowed origin"):
+        build_local_review_decision_server(
+            LocalReviewDecisionServiceOptions(
+                **{**base.__dict__, "allowed_origin": "https://example.com"}
+            )
+        )
+
+
+def test_server_enforces_origin_csrf_and_records_decision(tmp_path: Path) -> None:
+    server = build_local_review_decision_server(
+        LocalReviewDecisionServiceOptions(
+            workspace=tmp_path / "workspace",
+            catalog=CATALOG,
+            csrf_token=CSRF_TOKEN,
+            allowed_origin=ORIGIN,
+            port=0,
+        )
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    port = server.server_address[1]
+    body = json.dumps(decision(catalog_payload()))
+    try:
+        connection = http.client.HTTPConnection("127.0.0.1", port)
+        connection.request(
+            "POST",
+            "/v0/decisions",
+            body=body,
+            headers={
+                "Content-Type": "application/json",
+                "Origin": "http://attacker.invalid",
+                "X-CSRF-Token": CSRF_TOKEN,
+            },
+        )
+        assert connection.getresponse().status == 403
+        connection.close()
+
+        connection = http.client.HTTPConnection("127.0.0.1", port)
+        connection.request(
+            "POST",
+            "/v0/decisions",
+            body=body,
+            headers={
+                "Content-Type": "application/json",
+                "Origin": ORIGIN,
+                "X-CSRF-Token": CSRF_TOKEN,
+            },
+        )
+        response = connection.getresponse()
+        recorded = json.loads(response.read())
+        assert response.status == 201
+        assert recorded["status"] == "recorded"
+        connection.close()
+
+        connection = http.client.HTTPConnection("127.0.0.1", port)
+        connection.request("GET", f"/v0/decisions/{recorded['candidateId']}")
+        response = connection.getresponse()
+        assert response.status == 200
+        assert json.loads(response.read())["decisionSha256"] == recorded["decisionSha256"]
+        connection.close()
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)

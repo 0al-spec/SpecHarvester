@@ -402,6 +402,8 @@ Published DocC site:
    P54-T4 static candidate-only browser with facets and resumable queue
 107. [`LOCAL_CANDIDATE_REVIEW_DETAILS.md`](LOCAL_CANDIDATE_REVIEW_DETAILS.md):
    P54-T5 digest-bound local candidate details and proposal-only comparison
+108. [`LOCAL_REVIEW_DECISION_SERVICE.md`](LOCAL_REVIEW_DECISION_SERVICE.md):
+   P54-T6 loopback-only atomic local decision storage and history
 17. [`FASTAPI_PARSER_PROFILE_RERUN.md`](FASTAPI_PARSER_PROFILE_RERUN.md):
    practical FastAPI rerun showing the Python web-framework parser profile
    removing `docs_src/*` from public interface evidence
