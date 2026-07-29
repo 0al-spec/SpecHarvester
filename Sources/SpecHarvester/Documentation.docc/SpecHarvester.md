@@ -310,6 +310,7 @@ the host.
 - <doc:LocalCandidateReviewWorkbenchContract>
 - <doc:LocalCandidateReviewWorkbenchSchemas>
 - <doc:LocalCandidateReviewCatalog>
+- <doc:LocalCandidateReviewBrowser>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

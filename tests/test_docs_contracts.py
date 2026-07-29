@@ -39,6 +39,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P54-T5 Candidate Detail Review Surface" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P54-T4` Local Candidate Browser" in next_text
+        assert "candidate detail review surface" in normalized
+        assert "inert detail data" in normalized
+        return
+
     if "# Next Task: P54-T4 Local Candidate Browser" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text

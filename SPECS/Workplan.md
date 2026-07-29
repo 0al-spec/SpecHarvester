@@ -2708,7 +2708,7 @@ Acceptance:
   validated portable handoff packets and emits a local static review index with
   readiness, warning, correction, ecosystem, package-shape, and preflight
   facets.
-- [ ] `P54-T4` Implement the local candidate browser with corpus summary,
+- [x] `P54-T4` Implement the local candidate browser with corpus summary,
   filtering, sorting, search, review-state navigation, resumable queue
   position, and clear separation between candidates and already accepted
   public-index packages.
