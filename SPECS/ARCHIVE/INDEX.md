@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-07-30
+**Last Updated:** 2026-07-31
 
 ## Archived Tasks
 
@@ -258,6 +258,7 @@
 | P54-T6 | [P54-T6_Local_Review-Decision_Service_and_Storage_Contract/](P54-T6_Local_Review-Decision_Service_and_Storage_Contract/) | 2026-07-29 | PASS |
 | P54-T7 | [P54-T7_Reviewer_Actions_and_Portable_Decision_Exchange/](P54-T7_Reviewer_Actions_and_Portable_Decision_Exchange/) | 2026-07-29 | PASS |
 | P54-T8 | [P54-T8_SpecPM_Intake_Bridge/](P54-T8_SpecPM_Intake_Bridge/) | 2026-07-29 | PASS |
+| P55-T9 | [P55-T9_Targeted_Semantic_Quality_Calibration/](P55-T9_Targeted_Semantic_Quality_Calibration/) | 2026-07-31 | PASS |
 
 ## Historical Artifacts
 
@@ -392,6 +393,7 @@
 
 | Date | Task ID | Action |
 |------|---------|--------|
+| 2026-07-31 | P55-T9 | Archived Targeted Semantic Quality Calibration (PASS) |
 | 2026-07-31 | P55-T6 | Archived REVIEW_p55_t6_complete_portable_semantic_proposal_records report |
 | 2026-07-31 | P55-T6 | Archived Complete Portable Semantic Proposal Records (PASS) |
 | 2026-07-31 | P55-T7 | Archived Workbench Static-versus-AI Semantic Review (PASS) |

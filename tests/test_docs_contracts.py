@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P55-T10 Retained-Corpus Semantic Author and Review Flow" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Blocked" in next_text
+        assert "`P55-T9` Targeted Semantic Quality Calibration" in next_text
+        assert "neither Codex 5.3 Spark nor LM Studio met" in normalized
+        assert "provider-output-conformance follow-up" in normalized
+        assert "Do not select or execute P55-T10" in normalized
+        return
+
     if "# Next Task: P55-T9 Targeted Semantic Quality Calibration" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text

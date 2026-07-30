@@ -2832,7 +2832,7 @@ Acceptance:
   revision, retain before/after provenance and decision linkage, and run
   SpecHarvester plus read-only SpecPM validation without mutating accepted
   packages or registry truth.
-- [ ] `P55-T9` Run a targeted semantic quality calibration over repositories
+- [x] `P55-T9` Run a targeted semantic quality calibration over repositories
   whose product purpose is poorly represented by generic static intents,
   including `rtk-ai/rtk` and `openai/codex`. Compare Codex 5.3 Spark and LM
   Studio for purpose accuracy, evidence support, capability specificity,

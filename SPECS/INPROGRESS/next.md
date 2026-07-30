@@ -1,27 +1,29 @@
-# Next Task: P55-T9 Targeted Semantic Quality Calibration
+# Next Task: P55-T10 Retained-Corpus Semantic Author and Review Flow
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T8` Reviewer-Controlled Semantic Materialization
-**Status:** Selected
-**Branch:** `feature/P55-T9-targeted-semantic-quality-calibration`
+**Dependencies:** `P55-T9` Targeted Semantic Quality Calibration
+**Status:** Blocked
 
 ## Objective
 
-Run a targeted provider-separated semantic quality calibration on repositories
-whose product purpose is poorly represented by generic static intents.
+Run the validated semantic author and review flow over the retained
+100-repository corpus.
 
-## Required Scope
+## Blocking Condition
 
-Include `rtk-ai/rtk`, `openai/codex`, and comparable utility or agent
-repositories. Run Codex 5.3 Spark and LM Studio independently, then report
-purpose accuracy, evidence support, capability specificity, intent reuse,
-experimental-intent quality, schema validity, and reviewer edit burden against
-the frozen P55-T5 thresholds. Do not silently redefine thresholds, materialize
-the wider corpus, or promote results.
+P55-T9 completed its provider-separated measurement, but neither Codex 5.3
+Spark nor LM Studio met the frozen purpose-accuracy, evidence-support, and
+schema-validity gates. Do not select or execute P55-T10 until a bounded
+provider-output-conformance follow-up repeats the exact P55-T9 target set and
+meets the unchanged policy.
 
 ## Recently Archived
 
+- `P55-T9` Targeted Semantic Quality Calibration: PASS. Eight
+  provider/target outcomes were accounted for against the frozen policy.
+  Codex completed two of four proposals and LM Studio completed zero of four;
+  neither provider passed, so P55-T10 remains blocked.
 - `P55-T8` Reviewer-Controlled Semantic Materialization: PASS. Explicit
   accepted or edited semantic decisions now create separate preview revisions
   with exact before/after provenance and SpecHarvester plus read-only SpecPM
