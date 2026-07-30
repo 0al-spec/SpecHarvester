@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P55-T9 Targeted Semantic Quality Calibration" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P55-T8` Reviewer-Controlled Semantic Materialization" in next_text
+        assert "`rtk-ai/rtk`, `openai/codex`" in next_text
+        assert "Codex 5.3 Spark and LM Studio independently" in normalized
+        assert "Do not silently redefine thresholds" in normalized
+        return
+
     if "# Next Task: P55-T8 Reviewer-Controlled Semantic Materialization" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
