@@ -1,26 +1,31 @@
-# Next Task: P55-T6 Complete Portable Semantic Proposal Records
+# Next Task: P55-T7 Workbench Static-versus-AI Semantic Review
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T5` Semantic Proposal Validation and Quality Diagnostics
+**Dependencies:** `P55-T6` Complete Portable Semantic Proposal Records
 **Status:** Ready
 **Branch:** pending
 
 ## Objective
 
-Replace summary-only portable AI status with complete, digest-bound semantic
-proposal records in the author handoff and candidate detail bundle.
+Extend the Local Candidate Review Workbench with a reviewer-facing
+static-versus-AI semantic comparison.
 
 ## Required Scope
 
-Preserve each validated proposal, quality report, provider receipt, source
-binding, and proposal digest through portable handoff and local detail review.
-Do not retain raw prompts, raw responses, hidden reasoning, credentials, or
-provider-local paths. Do not automatically apply proposals, materialize
-candidates, mutate SpecPM, accept intents, or publish registry truth.
+Compare summaries, capabilities, intents, interfaces, and evidence from static
+candidate output with complete P55 semantic proposal records. Distinguish
+observed-intent reuse from experimental-intent proposals and support reviewer
+accept, edit, reject, and defer actions. Do not materialize candidates, mutate
+SpecPM, accept canonical intents, or publish registry truth.
 
 ## Recently Archived
 
+- `P55-T6` Complete Portable Semantic Proposal Records: PASS. Complete
+  proposals, deterministic quality reports, and allowlisted provider receipts
+  now survive P53 handoff and P54 detail generation with candidate, source,
+  proposal, receipt, quality, packet, and record digest bindings; raw provider
+  data and all application or publication authority remain excluded.
 - `P55-T5` Semantic Proposal Validation and Quality Diagnostics: PASS.
   Deterministic provider-neutral reports now distinguish eligible, review, and
   rejected proposals; enforce evidence, namespace, manifest/boundary, intent,

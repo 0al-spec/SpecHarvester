@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +17,10 @@ from spec_harvester.local_candidate_review_catalog import (
     _json_object,
     _preflight_statuses,
     _read_archive,
+)
+from spec_harvester.portable_semantic_proposal import (
+    MAX_PORTABLE_SEMANTIC_RECORD_BYTES,
+    validate_portable_semantic_proposal,
 )
 
 MAX_DETAIL_DOCUMENT_BYTES = 128 * 1024
@@ -93,10 +98,48 @@ def _detail_sections(
                 payload.decode("utf-8", errors="replace"),
             )
         )
+    semantic = _semantic_record(candidate_id, packet, members)
+    if semantic is not None:
+        sections.append(_json_section("semantic-proposal-record", semantic))
     return sections
 
 
-def _comparison(candidate_id: str, packet_sha256: str, packet: dict[str, Any]) -> dict[str, Any]:
+def _semantic_record(
+    candidate_id: str, packet: dict[str, Any], members: dict[str, bytes]
+) -> dict[str, Any] | None:
+    binding = packet.get("semanticProposal")
+    if not isinstance(binding, dict) or binding.get("status") == "not_available":
+        return None
+    if binding.get("status") != "complete_portable" or binding.get("path") != (
+        "semantic-proposal-record.json"
+    ):
+        raise ValueError(f"Semantic proposal binding is invalid: {candidate_id}")
+    member_name = str(Path("packets") / candidate_id / binding["path"])
+    payload = members.get(member_name)
+    if payload is None or sha256(payload).hexdigest() != binding.get("sha256"):
+        raise ValueError(f"Semantic proposal member digest differs from packet: {candidate_id}")
+    if len(payload) > MAX_PORTABLE_SEMANTIC_RECORD_BYTES:
+        raise ValueError(f"Semantic proposal exceeds bounded detail limit: {candidate_id}")
+    record = _json_object(payload, member_name)
+    validate_portable_semantic_proposal(record)
+    expected = {
+        "recordSha256": record["recordSha256"],
+        "proposalSha256": record["proposalSha256"],
+        "providerReceiptSha256": record["providerReceiptSha256"],
+        "qualityReportSha256": record["qualityReportSha256"],
+        "qualityStatus": record["qualityStatus"],
+    }
+    if any(binding.get(key) != value for key, value in expected.items()):
+        raise ValueError(f"Semantic proposal record binding differs from packet: {candidate_id}")
+    return record
+
+
+def _comparison(
+    candidate_id: str,
+    packet_sha256: str,
+    packet: dict[str, Any],
+    members: dict[str, bytes],
+) -> dict[str, Any]:
     proposal = packet["aiProposal"]
     ai: dict[str, Any] = {"status": proposal["status"]}
     summary = proposal.get("summary")
@@ -104,6 +147,18 @@ def _comparison(candidate_id: str, packet_sha256: str, packet: dict[str, Any]) -
         ai["warningCount"] = summary["warningCount"]
     if proposal["status"] == "portable":
         ai["proposalSha256"] = proposal["sha256"]
+    semantic = _semantic_record(candidate_id, packet, members)
+    if semantic is not None:
+        ai = {
+            "status": "complete_portable",
+            "proposalSha256": semantic["proposalSha256"],
+            "semanticRecordSha256": semantic["recordSha256"],
+            "qualityReportSha256": semantic["qualityReportSha256"],
+            "providerReceiptSha256": semantic["providerReceiptSha256"],
+            "sourceBundleSha256": semantic["sourceBundleSha256"],
+            "qualityStatus": semantic["qualityStatus"],
+            "warningCount": semantic["qualityReport"]["summary"]["warningCount"],
+        }
     return {
         "apiVersion": "spec-harvester.candidate-review-comparison/v0",
         "kind": "SpecHarvesterCandidateReviewComparison",
@@ -155,7 +210,7 @@ def build_local_candidate_review_details(
             "previewOnly": True,
             "sections": _detail_sections(candidate_id, packet, members),
         }
-        comparison = _comparison(candidate_id, catalog_item["packetSha256"], packet)
+        comparison = _comparison(candidate_id, catalog_item["packetSha256"], packet, members)
         _validate_record(detail)
         _validate_record(comparison)
         details.append(detail)

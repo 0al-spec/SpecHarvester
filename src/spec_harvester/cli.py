@@ -899,6 +899,14 @@ def build_parser() -> argparse.ArgumentParser:
     p53_handoff.add_argument("--repo-root", type=Path, required=True)
     p53_handoff.add_argument("--candidate-root", type=Path)
     p53_handoff.add_argument("--proposal-root", type=Path)
+    p53_handoff.add_argument(
+        "--semantic-record-root",
+        type=Path,
+        help=(
+            "Optional root containing <candidate_id>/input-pack.json, "
+            "semantic-pass.json, and quality-report.json."
+        ),
+    )
     p53_handoff.set_defaults(func=run_p53_portable_author_handoff_cli)
 
     local_review_catalog = subcommands.add_parser(
@@ -2507,6 +2515,7 @@ def run_p53_portable_author_handoff_cli(args: argparse.Namespace) -> int:
                 repo_root=args.repo_root,
                 candidate_root=args.candidate_root,
                 proposal_root=args.proposal_root,
+                semantic_record_root=getattr(args, "semantic_record_root", None),
             )
         )
     except ValueError as exc:

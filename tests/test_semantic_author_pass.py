@@ -15,6 +15,7 @@ from spec_harvester.semantic_author_pass import (
     SemanticAuthorPassError,
     SemanticAuthorPassOptions,
     run_semantic_author_pass,
+    validate_semantic_author_provider_receipt,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -100,6 +101,7 @@ def test_provider_neutral_pass_normalizes_contract_and_discards_raw_data(tmp_pat
     assert report["providerReceipt"]["rawPromptPersisted"] is False
     assert report["providerReceipt"]["rawResponsePersisted"] is False
     assert report["providerReceipt"]["chainOfThoughtPersisted"] is False
+    validate_semantic_author_provider_receipt(report["providerReceipt"])
 
 
 @pytest.mark.parametrize("mutation", ("evidence", "intent", "candidate", "output"))

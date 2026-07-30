@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P55-T7 Workbench Static-versus-AI Semantic Review" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P55-T6` Complete Portable Semantic Proposal Records" in next_text
+        assert "static-versus-AI semantic comparison" in normalized
+        assert "observed-intent reuse from experimental-intent proposals" in normalized
+        assert "Do not materialize candidates, mutate SpecPM" in normalized
+        return
+
     if "# Next Task: P55-T6 Complete Portable Semantic Proposal Records" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
