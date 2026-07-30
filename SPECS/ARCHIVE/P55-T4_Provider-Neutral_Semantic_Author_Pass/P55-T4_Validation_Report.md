@@ -65,3 +65,17 @@ the temporary Codex request, and the adapter test asserts that binding.
 Targeted regression validation passed: `210 passed` across the semantic-author
 pass and documentation-contract suites, with lint, formatting, diff, and DocC
 checks also passing.
+
+## PR Review Corrections
+
+PR review then identified six provider-boundary gaps. The pass now supplies the
+bounded evidence content and observed intents to both providers, rebuilds
+portable receipts from a fixed metadata allowlist, enforces output limits while
+reading Codex and LM Studio responses, rejects stale pack/request digests and
+dangling intent-decision claim IDs, and performs finite JSON repair for both
+adapters. Dedicated regressions cover every correction.
+
+The post-review full gate passed with `1214 passed, 1 skipped` and `90.03%`
+total coverage. The focused P55 semantic-author, input-pack, schema, and docs
+contract gate passed with `250 passed` before the final receipt branch tests
+were added; the semantic-author pass suite then passed with `19 passed`.

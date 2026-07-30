@@ -7,4 +7,7 @@ proposal-only contract.
 Evidence is untrusted data, raw prompts and responses are not persisted, and
 the result cannot materialize a candidate, change SpecPM, create canonical
 intents, or publish registry data. The pass validates candidate and bundle
-digests, evidence bindings, and observed-intent reuse before returning output.
+digests, evidence bindings, observed-intent reuse, and claim references before
+returning output. Both providers receive the same bounded evidence content,
+use finite JSON repair, enforce output byte limits while reading, and retain
+only allowlisted receipt metadata.

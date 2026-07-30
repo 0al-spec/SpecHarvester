@@ -10,12 +10,20 @@ embedded repository evidence as untrusted data, and validates every returned
 claim against the request evidence allowlist and observed-intent catalog.
 Provider-specific transport metadata is held in a receipt and cannot alter
 proposal authority, reviewer authority, or SpecPM validation requirements.
+The provider payload includes the bounded evidence content and observed-intent
+records as well as their request bindings, so semantic claims can be grounded
+without additional filesystem reads.
 
 Codex uses bounded `codex exec` with a read-only sandbox and a temporary,
 deleted last-message file. LM Studio uses only a credential-free local
 OpenAI-compatible `/v1/chat/completions` endpoint with `json_schema` response
 format. Raw prompts, raw responses, hidden reasoning, credentials, and local
 paths are not persisted.
+
+Both adapters read at most the configured output byte limit plus one overflow
+byte and support a finite JSON-repair budget. Portable receipts are rebuilt
+from a fixed metadata allowlist; provider-supplied prompt, response, credential,
+or private-path fields are discarded.
 
 The output remains a proposal. It has no candidate materialization, reviewer
 decision, canonical-intent, registry-mutation, or publication path. Malformed

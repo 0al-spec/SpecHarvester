@@ -14,7 +14,10 @@
 
 ### Secondary Issues
 
-- None.
+- PR review identified six provider-boundary issues after the initial FLOW
+  review. All were corrected in the PR branch: complete bounded provider input,
+  receipt allowlisting, bounded response reads, claim-reference validation,
+  input digest consistency, and finite JSON repair.
 
 ### Architectural Notes
 

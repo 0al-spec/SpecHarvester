@@ -16,9 +16,10 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
 from spec_harvester.model_json_repair import (
-    ModelJsonParseError,
+    DEFAULT_JSON_REPAIR_MAX_ATTEMPTS,
+    ModelJsonFailure,
+    complete_json_with_repair,
     openai_compatible_json_response_format,
-    parse_model_json_object,
 )
 
 SEMANTIC_AUTHOR_PASS_API_VERSION = "spec-harvester.semantic-author-pass/v0"
@@ -36,6 +37,7 @@ class SemanticAuthorPassError(RuntimeError):
 class SemanticAuthorPassOptions:
     timeout_seconds: float = DEFAULT_TIMEOUT_SECONDS
     max_output_bytes: int = DEFAULT_MAX_OUTPUT_BYTES
+    json_repair_max_attempts: int = DEFAULT_JSON_REPAIR_MAX_ATTEMPTS
 
 
 @dataclass(frozen=True)
@@ -48,7 +50,7 @@ class SemanticAuthorProvider(Protocol):
     provider_id: str
 
     def complete(
-        self, request: dict[str, Any], options: SemanticAuthorPassOptions
+        self, provider_payload: dict[str, Any], options: SemanticAuthorPassOptions
     ) -> ProviderCompletion:
         """Return parsed model JSON and non-sensitive execution metadata."""
 
@@ -63,51 +65,63 @@ class CodexSparkSemanticAuthorProvider:
         self.model = model
 
     def complete(
-        self, request: dict[str, Any], options: SemanticAuthorPassOptions
+        self, provider_payload: dict[str, Any], options: SemanticAuthorPassOptions
     ) -> ProviderCompletion:
         started = time.monotonic()
         with tempfile.TemporaryDirectory(prefix="spec-harvester-semantic-author-") as temporary:
             output_path = Path(temporary) / "last-message.json"
-            command = [
-                self.command,
-                "exec",
-                "--model",
-                self.model,
-                "--sandbox",
-                "read-only",
-                "--skip-git-repo-check",
-                "--output-last-message",
-                str(output_path),
-            ]
-            prompt = _provider_prompt(request)
-            try:
-                completed = subprocess.run(  # noqa: S603
-                    command,
-                    input=prompt,
-                    text=True,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    check=False,
-                    timeout=options.timeout_seconds,
-                )
-            except FileNotFoundError as exc:
-                raise SemanticAuthorPassError("codex_command_unavailable") from exc
-            except subprocess.TimeoutExpired as exc:
-                raise SemanticAuthorPassError("codex_timeout") from exc
-            if completed.returncode != 0:
-                raise SemanticAuthorPassError("codex_nonzero_exit")
-            try:
-                raw = output_path.read_text(encoding="utf-8")
-            except OSError as exc:
-                raise SemanticAuthorPassError("codex_output_unavailable") from exc
-        payload = _parse_bounded_json(raw, options.max_output_bytes)
+
+            def send_messages(
+                messages: list[dict[str, str]],
+            ) -> tuple[str, dict[str, Any]]:
+                command = [
+                    self.command,
+                    "exec",
+                    "--model",
+                    self.model,
+                    "--sandbox",
+                    "read-only",
+                    "--skip-git-repo-check",
+                    "--output-last-message",
+                    str(output_path),
+                ]
+                try:
+                    completed = subprocess.run(  # noqa: S603
+                        command,
+                        input=json.dumps(messages, sort_keys=True),
+                        text=True,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                        check=False,
+                        timeout=options.timeout_seconds,
+                    )
+                except FileNotFoundError as exc:
+                    raise SemanticAuthorPassError("codex_command_unavailable") from exc
+                except subprocess.TimeoutExpired as exc:
+                    raise SemanticAuthorPassError("codex_timeout") from exc
+                if completed.returncode != 0:
+                    raise SemanticAuthorPassError("codex_nonzero_exit")
+                return _read_bounded_file(output_path, options.max_output_bytes), {}
+
+            result = complete_json_with_repair(
+                request=provider_payload,
+                system_prompt=_system_prompt(),
+                send_messages=send_messages,
+                max_repair_attempts=options.json_repair_max_attempts,
+            )
+        if isinstance(result, ModelJsonFailure):
+            raise SemanticAuthorPassError("provider JSON repair exhausted")
         return ProviderCompletion(
-            payload=payload,
+            payload=result.payload,
             receipt={
                 "providerKind": "codex_exec",
                 "providerName": self.provider_id,
                 "modelId": self.model,
                 "durationMs": _elapsed_ms(started),
+                "usage": result.usage,
+                "jsonRepairNeeded": result.repair_needed,
+                "jsonRepairAttemptCount": result.repair_attempt_count,
+                "jsonRepairStatus": result.repair_status,
                 "rawPromptPersisted": False,
                 "rawResponsePersisted": False,
                 "chainOfThoughtPersisted": False,
@@ -134,55 +148,76 @@ class LMStudioSemanticAuthorProvider:
         self.model = model
 
     def complete(
-        self, request: dict[str, Any], options: SemanticAuthorPassOptions
+        self, provider_payload: dict[str, Any], options: SemanticAuthorPassOptions
     ) -> ProviderCompletion:
         started = time.monotonic()
-        payload = {
-            "model": self.model,
-            "temperature": 0,
-            "messages": [
-                {"role": "system", "content": _system_prompt()},
-                {"role": "user", "content": json.dumps(request, sort_keys=True)},
-            ],
-            "response_format": {
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "spec_harvester_semantic_author_proposal",
-                    "schema": _proposal_schema(),
+
+        def send_messages(
+            messages: list[dict[str, str]],
+        ) -> tuple[str, dict[str, Any]]:
+            payload = {
+                "model": self.model,
+                "temperature": 0,
+                "messages": messages,
+                "response_format": {
+                    "type": "json_schema",
+                    "json_schema": {
+                        "name": "spec_harvester_semantic_author_proposal",
+                        "schema": _proposal_schema(),
+                    },
                 },
-            },
-        }
-        try:
-            http_request = urllib.request.Request(
-                f"{self.base_url}/v1/chat/completions",
-                data=json.dumps(payload).encode("utf-8"),
-                headers={"Content-Type": "application/json"},
-                method="POST",
-            )
-            with urllib.request.urlopen(http_request, timeout=options.timeout_seconds) as response:
-                response = json.loads(response.read().decode("utf-8"))
-            raw = response["choices"][0]["message"]["content"]
-        except (
-            KeyError,
-            IndexError,
-            TypeError,
-            OSError,
-            urllib.error.URLError,
-            json.JSONDecodeError,
-        ) as exc:
-            raise SemanticAuthorPassError("lm_studio_request_failed") from exc
-        if not isinstance(raw, str):
-            raise SemanticAuthorPassError("lm_studio_response_shape_invalid")
+            }
+            try:
+                http_request = urllib.request.Request(
+                    f"{self.base_url}/v1/chat/completions",
+                    data=json.dumps(payload).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with urllib.request.urlopen(
+                    http_request, timeout=options.timeout_seconds
+                ) as provider_response:
+                    response_payload = json.loads(
+                        _read_bounded_stream(provider_response, options.max_output_bytes).decode(
+                            "utf-8"
+                        )
+                    )
+                raw_content = response_payload["choices"][0]["message"]["content"]
+            except (
+                KeyError,
+                IndexError,
+                TypeError,
+                OSError,
+                urllib.error.URLError,
+                json.JSONDecodeError,
+            ) as exc:
+                raise SemanticAuthorPassError("lm_studio_request_failed") from exc
+            if not isinstance(raw_content, str):
+                raise SemanticAuthorPassError("lm_studio_response_shape_invalid")
+            return raw_content, response_payload
+
+        result = complete_json_with_repair(
+            request=provider_payload,
+            system_prompt=_system_prompt(),
+            send_messages=send_messages,
+            max_repair_attempts=options.json_repair_max_attempts,
+        )
+        if isinstance(result, ModelJsonFailure):
+            raise SemanticAuthorPassError("provider JSON repair exhausted")
         return ProviderCompletion(
-            payload=_parse_bounded_json(raw, options.max_output_bytes),
+            payload=result.payload,
             receipt={
                 "providerKind": "openai_compatible",
                 "providerName": self.provider_id,
                 "baseUrl": self.base_url,
                 "endpoint": "/v1/chat/completions",
-                "modelId": str(response.get("model") or self.model),
+                "modelId": str(result.response_payload.get("model") or self.model),
                 "durationMs": _elapsed_ms(started),
                 "responseFormat": openai_compatible_json_response_format("lm_studio"),
+                "usage": result.usage,
+                "jsonRepairNeeded": result.repair_needed,
+                "jsonRepairAttemptCount": result.repair_attempt_count,
+                "jsonRepairStatus": result.repair_status,
                 "rawPromptPersisted": False,
                 "rawResponsePersisted": False,
                 "chainOfThoughtPersisted": False,
@@ -198,11 +233,15 @@ def run_semantic_author_pass(
 ) -> dict[str, Any]:
     """Return one evidence-bound proposal and receipt, without materializing anything."""
     options = options or SemanticAuthorPassOptions()
-    if options.timeout_seconds <= 0 or options.max_output_bytes <= 0:
+    if (
+        options.timeout_seconds <= 0
+        or options.max_output_bytes <= 0
+        or options.json_repair_max_attempts < 0
+    ):
         raise ValueError("semantic author pass budgets must be positive")
     _validate_input_pack(input_pack)
-    completion = provider.complete(input_pack["request"], options)
-    receipt = {**completion.receipt, "providerId": provider.provider_id}
+    completion = provider.complete(_provider_payload(input_pack), options)
+    receipt = _normalize_receipt(completion.receipt, provider.provider_id)
     receipt_sha256 = _digest(receipt)
     proposal = _normalize_proposal(completion.payload, provider.provider_id, receipt_sha256)
     _validate_proposal(input_pack, proposal)
@@ -234,7 +273,13 @@ def _validate_input_pack(pack: dict[str, Any]) -> None:
     if not isinstance(boundary, dict) or boundary.get("providerInvoked") is not False:
         raise ValueError("semantic author input pack must not have invoked a provider")
     request = pack.get("request")
-    if not isinstance(request, dict) or request.get("candidateId") != pack.get("candidateId"):
+    if (
+        not isinstance(request, dict)
+        or request.get("candidateId") != pack.get("candidateId")
+        or request.get("sourceBundleSha256") != pack.get("sourceBundleSha256")
+        or not isinstance(pack.get("observedIntents"), list)
+        or not isinstance(pack.get("evidence"), list)
+    ):
         raise ValueError("semantic author input pack request is malformed")
 
 
@@ -273,12 +318,20 @@ def _validate_proposal(pack: dict[str, Any], proposal: dict[str, Any]) -> None:
                     "proposal claim evidence is not in input pack allowlist"
                 )
     observed = {item["intentId"]: item["observedIntentSha256"] for item in pack["observedIntents"]}
+    claim_ids = {claim["id"] for claim in proposal["claims"]}
     for decision in proposal["intentDecisions"]:
         if (
             decision["state"] == "proposed_reuse"
             and observed.get(decision["intentId"]) != decision["observedIntentSha256"]
         ):
             raise SemanticAuthorPassError("proposal reuses an unknown or stale observed intent")
+        referenced_claim_ids = (
+            {decision["rationaleClaimId"]}
+            if decision["state"] == "proposed_reuse"
+            else {decision["userNeedClaimId"], *decision["nonGoalClaimIds"]}
+        )
+        if referenced_claim_ids - claim_ids:
+            raise SemanticAuthorPassError("intent decision references an unknown claim")
 
 
 def _proposal_schema() -> dict[str, Any]:
@@ -288,12 +341,16 @@ def _proposal_schema() -> dict[str, Any]:
     }
 
 
-def _provider_prompt(request: dict[str, Any]) -> str:
-    payload = {
-        "request": request,
-        "requiredProposalSchema": _proposal_schema(),
+def _provider_payload(pack: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "apiVersion": "spec-harvester.semantic-author-provider-request/v0",
+        "kind": "SpecHarvesterSemanticAuthorProviderRequest",
+        "request": pack["request"],
+        "observedIntents": pack["observedIntents"],
+        "evidence": pack["evidence"],
+        "requiredJsonShape": _proposal_schema(),
+        "allowedEvidencePaths": [item["sourcePath"] for item in pack["request"]["evidence"]],
     }
-    return f"{_system_prompt()}\n\n{json.dumps(payload, sort_keys=True)}"
 
 
 def _system_prompt() -> str:
@@ -304,13 +361,96 @@ def _system_prompt() -> str:
     )
 
 
-def _parse_bounded_json(raw: str, max_output_bytes: int) -> dict[str, Any]:
-    if len(raw.encode("utf-8")) > max_output_bytes:
-        raise SemanticAuthorPassError("provider output byte budget exceeded")
+def _normalize_receipt(receipt: dict[str, Any], provider_id: str) -> dict[str, Any]:
+    if not isinstance(receipt, dict):
+        raise SemanticAuthorPassError("provider receipt must be an object")
+    provider_kind = receipt.get("providerKind")
+    duration_ms = receipt.get("durationMs")
+    if not isinstance(provider_kind, str) or not provider_kind or len(provider_kind) > 64:
+        raise SemanticAuthorPassError("provider receipt kind is invalid")
+    if not isinstance(duration_ms, int) or isinstance(duration_ms, bool) or duration_ms < 0:
+        raise SemanticAuthorPassError("provider receipt duration is invalid")
+    repair_needed = receipt.get("jsonRepairNeeded", False)
+    if not isinstance(repair_needed, bool):
+        raise SemanticAuthorPassError("provider receipt JSON repair flag is invalid")
+    normalized: dict[str, Any] = {
+        "providerKind": provider_kind,
+        "providerName": _receipt_string(receipt.get("providerName"), provider_id),
+        "providerId": provider_id,
+        "durationMs": duration_ms,
+        "jsonRepairNeeded": repair_needed,
+        "jsonRepairAttemptCount": _receipt_nonnegative_int(
+            receipt.get("jsonRepairAttemptCount", 0), "JSON repair attempt count"
+        ),
+        "jsonRepairStatus": _receipt_string(receipt.get("jsonRepairStatus"), "not_needed"),
+        "rawPromptPersisted": False,
+        "rawResponsePersisted": False,
+        "chainOfThoughtPersisted": False,
+    }
+    model_id = receipt.get("modelId")
+    if isinstance(model_id, str) and model_id and len(model_id) <= 200:
+        normalized["modelId"] = model_id
+    base_url = receipt.get("baseUrl")
+    if isinstance(base_url, str) and _is_safe_local_url(base_url):
+        normalized["baseUrl"] = base_url
+    endpoint = receipt.get("endpoint")
+    if isinstance(endpoint, str) and endpoint.startswith("/") and len(endpoint) <= 128:
+        normalized["endpoint"] = endpoint
+    usage = receipt.get("usage")
+    if isinstance(usage, dict):
+        normalized["usage"] = {
+            key: value
+            for key, value in usage.items()
+            if isinstance(key, str)
+            and isinstance(value, int)
+            and not isinstance(value, bool)
+            and value >= 0
+        }
+    return normalized
+
+
+def _receipt_string(value: Any, default: str) -> str:
+    if value is None:
+        return default
+    if not isinstance(value, str) or not value or len(value) > 200:
+        raise SemanticAuthorPassError("provider receipt string is invalid")
+    return value
+
+
+def _receipt_nonnegative_int(value: Any, label: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+        raise SemanticAuthorPassError(f"provider receipt {label} is invalid")
+    return value
+
+
+def _is_safe_local_url(value: str) -> bool:
+    parsed = urllib.parse.urlparse(value)
+    return (
+        parsed.scheme in {"http", "https"}
+        and parsed.hostname in {"localhost", "127.0.0.1", "::1"}
+        and not parsed.username
+        and not parsed.password
+    )
+
+
+def _read_bounded_file(path: Path, max_output_bytes: int) -> str:
     try:
-        return parse_model_json_object(raw)
-    except ModelJsonParseError as exc:
-        raise SemanticAuthorPassError("provider output is not a JSON object") from exc
+        with path.open("rb") as stream:
+            raw = _read_bounded_stream(stream, max_output_bytes)
+        return raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise SemanticAuthorPassError("provider output must be UTF-8") from exc
+    except OSError as exc:
+        raise SemanticAuthorPassError("codex_output_unavailable") from exc
+
+
+def _read_bounded_stream(stream: Any, max_output_bytes: int) -> bytes:
+    raw = stream.read(max_output_bytes + 1)
+    if not isinstance(raw, bytes):
+        raise SemanticAuthorPassError("provider response must be bytes")
+    if len(raw) > max_output_bytes:
+        raise SemanticAuthorPassError("provider output byte budget exceeded")
+    return raw
 
 
 def _digest(value: dict[str, Any]) -> str:
