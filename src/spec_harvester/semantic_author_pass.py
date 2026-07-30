@@ -409,6 +409,21 @@ def _normalize_receipt(receipt: dict[str, Any], provider_id: str) -> dict[str, A
     return normalized
 
 
+def validate_semantic_author_provider_receipt(receipt: dict[str, Any]) -> None:
+    """Require exact equality with the bounded P55-T4 receipt normalization."""
+    if not isinstance(receipt, dict):
+        raise SemanticAuthorPassError("provider receipt must be an object")
+    provider_id = receipt.get("providerId")
+    receipt_sha256 = receipt.get("receiptSha256")
+    if not isinstance(provider_id, str) or not isinstance(receipt_sha256, str):
+        raise SemanticAuthorPassError("provider receipt identity is invalid")
+    source = {key: value for key, value in receipt.items() if key != "receiptSha256"}
+    normalized = _normalize_receipt(source, provider_id)
+    expected = {**normalized, "receiptSha256": _digest(normalized)}
+    if receipt != expected:
+        raise SemanticAuthorPassError("provider receipt is not canonically normalized")
+
+
 def _receipt_string(value: Any, default: str) -> str:
     if value is None:
         return default

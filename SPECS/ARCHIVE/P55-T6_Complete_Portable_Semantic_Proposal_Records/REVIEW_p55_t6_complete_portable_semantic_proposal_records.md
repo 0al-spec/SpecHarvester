@@ -17,7 +17,10 @@
 
 ### Secondary Issues
 
-- None remaining.
+- PR review found three further boundary gaps. All were corrected in the PR
+  branch: exact T3/T4/T5 source identity and authority revalidation, canonical
+  nested provider-receipt value validation, and one shared `512 KiB` semantic
+  record limit for producer and detail consumer.
 
 ### Architectural Notes
 
@@ -33,9 +36,9 @@
 
 ### Tests
 
-- Full gate: `1248 passed, 1 skipped`, total coverage `90.03%`.
-- Portable builder coverage: `87%`; P53 handoff: `93%`; P54 details: `92%`.
-- Focused final gate: `242 passed`.
+- Full gate: `1256 passed, 1 skipped`, total coverage `90.03%`.
+- Portable builder coverage: `89%`; P53 handoff: `93%`; P54 details: `92%`.
+- Focused final gate: `269 passed`.
 - Ruff lint and format, diff check, Swift manifest, and DocC build passed.
 - Swift emitted the repository's existing unhandled DocC resource warning.
 

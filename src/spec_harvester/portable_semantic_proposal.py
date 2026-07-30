@@ -8,10 +8,18 @@ from typing import Any
 from jsonschema import Draft202012Validator, FormatChecker
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
+from spec_harvester.semantic_author_input_pack import INPUT_PACK_API_VERSION, INPUT_PACK_KIND
+from spec_harvester.semantic_author_pass import (
+    SEMANTIC_AUTHOR_PASS_API_VERSION,
+    SEMANTIC_AUTHOR_PASS_KIND,
+    SemanticAuthorPassError,
+    validate_semantic_author_provider_receipt,
+)
 from spec_harvester.semantic_proposal_quality import evaluate_semantic_proposal_quality
 
 PORTABLE_SEMANTIC_API_VERSION = "spec-harvester.portable-semantic-proposal/v0"
 PORTABLE_SEMANTIC_KIND = "SpecHarvesterPortableSemanticProposal"
+MAX_PORTABLE_SEMANTIC_RECORD_BYTES = 512 * 1024
 SEMANTIC_INPUT_FILES = ("input-pack.json", "semantic-pass.json", "quality-report.json")
 RECEIPT_KEYS = {
     "providerKind",
@@ -89,9 +97,7 @@ def build_portable_semantic_proposal(
     candidate_id = input_pack.get("candidateId")
     source_digest = input_pack.get("sourceBundleSha256")
     if (
-        input_pack.get("kind") != "SpecHarvesterAISemanticAuthorInputPack"
-        or semantic_pass.get("kind") != "SpecHarvesterSemanticAuthorPass"
-        or quality_report.get("kind") != "SpecHarvesterSemanticProposalQualityReport"
+        not _valid_source_identities(input_pack, semantic_pass, quality_report)
         or not isinstance(candidate_id, str)
         or not isinstance(source_digest, str)
     ):
@@ -242,6 +248,65 @@ def _validate_receipt(receipt: dict[str, Any]) -> None:
         raise ValueError("portable semantic proposal receipt violates privacy boundary")
     if _contains_machine_local_path(receipt):
         raise ValueError("portable semantic proposal receipt contains a provider-local path")
+    try:
+        validate_semantic_author_provider_receipt(receipt)
+    except SemanticAuthorPassError as exc:
+        raise ValueError(f"portable semantic proposal receipt is invalid: {exc}") from exc
+
+
+def _valid_source_identities(
+    input_pack: dict[str, Any],
+    semantic_pass: dict[str, Any],
+    quality_report: dict[str, Any],
+) -> bool:
+    return (
+        input_pack.get("apiVersion") == INPUT_PACK_API_VERSION
+        and input_pack.get("kind") == INPUT_PACK_KIND
+        and input_pack.get("schemaVersion") == 1
+        and input_pack.get("authority") == "semantic_author_input_pack_evidence_only"
+        and input_pack.get("executionBoundary")
+        == {
+            "providerInvoked": False,
+            "repositoryCodeExecuted": False,
+            "packageManagerInvoked": False,
+            "adapterExecuted": False,
+            "materializationPerformed": False,
+        }
+        and input_pack.get("request", {}).get("apiVersion")
+        == "spec-harvester.ai-semantic-author-request/v0"
+        and input_pack.get("request", {}).get("kind") == "SpecHarvesterAISemanticAuthorRequest"
+        and input_pack.get("request", {}).get("schemaVersion") == 1
+        and input_pack.get("request", {}).get("authority")
+        == "semantic_author_request_evidence_only"
+        and semantic_pass.get("apiVersion") == SEMANTIC_AUTHOR_PASS_API_VERSION
+        and semantic_pass.get("kind") == SEMANTIC_AUTHOR_PASS_KIND
+        and semantic_pass.get("schemaVersion") == 1
+        and semantic_pass.get("authority") == "semantic_author_proposal_only"
+        and semantic_pass.get("executionBoundary")
+        == {
+            "providerInvoked": True,
+            "repositoryCodeExecuted": False,
+            "packageManagerInvoked": False,
+            "materializationPerformed": False,
+            "specpmMutated": False,
+            "registryMutated": False,
+            "publicationPerformed": False,
+        }
+        and quality_report.get("apiVersion") == "spec-harvester.semantic-proposal-quality/v0"
+        and quality_report.get("kind") == "SpecHarvesterSemanticProposalQualityReport"
+        and quality_report.get("schemaVersion") == 1
+        and quality_report.get("authority") == "semantic_proposal_quality_evidence_only"
+        and quality_report.get("executionBoundary")
+        == {
+            "providerInvoked": False,
+            "repositoryCodeExecuted": False,
+            "packageManagerInvoked": False,
+            "materializationPerformed": False,
+            "specpmMutated": False,
+            "registryMutated": False,
+            "publicationPerformed": False,
+        }
+    )
 
 
 def _contains_machine_local_path(value: Any) -> bool:

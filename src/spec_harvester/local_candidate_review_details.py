@@ -18,7 +18,10 @@ from spec_harvester.local_candidate_review_catalog import (
     _preflight_statuses,
     _read_archive,
 )
-from spec_harvester.portable_semantic_proposal import validate_portable_semantic_proposal
+from spec_harvester.portable_semantic_proposal import (
+    MAX_PORTABLE_SEMANTIC_RECORD_BYTES,
+    validate_portable_semantic_proposal,
+)
 
 MAX_DETAIL_DOCUMENT_BYTES = 128 * 1024
 DETAIL_API_VERSION = "spec-harvester.candidate-review-detail-set/v0"
@@ -115,7 +118,7 @@ def _semantic_record(
     payload = members.get(member_name)
     if payload is None or sha256(payload).hexdigest() != binding.get("sha256"):
         raise ValueError(f"Semantic proposal member digest differs from packet: {candidate_id}")
-    if len(payload) > MAX_DETAIL_DOCUMENT_BYTES:
+    if len(payload) > MAX_PORTABLE_SEMANTIC_RECORD_BYTES:
         raise ValueError(f"Semantic proposal exceeds bounded detail limit: {candidate_id}")
     record = _json_object(payload, member_name)
     validate_portable_semantic_proposal(record)

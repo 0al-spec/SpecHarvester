@@ -12,6 +12,7 @@ import yaml
 
 from spec_harvester.controlled_calibration import mapping_value, write_json
 from spec_harvester.portable_semantic_proposal import (
+    MAX_PORTABLE_SEMANTIC_RECORD_BYTES,
     build_portable_semantic_proposal_from_directory,
 )
 
@@ -24,7 +25,6 @@ REPORT_KIND = "SpecHarvesterP53PortableAuthorHandoff"
 ALLOWED_CANDIDATE_SUFFIXES = {".json", ".yaml", ".yml"}
 SAFE_REPOSITORY_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
 SHA256_HEX = re.compile(r"[0-9a-f]{64}\Z")
-MAX_PORTABLE_SEMANTIC_RECORD_BYTES = 512 * 1024
 NON_AUTHORITY = [
     "This proposal is review evidence only.",
     "It is not SpecPM registry acceptance.",

@@ -20,13 +20,13 @@ PASS
 ## Validation
 
 - `uv run pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90 -q`
-  - `1248 passed, 1 skipped`
+  - `1256 passed, 1 skipped`
   - total coverage: `90.03%`
-  - `portable_semantic_proposal.py`: `87%`
+  - `portable_semantic_proposal.py`: `89%`
   - `p53_portable_author_handoff.py`: `93%`
   - `local_candidate_review_details.py`: `92%`
 - Focused portable handoff, details, schema, and docs-contract gate:
-  - `237 passed`
+  - `269 passed`
 - `uv run ruff check src tests`
   - passed
 - `uv run ruff format --check src tests`

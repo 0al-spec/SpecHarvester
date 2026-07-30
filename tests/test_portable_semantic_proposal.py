@@ -183,6 +183,47 @@ def test_rejects_stale_quality_and_sensitive_receipt_fields(tmp_path: Path) -> N
         build_portable_semantic_proposal(pack, incomplete, quality)
 
 
+@pytest.mark.parametrize(
+    ("record_name", "mutation"),
+    [
+        ("input", ("authority", "other")),
+        ("input", ("executionBoundary", {"providerInvoked": True})),
+        ("pass", ("apiVersion", "other")),
+        ("pass", ("authority", "materialization_authority")),
+        ("pass", ("executionBoundary", {"materializationPerformed": True})),
+        ("quality", ("authority", "decision_authority")),
+        ("quality", ("executionBoundary", {"specpmMutated": True})),
+    ],
+)
+def test_rejects_source_record_identity_and_authority_drift(
+    tmp_path: Path, record_name: str, mutation: tuple[str, object]
+) -> None:
+    pack, semantic_pass, quality = semantic_triplet(tmp_path)
+    target = {"input": pack, "pass": semantic_pass, "quality": quality}[record_name]
+    target[mutation[0]] = mutation[1]
+
+    with pytest.raises(ValueError, match="inputs are malformed"):
+        build_portable_semantic_proposal(pack, semantic_pass, quality)
+
+
+def test_build_rejects_noncanonical_nested_receipt_values(tmp_path: Path) -> None:
+    pack, semantic_pass, _quality = semantic_triplet(tmp_path)
+    receipt = semantic_pass["providerReceipt"]
+    receipt["usage"] = {"apiKey": "super-secret"}
+    receipt["receiptSha256"] = digest(
+        {key: value for key, value in receipt.items() if key != "receiptSha256"}
+    )
+    proposal = semantic_pass["proposal"]
+    proposal["provider"]["receiptSha256"] = receipt["receiptSha256"]
+    proposal["proposalSha256"] = digest(
+        {key: value for key, value in proposal.items() if key != "proposalSha256"}
+    )
+    quality = evaluate_semantic_proposal_quality(pack, semantic_pass)
+
+    with pytest.raises(ValueError, match="receipt is invalid"):
+        build_portable_semantic_proposal(pack, semantic_pass, quality)
+
+
 def test_directory_and_handoff_pointer_preserve_all_digests(tmp_path: Path) -> None:
     source = tmp_path / "semantic" / "demo.package"
     write_triplet(source, semantic_triplet(tmp_path))
