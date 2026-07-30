@@ -118,6 +118,7 @@ def test_builds_one_portable_packet_per_selected_repository(tmp_path: Path) -> N
         "packetCount": 100,
         "portableCandidateCount": 100,
         "portableAIProposalCount": 0,
+        "portableSemanticProposalCount": 0,
         "summaryOnlyAIProposalCount": 100,
         "deferredCount": 0,
     }
@@ -171,6 +172,47 @@ def test_copies_only_digest_matching_ai_proposal(tmp_path: Path) -> None:
         (options.packet_root / "repo-001" / "packet.json").read_text(encoding="utf-8")
     )
     assert packet["aiProposal"]["status"] == "portable"
+
+
+def test_handoff_embeds_complete_semantic_record_when_available(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    options = handoff_inputs(tmp_path)
+    semantic_root = tmp_path / "semantic"
+    (semantic_root / "repo-001").mkdir(parents=True)
+    record = {
+        "candidateId": "repo-001",
+        "recordSha256": "1" * 64,
+        "proposalSha256": "2" * 64,
+        "providerReceiptSha256": "3" * 64,
+        "qualityReportSha256": "4" * 64,
+        "qualityStatus": "eligible_for_calibration",
+    }
+    monkeypatch.setattr(
+        "spec_harvester.p53_portable_author_handoff."
+        "build_portable_semantic_proposal_from_directory",
+        lambda _source: record,
+    )
+    options = P53PortableAuthorHandoffOptions(
+        **{**options.__dict__, "semantic_record_root": semantic_root}
+    )
+
+    result = build_p53_portable_author_handoff(options)
+
+    assert result["summary"]["portableSemanticProposalCount"] == 1
+    packet = json.loads(
+        (options.packet_root / "repo-001" / "packet.json").read_text(encoding="utf-8")
+    )
+    assert packet["semanticProposal"]["status"] == "complete_portable"
+    assert packet["semanticProposal"]["recordSha256"] == "1" * 64
+    assert (
+        json.loads((options.packet_root / "repo-001" / "semantic-proposal-record.json").read_text())
+        == record
+    )
+    missing = json.loads(
+        (options.packet_root / "repo-002" / "packet.json").read_text(encoding="utf-8")
+    )
+    assert missing["semanticProposal"] == {"status": "not_available"}
 
 
 def test_rejects_ai_proposal_digest_drift(tmp_path: Path) -> None:
@@ -332,3 +374,27 @@ def test_cli_returns_failure_when_handoff_needs_review(monkeypatch: pytest.Monke
     )
 
     assert cli.run_p53_portable_author_handoff_cli(args) == 1
+
+
+def test_cli_parses_optional_semantic_record_root() -> None:
+    args = cli.build_parser().parse_args(
+        [
+            "p53-portable-author-handoff",
+            "--triage",
+            "triage.json",
+            "--metadata",
+            "metadata.json",
+            "--packet-root",
+            "packets",
+            "--aggregate-output",
+            "aggregate.json",
+            "--report-output",
+            "report.json",
+            "--repo-root",
+            ".",
+            "--semantic-record-root",
+            "semantic",
+        ]
+    )
+
+    assert args.semantic_record_root == Path("semantic")

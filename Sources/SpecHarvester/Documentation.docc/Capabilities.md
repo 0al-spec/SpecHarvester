@@ -196,6 +196,8 @@ copied paths, SHA-256 digests, allowed/rejected/fallback/blocked counts,
 static adapter fixture matrix across manifest-backed single packages,
 workspaces, documentation-heavy repositories, nested package roots, and
 ambiguous mixed layouts without loading third-party adapter code.
+<doc:PortableSemanticProposalRecords> documents complete digest-bound P55
+semantic proposals in portable handoff and inert candidate detail records.
 
 ## Non-Goals
 

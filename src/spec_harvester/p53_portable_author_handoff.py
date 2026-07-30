@@ -11,6 +11,9 @@ from typing import Any
 import yaml
 
 from spec_harvester.controlled_calibration import mapping_value, write_json
+from spec_harvester.portable_semantic_proposal import (
+    build_portable_semantic_proposal_from_directory,
+)
 
 HANDOFF_API_VERSION = "spec-harvester.selected-candidate-handoff-proposal/v0"
 HANDOFF_KIND = "SpecHarvesterSelectedCandidateHandoffProposal"
@@ -21,6 +24,7 @@ REPORT_KIND = "SpecHarvesterP53PortableAuthorHandoff"
 ALLOWED_CANDIDATE_SUFFIXES = {".json", ".yaml", ".yml"}
 SAFE_REPOSITORY_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
 SHA256_HEX = re.compile(r"[0-9a-f]{64}\Z")
+MAX_PORTABLE_SEMANTIC_RECORD_BYTES = 512 * 1024
 NON_AUTHORITY = [
     "This proposal is review evidence only.",
     "It is not SpecPM registry acceptance.",
@@ -44,6 +48,7 @@ class P53PortableAuthorHandoffOptions:
     repo_root: Path
     candidate_root: Path | None = None
     proposal_root: Path | None = None
+    semantic_record_root: Path | None = None
 
 
 def build_p53_portable_author_handoff(
@@ -64,6 +69,7 @@ def build_p53_portable_author_handoff(
     deferred_candidates: list[dict[str, Any]] = []
     portable_candidate_count = 0
     portable_proposal_count = 0
+    portable_semantic_proposal_count = 0
 
     if options.packet_root.exists() and any(options.packet_root.iterdir()):
         raise ValueError("P53-T14 packet root must be empty before generation")
@@ -75,8 +81,12 @@ def build_p53_portable_author_handoff(
         packet_dir.mkdir(parents=True, exist_ok=True)
         candidate = copy_candidate(repository_id, packet_dir, options.candidate_root)
         proposal = copy_proposal(repository_id, triage_record, packet_dir, options.proposal_root)
+        semantic_proposal = copy_semantic_proposal(
+            repository_id, packet_dir, options.semantic_record_root
+        )
         portable_candidate_count += candidate["status"] == "portable"
         portable_proposal_count += proposal["status"] == "portable"
+        portable_semantic_proposal_count += semantic_proposal["status"] == "complete_portable"
         packet = {
             "apiVersion": PACKET_API_VERSION,
             "kind": PACKET_KIND,
@@ -96,6 +106,7 @@ def build_p53_portable_author_handoff(
             "triage": triage_record,
             "candidate": candidate,
             "aiProposal": proposal,
+            "semanticProposal": semantic_proposal,
             "previewOnly": True,
             "maintainerDisposition": "external_required",
             "authority": "producer_portable_handoff_evidence_only",
@@ -164,6 +175,7 @@ def build_p53_portable_author_handoff(
         "summary": {
             "selectedCandidateCount": len(selected_candidates),
             "deferredCandidateCount": len(deferred_candidates),
+            "portableSemanticProposalCount": portable_semantic_proposal_count,
             "requiredEvidenceRoleCount": 2,
             "specpmPullRequestCreated": False,
             "registryMutationCount": 0,
@@ -218,6 +230,7 @@ def build_p53_portable_author_handoff(
             "portableCandidateCount": portable_candidate_count,
             "portableAIProposalCount": portable_proposal_count,
             "summaryOnlyAIProposalCount": 100 - portable_proposal_count,
+            "portableSemanticProposalCount": portable_semantic_proposal_count,
             "deferredCount": len(deferred_candidates),
         },
         "source": {
@@ -386,6 +399,36 @@ def copy_proposal(
         "path": "ai-proposal.json",
         "sha256": digest,
         "summary": summary,
+    }
+
+
+def copy_semantic_proposal(
+    repository_id: str,
+    packet_dir: Path,
+    semantic_record_root: Path | None,
+) -> dict[str, Any]:
+    if semantic_record_root is None:
+        return {"status": "not_available"}
+    source = semantic_record_root / repository_id
+    if not source.exists():
+        return {"status": "not_available"}
+    record = build_portable_semantic_proposal_from_directory(source)
+    if record["candidateId"] != repository_id:
+        raise ValueError(f"P55-T6 semantic proposal candidate mismatch for {repository_id}")
+    target = packet_dir / "semantic-proposal-record.json"
+    write_json(target, record)
+    if target.stat().st_size > MAX_PORTABLE_SEMANTIC_RECORD_BYTES:
+        target.unlink()
+        raise ValueError(f"P55-T6 semantic proposal exceeds portable limit for {repository_id}")
+    return {
+        "status": "complete_portable",
+        "path": "semantic-proposal-record.json",
+        "sha256": sha256_file(target),
+        "recordSha256": record["recordSha256"],
+        "proposalSha256": record["proposalSha256"],
+        "providerReceiptSha256": record["providerReceiptSha256"],
+        "qualityReportSha256": record["qualityReportSha256"],
+        "qualityStatus": record["qualityStatus"],
     }
 
 
