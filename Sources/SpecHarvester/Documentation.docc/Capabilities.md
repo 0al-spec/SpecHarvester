@@ -28,6 +28,7 @@ local repository checkout
 | Author-ready quality reporting | `author_ready_draft`, `needs_regeneration`, and `blocked` verdicts with hard gates, dimensions, and action items. | <doc:AuthorReadyDraftQualityBar>, <doc:AuthorReadyDraftQualityReport> |
 | Local AI proposals | LM Studio/OpenAI-compatible proposal-only package-set drafting and enrichment. | <doc:PackageSetAIDraftProposal>, <doc:PackageSetAIEnrichment> |
 | Provider-neutral semantic authoring | Runs a bounded P55 evidence pack through Codex 5.3 Spark or local LM Studio and retains only an evidence-bound semantic proposal. | <doc:SemanticAuthorPass> |
+| Semantic proposal quality diagnostics | Revalidates P55 proposals, candidate YAML, evidence and intent bindings, and frozen calibration thresholds before reviewer-controlled use. | <doc:SemanticProposalQuality> |
 | AI-enriched preview candidate copies | Clean AI enrichment proposals can be applied into copied preview candidates with patch reports for review. | <doc:AIEnrichmentCandidatePatch> |
 | Selected/deferred candidate triage | Review-ready candidates are separated from candidates needing regeneration, repair, or explicit deferral. | <doc:SelectedCandidateHandoffProposal>, <doc:DeferredCandidateRegenerationRunbook> |
 | SpecPM handoff evidence | Portable JSON/Markdown review evidence that SpecPM can preflight without rerunning SpecHarvester. | <doc:SpecPMHandoff>, <doc:SelectedCandidateHandoffPreflightExpectations> |

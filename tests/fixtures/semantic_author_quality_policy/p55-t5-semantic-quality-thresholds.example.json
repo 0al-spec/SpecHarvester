@@ -1,0 +1,31 @@
+{
+  "apiVersion": "spec-harvester.semantic-author-quality-policy/v0",
+  "kind": "SpecHarvesterSemanticAuthorQualityPolicy",
+  "schemaVersion": 1,
+  "authority": "maintainer_frozen_calibration_thresholds",
+  "frozenByTask": "P55-T5",
+  "requiredBeforeTask": "P55-T9",
+  "policySha256": "687b4e2d7dccfb727bf0bd2e25811f26cf28dc539c44b1d996e5c821e3fa1a82",
+  "metrics": {
+    "purposeAccuracyRate": {
+      "operator": "greater_than_or_equal",
+      "threshold": 0.85
+    },
+    "evidenceSupportedClaimRate": {
+      "operator": "greater_than_or_equal",
+      "threshold": 0.95
+    },
+    "schemaValidProposalRate": {
+      "operator": "equal",
+      "threshold": 1.0
+    },
+    "reviewerEditBurdenRate": {
+      "operator": "less_than_or_equal",
+      "threshold": 0.25
+    }
+  },
+  "changeControl": {
+    "calibrationMayRedefineThresholds": false,
+    "separateReviewedPolicyRevisionRequired": true
+  }
+}

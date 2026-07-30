@@ -39,6 +39,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P55-T6 Complete Portable Semantic Proposal Records" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P55-T5` Semantic Proposal Validation and Quality Diagnostics" in next_text
+        assert "complete, digest-bound semantic proposal records" in normalized
+        assert "raw prompts, raw responses, hidden reasoning, credentials" in normalized
+        assert "Do not automatically apply proposals" in normalized
+        return
+
     if "# Next Task: P55-T5 Semantic Proposal Validation and Quality Diagnostics" in next_text:
         normalized = " ".join(next_text.split())
         assert "`P55-T4` Provider-Neutral Semantic Author Pass" in next_text

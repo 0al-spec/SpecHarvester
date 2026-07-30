@@ -2809,7 +2809,7 @@ Acceptance:
   capabilities, reuse suitable intents, or propose
   `intent.experimental.*` identifiers with user need, nearby intents,
   non-goals, and evidence.
-- [ ] `P55-T5` Implement deterministic semantic proposal validation and quality
+- [x] `P55-T5` Implement deterministic semantic proposal validation and quality
   diagnostics. Enforce identifier and namespace shape, package-to-capability
   ownership, evidence-path allowlists, manifest/BoundarySpec consistency,
   provider-neutral intent wording, unsupported quantitative-claim rejection,

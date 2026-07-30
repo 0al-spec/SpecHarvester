@@ -1,27 +1,31 @@
-# Next Task: P55-T5 Semantic Proposal Validation and Quality Diagnostics
+# Next Task: P55-T6 Complete Portable Semantic Proposal Records
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T4` Provider-Neutral Semantic Author Pass
+**Dependencies:** `P55-T5` Semantic Proposal Validation and Quality Diagnostics
 **Status:** Ready
-**Branch:** pending selection after P55-T4 review
+**Branch:** pending
 
 ## Objective
 
-Implement deterministic semantic proposal validation and quality diagnostics
-for the P55-T4 provider-neutral proposal contract.
+Replace summary-only portable AI status with complete, digest-bound semantic
+proposal records in the author handoff and candidate detail bundle.
 
 ## Required Scope
 
-Enforce identifier and namespace shape, package-to-capability ownership,
-evidence-path allowlists, manifest/BoundarySpec consistency, provider-neutral
-intent wording, unsupported quantitative-claim rejection, generic-intent
-detection, and duplicate or overlap warnings. Freeze digest-bound numerical
-quality thresholds before P55-T9; do not materialize candidates or mutate
-SpecPM.
+Preserve each validated proposal, quality report, provider receipt, source
+binding, and proposal digest through portable handoff and local detail review.
+Do not retain raw prompts, raw responses, hidden reasoning, credentials, or
+provider-local paths. Do not automatically apply proposals, materialize
+candidates, mutate SpecPM, accept intents, or publish registry truth.
 
 ## Recently Archived
 
+- `P55-T5` Semantic Proposal Validation and Quality Diagnostics: PASS.
+  Deterministic provider-neutral reports now distinguish eligible, review, and
+  rejected proposals; enforce evidence, namespace, manifest/boundary, intent,
+  wording, and quantitative-claim constraints; and bind the frozen P55-T9
+  quality thresholds without granting materialization or publication authority.
 - `P55-T4` Provider-Neutral Semantic Author Pass: PASS. Codex 5.3 Spark and
   local LM Studio now share a bounded P55-T2 semantic-proposal contract. The
   pass retains normalized proposal and receipt data only, validates evidence
