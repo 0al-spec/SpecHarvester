@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T6` Complete Portable Semantic Proposal Records
-**Status:** Ready
-**Branch:** pending
+**Status:** Selected
+**Branch:** `feature/P55-T7-workbench-static-versus-ai-semantic-review`
 
 ## Objective
 
