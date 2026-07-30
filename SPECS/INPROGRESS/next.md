@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T7` Workbench Static-versus-AI Semantic Review
-**Status:** Ready
-**Branch:** TBD
+**Status:** Selected
+**Branch:** `feature/P55-T8-reviewer-controlled-semantic-materialization`
 
 ## Objective
 
