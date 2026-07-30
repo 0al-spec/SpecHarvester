@@ -1,27 +1,30 @@
-# Next Task: P55-T3 Semantic Author Input Pack
+# Next Task: P55-T4 Provider-Neutral Semantic Author Pass
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T2` AI Semantic-Author Schemas
+**Dependencies:** `P55-T3` Semantic Author Input Pack
 **Status:** Ready
-**Branch:** pending selection after P55-T2 review
+**Branch:** pending selection after P55-T3 review
 
 ## Objective
 
-Build deterministic, size-bounded semantic author input packs from validated
-candidate YAML, harvested metadata, allowlisted source documentation,
-public-interface evidence, and the observed-intent catalog.
+Implement the provider-neutral semantic author pass with Codex 5.3 Spark as the
+primary worker and LM Studio as a comparison provider.
 
 ## Required Scope
 
-Preserve exact repository-relative paths and digests, bounded byte and item
-budgets, provider-neutral request records, allowlisted reads only, and the rule
-that repository documentation is evidence rather than host instructions. Do not
-invoke Codex 5.3 Spark or LM Studio, execute harvested content, or materialize
-candidate revisions.
+Consume only P55-T3 bounded packs and emit the P55-T2 proposal contract. Let a
+provider refine purpose, propose package-owned capabilities, reuse observed
+intents, or propose visibly experimental intents with evidence, nearby intents,
+and non-goals. Preserve provider-neutral authority, bounded budgets, and
+proposal-only output; do not materialize candidates or mutate SpecPM.
 
 ## Recently Archived
 
+- `P55-T3` Semantic Author Input Pack: PASS. Deterministic bounded packs now
+  bind allowlisted candidate YAML, harvest metadata, optional public-interface
+  evidence, documentation as untrusted data, and observed intents without any
+  provider execution.
 - `P55-T2` AI Semantic-Author Schemas: PASS. Provider-neutral JSON Schema and
   deterministic cross-record checks now define evidence-bound requests,
   proposals, observed-intent reuse, experimental intents, reviewer edits, and

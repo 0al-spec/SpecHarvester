@@ -318,6 +318,7 @@ the host.
 - <doc:Phase54ExitDecision>
 - <doc:AISemanticAuthorContract>
 - <doc:AISemanticAuthorSchemas>
+- <doc:SemanticAuthorInputPack>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>
