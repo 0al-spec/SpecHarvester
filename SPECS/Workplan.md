@@ -2837,6 +2837,12 @@ Acceptance:
   including `rtk-ai/rtk` and `openai/codex`. Compare Codex 5.3 Spark and LM
   Studio for purpose accuracy, evidence support, capability specificity,
   intent reuse, novel-intent quality, and reviewer edit burden.
+- [ ] `P55-T9A` Harden semantic provider output conformance and repeat the
+  exact P55-T9 targeted calibration. Prevent request wrappers, wrong API
+  identities, and schema/meta-schema fragments from entering proposal value
+  fields; improve RTK purpose emphasis without weakening evidence,
+  capability-namespace, or schema validation. Reuse the same four targets,
+  rubric, policy digest, provider separation, and failure denominators.
 - [ ] `P55-T10` Run the validated semantic author and review flow over the
   retained 100-repository corpus. Report generic-intent reduction,
   evidence-supported proposal rate, duplicate-intent warnings, provider
@@ -2900,7 +2906,9 @@ Acceptance:
   prior candidate, and remain proposal-only with respect to SpecPM accepted
   sources and the public index.
 - P55-T9 must include repositories with known weak static semantics and report
-  provider results separately. P55-T10 may proceed only after the targeted
+  provider results separately. If its frozen gates fail, P55-T9A must harden
+  output conformance and repeat the exact target set without changing the
+  rubric or thresholds. P55-T10 may proceed only after the targeted
   calibration meets the recorded purpose-accuracy, evidence-support, schema,
   and reviewer-burden thresholds.
 - P55-T11 must complete before automatic intent canonicalization, autonomous

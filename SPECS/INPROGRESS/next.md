@@ -1,22 +1,25 @@
-# Next Task: P55-T10 Retained-Corpus Semantic Author and Review Flow
+# Next Task: P55-T9A Semantic Provider Output Conformance Follow-Up
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T9` Targeted Semantic Quality Calibration
-**Status:** Blocked
+**Status:** Ready
 
 ## Objective
 
-Run the validated semantic author and review flow over the retained
-100-repository corpus.
+Harden provider output conformance and repeat the exact P55-T9 targeted
+calibration under the unchanged rubric and frozen policy.
 
-## Blocking Condition
+## Required Scope
 
-P55-T9 completed its provider-separated measurement, but neither Codex 5.3
-Spark nor LM Studio met the frozen purpose-accuracy, evidence-support, and
-schema-validity gates. Do not select or execute P55-T10 until a bounded
-provider-output-conformance follow-up repeats the exact P55-T9 target set and
-meets the unchanged policy.
+Prevent request wrappers, wrong API identities, and schema/meta-schema
+fragments from entering semantic proposal value fields. Improve RTK purpose
+emphasis without weakening evidence, namespace, or schema validation. Repeat
+`rtk-ai/rtk`, `openai/codex`, `BurntSushi/ripgrep`, and
+`thedotmack/claude-mem` independently through Codex 5.3 Spark and LM Studio.
+Do not change the target rubric, frozen thresholds, failure denominator,
+proposal-only authority, or publication boundary. P55-T10 remains blocked
+until every frozen gate passes.
 
 ## Recently Archived
 
