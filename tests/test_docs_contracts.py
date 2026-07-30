@@ -39,6 +39,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P55-T5 Semantic Proposal Validation and Quality Diagnostics" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "`P55-T4` Provider-Neutral Semantic Author Pass" in next_text
+        assert "Freeze digest-bound numerical quality thresholds before P55-T9" in normalized
+        assert "do not materialize candidates or mutate SpecPM" in normalized
+        return
+
     if "# Next Task: P55-T4 Provider-Neutral Semantic Author Pass" in next_text:
         normalized = " ".join(next_text.split())
         assert "`P55-T3` Semantic Author Input Pack" in next_text

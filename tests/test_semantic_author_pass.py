@@ -151,9 +151,11 @@ def test_codex_adapter_is_bounded_and_uses_read_only_temporary_output(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     command: list[str] = []
+    inputs: list[str] = []
 
     def fake_run(args: list[str], **kwargs: object) -> object:
         command.extend(args)
+        inputs.append(str(kwargs["input"]))
         Path(args[args.index("--output-last-message") + 1]).write_text("{}")
         return type("Completed", (), {"returncode": 0})()
 
@@ -166,3 +168,4 @@ def test_codex_adapter_is_bounded_and_uses_read_only_temporary_output(
     )
     assert command[0:2] == ["codex", "exec"]
     assert "read-only" in command and "gpt-5.3-codex-spark" in command
+    assert "requiredProposalSchema" in inputs[0]

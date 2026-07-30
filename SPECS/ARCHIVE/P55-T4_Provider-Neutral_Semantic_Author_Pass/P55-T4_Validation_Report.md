@@ -56,3 +56,12 @@ Build complete
 
 SwiftPM emitted the existing non-blocking warning that the DocC directory is
 not declared as a target resource.
+
+## Review Correction
+
+The archive review found that the initial Codex prompt named the proposal schema
+without including it. The pass now embeds the exact P55-T2 proposal schema in
+the temporary Codex request, and the adapter test asserts that binding.
+Targeted regression validation passed: `210 passed` across the semantic-author
+pass and documentation-contract suites, with lint, formatting, diff, and DocC
+checks also passing.

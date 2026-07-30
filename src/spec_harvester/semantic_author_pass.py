@@ -289,7 +289,11 @@ def _proposal_schema() -> dict[str, Any]:
 
 
 def _provider_prompt(request: dict[str, Any]) -> str:
-    return f"{_system_prompt()}\n\n{json.dumps(request, sort_keys=True)}"
+    payload = {
+        "request": request,
+        "requiredProposalSchema": _proposal_schema(),
+    }
+    return f"{_system_prompt()}\n\n{json.dumps(payload, sort_keys=True)}"
 
 
 def _system_prompt() -> str:
