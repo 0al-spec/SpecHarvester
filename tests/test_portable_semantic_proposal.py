@@ -6,7 +6,11 @@ import json
 from pathlib import Path
 
 import pytest
+import yaml
+from jsonschema import Draft202012Validator
 
+import spec_harvester.semantic_materialization as semantic_materialization
+from spec_harvester.cli import main
 from spec_harvester.local_candidate_review_details import (
     _comparison,
     _detail_sections,
@@ -24,6 +28,10 @@ from spec_harvester.semantic_author_pass import (
     ProviderCompletion,
     SemanticAuthorPassOptions,
     run_semantic_author_pass,
+)
+from spec_harvester.semantic_materialization import (
+    SemanticMaterializationOptions,
+    materialize_semantic_candidate,
 )
 from spec_harvester.semantic_proposal_quality import evaluate_semantic_proposal_quality
 from spec_harvester.semantic_review import (
@@ -570,6 +578,287 @@ def test_semantic_reviewer_edit_rejects_stale_unknown_and_incoherent_edits(
     invalid_shape.pop("editedClaims")
     with pytest.raises(ValueError, match="action shape"):
         build_semantic_reviewer_edit(invalid_shape, record, "maintainer@example")
+
+
+def _materialization_candidate(root: Path) -> Path:
+    candidate = root / "candidate"
+    (candidate / "specs").mkdir(parents=True)
+    (candidate / "specpm.yaml").write_text(
+        "apiVersion: specpm.dev/v0.1\n"
+        "kind: SpecPackage\n"
+        "metadata:\n"
+        "  id: demo.package\n"
+        "  name: Demo\n"
+        "  version: 0.1.0\n"
+        "  summary: Generic static summary.\n"
+        "preview_only: true\n"
+        "specs:\n"
+        "  - path: specs/core.spec.yaml\n"
+        "index:\n"
+        "  provides:\n"
+        "    capabilities:\n"
+        "      - demo.package.context_selection\n"
+        "    intents:\n"
+        "      - intent.package.python_library\n",
+        encoding="utf-8",
+    )
+    (candidate / "specs/core.spec.yaml").write_text(
+        "apiVersion: specpm.dev/v0.1\n"
+        "kind: BoundarySpec\n"
+        "metadata:\n"
+        "  id: demo.package\n"
+        "intent:\n"
+        "  summary: Generic static summary.\n"
+        "scope:\n"
+        "  includes: []\n"
+        "  excludes: []\n"
+        "provides:\n"
+        "  capabilities:\n"
+        "    - id: demo.package.context_selection\n"
+        "      summary: Generic capability.\n"
+        "      intentIds:\n"
+        "        - intent.package.python_library\n",
+        encoding="utf-8",
+    )
+    return candidate
+
+
+def _materialization_decision(
+    record: dict, reviewer_edit: dict, *, candidate_id: str | None = None
+) -> dict:
+    return {
+        "apiVersion": "spec-harvester.candidate-review-decision/v0",
+        "kind": "SpecHarvesterCandidateReviewDecision",
+        "authority": "local_review_decision_evidence_only",
+        "binding": {
+            "candidateId": candidate_id or record["candidateId"],
+            "packetSha256": "a" * 64,
+        },
+        "disposition": "accept_for_intake",
+        "reviewer": reviewer_edit["reviewer"],
+        "recordedAt": "2026-07-31T12:00:00Z",
+        "reasonCode": "evidence_verified",
+        "priorDecisionSha256": None,
+        "semanticReview": reviewer_edit,
+    }
+
+
+def _valid_specpm_report() -> dict:
+    return {
+        "status": "valid",
+        "error_count": 0,
+        "warning_count": 0,
+        "errors": [],
+        "warnings": [],
+        "package_identity": {
+            "package_id": "demo.package",
+            "name": "Demo",
+            "version": "0.1.0",
+        },
+        "checked_files": ["specpm.yaml", "specs/core.spec.yaml"],
+        "capabilities": ["demo.package.context_selection"],
+        "intents": ["intent.ai.context_selection"],
+        "intent_mappings": [
+            {
+                "capability_id": "demo.package.context_selection",
+                "intent_id": "intent.ai.context_selection",
+            }
+        ],
+    }
+
+
+def test_materializes_only_selected_semantics_into_new_preview_revision(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    record = build_portable_semantic_proposal(*semantic_triplet(tmp_path))
+    action = {
+        "decision": "edited",
+        "acceptedOrEditedClaimIds": [
+            "purpose",
+            "capability",
+            "interface",
+            "nearby",
+            "non_goal",
+        ],
+        "editedClaims": [
+            {"claimId": "purpose", "text": "Choose relevant repository context for a task."}
+        ],
+        "proposalSha256": record["proposalSha256"],
+        "sourceBundleSha256": record["sourceBundleSha256"],
+        "semanticRecordSha256": record["recordSha256"],
+    }
+    review = build_semantic_reviewer_edit(action, record, "maintainer@example")
+    candidate = _materialization_candidate(tmp_path)
+    before = {
+        path.relative_to(candidate): path.read_bytes()
+        for path in candidate.rglob("*")
+        if path.is_file()
+    }
+    record_path = tmp_path / "record.json"
+    decision_path = tmp_path / "decision.json"
+    record_path.write_text(json.dumps(record))
+    decision_path.write_text(json.dumps(_materialization_decision(record, review)))
+    monkeypatch.setattr(
+        semantic_materialization,
+        "_run_specpm_validation",
+        lambda *_args, **_kwargs: _valid_specpm_report(),
+    )
+
+    report = materialize_semantic_candidate(
+        SemanticMaterializationOptions(
+            candidate=candidate,
+            semantic_record=record_path,
+            review_decision=decision_path,
+            output=tmp_path / "materialized",
+        )
+    )
+
+    manifest = yaml.safe_load((tmp_path / "materialized/candidate/specpm.yaml").read_text())
+    boundary = yaml.safe_load(
+        (tmp_path / "materialized/candidate/specs/core.spec.yaml").read_text()
+    )
+    assert manifest["metadata"]["summary"] == "Choose relevant repository context for a task."
+    assert manifest["preview_only"] is True
+    assert "intent.ai.context_selection" in manifest["index"]["provides"]["intents"]
+    assert boundary["provides"]["capabilities"][0]["summary"] == (
+        "Select relevant repository context."
+    )
+    assert "Expose a command-line interface." in boundary["scope"]["includes"]
+    assert "Do not publish registry truth." in boundary["scope"]["excludes"]
+    assert report["validation"]["specHarvester"] == "passed"
+    assert report["validation"]["specPM"]["status"] == "valid"
+    assert report["registryMutationCount"] == 0
+    assert json.loads((tmp_path / "materialized/materialization-report.json").read_text()) == report
+    schema = json.loads(
+        (
+            Path(__file__).resolve().parents[1] / "schemas/semantic-materialization-v0.schema.json"
+        ).read_text()
+    )
+    assert list(Draft202012Validator(schema).iter_errors(report)) == []
+    assert {
+        path.relative_to(candidate): path.read_bytes()
+        for path in candidate.rglob("*")
+        if path.is_file()
+    } == before
+
+
+def test_materialization_rejects_non_authorizing_and_stale_decisions(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    record = build_portable_semantic_proposal(*semantic_triplet(tmp_path))
+    candidate = _materialization_candidate(tmp_path)
+    record_path = tmp_path / "record.json"
+    record_path.write_text(json.dumps(record))
+    monkeypatch.setattr(
+        semantic_materialization,
+        "_run_specpm_validation",
+        lambda *_args, **_kwargs: _valid_specpm_report(),
+    )
+    accepted_action = {
+        "decision": "accepted",
+        "acceptedOrEditedClaimIds": ["purpose"],
+        "editedClaims": [],
+        "proposalSha256": record["proposalSha256"],
+        "sourceBundleSha256": record["sourceBundleSha256"],
+        "semanticRecordSha256": record["recordSha256"],
+    }
+    accepted_review = build_semantic_reviewer_edit(accepted_action, record, "maintainer@example")
+    missing_review = _materialization_decision(record, accepted_review)
+    missing_review.pop("semanticReview")
+    missing_review_path = tmp_path / "missing-review.json"
+    missing_review_path.write_text(json.dumps(missing_review))
+    with pytest.raises(ValueError, match="Semantic review decision is missing"):
+        materialize_semantic_candidate(
+            SemanticMaterializationOptions(
+                candidate=candidate,
+                semantic_record=record_path,
+                review_decision=missing_review_path,
+                output=tmp_path / "output-missing-review",
+            )
+        )
+    for decision_name, candidate_id, message in (
+        ("deferred", record["candidateId"], "accepted or edited"),
+        ("accepted", "other.candidate", "candidate binding is stale"),
+    ):
+        action = {
+            "decision": decision_name,
+            "acceptedOrEditedClaimIds": (["purpose"] if decision_name == "accepted" else []),
+            "editedClaims": [],
+            "proposalSha256": record["proposalSha256"],
+            "sourceBundleSha256": record["sourceBundleSha256"],
+            "semanticRecordSha256": record["recordSha256"],
+        }
+        review = build_semantic_reviewer_edit(action, record, "maintainer@example")
+        decision_path = tmp_path / f"{decision_name}.json"
+        decision_path.write_text(
+            json.dumps(_materialization_decision(record, review, candidate_id=candidate_id))
+        )
+        with pytest.raises(ValueError, match=message):
+            materialize_semantic_candidate(
+                SemanticMaterializationOptions(
+                    candidate=candidate,
+                    semantic_record=record_path,
+                    review_decision=decision_path,
+                    output=tmp_path / f"output-{decision_name}",
+                )
+            )
+
+
+def test_semantic_materialization_cli_reports_success_and_validation_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    report = {
+        "apiVersion": "spec-harvester.semantic-materialization/v0",
+        "status": "passed",
+    }
+    monkeypatch.setattr(
+        "spec_harvester.cli.materialize_semantic_candidate",
+        lambda _options: report,
+    )
+    arguments = [
+        "materialize-semantic-candidate",
+        "--candidate",
+        str(tmp_path / "candidate"),
+        "--semantic-record",
+        str(tmp_path / "record.json"),
+        "--review-decision",
+        str(tmp_path / "decision.json"),
+        "--output",
+        str(tmp_path / "output"),
+    ]
+
+    assert main(arguments) == 0
+    assert json.loads(capsys.readouterr().out) == report
+
+    def reject(_options: SemanticMaterializationOptions) -> dict:
+        raise ValueError("stale semantic decision")
+
+    monkeypatch.setattr("spec_harvester.cli.materialize_semantic_candidate", reject)
+    assert main(arguments) == 2
+    assert json.loads(capsys.readouterr().out)["message"] == "stale semantic decision"
+
+
+@pytest.mark.parametrize(
+    ("timeout", "report_bytes", "message"),
+    [
+        (0, 1024, "timeout must be positive"),
+        (1, 0, "report byte limit is invalid"),
+    ],
+)
+def test_semantic_materialization_rejects_invalid_validation_bounds(
+    tmp_path: Path, timeout: int, report_bytes: int, message: str
+) -> None:
+    with pytest.raises(ValueError, match=message):
+        materialize_semantic_candidate(
+            SemanticMaterializationOptions(
+                candidate=tmp_path / "candidate",
+                semantic_record=tmp_path / "record.json",
+                review_decision=tmp_path / "decision.json",
+                output=tmp_path / "output",
+                specpm_timeout_seconds=timeout,
+                max_specpm_report_bytes=report_bytes,
+            )
+        )
 
 
 def test_detail_surface_rejects_semantic_member_drift(tmp_path: Path) -> None:
