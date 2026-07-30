@@ -2803,7 +2803,7 @@ Acceptance:
   public-interface evidence, and the SpecPM observed-intent catalog. Preserve
   exact source paths and digests without executing repository content or
   treating documentation as host instructions.
-- [ ] `P55-T4` Implement the provider-neutral semantic author pass with Codex
+- [x] `P55-T4` Implement the provider-neutral semantic author pass with Codex
   5.3 Spark as the primary worker and LM Studio as a comparison provider. Let
   the model refine package purpose, propose concrete package-owned
   capabilities, reuse suitable intents, or propose
