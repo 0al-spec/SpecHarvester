@@ -67,6 +67,14 @@ def test_builds_deterministic_schema_valid_input_pack(tmp_path: Path) -> None:
         "untrusted"
     ]
     assert all(value is False for value in first["executionBoundary"].values())
+    catalog_evidence = next(
+        item for item in first["evidence"] if item["id"] == "observed_intent_catalog"
+    )
+    assert (
+        hashlib.sha256(catalog_evidence["content"].encode()).hexdigest()
+        == catalog_evidence["sha256"]
+    )
+    assert len(catalog_evidence["content"].encode()) == catalog_evidence["byteCount"]
 
 
 @pytest.mark.parametrize("path", ("../README.md", "/tmp/README.md"))
@@ -156,4 +164,27 @@ def test_rejects_invalid_options_and_catalog_limit(tmp_path: Path) -> None:
             workspace(tmp_path),
             oversized,
             options=SemanticAuthorInputPackOptions(max_observed_intents=1),
+        )
+
+
+def test_rejects_symlinked_parent_and_file_before_reading(tmp_path: Path) -> None:
+    source = workspace(tmp_path)
+    target = source / "target"
+    target.mkdir()
+    (target / "doc.md").write_text("outside declared path", encoding="utf-8")
+    (source / "linked").symlink_to(target, target_is_directory=True)
+    with pytest.raises(ValueError, match="allowlisted evidence file is unavailable"):
+        build_semantic_author_input_pack(
+            source,
+            catalog(),
+            options=SemanticAuthorInputPackOptions(document_paths=("linked/doc.md",)),
+        )
+    (source / "README.md").write_text("x" * 100, encoding="utf-8")
+    with pytest.raises(ValueError, match="evidence exceeds remaining byte budget"):
+        build_semantic_author_input_pack(
+            source,
+            catalog(),
+            options=SemanticAuthorInputPackOptions(
+                document_paths=("README.md",), max_total_bytes=64
+            ),
         )

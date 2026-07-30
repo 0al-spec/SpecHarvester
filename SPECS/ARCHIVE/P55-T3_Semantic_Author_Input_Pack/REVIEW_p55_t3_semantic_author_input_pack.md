@@ -32,8 +32,8 @@ None.
 
 ### Tests
 
-- Focused input-pack and documentation tests: `212 passed`.
-- Full Python tests: `1194 passed, 1 skipped`.
+- Focused input-pack and documentation tests: `213 passed`.
+- Full Python tests: `1195 passed, 1 skipped`.
 - Total Python coverage: `90.03%`.
 - Ruff, format, `git diff --check`, Swift manifest, and DocC build passed.
 

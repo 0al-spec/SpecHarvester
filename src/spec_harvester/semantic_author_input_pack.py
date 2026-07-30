@@ -146,8 +146,12 @@ def _safe_path(path: str) -> str:
 
 
 def _workspace_file(workspace: Path, relative: str) -> Path:
-    path = workspace / _safe_path(relative)
-    if path.is_symlink() or not path.is_file() or workspace not in path.resolve().parents:
+    path = workspace
+    for component in Path(_safe_path(relative)).parts:
+        path /= component
+        if path.is_symlink():
+            raise ValueError(f"allowlisted evidence file is unavailable: {relative}")
+    if not path.is_file() or workspace not in path.resolve().parents:
         raise ValueError(f"allowlisted evidence file is unavailable: {relative}")
     return path
 
@@ -177,12 +181,16 @@ def _append_file(
     options: SemanticAuthorInputPackOptions,
 ) -> None:
     path = _workspace_file(workspace, relative)
-    raw = path.read_bytes()
+    file_size = path.stat().st_size
+    remaining_bytes = options.max_total_bytes - sum(item["byteCount"] for item in evidence)
+    if file_size > remaining_bytes:
+        raise ValueError(f"evidence exceeds remaining byte budget: {relative}")
     if (
         evidence_class == "allowlisted_source_documentation"
-        and len(raw) > options.max_document_bytes
+        and file_size > options.max_document_bytes
     ):
         raise ValueError(f"documentation evidence exceeds byte budget: {relative}")
+    raw = path.read_bytes()
     evidence.append(
         {
             "id": f"evidence_{len(evidence) + 1}",
@@ -242,7 +250,7 @@ def _validate_catalog(
         "sourcePath": _safe_path(path),
         "sha256": digest,
         "byteCount": len(raw),
-        "content": json.dumps(intents, sort_keys=True),
+        "content": raw.decode("utf-8"),
         "untrusted": False,
     }
 

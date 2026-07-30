@@ -31,10 +31,10 @@ canonicalization, acceptance, or publication.
 
 ```text
 uv run pytest tests/test_semantic_author_input_pack.py tests/test_docs_contracts.py -q
-212 passed
+213 passed
 
 uv run pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90
-1194 passed, 1 skipped
+1195 passed, 1 skipped
 Total coverage: 90.03%
 
 uv run ruff check src tests
