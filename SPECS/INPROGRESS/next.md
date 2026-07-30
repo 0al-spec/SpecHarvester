@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T5` Semantic Proposal Validation and Quality Diagnostics
-**Status:** Ready
-**Branch:** pending
+**Status:** Selected
+**Branch:** `feature/P55-T6-complete-portable-semantic-proposal-records`
 
 ## Objective
 
