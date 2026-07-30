@@ -1,25 +1,32 @@
-# Next Task: P55-T4 Provider-Neutral Semantic Author Pass
+# Next Task: P55-T5 Semantic Proposal Validation and Quality Diagnostics
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T3` Semantic Author Input Pack
+**Dependencies:** `P55-T4` Provider-Neutral Semantic Author Pass
 **Status:** Ready
-**Branch:** pending selection after P55-T3 review
+**Branch:** pending selection after P55-T4 review
 
 ## Objective
 
-Implement the provider-neutral semantic author pass with Codex 5.3 Spark as the
-primary worker and LM Studio as a comparison provider.
+Implement deterministic semantic proposal validation and quality diagnostics
+for the P55-T4 provider-neutral proposal contract.
 
 ## Required Scope
 
-Consume only P55-T3 bounded packs and emit the P55-T2 proposal contract. Let a
-provider refine purpose, propose package-owned capabilities, reuse observed
-intents, or propose visibly experimental intents with evidence, nearby intents,
-and non-goals. Preserve provider-neutral authority, bounded budgets, and
-proposal-only output; do not materialize candidates or mutate SpecPM.
+Enforce identifier and namespace shape, package-to-capability ownership,
+evidence-path allowlists, manifest/BoundarySpec consistency, provider-neutral
+intent wording, unsupported quantitative-claim rejection, generic-intent
+detection, and duplicate or overlap warnings. Freeze digest-bound numerical
+quality thresholds before P55-T9; do not materialize candidates or mutate
+SpecPM.
 
 ## Recently Archived
+
+- `P55-T4` Provider-Neutral Semantic Author Pass: PASS. Codex 5.3 Spark and
+  local LM Studio now share a bounded P55-T2 semantic-proposal contract. The
+  pass retains normalized proposal and receipt data only, validates evidence
+  and observed-intent bindings, and has no materialization, SpecPM mutation,
+  registry, or publication path.
 
 - `P55-T3` Semantic Author Input Pack: PASS. Deterministic bounded packs now
   bind allowlisted candidate YAML, harvest metadata, optional public-interface
