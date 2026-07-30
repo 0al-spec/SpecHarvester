@@ -2817,7 +2817,7 @@ Acceptance:
   begins, freeze numerical pass thresholds for purpose accuracy, evidence
   support, schema validity, and reviewer edit burden in a digest-bound policy
   fixture; calibration results must not redefine those thresholds.
-- [ ] `P55-T6` Replace summary-only portable AI status with complete,
+- [x] `P55-T6` Replace summary-only portable AI status with complete,
   digest-bound semantic proposal records in the author handoff and candidate
   detail bundle. Preserve provider receipts and proposal digests without raw
   prompts, raw responses, hidden reasoning, credentials, or automatic
