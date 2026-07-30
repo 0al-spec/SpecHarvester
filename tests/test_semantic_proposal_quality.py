@@ -256,6 +256,31 @@ def test_stale_request_binding_rejects(tmp_path: Path) -> None:
     assert "request_binding_mismatch" in diagnostic_codes(report)
 
 
+def test_recomputed_source_bundle_digest_rejects_coordinated_evidence_tampering(
+    tmp_path: Path,
+) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    readme = next(item for item in pack["evidence"] if item["sourcePath"] == "README.md")
+    readme["content"] += " Altered after pack creation."
+    readme["byteCount"] = len(readme["content"].encode())
+    readme["sha256"] = hashlib.sha256(readme["content"].encode()).hexdigest()
+    request_readme = next(
+        item for item in pack["request"]["evidence"] if item["sourcePath"] == "README.md"
+    )
+    request_readme["sha256"] = readme["sha256"]
+    for claim_record in passed["proposal"]["claims"]:
+        for evidence in claim_record["evidence"]:
+            if evidence["sourcePath"] == "README.md":
+                evidence["sha256"] = readme["sha256"]
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "source_bundle_digest_stale" in diagnostic_codes(report)
+
+
 def test_unknown_evidence_and_invalid_identifier_reject(tmp_path: Path) -> None:
     pack = input_pack(tmp_path)
     passed = semantic_pass(pack)
@@ -353,6 +378,43 @@ def test_experimental_intent_overlap_requires_review(tmp_path: Path) -> None:
 
     assert report["status"] == "review_required"
     assert "experimental_intent_overlaps_observed" in diagnostic_codes(report)
+
+
+def test_duplicate_experimental_intent_rejects(tmp_path: Path) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    passed["proposal"]["intentDecisions"].append(
+        copy.deepcopy(passed["proposal"]["intentDecisions"][1])
+    )
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "duplicate_experimental_intent" in diagnostic_codes(report)
+
+
+@pytest.mark.parametrize(
+    ("decision_index", "field"),
+    [
+        (0, "rationaleClaimId"),
+        (1, "userNeedClaimId"),
+        (1, "nonGoalClaimIds"),
+    ],
+)
+def test_unknown_intent_claim_reference_rejects(
+    tmp_path: Path, decision_index: int, field: str
+) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    decision = passed["proposal"]["intentDecisions"][decision_index]
+    decision[field] = ["missing"] if field == "nonGoalClaimIds" else "missing"
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "intent_claim_reference_unknown" in diagnostic_codes(report)
 
 
 def test_missing_proposal_returns_rejected_report(tmp_path: Path) -> None:

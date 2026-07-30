@@ -18,11 +18,11 @@ PASS
 ## Validation
 
 - `uv run pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90 -q`
-  - `1228 passed, 1 skipped`
+  - `1234 passed, 1 skipped`
   - total coverage: `90.05%`
   - `semantic_proposal_quality.py`: `91%`
 - `uv run pytest tests/test_semantic_proposal_quality.py -q`
-  - `15 passed`
+  - `20 passed`
 - `uv run pytest tests/test_docs_contracts.py -q`
   - `202 passed`
 - `uv run ruff check src tests`

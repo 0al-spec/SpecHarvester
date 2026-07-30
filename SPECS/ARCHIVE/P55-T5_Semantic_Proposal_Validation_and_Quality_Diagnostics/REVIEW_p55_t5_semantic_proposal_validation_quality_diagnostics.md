@@ -16,7 +16,10 @@
 
 ### Secondary Issues
 
-- None remaining.
+- PR review found three integrity gaps after the initial FLOW review. All were
+  corrected in the PR branch: canonical source-bundle digest recomputation,
+  hard rejection of duplicate experimental intent IDs, and intent-decision
+  claim-reference revalidation.
 
 ### Architectural Notes
 
@@ -31,9 +34,9 @@
 
 ### Tests
 
-- Full gate: `1229 passed, 1 skipped`, total coverage `90.05%`.
+- Full gate: `1234 passed, 1 skipped`, total coverage `90.05%`.
 - New evaluator coverage: `91%`.
-- Focused semantic quality gate: `15 passed`.
+- Focused semantic quality gate: `20 passed`.
 - Docs contracts: `202 passed`.
 - Ruff lint and format, diff check, Swift manifest, and DocC build passed.
 - Swift emitted the repository's existing unhandled DocC resource warning.

@@ -177,7 +177,11 @@ def _validate_evidence(
 ) -> dict[tuple[str, str, str, str, str], dict[str, Any]]:
     content_by_binding: dict[tuple[str, str, str, str, str], dict[str, Any]] = {}
     source_digest = pack.get("sourceBundleSha256")
-    for item in pack.get("evidence", []):
+    evidence = pack.get("evidence", [])
+    if not isinstance(evidence, list) or _source_bundle_digest(evidence) != source_digest:
+        diagnostics.append(_diagnostic("source_bundle_digest_stale", "error"))
+        evidence = evidence if isinstance(evidence, list) else []
+    for item in evidence:
         if not isinstance(item, dict):
             continue
         binding = _binding_tuple(item)
@@ -187,6 +191,7 @@ def _validate_evidence(
         if (
             not isinstance(content, str)
             or hashlib.sha256(content.encode()).hexdigest() != item.get("sha256")
+            or len(content.encode()) != item.get("byteCount")
             or item.get("sourceBundleSha256") != source_digest
         ):
             diagnostics.append(
@@ -334,12 +339,21 @@ def _validate_intents(
         for item in pack.get("observedIntents", [])
         if isinstance(item, dict)
     }
+    claim_ids = {claim["id"] for claim in proposal["claims"]}
     seen: set[str] = set()
     for decision in proposal["intentDecisions"]:
         intent_id = decision["intentId"]
         if intent_id in seen:
             diagnostics.append(
-                _diagnostic("duplicate_intent_decision", "warning", subject=intent_id)
+                _diagnostic(
+                    (
+                        "duplicate_experimental_intent"
+                        if decision["state"] == "proposed_experimental"
+                        else "duplicate_intent_decision"
+                    ),
+                    "error" if decision["state"] == "proposed_experimental" else "warning",
+                    subject=intent_id,
+                )
             )
         seen.add(intent_id)
         if intent_id in GENERIC_INTENT_IDS:
@@ -352,6 +366,21 @@ def _validate_intents(
         elif not intent_id.startswith("intent.experimental."):
             diagnostics.append(
                 _diagnostic("experimental_intent_namespace_invalid", "error", subject=intent_id)
+            )
+        referenced_claim_ids = (
+            {decision["rationaleClaimId"]}
+            if decision["state"] == "proposed_reuse"
+            else {decision["userNeedClaimId"], *decision["nonGoalClaimIds"]}
+        )
+        unknown_claim_ids = sorted(referenced_claim_ids - claim_ids)
+        if unknown_claim_ids:
+            diagnostics.append(
+                _diagnostic(
+                    "intent_claim_reference_unknown",
+                    "error",
+                    subject=intent_id,
+                    detail=", ".join(unknown_claim_ids),
+                )
             )
         for observed_id in observed:
             if (
@@ -492,6 +521,16 @@ def _binding_tuple(item: dict[str, Any]) -> tuple[str, str, str, str, str] | Non
         item.get(key) for key in ("id", "class", "sourcePath", "sha256", "sourceBundleSha256")
     )
     return values if all(isinstance(value, str) for value in values) else None
+
+
+def _source_bundle_digest(evidence: list[Any]) -> str | None:
+    keys = ("id", "class", "sourcePath", "sha256", "byteCount")
+    if any(not isinstance(item, dict) or any(key not in item for key in keys) for item in evidence):
+        return None
+    bindings = [{key: item[key] for key in keys} for item in evidence]
+    return hashlib.sha256(
+        json.dumps(bindings, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
 
 
 def _string_list(value: Any) -> list[str]:
