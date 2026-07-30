@@ -10,7 +10,7 @@ whose user purpose is poorly represented by generic static intents.
 - `rtk-ai/rtk`: token and context reduction utility.
 - `openai/codex`: coding agent.
 - `BurntSushi/ripgrep`: recursive regular-expression text search utility.
-- `junegunn/fzf`: interactive fuzzy finder and filter.
+- `thedotmack/claude-mem`: persistent context and memory for a coding agent.
 
 The retained P53 source revisions and P53-T14 static candidates are the only
 repository inputs.
