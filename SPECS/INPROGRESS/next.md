@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T8` Reviewer-Controlled Semantic Materialization
-**Status:** Ready
-**Branch:** TBD
+**Status:** Selected
+**Branch:** `feature/P55-T9-targeted-semantic-quality-calibration`
 
 ## Objective
 
