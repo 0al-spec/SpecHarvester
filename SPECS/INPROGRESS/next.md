@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T3` Semantic Author Input Pack
-**Status:** Ready
-**Branch:** pending selection after P55-T3 review
+**Status:** Selected
+**Branch:** `feature/P55-T4-provider-neutral-semantic-author-pass`
 
 ## Objective
 
