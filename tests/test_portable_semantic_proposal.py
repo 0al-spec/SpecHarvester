@@ -292,6 +292,30 @@ def test_portable_record_validators_fail_closed_for_identity_digest_and_privacy(
         build_portable_semantic_proposal_from_directory(tmp_path / "missing")
 
 
+@pytest.mark.parametrize("target", ("record", "proposal", "quality"))
+def test_embedded_validator_rejects_unknown_persisted_fields(tmp_path: Path, target: str) -> None:
+    record = build_portable_semantic_proposal(*semantic_triplet(tmp_path))
+    if target == "record":
+        record["rawPrompt"] = "secret"
+    elif target == "proposal":
+        record["proposal"]["rawResponse"] = "secret"
+        record["proposal"]["proposalSha256"] = digest(
+            {key: value for key, value in record["proposal"].items() if key != "proposalSha256"}
+        )
+        record["proposalSha256"] = record["proposal"]["proposalSha256"]
+        record["qualityReport"]["proposalSha256"] = record["proposalSha256"]
+        record["qualityReportSha256"] = digest(record["qualityReport"])
+    else:
+        record["qualityReport"]["chainOfThought"] = "secret"
+        record["qualityReportSha256"] = digest(record["qualityReport"])
+    record["recordSha256"] = digest(
+        {key: value for key, value in record.items() if key != "recordSha256"}
+    )
+
+    with pytest.raises(ValueError, match="identity|shape"):
+        validate_portable_semantic_proposal(record)
+
+
 def test_receipt_validator_rejects_raw_data_and_machine_local_paths(tmp_path: Path) -> None:
     record = build_portable_semantic_proposal(*semantic_triplet(tmp_path))
     receipt = copy.deepcopy(record["providerReceipt"])

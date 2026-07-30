@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 from typing import Any
 
+from jsonschema import Draft202012Validator, FormatChecker
+
+from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
 from spec_harvester.semantic_proposal_quality import evaluate_semantic_proposal_quality
 
 PORTABLE_SEMANTIC_API_VERSION = "spec-harvester.portable-semantic-proposal/v0"
@@ -41,6 +44,40 @@ REQUIRED_RECEIPT_KEYS = {
     "receiptSha256",
 }
 MACHINE_LOCAL_PREFIXES = ("/Users/", "/home/", "/tmp/", "/private/var/")
+PORTABLE_RECORD_KEYS = {
+    "apiVersion",
+    "kind",
+    "schemaVersion",
+    "authority",
+    "candidateId",
+    "sourceBundleSha256",
+    "proposalSha256",
+    "providerReceiptSha256",
+    "qualityReportSha256",
+    "qualityStatus",
+    "proposal",
+    "qualityReport",
+    "providerReceipt",
+    "privacy",
+    "executionBoundary",
+    "recordSha256",
+}
+QUALITY_REPORT_KEYS = {
+    "apiVersion",
+    "kind",
+    "schemaVersion",
+    "authority",
+    "candidateId",
+    "sourceBundleSha256",
+    "proposalSha256",
+    "policy",
+    "status",
+    "eligibleForCalibration",
+    "summary",
+    "metrics",
+    "diagnostics",
+    "executionBoundary",
+}
 
 
 def build_portable_semantic_proposal(
@@ -128,7 +165,7 @@ def build_portable_semantic_proposal_from_directory(source: Path) -> dict[str, A
 
 
 def validate_portable_semantic_proposal(record: dict[str, Any]) -> None:
-    if (
+    if set(record) != PORTABLE_RECORD_KEYS or (
         record.get("apiVersion") != PORTABLE_SEMANTIC_API_VERSION
         or record.get("kind") != PORTABLE_SEMANTIC_KIND
         or record.get("schemaVersion") != 1
@@ -142,6 +179,17 @@ def validate_portable_semantic_proposal(record: dict[str, Any]) -> None:
     receipt = record.get("providerReceipt")
     if not all(isinstance(item, dict) for item in (proposal, quality, receipt)):
         raise ValueError("portable semantic proposal embedded records are malformed")
+    if set(quality) != QUALITY_REPORT_KEYS:
+        raise ValueError("portable semantic proposal quality report shape is invalid")
+    proposal_schema = {
+        "$ref": "#/$defs/proposal",
+        "$defs": load_ai_semantic_author_schema()["$defs"],
+    }
+    proposal_errors = list(
+        Draft202012Validator(proposal_schema, format_checker=FormatChecker()).iter_errors(proposal)
+    )
+    if proposal_errors:
+        raise ValueError("portable semantic proposal embedded proposal shape is invalid")
     _validate_receipt(receipt)
     if (
         record.get("recordSha256") != _digest_without(record, "recordSha256")
