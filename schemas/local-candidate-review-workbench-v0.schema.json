@@ -125,6 +125,92 @@
             "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
             "qualityStatus": {"enum": ["eligible_for_calibration", "review_required"]}
           }
+        },
+        "semantic": {"$ref": "#/$defs/semanticComparison"}
+      }
+    },
+    "semanticClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text", "evidence"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "text": {"type": "string", "minLength": 1},
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "sourcePath", "sha256"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "sourcePath": {"type": "string", "minLength": 1},
+              "sha256": {"$ref": "#/$defs/sha256"}
+            }
+          }
+        }
+      }
+    },
+    "semanticComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["static", "ai", "binding"],
+      "properties": {
+        "static": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["summaries", "capabilities", "intents", "interfaces", "evidence"],
+          "properties": {
+            "summaries": {"type": "array", "items": {"type": "string"}},
+            "capabilities": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["id", "summary", "intentIds"],
+                "properties": {
+                  "id": {"type": "string", "minLength": 1},
+                  "summary": {"type": "string"},
+                  "intentIds": {"type": "array", "items": {"type": "string"}}
+                }
+              }
+            },
+            "intents": {"type": "array", "items": {"type": "string"}},
+            "interfaces": {"type": "array", "items": {"type": "string"}},
+            "evidence": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "ai": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["claims", "observedIntentReuse", "experimentalIntents"],
+          "properties": {
+            "claims": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["purpose", "capability", "interface", "nearby_intent_difference", "non_goal"],
+              "properties": {
+                "purpose": {"type": "array", "items": {"$ref": "#/$defs/semanticClaim"}},
+                "capability": {"type": "array", "items": {"$ref": "#/$defs/semanticClaim"}},
+                "interface": {"type": "array", "items": {"$ref": "#/$defs/semanticClaim"}},
+                "nearby_intent_difference": {"type": "array", "items": {"$ref": "#/$defs/semanticClaim"}},
+                "non_goal": {"type": "array", "items": {"$ref": "#/$defs/semanticClaim"}}
+              }
+            },
+            "observedIntentReuse": {"type": "array", "items": {"type": "object"}},
+            "experimentalIntents": {"type": "array", "items": {"type": "object"}}
+          }
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["semanticRecordSha256", "proposalSha256", "sourceBundleSha256"],
+          "properties": {
+            "semanticRecordSha256": {"$ref": "#/$defs/sha256"},
+            "proposalSha256": {"$ref": "#/$defs/sha256"},
+            "sourceBundleSha256": {"$ref": "#/$defs/sha256"}
+          }
         }
       }
     },
@@ -142,7 +228,39 @@
         "recordedAt": {"type": "string", "format": "date-time"},
         "reasonCode": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
         "notes": {"type": "string", "maxLength": 4000},
-        "priorDecisionSha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
+        "priorDecisionSha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "semanticReview": {"$ref": "#/$defs/semanticReview"}
+      }
+    },
+    "semanticReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiVersion", "kind", "schemaVersion", "authority", "proposalSha256", "reviewerEditSha256", "sourceBundleSha256", "semanticRecordSha256", "reviewer", "decision", "acceptedOrEditedClaimIds"],
+      "properties": {
+        "apiVersion": {"const": "spec-harvester.ai-semantic-reviewer-edit/v0"},
+        "kind": {"const": "SpecHarvesterAISemanticReviewerEdit"},
+        "schemaVersion": {"const": 1},
+        "authority": {"const": "reviewer_semantic_decision_evidence_only"},
+        "proposalSha256": {"$ref": "#/$defs/sha256"},
+        "reviewerEditSha256": {"$ref": "#/$defs/sha256"},
+        "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
+        "semanticRecordSha256": {"$ref": "#/$defs/sha256"},
+        "reviewer": {"type": "string", "minLength": 1, "maxLength": 200},
+        "decision": {"enum": ["accepted", "edited", "rejected", "deferred"]},
+        "acceptedOrEditedClaimIds": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"}},
+        "editedClaims": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["claimId", "text"],
+            "properties": {
+              "claimId": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+              "text": {"type": "string", "minLength": 1, "maxLength": 4000}
+            }
+          }
+        }
       }
     },
     "reasons": {

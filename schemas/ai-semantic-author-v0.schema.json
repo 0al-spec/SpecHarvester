@@ -151,7 +151,21 @@
         "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
         "reviewer": {"type": "string", "minLength": 1, "maxLength": 200},
         "decision": {"enum": ["accepted", "edited", "rejected", "deferred"]},
-        "acceptedOrEditedClaimIds": {"type": "array", "items": {"$ref": "#/$defs/claimId"}}
+        "acceptedOrEditedClaimIds": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/claimId"}},
+        "semanticRecordSha256": {"$ref": "#/$defs/sha256"},
+        "editedClaims": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["claimId", "text"],
+            "properties": {
+              "claimId": {"$ref": "#/$defs/claimId"},
+              "text": {"type": "string", "minLength": 1, "maxLength": 4000}
+            }
+          }
+        }
       }
     },
     "materializationDecision": {

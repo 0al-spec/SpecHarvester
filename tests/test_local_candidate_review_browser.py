@@ -98,6 +98,11 @@ def test_browser_copies_valid_detail_set(tmp_path: Path) -> None:
     assert "Package specifications" in script
     assert "Supporting evidence" in script
     assert "Raw YAML" in script
+    assert "Static versus AI semantics" in script
+    assert "Observed intent reuse" in script
+    assert "Experimental intent proposals" in script
+    assert "semanticAction" in script
+    assert "innerHTML" not in script
 
 
 def test_browser_rejects_invalid_yaml_presentation(tmp_path: Path) -> None:

@@ -8,6 +8,7 @@ from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
+import yaml
 from jsonschema import Draft202012Validator
 
 from spec_harvester.candidate_review_schema import load_candidate_review_schema
@@ -134,6 +135,138 @@ def _semantic_record(
     return record
 
 
+def _static_semantics(
+    candidate_id: str, packet: dict[str, Any], members: dict[str, bytes]
+) -> dict[str, Any]:
+    summaries: list[str] = []
+    capabilities: list[dict[str, Any]] = []
+    intents: set[str] = set()
+    interfaces: list[str] = []
+    evidence: list[str] = []
+    for file_record in packet["candidate"]["files"]:
+        path = file_record["path"]
+        if not path.endswith(("specpm.yaml", ".spec.yaml")):
+            continue
+        member_name = str(Path("packets") / candidate_id / path)
+        try:
+            document = yaml.safe_load(members[member_name])
+        except (KeyError, yaml.YAMLError) as exc:
+            raise ValueError(f"Static semantic YAML is invalid: {candidate_id}/{path}") from exc
+        if not isinstance(document, dict):
+            raise ValueError(f"Static semantic YAML must be an object: {candidate_id}/{path}")
+        metadata = document.get("metadata")
+        if isinstance(metadata, dict) and isinstance(metadata.get("summary"), str):
+            summaries.append(metadata["summary"])
+        provides = document.get("provides")
+        if not isinstance(provides, dict):
+            index = document.get("index")
+            provides = index.get("provides") if isinstance(index, dict) else None
+        if isinstance(provides, dict):
+            for intent_id in provides.get("intents", []):
+                if isinstance(intent_id, str):
+                    intents.add(intent_id)
+            for capability in provides.get("capabilities", []):
+                if isinstance(capability, str):
+                    capabilities.append({"id": capability, "summary": "", "intentIds": []})
+                    continue
+                if not isinstance(capability, dict) or not isinstance(capability.get("id"), str):
+                    continue
+                intent_ids = [
+                    item for item in capability.get("intentIds", []) if isinstance(item, str)
+                ]
+                intents.update(intent_ids)
+                capabilities.append(
+                    {
+                        "id": capability["id"],
+                        "summary": (
+                            capability.get("summary")
+                            if isinstance(capability.get("summary"), str)
+                            else ""
+                        ),
+                        "intentIds": intent_ids,
+                    }
+                )
+        for key in ("interfaces", "exposes"):
+            values = document.get(key)
+            if isinstance(values, list):
+                interfaces.extend(str(value) for value in values)
+        values = document.get("evidence")
+        if isinstance(values, list):
+            evidence.extend(
+                str(item.get("path") or item.get("id") or item)
+                if isinstance(item, dict)
+                else str(item)
+                for item in values
+            )
+    return {
+        "summaries": summaries,
+        "capabilities": capabilities,
+        "intents": sorted(intents),
+        "interfaces": interfaces,
+        "evidence": evidence,
+    }
+
+
+def _semantic_comparison_projection(
+    candidate_id: str,
+    packet: dict[str, Any],
+    members: dict[str, bytes],
+    record: dict[str, Any],
+) -> dict[str, Any]:
+    claims = record["proposal"]["claims"]
+    by_kind = {
+        kind: [
+            {
+                "id": claim["id"],
+                "text": claim["text"],
+                "evidence": [
+                    {
+                        "id": item["id"],
+                        "sourcePath": item["sourcePath"],
+                        "sha256": item["sha256"],
+                    }
+                    for item in claim["evidence"]
+                ],
+            }
+            for claim in claims
+            if claim["kind"] == kind
+        ]
+        for kind in ("purpose", "capability", "interface", "nearby_intent_difference", "non_goal")
+    }
+    reuse: list[dict[str, Any]] = []
+    experimental: list[dict[str, Any]] = []
+    for decision in record["proposal"]["intentDecisions"]:
+        if decision["state"] == "proposed_reuse":
+            reuse.append(
+                {
+                    "intentId": decision["intentId"],
+                    "rationaleClaimId": decision["rationaleClaimId"],
+                }
+            )
+        else:
+            experimental.append(
+                {
+                    "intentId": decision["intentId"],
+                    "userNeedClaimId": decision["userNeedClaimId"],
+                    "nearbyIntentIds": decision["nearbyIntentIds"],
+                    "nonGoalClaimIds": decision["nonGoalClaimIds"],
+                }
+            )
+    return {
+        "static": _static_semantics(candidate_id, packet, members),
+        "ai": {
+            "claims": by_kind,
+            "observedIntentReuse": reuse,
+            "experimentalIntents": experimental,
+        },
+        "binding": {
+            "semanticRecordSha256": record["recordSha256"],
+            "proposalSha256": record["proposalSha256"],
+            "sourceBundleSha256": record["sourceBundleSha256"],
+        },
+    }
+
+
 def _comparison(
     candidate_id: str,
     packet_sha256: str,
@@ -159,7 +292,7 @@ def _comparison(
             "qualityStatus": semantic["qualityStatus"],
             "warningCount": semantic["qualityReport"]["summary"]["warningCount"],
         }
-    return {
+    comparison = {
         "apiVersion": "spec-harvester.candidate-review-comparison/v0",
         "kind": "SpecHarvesterCandidateReviewComparison",
         "authority": "local_review_comparison_evidence_only",
@@ -167,6 +300,11 @@ def _comparison(
         "static": {"memberCount": packet["candidate"]["fileCount"]},
         "ai": ai,
     }
+    if semantic is not None:
+        comparison["semantic"] = _semantic_comparison_projection(
+            candidate_id, packet, members, semantic
+        )
+    return comparison
 
 
 def _validate_record(record: dict[str, Any]) -> None:

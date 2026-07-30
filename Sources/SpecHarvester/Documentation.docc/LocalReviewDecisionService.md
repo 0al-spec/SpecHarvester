@@ -19,5 +19,11 @@ when it would make the canonical export exceed the import transport limit. The
 CSRF token is entered at runtime and is not persisted in the generated browser
 or export.
 
+Pass the same verified detail set through `--details` to enable P55 semantic
+decisions. The service validates the selected claims and bounded edits against
+the complete portable proposal, binds them to packet, record, proposal, and
+source digests, computes the reviewer-edit digest, and preserves the record in
+the existing immutable history and portable exchange.
+
 Stored decisions remain local review evidence only. They do not accept packages,
 run SpecPM, or mutate registry truth.
