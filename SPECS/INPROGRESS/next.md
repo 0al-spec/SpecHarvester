@@ -3,8 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T4` Provider-Neutral Semantic Author Pass
-**Status:** Ready
-**Branch:** pending selection after P55-T4 review
+**Status:** Selected
+**Branch:** `feature/P55-T5-semantic-proposal-validation-quality-diagnostics`
 
 ## Objective
 
