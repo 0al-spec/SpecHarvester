@@ -41,7 +41,7 @@ None.
 
 ### Tests
 
-- Full suite: `1291 passed, 1 skipped`; total coverage `90.05%`.
+- Full suite: `1291 passed, 1 skipped`; total coverage `90.06%`.
 - Campaign runner: `5 passed`; module coverage `92%`.
 - Docs-contract plus campaign regression suite: `207 passed`.
 - Ruff, formatting, JSON integrity, deterministic archive, Swift package

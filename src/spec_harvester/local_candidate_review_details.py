@@ -114,17 +114,7 @@ def _detail_sections(
     if semantic is not None:
         sections.append(_json_section("semantic-proposal-record", semantic))
     if campaign_record is not None:
-        sections.append(
-            _json_section(
-                "semantic-campaign-quality",
-                {
-                    "status": campaign_record["status"],
-                    "qualityReport": campaign_record.get("qualityReport"),
-                    "recordSha256": campaign_record["recordSha256"],
-                    "providerAttemptCount": len(campaign_record["attempts"]),
-                },
-            )
-        )
+        sections.append(_json_section("semantic-campaign-record", campaign_record))
     return sections
 
 

@@ -11,6 +11,7 @@ from spec_harvester.local_candidate_review_details import (
     LocalCandidateReviewDetailsOptions,
     build_local_candidate_review_details,
 )
+from spec_harvester.local_review_decision_service import LocalReviewDecisionStore
 
 ROOT = Path(__file__).resolve().parents[1]
 ARCHIVE = ROOT / "SPECS/EVIDENCE/P53-T14/P53-T14_Portable_Handoff.tar.gz"
@@ -83,6 +84,8 @@ def test_detail_builder_overlays_retained_semantic_campaign(tmp_path: Path) -> N
     )
     assert rtk["ai"]["status"] == "campaign_rejected"
     assert rtk["ai"]["qualityStatus"] == "rejected"
+    store = LocalReviewDecisionStore(tmp_path / "review-state", CATALOG, output)
+    assert store.source_bundle_sha256 == payload["sourceBundleSha256"]
 
 
 def test_detail_builder_requires_complete_semantic_archive_binding(tmp_path: Path) -> None:

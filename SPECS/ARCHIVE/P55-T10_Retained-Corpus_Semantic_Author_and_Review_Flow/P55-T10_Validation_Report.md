@@ -61,7 +61,7 @@ reduction and high namespace-violation rate as exit-decision inputs.
 ## Validation Commands
 
 - `uv run pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90`:
-  `1291 passed, 1 skipped`; total coverage `90.05%`.
+  `1291 passed, 1 skipped`; total coverage `90.06%`.
 - `uv run pytest tests/test_retained_corpus_semantic_campaign.py
   --cov=spec_harvester.retained_corpus_semantic_campaign
   --cov-report=term-missing`: `5 passed`; campaign module coverage `92%`.
