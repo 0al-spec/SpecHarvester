@@ -1,0 +1,682 @@
+{
+  "apiVersion": "spec-harvester.retained-corpus-semantic-campaign/v0",
+  "archive": {
+    "path": "P55-T10_Semantic_Proposal_Records.tar.gz",
+    "recordCount": 100,
+    "sha256": "233f78f2541eee35b61e3bac5a1e00113e98041b9729ee67d4ce61209ae4f07f"
+  },
+  "authority": "semantic_campaign_proposal_only",
+  "bindings": {
+    "handoffAggregateSha256": "7e449a2c93413a789eba27a13512252622aa79712a0c1deb4dab04ea1237420c",
+    "p55T9AReadinessSha256": "b6c90f8a086c19eb48df282233ba2d71618d2f89a2e6d5b3e71a11de6fb8d051",
+    "sourceManifestSha256": "e61337a521d69531578ece0fe78c1ee48d932a0cdb4a12f3612395a65c82896b"
+  },
+  "budgets": {
+    "cost": {
+      "status": "unavailable_from_codex_exec_receipts"
+    },
+    "durationMs": 1307042,
+    "failedProviderAttemptCount": 3,
+    "jsonRepairRecordCount": 8,
+    "providerAttemptCount": 103,
+    "tokenUsage": {}
+  },
+  "campaignInputSha256": "b436fed31c9be0e149c9fdeb5dcbb700618c2d8b6535d8f448ffe18c4e9f1972",
+  "executionBoundary": {
+    "materializationPerformed": false,
+    "packageManagerInvoked": false,
+    "publicationPerformed": false,
+    "registryMutated": false,
+    "repositoryCodeExecuted": false,
+    "reviewerDecisionCreated": false,
+    "specpmMutated": false
+  },
+  "kind": "SpecHarvesterRetainedCorpusSemanticCampaign",
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "credentialsPersisted": false,
+    "machineLocalPathsPersisted": false,
+    "rawPromptsPersisted": false,
+    "rawResponsesPersisted": false
+  },
+  "provider": {
+    "id": "gpt-5.3-codex-spark",
+    "kind": "codex_exec"
+  },
+  "recordIndex": [
+    {
+      "candidateId": "public_apis_public_apis.core",
+      "recordSha256": "86f243424787df07daa27d26f05f834af9fd1e601e60cac3ea2fb598f8e4df5e",
+      "repositoryId": "public-apis-public-apis",
+      "status": "completed"
+    },
+    {
+      "candidateId": "freecodecamp_freecodecamp.api",
+      "recordSha256": "eb26c9edc203a7a0fc83f4a0699387562b3e83510ccb7d25a6984431420224ad",
+      "repositoryId": "freecodecamp-freecodecamp",
+      "status": "completed"
+    },
+    {
+      "candidateId": "affaan_m_ecc.ecc_universal",
+      "recordSha256": "3a80b53e38982488c112fde79f4d41615703ba49de68a03583ad287f32d38f99",
+      "repositoryId": "affaan-m-ecc",
+      "status": "completed"
+    },
+    {
+      "candidateId": "spf13_cobra.core",
+      "recordSha256": "7b2787b458c61e5a3224508cb1d32134ce14e667d9a289e2680c5db77048e16e",
+      "repositoryId": "spf13-cobra",
+      "status": "completed"
+    },
+    {
+      "candidateId": "ultraworkers_claw_code.core",
+      "recordSha256": "3b1ca5c7a86244d16ccfc745c03e4d44718aced580f9536a3c4093f13c4bc390",
+      "repositoryId": "ultraworkers-claw-code",
+      "status": "completed"
+    },
+    {
+      "candidateId": "krahets_hello_algo.core",
+      "recordSha256": "7e28a66d511e9ab78b748dbaf60be15a52b9abe60296c2ad1944ccda9d454337",
+      "repositoryId": "krahets-hello-algo",
+      "status": "completed"
+    },
+    {
+      "candidateId": "electron_electron.dialog_helper",
+      "recordSha256": "bd3498eba943a3d3025237d972642ccc89ec97b6b093b8a1e8391d62245b3e7b",
+      "repositoryId": "electron-electron",
+      "status": "completed"
+    },
+    {
+      "candidateId": "jaywcjlove_awesome_mac.awesome_mac",
+      "recordSha256": "9f9e5ccb62c74d9121deb11a93af41d39a979bcd7b847e9eaf6223a01c874cf4",
+      "repositoryId": "jaywcjlove-awesome-mac",
+      "status": "completed"
+    },
+    {
+      "candidateId": "ebookfoundation_free_programming_books.core",
+      "recordSha256": "2653edfed6feedf99e9b03c127be842b37fea037e75b20bbb6e3584b00d2346d",
+      "repositoryId": "ebookfoundation-free-programming-books",
+      "status": "completed"
+    },
+    {
+      "candidateId": "nilbuild_developer_roadmap.workspace",
+      "recordSha256": "8ae7eef610766dc3e1515ac831e86e8b7c6864c98861357a56a0be74fdd31073",
+      "repositoryId": "nilbuild-developer-roadmap",
+      "status": "completed"
+    },
+    {
+      "candidateId": "trekhleb_javascript_algorithms.javascript_algorithms_and_data_structures",
+      "recordSha256": "4242ae2ee14fb799b4ffbb4e6f3deb3469eb3f8b8b3022b690209f4a24a850ee",
+      "repositoryId": "trekhleb-javascript-algorithms",
+      "status": "completed"
+    },
+    {
+      "candidateId": "ollama_ollama.core",
+      "recordSha256": "fbc7a06d7b936ce40b9835e1eb9aee36cfaae623d60b8fdf6c472de964d3bf66",
+      "repositoryId": "ollama-ollama",
+      "status": "completed"
+    },
+    {
+      "candidateId": "farion1231_cc_switch.workspace",
+      "recordSha256": "a7216b44a203cd71dfab49e137476b400b1189a85fad1427aef2238be09602f9",
+      "repositoryId": "farion1231-cc-switch",
+      "status": "completed"
+    },
+    {
+      "candidateId": "iluwatar_java_design_patterns.core",
+      "recordSha256": "49588497ef08b79f154364106242d1a1f7a69e4660b2f5b4ddea8f9d9da13cba",
+      "repositoryId": "iluwatar-java-design-patterns",
+      "status": "completed"
+    },
+    {
+      "candidateId": "ggml_org_llama_cpp.core",
+      "recordSha256": "97e73df78faf570cdd1d67ec00997838c47e37d0ae48b9ecccc58056982a9e8d",
+      "repositoryId": "ggml-org-llama-cpp",
+      "status": "completed"
+    },
+    {
+      "candidateId": "vsouza_awesome_ios.core",
+      "recordSha256": "71cc175db4f3f68ab4a759467475de60dbdc176396b6fc28adc0b433752e2725",
+      "repositoryId": "vsouza-awesome-ios",
+      "status": "completed"
+    },
+    {
+      "candidateId": "donnemartin_system_design_primer.core",
+      "recordSha256": "1673c66100cc201b0ac0113c0f22abf842c89a154987a0d90d59df1f58440fdf",
+      "repositoryId": "donnemartin-system-design-primer",
+      "status": "completed"
+    },
+    {
+      "candidateId": "vuejs_vue.compiler_sfc",
+      "recordSha256": "2f75e29fab2073b26071b087c3dff3dce9bbff7a4b82778008e5a0f777c140bd",
+      "repositoryId": "vuejs-vue",
+      "status": "completed"
+    },
+    {
+      "candidateId": "snailclimb_javaguide.javaguide",
+      "recordSha256": "f9dd1682b7b532497eacc69c5baa613656d1cb8a49c06c6a323403ff5e9d19fa",
+      "repositoryId": "snailclimb-javaguide",
+      "status": "completed"
+    },
+    {
+      "candidateId": "golang_go.core",
+      "recordSha256": "643d482c739b47f23c1793ef092ad66540cc36c5a44bd7a886cb18e090ee9ede",
+      "repositoryId": "golang-go",
+      "status": "completed"
+    },
+    {
+      "candidateId": "sirupsen_logrus.core",
+      "recordSha256": "70605ad889e9b3290f640e8592e49271ac3f5d9c87942c3c4dc27f5a9ab1f877",
+      "repositoryId": "sirupsen-logrus",
+      "status": "completed"
+    },
+    {
+      "candidateId": "tokio_rs_tokio.core",
+      "recordSha256": "45f0e63bda7c3149ada7b2c1ec9c0c59d97e219a26d6cf8da75df41eadcca2da",
+      "repositoryId": "tokio-rs-tokio",
+      "status": "completed"
+    },
+    {
+      "candidateId": "microsoft_terminal.core",
+      "recordSha256": "fc8cb342aa786e74d36c92113d507d4c79aea83863ee980209061487b85a5271",
+      "repositoryId": "microsoft-terminal",
+      "status": "completed"
+    },
+    {
+      "candidateId": "apple_container.core",
+      "recordSha256": "f5dc478e4ccea6374abe86b8af4c743758beba6b35ed939b47255cbbe7a2a08d",
+      "repositoryId": "apple-container",
+      "status": "completed"
+    },
+    {
+      "candidateId": "vinta_awesome_python.core",
+      "recordSha256": "5df5f378a086d5479c4c6cb12b4b6a528c791cf71a8f863dd798a21c3e4ffdef",
+      "repositoryId": "vinta-awesome-python",
+      "status": "completed"
+    },
+    {
+      "candidateId": "n8n_io_n8n.agents",
+      "recordSha256": "06e2aba1d77e5c376621764e3ad09d7ea4632691a4b7e64c91d6fc6ddb461e6f",
+      "repositoryId": "n8n-io-n8n",
+      "status": "completed"
+    },
+    {
+      "candidateId": "airbnb_javascript.airbnb_style",
+      "recordSha256": "0519e97600f7a9d8fbd895a93d7bdc57661954e4a47ddd5da7ab74de62b08693",
+      "repositoryId": "airbnb-javascript",
+      "status": "completed"
+    },
+    {
+      "candidateId": "fatedier_frp.core",
+      "recordSha256": "4330c3cbfc912a1a17d79c5d4d7b06f4b08e560f33e7d7ac999cc6c37ab0d5b5",
+      "repositoryId": "fatedier-frp",
+      "status": "completed"
+    },
+    {
+      "candidateId": "tauri_apps_tauri.api.packages_api",
+      "recordSha256": "f33cc75095ee4d3b47cce8829cf73aa05429ae3ed1271e7b1abbeea53db4a605",
+      "repositoryId": "tauri-apps-tauri",
+      "status": "completed"
+    },
+    {
+      "candidateId": "macrozheng_mall.core",
+      "recordSha256": "942e5a62f05b259ca564b07ae2dbe7846189c1662e5e2f2069ded0c858d1ca5c",
+      "repositoryId": "macrozheng-mall",
+      "status": "completed"
+    },
+    {
+      "candidateId": "opencv_opencv.core",
+      "recordSha256": "b022093fc48ba84d39c7c6f30fe228be226db07987bcf767244f7b45c0ae84eb",
+      "repositoryId": "opencv-opencv",
+      "status": "completed"
+    },
+    {
+      "candidateId": "iina_iina.core",
+      "recordSha256": "3135249d7f4363ff026747359af2d4b02a8f8f9bf2a06b6fb246f6415c20aa74",
+      "repositoryId": "iina-iina",
+      "status": "completed"
+    },
+    {
+      "candidateId": "practical_tutorials_project_based_learning.core",
+      "recordSha256": "7bd7c630fc004aecf913c3e6428076f2f98ccae149b986f8a5afeee69abae9e7",
+      "repositoryId": "practical-tutorials-project-based-learning",
+      "status": "completed"
+    },
+    {
+      "candidateId": "anomalyco_opencode.app",
+      "recordSha256": "aaeeec7ec16e7919401553e8f0f448e23bb1631f12a98c18799fea472a354656",
+      "repositoryId": "anomalyco-opencode",
+      "status": "completed"
+    },
+    {
+      "candidateId": "chalarangelo_30_seconds_of_code.30_seconds_of_code",
+      "recordSha256": "dff10beb087a26b306ad6836a87d1fbae4cc5e2e8350a10577da4187a3ec40db",
+      "repositoryId": "chalarangelo-30-seconds-of-code",
+      "status": "completed"
+    },
+    {
+      "candidateId": "gohugoio_hugo.core",
+      "recordSha256": "e64a73434b0c4c8d69e68540e9d19b75d1e07707dd737e28f391e03f42bfc8b8",
+      "repositoryId": "gohugoio-hugo",
+      "status": "completed"
+    },
+    {
+      "candidateId": "denoland_deno.core",
+      "recordSha256": "9191dc0b8f403cee4994d82e6a22768deae4239326be0c663504ab7b51c4b6ad",
+      "repositoryId": "denoland-deno",
+      "status": "completed"
+    },
+    {
+      "candidateId": "spring_projects_spring_boot.core",
+      "recordSha256": "c0644407e357bd586044b09416218216b3c05beedf35c2c7f2483f0e7dd08ecd",
+      "repositoryId": "spring-projects-spring-boot",
+      "status": "completed"
+    },
+    {
+      "candidateId": "bitcoin_bitcoin.core",
+      "recordSha256": "a786f9f7e6b1a5d3aa667626da7f79030cfc6f77b0d6af658fc9e73054fac5c6",
+      "repositoryId": "bitcoin-bitcoin",
+      "status": "completed"
+    },
+    {
+      "candidateId": "alamofire_alamofire.core",
+      "recordSha256": "3c72aadff982f897e19a7aaa202a32899b4b3d2197394255e7de3695c2e50f30",
+      "repositoryId": "alamofire-alamofire",
+      "status": "completed"
+    },
+    {
+      "candidateId": "thealgorithms_python.core",
+      "recordSha256": "b10a5fe88dc9a7fe0170d63b18b0eb023ea677b6d2ae75e09ba7db2cd9b83fa2",
+      "repositoryId": "thealgorithms-python",
+      "status": "completed"
+    },
+    {
+      "candidateId": "firecrawl_firecrawl.firecrawl_scraper_js",
+      "recordSha256": "f37c4ffaa1dfc1b2d5c5e8fe62cf30cf4fdb9084ab727b6e17814368183c0af7",
+      "repositoryId": "firecrawl-firecrawl",
+      "status": "completed"
+    },
+    {
+      "candidateId": "axios_axios.axios",
+      "recordSha256": "8f79738213bba326986ff82cfc67099b21dafcf834be557e6673a92b59d70aa3",
+      "repositoryId": "axios-axios",
+      "status": "completed"
+    },
+    {
+      "candidateId": "syncthing_syncthing.core",
+      "recordSha256": "70e1aa4d7078e6a26b345b14b6a88f79ea693d5cf124e34244f6e41d376a6172",
+      "repositoryId": "syncthing-syncthing",
+      "status": "completed"
+    },
+    {
+      "candidateId": "openai_codex.codex",
+      "recordSha256": "aee6f89a4121f096aec445c7e9c365165c6e0ea4c4165a901f7b7b4314998f84",
+      "repositoryId": "openai-codex",
+      "status": "completed"
+    },
+    {
+      "candidateId": "doocs_advanced_java.advanced_java",
+      "recordSha256": "c9e0e0477cafc836d4ecccd140d1cb94130e5c3f7a5b7a5b358f331d24e16974",
+      "repositoryId": "doocs-advanced-java",
+      "status": "completed"
+    },
+    {
+      "candidateId": "nomic_ai_gpt4all.core",
+      "recordSha256": "1688e668c2f9f8c145459b7f270ce0576b29feb8d3fcdc2991dcc22dfdd7bad1",
+      "repositoryId": "nomic-ai-gpt4all",
+      "status": "completed"
+    },
+    {
+      "candidateId": "nousresearch_hermes_agent.bootstrap_installer",
+      "recordSha256": "7e2298035ef7f8304f6bcbf6e3c20db89db7e5dfe3f6ad592fb2651ffb920294",
+      "repositoryId": "nousresearch-hermes-agent",
+      "status": "completed"
+    },
+    {
+      "candidateId": "langgenius_dify.contracts",
+      "recordSha256": "af6bda2e05e7b6ccc97c5426745514b1eda1001ce58d22c3897611f3e81bdf82",
+      "repositoryId": "langgenius-dify",
+      "status": "completed"
+    },
+    {
+      "candidateId": "react_create_react_app.babel_plugin_named_asset_import",
+      "recordSha256": "1906b144697d39f250dd52e00aa06ef3119a2270eb5eec91d763b9e0be3daef4",
+      "repositoryId": "react-create-react-app",
+      "status": "completed"
+    },
+    {
+      "candidateId": "infiniflow_ragflow.core",
+      "recordSha256": "6b08cffed438b2931f6d30c8796da7d78368b7ec949aa5c37920c8b663085dda",
+      "repositoryId": "infiniflow-ragflow",
+      "status": "completed"
+    },
+    {
+      "candidateId": "rayon_rs_rayon.core",
+      "recordSha256": "ee3104679f9982e785aca8f5e50e0bf82b6e157a960eb4fb18f9a70c18c41828",
+      "repositoryId": "rayon-rs-rayon",
+      "status": "completed"
+    },
+    {
+      "candidateId": "nationalsecurityagency_ghidra.core",
+      "recordSha256": "8fbe351f520225d3709583caf48c67f81ae408ba1136c088ca006aaaeee2a0d0",
+      "repositoryId": "nationalsecurityagency-ghidra",
+      "status": "completed"
+    },
+    {
+      "candidateId": "tesseract_ocr_tesseract.core",
+      "recordSha256": "f9822947c85fad16d72f8d938bc4354456bc8d1b2bc1caeccfeba89b6e3c0d3a",
+      "repositoryId": "tesseract-ocr-tesseract",
+      "status": "completed"
+    },
+    {
+      "candidateId": "significant_gravitas_autogpt.core",
+      "recordSha256": "9442076abfc1a2d0cc8a5e5bc7cebdd1ecd58c9db9985a847470529fe09aece7",
+      "repositoryId": "significant-gravitas-autogpt",
+      "status": "completed"
+    },
+    {
+      "candidateId": "yangshun_tech_interview_handbook.portal",
+      "recordSha256": "63c6e3d62ea7e82b674b5a075cd7dee77ecc9e6048621498db3fb487d36868db",
+      "repositoryId": "yangshun-tech-interview-handbook",
+      "status": "completed"
+    },
+    {
+      "candidateId": "mui_material_ui.api_docs_builder_core",
+      "recordSha256": "ffcc241186259149a7c56b8aca67ce9fcaf4e4fc2e3298336e2cef549ad688a4",
+      "repositoryId": "mui-material-ui",
+      "status": "completed"
+    },
+    {
+      "candidateId": "junegunn_fzf.core",
+      "recordSha256": "4deb5df6eb5f742ce4c6a53e3a32f57f8efaaa32d5560b98db40fc6e6deb77d1",
+      "repositoryId": "junegunn-fzf",
+      "status": "completed"
+    },
+    {
+      "candidateId": "rust_lang_regex.core",
+      "recordSha256": "39560889241ce3771fac1f02f5c2069f1a668b78c116f13aee9a8ce7767384f4",
+      "repositoryId": "rust-lang-regex",
+      "status": "completed"
+    },
+    {
+      "candidateId": "thealgorithms_java.core",
+      "recordSha256": "967e811e37143f834682a0cde9a216f47d17655b93dec3701ede5a4486d6534c",
+      "repositoryId": "thealgorithms-java",
+      "status": "completed"
+    },
+    {
+      "candidateId": "ocornut_imgui.core",
+      "recordSha256": "4c884618e189b440b3a18546d51d2285af44846364ca495b20a4d8508c5cb475",
+      "repositoryId": "ocornut-imgui",
+      "status": "completed"
+    },
+    {
+      "candidateId": "yt_dlp_yt_dlp.core",
+      "recordSha256": "20866c76f3d73b9cd585ac65c16ef60051d966d6b11c8a9b027a25007dea99ec",
+      "repositoryId": "yt-dlp-yt-dlp",
+      "status": "completed"
+    },
+    {
+      "candidateId": "clash_verge_rev_clash_verge_rev.workspace",
+      "recordSha256": "b6f93ffdce4bcc1b3e0bf3f70863bfd07d185bb7817c70fa8f78ec27568a063c",
+      "repositoryId": "clash-verge-rev-clash-verge-rev",
+      "status": "completed"
+    },
+    {
+      "candidateId": "ryanmcdermott_clean_code_javascript.core",
+      "recordSha256": "72b9e737031deb4e49ce14dda3a584376bba7e7538f5f697a719294b55f60c1d",
+      "repositoryId": "ryanmcdermott-clean-code-javascript",
+      "status": "completed"
+    },
+    {
+      "candidateId": "jesseduffield_lazygit.core",
+      "recordSha256": "f51bdc3e18b3016da9523b6b44aeca6dc88d6e2039f102b9f34f47522de3a88a",
+      "repositoryId": "jesseduffield-lazygit",
+      "status": "completed"
+    },
+    {
+      "candidateId": "ruvnet_ruview.core",
+      "recordSha256": "9d2713bfc2ab1b02e15846572489208cb10088efb0e40ca2d50bceec99d144c1",
+      "repositoryId": "ruvnet-ruview",
+      "status": "completed"
+    },
+    {
+      "candidateId": "kdn251_interviews.core",
+      "recordSha256": "17804e5a6de3b039f0330dad44b928773bde3ba9ae33f88758f33ffdfbe46860",
+      "repositoryId": "kdn251-interviews",
+      "status": "completed"
+    },
+    {
+      "candidateId": "protocolbuffers_protobuf.core",
+      "recordSha256": "d2c0f3c7d53343a57703678b15dac61c5526bbc28ea75e1020a4f4fa2118bcfe",
+      "repositoryId": "protocolbuffers-protobuf",
+      "status": "completed"
+    },
+    {
+      "candidateId": "microsoft_markitdown.core",
+      "recordSha256": "29e579fabc60765f7b5eac618363ef6cfb828134e84bcdeb09007e7ef4799f6a",
+      "repositoryId": "microsoft-markitdown",
+      "status": "completed"
+    },
+    {
+      "candidateId": "excalidraw_excalidraw.common",
+      "recordSha256": "938ea36f48b47b09833712cd46af164b2cd1a1893b3c84878159a62d2d41941e",
+      "repositoryId": "excalidraw-excalidraw",
+      "status": "completed"
+    },
+    {
+      "candidateId": "juliusbrussee_caveman.caveman_installer",
+      "recordSha256": "e4c4ed5401be8d7a4c7594669610e76c2ddebfff209904742d86db70b69c139a",
+      "repositoryId": "juliusbrussee-caveman",
+      "status": "completed"
+    },
+    {
+      "candidateId": "netdata_netdata.core",
+      "recordSha256": "223a3ea53005d1de79541a6768b2d7bdc23f10411942dc153e1be392ea028102",
+      "repositoryId": "netdata-netdata",
+      "status": "completed"
+    },
+    {
+      "candidateId": "serde_rs_serde.core",
+      "recordSha256": "41c62f9d9f5409b7ebe77a35d2b6c70cb4d1a2ccbfe159e979f5e4b5c1ff1643",
+      "repositoryId": "serde-rs-serde",
+      "status": "completed"
+    },
+    {
+      "candidateId": "spring_projects_spring_framework.core",
+      "recordSha256": "76af0e6047b97e04d7a7cf7d1b995eca18dfe228711fa42c6c14d4a4473e7750",
+      "repositoryId": "spring-projects-spring-framework",
+      "status": "completed"
+    },
+    {
+      "candidateId": "ladybirdbrowser_ladybird.core",
+      "recordSha256": "ee87d1bce87d7f1df6f1d431bc3a064037308ad2bca92f76072c9c08dce6f111",
+      "repositoryId": "ladybirdbrowser-ladybird",
+      "status": "completed"
+    },
+    {
+      "candidateId": "automatic1111_stable_diffusion_webui.stable_diffusion_webui",
+      "recordSha256": "393479e10a5fe59a66453b92a1645619ab1386301627b353f4e1fa0476f2a8f2",
+      "repositoryId": "automatic1111-stable-diffusion-webui",
+      "status": "completed"
+    },
+    {
+      "candidateId": "garrytan_gstack.gstack",
+      "recordSha256": "13ee23964856f1d7fdaaa01401b64164aa62ce218ab7fa0a11fef9f1acedd6ea",
+      "repositoryId": "garrytan-gstack",
+      "status": "completed"
+    },
+    {
+      "candidateId": "dietrichgebert_ponytail.ponytail",
+      "recordSha256": "9117722aacc418d35a0eff49abdfcdbdd9c4d627cbba45729ecb3922b0ec2348",
+      "repositoryId": "dietrichgebert-ponytail",
+      "status": "completed"
+    },
+    {
+      "candidateId": "caddyserver_caddy.core",
+      "recordSha256": "4e9ba0a247471f7a7d504c3219da1dc256266b01d84a7d83f198c1b05ea171e8",
+      "repositoryId": "caddyserver-caddy",
+      "status": "completed"
+    },
+    {
+      "candidateId": "rtk_ai_rtk.core",
+      "recordSha256": "90b24d8b0eaaf226da23fdf3f39ebc849d62cb5e03d87b3f219fb75fd8de6b0e",
+      "repositoryId": "rtk-ai-rtk",
+      "status": "completed"
+    },
+    {
+      "candidateId": "huggingface_transformers.core",
+      "recordSha256": "166fca7fa072de03a96b6fc6a2f475184c68afe2aa2eb0b577af956056a981c4",
+      "repositoryId": "huggingface-transformers",
+      "status": "completed"
+    },
+    {
+      "candidateId": "shadcn_ui_ui.helpers",
+      "recordSha256": "318038bf276767448fb92ffcc34d1ceddb8cb8df80947c7482512b8d17f06681",
+      "repositoryId": "shadcn-ui-ui",
+      "status": "completed"
+    },
+    {
+      "candidateId": "louislam_uptime_kuma.uptime_kuma",
+      "recordSha256": "a03fff1b2f7ed07ad2edc1804b01a05b583cd7fee453b20700a218c50fc5a236",
+      "repositoryId": "louislam-uptime-kuma",
+      "status": "completed"
+    },
+    {
+      "candidateId": "moby_moby.core",
+      "recordSha256": "6e92b78986a55b9789ab4df666589d8662246aaaf965fd02200b1b99b890203a",
+      "repositoryId": "moby-moby",
+      "status": "completed"
+    },
+    {
+      "candidateId": "openinterpreter_openinterpreter.codex",
+      "recordSha256": "0c24aa22b1217a77dab3455fe4cadbfc0d30965d955c287a66d7409ec6731a6c",
+      "repositoryId": "openinterpreter-openinterpreter",
+      "status": "completed"
+    },
+    {
+      "candidateId": "open_webui_open_webui.open_webui",
+      "recordSha256": "6bf2ddcf85380ee2442ace3d046bc6a4eb2161c47988c1dfef551c9f7d1f8e54",
+      "repositoryId": "open-webui-open-webui",
+      "status": "completed"
+    },
+    {
+      "candidateId": "immich_app_immich.cli",
+      "recordSha256": "8938f0a102786e9c00b4ce80f98bcb2c2a900ae506d250c32b8536dd9a1b12b9",
+      "repositoryId": "immich-app-immich",
+      "status": "completed"
+    },
+    {
+      "candidateId": "thedotmack_claude_mem.claude_mem",
+      "recordSha256": "c22764204538b4b8332643fb5ee233f12cc9c3c144fbf8d9cd6087c06e9b86dc",
+      "repositoryId": "thedotmack-claude-mem",
+      "status": "completed"
+    },
+    {
+      "candidateId": "clap_rs_clap.core",
+      "recordSha256": "f85137ba752f457106886d1a199f9676acf477110bf810f565ce7fac6f19da0b",
+      "repositoryId": "clap-rs-clap",
+      "status": "completed"
+    },
+    {
+      "candidateId": "burntsushi_ripgrep.core",
+      "recordSha256": "7a900fa23d82bbc4550d62a38f5421f9028a6911a0cfc76b1c995bc4a6f52553",
+      "repositoryId": "burntsushi-ripgrep",
+      "status": "completed"
+    },
+    {
+      "candidateId": "langchain_ai_langchain.core",
+      "recordSha256": "3519399da242afb95e7709b09b5179c8b17a1a4c98ad316bf1e3a051638731a7",
+      "repositoryId": "langchain-ai-langchain",
+      "status": "completed"
+    },
+    {
+      "candidateId": "google_gemini_gemini_cli.gemini_cli",
+      "recordSha256": "635d9cf3670fe3341b1bc66ee9db0034d11840a4a738cae86287998ff05171d2",
+      "repositoryId": "google-gemini-gemini-cli",
+      "status": "completed"
+    },
+    {
+      "candidateId": "addyosmani_agent_skills.core",
+      "recordSha256": "d7c839ee760d79d9d75c5991f54f10a9512d08208e1b81a4dd59792b146cf1a3",
+      "repositoryId": "addyosmani-agent-skills",
+      "status": "completed"
+    },
+    {
+      "candidateId": "prometheus_prometheus.core",
+      "recordSha256": "b4b8f7075ffae97fa761a3e66317b9f1e78feeb488ffbe61ab3fc7cb08d4ddeb",
+      "repositoryId": "prometheus-prometheus",
+      "status": "completed"
+    },
+    {
+      "candidateId": "apache_commons_lang.core",
+      "recordSha256": "0d52751981d5ba2621ba6b6915af848d229b84fc73284f956eca250ef14b2d6e",
+      "repositoryId": "apache-commons-lang",
+      "status": "completed"
+    },
+    {
+      "candidateId": "ytdl_org_youtube_dl.core",
+      "recordSha256": "2bd8cf7daf6745194bb11c1bdc1463b479708ecaf092988669f54115c8b1aabc",
+      "repositoryId": "ytdl-org-youtube-dl",
+      "status": "completed"
+    },
+    {
+      "candidateId": "angular_angular.adev",
+      "recordSha256": "d26c382079f220d9308750120018c67dae06e6c1bb198e2beda1baace50ded73",
+      "repositoryId": "angular-angular",
+      "status": "completed"
+    },
+    {
+      "candidateId": "anuraghazra_github_readme_stats.github_readme_stats",
+      "recordSha256": "f6872d592b712ce8b97f7be3d86735d120d9199edcf8d98b2f27dc250a09a69e",
+      "repositoryId": "anuraghazra-github-readme-stats",
+      "status": "completed"
+    },
+    {
+      "candidateId": "traefik_traefik.core",
+      "recordSha256": "5d5107a2046f3e628f3911e45eb43ad8c9515dd3f0a98d124fc294db4e5c54a2",
+      "repositoryId": "traefik-traefik",
+      "status": "completed"
+    },
+    {
+      "candidateId": "dani_garcia_vaultwarden.core",
+      "recordSha256": "9544f33f4236dca74c3a3520609fea5de1d1b293f8ae89392101ce2a22ec6ba6",
+      "repositoryId": "dani-garcia-vaultwarden",
+      "status": "completed"
+    }
+  ],
+  "reportSha256": "838d7c1fd0a69eb942f6ef31f1821fd2ddb6f85f0112009dc97d01cad27d859c",
+  "reviewerDecisions": {
+    "acceptedCount": 0,
+    "deferredCount": 0,
+    "editedCount": 0,
+    "rejectedCount": 0,
+    "source": "no_reviewer_decision_evidence_supplied",
+    "unreviewedCount": 100
+  },
+  "schemaVersion": 1,
+  "semanticQuality": {
+    "diagnosticCounts": {
+      "capability_namespace_violation": 58,
+      "generic_intent_reuse": 48,
+      "unsupported_quantitative_claim": 1
+    },
+    "duplicateExperimentalIntentIds": {},
+    "evidenceSupportedProposalRate": 1.0,
+    "genericIntentReductionCount": 0,
+    "proposedGenericIntentReuseCount": 48,
+    "schemaValidProposalRate": 1.0,
+    "staticGenericIntentReferenceCount": 48
+  },
+  "summary": {
+    "completedCount": 100,
+    "failedCount": 0,
+    "portableProposalCount": 42,
+    "qualityStatusCounts": {
+      "eligible_for_calibration": 4,
+      "rejected": 58,
+      "review_required": 38
+    },
+    "repositoryCount": 100
+  }
+}

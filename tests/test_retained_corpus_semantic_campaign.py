@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -10,14 +11,19 @@ import pytest
 from spec_harvester.retained_corpus_semantic_campaign import (
     EXPECTED_REPOSITORY_COUNT,
     CampaignRunOptions,
+    _read_json,
+    _safe_child,
+    _validate_run_options,
     campaign_summary,
     finalize_campaign,
     initialize_campaign,
     load_campaign_scope,
+    read_pinned_readme,
     run_campaign_target,
     select_principal_candidate,
     sha256_file,
     validate_campaign_record,
+    validate_source_checkout,
     write_deterministic_archive,
 )
 from spec_harvester.semantic_author_pass import (
@@ -189,6 +195,50 @@ def test_rejects_stale_resume_and_incomplete_finalization(tmp_path: Path) -> Non
             output_path=tmp_path / "summary.json",
             archive_path=tmp_path / "records.tar.gz",
         )
+
+
+def test_rejects_invalid_budgets_paths_and_json(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="budgets are invalid"):
+        _validate_run_options(CampaignRunOptions(provider_max_attempts=3))
+    with pytest.raises(ValueError, match="must be relative"):
+        _safe_child(tmp_path, "/absolute")
+    with pytest.raises(ValueError, match="escapes its root"):
+        _safe_child(tmp_path, "../escape")
+
+    malformed = tmp_path / "malformed.json"
+    malformed.write_text("{")
+    with pytest.raises(ValueError, match="Cannot read campaign JSON"):
+        _read_json(malformed)
+    array = tmp_path / "array.json"
+    array.write_text("[]")
+    with pytest.raises(ValueError, match="must be an object"):
+        _read_json(array)
+
+
+def test_reads_documentation_from_pinned_git_object(tmp_path: Path) -> None:
+    repository = tmp_path / "repository"
+    repository.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=repository, check=True)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=repository, check=True)
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=repository, check=True)
+    (repository / "docs").mkdir()
+    (repository / "docs" / "readme.rst").write_text("Pinned purpose\n")
+    subprocess.run(["git", "add", "."], cwd=repository, check=True)
+    subprocess.run(["git", "commit", "-qm", "fixture"], cwd=repository, check=True)
+    revision = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=repository,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+    validate_source_checkout(repository, revision)
+    assert read_pinned_readme(repository, revision) == b"Pinned purpose\n"
+    with pytest.raises(ValueError, match="revision mismatch"):
+        validate_source_checkout(repository, "0" * 40)
+    with pytest.raises(ValueError, match="unavailable"):
+        validate_source_checkout(tmp_path / "missing", revision)
 
 
 def corpus(tmp_path: Path) -> tuple[Path, Path, Path, Path]:
