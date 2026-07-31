@@ -142,6 +142,24 @@ def test_provider_payload_carries_bounded_semantic_focus(tmp_path: Path) -> None
         provider.requests[0]["authoringConstraints"]["capabilityMustUseCandidateNamespace"]
         == input_pack["candidateId"]
     )
+    assert (
+        provider.requests[0]["authoringConstraints"][
+            "purposeMustUseExactSupportedTermFromEverySemanticFocusGroup"
+        ]
+        is True
+    )
+    assert (
+        provider.requests[0]["authoringConstraints"]["capabilityMustUseExactSupportedSpecificTerm"]
+        is True
+    )
+    assert provider.requests[0]["authoringConstraints"]["purposeRequiredExactTermGroups"] == [
+        ["token", "context"],
+        ["reduce", "save"],
+    ]
+    assert provider.requests[0]["authoringConstraints"]["capabilityRequiredExactTerms"] == [
+        "token",
+        "command",
+    ]
 
 
 def test_provider_payload_rejects_malformed_semantic_focus_before_invocation(
@@ -497,6 +515,36 @@ def test_codex_repairs_cross_record_conformance_failure(
         }
         for item in input_pack["observedIntents"]
     ]
+
+
+def test_codex_repairs_frozen_semantic_focus_failure(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    malformed = transport_proposal(input_pack)
+    repaired = transport_proposal(input_pack)
+    repaired["claims"][0]["text"] = "Help users reduce token context."
+    repaired["claims"][1]["text"] = "Compress command output."
+    outputs = iter((json.dumps(malformed), json.dumps(repaired)))
+    prompts: list[str] = []
+
+    def fake_run(args: list[str], **kwargs: object) -> object:
+        prompts.append(str(kwargs["input"]))
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    request = provider_request(input_pack)
+    request["semanticFocus"] = {
+        "purposeConceptGroups": [["token"], ["reduce"]],
+        "specificTerms": ["command"],
+    }
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        request, SemanticAuthorPassOptions(json_repair_max_attempts=1)
+    )
+
+    assert completion.receipt["jsonRepairNeeded"] is True
+    assert "purpose misses a required exact term group" in prompts[1]
 
 
 def test_lm_studio_repairs_schema_fragment_value(

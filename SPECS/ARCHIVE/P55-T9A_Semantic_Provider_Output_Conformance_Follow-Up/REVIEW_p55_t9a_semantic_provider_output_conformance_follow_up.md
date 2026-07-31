@@ -29,7 +29,7 @@ Two post-publication PR review findings were addressed before merge:
 
 ### Correctness and Architecture
 
-- Parsed-but-invalid provider output enters one bounded repair path and remains
+- Parsed-but-invalid provider output enters a bounded repair path and remains
   subject to the complete deterministic semantic schema and cross-record
   checks after transport normalization.
 - Codex Spark and LM Studio receive the same request-bound shallow structured
@@ -47,7 +47,8 @@ Two post-publication PR review findings were addressed before merge:
   a loopback endpoint without embedded credentials.
 - Request echoes, wrong identities, schema/meta-schema fragments, stale
   evidence, unknown claims, and stale observed intents fail closed or receive
-  only the bounded repair attempt.
+  only bounded repair attempts. Provider execution retries are capped at two,
+  explicitly counted, and retain prior failure codes.
 - Durable evidence contains no raw prompts, raw responses, hidden reasoning,
   credentials, or machine-local paths.
 - No accept, materialize, promote, publish, SpecPM mutation, or registry-truth
@@ -55,9 +56,9 @@ Two post-publication PR review findings were addressed before merge:
 
 ### Tests
 
-- Focused semantic-author, P55-T9A, and docs-contract tests: `233 passed`.
-- Full suite: `1278 passed, 1 skipped`.
-- Coverage: `90.02%`, meeting the `90%` repository gate.
+- Focused semantic-author, P55-T9A, and docs-contract tests: `240 passed`.
+- Full suite: `1284 passed, 1 skipped`.
+- Coverage: `90.00%`, meeting the `90%` repository gate.
 - Ruff lint and format, diff integrity, evidence JSON, Swift manifest, Swift
   documentation target, and DocC static build passed.
 - The DocC build retained three unrelated pre-existing unresolved-link
@@ -65,8 +66,9 @@ Two post-publication PR review findings were addressed before merge:
 
 ### Residual Risk
 
-- LM Studio passed reviewer edit burden exactly at the `0.25` maximum, so
-  P55-T10 must continue to report provider-separated edit burden and failures.
+- Both providers reached zero measured reviewer edit burden on the four frozen
+  targets, but P55-T10 must continue to report provider-separated edit burden,
+  attempts, and failures over the larger corpus.
 - `capability_namespace_violation` remains for RTK and ripgrep, and
   `generic_intent_reuse` remains for Codex and claude-mem. These are preserved
   reviewer diagnostics, not transport-conformance defects.

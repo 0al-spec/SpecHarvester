@@ -20,7 +20,7 @@ calibration through Codex 5.3 Spark and LM Studio.
   - rejects request echoes, wrong API identities, and schema/meta-schema
     fragments in proposal value fields;
   - supplies deterministic schema/conformance diagnostics to the existing
-    bounded repair attempt;
+  bounded repair path;
   - uses the same behavior for Codex Spark and LM Studio.
 - A semantic-author prompt/payload that prioritizes repository purpose and
   package-owned capability wording from allowlisted evidence and the frozen
@@ -47,7 +47,8 @@ calibration through Codex 5.3 Spark and LM Studio.
   claims after provider execution.
 - RTK purpose quality is improved through explicit evidence-grounded authoring
   guidance, not hard-coded output or relaxed namespace/evidence checks.
-- Every provider/target attempt is accounted for once, including failures.
+- Every provider/target attempt is explicitly counted, including prior bounded
+  failures; no provider/target pair receives more than two execution attempts.
 - P55-T10 is unblocked only if every frozen gate passes for both providers.
 - Raw prompts, raw responses, hidden reasoning, credentials, and machine-local
   paths are absent from durable evidence.
@@ -60,7 +61,8 @@ calibration through Codex 5.3 Spark and LM Studio.
 
 - Changing the P55-T5 policy, rubric, target set, or quality thresholds.
 - Retrying until a provider passes, silently converting failures to successes,
-  or applying deterministic claim substitutions.
+  or applying deterministic claim substitutions. Execution retries are capped
+  at two attempts and remain visible in evidence.
 - Running P55-T10, materializing the wider corpus, canonicalizing intents,
   mutating SpecPM, or publishing packages.
 

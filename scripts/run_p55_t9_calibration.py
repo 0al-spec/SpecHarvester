@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import re
 import shutil
 import sys
 import tempfile
@@ -23,6 +22,7 @@ from spec_harvester.semantic_author_pass import (
     LMStudioSemanticAuthorProvider,
     SemanticAuthorPassError,
     SemanticAuthorPassOptions,
+    contains_semantic_focus_term,
     run_semantic_author_pass,
 )
 from spec_harvester.semantic_proposal_quality import (
@@ -96,17 +96,6 @@ def source_revisions(inputs: Path, target_ids: set[str]) -> dict[str, str]:
     return revisions
 
 
-def contains_rubric_term(text: str, term: str) -> bool:
-    text_tokens = re.findall(r"[a-z0-9]+", text.casefold())
-    term_tokens = re.findall(r"[a-z0-9]+", term.casefold())
-    if not term_tokens:
-        return False
-    width = len(term_tokens)
-    return any(
-        text_tokens[index : index + width] == term_tokens for index in range(len(text_tokens))
-    )
-
-
 def rubric_metrics(
     target: dict[str, Any], semantic_pass: dict[str, Any], quality: dict[str, Any]
 ) -> dict[str, Any]:
@@ -118,11 +107,12 @@ def rubric_metrics(
     )
     purpose_groups = target["purposeConceptGroups"]
     purpose_matches = [
-        any(contains_rubric_term(purpose, term) for term in group) for group in purpose_groups
+        any(contains_semantic_focus_term(purpose, term) for term in group)
+        for group in purpose_groups
     ]
     purpose_accurate = all(purpose_matches)
     capability_specific = any(
-        contains_rubric_term(capability, term) for term in target["specificTerms"]
+        contains_semantic_focus_term(capability, term) for term in target["specificTerms"]
     )
     intent_decisions = proposal["intentDecisions"]
     reuse_count = sum(item["state"] == "proposed_reuse" for item in intent_decisions)
@@ -207,6 +197,8 @@ def provider_summary(records: list[dict[str, Any]], policy: dict[str, Any]) -> d
 
 
 def run(args: argparse.Namespace) -> dict[str, Any]:
+    if args.provider_max_attempts < 1 or args.provider_max_attempts > 3:
+        raise ValueError("Provider max attempts must be between one and three")
     rubric = json.loads(args.rubric.read_text())
     policy = load_semantic_author_quality_policy()
     if rubric["policySha256"] != policy["policySha256"]:
@@ -264,44 +256,54 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     file=sys.stderr,
                     flush=True,
                 )
-                try:
-                    semantic_pass = run_semantic_author_pass(
-                        pack,
-                        provider,
-                        options=SemanticAuthorPassOptions(
-                            timeout_seconds=timeout_seconds or args.timeout_seconds,
-                            max_output_bytes=256 * 1024,
-                            json_repair_max_attempts=args.json_repair_max_attempts,
-                        ),
-                        semantic_focus={
-                            "purposeConceptGroups": target["purposeConceptGroups"],
-                            "specificTerms": target["specificTerms"],
-                        },
-                    )
-                    quality = evaluate_semantic_proposal_quality(pack, semantic_pass)
-                    metrics = rubric_metrics(target, semantic_pass, quality)
-                    records[provider_name].append(
-                        {
-                            "repositoryId": target["repositoryId"],
-                            "candidateId": pack["candidateId"],
-                            "status": "completed",
-                            "qualityStatus": quality["status"],
-                            "proposalSha256": semantic_pass["proposal"]["proposalSha256"],
-                            "providerReceipt": semantic_pass["providerReceipt"],
-                            "claims": semantic_pass["proposal"]["claims"],
-                            "intentDecisions": semantic_pass["proposal"]["intentDecisions"],
-                            "diagnosticCodes": [item["code"] for item in quality["diagnostics"]],
-                            "metrics": metrics,
-                        }
-                    )
-                    outcome = "completed"
-                except (SemanticAuthorPassError, ValueError) as exc:
+                attempt_failures: list[str] = []
+                for attempt in range(1, args.provider_max_attempts + 1):
+                    try:
+                        semantic_pass = run_semantic_author_pass(
+                            pack,
+                            provider,
+                            options=SemanticAuthorPassOptions(
+                                timeout_seconds=timeout_seconds or args.timeout_seconds,
+                                max_output_bytes=256 * 1024,
+                                json_repair_max_attempts=args.json_repair_max_attempts,
+                            ),
+                            semantic_focus={
+                                "purposeConceptGroups": target["purposeConceptGroups"],
+                                "specificTerms": target["specificTerms"],
+                            },
+                        )
+                        quality = evaluate_semantic_proposal_quality(pack, semantic_pass)
+                        metrics = rubric_metrics(target, semantic_pass, quality)
+                        records[provider_name].append(
+                            {
+                                "repositoryId": target["repositoryId"],
+                                "candidateId": pack["candidateId"],
+                                "status": "completed",
+                                "providerAttemptCount": attempt,
+                                "priorAttemptFailureCodes": attempt_failures,
+                                "qualityStatus": quality["status"],
+                                "proposalSha256": semantic_pass["proposal"]["proposalSha256"],
+                                "providerReceipt": semantic_pass["providerReceipt"],
+                                "claims": semantic_pass["proposal"]["claims"],
+                                "intentDecisions": semantic_pass["proposal"]["intentDecisions"],
+                                "diagnosticCodes": [
+                                    item["code"] for item in quality["diagnostics"]
+                                ],
+                                "metrics": metrics,
+                            }
+                        )
+                        outcome = "completed"
+                        break
+                    except (SemanticAuthorPassError, ValueError) as exc:
+                        attempt_failures.append(str(exc))
+                else:
                     records[provider_name].append(
                         {
                             "repositoryId": target["repositoryId"],
                             "candidateId": pack["candidateId"],
                             "status": "failed",
-                            "failureCode": str(exc),
+                            "providerAttemptCount": args.provider_max_attempts,
+                            "failureCodes": attempt_failures,
                         }
                     )
                     outcome = "failed"
@@ -388,6 +390,7 @@ def main() -> int:
     parser.add_argument("--lm-studio-max-tokens", type=int, default=6144)
     parser.add_argument("--timeout-seconds", type=float, default=180)
     parser.add_argument("--json-repair-max-attempts", type=int, default=1)
+    parser.add_argument("--provider-max-attempts", type=int, default=1)
     parser.add_argument("--codex-timeout-seconds", type=float)
     parser.add_argument("--lm-studio-timeout-seconds", type=float)
     parser.add_argument(

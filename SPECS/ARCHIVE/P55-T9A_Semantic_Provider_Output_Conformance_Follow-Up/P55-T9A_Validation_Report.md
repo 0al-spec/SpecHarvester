@@ -14,13 +14,13 @@ rubric, policy, thresholds, or failure denominators.
 | Provider | Completed | Failed | Purpose accuracy | Evidence support | Schema validity | Edit burden | Capability specificity |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Codex 5.3 Spark | 4/4 | 0/4 | 1.00 | 1.00 | 1.00 | 0.00 | 1.00 |
-| LM Studio `openai/gpt-oss-20b` | 4/4 | 0/4 | 1.00 | 1.00 | 1.00 | 0.25 | 0.50 |
+| LM Studio `openai/gpt-oss-20b` | 4/4 | 0/4 | 1.00 | 1.00 | 1.00 | 0.00 | 1.00 |
 
 - Both providers used the same proposal contract and bounded conformance
   semantics.
-- LM Studio's edit burden passed exactly at the frozen maximum of `0.25`; the
-  retained-corpus run must continue to report this metric rather than treating
-  the boundary result as unlimited readiness.
+- Both providers reached zero measured reviewer edit burden under the frozen
+  rubric; the retained-corpus run must still report this metric rather than
+  treating a four-target result as unlimited readiness.
 - Deterministic diagnostics remain visible. RTK and ripgrep retain
   `capability_namespace_violation`; Codex and claude-mem retain
   `generic_intent_reuse`. Passing the calibration does not accept or publish
@@ -33,9 +33,9 @@ rubric, policy, thresholds, or failure denominators.
 - Frozen policy digest:
   `687b4e2d7dccfb727bf0bd2e25811f26cf28dc539c44b1d996e5c821e3fa1a82`
 - Baseline P55-T9 evidence digest:
-  `f470de471e8957f06c8f5df0c6b9d765b37fbb2a4c8a7e8f45ec36e5fcf728bc`
+  `2c5f74daa4cd30ffd91c2d3e8479285b9e9970f1cede0f7c78726fbf9c1c3834`
 - Target rubric digest:
-  `ab87c31746c3629536e53af305fcdb4bf569e44b1b25b3a2565aedbfb6836546`
+  `3346390190767c20c8067c0aa3dc71860173d044c4175afda88d27387e6c34ff`
 - No proposal was accepted, materialized, promoted, or published.
 
 ## Implementation
@@ -46,22 +46,25 @@ rubric, policy, thresholds, or failure denominators.
   the same shallow strict transport schema before full semantic validation.
 - Only recognized single-proposal envelopes are unwrapped. Request echoes,
   wrong identities, schema fragments, invalid evidence references, and invalid
-  intent branches fail closed or receive one bounded repair attempt.
+  intent branches fail closed or receive a bounded repair attempt.
 - The provider-neutral input now carries the unchanged semantic-focus rubric
   and explicit evidence-grounded purpose and capability guidance.
 - The calibration runner supports bounded diagnostic subsets while preventing
   subset runs from unblocking P55-T10.
+- Full runs cap provider execution attempts at two, account for every attempt,
+  and retain prior failure codes. The accepted run completed every record on
+  its first provider attempt.
 
 ## Durable Evidence
 
 - Evidence:
   `SPECS/EVIDENCE/P55-T9A/P55-T9A_Semantic_Provider_Output_Conformance_Follow-Up.json`
 - Evidence SHA-256:
-  `458b409268a953045a4791bc746c69e07d02522748c3ae481c9aa8401c7edbb1`
-- Codex aggregate provider duration: `88,200 ms`.
-- LM Studio aggregate provider duration: `282,817 ms`.
-- LM Studio usage: `49,653` prompt tokens, `6,237` completion tokens,
-  `55,890` total tokens. Codex CLI did not expose token usage in its retained
+  `b6c90f8a086c19eb48df282233ba2d71618d2f89a2e6d5b3e71a11de6fb8d051`
+- Codex aggregate provider duration: `58,749 ms`.
+- LM Studio aggregate provider duration: `201,726 ms`.
+- LM Studio usage: `15,721` prompt tokens, `2,701` completion tokens,
+  `18,422` total tokens. Codex CLI did not expose token usage in its retained
   receipt contract.
 - Raw prompts, raw responses, hidden reasoning, credentials, and machine-local
   paths are absent from durable evidence.
@@ -73,9 +76,9 @@ rubric, policy, thresholds, or failure denominators.
   - Codex 5.3 Spark `4/4` complete and all frozen gates passed;
   - LM Studio `4/4` complete and all frozen gates passed;
   - P55-T10 recorded as unblocked without threshold changes.
-- Focused semantic-author, P55-T9A, and docs-contract tests: `233 passed`.
-- Full test and coverage gate: `1278 passed, 1 skipped`; total coverage
-  `90.02%`.
+- Focused semantic-author, P55-T9A, and docs-contract tests: `240 passed`.
+- Full test and coverage gate: `1284 passed, 1 skipped`; total coverage
+  `90.00%`.
 - Ruff lint and format checks: passed; `185 files already formatted`.
 - `git diff --check`: passed.
 - Evidence JSON parsing and `swift package dump-package`: passed.

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import subprocess
 import tempfile
 import time
@@ -540,6 +541,24 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
             )
             if binding not in allowed_evidence:
                 raise ValueError("semantic proposal evidence is not in provider allowlist")
+    semantic_focus = provider_payload.get("semanticFocus")
+    if isinstance(semantic_focus, dict):
+        purpose = " ".join(
+            claim["text"] for claim in payload["claims"] if claim["kind"] == "purpose"
+        )
+        capability = " ".join(
+            claim["text"] for claim in payload["claims"] if claim["kind"] == "capability"
+        )
+        if any(
+            not any(contains_semantic_focus_term(purpose, term) for term in group)
+            for group in semantic_focus["purposeConceptGroups"]
+        ):
+            raise ValueError("semantic proposal purpose misses a required exact term group")
+        if not any(
+            contains_semantic_focus_term(capability, term)
+            for term in semantic_focus["specificTerms"]
+        ):
+            raise ValueError("semantic proposal capability misses a required exact term")
     observed = {
         item.get("intentId"): item.get("observedIntentSha256")
         for item in provider_payload.get("observedIntents", [])
@@ -559,6 +578,28 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
         )
         if referenced_claim_ids - claim_ids:
             raise ValueError("semantic proposal intent decision references an unknown claim")
+
+
+def contains_semantic_focus_term(text: str, term: str) -> bool:
+    text_tokens = re.findall(r"[a-z0-9]+", text.casefold())
+    term_tokens = re.findall(r"[a-z0-9]+", term.casefold())
+    if not term_tokens:
+        return False
+    width = len(term_tokens)
+    return any(
+        text_tokens[index : index + width - 1] == term_tokens[:-1]
+        and text_tokens[index + width - 1] in _term_inflections(term_tokens[-1])
+        for index in range(len(text_tokens) - width + 1)
+    )
+
+
+def _term_inflections(term: str) -> set[str]:
+    forms = {term, f"{term}s", f"{term}ed", f"{term}ing"}
+    if term.endswith("e") and len(term) > 1:
+        forms.update({f"{term}d", f"{term[:-1]}ing"})
+    if term.endswith(("s", "x", "z", "ch", "sh")):
+        forms.add(f"{term}es")
+    return forms
 
 
 def _schema_fragment_path(value: Any, path: str = "$") -> str | None:
@@ -597,6 +638,9 @@ def _schema_error_code(error: Any) -> str:
 def _provider_payload(
     pack: dict[str, Any], semantic_focus: dict[str, Any] | None
 ) -> dict[str, Any]:
+    normalized_focus = (
+        _normalize_semantic_focus(semantic_focus) if semantic_focus is not None else None
+    )
     payload = {
         "apiVersion": "spec-harvester.semantic-author-provider-request/v0",
         "kind": "SpecHarvesterSemanticAuthorProviderRequest",
@@ -608,15 +652,23 @@ def _provider_payload(
         "authoringConstraints": {
             "purposeMustDescribeUserOutcome": True,
             "purposeMustCoverEverySupportedSemanticFocusGroup": True,
+            "purposeMustUseExactSupportedTermFromEverySemanticFocusGroup": True,
             "purposeMustNotCenterPackageBoundaryOrMetadata": True,
             "capabilityMustUseCandidateNamespace": pack["candidateId"],
             "capabilityMustDescribeConcretePackageAction": True,
+            "capabilityMustUseExactSupportedSpecificTerm": True,
             "unsupportedClaimsMustBeOmitted": True,
             "schemaObjectsAreNotProposalValues": True,
         },
     }
-    if semantic_focus is not None:
-        payload["semanticFocus"] = _normalize_semantic_focus(semantic_focus)
+    if normalized_focus is not None:
+        payload["semanticFocus"] = normalized_focus
+        payload["authoringConstraints"]["purposeRequiredExactTermGroups"] = normalized_focus[
+            "purposeConceptGroups"
+        ]
+        payload["authoringConstraints"]["capabilityRequiredExactTerms"] = normalized_focus[
+            "specificTerms"
+        ]
     return payload
 
 
@@ -654,8 +706,11 @@ def _system_prompt() -> str:
         "$defs, JSON Pointer, or schema objects in proposal value fields. Describe the concrete "
         "user outcome before implementation shape, follow semanticFocus only when supported by "
         "the supplied evidence, and keep capability identifiers under the candidate namespace. "
-        "The purpose claim must explicitly cover at least one evidence-supported concept from "
-        "every semanticFocus purposeConceptGroup and must not center package-boundary capture, "
+        "The purpose claim must include at least one exact complete term, with the same spelling, "
+        "from every semanticFocus purposeConceptGroup when that term is supported by the evidence. "
+        "The capability claim must likewise include at least one exact complete evidence-supported "
+        "semanticFocus specificTerm. Do not merely use an inflection, derivative, or substring of "
+        "a required term. The purpose claim must not center package-boundary capture, "
         "harvest metadata, or schema representation. Capability claims must describe concrete "
         "package actions rather than metadata inventory. Claims must include at least one each "
         "of purpose, capability, interface, nearby_intent_difference, and non_goal; an interface "
