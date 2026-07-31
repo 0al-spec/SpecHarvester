@@ -1,0 +1,32 @@
+{
+  "apiVersion": "spec-harvester.targeted-semantic-calibration-rubric/v0",
+  "kind": "SpecHarvesterTargetedSemanticCalibrationRubric",
+  "authority": "maintainer_frozen_target_rubric",
+  "policySha256": "687b4e2d7dccfb727bf0bd2e25811f26cf28dc539c44b1d996e5c821e3fa1a82",
+  "targets": [
+    {
+      "repositoryId": "rtk-ai-rtk",
+      "candidateDirectory": "rtk_ai_rtk.core",
+      "purposeConceptGroups": [["token", "context"], ["reduce", "save", "compress", "optimize"]],
+      "specificTerms": ["token", "context", "output", "command"]
+    },
+    {
+      "repositoryId": "openai-codex",
+      "candidateDirectory": "openai_codex.codex",
+      "purposeConceptGroups": [["coding", "code", "software"], ["agent", "assistant"]],
+      "specificTerms": ["code", "coding", "agent", "software"]
+    },
+    {
+      "repositoryId": "burntsushi-ripgrep",
+      "candidateDirectory": "burntsushi_ripgrep.core",
+      "purposeConceptGroups": [["search", "find"], ["text", "file", "files"], ["regex", "pattern"]],
+      "specificTerms": ["search", "text", "file", "regex", "pattern"]
+    },
+    {
+      "repositoryId": "thedotmack-claude-mem",
+      "candidateDirectory": "thedotmack_claude_mem.claude_mem",
+      "purposeConceptGroups": [["memory", "context"], ["coding", "code", "claude"], ["persist", "retain", "recall", "session"]],
+      "specificTerms": ["memory", "context", "coding", "claude", "session"]
+    }
+  ]
+}

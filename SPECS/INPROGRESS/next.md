@@ -1,27 +1,33 @@
-# Next Task: P55-T9 Targeted Semantic Quality Calibration
+# Next Task: P55-T9A Semantic Provider Output Conformance Follow-Up
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T8` Reviewer-Controlled Semantic Materialization
+**Dependencies:** `P55-T9` Targeted Semantic Quality Calibration
 **Status:** Ready
-**Branch:** TBD
 
 ## Objective
 
-Run a targeted provider-separated semantic quality calibration on repositories
-whose product purpose is poorly represented by generic static intents.
+Harden provider output conformance and repeat the exact P55-T9 targeted
+calibration under the unchanged rubric and frozen policy.
 
 ## Required Scope
 
-Include `rtk-ai/rtk`, `openai/codex`, and comparable utility or agent
-repositories. Run Codex 5.3 Spark and LM Studio independently, then report
-purpose accuracy, evidence support, capability specificity, intent reuse,
-experimental-intent quality, schema validity, and reviewer edit burden against
-the frozen P55-T5 thresholds. Do not silently redefine thresholds, materialize
-the wider corpus, or promote results.
+Prevent request wrappers, wrong API identities, and schema/meta-schema
+fragments from entering semantic proposal value fields. Improve RTK purpose
+emphasis without weakening evidence, namespace, or schema validation. Repeat
+`rtk-ai/rtk`, `openai/codex`, `BurntSushi/ripgrep`, and
+`thedotmack/claude-mem` independently through Codex 5.3 Spark and LM Studio.
+Do not change the target rubric, frozen thresholds, failure denominator,
+proposal-only authority, or publication boundary. P55-T10 remains blocked
+until every frozen gate passes.
 
 ## Recently Archived
 
+- `P55-T9` Targeted Semantic Quality Calibration: PASS. Eight
+  provider/target outcomes were accounted for against the frozen policy.
+  Codex completed four schema-valid proposals but failed purpose and edit
+  burden gates; LM Studio completed zero of four. Neither provider passed, so
+  P55-T10 remains blocked.
 - `P55-T8` Reviewer-Controlled Semantic Materialization: PASS. Explicit
   accepted or edited semantic decisions now create separate preview revisions
   with exact before/after provenance and SpecHarvester plus read-only SpecPM
