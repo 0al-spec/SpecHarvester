@@ -2,8 +2,8 @@
 
 ## Objective
 
-Run Codex 5.3 Spark only over the 48 immutable P55-T10 records that reused a
-generic observed intent, compare the bounded follow-up with the original
+Run Codex 5.3 Spark only over the 46 immutable P55-T10 repository records that
+account for 48 reused generic observed-intent references, and compare the bounded follow-up with the original
 campaign, and expose the resulting complete and rejected proposals for explicit
 maintainer review without granting materialization or publication authority.
 
@@ -18,7 +18,8 @@ maintainer review without granting materialization or publication authority.
 ## Deliverables
 
 - A frozen follow-up plan that binds:
-  - exactly the 48 P55-T10 generic-reuse records and their record digests;
+  - exactly the 46 P55-T10 generic-reuse repository records, all 48 generic
+    references, and their record digests;
   - the P55-T10 report/archive and campaign-input digests;
   - unchanged repository, revision, packet, candidate, provider, and model
     identities;
@@ -34,7 +35,7 @@ maintainer review without granting materialization or publication authority.
 - A digest-bound follow-up archive and summary that retain complete and
   rejected proposal records while excluding raw prompts, raw responses, hidden
   reasoning, credentials, and machine-local paths.
-- A Workbench overlay path that shows T10C records for the 48 targets and T10
+- A Workbench overlay path that shows T10C records for the 46 targets and T10
   baseline records for the remaining corpus, with visible provenance and no
   authority change.
 - A deterministic representative review sample spanning experimental proposals,
@@ -46,8 +47,8 @@ maintainer review without granting materialization or publication authority.
 
 ## Execution Plan
 
-1. Validate the P55-T10 report/archive pair, derive exactly 48 generic-reuse
-   target bindings from archived records, and freeze their ordered digest set.
+1. Validate the P55-T10 report/archive pair, derive exactly 46 generic-reuse
+   repository bindings covering 48 references, and freeze their ordered digest set.
 2. Reconstruct the original retained-corpus target scope and prove every T10C
    repository, source revision, packet digest, and candidate identity matches
    its P55-T10 baseline record.
@@ -63,8 +64,9 @@ maintainer review without granting materialization or publication authority.
 
 ## Acceptance Criteria
 
-- The target set contains exactly the 48 P55-T10 records whose completed
-  proposal reused at least one frozen generic intent; no other repository runs.
+- The target set contains exactly the 46 P55-T10 repository records whose
+  completed proposals account for all 48 frozen generic-intent references; no
+  other repository runs.
 - Every target preserves the P55-T10 repository ID, revision, packet digest,
   candidate ID, baseline record digest, and provider/model binding.
 - Every target has exactly one completed or failed terminal record; provider
@@ -89,7 +91,7 @@ maintainer review without granting materialization or publication authority.
 
 ## Non-Goals
 
-- Re-running static harvesting or the 52 P55-T10 records without generic reuse.
+- Re-running static harvesting or the 54 P55-T10 records without generic reuse.
 - Re-downloading source repositories or changing pinned revisions.
 - Running LM Studio or comparing provider transport conformance.
 - Automatically treating an experimental intent as canonical or sufficient.

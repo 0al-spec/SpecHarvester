@@ -7,8 +7,9 @@
 
 ## Objective
 
-Run a bounded Codex 5.3 Spark follow-up over the 48 P55-T10 records that reused
-generic static intents, preserving the original campaign as immutable baseline.
+Run a bounded Codex 5.3 Spark follow-up over the 46 P55-T10 repository records
+that account for 48 reused generic static-intent references, preserving the
+original campaign as immutable baseline.
 
 ## Required Scope
 

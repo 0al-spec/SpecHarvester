@@ -124,7 +124,8 @@
             "providerReceiptSha256": {"$ref": "#/$defs/sha256"},
             "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
             "qualityStatus": {"enum": ["eligible_for_calibration", "review_required", "rejected"]},
-            "campaignRecordSha256": {"$ref": "#/$defs/sha256"}
+            "campaignRecordSha256": {"$ref": "#/$defs/sha256"},
+            "campaignSource": {"enum": ["baseline", "follow_up"]}
           }
         },
         "semantic": {"$ref": "#/$defs/semanticComparison"}

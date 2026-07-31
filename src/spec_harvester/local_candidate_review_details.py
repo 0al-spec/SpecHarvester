@@ -36,6 +36,8 @@ class LocalCandidateReviewDetailsOptions:
     output: Path
     semantic_campaign_archive: Path | None = None
     expected_semantic_campaign_sha256: str | None = None
+    semantic_follow_up_archive: Path | None = None
+    expected_semantic_follow_up_sha256: str | None = None
 
 
 def _catalog_bindings(path: Path) -> dict[str, str]:
@@ -71,6 +73,7 @@ def _detail_sections(
     packet: dict[str, Any],
     members: dict[str, bytes],
     campaign_record: dict[str, Any] | None = None,
+    campaign_source: str | None = None,
 ) -> list[dict[str, str]]:
     candidate = packet["candidate"]
     packet_member = str(Path("packets") / candidate_id / "packet.json")
@@ -114,6 +117,16 @@ def _detail_sections(
     if semantic is not None:
         sections.append(_json_section("semantic-proposal-record", semantic))
     if campaign_record is not None:
+        sections.append(
+            _json_section(
+                "semantic-campaign-provenance",
+                {
+                    "source": campaign_source,
+                    "campaignInputSha256": campaign_record["campaignInputSha256"],
+                    "recordSha256": campaign_record["recordSha256"],
+                },
+            )
+        )
         sections.append(_json_section("semantic-campaign-record", campaign_record))
     return sections
 
@@ -320,6 +333,7 @@ def _comparison(
     packet: dict[str, Any],
     members: dict[str, bytes],
     campaign_record: dict[str, Any] | None = None,
+    campaign_source: str | None = None,
 ) -> dict[str, Any]:
     proposal = packet["aiProposal"]
     ai: dict[str, Any] = {"status": proposal["status"]}
@@ -339,6 +353,7 @@ def _comparison(
             "sourceBundleSha256": semantic["sourceBundleSha256"],
             "qualityStatus": semantic["qualityStatus"],
             "warningCount": semantic["qualityReport"]["summary"]["warningCount"],
+            "campaignSource": campaign_source,
         }
     elif (
         campaign_record is not None
@@ -350,6 +365,7 @@ def _comparison(
             "qualityStatus": "rejected",
             "warningCount": quality["summary"]["warningCount"],
             "campaignRecordSha256": campaign_record["recordSha256"],
+            "campaignSource": campaign_source,
         }
     comparison = {
         "apiVersion": "spec-harvester.candidate-review-comparison/v0",
@@ -371,13 +387,13 @@ def _digest_without_record_sha256(record: dict[str, Any]) -> str:
     return sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
-def _semantic_campaign_records(
-    options: LocalCandidateReviewDetailsOptions, catalog_ids: set[str]
-) -> tuple[str | None, dict[str, dict[str, Any]]]:
-    archive = options.semantic_campaign_archive
-    expected = options.expected_semantic_campaign_sha256
-    if archive is None and expected is None:
-        return None, {}
+def _semantic_archive_records(
+    archive: Path,
+    expected: str,
+    catalog_ids: set[str],
+    *,
+    require_full_catalog: bool,
+) -> tuple[str, dict[str, Any], dict[str, dict[str, Any]]]:
     if archive is None or expected is None:
         raise ValueError("Semantic campaign archive and expected SHA-256 must be supplied together")
     archive_sha256, members = _read_archive(
@@ -397,7 +413,13 @@ def _semantic_campaign_records(
         for target in targets
         if isinstance(target, dict)
     }
-    if set(target_bindings) != catalog_ids or len(target_bindings) != len(targets):
+    target_ids = set(target_bindings)
+    if (
+        not target_ids
+        or not target_ids <= catalog_ids
+        or len(target_bindings) != len(targets)
+        or (require_full_catalog and target_ids != catalog_ids)
+    ):
         raise ValueError("Semantic campaign target set differs from catalog")
 
     records: dict[str, dict[str, Any]] = {}
@@ -432,9 +454,40 @@ def _semantic_campaign_records(
             if portable_member is None or _json_object(portable_member, repository_id) != portable:
                 raise ValueError(f"Semantic campaign portable member differs: {repository_id}")
         records[repository_id] = record
-    if set(records) != catalog_ids:
+    if set(records) != target_ids:
         raise ValueError("Semantic campaign record set differs from catalog")
-    return archive_sha256, records
+    return archive_sha256, campaign_input, records
+
+
+def _semantic_campaign_records(
+    options: LocalCandidateReviewDetailsOptions, catalog_ids: set[str]
+) -> tuple[str | None, str | None, dict[str, dict[str, Any]], set[str]]:
+    archive = options.semantic_campaign_archive
+    expected = options.expected_semantic_campaign_sha256
+    follow_up_archive = options.semantic_follow_up_archive
+    follow_up_expected = options.expected_semantic_follow_up_sha256
+    if archive is None and expected is None and follow_up_archive is None and follow_up_expected is None:
+        return None, None, {}, set()
+    if archive is None or expected is None:
+        raise ValueError("Semantic campaign archive and expected SHA-256 must be supplied together")
+    baseline_sha256, _baseline_input, records = _semantic_archive_records(
+        archive, expected, catalog_ids, require_full_catalog=True
+    )
+    if follow_up_archive is None and follow_up_expected is None:
+        return baseline_sha256, None, records, set()
+    if follow_up_archive is None or follow_up_expected is None:
+        raise ValueError("Semantic follow-up archive and expected SHA-256 must be supplied together")
+    follow_up_sha256, follow_up_input, follow_up_records = _semantic_archive_records(
+        follow_up_archive,
+        follow_up_expected,
+        catalog_ids,
+        require_full_catalog=False,
+    )
+    baseline = follow_up_input.get("baseline")
+    if not isinstance(baseline, dict) or baseline.get("archiveSha256") != baseline_sha256:
+        raise ValueError("Semantic follow-up baseline archive binding is stale")
+    records.update(follow_up_records)
+    return baseline_sha256, follow_up_sha256, records, set(follow_up_records)
 
 
 def _validate_record(record: dict[str, Any]) -> None:
@@ -456,7 +509,12 @@ def build_local_candidate_review_details(
     aggregate = _json_object(members["aggregate-handoff.json"], "aggregate-handoff.json")
     expectations = _preflight_statuses(aggregate)
     bindings = _catalog_bindings(options.catalog)
-    semantic_campaign_sha256, campaign_records = _semantic_campaign_records(options, set(bindings))
+    (
+        semantic_campaign_sha256,
+        semantic_follow_up_sha256,
+        campaign_records,
+        follow_up_ids,
+    ) = _semantic_campaign_records(options, set(bindings))
     details: list[dict[str, Any]] = []
     comparisons: list[dict[str, Any]] = []
     for name in sorted(
@@ -478,7 +536,11 @@ def build_local_candidate_review_details(
             },
             "previewOnly": True,
             "sections": _detail_sections(
-                candidate_id, packet, members, campaign_records.get(candidate_id)
+                candidate_id,
+                packet,
+                members,
+                campaign_records.get(candidate_id),
+                "follow_up" if candidate_id in follow_up_ids else "baseline",
             ),
         }
         comparison = _comparison(
@@ -487,6 +549,7 @@ def build_local_candidate_review_details(
             packet,
             members,
             campaign_records.get(candidate_id),
+            "follow_up" if candidate_id in follow_up_ids else "baseline",
         )
         _validate_record(detail)
         _validate_record(comparison)
@@ -500,6 +563,7 @@ def build_local_candidate_review_details(
         "authority": "local_review_detail_evidence_only",
         "sourceBundleSha256": archive_sha256,
         "semanticCampaignSha256": semantic_campaign_sha256,
+        "semanticFollowUpSha256": semantic_follow_up_sha256,
         "details": details,
         "comparisons": comparisons,
     }
@@ -517,5 +581,6 @@ def build_local_candidate_review_details(
             record.get("qualityReport", {}).get("status") == "rejected"
             for record in campaign_records.values()
         ),
+        "semanticFollowUpCount": len(follow_up_ids),
         "output": str(options.output),
     }
