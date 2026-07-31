@@ -3,7 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T9A` Semantic Provider Output Conformance Follow-Up
-**Status:** Ready
+**Status:** Selected
+**Branch:** `feature/P55-T10-retained-corpus-semantic-author-review`
 
 ## Objective
 
