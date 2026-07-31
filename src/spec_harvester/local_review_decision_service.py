@@ -136,6 +136,22 @@ class LocalReviewDecisionStore:
                 raise ValueError("Review detail set contains duplicate semantic records")
             if not semantic_sections:
                 continue
+            packet_sections = [
+                section
+                for section in sections
+                if isinstance(section, dict) and section.get("id") == "packet-binding.json"
+            ]
+            if len(packet_sections) != 1:
+                raise ValueError("Review detail semantic record lacks one packet binding")
+            packet_content = packet_sections[0].get("content")
+            if not isinstance(packet_content, str) or hashlib.sha256(
+                packet_content.encode("utf-8")
+            ).hexdigest() != binding.get("packetSha256"):
+                raise ValueError("Review detail packet content digest is stale")
+            try:
+                packet = json.loads(packet_content)
+            except json.JSONDecodeError as exc:
+                raise ValueError("Review detail packet binding is invalid") from exc
             try:
                 record = json.loads(semantic_sections[0]["content"])
             except (KeyError, TypeError, json.JSONDecodeError) as exc:
@@ -145,6 +161,27 @@ class LocalReviewDecisionStore:
             validate_portable_semantic_proposal(record)
             if record["candidateId"] != candidate_id:
                 raise ValueError("Review detail semantic candidate binding is stale")
+            repository = packet.get("repository") if isinstance(packet, dict) else None
+            semantic_binding = packet.get("semanticProposal") if isinstance(packet, dict) else None
+            expected_semantic_binding = {
+                "status": "complete_portable",
+                "path": "semantic-proposal-record.json",
+                "recordSha256": record["recordSha256"],
+                "proposalSha256": record["proposalSha256"],
+                "providerReceiptSha256": record["providerReceiptSha256"],
+                "qualityReportSha256": record["qualityReportSha256"],
+                "qualityStatus": record["qualityStatus"],
+            }
+            if (
+                not isinstance(repository, dict)
+                or repository.get("id") != candidate_id
+                or not isinstance(semantic_binding, dict)
+                or any(
+                    semantic_binding.get(key) != value
+                    for key, value in expected_semantic_binding.items()
+                )
+            ):
+                raise ValueError("Review detail semantic record differs from bound packet")
             records[candidate_id] = record
         return records
 

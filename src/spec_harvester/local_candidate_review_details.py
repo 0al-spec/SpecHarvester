@@ -68,7 +68,13 @@ def _detail_sections(
     candidate_id: str, packet: dict[str, Any], members: dict[str, bytes]
 ) -> list[dict[str, str]]:
     candidate = packet["candidate"]
+    packet_member = str(Path("packets") / candidate_id / "packet.json")
+    try:
+        packet_content = members[packet_member].decode("utf-8")
+    except (KeyError, UnicodeDecodeError) as exc:
+        raise ValueError(f"Packet binding content is invalid: {candidate_id}") from exc
     sections = [
+        _section("packet-binding.json", "application/json", packet_content),
         _json_section("source-provenance", packet["repository"]),
         _json_section(
             "package-topology",
@@ -157,6 +163,9 @@ def _static_semantics(
         metadata = document.get("metadata")
         if isinstance(metadata, dict) and isinstance(metadata.get("summary"), str):
             summaries.append(metadata["summary"])
+        intent = document.get("intent")
+        if isinstance(intent, dict) and isinstance(intent.get("summary"), str):
+            summaries.append(intent["summary"])
         provides = document.get("provides")
         if not isinstance(provides, dict):
             index = document.get("index")
@@ -188,8 +197,15 @@ def _static_semantics(
                 )
         for key in ("interfaces", "exposes"):
             values = document.get(key)
+            if isinstance(values, dict):
+                values = [
+                    item
+                    for direction in ("inbound", "outbound")
+                    if isinstance(values.get(direction), list)
+                    for item in values[direction]
+                ]
             if isinstance(values, list):
-                interfaces.extend(str(value) for value in values)
+                interfaces.extend(_interface_summary(value) for value in values)
         values = document.get("evidence")
         if isinstance(values, list):
             evidence.extend(
@@ -205,6 +221,18 @@ def _static_semantics(
         "interfaces": interfaces,
         "evidence": evidence,
     }
+
+
+def _interface_summary(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        return " · ".join(
+            str(value[key])
+            for key in ("id", "kind", "summary")
+            if isinstance(value.get(key), str) and value[key]
+        ) or json.dumps(value, sort_keys=True)
+    return str(value)
 
 
 def _semantic_comparison_projection(
