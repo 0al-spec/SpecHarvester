@@ -295,6 +295,7 @@ def _semantic_comparison_projection(
                     "intentId": decision["intentId"],
                     "userNeedClaimId": decision["userNeedClaimId"],
                     "nearbyIntentIds": decision["nearbyIntentIds"],
+                    "nearbyIntentClaimIds": decision["nearbyIntentClaimIds"],
                     "nonGoalClaimIds": decision["nonGoalClaimIds"],
                 }
             )

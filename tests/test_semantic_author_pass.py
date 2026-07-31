@@ -83,6 +83,7 @@ def proposal(input_pack: dict) -> dict:
         f"intent.experimental.ai_context_optimization.{input_pack['sourceBundleSha256'][:8]}"
     )
     result["intentDecisions"][1]["nearbyIntentIds"] = [reuse["intentId"]]
+    result["intentDecisions"][1]["nearbyIntentClaimIds"] = ["nearby_difference"]
     return result
 
 
@@ -249,6 +250,15 @@ def test_experimental_nearby_intent_must_be_observed(tmp_path: Path) -> None:
     payload["intentDecisions"][1]["nearbyIntentIds"] = ["intent.ai.unknown"]
 
     with pytest.raises(SemanticAuthorPassError, match="unknown nearby observed intent"):
+        run_semantic_author_pass(input_pack, FakeProvider(payload))
+
+
+def test_experimental_nearby_intents_require_matching_comparison_claims(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path)
+    payload = proposal(input_pack)
+    payload["intentDecisions"][1]["nearbyIntentClaimIds"] = ["capability"]
+
+    with pytest.raises(SemanticAuthorPassError, match="matching comparison claims"):
         run_semantic_author_pass(input_pack, FakeProvider(payload))
 
 
@@ -517,6 +527,7 @@ def test_transport_state_discards_only_inactive_intent_branch_padding(
         {
             "userNeedClaimId": "inactive_value",
             "nearbyIntentIds": ["intent.inactive"],
+            "nearbyIntentClaimIds": ["inactive_claim"],
             "nonGoalClaimIds": ["inactive_claim"],
         }
     )
@@ -534,6 +545,7 @@ def test_transport_state_discards_only_inactive_intent_branch_padding(
     assert normalized["rationaleClaimId"] == reuse["rationaleClaimId"]
     assert "userNeedClaimId" not in normalized
     assert "nearbyIntentIds" not in normalized
+    assert "nearbyIntentClaimIds" not in normalized
     assert "nonGoalClaimIds" not in normalized
 
 

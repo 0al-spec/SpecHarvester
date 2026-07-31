@@ -148,6 +148,7 @@ def proposal(pack: dict) -> dict:
                 ),
                 "userNeedClaimId": "purpose",
                 "nearbyIntentIds": [observed["intentId"]],
+                "nearbyIntentClaimIds": ["nearby"],
                 "nonGoalClaimIds": ["non_goal"],
             },
         ],
@@ -261,6 +262,53 @@ def test_stale_request_binding_rejects(tmp_path: Path) -> None:
 
     assert report["status"] == "rejected"
     assert "request_binding_mismatch" in diagnostic_codes(report)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("apiVersion", "spec-harvester.experimental-intent-decision-policy/v1"),
+        ("kind", "OtherExperimentalIntentDecisionPolicy"),
+    ),
+)
+def test_policy_binding_identity_rejects(tmp_path: Path, field: str, value: str) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    passed["experimentalIntentDecisionPolicy"][field] = value
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "experimental_intent_policy_binding_invalid" in diagnostic_codes(report)
+
+
+def test_quality_rejects_candidate_namespace_in_experimental_identifier(
+    tmp_path: Path,
+) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    passed["proposal"]["intentDecisions"][1]["intentId"] = (
+        f"intent.experimental.demo_context.{pack['sourceBundleSha256'][:8]}"
+    )
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "experimental_intent_identifier_leaks_candidate_namespace" in diagnostic_codes(report)
+
+
+def test_quality_rejects_unbound_nearby_intent_comparison(tmp_path: Path) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    decision = passed["proposal"]["intentDecisions"][1]
+    decision["nearbyIntentIds"].append("intent.ai.second_observed")
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "experimental_intent_nearby_binding_count_mismatch" in diagnostic_codes(report)
 
 
 def test_recomputed_source_bundle_digest_rejects_coordinated_evidence_tampering(

@@ -14,6 +14,7 @@ from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_sch
 from spec_harvester.experimental_intent_policy import (
     EXPERIMENTAL_INTENT_ID_PATTERN,
     GENERIC_OBSERVED_INTENT_IDS,
+    candidate_namespace_tokens,
     experimental_intent_suffix,
     load_experimental_intent_decision_policy,
 )
@@ -174,6 +175,8 @@ def _validate_envelope_bindings(
     policy_binding = semantic_pass.get("experimentalIntentDecisionPolicy")
     if (
         not isinstance(policy_binding, dict)
+        or policy_binding.get("apiVersion") != decision_policy["apiVersion"]
+        or policy_binding.get("kind") != decision_policy["kind"]
         or policy_binding.get("policySha256") != decision_policy["policySha256"]
         or policy_binding.get("frozenByTask") != "P55-T10A"
         or policy_binding.get("authority") != "maintainer_bounded_proposal_policy"
@@ -421,6 +424,16 @@ def _validate_intents(
                     subject=intent_id,
                 )
             )
+        elif set(intent_id.split(".")[2].split("_")) & candidate_namespace_tokens(
+            str(pack.get("candidateId", ""))
+        ):
+            diagnostics.append(
+                _diagnostic(
+                    "experimental_intent_identifier_leaks_candidate_namespace",
+                    "error",
+                    subject=intent_id,
+                )
+            )
         if decision["state"] == "proposed_experimental":
             unknown_nearby = sorted(set(decision["nearbyIntentIds"]) - set(observed))
             if unknown_nearby:
@@ -430,6 +443,26 @@ def _validate_intents(
                         "error",
                         subject=intent_id,
                         detail=", ".join(unknown_nearby),
+                    )
+                )
+            nearby_claim_ids = decision["nearbyIntentClaimIds"]
+            if len(nearby_claim_ids) != len(decision["nearbyIntentIds"]):
+                diagnostics.append(
+                    _diagnostic(
+                        "experimental_intent_nearby_binding_count_mismatch",
+                        "error",
+                        subject=intent_id,
+                    )
+                )
+            if any(
+                claims_by_id.get(claim_id, {}).get("kind") != "nearby_intent_difference"
+                for claim_id in nearby_claim_ids
+            ):
+                diagnostics.append(
+                    _diagnostic(
+                        "experimental_intent_nearby_difference_claim_invalid",
+                        "error",
+                        subject=intent_id,
                     )
                 )
             user_need = claims_by_id.get(decision["userNeedClaimId"])
@@ -447,7 +480,11 @@ def _validate_intents(
         referenced_claim_ids = (
             {decision["rationaleClaimId"]}
             if decision["state"] == "proposed_reuse"
-            else {decision["userNeedClaimId"], *decision["nonGoalClaimIds"]}
+            else {
+                decision["userNeedClaimId"],
+                *decision["nearbyIntentClaimIds"],
+                *decision["nonGoalClaimIds"],
+            }
         )
         unknown_claim_ids = sorted(referenced_claim_ids - claim_ids)
         if unknown_claim_ids:

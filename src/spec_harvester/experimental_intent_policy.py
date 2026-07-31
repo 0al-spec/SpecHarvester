@@ -87,6 +87,16 @@ def experimental_intent_suffix(source_bundle_sha256: str) -> str:
     return source_bundle_sha256[:8]
 
 
+def candidate_namespace_tokens(candidate_id: str) -> set[str]:
+    """Return package-specific tokens that must not enter portable intent IDs."""
+    ignored = {"api", "app", "cli", "core", "library", "package", "tool", "workspace"}
+    return {
+        token
+        for token in re.findall(r"[a-z0-9]+", candidate_id.casefold())
+        if len(token) >= 3 and token not in ignored
+    }
+
+
 def _digest_without(value: dict[str, Any], key: str) -> str:
     payload = {name: item for name, item in value.items() if name != key}
     return hashlib.sha256(

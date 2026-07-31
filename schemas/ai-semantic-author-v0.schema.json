@@ -88,7 +88,7 @@
     "experimentalIntent": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["apiVersion", "kind", "schemaVersion", "state", "intentId", "userNeedClaimId", "nearbyIntentIds", "nonGoalClaimIds"],
+      "required": ["apiVersion", "kind", "schemaVersion", "state", "intentId", "userNeedClaimId", "nearbyIntentIds", "nearbyIntentClaimIds", "nonGoalClaimIds"],
       "properties": {
         "apiVersion": {"const": "spec-harvester.ai-semantic-experimental-intent/v0"},
         "kind": {"const": "SpecHarvesterAISemanticExperimentalIntent"},
@@ -97,6 +97,7 @@
         "intentId": {"$ref": "#/$defs/experimentalIntentId"},
         "userNeedClaimId": {"$ref": "#/$defs/claimId"},
         "nearbyIntentIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/intentId"}},
+        "nearbyIntentClaimIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/claimId"}},
         "nonGoalClaimIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/claimId"}}
       }
     },
