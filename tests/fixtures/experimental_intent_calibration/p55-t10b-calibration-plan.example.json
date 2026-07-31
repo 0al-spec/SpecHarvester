@@ -1,0 +1,58 @@
+{
+  "apiVersion": "spec-harvester.experimental-intent-calibration-plan/v0",
+  "kind": "SpecHarvesterExperimentalIntentCalibrationPlan",
+  "schemaVersion": 1,
+  "authority": "maintainer_frozen_target_calibration_plan",
+  "taskId": "P55-T10B",
+  "provider": {
+    "providerId": "gpt-5.3-codex-spark",
+    "modelId": "gpt-5.3-codex-spark",
+    "transport": "codex_exec"
+  },
+  "targetRubric": {
+    "path": "tests/fixtures/targeted_semantic_calibration/p55-t9-target-rubric.example.json",
+    "sha256": "3346390190767c20c8067c0aa3dc71860173d044c4175afda88d27387e6c34ff"
+  },
+  "qualityPolicySha256": "687b4e2d7dccfb727bf0bd2e25811f26cf28dc539c44b1d996e5c821e3fa1a82",
+  "decisionPolicySha256": "0c8a92c0a782d501659021f75c644b03cb2156cd51151e6bbe322ed20845031c",
+  "targets": [
+    {
+      "repositoryId": "rtk-ai-rtk",
+      "expectedDecision": "experimental_required"
+    },
+    {
+      "repositoryId": "openai-codex",
+      "expectedDecision": "experimental_required"
+    },
+    {
+      "repositoryId": "burntsushi-ripgrep",
+      "expectedDecision": "experimental_required"
+    },
+    {
+      "repositoryId": "thedotmack-claude-mem",
+      "expectedDecision": "experimental_required"
+    }
+  ],
+  "attemptBudget": {
+    "providerMaxAttempts": 2,
+    "jsonRepairMaxAttemptsPerProviderAttempt": 1
+  },
+  "successCriteria": {
+    "minimumEvidenceSupportedExperimentalIntentCount": 1,
+    "maximumFalseNoveltyCount": 0,
+    "maximumDuplicateExperimentalIntentIdCount": 0,
+    "maximumDuplicateExperimentalSemanticStemCount": 0,
+    "requireAllTargetsTerminal": true,
+    "requireFrozenQualityGates": true
+  },
+  "executionBoundary": {
+    "repositoryCodeExecuted": false,
+    "packageManagerInvoked": false,
+    "materializationAllowed": false,
+    "canonicalizationAllowed": false,
+    "specpmMutationAllowed": false,
+    "registryMutationAllowed": false,
+    "publicationAllowed": false
+  },
+  "planSha256": "944c2eb1c50a3bdeefc72213ea542ec710be17b00b7afa9aae9426322840e79d"
+}

@@ -1,27 +1,31 @@
-# Next Task: P55-T10B Targeted Experimental-Intent Calibration
+# Next Task: P55-T10C Retained Generic-Intent Follow-Up
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10A` Experimental-Intent Decision Policy
-**Status:** Ready
+**Dependencies:** `P55-T10B` Targeted Experimental-Intent Calibration
+**Status:** Selected
 
 ## Objective
 
-Calibrate the new reuse-versus-novelty policy with Codex 5.3 Spark on
-repositories with known semantic gaps before any retained-corpus follow-up.
+Run a bounded Codex 5.3 Spark follow-up over the 48 P55-T10 records that reused
+generic static intents, preserving the original campaign as immutable baseline.
 
 ## Required Scope
 
-Run the digest-bound P55-T10A policy on `openai/codex`, `rtk-ai/rtk`,
-`BurntSushi/ripgrep`, and comparable generic-intent cases. Report justified
-reuse, experimental proposal rate, purpose accuracy, nearby-intent
-differentiation, duplicate or synonym risk, evidence support, and reviewer edit
-burden against the unchanged P55-T5 thresholds. At least one experimental
-proposal must be evidence-supported, and unjustified novelty must be recorded
-as failure. Do not materialize, canonicalize, mutate registry truth, or publish.
+Keep repository, candidate, source, and provider bindings unchanged. Compare
+generic-intent reduction, useful experimental intents, unjustified novelty,
+duplicate intent IDs, provider failures, and edit burden with P55-T10. Expose
+complete and rejected records in the Workbench and obtain explicit maintainer
+review evidence for a representative sample. Do not materialize, canonicalize,
+mutate registry truth, or publish.
 
 ## Recently Archived
 
+- `P55-T10B` Targeted Experimental-Intent Calibration: PASS. Codex 5.3 Spark
+  completed all four pinned targets and produced three evidence-supported
+  experimental intents with zero false novelty or duplicate IDs. All unchanged
+  P55-T5 gates passed; RTK's broad tooling-intent reuse remains an explicit edit
+  requirement, and no maintainer acceptance was inferred.
 - `P55-T10A` Experimental-Intent Decision Policy: PASS. Codex 5.3 Spark and LM
   Studio now receive one digest-bound policy requiring explicit comparison for
   generic reuse and allowing at most one package-neutral, source-bound
