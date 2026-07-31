@@ -18,25 +18,28 @@ P55-T10 is not unblocked.
 
 | Provider | Completed | Failed | Purpose accuracy | Evidence support | Schema validity | Edit burden |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Codex 5.3 Spark | 2/4 | 2/4 | 0.25 | 0.50 | 0.50 | 0.125 |
-| LM Studio `openai/gpt-oss-20b` | 0/4 | 4/4 | 0.00 | 0.00 | 0.00 | 0.00 |
+| Codex 5.3 Spark | 4/4 | 0/4 | 0.25 | 1.00 | 1.00 | 0.625 |
+| LM Studio `openai/gpt-oss-20b` | 0/4 | 4/4 | 0.00 | 0.00 | 0.00 | 1.00 |
 
-Failed provider records count as failures in the denominator. The apparently
-low LM Studio edit burden therefore does not indicate quality; no proposal
-completed for review.
+Failed provider records count as maximal reviewer edit burden. LM Studio's
+four failed proposals therefore produce an edit burden of `1.00`, not a false
+zero-work result.
 
 ## Observations
 
-- `openai/codex` was Spark's strongest result. Its purpose described a coding
-  agent/assistant, evidence bindings were complete, and capability wording was
-  repository-specific. It still reused a generic observed intent and therefore
-  remained `review_required`.
+- `openai/codex` was Spark's strongest purpose result. Its purpose described a
+  coding agent/assistant and evidence bindings were complete. Exact token
+  matching no longer treats `openai_codex.codex` as the rubric term `code`, so
+  capability specificity remains false. Generic intent reuse keeps the result
+  `review_required`.
 - Spark's `rtk-ai/rtk` proposal was schema-valid and evidence-bound, but its
   purpose did not describe token/context reduction. It also proposed a
   capability outside the candidate package namespace, so deterministic quality
   status was `rejected`.
-- Spark returned malformed proposal shapes for `ripgrep` and `claude-mem`,
-  including an unexpected request wrapper and wrong API identity.
+- Spark completed schema-valid, evidence-bound proposals for all four targets,
+  but only one purpose met every frozen concept group. RTK and ripgrep retained
+  capability namespace violations; Codex and claude-mem retained generic intent
+  reuse diagnostics.
 - LM Studio returned JSON Schema fragments or pointer-like objects in value
   positions for all four targets. Structured output transport succeeded, but
   the semantic proposal contract did not.
@@ -62,3 +65,7 @@ weakening evidence or namespace validation.
 Durable evidence excludes raw prompts, raw responses, hidden reasoning,
 credentials, and machine-local paths. No proposal was accepted, materialized,
 promoted, or published.
+
+The rerun verified each retained checkout was clean and exactly matched the
+pinned revision in `inputs/p53-mass-corpus/repositories.yml` before copying
+README evidence.

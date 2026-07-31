@@ -12,19 +12,17 @@ unblock P55-T10 because neither provider met the frozen quality gates.
 
 | Provider | Completed | Failed | Purpose accuracy | Evidence support | Schema validity | Edit burden |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Codex 5.3 Spark | 2/4 | 2/4 | 0.25 | 0.50 | 0.50 | 0.125 |
-| LM Studio `openai/gpt-oss-20b` | 0/4 | 4/4 | 0.00 | 0.00 | 0.00 | 0.00 |
+| Codex 5.3 Spark | 4/4 | 0/4 | 0.25 | 1.00 | 1.00 | 0.625 |
+| LM Studio `openai/gpt-oss-20b` | 0/4 | 4/4 | 0.00 | 0.00 | 0.00 | 1.00 |
 
-- Codex produced one purpose-accurate `openai/codex` proposal and one
-  schema-valid but purpose-inaccurate `rtk-ai/rtk` proposal. The latter also
-  violated the candidate capability namespace.
-- Codex outputs for `ripgrep` and `claude-mem` failed proposal-schema
-  validation.
+- Codex produced four schema-valid, evidence-bound proposals, but only the
+  `openai/codex` purpose matched every frozen concept group. Exact token
+  matching no longer accepts rubric terms embedded inside identifiers.
 - All four LM Studio outputs failed proposal-schema validation because schema
   references or pointer-like objects appeared where proposal values were
   required.
-- Failed records remain in the gate denominator. LM Studio's zero edit burden
-  therefore is not a quality pass.
+- Failed records contribute maximal edit burden. LM Studio's four failures
+  therefore record `1.00` instead of an understated `0.00`.
 
 ## Decision
 
@@ -49,7 +47,7 @@ target set are required before P55-T10.
   denominators, privacy, and the P55-T10 decision.
 
 The evidence file SHA-256 is
-`f470de471e8957f06c8f5df0c6b9d765b37fbb2a4c8a7e8f45ec36e5fcf728bc`.
+`2c5f74daa4cd30ffd91c2d3e8479285b9e9970f1cede0f7c78726fbf9c1c3834`.
 It excludes raw prompts, raw responses, hidden reasoning, credentials, and
 machine-local paths.
 
@@ -57,10 +55,10 @@ machine-local paths.
 
 - Real provider-separated calibration:
   - completed with eight accounted target/provider records;
-  - recorded Codex 5.3 Spark `2/4` complete and LM Studio `0/4` complete;
+  - recorded Codex 5.3 Spark `4/4` complete and LM Studio `0/4` complete;
   - recorded P55-T10 as blocked without changing thresholds.
 - `uv run pytest -q tests/test_targeted_semantic_calibration.py tests/test_portable_semantic_proposal.py tests/test_docs_contracts.py`
-  - `232 passed`
+  - `237 passed`
 - `uv run pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90 -q`
   - `1266 passed, 1 skipped`
   - total coverage: `90.00%`
@@ -81,7 +79,8 @@ machine-local paths.
 
 ## Boundary Verification
 
-The run used retained pinned P53 sources and P53-T14 candidates. It did not
+The run verified clean retained checkouts at the exact P53 manifest revisions
+before using pinned P53 sources and P53-T14 candidates. It did not
 clone or fetch repositories, execute harvested code, install dependencies,
 invoke package managers for harvested repositories, mutate SpecPM accepted
 sources, change registry truth, publish packages, or grant either provider

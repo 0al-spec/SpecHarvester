@@ -25,8 +25,9 @@ until every frozen gate passes.
 
 - `P55-T9` Targeted Semantic Quality Calibration: PASS. Eight
   provider/target outcomes were accounted for against the frozen policy.
-  Codex completed two of four proposals and LM Studio completed zero of four;
-  neither provider passed, so P55-T10 remains blocked.
+  Codex completed four schema-valid proposals but failed purpose and edit
+  burden gates; LM Studio completed zero of four. Neither provider passed, so
+  P55-T10 remains blocked.
 - `P55-T8` Reviewer-Controlled Semantic Materialization: PASS. Explicit
   accepted or edited semantic decisions now create separate preview revisions
   with exact before/after provenance and SpecHarvester plus read-only SpecPM

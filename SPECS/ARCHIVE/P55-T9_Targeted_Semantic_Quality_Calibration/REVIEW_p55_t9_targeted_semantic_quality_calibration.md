@@ -19,10 +19,9 @@ was identified in the calibration runner or durable evidence.
 
 ### Calibration Findings
 
-- **High:** Codex completed only two of four targets. `ripgrep` returned an
-  unexpected request wrapper and `claude-mem` returned the wrong proposal API
-  identity. Provider output conformance must be hardened without weakening
-  schema validation.
+- **High:** Codex completed all four targets after the review rerun, but only
+  one purpose met every frozen concept group and reviewer edit burden was
+  `0.625`. Output conformance and purpose guidance remain required.
 - **High:** LM Studio completed zero of four targets because schema references
   or pointer-like objects appeared in proposal value positions. The transport
   needs an explicit value-only output contract and fail-closed normalization
@@ -52,7 +51,11 @@ remain blocked until that rerun meets every frozen gate.
 
 - Full suite: `1266 passed, 1 skipped`.
 - Total coverage: `90.00%`.
-- Focused semantic and docs suite: `232 passed`.
+- Focused semantic and docs suite: `237 passed`.
 - Docs-contract suite after archive: `202 passed`.
 - Ruff lint and formatting, JSON parsing, Swift manifest, Swift docs, and DocC
   checks: passed.
+
+Post-review corrections bind README evidence to clean pinned source revisions,
+match rubric terms on token boundaries, and count failed proposals as maximal
+reviewer edit burden.

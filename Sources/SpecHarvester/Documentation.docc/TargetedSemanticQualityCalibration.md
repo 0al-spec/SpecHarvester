@@ -3,10 +3,11 @@
 P55-T9 compared Codex 5.3 Spark and LM Studio on `rtk-ai/rtk`,
 `openai/codex`, `BurntSushi/ripgrep`, and `thedotmack/claude-mem`.
 
-Spark completed two of four proposals; only Codex had an accurate
-repository-specific purpose, while RTK missed token reduction and two outputs
-were schema-invalid. LM Studio completed zero of four because schema fragments
-appeared in proposal value positions.
+Spark completed four of four schema-valid proposals, but only Codex had an
+accurate repository-specific purpose and its capability specificity still
+failed exact token matching. LM Studio completed zero of four because schema
+fragments appeared in proposal value positions; those failures now contribute
+maximal reviewer edit burden.
 
 Neither provider met the frozen purpose, evidence, schema, and reviewer-burden
 gates. P55-T10 remains blocked pending a bounded output-conformance follow-up
