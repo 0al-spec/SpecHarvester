@@ -21,6 +21,12 @@ None.
 
 None.
 
+Two post-publication PR review findings were addressed before merge:
+
+- normalization callback errors now become repairable conformance failures;
+- bounded repair prompts now include the authoritative evidence and
+  observed-intent bindings required by cross-record validation.
+
 ### Correctness and Architecture
 
 - Parsed-but-invalid provider output enters one bounded repair path and remains
@@ -49,9 +55,9 @@ None.
 
 ### Tests
 
-- Focused P55-T9A and docs-contract tests: `206 passed`.
-- Full suite: `1277 passed, 1 skipped`.
-- Coverage: `90.01%`, meeting the `90%` repository gate.
+- Focused semantic-author, P55-T9A, and docs-contract tests: `233 passed`.
+- Full suite: `1278 passed, 1 skipped`.
+- Coverage: `90.02%`, meeting the `90%` repository gate.
 - Ruff lint and format, diff integrity, evidence JSON, Swift manifest, Swift
   documentation target, and DocC static build passed.
 - The DocC build retained three unrelated pre-existing unresolved-link

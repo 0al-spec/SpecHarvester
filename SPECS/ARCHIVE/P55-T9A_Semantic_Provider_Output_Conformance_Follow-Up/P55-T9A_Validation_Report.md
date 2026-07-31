@@ -73,9 +73,9 @@ rubric, policy, thresholds, or failure denominators.
   - Codex 5.3 Spark `4/4` complete and all frozen gates passed;
   - LM Studio `4/4` complete and all frozen gates passed;
   - P55-T10 recorded as unblocked without threshold changes.
-- Focused P55-T9A and docs-contract tests: `206 passed`.
-- Full test and coverage gate: `1277 passed, 1 skipped`; total coverage
-  `90.01%`.
+- Focused semantic-author, P55-T9A, and docs-contract tests: `233 passed`.
+- Full test and coverage gate: `1278 passed, 1 skipped`; total coverage
+  `90.02%`.
 - Ruff lint and format checks: passed; `185 files already formatted`.
 - `git diff --check`: passed.
 - Evidence JSON parsing and `swift package dump-package`: passed.

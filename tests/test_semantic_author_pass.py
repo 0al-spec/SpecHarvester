@@ -388,6 +388,31 @@ def test_codex_unwraps_only_a_single_known_proposal_envelope(
     assert completion.receipt["jsonRepairNeeded"] is False
 
 
+def test_codex_repairs_invalid_known_proposal_envelope(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    outputs = iter(
+        (
+            json.dumps({"proposal": None}),
+            json.dumps(transport_proposal(input_pack)),
+        )
+    )
+
+    def fake_run(args: list[str], **_kwargs: object) -> object:
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+    assert completion.payload["candidateId"] == input_pack["candidateId"]
+    assert completion.receipt["jsonRepairNeeded"] is True
+    assert completion.receipt["jsonRepairAttemptCount"] == 1
+
+
 def test_transport_state_discards_only_inactive_intent_branch_padding(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -463,6 +488,15 @@ def test_codex_repairs_cross_record_conformance_failure(
     )
     assert completion.receipt["jsonRepairNeeded"] is True
     assert "references an unknown claim" in prompts[1]
+    repair_request = json.loads(json.loads(prompts[1])[1]["content"])
+    assert repair_request["allowedEvidenceBindings"] == input_pack["request"]["evidence"]
+    assert repair_request["observedIntentBindings"] == [
+        {
+            "intentId": item["intentId"],
+            "observedIntentSha256": item["observedIntentSha256"],
+        }
+        for item in input_pack["observedIntents"]
+    ]
 
 
 def test_lm_studio_repairs_schema_fragment_value(

@@ -155,6 +155,8 @@ def repair_messages(
         ],
         "requiredJsonShape": request.get("requiredJsonShape"),
         "allowedEvidencePaths": request.get("allowedEvidencePaths", []),
+        "allowedEvidenceBindings": _repair_evidence_bindings(request),
+        "observedIntentBindings": _repair_observed_intent_bindings(request),
         "validationError": validation_error,
         "invalidModelOutput": invalid_output[:MAX_REPAIR_INPUT_CHARS],
         "truncatedInvalidModelOutput": len(invalid_output) > MAX_REPAIR_INPUT_CHARS,
@@ -174,7 +176,10 @@ def _normalize_and_validate(
     normalize_payload: Callable[[dict[str, Any]], dict[str, Any]] | None,
     validate_payload: Callable[[dict[str, Any]], None] | None,
 ) -> dict[str, Any]:
-    normalized = normalize_payload(payload) if normalize_payload else payload
+    try:
+        normalized = normalize_payload(payload) if normalize_payload else payload
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ModelJsonConformanceError(str(exc)) from exc
     if not isinstance(normalized, dict):
         raise ModelJsonConformanceError("Model output normalization must return an object")
     if validate_payload:
@@ -183,6 +188,33 @@ def _normalize_and_validate(
         except (KeyError, TypeError, ValueError) as exc:
             raise ModelJsonConformanceError(str(exc)) from exc
     return normalized
+
+
+def _repair_evidence_bindings(request: dict[str, Any]) -> list[dict[str, Any]]:
+    semantic_request = request.get("request")
+    if not isinstance(semantic_request, dict):
+        return []
+    evidence = semantic_request.get("evidence")
+    if not isinstance(evidence, list):
+        return []
+    fields = ("id", "class", "sourcePath", "sha256", "sourceBundleSha256")
+    return [
+        {field: item[field] for field in fields if field in item}
+        for item in evidence
+        if isinstance(item, dict)
+    ]
+
+
+def _repair_observed_intent_bindings(request: dict[str, Any]) -> list[dict[str, Any]]:
+    observed = request.get("observedIntents")
+    if not isinstance(observed, list):
+        return []
+    fields = ("intentId", "observedIntentSha256")
+    return [
+        {field: item[field] for field in fields if field in item}
+        for item in observed
+        if isinstance(item, dict)
+    ]
 
 
 def parse_model_json_object(raw_content: str) -> dict[str, Any]:
