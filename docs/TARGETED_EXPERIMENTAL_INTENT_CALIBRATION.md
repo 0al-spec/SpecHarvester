@@ -28,15 +28,16 @@ bounded P55-T10C follow-up, not automatic materialization or publication.
 
 - **OpenAI Codex** proposed
   `intent.experimental.local_coding_agent.48e6a87f`, distinguishing local coding
-  agent work from the observed JavaScript-library package category.
+  agent work from the observed JavaScript-library package category. Its first
+  provider attempt tried to reuse that generic intent without a valid comparison
+  claim and failed closed; the second bounded attempt passed.
 - **ripgrep** proposed
-  `intent.experimental.search_text_file_regex.bbfdc65a`, expressing the user
+  `intent.experimental.search_text_in_files_pattern.bbfdc65a`, expressing the user
   outcome of pattern-based text search rather than broad documentation or
   tooling metadata.
 - **claude-mem** proposed
-  `intent.experimental.persistent_coding_session_memory.c6b2134c`, expressing
-  retained coding context across sessions. Its first provider attempt used an
-  invalid evidence binding and failed closed; the second bounded attempt passed.
+  `intent.experimental.preserve_coding_context_sessions.c6b2134c`, expressing
+  retained coding context across sessions.
 - **RTK** reused `intent.developer.tooling_surface`. Its purpose claim accurately
   described reducing command output and LLM token context, but the observed
   intent remained too broad. The result is not counted as justified reuse; it

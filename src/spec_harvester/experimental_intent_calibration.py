@@ -238,13 +238,18 @@ def target_metrics(
     reuses = [item for item in proposal["intentDecisions"] if item["state"] == "proposed_reuse"]
     nearby_differentiated = bool(experiments) and all(
         item["nearbyIntentIds"]
-        and any(claim["kind"] == "nearby_intent_difference" for claim in claims)
+        and len(item["nearbyIntentIds"]) == len(item["nearbyIntentClaimIds"])
+        and all(
+            claims_by_id.get(claim_id, {}).get("kind") == "nearby_intent_difference"
+            for claim_id in item["nearbyIntentClaimIds"]
+        )
         for item in experiments
     )
     evidence_supported_experimental = sum(
         purpose_accurate
         and nearby_differentiated
         and claims_by_id[item["userNeedClaimId"]]["evidence"]
+        and all(claims_by_id[claim_id]["evidence"] for claim_id in item["nearbyIntentClaimIds"])
         and all(claims_by_id[claim_id]["evidence"] for claim_id in item["nonGoalClaimIds"])
         for item in experiments
     )

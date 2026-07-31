@@ -38,9 +38,10 @@ claude-mem received evidence-supported experimental intents. RTK retained the
 overly broad `intent.developer.tooling_surface`; it is explicitly not counted as
 justified reuse and carries an experimental-intent edit requirement.
 
-Claude-mem's first provider attempt failed closed because of an invalid evidence
-binding. Its second and final allowed attempt completed without JSON repair.
-The failure remains recorded in the durable target record.
+OpenAI Codex's first provider attempt failed closed because it tried to reuse a
+generic observed intent without a valid comparison claim. Its second and final
+allowed attempt completed without JSON repair. The failure remains recorded in
+the durable target record.
 
 ## Decision and Authority
 
@@ -66,13 +67,13 @@ The failure remains recorded in the durable target record.
 - Real run with
   `scripts/run_p55_t10b_experimental_intent_calibration.py`: completed `4/4`,
   emitted evidence SHA-256
-  `579447d99b8eec971e1b8435e0915dbb8c1d2de5e01154d75d1b9a4bc122755e`,
+  `ba76606423fe48fd67a839f2ec9508fbd2616f9accb5310b603a45ff0e3b5000`,
   and returned `p55T10CUnblocked: true`.
 - `uv run pytest tests/test_experimental_intent_calibration.py
   --cov=spec_harvester.experimental_intent_calibration --cov-report=term-missing
   -q`: `16 passed`; module coverage `90%`.
 - `uv run pytest --cov=spec_harvester --cov-report=term-missing
-  --cov-fail-under=90`: `1321 passed, 1 skipped`; total coverage `90.03%`.
+  --cov-fail-under=90`: `1326 passed, 1 skipped`; total coverage `90.03%`.
 - `uv run ruff check src tests
   scripts/run_p55_t10b_experimental_intent_calibration.py`: passed.
 - `uv run ruff format --check src tests

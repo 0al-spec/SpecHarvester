@@ -74,6 +74,7 @@ class FocusAwareProvider:
                         ),
                         "userNeedClaimId": "purpose",
                         "nearbyIntentIds": [observed_id],
+                        "nearbyIntentClaimIds": ["nearby"],
                         "nonGoalClaimIds": ["non_goal"],
                     }
                 ],
@@ -229,6 +230,7 @@ def test_target_metrics_count_false_novelty_as_edit_failure() -> None:
                     "intentId": "intent.experimental.coding_agent.12345678",
                     "userNeedClaimId": "purpose",
                     "nearbyIntentIds": ["intent.ai.coding_agent"],
+                    "nearbyIntentClaimIds": ["nearby"],
                     "nonGoalClaimIds": ["non_goal"],
                 }
             ],
@@ -372,10 +374,10 @@ def test_real_evidence_preserves_rtk_gap_and_recovered_provider_failure() -> Non
         "experimental_intent_missing_or_unsupported"
     ]
     assert records["rtk-ai-rtk"]["metrics"]["justifiedReuseCount"] == 0
-    assert records["thedotmack-claude-mem"]["providerAttemptCount"] == 2
+    assert records["openai-codex"]["providerAttemptCount"] == 2
     assert (
-        "evidence is not in provider allowlist"
-        in records["thedotmack-claude-mem"]["priorAttemptFailureCodes"][0]
+        "generic observed intent reuse lacks an explicit comparison claim"
+        in records["openai-codex"]["priorAttemptFailureCodes"][0]
     )
     experimental_ids = {
         repository_id: [
@@ -387,10 +389,10 @@ def test_real_evidence_preserves_rtk_gap_and_recovered_provider_failure() -> Non
     }
     assert experimental_ids["openai-codex"] == ["intent.experimental.local_coding_agent.48e6a87f"]
     assert experimental_ids["burntsushi-ripgrep"] == [
-        "intent.experimental.search_text_file_regex.bbfdc65a"
+        "intent.experimental.search_text_in_files_pattern.bbfdc65a"
     ]
     assert experimental_ids["thedotmack-claude-mem"] == [
-        "intent.experimental.persistent_coding_session_memory.c6b2134c"
+        "intent.experimental.preserve_coding_context_sessions.c6b2134c"
     ]
 
 
