@@ -73,6 +73,12 @@ def decision_sha256(value: dict[str, Any]) -> str:
     return hashlib.sha256(_json_bytes(value)).hexdigest()
 
 
+def _campaign_record_sha256(value: dict[str, Any]) -> str:
+    payload = {key: item for key, item in value.items() if key != "recordSha256"}
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def _is_rfc3339(value: Any) -> bool:
     if not isinstance(value, str) or "T" not in value:
         return False
@@ -159,8 +165,6 @@ class LocalReviewDecisionStore:
             if not isinstance(record, dict):
                 raise ValueError("Review detail semantic record must be an object")
             validate_portable_semantic_proposal(record)
-            if record["candidateId"] != candidate_id:
-                raise ValueError("Review detail semantic candidate binding is stale")
             repository = packet.get("repository") if isinstance(packet, dict) else None
             semantic_binding = packet.get("semanticProposal") if isinstance(packet, dict) else None
             expected_semantic_binding = {
@@ -172,14 +176,39 @@ class LocalReviewDecisionStore:
                 "qualityReportSha256": record["qualityReportSha256"],
                 "qualityStatus": record["qualityStatus"],
             }
+            packet_bound = (
+                record["candidateId"] == candidate_id
+                and isinstance(semantic_binding, dict)
+                and all(
+                    semantic_binding.get(key) == value
+                    for key, value in expected_semantic_binding.items()
+                )
+            )
+            campaign_sections = [
+                section
+                for section in sections
+                if isinstance(section, dict) and section.get("id") == "semantic-campaign-record"
+            ]
+            campaign_bound = False
+            if len(campaign_sections) > 1:
+                raise ValueError("Review detail set contains duplicate semantic campaign records")
+            if campaign_sections:
+                try:
+                    campaign_record = json.loads(campaign_sections[0]["content"])
+                except (KeyError, TypeError, json.JSONDecodeError) as exc:
+                    raise ValueError("Review detail semantic campaign record is invalid") from exc
+                campaign_bound = (
+                    isinstance(campaign_record, dict)
+                    and campaign_record.get("repositoryId") == candidate_id
+                    and campaign_record.get("candidateId") == record["candidateId"]
+                    and campaign_record.get("portableProposal") == record
+                    and campaign_record.get("recordSha256")
+                    == _campaign_record_sha256(campaign_record)
+                )
             if (
                 not isinstance(repository, dict)
                 or repository.get("id") != candidate_id
-                or not isinstance(semantic_binding, dict)
-                or any(
-                    semantic_binding.get(key) != value
-                    for key, value in expected_semantic_binding.items()
-                )
+                or not (packet_bound or campaign_bound)
             ):
                 raise ValueError("Review detail semantic record differs from bound packet")
             records[candidate_id] = record

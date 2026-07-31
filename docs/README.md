@@ -1,5 +1,8 @@
 # SpecHarvester Documentation
 
+Current mass semantic-author execution evidence is documented in
+[`RETAINED_CORPUS_SEMANTIC_CAMPAIGN.md`](RETAINED_CORPUS_SEMANTIC_CAMPAIGN.md).
+
 This directory is the operator and design entrypoint for SpecHarvester.
 
 Use it the same way the SpecPM repository uses GitHub-facing documentation:

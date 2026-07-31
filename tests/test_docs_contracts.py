@@ -39,6 +39,26 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P55-T10A Experimental-Intent Decision Policy" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P55-T10` Retained-Corpus Semantic Author and Review Flow" in next_text
+        assert "all 48 generic static intent references were reused" in normalized
+        assert "no `intent.experimental.*` proposal was emitted" in normalized
+        assert "Prevent forced novelty, synonyms, taxonomy leakage" in normalized
+        assert "P55-T11 remains blocked through P55-T10C" in normalized
+        return
+
+    if "# Next Task: P55-T11 Record Phase 55 Exit Decision" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P55-T10` Retained-Corpus Semantic Author and Review Flow" in next_text
+        assert "100/100 terminal records" in normalized
+        assert "42 portable proposals" in normalized
+        assert "zero reduction across 48 generic static intent references" in normalized
+        assert "Keep all 100 records unreviewed" in normalized
+        return
+
     if "# Next Task: P55-T9A Semantic Provider Output Conformance Follow-Up" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text

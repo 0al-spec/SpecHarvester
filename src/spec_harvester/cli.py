@@ -945,6 +945,8 @@ def build_parser() -> argparse.ArgumentParser:
     local_review_details.add_argument("--archive", type=Path, required=True)
     local_review_details.add_argument("--expected-sha256", required=True)
     local_review_details.add_argument("--catalog", type=Path, required=True)
+    local_review_details.add_argument("--semantic-campaign-archive", type=Path)
+    local_review_details.add_argument("--expected-semantic-campaign-sha256")
     local_review_details.add_argument("--output", type=Path, required=True)
     local_review_details.set_defaults(func=run_local_candidate_review_details_cli)
 
@@ -2600,6 +2602,8 @@ def run_local_candidate_review_details_cli(args: argparse.Namespace) -> int:
                 expected_archive_sha256=args.expected_sha256,
                 catalog=args.catalog,
                 output=args.output,
+                semantic_campaign_archive=args.semantic_campaign_archive,
+                expected_semantic_campaign_sha256=args.expected_semantic_campaign_sha256,
             )
         )
     except ValueError as exc:

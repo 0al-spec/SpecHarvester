@@ -116,14 +116,15 @@
           "additionalProperties": false,
           "required": ["status"],
           "properties": {
-            "status": {"enum": ["complete_portable", "portable", "summary_only_not_portable", "not_available"]},
+            "status": {"enum": ["complete_portable", "portable", "summary_only_not_portable", "not_available", "campaign_rejected"]},
             "warningCount": {"type": "integer", "minimum": 0},
             "proposalSha256": {"$ref": "#/$defs/sha256"},
             "semanticRecordSha256": {"$ref": "#/$defs/sha256"},
             "qualityReportSha256": {"$ref": "#/$defs/sha256"},
             "providerReceiptSha256": {"$ref": "#/$defs/sha256"},
             "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
-            "qualityStatus": {"enum": ["eligible_for_calibration", "review_required"]}
+            "qualityStatus": {"enum": ["eligible_for_calibration", "review_required", "rejected"]},
+            "campaignRecordSha256": {"$ref": "#/$defs/sha256"}
           }
         },
         "semantic": {"$ref": "#/$defs/semanticComparison"}

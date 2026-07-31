@@ -34,6 +34,8 @@ class LocalCandidateReviewDetailsOptions:
     expected_archive_sha256: str
     catalog: Path
     output: Path
+    semantic_campaign_archive: Path | None = None
+    expected_semantic_campaign_sha256: str | None = None
 
 
 def _catalog_bindings(path: Path) -> dict[str, str]:
@@ -65,7 +67,10 @@ def _json_section(section_id: str, value: Any) -> dict[str, str]:
 
 
 def _detail_sections(
-    candidate_id: str, packet: dict[str, Any], members: dict[str, bytes]
+    candidate_id: str,
+    packet: dict[str, Any],
+    members: dict[str, bytes],
+    campaign_record: dict[str, Any] | None = None,
 ) -> list[dict[str, str]]:
     candidate = packet["candidate"]
     packet_member = str(Path("packets") / candidate_id / "packet.json")
@@ -105,15 +110,28 @@ def _detail_sections(
                 payload.decode("utf-8", errors="replace"),
             )
         )
-    semantic = _semantic_record(candidate_id, packet, members)
+    semantic = _semantic_record(candidate_id, packet, members, campaign_record)
     if semantic is not None:
         sections.append(_json_section("semantic-proposal-record", semantic))
+    if campaign_record is not None:
+        sections.append(_json_section("semantic-campaign-record", campaign_record))
     return sections
 
 
 def _semantic_record(
-    candidate_id: str, packet: dict[str, Any], members: dict[str, bytes]
+    candidate_id: str,
+    packet: dict[str, Any],
+    members: dict[str, bytes],
+    campaign_record: dict[str, Any] | None = None,
 ) -> dict[str, Any] | None:
+    if campaign_record is not None:
+        portable = campaign_record.get("portableProposal")
+        if portable is None:
+            return None
+        if not isinstance(portable, dict):
+            raise ValueError(f"Semantic campaign portable proposal is invalid: {candidate_id}")
+        validate_portable_semantic_proposal(portable)
+        return portable
     binding = packet.get("semanticProposal")
     if not isinstance(binding, dict) or binding.get("status") == "not_available":
         return None
@@ -300,6 +318,7 @@ def _comparison(
     packet_sha256: str,
     packet: dict[str, Any],
     members: dict[str, bytes],
+    campaign_record: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     proposal = packet["aiProposal"]
     ai: dict[str, Any] = {"status": proposal["status"]}
@@ -308,7 +327,7 @@ def _comparison(
         ai["warningCount"] = summary["warningCount"]
     if proposal["status"] == "portable":
         ai["proposalSha256"] = proposal["sha256"]
-    semantic = _semantic_record(candidate_id, packet, members)
+    semantic = _semantic_record(candidate_id, packet, members, campaign_record)
     if semantic is not None:
         ai = {
             "status": "complete_portable",
@@ -319,6 +338,17 @@ def _comparison(
             "sourceBundleSha256": semantic["sourceBundleSha256"],
             "qualityStatus": semantic["qualityStatus"],
             "warningCount": semantic["qualityReport"]["summary"]["warningCount"],
+        }
+    elif (
+        campaign_record is not None
+        and campaign_record.get("qualityReport", {}).get("status") == "rejected"
+    ):
+        quality = campaign_record["qualityReport"]
+        ai = {
+            "status": "campaign_rejected",
+            "qualityStatus": "rejected",
+            "warningCount": quality["summary"]["warningCount"],
+            "campaignRecordSha256": campaign_record["recordSha256"],
         }
     comparison = {
         "apiVersion": "spec-harvester.candidate-review-comparison/v0",
@@ -333,6 +363,77 @@ def _comparison(
             candidate_id, packet, members, semantic
         )
     return comparison
+
+
+def _digest_without_record_sha256(record: dict[str, Any]) -> str:
+    value = {key: item for key, item in record.items() if key != "recordSha256"}
+    return sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def _semantic_campaign_records(
+    options: LocalCandidateReviewDetailsOptions, catalog_ids: set[str]
+) -> tuple[str | None, dict[str, dict[str, Any]]]:
+    archive = options.semantic_campaign_archive
+    expected = options.expected_semantic_campaign_sha256
+    if archive is None and expected is None:
+        return None, {}
+    if archive is None or expected is None:
+        raise ValueError("Semantic campaign archive and expected SHA-256 must be supplied together")
+    archive_sha256, members = _read_archive(
+        LocalCandidateReviewCatalogOptions(
+            archive=archive,
+            expected_archive_sha256=expected,
+            expected_packet_count=len(catalog_ids),
+        )
+    )
+    campaign_input = _json_object(members.get("campaign-input.json", b""), "campaign-input.json")
+    input_sha256 = campaign_input.get("campaignInputSha256")
+    targets = campaign_input.get("targets")
+    if not isinstance(input_sha256, str) or not isinstance(targets, list):
+        raise ValueError("Semantic campaign input binding is invalid")
+    target_bindings = {
+        target.get("repositoryId"): target.get("candidateId")
+        for target in targets
+        if isinstance(target, dict)
+    }
+    if set(target_bindings) != catalog_ids or len(target_bindings) != len(targets):
+        raise ValueError("Semantic campaign target set differs from catalog")
+
+    records: dict[str, dict[str, Any]] = {}
+    for name, payload in members.items():
+        parts = Path(name).parts
+        if len(parts) != 3 or parts[0] != "records" or parts[2] != "campaign-record.json":
+            continue
+        repository_id = parts[1]
+        record = _json_object(payload, name)
+        if (
+            repository_id in records
+            or record.get("repositoryId") != repository_id
+            or record.get("candidateId") != target_bindings.get(repository_id)
+            or record.get("campaignInputSha256") != input_sha256
+            or record.get("status") not in {"completed", "failed"}
+            or not isinstance(record.get("attempts"), list)
+            or len(record["attempts"]) > 2
+            or record.get("recordSha256") != _digest_without_record_sha256(record)
+        ):
+            raise ValueError(f"Semantic campaign record binding is invalid: {repository_id}")
+        portable = record.get("portableProposal")
+        if portable is not None:
+            if (
+                not isinstance(portable, dict)
+                or portable.get("candidateId") != record["candidateId"]
+            ):
+                raise ValueError(f"Semantic campaign portable binding is invalid: {repository_id}")
+            validate_portable_semantic_proposal(portable)
+            portable_member = members.get(
+                str(Path("records") / repository_id / "semantic-proposal-record.json")
+            )
+            if portable_member is None or _json_object(portable_member, repository_id) != portable:
+                raise ValueError(f"Semantic campaign portable member differs: {repository_id}")
+        records[repository_id] = record
+    if set(records) != catalog_ids:
+        raise ValueError("Semantic campaign record set differs from catalog")
+    return archive_sha256, records
 
 
 def _validate_record(record: dict[str, Any]) -> None:
@@ -354,6 +455,7 @@ def build_local_candidate_review_details(
     aggregate = _json_object(members["aggregate-handoff.json"], "aggregate-handoff.json")
     expectations = _preflight_statuses(aggregate)
     bindings = _catalog_bindings(options.catalog)
+    semantic_campaign_sha256, campaign_records = _semantic_campaign_records(options, set(bindings))
     details: list[dict[str, Any]] = []
     comparisons: list[dict[str, Any]] = []
     for name in sorted(
@@ -374,9 +476,17 @@ def build_local_candidate_review_details(
                 "packetSha256": catalog_item["packetSha256"],
             },
             "previewOnly": True,
-            "sections": _detail_sections(candidate_id, packet, members),
+            "sections": _detail_sections(
+                candidate_id, packet, members, campaign_records.get(candidate_id)
+            ),
         }
-        comparison = _comparison(candidate_id, catalog_item["packetSha256"], packet, members)
+        comparison = _comparison(
+            candidate_id,
+            catalog_item["packetSha256"],
+            packet,
+            members,
+            campaign_records.get(candidate_id),
+        )
         _validate_record(detail)
         _validate_record(comparison)
         details.append(detail)
@@ -388,6 +498,7 @@ def build_local_candidate_review_details(
         "kind": "SpecHarvesterCandidateReviewDetailSet",
         "authority": "local_review_detail_evidence_only",
         "sourceBundleSha256": archive_sha256,
+        "semanticCampaignSha256": semantic_campaign_sha256,
         "details": details,
         "comparisons": comparisons,
     }
@@ -395,4 +506,15 @@ def build_local_candidate_review_details(
     options.output.write_text(
         json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
-    return {"status": "passed", "detailCount": len(details), "output": str(options.output)}
+    return {
+        "status": "passed",
+        "detailCount": len(details),
+        "semanticPortableCount": sum(
+            isinstance(record.get("portableProposal"), dict) for record in campaign_records.values()
+        ),
+        "semanticRejectedCount": sum(
+            record.get("qualityReport", {}).get("status") == "rejected"
+            for record in campaign_records.values()
+        ),
+        "output": str(options.output),
+    }

@@ -46,6 +46,9 @@ adds a side-by-side semantic review panel. It compares static summaries,
 capabilities, intent IDs, interfaces, and evidence with AI purpose, capability,
 interface, nearby-intent, and non-goal claims. Existing observed-intent reuse
 and `intent.experimental.*` proposals are displayed in separate groups.
+P55-T10 campaign overlays expose all 42 portable proposals through this panel.
+The other 58 candidates remain visible with `campaign_rejected` health status
+and a separate semantic campaign quality drawer explaining the rejection.
 
 The reviewer may select proposal claims and record `accepted`, `edited`,
 `rejected`, or `deferred`. Edited decisions retain only bounded replacement

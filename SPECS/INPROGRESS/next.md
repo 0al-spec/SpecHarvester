@@ -1,28 +1,33 @@
-# Next Task: P55-T10 Retained-Corpus Semantic Author and Review Flow
+# Next Task: P55-T10A Experimental-Intent Decision Policy
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T9A` Semantic Provider Output Conformance Follow-Up
+**Dependencies:** `P55-T10` Retained-Corpus Semantic Author and Review Flow
 **Status:** Ready
 
 ## Objective
 
-Run the validated semantic author and reviewer flow over the retained
-100-repository corpus while preserving proposal-only authority.
+Correct the semantic-author decision policy so Codex 5.3 Spark can propose a
+bounded experimental intent when existing generic intents do not express the
+evidence-backed user outcome.
 
 ## Required Scope
 
-Account for all 100 retained repositories and report generic-intent reduction,
-evidence-supported proposal rate, duplicate-intent warnings, provider failures,
-accepted/edit/rejected/deferred counts, and token/cost/runtime budgets. Bind the
-run to the P55-T9A evidence where Codex 5.3 Spark and LM Studio each completed
-`4/4` targets and passed every unchanged frozen gate. Preserve deterministic
-diagnostics such as capability namespace violations and generic intent reuse.
-Do not automatically accept, materialize, promote, canonicalize, or publish
-model proposals.
+Use the P55-T10 result as the fixed baseline: all 48 generic static intent
+references were reused and no `intent.experimental.*` proposal was emitted.
+Require explicit nearby-intent comparison and evidence-grounded justification
+for reuse versus novelty. Prevent forced novelty, synonyms, taxonomy leakage,
+canonicalization, materialization, registry mutation, and publication. Produce
+the implementation and fixtures needed to unblock P55-T10B targeted
+calibration; P55-T11 remains blocked through P55-T10C.
 
 ## Recently Archived
 
+- `P55-T10` Retained-Corpus Semantic Author and Review Flow: PASS. Codex 5.3
+  Spark completed all 100 retained repositories without terminal provider
+  failures and produced 42 portable proposals. Deterministic quality checks
+  rejected 58 records; generic-intent reduction remained 0/48 and all records
+  remain explicitly unreviewed, so P55-T11 must choose the bounded next step.
 - `P55-T9A` Semantic Provider Output Conformance Follow-Up: PASS. Codex 5.3
   Spark and LM Studio each completed all four frozen targets and passed every
   unchanged gate. Provider outputs now use bounded structured conformance and
