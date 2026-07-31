@@ -516,11 +516,25 @@ def _normalize_transport_intent_decision(value: Any) -> Any:
     normalized = dict(value)
     state = normalized.get("state")
     if state == "proposed_reuse":
+        normalized.update(
+            {
+                "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+                "kind": "SpecHarvesterAISemanticIntentReuse",
+                "schemaVersion": 1,
+            }
+        )
         _remove_transport_padding(
             normalized,
             ("userNeedClaimId", "nearbyIntentIds", "nearbyIntentClaimIds", "nonGoalClaimIds"),
         )
     elif state == "proposed_experimental":
+        normalized.update(
+            {
+                "apiVersion": "spec-harvester.ai-semantic-experimental-intent/v0",
+                "kind": "SpecHarvesterAISemanticExperimentalIntent",
+                "schemaVersion": 1,
+            }
+        )
         _remove_transport_padding(normalized, ("observedIntentSha256", "rationaleClaimId"))
     return normalized
 
