@@ -25,7 +25,14 @@ SEMANTIC_ARCHIVE = ROOT / "SPECS/EVIDENCE/P55-T10/P55-T10_Semantic_Proposal_Reco
 SEMANTIC_DIGEST = "233f78f2541eee35b61e3bac5a1e00113e98041b9729ee67d4ce61209ae4f07f"
 
 
-def follow_up_archive(tmp_path: Path, repository_id: str) -> tuple[Path, str]:
+def follow_up_archive(
+    tmp_path: Path,
+    repository_id: str,
+    *,
+    baseline_digest: str = SEMANTIC_DIGEST,
+    archive_name: str = "follow-up",
+    campaign_digest: str = "f" * 64,
+) -> tuple[Path, str]:
     with tarfile.open(SEMANTIC_ARCHIVE, "r:gz") as archive:
         scope = json.load(archive.extractfile("campaign-input.json"))
         record = json.load(archive.extractfile(f"records/{repository_id}/campaign-record.json"))
@@ -37,9 +44,9 @@ def follow_up_archive(tmp_path: Path, repository_id: str) -> tuple[Path, str]:
             pass
     target = next(item for item in scope["targets"] if item["repositoryId"] == repository_id)
     follow_scope = {
-        "baseline": {"archiveSha256": SEMANTIC_DIGEST},
+        "baseline": {"archiveSha256": baseline_digest},
         "targets": [target],
-        "campaignInputSha256": "f" * 64,
+        "campaignInputSha256": campaign_digest,
     }
     record["campaignInputSha256"] = follow_scope["campaignInputSha256"]
     value = {key: item for key, item in record.items() if key != "recordSha256"}
@@ -60,7 +67,7 @@ def follow_up_archive(tmp_path: Path, repository_id: str) -> tuple[Path, str]:
             info = tarfile.TarInfo(name)
             info.size = len(payload)
             archive.addfile(info, io.BytesIO(payload))
-    output = tmp_path / "follow-up.tar.gz"
+    output = tmp_path / f"{archive_name}.tar.gz"
     with output.open("wb") as raw:
         with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as compressed:
             compressed.write(tar_buffer.getvalue())
@@ -177,3 +184,44 @@ def test_detail_builder_overlays_partial_semantic_follow_up(tmp_path: Path) -> N
     )
     assert openai["ai"]["campaignSource"] == "follow_up"
     assert other["ai"]["campaignSource"] == "baseline"
+
+
+def test_detail_builder_overlays_digest_bound_semantic_recovery(tmp_path: Path) -> None:
+    follow_up, follow_up_digest = follow_up_archive(tmp_path, "openai-codex")
+    recovery, recovery_digest = follow_up_archive(
+        tmp_path,
+        "angular-angular",
+        baseline_digest=follow_up_digest,
+        archive_name="recovery",
+        campaign_digest="e" * 64,
+    )
+    output = tmp_path / "details.json"
+
+    result = build_local_candidate_review_details(
+        LocalCandidateReviewDetailsOptions(
+            ARCHIVE,
+            DIGEST,
+            CATALOG,
+            output,
+            SEMANTIC_ARCHIVE,
+            SEMANTIC_DIGEST,
+            follow_up,
+            follow_up_digest,
+            recovery,
+            recovery_digest,
+        )
+    )
+
+    payload = json.loads(output.read_text())
+    angular = next(
+        item
+        for item in payload["comparisons"]
+        if item["binding"]["candidateId"] == "angular-angular"
+    )
+    openai = next(
+        item for item in payload["comparisons"] if item["binding"]["candidateId"] == "openai-codex"
+    )
+    assert result["semanticRecoveryCount"] == 1
+    assert payload["semanticRecoverySha256"] == recovery_digest
+    assert angular["ai"]["campaignSource"] == "recovery"
+    assert openai["ai"]["campaignSource"] == "follow_up"

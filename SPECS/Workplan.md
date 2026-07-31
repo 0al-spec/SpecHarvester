@@ -2864,8 +2864,11 @@ Acceptance:
   burden. Preserve the frozen P55 quality policy and record false novelty as a
   failure rather than redefining thresholds.
 - [ ] `P55-T10C` Run a bounded Codex 5.3 Spark follow-up over the 46 retained
-  repositories accounting for 48 generic static-intent references in P55-T10. Keep unchanged
-  repository, candidate, source, and provider bindings; compare results against
+  repositories accounting for 48 generic static-intent references in P55-T10.
+  Permit a digest-bound GPT-5.6 Luna Light recovery only for targets whose
+  bounded Spark attempts ended solely in the verified account usage-limit
+  failure; do not rerun semantic failures or completed records. Keep unchanged
+  repository, candidate, and source bindings; compare effective results against
   the P55-T10 baseline; expose complete and rejected records in the Workbench;
   and obtain explicit maintainer review evidence for a representative sample.
   Report generic-intent reduction, useful experimental intents, unjustified

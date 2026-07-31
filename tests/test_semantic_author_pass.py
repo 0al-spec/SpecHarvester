@@ -549,6 +549,30 @@ def test_transport_state_discards_only_inactive_intent_branch_padding(
     assert "nonGoalClaimIds" not in normalized
 
 
+def test_codex_provider_pins_model_reasoning_effort(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    command: list[str] = []
+
+    def fake_run(args: list[str], **_kwargs: object) -> object:
+        command.extend(args)
+        Path(args[args.index("--output-last-message") + 1]).write_text(
+            json.dumps(transport_proposal(input_pack))
+        )
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider(
+        model="gpt-5.6-luna", reasoning_effort="low"
+    ).complete(provider_request(input_pack), SemanticAuthorPassOptions())
+
+    assert command[command.index("--model") + 1] == "gpt-5.6-luna"
+    assert command[command.index("-c") + 1] == 'model_reasoning_effort="low"'
+    assert completion.receipt["providerName"] == "gpt-5.6-luna"
+    assert completion.receipt["reasoningEffort"] == "low"
+
+
 @pytest.mark.parametrize(
     ("decision_index", "api_version", "kind"),
     (

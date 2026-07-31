@@ -67,11 +67,18 @@ class SemanticAuthorProvider(Protocol):
 class CodexSparkSemanticAuthorProvider:
     """Bounded `codex exec` adapter that discards temporary model output."""
 
-    provider_id = "gpt-5.3-codex-spark"
-
-    def __init__(self, command: str = "codex", model: str = DEFAULT_CODEX_MODEL) -> None:
+    def __init__(
+        self,
+        command: str = "codex",
+        model: str = DEFAULT_CODEX_MODEL,
+        reasoning_effort: str | None = None,
+    ) -> None:
+        if reasoning_effort not in {None, "low", "medium", "high", "xhigh", "max"}:
+            raise ValueError("Codex reasoning effort is invalid")
         self.command = command
         self.model = model
+        self.provider_id = model
+        self.reasoning_effort = reasoning_effort
 
     def complete(
         self, provider_payload: dict[str, Any], options: SemanticAuthorPassOptions
@@ -92,15 +99,21 @@ class CodexSparkSemanticAuthorProvider:
                     "exec",
                     "--model",
                     self.model,
-                    "--sandbox",
-                    "read-only",
-                    "--skip-git-repo-check",
-                    "--ephemeral",
-                    "--output-schema",
-                    str(schema_path),
-                    "--output-last-message",
-                    str(output_path),
                 ]
+                if self.reasoning_effort is not None:
+                    command.extend(["-c", f'model_reasoning_effort="{self.reasoning_effort}"'])
+                command.extend(
+                    [
+                        "--sandbox",
+                        "read-only",
+                        "--skip-git-repo-check",
+                        "--ephemeral",
+                        "--output-schema",
+                        str(schema_path),
+                        "--output-last-message",
+                        str(output_path),
+                    ]
+                )
                 try:
                     completed = subprocess.run(  # noqa: S603
                         command,
@@ -139,6 +152,7 @@ class CodexSparkSemanticAuthorProvider:
                 "providerKind": "codex_exec",
                 "providerName": self.provider_id,
                 "modelId": self.model,
+                "reasoningEffort": self.reasoning_effort,
                 "durationMs": _elapsed_ms(started),
                 "usage": result.usage,
                 "jsonRepairNeeded": result.repair_needed,

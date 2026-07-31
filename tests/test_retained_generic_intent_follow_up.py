@@ -11,11 +11,35 @@ from spec_harvester.retained_corpus_semantic_campaign import CampaignTarget, dig
 from spec_harvester.retained_generic_intent_follow_up import (
     EXPECTED_GENERIC_REFERENCE_COUNT,
     EXPECTED_TARGET_COUNT,
+    _is_codex_quota_failure,
     build_follow_up_plan,
     build_representative_review_sample,
     compare_follow_up,
     validate_follow_up_plan,
 )
+
+
+def test_quota_recovery_selector_accepts_only_codex_nonzero_attempts() -> None:
+    quota_failure = {
+        "status": "failed",
+        "attempts": [
+            {"status": "failed", "failureCode": "codex_nonzero_exit"},
+            {"status": "failed", "failureCode": "codex_nonzero_exit"},
+        ],
+    }
+    semantic_failure = {
+        "status": "failed",
+        "attempts": [
+            {
+                "status": "failed",
+                "failureCode": "provider JSON repair exhausted: policy violation",
+            }
+        ],
+    }
+
+    assert _is_codex_quota_failure(quota_failure) is True
+    assert _is_codex_quota_failure(semantic_failure) is False
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PLAN = (

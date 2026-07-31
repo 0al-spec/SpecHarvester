@@ -6,6 +6,9 @@ Run Codex 5.3 Spark only over the 46 immutable P55-T10 repository records that
 account for 48 reused generic observed-intent references, and compare the bounded follow-up with the original
 campaign, and expose the resulting complete and rejected proposals for explicit
 maintainer review without granting materialization or publication authority.
+When the Spark account usage limit prevents a target from receiving any model
+result, recover only that frozen target with `gpt-5.6-luna` at `low` reasoning
+under a separate digest-bound provider scope.
 
 ## Dependencies
 
@@ -28,6 +31,10 @@ maintainer review without granting materialization or publication authority.
 - A resumable sequential Codex 5.3 Spark runner that rebuilds each input from
   the pinned packet and git revision, invokes no repository code or package
   manager, and writes one terminal record per target.
+- A separate Luna Light recovery runner that accepts only the three verified
+  all-`codex_nonzero_exit` Spark records, preserves the initial report/archive
+  as immutable provenance, and recomputes effective metrics without rerunning
+  any completed or semantic-failure record.
 - Deterministic baseline-versus-follow-up metrics covering generic-intent
   reduction, evidence-supported experimental intents, justified reuse,
   unjustified novelty, duplicate IDs and semantic stems, provider failures,
@@ -57,10 +64,13 @@ maintainer review without granting materialization or publication authority.
    privacy boundaries, and Workbench overlay integrity.
 4. Run Codex 5.3 Spark sequentially with at most two provider attempts and one
    JSON repair per attempt, retaining one terminal record for every target.
-5. Finalize the comparison report and deterministic archive, generate the
+5. If a verified Spark usage limit prevents model execution, run only those
+   failed targets through `gpt-5.6-luna` at `low` effort under the same bounded
+   attempt limits and retain separate recovery provenance.
+6. Finalize the comparison report and deterministic archive, generate the
    representative review sample and Workbench detail overlay, and obtain
    explicit maintainer review evidence before recording the final task verdict.
-6. Run all repository quality gates and archive the task under FLOW.
+7. Run all repository quality gates and archive the task under FLOW.
 
 ## Acceptance Criteria
 
@@ -68,7 +78,8 @@ maintainer review without granting materialization or publication authority.
   completed proposals account for all 48 frozen generic-intent references; no
   other repository runs.
 - Every target preserves the P55-T10 repository ID, revision, packet digest,
-  candidate ID, baseline record digest, and provider/model binding.
+  candidate ID, and baseline record digest. Any Luna Light recovery is limited
+  to the frozen quota-failure set and records its own model and reasoning effort.
 - Every target has exactly one completed or failed terminal record; provider
   retries remain bounded and all failures remain in denominators.
 - The report compares the follow-up with the immutable P55-T10 baseline and
@@ -78,7 +89,7 @@ maintainer review without granting materialization or publication authority.
 - Experimental intent differentiation uses the explicit nearby-intent claim
   bindings introduced by P55-T10A review fixes.
 - Complete and rejected follow-up records are visible in the local Workbench as
-  an overlay with baseline/follow-up provenance.
+  an overlay with baseline, Spark follow-up, and Luna recovery provenance.
 - A representative sample is selected deterministically and any accepted,
   edited, rejected, or deferred evidence is recorded only through an explicit
   maintainer action with reviewer identity and digest bindings.
@@ -94,6 +105,7 @@ maintainer review without granting materialization or publication authority.
 - Re-running static harvesting or the 54 P55-T10 records without generic reuse.
 - Re-downloading source repositories or changing pinned revisions.
 - Running LM Studio or comparing provider transport conformance.
+- Rerunning completed Spark records or Spark semantic-policy failures with Luna.
 - Automatically treating an experimental intent as canonical or sufficient.
 - Fabricating maintainer decisions from model output or quality diagnostics.
 - Materializing, accepting, promoting, or publishing candidate changes.

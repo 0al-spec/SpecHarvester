@@ -15,6 +15,7 @@ from spec_harvester.local_candidate_review_catalog import (
     _read_archive,
 )
 from spec_harvester.retained_corpus_semantic_campaign import (
+    CODEX_LUNA_MODEL,
     CODEX_SPARK_MODEL,
     CampaignTarget,
     digest,
@@ -31,8 +32,15 @@ PLAN_API_VERSION = "spec-harvester.retained-generic-intent-follow-up-plan/v0"
 PLAN_KIND = "SpecHarvesterRetainedGenericIntentFollowUpPlan"
 REVIEW_SAMPLE_API_VERSION = "spec-harvester.semantic-follow-up-review-sample/v0"
 REVIEW_SAMPLE_KIND = "SpecHarvesterSemanticFollowUpReviewSample"
+QUOTA_RECOVERY_API_VERSION = "spec-harvester.semantic-follow-up-quota-recovery/v0"
+QUOTA_RECOVERY_KIND = "SpecHarvesterSemanticFollowUpQuotaRecovery"
 EXPECTED_TARGET_COUNT = 46
 EXPECTED_GENERIC_REFERENCE_COUNT = 48
+EXPECTED_LUNA_RECOVERY_IDS = (
+    "angular-angular",
+    "anuraghazra-github-readme-stats",
+    "google-gemini-gemini-cli",
+)
 FALSE_NOVELTY_CODES = frozenset(
     {
         "experimental_intent_false_novelty_risk",
@@ -330,6 +338,180 @@ def finalize_follow_up(
     report["reportSha256"] = digest(report)
     _write_json(output_path, report)
     return report
+
+
+def load_quota_recovery_scope(
+    *,
+    initial_report_path: Path,
+    initial_archive_path: Path,
+    plan_path: Path,
+    source_manifest_dir: Path,
+    source_root: Path,
+    handoff_root: Path,
+    readiness_evidence: Path,
+    baseline_report_path: Path,
+    baseline_archive_path: Path,
+) -> tuple[
+    dict[str, Any],
+    list[CampaignTarget],
+    dict[str, dict[str, Any]],
+    dict[str, dict[str, Any]],
+]:
+    initial_scope, targets, baseline_records = load_follow_up_scope(
+        plan_path=plan_path,
+        source_manifest_dir=source_manifest_dir,
+        source_root=source_root,
+        handoff_root=handoff_root,
+        readiness_evidence=readiness_evidence,
+        baseline_report_path=baseline_report_path,
+        baseline_archive_path=baseline_archive_path,
+    )
+    initial_report = _read_json(initial_report_path)
+    if initial_report.get("reportSha256") != _digest_without(initial_report, "reportSha256"):
+        raise ValueError("P55-T10C initial report digest is stale")
+    archive_binding = initial_report.get("archive")
+    if (
+        initial_report.get("campaignInputSha256") != initial_scope["campaignInputSha256"]
+        or not isinstance(archive_binding, dict)
+        or archive_binding.get("recordCount") != EXPECTED_TARGET_COUNT
+        or archive_binding.get("sha256") != sha256_file(initial_archive_path)
+    ):
+        raise ValueError("P55-T10C initial report or archive binding is stale")
+    _, members = _read_archive(
+        LocalCandidateReviewCatalogOptions(
+            archive=initial_archive_path,
+            expected_archive_sha256=archive_binding["sha256"],
+        )
+    )
+    archived_scope = _json_object(members.get("campaign-input.json", b""), "campaign-input.json")
+    if archived_scope != initial_scope:
+        raise ValueError("P55-T10C initial archived campaign input is stale")
+
+    target_by_id = {target.repository_id: target for target in targets}
+    initial_records: dict[str, dict[str, Any]] = {}
+    for target in targets:
+        member_name = f"records/{target.repository_id}/campaign-record.json"
+        record = _json_object(members.get(member_name, b""), member_name)
+        validate_campaign_record(record, initial_scope, target)
+        initial_records[target.repository_id] = record
+    recovery_bindings: list[dict[str, Any]] = []
+    for repository_id in EXPECTED_LUNA_RECOVERY_IDS:
+        target = target_by_id[repository_id]
+        record = initial_records[repository_id]
+        if not _is_codex_quota_failure(record):
+            raise ValueError(
+                f"P55-T10C recovery target is not a Spark quota failure: {repository_id}"
+            )
+        recovery_bindings.append(
+            {**target.binding(), "initialFailedRecordSha256": record["recordSha256"]}
+        )
+
+    scope: dict[str, Any] = {
+        "apiVersion": QUOTA_RECOVERY_API_VERSION,
+        "kind": QUOTA_RECOVERY_KIND,
+        "schemaVersion": 1,
+        "authority": "semantic_follow_up_quota_recovery_proposal_only",
+        "taskId": "P55-T10C",
+        "provider": {
+            "id": CODEX_LUNA_MODEL,
+            "kind": "codex_exec",
+            "reasoningEffort": "low",
+        },
+        "targetCount": len(EXPECTED_LUNA_RECOVERY_IDS),
+        "baseline": {
+            "reportSha256": initial_report["reportSha256"],
+            "archiveSha256": archive_binding["sha256"],
+            "campaignInputSha256": initial_scope["campaignInputSha256"],
+        },
+        "attemptBudget": initial_scope["attemptBudget"],
+        "targets": recovery_bindings,
+        "executionBoundary": _execution_boundary(),
+    }
+    scope["campaignInputSha256"] = digest(scope)
+    return (
+        scope,
+        [target_by_id[repository_id] for repository_id in EXPECTED_LUNA_RECOVERY_IDS],
+        baseline_records,
+        initial_records,
+    )
+
+
+def finalize_quota_recovery(
+    *,
+    scope: dict[str, Any],
+    targets: list[CampaignTarget],
+    baseline_records: dict[str, dict[str, Any]],
+    initial_records: dict[str, dict[str, Any]],
+    work_root: Path,
+    output_path: Path,
+    archive_path: Path,
+) -> dict[str, Any]:
+    records: list[dict[str, Any]] = []
+    for target in targets:
+        record = _read_json(work_root / "records" / target.repository_id / "campaign-record.json")
+        validate_campaign_record(record, scope, target)
+        records.append(record)
+    archive_sha256 = write_deterministic_archive(work_root, archive_path)
+    completed = [record for record in records if record["status"] == "completed"]
+    quality_counts = Counter(record["qualityReport"]["status"] for record in completed)
+    effective_records = dict(initial_records)
+    effective_records.update({record["repositoryId"]: record for record in records})
+    effective_summary = compare_follow_up(baseline_records, list(effective_records.values()))
+    report: dict[str, Any] = {
+        "apiVersion": QUOTA_RECOVERY_API_VERSION,
+        "kind": QUOTA_RECOVERY_KIND,
+        "schemaVersion": 1,
+        "authority": "semantic_follow_up_quota_recovery_evidence_only",
+        "taskId": "P55-T10C",
+        "campaignInputSha256": scope["campaignInputSha256"],
+        "provider": scope["provider"],
+        "baseline": scope["baseline"],
+        "summary": {
+            "targetCount": len(records),
+            "completedCount": len(completed),
+            "failedCount": len(records) - len(completed),
+            "qualityStatusCounts": dict(sorted(quality_counts.items())),
+            "providerAttemptCount": sum(len(record["attempts"]) for record in records),
+            "jsonRepairRecordCount": sum(
+                bool(record.get("providerReceipt", {}).get("jsonRepairNeeded"))
+                for record in completed
+            ),
+        },
+        "effectiveFollowUpSummary": effective_summary,
+        "archive": {
+            "path": archive_path.name,
+            "sha256": archive_sha256,
+            "recordCount": len(records),
+        },
+        "recordIndex": [
+            {
+                "repositoryId": record["repositoryId"],
+                "candidateId": record["candidateId"],
+                "status": record["status"],
+                "recordSha256": record["recordSha256"],
+            }
+            for record in records
+        ],
+        "executionBoundary": _execution_boundary(),
+    }
+    report["reportSha256"] = digest(report)
+    _write_json(output_path, report)
+    return report
+
+
+def _is_codex_quota_failure(record: dict[str, Any]) -> bool:
+    attempts = record.get("attempts")
+    return (
+        record.get("status") == "failed"
+        and isinstance(attempts, list)
+        and bool(attempts)
+        and all(
+            isinstance(attempt, dict)
+            and attempt.get("status") == "failed"
+            and attempt.get("failureCode") == "codex_nonzero_exit"
+            for attempt in attempts
+        )
+    )
 
 
 def compare_follow_up(

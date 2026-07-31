@@ -38,6 +38,8 @@ class LocalCandidateReviewDetailsOptions:
     expected_semantic_campaign_sha256: str | None = None
     semantic_follow_up_archive: Path | None = None
     expected_semantic_follow_up_sha256: str | None = None
+    semantic_recovery_archive: Path | None = None
+    expected_semantic_recovery_sha256: str | None = None
 
 
 def _catalog_bindings(path: Path) -> dict[str, str]:
@@ -461,22 +463,45 @@ def _semantic_archive_records(
 
 def _semantic_campaign_records(
     options: LocalCandidateReviewDetailsOptions, catalog_ids: set[str]
-) -> tuple[str | None, str | None, dict[str, dict[str, Any]], set[str]]:
+) -> tuple[
+    str | None,
+    str | None,
+    str | None,
+    dict[str, dict[str, Any]],
+    set[str],
+    set[str],
+]:
     archive = options.semantic_campaign_archive
     expected = options.expected_semantic_campaign_sha256
     follow_up_archive = options.semantic_follow_up_archive
     follow_up_expected = options.expected_semantic_follow_up_sha256
-    if archive is None and expected is None and follow_up_archive is None and follow_up_expected is None:
-        return None, None, {}, set()
+    recovery_archive = options.semantic_recovery_archive
+    recovery_expected = options.expected_semantic_recovery_sha256
+    if all(
+        value is None
+        for value in (
+            archive,
+            expected,
+            follow_up_archive,
+            follow_up_expected,
+            recovery_archive,
+            recovery_expected,
+        )
+    ):
+        return None, None, None, {}, set(), set()
     if archive is None or expected is None:
         raise ValueError("Semantic campaign archive and expected SHA-256 must be supplied together")
     baseline_sha256, _baseline_input, records = _semantic_archive_records(
         archive, expected, catalog_ids, require_full_catalog=True
     )
     if follow_up_archive is None and follow_up_expected is None:
-        return baseline_sha256, None, records, set()
+        if recovery_archive is not None or recovery_expected is not None:
+            raise ValueError("Semantic recovery requires a semantic follow-up archive")
+        return baseline_sha256, None, None, records, set(), set()
     if follow_up_archive is None or follow_up_expected is None:
-        raise ValueError("Semantic follow-up archive and expected SHA-256 must be supplied together")
+        raise ValueError(
+            "Semantic follow-up archive and expected SHA-256 must be supplied together"
+        )
     follow_up_sha256, follow_up_input, follow_up_records = _semantic_archive_records(
         follow_up_archive,
         follow_up_expected,
@@ -487,7 +512,31 @@ def _semantic_campaign_records(
     if not isinstance(baseline, dict) or baseline.get("archiveSha256") != baseline_sha256:
         raise ValueError("Semantic follow-up baseline archive binding is stale")
     records.update(follow_up_records)
-    return baseline_sha256, follow_up_sha256, records, set(follow_up_records)
+    if recovery_archive is None and recovery_expected is None:
+        return baseline_sha256, follow_up_sha256, None, records, set(follow_up_records), set()
+    if recovery_archive is None or recovery_expected is None:
+        raise ValueError("Semantic recovery archive and expected SHA-256 must be supplied together")
+    recovery_sha256, recovery_input, recovery_records = _semantic_archive_records(
+        recovery_archive,
+        recovery_expected,
+        catalog_ids,
+        require_full_catalog=False,
+    )
+    recovery_baseline = recovery_input.get("baseline")
+    if (
+        not isinstance(recovery_baseline, dict)
+        or recovery_baseline.get("archiveSha256") != follow_up_sha256
+    ):
+        raise ValueError("Semantic recovery follow-up archive binding is stale")
+    records.update(recovery_records)
+    return (
+        baseline_sha256,
+        follow_up_sha256,
+        recovery_sha256,
+        records,
+        set(follow_up_records),
+        set(recovery_records),
+    )
 
 
 def _validate_record(record: dict[str, Any]) -> None:
@@ -512,8 +561,10 @@ def build_local_candidate_review_details(
     (
         semantic_campaign_sha256,
         semantic_follow_up_sha256,
+        semantic_recovery_sha256,
         campaign_records,
         follow_up_ids,
+        recovery_ids,
     ) = _semantic_campaign_records(options, set(bindings))
     details: list[dict[str, Any]] = []
     comparisons: list[dict[str, Any]] = []
@@ -540,7 +591,13 @@ def build_local_candidate_review_details(
                 packet,
                 members,
                 campaign_records.get(candidate_id),
-                "follow_up" if candidate_id in follow_up_ids else "baseline",
+                (
+                    "recovery"
+                    if candidate_id in recovery_ids
+                    else "follow_up"
+                    if candidate_id in follow_up_ids
+                    else "baseline"
+                ),
             ),
         }
         comparison = _comparison(
@@ -549,7 +606,13 @@ def build_local_candidate_review_details(
             packet,
             members,
             campaign_records.get(candidate_id),
-            "follow_up" if candidate_id in follow_up_ids else "baseline",
+            (
+                "recovery"
+                if candidate_id in recovery_ids
+                else "follow_up"
+                if candidate_id in follow_up_ids
+                else "baseline"
+            ),
         )
         _validate_record(detail)
         _validate_record(comparison)
@@ -564,6 +627,7 @@ def build_local_candidate_review_details(
         "sourceBundleSha256": archive_sha256,
         "semanticCampaignSha256": semantic_campaign_sha256,
         "semanticFollowUpSha256": semantic_follow_up_sha256,
+        "semanticRecoverySha256": semantic_recovery_sha256,
         "details": details,
         "comparisons": comparisons,
     }
@@ -582,5 +646,6 @@ def build_local_candidate_review_details(
             for record in campaign_records.values()
         ),
         "semanticFollowUpCount": len(follow_up_ids),
+        "semanticRecoveryCount": len(recovery_ids),
         "output": str(options.output),
     }

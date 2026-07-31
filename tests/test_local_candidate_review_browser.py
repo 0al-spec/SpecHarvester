@@ -106,6 +106,7 @@ def test_browser_copies_valid_detail_set(tmp_path: Path) -> None:
     assert "Static versus AI semantics" in script
     assert "Observed intent reuse" in script
     assert "Experimental intent proposals" in script
+    assert "Luna recovery" in script
     assert "semanticAction" in script
     assert "restoreCurrent" in script
     assert "acceptedOrEditedClaimIds" in script

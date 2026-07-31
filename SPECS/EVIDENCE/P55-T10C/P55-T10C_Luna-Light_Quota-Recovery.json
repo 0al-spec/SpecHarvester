@@ -1,0 +1,92 @@
+{
+  "apiVersion": "spec-harvester.semantic-follow-up-quota-recovery/v0",
+  "archive": {
+    "path": "P55-T10C_Luna-Light_Quota-Recovery.tar.gz",
+    "recordCount": 3,
+    "sha256": "40bf4a797c431f1c4a66771e62f8d337411806d377806e8b6fdea7deecbfb484"
+  },
+  "authority": "semantic_follow_up_quota_recovery_evidence_only",
+  "baseline": {
+    "archiveSha256": "d892323780b9f30c6ece5997ec191f48b2b0a4f405833f23bccdc1840fa4e669",
+    "campaignInputSha256": "68adc5ae349e9e4f4cedca1ba53a7fe860c93c8ca07f7aa81b1190717a45e59e",
+    "reportSha256": "8b32f99c29fd3374a48b3ff60c0476f14b436612dfc30baeac8c370164288bd3"
+  },
+  "campaignInputSha256": "be3917b713024bc474f37f2aaec830785db294d62f2eb52fcb1df39c18cb1a24",
+  "effectiveFollowUpSummary": {
+    "baselineGenericIntentReuseCount": 48,
+    "completedCount": 34,
+    "cost": {
+      "status": "unavailable_from_codex_exec_receipts"
+    },
+    "duplicateExperimentalIntentIdCount": 0,
+    "duplicateExperimentalSemanticStemCount": 0,
+    "durationMs": 1562134,
+    "estimatedReviewerEditBurdenRate": 0.8478,
+    "estimatedReviewerEditRequiredCount": 39,
+    "evidenceSupportedExperimentalIntentCount": 6,
+    "experimentalIntentCount": 6,
+    "failedCount": 12,
+    "failedProviderAttemptCount": 30,
+    "falseNoveltyCount": 0,
+    "followUpGenericIntentReuseCount": 41,
+    "genericIntentReductionCount": 7,
+    "jsonRepairRecordCount": 23,
+    "providerAttemptCount": 64,
+    "qualityStatusCounts": {
+      "eligible_for_calibration": 7,
+      "rejected": 7,
+      "review_required": 20
+    },
+    "targetCount": 46,
+    "tokenUsage": {}
+  },
+  "executionBoundary": {
+    "canonicalizationPerformed": false,
+    "materializationPerformed": false,
+    "packageManagerInvoked": false,
+    "publicationPerformed": false,
+    "registryMutated": false,
+    "repositoryCodeExecuted": false,
+    "reviewerDecisionCreated": false,
+    "specpmMutated": false
+  },
+  "kind": "SpecHarvesterSemanticFollowUpQuotaRecovery",
+  "provider": {
+    "id": "gpt-5.6-luna",
+    "kind": "codex_exec",
+    "reasoningEffort": "low"
+  },
+  "recordIndex": [
+    {
+      "candidateId": "angular_angular.adev",
+      "recordSha256": "e245a8a1d8dcbbc451ae6b3baa3b236aab88c16fa9e1b1674196c1c20655e30e",
+      "repositoryId": "angular-angular",
+      "status": "completed"
+    },
+    {
+      "candidateId": "anuraghazra_github_readme_stats.github_readme_stats",
+      "recordSha256": "f422b8215e58686a2de32afe555f8c80e9142465b2349b3e3ad14c0f068686ad",
+      "repositoryId": "anuraghazra-github-readme-stats",
+      "status": "failed"
+    },
+    {
+      "candidateId": "google_gemini_gemini_cli.gemini_cli",
+      "recordSha256": "494a5227a0b1d631e240fc8941b3ab89e6329df197e57ca7f15465d4434cf54e",
+      "repositoryId": "google-gemini-gemini-cli",
+      "status": "completed"
+    }
+  ],
+  "reportSha256": "5859a46858ea7522ca1b61be1384aa8e2694a633638a41243ab61b8bd0714b88",
+  "schemaVersion": 1,
+  "summary": {
+    "completedCount": 2,
+    "failedCount": 1,
+    "jsonRepairRecordCount": 0,
+    "providerAttemptCount": 4,
+    "qualityStatusCounts": {
+      "eligible_for_calibration": 2
+    },
+    "targetCount": 3
+  },
+  "taskId": "P55-T10C"
+}
