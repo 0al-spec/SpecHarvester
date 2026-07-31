@@ -119,6 +119,26 @@ def load_campaign_scope(
         "sourceManifestSha256": _directory_digest(source_manifest_dir, "*.yml"),
         "handoffAggregateSha256": sha256_file(aggregate_path),
         "p55T9AReadinessSha256": sha256_file(readiness_evidence),
+        "inputProjection": {
+            "id": "principal_candidate_semantic_projection_v1",
+            "manifest": "exact",
+            "boundaryFields": [
+                "apiVersion",
+                "kind",
+                "metadata",
+                "intent",
+                "scope",
+                "provides",
+                "requires",
+                "interfaces",
+                "effects",
+                "constraints",
+            ],
+            "publicInterfaceIndex": "omitted_packet_digest_bound",
+            "interfaces": "id_kind_summary_language_max_32_per_direction",
+            "documentation": "pinned_git_object_utf8_max_24_kib",
+            "observedIntents": "generic_first_then_lexicographic_max_64",
+        },
         "targets": [target.binding() for target in targets],
         "executionBoundary": _execution_boundary(),
     }
@@ -210,47 +230,66 @@ def run_campaign_target(
     validate_source_checkout(target.source_dir, target.revision)
     attempt_records: list[dict[str, Any]] = []
     terminal: dict[str, Any] | None = None
+    try:
+        with tempfile.TemporaryDirectory(prefix="p55-t10-") as temporary:
+            workspace = prepare_workspace(
+                target.candidate_dir,
+                target.source_dir,
+                target.revision,
+                Path(temporary),
+            )
+            manifest = yaml.safe_load((workspace / "specpm.yaml").read_text(encoding="utf-8"))
+            static_intent_ids = manifest_intent_ids(manifest)
+            pack = build_semantic_author_input_pack(
+                workspace,
+                observed_catalog(manifest),
+                options=SemanticAuthorInputPackOptions(document_paths=("README.md",)),
+            )
+    except (ValueError, OSError) as exc:
+        terminal = {
+            "apiVersion": RECORD_API_VERSION,
+            "kind": RECORD_KIND,
+            "schemaVersion": 1,
+            "authority": "semantic_campaign_proposal_only",
+            "campaignInputSha256": scope["campaignInputSha256"],
+            **target.binding(),
+            "status": "failed",
+            "failureStage": "input_pack",
+            "failureCode": str(exc)[:500],
+            "attempts": [],
+            "executionBoundary": _execution_boundary(),
+        }
     for attempt in range(1, options.provider_max_attempts + 1):
+        if terminal is not None:
+            break
         started = time.monotonic()
         try:
-            with tempfile.TemporaryDirectory(prefix="p55-t10-") as temporary:
-                workspace = prepare_workspace(
-                    target.candidate_dir,
-                    target.source_dir,
-                    target.revision,
-                    Path(temporary),
-                )
-                manifest = yaml.safe_load((workspace / "specpm.yaml").read_text(encoding="utf-8"))
-                pack = build_semantic_author_input_pack(
-                    workspace,
-                    observed_catalog(manifest),
-                    options=SemanticAuthorInputPackOptions(document_paths=("README.md",)),
-                )
-                semantic_pass = run_semantic_author_pass(
-                    pack,
-                    provider,
-                    options=SemanticAuthorPassOptions(
-                        timeout_seconds=options.timeout_seconds,
-                        max_output_bytes=options.max_output_bytes,
-                        json_repair_max_attempts=options.json_repair_max_attempts,
-                    ),
-                )
-                quality = evaluate_semantic_proposal_quality(pack, semantic_pass)
-                portable = (
-                    build_portable_semantic_proposal(pack, semantic_pass, quality)
-                    if quality["status"] != "rejected"
-                    else None
-                )
-                terminal = _completed_record(
-                    target,
-                    scope=scope,
-                    attempt=attempt,
-                    attempt_records=attempt_records,
-                    pack=pack,
-                    semantic_pass=semantic_pass,
-                    quality=quality,
-                    portable=portable,
-                )
+            semantic_pass = run_semantic_author_pass(
+                pack,
+                provider,
+                options=SemanticAuthorPassOptions(
+                    timeout_seconds=options.timeout_seconds,
+                    max_output_bytes=options.max_output_bytes,
+                    json_repair_max_attempts=options.json_repair_max_attempts,
+                ),
+            )
+            quality = evaluate_semantic_proposal_quality(pack, semantic_pass)
+            portable = (
+                build_portable_semantic_proposal(pack, semantic_pass, quality)
+                if quality["status"] != "rejected"
+                else None
+            )
+            terminal = _completed_record(
+                target,
+                scope=scope,
+                attempt=attempt,
+                attempt_records=attempt_records,
+                pack=pack,
+                semantic_pass=semantic_pass,
+                quality=quality,
+                portable=portable,
+                static_intent_ids=static_intent_ids,
+            )
             attempt_records.append(
                 _attempt_record(attempt, "completed", started, semantic_pass=semantic_pass)
             )
@@ -291,6 +330,7 @@ def _completed_record(
     semantic_pass: dict[str, Any],
     quality: dict[str, Any],
     portable: dict[str, Any] | None,
+    static_intent_ids: list[str],
 ) -> dict[str, Any]:
     proposal = semantic_pass["proposal"]
     intent_decisions = proposal["intentDecisions"]
@@ -305,7 +345,7 @@ def _completed_record(
         "providerAttemptCount": attempt,
         "attempts": attempt_records,
         "sourceBundleSha256": pack["sourceBundleSha256"],
-        "staticObservedIntentIds": sorted(item["intentId"] for item in pack["observedIntents"]),
+        "staticObservedIntentIds": static_intent_ids,
         "proposalReuseIntentIds": sorted(
             item["intentId"] for item in intent_decisions if item["state"] == "proposed_reuse"
         ),
@@ -337,9 +377,13 @@ def validate_campaign_record(
     ):
         raise ValueError(f"Campaign record binding is stale: {target.repository_id}")
     attempts = record.get("attempts")
-    if not isinstance(attempts, list) or not attempts or len(attempts) > 2:
+    if not isinstance(attempts, list) or len(attempts) > 2:
         raise ValueError(f"Campaign record attempt accounting is invalid: {target.repository_id}")
     if record["status"] == "completed":
+        if not attempts:
+            raise ValueError(
+                f"Completed campaign record has no provider attempt: {target.repository_id}"
+            )
         if not all(
             isinstance(record.get(key), expected)
             for key, expected in (
@@ -530,11 +574,44 @@ def prepare_workspace(candidate: Path, source: Path, revision: str, root: Path) 
     workspace = root / "workspace"
     workspace.mkdir()
     shutil.copy2(candidate / "specpm.yaml", workspace / "specpm.yaml")
-    shutil.copytree(candidate / "specs", workspace / "specs")
+    (workspace / "specs").mkdir()
+    for source_spec in sorted((candidate / "specs").glob("*.spec.yaml")):
+        value = yaml.safe_load(source_spec.read_text(encoding="utf-8"))
+        if not isinstance(value, dict):
+            raise ValueError(f"BoundarySpec projection source is invalid: {source_spec.name}")
+        projected = {
+            key: value[key]
+            for key in (
+                "apiVersion",
+                "kind",
+                "metadata",
+                "intent",
+                "scope",
+                "provides",
+                "requires",
+                "interfaces",
+                "effects",
+                "constraints",
+            )
+            if key in value
+        }
+        if isinstance(value.get("interfaces"), dict):
+            projected["interfaces"] = {
+                direction: [
+                    {
+                        key: interface[key]
+                        for key in ("id", "kind", "summary", "language")
+                        if key in interface
+                    }
+                    for interface in value["interfaces"].get(direction, [])[:32]
+                    if isinstance(interface, dict)
+                ]
+                for direction in ("inbound", "outbound")
+            }
+        (workspace / "specs" / source_spec.name).write_text(
+            yaml.safe_dump(projected, sort_keys=False), encoding="utf-8"
+        )
     shutil.copy2(candidate / "harvest.json", workspace / "harvest.json")
-    interface = candidate / "public-interface-index.json"
-    if interface.is_file() and not interface.is_symlink():
-        shutil.copy2(interface, workspace / interface.name)
     (workspace / "README.md").write_bytes(read_pinned_readme(source, revision))
     return workspace
 
@@ -606,16 +683,21 @@ def read_pinned_readme(source: Path, revision: str) -> bytes:
 
 
 def observed_catalog(manifest: dict[str, Any]) -> dict[str, Any]:
-    provides = manifest.get("index", {}).get("provides", {})
-    intent_ids = sorted(item for item in provides.get("intents", []) if isinstance(item, str))
+    intent_ids = manifest_intent_ids(manifest)
+    selected = sorted(intent_ids, key=lambda item: (item not in GENERIC_INTENT_IDS, item))[:64]
     content = {
         "sourcePath": "generated/observed-intents.json",
         "intents": [
             {"intentId": intent_id, "sha256": hashlib.sha256(intent_id.encode()).hexdigest()}
-            for intent_id in intent_ids
+            for intent_id in selected
         ],
     }
     return {**content, "sha256": digest(content)}
+
+
+def manifest_intent_ids(manifest: dict[str, Any]) -> list[str]:
+    provides = manifest.get("index", {}).get("provides", {})
+    return sorted({item for item in provides.get("intents", []) if isinstance(item, str)})
 
 
 def _verify_packet_files(packet_dir: Path, packet: dict[str, Any]) -> None:
