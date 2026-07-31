@@ -30,16 +30,16 @@ None.
   provider and receipt model identity, policy bindings, and full target
   accounting before it can unblock P55-T10C.
 - Failed attempts remain recorded and terminal failures remain in every frozen
-  gate denominator. Claude-mem's recovered evidence-binding failure is retained.
+  gate denominator. Claude-mem's recovered collision-binding failure is retained.
 - Purpose, evidence, schema, nearby differentiation, experimental proposal,
   justified reuse, false novelty, duplicate ID/stem, and reviewer edit-burden
   metrics are derived deterministically from retained proposal and quality data.
-- RTK's broad tooling-intent reuse is not represented as success: it contributes
-  an explicit edit reason, zero justified reuse, and the aggregate 0.0625 edit
-  burden. The transition still satisfies the predeclared minimum of one useful
-  experimental intent because three were produced.
-- False novelty and exact duplicate IDs are hard transition blockers. The
-  P55-T5 quality policy and thresholds are unchanged.
+- RTK and ripgrep broad-intent reuse are not represented as success: both
+  contribute an explicit edit reason, zero justified reuse, and the aggregate
+  0.125 edit burden. The transition still satisfies the predeclared minimum of
+  one useful experimental intent because two were produced.
+- False novelty, exact duplicate IDs, and duplicate semantic stems are hard
+  transition blockers. The P55-T5 quality policy and thresholds are unchanged.
 
 ### Security and Authority
 
@@ -55,7 +55,7 @@ None.
 ### Tests
 
 - Focused calibration and docs-contract suite: `218 passed` after archive.
-- Full suite: `1321 passed, 1 skipped`.
+- Full suite: `1326 passed, 1 skipped`.
 - Total coverage: `90.03%`; calibration module coverage: `90%`.
 - Ruff lint and format, evidence JSON, diff integrity, Swift manifest, and Swift
   documentation target passed.
@@ -78,4 +78,4 @@ None.
   candidate, provider, and baseline bindings.
 - FOLLOW-UP is skipped because this review found no new actionable defect;
   P55-T10C already owns broader comparison and explicit review evidence.
-- Keep this PR based on the P55-T10A branch until the parent is merged.
+- The parent is merged and this PR is rebased directly onto `main`.

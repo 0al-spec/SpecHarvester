@@ -11,13 +11,13 @@ from P55-T9/P55-T9A; the P55-T5 numerical thresholds are unchanged.
 | --- | ---: |
 | Completed / failed targets | 4 / 0 |
 | Provider attempts | 5 |
-| Evidence-supported experimental intents | 3 |
-| Experimental proposal rate | 0.75 |
+| Evidence-supported experimental intents | 2 |
+| Experimental proposal rate | 0.50 |
 | Purpose accuracy | 1.00 |
 | Evidence-supported claim rate | 1.00 |
 | Schema-valid proposal rate | 1.00 |
-| Reviewer edit-burden estimate | 0.0625 |
-| Nearby-intent differentiation rate | 0.75 |
+| Reviewer edit-burden estimate | 0.125 |
+| Nearby-intent differentiation rate | 0.50 |
 | False novelty | 0 |
 | Duplicate experimental IDs / semantic stems | 0 / 0 |
 
@@ -28,16 +28,15 @@ bounded P55-T10C follow-up, not automatic materialization or publication.
 
 - **OpenAI Codex** proposed
   `intent.experimental.local_coding_agent.48e6a87f`, distinguishing local coding
-  agent work from the observed JavaScript-library package category. Its first
-  provider attempt tried to reuse that generic intent without a valid comparison
-  claim and failed closed; the second bounded attempt passed.
-- **ripgrep** proposed
-  `intent.experimental.search_text_in_files_pattern.bbfdc65a`, expressing the user
-  outcome of pattern-based text search rather than broad documentation or
-  tooling metadata.
+  agent work from the observed JavaScript-library package category.
+- **ripgrep** reused `intent.developer.tooling_surface`. The purpose and
+  capability claims describe pattern-based text search accurately, but the
+  observed intent remains too broad, so this record carries the same explicit
+  experimental-intent edit requirement as RTK.
 - **claude-mem** proposed
-  `intent.experimental.preserve_coding_context_sessions.c6b2134c`, expressing
-  retained coding context across sessions.
+  `intent.experimental.persist_session_context_recall.c6b2134c`, expressing
+  retained coding context across sessions. Its first attempt emitted an invalid
+  collision-bound identifier and failed closed; the second bounded attempt passed.
 - **RTK** reused `intent.developer.tooling_surface`. Its purpose claim accurately
   described reducing command output and LLM token context, but the observed
   intent remained too broad. The result is not counted as justified reuse; it

@@ -41,6 +41,7 @@
     "minimumEvidenceSupportedExperimentalIntentCount": 1,
     "maximumFalseNoveltyCount": 0,
     "maximumDuplicateExperimentalIntentIdCount": 0,
+    "maximumDuplicateExperimentalSemanticStemCount": 0,
     "requireAllTargetsTerminal": true,
     "requireFrozenQualityGates": true
   },
@@ -53,5 +54,5 @@
     "registryMutationAllowed": false,
     "publicationAllowed": false
   },
-  "planSha256": "17d6af704e2bad698eb409d077199cc53156c69c31b6cef786f79222bebba477"
+  "planSha256": "944c2eb1c50a3bdeefc72213ea542ec710be17b00b7afa9aae9426322840e79d"
 }

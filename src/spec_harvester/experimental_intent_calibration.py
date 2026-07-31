@@ -102,6 +102,7 @@ def validate_calibration_plan(plan: dict[str, Any]) -> None:
         "minimumEvidenceSupportedExperimentalIntentCount": 1,
         "maximumFalseNoveltyCount": 0,
         "maximumDuplicateExperimentalIntentIdCount": 0,
+        "maximumDuplicateExperimentalSemanticStemCount": 0,
         "requireAllTargetsTerminal": True,
         "requireFrozenQualityGates": True,
     }:
@@ -168,6 +169,8 @@ def run_experimental_intent_calibration(
         and summary["falseNoveltyCount"] <= criteria["maximumFalseNoveltyCount"]
         and summary["duplicateExperimentalIntentIdCount"]
         <= criteria["maximumDuplicateExperimentalIntentIdCount"]
+        and summary["duplicateExperimentalSemanticStemCount"]
+        <= criteria["maximumDuplicateExperimentalSemanticStemCount"]
     )
     report = {
         "apiVersion": CALIBRATION_API_VERSION,

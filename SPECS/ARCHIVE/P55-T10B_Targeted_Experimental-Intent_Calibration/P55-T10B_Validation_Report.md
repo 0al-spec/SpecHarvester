@@ -23,31 +23,30 @@
 | --- | ---: |
 | Completed / failed | 4 / 0 |
 | Provider attempts | 5 |
-| Evidence-supported experimental intents | 3 |
-| Experimental proposal rate | 0.75 |
+| Evidence-supported experimental intents | 2 |
+| Experimental proposal rate | 0.50 |
 | Purpose accuracy | 1.00 |
 | Evidence-supported claim rate | 1.00 |
 | Schema-valid proposal rate | 1.00 |
-| Reviewer edit-burden estimate | 0.0625 |
-| Nearby-intent differentiation rate | 0.75 |
+| Reviewer edit-burden estimate | 0.125 |
+| Nearby-intent differentiation rate | 0.50 |
 | False novelty | 0 |
 | Duplicate experimental IDs / semantic stems | 0 / 0 |
 
-All unchanged P55-T5 numerical gates passed. OpenAI Codex, ripgrep, and
-claude-mem received evidence-supported experimental intents. RTK retained the
-overly broad `intent.developer.tooling_surface`; it is explicitly not counted as
-justified reuse and carries an experimental-intent edit requirement.
+All unchanged P55-T5 numerical gates passed. OpenAI Codex and claude-mem
+received evidence-supported experimental intents. RTK and ripgrep retained
+overly broad observed intents; neither is counted as justified reuse and both
+carry an experimental-intent edit requirement.
 
-OpenAI Codex's first provider attempt failed closed because it tried to reuse a
-generic observed intent without a valid comparison claim. Its second and final
-allowed attempt completed without JSON repair. The failure remains recorded in
-the durable target record.
+Claude-mem's first provider attempt failed closed because its experimental ID
+was not collision-bound. Its second and final allowed attempt completed without
+JSON repair. The failure remains recorded in the durable target record.
 
 ## Decision and Authority
 
 - `p55T10CUnblocked` is `true` because all targets completed, all frozen gates
-  passed, three useful experimental intents were produced, and false novelty
-  plus duplicate IDs remained zero.
+  passed, two useful experimental intents were produced, and false novelty,
+  duplicate IDs, and duplicate semantic stems remained zero.
 - `thresholdsRedefined` is `false`.
 - `maintainerDecisionRecorded` is `false`: calibration success is not intent
   acceptance, materialization, canonicalization, or publication.
@@ -67,7 +66,7 @@ the durable target record.
 - Real run with
   `scripts/run_p55_t10b_experimental_intent_calibration.py`: completed `4/4`,
   emitted evidence SHA-256
-  `ba76606423fe48fd67a839f2ec9508fbd2616f9accb5310b603a45ff0e3b5000`,
+  `7e7739374bfe78c3e72179e5521ee941cd9eefa94fba147a8e1f7e74397e361f`,
   and returned `p55T10CUnblocked: true`.
 - `uv run pytest tests/test_experimental_intent_calibration.py
   --cov=spec_harvester.experimental_intent_calibration --cov-report=term-missing

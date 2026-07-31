@@ -121,6 +121,7 @@ def test_plan_is_digest_bound_to_provider_policies_and_targets() -> None:
     assert [item["repositoryId"] for item in plan["targets"]] == list(EXPECTED_REPOSITORY_IDS)
     assert plan["provider"]["modelId"] == "gpt-5.3-codex-spark"
     assert plan["successCriteria"]["minimumEvidenceSupportedExperimentalIntentCount"] == 1
+    assert plan["successCriteria"]["maximumDuplicateExperimentalSemanticStemCount"] == 0
     assert all(value is False for value in plan["executionBoundary"].values())
 
     stale = copy.deepcopy(plan)
@@ -288,8 +289,9 @@ def test_runner_accounts_for_four_targets_and_preserves_non_authority(
     assert report["summary"]["completedCount"] == 4
     assert report["summary"]["evidenceSupportedExperimentalIntentCount"] == 4
     assert report["summary"]["falseNoveltyCount"] == 0
+    assert report["summary"]["duplicateExperimentalSemanticStemCount"] == 3
     assert report["decision"] == {
-        "p55T10CUnblocked": True,
+        "p55T10CUnblocked": False,
         "thresholdsRedefined": False,
         "maintainerDecisionRecorded": False,
     }
@@ -347,15 +349,15 @@ def test_real_evidence_passes_frozen_gates_with_useful_bounded_novelty() -> None
     assert summary["completedCount"] == 4
     assert summary["failedCount"] == 0
     assert summary["providerAttemptCount"] == 5
-    assert summary["evidenceSupportedExperimentalIntentCount"] == 3
-    assert summary["experimentalIntentProposalRate"] == 0.75
+    assert summary["evidenceSupportedExperimentalIntentCount"] == 2
+    assert summary["experimentalIntentProposalRate"] == 0.5
     assert summary["falseNoveltyCount"] == 0
     assert summary["duplicateExperimentalIntentIdCount"] == 0
     assert summary["metrics"] == {
         "purposeAccuracyRate": 1.0,
         "evidenceSupportedClaimRate": 1.0,
         "schemaValidProposalRate": 1.0,
-        "reviewerEditBurdenRate": 0.0625,
+        "reviewerEditBurdenRate": 0.125,
     }
     assert all(gate["passed"] for gate in summary["frozenQualityGates"].values())
     assert report["decision"] == {
@@ -374,10 +376,10 @@ def test_real_evidence_preserves_rtk_gap_and_recovered_provider_failure() -> Non
         "experimental_intent_missing_or_unsupported"
     ]
     assert records["rtk-ai-rtk"]["metrics"]["justifiedReuseCount"] == 0
-    assert records["openai-codex"]["providerAttemptCount"] == 2
+    assert records["thedotmack-claude-mem"]["providerAttemptCount"] == 2
     assert (
-        "generic observed intent reuse lacks an explicit comparison claim"
-        in records["openai-codex"]["priorAttemptFailureCodes"][0]
+        "experimental intent identifier is not collision-bound"
+        in records["thedotmack-claude-mem"]["priorAttemptFailureCodes"][0]
     )
     experimental_ids = {
         repository_id: [
@@ -388,11 +390,9 @@ def test_real_evidence_preserves_rtk_gap_and_recovered_provider_failure() -> Non
         for repository_id, record in records.items()
     }
     assert experimental_ids["openai-codex"] == ["intent.experimental.local_coding_agent.48e6a87f"]
-    assert experimental_ids["burntsushi-ripgrep"] == [
-        "intent.experimental.search_text_in_files_pattern.bbfdc65a"
-    ]
+    assert experimental_ids["burntsushi-ripgrep"] == []
     assert experimental_ids["thedotmack-claude-mem"] == [
-        "intent.experimental.preserve_coding_context_sessions.c6b2134c"
+        "intent.experimental.persist_session_context_recall.c6b2134c"
     ]
 
 
