@@ -47,10 +47,21 @@ reduction and high namespace-violation rate as exit-decision inputs.
 - No repository code or package manager was executed. No proposal was
   materialized or published, and SpecPM plus registry truth were unchanged.
 
+## Workbench Overlay Follow-Up
+
+- The P55-T10 archive can be supplied to the P54 detail builder as a separate
+  expected-digest overlay without rewriting the P53 handoff.
+- All 100 campaign records and candidate bindings are revalidated.
+- The generated Workbench exposes 42 `complete_portable` Static-versus-AI
+  panels and 58 `campaign_rejected` diagnostic records.
+- The `AI proposal` filter was verified in Browser Preview to produce a
+  42-candidate review queue. OpenAI Codex rendered a complete semantic panel;
+  RTK rendered its rejected status and quality evidence.
+
 ## Validation Commands
 
 - `uv run pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90`:
-  `1289 passed, 1 skipped`; total coverage `90.06%`.
+  `1291 passed, 1 skipped`; total coverage `90.05%`.
 - `uv run pytest tests/test_retained_corpus_semantic_campaign.py
   --cov=spec_harvester.retained_corpus_semantic_campaign
   --cov-report=term-missing`: `5 passed`; campaign module coverage `92%`.

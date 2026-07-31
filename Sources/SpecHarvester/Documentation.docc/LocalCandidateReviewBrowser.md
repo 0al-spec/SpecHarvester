@@ -1,5 +1,10 @@
 # Local Candidate Review Browser
 
+The `AI proposal` filter separates complete portable semantic proposals from
+campaign-rejected records. A P55-T10 overlay therefore provides a 42-item
+review queue and a separate 58-item diagnostic queue without changing package
+or registry state.
+
 Render the static browser from a P54-T3 catalog with the
 `render-local-candidate-review-browser` command.
 

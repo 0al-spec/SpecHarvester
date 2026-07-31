@@ -21,6 +21,11 @@ None.
   purpose-claim coverage measure and reviewer edit-burden availability. The
   summary now records purpose coverage as `1.00` and marks edit burden
   unavailable until reviewer-decision evidence exists.
+- [Resolved/High] The original T10 archive was portable but could not be loaded
+  into the P54 Workbench without rebuilding the P53 handoff. The detail builder
+  now accepts a fail-closed digest-bound semantic campaign overlay, renders 42
+  complete proposal comparisons, preserves 58 rejected diagnostics, and offers
+  an AI-status queue filter.
 
 ### Architectural Notes
 
@@ -36,7 +41,7 @@ None.
 
 ### Tests
 
-- Full suite: `1289 passed, 1 skipped`; total coverage `90.06%`.
+- Full suite: `1291 passed, 1 skipped`; total coverage `90.05%`.
 - Campaign runner: `5 passed`; module coverage `92%`.
 - Docs-contract plus campaign regression suite: `207 passed`.
 - Ruff, formatting, JSON integrity, deterministic archive, Swift package
