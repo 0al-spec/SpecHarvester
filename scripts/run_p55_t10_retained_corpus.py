@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from spec_harvester.retained_corpus_semantic_campaign import (
+    CODEX_SPARK_MODEL,
     CampaignRunOptions,
     CodexSparkSemanticAuthorProvider,
     finalize_campaign,
@@ -29,13 +30,15 @@ def main() -> int:
     parser.add_argument("--repository", action="append")
     parser.add_argument("--finalize", action="store_true")
     parser.add_argument("--codex-command", default="codex")
-    parser.add_argument("--codex-model", default="gpt-5.3-codex-spark")
+    parser.add_argument("--codex-model", default=CODEX_SPARK_MODEL)
     parser.add_argument("--timeout-seconds", type=float, default=300)
     parser.add_argument("--json-repair-max-attempts", type=int, default=1)
     parser.add_argument("--provider-max-attempts", type=int, default=2)
     args = parser.parse_args()
 
     try:
+        if args.codex_model != CODEX_SPARK_MODEL:
+            raise ValueError(f"P55-T10 requires Codex model {CODEX_SPARK_MODEL}")
         scope, targets = load_campaign_scope(
             source_manifest_dir=args.source_manifest_dir,
             source_root=args.source_root,

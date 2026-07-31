@@ -11,7 +11,7 @@ import tempfile
 import time
 from collections import Counter
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 import yaml
@@ -39,6 +39,7 @@ CAMPAIGN_KIND = "SpecHarvesterRetainedCorpusSemanticCampaign"
 RECORD_API_VERSION = "spec-harvester.retained-corpus-semantic-record/v0"
 RECORD_KIND = "SpecHarvesterRetainedCorpusSemanticRecord"
 EXPECTED_REPOSITORY_COUNT = 100
+CODEX_SPARK_MODEL = "gpt-5.3-codex-spark"
 
 
 @dataclass(frozen=True)
@@ -86,9 +87,8 @@ def load_campaign_scope(
     aggregate_path = handoff_root / "aggregate-handoff.json"
     aggregate = _read_json(aggregate_path)
     selected = aggregate.get("selectedCandidates")
-    if not isinstance(selected, list) or {
-        item.get("repositoryId") for item in selected if isinstance(item, dict)
-    } != set(repository_ids):
+    packet_bindings = _aggregate_packet_bindings(selected)
+    if set(packet_bindings) != set(repository_ids):
         raise ValueError("P53-T14 handoff does not match the retained corpus")
 
     readiness = _read_json(readiness_evidence)
@@ -103,7 +103,12 @@ def load_campaign_scope(
         raise ValueError("P55-T9A readiness evidence does not unblock P55-T10")
 
     targets = [
-        _load_target(source, source_root=source_root, handoff_root=handoff_root)
+        _load_target(
+            source,
+            source_root=source_root,
+            handoff_root=handoff_root,
+            expected_packet_sha256=packet_bindings[source["id"]],
+        )
         for source in sources
     ]
     scope = {
@@ -112,7 +117,7 @@ def load_campaign_scope(
         "schemaVersion": 1,
         "authority": "semantic_campaign_proposal_only",
         "provider": {
-            "id": "gpt-5.3-codex-spark",
+            "id": CODEX_SPARK_MODEL,
             "kind": "codex_exec",
         },
         "repositoryCount": EXPECTED_REPOSITORY_COUNT,
@@ -147,7 +152,11 @@ def load_campaign_scope(
 
 
 def _load_target(
-    source: dict[str, Any], *, source_root: Path, handoff_root: Path
+    source: dict[str, Any],
+    *,
+    source_root: Path,
+    handoff_root: Path,
+    expected_packet_sha256: str,
 ) -> CampaignTarget:
     repository_id = source["id"]
     revision = source.get("revision")
@@ -155,6 +164,8 @@ def _load_target(
         raise ValueError(f"Retained source revision is not pinned: {repository_id}")
     packet_dir = handoff_root / "packets" / repository_id
     packet_path = packet_dir / "packet.json"
+    if sha256_file(packet_path) != expected_packet_sha256:
+        raise ValueError(f"P53-T14 aggregate packet digest mismatch: {repository_id}")
     packet = _read_json(packet_path)
     if packet.get("repository", {}).get("id") != repository_id:
         raise ValueError(f"P53-T14 packet identity mismatch: {repository_id}")
@@ -179,6 +190,47 @@ def _load_target(
         candidate_dir=candidate_dir,
         source_dir=source_root / repository_id,
     )
+
+
+def _aggregate_packet_bindings(selected: Any) -> dict[str, str]:
+    if not isinstance(selected, list):
+        raise ValueError("P53-T14 handoff selected candidates are invalid")
+    bindings: dict[str, str] = {}
+    for item in selected:
+        if not isinstance(item, dict) or not isinstance(item.get("repositoryId"), str):
+            raise ValueError("P53-T14 selected candidate identity is invalid")
+        repository_id = item["repositoryId"]
+        links = item.get("evidenceLinks")
+        portable = (
+            [
+                link
+                for link in links
+                if isinstance(link, dict)
+                and link.get("role") == "portable_packet"
+                and link.get("status") == "present"
+            ]
+            if isinstance(links, list)
+            else []
+        )
+        if len(portable) != 1:
+            raise ValueError(f"P53-T14 portable packet binding is invalid: {repository_id}")
+        digest_value = portable[0].get("digest")
+        path_value = portable[0].get("path")
+        path = PurePosixPath(path_value) if isinstance(path_value, str) else None
+        if (
+            repository_id in bindings
+            or not isinstance(digest_value, str)
+            or not digest_value.startswith("sha256:")
+            or len(digest_value) != 71
+            or any(character not in "0123456789abcdef" for character in digest_value[7:])
+            or path is None
+            or path.is_absolute()
+            or ".." in path.parts
+            or tuple(path.parts[-3:]) != ("packets", repository_id, "packet.json")
+        ):
+            raise ValueError(f"P53-T14 portable packet binding is invalid: {repository_id}")
+        bindings[repository_id] = digest_value[7:]
+    return bindings
 
 
 def select_principal_candidate(draft: dict[str, Any]) -> str:
@@ -763,7 +815,7 @@ def _validate_run_options(options: CampaignRunOptions) -> None:
     if (
         options.timeout_seconds <= 0
         or options.max_output_bytes <= 0
-        or options.json_repair_max_attempts < 0
+        or not 0 <= options.json_repair_max_attempts <= 1
         or not 1 <= options.provider_max_attempts <= 2
     ):
         raise ValueError("Semantic campaign budgets are invalid")

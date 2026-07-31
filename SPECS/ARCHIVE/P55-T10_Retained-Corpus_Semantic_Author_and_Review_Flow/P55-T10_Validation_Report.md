@@ -64,7 +64,10 @@ reduction and high namespace-violation rate as exit-decision inputs.
   `1291 passed, 1 skipped`; total coverage `90.06%`.
 - `uv run pytest tests/test_retained_corpus_semantic_campaign.py
   --cov=spec_harvester.retained_corpus_semantic_campaign
-  --cov-report=term-missing`: `5 passed`; campaign module coverage `92%`.
+  --cov-report=term-missing`: campaign module coverage `92%` before the final
+  review hardening; the final focused suite passed `6` tests.
+- Real 100-record `--finalize` after review hardening: passed with `100`
+  completed, `0` failed, and `42` portable proposals.
 - `uv run ruff check ...` and `uv run ruff format --check ...`: passed.
 - `git diff --check`: passed.
 - `jq empty` on aggregate evidence and archive listing: passed; archive

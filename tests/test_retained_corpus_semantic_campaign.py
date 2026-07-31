@@ -205,6 +205,8 @@ def test_rejects_stale_resume_and_incomplete_finalization(tmp_path: Path) -> Non
 def test_rejects_invalid_budgets_paths_and_json(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="budgets are invalid"):
         _validate_run_options(CampaignRunOptions(provider_max_attempts=3))
+    with pytest.raises(ValueError, match="budgets are invalid"):
+        _validate_run_options(CampaignRunOptions(json_repair_max_attempts=2))
     with pytest.raises(ValueError, match="must be relative"):
         _safe_child(tmp_path, "/absolute")
     with pytest.raises(ValueError, match="escapes its root"):
@@ -246,6 +248,22 @@ def test_reads_documentation_from_pinned_git_object(tmp_path: Path) -> None:
         validate_source_checkout(tmp_path / "missing", revision)
 
 
+def test_rejects_packet_substitution_against_aggregate_binding(tmp_path: Path) -> None:
+    source_manifest_dir, source_root, handoff_root, readiness = corpus(tmp_path)
+    packet = handoff_root / "packets/repo-000/packet.json"
+    value = json.loads(packet.read_text())
+    value["substituted"] = True
+    packet.write_text(json.dumps(value))
+
+    with pytest.raises(ValueError, match="aggregate packet digest mismatch"):
+        load_campaign_scope(
+            source_manifest_dir=source_manifest_dir,
+            source_root=source_root,
+            handoff_root=handoff_root,
+            readiness_evidence=readiness,
+        )
+
+
 def corpus(tmp_path: Path) -> tuple[Path, Path, Path, Path]:
     source_manifest_dir = tmp_path / "inputs"
     source_root = tmp_path / "sources"
@@ -269,7 +287,6 @@ def corpus(tmp_path: Path) -> tuple[Path, Path, Path, Path]:
                 "    labels: [wave_1]",
             )
         )
-        selected.append({"repositoryId": repository_id})
         source = source_root / repository_id
         source.mkdir()
         (source / "README.md").write_text(f"# {repository_id}\nSearch files for users.\n")
@@ -324,6 +341,19 @@ def corpus(tmp_path: Path) -> tuple[Path, Path, Path, Path]:
             "candidate": {"files": files},
         }
         (packet_dir / "packet.json").write_text(json.dumps(packet))
+        selected.append(
+            {
+                "repositoryId": repository_id,
+                "evidenceLinks": [
+                    {
+                        "role": "portable_packet",
+                        "status": "present",
+                        "path": f"handoff/packets/{repository_id}/packet.json",
+                        "digest": f"sha256:{sha256_file(packet_dir / 'packet.json')}",
+                    }
+                ],
+            }
+        )
 
     (source_manifest_dir / "repositories.yml").write_text("\n".join(manifest_lines) + "\n")
     (handoff_root / "aggregate-handoff.json").write_text(

@@ -26,6 +26,11 @@ None.
   now accepts a fail-closed digest-bound semantic campaign overlay, renders 42
   complete proposal comparisons, preserves 58 rejected diagnostics, and offers
   an AI-status queue filter.
+- [Resolved/High] Review identified that a custom `--codex-model` could be
+  attributed to Spark, aggregate handoff membership did not verify each
+  portable packet digest, and JSON repair accepted values above the documented
+  budget. T10 now requires the exact Spark model, binds every packet to its
+  aggregate evidence link, and enforces zero or one repair per attempt.
 
 ### Architectural Notes
 
