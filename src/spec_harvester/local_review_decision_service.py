@@ -27,6 +27,11 @@ from spec_harvester.candidate_review_schema import load_candidate_review_schema
 from spec_harvester.local_candidate_review_browser import (
     load_local_candidate_review_catalog,
 )
+from spec_harvester.portable_semantic_proposal import validate_portable_semantic_proposal
+from spec_harvester.semantic_review import (
+    build_semantic_reviewer_edit,
+    validate_semantic_reviewer_edit,
+)
 
 MAX_DECISION_BYTES = 16 * 1024
 MAX_EXCHANGE_BYTES = 2 * 1024 * 1024
@@ -57,6 +62,7 @@ class LocalReviewDecisionServiceOptions:
     host: str = LOOPBACK_HOST
     port: int = 8765
     max_request_bytes: int = MAX_EXCHANGE_BYTES
+    details: Path | None = None
 
 
 def _json_bytes(value: dict[str, Any]) -> bytes:
@@ -79,7 +85,7 @@ def _is_rfc3339(value: Any) -> bool:
 
 
 class LocalReviewDecisionStore:
-    def __init__(self, workspace: Path, catalog: Path) -> None:
+    def __init__(self, workspace: Path, catalog: Path, details: Path | None = None) -> None:
         if workspace.is_symlink():
             raise ValueError("Review workspace must not be a symlink")
         workspace.mkdir(parents=True, exist_ok=True)
@@ -92,7 +98,92 @@ class LocalReviewDecisionStore:
         }
         schema = load_candidate_review_schema()
         self._validator = Draft202012Validator(schema, format_checker=FormatChecker())
+        self._semantic_records = self._load_semantic_records(details)
         self._lock = threading.Lock()
+
+    def _load_semantic_records(self, details: Path | None) -> dict[str, dict[str, Any]]:
+        if details is None:
+            return {}
+        try:
+            payload = json.loads(details.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise ValueError(f"Cannot read review detail set: {exc}") from exc
+        records: dict[str, dict[str, Any]] = {}
+        detail_records = payload.get("details") if isinstance(payload, dict) else None
+        if (
+            not isinstance(detail_records, list)
+            or payload.get("sourceBundleSha256") != self.source_bundle_sha256
+        ):
+            raise ValueError("Review detail set binding is invalid")
+        for detail in detail_records:
+            if not isinstance(detail, dict):
+                raise ValueError("Review detail set contains an invalid record")
+            binding = detail.get("binding")
+            sections = detail.get("sections")
+            if not isinstance(binding, dict) or not isinstance(sections, list):
+                raise ValueError("Review detail set contains an invalid record")
+            candidate_id = binding.get("candidateId")
+            if not isinstance(candidate_id, str) or self._bindings.get(candidate_id) != binding.get(
+                "packetSha256"
+            ):
+                raise ValueError("Review detail set packet binding is stale")
+            semantic_sections = [
+                section
+                for section in sections
+                if isinstance(section, dict) and section.get("id") == "semantic-proposal-record"
+            ]
+            if len(semantic_sections) > 1:
+                raise ValueError("Review detail set contains duplicate semantic records")
+            if not semantic_sections:
+                continue
+            packet_sections = [
+                section
+                for section in sections
+                if isinstance(section, dict) and section.get("id") == "packet-binding.json"
+            ]
+            if len(packet_sections) != 1:
+                raise ValueError("Review detail semantic record lacks one packet binding")
+            packet_content = packet_sections[0].get("content")
+            if not isinstance(packet_content, str) or hashlib.sha256(
+                packet_content.encode("utf-8")
+            ).hexdigest() != binding.get("packetSha256"):
+                raise ValueError("Review detail packet content digest is stale")
+            try:
+                packet = json.loads(packet_content)
+            except json.JSONDecodeError as exc:
+                raise ValueError("Review detail packet binding is invalid") from exc
+            try:
+                record = json.loads(semantic_sections[0]["content"])
+            except (KeyError, TypeError, json.JSONDecodeError) as exc:
+                raise ValueError("Review detail semantic record is invalid") from exc
+            if not isinstance(record, dict):
+                raise ValueError("Review detail semantic record must be an object")
+            validate_portable_semantic_proposal(record)
+            if record["candidateId"] != candidate_id:
+                raise ValueError("Review detail semantic candidate binding is stale")
+            repository = packet.get("repository") if isinstance(packet, dict) else None
+            semantic_binding = packet.get("semanticProposal") if isinstance(packet, dict) else None
+            expected_semantic_binding = {
+                "status": "complete_portable",
+                "path": "semantic-proposal-record.json",
+                "recordSha256": record["recordSha256"],
+                "proposalSha256": record["proposalSha256"],
+                "providerReceiptSha256": record["providerReceiptSha256"],
+                "qualityReportSha256": record["qualityReportSha256"],
+                "qualityStatus": record["qualityStatus"],
+            }
+            if (
+                not isinstance(repository, dict)
+                or repository.get("id") != candidate_id
+                or not isinstance(semantic_binding, dict)
+                or any(
+                    semantic_binding.get(key) != value
+                    for key, value in expected_semantic_binding.items()
+                )
+            ):
+                raise ValueError("Review detail semantic record differs from bound packet")
+            records[candidate_id] = record
+        return records
 
     @property
     def source_bundle_sha256(self) -> str:
@@ -147,6 +238,14 @@ class LocalReviewDecisionStore:
         disposition = decision["disposition"]
         if decision["reasonCode"] not in REVIEW_REASONS[disposition]:
             raise ValueError(f"Review reason is not allowed for disposition: {disposition}")
+        semantic_review = decision.get("semanticReview")
+        if semantic_review is not None:
+            record = self._semantic_records.get(candidate_id)
+            if record is None:
+                raise ValueError(f"Semantic proposal is unavailable: {candidate_id}")
+            validate_semantic_reviewer_edit(semantic_review, record)
+            if semantic_review["reviewer"] != decision["reviewer"]:
+                raise ValueError("Semantic reviewer identity differs from candidate decision")
         return candidate_id, expected_digest
 
     def _read_path(self, path: Path) -> tuple[dict[str, Any], bytes]:
@@ -307,10 +406,11 @@ class LocalReviewDecisionStore:
             "reasonCode",
             "notes",
             "priorDecisionSha256",
+            "semanticAction",
         }
         if set(action) - allowed:
             raise ValueError("Review action contains unsupported fields")
-        required = allowed - {"notes"}
+        required = allowed - {"notes", "semanticAction"}
         if not required.issubset(action):
             raise ValueError("Review action is missing required fields")
         candidate_id = action["candidateId"]
@@ -332,6 +432,13 @@ class LocalReviewDecisionStore:
         }
         if "notes" in action and action["notes"]:
             decision["notes"] = action["notes"]
+        if "semanticAction" in action:
+            record = self._semantic_records.get(candidate_id)
+            if record is None:
+                raise ValueError(f"Semantic proposal is unavailable: {candidate_id}")
+            decision["semanticReview"] = build_semantic_reviewer_edit(
+                action["semanticAction"], record, action["reviewer"]
+            )
         return self.write(decision)
 
     def _history(self, candidate_id: str) -> list[dict[str, Any]]:
@@ -475,7 +582,7 @@ def build_local_review_decision_server(
         raise ValueError("Review decision service allowed origin must be local HTTP")
     if not 1 <= options.max_request_bytes <= MAX_EXCHANGE_BYTES:
         raise ValueError("Review decision service request byte limit is invalid")
-    store = LocalReviewDecisionStore(options.workspace, options.catalog)
+    store = LocalReviewDecisionStore(options.workspace, options.catalog, options.details)
 
     class DecisionHandler(BaseHTTPRequestHandler):
         server_version = "SpecHarvesterLocalReview/0"

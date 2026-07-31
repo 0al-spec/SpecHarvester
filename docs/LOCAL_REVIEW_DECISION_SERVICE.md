@@ -9,6 +9,7 @@ evidence; it does not accept a package, invoke SpecPM, or mutate registry state.
 spec-harvester serve-local-review-decisions \
   --workspace review-workspace \
   --catalog SPECS/EVIDENCE/P54-T3/P54-T3_Candidate_Review_Catalog.json \
+  --details review-workspace/details.json \
   --allowed-origin http://127.0.0.1:8000 \
   --csrf-token '<operator-generated-token-with-at-least-32-characters>' \
   --host 127.0.0.1 \
@@ -43,6 +44,22 @@ CSRF checks as actions. New decisions are rejected before persistence if they
 would make the canonical export exceed the import transport limit, so every
 export produced by the service remains importable. The export fixes
 `registryMutationCount` at zero.
+
+With `--details`, P55-T7 also permits one semantic reviewer edit inside a
+candidate decision. The service revalidates the complete portable semantic
+record and requires exact candidate packet, semantic record, proposal, and
+source-bundle digests. It computes the reviewer-edit digest itself and accepts
+only:
+
+- `accepted` with one or more selected proposal claim IDs;
+- `edited` with selected claim IDs and bounded replacement text;
+- `rejected` or `deferred` without selected or edited claims.
+
+Unknown claims, stale proposal records, duplicate edits, unsupported fields,
+empty reviewer identities, and incoherent decision/edit combinations fail
+before persistence. The semantic record is optional for ordinary candidate
+decisions, but a semantic action is rejected when no complete record is present
+in the configured detail set.
 
 Every submitted record must match the P54-T2 decision schema and the exact
 candidate/packet binding in the validated P54-T3 catalog. A first decision must

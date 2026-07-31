@@ -2822,7 +2822,7 @@ Acceptance:
   detail bundle. Preserve provider receipts and proposal digests without raw
   prompts, raw responses, hidden reasoning, credentials, or automatic
   application.
-- [ ] `P55-T7` Extend the Local Candidate Review Workbench with a
+- [x] `P55-T7` Extend the Local Candidate Review Workbench with a
   static-versus-AI author comparison for summaries, capabilities, intents,
   interfaces, and evidence. Show existing-intent reuse and experimental-intent
   proposals distinctly and support reviewer accept, edit, reject, and defer

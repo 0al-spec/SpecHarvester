@@ -40,3 +40,16 @@ capabilities, intent IDs, scope, constraints, and evidence. Raw YAML remains
 available in a collapsed drawer. Supporting diagnostics, provenance, generated
 files, and proposal-only static-versus-Codex Spark comparison records are
 available in separate collapsed evidence drawers below the specifications.
+
+When the detail set contains a complete P55 semantic proposal, the Workbench
+adds a side-by-side semantic review panel. It compares static summaries,
+capabilities, intent IDs, interfaces, and evidence with AI purpose, capability,
+interface, nearby-intent, and non-goal claims. Existing observed-intent reuse
+and `intent.experimental.*` proposals are displayed in separate groups.
+
+The reviewer may select proposal claims and record `accepted`, `edited`,
+`rejected`, or `deferred`. Edited decisions retain only bounded replacement
+text for selected claim IDs; original evidence bindings remain unchanged. The
+action is sent to the local decision service and remains review evidence only.
+It does not materialize a candidate, accept an experimental intent, mutate
+SpecPM, or publish registry truth.

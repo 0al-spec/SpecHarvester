@@ -950,6 +950,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     local_review_decisions.add_argument("--workspace", type=Path, required=True)
     local_review_decisions.add_argument("--catalog", type=Path, required=True)
+    local_review_decisions.add_argument("--details", type=Path)
     local_review_decisions.add_argument("--csrf-token", required=True)
     local_review_decisions.add_argument("--allowed-origin", required=True)
     local_review_decisions.add_argument("--host", default="127.0.0.1")
@@ -2599,6 +2600,7 @@ def run_local_review_decisions_cli(args: argparse.Namespace) -> int:
                 host=args.host,
                 port=args.port,
                 max_request_bytes=args.max_request_bytes,
+                details=args.details,
             )
         )
     except ValueError as exc:

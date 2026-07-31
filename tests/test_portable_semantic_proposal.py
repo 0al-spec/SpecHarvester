@@ -11,6 +11,7 @@ from spec_harvester.local_candidate_review_details import (
     _comparison,
     _detail_sections,
 )
+from spec_harvester.local_review_decision_service import LocalReviewDecisionStore
 from spec_harvester.p53_portable_author_handoff import copy_semantic_proposal
 from spec_harvester.portable_semantic_proposal import (
     _validate_receipt,
@@ -25,6 +26,10 @@ from spec_harvester.semantic_author_pass import (
     run_semantic_author_pass,
 )
 from spec_harvester.semantic_proposal_quality import evaluate_semantic_proposal_quality
+from spec_harvester.semantic_review import (
+    build_semantic_reviewer_edit,
+    validate_semantic_reviewer_edit,
+)
 
 
 class FakeProvider:
@@ -250,14 +255,63 @@ def test_detail_surface_carries_inert_record_and_digest_comparison(tmp_path: Pat
     packet_dir.mkdir()
     pointer = copy_semantic_proposal("demo.package", packet_dir, tmp_path / "semantic")
     payload = (packet_dir / "semantic-proposal-record.json").read_bytes()
+    package_yaml = (
+        b"kind: SpecPackage\n"
+        b"metadata:\n"
+        b"  id: demo.package\n"
+        b"  summary: Static package summary.\n"
+        b"index:\n"
+        b"  provides:\n"
+        b"    capabilities:\n"
+        b"      - demo.package.context_selection\n"
+        b"    intents:\n"
+        b"      - intent.ai.context_selection\n"
+    )
+    boundary_yaml = (
+        b"kind: BoundarySpec\n"
+        b"metadata:\n"
+        b"  id: demo.package.core\n"
+        b"intent:\n"
+        b"  summary: Static boundary summary.\n"
+        b"provides:\n"
+        b"  capabilities:\n"
+        b"    - id: demo.package.context_selection\n"
+        b"      summary: Select repository context.\n"
+        b"      intentIds:\n"
+        b"        - intent.ai.context_selection\n"
+        b"interfaces:\n"
+        b"  inbound:\n"
+        b"    - id: demo.package.cli\n"
+        b"      kind: command-line\n"
+        b"      summary: Command-line interface.\n"
+        b"  outbound: []\n"
+        b"evidence:\n"
+        b"  - path: README.md\n"
+    )
+    files = [
+        {"path": "specpm.yaml"},
+        {"path": "specs/core.spec.yaml"},
+    ]
     packet = {
-        "candidate": {"fileCount": 0, "manifestCount": 0, "status": "portable", "files": []},
+        "candidate": {
+            "fileCount": 2,
+            "manifestCount": 1,
+            "status": "portable",
+            "files": files,
+        },
         "repository": {"id": "demo.package"},
         "triage": {"status": "completed"},
         "aiProposal": {"status": "summary_only_not_portable", "summary": {}},
         "semanticProposal": pointer,
     }
-    members = {"packets/demo.package/semantic-proposal-record.json": payload}
+    members = {
+        "packets/demo.package/packet.json": (
+            json.dumps(packet, indent=2, sort_keys=True) + "\n"
+        ).encode(),
+        "packets/demo.package/semantic-proposal-record.json": payload,
+        "packets/demo.package/specpm.yaml": package_yaml,
+        "packets/demo.package/specs/core.spec.yaml": boundary_yaml,
+    }
 
     sections = _detail_sections("demo.package", packet, members)
     comparison = _comparison("demo.package", "a" * 64, packet, members)
@@ -275,6 +329,247 @@ def test_detail_surface_carries_inert_record_and_digest_comparison(tmp_path: Pat
         "qualityStatus": "eligible_for_calibration",
         "warningCount": 0,
     }
+    assert comparison["semantic"]["ai"]["claims"]["purpose"][0]["text"] == (
+        "Select relevant repository context."
+    )
+    assert comparison["semantic"]["ai"]["observedIntentReuse"] == [
+        {
+            "intentId": "intent.ai.context_selection",
+            "rationaleClaimId": "nearby",
+        }
+    ]
+    assert comparison["semantic"]["ai"]["experimentalIntents"] == []
+    assert comparison["semantic"]["binding"]["semanticRecordSha256"] == pointer["recordSha256"]
+    assert comparison["semantic"]["static"] == {
+        "summaries": ["Static package summary.", "Static boundary summary."],
+        "capabilities": [
+            {
+                "id": "demo.package.context_selection",
+                "summary": "",
+                "intentIds": [],
+            },
+            {
+                "id": "demo.package.context_selection",
+                "summary": "Select repository context.",
+                "intentIds": ["intent.ai.context_selection"],
+            },
+        ],
+        "intents": ["intent.ai.context_selection"],
+        "interfaces": ["demo.package.cli · command-line · Command-line interface."],
+        "evidence": ["README.md"],
+    }
+
+
+def test_semantic_reviewer_edit_is_digest_bound_and_decision_service_portable(
+    tmp_path: Path,
+) -> None:
+    record = build_portable_semantic_proposal(*semantic_triplet(tmp_path))
+    candidate_id = record["candidateId"]
+    semantic_pointer = {
+        "status": "complete_portable",
+        "path": "semantic-proposal-record.json",
+        "recordSha256": record["recordSha256"],
+        "proposalSha256": record["proposalSha256"],
+        "providerReceiptSha256": record["providerReceiptSha256"],
+        "qualityReportSha256": record["qualityReportSha256"],
+        "qualityStatus": record["qualityStatus"],
+    }
+    packet_content = (
+        json.dumps(
+            {"repository": {"id": candidate_id}, "semanticProposal": semantic_pointer},
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    packet_sha256 = hashlib.sha256(packet_content.encode()).hexdigest()
+    catalog = {
+        "apiVersion": "spec-harvester.candidate-review-catalog/v0",
+        "kind": "SpecHarvesterCandidateReviewCatalog",
+        "authority": "local_review_catalog_evidence_only",
+        "sourceBundleSha256": record["sourceBundleSha256"],
+        "items": [
+            {
+                "candidateId": candidate_id,
+                "packetSha256": packet_sha256,
+                "reviewState": "unreviewed",
+                "readiness": "ready_for_author_review",
+                "ecosystem": "python",
+                "packageShape": "single",
+                "warningCount": 0,
+                "corrected": False,
+                "preflightStatus": "passed",
+            }
+        ],
+    }
+    catalog_path = tmp_path / "catalog.json"
+    catalog_path.write_text(json.dumps(catalog))
+    details = {
+        "sourceBundleSha256": record["sourceBundleSha256"],
+        "details": [
+            {
+                "binding": {"candidateId": candidate_id, "packetSha256": packet_sha256},
+                "sections": [
+                    {
+                        "id": "packet-binding.json",
+                        "contentType": "application/json",
+                        "content": packet_content,
+                    },
+                    {
+                        "id": "semantic-proposal-record",
+                        "contentType": "application/json",
+                        "content": json.dumps(record),
+                    },
+                ],
+            }
+        ],
+    }
+    details_path = tmp_path / "details.json"
+    details_path.write_text(json.dumps(details))
+    store = LocalReviewDecisionStore(tmp_path / "review", catalog_path, details_path)
+    semantic_action = {
+        "decision": "edited",
+        "acceptedOrEditedClaimIds": ["purpose", "capability"],
+        "editedClaims": [{"claimId": "purpose", "text": "Choose relevant context for a task."}],
+        "proposalSha256": record["proposalSha256"],
+        "sourceBundleSha256": record["sourceBundleSha256"],
+        "semanticRecordSha256": record["recordSha256"],
+    }
+
+    result = store.record_action(
+        {
+            "candidateId": candidate_id,
+            "disposition": "request_revision",
+            "reviewer": "maintainer@example",
+            "reasonCode": "evidence_revision_required",
+            "notes": "Purpose needs a concise edit.",
+            "priorDecisionSha256": None,
+            "semanticAction": semantic_action,
+        }
+    )
+
+    current = store.current(candidate_id)
+    assert current is not None
+    review = current["decision"]["semanticReview"]
+    assert review["decision"] == "edited"
+    assert review["editedClaims"] == semantic_action["editedClaims"]
+    assert result["decisionSha256"]
+    validate_semantic_reviewer_edit(review, record)
+    exported = store.export()
+    assert (
+        exported["decisions"][0]["semanticReview"]["semanticRecordSha256"]
+        == (record["recordSha256"])
+    )
+
+    other_pack, other_pass, _other_quality = semantic_triplet(tmp_path / "other")
+    other_pass["proposal"]["claims"][0]["text"] = "Choose task-relevant context."
+    other_pass["proposal"]["proposalSha256"] = digest(
+        {key: value for key, value in other_pass["proposal"].items() if key != "proposalSha256"}
+    )
+    other_quality = evaluate_semantic_proposal_quality(other_pack, other_pass)
+    substituted_record = build_portable_semantic_proposal(other_pack, other_pass, other_quality)
+    substituted = json.loads(details_path.read_text())
+    substituted["details"][0]["sections"][1]["content"] = json.dumps(substituted_record)
+    substituted_path = tmp_path / "substituted-details.json"
+    substituted_path.write_text(json.dumps(substituted))
+    with pytest.raises(ValueError, match="differs from bound packet"):
+        LocalReviewDecisionStore(tmp_path / "substituted", catalog_path, substituted_path)
+    without_details = LocalReviewDecisionStore(tmp_path / "review-without-details", catalog_path)
+    with pytest.raises(ValueError, match="Semantic proposal is unavailable"):
+        without_details.record_action(
+            {
+                "candidateId": candidate_id,
+                "disposition": "request_revision",
+                "reviewer": "maintainer@example",
+                "reasonCode": "evidence_revision_required",
+                "notes": "",
+                "priorDecisionSha256": None,
+                "semanticAction": semantic_action,
+            }
+        )
+
+
+def test_semantic_reviewer_edit_rejects_stale_unknown_and_incoherent_edits(
+    tmp_path: Path,
+) -> None:
+    record = build_portable_semantic_proposal(*semantic_triplet(tmp_path))
+    base = {
+        "decision": "accepted",
+        "acceptedOrEditedClaimIds": ["purpose"],
+        "editedClaims": [],
+        "proposalSha256": record["proposalSha256"],
+        "sourceBundleSha256": record["sourceBundleSha256"],
+        "semanticRecordSha256": record["recordSha256"],
+    }
+    valid = build_semantic_reviewer_edit(base, record, "maintainer@example")
+    validate_semantic_reviewer_edit(valid, record)
+    invalid_digest = copy.deepcopy(valid)
+    invalid_digest["reviewerEditSha256"] = "0" * 64
+    with pytest.raises(ValueError, match="digest is invalid"):
+        validate_semantic_reviewer_edit(invalid_digest, record)
+
+    for mutation, message in (
+        ({"acceptedOrEditedClaimIds": []}, "requires selected claims"),
+        ({"proposalSha256": "0" * 64}, "binding is stale"),
+        ({"acceptedOrEditedClaimIds": ["unknown"]}, "unknown claim"),
+        (
+            {
+                "decision": "edited",
+                "acceptedOrEditedClaimIds": ["purpose"],
+                "editedClaims": [],
+            },
+            "requires edited claim text",
+        ),
+        (
+            {
+                "decision": "edited",
+                "acceptedOrEditedClaimIds": ["purpose"],
+                "editedClaims": [
+                    {"claimId": "purpose", "text": "First"},
+                    {"claimId": "purpose", "text": "Second"},
+                ],
+            },
+            "duplicate edited claims",
+        ),
+        (
+            {
+                "decision": "edited",
+                "acceptedOrEditedClaimIds": ["capability"],
+                "editedClaims": [{"claimId": "purpose", "text": "Unselected edit"}],
+            },
+            "not selected",
+        ),
+        (
+            {
+                "decision": "accepted",
+                "editedClaims": [{"claimId": "purpose", "text": "Unexpected edit"}],
+            },
+            "Only an edited",
+        ),
+        (
+            {
+                "decision": "rejected",
+                "acceptedOrEditedClaimIds": ["purpose"],
+            },
+            "cannot select claims",
+        ),
+        (
+            {
+                "decision": "edited",
+                "acceptedOrEditedClaimIds": ["purpose"],
+                "editedClaims": [{"claimId": "purpose", "text": "x" * 17000}],
+            },
+            "byte limit|too long",
+        ),
+    ):
+        action = {**base, **mutation}
+        with pytest.raises(ValueError, match=message):
+            build_semantic_reviewer_edit(action, record, "maintainer@example")
+
+    invalid_shape = dict(base)
+    invalid_shape.pop("editedClaims")
+    with pytest.raises(ValueError, match="action shape"):
+        build_semantic_reviewer_edit(invalid_shape, record, "maintainer@example")
 
 
 def test_detail_surface_rejects_semantic_member_drift(tmp_path: Path) -> None:

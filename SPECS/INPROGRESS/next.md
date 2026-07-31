@@ -1,25 +1,31 @@
-# Next Task: P55-T7 Workbench Static-versus-AI Semantic Review
+# Next Task: P55-T8 Reviewer-Controlled Semantic Materialization
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T6` Complete Portable Semantic Proposal Records
+**Dependencies:** `P55-T7` Workbench Static-versus-AI Semantic Review
 **Status:** Ready
-**Branch:** pending
+**Branch:** TBD
 
 ## Objective
 
-Extend the Local Candidate Review Workbench with a reviewer-facing
-static-versus-AI semantic comparison.
+Materialize only explicitly accepted or edited semantic proposal fields into a
+new preview candidate revision.
 
 ## Required Scope
 
-Compare summaries, capabilities, intents, interfaces, and evidence from static
-candidate output with complete P55 semantic proposal records. Distinguish
-observed-intent reuse from experimental-intent proposals and support reviewer
-accept, edit, reject, and defer actions. Do not materialize candidates, mutate
-SpecPM, accept canonical intents, or publish registry truth.
+Require explicit reviewer identity and an accepted or edited P55-T7 semantic
+decision. Revalidate packet, proposal, source, record, and reviewer-edit
+digests; retain the prior candidate and before/after provenance; apply only
+selected claims and bounded reviewer edits; run SpecHarvester and read-only
+SpecPM validation. Do not mutate accepted packages, canonical intents, registry
+truth, or the public index.
 
 ## Recently Archived
+
+- `P55-T7` Workbench Static-versus-AI Semantic Review: PASS. The Workbench now
+  presents inert structured static-versus-AI semantic comparisons and records
+  digest-bound accept, edit, reject, or defer evidence in the existing immutable
+  reviewer decision history without materialization or publication authority.
 
 - `P55-T6` Complete Portable Semantic Proposal Records: PASS. Complete
   proposals, deterministic quality reports, and allowlisted provider receipts
