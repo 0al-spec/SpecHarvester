@@ -976,3 +976,4 @@
 | 2026-07-30 | P55-T4 | Archived Provider-Neutral Semantic Author Pass (PASS) |
 | 2026-07-30 | P55-T4 | Archived REVIEW_p55_t4_provider_neutral_semantic_author_pass report |
 | 2026-07-31 | P55-T10 | Archived Retained-Corpus Semantic Author and Review Flow (PASS) |
+| 2026-07-31 | P55-T10 | Archived REVIEW_p55_t10_retained_corpus_semantic_campaign report |
