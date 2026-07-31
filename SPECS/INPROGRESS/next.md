@@ -3,7 +3,7 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T10B` Targeted Experimental-Intent Calibration
-**Status:** Selected
+**Status:** In Progress
 
 ## Objective
 
