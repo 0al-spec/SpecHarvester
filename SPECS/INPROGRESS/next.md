@@ -22,10 +22,11 @@ mutate registry truth, or publish.
 ## Recently Archived
 
 - `P55-T10B` Targeted Experimental-Intent Calibration: PASS. Codex 5.3 Spark
-  completed all four pinned targets and produced three evidence-supported
-  experimental intents with zero false novelty or duplicate IDs. All unchanged
-  P55-T5 gates passed; RTK's broad tooling-intent reuse remains an explicit edit
-  requirement, and no maintainer acceptance was inferred.
+  completed all four pinned targets and produced two evidence-supported
+  experimental intents with zero false novelty, duplicate IDs, or duplicate
+  semantic stems. All unchanged P55-T5 gates passed; broad intent reuse for RTK
+  and ripgrep remains an explicit edit requirement, and no maintainer acceptance
+  was inferred.
 - `P55-T10A` Experimental-Intent Decision Policy: PASS. Codex 5.3 Spark and LM
   Studio now receive one digest-bound policy requiring explicit comparison for
   generic reuse and allowing at most one package-neutral, source-bound
