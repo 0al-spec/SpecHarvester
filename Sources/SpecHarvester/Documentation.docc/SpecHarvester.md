@@ -190,6 +190,7 @@ The canonical source files remain in the repository:
 - `docs/SELECTED_CANDIDATE_HANDOFF_PREFLIGHT_EXPECTATIONS.md`
 - `docs/DEFERRED_SELECTED_CANDIDATE_REGENERATION_REQUIREMENTS.md`
 - `docs/ROADMAP.md`
+- `docs/SEMANTIC_PROVIDER_OUTPUT_CONFORMANCE_FOLLOW_UP.md`
 
 This DocC site is a navigable documentation mirror built from those contracts.
 
@@ -319,6 +320,7 @@ the host.
 - <doc:AISemanticAuthorContract>
 - <doc:AISemanticAuthorSchemas>
 - <doc:SemanticAuthorInputPack>
+- <doc:SemanticProviderOutputConformanceFollowUp>
 - <doc:AutonomousCandidateBatch>
 - <doc:FastAPIParserProfileRerun>
 - <doc:ArchitectureLintGuardrails>

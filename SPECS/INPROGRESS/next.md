@@ -1,28 +1,33 @@
-# Next Task: P55-T9A Semantic Provider Output Conformance Follow-Up
+# Next Task: P55-T10 Retained-Corpus Semantic Author and Review Flow
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T9` Targeted Semantic Quality Calibration
+**Dependencies:** `P55-T9A` Semantic Provider Output Conformance Follow-Up
 **Status:** Ready
 
 ## Objective
 
-Harden provider output conformance and repeat the exact P55-T9 targeted
-calibration under the unchanged rubric and frozen policy.
+Run the validated semantic author and reviewer flow over the retained
+100-repository corpus while preserving proposal-only authority.
 
 ## Required Scope
 
-Prevent request wrappers, wrong API identities, and schema/meta-schema
-fragments from entering semantic proposal value fields. Improve RTK purpose
-emphasis without weakening evidence, namespace, or schema validation. Repeat
-`rtk-ai/rtk`, `openai/codex`, `BurntSushi/ripgrep`, and
-`thedotmack/claude-mem` independently through Codex 5.3 Spark and LM Studio.
-Do not change the target rubric, frozen thresholds, failure denominator,
-proposal-only authority, or publication boundary. P55-T10 remains blocked
-until every frozen gate passes.
+Account for all 100 retained repositories and report generic-intent reduction,
+evidence-supported proposal rate, duplicate-intent warnings, provider failures,
+accepted/edit/rejected/deferred counts, and token/cost/runtime budgets. Bind the
+run to the P55-T9A evidence where Codex 5.3 Spark and LM Studio each completed
+`4/4` targets and passed every unchanged frozen gate. Preserve deterministic
+diagnostics such as capability namespace violations and generic intent reuse.
+Do not automatically accept, materialize, promote, canonicalize, or publish
+model proposals.
 
 ## Recently Archived
 
+- `P55-T9A` Semantic Provider Output Conformance Follow-Up: PASS. Codex 5.3
+  Spark and LM Studio each completed all four frozen targets and passed every
+  unchanged gate. Provider outputs now use bounded structured conformance and
+  repair while deterministic quality diagnostics and proposal-only authority
+  remain intact; P55-T10 is unblocked.
 - `P55-T9` Targeted Semantic Quality Calibration: PASS. Eight
   provider/target outcomes were accounted for against the frozen policy.
   Codex completed four schema-valid proposals but failed purpose and edit

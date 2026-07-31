@@ -119,7 +119,11 @@ def test_rubric_terms_match_complete_normalized_tokens_only() -> None:
 
     assert metrics["purposeAccurate"] is False
     assert metrics["capabilitySpecific"] is False
-    assert calibration.contains_rubric_term("code-aware assistant", "code") is True
+    assert calibration.contains_semantic_focus_term("code-aware assistant", "code") is True
+    assert calibration.contains_semantic_focus_term("coding assistant", "code") is True
+    assert calibration.contains_semantic_focus_term("searches files", "search") is True
+    assert calibration.contains_semantic_focus_term("decode payload", "code") is False
+    assert calibration.contains_semantic_focus_term("code", "---") is False
 
 
 def test_failed_proposals_contribute_maximal_reviewer_edit_burden() -> None:

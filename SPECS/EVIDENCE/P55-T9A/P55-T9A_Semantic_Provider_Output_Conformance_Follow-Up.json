@@ -1,0 +1,1457 @@
+{
+  "apiVersion": "spec-harvester.targeted-semantic-quality-calibration/v0",
+  "authority": "targeted_calibration_evidence_only",
+  "baselineEvidenceSha256": "2c5f74daa4cd30ffd91c2d3e8479285b9e9970f1cede0f7c78726fbf9c1c3834",
+  "decision": {
+    "p55T10Unblocked": true,
+    "thresholdsRedefined": false
+  },
+  "kind": "SpecHarvesterTargetedSemanticQualityCalibration",
+  "materializationCount": 0,
+  "policySha256": "687b4e2d7dccfb727bf0bd2e25811f26cf28dc539c44b1d996e5c821e3fa1a82",
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "credentialsPersisted": false,
+    "machineLocalPathsPersisted": false,
+    "rawPromptsPersisted": false,
+    "rawResponsesPersisted": false
+  },
+  "providers": {
+    "codex_spark": {
+      "records": [
+        {
+          "candidateId": "rtk_ai_rtk.core",
+          "claims": [
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "9eedab13449e48321140887bad972786f1faa25ac5b4120f0259f4086dd601e9",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "README.md"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "cfedf0bf6ea1d363262510515d6c0a5cf889fe7c6dcbaf92e7242cf103d35ad2",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "harvest.json"
+                }
+              ],
+              "id": "rtk_ai_rtk_core_purpose",
+              "kind": "purpose",
+              "text": "Enable AI tooling workflows to run shell command operations through RTK so command output is filtered, compressed, and summarized before entering agent context, helping teams reduce token usage while preserving the important parts of command responses for decision-making."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "9eedab13449e48321140887bad972786f1faa25ac5b4120f0259f4086dd601e9",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "README.md"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "ecf08717f2e82098996124c7de1f26318c6eea7de9ec4cc524209e94a6359574",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specpm.yaml"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "cfedf0bf6ea1d363262510515d6c0a5cf889fe7c6dcbaf92e7242cf103d35ad2",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "harvest.json"
+                }
+              ],
+              "id": "rtk_ai_rtk_core_capability",
+              "kind": "capability",
+              "text": "Provides concrete command filtering for CLI actions such as `git`, `cargo test`, `docker`, `aws`, and file-reading helpers, where RTK rewrites/ intercepts commands and returns compacted command output, failure-focused summaries, and grouped diagnostics that preserve context while lowering output volume."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "57d8def6e7e4c28109ee7237a7fe41deb0dd8a0fc5c25f6064bfeecbbc534a77",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specs/rtk.spec.yaml"
+                }
+              ],
+              "id": "rtk_ai_rtk_core_interface",
+              "kind": "interface",
+              "text": "No external programmatic interface is documented as supported by the supplied evidence; only CLI command and hook-oriented use patterns are described."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "57d8def6e7e4c28109ee7237a7fe41deb0dd8a0fc5c25f6064bfeecbbc534a77",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specs/rtk.spec.yaml"
+                },
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "9eedab13449e48321140887bad972786f1faa25ac5b4120f0259f4086dd601e9",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "rtk_ai_rtk_core_nearby_intent_difference",
+              "kind": "nearby_intent_difference",
+              "text": "The evidence supports output-focused command compression and developer command workflow support; it does not support metadata-schema mutation, registry publication, or package-manager state changes as direct package actions."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "57d8def6e7e4c28109ee7237a7fe41deb0dd8a0fc5c25f6064bfeecbbc534a77",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specs/rtk.spec.yaml"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "cfedf0bf6ea1d363262510515d6c0a5cf889fe7c6dcbaf92e7242cf103d35ad2",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "harvest.json"
+                }
+              ],
+              "id": "rtk_ai_rtk_core_non_goal",
+              "kind": "non_goal",
+              "text": "Not about preserving package scripts, installing dependencies, or verifying package metadata governance outcomes; not about acceptance into registries or altering source artifacts."
+            }
+          ],
+          "diagnosticCodes": [
+            "capability_namespace_violation"
+          ],
+          "intentDecisions": [
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.api.contract_surface",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "7e52d19227aaa69cbdc10850efedba7c69c6fd0c81f3593fa26b6806def21eb7",
+              "rationaleClaimId": "rtk_ai_rtk_core_purpose",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            },
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.developer.tooling_surface",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "896388b27b44b67eb79db20a7e3a354830c8f9d2f4eeb03337bc7cf3013643dd",
+              "rationaleClaimId": "rtk_ai_rtk_core_capability",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            },
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.documentation.knowledge_base",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "58e63043951b417696414de444d0841614b8515d5ea998af46a0f9368b0fbc26",
+              "rationaleClaimId": "rtk_ai_rtk_core_purpose",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            },
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.metadata.schema_validation",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "b524357a9e6d67b4c0599b817b2dc1f1a4759f563c224fa5ee6ce88947ac86b8",
+              "rationaleClaimId": "rtk_ai_rtk_core_interface",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            },
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.web.request_response_context",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "5f981552d88639fd31948e549dfbbe3d57cb6f0b70b6f51999f4e738b7a3d77a",
+              "rationaleClaimId": "rtk_ai_rtk_core_capability",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            },
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.workflow.automation_pipeline",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "4a348ffff2cace24da7dbbf007cbd9ee4d97b51409c216f95680be435e5803df",
+              "rationaleClaimId": "rtk_ai_rtk_core_capability",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            }
+          ],
+          "metrics": {
+            "capabilitySpecific": true,
+            "evidenceSupportRate": 1.0,
+            "experimentalIntentCount": 0,
+            "experimentalIntentQuality": null,
+            "observedIntentReuseCount": 6,
+            "purposeAccurate": true,
+            "purposeConceptGroupMatches": [
+              true,
+              true
+            ],
+            "reviewerEditBurdenRate": 0.0,
+            "schemaValid": true
+          },
+          "priorAttemptFailureCodes": [],
+          "proposalSha256": "8429bd4a46b87f4646e4330ff64cdfe4643c0de2ca69cc4898ac81847de830b4",
+          "providerAttemptCount": 1,
+          "providerReceipt": {
+            "chainOfThoughtPersisted": false,
+            "durationMs": 17308,
+            "jsonRepairAttemptCount": 0,
+            "jsonRepairNeeded": false,
+            "jsonRepairStatus": "not_needed",
+            "modelId": "gpt-5.3-codex-spark",
+            "providerId": "gpt-5.3-codex-spark",
+            "providerKind": "codex_exec",
+            "providerName": "gpt-5.3-codex-spark",
+            "rawPromptPersisted": false,
+            "rawResponsePersisted": false,
+            "receiptSha256": "096ddf23429d09e688b4aef18179565be353b0af2787a03c5de323e5ad6be7d7",
+            "usage": {}
+          },
+          "qualityStatus": "rejected",
+          "repositoryId": "rtk-ai-rtk",
+          "status": "completed"
+        },
+        {
+          "candidateId": "openai_codex.codex",
+          "claims": [
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "99d31d39c502e2a002936e38dc9d4c3b08fb527f3e4a07c87f7d420d005d42b0",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specpm.yaml"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "07afe528ea33586948d2cdbab28832b7a52f303b7963b4951e82675f9889a859",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specs/codex_cli.spec.yaml"
+                },
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "ba4e1f69ff48386e72a9c5e1edaf76aad64a475c2d51af79ccba6d1128261ba7",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "purpose_codex",
+              "kind": "purpose",
+              "text": "Help developers use Codex as a local coding agent by installing the package and running `codex` to do coding tasks with software workflows on their own machine."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "ba4e1f69ff48386e72a9c5e1edaf76aad64a475c2d51af79ccba6d1128261ba7",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "README.md"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "8a8254c0c30ef5f397c382480d8e39ea57f4cab3be326d108fbda6ad5a4aa427",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "harvest.json"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "99d31d39c502e2a002936e38dc9d4c3b08fb527f3e4a07c87f7d420d005d42b0",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specpm.yaml"
+                }
+              ],
+              "id": "capability_codex",
+              "kind": "capability",
+              "text": "The package enables concrete package actions: installation via `npm install -g @openai/codex` and execution of the local `codex` command, which is the observable code execution path for this software agent package."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "07afe528ea33586948d2cdbab28832b7a52f303b7963b4951e82675f9889a859",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specs/codex_cli.spec.yaml"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "99d31d39c502e2a002936e38dc9d4c3b08fb527f3e4a07c87f7d420d005d42b0",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specpm.yaml"
+                }
+              ],
+              "id": "interface_codex",
+              "kind": "interface",
+              "text": "No external runtime interface is evidenced from supplied sources; the only observed interface surface is package manifest/import metadata for `@openai/codex`."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "8a8254c0c30ef5f397c382480d8e39ea57f4cab3be326d108fbda6ad5a4aa427",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "harvest.json"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "07afe528ea33586948d2cdbab28832b7a52f303b7963b4951e82675f9889a859",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specs/codex_cli.spec.yaml"
+                },
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "ba4e1f69ff48386e72a9c5e1edaf76aad64a475c2d51af79ccba6d1128261ba7",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "nearby_intent_difference_codex",
+              "kind": "nearby_intent_difference",
+              "text": "Adjacent intent intent.package.javascript_library describes a generic JavaScript library package profile, while this package is described as a local coding agent package whose primary concrete action is running the `codex` CLI for coding workflows; this is behaviorally distinct from a pure library package boundary."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "8a8254c0c30ef5f397c382480d8e39ea57f4cab3be326d108fbda6ad5a4aa427",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "harvest.json"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "07afe528ea33586948d2cdbab28832b7a52f303b7963b4951e82675f9889a859",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specs/codex_cli.spec.yaml"
+                }
+              ],
+              "id": "non_goal_codex",
+              "kind": "non_goal",
+              "text": "Non-goals are registry approval actions, package-manager identity beyond manifest evidence, package execution policy decisions, package-boundary capture workflows, and non-local cloud agent behavior claims that are not evidenced in the provided sources."
+            }
+          ],
+          "diagnosticCodes": [
+            "generic_intent_reuse"
+          ],
+          "intentDecisions": [
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.package.javascript_library",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "afdd1d9ce3fba4dfe3bc0ec62437231b5e02a426491a32b950188608d73c56fd",
+              "rationaleClaimId": "capability_codex",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            }
+          ],
+          "metrics": {
+            "capabilitySpecific": true,
+            "evidenceSupportRate": 1.0,
+            "experimentalIntentCount": 0,
+            "experimentalIntentQuality": null,
+            "observedIntentReuseCount": 1,
+            "purposeAccurate": true,
+            "purposeConceptGroupMatches": [
+              true,
+              true
+            ],
+            "reviewerEditBurdenRate": 0.0,
+            "schemaValid": true
+          },
+          "priorAttemptFailureCodes": [],
+          "proposalSha256": "285523d589f6d455f98ec00df0ec71d41aef4c21ed5edc5c4a53321c41ae3b00",
+          "providerAttemptCount": 1,
+          "providerReceipt": {
+            "chainOfThoughtPersisted": false,
+            "durationMs": 9595,
+            "jsonRepairAttemptCount": 0,
+            "jsonRepairNeeded": false,
+            "jsonRepairStatus": "not_needed",
+            "modelId": "gpt-5.3-codex-spark",
+            "providerId": "gpt-5.3-codex-spark",
+            "providerKind": "codex_exec",
+            "providerName": "gpt-5.3-codex-spark",
+            "rawPromptPersisted": false,
+            "rawResponsePersisted": false,
+            "receiptSha256": "121078ebf4db024c94395245458efcc207e4a06bedd55fac67bab8a691042121",
+            "usage": {}
+          },
+          "qualityStatus": "review_required",
+          "repositoryId": "openai-codex",
+          "status": "completed"
+        },
+        {
+          "candidateId": "burntsushi_ripgrep.core",
+          "claims": [
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "945622d974f65e4e141ef9726c948c2640eebd222c5b101afb6445728283921e",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "purpose_1",
+              "kind": "purpose",
+              "text": "Enable users to search text in files by running ripgrep to locate matching lines with a regex pattern, so they can quickly find and inspect occurrences of a specific pattern inside large repositories."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "945622d974f65e4e141ef9726c948c2640eebd222c5b101afb6445728283921e",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "README.md"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "fc8087c2b0331a18f2eba5adb24d588f81f3811b475a5357f67fb6a9fac8e592",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "specs/ripgrep.spec.yaml"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "87aa161e306a1a6b22a23d613e0f31ffe3c187fe7afc1cba435bde6f013fa406",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "harvest.json"
+                }
+              ],
+              "id": "capability_1",
+              "kind": "capability",
+              "text": "For candidate burntsushi_ripgrep.core, users can use the package to perform recursive text search actions over files: scanning directories, matching lines with regex pattern rules, and returning file/line/file content results from matching search text patterns."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "fc8087c2b0331a18f2eba5adb24d588f81f3811b475a5357f67fb6a9fac8e592",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "specs/ripgrep.spec.yaml"
+                }
+              ],
+              "id": "interface_1",
+              "kind": "interface",
+              "text": "No external interface is evidenced: the supplied boundary spec shows no inbound or outbound interfaces, so this intent is limited to package-provided tooling behavior rather than API transport surfaces."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "10adc877910d9250e634333c7fde5f117725fc90e6643b3dad39c22f75f213bf",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "specpm.yaml"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "fc8087c2b0331a18f2eba5adb24d588f81f3811b475a5357f67fb6a9fac8e592",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "specs/ripgrep.spec.yaml"
+                }
+              ],
+              "id": "nearby_intent_difference_1",
+              "kind": "nearby_intent_difference",
+              "text": "Compared with metadata schema validation intent, this intent is about user-facing search behavior and outcomes, not about validating manifests or declaring package-manager schema compliance."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "fc8087c2b0331a18f2eba5adb24d588f81f3811b475a5357f67fb6a9fac8e592",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "specs/ripgrep.spec.yaml"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "87aa161e306a1a6b22a23d613e0f31ffe3c187fe7afc1cba435bde6f013fa406",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "harvest.json"
+                }
+              ],
+              "id": "non_goal_1",
+              "kind": "non_goal",
+              "text": "Non-goal: this proposal does not include package execution, runtime network probing, dependency installation, or registry mutation/publication claims."
+            }
+          ],
+          "diagnosticCodes": [
+            "capability_namespace_violation"
+          ],
+          "intentDecisions": [
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.developer.tooling_surface",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "896388b27b44b67eb79db20a7e3a354830c8f9d2f4eeb03337bc7cf3013643dd",
+              "rationaleClaimId": "purpose_1",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            },
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.documentation.knowledge_base",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "58e63043951b417696414de444d0841614b8515d5ea998af46a0f9368b0fbc26",
+              "rationaleClaimId": "interface_1",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            },
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.metadata.schema_validation",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "b524357a9e6d67b4c0599b817b2dc1f1a4759f563c224fa5ee6ce88947ac86b8",
+              "rationaleClaimId": "nearby_intent_difference_1",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            }
+          ],
+          "metrics": {
+            "capabilitySpecific": true,
+            "evidenceSupportRate": 1.0,
+            "experimentalIntentCount": 0,
+            "experimentalIntentQuality": null,
+            "observedIntentReuseCount": 3,
+            "purposeAccurate": true,
+            "purposeConceptGroupMatches": [
+              true,
+              true,
+              true
+            ],
+            "reviewerEditBurdenRate": 0.0,
+            "schemaValid": true
+          },
+          "priorAttemptFailureCodes": [],
+          "proposalSha256": "00c27ae3dc248fde53c55579de6b8d9ba8b1538738a9e168c86af5cef7ecfada",
+          "providerAttemptCount": 1,
+          "providerReceipt": {
+            "chainOfThoughtPersisted": false,
+            "durationMs": 14892,
+            "jsonRepairAttemptCount": 0,
+            "jsonRepairNeeded": false,
+            "jsonRepairStatus": "not_needed",
+            "modelId": "gpt-5.3-codex-spark",
+            "providerId": "gpt-5.3-codex-spark",
+            "providerKind": "codex_exec",
+            "providerName": "gpt-5.3-codex-spark",
+            "rawPromptPersisted": false,
+            "rawResponsePersisted": false,
+            "receiptSha256": "d08ff88fbdaa84c0b97addf6c9b577b6d4315f158834e89c92df3e0c1d2fbf05",
+            "usage": {}
+          },
+          "qualityStatus": "rejected",
+          "repositoryId": "burntsushi-ripgrep",
+          "status": "completed"
+        },
+        {
+          "candidateId": "thedotmack_claude_mem.claude_mem",
+          "claims": [
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "e9127cfde20f1cbb7d92df7d3d7f7d6373629f129a369982a5994bbbbaf327df",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specpm.yaml"
+                },
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "a81d17483dab4063cb672277449276fd761634307f1a91f3df48cb6e1aa56b16",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "README.md"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "5e5c56fb60d12a405070021ffeff94d1d18c2006ed96fd9fd53451d40bfc5a2e",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "harvest.json"
+                }
+              ],
+              "id": "purpose_1",
+              "kind": "purpose",
+              "text": "Enable users to retain and recall practical project knowledge in Claude sessions by preserving code context as memory over time, so future coding work can continue with continuity and avoid repeating prior context reconstruction."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "0203719691639447fd9f68c2f5d096e3cb930438fa38189b23aa106c73224b61",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specs/claude_mem.spec.yaml"
+                },
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "a81d17483dab4063cb672277449276fd761634307f1a91f3df48cb6e1aa56b16",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "README.md"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "5e5c56fb60d12a405070021ffeff94d1d18c2006ed96fd9fd53451d40bfc5a2e",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "harvest.json"
+                }
+              ],
+              "id": "capability_1",
+              "kind": "capability",
+              "text": "For thedotmack_claude_mem.claude_mem, the package performs concrete actions to support memory workflows: it installs/activates Claude hooks, captures coding observations during a Claude session, persists and compresses context into stored memory, and provides retrieval/search of stored context for later coding continuity."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "0203719691639447fd9f68c2f5d096e3cb930438fa38189b23aa106c73224b61",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specs/claude_mem.spec.yaml"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "5e5c56fb60d12a405070021ffeff94d1d18c2006ed96fd9fd53451d40bfc5a2e",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "harvest.json"
+                }
+              ],
+              "id": "interface_1",
+              "kind": "interface",
+              "text": "No external runtime interface is evidenced in provided data; the available inbound interface evidence is a package-manifest import surface entry (`package.claude_mem`) rather than a claimed API contract."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "5e5c56fb60d12a405070021ffeff94d1d18c2006ed96fd9fd53451d40bfc5a2e",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "harvest.json"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "0203719691639447fd9f68c2f5d096e3cb930438fa38189b23aa106c73224b61",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specs/claude_mem.spec.yaml"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "e9127cfde20f1cbb7d92df7d3d7f7d6373629f129a369982a5994bbbbaf327df",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specpm.yaml"
+                }
+              ],
+              "id": "nearby_intent_difference_1",
+              "kind": "nearby_intent_difference",
+              "text": "Compared with the generic `intent.package.javascript_library`, this package\u2019s observable intent is narrower and stronger on session continuity: the key user benefit is persistent memory/context across Claude sessions, not just generic JavaScript library packaging characteristics."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "0203719691639447fd9f68c2f5d096e3cb930438fa38189b23aa106c73224b61",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specs/claude_mem.spec.yaml"
+                },
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "a81d17483dab4063cb672277449276fd761634307f1a91f3df48cb6e1aa56b16",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "non_goal_1",
+              "kind": "non_goal",
+              "text": "Not a goal to accept packages into registries, mutate registry metadata, or publish package state; not a goal to provide registry-level catalog operations or package-boundary metadata collection as a primary function."
+            }
+          ],
+          "diagnosticCodes": [
+            "generic_intent_reuse"
+          ],
+          "intentDecisions": [
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.package.javascript_library",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "afdd1d9ce3fba4dfe3bc0ec62437231b5e02a426491a32b950188608d73c56fd",
+              "rationaleClaimId": "purpose_1",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            }
+          ],
+          "metrics": {
+            "capabilitySpecific": true,
+            "evidenceSupportRate": 1.0,
+            "experimentalIntentCount": 0,
+            "experimentalIntentQuality": null,
+            "observedIntentReuseCount": 1,
+            "purposeAccurate": true,
+            "purposeConceptGroupMatches": [
+              true,
+              true,
+              true
+            ],
+            "reviewerEditBurdenRate": 0.0,
+            "schemaValid": true
+          },
+          "priorAttemptFailureCodes": [],
+          "proposalSha256": "3686997d4d381a3ac8a30880064de44117c7259e657d769d7276086084709e9b",
+          "providerAttemptCount": 1,
+          "providerReceipt": {
+            "chainOfThoughtPersisted": false,
+            "durationMs": 16954,
+            "jsonRepairAttemptCount": 0,
+            "jsonRepairNeeded": false,
+            "jsonRepairStatus": "not_needed",
+            "modelId": "gpt-5.3-codex-spark",
+            "providerId": "gpt-5.3-codex-spark",
+            "providerKind": "codex_exec",
+            "providerName": "gpt-5.3-codex-spark",
+            "rawPromptPersisted": false,
+            "rawResponsePersisted": false,
+            "receiptSha256": "5bb1cef566cfbcad007d42852c53d0cacb98d4d386d3f9a7a3970a9497dae097",
+            "usage": {}
+          },
+          "qualityStatus": "review_required",
+          "repositoryId": "thedotmack-claude-mem",
+          "status": "completed"
+        }
+      ],
+      "summary": {
+        "completedCount": 4,
+        "failedCount": 0,
+        "frozenGates": {
+          "evidenceSupportedClaimRate": {
+            "operator": "greater_than_or_equal",
+            "passed": true,
+            "threshold": 0.95,
+            "value": 1.0
+          },
+          "purposeAccuracyRate": {
+            "operator": "greater_than_or_equal",
+            "passed": true,
+            "threshold": 0.85,
+            "value": 1.0
+          },
+          "reviewerEditBurdenRate": {
+            "operator": "less_than_or_equal",
+            "passed": true,
+            "threshold": 0.25,
+            "value": 0.0
+          },
+          "schemaValidProposalRate": {
+            "operator": "equal",
+            "passed": true,
+            "threshold": 1.0,
+            "value": 1.0
+          }
+        },
+        "metrics": {
+          "capabilitySpecificityRate": 1.0,
+          "evidenceSupportedClaimRate": 1.0,
+          "experimentalIntentProposalRate": 0.0,
+          "observedIntentReuseRate": 1.0,
+          "purposeAccuracyRate": 1.0,
+          "reviewerEditBurdenRate": 0.0,
+          "schemaValidProposalRate": 1.0
+        },
+        "passed": true,
+        "targetCount": 4
+      }
+    },
+    "lm_studio": {
+      "records": [
+        {
+          "candidateId": "rtk_ai_rtk.core",
+          "claims": [
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "ecf08717f2e82098996124c7de1f26318c6eea7de9ec4cc524209e94a6359574",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specpm.yaml"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "57d8def6e7e4c28109ee7237a7fe41deb0dd8a0fc5c25f6064bfeecbbc534a77",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specs/rtk.spec.yaml"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "cfedf0bf6ea1d363262510515d6c0a5cf889fe7c6dcbaf92e7242cf103d35ad2",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "harvest.json"
+                },
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "9eedab13449e48321140887bad972786f1faa25ac5b4120f0259f4086dd601e9",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "README.md"
+                },
+                {
+                  "class": "specpm_observed_intent_catalog",
+                  "id": "observed_intent_catalog",
+                  "sha256": "9bee4eef5c4b444d8d2c690523a2410b51832fb67e9a1fe4f3a72c99b11c7e94",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "generated/observed-intents.json"
+                }
+              ],
+              "id": "purpose_001",
+              "kind": "purpose",
+              "text": "Provide users with a language\u2011neutral API contract that reduces the amount of token context required for LLM agents by compressing command output and saving tokens."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "ecf08717f2e82098996124c7de1f26318c6eea7de9ec4cc524209e94a6359574",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specpm.yaml"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "57d8def6e7e4c28109ee7237a7fe41deb0dd8a0fc5c25f6064bfeecbbc534a77",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specs/rtk.spec.yaml"
+                },
+                {
+                  "class": "specpm_observed_intent_catalog",
+                  "id": "observed_intent_catalog",
+                  "sha256": "9bee4eef5c4b444d8d2c690523a2410b51832fb67e9a1fe4f3a72c99b11c7e94",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "generated/observed-intents.json"
+                }
+              ],
+              "id": "capability_001",
+              "kind": "capability",
+              "text": "The package exposes a CLI that accepts commands, rewrites them to compressed equivalents, and returns the reduced output as tokens for LLM consumption."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "ecf08717f2e82098996124c7de1f26318c6eea7de9ec4cc524209e94a6359574",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specpm.yaml"
+                }
+              ],
+              "id": "interface_001",
+              "kind": "interface",
+              "text": "No external interface is supported by the evidence; the package operates solely as a CLI tool."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "specpm_observed_intent_catalog",
+                  "id": "observed_intent_catalog",
+                  "sha256": "9bee4eef5c4b444d8d2c690523a2410b51832fb67e9a1fe4f3a72c99b11c7e94",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "generated/observed-intents.json"
+                }
+              ],
+              "id": "nearby_intent_difference_001",
+              "kind": "nearby_intent_difference",
+              "text": "The intent to provide a language\u2011neutral API contract surface is distinct from the intent of providing documentation knowledge base; the former focuses on token compression, while the latter focuses on user guidance."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "ecf08717f2e82098996124c7de1f26318c6eea7de9ec4cc524209e94a6359574",
+                  "sourceBundleSha256": "1a23fe74040232ff801d94e5525b989e2049f6285cfcccdafaed5799d6442228",
+                  "sourcePath": "specpm.yaml"
+                }
+              ],
+              "id": "non_goal_001",
+              "kind": "non_goal",
+              "text": "This proposal does not aim to provide a schema registry or metadata ingestion service; it focuses solely on token\u2011saving command output compression."
+            }
+          ],
+          "diagnosticCodes": [
+            "capability_namespace_violation"
+          ],
+          "intentDecisions": [
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.api.contract_surface",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "7e52d19227aaa69cbdc10850efedba7c69c6fd0c81f3593fa26b6806def21eb7",
+              "rationaleClaimId": "purpose_001",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            },
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.developer.tooling_surface",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "896388b27b44b67eb79db20a7e3a354830c8f9d2f4eeb03337bc7cf3013643dd",
+              "rationaleClaimId": "capability_001",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            }
+          ],
+          "metrics": {
+            "capabilitySpecific": true,
+            "evidenceSupportRate": 1.0,
+            "experimentalIntentCount": 0,
+            "experimentalIntentQuality": null,
+            "observedIntentReuseCount": 2,
+            "purposeAccurate": true,
+            "purposeConceptGroupMatches": [
+              true,
+              true
+            ],
+            "reviewerEditBurdenRate": 0.0,
+            "schemaValid": true
+          },
+          "priorAttemptFailureCodes": [],
+          "proposalSha256": "9edaf6842e6de71864c7be4755dbc14f5a7ffaecacf26d888aff2a802d331ec1",
+          "providerAttemptCount": 1,
+          "providerReceipt": {
+            "baseUrl": "http://127.0.0.1:1234",
+            "chainOfThoughtPersisted": false,
+            "durationMs": 53897,
+            "endpoint": "/v1/chat/completions",
+            "jsonRepairAttemptCount": 0,
+            "jsonRepairNeeded": false,
+            "jsonRepairStatus": "not_needed",
+            "modelId": "openai/gpt-oss-20b",
+            "providerId": "lm_studio",
+            "providerKind": "openai_compatible",
+            "providerName": "lm_studio",
+            "rawPromptPersisted": false,
+            "rawResponsePersisted": false,
+            "receiptSha256": "5b8e64ce8ae0d09b003a7ee94d95b135ee8ba3a409b1a7aa2ad29a25f80cf899",
+            "usage": {
+              "completion_tokens": 1841,
+              "prompt_tokens": 16123,
+              "total_tokens": 17964
+            }
+          },
+          "qualityStatus": "rejected",
+          "repositoryId": "rtk-ai-rtk",
+          "status": "completed"
+        },
+        {
+          "candidateId": "openai_codex.codex",
+          "claims": [
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "99d31d39c502e2a002936e38dc9d4c3b08fb527f3e4a07c87f7d420d005d42b0",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specpm.yaml"
+                },
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "07afe528ea33586948d2cdbab28832b7a52f303b7963b4951e82675f9889a859",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specs/codex_cli.spec.yaml"
+                },
+                {
+                  "class": "harvested_repository_metadata",
+                  "id": "evidence_3",
+                  "sha256": "8a8254c0c30ef5f397c382480d8e39ea57f4cab3be326d108fbda6ad5a4aa427",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "harvest.json"
+                }
+              ],
+              "id": "purpose_1",
+              "kind": "purpose",
+              "text": "The Openai_codex Codex package provides a coding agent that enables developers to write and run code locally using the Codex CLI, thereby delivering an assistant for software development."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "07afe528ea33586948d2cdbab28832b7a52f303b7963b4951e82675f9889a859",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specs/codex_cli.spec.yaml"
+                }
+              ],
+              "id": "capability_1",
+              "kind": "capability",
+              "text": "The package declares the capability openai_codex.codex.package_boundary, which allows a consumer to import @openai/codex as a JavaScript library that provides coding functions for software development."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "07afe528ea33586948d2cdbab28832b7a52f303b7963b4951e82675f9889a859",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specs/codex_cli.spec.yaml"
+                }
+              ],
+              "id": "interface_1",
+              "kind": "interface",
+              "text": "No external interface is supported by the evidence; the package only exposes a library import surface."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "specpm_observed_intent_catalog",
+                  "id": "observed_intent_catalog",
+                  "sha256": "54d796b514a2c79ccf764ff6cfbd596b2b49709eb7393056a16e5094469090b3",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "generated/observed-intents.json"
+                }
+              ],
+              "id": "nearby_intent_difference_1",
+              "kind": "nearby_intent_difference",
+              "text": "The observed intent intent.package.javascript_library describes the package as a JavaScript library, whereas this proposal focuses on its role as a coding agent for software development."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "07afe528ea33586948d2cdbab28832b7a52f303b7963b4951e82675f9889a859",
+                  "sourceBundleSha256": "48e6a87f86ae077c469d532152e0ad89b5d2f0eb17227d8e981331f3b2ae81b0",
+                  "sourcePath": "specs/codex_cli.spec.yaml"
+                }
+              ],
+              "id": "non_goal_1",
+              "kind": "non_goal",
+              "text": "This proposal does not claim that the package can be used as a general-purpose programming language interpreter or runtime."
+            }
+          ],
+          "diagnosticCodes": [
+            "generic_intent_reuse"
+          ],
+          "intentDecisions": [
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.package.javascript_library",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "afdd1d9ce3fba4dfe3bc0ec62437231b5e02a426491a32b950188608d73c56fd",
+              "rationaleClaimId": "purpose_1",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            }
+          ],
+          "metrics": {
+            "capabilitySpecific": true,
+            "evidenceSupportRate": 1.0,
+            "experimentalIntentCount": 0,
+            "experimentalIntentQuality": null,
+            "observedIntentReuseCount": 1,
+            "purposeAccurate": true,
+            "purposeConceptGroupMatches": [
+              true,
+              true
+            ],
+            "reviewerEditBurdenRate": 0.0,
+            "schemaValid": true
+          },
+          "priorAttemptFailureCodes": [],
+          "proposalSha256": "163e445048243c71d17bb606aa81412690fd390ef3f10759187cfbc052648166",
+          "providerAttemptCount": 1,
+          "providerReceipt": {
+            "baseUrl": "http://127.0.0.1:1234",
+            "chainOfThoughtPersisted": false,
+            "durationMs": 36273,
+            "endpoint": "/v1/chat/completions",
+            "jsonRepairAttemptCount": 0,
+            "jsonRepairNeeded": false,
+            "jsonRepairStatus": "not_needed",
+            "modelId": "openai/gpt-oss-20b",
+            "providerId": "lm_studio",
+            "providerKind": "openai_compatible",
+            "providerName": "lm_studio",
+            "rawPromptPersisted": false,
+            "rawResponsePersisted": false,
+            "receiptSha256": "b5cc88edada0b924b25e007633f9beaa1999096046180b1d1c873ed6ef162b72",
+            "usage": {
+              "completion_tokens": 1324,
+              "prompt_tokens": 7536,
+              "total_tokens": 8860
+            }
+          },
+          "qualityStatus": "review_required",
+          "repositoryId": "openai-codex",
+          "status": "completed"
+        },
+        {
+          "candidateId": "burntsushi_ripgrep.core",
+          "claims": [
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "945622d974f65e4e141ef9726c948c2640eebd222c5b101afb6445728283921e",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "purpose_01",
+              "kind": "purpose",
+              "text": "Provide a command\u2011line tool that lets users search for a regex pattern in text files, returning matching lines and context."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "945622d974f65e4e141ef9726c948c2640eebd222c5b101afb6445728283921e",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "capability_01",
+              "kind": "capability",
+              "text": "Search for a regex pattern in text files, optionally filtering by file type and ignoring git\u2011ignored or binary files."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "945622d974f65e4e141ef9726c948c2640eebd222c5b101afb6445728283921e",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "interface_01",
+              "kind": "interface",
+              "text": "No external API interface is provided; the tool is invoked via the command line."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "945622d974f65e4e141ef9726c948c2640eebd222c5b101afb6445728283921e",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "nearby_intent_difference_01",
+              "kind": "nearby_intent_difference",
+              "text": "Unlike generic grep, this tool automatically respects .gitignore rules and skips binary files unless explicitly requested."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "allowlisted_source_documentation",
+                  "id": "evidence_4",
+                  "sha256": "945622d974f65e4e141ef9726c948c2640eebd222c5b101afb6445728283921e",
+                  "sourceBundleSha256": "bbfdc65abee0d0c95d99493d46e80d4db62941f5a1edf7bc0d6b66c9692a3abb",
+                  "sourcePath": "README.md"
+                }
+              ],
+              "id": "non_goal_01",
+              "kind": "non_goal",
+              "text": "The tool does not provide a library API for embedding regex search into other programs."
+            }
+          ],
+          "diagnosticCodes": [
+            "capability_namespace_violation"
+          ],
+          "intentDecisions": [
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.developer.tooling_surface",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "896388b27b44b67eb79db20a7e3a354830c8f9d2f4eeb03337bc7cf3013643dd",
+              "rationaleClaimId": "purpose_01",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            }
+          ],
+          "metrics": {
+            "capabilitySpecific": true,
+            "evidenceSupportRate": 1.0,
+            "experimentalIntentCount": 0,
+            "experimentalIntentQuality": null,
+            "observedIntentReuseCount": 1,
+            "purposeAccurate": true,
+            "purposeConceptGroupMatches": [
+              true,
+              true,
+              true
+            ],
+            "reviewerEditBurdenRate": 0.0,
+            "schemaValid": true
+          },
+          "priorAttemptFailureCodes": [],
+          "proposalSha256": "11af9fa1e70447c6b98310409d4a3864116567094a5d60ffff95334eaa0f59a0",
+          "providerAttemptCount": 1,
+          "providerReceipt": {
+            "baseUrl": "http://127.0.0.1:1234",
+            "chainOfThoughtPersisted": false,
+            "durationMs": 30614,
+            "endpoint": "/v1/chat/completions",
+            "jsonRepairAttemptCount": 0,
+            "jsonRepairNeeded": false,
+            "jsonRepairStatus": "not_needed",
+            "modelId": "openai/gpt-oss-20b",
+            "providerId": "lm_studio",
+            "providerKind": "openai_compatible",
+            "providerName": "lm_studio",
+            "rawPromptPersisted": false,
+            "rawResponsePersisted": false,
+            "receiptSha256": "bfdc5e0421ce1382797b779f3568f99e6bbfb3a938a05e3af80bb76ca59d2c41",
+            "usage": {
+              "completion_tokens": 1053,
+              "prompt_tokens": 14272,
+              "total_tokens": 15325
+            }
+          },
+          "qualityStatus": "rejected",
+          "repositoryId": "burntsushi-ripgrep",
+          "status": "completed"
+        },
+        {
+          "candidateId": "thedotmack_claude_mem.claude_mem",
+          "claims": [
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_1",
+                  "sha256": "e9127cfde20f1cbb7d92df7d3d7f7d6373629f129a369982a5994bbbbaf327df",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specpm.yaml"
+                }
+              ],
+              "id": "purpose_claim_001",
+              "kind": "purpose",
+              "text": "Enable developers to persist and automatically restore Claude Code context across sessions, so that the AI remembers prior interactions without manual re\u2011entry."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "0203719691639447fd9f68c2f5d096e3cb930438fa38189b23aa106c73224b61",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specs/claude_mem.spec.yaml"
+                }
+              ],
+              "id": "capability_claim_001",
+              "kind": "capability",
+              "text": "Provide a JavaScript library that compresses, stores, and retrieves Claude Code session context in a persistent store, enabling automatic restoration on subsequent sessions."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "0203719691639447fd9f68c2f5d096e3cb930438fa38189b23aa106c73224b61",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specs/claude_mem.spec.yaml"
+                }
+              ],
+              "id": "interface_claim_001",
+              "kind": "interface",
+              "text": "Expose an inbound library interface (package.claude_mem) that consumers import to access the memory compression functionality; no external network or CLI interfaces are required by this claim."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "specpm_observed_intent_catalog",
+                  "id": "observed_intent_catalog",
+                  "sha256": "54d796b514a2c79ccf764ff6cfbd596b2b49709eb7393056a16e5094469090b3",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "generated/observed-intents.json"
+                }
+              ],
+              "id": "nearby_intent_difference_claim_001",
+              "kind": "nearby_intent_difference",
+              "text": "This claim focuses on persistent context storage, whereas the observed intent.intent.package.javascript_library describes a generic JavaScript library; the difference is that this proposal explicitly ties the library to Claude Code session persistence."
+            },
+            {
+              "evidence": [
+                {
+                  "class": "validated_candidate_yaml",
+                  "id": "evidence_2",
+                  "sha256": "0203719691639447fd9f68c2f5d096e3cb930438fa38189b23aa106c73224b61",
+                  "sourceBundleSha256": "c6b2134c8b3f3f3322d513ab7e296990afb6171e6811b84daad986ebe9501378",
+                  "sourcePath": "specs/claude_mem.spec.yaml"
+                }
+              ],
+              "id": "non_goal_claim_001",
+              "kind": "non_goal",
+              "text": "This proposal does not claim to provide package metadata inventory, schema representation, or generic package boundary capture beyond the specific memory compression functionality."
+            }
+          ],
+          "diagnosticCodes": [
+            "generic_intent_reuse"
+          ],
+          "intentDecisions": [
+            {
+              "apiVersion": "spec-harvester.ai-semantic-intent-reuse/v0",
+              "intentId": "intent.package.javascript_library",
+              "kind": "SpecHarvesterAISemanticIntentReuse",
+              "observedIntentSha256": "afdd1d9ce3fba4dfe3bc0ec62437231b5e02a426491a32b950188608d73c56fd",
+              "rationaleClaimId": "purpose_claim_001",
+              "schemaVersion": 1,
+              "state": "proposed_reuse"
+            }
+          ],
+          "metrics": {
+            "capabilitySpecific": true,
+            "evidenceSupportRate": 1.0,
+            "experimentalIntentCount": 0,
+            "experimentalIntentQuality": null,
+            "observedIntentReuseCount": 1,
+            "purposeAccurate": true,
+            "purposeConceptGroupMatches": [
+              true,
+              true,
+              true
+            ],
+            "reviewerEditBurdenRate": 0.0,
+            "schemaValid": true
+          },
+          "priorAttemptFailureCodes": [],
+          "proposalSha256": "56c2bb8bbc709f2ff1a75364b02b1c669ecf595c0edcb263bf2cd28f1298cbf0",
+          "providerAttemptCount": 1,
+          "providerReceipt": {
+            "baseUrl": "http://127.0.0.1:1234",
+            "chainOfThoughtPersisted": false,
+            "durationMs": 80942,
+            "endpoint": "/v1/chat/completions",
+            "jsonRepairAttemptCount": 1,
+            "jsonRepairNeeded": true,
+            "jsonRepairStatus": "repaired",
+            "modelId": "openai/gpt-oss-20b",
+            "providerId": "lm_studio",
+            "providerKind": "openai_compatible",
+            "providerName": "lm_studio",
+            "rawPromptPersisted": false,
+            "rawResponsePersisted": false,
+            "receiptSha256": "db3127b1ec73011ee9939c9353850e276c412737069e2dc3d2923115a9100657",
+            "usage": {
+              "completion_tokens": 2701,
+              "prompt_tokens": 15721,
+              "total_tokens": 18422
+            }
+          },
+          "qualityStatus": "review_required",
+          "repositoryId": "thedotmack-claude-mem",
+          "status": "completed"
+        }
+      ],
+      "summary": {
+        "completedCount": 4,
+        "failedCount": 0,
+        "frozenGates": {
+          "evidenceSupportedClaimRate": {
+            "operator": "greater_than_or_equal",
+            "passed": true,
+            "threshold": 0.95,
+            "value": 1.0
+          },
+          "purposeAccuracyRate": {
+            "operator": "greater_than_or_equal",
+            "passed": true,
+            "threshold": 0.85,
+            "value": 1.0
+          },
+          "reviewerEditBurdenRate": {
+            "operator": "less_than_or_equal",
+            "passed": true,
+            "threshold": 0.25,
+            "value": 0.0
+          },
+          "schemaValidProposalRate": {
+            "operator": "equal",
+            "passed": true,
+            "threshold": 1.0,
+            "value": 1.0
+          }
+        },
+        "metrics": {
+          "capabilitySpecificityRate": 1.0,
+          "evidenceSupportedClaimRate": 1.0,
+          "experimentalIntentProposalRate": 0.0,
+          "observedIntentReuseRate": 1.0,
+          "purposeAccuracyRate": 1.0,
+          "reviewerEditBurdenRate": 0.0,
+          "schemaValidProposalRate": 1.0
+        },
+        "passed": true,
+        "targetCount": 4
+      }
+    }
+  },
+  "registryMutationCount": 0,
+  "rubricSha256": "3346390190767c20c8067c0aa3dc71860173d044c4175afda88d27387e6c34ff",
+  "runId": "p55-t9a",
+  "scope": {
+    "fullFrozenTargetSet": true,
+    "providerIds": [
+      "codex_spark",
+      "lm_studio"
+    ],
+    "repositoryIds": [
+      "rtk-ai-rtk",
+      "openai-codex",
+      "burntsushi-ripgrep",
+      "thedotmack-claude-mem"
+    ]
+  },
+  "sourceManifestSha256": "d1443331ff27845683d68a3bbafc146f45a337962ec7d1b9537aff37f967403d",
+  "sourceRevisions": {
+    "burntsushi-ripgrep": "f9c05a949d1a0dc8e16dee28ca9605d38611faeb",
+    "openai-codex": "16d7daad7c5dc73da8558102a65bb7d7709807e1",
+    "rtk-ai-rtk": "7da2674073394194754a228d346189a74869e6ba",
+    "thedotmack-claude-mem": "132b46343e60ecf4057c427736c57b08f7615dfe"
+  }
+}
