@@ -3,7 +3,8 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T9` Targeted Semantic Quality Calibration
-**Status:** Ready
+**Status:** Selected
+**Branch:** `feature/P55-T9A-semantic-provider-output-conformance-follow-up`
 
 ## Objective
 
