@@ -63,3 +63,7 @@ calibration through Codex 5.3 Spark and LM Studio.
   or applying deterministic claim substitutions.
 - Running P55-T10, materializing the wider corpus, canonicalizing intents,
   mutating SpecPM, or publishing packages.
+
+---
+**Archived:** 2026-07-31
+**Verdict:** PASS

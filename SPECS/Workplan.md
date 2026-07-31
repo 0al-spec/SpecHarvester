@@ -2837,7 +2837,7 @@ Acceptance:
   including `rtk-ai/rtk` and `openai/codex`. Compare Codex 5.3 Spark and LM
   Studio for purpose accuracy, evidence support, capability specificity,
   intent reuse, novel-intent quality, and reviewer edit burden.
-- [ ] `P55-T9A` Harden semantic provider output conformance and repeat the
+- [x] `P55-T9A` Harden semantic provider output conformance and repeat the
   exact P55-T9 targeted calibration. Prevent request wrappers, wrong API
   identities, and schema/meta-schema fragments from entering proposal value
   fields; improve RTK purpose emphasis without weakening evidence,
