@@ -29,3 +29,11 @@ The output remains a proposal. It has no candidate materialization, reviewer
 decision, canonical-intent, registry-mutation, or publication path. Malformed
 output, stale bindings, unknown evidence, unknown observed intents, remote LM
 Studio URLs, and exhausted output budgets fail closed.
+
+P55-T10A additionally binds the
+[`EXPERIMENTAL_INTENT_DECISION_POLICY.md`](EXPERIMENTAL_INTENT_DECISION_POLICY.md)
+contract into both providers. Generic observed-intent reuse now requires an
+explicit comparison claim. If observed intents do not express the documented
+outcome, the provider may instead return one digest-suffixed, package-neutral
+experimental intent with user need, nearby intents, and non-goals. The policy
+does not force novelty or grant canonicalization authority.

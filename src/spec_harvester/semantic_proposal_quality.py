@@ -11,6 +11,12 @@ import yaml
 from jsonschema import Draft202012Validator, FormatChecker
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
+from spec_harvester.experimental_intent_policy import (
+    EXPERIMENTAL_INTENT_ID_PATTERN,
+    GENERIC_OBSERVED_INTENT_IDS,
+    experimental_intent_suffix,
+    load_experimental_intent_decision_policy,
+)
 
 QUALITY_REPORT_API_VERSION = "spec-harvester.semantic-proposal-quality/v0"
 QUALITY_REPORT_KIND = "SpecHarvesterSemanticProposalQualityReport"
@@ -19,11 +25,6 @@ POLICY_SOURCE_PATH = (
     "tests/fixtures/semantic_author_quality_policy/p55-t5-semantic-quality-thresholds.example.json"
 )
 
-GENERIC_INTENT_IDS = {
-    "intent.package.javascript_library",
-    "intent.package.public_repository_metadata",
-    "intent.repository.package_workspace",
-}
 PROVIDER_AUTHORITY_PATTERNS = (
     re.compile(r"\baccording to (?:the )?(?:model|provider)\b", re.IGNORECASE),
     re.compile(r"\b(?:the )?(?:model|provider) (?:accepts|approves|authorizes)\b", re.IGNORECASE),
@@ -99,6 +100,7 @@ def evaluate_semantic_proposal_quality(
     """Evaluate one P55 proposal without invoking a provider or changing authority."""
     policy = policy or load_semantic_author_quality_policy()
     validate_semantic_author_quality_policy(policy)
+    decision_policy = load_experimental_intent_decision_policy()
     diagnostics: list[dict[str, Any]] = []
     proposal = semantic_pass.get("proposal")
     request = input_pack.get("request")
@@ -107,12 +109,12 @@ def evaluate_semantic_proposal_quality(
         return _report(input_pack, semantic_pass, policy, diagnostics, _empty_metrics(False))
 
     schema_valid = _validate_schema(proposal, diagnostics)
-    _validate_envelope_bindings(input_pack, semantic_pass, proposal, diagnostics)
+    _validate_envelope_bindings(input_pack, semantic_pass, proposal, decision_policy, diagnostics)
     evidence_by_binding = _validate_evidence(input_pack, proposal, diagnostics)
     _validate_candidate_yaml(input_pack, diagnostics)
     if schema_valid:
         _validate_claims(proposal, evidence_by_binding, diagnostics)
-        _validate_intents(input_pack, proposal, diagnostics)
+        _validate_intents(input_pack, proposal, decision_policy, diagnostics)
 
     metrics = _metrics(proposal, diagnostics, schema_valid)
     return _report(input_pack, semantic_pass, policy, diagnostics, metrics)
@@ -146,6 +148,7 @@ def _validate_envelope_bindings(
     pack: dict[str, Any],
     semantic_pass: dict[str, Any],
     proposal: dict[str, Any],
+    decision_policy: dict[str, Any],
     diagnostics: list[dict[str, Any]],
 ) -> None:
     candidate_id = pack.get("candidateId")
@@ -168,6 +171,14 @@ def _validate_envelope_bindings(
         or semantic_pass.get("sourceBundleSha256") != source_digest
     ):
         diagnostics.append(_diagnostic("source_bundle_binding_mismatch", "error"))
+    policy_binding = semantic_pass.get("experimentalIntentDecisionPolicy")
+    if (
+        not isinstance(policy_binding, dict)
+        or policy_binding.get("policySha256") != decision_policy["policySha256"]
+        or policy_binding.get("frozenByTask") != "P55-T10A"
+        or policy_binding.get("authority") != "maintainer_bounded_proposal_policy"
+    ):
+        diagnostics.append(_diagnostic("experimental_intent_policy_binding_invalid", "error"))
 
 
 def _validate_evidence(
@@ -332,6 +343,7 @@ def _validate_claims(
 def _validate_intents(
     pack: dict[str, Any],
     proposal: dict[str, Any],
+    decision_policy: dict[str, Any],
     diagnostics: list[dict[str, Any]],
 ) -> None:
     observed = {
@@ -340,6 +352,28 @@ def _validate_intents(
         if isinstance(item, dict)
     }
     claim_ids = {claim["id"] for claim in proposal["claims"]}
+    claims_by_id = {claim["id"]: claim for claim in proposal["claims"]}
+    experiments = [
+        decision
+        for decision in proposal["intentDecisions"]
+        if decision["state"] == "proposed_experimental"
+    ]
+    if len(experiments) > decision_policy["decisionRules"]["maxExperimentalIntentCount"]:
+        diagnostics.append(_diagnostic("experimental_intent_count_exceeded", "error"))
+    generic_reuse_ids = {
+        decision["intentId"]
+        for decision in proposal["intentDecisions"]
+        if decision["state"] == "proposed_reuse"
+        and decision["intentId"] in GENERIC_OBSERVED_INTENT_IDS
+    }
+    if experiments and generic_reuse_ids:
+        diagnostics.append(
+            _diagnostic(
+                "experimental_intent_retains_generic_reuse",
+                "error",
+                detail=", ".join(sorted(generic_reuse_ids)),
+            )
+        )
     seen: set[str] = set()
     for decision in proposal["intentDecisions"]:
         intent_id = decision["intentId"]
@@ -356,17 +390,60 @@ def _validate_intents(
                 )
             )
         seen.add(intent_id)
-        if intent_id in GENERIC_INTENT_IDS:
+        if intent_id in GENERIC_OBSERVED_INTENT_IDS:
             diagnostics.append(_diagnostic("generic_intent_reuse", "warning", subject=intent_id))
         if decision["state"] == "proposed_reuse":
             if observed.get(intent_id) != decision["observedIntentSha256"]:
                 diagnostics.append(
                     _diagnostic("observed_intent_binding_stale", "error", subject=intent_id)
                 )
+            if intent_id in GENERIC_OBSERVED_INTENT_IDS:
+                rationale = claims_by_id.get(decision["rationaleClaimId"])
+                if rationale is None or rationale["kind"] != "nearby_intent_difference":
+                    diagnostics.append(
+                        _diagnostic(
+                            "generic_intent_reuse_comparison_missing",
+                            "error",
+                            subject=intent_id,
+                        )
+                    )
         elif not intent_id.startswith("intent.experimental."):
             diagnostics.append(
                 _diagnostic("experimental_intent_namespace_invalid", "error", subject=intent_id)
             )
+        elif EXPERIMENTAL_INTENT_ID_PATTERN.fullmatch(intent_id) is None or not intent_id.endswith(
+            f".{experimental_intent_suffix(str(pack.get('sourceBundleSha256', '')))}"
+        ):
+            diagnostics.append(
+                _diagnostic(
+                    "experimental_intent_identifier_not_collision_bound",
+                    "error",
+                    subject=intent_id,
+                )
+            )
+        if decision["state"] == "proposed_experimental":
+            unknown_nearby = sorted(set(decision["nearbyIntentIds"]) - set(observed))
+            if unknown_nearby:
+                diagnostics.append(
+                    _diagnostic(
+                        "experimental_intent_nearby_unknown",
+                        "error",
+                        subject=intent_id,
+                        detail=", ".join(unknown_nearby),
+                    )
+                )
+            user_need = claims_by_id.get(decision["userNeedClaimId"])
+            if user_need is None or user_need["kind"] != "purpose":
+                diagnostics.append(
+                    _diagnostic("experimental_intent_user_need_invalid", "error", subject=intent_id)
+                )
+            if any(
+                claims_by_id.get(claim_id, {}).get("kind") != "non_goal"
+                for claim_id in decision["nonGoalClaimIds"]
+            ):
+                diagnostics.append(
+                    _diagnostic("experimental_intent_non_goal_invalid", "error", subject=intent_id)
+                )
         referenced_claim_ids = (
             {decision["rationaleClaimId"]}
             if decision["state"] == "proposed_reuse"
@@ -391,6 +468,13 @@ def _validate_intents(
                     _diagnostic(
                         "experimental_intent_overlaps_observed",
                         "warning",
+                        subject=f"{intent_id}:{observed_id}",
+                    )
+                )
+                diagnostics.append(
+                    _diagnostic(
+                        "experimental_intent_false_novelty_risk",
+                        "error",
                         subject=f"{intent_id}:{observed_id}",
                     )
                 )
@@ -549,8 +633,16 @@ def _text_overlap(left: str, right: str) -> float:
 
 def _intent_overlap(left: str, right: str) -> float:
     ignored = {"intent", "experimental"}
-    left_words = set(left.replace("-", ".").replace("_", ".").split(".")) - ignored
-    right_words = set(right.replace("-", ".").replace("_", ".").split(".")) - ignored
+    left_words = {
+        word
+        for word in left.replace("-", ".").replace("_", ".").split(".")
+        if word not in ignored and re.fullmatch(r"[0-9a-f]{8}", word) is None
+    }
+    right_words = {
+        word
+        for word in right.replace("-", ".").replace("_", ".").split(".")
+        if word not in ignored and re.fullmatch(r"[0-9a-f]{8}", word) is None
+    }
     return len(left_words & right_words) / len(left_words | right_words) if left_words else 0.0
 
 

@@ -44,3 +44,4 @@ testpaths = ["tests"]
 "schemas/ai-semantic-author-v0.schema.json" = "spec_harvester/schemas/ai-semantic-author-v0.schema.json"
 "schemas/semantic-materialization-v0.schema.json" = "spec_harvester/schemas/semantic-materialization-v0.schema.json"
 "tests/fixtures/semantic_author_quality_policy/p55-t5-semantic-quality-thresholds.example.json" = "spec_harvester/policies/semantic-author-quality-thresholds-v0.json"
+"tests/fixtures/experimental_intent_decision_policy/p55-t10a-experimental-intent-decision-policy.example.json" = "spec_harvester/policies/experimental-intent-decision-policy-v0.json"
