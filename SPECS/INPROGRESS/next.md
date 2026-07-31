@@ -1,27 +1,31 @@
-# Next Task: P55-T8 Reviewer-Controlled Semantic Materialization
+# Next Task: P55-T9 Targeted Semantic Quality Calibration
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T7` Workbench Static-versus-AI Semantic Review
+**Dependencies:** `P55-T8` Reviewer-Controlled Semantic Materialization
 **Status:** Ready
 **Branch:** TBD
 
 ## Objective
 
-Materialize only explicitly accepted or edited semantic proposal fields into a
-new preview candidate revision.
+Run a targeted provider-separated semantic quality calibration on repositories
+whose product purpose is poorly represented by generic static intents.
 
 ## Required Scope
 
-Require explicit reviewer identity and an accepted or edited P55-T7 semantic
-decision. Revalidate packet, proposal, source, record, and reviewer-edit
-digests; retain the prior candidate and before/after provenance; apply only
-selected claims and bounded reviewer edits; run SpecHarvester and read-only
-SpecPM validation. Do not mutate accepted packages, canonical intents, registry
-truth, or the public index.
+Include `rtk-ai/rtk`, `openai/codex`, and comparable utility or agent
+repositories. Run Codex 5.3 Spark and LM Studio independently, then report
+purpose accuracy, evidence support, capability specificity, intent reuse,
+experimental-intent quality, schema validity, and reviewer edit burden against
+the frozen P55-T5 thresholds. Do not silently redefine thresholds, materialize
+the wider corpus, or promote results.
 
 ## Recently Archived
 
+- `P55-T8` Reviewer-Controlled Semantic Materialization: PASS. Explicit
+  accepted or edited semantic decisions now create separate preview revisions
+  with exact before/after provenance and SpecHarvester plus read-only SpecPM
+  validation, without changing source candidates or registry truth.
 - `P55-T7` Workbench Static-versus-AI Semantic Review: PASS. The Workbench now
   presents inert structured static-versus-AI semantic comparisons and records
   digest-bound accept, edit, reject, or defer evidence in the existing immutable

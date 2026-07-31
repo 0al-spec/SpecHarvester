@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-harvester.dev/schemas/semantic-materialization-v0.schema.json",
+  "title": "Reviewer-Controlled Semantic Materialization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["apiVersion", "kind", "authority", "candidateId", "packetSha256", "semanticRecordSha256", "proposalSha256", "sourceBundleSha256", "reviewerEditSha256", "reviewer", "decision", "application", "files", "validation", "previewOnly", "isRegistryTruth", "registryMutationCount"],
+  "properties": {
+    "apiVersion": {"const": "spec-harvester.semantic-materialization/v0"},
+    "kind": {"const": "SpecHarvesterSemanticMaterialization"},
+    "authority": {"const": "reviewer_controlled_preview_revision_evidence_only"},
+    "candidateId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "packetSha256": {"$ref": "#/$defs/sha256"},
+    "semanticRecordSha256": {"$ref": "#/$defs/sha256"},
+    "proposalSha256": {"$ref": "#/$defs/sha256"},
+    "sourceBundleSha256": {"$ref": "#/$defs/sha256"},
+    "reviewerEditSha256": {"$ref": "#/$defs/sha256"},
+    "reviewer": {"type": "string", "minLength": 1, "maxLength": 200},
+    "decision": {"enum": ["accepted", "edited"]},
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selectedClaimIds", "editedClaimIds", "reusedIntentIds", "experimentalIntentIds"],
+      "properties": {
+        "selectedClaimIds": {"$ref": "#/$defs/strings"},
+        "editedClaimIds": {"$ref": "#/$defs/strings"},
+        "reusedIntentIds": {"$ref": "#/$defs/strings"},
+        "experimentalIntentIds": {"$ref": "#/$defs/strings"}
+      }
+    },
+    "files": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["before", "after"],
+      "properties": {
+        "before": {"$ref": "#/$defs/fileDigests"},
+        "after": {"$ref": "#/$defs/fileDigests"}
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["specHarvester", "specPM"],
+      "properties": {
+        "specHarvester": {"const": "passed"},
+        "specPM": {"type": "object"}
+      }
+    },
+    "previewOnly": {"const": true},
+    "isRegistryTruth": {"const": false},
+    "registryMutationCount": {"const": 0}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "strings": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "fileDigests": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/sha256"},
+      "propertyNames": {"pattern": "^(specpm\\.yaml|specs/[A-Za-z0-9._-]+\\.spec\\.yaml)$"}
+    }
+  }
+}

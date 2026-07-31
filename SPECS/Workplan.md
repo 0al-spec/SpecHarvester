@@ -2827,7 +2827,7 @@ Acceptance:
   interfaces, and evidence. Show existing-intent reuse and experimental-intent
   proposals distinctly and support reviewer accept, edit, reject, and defer
   actions.
-- [ ] `P55-T8` Implement reviewer-controlled semantic materialization. Apply
+- [x] `P55-T8` Implement reviewer-controlled semantic materialization. Apply
   only explicitly accepted or edited proposal fields to a new candidate
   revision, retain before/after provenance and decision linkage, and run
   SpecHarvester plus read-only SpecPM validation without mutating accepted

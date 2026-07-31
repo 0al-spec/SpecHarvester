@@ -228,6 +228,10 @@ from spec_harvester.selected_candidate_handoff_proposal import (
     write_selected_candidate_handoff_proposal,
     write_selected_candidate_handoff_proposal_markdown,
 )
+from spec_harvester.semantic_materialization import (
+    SemanticMaterializationOptions,
+    materialize_semantic_candidate,
+)
 from spec_harvester.smoke_triage import (
     build_smoke_triage_summary,
     write_smoke_triage_summary,
@@ -972,6 +976,22 @@ def build_parser() -> argparse.ArgumentParser:
     local_specpm_intake.add_argument("--specpm-timeout-seconds", type=int, default=60)
     local_specpm_intake.add_argument("--max-specpm-report-bytes", type=int, default=2 * 1024 * 1024)
     local_specpm_intake.set_defaults(func=run_local_specpm_intake_bridge_cli)
+
+    semantic_materialization = subcommands.add_parser(
+        "materialize-semantic-candidate",
+        help="Create a reviewer-controlled preview candidate revision.",
+    )
+    semantic_materialization.add_argument("--candidate", type=Path, required=True)
+    semantic_materialization.add_argument("--semantic-record", type=Path, required=True)
+    semantic_materialization.add_argument("--review-decision", type=Path, required=True)
+    semantic_materialization.add_argument("--output", type=Path, required=True)
+    semantic_materialization.add_argument("--specpm-command", default="specpm")
+    semantic_materialization.add_argument("--specpm-pythonpath")
+    semantic_materialization.add_argument("--specpm-timeout-seconds", type=int, default=60)
+    semantic_materialization.add_argument(
+        "--max-specpm-report-bytes", type=int, default=2 * 1024 * 1024
+    )
+    semantic_materialization.set_defaults(func=run_semantic_materialization_cli)
 
     local_workbench_e2e = subcommands.add_parser(
         "validate-local-candidate-review-workbench",
@@ -2648,6 +2668,27 @@ def run_local_candidate_review_workbench_e2e_cli(args: argparse.Namespace) -> in
         print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
         return 2
     print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
+def run_semantic_materialization_cli(args: argparse.Namespace) -> int:
+    try:
+        report = materialize_semantic_candidate(
+            SemanticMaterializationOptions(
+                candidate=args.candidate,
+                semantic_record=args.semantic_record,
+                review_decision=args.review_decision,
+                output=args.output,
+                specpm_command=args.specpm_command,
+                specpm_pythonpath=args.specpm_pythonpath,
+                specpm_timeout_seconds=args.specpm_timeout_seconds,
+                max_specpm_report_bytes=args.max_specpm_report_bytes,
+            )
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        return 2
+    print(json.dumps(report, indent=2, sort_keys=True))
     return 0
 
 
