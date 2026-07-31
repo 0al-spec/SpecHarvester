@@ -982,3 +982,4 @@
 | 2026-07-31 | P55-T10A | Archived Experimental-Intent Decision Policy (PASS) |
 | 2026-07-31 | P55-T10A | Archived REVIEW_p55_t10a_experimental_intent_decision_policy report |
 | 2026-07-31 | P55-T10B | Archived Targeted Experimental-Intent Calibration (PASS) |
+| 2026-07-31 | P55-T10B | Archived REVIEW_p55_t10b_targeted_experimental_intent_calibration report |
