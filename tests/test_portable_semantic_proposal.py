@@ -804,6 +804,111 @@ def test_materialization_rejects_non_authorizing_and_stale_decisions(
             )
 
 
+def test_materialization_rejects_incoherent_reviewer_and_manifest_identity(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    record = build_portable_semantic_proposal(*semantic_triplet(tmp_path))
+    action = {
+        "decision": "accepted",
+        "acceptedOrEditedClaimIds": ["purpose"],
+        "editedClaims": [],
+        "proposalSha256": record["proposalSha256"],
+        "sourceBundleSha256": record["sourceBundleSha256"],
+        "semanticRecordSha256": record["recordSha256"],
+    }
+    review = build_semantic_reviewer_edit(action, record, "semantic-reviewer@example")
+    record_path = tmp_path / "record.json"
+    record_path.write_text(json.dumps(record))
+    decision = _materialization_decision(record, review)
+    decision["reviewer"] = "candidate-reviewer@example"
+    decision_path = tmp_path / "decision.json"
+    decision_path.write_text(json.dumps(decision))
+    candidate = _materialization_candidate(tmp_path)
+    monkeypatch.setattr(
+        semantic_materialization,
+        "_run_specpm_validation",
+        lambda *_args, **_kwargs: _valid_specpm_report(),
+    )
+
+    with pytest.raises(ValueError, match="reviewer identity differs"):
+        materialize_semantic_candidate(
+            SemanticMaterializationOptions(
+                candidate=candidate,
+                semantic_record=record_path,
+                review_decision=decision_path,
+                output=tmp_path / "reviewer-output",
+            )
+        )
+
+    decision["reviewer"] = review["reviewer"]
+    decision_path.write_text(json.dumps(decision))
+    manifest_path = candidate / "specpm.yaml"
+    manifest_path.write_text(manifest_path.read_text().replace("id: demo.package", "id: other"))
+    with pytest.raises(ValueError, match="manifest package identity is stale"):
+        materialize_semantic_candidate(
+            SemanticMaterializationOptions(
+                candidate=candidate,
+                semantic_record=record_path,
+                review_decision=decision_path,
+                output=tmp_path / "identity-output",
+            )
+        )
+
+
+def test_materialization_rejects_source_output_overlap_and_symlinked_specs(
+    tmp_path: Path,
+) -> None:
+    record = build_portable_semantic_proposal(*semantic_triplet(tmp_path))
+    action = {
+        "decision": "accepted",
+        "acceptedOrEditedClaimIds": ["purpose"],
+        "editedClaims": [],
+        "proposalSha256": record["proposalSha256"],
+        "sourceBundleSha256": record["sourceBundleSha256"],
+        "semanticRecordSha256": record["recordSha256"],
+    }
+    review = build_semantic_reviewer_edit(action, record, "maintainer@example")
+    record_path = tmp_path / "record.json"
+    decision_path = tmp_path / "decision.json"
+    record_path.write_text(json.dumps(record))
+    decision_path.write_text(json.dumps(_materialization_decision(record, review)))
+    candidate = _materialization_candidate(tmp_path)
+    before = {
+        path.relative_to(candidate): path.read_bytes()
+        for path in candidate.rglob("*")
+        if path.is_file()
+    }
+
+    for output in (candidate, candidate / "nested-output", tmp_path):
+        with pytest.raises(ValueError, match="output overlaps"):
+            materialize_semantic_candidate(
+                SemanticMaterializationOptions(
+                    candidate=candidate,
+                    semantic_record=record_path,
+                    review_decision=decision_path,
+                    output=output,
+                )
+            )
+    assert {
+        path.relative_to(candidate): path.read_bytes()
+        for path in candidate.rglob("*")
+        if path.is_file()
+    } == before
+
+    outside = tmp_path / "outside-specs"
+    (candidate / "specs").rename(outside)
+    (candidate / "specs").symlink_to(outside, target_is_directory=True)
+    with pytest.raises(ValueError, match="symlinked specs"):
+        materialize_semantic_candidate(
+            SemanticMaterializationOptions(
+                candidate=candidate,
+                semantic_record=record_path,
+                review_decision=decision_path,
+                output=tmp_path / "safe-output",
+            )
+        )
+
+
 def test_semantic_materialization_cli_reports_success_and_validation_error(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:

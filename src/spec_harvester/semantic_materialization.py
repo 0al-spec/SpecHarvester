@@ -56,6 +56,10 @@ def _file_digest(path: Path) -> str:
 def _candidate_files(root: Path) -> list[Path]:
     if not root.is_dir() or root.is_symlink():
         raise ValueError("Semantic materialization candidate must be a regular directory")
+    resolved_root = root.resolve()
+    specs = root / "specs"
+    if specs.is_symlink():
+        raise ValueError("Semantic materialization candidate contains a symlinked specs directory")
     files = sorted(
         [root / "specpm.yaml", *root.glob("specs/*.spec.yaml")],
         key=lambda path: path.relative_to(root).as_posix(),
@@ -68,10 +72,27 @@ def _candidate_files(root: Path) -> list[Path]:
     for path in files:
         if path.is_symlink() or not path.is_file():
             raise ValueError("Semantic materialization candidate contains an unsafe file")
+        try:
+            path.resolve(strict=True).relative_to(resolved_root)
+        except (OSError, ValueError) as exc:
+            raise ValueError("Semantic materialization candidate file escapes its root") from exc
         total += path.stat().st_size
     if total > MAX_CANDIDATE_BYTES:
         raise ValueError("Semantic materialization candidate exceeds byte limit")
     return files
+
+
+def _validate_output_boundary(candidate: Path, output: Path) -> None:
+    if output.is_symlink():
+        raise ValueError("Semantic materialization output must not be a symlink")
+    candidate_path = candidate.resolve(strict=False)
+    output_path = output.resolve(strict=False)
+    if (
+        candidate_path == output_path
+        or candidate_path in output_path.parents
+        or output_path in candidate_path.parents
+    ):
+        raise ValueError("Semantic materialization output overlaps the source candidate")
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -204,12 +225,18 @@ def materialize_semantic_candidate(options: SemanticMaterializationOptions) -> d
     if not isinstance(reviewer_edit, dict):
         raise ValueError("Semantic review decision is missing")
     validate_semantic_reviewer_edit(reviewer_edit, record)
+    if reviewer_edit["reviewer"] != decision["reviewer"]:
+        raise ValueError("Semantic reviewer identity differs from candidate decision")
     if reviewer_edit["decision"] not in {"accepted", "edited"}:
         raise ValueError("Semantic materialization requires an accepted or edited decision")
     if decision["binding"]["candidateId"] != record["candidateId"]:
         raise ValueError("Semantic materialization candidate binding is stale")
 
+    _validate_output_boundary(options.candidate, options.output)
     source_files = _candidate_files(options.candidate)
+    source_manifest = SpecPackageManifest.from_path(options.candidate / "specpm.yaml")
+    if source_manifest.package_id() != record["candidateId"]:
+        raise ValueError("Semantic materialization manifest package identity is stale")
     before = {
         path.relative_to(options.candidate).as_posix(): _file_digest(path) for path in source_files
     }
@@ -225,7 +252,9 @@ def materialize_semantic_candidate(options: SemanticMaterializationOptions) -> d
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, target)
         application = _apply_semantics(revision, record, reviewer_edit)
-        SpecPackageManifest.from_path(revision / "specpm.yaml")
+        revision_manifest = SpecPackageManifest.from_path(revision / "specpm.yaml")
+        if revision_manifest.package_id() != record["candidateId"]:
+            raise ValueError("Materialized manifest package identity is stale")
         specpm = _normalized_specpm_report(
             _run_specpm_validation(
                 revision,
@@ -270,8 +299,6 @@ def materialize_semantic_candidate(options: SemanticMaterializationOptions) -> d
             json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
         if options.output.exists():
-            if options.output.is_symlink():
-                raise ValueError("Semantic materialization output must not be a symlink")
             shutil.rmtree(options.output)
         os.replace(temporary, options.output)
     return report
