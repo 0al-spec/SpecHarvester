@@ -1,0 +1,687 @@
+from __future__ import annotations
+
+import gzip
+import hashlib
+import io
+import json
+import shutil
+import tarfile
+import tempfile
+import time
+from collections import Counter
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+from spec_harvester.controlled_calibration import git_dirty_status, git_head
+from spec_harvester.portable_semantic_proposal import build_portable_semantic_proposal
+from spec_harvester.semantic_author_input_pack import (
+    SemanticAuthorInputPackOptions,
+    build_semantic_author_input_pack,
+)
+from spec_harvester.semantic_author_pass import (
+    CodexSparkSemanticAuthorProvider,
+    SemanticAuthorPassError,
+    SemanticAuthorPassOptions,
+    run_semantic_author_pass,
+)
+from spec_harvester.semantic_proposal_quality import (
+    GENERIC_INTENT_IDS,
+    evaluate_semantic_proposal_quality,
+)
+from spec_harvester.source_manifest import read_repository_source_manifests
+
+CAMPAIGN_API_VERSION = "spec-harvester.retained-corpus-semantic-campaign/v0"
+CAMPAIGN_KIND = "SpecHarvesterRetainedCorpusSemanticCampaign"
+RECORD_API_VERSION = "spec-harvester.retained-corpus-semantic-record/v0"
+RECORD_KIND = "SpecHarvesterRetainedCorpusSemanticRecord"
+EXPECTED_REPOSITORY_COUNT = 100
+
+
+@dataclass(frozen=True)
+class CampaignTarget:
+    repository_id: str
+    revision: str
+    wave: str
+    packet_sha256: str
+    candidate_id: str
+    candidate_dir: Path
+    source_dir: Path
+
+    def binding(self) -> dict[str, str]:
+        return {
+            "repositoryId": self.repository_id,
+            "revision": self.revision,
+            "wave": self.wave,
+            "packetSha256": self.packet_sha256,
+            "candidateId": self.candidate_id,
+        }
+
+
+@dataclass(frozen=True)
+class CampaignRunOptions:
+    timeout_seconds: float = 300.0
+    json_repair_max_attempts: int = 1
+    provider_max_attempts: int = 2
+    max_output_bytes: int = 256 * 1024
+
+
+def load_campaign_scope(
+    *,
+    source_manifest_dir: Path,
+    source_root: Path,
+    handoff_root: Path,
+    readiness_evidence: Path,
+) -> tuple[dict[str, Any], list[CampaignTarget]]:
+    sources = read_repository_source_manifests(source_manifest_dir)
+    if len(sources) != EXPECTED_REPOSITORY_COUNT:
+        raise ValueError("Retained corpus must contain exactly 100 repositories")
+    repository_ids = [item["id"] for item in sources]
+    if len(set(repository_ids)) != EXPECTED_REPOSITORY_COUNT:
+        raise ValueError("Retained corpus repository IDs must be unique")
+
+    aggregate_path = handoff_root / "aggregate-handoff.json"
+    aggregate = _read_json(aggregate_path)
+    selected = aggregate.get("selectedCandidates")
+    if not isinstance(selected, list) or {
+        item.get("repositoryId") for item in selected if isinstance(item, dict)
+    } != set(repository_ids):
+        raise ValueError("P53-T14 handoff does not match the retained corpus")
+
+    readiness = _read_json(readiness_evidence)
+    if readiness.get("decision") != {
+        "p55T10Unblocked": True,
+        "thresholdsRedefined": False,
+    } or any(
+        readiness.get("providers", {}).get(provider, {}).get("summary", {}).get("passed")
+        is not True
+        for provider in ("codex_spark", "lm_studio")
+    ):
+        raise ValueError("P55-T9A readiness evidence does not unblock P55-T10")
+
+    targets = [
+        _load_target(source, source_root=source_root, handoff_root=handoff_root)
+        for source in sources
+    ]
+    scope = {
+        "apiVersion": CAMPAIGN_API_VERSION,
+        "kind": CAMPAIGN_KIND,
+        "schemaVersion": 1,
+        "authority": "semantic_campaign_proposal_only",
+        "provider": {
+            "id": "gpt-5.3-codex-spark",
+            "kind": "codex_exec",
+        },
+        "repositoryCount": EXPECTED_REPOSITORY_COUNT,
+        "sourceManifestSha256": _directory_digest(source_manifest_dir, "*.yml"),
+        "handoffAggregateSha256": sha256_file(aggregate_path),
+        "p55T9AReadinessSha256": sha256_file(readiness_evidence),
+        "targets": [target.binding() for target in targets],
+        "executionBoundary": _execution_boundary(),
+    }
+    scope["campaignInputSha256"] = digest(scope)
+    return scope, targets
+
+
+def _load_target(
+    source: dict[str, Any], *, source_root: Path, handoff_root: Path
+) -> CampaignTarget:
+    repository_id = source["id"]
+    revision = source.get("revision")
+    if not isinstance(revision, str):
+        raise ValueError(f"Retained source revision is not pinned: {repository_id}")
+    packet_dir = handoff_root / "packets" / repository_id
+    packet_path = packet_dir / "packet.json"
+    packet = _read_json(packet_path)
+    if packet.get("repository", {}).get("id") != repository_id:
+        raise ValueError(f"P53-T14 packet identity mismatch: {repository_id}")
+    _verify_packet_files(packet_dir, packet)
+    candidate_relative = select_principal_candidate(
+        _read_json(packet_dir / "candidate" / "package-set-draft.json")
+    )
+    candidate_dir = _safe_child(packet_dir / "candidate", candidate_relative)
+    manifest = yaml.safe_load((candidate_dir / "specpm.yaml").read_text(encoding="utf-8"))
+    candidate_id = manifest.get("metadata", {}).get("id") if isinstance(manifest, dict) else None
+    if not isinstance(candidate_id, str) or not candidate_id:
+        raise ValueError(f"Principal candidate identity is invalid: {repository_id}")
+    wave = packet.get("repository", {}).get("wave")
+    if not isinstance(wave, str) or not wave:
+        raise ValueError(f"P53-T14 packet wave is invalid: {repository_id}")
+    return CampaignTarget(
+        repository_id=repository_id,
+        revision=revision,
+        wave=wave,
+        packet_sha256=sha256_file(packet_path),
+        candidate_id=candidate_id,
+        candidate_dir=candidate_dir,
+        source_dir=source_root / repository_id,
+    )
+
+
+def select_principal_candidate(draft: dict[str, Any]) -> str:
+    candidates = draft.get("candidates")
+    if not isinstance(candidates, list) or not candidates:
+        raise ValueError("Package-set draft has no candidates")
+    eligible = [
+        item
+        for item in candidates
+        if isinstance(item, dict)
+        and item.get("status") == "ok"
+        and isinstance(item.get("candidatePath"), str)
+    ]
+    if not eligible:
+        raise ValueError("Package-set draft has no eligible candidates")
+    selected = next(
+        (item for item in eligible if item.get("role") == "member_package"), eligible[0]
+    )
+    return selected["candidatePath"]
+
+
+def initialize_campaign(work_root: Path, scope: dict[str, Any]) -> None:
+    work_root.mkdir(parents=True, exist_ok=True)
+    scope_path = work_root / "campaign-input.json"
+    if scope_path.exists():
+        existing = _read_json(scope_path)
+        if existing != scope:
+            raise ValueError("Resumed campaign input binding is stale")
+    else:
+        _atomic_write_json(scope_path, scope)
+    (work_root / "records").mkdir(exist_ok=True)
+
+
+def run_campaign_target(
+    target: CampaignTarget,
+    *,
+    scope: dict[str, Any],
+    work_root: Path,
+    provider: CodexSparkSemanticAuthorProvider,
+    options: CampaignRunOptions,
+) -> dict[str, Any]:
+    _validate_run_options(options)
+    record_path = _record_path(work_root, target.repository_id)
+    if record_path.exists():
+        record = _read_json(record_path)
+        validate_campaign_record(record, scope, target)
+        return record
+
+    validate_source_checkout(target.source_dir, target.revision)
+    attempt_records: list[dict[str, Any]] = []
+    terminal: dict[str, Any] | None = None
+    for attempt in range(1, options.provider_max_attempts + 1):
+        started = time.monotonic()
+        try:
+            with tempfile.TemporaryDirectory(prefix="p55-t10-") as temporary:
+                workspace = prepare_workspace(
+                    target.candidate_dir, target.source_dir, Path(temporary)
+                )
+                manifest = yaml.safe_load((workspace / "specpm.yaml").read_text(encoding="utf-8"))
+                pack = build_semantic_author_input_pack(
+                    workspace,
+                    observed_catalog(manifest),
+                    options=SemanticAuthorInputPackOptions(document_paths=("README.md",)),
+                )
+                semantic_pass = run_semantic_author_pass(
+                    pack,
+                    provider,
+                    options=SemanticAuthorPassOptions(
+                        timeout_seconds=options.timeout_seconds,
+                        max_output_bytes=options.max_output_bytes,
+                        json_repair_max_attempts=options.json_repair_max_attempts,
+                    ),
+                )
+                quality = evaluate_semantic_proposal_quality(pack, semantic_pass)
+                portable = (
+                    build_portable_semantic_proposal(pack, semantic_pass, quality)
+                    if quality["status"] != "rejected"
+                    else None
+                )
+                terminal = _completed_record(
+                    target,
+                    scope=scope,
+                    attempt=attempt,
+                    attempt_records=attempt_records,
+                    pack=pack,
+                    semantic_pass=semantic_pass,
+                    quality=quality,
+                    portable=portable,
+                )
+            attempt_records.append(
+                _attempt_record(attempt, "completed", started, semantic_pass=semantic_pass)
+            )
+            terminal["attempts"] = attempt_records
+            break
+        except (SemanticAuthorPassError, ValueError, OSError) as exc:
+            attempt_records.append(_attempt_record(attempt, "failed", started, error=exc))
+
+    if terminal is None:
+        terminal = {
+            "apiVersion": RECORD_API_VERSION,
+            "kind": RECORD_KIND,
+            "schemaVersion": 1,
+            "authority": "semantic_campaign_proposal_only",
+            "campaignInputSha256": scope["campaignInputSha256"],
+            **target.binding(),
+            "status": "failed",
+            "attempts": attempt_records,
+            "executionBoundary": _execution_boundary(),
+        }
+    terminal["recordSha256"] = digest(terminal)
+    validate_campaign_record(terminal, scope, target)
+    record_path.parent.mkdir(parents=True, exist_ok=True)
+    _atomic_write_json(record_path, terminal)
+    portable = terminal.get("portableProposal")
+    if isinstance(portable, dict):
+        _atomic_write_json(record_path.parent / "semantic-proposal-record.json", portable)
+    return terminal
+
+
+def _completed_record(
+    target: CampaignTarget,
+    *,
+    scope: dict[str, Any],
+    attempt: int,
+    attempt_records: list[dict[str, Any]],
+    pack: dict[str, Any],
+    semantic_pass: dict[str, Any],
+    quality: dict[str, Any],
+    portable: dict[str, Any] | None,
+) -> dict[str, Any]:
+    proposal = semantic_pass["proposal"]
+    intent_decisions = proposal["intentDecisions"]
+    record: dict[str, Any] = {
+        "apiVersion": RECORD_API_VERSION,
+        "kind": RECORD_KIND,
+        "schemaVersion": 1,
+        "authority": "semantic_campaign_proposal_only",
+        "campaignInputSha256": scope["campaignInputSha256"],
+        **target.binding(),
+        "status": "completed",
+        "providerAttemptCount": attempt,
+        "attempts": attempt_records,
+        "sourceBundleSha256": pack["sourceBundleSha256"],
+        "staticObservedIntentIds": sorted(item["intentId"] for item in pack["observedIntents"]),
+        "proposalReuseIntentIds": sorted(
+            item["intentId"] for item in intent_decisions if item["state"] == "proposed_reuse"
+        ),
+        "experimentalIntentIds": sorted(
+            item["intentId"]
+            for item in intent_decisions
+            if item["state"] == "proposed_experimental"
+        ),
+        "semanticPass": semantic_pass,
+        "qualityReport": quality,
+        "portableProposal": portable,
+        "executionBoundary": _execution_boundary(),
+    }
+    return record
+
+
+def validate_campaign_record(
+    record: dict[str, Any], scope: dict[str, Any], target: CampaignTarget
+) -> None:
+    if (
+        record.get("apiVersion") != RECORD_API_VERSION
+        or record.get("kind") != RECORD_KIND
+        or record.get("authority") != "semantic_campaign_proposal_only"
+        or record.get("campaignInputSha256") != scope.get("campaignInputSha256")
+        or any(record.get(key) != value for key, value in target.binding().items())
+        or record.get("status") not in {"completed", "failed"}
+        or record.get("executionBoundary") != _execution_boundary()
+        or record.get("recordSha256") != _digest_without(record, "recordSha256")
+    ):
+        raise ValueError(f"Campaign record binding is stale: {target.repository_id}")
+    attempts = record.get("attempts")
+    if not isinstance(attempts, list) or not attempts or len(attempts) > 2:
+        raise ValueError(f"Campaign record attempt accounting is invalid: {target.repository_id}")
+    if record["status"] == "completed":
+        if not all(
+            isinstance(record.get(key), expected)
+            for key, expected in (
+                ("semanticPass", dict),
+                ("qualityReport", dict),
+                ("staticObservedIntentIds", list),
+                ("proposalReuseIntentIds", list),
+                ("experimentalIntentIds", list),
+            )
+        ):
+            raise ValueError(f"Completed campaign record is incomplete: {target.repository_id}")
+
+
+def finalize_campaign(
+    *,
+    scope: dict[str, Any],
+    targets: list[CampaignTarget],
+    work_root: Path,
+    output_path: Path,
+    archive_path: Path,
+) -> dict[str, Any]:
+    records: list[dict[str, Any]] = []
+    for target in targets:
+        path = _record_path(work_root, target.repository_id)
+        if not path.is_file():
+            raise ValueError(f"Campaign is incomplete: {target.repository_id}")
+        record = _read_json(path)
+        validate_campaign_record(record, scope, target)
+        records.append(record)
+
+    archive_sha256 = write_deterministic_archive(work_root, archive_path)
+    report = campaign_summary(scope, records)
+    report["archive"] = {
+        "path": archive_path.name,
+        "sha256": archive_sha256,
+        "recordCount": len(records),
+    }
+    report["reportSha256"] = digest(report)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    _atomic_write_json(output_path, report)
+    return report
+
+
+def campaign_summary(scope: dict[str, Any], records: list[dict[str, Any]]) -> dict[str, Any]:
+    if len(records) != EXPECTED_REPOSITORY_COUNT:
+        raise ValueError("Full campaign summary requires exactly 100 records")
+    completed = [record for record in records if record["status"] == "completed"]
+    failed = [record for record in records if record["status"] == "failed"]
+    quality_counts = Counter(record["qualityReport"]["status"] for record in completed)
+    diagnostics = Counter(
+        item["code"] for record in completed for item in record["qualityReport"]["diagnostics"]
+    )
+    static_generic = sum(
+        intent_id in GENERIC_INTENT_IDS
+        for record in completed
+        for intent_id in record["staticObservedIntentIds"]
+    )
+    proposed_generic = sum(
+        intent_id in GENERIC_INTENT_IDS
+        for record in completed
+        for intent_id in record["proposalReuseIntentIds"]
+    )
+    experimental = Counter(
+        intent_id for record in completed for intent_id in record["experimentalIntentIds"]
+    )
+    duration_ms = sum(attempt["durationMs"] for record in records for attempt in record["attempts"])
+    usage: Counter[str] = Counter()
+    for record in completed:
+        usage.update(
+            {
+                key: value
+                for key, value in record["semanticPass"]["providerReceipt"].get("usage", {}).items()
+                if isinstance(value, int)
+            }
+        )
+    repair_count = sum(
+        record["semanticPass"]["providerReceipt"]["jsonRepairNeeded"] for record in completed
+    )
+    return {
+        "apiVersion": CAMPAIGN_API_VERSION,
+        "kind": CAMPAIGN_KIND,
+        "schemaVersion": 1,
+        "authority": "semantic_campaign_proposal_only",
+        "campaignInputSha256": scope["campaignInputSha256"],
+        "bindings": {
+            key: scope[key]
+            for key in (
+                "sourceManifestSha256",
+                "handoffAggregateSha256",
+                "p55T9AReadinessSha256",
+            )
+        },
+        "provider": scope["provider"],
+        "summary": {
+            "repositoryCount": len(records),
+            "completedCount": len(completed),
+            "failedCount": len(failed),
+            "portableProposalCount": sum(
+                isinstance(record.get("portableProposal"), dict) for record in completed
+            ),
+            "qualityStatusCounts": dict(sorted(quality_counts.items())),
+        },
+        "semanticQuality": {
+            "evidenceSupportedProposalRate": _rate(
+                sum(
+                    record["qualityReport"]["metrics"]["evidenceSupportRate"] == 1.0
+                    for record in completed
+                ),
+                len(records),
+            ),
+            "schemaValidProposalRate": _rate(
+                sum(
+                    record["qualityReport"]["metrics"]["schemaValid"] is True
+                    for record in completed
+                ),
+                len(records),
+            ),
+            "staticGenericIntentReferenceCount": static_generic,
+            "proposedGenericIntentReuseCount": proposed_generic,
+            "genericIntentReductionCount": static_generic - proposed_generic,
+            "diagnosticCounts": dict(sorted(diagnostics.items())),
+            "duplicateExperimentalIntentIds": {
+                key: count for key, count in sorted(experimental.items()) if count > 1
+            },
+        },
+        "reviewerDecisions": {
+            "acceptedCount": 0,
+            "editedCount": 0,
+            "rejectedCount": 0,
+            "deferredCount": 0,
+            "unreviewedCount": len(records),
+            "source": "no_reviewer_decision_evidence_supplied",
+        },
+        "budgets": {
+            "providerAttemptCount": sum(len(record["attempts"]) for record in records),
+            "failedProviderAttemptCount": sum(
+                attempt["status"] == "failed"
+                for record in records
+                for attempt in record["attempts"]
+            ),
+            "jsonRepairRecordCount": repair_count,
+            "durationMs": duration_ms,
+            "tokenUsage": dict(sorted(usage.items())),
+            "cost": {"status": "unavailable_from_codex_exec_receipts"},
+        },
+        "privacy": {
+            "rawPromptsPersisted": False,
+            "rawResponsesPersisted": False,
+            "chainOfThoughtPersisted": False,
+            "credentialsPersisted": False,
+            "machineLocalPathsPersisted": False,
+        },
+        "executionBoundary": _execution_boundary(),
+        "recordIndex": [
+            {
+                "repositoryId": record["repositoryId"],
+                "candidateId": record["candidateId"],
+                "status": record["status"],
+                "recordSha256": record["recordSha256"],
+            }
+            for record in records
+        ],
+    }
+
+
+def write_deterministic_archive(work_root: Path, archive_path: Path) -> str:
+    paths = [work_root / "campaign-input.json", *sorted((work_root / "records").rglob("*.json"))]
+    tar_buffer = io.BytesIO()
+    with tarfile.open(fileobj=tar_buffer, mode="w") as archive:
+        for path in paths:
+            if path.is_symlink() or not path.is_file():
+                raise ValueError("Campaign archive input must be a regular file")
+            relative = path.relative_to(work_root).as_posix()
+            data = path.read_bytes()
+            info = tarfile.TarInfo(relative)
+            info.size = len(data)
+            info.mode = 0o644
+            info.mtime = 0
+            archive.addfile(info, io.BytesIO(data))
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+    with archive_path.open("wb") as raw:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as compressed:
+            compressed.write(tar_buffer.getvalue())
+    return sha256_file(archive_path)
+
+
+def prepare_workspace(candidate: Path, source: Path, root: Path) -> Path:
+    workspace = root / "workspace"
+    workspace.mkdir()
+    shutil.copy2(candidate / "specpm.yaml", workspace / "specpm.yaml")
+    shutil.copytree(candidate / "specs", workspace / "specs")
+    shutil.copy2(candidate / "harvest.json", workspace / "harvest.json")
+    interface = candidate / "public-interface-index.json"
+    if interface.is_file() and not interface.is_symlink():
+        shutil.copy2(interface, workspace / interface.name)
+    readme = next(
+        (
+            path
+            for name in ("README.md", "README.markdown", "README")
+            if (path := source / name).is_file() and not path.is_symlink()
+        ),
+        None,
+    )
+    if readme is None:
+        raise ValueError(f"README evidence is unavailable: {source.name}")
+    shutil.copy2(readme, workspace / "README.md")
+    return workspace
+
+
+def validate_source_checkout(source: Path, expected_revision: str) -> None:
+    if not source.is_dir() or source.is_symlink():
+        raise ValueError(f"Retained source checkout is unavailable: {source.name}")
+    if git_head(source) != expected_revision:
+        raise ValueError(f"Retained source revision mismatch: {source.name}")
+    dirty = git_dirty_status(source)
+    if dirty is None:
+        raise ValueError(f"Retained source status is unavailable: {source.name}")
+    if dirty:
+        raise ValueError(f"Retained source checkout is dirty: {source.name}")
+
+
+def observed_catalog(manifest: dict[str, Any]) -> dict[str, Any]:
+    provides = manifest.get("index", {}).get("provides", {})
+    intent_ids = sorted(item for item in provides.get("intents", []) if isinstance(item, str))
+    content = {
+        "sourcePath": "generated/observed-intents.json",
+        "intents": [
+            {"intentId": intent_id, "sha256": hashlib.sha256(intent_id.encode()).hexdigest()}
+            for intent_id in intent_ids
+        ],
+    }
+    return {**content, "sha256": digest(content)}
+
+
+def _verify_packet_files(packet_dir: Path, packet: dict[str, Any]) -> None:
+    files = packet.get("candidate", {}).get("files")
+    if not isinstance(files, list) or not files:
+        raise ValueError(f"P53-T14 packet has no candidate files: {packet_dir.name}")
+    for item in files:
+        if not isinstance(item, dict) or not isinstance(item.get("path"), str):
+            raise ValueError(f"P53-T14 packet file binding is invalid: {packet_dir.name}")
+        path = _safe_child(packet_dir, item["path"])
+        if path.is_symlink() or not path.is_file() or sha256_file(path) != item.get("sha256"):
+            raise ValueError(f"P53-T14 packet file binding is stale: {packet_dir.name}")
+
+
+def _safe_child(root: Path, relative: str) -> Path:
+    if Path(relative).is_absolute():
+        raise ValueError("Campaign path must be relative")
+    root_resolved = root.resolve()
+    path = (root / relative).resolve()
+    if path == root_resolved or root_resolved not in path.parents:
+        raise ValueError("Campaign path escapes its root")
+    return path
+
+
+def _attempt_record(
+    attempt: int,
+    status: str,
+    started: float,
+    *,
+    semantic_pass: dict[str, Any] | None = None,
+    error: Exception | None = None,
+) -> dict[str, Any]:
+    record: dict[str, Any] = {
+        "attempt": attempt,
+        "status": status,
+        "durationMs": int((time.monotonic() - started) * 1000),
+    }
+    if semantic_pass is not None:
+        receipt = semantic_pass["providerReceipt"]
+        record.update(
+            {
+                "jsonRepairNeeded": receipt["jsonRepairNeeded"],
+                "jsonRepairAttemptCount": receipt["jsonRepairAttemptCount"],
+            }
+        )
+    if error is not None:
+        record["failureCode"] = str(error)[:500]
+    return record
+
+
+def _validate_run_options(options: CampaignRunOptions) -> None:
+    if (
+        options.timeout_seconds <= 0
+        or options.max_output_bytes <= 0
+        or options.json_repair_max_attempts < 0
+        or not 1 <= options.provider_max_attempts <= 2
+    ):
+        raise ValueError("Semantic campaign budgets are invalid")
+
+
+def _execution_boundary() -> dict[str, bool]:
+    return {
+        "repositoryCodeExecuted": False,
+        "packageManagerInvoked": False,
+        "reviewerDecisionCreated": False,
+        "materializationPerformed": False,
+        "specpmMutated": False,
+        "registryMutated": False,
+        "publicationPerformed": False,
+    }
+
+
+def _record_path(work_root: Path, repository_id: str) -> Path:
+    return work_root / "records" / repository_id / "campaign-record.json"
+
+
+def _directory_digest(root: Path, pattern: str) -> str:
+    records = [
+        {"path": path.relative_to(root).as_posix(), "sha256": sha256_file(path)}
+        for path in sorted(root.glob(pattern))
+    ]
+    return digest(records)
+
+
+def _rate(numerator: int, denominator: int) -> float:
+    return round(numerator / denominator, 4) if denominator else 0.0
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"Cannot read campaign JSON: {path.name}") from exc
+    if not isinstance(value, dict):
+        raise ValueError(f"Campaign JSON must be an object: {path.name}")
+    return value
+
+
+def _atomic_write_json(path: Path, value: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.tmp")
+    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temporary.replace(path)
+
+
+def sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def digest(value: Any) -> str:
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+
+
+def _digest_without(value: dict[str, Any], key: str) -> str:
+    return digest({name: item for name, item in value.items() if name != key})
