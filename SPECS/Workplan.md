@@ -2848,7 +2848,7 @@ Acceptance:
   evidence-supported proposal rate, duplicate-intent warnings, provider
   failures, accepted/edit/rejected/deferred counts, and token/cost/runtime
   budgets without automatically promoting candidates.
-- [ ] `P55-T10A` Define and implement an evidence-grounded experimental-intent
+- [x] `P55-T10A` Define and implement an evidence-grounded experimental-intent
   decision policy. When a generic observed intent does not express the
   documented user outcome, require Codex 5.3 Spark to compare nearby observed
   intents and either justify reuse or propose one bounded

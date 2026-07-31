@@ -261,6 +261,7 @@
 | P55-T9 | [P55-T9_Targeted_Semantic_Quality_Calibration/](P55-T9_Targeted_Semantic_Quality_Calibration/) | 2026-07-31 | PASS |
 | P55-T9A | [P55-T9A_Semantic_Provider_Output_Conformance_Follow-Up/](P55-T9A_Semantic_Provider_Output_Conformance_Follow-Up/) | 2026-07-31 | PASS |
 | P55-T10 | [P55-T10_Retained-Corpus_Semantic_Author_and_Review_Flow/](P55-T10_Retained-Corpus_Semantic_Author_and_Review_Flow/) | 2026-07-31 | PASS |
+| P55-T10A | [P55-T10A_Experimental-Intent_Decision_Policy/](P55-T10A_Experimental-Intent_Decision_Policy/) | 2026-07-31 | PASS |
 
 ## Historical Artifacts
 
@@ -977,3 +978,5 @@
 | 2026-07-30 | P55-T4 | Archived REVIEW_p55_t4_provider_neutral_semantic_author_pass report |
 | 2026-07-31 | P55-T10 | Archived Retained-Corpus Semantic Author and Review Flow (PASS) |
 | 2026-07-31 | P55-T10 | Archived REVIEW_p55_t10_retained_corpus_semantic_campaign report |
+| 2026-07-31 | P55-T10A | Archived Experimental-Intent Decision Policy (PASS) |
+| 2026-07-31 | P55-T10A | Archived REVIEW_p55_t10a_experimental_intent_decision_policy report |

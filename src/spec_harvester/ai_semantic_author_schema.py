@@ -89,7 +89,10 @@ def validate_semantic_author_fixture(payload: dict[str, Any]) -> None:
             referenced_claim_ids.add(record["rationaleClaimId"])
         else:
             referenced_claim_ids.add(record["userNeedClaimId"])
+            referenced_claim_ids.update(record["nearbyIntentClaimIds"])
             referenced_claim_ids.update(record["nonGoalClaimIds"])
+            if len(record["nearbyIntentIds"]) != len(record["nearbyIntentClaimIds"]):
+                raise ValueError("experimental intent nearby claim binding count does not match")
 
     nearby_intent_analysis = payload["nearbyIntentAnalysis"]
     if nearby_intent_analysis["proposalSha256"] != proposal["proposalSha256"]:

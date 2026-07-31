@@ -7,6 +7,9 @@ from pathlib import Path
 
 import pytest
 
+from spec_harvester.experimental_intent_policy import (
+    load_experimental_intent_decision_policy,
+)
 from spec_harvester.semantic_author_input_pack import build_semantic_author_input_pack
 from spec_harvester.semantic_author_pass import (
     CodexSparkSemanticAuthorProvider,
@@ -43,10 +46,10 @@ class FakeProvider:
         )
 
 
-def catalog() -> dict:
+def catalog(intent_id: str = "intent.ai.context_selection") -> dict:
     payload = {
         "sourcePath": "catalog/observed.json",
-        "intents": [{"intentId": "intent.package.javascript_library", "sha256": "a" * 64}],
+        "intents": [{"intentId": intent_id, "sha256": "a" * 64}],
     }
     return {
         **payload,
@@ -56,14 +59,14 @@ def catalog() -> dict:
     }
 
 
-def pack(tmp_path: Path) -> dict:
+def pack(tmp_path: Path, intent_id: str = "intent.ai.context_selection") -> dict:
     (tmp_path / "specs").mkdir()
     (tmp_path / "specpm.yaml").write_text(
         "kind: SpecPackage\nmetadata:\n  id: demo.package\npreview_only: true\n"
     )
     (tmp_path / "specs/core.spec.yaml").write_text("kind: BoundarySpec\n")
     (tmp_path / "harvest.json").write_text("{}")
-    return build_semantic_author_input_pack(tmp_path, catalog())
+    return build_semantic_author_input_pack(tmp_path, catalog(intent_id))
 
 
 def proposal(input_pack: dict) -> dict:
@@ -76,6 +79,11 @@ def proposal(input_pack: dict) -> dict:
     reuse = result["intentDecisions"][0]
     reuse["intentId"] = input_pack["observedIntents"][0]["intentId"]
     reuse["observedIntentSha256"] = input_pack["observedIntents"][0]["observedIntentSha256"]
+    result["intentDecisions"][1]["intentId"] = (
+        f"intent.experimental.ai_context_optimization.{input_pack['sourceBundleSha256'][:8]}"
+    )
+    result["intentDecisions"][1]["nearbyIntentIds"] = [reuse["intentId"]]
+    result["intentDecisions"][1]["nearbyIntentClaimIds"] = ["nearby_difference"]
     return result
 
 
@@ -90,6 +98,7 @@ def provider_request(input_pack: dict) -> dict:
     return {
         "request": input_pack["request"],
         "observedIntents": input_pack["observedIntents"],
+        "experimentalIntentDecisionPolicy": load_experimental_intent_decision_policy(),
         "requiredJsonShape": {"type": "object"},
         "allowedEvidencePaths": [item["sourcePath"] for item in input_pack["request"]["evidence"]],
     }
@@ -103,6 +112,10 @@ def test_provider_neutral_pass_normalizes_contract_and_discards_raw_data(tmp_pat
     assert provider.requests[0]["observedIntents"] == input_pack["observedIntents"]
     assert provider.requests[0]["evidence"] == input_pack["evidence"]
     assert provider.requests[0]["evidence"][0]["content"]
+    assert (
+        report["experimentalIntentDecisionPolicy"]["policySha256"]
+        == provider.requests[0]["experimentalIntentDecisionPolicy"]["policySha256"]
+    )
     assert report["kind"] == "SpecHarvesterSemanticAuthorPass"
     assert report["proposal"]["provider"]["id"] == "test_provider"
     assert (
@@ -174,6 +187,79 @@ def test_provider_payload_rejects_malformed_semantic_focus_before_invocation(
             semantic_focus={"purposeConceptGroups": [], "specificTerms": []},
         )
     assert provider.requests == []
+
+
+def test_decision_policy_is_validated_before_provider_invocation(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path)
+    provider = FakeProvider(proposal(input_pack))
+    stale = load_experimental_intent_decision_policy()
+    stale["policySha256"] = "f" * 64
+
+    with pytest.raises(ValueError, match="policy digest is stale"):
+        run_semantic_author_pass(input_pack, provider, decision_policy=stale)
+
+    assert provider.requests == []
+
+
+def test_generic_reuse_and_experimental_novelty_are_mutually_exclusive(
+    tmp_path: Path,
+) -> None:
+    input_pack = pack(tmp_path, "intent.package.javascript_library")
+    provider = FakeProvider(proposal(input_pack))
+
+    with pytest.raises(SemanticAuthorPassError, match="cannot retain a generic observed intent"):
+        run_semantic_author_pass(input_pack, provider)
+
+
+def test_generic_reuse_is_allowed_with_explicit_comparison(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path, "intent.package.javascript_library")
+    payload = proposal(input_pack)
+    payload["intentDecisions"] = payload["intentDecisions"][:1]
+
+    report = run_semantic_author_pass(input_pack, FakeProvider(payload))
+
+    assert report["proposal"]["intentDecisions"][0]["state"] == "proposed_reuse"
+
+
+def test_generic_reuse_without_comparison_fails_closed(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path, "intent.package.javascript_library")
+    payload = proposal(input_pack)
+    payload["intentDecisions"] = payload["intentDecisions"][:1]
+    payload["intentDecisions"][0]["rationaleClaimId"] = next(
+        claim["id"] for claim in payload["claims"] if claim["kind"] == "capability"
+    )
+
+    with pytest.raises(SemanticAuthorPassError, match="lacks an explicit comparison claim"):
+        run_semantic_author_pass(input_pack, FakeProvider(payload))
+
+
+def test_experimental_identifier_cannot_leak_candidate_namespace(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path)
+    payload = proposal(input_pack)
+    payload["intentDecisions"][1]["intentId"] = (
+        f"intent.experimental.demo_context.{input_pack['sourceBundleSha256'][:8]}"
+    )
+
+    with pytest.raises(SemanticAuthorPassError, match="leaks candidate namespace"):
+        run_semantic_author_pass(input_pack, FakeProvider(payload))
+
+
+def test_experimental_nearby_intent_must_be_observed(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path)
+    payload = proposal(input_pack)
+    payload["intentDecisions"][1]["nearbyIntentIds"] = ["intent.ai.unknown"]
+
+    with pytest.raises(SemanticAuthorPassError, match="unknown nearby observed intent"):
+        run_semantic_author_pass(input_pack, FakeProvider(payload))
+
+
+def test_experimental_nearby_intents_require_matching_comparison_claims(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path)
+    payload = proposal(input_pack)
+    payload["intentDecisions"][1]["nearbyIntentClaimIds"] = ["capability"]
+
+    with pytest.raises(SemanticAuthorPassError, match="matching comparison claims"):
+        run_semantic_author_pass(input_pack, FakeProvider(payload))
 
 
 @pytest.mark.parametrize("mutation", ("evidence", "intent", "candidate", "output"))
@@ -441,6 +527,7 @@ def test_transport_state_discards_only_inactive_intent_branch_padding(
         {
             "userNeedClaimId": "inactive_value",
             "nearbyIntentIds": ["intent.inactive"],
+            "nearbyIntentClaimIds": ["inactive_claim"],
             "nonGoalClaimIds": ["inactive_claim"],
         }
     )
@@ -458,6 +545,7 @@ def test_transport_state_discards_only_inactive_intent_branch_padding(
     assert normalized["rationaleClaimId"] == reuse["rationaleClaimId"]
     assert "userNeedClaimId" not in normalized
     assert "nearbyIntentIds" not in normalized
+    assert "nearbyIntentClaimIds" not in normalized
     assert "nonGoalClaimIds" not in normalized
 
 

@@ -11,3 +11,8 @@ digests, evidence bindings, observed-intent reuse, and claim references before
 returning output. Both providers receive the same bounded evidence content,
 use finite JSON repair, enforce output byte limits while reading, and retain
 only allowlisted receipt metadata.
+
+The P55-T10A experimental-intent decision policy is supplied to both providers.
+It requires explicit semantic comparison for generic reuse and permits at most
+one source-digest-bound experimental intent when observed intents are
+insufficient. Novelty remains proposal-only and non-canonical.

@@ -39,6 +39,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P55-T10B Targeted Experimental-Intent Calibration" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P55-T10A` Experimental-Intent Decision Policy" in next_text
+        assert "`openai/codex`, `rtk-ai/rtk`, `BurntSushi/ripgrep`" in normalized
+        assert "At least one experimental proposal must be evidence-supported" in normalized
+        assert "unjustified novelty must be recorded as failure" in normalized
+        assert "Do not materialize, canonicalize, mutate registry truth" in normalized
+        return
+
     if "# Next Task: P55-T10A Experimental-Intent Decision Policy" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text

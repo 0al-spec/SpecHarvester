@@ -104,6 +104,7 @@
         "intentId": "intent.experimental.ai_context_optimization",
         "userNeedClaimId": "purpose",
         "nearbyIntentIds": ["intent.package.javascript_library"],
+        "nearbyIntentClaimIds": ["nearby_difference"],
         "nonGoalClaimIds": ["non_goal"]
       }
     ]

@@ -1,0 +1,28 @@
+{
+  "apiVersion": "spec-harvester.experimental-intent-decision-policy/v0",
+  "kind": "SpecHarvesterExperimentalIntentDecisionPolicy",
+  "schemaVersion": 1,
+  "authority": "maintainer_bounded_proposal_policy",
+  "frozenByTask": "P55-T10A",
+  "genericObservedIntentIds": [
+    "intent.package.javascript_library",
+    "intent.package.public_repository_metadata",
+    "intent.repository.package_workspace"
+  ],
+  "decisionRules": {
+    "existingIntentReusePreferredWhenSufficient": true,
+    "genericIntentRequiresExplicitComparison": true,
+    "maxExperimentalIntentCount": 1,
+    "experimentalNamespace": "intent.experimental.*",
+    "identifierPattern": "^intent\\.experimental\\.[a-z0-9]+(?:_[a-z0-9]+){1,5}\\.[0-9a-f]{8}$",
+    "identifierSuffixSource": "sourceBundleSha256:first8",
+    "nearbyIntentMustBeObserved": true,
+    "userNeedClaimKind": "purpose",
+    "nearbyDifferenceClaimKind": "nearby_intent_difference",
+    "minimumNonGoalClaims": 1,
+    "falseNoveltyDisposition": "calibration_failure",
+    "proposalOnly": true,
+    "canonicalizationAllowed": false
+  },
+  "policySha256": "0c8a92c0a782d501659021f75c644b03cb2156cd51151e6bbe322ed20845031c"
+}

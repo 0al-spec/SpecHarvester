@@ -17,6 +17,9 @@ from typing import Any
 import yaml
 
 from spec_harvester.controlled_calibration import git_dirty_status, git_head
+from spec_harvester.experimental_intent_policy import (
+    GENERIC_OBSERVED_INTENT_IDS as GENERIC_INTENT_IDS,
+)
 from spec_harvester.portable_semantic_proposal import build_portable_semantic_proposal
 from spec_harvester.semantic_author_input_pack import (
     SemanticAuthorInputPackOptions,
@@ -28,10 +31,7 @@ from spec_harvester.semantic_author_pass import (
     SemanticAuthorPassOptions,
     run_semantic_author_pass,
 )
-from spec_harvester.semantic_proposal_quality import (
-    GENERIC_INTENT_IDS,
-    evaluate_semantic_proposal_quality,
-)
+from spec_harvester.semantic_proposal_quality import evaluate_semantic_proposal_quality
 from spec_harvester.source_manifest import read_repository_source_manifests
 
 CAMPAIGN_API_VERSION = "spec-harvester.retained-corpus-semantic-campaign/v0"

@@ -1,28 +1,33 @@
-# Next Task: P55-T10A Experimental-Intent Decision Policy
+# Next Task: P55-T10B Targeted Experimental-Intent Calibration
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10` Retained-Corpus Semantic Author and Review Flow
+**Dependencies:** `P55-T10A` Experimental-Intent Decision Policy
 **Status:** Ready
 
 ## Objective
 
-Correct the semantic-author decision policy so Codex 5.3 Spark can propose a
-bounded experimental intent when existing generic intents do not express the
-evidence-backed user outcome.
+Calibrate the new reuse-versus-novelty policy with Codex 5.3 Spark on
+repositories with known semantic gaps before any retained-corpus follow-up.
 
 ## Required Scope
 
-Use the P55-T10 result as the fixed baseline: all 48 generic static intent
-references were reused and no `intent.experimental.*` proposal was emitted.
-Require explicit nearby-intent comparison and evidence-grounded justification
-for reuse versus novelty. Prevent forced novelty, synonyms, taxonomy leakage,
-canonicalization, materialization, registry mutation, and publication. Produce
-the implementation and fixtures needed to unblock P55-T10B targeted
-calibration; P55-T11 remains blocked through P55-T10C.
+Run the digest-bound P55-T10A policy on `openai/codex`, `rtk-ai/rtk`,
+`BurntSushi/ripgrep`, and comparable generic-intent cases. Report justified
+reuse, experimental proposal rate, purpose accuracy, nearby-intent
+differentiation, duplicate or synonym risk, evidence support, and reviewer edit
+burden against the unchanged P55-T5 thresholds. At least one experimental
+proposal must be evidence-supported, and unjustified novelty must be recorded
+as failure. Do not materialize, canonicalize, mutate registry truth, or publish.
 
 ## Recently Archived
 
+- `P55-T10A` Experimental-Intent Decision Policy: PASS. Codex 5.3 Spark and LM
+  Studio now receive one digest-bound policy requiring explicit comparison for
+  generic reuse and allowing at most one package-neutral, source-bound
+  experimental intent when observed intents are insufficient. False novelty is
+  a calibration failure; proposal-only authority and P55-T5 thresholds remain
+  unchanged.
 - `P55-T10` Retained-Corpus Semantic Author and Review Flow: PASS. Codex 5.3
   Spark completed all 100 retained repositories without terminal provider
   failures and produced 42 portable proposals. Deterministic quality checks

@@ -101,7 +101,7 @@ def proposal(pack: dict) -> dict:
         item for item in pack["request"]["evidence"] if item["sourcePath"] == "README.md"
     )
     observed = pack["observedIntents"][0]
-    return {
+    result = {
         "apiVersion": "spec-harvester.ai-semantic-proposal/v0",
         "kind": "SpecHarvesterAISemanticProposal",
         "schemaVersion": 1,
@@ -143,13 +143,21 @@ def proposal(pack: dict) -> dict:
                 "kind": "SpecHarvesterAISemanticExperimentalIntent",
                 "schemaVersion": 1,
                 "state": "proposed_experimental",
-                "intentId": "intent.experimental.ai.context_optimization",
+                "intentId": (
+                    f"intent.experimental.ai_context_optimization.{pack['sourceBundleSha256'][:8]}"
+                ),
                 "userNeedClaimId": "purpose",
                 "nearbyIntentIds": [observed["intentId"]],
+                "nearbyIntentClaimIds": ["nearby"],
                 "nonGoalClaimIds": ["non_goal"],
             },
         ],
     }
+    if observed["intentId"].startswith("intent.package.") or observed["intentId"].startswith(
+        "intent.repository."
+    ):
+        result["intentDecisions"] = result["intentDecisions"][:1]
+    return result
 
 
 def claim(claim_id: str, kind: str, text: str, evidence: dict) -> dict:
@@ -254,6 +262,53 @@ def test_stale_request_binding_rejects(tmp_path: Path) -> None:
 
     assert report["status"] == "rejected"
     assert "request_binding_mismatch" in diagnostic_codes(report)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("apiVersion", "spec-harvester.experimental-intent-decision-policy/v1"),
+        ("kind", "OtherExperimentalIntentDecisionPolicy"),
+    ),
+)
+def test_policy_binding_identity_rejects(tmp_path: Path, field: str, value: str) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    passed["experimentalIntentDecisionPolicy"][field] = value
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "experimental_intent_policy_binding_invalid" in diagnostic_codes(report)
+
+
+def test_quality_rejects_candidate_namespace_in_experimental_identifier(
+    tmp_path: Path,
+) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    passed["proposal"]["intentDecisions"][1]["intentId"] = (
+        f"intent.experimental.demo_context.{pack['sourceBundleSha256'][:8]}"
+    )
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "experimental_intent_identifier_leaks_candidate_namespace" in diagnostic_codes(report)
+
+
+def test_quality_rejects_unbound_nearby_intent_comparison(tmp_path: Path) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    decision = passed["proposal"]["intentDecisions"][1]
+    decision["nearbyIntentIds"].append("intent.ai.second_observed")
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "experimental_intent_nearby_binding_count_mismatch" in diagnostic_codes(report)
 
 
 def test_recomputed_source_bundle_digest_rejects_coordinated_evidence_tampering(
@@ -370,14 +425,17 @@ def test_generic_duplicate_and_overlap_signals_require_review(tmp_path: Path) ->
     } <= diagnostic_codes(report)
 
 
-def test_experimental_intent_overlap_requires_review(tmp_path: Path) -> None:
+def test_experimental_intent_overlap_is_false_novelty_failure(tmp_path: Path) -> None:
     pack = input_pack(tmp_path, "intent.ai.context_optimization")
     passed = semantic_pass(pack)
 
     report = evaluate_semantic_proposal_quality(pack, passed)
 
-    assert report["status"] == "review_required"
-    assert "experimental_intent_overlaps_observed" in diagnostic_codes(report)
+    assert report["status"] == "rejected"
+    assert {
+        "experimental_intent_overlaps_observed",
+        "experimental_intent_false_novelty_risk",
+    } <= diagnostic_codes(report)
 
 
 def test_duplicate_experimental_intent_rejects(tmp_path: Path) -> None:
