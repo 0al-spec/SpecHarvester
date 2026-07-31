@@ -1,7 +1,9 @@
 # P55-T10 Validation Report
 
-**Task:** P55-T10 Retained-Corpus Semantic Author and Review Flow  
-**Date:** 2026-07-31  
+**Task:** P55-T10 Retained-Corpus Semantic Author and Review Flow
+
+**Date:** 2026-07-31
+
 **Verdict:** PASS
 
 ## Scope Validation
