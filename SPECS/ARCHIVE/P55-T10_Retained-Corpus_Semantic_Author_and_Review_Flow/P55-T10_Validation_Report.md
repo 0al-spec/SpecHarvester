@@ -23,6 +23,7 @@
 | Eligible / review required / rejected | 4 / 38 / 58 |
 | Schema-valid proposal rate | 1.00 |
 | Evidence-supported proposal rate | 1.00 |
+| Purpose-claim coverage rate | 1.00 |
 | Generic static intent references reduced | 0 / 48 |
 | Capability namespace violations | 58 |
 | Generic intent reuse diagnostics | 48 |
@@ -42,6 +43,7 @@ reduction and high namespace-violation rate as exit-decision inputs.
 - Raw prompts, raw responses, hidden reasoning, credentials, and machine-local
   paths were not persisted.
 - All 100 records remain unreviewed; no disposition was inferred.
+- Reviewer edit burden is unavailable until explicit reviewer evidence exists.
 - No repository code or package manager was executed. No proposal was
   materialized or published, and SpecPM plus registry truth were unchanged.
 

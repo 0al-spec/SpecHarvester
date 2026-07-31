@@ -645,7 +645,7 @@
       "status": "completed"
     }
   ],
-  "reportSha256": "838d7c1fd0a69eb942f6ef31f1821fd2ddb6f85f0112009dc97d01cad27d859c",
+  "reportSha256": "4f908d23a29a25b58d381d3afb66d3d571d8e459822f6643f470fc609bacb993",
   "reviewerDecisions": {
     "acceptedCount": 0,
     "deferredCount": 0,
@@ -665,6 +665,11 @@
     "evidenceSupportedProposalRate": 1.0,
     "genericIntentReductionCount": 0,
     "proposedGenericIntentReuseCount": 48,
+    "purposeClaimCoverageRate": 1.0,
+    "reviewerEditBurden": {
+      "reviewedRecordCount": 0,
+      "status": "unavailable_without_reviewer_decision_evidence"
+    },
     "schemaValidProposalRate": 1.0,
     "staticGenericIntentReferenceCount": 48
   },

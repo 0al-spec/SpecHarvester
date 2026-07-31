@@ -21,8 +21,9 @@ SpecPM, registry truth, or publication output.
 | Records requiring bounded JSON repair | 8 |
 | Recorded provider runtime | 1,307,042 ms |
 
-Every completed proposal was schema-valid and evidence-supported. The main
-quality limitation was not transport reliability: 58 proposals inherited or
+Every completed proposal was schema-valid and evidence-supported, and the
+campaign recorded purpose-claim coverage of 1.00. The main quality limitation
+was not transport reliability: 58 proposals inherited or
 created capability identifiers outside the accepted candidate namespace, 48
 retained a generic static intent, and one contained an unsupported quantitative
 claim. No duplicate experimental intent IDs were observed.
@@ -36,7 +37,8 @@ intent descriptions consistently enough for automatic downstream use.
 
 No human reviewer decisions were supplied to the campaign. All 100 records are
 therefore reported as `unreviewed`; none are inferred to be accepted, edited,
-rejected, or deferred. The 42 portable proposals can be loaded into the Phase
+rejected, or deferred, and reviewer edit burden is explicitly unavailable. The
+42 portable proposals can be loaded into the Phase
 54 Workbench for explicit review.
 
 ## Reproduction

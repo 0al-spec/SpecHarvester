@@ -158,6 +158,11 @@ def test_runs_resumes_and_finalizes_complete_bound_campaign(
     assert report["summary"]["repositoryCount"] == 100
     assert report["summary"]["completedCount"] == 99
     assert report["summary"]["failedCount"] == 1
+    assert report["semanticQuality"]["purposeClaimCoverageRate"] == 0.99
+    assert report["semanticQuality"]["reviewerEditBurden"] == {
+        "status": "unavailable_without_reviewer_decision_evidence",
+        "reviewedRecordCount": 0,
+    }
     assert report["reviewerDecisions"]["unreviewedCount"] == 100
     assert report["budgets"]["providerAttemptCount"] == 101
     assert report["archive"]["sha256"] == sha256_file(archive)

@@ -11,7 +11,8 @@ were eligible for calibration and 38 require reviewer attention. The remaining
 58 proposals were rejected while their diagnostics and proposal-only records
 were preserved.
 
-All completed proposals were schema-valid and evidence-supported. The campaign
+All completed proposals were schema-valid, evidence-supported, and contained a
+purpose claim. The campaign
 recorded 58 capability namespace violations, 48 generic-intent reuse
 diagnostics, one unsupported quantitative claim, and no duplicate experimental
 intent IDs. It made no reduction in the 48 generic static intent references.

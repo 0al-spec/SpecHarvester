@@ -487,6 +487,13 @@ def campaign_summary(scope: dict[str, Any], records: list[dict[str, Any]]) -> di
             "qualityStatusCounts": dict(sorted(quality_counts.items())),
         },
         "semanticQuality": {
+            "purposeClaimCoverageRate": _rate(
+                sum(
+                    record["qualityReport"]["metrics"]["purposeClaimCount"] > 0
+                    for record in completed
+                ),
+                len(records),
+            ),
             "evidenceSupportedProposalRate": _rate(
                 sum(
                     record["qualityReport"]["metrics"]["evidenceSupportRate"] == 1.0
@@ -507,6 +514,10 @@ def campaign_summary(scope: dict[str, Any], records: list[dict[str, Any]]) -> di
             "diagnosticCounts": dict(sorted(diagnostics.items())),
             "duplicateExperimentalIntentIds": {
                 key: count for key, count in sorted(experimental.items()) if count > 1
+            },
+            "reviewerEditBurden": {
+                "status": "unavailable_without_reviewer_decision_evidence",
+                "reviewedRecordCount": 0,
             },
         },
         "reviewerDecisions": {
