@@ -3,7 +3,7 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T10` Retained-Corpus Semantic Author and Review Flow
-**Status:** Ready
+**Status:** Selected
 
 ## Objective
 
