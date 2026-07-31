@@ -979,3 +979,4 @@
 | 2026-07-31 | P55-T10 | Archived Retained-Corpus Semantic Author and Review Flow (PASS) |
 | 2026-07-31 | P55-T10 | Archived REVIEW_p55_t10_retained_corpus_semantic_campaign report |
 | 2026-07-31 | P55-T10A | Archived Experimental-Intent Decision Policy (PASS) |
+| 2026-07-31 | P55-T10A | Archived REVIEW_p55_t10a_experimental_intent_decision_policy report |
