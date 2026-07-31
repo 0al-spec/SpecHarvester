@@ -262,6 +262,7 @@
 | P55-T9A | [P55-T9A_Semantic_Provider_Output_Conformance_Follow-Up/](P55-T9A_Semantic_Provider_Output_Conformance_Follow-Up/) | 2026-07-31 | PASS |
 | P55-T10 | [P55-T10_Retained-Corpus_Semantic_Author_and_Review_Flow/](P55-T10_Retained-Corpus_Semantic_Author_and_Review_Flow/) | 2026-07-31 | PASS |
 | P55-T10A | [P55-T10A_Experimental-Intent_Decision_Policy/](P55-T10A_Experimental-Intent_Decision_Policy/) | 2026-07-31 | PASS |
+| P55-T10B | [P55-T10B_Targeted_Experimental-Intent_Calibration/](P55-T10B_Targeted_Experimental-Intent_Calibration/) | 2026-07-31 | PASS |
 
 ## Historical Artifacts
 
@@ -980,3 +981,4 @@
 | 2026-07-31 | P55-T10 | Archived REVIEW_p55_t10_retained_corpus_semantic_campaign report |
 | 2026-07-31 | P55-T10A | Archived Experimental-Intent Decision Policy (PASS) |
 | 2026-07-31 | P55-T10A | Archived REVIEW_p55_t10a_experimental_intent_decision_policy report |
+| 2026-07-31 | P55-T10B | Archived Targeted Experimental-Intent Calibration (PASS) |

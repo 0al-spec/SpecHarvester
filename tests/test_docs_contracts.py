@@ -39,6 +39,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if "# Next Task: P55-T10C Retained Generic-Intent Follow-Up" in next_text:
+        normalized = " ".join(next_text.split())
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert "`P55-T10B` Targeted Experimental-Intent Calibration" in next_text
+        assert "48 P55-T10 records that reused generic static intents" in normalized
+        assert "original campaign as immutable baseline" in normalized
+        assert "obtain explicit maintainer review evidence" in normalized
+        assert "Do not materialize, canonicalize, mutate registry truth" in normalized
+        return
+
     if "# Next Task: P55-T10B Targeted Experimental-Intent Calibration" in next_text:
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text

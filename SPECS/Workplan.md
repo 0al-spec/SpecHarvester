@@ -2856,7 +2856,7 @@ Acceptance:
   collision-resistant identifier. Do not force novelty when an existing intent
   is semantically sufficient, weaken validation, or make experimental metadata
   canonical.
-- [ ] `P55-T10B` Run targeted experimental-intent calibration on repositories
+- [x] `P55-T10B` Run targeted experimental-intent calibration on repositories
   with known semantic gaps, including `openai/codex`, `rtk-ai/rtk`,
   `BurntSushi/ripgrep`, and comparable generic-intent cases. Measure justified
   reuse, experimental proposal rate, purpose accuracy, nearby-intent
