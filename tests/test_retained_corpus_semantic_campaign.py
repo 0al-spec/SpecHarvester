@@ -110,6 +110,10 @@ def test_runs_resumes_and_finalizes_complete_bound_campaign(
         "spec_harvester.retained_corpus_semantic_campaign.validate_source_checkout",
         lambda *_args: None,
     )
+    monkeypatch.setattr(
+        "spec_harvester.retained_corpus_semantic_campaign.read_pinned_readme",
+        lambda *_args: b"# Pinned README\nSearch files for users.\n",
+    )
     provider = FakeProvider()
     options = CampaignRunOptions(provider_max_attempts=2)
     records = [

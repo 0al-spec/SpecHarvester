@@ -5,6 +5,7 @@ import hashlib
 import io
 import json
 import shutil
+import subprocess
 import tarfile
 import tempfile
 import time
@@ -214,7 +215,10 @@ def run_campaign_target(
         try:
             with tempfile.TemporaryDirectory(prefix="p55-t10-") as temporary:
                 workspace = prepare_workspace(
-                    target.candidate_dir, target.source_dir, Path(temporary)
+                    target.candidate_dir,
+                    target.source_dir,
+                    target.revision,
+                    Path(temporary),
                 )
                 manifest = yaml.safe_load((workspace / "specpm.yaml").read_text(encoding="utf-8"))
                 pack = build_semantic_author_input_pack(
@@ -522,7 +526,7 @@ def write_deterministic_archive(work_root: Path, archive_path: Path) -> str:
     return sha256_file(archive_path)
 
 
-def prepare_workspace(candidate: Path, source: Path, root: Path) -> Path:
+def prepare_workspace(candidate: Path, source: Path, revision: str, root: Path) -> Path:
     workspace = root / "workspace"
     workspace.mkdir()
     shutil.copy2(candidate / "specpm.yaml", workspace / "specpm.yaml")
@@ -531,17 +535,7 @@ def prepare_workspace(candidate: Path, source: Path, root: Path) -> Path:
     interface = candidate / "public-interface-index.json"
     if interface.is_file() and not interface.is_symlink():
         shutil.copy2(interface, workspace / interface.name)
-    readme = next(
-        (
-            path
-            for name in ("README.md", "README.markdown", "README")
-            if (path := source / name).is_file() and not path.is_symlink()
-        ),
-        None,
-    )
-    if readme is None:
-        raise ValueError(f"README evidence is unavailable: {source.name}")
-    shutil.copy2(readme, workspace / "README.md")
+    (workspace / "README.md").write_bytes(read_pinned_readme(source, revision))
     return workspace
 
 
@@ -550,11 +544,65 @@ def validate_source_checkout(source: Path, expected_revision: str) -> None:
         raise ValueError(f"Retained source checkout is unavailable: {source.name}")
     if git_head(source) != expected_revision:
         raise ValueError(f"Retained source revision mismatch: {source.name}")
-    dirty = git_dirty_status(source)
-    if dirty is None:
+    if git_dirty_status(source) is None:
         raise ValueError(f"Retained source status is unavailable: {source.name}")
-    if dirty:
-        raise ValueError(f"Retained source checkout is dirty: {source.name}")
+
+
+def read_pinned_readme(source: Path, revision: str) -> bytes:
+    allowed_names = {
+        "readme",
+        "readme.adoc",
+        "readme.md",
+        "readme.markdown",
+        "readme.rst",
+        "readme.txt",
+    }
+    listing = subprocess.run(  # noqa: S603
+        ["git", "ls-tree", "--name-only", revision],
+        cwd=source,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+        timeout=30,
+        text=True,
+    )
+    names = ["README.md", "README.markdown", "README"]
+    if listing.returncode == 0:
+        names.extend(
+            name for name in listing.stdout.splitlines() if name.casefold() in allowed_names
+        )
+    if not any(name.casefold() in allowed_names for name in listing.stdout.splitlines()):
+        recursive = subprocess.run(  # noqa: S603
+            ["git", "ls-tree", "-r", "--name-only", revision],
+            cwd=source,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+            timeout=30,
+            text=True,
+        )
+        if recursive.returncode == 0:
+            nested = [
+                name
+                for name in recursive.stdout.splitlines()
+                if Path(name).name.casefold() in allowed_names
+            ]
+            names.extend(sorted(nested, key=lambda name: (name.count("/"), name)))
+    for name in dict.fromkeys(names):
+        completed = subprocess.run(  # noqa: S603
+            ["git", "show", f"{revision}:{name}"],
+            cwd=source,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+            timeout=30,
+        )
+        if completed.returncode == 0:
+            text = completed.stdout.decode("utf-8", errors="strict")
+            while len(text.encode("utf-8")) > 24 * 1024:
+                text = text[: int(len(text) * 0.9)]
+            return text.encode("utf-8")
+    raise ValueError(f"Pinned README evidence is unavailable: {source.name}")
 
 
 def observed_catalog(manifest: dict[str, Any]) -> dict[str, Any]:
