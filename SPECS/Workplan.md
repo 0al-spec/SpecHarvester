@@ -2843,7 +2843,7 @@ Acceptance:
   fields; improve RTK purpose emphasis without weakening evidence,
   capability-namespace, or schema validation. Reuse the same four targets,
   rubric, policy digest, provider separation, and failure denominators.
-- [ ] `P55-T10` Run the validated semantic author and review flow over the
+- [x] `P55-T10` Run the validated semantic author and review flow over the
   retained 100-repository corpus. Report generic-intent reduction,
   evidence-supported proposal rate, duplicate-intent warnings, provider
   failures, accepted/edit/rejected/deferred counts, and token/cost/runtime
