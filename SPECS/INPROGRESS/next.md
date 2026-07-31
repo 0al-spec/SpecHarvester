@@ -1,4 +1,4 @@
-# Next Task: P55-T11 Record Phase 55 Exit Decision
+# Next Task: P55-T10A Experimental-Intent Decision Policy
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
@@ -7,17 +7,19 @@
 
 ## Objective
 
-Choose the Phase 55 exit disposition from the retained-corpus evidence without
-granting automatic intent-canonicalization or publication authority.
+Correct the semantic-author decision policy so Codex 5.3 Spark can propose a
+bounded experimental intent when existing generic intents do not express the
+evidence-backed user outcome.
 
 ## Required Scope
 
-Review the P55-T10 result: 100/100 terminal records, zero provider failures, 42
-portable proposals, 58 quality rejections, zero reduction across 48 generic
-static intent references, and 58 capability namespace violations. Decide
-whether to stop, run a bounded follow-up, authorize maintainer-reviewed
-AI-authored revisions, or plan separate intent governance. Keep all 100 records
-unreviewed until explicit maintainer decisions exist.
+Use the P55-T10 result as the fixed baseline: all 48 generic static intent
+references were reused and no `intent.experimental.*` proposal was emitted.
+Require explicit nearby-intent comparison and evidence-grounded justification
+for reuse versus novelty. Prevent forced novelty, synonyms, taxonomy leakage,
+canonicalization, materialization, registry mutation, and publication. Produce
+the implementation and fixtures needed to unblock P55-T10B targeted
+calibration; P55-T11 remains blocked through P55-T10C.
 
 ## Recently Archived
 

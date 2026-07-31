@@ -2848,6 +2848,29 @@ Acceptance:
   evidence-supported proposal rate, duplicate-intent warnings, provider
   failures, accepted/edit/rejected/deferred counts, and token/cost/runtime
   budgets without automatically promoting candidates.
+- [ ] `P55-T10A` Define and implement an evidence-grounded experimental-intent
+  decision policy. When a generic observed intent does not express the
+  documented user outcome, require Codex 5.3 Spark to compare nearby observed
+  intents and either justify reuse or propose one bounded
+  `intent.experimental.*` candidate with user need, non-goals, evidence, and a
+  collision-resistant identifier. Do not force novelty when an existing intent
+  is semantically sufficient, weaken validation, or make experimental metadata
+  canonical.
+- [ ] `P55-T10B` Run targeted experimental-intent calibration on repositories
+  with known semantic gaps, including `openai/codex`, `rtk-ai/rtk`,
+  `BurntSushi/ripgrep`, and comparable generic-intent cases. Measure justified
+  reuse, experimental proposal rate, purpose accuracy, nearby-intent
+  differentiation, duplicate/synonym risk, evidence support, and reviewer edit
+  burden. Preserve the frozen P55 quality policy and record false novelty as a
+  failure rather than redefining thresholds.
+- [ ] `P55-T10C` Run a bounded Codex 5.3 Spark follow-up over the 48 retained
+  repositories that reused generic static intents in P55-T10. Keep unchanged
+  repository, candidate, source, and provider bindings; compare results against
+  the P55-T10 baseline; expose complete and rejected records in the Workbench;
+  and obtain explicit maintainer review evidence for a representative sample.
+  Report generic-intent reduction, useful experimental intents, unjustified
+  novelty, duplicate intent IDs, provider failures, and edit burden without
+  materialization, canonicalization, registry mutation, or publication.
 - [ ] `P55-T11` Record the Phase 55 exit decision: stop, run a bounded semantic
   follow-up, authorize maintainer-reviewed AI-authored candidate revisions, or
   plan a separate intent-governance/publication phase. Do not authorize
@@ -2911,6 +2934,14 @@ Acceptance:
   rubric or thresholds. P55-T10 may proceed only after the targeted
   calibration meets the recorded purpose-accuracy, evidence-support, schema,
   and reviewer-burden thresholds.
+- P55-T10A must complete before P55-T10B. P55-T10B must demonstrate at least
+  one evidence-supported experimental-intent proposal and must reject
+  unjustified novelty before P55-T10C may run. P55-T10C is limited to the 48
+  P55-T10 generic-intent reuse cases and must preserve the original baseline as
+  immutable comparison evidence.
+- P55-T11 remains blocked until P55-T10A through P55-T10C complete and their
+  Workbench review evidence distinguishes useful experimental intents from
+  synonyms, taxonomy leakage, and unsupported novelty.
 - P55-T11 must complete before automatic intent canonicalization, autonomous
   publication, remote multi-user review, or model-authored mutation of SpecPM
   registry truth is planned.
