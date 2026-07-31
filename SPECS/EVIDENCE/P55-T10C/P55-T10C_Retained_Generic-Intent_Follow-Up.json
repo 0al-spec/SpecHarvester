@@ -1,0 +1,365 @@
+{
+  "apiVersion": "spec-harvester.retained-generic-intent-follow-up/v0",
+  "archive": {
+    "path": "P55-T10C_Semantic_Proposal_Records.tar.gz",
+    "recordCount": 46,
+    "sha256": "d892323780b9f30c6ece5997ec191f48b2b0a4f405833f23bccdc1840fa4e669"
+  },
+  "authority": "semantic_follow_up_evidence_only",
+  "baseline": {
+    "archiveSha256": "233f78f2541eee35b61e3bac5a1e00113e98041b9729ee67d4ce61209ae4f07f",
+    "campaignInputSha256": "b436fed31c9be0e149c9fdeb5dcbb700618c2d8b6535d8f448ffe18c4e9f1972",
+    "reportSha256": "4f908d23a29a25b58d381d3afb66d3d571d8e459822f6643f470fc609bacb993"
+  },
+  "campaignInputSha256": "68adc5ae349e9e4f4cedca1ba53a7fe860c93c8ca07f7aa81b1190717a45e59e",
+  "decision": {
+    "blockedOn": [
+      "explicit_representative_maintainer_review"
+    ],
+    "p55T11TechnicallyReady": true,
+    "p55T11Unblocked": false,
+    "thresholdsRedefined": false
+  },
+  "executionBoundary": {
+    "canonicalizationPerformed": false,
+    "materializationPerformed": false,
+    "packageManagerInvoked": false,
+    "publicationPerformed": false,
+    "registryMutated": false,
+    "repositoryCodeExecuted": false,
+    "reviewerDecisionCreated": false,
+    "specpmMutated": false
+  },
+  "kind": "SpecHarvesterRetainedGenericIntentFollowUp",
+  "policies": {
+    "experimentalIntentDecisionPolicySha256": "0c8a92c0a782d501659021f75c644b03cb2156cd51151e6bbe322ed20845031c",
+    "semanticQualityPolicySha256": "687b4e2d7dccfb727bf0bd2e25811f26cf28dc539c44b1d996e5c821e3fa1a82"
+  },
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "credentialsPersisted": false,
+    "machineLocalPathsPersisted": false,
+    "rawPromptsPersisted": false,
+    "rawResponsesPersisted": false
+  },
+  "provider": {
+    "id": "gpt-5.3-codex-spark",
+    "kind": "codex_exec"
+  },
+  "recordIndex": [
+    {
+      "candidateId": "freecodecamp_freecodecamp.api",
+      "recordSha256": "3b6a1b539d8894b3821920f604d007425488da2be31217e65c9e5a1c550acff3",
+      "repositoryId": "freecodecamp-freecodecamp",
+      "status": "completed"
+    },
+    {
+      "candidateId": "affaan_m_ecc.ecc_universal",
+      "recordSha256": "7566f1ea256652023a18f526b3250e55fc34e5f3bfe216e5a34f8657fcdbd54f",
+      "repositoryId": "affaan-m-ecc",
+      "status": "completed"
+    },
+    {
+      "candidateId": "electron_electron.dialog_helper",
+      "recordSha256": "7397479eb6087ba6171c8f299748c48d9fc11cf5f27bb8e579799ad7a322a8bf",
+      "repositoryId": "electron-electron",
+      "status": "completed"
+    },
+    {
+      "candidateId": "jaywcjlove_awesome_mac.awesome_mac",
+      "recordSha256": "1dffb68f07f5500eb9cab9619b505c57d6e681621380a181061e0a83891b0fcf",
+      "repositoryId": "jaywcjlove-awesome-mac",
+      "status": "completed"
+    },
+    {
+      "candidateId": "nilbuild_developer_roadmap.workspace",
+      "recordSha256": "1fd4d4bebda78b3744e5eced4585cc66dde68cd725f060ed21180382b30bc544",
+      "repositoryId": "nilbuild-developer-roadmap",
+      "status": "failed"
+    },
+    {
+      "candidateId": "trekhleb_javascript_algorithms.javascript_algorithms_and_data_structures",
+      "recordSha256": "96e4812850dcff890c888935a8b6b695d0e19e642578698295f69632f61260c4",
+      "repositoryId": "trekhleb-javascript-algorithms",
+      "status": "completed"
+    },
+    {
+      "candidateId": "farion1231_cc_switch.workspace",
+      "recordSha256": "6bf1870db939aee23fa1a6ecfcd38340a6f514005ed732dab4e8b20321792e4a",
+      "repositoryId": "farion1231-cc-switch",
+      "status": "completed"
+    },
+    {
+      "candidateId": "vuejs_vue.compiler_sfc",
+      "recordSha256": "6422991394b6ad98dba6cdeee507bc60260831b1b64610c58ae9ce8da5da4cb5",
+      "repositoryId": "vuejs-vue",
+      "status": "completed"
+    },
+    {
+      "candidateId": "snailclimb_javaguide.javaguide",
+      "recordSha256": "56fcb2cccf391379af3e4e907f6b9fc8dc66957e409eead3878bf4db08759743",
+      "repositoryId": "snailclimb-javaguide",
+      "status": "completed"
+    },
+    {
+      "candidateId": "golang_go.core",
+      "recordSha256": "899220ee2d8a9bed49397e0639ff0c1de039503b0929ea806cad334554e9281f",
+      "repositoryId": "golang-go",
+      "status": "completed"
+    },
+    {
+      "candidateId": "n8n_io_n8n.agents",
+      "recordSha256": "3cd3779317c657c499b293ae7ca10d21aadb6f279256e9eec275b42d8b0950ff",
+      "repositoryId": "n8n-io-n8n",
+      "status": "completed"
+    },
+    {
+      "candidateId": "airbnb_javascript.airbnb_style",
+      "recordSha256": "dbd61663bb179624927c7319770431c2927b0ca6d2e7ee5daf00e1ef50525166",
+      "repositoryId": "airbnb-javascript",
+      "status": "failed"
+    },
+    {
+      "candidateId": "tauri_apps_tauri.api.packages_api",
+      "recordSha256": "264c16a9f9e13cb4564fce569cdb7cd00e0877aca31705bb826aa05d37cfb6f9",
+      "repositoryId": "tauri-apps-tauri",
+      "status": "completed"
+    },
+    {
+      "candidateId": "anomalyco_opencode.app",
+      "recordSha256": "53bcf4f63603fadc77c50a28e3774eac27eb1570590af7d2a4df1ed368b725f9",
+      "repositoryId": "anomalyco-opencode",
+      "status": "failed"
+    },
+    {
+      "candidateId": "chalarangelo_30_seconds_of_code.30_seconds_of_code",
+      "recordSha256": "4167e9a466e812bb7c6f6117a2abb5e32d761b6f0c3b430538a12699403ad87d",
+      "repositoryId": "chalarangelo-30-seconds-of-code",
+      "status": "completed"
+    },
+    {
+      "candidateId": "spring_projects_spring_boot.core",
+      "recordSha256": "eb0fe98558287a87fa75aa533307bd3110806ce3f7f15cfa4200513a65d63fc3",
+      "repositoryId": "spring-projects-spring-boot",
+      "status": "completed"
+    },
+    {
+      "candidateId": "bitcoin_bitcoin.core",
+      "recordSha256": "1d7bf9bfae3b3af49c6ab600d1e27433311b05d72a211ad310e8ecc9480c2e26",
+      "repositoryId": "bitcoin-bitcoin",
+      "status": "completed"
+    },
+    {
+      "candidateId": "thealgorithms_python.core",
+      "recordSha256": "d83d5b265411a52ee6385382bc7e526d1353440dcaf5f52497c2a46dd798ea57",
+      "repositoryId": "thealgorithms-python",
+      "status": "completed"
+    },
+    {
+      "candidateId": "firecrawl_firecrawl.firecrawl_scraper_js",
+      "recordSha256": "b407b56f2563985723d1fe0f0e2fd82324b7435c1b0a0df0e6e4d777d8f7b64a",
+      "repositoryId": "firecrawl-firecrawl",
+      "status": "completed"
+    },
+    {
+      "candidateId": "axios_axios.axios",
+      "recordSha256": "6b19b3fc98de2d580bef36c78304a659f6d41484d3bc8e480274698482e88733",
+      "repositoryId": "axios-axios",
+      "status": "completed"
+    },
+    {
+      "candidateId": "openai_codex.codex",
+      "recordSha256": "b559502f853188ef5070bdca1f7cb9be197a1b27a59392197a2e8e3613466402",
+      "repositoryId": "openai-codex",
+      "status": "completed"
+    },
+    {
+      "candidateId": "doocs_advanced_java.advanced_java",
+      "recordSha256": "13f06d5325dcd2bfeaee06caa8f3e220d8c644b4ea55ebd5cd173fed1b7d5473",
+      "repositoryId": "doocs-advanced-java",
+      "status": "completed"
+    },
+    {
+      "candidateId": "nousresearch_hermes_agent.bootstrap_installer",
+      "recordSha256": "9af0f9813140d85f777059dbe722a9e13aa7f078475707e94827670e5ff733a3",
+      "repositoryId": "nousresearch-hermes-agent",
+      "status": "failed"
+    },
+    {
+      "candidateId": "langgenius_dify.contracts",
+      "recordSha256": "414a959b9bc2ea0f4296a68e071f5947beaa2a81ceddaa9436809eb0abf1c06a",
+      "repositoryId": "langgenius-dify",
+      "status": "completed"
+    },
+    {
+      "candidateId": "react_create_react_app.babel_plugin_named_asset_import",
+      "recordSha256": "0dce5fe9ad70a6a34241578d887610bf856333db12cda8bcb31c897bb2484a74",
+      "repositoryId": "react-create-react-app",
+      "status": "completed"
+    },
+    {
+      "candidateId": "tesseract_ocr_tesseract.core",
+      "recordSha256": "f2f55243aa2f3506ce5f96794cc1b43335be07c756d36fe40fa1fe000547d6f6",
+      "repositoryId": "tesseract-ocr-tesseract",
+      "status": "completed"
+    },
+    {
+      "candidateId": "yangshun_tech_interview_handbook.portal",
+      "recordSha256": "2542273bd99da0df16d7673796225bacc49d254b21fe92bb7fbf663c7331d5c2",
+      "repositoryId": "yangshun-tech-interview-handbook",
+      "status": "failed"
+    },
+    {
+      "candidateId": "mui_material_ui.api_docs_builder_core",
+      "recordSha256": "ff183ab328eed9dd5c6e088e18249f3c47fa06119369099fb1ff264995453f16",
+      "repositoryId": "mui-material-ui",
+      "status": "failed"
+    },
+    {
+      "candidateId": "rust_lang_regex.core",
+      "recordSha256": "1719320fa8f80a8c4c86b5f1340dd594abc53708ce5bea2b2f001857f884bf4d",
+      "repositoryId": "rust-lang-regex",
+      "status": "completed"
+    },
+    {
+      "candidateId": "thealgorithms_java.core",
+      "recordSha256": "494e8bad04b33b1a3beed362fc9a1ccdf30a1eee7c6ed3c10e1919fa12855607",
+      "repositoryId": "thealgorithms-java",
+      "status": "failed"
+    },
+    {
+      "candidateId": "clash_verge_rev_clash_verge_rev.workspace",
+      "recordSha256": "a6a7c915886a384ef36029f53af4d0514d368d1fdbab5c87279c970f6e27bc36",
+      "repositoryId": "clash-verge-rev-clash-verge-rev",
+      "status": "failed"
+    },
+    {
+      "candidateId": "kdn251_interviews.core",
+      "recordSha256": "660889c5f5ba4dc397ee29876e8d3e4bd60c9c34b6f823b2cd623c3431de16b4",
+      "repositoryId": "kdn251-interviews",
+      "status": "completed"
+    },
+    {
+      "candidateId": "excalidraw_excalidraw.common",
+      "recordSha256": "8e103500e3aae41f9dd4edc7629d88c20f05c4f94b2959d27cae3d5f3d16afca",
+      "repositoryId": "excalidraw-excalidraw",
+      "status": "completed"
+    },
+    {
+      "candidateId": "juliusbrussee_caveman.caveman_installer",
+      "recordSha256": "293cfba42c0f78b8cd026f2ae0620b5f572c1df8ab93a51e94cd5ef89982ac6a",
+      "repositoryId": "juliusbrussee-caveman",
+      "status": "completed"
+    },
+    {
+      "candidateId": "automatic1111_stable_diffusion_webui.stable_diffusion_webui",
+      "recordSha256": "5c662019337a7104fad1593d1fd796d26c88982e810cbbb48d9c78132f3cae51",
+      "repositoryId": "automatic1111-stable-diffusion-webui",
+      "status": "completed"
+    },
+    {
+      "candidateId": "garrytan_gstack.gstack",
+      "recordSha256": "99782654d8096513d87e6960cae52d40c32e9237b726f75edd096c20bf34b8d9",
+      "repositoryId": "garrytan-gstack",
+      "status": "failed"
+    },
+    {
+      "candidateId": "dietrichgebert_ponytail.ponytail",
+      "recordSha256": "66526d1b059b9058edbd2b9cfde5e332072cfcce0ee14156cc385ade50b99b0e",
+      "repositoryId": "dietrichgebert-ponytail",
+      "status": "completed"
+    },
+    {
+      "candidateId": "shadcn_ui_ui.helpers",
+      "recordSha256": "8208ba81b5b6e3149a33f9cf938c9a28fb9e5ef9eedd8e69833f9bfa89691bbb",
+      "repositoryId": "shadcn-ui-ui",
+      "status": "completed"
+    },
+    {
+      "candidateId": "louislam_uptime_kuma.uptime_kuma",
+      "recordSha256": "c4036de79a2ecff9e4e402ff7d4482933f1092c11125167f619b7a9db4ef5e45",
+      "repositoryId": "louislam-uptime-kuma",
+      "status": "completed"
+    },
+    {
+      "candidateId": "openinterpreter_openinterpreter.codex",
+      "recordSha256": "0f52bb781f5f151411f7ccec3ad1d8b44170effbc0015bdd813da41fa44e08b0",
+      "repositoryId": "openinterpreter-openinterpreter",
+      "status": "failed"
+    },
+    {
+      "candidateId": "open_webui_open_webui.open_webui",
+      "recordSha256": "2cf924ae8d656dcdbad9b6b82227a2456e235c533fdbe069c0b25c68c26da74c",
+      "repositoryId": "open-webui-open-webui",
+      "status": "completed"
+    },
+    {
+      "candidateId": "immich_app_immich.cli",
+      "recordSha256": "fef0d3c78081a40cfd55fac66015d6b04ca6fa7448b6c81ad47b6545d55cd9ff",
+      "repositoryId": "immich-app-immich",
+      "status": "failed"
+    },
+    {
+      "candidateId": "thedotmack_claude_mem.claude_mem",
+      "recordSha256": "3a26ff85aa35138aa96ff25b73d8c90a98aad33265047567390985cb29ea2367",
+      "repositoryId": "thedotmack-claude-mem",
+      "status": "completed"
+    },
+    {
+      "candidateId": "google_gemini_gemini_cli.gemini_cli",
+      "recordSha256": "dbcf4c3cc41bc66e83391cd3df0f3dca54b9685cd481f623d8d618b24f896148",
+      "repositoryId": "google-gemini-gemini-cli",
+      "status": "failed"
+    },
+    {
+      "candidateId": "angular_angular.adev",
+      "recordSha256": "08be13470916f185b4a45b143bf4fe0a6a7f1bab0e6bc4495b831bef8ee5430b",
+      "repositoryId": "angular-angular",
+      "status": "failed"
+    },
+    {
+      "candidateId": "anuraghazra_github_readme_stats.github_readme_stats",
+      "recordSha256": "e0b8ae646fe308d20a255eed0e3eb732770a1e42966bf27828f71eb150518968",
+      "repositoryId": "anuraghazra-github-readme-stats",
+      "status": "failed"
+    }
+  ],
+  "reportSha256": "8b32f99c29fd3374a48b3ff60c0476f14b436612dfc30baeac8c370164288bd3",
+  "review": {
+    "maintainerDecisionCount": 0,
+    "sampleCount": 8,
+    "samplePath": "P55-T10C_Representative_Review_Sample.json",
+    "sampleSha256": "a3c59d7ef1cb1c06cb708210ed32fbce4a18555060eaffd934ef179b66bb5288",
+    "status": "awaiting_explicit_maintainer_review"
+  },
+  "schemaVersion": 1,
+  "summary": {
+    "baselineGenericIntentReuseCount": 48,
+    "completedCount": 32,
+    "cost": {
+      "status": "unavailable_from_codex_exec_receipts"
+    },
+    "duplicateExperimentalIntentIdCount": 0,
+    "duplicateExperimentalSemanticStemCount": 0,
+    "durationMs": 1379358,
+    "estimatedReviewerEditBurdenRate": 0.8913,
+    "estimatedReviewerEditRequiredCount": 41,
+    "evidenceSupportedExperimentalIntentCount": 4,
+    "experimentalIntentCount": 4,
+    "failedCount": 14,
+    "failedProviderAttemptCount": 34,
+    "falseNoveltyCount": 0,
+    "followUpGenericIntentReuseCount": 43,
+    "genericIntentReductionCount": 5,
+    "jsonRepairRecordCount": 23,
+    "providerAttemptCount": 66,
+    "qualityStatusCounts": {
+      "eligible_for_calibration": 5,
+      "rejected": 7,
+      "review_required": 20
+    },
+    "targetCount": 46,
+    "tokenUsage": {}
+  },
+  "taskId": "P55-T10C"
+}

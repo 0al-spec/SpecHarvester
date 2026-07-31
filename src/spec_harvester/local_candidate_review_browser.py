@@ -156,6 +156,7 @@ def _candidate_presentations(catalog: dict[str, Any], details: dict[str, Any]) -
                 },
                 "documents": documents,
                 "supporting": supporting,
+                "ai": comparison["ai"],
                 "semanticReview": comparison.get("semantic"),
             }
         )
