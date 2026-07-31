@@ -30,10 +30,15 @@ class ModelJsonFailure:
     repair_needed: bool
     repair_attempt_count: int
     repair_status: str
+    failure_reason: str
 
 
 class ModelJsonParseError(ValueError):
     """Raised when model output cannot be parsed as a JSON object."""
+
+
+class ModelJsonConformanceError(ValueError):
+    """Raised when parsed model JSON does not satisfy a caller contract."""
 
 
 def openai_compatible_json_response_format(provider_name: str) -> dict[str, Any] | None:
@@ -59,13 +64,20 @@ def complete_json_with_repair(
     system_prompt: str,
     send_messages: Callable[[list[dict[str, str]]], tuple[str, dict[str, Any]]],
     max_repair_attempts: int,
+    normalize_payload: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
+    validate_payload: Callable[[dict[str, Any]], None] | None = None,
 ) -> ModelJsonCompletion | ModelJsonFailure:
     repair_bound = max(0, max_repair_attempts)
     raw_content, response_payload = send_messages(initial_messages(system_prompt, request))
     responses = [(raw_content, response_payload)]
     try:
+        payload = _normalize_and_validate(
+            parse_model_json_object(raw_content),
+            normalize_payload=normalize_payload,
+            validate_payload=validate_payload,
+        )
         return ModelJsonCompletion(
-            payload=parse_model_json_object(raw_content),
+            payload=payload,
             raw_content=raw_content,
             response_payload=response_payload,
             usage=sum_usage(responses),
@@ -73,17 +85,29 @@ def complete_json_with_repair(
             repair_attempt_count=0,
             repair_status="not_needed",
         )
-    except ModelJsonParseError:
-        pass
+    except (ModelJsonParseError, ModelJsonConformanceError) as exc:
+        validation_error = str(exc)
 
     latest_raw = raw_content
     latest_payload = response_payload
     for attempt in range(1, repair_bound + 1):
-        latest_raw, latest_payload = send_messages(repair_messages(request, latest_raw, attempt))
+        latest_raw, latest_payload = send_messages(
+            repair_messages(
+                request,
+                latest_raw,
+                attempt,
+                validation_error=validation_error,
+            )
+        )
         responses.append((latest_raw, latest_payload))
         try:
+            payload = _normalize_and_validate(
+                parse_model_json_object(latest_raw),
+                normalize_payload=normalize_payload,
+                validate_payload=validate_payload,
+            )
             return ModelJsonCompletion(
-                payload=parse_model_json_object(latest_raw),
+                payload=payload,
                 raw_content=latest_raw,
                 response_payload=latest_payload,
                 usage=sum_usage(responses),
@@ -91,7 +115,8 @@ def complete_json_with_repair(
                 repair_attempt_count=attempt,
                 repair_status="repaired",
             )
-        except ModelJsonParseError:
+        except (ModelJsonParseError, ModelJsonConformanceError) as exc:
+            validation_error = str(exc)
             continue
 
     return ModelJsonFailure(
@@ -101,6 +126,7 @@ def complete_json_with_repair(
         repair_needed=True,
         repair_attempt_count=repair_bound,
         repair_status="exhausted",
+        failure_reason=validation_error,
     )
 
 
@@ -115,6 +141,8 @@ def repair_messages(
     request: dict[str, Any],
     invalid_output: str,
     attempt: int,
+    *,
+    validation_error: str | None = None,
 ) -> list[dict[str, str]]:
     payload = {
         "task": "repair_invalid_json_model_output",
@@ -127,6 +155,7 @@ def repair_messages(
         ],
         "requiredJsonShape": request.get("requiredJsonShape"),
         "allowedEvidencePaths": request.get("allowedEvidencePaths", []),
+        "validationError": validation_error,
         "invalidModelOutput": invalid_output[:MAX_REPAIR_INPUT_CHARS],
         "truncatedInvalidModelOutput": len(invalid_output) > MAX_REPAIR_INPUT_CHARS,
     }
@@ -137,6 +166,23 @@ def repair_messages(
         },
         {"role": "user", "content": json.dumps(payload, sort_keys=True)},
     ]
+
+
+def _normalize_and_validate(
+    payload: dict[str, Any],
+    *,
+    normalize_payload: Callable[[dict[str, Any]], dict[str, Any]] | None,
+    validate_payload: Callable[[dict[str, Any]], None] | None,
+) -> dict[str, Any]:
+    normalized = normalize_payload(payload) if normalize_payload else payload
+    if not isinstance(normalized, dict):
+        raise ModelJsonConformanceError("Model output normalization must return an object")
+    if validate_payload:
+        try:
+            validate_payload(normalized)
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ModelJsonConformanceError(str(exc)) from exc
+    return normalized
 
 
 def parse_model_json_object(raw_content: str) -> dict[str, Any]:

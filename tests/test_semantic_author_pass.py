@@ -79,6 +79,22 @@ def proposal(input_pack: dict) -> dict:
     return result
 
 
+def transport_proposal(input_pack: dict) -> dict:
+    result = proposal(input_pack)
+    result.pop("proposalSha256")
+    result.pop("provider")
+    return result
+
+
+def provider_request(input_pack: dict) -> dict:
+    return {
+        "request": input_pack["request"],
+        "observedIntents": input_pack["observedIntents"],
+        "requiredJsonShape": {"type": "object"},
+        "allowedEvidencePaths": [item["sourcePath"] for item in input_pack["request"]["evidence"]],
+    }
+
+
 def test_provider_neutral_pass_normalizes_contract_and_discards_raw_data(tmp_path: Path) -> None:
     input_pack = pack(tmp_path)
     provider = FakeProvider(proposal(input_pack))
@@ -104,6 +120,44 @@ def test_provider_neutral_pass_normalizes_contract_and_discards_raw_data(tmp_pat
     validate_semantic_author_provider_receipt(report["providerReceipt"])
 
 
+def test_provider_payload_carries_bounded_semantic_focus(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path)
+    provider = FakeProvider(proposal(input_pack))
+    run_semantic_author_pass(
+        input_pack,
+        provider,
+        semantic_focus={
+            "purposeConceptGroups": [["token", "context"], ["reduce", "save"]],
+            "specificTerms": ["token", "command"],
+        },
+    )
+
+    focus = provider.requests[0]["semanticFocus"]
+    assert focus["purposeConceptGroups"] == [
+        ["token", "context"],
+        ["reduce", "save"],
+    ]
+    assert focus["authority"] == "review_rubric_only"
+    assert (
+        provider.requests[0]["authoringConstraints"]["capabilityMustUseCandidateNamespace"]
+        == input_pack["candidateId"]
+    )
+
+
+def test_provider_payload_rejects_malformed_semantic_focus_before_invocation(
+    tmp_path: Path,
+) -> None:
+    input_pack = pack(tmp_path)
+    provider = FakeProvider(proposal(input_pack))
+    with pytest.raises(ValueError, match="semantic focus is malformed"):
+        run_semantic_author_pass(
+            input_pack,
+            provider,
+            semantic_focus={"purposeConceptGroups": [], "specificTerms": []},
+        )
+    assert provider.requests == []
+
+
 @pytest.mark.parametrize("mutation", ("evidence", "intent", "candidate", "output"))
 def test_pass_fails_closed_for_untrusted_provider_output(tmp_path: Path, mutation: str) -> None:
     input_pack = pack(tmp_path)
@@ -121,9 +175,11 @@ def test_pass_fails_closed_for_untrusted_provider_output(tmp_path: Path, mutatio
 
 
 def test_lm_studio_adapter_uses_local_schema_constrained_transport(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     calls: list[dict] = []
+    input_pack = pack(tmp_path)
+    content = json.dumps(transport_proposal(input_pack))
 
     class Response:
         def __enter__(self) -> Response:
@@ -133,7 +189,9 @@ def test_lm_studio_adapter_uses_local_schema_constrained_transport(
             pass
 
         def read(self, size: int = -1) -> bytes:
-            return b'{"model":"local","choices":[{"message":{"content":"{}"}}]}'
+            return json.dumps(
+                {"model": "local", "choices": [{"message": {"content": content}}]}
+            ).encode()
 
     def fake_urlopen(request: object, timeout: float) -> Response:
         calls.append(json.loads(request.data.decode()))  # type: ignore[attr-defined]
@@ -141,8 +199,15 @@ def test_lm_studio_adapter_uses_local_schema_constrained_transport(
 
     monkeypatch.setattr("urllib.request.urlopen", fake_urlopen)
     provider = LMStudioSemanticAuthorProvider(base_url="http://127.0.0.1:1234/v1", model="local")
-    assert provider.complete({"candidateId": "demo"}, SemanticAuthorPassOptions()).payload == {}
+    completion = provider.complete(provider_request(input_pack), SemanticAuthorPassOptions())
+    assert completion.payload["candidateId"] == input_pack["candidateId"]
     assert calls[0]["response_format"]["type"] == "json_schema"
+    serialized_schema = json.dumps(calls[0]["response_format"]["json_schema"]["schema"])
+    assert "$ref" not in serialized_schema
+    assert all(
+        keyword not in serialized_schema
+        for keyword in ('"allOf"', '"contains"', '"oneOf"', '"uniqueItems"')
+    )
     assert provider.base_url == "http://127.0.0.1:1234"
 
 
@@ -153,29 +218,41 @@ def test_lm_studio_rejects_remote_or_credentialed_urls() -> None:
 
 
 def test_codex_adapter_is_bounded_and_uses_read_only_temporary_output(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     command: list[str] = []
     inputs: list[str] = []
+    schemas: list[dict] = []
+    input_pack = pack(tmp_path)
 
     def fake_run(args: list[str], **kwargs: object) -> object:
         command.extend(args)
         inputs.append(str(kwargs["input"]))
-        Path(args[args.index("--output-last-message") + 1]).write_text("{}")
+        schemas.append(json.loads(Path(args[args.index("--output-schema") + 1]).read_text()))
+        Path(args[args.index("--output-last-message") + 1]).write_text(
+            json.dumps(transport_proposal(input_pack))
+        )
         return type("Completed", (), {"returncode": 0})()
 
     monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
     assert (
         CodexSparkSemanticAuthorProvider()
         .complete(
-            {"candidateId": "demo", "requiredJsonShape": {"type": "object"}},
+            provider_request(input_pack),
             SemanticAuthorPassOptions(),
         )
-        .payload
-        == {}
+        .payload["candidateId"]
+        == input_pack["candidateId"]
     )
     assert command[0:2] == ["codex", "exec"]
     assert "read-only" in command and "gpt-5.3-codex-spark" in command
+    assert "--ephemeral" in command and "--output-schema" in command
+    serialized_schema = json.dumps(schemas[0])
+    assert "$ref" not in serialized_schema
+    assert all(
+        keyword not in serialized_schema
+        for keyword in ('"allOf"', '"contains"', '"oneOf"', '"uniqueItems"')
+    )
     assert "requiredJsonShape" in inputs[0]
 
 
@@ -272,8 +349,11 @@ def test_rejects_intent_decisions_with_unknown_claims(tmp_path: Path, field: str
         run_semantic_author_pass(input_pack, FakeProvider(invalid))
 
 
-def test_codex_repairs_malformed_json_within_budget(monkeypatch: pytest.MonkeyPatch) -> None:
-    outputs = iter(("not json", "{}"))
+def test_codex_repairs_malformed_json_within_budget(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    outputs = iter(("not json", json.dumps(transport_proposal(input_pack))))
 
     def fake_run(args: list[str], **kwargs: object) -> object:
         Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
@@ -281,11 +361,142 @@ def test_codex_repairs_malformed_json_within_budget(monkeypatch: pytest.MonkeyPa
 
     monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
     completion = CodexSparkSemanticAuthorProvider().complete(
-        {"requiredJsonShape": {}}, SemanticAuthorPassOptions(json_repair_max_attempts=1)
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
     )
-    assert completion.payload == {}
+    assert completion.payload["candidateId"] == input_pack["candidateId"]
     assert completion.receipt["jsonRepairNeeded"] is True
     assert completion.receipt["jsonRepairAttemptCount"] == 1
+
+
+def test_codex_unwraps_only_a_single_known_proposal_envelope(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+
+    def fake_run(args: list[str], **_kwargs: object) -> object:
+        Path(args[args.index("--output-last-message") + 1]).write_text(
+            json.dumps({"proposal": transport_proposal(input_pack)})
+        )
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack), SemanticAuthorPassOptions()
+    )
+    assert completion.payload["candidateId"] == input_pack["candidateId"]
+    assert completion.receipt["jsonRepairNeeded"] is False
+
+
+def test_transport_state_discards_only_inactive_intent_branch_padding(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    padded = transport_proposal(input_pack)
+    reuse = padded["intentDecisions"][0]
+    reuse.update(
+        {
+            "userNeedClaimId": "inactive_value",
+            "nearbyIntentIds": ["intent.inactive"],
+            "nonGoalClaimIds": ["inactive_claim"],
+        }
+    )
+
+    def fake_run(args: list[str], **_kwargs: object) -> object:
+        Path(args[args.index("--output-last-message") + 1]).write_text(json.dumps(padded))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack), SemanticAuthorPassOptions()
+    )
+    normalized = completion.payload["intentDecisions"][0]
+    assert normalized["state"] == "proposed_reuse"
+    assert normalized["rationaleClaimId"] == reuse["rationaleClaimId"]
+    assert "userNeedClaimId" not in normalized
+    assert "nearbyIntentIds" not in normalized
+    assert "nonGoalClaimIds" not in normalized
+
+
+def test_codex_repairs_schema_conformance_failure_with_diagnostic(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    malformed = transport_proposal(input_pack)
+    malformed["apiVersion"] = "wrong-api"
+    outputs = iter((json.dumps(malformed), json.dumps(transport_proposal(input_pack))))
+    prompts: list[str] = []
+
+    def fake_run(args: list[str], **kwargs: object) -> object:
+        prompts.append(str(kwargs["input"]))
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+    assert completion.receipt["jsonRepairNeeded"] is True
+    assert completion.receipt["jsonRepairAttemptCount"] == 1
+    assert "transport schema violation" in prompts[1]
+
+
+def test_codex_repairs_cross_record_conformance_failure(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    malformed = transport_proposal(input_pack)
+    malformed["intentDecisions"][0]["rationaleClaimId"] = "missing_claim"
+    outputs = iter((json.dumps(malformed), json.dumps(transport_proposal(input_pack))))
+    prompts: list[str] = []
+
+    def fake_run(args: list[str], **kwargs: object) -> object:
+        prompts.append(str(kwargs["input"]))
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+    assert completion.receipt["jsonRepairNeeded"] is True
+    assert "references an unknown claim" in prompts[1]
+
+
+def test_lm_studio_repairs_schema_fragment_value(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    malformed = transport_proposal(input_pack)
+    malformed["candidateId"] = {"$ref": "#/$defs/candidateId"}
+    contents = iter((json.dumps(malformed), json.dumps(transport_proposal(input_pack))))
+
+    class Response:
+        def __enter__(self) -> Response:
+            return self
+
+        def __exit__(self, *_: object) -> None:
+            pass
+
+        def read(self, size: int = -1) -> bytes:
+            return json.dumps(
+                {
+                    "model": "local",
+                    "choices": [{"message": {"content": next(contents)}}],
+                }
+            ).encode()[:size]
+
+    monkeypatch.setattr("urllib.request.urlopen", lambda *_args, **_kwargs: Response())
+    completion = LMStudioSemanticAuthorProvider(
+        base_url="http://127.0.0.1:1234", model="local"
+    ).complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+    assert completion.payload["candidateId"] == input_pack["candidateId"]
+    assert completion.receipt["jsonRepairNeeded"] is True
 
 
 def test_codex_rejects_output_before_unbounded_read(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -301,12 +512,20 @@ def test_codex_rejects_output_before_unbounded_read(monkeypatch: pytest.MonkeyPa
 
 
 def test_lm_studio_repairs_json_and_bounds_response_reads(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
+    input_pack = pack(tmp_path)
     bodies = iter(
         (
             b'{"model":"local","choices":[{"message":{"content":"bad"}}]}',
-            b'{"model":"local","choices":[{"message":{"content":"{}"}}]}',
+            json.dumps(
+                {
+                    "model": "local",
+                    "choices": [
+                        {"message": {"content": json.dumps(transport_proposal(input_pack))}}
+                    ],
+                }
+            ).encode(),
         )
     )
     read_sizes: list[int] = []
@@ -328,11 +547,11 @@ def test_lm_studio_repairs_json_and_bounds_response_reads(
     monkeypatch.setattr("urllib.request.urlopen", lambda *_args, **_kwargs: Response())
     completion = LMStudioSemanticAuthorProvider(
         base_url="http://127.0.0.1:1234", model="local"
-    ).complete({}, SemanticAuthorPassOptions(max_output_bytes=1024))
+    ).complete(provider_request(input_pack), SemanticAuthorPassOptions(max_output_bytes=16_384))
 
-    assert completion.payload == {}
+    assert completion.payload["candidateId"] == input_pack["candidateId"]
     assert completion.receipt["jsonRepairAttemptCount"] == 1
-    assert read_sizes == [1025, 1025]
+    assert read_sizes == [16_385, 16_385]
 
 
 def test_lm_studio_rejects_oversized_response_while_reading(

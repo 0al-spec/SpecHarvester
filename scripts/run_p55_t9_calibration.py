@@ -218,11 +218,23 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             command=args.codex_command, model=args.codex_model
         ),
         "lm_studio": LMStudioSemanticAuthorProvider(
-            base_url=args.lm_studio_base_url, model=args.lm_studio_model
+            base_url=args.lm_studio_base_url,
+            model=args.lm_studio_model,
+            max_tokens=args.lm_studio_max_tokens,
         ),
     }
+    if args.provider:
+        providers = {name: providers[name] for name in args.provider}
+    targets = [
+        target
+        for target in rubric["targets"]
+        if not args.repository or target["repositoryId"] in args.repository
+    ]
+    expected_repositories = {target["repositoryId"] for target in rubric["targets"]}
+    if args.repository and set(args.repository) - expected_repositories:
+        raise ValueError("Unknown targeted calibration repository")
     records: dict[str, list[dict[str, Any]]] = {name: [] for name in providers}
-    for target in rubric["targets"]:
+    for target in targets:
         candidate = args.candidate_root / target["repositoryId"] / target["candidateDirectory"]
         source = args.source_root / target["repositoryId"]
         validate_source_checkout(source, revisions[target["repositoryId"]])
@@ -235,15 +247,36 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 options=SemanticAuthorInputPackOptions(document_paths=("README.md",)),
             )
             for provider_name, provider in providers.items():
+                timeout_seconds = (
+                    args.codex_timeout_seconds
+                    if provider_name == "codex_spark"
+                    else args.lm_studio_timeout_seconds
+                )
+                print(
+                    json.dumps(
+                        {
+                            "event": "provider_target_started",
+                            "provider": provider_name,
+                            "repositoryId": target["repositoryId"],
+                        },
+                        sort_keys=True,
+                    ),
+                    file=sys.stderr,
+                    flush=True,
+                )
                 try:
                     semantic_pass = run_semantic_author_pass(
                         pack,
                         provider,
                         options=SemanticAuthorPassOptions(
-                            timeout_seconds=args.timeout_seconds,
+                            timeout_seconds=timeout_seconds or args.timeout_seconds,
                             max_output_bytes=256 * 1024,
-                            json_repair_max_attempts=1,
+                            json_repair_max_attempts=args.json_repair_max_attempts,
                         ),
+                        semantic_focus={
+                            "purposeConceptGroups": target["purposeConceptGroups"],
+                            "specificTerms": target["specificTerms"],
+                        },
                     )
                     quality = evaluate_semantic_proposal_quality(pack, semantic_pass)
                     metrics = rubric_metrics(target, semantic_pass, quality)
@@ -261,6 +294,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                             "metrics": metrics,
                         }
                     )
+                    outcome = "completed"
                 except (SemanticAuthorPassError, ValueError) as exc:
                     records[provider_name].append(
                         {
@@ -270,10 +304,33 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                             "failureCode": str(exc),
                         }
                     )
+                    outcome = "failed"
+                print(
+                    json.dumps(
+                        {
+                            "event": "provider_target_finished",
+                            "provider": provider_name,
+                            "repositoryId": target["repositoryId"],
+                            "status": outcome,
+                        },
+                        sort_keys=True,
+                    ),
+                    file=sys.stderr,
+                    flush=True,
+                )
     summaries = {
         provider: provider_summary(provider_records, policy)
         for provider, provider_records in records.items()
     }
+    full_scope = (
+        set(providers) == {"codex_spark", "lm_studio"}
+        and {target["repositoryId"] for target in targets} == expected_repositories
+    )
+    baseline_evidence_sha256 = None
+    if args.baseline_evidence:
+        baseline_evidence_sha256 = hashlib.sha256(args.baseline_evidence.read_bytes()).hexdigest()
+    if args.run_id == "p55-t9a" and baseline_evidence_sha256 is None:
+        raise ValueError("P55-T9A requires baseline evidence binding")
     report = {
         "apiVersion": "spec-harvester.targeted-semantic-quality-calibration/v0",
         "kind": "SpecHarvesterTargetedSemanticQualityCalibration",
@@ -282,14 +339,22 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             (args.source_manifest_dir / "repositories.yml").read_bytes()
         ).hexdigest(),
         "sourceRevisions": dict(sorted(revisions.items())),
+        "runId": args.run_id,
+        "baselineEvidenceSha256": baseline_evidence_sha256,
         "rubricSha256": digest(rubric),
         "policySha256": policy["policySha256"],
+        "scope": {
+            "fullFrozenTargetSet": full_scope,
+            "repositoryIds": [target["repositoryId"] for target in targets],
+            "providerIds": list(providers),
+        },
         "providers": {
             provider: {"summary": summaries[provider], "records": provider_records}
             for provider, provider_records in records.items()
         },
         "decision": {
-            "p55T10Unblocked": all(summary["passed"] for summary in summaries.values()),
+            "p55T10Unblocked": full_scope
+            and all(summary["passed"] for summary in summaries.values()),
             "thresholdsRedefined": False,
         },
         "privacy": {
@@ -314,11 +379,28 @@ def main() -> int:
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--source-manifest-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--run-id", default="p55-t9")
+    parser.add_argument("--baseline-evidence", type=Path)
     parser.add_argument("--codex-command", default="codex")
     parser.add_argument("--codex-model", default="gpt-5.3-codex-spark")
     parser.add_argument("--lm-studio-base-url", default="http://127.0.0.1:1234")
     parser.add_argument("--lm-studio-model", default="openai/gpt-oss-20b")
+    parser.add_argument("--lm-studio-max-tokens", type=int, default=6144)
     parser.add_argument("--timeout-seconds", type=float, default=180)
+    parser.add_argument("--json-repair-max-attempts", type=int, default=1)
+    parser.add_argument("--codex-timeout-seconds", type=float)
+    parser.add_argument("--lm-studio-timeout-seconds", type=float)
+    parser.add_argument(
+        "--provider",
+        action="append",
+        choices=("codex_spark", "lm_studio"),
+        help="Run only the selected provider for a diagnostic subset",
+    )
+    parser.add_argument(
+        "--repository",
+        action="append",
+        help="Run only the selected frozen repository ID for a diagnostic subset",
+    )
     args = parser.parse_args()
     try:
         report = run(args)

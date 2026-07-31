@@ -41,7 +41,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P55-T9A Semantic Provider Output Conformance Follow-Up" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Ready" in next_text
+        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
         assert "`P55-T9` Targeted Semantic Quality Calibration" in next_text
         assert "schema/meta-schema fragments" in normalized
         assert "`rtk-ai/rtk`, `openai/codex`, `BurntSushi/ripgrep`" in normalized

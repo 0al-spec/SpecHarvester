@@ -69,3 +69,15 @@ promoted, or published.
 The rerun verified each retained checkout was clean and exactly matched the
 pinned revision in `inputs/p53-mass-corpus/repositories.yml` before copying
 README evidence.
+
+## P55-T9A Follow-Up
+
+P55-T9A added provider-neutral structured-output conformance and repeated this
+exact target set against the unchanged rubric and policy. Codex 5.3 Spark and
+LM Studio both completed 4/4 records and passed every frozen gate, so P55-T10
+is now unblocked. Static namespace and generic-intent diagnostics remain
+review evidence; the follow-up did not promote any proposal.
+
+See
+[`SEMANTIC_PROVIDER_OUTPUT_CONFORMANCE_FOLLOW_UP.md`](SEMANTIC_PROVIDER_OUTPUT_CONFORMANCE_FOLLOW_UP.md)
+for the transport changes, metrics, and authority boundary.
