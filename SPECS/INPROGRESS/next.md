@@ -1,26 +1,31 @@
-# Next Task: P55-T10G1 Outcome-Level Purpose Anchors
+# Next Task: P55-T10G2 Validation-Aware Semantic Repair
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10G` Ten-Repository Semantic Root-Cause Calibration
+**Dependencies:** `P55-T10G1` Outcome-Level Purpose Anchors
 **Status:** Ready
 
 ## Objective
 
-Add deterministic, source-bound outcome-level purpose anchors so semantic
-quality checks can distinguish a package's concrete user outcome from package
-identity, import, discovery, repository, or implementation mechanics.
+Make semantic JSON repair validation-aware for generic-only contradiction,
+experimental-intent namespace, and outcome-purpose specificity failures while
+preserving the complete original request and bounded provider budgets.
 
 ## Required Scope
 
-Use the existing semantic product profile and bounded source documentation.
-Keep all repository-derived fields untrusted and digest-bound. Add a
-provider-neutral diagnostic that fails or requires review when a proposed
-purpose only restates package mechanics. Do not invoke a provider, change the
-frozen P55 thresholds, or grant acceptance, materialization, canonicalization,
-registry, or publication authority.
+Carry structured violation codes and prohibited/replacement constraints into the
+preserved repair request. Deterministically reject unchanged semantic violations.
+Keep the existing two-provider-attempt and one-repair-per-attempt budgets. Do not
+change frozen P55 thresholds or grant acceptance, materialization,
+canonicalization, registry, or publication authority.
 
 ## Recently Archived
+
+- `P55-T10G1` Outcome-Level Purpose Anchors: PASS. Semantic input packs now carry
+  deterministic digest-bound outcome phrases and terms. Provider transport and
+  independent quality diagnostics distinguish source-supported outcomes,
+  unmatched outcomes requiring review, and mechanics-only purposes that must be
+  rejected. No provider or authority-changing path ran.
 
 - `P55-T10G` Ten-Repository Semantic Root-Cause Calibration: PARTIAL. Codex 5.3
   Spark completed 8 of 10 frozen cases, removed all seven baseline generic

@@ -11,6 +11,7 @@ from jsonschema import Draft202012Validator
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
 from spec_harvester.interface_index import validate_public_interface_index
+from spec_harvester.outcome_purpose_anchors import build_outcome_purpose_anchors
 from spec_harvester.relevant_intent_routing import validate_relevant_intent_catalog
 from spec_harvester.semantic_product_profile import (
     PROFILE_FILENAME,
@@ -149,6 +150,15 @@ def build_semantic_author_input_pack(
     }
     if intent_routing is not None:
         result["intentRouting"] = json.loads(json.dumps(intent_routing))
+    if profile is not None:
+        purpose_anchors = build_outcome_purpose_anchors(
+            profile,
+            evidence,
+            candidate_id=candidate_id,
+            source_bundle_sha256=source_bundle_sha256,
+        )
+        if purpose_anchors["anchors"]:
+            result["outcomePurposeAnchors"] = purpose_anchors
     return result
 
 
