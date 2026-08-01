@@ -3,7 +3,7 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T10C` Retained Generic-Intent Follow-Up evidence
-**Status:** Selected
+**Status:** In Progress
 
 ## Objective
 
