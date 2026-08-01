@@ -61,6 +61,10 @@ def test_p55_t10g3_durable_rerun_evidence_preserves_frozen_contract() -> None:
     assert report["archive"]["sha256"] == hashlib.sha256(archive_path.read_bytes()).hexdigest()
     with tarfile.open(archive_path, "r:gz") as archive:
         assert sum(name.endswith("/campaign-record.json") for name in archive.getnames()) == 10
+        archived_scope = json.load(archive.extractfile("campaign-input.json"))
+        assert archived_scope["campaignInputSha256"] == calibration._digest_without(
+            archived_scope, "campaignInputSha256"
+        )
     assert all(value is False for value in report["privacy"].values())
     assert all(value is False for value in report["executionBoundary"].values())
 

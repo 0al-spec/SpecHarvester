@@ -29,11 +29,11 @@ PARTIAL
 
 ## Durable Evidence
 
-- Report digest: `a87f2cab127306faad03245fb0c249b1316c31a4014541c5815c78e34954fbcb`.
+- Report digest: `e70f4483680fb6608111a1ebc3f6a372469cce89d1aa3a908ee8a00e70024244`.
 - Purpose assessment digest:
   `d205379cfa75f6de30720cf1f41ac0a2e5009bd27077ea46244f9dc1ead33f06`.
 - Portable archive digest:
-  `134159f0c395e01fc2eb68b1f8700669bcc2899012031eb04903e20ca95f98fb`.
+  `e568046577f810a138ba442561c5a9ff60971f33da45808d23fbb476c1ee04cb`.
 
 ## Decision and Boundaries
 

@@ -3,10 +3,10 @@
   "archive": {
     "path": "P55-T10G3_Semantic_Proposal_Records.tar.gz",
     "recordCount": 10,
-    "sha256": "134159f0c395e01fc2eb68b1f8700669bcc2899012031eb04903e20ca95f98fb"
+    "sha256": "e568046577f810a138ba442561c5a9ff60971f33da45808d23fbb476c1ee04cb"
   },
   "authority": "semantic_root_cause_calibration_evidence_only",
-  "campaignInputSha256": "f6dc0270378912b506574484c376e1600b3e6843b00e2091851c7a8eeab53550",
+  "campaignInputSha256": "53d0e1e34d18da2b10c286765148a4af647ab1c5ea3d93fe69d7dc6b0229dfc2",
   "comparisons": [
     {
       "baselineGenericIntentIds": [
@@ -22,7 +22,7 @@
       "currentGenericIntentIds": [],
       "currentJsonRepairNeeded": false,
       "currentQualityStatus": "eligible_for_calibration",
-      "currentRecordSha256": "2cb56172d04f476e85aac0b59c637fb19b4c3ac45fbd3435ac55bddffde422a8",
+      "currentRecordSha256": "f2c451b1c21f5a62c05bb96e5bc7f0805b5fd4ba9e1d5db10748ee09737b2d48",
       "currentStatus": "completed",
       "purposeAccurate": true,
       "repositoryId": "axios-axios",
@@ -43,7 +43,7 @@
       "currentGenericIntentIds": [],
       "currentJsonRepairNeeded": true,
       "currentQualityStatus": "eligible_for_calibration",
-      "currentRecordSha256": "bf1372a859d3c8f0d1d05b1a70ef0781e0d2e91a7ce87bb248cd8f4e652ad6bc",
+      "currentRecordSha256": "1aa61271413e5c73f49316e1b3b5fad5f7c2fcf2fa8ec459086cfdccda6049de",
       "currentStatus": "completed",
       "purposeAccurate": true,
       "repositoryId": "n8n-io-n8n",
@@ -64,7 +64,7 @@
       "currentGenericIntentIds": [],
       "currentJsonRepairNeeded": true,
       "currentQualityStatus": "eligible_for_calibration",
-      "currentRecordSha256": "0c608fe79e915b75d160db8d32f64b038fbca1e32a443f1b6dddf7ae4d8057ac",
+      "currentRecordSha256": "11adf9753d3f8e07f6c6a148b905e2ee1fd99fced7508ebf8ea8fc258714249e",
       "currentStatus": "completed",
       "purposeAccurate": false,
       "repositoryId": "firecrawl-firecrawl",
@@ -88,7 +88,7 @@
       ],
       "currentJsonRepairNeeded": true,
       "currentQualityStatus": "rejected",
-      "currentRecordSha256": "012ffee892472233d1d037a47f7e441a63e5d4b57c3072095e212d3dc378b92b",
+      "currentRecordSha256": "51c5c9945bb83331eb9550456fd10237149cd16de0f3c255c8a334e7a6126dc6",
       "currentStatus": "completed",
       "purposeAccurate": true,
       "repositoryId": "bitcoin-bitcoin",
@@ -109,7 +109,7 @@
       "currentGenericIntentIds": [],
       "currentJsonRepairNeeded": true,
       "currentQualityStatus": "eligible_for_calibration",
-      "currentRecordSha256": "4c84dc0bc6370d82b06cfad4f471a3c664f382fbe138fea96bb1e328ad6d7e3c",
+      "currentRecordSha256": "b6e6176358dc3659544e64892774a91d2e2c593221a8f98e7ff2384ac4b6ed80",
       "currentStatus": "completed",
       "purposeAccurate": true,
       "repositoryId": "excalidraw-excalidraw",
@@ -128,7 +128,7 @@
       "currentGenericIntentIds": [],
       "currentJsonRepairNeeded": false,
       "currentQualityStatus": "eligible_for_calibration",
-      "currentRecordSha256": "a0796af574e0f945778f464cf9647b63ff5f255351b5be68ad80566ba3a6fcb1",
+      "currentRecordSha256": "17b78c6b1ef0e983ca6b8fc5351056c2f3869bc418198324f63ac793592695f7",
       "currentStatus": "completed",
       "purposeAccurate": true,
       "repositoryId": "openai-codex",
@@ -147,7 +147,7 @@
       "currentGenericIntentIds": [],
       "currentJsonRepairNeeded": false,
       "currentQualityStatus": "eligible_for_calibration",
-      "currentRecordSha256": "748183b63072d5df49d9278cd7f42462a7c601372612d8a4629f58cd0e70d95c",
+      "currentRecordSha256": "978ac57a4d243f26b95e034a68374ab36d0d1a0aa4a1ebe1a116b521a770963c",
       "currentStatus": "completed",
       "purposeAccurate": true,
       "repositoryId": "thedotmack-claude-mem",
@@ -166,7 +166,7 @@
       "currentGenericIntentIds": [],
       "currentJsonRepairNeeded": false,
       "currentQualityStatus": "eligible_for_calibration",
-      "currentRecordSha256": "da7a57411b3e0aa5778811ff123c6480c3e670c48d29de5f1159325d0ea8b5b3",
+      "currentRecordSha256": "a623aadda7dcaf5ea14307fe3a6160278b2fa97db023f3a3ea9235f252c254fd",
       "currentStatus": "completed",
       "purposeAccurate": false,
       "repositoryId": "angular-angular",
@@ -187,7 +187,7 @@
       "currentGenericIntentIds": [],
       "currentJsonRepairNeeded": false,
       "currentQualityStatus": "eligible_for_calibration",
-      "currentRecordSha256": "0c4b40e8961899f567e86adb4e2b934132c533e398f6df9b0a8b3284d1958d2f",
+      "currentRecordSha256": "b3cb8e232560584e5356ae3b0902e40bdcbbdc4e39533cebec7bba18d2c30e9f",
       "currentStatus": "completed",
       "purposeAccurate": false,
       "repositoryId": "electron-electron",
@@ -208,7 +208,7 @@
       "currentGenericIntentIds": [],
       "currentJsonRepairNeeded": false,
       "currentQualityStatus": "eligible_for_calibration",
-      "currentRecordSha256": "3b2b89783a8095b1a804eafd2d3a72e7dc5f0cd0f6e9457d0090922d96a7ab4f",
+      "currentRecordSha256": "f0ee5a166596a456dff2d1f8ed5a830aa8942decd182721cdc0f7989772cbb47",
       "currentStatus": "completed",
       "purposeAccurate": true,
       "repositoryId": "freecodecamp-freecodecamp",
@@ -242,66 +242,66 @@
   "purposeAssessment": {
     "acceptanceAuthorityGranted": false,
     "apiVersion": "spec-harvester.semantic-purpose-supervisor-assessment/v0",
-    "assessmentSha256": "d205379cfa75f6de30720cf1f41ac0a2e5009bd27077ea46244f9dc1ead33f06",
+    "assessmentSha256": "1cd7085dcd5d447fe1ba36b36a9d46c805114748223b051d0c5b35c20499618b",
     "assessments": [
       {
         "purposeAccurate": true,
         "rationale": "Identifies Axios as a promise-based browser and Node.js HTTP client for asynchronous request and response workflows.",
-        "recordSha256": "2cb56172d04f476e85aac0b59c637fb19b4c3ac45fbd3435ac55bddffde422a8",
+        "recordSha256": "f2c451b1c21f5a62c05bb96e5bc7f0805b5fd4ba9e1d5db10748ee09737b2d48",
         "repositoryId": "axios-axios"
       },
       {
         "purposeAccurate": true,
         "rationale": "Describes the selected n8n agents package as an SDK for building AI-capable workflow logic on the code-first execution engine.",
-        "recordSha256": "bf1372a859d3c8f0d1d05b1a70ef0781e0d2e91a7ce87bb248cd8f4e652ad6bc",
+        "recordSha256": "1aa61271413e5c73f49316e1b3b5fad5f7c2fcf2fa8ec459086cfdccda6049de",
         "repositoryId": "n8n-io-n8n"
       },
       {
         "purposeAccurate": false,
         "rationale": "Restates generated preview and package metadata mechanics instead of Firecrawl web search, scraping, crawling, and extraction outcomes.",
-        "recordSha256": "0c608fe79e915b75d160db8d32f64b038fbca1e32a443f1b6dddf7ae4d8057ac",
+        "recordSha256": "11adf9753d3f8e07f6c6a148b905e2ee1fd99fced7508ebf8ea8fc258714249e",
         "repositoryId": "firecrawl-firecrawl"
       },
       {
         "purposeAccurate": true,
         "rationale": "Explains that Bitcoin Core connects to the peer-to-peer network and fully validates downloaded blocks and transactions.",
-        "recordSha256": "012ffee892472233d1d037a47f7e441a63e5d4b57c3072095e212d3dc378b92b",
+        "recordSha256": "51c5c9945bb83331eb9550456fd10237149cd16de0f3c255c8a334e7a6126dc6",
         "repositoryId": "bitcoin-bitcoin"
       },
       {
         "purposeAccurate": true,
         "rationale": "Describes the selected Excalidraw common package as reusable shared functions and constants for downstream code.",
-        "recordSha256": "4c84dc0bc6370d82b06cfad4f471a3c664f382fbe138fea96bb1e328ad6d7e3c",
+        "recordSha256": "b6e6176358dc3659544e64892774a91d2e2c593221a8f98e7ff2384ac4b6ed80",
         "repositoryId": "excalidraw-excalidraw"
       },
       {
         "purposeAccurate": true,
         "rationale": "Identifies Codex CLI as a locally executed coding agent used through the codex command-line workflow.",
-        "recordSha256": "a0796af574e0f945778f464cf9647b63ff5f255351b5be68ad80566ba3a6fcb1",
+        "recordSha256": "17b78c6b1ef0e983ca6b8fc5351056c2f3869bc418198324f63ac793592695f7",
         "repositoryId": "openai-codex"
       },
       {
         "purposeAccurate": true,
         "rationale": "Captures claude-mem context compression, persistence, and reuse across Claude Code sessions.",
-        "recordSha256": "748183b63072d5df49d9278cd7f42462a7c601372612d8a4629f58cd0e70d95c",
+        "recordSha256": "978ac57a4d243f26b95e034a68374ab36d0d1a0aa4a1ebe1a116b521a770963c",
         "repositoryId": "thedotmack-claude-mem"
       },
       {
         "purposeAccurate": false,
         "rationale": "Describes a generated member-package preview and Angular Adev identity rather than the documentation application's user outcome.",
-        "recordSha256": "da7a57411b3e0aa5778811ff123c6480c3e670c48d29de5f1159325d0ea8b5b3",
+        "recordSha256": "a623aadda7dcaf5ea14307fe3a6160278b2fa97db023f3a3ea9235f252c254fd",
         "repositoryId": "angular-angular"
       },
       {
         "purposeAccurate": false,
         "rationale": "Centers generated package import and module-boundary mechanics instead of the dialog-helper's concrete automation outcome.",
-        "recordSha256": "0c4b40e8961899f567e86adb4e2b934132c533e398f6df9b0a8b3284d1958d2f",
+        "recordSha256": "b3cb8e232560584e5356ae3b0902e40bdcbbdc4e39533cebec7bba18d2c30e9f",
         "repositoryId": "electron-electron"
       },
       {
         "purposeAccurate": true,
         "rationale": "Connects the selected freeCodeCamp API package to consuming the open-source curriculum and codebase through its API surface.",
-        "recordSha256": "3b2b89783a8095b1a804eafd2d3a72e7dc5f0cd0f6e9457d0090922d96a7ab4f",
+        "recordSha256": "f0ee5a166596a456dff2d1f8ed5a830aa8942decd182721cdc0f7989772cbb47",
         "repositoryId": "freecodecamp-freecodecamp"
       }
     ],
@@ -309,7 +309,7 @@
     "kind": "SpecHarvesterSemanticPurposeSupervisorAssessment",
     "schemaVersion": 1
   },
-  "reportSha256": "a87f2cab127306faad03245fb0c249b1316c31a4014541c5815c78e34954fbcb",
+  "reportSha256": "e70f4483680fb6608111a1ebc3f6a372469cce89d1aa3a908ee8a00e70024244",
   "schemaVersion": 1,
   "summary": {
     "baselineGenericIntentReuseCount": 7,

@@ -234,7 +234,7 @@ def load_calibration_scope(
     if plan != expected:
         raise ValueError("P55-T10G frozen plan differs from current evidence bindings")
     scope = {
-        **base_scope,
+        **{key: value for key, value in base_scope.items() if key != "campaignInputSha256"},
         "authority": "semantic_root_cause_calibration_proposal_only",
         "taskId": "P55-T10G",
         "repositoryCount": len(TARGET_IDS),
