@@ -1,36 +1,30 @@
-# Next Task: P55-T10G Ten-Repository Semantic Root-Cause Calibration
+# Next Task: P55-T10H Exact Generic-Intent Scope Revalidation
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10F` Relevant Intent Routing and Generic Contradiction Gate
-**Status:** Selected
+**Dependencies:** `P55-T10G` must pass its frozen gates
+**Status:** Blocked
 
 ## Objective
 
-Run the frozen ten-repository calibration to determine whether preserved repair
-context, deterministic product profiles, relevant observed-intent routing, and
-the generic contradiction gate improve semantic proposal quality.
+Revalidate the exact 46-repository P55-T10C generic-intent scope only after the
+targeted root-cause calibration passes its frozen semantic quality gates.
 
 ## Required Scope
 
-Use pinned cases including `axios/axios`, `n8n-io/n8n`,
-`firecrawl/firecrawl`, `bitcoin/bitcoin`, `excalidraw/excalidraw`, and
-`openai/codex`. Compare against immutable P55-T10C evidence for purpose
-accuracy, generic-intent reduction, repair outcomes, false novelty, provider
-failures, and reviewer edit burden. Do not expand scope or redefine thresholds
-after observing results. Preserve proposal-only authority and the ban on
-materialization, canonicalization, registry mutation, or publication.
-
-## Frozen Target Set
-
-The calibration is fixed before provider execution to these ten P55-T10C
-records: `axios/axios`, `n8n-io/n8n`, `firecrawl/firecrawl`,
-`bitcoin/bitcoin`, `excalidraw/excalidraw`, `openai/codex`,
-`thedotmack/claude-mem`, `angular/angular`, `electron/electron`, and
-`freeCodeCamp/freeCodeCamp`. The set may not be expanded or replaced after
-observing results.
+P55-T10G completed 8/10, reduced generic reuse from 7 to 0, and had zero false
+novelty, but purpose accuracy was 0.60 and reviewer edit burden was 0.40. Do not
+start the 46-repository run until bounded follow-up work resolves semantic
+specificity and repair convergence and a repeated targeted calibration passes.
 
 ## Recently Archived
+
+- `P55-T10G` Ten-Repository Semantic Root-Cause Calibration: PARTIAL. Codex 5.3
+  Spark completed 8 of 10 frozen cases, removed all seven baseline generic
+  intent references, and proposed eight evidence-bound experimental intents
+  with zero false novelty or duplicates. Purpose accuracy was 0.60, reviewer
+  edit burden was 0.40, Bitcoin stopped at the generic-only contradiction gate,
+  and Excalidraw stopped at namespace validation. P55-T10H remains blocked.
 
 - `P55-T10F` Relevant Intent Routing and Generic Contradiction Gate: PASS. The
   semantic author now receives a digest-bound, observed-only set of genuinely

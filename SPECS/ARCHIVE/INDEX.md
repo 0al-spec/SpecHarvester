@@ -267,6 +267,7 @@
 | P55-T10D | [P55-T10D_Semantic_Repair_Context_Preservation/](P55-T10D_Semantic_Repair_Context_Preservation/) | 2026-08-01 | PASS |
 | P55-T10E | [P55-T10E_Repository_and_Package_Semantic_Product_Profile/](P55-T10E_Repository_and_Package_Semantic_Product_Profile/) | 2026-08-01 | PASS |
 | P55-T10F | [P55-T10F_Relevant_Intent_Routing_and_Generic_Contradiction_Gate/](P55-T10F_Relevant_Intent_Routing_and_Generic_Contradiction_Gate/) | 2026-08-01 | PASS |
+| P55-T10G | [P55-T10G_Ten-Repository_Semantic_Root-Cause_Calibration/](P55-T10G_Ten-Repository_Semantic_Root-Cause_Calibration/) | 2026-08-01 | PARTIAL |
 
 ## Historical Artifacts
 
@@ -994,3 +995,4 @@
 | 2026-08-01 | P55-T10E | Archived REVIEW_p55_t10e_repository_package_semantic_product_profile report |
 | 2026-08-01 | P55-T10F | Archived Relevant Intent Routing and Generic Contradiction Gate (PASS) |
 | 2026-08-01 | P55-T10F | Archived REVIEW_p55_t10f_relevant_intent_routing_generic_contradiction report |
+| 2026-08-01 | P55-T10G | Archived Ten-Repository Semantic Root-Cause Calibration (PARTIAL) |

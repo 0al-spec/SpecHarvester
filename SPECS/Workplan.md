@@ -2894,7 +2894,7 @@ Acceptance:
   for generic reuse; and reject or require review when a specific purpose is
   mapped only to an implementation-shape intent. Preserve proposal-only
   experimental intent authority and all P55-T5 false-novelty protections.
-- [ ] `P55-T10G` Run a ten-repository semantic root-cause calibration over
+- [x] `P55-T10G` Run a ten-repository semantic root-cause calibration over
   pinned cases including `axios/axios`, `n8n-io/n8n`, `firecrawl/firecrawl`,
   `bitcoin/bitcoin`, `excalidraw/excalidraw`, and `openai/codex`. Compare the
   repaired pipeline with the immutable P55-T10C evidence for purpose accuracy,
