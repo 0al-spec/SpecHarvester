@@ -990,3 +990,4 @@
 | 2026-08-01 | P55-T10D | Archived Semantic Repair Context Preservation (PASS) |
 | 2026-08-01 | P55-T10D | Archived REVIEW_p55_t10d_semantic_repair_context_preservation report |
 | 2026-08-01 | P55-T10E | Archived Repository and Package Semantic Product Profile (PASS) |
+| 2026-08-01 | P55-T10E | Archived REVIEW_p55_t10e_repository_package_semantic_product_profile report |
