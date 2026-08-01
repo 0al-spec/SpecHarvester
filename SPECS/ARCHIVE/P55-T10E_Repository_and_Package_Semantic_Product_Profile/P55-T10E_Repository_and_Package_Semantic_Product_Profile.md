@@ -50,3 +50,7 @@ author what the repository and selected package are for before intent selection.
   that is P55-T10F.
 - Invoking an AI provider or rerunning repositories; that is P55-T10G.
 - Accepting, canonicalizing, materializing, or publishing a proposed intent.
+
+---
+**Archived:** 2026-08-01
+**Verdict:** PASS

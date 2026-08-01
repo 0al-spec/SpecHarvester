@@ -2881,7 +2881,7 @@ Acceptance:
   interface, observed-intent, or decision-policy context. Continue excluding
   raw prompts, raw responses, hidden reasoning, credentials, and machine-local
   paths from portable evidence.
-- [ ] `P55-T10E` Build a deterministic repository-and-package semantic product
+- [x] `P55-T10E` Build a deterministic repository-and-package semantic product
   profile before intent authoring. Bind explicit repository identity, candidate
   package role, language and framework signals, root documentation, nearest
   package-local documentation, and manifest description or keywords when
