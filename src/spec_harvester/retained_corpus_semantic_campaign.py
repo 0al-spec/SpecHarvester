@@ -40,6 +40,7 @@ RECORD_API_VERSION = "spec-harvester.retained-corpus-semantic-record/v0"
 RECORD_KIND = "SpecHarvesterRetainedCorpusSemanticRecord"
 EXPECTED_REPOSITORY_COUNT = 100
 CODEX_SPARK_MODEL = "gpt-5.3-codex-spark"
+CODEX_LUNA_MODEL = "gpt-5.6-luna"
 
 
 @dataclass(frozen=True)

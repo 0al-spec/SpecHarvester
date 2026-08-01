@@ -41,10 +41,18 @@ ROOT = Path(__file__).resolve().parents[1]
 def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P55-T10C Retained Generic-Intent Follow-Up" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Ready" in next_text or "**Status:** Selected" in next_text
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
         assert "`P55-T10B` Targeted Experimental-Intent Calibration" in next_text
-        assert "48 P55-T10 records that reused generic static intents" in normalized
+        assert (
+            "46 P55-T10 repository records that account for 48 reused generic static-intent "
+            "references" in normalized
+        )
         assert "original campaign as immutable baseline" in normalized
+        assert "GPT-5.6 Luna Light at `low` effort" in normalized
+        assert "Do not rerun completed Spark records or semantic-policy failures" in normalized
         assert "obtain explicit maintainer review evidence" in normalized
         assert "Do not materialize, canonicalize, mutate registry truth" in normalized
         return

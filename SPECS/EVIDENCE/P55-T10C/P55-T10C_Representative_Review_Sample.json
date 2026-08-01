@@ -1,0 +1,133 @@
+{
+  "apiVersion": "spec-harvester.semantic-follow-up-review-sample/v0",
+  "authority": "maintainer_review_queue_only",
+  "campaignInputSha256": "68adc5ae349e9e4f4cedca1ba53a7fe860c93c8ca07f7aa81b1190717a45e59e",
+  "executionBoundary": {
+    "canonicalizationPerformed": false,
+    "materializationPerformed": false,
+    "packageManagerInvoked": false,
+    "publicationPerformed": false,
+    "registryMutated": false,
+    "repositoryCodeExecuted": false,
+    "reviewerDecisionCreated": false,
+    "specpmMutated": false
+  },
+  "items": [
+    {
+      "candidateId": "juliusbrussee_caveman.caveman_installer",
+      "experimentalIntentIds": [
+        "intent.experimental.detect_and_install_agent_modes.c7440af0"
+      ],
+      "proposalReuseIntentIds": [],
+      "providerAttemptCount": 1,
+      "qualityStatus": "eligible_for_calibration",
+      "recordSha256": "293cfba42c0f78b8cd026f2ae0620b5f572c1df8ab93a51e94cd5ef89982ac6a",
+      "repositoryId": "juliusbrussee-caveman",
+      "reviewStatus": "awaiting_explicit_maintainer_review",
+      "stratum": "experimental_proposal",
+      "workbenchCursor": "juliusbrussee_caveman.caveman_installer"
+    },
+    {
+      "candidateId": "affaan_m_ecc.ecc_universal",
+      "experimentalIntentIds": [],
+      "proposalReuseIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "providerAttemptCount": 1,
+      "qualityStatus": "review_required",
+      "recordSha256": "7566f1ea256652023a18f526b3250e55fc34e5f3bfe216e5a34f8657fcdbd54f",
+      "repositoryId": "affaan-m-ecc",
+      "reviewStatus": "awaiting_explicit_maintainer_review",
+      "stratum": "retained_generic_reuse",
+      "workbenchCursor": "affaan_m_ecc.ecc_universal"
+    },
+    {
+      "candidateId": "bitcoin_bitcoin.core",
+      "experimentalIntentIds": [],
+      "proposalReuseIntentIds": [
+        "intent.package.public_repository_metadata"
+      ],
+      "providerAttemptCount": 1,
+      "qualityStatus": "rejected",
+      "recordSha256": "1d7bf9bfae3b3af49c6ab600d1e27433311b05d72a211ad310e8ecc9480c2e26",
+      "repositoryId": "bitcoin-bitcoin",
+      "reviewStatus": "awaiting_explicit_maintainer_review",
+      "stratum": "quality_rejected",
+      "workbenchCursor": "bitcoin_bitcoin.core"
+    },
+    {
+      "candidateId": "electron_electron.dialog_helper",
+      "experimentalIntentIds": [],
+      "proposalReuseIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "providerAttemptCount": 2,
+      "qualityStatus": "review_required",
+      "recordSha256": "7397479eb6087ba6171c8f299748c48d9fc11cf5f27bb8e579799ad7a322a8bf",
+      "repositoryId": "electron-electron",
+      "reviewStatus": "awaiting_explicit_maintainer_review",
+      "stratum": "recovered_provider_attempt",
+      "workbenchCursor": "electron_electron.dialog_helper"
+    },
+    {
+      "candidateId": "openai_codex.codex",
+      "experimentalIntentIds": [
+        "intent.experimental.install_and_run_local_coding_agent.f5c2460c"
+      ],
+      "proposalReuseIntentIds": [],
+      "providerAttemptCount": 1,
+      "qualityStatus": "eligible_for_calibration",
+      "recordSha256": "b559502f853188ef5070bdca1f7cb9be197a1b27a59392197a2e8e3613466402",
+      "repositoryId": "openai-codex",
+      "reviewStatus": "awaiting_explicit_maintainer_review",
+      "stratum": "experimental_proposal",
+      "workbenchCursor": "openai_codex.codex"
+    },
+    {
+      "candidateId": "thedotmack_claude_mem.claude_mem",
+      "experimentalIntentIds": [
+        "intent.experimental.persist_context_sessions.b2487e3a"
+      ],
+      "proposalReuseIntentIds": [],
+      "providerAttemptCount": 1,
+      "qualityStatus": "eligible_for_calibration",
+      "recordSha256": "3a26ff85aa35138aa96ff25b73d8c90a98aad33265047567390985cb29ea2367",
+      "repositoryId": "thedotmack-claude-mem",
+      "reviewStatus": "awaiting_explicit_maintainer_review",
+      "stratum": "experimental_proposal",
+      "workbenchCursor": "thedotmack_claude_mem.claude_mem"
+    },
+    {
+      "candidateId": "vuejs_vue.compiler_sfc",
+      "experimentalIntentIds": [
+        "intent.experimental.identify_import_surface_for_module_javascript.3058182b"
+      ],
+      "proposalReuseIntentIds": [],
+      "providerAttemptCount": 2,
+      "qualityStatus": "eligible_for_calibration",
+      "recordSha256": "6422991394b6ad98dba6cdeee507bc60260831b1b64610c58ae9ce8da5da4cb5",
+      "repositoryId": "vuejs-vue",
+      "reviewStatus": "awaiting_explicit_maintainer_review",
+      "stratum": "experimental_proposal",
+      "workbenchCursor": "vuejs_vue.compiler_sfc"
+    },
+    {
+      "candidateId": "automatic1111_stable_diffusion_webui.stable_diffusion_webui",
+      "experimentalIntentIds": [],
+      "proposalReuseIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "providerAttemptCount": 1,
+      "qualityStatus": "review_required",
+      "recordSha256": "5c662019337a7104fad1593d1fd796d26c88982e810cbbb48d9c78132f3cae51",
+      "repositoryId": "automatic1111-stable-diffusion-webui",
+      "reviewStatus": "awaiting_explicit_maintainer_review",
+      "stratum": "retained_generic_reuse",
+      "workbenchCursor": "automatic1111_stable_diffusion_webui.stable_diffusion_webui"
+    }
+  ],
+  "kind": "SpecHarvesterSemanticFollowUpReviewSample",
+  "sampleSha256": "fab7364b39dfcdc99b9e2839b75622ec74923105c82370e58c0bf4e8a6e3992c",
+  "schemaVersion": 1,
+  "taskId": "P55-T10C"
+}

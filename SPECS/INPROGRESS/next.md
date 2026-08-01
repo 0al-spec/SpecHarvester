@@ -3,12 +3,15 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T10B` Targeted Experimental-Intent Calibration
-**Status:** Selected
+**Status:** In Progress
 
 ## Objective
 
-Run a bounded Codex 5.3 Spark follow-up over the 48 P55-T10 records that reused
-generic static intents, preserving the original campaign as immutable baseline.
+Run a bounded Codex 5.3 Spark follow-up over the 46 P55-T10 repository records
+that account for 48 reused generic static-intent references, preserving the
+original campaign as immutable baseline. Recover only verified Spark
+usage-limit failures with GPT-5.6 Luna Light at `low` effort under a separate
+digest-bound provider scope.
 
 ## Required Scope
 
@@ -18,6 +21,7 @@ duplicate intent IDs, provider failures, and edit burden with P55-T10. Expose
 complete and rejected records in the Workbench and obtain explicit maintainer
 review evidence for a representative sample. Do not materialize, canonicalize,
 mutate registry truth, or publish.
+Do not rerun completed Spark records or semantic-policy failures through Luna.
 
 ## Recently Archived
 

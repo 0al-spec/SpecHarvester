@@ -336,6 +336,7 @@ def test_detail_surface_carries_inert_record_and_digest_comparison(tmp_path: Pat
         "sourceBundleSha256": json.loads(payload)["sourceBundleSha256"],
         "qualityStatus": "eligible_for_calibration",
         "warningCount": 0,
+        "campaignSource": None,
     }
     assert comparison["semantic"]["ai"]["claims"]["purpose"][0]["text"] == (
         "Select relevant repository context."

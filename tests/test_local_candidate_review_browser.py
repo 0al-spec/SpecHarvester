@@ -95,7 +95,9 @@ def test_browser_copies_valid_detail_set(tmp_path: Path) -> None:
         for section in first["supporting"]
         if section["id"] == "static-versus-ai-comparison.json"
     )
-    assert json.loads(comparison["content"])["ai"]["status"] == "summary_only_not_portable"
+    comparison_payload = json.loads(comparison["content"])
+    assert comparison_payload["ai"]["status"] == "summary_only_not_portable"
+    assert first["ai"] == comparison_payload["ai"]
     script = (tmp_path / "browser/workbench.js").read_text()
     assert "Spec health" in script
     assert "Package specifications" in script
@@ -104,6 +106,7 @@ def test_browser_copies_valid_detail_set(tmp_path: Path) -> None:
     assert "Static versus AI semantics" in script
     assert "Observed intent reuse" in script
     assert "Experimental intent proposals" in script
+    assert "Luna recovery" in script
     assert "semanticAction" in script
     assert "restoreCurrent" in script
     assert "acceptedOrEditedClaimIds" in script

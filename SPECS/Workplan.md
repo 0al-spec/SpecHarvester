@@ -2863,9 +2863,12 @@ Acceptance:
   differentiation, duplicate/synonym risk, evidence support, and reviewer edit
   burden. Preserve the frozen P55 quality policy and record false novelty as a
   failure rather than redefining thresholds.
-- [ ] `P55-T10C` Run a bounded Codex 5.3 Spark follow-up over the 48 retained
-  repositories that reused generic static intents in P55-T10. Keep unchanged
-  repository, candidate, source, and provider bindings; compare results against
+- [ ] `P55-T10C` Run a bounded Codex 5.3 Spark follow-up over the 46 retained
+  repositories accounting for 48 generic static-intent references in P55-T10.
+  Permit a digest-bound GPT-5.6 Luna Light recovery only for targets whose
+  bounded Spark attempts ended solely in the verified account usage-limit
+  failure; do not rerun semantic failures or completed records. Keep unchanged
+  repository, candidate, and source bindings; compare effective results against
   the P55-T10 baseline; expose complete and rejected records in the Workbench;
   and obtain explicit maintainer review evidence for a representative sample.
   Report generic-intent reduction, useful experimental intents, unjustified
@@ -2936,9 +2939,9 @@ Acceptance:
   and reviewer-burden thresholds.
 - P55-T10A must complete before P55-T10B. P55-T10B must demonstrate at least
   one evidence-supported experimental-intent proposal and must reject
-  unjustified novelty before P55-T10C may run. P55-T10C is limited to the 48
-  P55-T10 generic-intent reuse cases and must preserve the original baseline as
-  immutable comparison evidence.
+  unjustified novelty before P55-T10C may run. P55-T10C is limited to the 46
+  P55-T10 repositories covering all 48 generic-intent references and must
+  preserve the original baseline as immutable comparison evidence.
 - P55-T11 remains blocked until P55-T10A through P55-T10C complete and their
   Workbench review evidence distinguishes useful experimental intents from
   synonyms, taxonomy leakage, and unsupported novelty.
