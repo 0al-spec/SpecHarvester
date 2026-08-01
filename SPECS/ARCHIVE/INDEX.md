@@ -993,3 +993,4 @@
 | 2026-08-01 | P55-T10E | Archived Repository and Package Semantic Product Profile (PASS) |
 | 2026-08-01 | P55-T10E | Archived REVIEW_p55_t10e_repository_package_semantic_product_profile report |
 | 2026-08-01 | P55-T10F | Archived Relevant Intent Routing and Generic Contradiction Gate (PASS) |
+| 2026-08-01 | P55-T10F | Archived REVIEW_p55_t10f_relevant_intent_routing_generic_contradiction report |
