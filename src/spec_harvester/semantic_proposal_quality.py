@@ -18,6 +18,10 @@ from spec_harvester.experimental_intent_policy import (
     experimental_intent_suffix,
     load_experimental_intent_decision_policy,
 )
+from spec_harvester.outcome_purpose_anchors import (
+    assess_purpose_specificity,
+    validate_outcome_purpose_anchors,
+)
 from spec_harvester.relevant_intent_routing import (
     has_specific_purpose_generic_only_contradiction,
     validate_relevant_intent_routing,
@@ -119,6 +123,7 @@ def evaluate_semantic_proposal_quality(
     _validate_candidate_yaml(input_pack, diagnostics)
     if schema_valid:
         _validate_claims(proposal, evidence_by_binding, diagnostics)
+        _validate_purpose_specificity(input_pack, proposal, diagnostics)
         _validate_intents(input_pack, proposal, decision_policy, diagnostics)
 
     metrics = _metrics(proposal, diagnostics, schema_valid)
@@ -345,6 +350,30 @@ def _validate_claims(
                         subject=f"{left['id']}:{right['id']}",
                     )
                 )
+
+
+def _validate_purpose_specificity(
+    pack: dict[str, Any],
+    proposal: dict[str, Any],
+    diagnostics: list[dict[str, Any]],
+) -> None:
+    anchors = pack.get("outcomePurposeAnchors")
+    if anchors is None:
+        return
+    if not isinstance(anchors, dict):
+        diagnostics.append(_diagnostic("outcome_purpose_anchors_invalid", "error"))
+        return
+    try:
+        validate_outcome_purpose_anchors(anchors, evidence=pack.get("evidence", []))
+    except ValueError as exc:
+        diagnostics.append(_diagnostic("outcome_purpose_anchors_invalid", "error", detail=str(exc)))
+        return
+    purpose = " ".join(claim["text"] for claim in proposal["claims"] if claim["kind"] == "purpose")
+    specificity = assess_purpose_specificity(anchors, purpose)
+    if specificity == "mechanics_only":
+        diagnostics.append(_diagnostic("purpose_restates_package_mechanics", "error"))
+    elif specificity == "missing_anchor":
+        diagnostics.append(_diagnostic("purpose_outcome_anchor_missing", "warning"))
 
 
 def _validate_intents(

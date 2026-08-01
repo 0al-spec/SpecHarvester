@@ -30,6 +30,10 @@ from spec_harvester.model_json_repair import (
     complete_json_with_repair,
     openai_compatible_json_response_format,
 )
+from spec_harvester.outcome_purpose_anchors import (
+    assess_purpose_specificity,
+    validate_outcome_purpose_anchors,
+)
 from spec_harvester.relevant_intent_routing import (
     has_specific_purpose_generic_only_contradiction,
     validate_relevant_intent_routing,
@@ -317,6 +321,16 @@ def run_semantic_author_pass(
         raise SemanticAuthorPassError(
             "specific semantic purpose cannot use only a generic observed intent"
         )
+    purpose_anchors = input_pack.get("outcomePurposeAnchors")
+    if isinstance(purpose_anchors, dict):
+        purpose = " ".join(
+            claim["text"] for claim in proposal["claims"] if claim["kind"] == "purpose"
+        )
+        specificity = assess_purpose_specificity(purpose_anchors, purpose)
+        if specificity == "mechanics_only":
+            raise SemanticAuthorPassError("semantic purpose only restates package mechanics")
+        if specificity == "missing_anchor":
+            raise SemanticAuthorPassError("semantic purpose misses source-bound outcome anchors")
     return {
         "apiVersion": SEMANTIC_AUTHOR_PASS_API_VERSION,
         "kind": SEMANTIC_AUTHOR_PASS_KIND,
@@ -361,6 +375,15 @@ def _validate_input_pack(pack: dict[str, Any]) -> None:
     ):
         raise ValueError("semantic author input pack request is malformed")
     intent_routing = pack.get("intentRouting")
+    purpose_anchors = pack.get("outcomePurposeAnchors")
+    if purpose_anchors is not None:
+        if not isinstance(purpose_anchors, dict):
+            raise ValueError("semantic author input pack outcome anchors are malformed")
+        validate_outcome_purpose_anchors(purpose_anchors, evidence=pack["evidence"])
+        if purpose_anchors.get("candidateId") != pack.get("candidateId") or purpose_anchors.get(
+            "sourceBundleSha256"
+        ) != pack.get("sourceBundleSha256"):
+            raise ValueError("semantic author input pack outcome anchor binding is stale")
     catalog_records = [
         item
         for item in pack["evidence"]
@@ -656,6 +679,16 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
             for term in semantic_focus["specificTerms"]
         ):
             raise ValueError("semantic proposal capability misses a required exact term")
+    purpose_anchors = provider_payload.get("outcomePurposeAnchors")
+    if isinstance(purpose_anchors, dict):
+        purpose = " ".join(
+            claim["text"] for claim in payload["claims"] if claim["kind"] == "purpose"
+        )
+        specificity = assess_purpose_specificity(purpose_anchors, purpose)
+        if specificity == "mechanics_only":
+            raise ValueError("semantic purpose only restates package mechanics")
+        if specificity == "missing_anchor":
+            raise ValueError("semantic purpose misses source-bound outcome anchors")
     observed = {
         item.get("intentId"): item.get("observedIntentSha256")
         for item in provider_payload.get("observedIntents", [])
@@ -789,6 +822,11 @@ def _provider_payload(
         payload["intentRouting"] = intent_routing
         payload["authoringConstraints"]["relevantObservedIntentRoutingPresent"] = True
         payload["authoringConstraints"]["specificPurposeCannotUseOnlyGenericIntent"] = True
+    purpose_anchors = pack.get("outcomePurposeAnchors")
+    if isinstance(purpose_anchors, dict):
+        payload["outcomePurposeAnchors"] = purpose_anchors
+        payload["authoringConstraints"]["purposeMustMatchSourceBoundOutcomeAnchor"] = True
+        payload["authoringConstraints"]["purposeMustNotOnlyRestateMechanics"] = True
     if normalized_focus is not None:
         payload["semanticFocus"] = normalized_focus
         payload["authoringConstraints"]["purposeRequiredExactTermGroups"] = normalized_focus[

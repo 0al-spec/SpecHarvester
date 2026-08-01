@@ -513,6 +513,64 @@ def test_specific_purpose_generic_only_contradiction_rejects_quality(
     assert report["metrics"]["genericOnlyContradictionCount"] == 1
 
 
+def test_outcome_anchor_diagnostic_rejects_mechanics_only_purpose(tmp_path: Path) -> None:
+    pack = input_pack(tmp_path, catalog_override=routed_generic_catalog())
+    payload = proposal(pack)
+    generic_decision = payload["intentDecisions"][0]
+    payload["intentDecisions"] = [
+        {
+            "apiVersion": "spec-harvester.ai-semantic-experimental-intent/v0",
+            "kind": "SpecHarvesterAISemanticExperimentalIntent",
+            "schemaVersion": 1,
+            "state": "proposed_experimental",
+            "intentId": (
+                f"intent.experimental.ai_context_optimization.{pack['sourceBundleSha256'][:8]}"
+            ),
+            "userNeedClaimId": "purpose",
+            "nearbyIntentIds": [generic_decision["intentId"]],
+            "nearbyIntentClaimIds": ["nearby"],
+            "nonGoalClaimIds": ["non_goal"],
+        }
+    ]
+    passed = semantic_pass(pack, payload)
+    passed["proposal"]["claims"][0]["text"] = "A package library and command-line tool."
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "purpose_restates_package_mechanics" in diagnostic_codes(report)
+
+
+def test_outcome_anchor_diagnostic_requires_review_for_unmatched_outcome(tmp_path: Path) -> None:
+    pack = input_pack(tmp_path, catalog_override=routed_generic_catalog())
+    payload = proposal(pack)
+    generic_decision = payload["intentDecisions"][0]
+    payload["intentDecisions"] = [
+        {
+            "apiVersion": "spec-harvester.ai-semantic-experimental-intent/v0",
+            "kind": "SpecHarvesterAISemanticExperimentalIntent",
+            "schemaVersion": 1,
+            "state": "proposed_experimental",
+            "intentId": (
+                f"intent.experimental.ai_context_optimization.{pack['sourceBundleSha256'][:8]}"
+            ),
+            "userNeedClaimId": "purpose",
+            "nearbyIntentIds": [generic_decision["intentId"]],
+            "nearbyIntentClaimIds": ["nearby"],
+            "nonGoalClaimIds": ["non_goal"],
+        }
+    ]
+    passed = semantic_pass(pack, payload)
+    passed["proposal"]["claims"][0]["text"] = "Schedule meetings for distributed teams."
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "review_required"
+    assert "purpose_outcome_anchor_missing" in diagnostic_codes(report)
+
+
 def test_experimental_intent_overlap_is_false_novelty_failure(tmp_path: Path) -> None:
     pack = input_pack(tmp_path, "intent.ai.context_optimization")
     passed = semantic_pass(pack)

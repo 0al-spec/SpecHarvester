@@ -54,6 +54,8 @@ class FakeProvider:
         evidence = request["request"]["evidence"][0]
         for claim in proposal["claims"]:
             claim["evidence"] = [dict(evidence)]
+            if claim["kind"] == "purpose":
+                claim["text"] = request["outcomePurposeAnchors"]["anchors"][0]["phrase"]
         reuse = proposal["intentDecisions"][0]
         observed = request["observedIntents"][0]
         reuse["intentId"] = observed["intentId"]

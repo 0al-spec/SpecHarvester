@@ -114,6 +114,11 @@ def test_input_pack_includes_validated_semantic_product_profile(tmp_path: Path) 
     assert evidence["sourcePath"] == PROFILE_FILENAME
     assert evidence["untrusted"] is True
     assert json.loads(evidence["content"])["profileSha256"] == profile["profileSha256"]
+    anchors = result["outcomePurposeAnchors"]
+    assert anchors["candidateId"] == "demo.package"
+    assert anchors["sourceBundleSha256"] == result["sourceBundleSha256"]
+    assert anchors["profileSha256"] == profile["profileSha256"]
+    assert anchors["anchors"][0]["sourcePath"] == "README.md"
 
 
 def test_input_pack_binds_relevant_intent_routing_to_catalog_evidence(tmp_path: Path) -> None:
