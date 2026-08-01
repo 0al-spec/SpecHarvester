@@ -801,6 +801,51 @@ def test_codex_repairs_specific_purpose_generic_only_contradiction(
     assert completion.receipt["jsonRepairNeeded"] is True
     assert completion.payload["intentDecisions"][0]["state"] == "proposed_experimental"
     assert "specific semantic purpose cannot use only a generic" in prompts[1]
+    repair = json.loads(json.loads(prompts[1])[3]["content"])
+    assert repair["semanticViolation"]["code"] == ("specific_purpose_generic_only_contradiction")
+    assert "intent.package.javascript_library" in repair["semanticViolation"]["prohibitedValues"]
+    assert repair["semanticViolation"]["replacementConstraints"] == {
+        "experimentalIntentIdentifierSuffix": input_pack["sourceBundleSha256"][:8],
+        "maxExperimentalIntentCount": 1,
+        "removeGenericOnlyReuse": True,
+    }
+
+
+def test_codex_repairs_experimental_intent_namespace_violation(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    malformed = transport_proposal(input_pack)
+    malformed["intentDecisions"] = [malformed["intentDecisions"][1]]
+    malformed["intentDecisions"][0]["intentId"] = "intent.experimental.invalid"
+    repaired = transport_proposal(input_pack)
+    repaired["intentDecisions"] = [repaired["intentDecisions"][1]]
+    outputs = iter((json.dumps(malformed), json.dumps(repaired)))
+    prompts: list[str] = []
+
+    def fake_run(args: list[str], **kwargs: object) -> object:
+        prompts.append(str(kwargs["input"]))
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+
+    assert completion.receipt["jsonRepairNeeded"] is True
+    repair = json.loads(json.loads(prompts[1])[3]["content"])
+    assert repair["semanticViolation"] == {
+        "code": "experimental_intent_identifier_not_collision_bound",
+        "prohibitedValues": ["intent.experimental.invalid"],
+        "replacementConstraints": {
+            "requiredPrefix": "intent.experimental.",
+            "requiredSuffix": input_pack["sourceBundleSha256"][:8],
+            "semanticWordCountMaximum": 6,
+            "semanticWordCountMinimum": 2,
+        },
+    }
 
 
 def test_codex_repairs_frozen_semantic_focus_failure(

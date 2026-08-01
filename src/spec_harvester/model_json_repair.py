@@ -31,6 +31,8 @@ class ModelJsonFailure:
     repair_attempt_count: int
     repair_status: str
     failure_reason: str
+    violation_code: str | None = None
+    unchanged_semantic_violation: bool = False
 
 
 class ModelJsonParseError(ValueError):
@@ -39,6 +41,32 @@ class ModelJsonParseError(ValueError):
 
 class ModelJsonConformanceError(ValueError):
     """Raised when parsed model JSON does not satisfy a caller contract."""
+
+
+class ModelJsonSemanticViolation(ModelJsonConformanceError):
+    """A stable semantic failure that can safely guide one bounded repair."""
+
+    def __init__(
+        self,
+        code: str,
+        message: str,
+        *,
+        prohibited_values: list[str] | None = None,
+        replacement_constraints: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(message)
+        if not re.fullmatch(r"[a-z][a-z0-9_]{2,79}", code):
+            raise ValueError("semantic violation code is invalid")
+        self.code = code
+        self.prohibited_values = sorted(set(prohibited_values or []))[:64]
+        self.replacement_constraints = dict(replacement_constraints or {})
+
+    def repair_guidance(self) -> dict[str, Any]:
+        return {
+            "code": self.code,
+            "prohibitedValues": self.prohibited_values,
+            "replacementConstraints": self.replacement_constraints,
+        }
 
 
 def openai_compatible_json_response_format(provider_name: str) -> dict[str, Any] | None:
@@ -87,6 +115,7 @@ def complete_json_with_repair(
         )
     except (ModelJsonParseError, ModelJsonConformanceError) as exc:
         validation_error = str(exc)
+        semantic_violation = _semantic_violation(exc)
 
     latest_raw = raw_content
     latest_payload = response_payload
@@ -98,6 +127,7 @@ def complete_json_with_repair(
                 attempt,
                 system_prompt=system_prompt,
                 validation_error=validation_error,
+                semantic_violation=semantic_violation,
             )
         )
         responses.append((latest_raw, latest_payload))
@@ -118,6 +148,24 @@ def complete_json_with_repair(
             )
         except (ModelJsonParseError, ModelJsonConformanceError) as exc:
             validation_error = str(exc)
+            next_violation = _semantic_violation(exc)
+            if (
+                semantic_violation is not None
+                and next_violation is not None
+                and next_violation["code"] == semantic_violation["code"]
+            ):
+                return ModelJsonFailure(
+                    raw_content=latest_raw,
+                    response_payload=latest_payload,
+                    usage=sum_usage(responses),
+                    repair_needed=True,
+                    repair_attempt_count=attempt,
+                    repair_status="unchanged_semantic_violation",
+                    failure_reason=validation_error,
+                    violation_code=next_violation["code"],
+                    unchanged_semantic_violation=True,
+                )
+            semantic_violation = next_violation
             continue
 
     return ModelJsonFailure(
@@ -128,6 +176,7 @@ def complete_json_with_repair(
         repair_attempt_count=repair_bound,
         repair_status="exhausted",
         failure_reason=validation_error,
+        violation_code=(semantic_violation or {}).get("code"),
     )
 
 
@@ -145,6 +194,7 @@ def repair_messages(
     *,
     system_prompt: str,
     validation_error: str | None = None,
+    semantic_violation: dict[str, Any] | None = None,
 ) -> list[dict[str, str]]:
     bounded_output = invalid_output[:MAX_REPAIR_INPUT_CHARS]
     payload = {
@@ -160,6 +210,7 @@ def repair_messages(
         "allowedEvidenceBindings": _repair_evidence_bindings(request),
         "observedIntentBindings": _repair_observed_intent_bindings(request),
         "validationError": validation_error,
+        "semanticViolation": semantic_violation,
         "truncatedInvalidModelOutput": len(invalid_output) > MAX_REPAIR_INPUT_CHARS,
     }
     return [
@@ -178,6 +229,8 @@ def _normalize_and_validate(
 ) -> dict[str, Any]:
     try:
         normalized = normalize_payload(payload) if normalize_payload else payload
+    except ModelJsonSemanticViolation:
+        raise
     except (KeyError, TypeError, ValueError) as exc:
         raise ModelJsonConformanceError(str(exc)) from exc
     if not isinstance(normalized, dict):
@@ -185,9 +238,15 @@ def _normalize_and_validate(
     if validate_payload:
         try:
             validate_payload(normalized)
+        except ModelJsonSemanticViolation:
+            raise
         except (KeyError, TypeError, ValueError) as exc:
             raise ModelJsonConformanceError(str(exc)) from exc
     return normalized
+
+
+def _semantic_violation(exc: Exception) -> dict[str, Any] | None:
+    return exc.repair_guidance() if isinstance(exc, ModelJsonSemanticViolation) else None
 
 
 def _repair_evidence_bindings(request: dict[str, Any]) -> list[dict[str, Any]]:

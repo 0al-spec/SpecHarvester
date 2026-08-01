@@ -27,6 +27,7 @@ from spec_harvester.experimental_intent_policy import (
 from spec_harvester.model_json_repair import (
     DEFAULT_JSON_REPAIR_MAX_ATTEMPTS,
     ModelJsonFailure,
+    ModelJsonSemanticViolation,
     complete_json_with_repair,
     openai_compatible_json_response_format,
 )
@@ -684,7 +685,21 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
         )
         specificity = assess_purpose_specificity(purpose_anchors, purpose)
         if specificity == "mechanics_only":
-            raise ValueError("semantic purpose only restates package mechanics")
+            raise ModelJsonSemanticViolation(
+                "purpose_restates_package_mechanics",
+                "semantic purpose only restates package mechanics",
+                prohibited_values=purpose_anchors["mechanicsTerms"],
+                replacement_constraints={
+                    "mustMatchOutcomeAnchor": True,
+                    "allowedOutcomeTerms": sorted(
+                        {
+                            term
+                            for anchor in purpose_anchors["anchors"]
+                            for term in anchor["outcomeTerms"]
+                        }
+                    ),
+                },
+            )
     observed = {
         item.get("intentId"): item.get("observedIntentSha256")
         for item in provider_payload.get("observedIntents", [])
@@ -721,7 +736,16 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
     if isinstance(intent_routing, dict) and has_specific_purpose_generic_only_contradiction(
         intent_routing, payload
     ):
-        raise ValueError("specific semantic purpose cannot use only a generic observed intent")
+        raise ModelJsonSemanticViolation(
+            "specific_purpose_generic_only_contradiction",
+            "specific semantic purpose cannot use only a generic observed intent",
+            prohibited_values=sorted(GENERIC_OBSERVED_INTENT_IDS),
+            replacement_constraints={
+                "removeGenericOnlyReuse": True,
+                "maxExperimentalIntentCount": 1,
+                "experimentalIntentIdentifierSuffix": str(request["sourceBundleSha256"])[:8],
+            },
+        )
 
 
 def contains_semantic_focus_term(text: str, term: str) -> bool:
@@ -948,10 +972,28 @@ def _validate_policy_decisions(
             or EXPERIMENTAL_INTENT_ID_PATTERN.fullmatch(intent_id) is None
             or not intent_id.endswith(f".{expected_suffix}")
         ):
-            raise ValueError("experimental intent identifier is not collision-bound")
+            raise ModelJsonSemanticViolation(
+                "experimental_intent_identifier_not_collision_bound",
+                "experimental intent identifier is not collision-bound",
+                prohibited_values=[str(intent_id)] if intent_id is not None else [],
+                replacement_constraints={
+                    "requiredPrefix": "intent.experimental.",
+                    "requiredSuffix": expected_suffix,
+                    "semanticWordCountMinimum": 2,
+                    "semanticWordCountMaximum": 6,
+                },
+            )
         semantic_tokens = set(intent_id.split(".")[2].split("_"))
         if semantic_tokens & candidate_tokens:
-            raise ValueError("experimental intent identifier leaks candidate namespace")
+            raise ModelJsonSemanticViolation(
+                "experimental_intent_identifier_leaks_candidate_namespace",
+                "experimental intent identifier leaks candidate namespace",
+                prohibited_values=sorted(semantic_tokens & candidate_tokens),
+                replacement_constraints={
+                    "excludeCandidateNamespaceTokens": True,
+                    "requiredSuffix": expected_suffix,
+                },
+            )
         nearby_ids = decision.get("nearbyIntentIds")
         if not isinstance(nearby_ids, list) or not nearby_ids or set(nearby_ids) - observed_ids:
             raise ValueError("experimental intent references an unknown nearby observed intent")
