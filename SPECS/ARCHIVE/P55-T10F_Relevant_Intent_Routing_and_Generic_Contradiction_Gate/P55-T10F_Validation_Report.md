@@ -56,9 +56,11 @@ provider for `axios/axios`, `n8n-io/n8n`, `firecrawl/firecrawl`,
 
 ## Validation Commands
 
-- `PYTHONPATH=src .venv/bin/python -m pytest`: 1374 passed, 1 skipped.
+- `PYTHONPATH=src .venv/bin/python -m pytest`: 1374 passed, 1 skipped before
+  review follow-up; the final coverage run below includes all 1376 passing
+  tests.
 - `PYTHONPATH=src .venv/bin/python -m pytest --cov=spec_harvester
-  --cov-report=term-missing --cov-fail-under=90`: 1374 passed, 1 skipped; total
+  --cov-report=term-missing --cov-fail-under=90`: 1376 passed, 1 skipped; total
   coverage 90.01%.
 - `.venv/bin/ruff check src tests`: passed.
 - `.venv/bin/ruff format --check src tests`: passed; 197 files formatted.
@@ -73,3 +75,14 @@ P55-T10G remains responsible for invoking Codex 5.3 Spark on the frozen ten
 repository calibration and measuring whether the repaired pipeline improves
 generic-intent reduction and reviewer edit burden without increasing false
 novelty or provider failures.
+
+## Review Follow-Up
+
+- The exact snapshot digest is now pinned independently from its self-digest.
+- Routing validation requires normalized, unique product terms and intent IDs,
+  fixed thresholds, a bounded selection, and retained current generic intents.
+- Catalog validation reconstructs every selected record from the pinned
+  snapshot and rejects substituted intent data even when local digests are
+  recomputed.
+- Resumed campaign records revalidate routing semantics after their outer
+  record digest check.

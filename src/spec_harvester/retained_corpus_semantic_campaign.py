@@ -29,6 +29,7 @@ from spec_harvester.portable_semantic_proposal import build_portable_semantic_pr
 from spec_harvester.relevant_intent_routing import (
     build_relevant_intent_catalog,
     load_specpm_observed_intent_snapshot,
+    validate_relevant_intent_routing,
 )
 from spec_harvester.semantic_author_input_pack import (
     SemanticAuthorInputPackOptions,
@@ -485,6 +486,12 @@ def validate_campaign_record(
             or record["intentRouting"].get("selectedIntentIds") != record["routedObservedIntentIds"]
         ):
             raise ValueError(f"Campaign record intent routing is stale: {target.repository_id}")
+        try:
+            validate_relevant_intent_routing(record["intentRouting"])
+        except ValueError as exc:
+            raise ValueError(
+                f"Campaign record intent routing is stale: {target.repository_id}"
+            ) from exc
 
 
 def finalize_campaign(

@@ -185,6 +185,28 @@ def test_runs_resumes_and_finalizes_complete_bound_campaign(
     stale["candidateId"] = "substituted.core"
     with pytest.raises(ValueError, match="binding is stale"):
         validate_campaign_record(stale, scope, targets[0])
+    stale_routing = copy.deepcopy(records[0])
+    stale_routing["intentRouting"]["specificProductTerms"] = ["substituted", "terms"]
+    stale_routing["intentRouting"]["routingSha256"] = hashlib.sha256(
+        json.dumps(
+            {
+                key: value
+                for key, value in stale_routing["intentRouting"].items()
+                if key != "routingSha256"
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+    stale_routing["recordSha256"] = hashlib.sha256(
+        json.dumps(
+            {key: value for key, value in stale_routing.items() if key != "recordSha256"},
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+    with pytest.raises(ValueError, match="intent routing is stale"):
+        validate_campaign_record(stale_routing, scope, targets[0])
     with pytest.raises(ValueError, match="exactly 100"):
         campaign_summary(scope, records[:-1])
 

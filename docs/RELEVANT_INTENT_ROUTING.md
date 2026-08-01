@@ -15,8 +15,11 @@ An observed intent is non-canonical comparison evidence, not a taxonomy
 decision.
 
 The snapshot records each intent ID, associated capabilities, package IDs, the
-source index digest, and its own deterministic digest. Campaign scope and every
-completed record bind the snapshot digest.
+source index digest, and its pinned deterministic digest. Catalog validation
+reconstructs every selected record from that exact snapshot, so replacing a
+capability, source-record digest, or routing term and recomputing a self-digest
+still fails closed. Campaign scope and every completed record bind and
+revalidate the snapshot and routing digests.
 
 ## Bounded Routing
 

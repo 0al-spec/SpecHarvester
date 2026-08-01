@@ -8,13 +8,13 @@ pinned observed-intent snapshot, and FLOW artifacts.
 ### Summary Verdict
 
 - [ ] Approve
-- [ ] Approve with comments
-- [x] Request changes
+- [x] Approve with comments
+- [ ] Request changes
 - [ ] Block
 
-### Critical Issues
+### Resolved Issues
 
-- [High] The snapshot, routing, and selected catalog use deterministic
+- [High, resolved] The snapshot, routing, and selected catalog used deterministic
   self-digests, but their validators do not bind all semantic contents back to
   the pinned source. A caller can change an observed capability, replace
   `specificProductTerms`, or substitute a selected intent digest and then
@@ -23,6 +23,12 @@ pinned observed-intent snapshot, and FLOW artifacts.
   intent record that did not come from the pinned SpecPM snapshot. Pin the exact
   snapshot digest, require canonical normalized routing fields, and reconstruct
   each selected catalog record from the pinned snapshot before accepting it.
+  The review follow-up implemented all three checks and also revalidates routing
+  semantics in resumed campaign records.
+
+### Critical Issues
+
+None remaining.
 
 ### Secondary Issues
 
@@ -43,14 +49,14 @@ None.
 
 ### Tests
 
-- Full Python suite: 1374 passed, 1 skipped.
+- Full post-review coverage suite: 1376 passed, 1 skipped.
 - Coverage: 90.01%.
 - Ruff lint and format, Swift manifest, Swift DocC target, and diff integrity
   passed before review.
-- Add negative tests for substitutions with recomputed self-digests.
+- Negative tests now reject snapshot, routing, catalog, and campaign-record
+  substitutions even when their self-digests are recomputed.
 
 ### Next Steps
 
-- Resolve the high finding in the current review follow-up and rerun the focused
-  semantic-author and full project gates.
-- No separate Workplan task is needed if the finding is closed in this branch.
+- The high finding is resolved in the current review follow-up.
+- No separate Workplan task is required.

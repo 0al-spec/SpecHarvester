@@ -65,6 +65,7 @@ EXPECTED_SOURCE = {
     "sourcePath": ".specpm/public-index/v0/intents/index.json",
     "sha256": "5ab3e55940faac03f341cb9b24f8db37924acec636179aa5eb17352ac2364f4e",
 }
+EXPECTED_SNAPSHOT_SHA256 = "ed03e772f9e634a4bd5de1343a0bd1d847513d66996c0770fcf61d3c3907781d"
 
 
 def load_specpm_observed_intent_snapshot() -> dict[str, Any]:
@@ -121,6 +122,8 @@ def validate_specpm_observed_intent_snapshot(snapshot: dict[str, Any]) -> None:
         if intent_id in seen:
             raise ValueError("SpecPM observed intent snapshot has duplicate intent ID")
         seen.add(intent_id)
+    if snapshot["snapshotSha256"] != EXPECTED_SNAPSHOT_SHA256:
+        raise ValueError("SpecPM observed intent snapshot identity is invalid")
 
 
 def build_relevant_intent_catalog(
@@ -143,22 +146,7 @@ def build_relevant_intent_catalog(
     query_terms = _product_terms(product_profile)
     source_by_id = {item["intentId"]: item for item in snapshot["intents"]}
     current = sorted(set(current_intent_ids) & set(source_by_id))
-    mandatory = [
-        _selection(source_by_id[intent_id], query_terms, "current_observed_generic")
-        for intent_id in current
-        if intent_id in GENERIC_OBSERVED_INTENT_IDS
-    ]
-    ranked = []
-    for item in snapshot["intents"]:
-        if item["intentId"] in {record["intentId"] for record in mandatory}:
-            continue
-        selection = _selection(item, query_terms, "relevant_lexical_match")
-        if len(selection["matchedTerms"]) >= MINIMUM_RELEVANT_INTENT_TERM_MATCHES:
-            ranked.append(selection)
-    ranked.sort(key=lambda item: (-item["relevanceScore"], item["intentId"]))
-    selected = mandatory[:max_observed_intents]
-    selected.extend(ranked[: max_observed_intents - len(selected)])
-    selected.sort(key=lambda item: item["intentId"])
+    selected = _selected_records(snapshot, query_terms, current, max_observed_intents)
     selected_ids = [item["intentId"] for item in selected]
     routing: dict[str, Any] = {
         "apiVersion": ROUTING_API_VERSION,
@@ -189,6 +177,10 @@ def build_relevant_intent_catalog(
 
 
 def validate_relevant_intent_routing(routing: dict[str, Any]) -> None:
+    query_terms = routing.get("queryTerms") if isinstance(routing, dict) else None
+    specific_terms = routing.get("specificProductTerms") if isinstance(routing, dict) else None
+    current_ids = routing.get("currentObservedIntentIds") if isinstance(routing, dict) else None
+    selected_ids = routing.get("selectedIntentIds") if isinstance(routing, dict) else None
     if (
         not isinstance(routing, dict)
         or routing.get("apiVersion") != ROUTING_API_VERSION
@@ -196,20 +188,63 @@ def validate_relevant_intent_routing(routing: dict[str, Any]) -> None:
         or routing.get("schemaVersion") != 1
         or routing.get("authority") != "observed_metadata_routing_only"
         or routing.get("canonical") is not False
+        or routing.get("snapshotSha256") != EXPECTED_SNAPSHOT_SHA256
         or routing.get("genericObservedIntentIds") != sorted(GENERIC_OBSERVED_INTENT_IDS)
         or routing.get("minimumRelevantIntentTermMatches") != MINIMUM_RELEVANT_INTENT_TERM_MATCHES
         or routing.get("minimumSpecificPurposeTermMatches") != MINIMUM_SPECIFIC_PURPOSE_TERM_MATCHES
         or routing.get("zeroScoreIntentsExcluded") is not True
         or not isinstance(routing.get("maxObservedIntents"), int)
         or not 1 <= routing["maxObservedIntents"] <= DEFAULT_MAX_OBSERVED_INTENTS
-        or not _bounded_strings(routing.get("queryTerms"))
-        or not _bounded_strings(routing.get("specificProductTerms"))
-        or not _bounded_strings(routing.get("currentObservedIntentIds"))
-        or not _bounded_strings(routing.get("selectedIntentIds"))
+        or not _bounded_strings(query_terms)
+        or not _bounded_strings(specific_terms)
+        or not _bounded_strings(current_ids)
+        or not _bounded_strings(selected_ids)
+        or query_terms != sorted(set(query_terms))
+        or specific_terms != query_terms
+        or any(
+            TOKEN_PATTERN.fullmatch(term) is None or len(term) < 3 or term in PRODUCT_STOP_WORDS
+            for term in query_terms
+        )
+        or current_ids != sorted(set(current_ids))
+        or selected_ids != sorted(set(selected_ids))
+        or any(INTENT_ID_PATTERN.fullmatch(intent_id) is None for intent_id in current_ids)
+        or any(INTENT_ID_PATTERN.fullmatch(intent_id) is None for intent_id in selected_ids)
+        or len(selected_ids) > routing.get("maxObservedIntents", 0)
+        or (set(current_ids) & GENERIC_OBSERVED_INTENT_IDS) - set(selected_ids)
     ):
         raise ValueError("relevant observed intent routing is malformed")
     if routing.get("routingSha256") != _digest_without(routing, "routingSha256"):
         raise ValueError("relevant observed intent routing digest is stale")
+
+
+def validate_relevant_intent_catalog(catalog: dict[str, Any]) -> None:
+    if (
+        not isinstance(catalog, dict)
+        or catalog.get("sourcePath") != "generated/specpm-relevant-observed-intents.json"
+        or catalog.get("snapshotSource") != EXPECTED_SOURCE
+        or catalog.get("snapshotSha256") != EXPECTED_SNAPSHOT_SHA256
+        or not isinstance(catalog.get("routing"), dict)
+        or not isinstance(catalog.get("intents"), list)
+        or catalog.get("sha256") != _digest_without(catalog, "sha256")
+    ):
+        raise ValueError("relevant observed intent catalog is malformed")
+    routing = catalog["routing"]
+    validate_relevant_intent_routing(routing)
+    snapshot = load_specpm_observed_intent_snapshot()
+    if set(routing["currentObservedIntentIds"]) - {
+        item["intentId"] for item in snapshot["intents"]
+    }:
+        raise ValueError("relevant observed intent catalog selection is stale")
+    expected = _selected_records(
+        snapshot,
+        set(routing["queryTerms"]),
+        routing["currentObservedIntentIds"],
+        routing["maxObservedIntents"],
+    )
+    if catalog["intents"] != expected:
+        raise ValueError("relevant observed intent catalog item is stale")
+    if routing["selectedIntentIds"] != [item["intentId"] for item in expected]:
+        raise ValueError("relevant observed intent catalog selection is stale")
 
 
 def has_specific_purpose_generic_only_contradiction(
@@ -255,6 +290,32 @@ def _selection(item: dict[str, Any], query_terms: set[str], reason: str) -> dict
         "capabilities": item["capabilities"],
         "packageIds": item["packageIds"],
     }
+
+
+def _selected_records(
+    snapshot: dict[str, Any],
+    query_terms: set[str],
+    current_intent_ids: list[str],
+    max_observed_intents: int,
+) -> list[dict[str, Any]]:
+    source_by_id = {item["intentId"]: item for item in snapshot["intents"]}
+    mandatory = [
+        _selection(source_by_id[intent_id], query_terms, "current_observed_generic")
+        for intent_id in current_intent_ids
+        if intent_id in GENERIC_OBSERVED_INTENT_IDS
+    ]
+    mandatory_ids = {item["intentId"] for item in mandatory}
+    ranked = []
+    for item in snapshot["intents"]:
+        if item["intentId"] in mandatory_ids:
+            continue
+        selection = _selection(item, query_terms, "relevant_lexical_match")
+        if len(selection["matchedTerms"]) >= MINIMUM_RELEVANT_INTENT_TERM_MATCHES:
+            ranked.append(selection)
+    ranked.sort(key=lambda item: (-item["relevanceScore"], item["intentId"]))
+    selected = mandatory[:max_observed_intents]
+    selected.extend(ranked[: max_observed_intents - len(selected)])
+    return sorted(selected, key=lambda item: item["intentId"])
 
 
 def _product_terms(profile: dict[str, Any]) -> set[str]:

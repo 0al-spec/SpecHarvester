@@ -10,6 +10,8 @@ from spec_harvester.relevant_intent_routing import (
     build_relevant_intent_catalog,
     has_specific_purpose_generic_only_contradiction,
     load_specpm_observed_intent_snapshot,
+    validate_relevant_intent_catalog,
+    validate_relevant_intent_routing,
     validate_specpm_observed_intent_snapshot,
 )
 from spec_harvester.semantic_product_profile import build_semantic_product_profile
@@ -152,6 +154,33 @@ def test_snapshot_validation_rejects_stale_digest_and_duplicate_ids() -> None:
     duplicate["snapshotSha256"] = digest_without(duplicate, "snapshotSha256")
     with pytest.raises(ValueError, match="duplicate intent ID"):
         validate_specpm_observed_intent_snapshot(duplicate)
+
+
+def test_snapshot_validation_rejects_rehashed_source_substitution() -> None:
+    substituted = load_specpm_observed_intent_snapshot()
+    substituted["intents"][0]["capabilities"] = ["substituted.capability"]
+    substituted["snapshotSha256"] = digest_without(substituted, "snapshotSha256")
+
+    with pytest.raises(ValueError, match="identity is invalid"):
+        validate_specpm_observed_intent_snapshot(substituted)
+
+
+def test_routing_and_catalog_reject_rehashed_semantic_substitution() -> None:
+    catalog = build_relevant_intent_catalog(
+        product_profile(),
+        current_intent_ids=["intent.package.javascript_library"],
+    )
+    substituted_routing = copy.deepcopy(catalog["routing"])
+    substituted_routing["specificProductTerms"] = ["substituted", "terms"]
+    substituted_routing["routingSha256"] = digest_without(substituted_routing, "routingSha256")
+    with pytest.raises(ValueError, match="routing is malformed"):
+        validate_relevant_intent_routing(substituted_routing)
+
+    substituted_catalog = copy.deepcopy(catalog)
+    substituted_catalog["intents"][0]["sha256"] = "a" * 64
+    substituted_catalog["sha256"] = digest_without(substituted_catalog, "sha256")
+    with pytest.raises(ValueError, match="catalog item is stale"):
+        validate_relevant_intent_catalog(substituted_catalog)
 
 
 def test_detects_specific_purpose_mapped_only_to_generic_intent() -> None:
