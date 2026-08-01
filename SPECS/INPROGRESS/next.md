@@ -1,22 +1,22 @@
-# Next Task: P55-T10H Forty-Six-Repository Semantic Revalidation
+# Next Task: P55-T10G4 Outcome Anchor Source-Authority Ranking
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T10G3` Repeat Ten-Repository Semantic Calibration
-**Status:** Blocked
+**Status:** Ready
 
 ## Objective
 
-Revalidate the exact 46-repository generic-intent scope only after the frozen
-ten-repository gates demonstrate sufficient purpose accuracy and reviewer burden.
-P55-T10G3 did not satisfy that prerequisite, so execution is not authorized.
+Rank outcome-anchor provenance so generated preview and package-boundary wording
+cannot satisfy concrete user-outcome specificity when stronger pinned source
+documentation or descriptive manifest evidence exists.
 
 ## Required Scope
 
-Keep the exact 46-repository generic-intent scope and Codex 5.3 Spark primary
-worker. Do not run until a reviewed follow-up passes the frozen purpose and edit
-burden gates. Run without accepting, materializing, canonicalizing, or publishing
-any proposal.
+Classify generated preview, member-package boundary, import, discovery, and module
+phrases as mechanics-only guidance. Prefer package-local or repository source
+documentation and descriptive manifest purpose, retain digest-bound untrusted
+evidence, and do not invoke a provider or grant publication authority.
 
 ## Recently Archived
 
