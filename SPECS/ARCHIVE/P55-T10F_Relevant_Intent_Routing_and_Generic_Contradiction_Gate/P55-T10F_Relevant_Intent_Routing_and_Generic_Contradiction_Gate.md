@@ -63,3 +63,7 @@ maps it only to a generic implementation-shape intent.
 - Semantic embedding infrastructure, remote search, or an unbounded registry
   crawl.
 - Accepting, materializing, canonicalizing, or publishing any proposal.
+
+---
+**Archived:** 2026-08-01
+**Verdict:** PASS

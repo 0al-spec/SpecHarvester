@@ -1,26 +1,34 @@
-# Next Task: P55-T10F Relevant Intent Routing and Generic Contradiction Gate
+# Next Task: P55-T10G Ten-Repository Semantic Root-Cause Calibration
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10E` Repository and Package Semantic Product Profile
-**Status:** Selected
+**Dependencies:** `P55-T10F` Relevant Intent Routing and Generic Contradiction Gate
+**Status:** Ready
 
 ## Objective
 
-Give the semantic author semantically nearby SpecPM intents and prevent a
-specific purpose from being represented only by a generic implementation-shape
-intent.
+Run the frozen ten-repository calibration to determine whether preserved repair
+context, deterministic product profiles, relevant observed-intent routing, and
+the generic contradiction gate improve semantic proposal quality.
 
 ## Required Scope
 
-Add bounded, deterministic retrieval of semantically nearby SpecPM intents
-beyond the candidate's current observations. Require outcome-level evidence for
-generic reuse, and reject or require review when a specific purpose is mapped
-only to an implementation-shape intent. Preserve proposal-only experimental
-intent authority, false-novelty protections, source bindings, provider-neutral
-behavior, and the ban on materialization or publication.
+Use pinned cases including `axios/axios`, `n8n-io/n8n`,
+`firecrawl/firecrawl`, `bitcoin/bitcoin`, `excalidraw/excalidraw`, and
+`openai/codex`. Compare against immutable P55-T10C evidence for purpose
+accuracy, generic-intent reduction, repair outcomes, false novelty, provider
+failures, and reviewer edit burden. Do not expand scope or redefine thresholds
+after observing results. Preserve proposal-only authority and the ban on
+materialization, canonicalization, registry mutation, or publication.
 
 ## Recently Archived
+
+- `P55-T10F` Relevant Intent Routing and Generic Contradiction Gate: PASS. The
+  semantic author now receives a digest-bound, observed-only set of genuinely
+  nearby SpecPM intents; ambiguous single-token matches are excluded, and a
+  specific purpose represented only by generic implementation-shape reuse fails
+  provider validation and independent quality diagnostics. No provider,
+  materialization, canonicalization, registry, or publication path ran.
 
 - `P55-T10E` Repository and Package Semantic Product Profile: PASS. Every
   campaign workspace now gives the semantic author a deterministic,
