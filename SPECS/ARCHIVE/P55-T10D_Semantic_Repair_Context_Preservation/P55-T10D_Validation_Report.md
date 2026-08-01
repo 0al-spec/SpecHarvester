@@ -43,3 +43,10 @@
 - `swift build --target SpecHarvesterDocs`: passed with the existing unhandled
   DocC catalog warning.
 - `git diff --check`: passed.
+
+## Review Follow-Up
+
+- Removed the duplicate `requiredJsonShape` from the final repair instruction;
+  the unchanged schema remains available in the preceding original request.
+- Focused repair/provider tests, Ruff lint and format, and diff integrity passed
+  again after the review fix.

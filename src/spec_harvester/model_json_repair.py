@@ -156,7 +156,6 @@ def repair_messages(
             "Do not add prose, markdown fences, comments, or chain-of-thought.",
             "Do not claim package acceptance, relation acceptance, or registry publication.",
         ],
-        "requiredJsonShape": request.get("requiredJsonShape"),
         "allowedEvidencePaths": request.get("allowedEvidencePaths", []),
         "allowedEvidenceBindings": _repair_evidence_bindings(request),
         "observedIntentBindings": _repair_observed_intent_bindings(request),

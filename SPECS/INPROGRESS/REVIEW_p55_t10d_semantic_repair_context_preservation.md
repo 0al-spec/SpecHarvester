@@ -43,7 +43,7 @@ None.
 
 ### Next Steps
 
-- Remove the duplicated schema from the repair instruction and rerun focused
-  repair/provider tests plus repository lint and format checks.
-- No new Workplan task is required if the finding is fixed before
-  ARCHIVE-REVIEW.
+- Resolved in the review follow-up: the final repair instruction no longer
+  duplicates `requiredJsonShape`; the original request remains the single
+  schema-bearing context message.
+- No new Workplan task is required.

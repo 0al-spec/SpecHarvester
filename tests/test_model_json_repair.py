@@ -72,6 +72,8 @@ def test_repair_messages_preserve_original_semantic_context_and_roles() -> None:
     assert repair["validationError"] == "generic reuse lacks comparison"
     assert repair["truncatedInvalidModelOutput"] is True
     assert "invalidModelOutput" not in repair
+    assert "requiredJsonShape" not in repair
+    assert json.loads(messages[1]["content"])["requiredJsonShape"] == {"type": "object"}
 
 
 def test_successful_repair_continues_original_request_context() -> None:
