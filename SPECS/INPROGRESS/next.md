@@ -1,21 +1,24 @@
-# Next Task: P55-T10H Exact Generic-Intent Scope Revalidation
+# Next Task: P55-T10G1 Outcome-Level Purpose Anchors
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10G` must pass its frozen gates
-**Status:** Blocked
+**Dependencies:** `P55-T10G` Ten-Repository Semantic Root-Cause Calibration
+**Status:** Ready
 
 ## Objective
 
-Revalidate the exact 46-repository P55-T10C generic-intent scope only after the
-targeted root-cause calibration passes its frozen semantic quality gates.
+Add deterministic, source-bound outcome-level purpose anchors so semantic
+quality checks can distinguish a package's concrete user outcome from package
+identity, import, discovery, repository, or implementation mechanics.
 
 ## Required Scope
 
-P55-T10G completed 8/10, reduced generic reuse from 7 to 0, and had zero false
-novelty, but purpose accuracy was 0.60 and reviewer edit burden was 0.40. Do not
-start the 46-repository run until bounded follow-up work resolves semantic
-specificity and repair convergence and a repeated targeted calibration passes.
+Use the existing semantic product profile and bounded source documentation.
+Keep all repository-derived fields untrusted and digest-bound. Add a
+provider-neutral diagnostic that fails or requires review when a proposed
+purpose only restates package mechanics. Do not invoke a provider, change the
+frozen P55 thresholds, or grant acceptance, materialization, canonicalization,
+registry, or publication authority.
 
 ## Recently Archived
 

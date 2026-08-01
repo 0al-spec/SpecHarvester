@@ -84,6 +84,17 @@ def assert_current_next_task(next_text: str) -> None:
         assert "Do not expand scope or redefine thresholds" in normalized
         return
 
+    if "# Next Task: P55-T10G1 Outcome-Level Purpose Anchors" in next_text:
+        normalized = " ".join(next_text.split())
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
+        assert "`P55-T10G` Ten-Repository Semantic Root-Cause Calibration" in next_text
+        assert "concrete user outcome" in normalized
+        assert "Do not invoke a provider" in normalized
+        return
+
     if "# Next Task: P55-T10H Forty-Six-Repository Semantic Revalidation" in next_text:
         normalized = " ".join(next_text.split())
         assert any(
