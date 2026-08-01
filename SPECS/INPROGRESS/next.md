@@ -1,24 +1,29 @@
-# Next Task: P55-T10G3 Repeat Ten-Repository Semantic Calibration
+# Next Task: P55-T10G4 Outcome Anchor Source-Authority Ranking
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10G2` Validation-Aware Semantic Repair
+**Dependencies:** `P55-T10G3` Repeat Ten-Repository Semantic Calibration
 **Status:** Ready
 
 ## Objective
 
-Repeat the exact P55-T10G ten-repository calibration after the outcome-anchor and
-validation-aware repair changes, using the same provider, evidence, baseline,
-rubric, thresholds, denominators, and success criteria.
+Rank outcome-anchor provenance so generated preview and package-boundary wording
+cannot satisfy concrete user-outcome specificity when stronger pinned source
+documentation or descriptive manifest evidence exists.
 
 ## Required Scope
 
-Run Codex 5.3 Spark over the same ten pinned repositories without changing
-targets, thresholds, denominators, baseline evidence, purpose rubric, or budgets.
-P55-T10H remains blocked unless every frozen gate passes with zero false novelty
-and no duplicate experimental intent IDs or semantic stems.
+Classify generated preview, member-package boundary, import, discovery, and module
+phrases as mechanics-only guidance. Prefer package-local or repository source
+documentation and descriptive manifest purpose, retain digest-bound untrusted
+evidence, and do not invoke a provider or grant publication authority.
 
 ## Recently Archived
+
+- `P55-T10G3` Repeat Ten-Repository Semantic Calibration: PARTIAL. All ten
+  targets completed with schema and evidence rates of 1.00, generic reuse fell
+  from seven to one, and false novelty stayed zero. Purpose accuracy reached
+  0.70 and reviewer edit burden remained 0.40, so P55-T10H remains blocked.
 
 - `P55-T10G2` Validation-Aware Semantic Repair: PASS. JSON repair now receives
   stable semantic violation codes, prohibited values, and replacement

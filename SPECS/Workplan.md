@@ -2912,17 +2912,33 @@ Acceptance:
   violation codes and prohibited/replacement constraints into the preserved
   repair request, reject unchanged semantic violations deterministically, and
   keep the existing two-provider-attempt and one-repair-per-attempt budgets.
-- [ ] `P55-T10G3` Repeat the exact P55-T10G ten-repository calibration after
+- [x] `P55-T10G3` Repeat the exact P55-T10G ten-repository calibration after
   P55-T10G1 and P55-T10G2. Reuse the same targets, Codex 5.3 Spark model,
   immutable P55-T10C baseline, thresholds, denominators, and digest-bound
   supervisor purpose rubric. P55-T10H may proceed only if every frozen gate
   passes with zero false novelty and no duplicate experimental intent IDs or
   semantic stems.
+- [ ] `P55-T10G4` Rank outcome-anchor source authority and exclude generated
+  preview, member-package boundary, import, discovery, and module mechanics from
+  satisfying outcome specificity. Prefer pinned package-local or repository
+  documentation and descriptive manifest purpose; require review when only weak
+  generated candidate wording remains. Preserve untrusted digest bindings and
+  proposal-only authority.
+- [ ] `P55-T10G5` Add validation-aware repair for capability namespace
+  violations. Carry the exact candidate namespace, prohibited identifier, and
+  replacement shape into the preserved repair request; reject unchanged
+  violations without increasing the two-provider-attempt or one-repair budget.
+- [ ] `P55-T10G6` Repeat the exact P55-T10G ten-repository calibration after
+  P55-T10G4 and P55-T10G5. Reuse the same plan, targets, Codex 5.3 Spark model,
+  P55-T10C baseline, thresholds, denominators, purpose rubric, and budgets.
+  P55-T10H may proceed only if every unchanged gate passes with zero false
+  novelty and no duplicate experimental intent IDs or semantic stems.
 - [ ] `P55-T10H` Revalidate the exact 46-repository generic-intent scope only if
-  P55-T10G3 passes the frozen P55-T10G gates. Use Codex 5.3 Spark as the primary worker,
-  permit a separate digest-bound recovery model only for verified usage-limit
-  failures, and compare all terminal records with P55-T10 and P55-T10C without
-  accepting, materializing, canonicalizing, or publishing proposals.
+  P55-T10G6 passes the frozen P55-T10G gates. Use Codex 5.3 Spark as the primary
+  worker, permit a separate digest-bound recovery model only for verified
+  usage-limit failures, and compare all terminal records with P55-T10 and
+  P55-T10C without accepting, materializing, canonicalizing, or publishing
+  proposals.
 - [ ] `P55-T11` Record the Phase 55 exit decision: stop, run a bounded semantic
   follow-up, authorize maintainer-reviewed AI-authored candidate revisions, or
   plan a separate intent-governance/publication phase. Do not authorize
@@ -2997,8 +3013,9 @@ Acceptance:
   retained generic intents in all 23 completed repair cases, so P55-T10D through
   P55-T10H must address the context, product-profile, and routing root causes.
 - P55-T10D through P55-T10F must complete before P55-T10G. P55-T10G1 and
-  P55-T10G2 must complete before P55-T10G3. P55-T10H may run only after
-  P55-T10G3 meets the frozen purpose, generic-reduction, false-novelty,
+  P55-T10G2 must complete before P55-T10G3. P55-T10G4 and P55-T10G5 must
+  complete before P55-T10G6. P55-T10H may run only after P55-T10G6 meets the
+  frozen purpose, generic-reduction, false-novelty,
   provider-failure, and reviewer-burden gates.
 - P55-T11 remains blocked until P55-T10D through P55-T10H complete and their
   Workbench review evidence distinguishes useful experimental intents from

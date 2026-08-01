@@ -1,0 +1,389 @@
+{
+  "apiVersion": "spec-harvester.semantic-root-cause-calibration/v0",
+  "archive": {
+    "path": "P55-T10G3_Semantic_Proposal_Records.tar.gz",
+    "recordCount": 10,
+    "sha256": "e568046577f810a138ba442561c5a9ff60971f33da45808d23fbb476c1ee04cb"
+  },
+  "authority": "semantic_root_cause_calibration_evidence_only",
+  "campaignInputSha256": "53d0e1e34d18da2b10c286765148a4af647ab1c5ea3d93fe69d7dc6b0229dfc2",
+  "comparisons": [
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "6b19b3fc98de2d580bef36c78304a659f6d41484d3bc8e480274698482e88733",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.promise_based_http_client.9fd12727"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "f2c451b1c21f5a62c05bb96e5bc7f0805b5fd4ba9e1d5db10748ee09737b2d48",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "axios-axios",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "3cd3779317c657c499b293ae7ca10d21aadb6f279256e9eec275b42d8b0950ff",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.code_first_agent_sdk.906438df"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "1aa61271413e5c73f49316e1b3b5fad5f7c2fcf2fa8ec459086cfdccda6049de",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "n8n-io-n8n",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "b407b56f2563985723d1fe0f0e2fd82324b7435c1b0a0df0e6e4d777d8f7b64a",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.boundary_preview_capture.693ef4af"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "11adf9753d3f8e07f6c6a148b905e2ee1fd99fced7508ebf8ea8fc258714249e",
+      "currentStatus": "completed",
+      "purposeAccurate": false,
+      "repositoryId": "firecrawl-firecrawl",
+      "reviewerEditRequired": true,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.public_repository_metadata"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "1d7bf9bfae3b3af49c6ab600d1e27433311b05d72a211ad310e8ecc9480c2e26",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [
+        "capability_namespace_violation",
+        "generic_intent_reuse"
+      ],
+      "currentExperimentalIntentIds": [],
+      "currentGenericIntentIds": [
+        "intent.package.public_repository_metadata"
+      ],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "rejected",
+      "currentRecordSha256": "51c5c9945bb83331eb9550456fd10237149cd16de0f3c255c8a334e7a6126dc6",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "bitcoin-bitcoin",
+      "reviewerEditRequired": true,
+      "rootCause": "semantic_quality_diagnostic"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "8e103500e3aae41f9dd4edc7629d88c20f05c4f94b2959d27cae3d5f3d16afca",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.utils_lib_reuse.2d644a76"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "b6e6176358dc3659544e64892774a91d2e2c593221a8f98e7ff2384ac4b6ed80",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "excalidraw-excalidraw",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "b559502f853188ef5070bdca1f7cb9be197a1b27a59392197a2e8e3613466402",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.local_coding_agent_interface.01d260d8"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "17b78c6b1ef0e983ca6b8fc5351056c2f3869bc418198324f63ac793592695f7",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "openai-codex",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "3a26ff85aa35138aa96ff25b73d8c90a98aad33265047567390985cb29ea2367",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.persist_context_across_sessions.09a3db91"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "978ac57a4d243f26b95e034a68374ab36d0d1a0aa4a1ebe1a116b521a770963c",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "thedotmack-claude-mem",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "08be13470916f185b4a45b143bf4fe0a6a7f1bab0e6bc4495b831bef8ee5430b",
+      "baselineStatus": "failed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.generated_member_package_boundary.2b557d30"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "a623aadda7dcaf5ea14307fe3a6160278b2fa97db023f3a3ea9235f252c254fd",
+      "currentStatus": "completed",
+      "purposeAccurate": false,
+      "repositoryId": "angular-angular",
+      "reviewerEditRequired": true,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "7397479eb6087ba6171c8f299748c48d9fc11cf5f27bb8e579799ad7a322a8bf",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.generate_member_package_boundary_preview.4bda58d8"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "b3cb8e232560584e5356ae3b0902e40bdcbbdc4e39533cebec7bba18d2c30e9f",
+      "currentStatus": "completed",
+      "purposeAccurate": false,
+      "repositoryId": "electron-electron",
+      "reviewerEditRequired": true,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "3b6a1b539d8894b3821920f604d007425488da2be31217e65c9e5a1c550acff3",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.curriculum_codebase_package_boundary.16224178"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "f0ee5a166596a456dff2d1f8ed5a830aa8942decd182721cdc0f7989772cbb47",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "freecodecamp-freecodecamp",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    }
+  ],
+  "executionBoundary": {
+    "candidateAccepted": false,
+    "canonicalIntentCreated": false,
+    "materializationPerformed": false,
+    "packageManagerInvoked": false,
+    "publicationPerformed": false,
+    "repositoryCodeExecuted": false,
+    "specpmRegistryMutated": false
+  },
+  "kind": "SpecHarvesterSemanticRootCauseCalibration",
+  "planSha256": "376001a3ea1053afb5908bf1b7cb8125b95da4eebf2d76a6422e733f06844a11",
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "credentialsPersisted": false,
+    "machineLocalPathsPersisted": false,
+    "rawPromptsPersisted": false,
+    "rawResponsesPersisted": false
+  },
+  "provider": {
+    "modelId": "gpt-5.3-codex-spark",
+    "providerId": "gpt-5.3-codex-spark",
+    "transport": "codex_exec"
+  },
+  "purposeAssessment": {
+    "acceptanceAuthorityGranted": false,
+    "apiVersion": "spec-harvester.semantic-purpose-supervisor-assessment/v0",
+    "assessmentSha256": "1cd7085dcd5d447fe1ba36b36a9d46c805114748223b051d0c5b35c20499618b",
+    "assessments": [
+      {
+        "purposeAccurate": true,
+        "rationale": "Identifies Axios as a promise-based browser and Node.js HTTP client for asynchronous request and response workflows.",
+        "recordSha256": "f2c451b1c21f5a62c05bb96e5bc7f0805b5fd4ba9e1d5db10748ee09737b2d48",
+        "repositoryId": "axios-axios"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Describes the selected n8n agents package as an SDK for building AI-capable workflow logic on the code-first execution engine.",
+        "recordSha256": "1aa61271413e5c73f49316e1b3b5fad5f7c2fcf2fa8ec459086cfdccda6049de",
+        "repositoryId": "n8n-io-n8n"
+      },
+      {
+        "purposeAccurate": false,
+        "rationale": "Restates generated preview and package metadata mechanics instead of Firecrawl web search, scraping, crawling, and extraction outcomes.",
+        "recordSha256": "11adf9753d3f8e07f6c6a148b905e2ee1fd99fced7508ebf8ea8fc258714249e",
+        "repositoryId": "firecrawl-firecrawl"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Explains that Bitcoin Core connects to the peer-to-peer network and fully validates downloaded blocks and transactions.",
+        "recordSha256": "51c5c9945bb83331eb9550456fd10237149cd16de0f3c255c8a334e7a6126dc6",
+        "repositoryId": "bitcoin-bitcoin"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Describes the selected Excalidraw common package as reusable shared functions and constants for downstream code.",
+        "recordSha256": "b6e6176358dc3659544e64892774a91d2e2c593221a8f98e7ff2384ac4b6ed80",
+        "repositoryId": "excalidraw-excalidraw"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Identifies Codex CLI as a locally executed coding agent used through the codex command-line workflow.",
+        "recordSha256": "17b78c6b1ef0e983ca6b8fc5351056c2f3869bc418198324f63ac793592695f7",
+        "repositoryId": "openai-codex"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Captures claude-mem context compression, persistence, and reuse across Claude Code sessions.",
+        "recordSha256": "978ac57a4d243f26b95e034a68374ab36d0d1a0aa4a1ebe1a116b521a770963c",
+        "repositoryId": "thedotmack-claude-mem"
+      },
+      {
+        "purposeAccurate": false,
+        "rationale": "Describes a generated member-package preview and Angular Adev identity rather than the documentation application's user outcome.",
+        "recordSha256": "a623aadda7dcaf5ea14307fe3a6160278b2fa97db023f3a3ea9235f252c254fd",
+        "repositoryId": "angular-angular"
+      },
+      {
+        "purposeAccurate": false,
+        "rationale": "Centers generated package import and module-boundary mechanics instead of the dialog-helper's concrete automation outcome.",
+        "recordSha256": "b3cb8e232560584e5356ae3b0902e40bdcbbdc4e39533cebec7bba18d2c30e9f",
+        "repositoryId": "electron-electron"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Connects the selected freeCodeCamp API package to consuming the open-source curriculum and codebase through its API surface.",
+        "recordSha256": "f0ee5a166596a456dff2d1f8ed5a830aa8942decd182721cdc0f7989772cbb47",
+        "repositoryId": "freecodecamp-freecodecamp"
+      }
+    ],
+    "authority": "calibration_measurement_only",
+    "kind": "SpecHarvesterSemanticPurposeSupervisorAssessment",
+    "schemaVersion": 1
+  },
+  "reportSha256": "e70f4483680fb6608111a1ebc3f6a372469cce89d1aa3a908ee8a00e70024244",
+  "schemaVersion": 1,
+  "summary": {
+    "baselineGenericIntentReuseCount": 7,
+    "completedCount": 10,
+    "currentGenericIntentReuseCount": 1,
+    "experimentalIntentCount": 9,
+    "failedCount": 0,
+    "failedProviderAttemptCount": 1,
+    "falseNoveltyCount": 0,
+    "gates": {
+      "duplicateExperimentalIntentIds": {
+        "passed": true,
+        "value": 0
+      },
+      "duplicateExperimentalSemanticStems": {
+        "passed": true,
+        "value": 0
+      },
+      "evidenceSupportedClaimRate": {
+        "operator": "greater_than_or_equal",
+        "passed": true,
+        "threshold": 0.95,
+        "value": 1.0
+      },
+      "falseNovelty": {
+        "passed": true,
+        "value": 0
+      },
+      "genericIntentReduction": {
+        "baseline": 7,
+        "passed": true,
+        "value": 6
+      },
+      "purposeAccuracyRate": {
+        "operator": "greater_than_or_equal",
+        "passed": false,
+        "threshold": 0.85,
+        "value": 0.7
+      },
+      "repairedGenericCaseImprovement": {
+        "passed": true,
+        "repositoryIds": [
+          "axios-axios",
+          "electron-electron",
+          "excalidraw-excalidraw",
+          "firecrawl-firecrawl",
+          "n8n-io-n8n"
+        ]
+      },
+      "reviewerEditBurdenRate": {
+        "operator": "less_than_or_equal",
+        "passed": false,
+        "threshold": 0.25,
+        "value": 0.4
+      },
+      "schemaValidProposalRate": {
+        "operator": "equal",
+        "passed": true,
+        "threshold": 1.0,
+        "value": 1.0
+      }
+    },
+    "genericIntentReductionCount": 6,
+    "jsonRepairRecordCount": 4,
+    "metrics": {
+      "evidenceSupportedClaimRate": 1.0,
+      "purposeAccuracyRate": 0.7,
+      "reviewerEditBurdenRate": 0.4,
+      "schemaValidProposalRate": 1.0
+    },
+    "p55T10HUnblocked": false,
+    "passed": false,
+    "providerAttemptCount": 11,
+    "targetCount": 10
+  },
+  "taskId": "P55-T10G"
+}
