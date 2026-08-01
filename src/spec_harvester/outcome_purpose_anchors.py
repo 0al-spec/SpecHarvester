@@ -193,8 +193,7 @@ def validate_outcome_purpose_anchors(
     bindings = {
         (item.get("sourcePath"), item.get("sha256")): item.get("content")
         for item in evidence or []
-        if isinstance(item, dict)
-        and isinstance(item.get("content"), str)
+        if isinstance(item, dict) and isinstance(item.get("content"), str)
     }
     for anchor in anchors:
         if (
@@ -214,9 +213,10 @@ def validate_outcome_purpose_anchors(
             content = bindings.get((anchor["sourcePath"], anchor["sha256"]))
             if content is None:
                 raise ValueError("outcome purpose anchor evidence binding is stale")
-            if " ".join(anchor["phrase"].split()).casefold() not in " ".join(
-                content.split()
-            ).casefold():
+            if (
+                " ".join(anchor["phrase"].split()).casefold()
+                not in " ".join(content.split()).casefold()
+            ):
                 raise ValueError("outcome purpose anchor phrase is not present in bound evidence")
             expected_terms = sorted(
                 token
