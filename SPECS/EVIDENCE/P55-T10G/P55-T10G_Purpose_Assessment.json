@@ -1,0 +1,70 @@
+{
+  "acceptanceAuthorityGranted": false,
+  "apiVersion": "spec-harvester.semantic-purpose-supervisor-assessment/v0",
+  "assessmentSha256": "a2740be79309869c5e4cf02b9892ee656757da83b0816bca0d8821b3fa332bc2",
+  "assessments": [
+    {
+      "purposeAccurate": true,
+      "rationale": "Identifies Axios as a promise-based browser and Node.js HTTP client.",
+      "recordSha256": "6089cf3099dc978869053543ac50907ec7ce0dbc23f93d1a10a71d73221cf7d4",
+      "repositoryId": "axios-axios"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Describes the selected n8n agents package as a code-first SDK for multi-step AI agents.",
+      "recordSha256": "aae3996019619b41d67a0728a9aa1432cc80c86c12bd05ce4ed7080b255640c1",
+      "repositoryId": "n8n-io-n8n"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Captures Firecrawl's web search, scraping, crawling, and LLM-ready extraction outcome.",
+      "recordSha256": "4f6846bf12a4a0c5e7ad7f71119950dea778a156e3de0435e8fdedfed3226b80",
+      "repositoryId": "firecrawl-firecrawl"
+    },
+    {
+      "purposeAccurate": false,
+      "rationale": "No proposal survived the generic-only contradiction gate, so no accurate purpose was produced.",
+      "recordSha256": "832d5d8b49297ec6720d52178948b641412371770d875f58031e0ea600314412",
+      "repositoryId": "bitcoin-bitcoin"
+    },
+    {
+      "purposeAccurate": false,
+      "rationale": "No proposal survived the experimental-intent namespace validation gate.",
+      "recordSha256": "d4fe2a95fd9b88429f6b49e93c721bbe0951bfe5febfc1ddd8a0d233199ac22e",
+      "repositoryId": "excalidraw-excalidraw"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Identifies Codex as a locally executed terminal coding agent.",
+      "recordSha256": "0074425a621f4baafabba61f35db37bd5c86aa98887ecd22db3d06939633265d",
+      "repositoryId": "openai-codex"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Captures claude-mem's persistence and reuse of context across Claude Code sessions.",
+      "recordSha256": "029c028bc66b0d68b60b6586d87c7ecf9ce67ab9f6624a753a9865a1dc0a87d3",
+      "repositoryId": "thedotmack-claude-mem"
+    },
+    {
+      "purposeAccurate": false,
+      "rationale": "Describes package identity and discovery rather than the selected adev documentation application's user outcome.",
+      "recordSha256": "1abd490318301124e9fb9ba1005046bf1f03b91078c99b931a94b91c1ded1823",
+      "repositoryId": "angular-angular"
+    },
+    {
+      "purposeAccurate": false,
+      "rationale": "Describes generic package consumption and import identity rather than the dialog-helper's concrete automation outcome.",
+      "recordSha256": "2d7339b088c1febb29abaeb5f1f29329e450bf4d0be3449345657db981163b75",
+      "repositoryId": "electron-electron"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Connects the selected API package to freeCodeCamp's curriculum workflows and public API surface.",
+      "recordSha256": "65e8dfdd389f06068ce3ef4797a3a5c54e98712422f37e1cdf0f0694236ad253",
+      "repositoryId": "freecodecamp-freecodecamp"
+    }
+  ],
+  "authority": "calibration_measurement_only",
+  "kind": "SpecHarvesterSemanticPurposeSupervisorAssessment",
+  "schemaVersion": 1
+}

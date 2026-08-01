@@ -1,0 +1,190 @@
+{
+  "apiVersion": "spec-harvester.semantic-root-cause-calibration-plan/v0",
+  "attemptBudget": {
+    "jsonRepairMaxAttemptsPerProviderAttempt": 1,
+    "maxOutputBytes": 262144,
+    "providerMaxAttempts": 2,
+    "timeoutSeconds": 300
+  },
+  "authority": "maintainer_frozen_root_cause_calibration_plan",
+  "baseline": {
+    "archiveSha256": "d892323780b9f30c6ece5997ec191f48b2b0a4f405833f23bccdc1840fa4e669",
+    "campaignInputSha256": "68adc5ae349e9e4f4cedca1ba53a7fe860c93c8ca07f7aa81b1190717a45e59e",
+    "reportSha256": "8b32f99c29fd3374a48b3ff60c0476f14b436612dfc30baeac8c370164288bd3",
+    "taskId": "P55-T10C"
+  },
+  "currentInputBindings": {
+    "handoffAggregateSha256": "7e449a2c93413a789eba27a13512252622aa79712a0c1deb4dab04ea1237420c",
+    "p55T9AReadinessSha256": "b6c90f8a086c19eb48df282233ba2d71618d2f89a2e6d5b3e71a11de6fb8d051",
+    "sourceManifestSha256": "e61337a521d69531578ece0fe78c1ee48d932a0cdb4a12f3612395a65c82896b",
+    "specpmObservedIntentSnapshotSha256": "ed03e772f9e634a4bd5de1343a0bd1d847513d66996c0770fcf61d3c3907781d"
+  },
+  "executionBoundary": {
+    "candidateAccepted": false,
+    "canonicalIntentCreated": false,
+    "materializationPerformed": false,
+    "packageManagerInvoked": false,
+    "publicationPerformed": false,
+    "repositoryCodeExecuted": false,
+    "specpmRegistryMutated": false
+  },
+  "kind": "SpecHarvesterSemanticRootCauseCalibrationPlan",
+  "planSha256": "376001a3ea1053afb5908bf1b7cb8125b95da4eebf2d76a6422e733f06844a11",
+  "provider": {
+    "modelId": "gpt-5.3-codex-spark",
+    "providerId": "gpt-5.3-codex-spark",
+    "transport": "codex_exec"
+  },
+  "schemaVersion": 1,
+  "semanticQualityPolicySha256": "687b4e2d7dccfb727bf0bd2e25811f26cf28dc539c44b1d996e5c821e3fa1a82",
+  "successCriteria": {
+    "evidenceSupportedClaimRate": {
+      "operator": "greater_than_or_equal",
+      "threshold": 0.95
+    },
+    "maximumDuplicateExperimentalIntentIdCount": 0,
+    "maximumDuplicateExperimentalSemanticStemCount": 0,
+    "maximumFalseNoveltyCount": 0,
+    "purposeAccuracyRate": {
+      "operator": "greater_than_or_equal",
+      "threshold": 0.85
+    },
+    "requireGenericIntentReduction": true,
+    "requireRepairedGenericCaseImprovement": true,
+    "reviewerEditBurdenRate": {
+      "operator": "less_than_or_equal",
+      "threshold": 0.25
+    },
+    "schemaValidProposalRate": {
+      "operator": "equal",
+      "threshold": 1.0
+    }
+  },
+  "targets": [
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "6b19b3fc98de2d580bef36c78304a659f6d41484d3bc8e480274698482e88733",
+      "baselineStatus": "completed",
+      "candidateId": "axios_axios.axios",
+      "packetSha256": "bda6b790f5c13a590dbeebd13172125da456f488f3006b93a629e132d6a74add",
+      "repositoryId": "axios-axios",
+      "revision": "509719387e4993392ca40da03a49678269cdfb90",
+      "wave": "wave-2"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "3cd3779317c657c499b293ae7ca10d21aadb6f279256e9eec275b42d8b0950ff",
+      "baselineStatus": "completed",
+      "candidateId": "n8n_io_n8n.agents",
+      "packetSha256": "81305286bb93c7ef7452f3baad3478793e145758ef7566612a3967a39ba0ec69",
+      "repositoryId": "n8n-io-n8n",
+      "revision": "082b5d9190f4bc81d93c6a94d6d4692bed4660ca",
+      "wave": "wave-2"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "b407b56f2563985723d1fe0f0e2fd82324b7435c1b0a0df0e6e4d777d8f7b64a",
+      "baselineStatus": "completed",
+      "candidateId": "firecrawl_firecrawl.firecrawl_scraper_js",
+      "packetSha256": "c692107375b732ff7b1f85ca4ca67a9a6649d0d58dd7aef183bc16da3de157ae",
+      "repositoryId": "firecrawl-firecrawl",
+      "revision": "ab033afd95b6e7865cf8d955fec359043389f227",
+      "wave": "wave-2"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.public_repository_metadata"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "1d7bf9bfae3b3af49c6ab600d1e27433311b05d72a211ad310e8ecc9480c2e26",
+      "baselineStatus": "completed",
+      "candidateId": "bitcoin_bitcoin.core",
+      "packetSha256": "573d216eea25945b04202075ab7f9ebea816a4bb4f77722c828ed0a261919cf0",
+      "repositoryId": "bitcoin-bitcoin",
+      "revision": "a2aab6df97d9f3e1186e8c3fc57ad909cc8aef9b",
+      "wave": "wave-2"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "8e103500e3aae41f9dd4edc7629d88c20f05c4f94b2959d27cae3d5f3d16afca",
+      "baselineStatus": "completed",
+      "candidateId": "excalidraw_excalidraw.common",
+      "packetSha256": "1933b03f3e936689d626df6880c53643a993fd29b0e4985da7f4f3184486669f",
+      "repositoryId": "excalidraw-excalidraw",
+      "revision": "b2e81e38a6fde8b3cb5dfdf2f2fb651323ad309d",
+      "wave": "wave-3"
+    },
+    {
+      "baselineGenericIntentIds": [],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "b559502f853188ef5070bdca1f7cb9be197a1b27a59392197a2e8e3613466402",
+      "baselineStatus": "completed",
+      "candidateId": "openai_codex.codex",
+      "packetSha256": "155f3fa87a0f3a1d2b3141d06b625aac07bea061eca5a8be1933579b3af9cda6",
+      "repositoryId": "openai-codex",
+      "revision": "16d7daad7c5dc73da8558102a65bb7d7709807e1",
+      "wave": "wave-2"
+    },
+    {
+      "baselineGenericIntentIds": [],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "3a26ff85aa35138aa96ff25b73d8c90a98aad33265047567390985cb29ea2367",
+      "baselineStatus": "completed",
+      "candidateId": "thedotmack_claude_mem.claude_mem",
+      "packetSha256": "e24da4b72d5cb852a00f02a59bb6a8798b208a4d7bb3185005f6dfd00c9acb35",
+      "repositoryId": "thedotmack-claude-mem",
+      "revision": "132b46343e60ecf4057c427736c57b08f7615dfe",
+      "wave": "wave-4"
+    },
+    {
+      "baselineGenericIntentIds": [],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "08be13470916f185b4a45b143bf4fe0a6a7f1bab0e6bc4495b831bef8ee5430b",
+      "baselineStatus": "failed",
+      "candidateId": "angular_angular.adev",
+      "packetSha256": "e38c2decf8a40a0a48754e00ba21d0c9d203150886701acdfba7d9984c99eaa9",
+      "repositoryId": "angular-angular",
+      "revision": "5ad823139758b4d3a8a021d378b008c3457f8689",
+      "wave": "wave-4"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "7397479eb6087ba6171c8f299748c48d9fc11cf5f27bb8e579799ad7a322a8bf",
+      "baselineStatus": "completed",
+      "candidateId": "electron_electron.dialog_helper",
+      "packetSha256": "24ebf8e0d54716804c62489502594164a105e2c42300ab46b03767ec2552d0af",
+      "repositoryId": "electron-electron",
+      "revision": "99778533351cbdfd33d47cd1832a36d0941a1549",
+      "wave": "wave-1"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "3b6a1b539d8894b3821920f604d007425488da2be31217e65c9e5a1c550acff3",
+      "baselineStatus": "completed",
+      "candidateId": "freecodecamp_freecodecamp.api",
+      "packetSha256": "7227cd58e93f6896b24a568c66b39278bee8c6eb8daec30b57e230d90fbb893e",
+      "repositoryId": "freecodecamp-freecodecamp",
+      "revision": "b6380af76d8ac7a625aaf1d92b9999ec87a8013b",
+      "wave": "wave-1"
+    }
+  ],
+  "taskId": "P55-T10G"
+}
