@@ -996,3 +996,4 @@
 | 2026-08-01 | P55-T10F | Archived Relevant Intent Routing and Generic Contradiction Gate (PASS) |
 | 2026-08-01 | P55-T10F | Archived REVIEW_p55_t10f_relevant_intent_routing_generic_contradiction report |
 | 2026-08-01 | P55-T10G | Archived Ten-Repository Semantic Root-Cause Calibration (PARTIAL) |
+| 2026-08-01 | P55-T10G | Archived REVIEW_p55_t10g_semantic_root_cause_calibration report |
