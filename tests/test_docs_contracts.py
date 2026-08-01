@@ -40877,3 +40877,23 @@ def test_ai_semantic_author_contract_preserves_evidence_and_reviewer_authority()
         "<doc:AISemanticAuthorContract>"
         in (ROOT / "Sources/SpecHarvester/Documentation.docc/Capabilities.md").read_text()
     )
+
+
+def test_relevant_intent_routing_documents_observed_only_contradiction_gate() -> None:
+    github_doc = (ROOT / "docs/RELEVANT_INTENT_ROUTING.md").read_text()
+    docc_doc = (
+        ROOT / "Sources/SpecHarvester/Documentation.docc/RelevantIntentRouting.md"
+    ).read_text()
+
+    for text in (github_doc, docc_doc):
+        normalized = " ".join(text.split()).lower()
+        assert "16" in normalized
+        assert "observed" in normalized and "non-canonical" in normalized
+        assert "generic contradiction gate" in normalized
+        assert "intent.experimental.*" in normalized
+        assert "does not" in normalized and "canonical" in normalized
+    assert "RELEVANT_INTENT_ROUTING.md" in (ROOT / "docs/CAPABILITIES.md").read_text()
+    assert (
+        "<doc:RelevantIntentRouting>"
+        in (ROOT / "Sources/SpecHarvester/Documentation.docc/Capabilities.md").read_text()
+    )

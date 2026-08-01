@@ -1,0 +1,179 @@
+{
+  "apiVersion": "spec-harvester.specpm-observed-intent-snapshot/v0",
+  "kind": "SpecHarvesterSpecPMObservedIntentSnapshot",
+  "schemaVersion": 1,
+  "authority": "observed_metadata_only",
+  "canonical": false,
+  "source": {
+    "repository": "https://github.com/0al-spec/SpecPM",
+    "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+    "sourcePath": ".specpm/public-index/v0/intents/index.json",
+    "sha256": "5ab3e55940faac03f341cb9b24f8db37924acec636179aa5eb17352ac2364f4e"
+  },
+  "intents": [
+    {
+      "intentId": "intent.agent_identity.passport_alignment",
+      "capabilities": ["specnode.agent_passport_alignment"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.control_plane.outbound_channel",
+      "capabilities": ["specnode.outbound_control_plane_channel"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.document_conversion.email_to_markdown",
+      "capabilities": ["document_conversion.email_to_markdown"],
+      "packageIds": ["document_conversion.email_tools"]
+    },
+    {
+      "intentId": "intent.documentation.docc_site",
+      "capabilities": ["specnode.documentation.docc_site"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.documentation.github_pages_deployment",
+      "capabilities": ["specnode.docs_pages_deployment"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.javascript.react_library",
+      "capabilities": [
+        "xyflow.core.monorepo",
+        "xyflow.core.react",
+        "xyflow.core.system",
+        "xyflow.react.flow_canvas",
+        "xyflow.system.flow_system_utilities"
+      ],
+      "packageIds": ["xyflow.core", "xyflow.react", "xyflow.system"]
+    },
+    {
+      "intentId": "intent.javascript.svelte_library",
+      "capabilities": [
+        "xyflow.core.svelte",
+        "xyflow.core.system",
+        "xyflow.svelte.flow_canvas",
+        "xyflow.system.flow_system_utilities"
+      ],
+      "packageIds": ["xyflow.core", "xyflow.svelte", "xyflow.system"]
+    },
+    {
+      "intentId": "intent.job_protocol.typed_jobs",
+      "capabilities": ["specnode.typed_job_protocol"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.llm.local_provider_discovery",
+      "capabilities": ["specnode.local_provider_discovery"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.node_identity.pairing",
+      "capabilities": ["specnode.node_pairing"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.package.javascript_library",
+      "capabilities": [
+        "xyflow.core.monorepo",
+        "xyflow.core.react",
+        "xyflow.core.svelte",
+        "xyflow.core.system",
+        "xyflow.react.flow_canvas",
+        "xyflow.svelte.flow_canvas",
+        "xyflow.system.flow_system_utilities"
+      ],
+      "packageIds": ["xyflow.core", "xyflow.react", "xyflow.svelte", "xyflow.system"]
+    },
+    {
+      "intentId": "intent.package.public_repository_metadata",
+      "capabilities": ["intent.package.public_repository_metadata.contract"],
+      "packageIds": ["intent.package.public_repository_metadata"]
+    },
+    {
+      "intentId": "intent.personal_compute.adapter",
+      "capabilities": ["specnode.personal_compute_adapter"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.provenance.artifact_receipts",
+      "capabilities": ["specnode.provenance_receipts"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.registry.intent_lookup",
+      "capabilities": ["specpm.registry.intent_search", "specpm.registry.observed_intent_catalog"],
+      "packageIds": ["specpm.core"]
+    },
+    {
+      "intentId": "intent.repository.package_workspace",
+      "capabilities": ["xyflow.core.monorepo", "xyflow.workspace.package_set"],
+      "packageIds": ["xyflow.core", "xyflow.workspace"]
+    },
+    {
+      "intentId": "intent.security.deny_by_default_execution",
+      "capabilities": ["specnode.security_model"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.security.workspace_policy",
+      "capabilities": ["specnode.workspace_policy"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.specification.identifier_model",
+      "capabilities": ["specpm.intent.identifier_model", "specpm.intent.taxonomy_governance"],
+      "packageIds": ["specpm.core"]
+    },
+    {
+      "intentId": "intent.specification.package_generation",
+      "capabilities": ["specnode.specpm_package_generation"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.specification_graph.local_extraction",
+      "capabilities": ["specnode.specgraph_local_extraction"],
+      "packageIds": ["specnode.core"]
+    },
+    {
+      "intentId": "intent.ui.diagramming",
+      "capabilities": ["xyflow.core.svelte", "xyflow.svelte.flow_canvas"],
+      "packageIds": ["xyflow.core", "xyflow.svelte"]
+    },
+    {
+      "intentId": "intent.ui.flow_diagramming",
+      "capabilities": [
+        "xyflow.core.monorepo",
+        "xyflow.core.react",
+        "xyflow.core.svelte",
+        "xyflow.react.flow_canvas",
+        "xyflow.svelte.flow_canvas",
+        "xyflow.workspace.package_set"
+      ],
+      "packageIds": ["xyflow.core", "xyflow.react", "xyflow.svelte", "xyflow.workspace"]
+    },
+    {
+      "intentId": "intent.ui.flow_system_utilities",
+      "capabilities": ["xyflow.core.system", "xyflow.system.flow_system_utilities"],
+      "packageIds": ["xyflow.core", "xyflow.system"]
+    },
+    {
+      "intentId": "intent.ui.node_based_editor",
+      "capabilities": [
+        "xyflow.core.monorepo",
+        "xyflow.core.react",
+        "xyflow.core.svelte",
+        "xyflow.react.flow_canvas",
+        "xyflow.svelte.flow_canvas",
+        "xyflow.workspace.package_set"
+      ],
+      "packageIds": ["xyflow.core", "xyflow.react", "xyflow.svelte", "xyflow.workspace"]
+    },
+    {
+      "intentId": "intent.usage.receipts",
+      "capabilities": ["specnode.usage_receipts"],
+      "packageIds": ["specnode.core"]
+    }
+  ],
+  "snapshotSha256": "ed03e772f9e634a4bd5de1343a0bd1d847513d66996c0770fcf61d3c3907781d"
+}

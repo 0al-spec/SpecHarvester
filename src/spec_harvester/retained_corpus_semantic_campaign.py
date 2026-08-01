@@ -26,6 +26,11 @@ from spec_harvester.experimental_intent_policy import (
     GENERIC_OBSERVED_INTENT_IDS as GENERIC_INTENT_IDS,
 )
 from spec_harvester.portable_semantic_proposal import build_portable_semantic_proposal
+from spec_harvester.relevant_intent_routing import (
+    build_relevant_intent_catalog,
+    load_specpm_observed_intent_snapshot,
+    validate_relevant_intent_routing,
+)
 from spec_harvester.semantic_author_input_pack import (
     SemanticAuthorInputPackOptions,
     build_semantic_author_input_pack,
@@ -113,6 +118,7 @@ def load_campaign_scope(
     ):
         raise ValueError("P55-T9A readiness evidence does not unblock P55-T10")
 
+    intent_snapshot = load_specpm_observed_intent_snapshot()
     targets = [
         _load_target(
             source,
@@ -135,6 +141,7 @@ def load_campaign_scope(
         "sourceManifestSha256": _directory_digest(source_manifest_dir, "*.yml"),
         "handoffAggregateSha256": sha256_file(aggregate_path),
         "p55T9AReadinessSha256": sha256_file(readiness_evidence),
+        "specpmObservedIntentSnapshotSha256": intent_snapshot["snapshotSha256"],
         "inputProjection": {
             "id": "principal_candidate_semantic_projection_v1",
             "manifest": "exact",
@@ -153,7 +160,7 @@ def load_campaign_scope(
             "publicInterfaceIndex": "omitted_packet_digest_bound",
             "interfaces": "id_kind_summary_language_max_32_per_direction",
             "documentation": "pinned_git_object_utf8_max_24_kib",
-            "observedIntents": "generic_first_then_lexicographic_max_64",
+            "observedIntents": "specpm_observed_positive_lexical_matches_max_16",
         },
         "targets": [target.binding() for target in targets],
         "executionBoundary": _execution_boundary(),
@@ -304,9 +311,13 @@ def run_campaign_target(
             )
             manifest = yaml.safe_load((workspace / "specpm.yaml").read_text(encoding="utf-8"))
             static_intent_ids = manifest_intent_ids(manifest)
+            product_profile = _read_json(workspace / PROFILE_FILENAME)
+            intent_catalog = observed_catalog(manifest, product_profile)
+            if intent_catalog["snapshotSha256"] != scope["specpmObservedIntentSnapshotSha256"]:
+                raise ValueError("SpecPM observed intent snapshot binding is stale")
             pack = build_semantic_author_input_pack(
                 workspace,
-                observed_catalog(manifest),
+                intent_catalog,
                 options=SemanticAuthorInputPackOptions(
                     document_paths=tuple(
                         path
@@ -416,6 +427,8 @@ def _completed_record(
         "attempts": attempt_records,
         "sourceBundleSha256": pack["sourceBundleSha256"],
         "staticObservedIntentIds": static_intent_ids,
+        "routedObservedIntentIds": [item["intentId"] for item in pack["observedIntents"]],
+        "intentRouting": pack["intentRouting"],
         "proposalReuseIntentIds": sorted(
             item["intentId"] for item in intent_decisions if item["state"] == "proposed_reuse"
         ),
@@ -460,11 +473,25 @@ def validate_campaign_record(
                 ("semanticPass", dict),
                 ("qualityReport", dict),
                 ("staticObservedIntentIds", list),
+                ("routedObservedIntentIds", list),
+                ("intentRouting", dict),
                 ("proposalReuseIntentIds", list),
                 ("experimentalIntentIds", list),
             )
         ):
             raise ValueError(f"Completed campaign record is incomplete: {target.repository_id}")
+        if (
+            record["intentRouting"].get("snapshotSha256")
+            != scope.get("specpmObservedIntentSnapshotSha256")
+            or record["intentRouting"].get("selectedIntentIds") != record["routedObservedIntentIds"]
+        ):
+            raise ValueError(f"Campaign record intent routing is stale: {target.repository_id}")
+        try:
+            validate_relevant_intent_routing(record["intentRouting"])
+        except ValueError as exc:
+            raise ValueError(
+                f"Campaign record intent routing is stale: {target.repository_id}"
+            ) from exc
 
 
 def finalize_campaign(
@@ -544,6 +571,7 @@ def campaign_summary(scope: dict[str, Any], records: list[dict[str, Any]]) -> di
                 "sourceManifestSha256",
                 "handoffAggregateSha256",
                 "p55T9AReadinessSha256",
+                "specpmObservedIntentSnapshotSha256",
             )
         },
         "provider": scope["provider"],
@@ -581,6 +609,12 @@ def campaign_summary(scope: dict[str, Any], records: list[dict[str, Any]]) -> di
             "staticGenericIntentReferenceCount": static_generic,
             "proposedGenericIntentReuseCount": proposed_generic,
             "genericIntentReductionCount": static_generic - proposed_generic,
+            "routedObservedIntentReferenceCount": sum(
+                len(record["routedObservedIntentIds"]) for record in completed
+            ),
+            "specificPurposeGenericOnlyContradictionCount": diagnostics.get(
+                "specific_purpose_generic_only_contradiction", 0
+            ),
             "diagnosticCounts": dict(sorted(diagnostics.items())),
             "duplicateExperimentalIntentIds": {
                 key: count for key, count in sorted(experimental.items()) if count > 1
@@ -913,17 +947,11 @@ def _document_record(evidence_path: str, source_path: str, raw: bytes) -> dict[s
     }
 
 
-def observed_catalog(manifest: dict[str, Any]) -> dict[str, Any]:
-    intent_ids = manifest_intent_ids(manifest)
-    selected = sorted(intent_ids, key=lambda item: (item not in GENERIC_INTENT_IDS, item))[:64]
-    content = {
-        "sourcePath": "generated/observed-intents.json",
-        "intents": [
-            {"intentId": intent_id, "sha256": hashlib.sha256(intent_id.encode()).hexdigest()}
-            for intent_id in selected
-        ],
-    }
-    return {**content, "sha256": digest(content)}
+def observed_catalog(manifest: dict[str, Any], product_profile: dict[str, Any]) -> dict[str, Any]:
+    return build_relevant_intent_catalog(
+        product_profile,
+        current_intent_ids=manifest_intent_ids(manifest),
+    )
 
 
 def manifest_intent_ids(manifest: dict[str, Any]) -> list[str]:

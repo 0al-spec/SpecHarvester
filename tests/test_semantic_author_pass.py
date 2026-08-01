@@ -10,6 +10,7 @@ import pytest
 from spec_harvester.experimental_intent_policy import (
     load_experimental_intent_decision_policy,
 )
+from spec_harvester.relevant_intent_routing import build_relevant_intent_catalog
 from spec_harvester.semantic_author_input_pack import build_semantic_author_input_pack
 from spec_harvester.semantic_author_pass import (
     CodexSparkSemanticAuthorProvider,
@@ -20,6 +21,7 @@ from spec_harvester.semantic_author_pass import (
     run_semantic_author_pass,
     validate_semantic_author_provider_receipt,
 )
+from spec_harvester.semantic_product_profile import build_semantic_product_profile
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "tests/fixtures/ai_semantic_author_schemas/p55-t2-valid.example.json"
@@ -59,14 +61,71 @@ def catalog(intent_id: str = "intent.ai.context_selection") -> dict:
     }
 
 
-def pack(tmp_path: Path, intent_id: str = "intent.ai.context_selection") -> dict:
+def routed_profile() -> dict:
+    readme = b"Reduce AI context consumption by selecting relevant repository content."
+    profile = build_semantic_product_profile(
+        repository_id="demo",
+        candidate_id="demo.package",
+        harvest={
+            "source": {
+                "repository": "https://github.com/demo/package",
+                "revision": "a" * 40,
+                "target": {"path": "."},
+            },
+            "files": [
+                {
+                    "path": "package.json",
+                    "package": {
+                        "name": "demo-package",
+                        "description": "Reduce AI context consumption by selecting content",
+                    },
+                }
+            ],
+        },
+        root_document={
+            "evidencePath": "README.md",
+            "sourcePath": "README.md",
+            "sha256": hashlib.sha256(readme).hexdigest(),
+            "byteCount": len(readme),
+            "harvestSha256": hashlib.sha256(b"{}").hexdigest(),
+        },
+        manifest_metadata={
+            "sourcePath": "package.json",
+            "sha256": "b" * 64,
+            "description": "Reduce AI context consumption by selecting content",
+            "keywords": ["context", "content", "selection"],
+        },
+    )
+    return profile
+
+
+def routed_catalog() -> dict:
+    return build_relevant_intent_catalog(
+        routed_profile(),
+        current_intent_ids=["intent.package.javascript_library"],
+    )
+
+
+def pack(
+    tmp_path: Path,
+    intent_id: str = "intent.ai.context_selection",
+    *,
+    catalog_override: dict | None = None,
+) -> dict:
     (tmp_path / "specs").mkdir()
     (tmp_path / "specpm.yaml").write_text(
         "kind: SpecPackage\nmetadata:\n  id: demo.package\npreview_only: true\n"
     )
     (tmp_path / "specs/core.spec.yaml").write_text("kind: BoundarySpec\n")
     (tmp_path / "harvest.json").write_text("{}")
-    return build_semantic_author_input_pack(tmp_path, catalog(intent_id))
+    if catalog_override is not None and "routing" in catalog_override:
+        (tmp_path / "README.md").write_bytes(
+            b"Reduce AI context consumption by selecting relevant repository content."
+        )
+        (tmp_path / "semantic-product-profile.json").write_text(
+            json.dumps(routed_profile(), sort_keys=True)
+        )
+    return build_semantic_author_input_pack(tmp_path, catalog_override or catalog(intent_id))
 
 
 def proposal(input_pack: dict) -> dict:
@@ -95,7 +154,7 @@ def transport_proposal(input_pack: dict) -> dict:
 
 
 def provider_request(input_pack: dict) -> dict:
-    return {
+    request = {
         "request": input_pack["request"],
         "observedIntents": input_pack["observedIntents"],
         "evidence": input_pack["evidence"],
@@ -103,6 +162,9 @@ def provider_request(input_pack: dict) -> dict:
         "requiredJsonShape": {"type": "object"},
         "allowedEvidencePaths": [item["sourcePath"] for item in input_pack["request"]["evidence"]],
     }
+    if "intentRouting" in input_pack:
+        request["intentRouting"] = input_pack["intentRouting"]
+    return request
 
 
 def test_provider_neutral_pass_normalizes_contract_and_discards_raw_data(tmp_path: Path) -> None:
@@ -220,6 +282,41 @@ def test_generic_reuse_is_allowed_with_explicit_comparison(tmp_path: Path) -> No
     report = run_semantic_author_pass(input_pack, FakeProvider(payload))
 
     assert report["proposal"]["intentDecisions"][0]["state"] == "proposed_reuse"
+
+
+def test_specific_purpose_cannot_use_only_routed_generic_intent(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path, catalog_override=routed_catalog())
+    payload = proposal(input_pack)
+    payload["intentDecisions"] = [
+        item
+        for item in payload["intentDecisions"]
+        if item["state"] == "proposed_reuse"
+        and item["intentId"] == "intent.package.javascript_library"
+    ]
+    provider = FakeProvider(payload)
+
+    with pytest.raises(
+        SemanticAuthorPassError,
+        match="specific semantic purpose cannot use only a generic observed intent",
+    ):
+        run_semantic_author_pass(input_pack, provider)
+
+    assert provider.requests[0]["intentRouting"] == input_pack["intentRouting"]
+    assert (
+        provider.requests[0]["authoringConstraints"]["specificPurposeCannotUseOnlyGenericIntent"]
+        is True
+    )
+
+
+def test_routing_cannot_be_removed_from_digest_bound_catalog_pack(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path, catalog_override=routed_catalog())
+    input_pack.pop("intentRouting")
+    provider = FakeProvider(proposal(input_pack))
+
+    with pytest.raises(ValueError, match="routing evidence is stale"):
+        run_semantic_author_pass(input_pack, provider)
+
+    assert provider.requests == []
 
 
 def test_generic_reuse_without_comparison_fails_closed(tmp_path: Path) -> None:
@@ -677,6 +774,33 @@ def test_codex_repairs_cross_record_conformance_failure(
         }
         for item in input_pack["observedIntents"]
     ]
+
+
+def test_codex_repairs_specific_purpose_generic_only_contradiction(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path, catalog_override=routed_catalog())
+    malformed = transport_proposal(input_pack)
+    malformed["intentDecisions"] = [malformed["intentDecisions"][0]]
+    repaired = transport_proposal(input_pack)
+    repaired["intentDecisions"] = [repaired["intentDecisions"][1]]
+    outputs = iter((json.dumps(malformed), json.dumps(repaired)))
+    prompts: list[str] = []
+
+    def fake_run(args: list[str], **kwargs: object) -> object:
+        prompts.append(str(kwargs["input"]))
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+
+    assert completion.receipt["jsonRepairNeeded"] is True
+    assert completion.payload["intentDecisions"][0]["state"] == "proposed_experimental"
+    assert "specific semantic purpose cannot use only a generic" in prompts[1]
 
 
 def test_codex_repairs_frozen_semantic_focus_failure(

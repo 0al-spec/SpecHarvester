@@ -2888,7 +2888,7 @@ Acceptance:
   available. Keep every field source-bound, size-bounded, untrusted where
   appropriate, and generated without executing repository code or package
   managers.
-- [ ] `P55-T10F` Add bounded relevant-intent retrieval and a generic-reuse
+- [x] `P55-T10F` Add bounded relevant-intent retrieval and a generic-reuse
   contradiction gate. Give the author semantically nearby SpecPM intents beyond
   the current candidate's generic observations; require outcome-level evidence
   for generic reuse; and reject or require review when a specific purpose is

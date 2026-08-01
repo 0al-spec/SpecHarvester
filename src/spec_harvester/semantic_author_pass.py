@@ -30,6 +30,10 @@ from spec_harvester.model_json_repair import (
     complete_json_with_repair,
     openai_compatible_json_response_format,
 )
+from spec_harvester.relevant_intent_routing import (
+    has_specific_purpose_generic_only_contradiction,
+    validate_relevant_intent_routing,
+)
 
 SEMANTIC_AUTHOR_PASS_API_VERSION = "spec-harvester.semantic-author-pass/v0"
 SEMANTIC_AUTHOR_PASS_KIND = "SpecHarvesterSemanticAuthorPass"
@@ -306,6 +310,13 @@ def run_semantic_author_pass(
         )
     except ValueError as exc:
         raise SemanticAuthorPassError(str(exc)) from exc
+    intent_routing = input_pack.get("intentRouting")
+    if isinstance(intent_routing, dict) and has_specific_purpose_generic_only_contradiction(
+        intent_routing, proposal
+    ):
+        raise SemanticAuthorPassError(
+            "specific semantic purpose cannot use only a generic observed intent"
+        )
     return {
         "apiVersion": SEMANTIC_AUTHOR_PASS_API_VERSION,
         "kind": SEMANTIC_AUTHOR_PASS_KIND,
@@ -349,6 +360,33 @@ def _validate_input_pack(pack: dict[str, Any]) -> None:
         or not isinstance(pack.get("evidence"), list)
     ):
         raise ValueError("semantic author input pack request is malformed")
+    intent_routing = pack.get("intentRouting")
+    catalog_records = [
+        item
+        for item in pack["evidence"]
+        if isinstance(item, dict) and item.get("class") == "specpm_observed_intent_catalog"
+    ]
+    try:
+        catalog_content = json.loads(catalog_records[0]["content"])
+    except (IndexError, KeyError, TypeError, json.JSONDecodeError) as exc:
+        raise ValueError("semantic author input pack routing evidence is malformed") from exc
+    catalog_routing = catalog_content.get("routing")
+    if intent_routing is None and catalog_routing is None:
+        return
+    if not isinstance(intent_routing, dict) or not isinstance(catalog_routing, dict):
+        raise ValueError("semantic author input pack routing evidence is stale")
+    validate_relevant_intent_routing(intent_routing)
+    observed_ids = sorted(
+        item.get("intentId")
+        for item in pack["observedIntents"]
+        if isinstance(item, dict) and isinstance(item.get("intentId"), str)
+    )
+    if (
+        len(catalog_records) != 1
+        or intent_routing != catalog_routing
+        or intent_routing["selectedIntentIds"] != observed_ids
+    ):
+        raise ValueError("semantic author input pack routing evidence is stale")
 
 
 def _normalize_proposal(
@@ -650,6 +688,11 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
         candidate_id=str(request.get("candidateId", "")),
         policy=policy,
     )
+    intent_routing = provider_payload.get("intentRouting")
+    if isinstance(intent_routing, dict) and has_specific_purpose_generic_only_contradiction(
+        intent_routing, payload
+    ):
+        raise ValueError("specific semantic purpose cannot use only a generic observed intent")
 
 
 def contains_semantic_focus_term(text: str, term: str) -> bool:
@@ -741,6 +784,11 @@ def _provider_payload(
             "experimentalIntentIdentifierSuffix": pack["sourceBundleSha256"][:8],
         },
     }
+    intent_routing = pack.get("intentRouting")
+    if isinstance(intent_routing, dict):
+        payload["intentRouting"] = intent_routing
+        payload["authoringConstraints"]["relevantObservedIntentRoutingPresent"] = True
+        payload["authoringConstraints"]["specificPurposeCannotUseOnlyGenericIntent"] = True
     if normalized_focus is not None:
         payload["semanticFocus"] = normalized_focus
         payload["authoringConstraints"]["purposeRequiredExactTermGroups"] = normalized_focus[
@@ -799,6 +847,7 @@ def _system_prompt() -> str:
         "outcome with the supplied observed intents before deciding. Prefer proposed_reuse when "
         "an observed intent already expresses that outcome; the mere presence of a generic intent "
         "does not force novelty. If generic observed intents do not express the supported outcome, "
+        "or the documented purpose is specific while every proposed intent is generic, "
         "do not reuse them: propose at most one package-neutral intent.experimental.* identifier. "
         "Build that identifier from two to six lower-case user-outcome words joined by underscores "
         "and append a dot plus the supplied experimentalIntentIdentifierSuffix. Cite at least one "

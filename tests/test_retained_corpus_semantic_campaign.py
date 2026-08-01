@@ -111,6 +111,9 @@ def test_runs_resumes_and_finalizes_complete_bound_campaign(
     )
     assert len(targets) == EXPECTED_REPOSITORY_COUNT
     assert scope["repositoryCount"] == EXPECTED_REPOSITORY_COUNT
+    assert scope["specpmObservedIntentSnapshotSha256"] == (
+        "ed03e772f9e634a4bd5de1343a0bd1d847513d66996c0770fcf61d3c3907781d"
+    )
     assert targets[0].candidate_id == "repo_000.core"
 
     work_root = tmp_path / "work"
@@ -149,6 +152,8 @@ def test_runs_resumes_and_finalizes_complete_bound_campaign(
     assert sum(record["status"] == "completed" for record in records) == 99
     assert records[-1]["status"] == "failed"
     assert len(records[-1]["attempts"]) == 2
+    assert records[0]["routedObservedIntentIds"] == ["intent.package.javascript_library"]
+    assert records[0]["intentRouting"]["selectedIntentIds"] == records[0]["routedObservedIntentIds"]
 
     output = tmp_path / "evidence" / "summary.json"
     archive = tmp_path / "evidence" / "records.tar.gz"
@@ -163,6 +168,8 @@ def test_runs_resumes_and_finalizes_complete_bound_campaign(
     assert report["summary"]["completedCount"] == 99
     assert report["summary"]["failedCount"] == 1
     assert report["semanticQuality"]["purposeClaimCoverageRate"] == 0.99
+    assert report["semanticQuality"]["routedObservedIntentReferenceCount"] == 99
+    assert report["semanticQuality"]["specificPurposeGenericOnlyContradictionCount"] == 0
     assert report["semanticQuality"]["reviewerEditBurden"] == {
         "status": "unavailable_without_reviewer_decision_evidence",
         "reviewedRecordCount": 0,
@@ -178,6 +185,28 @@ def test_runs_resumes_and_finalizes_complete_bound_campaign(
     stale["candidateId"] = "substituted.core"
     with pytest.raises(ValueError, match="binding is stale"):
         validate_campaign_record(stale, scope, targets[0])
+    stale_routing = copy.deepcopy(records[0])
+    stale_routing["intentRouting"]["specificProductTerms"] = ["substituted", "terms"]
+    stale_routing["intentRouting"]["routingSha256"] = hashlib.sha256(
+        json.dumps(
+            {
+                key: value
+                for key, value in stale_routing["intentRouting"].items()
+                if key != "routingSha256"
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+    stale_routing["recordSha256"] = hashlib.sha256(
+        json.dumps(
+            {key: value for key, value in stale_routing.items() if key != "recordSha256"},
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+    with pytest.raises(ValueError, match="intent routing is stale"):
+        validate_campaign_record(stale_routing, scope, targets[0])
     with pytest.raises(ValueError, match="exactly 100"):
         campaign_summary(scope, records[:-1])
 

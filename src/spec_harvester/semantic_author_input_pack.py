@@ -11,6 +11,7 @@ from jsonschema import Draft202012Validator
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
 from spec_harvester.interface_index import validate_public_interface_index
+from spec_harvester.relevant_intent_routing import validate_relevant_intent_catalog
 from spec_harvester.semantic_product_profile import (
     PROFILE_FILENAME,
     validate_semantic_product_profile,
@@ -72,6 +73,7 @@ def build_semantic_author_input_pack(
             evidence, workspace, "public-interface-index.json", "public_interface_evidence", options
         )
 
+    profile: dict[str, Any] | None = None
     profile_path = workspace / PROFILE_FILENAME
     if profile_path.exists():
         profile = _read_json(workspace, PROFILE_FILENAME)
@@ -89,6 +91,11 @@ def build_semantic_author_input_pack(
         _append_file(evidence, workspace, path, "allowlisted_source_documentation", options)
 
     observed_intents, catalog_binding = _validate_catalog(observed_intent_catalog, options)
+    intent_routing = observed_intent_catalog.get("routing")
+    if intent_routing is not None:
+        if profile is None:
+            raise ValueError("relevant observed intent routing requires a semantic product profile")
+        validate_relevant_intent_catalog(observed_intent_catalog, profile)
     evidence.append(catalog_binding)
     if len(evidence) > options.max_evidence_items:
         raise ValueError("semantic author input pack evidence item budget exceeded")
@@ -115,7 +122,7 @@ def build_semantic_author_input_pack(
     for observed in observed_intents:
         validator.validate(observed)
 
-    return {
+    result = {
         "apiVersion": INPUT_PACK_API_VERSION,
         "kind": INPUT_PACK_KIND,
         "schemaVersion": 1,
@@ -140,6 +147,9 @@ def build_semantic_author_input_pack(
             "materializationPerformed": False,
         },
     }
+    if intent_routing is not None:
+        result["intentRouting"] = json.loads(json.dumps(intent_routing))
+    return result
 
 
 def _validate_options(options: SemanticAuthorInputPackOptions) -> None:

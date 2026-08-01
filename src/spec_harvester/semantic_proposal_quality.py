@@ -18,6 +18,10 @@ from spec_harvester.experimental_intent_policy import (
     experimental_intent_suffix,
     load_experimental_intent_decision_policy,
 )
+from spec_harvester.relevant_intent_routing import (
+    has_specific_purpose_generic_only_contradiction,
+    validate_relevant_intent_routing,
+)
 
 QUALITY_REPORT_API_VERSION = "spec-harvester.semantic-proposal-quality/v0"
 QUALITY_REPORT_KIND = "SpecHarvesterSemanticProposalQualityReport"
@@ -349,6 +353,19 @@ def _validate_intents(
     decision_policy: dict[str, Any],
     diagnostics: list[dict[str, Any]],
 ) -> None:
+    intent_routing = pack.get("intentRouting")
+    if intent_routing is not None:
+        try:
+            validate_relevant_intent_routing(intent_routing)
+        except ValueError as exc:
+            diagnostics.append(
+                _diagnostic("relevant_intent_routing_invalid", "error", detail=str(exc))
+            )
+        else:
+            if has_specific_purpose_generic_only_contradiction(intent_routing, proposal):
+                diagnostics.append(
+                    _diagnostic("specific_purpose_generic_only_contradiction", "error")
+                )
     observed = {
         item.get("intentId"): item.get("observedIntentSha256")
         for item in pack.get("observedIntents", [])
@@ -539,6 +556,9 @@ def _metrics(
             else 0.0
         ),
         "genericIntentCount": sum(item["code"] == "generic_intent_reuse" for item in diagnostics),
+        "genericOnlyContradictionCount": sum(
+            item["code"] == "specific_purpose_generic_only_contradiction" for item in diagnostics
+        ),
         "duplicateIntentCount": sum(
             item["code"] == "duplicate_intent_decision" for item in diagnostics
         ),
@@ -557,6 +577,7 @@ def _empty_metrics(schema_valid: bool) -> dict[str, Any]:
         "supportedEvidenceBindingCount": 0,
         "evidenceSupportRate": 0.0,
         "genericIntentCount": 0,
+        "genericOnlyContradictionCount": 0,
         "duplicateIntentCount": 0,
         "overlappingClaimPairCount": 0,
     }
