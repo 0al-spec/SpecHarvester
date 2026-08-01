@@ -39,6 +39,7 @@ TARGET_IDS = (
     "electron-electron",
     "freecodecamp-freecodecamp",
 )
+EXPECTED_PLAN_SHA256 = "376001a3ea1053afb5908bf1b7cb8125b95da4eebf2d76a6422e733f06844a11"
 FALSE_NOVELTY_CODES = frozenset(
     {
         "experimental_intent_false_novelty_risk",
@@ -46,6 +47,29 @@ FALSE_NOVELTY_CODES = frozenset(
         "experimental_intent_overlaps_observed",
     }
 )
+ATTEMPT_BUDGET = {
+    "providerMaxAttempts": 2,
+    "jsonRepairMaxAttemptsPerProviderAttempt": 1,
+    "timeoutSeconds": 300,
+    "maxOutputBytes": 256 * 1024,
+}
+SUCCESS_CRITERIA = {
+    "purposeAccuracyRate": {"operator": "greater_than_or_equal", "threshold": 0.85},
+    "evidenceSupportedClaimRate": {
+        "operator": "greater_than_or_equal",
+        "threshold": 0.95,
+    },
+    "schemaValidProposalRate": {"operator": "equal", "threshold": 1.0},
+    "reviewerEditBurdenRate": {
+        "operator": "less_than_or_equal",
+        "threshold": 0.25,
+    },
+    "requireGenericIntentReduction": True,
+    "requireRepairedGenericCaseImprovement": True,
+    "maximumFalseNoveltyCount": 0,
+    "maximumDuplicateExperimentalIntentIdCount": 0,
+    "maximumDuplicateExperimentalSemanticStemCount": 0,
+}
 
 
 def build_calibration_plan(
@@ -133,42 +157,28 @@ def build_calibration_plan(
             )
         },
         "semanticQualityPolicySha256": quality_policy["policySha256"],
-        "attemptBudget": {
-            "providerMaxAttempts": 2,
-            "jsonRepairMaxAttemptsPerProviderAttempt": 1,
-            "timeoutSeconds": 300,
-            "maxOutputBytes": 256 * 1024,
-        },
+        "attemptBudget": ATTEMPT_BUDGET,
         "targets": bindings,
-        "successCriteria": {
-            "purposeAccuracyRate": {"operator": "greater_than_or_equal", "threshold": 0.85},
-            "evidenceSupportedClaimRate": {
-                "operator": "greater_than_or_equal",
-                "threshold": 0.95,
-            },
-            "schemaValidProposalRate": {"operator": "equal", "threshold": 1.0},
-            "reviewerEditBurdenRate": {
-                "operator": "less_than_or_equal",
-                "threshold": 0.25,
-            },
-            "requireGenericIntentReduction": True,
-            "requireRepairedGenericCaseImprovement": True,
-            "maximumFalseNoveltyCount": 0,
-            "maximumDuplicateExperimentalIntentIdCount": 0,
-            "maximumDuplicateExperimentalSemanticStemCount": 0,
-        },
+        "successCriteria": SUCCESS_CRITERIA,
         "executionBoundary": _execution_boundary(),
     }
     plan["planSha256"] = digest(plan)
-    validate_calibration_plan(plan)
+    validate_calibration_plan(plan, require_frozen_identity=False)
     return plan, base_scope, selected, baseline_records
 
 
-def validate_calibration_plan(plan: dict[str, Any]) -> None:
-    targets = plan.get("targets") if isinstance(plan, dict) else None
+def validate_calibration_plan(
+    plan: dict[str, Any], *, require_frozen_identity: bool = True
+) -> None:
+    if not isinstance(plan, dict):
+        raise ValueError("P55-T10G calibration plan is invalid")
+    targets = plan.get("targets")
+    baseline = plan.get("baseline")
+    current_bindings = plan.get("currentInputBindings")
     if (
         plan.get("apiVersion") != PLAN_API_VERSION
         or plan.get("kind") != PLAN_KIND
+        or plan.get("schemaVersion") != 1
         or plan.get("taskId") != "P55-T10G"
         or plan.get("authority") != "maintainer_frozen_root_cause_calibration_plan"
         or plan.get("provider")
@@ -178,9 +188,34 @@ def validate_calibration_plan(plan: dict[str, Any]) -> None:
             "transport": "codex_exec",
         }
         or not isinstance(targets, list)
+        or not all(isinstance(item, dict) for item in targets)
         or [item.get("repositoryId") for item in targets] != list(TARGET_IDS)
+        or any(not _valid_target_binding(item) for item in targets)
+        or not isinstance(baseline, dict)
+        or baseline.get("taskId") != "P55-T10C"
+        or set(baseline)
+        != {
+            "taskId",
+            "reportSha256",
+            "archiveSha256",
+            "campaignInputSha256",
+        }
+        or any(not _sha256(baseline.get(key)) for key in set(baseline) - {"taskId"})
+        or not isinstance(current_bindings, dict)
+        or set(current_bindings)
+        != {
+            "sourceManifestSha256",
+            "handoffAggregateSha256",
+            "p55T9AReadinessSha256",
+            "specpmObservedIntentSnapshotSha256",
+        }
+        or any(not _sha256(value) for value in current_bindings.values())
+        or not _sha256(plan.get("semanticQualityPolicySha256"))
+        or plan.get("attemptBudget") != ATTEMPT_BUDGET
+        or plan.get("successCriteria") != SUCCESS_CRITERIA
         or plan.get("executionBoundary") != _execution_boundary()
         or plan.get("planSha256") != _digest_without(plan, "planSha256")
+        or (require_frozen_identity and plan.get("planSha256") != EXPECTED_PLAN_SHA256)
     ):
         raise ValueError("P55-T10G calibration plan is invalid")
 
@@ -231,10 +266,10 @@ def finalize_calibration(
         record = _read_json(path)
         validate_campaign_record(record, scope, target)
         records.append(record)
-    archive_sha256 = write_deterministic_archive(work_root, archive_path)
     purpose_assessment = _read_json(purpose_assessment_path)
     _validate_purpose_assessment(purpose_assessment, records)
     report = _report(scope, plan, records, baseline_records, purpose_assessment)
+    archive_sha256 = write_deterministic_archive(work_root, archive_path)
     report["archive"] = {
         "path": archive_path.name,
         "sha256": archive_sha256,
@@ -288,12 +323,7 @@ def _report(
     repaired_improved = sorted(
         record["repositoryId"]
         for record in records
-        if record["repositoryId"] in repaired_baseline_ids
-        and (
-            not _generic_reuse(record)
-            or _has_diagnostic(record, "specific_purpose_generic_only_contradiction")
-            or record["status"] == "failed"
-        )
+        if record["repositoryId"] in repaired_baseline_ids and _repaired_case_improved(record)
     )
     metrics = {
         "purposeAccuracyRate": _rate(purpose_count, total),
@@ -492,15 +522,51 @@ def _has_diagnostic(record: dict[str, Any], code: str) -> bool:
     )
 
 
+def _repaired_case_improved(record: dict[str, Any]) -> bool:
+    if record.get("status") == "completed":
+        return not _generic_reuse(record) or _has_diagnostic(
+            record, "specific_purpose_generic_only_contradiction"
+        )
+    return _root_cause(record) == "generic_only_contradiction"
+
+
 def _passes(value: float, rule: dict[str, Any]) -> bool:
     operator = rule["operator"]
     threshold = float(rule["threshold"])
+    if operator == "greater_than_or_equal":
+        return value >= threshold
+    if operator == "less_than_or_equal":
+        return value <= threshold
+    if operator == "equal":
+        return value == threshold
+    raise ValueError(f"unsupported calibration gate operator: {operator}")
+
+
+def _valid_target_binding(item: dict[str, Any]) -> bool:
     return (
-        value >= threshold
-        if operator == "greater_than_or_equal"
-        else value <= threshold
-        if operator == "less_than_or_equal"
-        else value == threshold
+        isinstance(item.get("revision"), str)
+        and len(item["revision"]) == 40
+        and _sha256(item.get("packetSha256"))
+        and _sha256(item.get("baselineRecordSha256"))
+        and isinstance(item.get("wave"), str)
+        and bool(item["wave"])
+        and isinstance(item.get("candidateId"), str)
+        and bool(item["candidateId"])
+        and item.get("baselineStatus") in {"completed", "failed"}
+        and isinstance(item.get("baselineGenericIntentIds"), list)
+        and all(
+            isinstance(intent_id, str) and intent_id in GENERIC_OBSERVED_INTENT_IDS
+            for intent_id in item["baselineGenericIntentIds"]
+        )
+        and isinstance(item.get("baselineJsonRepairNeeded"), bool)
+    )
+
+
+def _sha256(value: Any) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
     )
 
 

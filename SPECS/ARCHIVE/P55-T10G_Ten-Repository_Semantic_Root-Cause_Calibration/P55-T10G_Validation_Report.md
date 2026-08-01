@@ -28,7 +28,7 @@
 | Schema-valid proposals | 0.80 | 1.00 | FAIL |
 | Reviewer edit burden | 0.40 | <= 0.25 | FAIL |
 | Generic intent reduction | 7 | > 0 | PASS |
-| Repaired generic-case improvement | 6 cases | >= 1 | PASS |
+| Repaired generic-case improvement | 5 cases | >= 1 | PASS |
 | False novelty | 0 | 0 | PASS |
 | Duplicate IDs / semantic stems | 0 / 0 | 0 / 0 | PASS |
 
@@ -66,3 +66,16 @@ was persisted in durable evidence.
 - `swift build --target SpecHarvesterDocs`: passed with the existing unhandled
   DocC catalog warning.
 - `jq empty SPECS/EVIDENCE/P55-T10G/*.json` and `git diff --check`: passed.
+
+## Review Follow-Up
+
+- Frozen-plan validation now checks the complete contract and independently pins
+  the expected plan digest, so fully rehashed binding substitutions fail closed.
+- Unknown quality-gate operators now raise instead of falling through to
+  equality.
+- Purpose assessment and report construction complete before the durable archive
+  is replaced during finalization.
+- Failed repaired cases count as improvements only for an explicit generic-only
+  contradiction; unrelated input, transport, quota, or namespace failures do
+  not qualify. The corrected result contains five improved repaired cases.
+- Focused review regression suite: `17 passed`.

@@ -10,6 +10,8 @@ import spec_harvester.semantic_root_cause_calibration as calibration
 from spec_harvester.retained_corpus_semantic_campaign import CampaignTarget, digest
 from spec_harvester.semantic_root_cause_calibration import (
     TARGET_IDS,
+    _passes,
+    _repaired_case_improved,
     _report,
     _root_cause,
     _validate_purpose_assessment,
@@ -83,7 +85,7 @@ def test_build_plan_binds_current_scope_and_immutable_baseline(
     assert set(baseline) == set(TARGET_IDS)
     assert plan["targets"][0]["baselineJsonRepairNeeded"] is True
     assert plan["targets"][0]["baselineGenericIntentIds"] == ["intent.package.javascript_library"]
-    validate_calibration_plan(plan)
+    validate_calibration_plan(plan, require_frozen_identity=False)
 
 
 def test_load_scope_and_finalize_use_frozen_plan_and_terminal_records(
@@ -136,12 +138,21 @@ def test_load_scope_and_finalize_use_frozen_plan_and_terminal_records(
     assessment_path.write_text("{}")
     monkeypatch.setattr(calibration, "_read_json", lambda path: records_by_path.get(path, {}))
     monkeypatch.setattr(calibration, "validate_campaign_record", lambda *_args: None)
-    monkeypatch.setattr(calibration, "write_deterministic_archive", lambda *_args: "c" * 64)
-    monkeypatch.setattr(calibration, "_validate_purpose_assessment", lambda *_args: None)
+    events = []
+    monkeypatch.setattr(
+        calibration,
+        "write_deterministic_archive",
+        lambda *_args: events.append("archive") or "c" * 64,
+    )
+    monkeypatch.setattr(
+        calibration,
+        "_validate_purpose_assessment",
+        lambda *_args: events.append("assessment"),
+    )
     monkeypatch.setattr(
         calibration,
         "_report",
-        lambda *_args: {"summary": {"passed": False}},
+        lambda *_args: events.append("report") or {"summary": {"passed": False}},
     )
     written = {}
     monkeypatch.setattr(
@@ -162,6 +173,7 @@ def test_load_scope_and_finalize_use_frozen_plan_and_terminal_records(
     assert report["archive"]["recordCount"] == 10
     assert len(report["reportSha256"]) == 64
     assert written[tmp_path / "report.json"] == report
+    assert events == ["assessment", "report", "archive"]
 
 
 def test_frozen_plan_is_valid_and_has_exact_ordered_scope() -> None:
@@ -180,6 +192,66 @@ def test_frozen_plan_rejects_rehashed_target_substitution() -> None:
 
     with pytest.raises(ValueError, match="calibration plan is invalid"):
         validate_calibration_plan(plan)
+
+
+@pytest.mark.parametrize(
+    ("path", "value"),
+    [
+        (("schemaVersion",), 2),
+        (("attemptBudget", "providerMaxAttempts"), 3),
+        (("successCriteria", "reviewerEditBurdenRate", "threshold"), 0.5),
+        (("baseline", "archiveSha256"), "0" * 64),
+        (("currentInputBindings", "sourceManifestSha256"), "not-a-digest"),
+        (("semanticQualityPolicySha256",), "not-a-digest"),
+    ],
+)
+def test_frozen_plan_rejects_rehashed_contract_drift(path: tuple[str, ...], value: object) -> None:
+    plan = json.loads((EVIDENCE / "P55-T10G_Frozen_Plan.json").read_text())
+    target = plan
+    for key in path[:-1]:
+        target = target[key]
+    target[path[-1]] = value
+    plan["planSha256"] = digest({key: item for key, item in plan.items() if key != "planSha256"})
+
+    with pytest.raises(ValueError, match="calibration plan is invalid"):
+        validate_calibration_plan(plan)
+
+
+def test_frozen_plan_rejects_non_object() -> None:
+    with pytest.raises(ValueError, match="calibration plan is invalid"):
+        validate_calibration_plan([])  # type: ignore[arg-type]
+
+
+def test_gate_operator_must_be_known() -> None:
+    with pytest.raises(ValueError, match="unsupported calibration gate operator"):
+        _passes(1.0, {"operator": "approximately", "threshold": 1.0})
+
+
+def test_unrelated_failed_repaired_case_is_not_an_improvement() -> None:
+    assert (
+        _repaired_case_improved(
+            {
+                "status": "failed",
+                "attempts": [{"status": "failed", "failureCode": "provider usage limit reached"}],
+            }
+        )
+        is False
+    )
+    assert (
+        _repaired_case_improved(
+            {
+                "status": "failed",
+                "attempts": [
+                    {
+                        "status": "failed",
+                        "failureCode": "specific semantic purpose cannot use only a generic "
+                        "observed intent",
+                    }
+                ],
+            }
+        )
+        is True
+    )
 
 
 def test_purpose_assessment_binds_every_terminal_record() -> None:

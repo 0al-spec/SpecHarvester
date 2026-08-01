@@ -302,7 +302,7 @@
     "kind": "SpecHarvesterSemanticPurposeSupervisorAssessment",
     "schemaVersion": 1
   },
-  "reportSha256": "b4689f63259da639805c8e1d1a1b0bd77a4a5ca87e486d30015c4388cdac6a95",
+  "reportSha256": "235785507346ed94b50da2ee0f3efd6adac4d1734e61db8f93a4785560f67480",
   "schemaVersion": 1,
   "summary": {
     "baselineGenericIntentReuseCount": 7,
@@ -348,7 +348,6 @@
           "axios-axios",
           "bitcoin-bitcoin",
           "electron-electron",
-          "excalidraw-excalidraw",
           "firecrawl-firecrawl",
           "n8n-io-n8n"
         ]
