@@ -1,27 +1,33 @@
-# Next Task: P55-T10G Ten-Repository Semantic Root-Cause Calibration
+# Next Task: P55-T10G1 Outcome-Level Purpose Anchors
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10F` Relevant Intent Routing and Generic Contradiction Gate
+**Dependencies:** `P55-T10G` Ten-Repository Semantic Root-Cause Calibration
 **Status:** Ready
 
 ## Objective
 
-Run the frozen ten-repository calibration to determine whether preserved repair
-context, deterministic product profiles, relevant observed-intent routing, and
-the generic contradiction gate improve semantic proposal quality.
+Add deterministic, source-bound outcome-level purpose anchors so semantic
+quality checks can distinguish a package's concrete user outcome from package
+identity, import, discovery, repository, or implementation mechanics.
 
 ## Required Scope
 
-Use pinned cases including `axios/axios`, `n8n-io/n8n`,
-`firecrawl/firecrawl`, `bitcoin/bitcoin`, `excalidraw/excalidraw`, and
-`openai/codex`. Compare against immutable P55-T10C evidence for purpose
-accuracy, generic-intent reduction, repair outcomes, false novelty, provider
-failures, and reviewer edit burden. Do not expand scope or redefine thresholds
-after observing results. Preserve proposal-only authority and the ban on
-materialization, canonicalization, registry mutation, or publication.
+Use the existing semantic product profile and bounded source documentation.
+Keep all repository-derived fields untrusted and digest-bound. Add a
+provider-neutral diagnostic that fails or requires review when a proposed
+purpose only restates package mechanics. Do not invoke a provider, change the
+frozen P55 thresholds, or grant acceptance, materialization, canonicalization,
+registry, or publication authority.
 
 ## Recently Archived
+
+- `P55-T10G` Ten-Repository Semantic Root-Cause Calibration: PARTIAL. Codex 5.3
+  Spark completed 8 of 10 frozen cases, removed all seven baseline generic
+  intent references, and proposed eight evidence-bound experimental intents
+  with zero false novelty or duplicates. Purpose accuracy was 0.60, reviewer
+  edit burden was 0.40, Bitcoin stopped at the generic-only contradiction gate,
+  and Excalidraw stopped at namespace validation. P55-T10H remains blocked.
 
 - `P55-T10F` Relevant Intent Routing and Generic Contradiction Gate: PASS. The
   semantic author now receives a digest-bound, observed-only set of genuinely

@@ -2894,15 +2894,32 @@ Acceptance:
   for generic reuse; and reject or require review when a specific purpose is
   mapped only to an implementation-shape intent. Preserve proposal-only
   experimental intent authority and all P55-T5 false-novelty protections.
-- [ ] `P55-T10G` Run a ten-repository semantic root-cause calibration over
+- [x] `P55-T10G` Run a ten-repository semantic root-cause calibration over
   pinned cases including `axios/axios`, `n8n-io/n8n`, `firecrawl/firecrawl`,
   `bitcoin/bitcoin`, `excalidraw/excalidraw`, and `openai/codex`. Compare the
   repaired pipeline with the immutable P55-T10C evidence for purpose accuracy,
   generic-intent reduction, repair outcomes, false novelty, provider failures,
   and reviewer edit burden. Do not expand scope or redefine thresholds after
   observing results.
+- [ ] `P55-T10G1` Add source-bound outcome-level purpose anchors and a
+  provider-neutral purpose-specificity diagnostic. Distinguish a selected
+  package's concrete user outcome from package identity, import, discovery,
+  repository, framework, or implementation-shape mechanics; fail or require
+  review when the proposed purpose merely restates those mechanics. Preserve
+  bounded untrusted evidence and proposal-only authority.
+- [ ] `P55-T10G2` Make semantic JSON repair validation-aware for generic-only
+  contradiction and experimental-intent namespace failures. Carry structured
+  violation codes and prohibited/replacement constraints into the preserved
+  repair request, reject unchanged semantic violations deterministically, and
+  keep the existing two-provider-attempt and one-repair-per-attempt budgets.
+- [ ] `P55-T10G3` Repeat the exact P55-T10G ten-repository calibration after
+  P55-T10G1 and P55-T10G2. Reuse the same targets, Codex 5.3 Spark model,
+  immutable P55-T10C baseline, thresholds, denominators, and digest-bound
+  supervisor purpose rubric. P55-T10H may proceed only if every frozen gate
+  passes with zero false novelty and no duplicate experimental intent IDs or
+  semantic stems.
 - [ ] `P55-T10H` Revalidate the exact 46-repository generic-intent scope only if
-  P55-T10G passes its frozen gates. Use Codex 5.3 Spark as the primary worker,
+  P55-T10G3 passes the frozen P55-T10G gates. Use Codex 5.3 Spark as the primary worker,
   permit a separate digest-bound recovery model only for verified usage-limit
   failures, and compare all terminal records with P55-T10 and P55-T10C without
   accepting, materializing, canonicalizing, or publishing proposals.
@@ -2979,8 +2996,9 @@ Acceptance:
   intents, but 39 of 46 records still required reviewer edits. Repaired outputs
   retained generic intents in all 23 completed repair cases, so P55-T10D through
   P55-T10H must address the context, product-profile, and routing root causes.
-- P55-T10D through P55-T10F must complete before P55-T10G. P55-T10H may run only
-  after P55-T10G meets its frozen purpose, generic-reduction, false-novelty,
+- P55-T10D through P55-T10F must complete before P55-T10G. P55-T10G1 and
+  P55-T10G2 must complete before P55-T10G3. P55-T10H may run only after
+  P55-T10G3 meets the frozen purpose, generic-reduction, false-novelty,
   provider-failure, and reviewer-burden gates.
 - P55-T11 remains blocked until P55-T10D through P55-T10H complete and their
   Workbench review evidence distinguishes useful experimental intents from
