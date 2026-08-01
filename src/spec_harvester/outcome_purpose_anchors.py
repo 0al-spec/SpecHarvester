@@ -191,9 +191,10 @@ def validate_outcome_purpose_anchors(
     ):
         raise ValueError("outcome purpose anchor content is invalid")
     bindings = {
-        (item.get("sourcePath"), item.get("sha256"))
+        (item.get("sourcePath"), item.get("sha256")): item.get("content")
         for item in evidence or []
         if isinstance(item, dict)
+        and isinstance(item.get("content"), str)
     }
     for anchor in anchors:
         if (
@@ -209,8 +210,21 @@ def validate_outcome_purpose_anchors(
             or any(term in mechanics for term in anchor["outcomeTerms"])
         ):
             raise ValueError("outcome purpose anchor content is invalid")
-        if evidence is not None and (anchor["sourcePath"], anchor["sha256"]) not in bindings:
-            raise ValueError("outcome purpose anchor evidence binding is stale")
+        if evidence is not None:
+            content = bindings.get((anchor["sourcePath"], anchor["sha256"]))
+            if content is None:
+                raise ValueError("outcome purpose anchor evidence binding is stale")
+            if " ".join(anchor["phrase"].split()).casefold() not in " ".join(
+                content.split()
+            ).casefold():
+                raise ValueError("outcome purpose anchor phrase is not present in bound evidence")
+            expected_terms = sorted(
+                token
+                for token in set(_tokens(anchor["phrase"]))
+                if len(token) >= 3 and token not in STOP_TERMS and token not in mechanics
+            )[:16]
+            if anchor["outcomeTerms"] != expected_terms:
+                raise ValueError("outcome purpose anchor terms do not match bound phrase")
     if profile is not None and record["profileSha256"] != profile.get("profileSha256"):
         raise ValueError("outcome purpose anchor profile binding is stale")
 

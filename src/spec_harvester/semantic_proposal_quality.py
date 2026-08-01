@@ -363,6 +363,17 @@ def _validate_purpose_specificity(
     if not isinstance(anchors, dict):
         diagnostics.append(_diagnostic("outcome_purpose_anchors_invalid", "error"))
         return
+    if anchors.get("candidateId") != pack.get("candidateId") or anchors.get(
+        "sourceBundleSha256"
+    ) != pack.get("sourceBundleSha256"):
+        diagnostics.append(
+            _diagnostic(
+                "outcome_purpose_anchors_invalid",
+                "error",
+                detail="outcome purpose anchor binding is stale",
+            )
+        )
+        return
     try:
         validate_outcome_purpose_anchors(anchors, evidence=pack.get("evidence", []))
     except ValueError as exc:

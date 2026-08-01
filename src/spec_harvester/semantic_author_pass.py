@@ -329,8 +329,6 @@ def run_semantic_author_pass(
         specificity = assess_purpose_specificity(purpose_anchors, purpose)
         if specificity == "mechanics_only":
             raise SemanticAuthorPassError("semantic purpose only restates package mechanics")
-        if specificity == "missing_anchor":
-            raise SemanticAuthorPassError("semantic purpose misses source-bound outcome anchors")
     return {
         "apiVersion": SEMANTIC_AUTHOR_PASS_API_VERSION,
         "kind": SEMANTIC_AUTHOR_PASS_KIND,
@@ -687,8 +685,6 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
         specificity = assess_purpose_specificity(purpose_anchors, purpose)
         if specificity == "mechanics_only":
             raise ValueError("semantic purpose only restates package mechanics")
-        if specificity == "missing_anchor":
-            raise ValueError("semantic purpose misses source-bound outcome anchors")
     observed = {
         item.get("intentId"): item.get("observedIntentSha256")
         for item in provider_payload.get("observedIntents", [])
@@ -823,7 +819,7 @@ def _provider_payload(
         payload["authoringConstraints"]["relevantObservedIntentRoutingPresent"] = True
         payload["authoringConstraints"]["specificPurposeCannotUseOnlyGenericIntent"] = True
     purpose_anchors = pack.get("outcomePurposeAnchors")
-    if isinstance(purpose_anchors, dict):
+    if isinstance(purpose_anchors, dict) and purpose_anchors.get("anchors"):
         payload["outcomePurposeAnchors"] = purpose_anchors
         payload["authoringConstraints"]["purposeMustMatchSourceBoundOutcomeAnchor"] = True
         payload["authoringConstraints"]["purposeMustNotOnlyRestateMechanics"] = True

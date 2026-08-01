@@ -151,12 +151,14 @@ def build_semantic_author_input_pack(
     if intent_routing is not None:
         result["intentRouting"] = json.loads(json.dumps(intent_routing))
     if profile is not None:
-        result["outcomePurposeAnchors"] = build_outcome_purpose_anchors(
+        purpose_anchors = build_outcome_purpose_anchors(
             profile,
             evidence,
             candidate_id=candidate_id,
             source_bundle_sha256=source_bundle_sha256,
         )
+        if purpose_anchors["anchors"]:
+            result["outcomePurposeAnchors"] = purpose_anchors
     return result
 
 

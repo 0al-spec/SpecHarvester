@@ -121,6 +121,34 @@ def test_input_pack_includes_validated_semantic_product_profile(tmp_path: Path) 
     assert anchors["anchors"][0]["sourcePath"] == "README.md"
 
 
+def test_input_pack_omits_empty_outcome_anchor_guidance(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = workspace(tmp_path)
+    readme = (source / "README.md").read_bytes()
+    profile = build_semantic_product_profile(
+        repository_id="demo",
+        candidate_id="demo.package",
+        harvest=json.loads((source / "harvest.json").read_text()),
+        root_document={
+            "evidencePath": "README.md",
+            "sourcePath": "README.md",
+            "sha256": hashlib.sha256(readme).hexdigest(),
+            "byteCount": len(readme),
+            "harvestSha256": hashlib.sha256((source / "harvest.json").read_bytes()).hexdigest(),
+        },
+    )
+    write_semantic_product_profile(source / PROFILE_FILENAME, profile)
+
+    monkeypatch.setattr(
+        "spec_harvester.semantic_author_input_pack.build_outcome_purpose_anchors",
+        lambda *args, **kwargs: {"anchors": []},
+    )
+    result = build_semantic_author_input_pack(source, catalog())
+
+    assert "outcomePurposeAnchors" not in result
+
+
 def test_input_pack_binds_relevant_intent_routing_to_catalog_evidence(tmp_path: Path) -> None:
     source = workspace(tmp_path)
     readme = (source / "README.md").read_bytes()

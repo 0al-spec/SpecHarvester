@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import json
 
 import pytest
 
@@ -36,11 +37,12 @@ def fixture() -> tuple[dict, list[dict], str]:
             }
         ],
     }
+    profile_content = json.dumps(profile, sort_keys=True, separators=(",", ":"))
     evidence = [
         {
             "sourcePath": "semantic-product-profile.json",
             "sha256": "d" * 64,
-            "content": "{}",
+            "content": profile_content,
         },
         {
             "sourcePath": "README.md",
@@ -118,6 +120,19 @@ def test_validation_rejects_stale_digest_and_evidence_binding() -> None:
     with pytest.raises(ValueError, match="evidence binding is stale"):
         validate_outcome_purpose_anchors(record, profile=profile, evidence=evidence[:1])
 
+    fabricated = copy.deepcopy(record)
+    fabricated["anchors"][0]["phrase"] = "Schedule meetings for distributed teams"
+    fabricated["anchors"][0]["outcomeTerms"] = ["distributed", "meetings", "schedule", "teams"]
+    fabricated["anchorsSha256"] = hashlib.sha256(
+        json.dumps(
+            {key: value for key, value in fabricated.items() if key != "anchorsSha256"},
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+    with pytest.raises(ValueError, match="phrase is not present"):
+        validate_outcome_purpose_anchors(fabricated, profile=profile, evidence=evidence)
+
     stale_profile = copy.deepcopy(profile)
     stale_profile["profileSha256"] = "e" * 64
     with pytest.raises(ValueError, match="profile binding is stale"):
@@ -177,6 +192,7 @@ def test_builder_ignores_malformed_unbound_and_mechanics_only_candidates() -> No
 def test_builder_deduplicates_identical_profile_and_document_phrases() -> None:
     profile, evidence, source_bundle = fixture()
     profile["package"]["description"] = evidence[1]["content"]
+    evidence[0]["content"] = json.dumps(profile, sort_keys=True, separators=(",", ":"))
 
     record = build_outcome_purpose_anchors(
         profile,
