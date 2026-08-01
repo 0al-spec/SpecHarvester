@@ -3,7 +3,7 @@
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T10F` Relevant Intent Routing and Generic Contradiction Gate
-**Status:** Ready
+**Status:** Selected
 
 ## Objective
 
@@ -20,6 +20,15 @@ accuracy, generic-intent reduction, repair outcomes, false novelty, provider
 failures, and reviewer edit burden. Do not expand scope or redefine thresholds
 after observing results. Preserve proposal-only authority and the ban on
 materialization, canonicalization, registry mutation, or publication.
+
+## Frozen Target Set
+
+The calibration is fixed before provider execution to these ten P55-T10C
+records: `axios/axios`, `n8n-io/n8n`, `firecrawl/firecrawl`,
+`bitcoin/bitcoin`, `excalidraw/excalidraw`, `openai/codex`,
+`thedotmack/claude-mem`, `angular/angular`, `electron/electron`, and
+`freeCodeCamp/freeCodeCamp`. The set may not be expanded or replaced after
+observing results.
 
 ## Recently Archived
 
