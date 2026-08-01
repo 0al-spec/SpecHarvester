@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from spec_harvester.relevant_intent_routing import build_relevant_intent_catalog
 from spec_harvester.semantic_author_input_pack import (
     SemanticAuthorInputPackOptions,
     build_semantic_author_input_pack,
@@ -113,6 +114,40 @@ def test_input_pack_includes_validated_semantic_product_profile(tmp_path: Path) 
     assert evidence["sourcePath"] == PROFILE_FILENAME
     assert evidence["untrusted"] is True
     assert json.loads(evidence["content"])["profileSha256"] == profile["profileSha256"]
+
+
+def test_input_pack_binds_relevant_intent_routing_to_catalog_evidence(tmp_path: Path) -> None:
+    source = workspace(tmp_path)
+    readme = (source / "README.md").read_bytes()
+    harvest = source / "harvest.json"
+    profile = build_semantic_product_profile(
+        repository_id="demo",
+        candidate_id="demo.package",
+        harvest=json.loads(harvest.read_text()),
+        root_document={
+            "evidencePath": "README.md",
+            "sourcePath": "README.md",
+            "sha256": hashlib.sha256(readme).hexdigest(),
+            "byteCount": len(readme),
+            "harvestSha256": hashlib.sha256(harvest.read_bytes()).hexdigest(),
+        },
+    )
+    write_semantic_product_profile(source / PROFILE_FILENAME, profile)
+    routed_catalog = build_relevant_intent_catalog(
+        profile,
+        current_intent_ids=["intent.package.javascript_library"],
+    )
+
+    result = build_semantic_author_input_pack(source, routed_catalog)
+
+    assert result["intentRouting"] == routed_catalog["routing"]
+    assert result["intentRouting"]["selectedIntentIds"] == [
+        item["intentId"] for item in result["observedIntents"]
+    ]
+    catalog_evidence = next(
+        item for item in result["evidence"] if item["class"] == "specpm_observed_intent_catalog"
+    )
+    assert json.loads(catalog_evidence["content"])["routing"] == result["intentRouting"]
 
 
 @pytest.mark.parametrize(

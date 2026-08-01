@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from spec_harvester.relevant_intent_routing import build_relevant_intent_catalog
 from spec_harvester.semantic_author_input_pack import (
     SemanticAuthorInputPackOptions,
     build_semantic_author_input_pack,
@@ -16,6 +17,7 @@ from spec_harvester.semantic_author_pass import (
     SemanticAuthorPassOptions,
     run_semantic_author_pass,
 )
+from spec_harvester.semantic_product_profile import build_semantic_product_profile
 from spec_harvester.semantic_proposal_quality import (
     evaluate_semantic_proposal_quality,
     load_semantic_author_quality_policy,
@@ -88,11 +90,50 @@ def workspace(
     return tmp_path
 
 
-def input_pack(tmp_path: Path, *intent_ids: str, **workspace_options: str) -> dict:
+def input_pack(
+    tmp_path: Path,
+    *intent_ids: str,
+    catalog_override: dict | None = None,
+    **workspace_options: str,
+) -> dict:
     return build_semantic_author_input_pack(
         workspace(tmp_path, **workspace_options),
-        catalog(*(intent_ids or ("intent.ai.context_selection",))),
+        catalog_override or catalog(*(intent_ids or ("intent.ai.context_selection",))),
         options=SemanticAuthorInputPackOptions(document_paths=("README.md",)),
+    )
+
+
+def routed_generic_catalog() -> dict:
+    readme = b"Select relevant repository context for AI-assisted work."
+    profile = build_semantic_product_profile(
+        repository_id="demo",
+        candidate_id="demo.package",
+        harvest={
+            "source": {
+                "repository": "https://github.com/demo/package",
+                "revision": "a" * 40,
+                "target": {"path": "."},
+            },
+            "files": [
+                {
+                    "package": {
+                        "name": "demo-package",
+                        "description": "Select relevant repository context for AI-assisted work",
+                    }
+                }
+            ],
+        },
+        root_document={
+            "evidencePath": "README.md",
+            "sourcePath": "README.md",
+            "sha256": hashlib.sha256(readme).hexdigest(),
+            "byteCount": len(readme),
+            "harvestSha256": "f" * 64,
+        },
+    )
+    return build_relevant_intent_catalog(
+        profile,
+        current_intent_ids=["intent.package.javascript_library"],
     )
 
 
@@ -423,6 +464,38 @@ def test_generic_duplicate_and_overlap_signals_require_review(tmp_path: Path) ->
         "duplicate_intent_decision",
         "overlapping_semantic_claims",
     } <= diagnostic_codes(report)
+
+
+def test_specific_purpose_generic_only_contradiction_rejects_quality(
+    tmp_path: Path,
+) -> None:
+    pack = input_pack(tmp_path, catalog_override=routed_generic_catalog())
+    payload = proposal(pack)
+    generic_decision = copy.deepcopy(payload["intentDecisions"][0])
+    payload["intentDecisions"] = [
+        {
+            "apiVersion": "spec-harvester.ai-semantic-experimental-intent/v0",
+            "kind": "SpecHarvesterAISemanticExperimentalIntent",
+            "schemaVersion": 1,
+            "state": "proposed_experimental",
+            "intentId": (
+                f"intent.experimental.ai_context_optimization.{pack['sourceBundleSha256'][:8]}"
+            ),
+            "userNeedClaimId": "purpose",
+            "nearbyIntentIds": [generic_decision["intentId"]],
+            "nearbyIntentClaimIds": ["nearby"],
+            "nonGoalClaimIds": ["non_goal"],
+        }
+    ]
+    passed = semantic_pass(pack, payload)
+    passed["proposal"]["intentDecisions"] = [generic_decision]
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "specific_purpose_generic_only_contradiction" in diagnostic_codes(report)
+    assert report["metrics"]["genericOnlyContradictionCount"] == 1
 
 
 def test_experimental_intent_overlap_is_false_novelty_failure(tmp_path: Path) -> None:

@@ -21,9 +21,9 @@ maps it only to a generic implementation-shape intent.
 - Deterministic relevant-intent routing that:
   - derives bounded product terms from the P55-T10E profile;
   - always retains current generic observed intents when present in SpecPM;
-  - ranks positive lexical matches across intent IDs, capabilities, and package
-    IDs;
-  - excludes zero-score unrelated intents and caps the selected catalog;
+  - ranks lexical matches across intent IDs, capabilities, and package IDs;
+  - requires two distinct product-term matches so ambiguous single words do not
+    select unrelated intents, and caps the selected catalog;
   - records matched terms, score, source intent digest, and routing digest.
 - Semantic-author input-pack and provider-request integration for the selected
   relevant catalog and routing explanation.
