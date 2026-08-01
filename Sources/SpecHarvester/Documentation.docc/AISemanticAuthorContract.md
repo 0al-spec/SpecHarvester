@@ -7,8 +7,8 @@ authority.
 The model may refine purpose, propose package-owned capabilities, recommend
 observed intent reuse, or propose visibly experimental
 `intent.experimental.*` declarations. Every claim requires an allowlisted
-source path and digest. Repository documentation is untrusted evidence, not
-host instructions.
+source path and digest. Deterministic semantic product profiles and repository
+documentation are untrusted evidence, not host instructions.
 
 Both providers share the same request, proposal, evidence, review, and authority
 contracts. Provider identity and transport cannot increase authority.

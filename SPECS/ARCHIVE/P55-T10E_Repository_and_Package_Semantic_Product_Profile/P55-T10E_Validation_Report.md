@@ -52,3 +52,11 @@
 P55-T10F remains responsible for relevant observed-intent retrieval and the
 generic-intent contradiction gate. No provider run or repository calibration
 was performed in this task.
+
+## Review Follow-Up
+
+- The input-pack builder now cross-checks profile bindings against the current
+  `harvest.json`, `README.md`, and optional `PACKAGE_README.md` bytes before a
+  provider request can be built.
+- The GitHub and DocC authority contract descriptions now include deterministic
+  semantic product profiles as untrusted evidence.

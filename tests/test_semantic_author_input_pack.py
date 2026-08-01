@@ -115,6 +115,42 @@ def test_input_pack_includes_validated_semantic_product_profile(tmp_path: Path) 
     assert json.loads(evidence["content"])["profileSha256"] == profile["profileSha256"]
 
 
+@pytest.mark.parametrize(
+    ("relative", "replacement"),
+    [
+        ("README.md", "Changed documentation.\n"),
+        ("harvest.json", '{"source":{"repository":"changed"}}\n'),
+    ],
+)
+def test_input_pack_rejects_stale_product_profile_evidence(
+    tmp_path: Path, relative: str, replacement: str
+) -> None:
+    source = workspace(tmp_path)
+    readme = (source / "README.md").read_bytes()
+    harvest = source / "harvest.json"
+    profile = build_semantic_product_profile(
+        repository_id="demo",
+        candidate_id="demo.package",
+        harvest=json.loads(harvest.read_text()),
+        root_document={
+            "evidencePath": "README.md",
+            "sourcePath": "README.md",
+            "sha256": hashlib.sha256(readme).hexdigest(),
+            "byteCount": len(readme),
+            "harvestSha256": hashlib.sha256(harvest.read_bytes()).hexdigest(),
+        },
+    )
+    write_semantic_product_profile(source / PROFILE_FILENAME, profile)
+    (source / relative).write_text(replacement)
+
+    with pytest.raises(ValueError, match="evidence binding is stale"):
+        build_semantic_author_input_pack(
+            source,
+            catalog(),
+            options=SemanticAuthorInputPackOptions(document_paths=("README.md",)),
+        )
+
+
 @pytest.mark.parametrize("path", ("../README.md", "/tmp/README.md"))
 def test_rejects_unsafe_document_paths(tmp_path: Path, path: str) -> None:
     with pytest.raises(ValueError, match="unsafe evidence path"):

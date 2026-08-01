@@ -136,14 +136,16 @@ def validate_semantic_product_profile(profile: dict[str, Any]) -> None:
     _safe_relative(str(package.get("targetPath") or "."))
     _optional_safe_relative(str(package.get("manifestPath") or ""))
     bindings: set[tuple[str, str]] = set()
+    binding_paths: set[str] = set()
     for item in source_bindings:
         if not isinstance(item, dict):
             raise ValueError("semantic product profile source binding is malformed")
         source_path = _safe_relative(str(item.get("sourcePath") or ""))
         sha256 = item.get("sha256")
-        if not _sha256(sha256) or (source_path, sha256) in bindings:
+        if not _sha256(sha256) or source_path in binding_paths:
             raise ValueError("semantic product profile source binding is malformed")
         bindings.add((source_path, sha256))
+        binding_paths.add(source_path)
     for item in documents:
         if not isinstance(item, dict) or item.get("untrusted") is not True:
             raise ValueError("semantic product profile document binding is malformed")

@@ -8,8 +8,8 @@ fixtures, and FLOW artifacts.
 ### Summary Verdict
 
 - [ ] Approve
-- [ ] Approve with comments
-- [x] Request changes
+- [x] Approve with comments
+- [ ] Request changes
 - [ ] Block
 
 ### Critical Issues
@@ -46,8 +46,9 @@ None.
 
 ### Next Steps
 
-- Add workspace-binding verification and stale-evidence regression tests.
-- Synchronize both human-readable authority contract documents and their docs
-  contract assertion.
+- Resolved in the review follow-up: the input-pack builder cross-checks profile
+  document and harvest bindings with the current workspace files.
+- Resolved in the review follow-up: both authority contract documents and their
+  docs contract assertion now include deterministic semantic product profiles.
 - No new Workplan task is required when these findings are resolved in the
   current review follow-up.

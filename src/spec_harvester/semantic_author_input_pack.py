@@ -74,7 +74,9 @@ def build_semantic_author_input_pack(
 
     profile_path = workspace / PROFILE_FILENAME
     if profile_path.exists():
-        validate_semantic_product_profile(_read_json(workspace, PROFILE_FILENAME))
+        profile = _read_json(workspace, PROFILE_FILENAME)
+        validate_semantic_product_profile(profile)
+        _validate_profile_workspace_bindings(workspace, profile)
         _append_file(
             evidence,
             workspace,
@@ -221,6 +223,41 @@ def _append_file(
             },
         }
     )
+
+
+def _validate_profile_workspace_bindings(workspace: Path, profile: dict[str, Any]) -> None:
+    source_bindings = profile["sourceBindings"]
+    harvest_bindings = [
+        item for item in source_bindings if item.get("sourcePath") == "harvest.json"
+    ]
+    if len(harvest_bindings) != 1:
+        raise ValueError("semantic product profile harvest binding is malformed")
+    _verify_profile_workspace_file(
+        workspace,
+        "harvest.json",
+        harvest_bindings[0]["sha256"],
+    )
+    for document in profile["documents"]:
+        _verify_profile_workspace_file(
+            workspace,
+            document["evidencePath"],
+            document["sha256"],
+            expected_byte_count=document["byteCount"],
+        )
+
+
+def _verify_profile_workspace_file(
+    workspace: Path,
+    relative: str,
+    expected_sha256: str,
+    *,
+    expected_byte_count: int | None = None,
+) -> None:
+    raw = _workspace_file(workspace, relative).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != expected_sha256 or (
+        expected_byte_count is not None and len(raw) != expected_byte_count
+    ):
+        raise ValueError(f"semantic product profile evidence binding is stale: {relative}")
 
 
 def _validate_catalog(
