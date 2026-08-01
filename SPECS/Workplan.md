@@ -2874,7 +2874,7 @@ Acceptance:
   Report generic-intent reduction, useful experimental intents, unjustified
   novelty, duplicate intent IDs, provider failures, and edit burden without
   materialization, canonicalization, registry mutation, or publication.
-- [ ] `P55-T10D` Preserve the complete semantic-author request across bounded
+- [x] `P55-T10D` Preserve the complete semantic-author request across bounded
   JSON repair. Reuse the original system instructions and evidence contents,
   keep repair attempts under the existing timeout and output budgets, and prove
   that repaired proposals cannot silently lose README, candidate, harvest,

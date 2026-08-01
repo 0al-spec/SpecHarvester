@@ -1,26 +1,33 @@
-# Next Task: P55-T10D Semantic Repair Context Preservation
+# Next Task: P55-T10E Repository and Package Semantic Product Profile
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10C` Retained Generic-Intent Follow-Up evidence
-**Status:** In Progress
+**Dependencies:** `P55-T10D` Semantic Repair Context Preservation
+**Status:** Ready
 
 ## Objective
 
-Preserve the complete semantic-author request across bounded JSON repair so a
-formal output correction cannot discard the repository evidence and push an
-otherwise specific proposal back to a generic intent.
+Build a deterministic semantic product profile that tells the author what the
+repository and selected package are for before it must choose or create an
+intent.
 
 ## Required Scope
 
-Reuse the original semantic system instructions and complete provider request,
-including README, candidate YAML, harvest metadata, public-interface evidence,
-observed intents, and decision policy, on every repair attempt. Preserve the
-existing provider attempt, timeout, output-size, evidence allowlist, privacy,
-and proposal-only boundaries. Add regression coverage proving that repair sees
-the semantic evidence contents and cannot persist raw prompts or responses.
+Bind explicit repository identity, candidate package role, detected language
+and framework signals, root documentation, nearest package-local documentation,
+and manifest description or keywords when available. Every profile field must
+cite allowlisted evidence and remain deterministic, size-bounded, and untrusted
+where sourced from repository text. Generate it without executing repository
+code or package managers, and do not grant materialization or publication
+authority.
 
 ## Recently Archived
+
+- `P55-T10D` Semantic Repair Context Preservation: PASS. Shared JSON repair now
+  continues the original system prompt and complete provider request, retains
+  evidence contents and policy context at their original roles, bounds invalid
+  assistant output to 24,000 characters, and preserves all proposal-only,
+  privacy, schema, and evidence-validation boundaries.
 
 - `P55-T10C` Retained Generic-Intent Follow-Up: PARTIAL. The effective Spark
   plus quota-recovery result completed 34 of 46 records, reduced 48 generic

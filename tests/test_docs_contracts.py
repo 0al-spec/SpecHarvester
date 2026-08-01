@@ -41,7 +41,10 @@ ROOT = Path(__file__).resolve().parents[1]
 def assert_current_next_task(next_text: str) -> None:
     if "# Next Task: P55-T10D Semantic Repair Context Preservation" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Selected" in next_text or "**Status:** In Progress" in next_text
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
         assert "`P55-T10C` Retained Generic-Intent Follow-Up evidence" in next_text
         assert "complete semantic-author request across bounded JSON repair" in normalized
         assert "README, candidate YAML, harvest metadata, public-interface evidence" in normalized
@@ -50,7 +53,10 @@ def assert_current_next_task(next_text: str) -> None:
 
     if "# Next Task: P55-T10E Repository and Package Semantic Product Profile" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Selected" in next_text or "**Status:** In Progress" in next_text
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
         assert "`P55-T10D` Semantic Repair Context Preservation" in next_text
         assert "nearest package-local documentation" in normalized
         assert "without executing repository code or package managers" in normalized
@@ -58,7 +64,10 @@ def assert_current_next_task(next_text: str) -> None:
 
     if "# Next Task: P55-T10F Relevant Intent Routing and Generic Contradiction Gate" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Selected" in next_text or "**Status:** In Progress" in next_text
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
         assert "`P55-T10E` Repository and Package Semantic Product Profile" in next_text
         assert "semantically nearby SpecPM intents" in normalized
         assert "specific purpose" in normalized and "implementation-shape intent" in normalized
@@ -66,7 +75,10 @@ def assert_current_next_task(next_text: str) -> None:
 
     if "# Next Task: P55-T10G Ten-Repository Semantic Root-Cause Calibration" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Selected" in next_text or "**Status:** In Progress" in next_text
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
         assert "`P55-T10F` Relevant Intent Routing and Generic Contradiction Gate" in next_text
         assert "`axios/axios`, `n8n-io/n8n`, `firecrawl/firecrawl`" in normalized
         assert "Do not expand scope or redefine thresholds" in normalized
@@ -74,7 +86,10 @@ def assert_current_next_task(next_text: str) -> None:
 
     if "# Next Task: P55-T10H Forty-Six-Repository Semantic Revalidation" in next_text:
         normalized = " ".join(next_text.split())
-        assert "**Status:** Selected" in next_text or "**Status:** In Progress" in next_text
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
         assert "`P55-T10G` Ten-Repository Semantic Root-Cause Calibration" in next_text
         assert "exact 46-repository generic-intent scope" in normalized
         assert "without accepting, materializing, canonicalizing, or publishing" in normalized
