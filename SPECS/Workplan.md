@@ -2901,7 +2901,7 @@ Acceptance:
   generic-intent reduction, repair outcomes, false novelty, provider failures,
   and reviewer edit burden. Do not expand scope or redefine thresholds after
   observing results.
-- [ ] `P55-T10G1` Add source-bound outcome-level purpose anchors and a
+- [x] `P55-T10G1` Add source-bound outcome-level purpose anchors and a
   provider-neutral purpose-specificity diagnostic. Distinguish a selected
   package's concrete user outcome from package identity, import, discovery,
   repository, framework, or implementation-shape mechanics; fail or require
