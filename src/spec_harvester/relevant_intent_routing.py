@@ -19,6 +19,8 @@ SNAPSHOT_KIND = "SpecHarvesterSpecPMObservedIntentSnapshot"
 ROUTING_API_VERSION = "spec-harvester.relevant-observed-intent-routing/v0"
 ROUTING_KIND = "SpecHarvesterRelevantObservedIntentRouting"
 DEFAULT_MAX_OBSERVED_INTENTS = 16
+MAX_PRODUCT_TERMS = 64
+MAX_PRODUCT_TERM_LENGTH = 80
 MINIMUM_RELEVANT_INTENT_TERM_MATCHES = 2
 MINIMUM_SPECIFIC_PURPOSE_TERM_MATCHES = 2
 TOKEN_PATTERN = re.compile(r"[a-z0-9]+")
@@ -155,6 +157,7 @@ def build_relevant_intent_catalog(
         "authority": "observed_metadata_routing_only",
         "canonical": False,
         "snapshotSha256": snapshot["snapshotSha256"],
+        "productProfileSha256": product_profile["profileSha256"],
         "queryTerms": sorted(query_terms),
         "specificProductTerms": sorted(query_terms),
         "currentObservedIntentIds": current,
@@ -189,6 +192,7 @@ def validate_relevant_intent_routing(routing: dict[str, Any]) -> None:
         or routing.get("authority") != "observed_metadata_routing_only"
         or routing.get("canonical") is not False
         or routing.get("snapshotSha256") != EXPECTED_SNAPSHOT_SHA256
+        or not _sha256(routing.get("productProfileSha256"))
         or routing.get("genericObservedIntentIds") != sorted(GENERIC_OBSERVED_INTENT_IDS)
         or routing.get("minimumRelevantIntentTermMatches") != MINIMUM_RELEVANT_INTENT_TERM_MATCHES
         or routing.get("minimumSpecificPurposeTermMatches") != MINIMUM_SPECIFIC_PURPOSE_TERM_MATCHES
@@ -217,7 +221,9 @@ def validate_relevant_intent_routing(routing: dict[str, Any]) -> None:
         raise ValueError("relevant observed intent routing digest is stale")
 
 
-def validate_relevant_intent_catalog(catalog: dict[str, Any]) -> None:
+def validate_relevant_intent_catalog(
+    catalog: dict[str, Any], product_profile: dict[str, Any]
+) -> None:
     if (
         not isinstance(catalog, dict)
         or catalog.get("sourcePath") != "generated/specpm-relevant-observed-intents.json"
@@ -230,6 +236,14 @@ def validate_relevant_intent_catalog(catalog: dict[str, Any]) -> None:
         raise ValueError("relevant observed intent catalog is malformed")
     routing = catalog["routing"]
     validate_relevant_intent_routing(routing)
+    validate_semantic_product_profile(product_profile)
+    expected_terms = sorted(_product_terms(product_profile))
+    if (
+        routing["productProfileSha256"] != product_profile["profileSha256"]
+        or routing["queryTerms"] != expected_terms
+        or routing["specificProductTerms"] != expected_terms
+    ):
+        raise ValueError("relevant observed intent catalog product profile binding is stale")
     snapshot = load_specpm_observed_intent_snapshot()
     if set(routing["currentObservedIntentIds"]) - {
         item["intentId"] for item in snapshot["intents"]
@@ -315,6 +329,19 @@ def _selected_records(
     ranked.sort(key=lambda item: (-item["relevanceScore"], item["intentId"]))
     selected = mandatory[:max_observed_intents]
     selected.extend(ranked[: max_observed_intents - len(selected)])
+    if not selected:
+        comparisons = [
+            _selection(item, query_terms, "fallback_comparison_only")
+            for item in snapshot["intents"]
+        ]
+        comparisons.sort(
+            key=lambda item: (
+                -item["relevanceScore"],
+                item["intentId"] not in GENERIC_OBSERVED_INTENT_IDS,
+                item["intentId"],
+            )
+        )
+        selected = comparisons[:1]
     return sorted(selected, key=lambda item: item["intentId"])
 
 
@@ -332,11 +359,12 @@ def _product_terms(profile: dict[str, Any]) -> set[str]:
         *(item.get("id", "") for item in technology.get("ecosystems", [])),
         *technology.get("analyzerSignals", []),
     ]
-    return {
+    terms = {
         token
         for token in _tokens(" ".join(str(item) for item in values))
-        if len(token) >= 3 and token not in PRODUCT_STOP_WORDS
+        if 3 <= len(token) <= MAX_PRODUCT_TERM_LENGTH and token not in PRODUCT_STOP_WORDS
     }
+    return set(sorted(terms)[:MAX_PRODUCT_TERMS])
 
 
 def _tokens(value: str) -> set[str]:
@@ -349,6 +377,10 @@ def _bounded_strings(value: Any) -> bool:
         and len(value) <= 64
         and all(isinstance(item, str) and 0 < len(item) <= 200 for item in value)
     )
+
+
+def _sha256(value: Any) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
 
 
 def _digest(value: Any) -> str:

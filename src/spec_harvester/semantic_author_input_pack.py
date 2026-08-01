@@ -73,6 +73,7 @@ def build_semantic_author_input_pack(
             evidence, workspace, "public-interface-index.json", "public_interface_evidence", options
         )
 
+    profile: dict[str, Any] | None = None
     profile_path = workspace / PROFILE_FILENAME
     if profile_path.exists():
         profile = _read_json(workspace, PROFILE_FILENAME)
@@ -92,7 +93,9 @@ def build_semantic_author_input_pack(
     observed_intents, catalog_binding = _validate_catalog(observed_intent_catalog, options)
     intent_routing = observed_intent_catalog.get("routing")
     if intent_routing is not None:
-        validate_relevant_intent_catalog(observed_intent_catalog)
+        if profile is None:
+            raise ValueError("relevant observed intent routing requires a semantic product profile")
+        validate_relevant_intent_catalog(observed_intent_catalog, profile)
     evidence.append(catalog_binding)
     if len(evidence) > options.max_evidence_items:
         raise ValueError("semantic author input pack evidence item budget exceeded")

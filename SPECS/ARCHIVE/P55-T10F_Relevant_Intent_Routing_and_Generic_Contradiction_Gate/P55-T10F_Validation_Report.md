@@ -86,3 +86,19 @@ novelty or provider failures.
   recomputed.
 - Resumed campaign records revalidate routing semantics after their outer
   record digest check.
+- Routing now binds the exact semantic product-profile digest and reconstructs
+  its bounded product terms from that profile, so jointly rehashed query terms
+  cannot substitute a different product meaning.
+- When neither a current generic intent nor a two-term lexical match exists,
+  routing retains exactly one deterministic observed intent marked
+  `fallback_comparison_only`; this gives experimental proposals an observed
+  comparator without representing the fallback as a relevant recommendation.
+- Product-profile routing terms are deterministically limited to 64 entries of
+  at most 80 characters before routing records are constructed.
+- Review follow-up targeted validation: `uv run pytest -q
+  tests/test_relevant_intent_routing.py tests/test_semantic_author_input_pack.py
+  tests/test_semantic_author_pass.py
+  tests/test_retained_corpus_semantic_campaign.py`: 75 passed.
+- Review follow-up full validation: `uv run pytest -q`: 1382 passed, 1
+  skipped; `uv run ruff check src tests`, `uv run ruff format --check src
+  tests`, and `git diff --check`: passed.

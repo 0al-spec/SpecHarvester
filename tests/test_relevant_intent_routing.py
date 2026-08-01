@@ -166,8 +166,9 @@ def test_snapshot_validation_rejects_rehashed_source_substitution() -> None:
 
 
 def test_routing_and_catalog_reject_rehashed_semantic_substitution() -> None:
+    profile = product_profile()
     catalog = build_relevant_intent_catalog(
-        product_profile(),
+        profile,
         current_intent_ids=["intent.package.javascript_library"],
     )
     substituted_routing = copy.deepcopy(catalog["routing"])
@@ -180,7 +181,44 @@ def test_routing_and_catalog_reject_rehashed_semantic_substitution() -> None:
     substituted_catalog["intents"][0]["sha256"] = "a" * 64
     substituted_catalog["sha256"] = digest_without(substituted_catalog, "sha256")
     with pytest.raises(ValueError, match="catalog item is stale"):
-        validate_relevant_intent_catalog(substituted_catalog)
+        validate_relevant_intent_catalog(substituted_catalog, profile)
+
+
+def test_catalog_rejects_rehashed_terms_not_derived_from_product_profile() -> None:
+    profile = product_profile()
+    catalog = build_relevant_intent_catalog(
+        profile,
+        current_intent_ids=["intent.package.javascript_library"],
+    )
+    catalog["routing"]["queryTerms"] = ["fabricated", "purpose"]
+    catalog["routing"]["specificProductTerms"] = ["fabricated", "purpose"]
+    catalog["routing"]["routingSha256"] = digest_without(catalog["routing"], "routingSha256")
+    catalog["sha256"] = digest_without(catalog, "sha256")
+
+    with pytest.raises(ValueError, match="product profile binding is stale"):
+        validate_relevant_intent_catalog(catalog, profile)
+
+
+def test_routing_keeps_one_observed_comparator_when_lexical_selection_is_empty() -> None:
+    catalog = build_relevant_intent_catalog(
+        product_profile(description="Quux zorb", keywords=["quux", "zorb"]),
+        current_intent_ids=[],
+    )
+
+    assert len(catalog["intents"]) == 1
+    assert catalog["intents"][0]["selectionReason"] == "fallback_comparison_only"
+    assert catalog["routing"]["selectedIntentIds"] == [catalog["intents"][0]["intentId"]]
+
+
+def test_product_terms_are_deterministically_bounded() -> None:
+    keywords = [f"keyword{index} companion{index} " + "x" * 120 for index in range(40)]
+    profile = product_profile(description="Bounded metadata projection", keywords=keywords)
+
+    catalog = build_relevant_intent_catalog(profile, current_intent_ids=[])
+
+    assert len(catalog["routing"]["queryTerms"]) <= 64
+    assert all(len(term) <= 80 for term in catalog["routing"]["queryTerms"])
+    validate_relevant_intent_catalog(catalog, profile)
 
 
 def test_detects_specific_purpose_mapped_only_to_generic_intent() -> None:

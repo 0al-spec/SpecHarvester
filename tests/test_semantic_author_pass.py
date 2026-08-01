@@ -61,7 +61,7 @@ def catalog(intent_id: str = "intent.ai.context_selection") -> dict:
     }
 
 
-def routed_catalog() -> dict:
+def routed_profile() -> dict:
     readme = b"Reduce AI context consumption by selecting relevant repository content."
     profile = build_semantic_product_profile(
         repository_id="demo",
@@ -87,7 +87,7 @@ def routed_catalog() -> dict:
             "sourcePath": "README.md",
             "sha256": hashlib.sha256(readme).hexdigest(),
             "byteCount": len(readme),
-            "harvestSha256": "f" * 64,
+            "harvestSha256": hashlib.sha256(b"{}").hexdigest(),
         },
         manifest_metadata={
             "sourcePath": "package.json",
@@ -96,8 +96,12 @@ def routed_catalog() -> dict:
             "keywords": ["context", "content", "selection"],
         },
     )
+    return profile
+
+
+def routed_catalog() -> dict:
     return build_relevant_intent_catalog(
-        profile,
+        routed_profile(),
         current_intent_ids=["intent.package.javascript_library"],
     )
 
@@ -114,6 +118,13 @@ def pack(
     )
     (tmp_path / "specs/core.spec.yaml").write_text("kind: BoundarySpec\n")
     (tmp_path / "harvest.json").write_text("{}")
+    if catalog_override is not None and "routing" in catalog_override:
+        (tmp_path / "README.md").write_bytes(
+            b"Reduce AI context consumption by selecting relevant repository content."
+        )
+        (tmp_path / "semantic-product-profile.json").write_text(
+            json.dumps(routed_profile(), sort_keys=True)
+        )
     return build_semantic_author_input_pack(tmp_path, catalog_override or catalog(intent_id))
 
 

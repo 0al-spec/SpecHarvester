@@ -17,7 +17,10 @@ from spec_harvester.semantic_author_pass import (
     SemanticAuthorPassOptions,
     run_semantic_author_pass,
 )
-from spec_harvester.semantic_product_profile import build_semantic_product_profile
+from spec_harvester.semantic_product_profile import (
+    build_semantic_product_profile,
+    write_semantic_product_profile,
+)
 from spec_harvester.semantic_proposal_quality import (
     evaluate_semantic_proposal_quality,
     load_semantic_author_quality_policy,
@@ -96,16 +99,25 @@ def input_pack(
     catalog_override: dict | None = None,
     **workspace_options: str,
 ) -> dict:
+    source = workspace(tmp_path, **workspace_options)
+    if catalog_override is not None and "routing" in catalog_override:
+        write_semantic_product_profile(
+            source / "semantic-product-profile.json", routed_generic_profile()
+        )
     return build_semantic_author_input_pack(
-        workspace(tmp_path, **workspace_options),
+        source,
         catalog_override or catalog(*(intent_ids or ("intent.ai.context_selection",))),
         options=SemanticAuthorInputPackOptions(document_paths=("README.md",)),
     )
 
 
-def routed_generic_catalog() -> dict:
-    readme = b"Select relevant repository context for AI-assisted work."
-    profile = build_semantic_product_profile(
+def routed_generic_profile() -> dict:
+    readme = (
+        b"Demo selects relevant repository context for AI-assisted work. "
+        b"It exposes a command-line interface and does not publish registry truth.\n"
+    )
+    harvest = b'{"repository":"demo"}\n'
+    return build_semantic_product_profile(
         repository_id="demo",
         candidate_id="demo.package",
         harvest={
@@ -128,11 +140,14 @@ def routed_generic_catalog() -> dict:
             "sourcePath": "README.md",
             "sha256": hashlib.sha256(readme).hexdigest(),
             "byteCount": len(readme),
-            "harvestSha256": "f" * 64,
+            "harvestSha256": hashlib.sha256(harvest).hexdigest(),
         },
     )
+
+
+def routed_generic_catalog() -> dict:
     return build_relevant_intent_catalog(
-        profile,
+        routed_generic_profile(),
         current_intent_ids=["intent.package.javascript_library"],
     )
 
