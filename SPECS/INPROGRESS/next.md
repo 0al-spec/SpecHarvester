@@ -1,26 +1,29 @@
-# Next Task: P55-T10G3 Repeat Ten-Repository Semantic Calibration
+# Next Task: P55-T10H Forty-Six-Repository Semantic Revalidation
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10G2` Validation-Aware Semantic Repair
-**Status:** In Progress
-
-**Selected At:** 2026-08-01
+**Dependencies:** `P55-T10G3` Repeat Ten-Repository Semantic Calibration
+**Status:** Blocked
 
 ## Objective
 
-Repeat the exact P55-T10G ten-repository calibration after the outcome-anchor and
-validation-aware repair changes, using the same provider, evidence, baseline,
-rubric, thresholds, denominators, and success criteria.
+Revalidate the exact 46-repository generic-intent scope only after the frozen
+ten-repository gates demonstrate sufficient purpose accuracy and reviewer burden.
+P55-T10G3 did not satisfy that prerequisite, so execution is not authorized.
 
 ## Required Scope
 
-Run Codex 5.3 Spark over the same ten pinned repositories without changing
-targets, thresholds, denominators, baseline evidence, purpose rubric, or budgets.
-P55-T10H remains blocked unless every frozen gate passes with zero false novelty
-and no duplicate experimental intent IDs or semantic stems.
+Keep the exact 46-repository generic-intent scope and Codex 5.3 Spark primary
+worker. Do not run until a reviewed follow-up passes the frozen purpose and edit
+burden gates. Run without accepting, materializing, canonicalizing, or publishing
+any proposal.
 
 ## Recently Archived
+
+- `P55-T10G3` Repeat Ten-Repository Semantic Calibration: PARTIAL. All ten
+  targets completed with schema and evidence rates of 1.00, generic reuse fell
+  from seven to one, and false novelty stayed zero. Purpose accuracy reached
+  0.70 and reviewer edit burden remained 0.40, so P55-T10H remains blocked.
 
 - `P55-T10G2` Validation-Aware Semantic Repair: PASS. JSON repair now receives
   stable semantic violation codes, prohibited values, and replacement

@@ -2912,7 +2912,7 @@ Acceptance:
   violation codes and prohibited/replacement constraints into the preserved
   repair request, reject unchanged semantic violations deterministically, and
   keep the existing two-provider-attempt and one-repair-per-attempt budgets.
-- [ ] `P55-T10G3` Repeat the exact P55-T10G ten-repository calibration after
+- [x] `P55-T10G3` Repeat the exact P55-T10G ten-repository calibration after
   P55-T10G1 and P55-T10G2. Reuse the same targets, Codex 5.3 Spark model,
   immutable P55-T10C baseline, thresholds, denominators, and digest-bound
   supervisor purpose rubric. P55-T10H may proceed only if every frozen gate

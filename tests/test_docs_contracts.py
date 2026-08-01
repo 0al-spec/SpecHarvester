@@ -123,9 +123,14 @@ def assert_current_next_task(next_text: str) -> None:
         normalized = " ".join(next_text.split())
         assert any(
             status in next_text
-            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+            for status in (
+                "**Status:** Ready",
+                "**Status:** Selected",
+                "**Status:** In Progress",
+                "**Status:** Blocked",
+            )
         )
-        assert "`P55-T10G` Ten-Repository Semantic Root-Cause Calibration" in next_text
+        assert "`P55-T10G3` Repeat Ten-Repository Semantic Calibration" in next_text
         assert "exact 46-repository generic-intent scope" in normalized
         assert "without accepting, materializing, canonicalizing, or publishing" in normalized
         return

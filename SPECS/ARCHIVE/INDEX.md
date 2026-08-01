@@ -1001,3 +1001,4 @@
 | 2026-08-01 | P55-T10G1 | Archived REVIEW_p55_t10g1_outcome_level_purpose_anchors report |
 | 2026-08-01 | P55-T10G2 | Archived Validation-Aware Semantic Repair (PASS) |
 | 2026-08-01 | P55-T10G2 | Archived REVIEW_p55_t10g2_validation_aware_semantic_repair report |
+| 2026-08-01 | P55-T10G3 | Archived Repeat Ten-Repository Semantic Calibration (PARTIAL) |
