@@ -851,7 +851,7 @@ def read_pinned_manifest_metadata(
         raise ValueError("Package manifest path is unsafe")
     raw = _git_show_bounded(source, revision, path, 64 * 1024)
     if raw is None:
-        return None
+        raise ValueError(f"Pinned package manifest is unavailable: {path}")
     payload = _parse_manifest_metadata(path, raw)
     if not isinstance(payload, dict):
         payload = {}

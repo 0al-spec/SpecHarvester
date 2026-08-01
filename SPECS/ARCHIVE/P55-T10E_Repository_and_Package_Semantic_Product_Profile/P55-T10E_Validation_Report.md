@@ -60,3 +60,8 @@ was performed in this task.
   provider request can be built.
 - The GitHub and DocC authority contract descriptions now include deterministic
   semantic product profiles as untrusted evidence.
+- GitHub review follow-up deduplicates a shared root/package README source
+  binding while preserving both semantic document roles.
+- GitHub review follow-up rejects a harvest-declared package manifest that is
+  absent from the pinned revision instead of falling back to unverified
+  harvested metadata.

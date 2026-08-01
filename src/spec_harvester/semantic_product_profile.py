@@ -35,6 +35,13 @@ def build_semantic_product_profile(
     documents = [_document_binding(root_document, "repository_root")]
     if package_document is not None:
         documents.append(_document_binding(package_document, "package_local"))
+    document_source_bindings = {
+        (item["sourcePath"], item["sha256"]): {
+            "sourcePath": item["sourcePath"],
+            "sha256": item["sha256"],
+        }
+        for item in documents
+    }
     profile: dict[str, Any] = {
         "apiVersion": PROFILE_API_VERSION,
         "kind": PROFILE_KIND,
@@ -79,13 +86,7 @@ def build_semantic_product_profile(
                 "sourcePath": "harvest.json",
                 "sha256": str(root_document.get("harvestSha256") or ""),
             },
-            *[
-                {
-                    "sourcePath": item["sourcePath"],
-                    "sha256": item["sha256"],
-                }
-                for item in documents
-            ],
+            *document_source_bindings.values(),
         ],
         "executionBoundary": {
             "repositoryCodeExecuted": False,

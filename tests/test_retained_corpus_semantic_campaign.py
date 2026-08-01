@@ -342,6 +342,12 @@ def test_prepares_nested_package_semantic_profile_from_pinned_objects(tmp_path: 
         "description": "Python AI agent SDK",
         "keywords": ["agents", "workflow"],
     }
+    missing_manifest = copy.deepcopy(harvest)
+    missing_manifest["projectProfile"]["manifests"][0]["path"] = (
+        "packages/agents/missing-package.json"
+    )
+    with pytest.raises(ValueError, match="Pinned package manifest is unavailable"):
+        read_pinned_manifest_metadata(repository, revision, missing_manifest)
 
 
 def test_rejects_packet_substitution_against_aggregate_binding(tmp_path: Path) -> None:

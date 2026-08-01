@@ -104,6 +104,30 @@ def test_builds_digest_bound_nested_package_product_profile(tmp_path: Path) -> N
     assert output.read_text().endswith("\n")
 
 
+def test_shared_root_and_package_document_reuse_one_source_binding() -> None:
+    shared = document("README.md", "packages/demo/README.md", b"Shared purpose")
+    package = document("PACKAGE_README.md", "packages/demo/README.md", b"Shared purpose")
+
+    profile = build_semantic_product_profile(
+        repository_id="demo",
+        candidate_id="demo.core",
+        harvest={"source": {"target": {"path": "packages/demo"}}},
+        root_document=shared,
+        package_document=package,
+    )
+
+    assert [item["role"] for item in profile["documents"]] == [
+        "repository_root",
+        "package_local",
+    ]
+    assert [item for item in profile["sourceBindings"] if item["sourcePath"] != "harvest.json"] == [
+        {
+            "sourcePath": "packages/demo/README.md",
+            "sha256": hashlib.sha256(b"Shared purpose").hexdigest(),
+        }
+    ]
+
+
 def test_profile_validation_rejects_stale_digest_and_unsafe_paths() -> None:
     profile = build_semantic_product_profile(
         repository_id="demo",
