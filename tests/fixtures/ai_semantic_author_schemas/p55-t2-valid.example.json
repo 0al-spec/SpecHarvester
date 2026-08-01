@@ -4,7 +4,7 @@
   "schemaVersion": 1,
   "sourceContract": {
     "path": "tests/fixtures/ai_semantic_author_contract/p55-t1-ai-semantic-author-contract.example.json",
-    "sha256": "ddde481a6f9cdb8ec051b0d1d8944d217b7f1616174a987db1bb6f1357b9dd32",
+    "sha256": "0850c1342fce70f4f8671522706e0bb06032d6c031b644d1ac6be29eb93ded48",
     "authority": "semantic_author_product_contract_evidence_only"
   },
   "request": {

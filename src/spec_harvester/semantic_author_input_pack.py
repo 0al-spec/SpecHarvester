@@ -11,6 +11,10 @@ from jsonschema import Draft202012Validator
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
 from spec_harvester.interface_index import validate_public_interface_index
+from spec_harvester.semantic_product_profile import (
+    PROFILE_FILENAME,
+    validate_semantic_product_profile,
+)
 
 INPUT_PACK_API_VERSION = "spec-harvester.ai-semantic-author-input-pack/v0"
 INPUT_PACK_KIND = "SpecHarvesterAISemanticAuthorInputPack"
@@ -66,6 +70,17 @@ def build_semantic_author_input_pack(
         validate_public_interface_index(_read_json(workspace, "public-interface-index.json"))
         _append_file(
             evidence, workspace, "public-interface-index.json", "public_interface_evidence", options
+        )
+
+    profile_path = workspace / PROFILE_FILENAME
+    if profile_path.exists():
+        validate_semantic_product_profile(_read_json(workspace, PROFILE_FILENAME))
+        _append_file(
+            evidence,
+            workspace,
+            PROFILE_FILENAME,
+            "deterministic_semantic_product_profile",
+            options,
         )
 
     for path in options.document_paths:
@@ -199,7 +214,11 @@ def _append_file(
             "sha256": hashlib.sha256(raw).hexdigest(),
             "byteCount": len(raw),
             "content": raw.decode("utf-8", errors="strict"),
-            "untrusted": evidence_class == "allowlisted_source_documentation",
+            "untrusted": evidence_class
+            in {
+                "allowlisted_source_documentation",
+                "deterministic_semantic_product_profile",
+            },
         }
     )
 
