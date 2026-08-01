@@ -1,27 +1,33 @@
-# Next Task: P55-T10E Repository and Package Semantic Product Profile
+# Next Task: P55-T10F Relevant Intent Routing and Generic Contradiction Gate
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10D` Semantic Repair Context Preservation
+**Dependencies:** `P55-T10E` Repository and Package Semantic Product Profile
 **Status:** Ready
 
 ## Objective
 
-Build a deterministic semantic product profile that tells the author what the
-repository and selected package are for before it must choose or create an
+Give the semantic author semantically nearby SpecPM intents and prevent a
+specific purpose from being represented only by a generic implementation-shape
 intent.
 
 ## Required Scope
 
-Bind explicit repository identity, candidate package role, detected language
-and framework signals, root documentation, nearest package-local documentation,
-and manifest description or keywords when available. Every profile field must
-cite allowlisted evidence and remain deterministic, size-bounded, and untrusted
-where sourced from repository text. Generate it without executing repository
-code or package managers, and do not grant materialization or publication
-authority.
+Add bounded, deterministic retrieval of semantically nearby SpecPM intents
+beyond the candidate's current observations. Require outcome-level evidence for
+generic reuse, and reject or require review when a specific purpose is mapped
+only to an implementation-shape intent. Preserve proposal-only experimental
+intent authority, false-novelty protections, source bindings, provider-neutral
+behavior, and the ban on materialization or publication.
 
 ## Recently Archived
+
+- `P55-T10E` Repository and Package Semantic Product Profile: PASS. Every
+  campaign workspace now gives the semantic author a deterministic,
+  digest-bound repository and package profile with pinned root and package-local
+  documentation, manifest metadata, and technology signals. All projected
+  repository content remains bounded and untrusted; no provider, repository
+  code, package manager, materialization, registry, or publication path ran.
 
 - `P55-T10D` Semantic Repair Context Preservation: PASS. Shared JSON repair now
   continues the original system prompt and complete provider request, retains

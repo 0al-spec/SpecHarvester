@@ -16,6 +16,11 @@ from typing import Any
 
 import yaml
 
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover - exercised on Python 3.9/3.10
+    import tomli as tomllib
+
 from spec_harvester.controlled_calibration import git_dirty_status, git_head
 from spec_harvester.experimental_intent_policy import (
     GENERIC_OBSERVED_INTENT_IDS as GENERIC_INTENT_IDS,
@@ -30,6 +35,11 @@ from spec_harvester.semantic_author_pass import (
     SemanticAuthorPassError,
     SemanticAuthorPassOptions,
     run_semantic_author_pass,
+)
+from spec_harvester.semantic_product_profile import (
+    PROFILE_FILENAME,
+    build_semantic_product_profile,
+    write_semantic_product_profile,
 )
 from spec_harvester.semantic_proposal_quality import evaluate_semantic_proposal_quality
 from spec_harvester.source_manifest import read_repository_source_manifests
@@ -290,13 +300,20 @@ def run_campaign_target(
                 target.source_dir,
                 target.revision,
                 Path(temporary),
+                repository_id=target.repository_id,
             )
             manifest = yaml.safe_load((workspace / "specpm.yaml").read_text(encoding="utf-8"))
             static_intent_ids = manifest_intent_ids(manifest)
             pack = build_semantic_author_input_pack(
                 workspace,
                 observed_catalog(manifest),
-                options=SemanticAuthorInputPackOptions(document_paths=("README.md",)),
+                options=SemanticAuthorInputPackOptions(
+                    document_paths=tuple(
+                        path
+                        for path in ("README.md", "PACKAGE_README.md")
+                        if (workspace / path).exists()
+                    )
+                ),
             )
     except (ValueError, OSError) as exc:
         terminal = {
@@ -634,7 +651,14 @@ def write_deterministic_archive(work_root: Path, archive_path: Path) -> str:
     return sha256_file(archive_path)
 
 
-def prepare_workspace(candidate: Path, source: Path, revision: str, root: Path) -> Path:
+def prepare_workspace(
+    candidate: Path,
+    source: Path,
+    revision: str,
+    root: Path,
+    *,
+    repository_id: str,
+) -> Path:
     workspace = root / "workspace"
     workspace.mkdir()
     shutil.copy2(candidate / "specpm.yaml", workspace / "specpm.yaml")
@@ -675,8 +699,37 @@ def prepare_workspace(candidate: Path, source: Path, revision: str, root: Path) 
         (workspace / "specs" / source_spec.name).write_text(
             yaml.safe_dump(projected, sort_keys=False), encoding="utf-8"
         )
-    shutil.copy2(candidate / "harvest.json", workspace / "harvest.json")
-    (workspace / "README.md").write_bytes(read_pinned_readme(source, revision))
+    harvest_path = candidate / "harvest.json"
+    shutil.copy2(harvest_path, workspace / "harvest.json")
+    harvest = json.loads(harvest_path.read_text(encoding="utf-8"))
+    if not isinstance(harvest, dict):
+        raise ValueError("Candidate harvest.json must be an object")
+    repository_source_path, root_readme = read_pinned_repository_document(source, revision)
+    (workspace / "README.md").write_bytes(root_readme)
+    package_readme = read_pinned_package_readme(source, revision, harvest)
+    package_document = None
+    if package_readme is not None:
+        package_source_path, package_readme_bytes = package_readme
+        (workspace / "PACKAGE_README.md").write_bytes(package_readme_bytes)
+        package_document = _document_record(
+            "PACKAGE_README.md", package_source_path, package_readme_bytes
+        )
+    candidate_manifest = yaml.safe_load((candidate / "specpm.yaml").read_text(encoding="utf-8"))
+    candidate_id = candidate_manifest.get("metadata", {}).get("id")
+    if not isinstance(candidate_id, str) or not candidate_id:
+        raise ValueError("Candidate specpm.yaml metadata.id must be non-empty")
+    profile = build_semantic_product_profile(
+        repository_id=repository_id,
+        candidate_id=candidate_id,
+        harvest=harvest,
+        root_document={
+            **_document_record("README.md", repository_source_path, root_readme),
+            "harvestSha256": sha256_file(harvest_path),
+        },
+        package_document=package_document,
+        manifest_metadata=read_pinned_manifest_metadata(source, revision, harvest),
+    )
+    write_semantic_product_profile(workspace / PROFILE_FILENAME, profile)
     return workspace
 
 
@@ -690,6 +743,10 @@ def validate_source_checkout(source: Path, expected_revision: str) -> None:
 
 
 def read_pinned_readme(source: Path, revision: str) -> bytes:
+    return read_pinned_repository_document(source, revision)[1]
+
+
+def read_pinned_repository_document(source: Path, revision: str) -> tuple[str, bytes]:
     allowed_names = {
         "readme",
         "readme.adoc",
@@ -742,8 +799,118 @@ def read_pinned_readme(source: Path, revision: str) -> bytes:
             text = completed.stdout.decode("utf-8", errors="strict")
             while len(text.encode("utf-8")) > 24 * 1024:
                 text = text[: int(len(text) * 0.9)]
-            return text.encode("utf-8")
+            return name, text.encode("utf-8")
     raise ValueError(f"Pinned README evidence is unavailable: {source.name}")
+
+
+def read_pinned_package_readme(
+    source: Path, revision: str, harvest: dict[str, Any]
+) -> tuple[str, bytes] | None:
+    source_record = harvest.get("source") if isinstance(harvest.get("source"), dict) else {}
+    target = source_record.get("target") if isinstance(source_record.get("target"), dict) else {}
+    target_path = str(target.get("path") or ".")
+    if target_path == ".":
+        return None
+    relative = PurePosixPath(target_path)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ValueError("Package target path is unsafe")
+    directories = [relative, *relative.parents]
+    for directory in directories:
+        if directory.as_posix() == ".":
+            continue
+        for filename in (
+            "README.md",
+            "README.markdown",
+            "README.rst",
+            "README.adoc",
+            "README.txt",
+            "README",
+        ):
+            path = (directory / filename).as_posix()
+            raw = _git_show_bounded(source, revision, path, 24 * 1024)
+            if raw is not None:
+                return path, raw
+    return None
+
+
+def read_pinned_manifest_metadata(
+    source: Path, revision: str, harvest: dict[str, Any]
+) -> dict[str, Any] | None:
+    project = (
+        harvest.get("projectProfile") if isinstance(harvest.get("projectProfile"), dict) else {}
+    )
+    manifests = project.get("manifests") if isinstance(project.get("manifests"), list) else []
+    path = next(
+        (
+            str(item["path"])
+            for item in manifests
+            if isinstance(item, dict) and isinstance(item.get("path"), str)
+        ),
+        "",
+    )
+    if not path:
+        return None
+    relative = PurePosixPath(path)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ValueError("Package manifest path is unsafe")
+    raw = _git_show_bounded(source, revision, path, 64 * 1024)
+    if raw is None:
+        raise ValueError(f"Pinned package manifest is unavailable: {path}")
+    payload = _parse_manifest_metadata(path, raw)
+    if not isinstance(payload, dict):
+        payload = {}
+    package = payload.get("package") if isinstance(payload.get("package"), dict) else {}
+    project = payload.get("project") if isinstance(payload.get("project"), dict) else {}
+    tool = payload.get("tool") if isinstance(payload.get("tool"), dict) else {}
+    poetry = tool.get("poetry") if isinstance(tool.get("poetry"), dict) else {}
+    metadata = next((item for item in (project, package, poetry, payload) if item), {})
+    return {
+        "sourcePath": path,
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "name": metadata.get("name", ""),
+        "description": metadata.get("description", ""),
+        "keywords": metadata.get("keywords", []),
+    }
+
+
+def _parse_manifest_metadata(path: str, raw: bytes) -> dict[str, Any]:
+    try:
+        text = raw.decode("utf-8")
+        if PurePosixPath(path).suffix == ".json":
+            value = json.loads(text)
+        elif PurePosixPath(path).suffix == ".toml":
+            value = tomllib.loads(text)
+        else:
+            return {}
+    except (UnicodeDecodeError, json.JSONDecodeError, tomllib.TOMLDecodeError):
+        return {}
+    return value if isinstance(value, dict) else {}
+
+
+def _git_show_bounded(source: Path, revision: str, path: str, maximum_bytes: int) -> bytes | None:
+    completed = subprocess.run(  # noqa: S603
+        ["git", "show", f"{revision}:{path}"],
+        cwd=source,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+        timeout=30,
+    )
+    if completed.returncode != 0:
+        return None
+    text = completed.stdout.decode("utf-8", errors="strict")
+    while len(text.encode("utf-8")) > maximum_bytes:
+        text = text[: int(len(text) * 0.9)]
+    return text.encode("utf-8")
+
+
+def _document_record(evidence_path: str, source_path: str, raw: bytes) -> dict[str, Any]:
+    return {
+        "evidencePath": evidence_path,
+        "sourcePath": source_path,
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "byteCount": len(raw),
+    }
 
 
 def observed_catalog(manifest: dict[str, Any]) -> dict[str, Any]:

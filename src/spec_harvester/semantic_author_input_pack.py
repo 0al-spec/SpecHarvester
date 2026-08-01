@@ -11,6 +11,10 @@ from jsonschema import Draft202012Validator
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
 from spec_harvester.interface_index import validate_public_interface_index
+from spec_harvester.semantic_product_profile import (
+    PROFILE_FILENAME,
+    validate_semantic_product_profile,
+)
 
 INPUT_PACK_API_VERSION = "spec-harvester.ai-semantic-author-input-pack/v0"
 INPUT_PACK_KIND = "SpecHarvesterAISemanticAuthorInputPack"
@@ -66,6 +70,19 @@ def build_semantic_author_input_pack(
         validate_public_interface_index(_read_json(workspace, "public-interface-index.json"))
         _append_file(
             evidence, workspace, "public-interface-index.json", "public_interface_evidence", options
+        )
+
+    profile_path = workspace / PROFILE_FILENAME
+    if profile_path.exists():
+        profile = _read_json(workspace, PROFILE_FILENAME)
+        validate_semantic_product_profile(profile)
+        _validate_profile_workspace_bindings(workspace, profile)
+        _append_file(
+            evidence,
+            workspace,
+            PROFILE_FILENAME,
+            "deterministic_semantic_product_profile",
+            options,
         )
 
     for path in options.document_paths:
@@ -199,9 +216,48 @@ def _append_file(
             "sha256": hashlib.sha256(raw).hexdigest(),
             "byteCount": len(raw),
             "content": raw.decode("utf-8", errors="strict"),
-            "untrusted": evidence_class == "allowlisted_source_documentation",
+            "untrusted": evidence_class
+            in {
+                "allowlisted_source_documentation",
+                "deterministic_semantic_product_profile",
+            },
         }
     )
+
+
+def _validate_profile_workspace_bindings(workspace: Path, profile: dict[str, Any]) -> None:
+    source_bindings = profile["sourceBindings"]
+    harvest_bindings = [
+        item for item in source_bindings if item.get("sourcePath") == "harvest.json"
+    ]
+    if len(harvest_bindings) != 1:
+        raise ValueError("semantic product profile harvest binding is malformed")
+    _verify_profile_workspace_file(
+        workspace,
+        "harvest.json",
+        harvest_bindings[0]["sha256"],
+    )
+    for document in profile["documents"]:
+        _verify_profile_workspace_file(
+            workspace,
+            document["evidencePath"],
+            document["sha256"],
+            expected_byte_count=document["byteCount"],
+        )
+
+
+def _verify_profile_workspace_file(
+    workspace: Path,
+    relative: str,
+    expected_sha256: str,
+    *,
+    expected_byte_count: int | None = None,
+) -> None:
+    raw = _workspace_file(workspace, relative).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != expected_sha256 or (
+        expected_byte_count is not None and len(raw) != expected_byte_count
+    ):
+        raise ValueError(f"semantic product profile evidence binding is stale: {relative}")
 
 
 def _validate_catalog(

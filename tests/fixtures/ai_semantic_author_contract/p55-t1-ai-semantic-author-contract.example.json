@@ -110,6 +110,7 @@
     "allowedClasses": [
       "validated_candidate_yaml",
       "harvested_repository_metadata",
+      "deterministic_semantic_product_profile",
       "allowlisted_source_documentation",
       "public_interface_evidence",
       "specpm_observed_intent_catalog"

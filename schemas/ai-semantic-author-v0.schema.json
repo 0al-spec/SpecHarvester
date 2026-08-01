@@ -27,7 +27,7 @@
       "required": ["id", "class", "sourcePath", "sha256", "sourceBundleSha256"],
       "properties": {
         "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,79}$"},
-        "class": {"enum": ["validated_candidate_yaml", "harvested_repository_metadata", "allowlisted_source_documentation", "public_interface_evidence", "specpm_observed_intent_catalog"]},
+        "class": {"enum": ["validated_candidate_yaml", "harvested_repository_metadata", "deterministic_semantic_product_profile", "allowlisted_source_documentation", "public_interface_evidence", "specpm_observed_intent_catalog"]},
         "sourcePath": {"$ref": "#/$defs/safePath"},
         "sha256": {"$ref": "#/$defs/sha256"},
         "sourceBundleSha256": {"$ref": "#/$defs/sha256"}

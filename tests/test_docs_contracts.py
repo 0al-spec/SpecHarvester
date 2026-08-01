@@ -40838,6 +40838,7 @@ def test_ai_semantic_author_contract_preserves_evidence_and_reviewer_authority()
     )
 
     evidence = payload["evidenceBoundary"]
+    assert "deterministic_semantic_product_profile" in evidence["allowedClasses"]
     assert evidence["everySemanticClaimRequiresEvidence"] is True
     assert evidence["sourcePathRequired"] is True
     assert evidence["sourceDigestRequired"] is True
@@ -40868,6 +40869,7 @@ def test_ai_semantic_author_contract_preserves_evidence_and_reviewer_authority()
         assert "Codex 5.3 Spark" in normalized
         assert "LM Studio" in normalized
         assert "intent.experimental.*" in normalized
+        assert "deterministic semantic product profiles" in normalized.lower()
         assert "untrusted evidence, not host instructions" in normalized
         assert "proposal-only" in normalized
     assert "AI_SEMANTIC_AUTHOR_CONTRACT.md" in (ROOT / "docs/CAPABILITIES.md").read_text()

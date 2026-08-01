@@ -18,7 +18,11 @@ from spec_harvester.retained_corpus_semantic_campaign import (
     finalize_campaign,
     initialize_campaign,
     load_campaign_scope,
+    prepare_workspace,
+    read_pinned_manifest_metadata,
+    read_pinned_package_readme,
     read_pinned_readme,
+    read_pinned_repository_document,
     run_campaign_target,
     select_principal_candidate,
     sha256_file,
@@ -117,8 +121,8 @@ def test_runs_resumes_and_finalizes_complete_bound_campaign(
         lambda *_args: None,
     )
     monkeypatch.setattr(
-        "spec_harvester.retained_corpus_semantic_campaign.read_pinned_readme",
-        lambda *_args: b"# Pinned README\nSearch files for users.\n",
+        "spec_harvester.retained_corpus_semantic_campaign.read_pinned_repository_document",
+        lambda *_args: ("README.md", b"# Pinned README\nSearch files for users.\n"),
     )
     provider = FakeProvider()
     options = CampaignRunOptions(provider_max_attempts=2)
@@ -242,10 +246,108 @@ def test_reads_documentation_from_pinned_git_object(tmp_path: Path) -> None:
 
     validate_source_checkout(repository, revision)
     assert read_pinned_readme(repository, revision) == b"Pinned purpose\n"
+    assert read_pinned_repository_document(repository, revision) == (
+        "docs/readme.rst",
+        b"Pinned purpose\n",
+    )
     with pytest.raises(ValueError, match="revision mismatch"):
         validate_source_checkout(repository, "0" * 40)
     with pytest.raises(ValueError, match="unavailable"):
         validate_source_checkout(tmp_path / "missing", revision)
+
+
+def test_prepares_nested_package_semantic_profile_from_pinned_objects(tmp_path: Path) -> None:
+    repository = tmp_path / "repository"
+    package = repository / "packages/agents"
+    package.mkdir(parents=True)
+    subprocess.run(["git", "init", "-q"], cwd=repository, check=True)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=repository, check=True)
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=repository, check=True)
+    (repository / "README.md").write_text("Workflow automation platform\n")
+    (package / "README.md").write_text("Build code-first AI agents\n")
+    (package / "package.json").write_text(
+        json.dumps(
+            {
+                "name": "@demo/agents",
+                "description": "AI agent SDK",
+                "keywords": ["agents", "workflow"],
+            }
+        )
+    )
+    (package / "pyproject.toml").write_text(
+        '[project]\nname = "demo-agents"\ndescription = "Python AI agent SDK"\n'
+        'keywords = ["agents", "workflow"]\n'
+    )
+    subprocess.run(["git", "add", "."], cwd=repository, check=True)
+    subprocess.run(["git", "commit", "-qm", "fixture"], cwd=repository, check=True)
+    revision = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=repository,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    candidate = tmp_path / "candidate"
+    (candidate / "specs").mkdir(parents=True)
+    (candidate / "specpm.yaml").write_text(
+        "kind: SpecPackage\nmetadata:\n  id: demo.agents\npreview_only: true\n"
+    )
+    (candidate / "specs/core.spec.yaml").write_text("kind: BoundarySpec\n")
+    harvest = {
+        "source": {
+            "repository": "https://github.com/demo/workspace",
+            "revision": revision,
+            "target": {"kind": "folder", "path": "packages/agents", "label": "agents"},
+        },
+        "projectProfile": {
+            "languages": [{"id": "javascript", "confidence": "high"}],
+            "ecosystems": [{"id": "npm", "packageManager": "pnpm"}],
+            "manifests": [{"path": "packages/agents/package.json"}],
+            "analyzerPlan": [],
+        },
+        "files": [
+            {
+                "path": "packages/agents/package.json",
+                "package": {"name": "@demo/agents", "description": "AI agent SDK"},
+            }
+        ],
+    }
+    (candidate / "harvest.json").write_text(json.dumps(harvest))
+    output_root = tmp_path / "output"
+    output_root.mkdir()
+
+    workspace_path = prepare_workspace(
+        candidate,
+        repository,
+        revision,
+        output_root,
+        repository_id="demo-workspace",
+    )
+
+    profile = json.loads((workspace_path / "semantic-product-profile.json").read_text())
+    assert (workspace_path / "PACKAGE_README.md").read_text() == "Build code-first AI agents\n"
+    assert profile["repository"]["owner"] == "demo"
+    assert profile["documents"][0]["sourcePath"] == "README.md"
+    assert profile["package"]["targetPath"] == "packages/agents"
+    assert profile["package"]["description"] == "AI agent SDK"
+    assert profile["package"]["keywords"] == ["agents", "workflow"]
+    assert read_pinned_package_readme(repository, revision, harvest) is not None
+    assert read_pinned_manifest_metadata(repository, revision, harvest)["name"] == "@demo/agents"
+    python_harvest = copy.deepcopy(harvest)
+    python_harvest["projectProfile"]["manifests"][0]["path"] = "packages/agents/pyproject.toml"
+    assert read_pinned_manifest_metadata(repository, revision, python_harvest) == {
+        "sourcePath": "packages/agents/pyproject.toml",
+        "sha256": hashlib.sha256((package / "pyproject.toml").read_bytes()).hexdigest(),
+        "name": "demo-agents",
+        "description": "Python AI agent SDK",
+        "keywords": ["agents", "workflow"],
+    }
+    missing_manifest = copy.deepcopy(harvest)
+    missing_manifest["projectProfile"]["manifests"][0]["path"] = (
+        "packages/agents/missing-package.json"
+    )
+    with pytest.raises(ValueError, match="Pinned package manifest is unavailable"):
+        read_pinned_manifest_metadata(repository, revision, missing_manifest)
 
 
 def test_rejects_packet_substitution_against_aggregate_binding(tmp_path: Path) -> None:
