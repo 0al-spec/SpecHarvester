@@ -96,6 +96,7 @@ def complete_json_with_repair(
                 request,
                 latest_raw,
                 attempt,
+                system_prompt=system_prompt,
                 validation_error=validation_error,
             )
         )
@@ -142,8 +143,10 @@ def repair_messages(
     invalid_output: str,
     attempt: int,
     *,
+    system_prompt: str,
     validation_error: str | None = None,
 ) -> list[dict[str, str]]:
+    bounded_output = invalid_output[:MAX_REPAIR_INPUT_CHARS]
     payload = {
         "task": "repair_invalid_json_model_output",
         "attempt": attempt,
@@ -153,19 +156,16 @@ def repair_messages(
             "Do not add prose, markdown fences, comments, or chain-of-thought.",
             "Do not claim package acceptance, relation acceptance, or registry publication.",
         ],
-        "requiredJsonShape": request.get("requiredJsonShape"),
         "allowedEvidencePaths": request.get("allowedEvidencePaths", []),
         "allowedEvidenceBindings": _repair_evidence_bindings(request),
         "observedIntentBindings": _repair_observed_intent_bindings(request),
         "validationError": validation_error,
-        "invalidModelOutput": invalid_output[:MAX_REPAIR_INPUT_CHARS],
         "truncatedInvalidModelOutput": len(invalid_output) > MAX_REPAIR_INPUT_CHARS,
     }
     return [
-        {
-            "role": "system",
-            "content": "Repair malformed model output into valid JSON only.",
-        },
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": json.dumps(request, sort_keys=True)},
+        {"role": "assistant", "content": bounded_output},
         {"role": "user", "content": json.dumps(payload, sort_keys=True)},
     ]
 

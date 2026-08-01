@@ -1,29 +1,41 @@
-# Next Task: P55-T10C Retained Generic-Intent Follow-Up
+# Next Task: P55-T10E Repository and Package Semantic Product Profile
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10B` Targeted Experimental-Intent Calibration
-**Status:** In Progress
+**Dependencies:** `P55-T10D` Semantic Repair Context Preservation
+**Status:** Ready
 
 ## Objective
 
-Run a bounded Codex 5.3 Spark follow-up over the 46 P55-T10 repository records
-that account for 48 reused generic static-intent references, preserving the
-original campaign as immutable baseline. Recover only verified Spark
-usage-limit failures with GPT-5.6 Luna Light at `low` effort under a separate
-digest-bound provider scope.
+Build a deterministic semantic product profile that tells the author what the
+repository and selected package are for before it must choose or create an
+intent.
 
 ## Required Scope
 
-Keep repository, candidate, source, and provider bindings unchanged. Compare
-generic-intent reduction, useful experimental intents, unjustified novelty,
-duplicate intent IDs, provider failures, and edit burden with P55-T10. Expose
-complete and rejected records in the Workbench and obtain explicit maintainer
-review evidence for a representative sample. Do not materialize, canonicalize,
-mutate registry truth, or publish.
-Do not rerun completed Spark records or semantic-policy failures through Luna.
+Bind explicit repository identity, candidate package role, detected language
+and framework signals, root documentation, nearest package-local documentation,
+and manifest description or keywords when available. Every profile field must
+cite allowlisted evidence and remain deterministic, size-bounded, and untrusted
+where sourced from repository text. Generate it without executing repository
+code or package managers, and do not grant materialization or publication
+authority.
 
 ## Recently Archived
+
+- `P55-T10D` Semantic Repair Context Preservation: PASS. Shared JSON repair now
+  continues the original system prompt and complete provider request, retains
+  evidence contents and policy context at their original roles, bounds invalid
+  assistant output to 24,000 characters, and preserves all proposal-only,
+  privacy, schema, and evidence-validation boundaries.
+
+- `P55-T10C` Retained Generic-Intent Follow-Up: PARTIAL. The effective Spark
+  plus quota-recovery result completed 34 of 46 records, reduced 48 generic
+  references to 41, and produced six evidence-supported experimental intents
+  with zero false novelty or duplicates. The maintainer rejected the result as
+  too weak for scale-out because 39 of 46 records still require edits and every
+  one of the 23 completed JSON-repair cases retained a generic intent. No
+  proposal was accepted, materialized, canonicalized, or published.
 
 - `P55-T10B` Targeted Experimental-Intent Calibration: PASS. Codex 5.3 Spark
   completed all four pinned targets and produced two evidence-supported

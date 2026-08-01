@@ -98,6 +98,7 @@ def provider_request(input_pack: dict) -> dict:
     return {
         "request": input_pack["request"],
         "observedIntents": input_pack["observedIntents"],
+        "evidence": input_pack["evidence"],
         "experimentalIntentDecisionPolicy": load_experimental_intent_decision_policy(),
         "requiredJsonShape": {"type": "object"},
         "allowedEvidencePaths": [item["sourcePath"] for item in input_pack["request"]["evidence"]],
@@ -659,7 +660,15 @@ def test_codex_repairs_cross_record_conformance_failure(
     )
     assert completion.receipt["jsonRepairNeeded"] is True
     assert "references an unknown claim" in prompts[1]
-    repair_request = json.loads(json.loads(prompts[1])[1]["content"])
+    repair_messages = json.loads(prompts[1])
+    assert [message["role"] for message in repair_messages] == [
+        "system",
+        "user",
+        "assistant",
+        "user",
+    ]
+    assert json.loads(repair_messages[1]["content"])["evidence"] == input_pack["evidence"]
+    repair_request = json.loads(repair_messages[3]["content"])
     assert repair_request["allowedEvidenceBindings"] == input_pack["request"]["evidence"]
     assert repair_request["observedIntentBindings"] == [
         {

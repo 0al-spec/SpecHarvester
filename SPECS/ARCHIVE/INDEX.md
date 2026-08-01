@@ -1,6 +1,6 @@
 # Tasks Archive
 
-**Last Updated:** 2026-07-31
+**Last Updated:** 2026-08-01
 
 ## Archived Tasks
 
@@ -263,6 +263,8 @@
 | P55-T10 | [P55-T10_Retained-Corpus_Semantic_Author_and_Review_Flow/](P55-T10_Retained-Corpus_Semantic_Author_and_Review_Flow/) | 2026-07-31 | PASS |
 | P55-T10A | [P55-T10A_Experimental-Intent_Decision_Policy/](P55-T10A_Experimental-Intent_Decision_Policy/) | 2026-07-31 | PASS |
 | P55-T10B | [P55-T10B_Targeted_Experimental-Intent_Calibration/](P55-T10B_Targeted_Experimental-Intent_Calibration/) | 2026-07-31 | PASS |
+| P55-T10C | [P55-T10C_Retained_Generic-Intent_Follow-Up/](P55-T10C_Retained_Generic-Intent_Follow-Up/) | 2026-08-01 | PARTIAL |
+| P55-T10D | [P55-T10D_Semantic_Repair_Context_Preservation/](P55-T10D_Semantic_Repair_Context_Preservation/) | 2026-08-01 | PASS |
 
 ## Historical Artifacts
 
@@ -983,3 +985,6 @@
 | 2026-07-31 | P55-T10A | Archived REVIEW_p55_t10a_experimental_intent_decision_policy report |
 | 2026-07-31 | P55-T10B | Archived Targeted Experimental-Intent Calibration (PASS) |
 | 2026-07-31 | P55-T10B | Archived REVIEW_p55_t10b_targeted_experimental_intent_calibration report |
+| 2026-08-01 | P55-T10C | Archived Retained Generic-Intent Follow-Up (PARTIAL) |
+| 2026-08-01 | P55-T10D | Archived Semantic Repair Context Preservation (PASS) |
+| 2026-08-01 | P55-T10D | Archived REVIEW_p55_t10d_semantic_repair_context_preservation report |
