@@ -987,3 +987,4 @@
 | 2026-07-31 | P55-T10B | Archived REVIEW_p55_t10b_targeted_experimental_intent_calibration report |
 | 2026-08-01 | P55-T10C | Archived Retained Generic-Intent Follow-Up (PARTIAL) |
 | 2026-08-01 | P55-T10D | Archived Semantic Repair Context Preservation (PASS) |
+| 2026-08-01 | P55-T10D | Archived REVIEW_p55_t10d_semantic_repair_context_preservation report |
