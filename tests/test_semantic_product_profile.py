@@ -172,6 +172,33 @@ def test_profile_rejects_invalid_identity_and_document_digest() -> None:
         )
 
 
+def test_profile_rejects_missing_harvest_and_manifest_bindings() -> None:
+    missing_harvest = document("README.md", "README.md", b"Demo")
+    missing_harvest.pop("harvestSha256")
+    with pytest.raises(ValueError, match="harvest binding is invalid"):
+        build_semantic_product_profile(
+            repository_id="demo",
+            candidate_id="demo.core",
+            harvest={},
+            root_document=missing_harvest,
+        )
+
+    with pytest.raises(ValueError, match="manifest binding is invalid"):
+        build_semantic_product_profile(
+            repository_id="demo",
+            candidate_id="demo.core",
+            harvest={},
+            root_document=document("README.md", "README.md", b"Demo"),
+            manifest_metadata={"sha256": "b" * 64},
+        )
+
+
+def test_python_39_toml_backport_is_declared() -> None:
+    pyproject = (Path(__file__).resolve().parents[1] / "pyproject.toml").read_text()
+
+    assert "tomli>=1.1.0; python_version < '3.11'" in pyproject
+
+
 @pytest.mark.parametrize(
     ("mutate", "message"),
     [

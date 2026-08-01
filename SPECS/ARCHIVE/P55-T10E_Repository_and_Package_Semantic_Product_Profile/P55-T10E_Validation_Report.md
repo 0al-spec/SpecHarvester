@@ -65,3 +65,7 @@ was performed in this task.
 - GitHub review follow-up rejects a harvest-declared package manifest that is
   absent from the pinned revision instead of falling back to unverified
   harvested metadata.
+- Python 3.9 and 3.10 use the conditional `tomli` backport while Python 3.11+
+  continues to use `tomllib`.
+- Profile construction now reports dedicated harvest and manifest binding
+  errors before building a partially bound profile.

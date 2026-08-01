@@ -22,6 +22,9 @@ def build_semantic_product_profile(
 ) -> dict[str, Any]:
     if not repository_id or not candidate_id or not isinstance(harvest, dict):
         raise ValueError("semantic product profile identity is invalid")
+    harvest_sha256 = root_document.get("harvestSha256")
+    if not _sha256(harvest_sha256):
+        raise ValueError("semantic product profile harvest binding is invalid")
     source = harvest.get("source") if isinstance(harvest.get("source"), dict) else {}
     target = source.get("target") if isinstance(source.get("target"), dict) else {}
     project = (
@@ -84,7 +87,7 @@ def build_semantic_product_profile(
         "sourceBindings": [
             {
                 "sourcePath": "harvest.json",
-                "sha256": str(root_document.get("harvestSha256") or ""),
+                "sha256": harvest_sha256,
             },
             *document_source_bindings.values(),
         ],
@@ -96,10 +99,13 @@ def build_semantic_product_profile(
             "materializationPerformed": False,
         },
     }
-    if manifest.get("sha256"):
-        profile["package"]["manifestSha256"] = manifest["sha256"]
+    if "sha256" in manifest:
+        manifest_sha256 = manifest["sha256"]
+        if not profile["package"]["manifestPath"] or not _sha256(manifest_sha256):
+            raise ValueError("semantic product profile manifest binding is invalid")
+        profile["package"]["manifestSha256"] = manifest_sha256
         profile["sourceBindings"].append(
-            {"sourcePath": profile["package"]["manifestPath"], "sha256": manifest["sha256"]}
+            {"sourcePath": profile["package"]["manifestPath"], "sha256": manifest_sha256}
         )
     profile["profileSha256"] = _digest_without(profile, "profileSha256")
     validate_semantic_product_profile(profile)

@@ -14,8 +14,12 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-import tomllib
 import yaml
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover - exercised on Python 3.9/3.10
+    import tomli as tomllib
 
 from spec_harvester.controlled_calibration import git_dirty_status, git_head
 from spec_harvester.experimental_intent_policy import (
