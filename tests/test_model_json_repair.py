@@ -6,6 +6,7 @@ from spec_harvester.model_json_repair import (
     MAX_REPAIR_INPUT_CHARS,
     ModelJsonCompletion,
     ModelJsonFailure,
+    ModelJsonSemanticViolation,
     complete_json_with_repair,
     repair_messages,
 )
@@ -120,3 +121,50 @@ def test_exhausted_repair_retains_failure_without_persisting_context() -> None:
     assert result.repair_attempt_count == 1
     assert result.repair_status == "exhausted"
     assert "Promise based HTTP client" not in result.raw_content
+
+
+def test_repair_carries_structured_semantic_violation_guidance() -> None:
+    request = semantic_request()
+    calls: list[list[dict[str, str]]] = []
+
+    def send_messages(messages: list[dict[str, str]]) -> tuple[str, dict]:
+        calls.append(messages)
+        return '{"intentId":"intent.package.javascript_library"}', {}
+
+    def reject_generic(_payload: dict) -> None:
+        raise ModelJsonSemanticViolation(
+            "specific_purpose_generic_only_contradiction",
+            "specific purpose cannot use only a generic intent",
+            prohibited_values=["intent.package.javascript_library"],
+            replacement_constraints={"removeGenericOnlyReuse": True},
+        )
+
+    result = complete_json_with_repair(
+        request=request,
+        system_prompt="semantic system prompt",
+        send_messages=send_messages,
+        max_repair_attempts=3,
+        validate_payload=reject_generic,
+    )
+
+    assert isinstance(result, ModelJsonFailure)
+    assert len(calls) == 2
+    assert result.repair_attempt_count == 1
+    assert result.repair_status == "unchanged_semantic_violation"
+    assert result.violation_code == "specific_purpose_generic_only_contradiction"
+    assert result.unchanged_semantic_violation is True
+    repair = json.loads(calls[1][-1]["content"])
+    assert repair["semanticViolation"] == {
+        "code": "specific_purpose_generic_only_contradiction",
+        "prohibitedValues": ["intent.package.javascript_library"],
+        "replacementConstraints": {"removeGenericOnlyReuse": True},
+    }
+
+
+def test_semantic_violation_rejects_unstable_code() -> None:
+    try:
+        ModelJsonSemanticViolation("INVALID-CODE", "bad")
+    except ValueError as exc:
+        assert str(exc) == "semantic violation code is invalid"
+    else:
+        raise AssertionError("invalid semantic violation code was accepted")

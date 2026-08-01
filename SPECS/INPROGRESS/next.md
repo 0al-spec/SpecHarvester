@@ -1,25 +1,30 @@
-# Next Task: P55-T10G2 Validation-Aware Semantic Repair
+# Next Task: P55-T10G3 Repeat Ten-Repository Semantic Calibration
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10G1` Outcome-Level Purpose Anchors
+**Dependencies:** `P55-T10G2` Validation-Aware Semantic Repair
 **Status:** Ready
 
 ## Objective
 
-Make semantic JSON repair validation-aware for generic-only contradiction,
-experimental-intent namespace, and outcome-purpose specificity failures while
-preserving the complete original request and bounded provider budgets.
+Repeat the exact P55-T10G ten-repository calibration after the outcome-anchor and
+validation-aware repair changes, using the same provider, evidence, baseline,
+rubric, thresholds, denominators, and success criteria.
 
 ## Required Scope
 
-Carry structured violation codes and prohibited/replacement constraints into the
-preserved repair request. Deterministically reject unchanged semantic violations.
-Keep the existing two-provider-attempt and one-repair-per-attempt budgets. Do not
-change frozen P55 thresholds or grant acceptance, materialization,
-canonicalization, registry, or publication authority.
+Run Codex 5.3 Spark over the same ten pinned repositories without changing
+targets, thresholds, denominators, baseline evidence, purpose rubric, or budgets.
+P55-T10H remains blocked unless every frozen gate passes with zero false novelty
+and no duplicate experimental intent IDs or semantic stems.
 
 ## Recently Archived
+
+- `P55-T10G2` Validation-Aware Semantic Repair: PASS. JSON repair now receives
+  stable semantic violation codes, prohibited values, and replacement
+  constraints for generic contradiction, experimental namespace, and outcome
+  specificity failures. Repeating the same violation terminates repair
+  deterministically without increasing the frozen attempt budgets.
 
 - `P55-T10G1` Outcome-Level Purpose Anchors: PASS. Semantic input packs now carry
   deterministic digest-bound outcome phrases and terms. Provider transport and

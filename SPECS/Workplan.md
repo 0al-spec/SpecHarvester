@@ -2907,7 +2907,7 @@ Acceptance:
   repository, framework, or implementation-shape mechanics; fail or require
   review when the proposed purpose merely restates those mechanics. Preserve
   bounded untrusted evidence and proposal-only authority.
-- [ ] `P55-T10G2` Make semantic JSON repair validation-aware for generic-only
+- [x] `P55-T10G2` Make semantic JSON repair validation-aware for generic-only
   contradiction and experimental-intent namespace failures. Carry structured
   violation codes and prohibited/replacement constraints into the preserved
   repair request, reject unchanged semantic violations deterministically, and
