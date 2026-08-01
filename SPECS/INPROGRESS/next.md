@@ -1,29 +1,34 @@
-# Next Task: P55-T10C Retained Generic-Intent Follow-Up
+# Next Task: P55-T10D Semantic Repair Context Preservation
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10B` Targeted Experimental-Intent Calibration
-**Status:** In Progress
+**Dependencies:** `P55-T10C` Retained Generic-Intent Follow-Up evidence
+**Status:** Selected
 
 ## Objective
 
-Run a bounded Codex 5.3 Spark follow-up over the 46 P55-T10 repository records
-that account for 48 reused generic static-intent references, preserving the
-original campaign as immutable baseline. Recover only verified Spark
-usage-limit failures with GPT-5.6 Luna Light at `low` effort under a separate
-digest-bound provider scope.
+Preserve the complete semantic-author request across bounded JSON repair so a
+formal output correction cannot discard the repository evidence and push an
+otherwise specific proposal back to a generic intent.
 
 ## Required Scope
 
-Keep repository, candidate, source, and provider bindings unchanged. Compare
-generic-intent reduction, useful experimental intents, unjustified novelty,
-duplicate intent IDs, provider failures, and edit burden with P55-T10. Expose
-complete and rejected records in the Workbench and obtain explicit maintainer
-review evidence for a representative sample. Do not materialize, canonicalize,
-mutate registry truth, or publish.
-Do not rerun completed Spark records or semantic-policy failures through Luna.
+Reuse the original semantic system instructions and complete provider request,
+including README, candidate YAML, harvest metadata, public-interface evidence,
+observed intents, and decision policy, on every repair attempt. Preserve the
+existing provider attempt, timeout, output-size, evidence allowlist, privacy,
+and proposal-only boundaries. Add regression coverage proving that repair sees
+the semantic evidence contents and cannot persist raw prompts or responses.
 
 ## Recently Archived
+
+- `P55-T10C` Retained Generic-Intent Follow-Up: PARTIAL. The effective Spark
+  plus quota-recovery result completed 34 of 46 records, reduced 48 generic
+  references to 41, and produced six evidence-supported experimental intents
+  with zero false novelty or duplicates. The maintainer rejected the result as
+  too weak for scale-out because 39 of 46 records still require edits and every
+  one of the 23 completed JSON-repair cases retained a generic intent. No
+  proposal was accepted, materialized, canonicalized, or published.
 
 - `P55-T10B` Targeted Experimental-Intent Calibration: PASS. Codex 5.3 Spark
   completed all four pinned targets and produced two evidence-supported

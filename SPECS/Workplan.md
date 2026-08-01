@@ -2863,7 +2863,7 @@ Acceptance:
   differentiation, duplicate/synonym risk, evidence support, and reviewer edit
   burden. Preserve the frozen P55 quality policy and record false novelty as a
   failure rather than redefining thresholds.
-- [ ] `P55-T10C` Run a bounded Codex 5.3 Spark follow-up over the 46 retained
+- [x] `P55-T10C` Run a bounded Codex 5.3 Spark follow-up over the 46 retained
   repositories accounting for 48 generic static-intent references in P55-T10.
   Permit a digest-bound GPT-5.6 Luna Light recovery only for targets whose
   bounded Spark attempts ended solely in the verified account usage-limit
@@ -2874,6 +2874,38 @@ Acceptance:
   Report generic-intent reduction, useful experimental intents, unjustified
   novelty, duplicate intent IDs, provider failures, and edit burden without
   materialization, canonicalization, registry mutation, or publication.
+- [ ] `P55-T10D` Preserve the complete semantic-author request across bounded
+  JSON repair. Reuse the original system instructions and evidence contents,
+  keep repair attempts under the existing timeout and output budgets, and prove
+  that repaired proposals cannot silently lose README, candidate, harvest,
+  interface, observed-intent, or decision-policy context. Continue excluding
+  raw prompts, raw responses, hidden reasoning, credentials, and machine-local
+  paths from portable evidence.
+- [ ] `P55-T10E` Build a deterministic repository-and-package semantic product
+  profile before intent authoring. Bind explicit repository identity, candidate
+  package role, language and framework signals, root documentation, nearest
+  package-local documentation, and manifest description or keywords when
+  available. Keep every field source-bound, size-bounded, untrusted where
+  appropriate, and generated without executing repository code or package
+  managers.
+- [ ] `P55-T10F` Add bounded relevant-intent retrieval and a generic-reuse
+  contradiction gate. Give the author semantically nearby SpecPM intents beyond
+  the current candidate's generic observations; require outcome-level evidence
+  for generic reuse; and reject or require review when a specific purpose is
+  mapped only to an implementation-shape intent. Preserve proposal-only
+  experimental intent authority and all P55-T5 false-novelty protections.
+- [ ] `P55-T10G` Run a ten-repository semantic root-cause calibration over
+  pinned cases including `axios/axios`, `n8n-io/n8n`, `firecrawl/firecrawl`,
+  `bitcoin/bitcoin`, `excalidraw/excalidraw`, and `openai/codex`. Compare the
+  repaired pipeline with the immutable P55-T10C evidence for purpose accuracy,
+  generic-intent reduction, repair outcomes, false novelty, provider failures,
+  and reviewer edit burden. Do not expand scope or redefine thresholds after
+  observing results.
+- [ ] `P55-T10H` Revalidate the exact 46-repository generic-intent scope only if
+  P55-T10G passes its frozen gates. Use Codex 5.3 Spark as the primary worker,
+  permit a separate digest-bound recovery model only for verified usage-limit
+  failures, and compare all terminal records with P55-T10 and P55-T10C without
+  accepting, materializing, canonicalizing, or publishing proposals.
 - [ ] `P55-T11` Record the Phase 55 exit decision: stop, run a bounded semantic
   follow-up, authorize maintainer-reviewed AI-authored candidate revisions, or
   plan a separate intent-governance/publication phase. Do not authorize
@@ -2942,9 +2974,18 @@ Acceptance:
   unjustified novelty before P55-T10C may run. P55-T10C is limited to the 46
   P55-T10 repositories covering all 48 generic-intent references and must
   preserve the original baseline as immutable comparison evidence.
-- P55-T11 remains blocked until P55-T10A through P55-T10C complete and their
+- P55-T10C completed with a PARTIAL verdict: the effective pass reduced 48
+  generic references to 41 and produced six evidence-supported experimental
+  intents, but 39 of 46 records still required reviewer edits. Repaired outputs
+  retained generic intents in all 23 completed repair cases, so P55-T10D through
+  P55-T10H must address the context, product-profile, and routing root causes.
+- P55-T10D through P55-T10F must complete before P55-T10G. P55-T10H may run only
+  after P55-T10G meets its frozen purpose, generic-reduction, false-novelty,
+  provider-failure, and reviewer-burden gates.
+- P55-T11 remains blocked until P55-T10D through P55-T10H complete and their
   Workbench review evidence distinguishes useful experimental intents from
-  synonyms, taxonomy leakage, and unsupported novelty.
+  synonyms, taxonomy leakage, unsupported novelty, and generic fallback caused
+  by missing semantic context.
 - P55-T11 must complete before automatic intent canonicalization, autonomous
   publication, remote multi-user review, or model-authored mutation of SpecPM
   registry truth is planned.
