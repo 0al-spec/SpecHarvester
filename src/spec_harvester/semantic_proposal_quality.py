@@ -383,6 +383,12 @@ def _validate_purpose_specificity(
     specificity = assess_purpose_specificity(anchors, purpose)
     if specificity == "mechanics_only":
         diagnostics.append(_diagnostic("purpose_restates_package_mechanics", "error"))
+    elif specificity == "weak_source_only":
+        diagnostics.append(_diagnostic("purpose_outcome_anchor_weak_source", "warning"))
+    elif specificity == "no_outcome_source":
+        diagnostics.append(_diagnostic("purpose_outcome_anchor_no_outcome_source", "warning"))
+    elif specificity == "legacy_unclassified":
+        diagnostics.append(_diagnostic("purpose_outcome_anchor_legacy_unclassified", "warning"))
     elif specificity == "missing_anchor":
         diagnostics.append(_diagnostic("purpose_outcome_anchor_missing", "warning"))
 
@@ -647,6 +653,11 @@ def _report(
         if warning_count
         else "eligible_for_calibration"
     )
+    calibration_blocked = {
+        "purpose_outcome_anchor_weak_source",
+        "purpose_outcome_anchor_no_outcome_source",
+        "purpose_outcome_anchor_legacy_unclassified",
+    }
     proposal = semantic_pass.get("proposal", {})
     return {
         "apiVersion": QUALITY_REPORT_API_VERSION,
@@ -663,7 +674,8 @@ def _report(
             "requiredBeforeTask": policy["requiredBeforeTask"],
         },
         "status": status,
-        "eligibleForCalibration": status != "rejected",
+        "eligibleForCalibration": status != "rejected"
+        and not any(item["code"] in calibration_blocked for item in diagnostics),
         "summary": {
             "errorCount": error_count,
             "warningCount": warning_count,

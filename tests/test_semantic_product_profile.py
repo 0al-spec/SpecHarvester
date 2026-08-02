@@ -92,6 +92,15 @@ def test_builds_digest_bound_nested_package_product_profile(tmp_path: Path) -> N
     assert profile["package"]["role"] == "member_package"
     assert profile["package"]["targetPath"] == "packages/@n8n/agents"
     assert profile["package"]["description"].startswith("AI agent SDK")
+    assert profile["package"]["descriptionProvenance"] == {
+        "sourcePath": "packages/@n8n/agents/package.json",
+        "sha256": "b" * 64,
+        "field": "description",
+        "normalizedValueSha256": hashlib.sha256(
+            b"AI agent SDK for n8n's code-first execution engine"
+        ).hexdigest(),
+        "extractor": "pinned_manifest_metadata/v1",
+    }
     assert profile["package"]["keywords"] == ["agents", "workflow"]
     assert profile["technology"]["languages"][0]["id"] == "javascript"
     assert profile["technology"]["analyzerSignals"] == ["javascript.public_api"]

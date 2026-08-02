@@ -33,12 +33,14 @@ from spec_harvester.model_json_repair import (
 )
 from spec_harvester.outcome_purpose_anchors import (
     assess_purpose_specificity,
+    has_strong_outcome_anchors,
     validate_outcome_purpose_anchors,
 )
 from spec_harvester.relevant_intent_routing import (
     has_specific_purpose_generic_only_contradiction,
     validate_relevant_intent_routing,
 )
+from spec_harvester.semantic_author_input_pack import validate_semantic_author_input_pack_integrity
 
 SEMANTIC_AUTHOR_PASS_API_VERSION = "spec-harvester.semantic-author-pass/v0"
 SEMANTIC_AUTHOR_PASS_KIND = "SpecHarvesterSemanticAuthorPass"
@@ -373,6 +375,7 @@ def _validate_input_pack(pack: dict[str, Any]) -> None:
         or not isinstance(pack.get("evidence"), list)
     ):
         raise ValueError("semantic author input pack request is malformed")
+    validate_semantic_author_input_pack_integrity(pack)
     intent_routing = pack.get("intentRouting")
     purpose_anchors = pack.get("outcomePurposeAnchors")
     if purpose_anchors is not None:
@@ -845,8 +848,11 @@ def _provider_payload(
     purpose_anchors = pack.get("outcomePurposeAnchors")
     if isinstance(purpose_anchors, dict) and purpose_anchors.get("anchors"):
         payload["outcomePurposeAnchors"] = purpose_anchors
-        payload["authoringConstraints"]["purposeMustMatchSourceBoundOutcomeAnchor"] = True
         payload["authoringConstraints"]["purposeMustNotOnlyRestateMechanics"] = True
+        if has_strong_outcome_anchors(purpose_anchors):
+            payload["authoringConstraints"]["purposeMustMatchSourceBoundOutcomeAnchor"] = True
+        else:
+            payload["authoringConstraints"]["weakOutcomeAnchorsRequireReview"] = True
     if normalized_focus is not None:
         payload["semanticFocus"] = normalized_focus
         payload["authoringConstraints"]["purposeRequiredExactTermGroups"] = normalized_focus[

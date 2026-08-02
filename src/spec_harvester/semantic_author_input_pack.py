@@ -157,8 +157,7 @@ def build_semantic_author_input_pack(
             candidate_id=candidate_id,
             source_bundle_sha256=source_bundle_sha256,
         )
-        if purpose_anchors["anchors"]:
-            result["outcomePurposeAnchors"] = purpose_anchors
+        result["outcomePurposeAnchors"] = purpose_anchors
     return result
 
 
@@ -173,6 +172,50 @@ def _validate_options(options: SemanticAuthorInputPackOptions) -> None:
         <= 0
     ):
         raise ValueError("semantic author input pack budgets must be positive")
+
+
+def validate_semantic_author_input_pack_integrity(pack: dict[str, Any]) -> None:
+    """Fail closed when a persisted input pack no longer matches its evidence."""
+    evidence = pack.get("evidence")
+    source_bundle_sha256 = pack.get("sourceBundleSha256")
+    request = pack.get("request")
+    if (
+        not isinstance(evidence, list)
+        or not evidence
+        or not isinstance(source_bundle_sha256, str)
+        or not isinstance(request, dict)
+    ):
+        raise ValueError("semantic author input pack integrity is malformed")
+    identifiers: set[str] = set()
+    bindings: list[dict[str, str]] = []
+    for item in evidence:
+        if (
+            not isinstance(item, dict)
+            or not isinstance(item.get("id"), str)
+            or item["id"] in identifiers
+            or not isinstance(item.get("content"), str)
+            or not isinstance(item.get("byteCount"), int)
+            or item["byteCount"] < 0
+            or not isinstance(item.get("sha256"), str)
+            or item.get("sourceBundleSha256") != source_bundle_sha256
+            or hashlib.sha256(item["content"].encode()).hexdigest() != item["sha256"]
+            or len(item["content"].encode()) != item["byteCount"]
+        ):
+            raise ValueError("semantic author input pack evidence binding is stale")
+        identifiers.add(item["id"])
+        try:
+            bindings.append(_binding(item))
+        except KeyError as exc:
+            raise ValueError("semantic author input pack evidence binding is malformed") from exc
+    if _source_bundle_digest(evidence) != source_bundle_sha256:
+        raise ValueError("semantic author input pack source bundle is stale")
+    if (
+        request.get("candidateId") != pack.get("candidateId")
+        or request.get("sourceBundleSha256") != source_bundle_sha256
+    ):
+        raise ValueError("semantic author input pack request is malformed")
+    if request.get("evidence") != bindings:
+        raise ValueError("semantic author input pack request evidence is stale")
 
 
 def _safe_path(path: str) -> str:

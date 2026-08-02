@@ -121,7 +121,7 @@ def test_input_pack_includes_validated_semantic_product_profile(tmp_path: Path) 
     assert anchors["anchors"][0]["sourcePath"] == "README.md"
 
 
-def test_input_pack_omits_empty_outcome_anchor_guidance(
+def test_input_pack_retains_empty_outcome_anchor_assessment(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     source = workspace(tmp_path)
@@ -146,7 +146,7 @@ def test_input_pack_omits_empty_outcome_anchor_guidance(
     )
     result = build_semantic_author_input_pack(source, catalog())
 
-    assert "outcomePurposeAnchors" not in result
+    assert result["outcomePurposeAnchors"] == {"anchors": []}
 
 
 def test_input_pack_binds_relevant_intent_routing_to_catalog_evidence(tmp_path: Path) -> None:

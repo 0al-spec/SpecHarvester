@@ -264,6 +264,17 @@ def test_decision_policy_is_validated_before_provider_invocation(tmp_path: Path)
     assert provider.requests == []
 
 
+def test_tampered_input_pack_evidence_fails_before_provider_invocation(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path)
+    input_pack["evidence"][0]["content"] = "tampered"
+    provider = FakeProvider(proposal(input_pack))
+
+    with pytest.raises(ValueError, match="evidence binding is stale"):
+        run_semantic_author_pass(input_pack, provider)
+
+    assert provider.requests == []
+
+
 def test_generic_reuse_and_experimental_novelty_are_mutually_exclusive(
     tmp_path: Path,
 ) -> None:
