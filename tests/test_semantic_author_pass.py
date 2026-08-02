@@ -65,7 +65,8 @@ def test_codex_structured_output_schema_requires_transport_repair_padding() -> N
         }
     )
 
-    assert schema["required"] == list(schema["properties"])
+    assert set(schema["required"]) == set(schema["properties"])
+    assert len(schema["required"]) == len(schema["properties"])
     assert "capabilityNamespaceRepairs" in schema["required"]
 
 

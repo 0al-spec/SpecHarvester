@@ -25,8 +25,11 @@ The frozen exit gate is **PARTIAL**, not PASS:
 The independent reviewer marked the Bitcoin Core proposal inaccurate because
 it described manifest discovery rather than the package outcome. The Electron
 dialog-helper proposal likewise described generic import mechanics rather than
-its concrete user-facing outcome. These two assessments, plus JSON-repair
-records, keep reviewer burden above the frozen threshold.
+its concrete user-facing outcome. Those two assessments and Firecrawl's
+`purpose_outcome_anchor_missing` quality diagnostic make three records require
+review, keeping reviewer burden above the frozen threshold. Six records used
+the bounded JSON repair path, but repair usage alone does not determine this
+metric.
 
 ## Transport Prerequisites
 
@@ -46,6 +49,6 @@ durable evidence.
 ## Decision
 
 `P55-T10H` remains blocked. A targeted follow-up must improve outcome-level
-purpose grounding for the identified Bitcoin and Electron-style cases and
-reduce repair-driven reviewer burden before the exact 46-repository scope is
+purpose grounding for the identified Bitcoin, Electron, and Firecrawl-style
+cases before the exact 46-repository scope is
 revalidated.

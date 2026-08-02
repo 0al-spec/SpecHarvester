@@ -41,6 +41,11 @@ def test_p55_t10g3_durable_rerun_evidence_preserves_frozen_contract() -> None:
         "providerId": "gpt-5.3-codex-spark",
         "transport": "codex_exec",
     }
+    assert report["provider"] == {
+        "modelId": "gpt-5.3-codex-spark",
+        "providerId": "gpt-5.3-codex-spark",
+        "transport": "codex_exec",
+    }
     assert report["reportSha256"] == calibration._digest_without(report, "reportSha256")
     assert assessment["assessmentSha256"] == calibration._digest_without(
         assessment, "assessmentSha256"
@@ -98,6 +103,14 @@ def test_p55_t10g6_durable_rerun_preserves_the_partial_exit_decision() -> None:
     assert report["summary"]["currentGenericIntentReuseCount"] == 0
     assert report["summary"]["falseNoveltyCount"] == 0
     assert report["archive"]["sha256"] == hashlib.sha256(archive_path.read_bytes()).hexdigest()
+    with tarfile.open(archive_path, "r:gz") as archive:
+        assert sum(name.endswith("/campaign-record.json") for name in archive.getnames()) == 10
+        archived_scope = json.load(archive.extractfile("campaign-input.json"))
+        assert archived_scope["campaignInputSha256"] == calibration._digest_without(
+            archived_scope, "campaignInputSha256"
+        )
+    assert all(value is False for value in report["privacy"].values())
+    assert all(value is False for value in report["executionBoundary"].values())
 
 
 def test_build_plan_binds_current_scope_and_immutable_baseline(
